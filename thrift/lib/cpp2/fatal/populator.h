@@ -30,9 +30,9 @@
 
 #include <folly/io/Cursor.h>
 
-#include <fatal/type/string_lookup.h>
-#include <fatal/type/call_traits.h>
-#include <fatal/type/map.h>
+#include <fatal/type/array.h>
+#include <fatal/type/convert.h>
+#include <fatal/type/prefix_tree.h>
 
 namespace apache { namespace thrift { namespace populator {
 
@@ -330,47 +330,31 @@ struct populator_methods<type_class::map<KeyClass, MappedClass>, Type> {
 template <typename Union>
 struct populator_methods<type_class::variant, Union> {
   using traits = fatal::variant_traits<Union>;
-  using enum_traits = fatal::enum_traits<typename traits::id>;
-  using id_name_strs = typename enum_traits::name_to_value::keys;
 
   // Field ID -> descriptor
-  using sorted_fids = typename traits
-    ::descriptors
-    ::template transform<detail::extract_descriptor_fid>
-    ::template sort<>;
-  using fid_to_descriptor_map = typename fatal
-    ::template type_map_from<detail::extract_descriptor_fid>
-    ::list<typename traits::descriptors>;
-
-  // Union.Type id -> descriptor
-  using sorted_ids = typename traits
-    ::descriptors
-    ::template transform<fatal::get_member_type::id>
-    ::template sort<>;
-  using id_to_descriptor_map = typename fatal
-    ::template type_map_from<fatal::get_member_type::id>
-    ::list<typename traits::descriptors>;
+  using fid_to_descriptor_map = fatal::as_map<
+    typename traits::descriptors,
+    detail::extract_descriptor_fid
+  >;
 
 private:
   struct write_member_by_fid {
     template <typename Fid, std::size_t Index, typename Rng>
     void operator ()(
-      fatal::indexed_type_tag<Fid, Index>,
-      const field_id_t needle,
+      fatal::indexed<Fid, Index>,
       Rng& rng,
       populator_opts const& opts,
       Union& obj
     ) {
-      using descriptor = typename fid_to_descriptor_map::template get<Fid>;
+      using descriptor = fatal::map_get<fid_to_descriptor_map, Fid>;
       using methods = populator_methods<
         typename descriptor::metadata::type_class,
         typename descriptor::type>;
 
-      assert(needle == Fid::value);
-      assert(needle == descriptor::metadata::id::value);
+      assert(Fid::value == descriptor::metadata::id::value);
 
       DVLOG(3) << "writing union field "
-        << descriptor::metadata::name::z_data()
+        << fatal::z_data<typename descriptor::metadata::name>()
         << ", fid: " << descriptor::metadata::id::value;
 
       typename descriptor::type tmp;
@@ -388,19 +372,31 @@ private:
 public:
   template <typename Rng>
   static void populate(Rng& rng, populator_opts const& opts, Union& out) {
-    DVLOG(3) << "begin writing union: " << traits::name::z_data()
+    DVLOG(3) << "begin writing union: "
+      << fatal::z_data<typename traits::name>()
       << ", type: " << out.getType();
 
     // array of all possible FIDs of this union
-    using fids_seq = typename sorted_fids
-      ::template apply_values<field_id_t, detail::field_id_sequence>;
+    using fids_seq = fatal::sort<
+      fatal::as_sequence<
+        fatal::transform<
+          typename traits::descriptors,
+          detail::extract_descriptor_fid
+        >,
+        fatal::sequence,
+        field_id_t
+      >
+    >;
 
     // std::array of field_id_t
-    auto const fids = fids_seq::template array<>::get;
-    auto const range = populator_opts::range<std::size_t>(0, fids_seq::size-1);
+    auto const fids = fatal::as_array<fids_seq>::get;
+    auto const range = populator_opts::range<std::size_t>(
+      0,
+      fatal::size<fids_seq>::value - !fatal::empty<fids_seq>::value
+    );
     auto const selected = detail::rand_in_range(rng, range);
 
-    sorted_fids::template binary_search<>::exact(
+    fatal::sorted_search<fids_seq>(
       fids[selected],
       write_member_by_fid(),
       rng,
@@ -417,30 +413,14 @@ struct populator_methods<type_class::structure, Struct> {
 private:
   using traits = apache::thrift::reflect_struct<Struct>;
 
-  // fatal::type_list
-  using member_names = typename traits::members::keys;
-  using sorted_fids  = typename traits::members::mapped
-    ::template transform<fatal::get_member_type::id>
-    ::template sort<>;
+  using all_fields = fatal::partition<
+    fatal::map_values<typename traits::members>,
+    fatal::applier<detail::is_required_field>
+  >;
+  using required_fields = fatal::first<all_fields>;
+  using optional_fields = fatal::second<all_fields>;
 
-  // fatal::prefix_tree
-  using member_matcher =
-    typename member_names
-    ::template apply<fatal::string_lookup>;
-
-  // fatal::type_list
-  using required_fields = typename
-    traits::members::mapped::template filter<detail::is_required_field>;
-  using optional_fields = typename
-    traits::members::mapped::template reject<detail::is_required_field>;
-
-  // fatal::type_map {std::integral_constant<field_id_t, Id> => MemberInfo}
-  using id_to_member_map =
-    typename fatal::type_map_from<fatal::get_member_type::id>::list<
-      typename traits::members::mapped
-    >;
-
-  using isset_array = std::array<bool, required_fields::size>;
+  using isset_array = std::array<bool, fatal::size<required_fields>::value>;
 
   template <
     typename Member,
@@ -544,7 +524,7 @@ private:
   struct member_populator {
     template <typename Member, std::size_t Index, typename Rng>
     void operator()(
-      fatal::indexed_type_tag<Member, Index>,
+      fatal::indexed<Member, Index>,
       Rng& rng,
       populator_opts const& opts,
       Struct& out)
@@ -558,7 +538,8 @@ private:
       using member_type = typename std::decay<decltype(got)>::type;
       member_type tmp;
 
-      DVLOG(3) << "populating member: " << Member::name::z_data();
+      DVLOG(3) << "populating member: "
+        << fatal::z_data<typename Member::name>();
 
       field_populator<
         Member,
@@ -572,7 +553,9 @@ private:
 public:
   template <typename Rng>
   static void populate(Rng& rng, populator_opts const& opts, Struct& out) {
-    traits::members::mapped::foreach(member_populator(), rng, opts, out);
+    fatal::foreach<fatal::map_values<typename traits::members>>(
+      member_populator(), rng, opts, out
+    );
   }
 };
 

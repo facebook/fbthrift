@@ -23,51 +23,52 @@
 namespace test_cpp2 {
 namespace cpp_reflection {
 
-FATAL_STR(cpp_s, "cpp");
-FATAL_STR(cpp_ns, "test_cpp1::cpp_reflection");
-FATAL_STR(cpp2_s, "cpp2");
-FATAL_STR(cpp2_ns, "test_cpp2::cpp_reflection");
-FATAL_STR(d_s, "d");
-FATAL_STR(d_2ns, "test_d.cpp_reflection");
-FATAL_STR(java_s, "java");
-FATAL_STR(java_ns, "test_java.cpp_reflection");
-FATAL_STR(java_swift_s, "java.swift");
-FATAL_STR(java_swift_ns, "test_swift.cpp_reflection");
-FATAL_STR(php_s, "php");
-FATAL_STR(php_ns, "test_php_cpp_reflection");
-FATAL_STR(python_s, "python");
-FATAL_STR(python_ns, "test_py.cpp_reflection");
+FATAL_S(cpp_s, "cpp");
+FATAL_S(cpp_ns, "test_cpp1::cpp_reflection");
+FATAL_S(cpp2_s, "cpp2");
+FATAL_S(cpp2_ns, "test_cpp2::cpp_reflection");
+FATAL_S(d_s, "d");
+FATAL_S(d_2ns, "test_d.cpp_reflection");
+FATAL_S(java_s, "java");
+FATAL_S(java_ns, "test_java.cpp_reflection");
+FATAL_S(java_swift_s, "java.swift");
+FATAL_S(java_swift_ns, "test_swift.cpp_reflection");
+FATAL_S(php_s, "php");
+FATAL_S(php_ns, "test_php_cpp_reflection");
+FATAL_S(python_s, "python");
+FATAL_S(python_ns, "test_py.cpp_reflection");
 
-FATAL_STR(enum1s, "enum1");
-FATAL_STR(enum2s, "enum2");
-FATAL_STR(enum3s, "enum3");
+FATAL_S(enum1s, "enum1");
+FATAL_S(enum2s, "enum2");
+FATAL_S(enum3s, "enum3");
 
-FATAL_STR(union1s, "union1");
-FATAL_STR(union2s, "union2");
-FATAL_STR(union3s, "union3");
-FATAL_STR(unionAs, "unionA");
+FATAL_S(union1s, "union1");
+FATAL_S(union2s, "union2");
+FATAL_S(union3s, "union3");
+FATAL_S(unionAs, "unionA");
 
-FATAL_STR(structAs, "structA");
-FATAL_STR(structBs, "structB");
-FATAL_STR(structCs, "structC");
-FATAL_STR(struct1s, "struct1");
-FATAL_STR(struct2s, "struct2");
-FATAL_STR(struct3s, "struct3");
-FATAL_STR(struct_binarys, "struct_binary");
+FATAL_S(structAs, "structA");
+FATAL_S(structBs, "structB");
+FATAL_S(structCs, "structC");
+FATAL_S(struct1s, "struct1");
+FATAL_S(struct2s, "struct2");
+FATAL_S(struct3s, "struct3");
+FATAL_S(struct4s, "struct4");
+FATAL_S(struct_binarys, "struct_binary");
 
-FATAL_STR(constant1s, "constant1");
-FATAL_STR(constant2s, "constant2");
-FATAL_STR(constant3s, "constant3");
+FATAL_S(constant1s, "constant1");
+FATAL_S(constant2s, "constant2");
+FATAL_S(constant3s, "constant3");
 
-FATAL_STR(service1s, "service1");
-FATAL_STR(service2s, "service2");
-FATAL_STR(service3s, "service3");
+FATAL_S(service1s, "service1");
+FATAL_S(service2s, "service2");
+FATAL_S(service3s, "service3");
 
-FATAL_STR(enum_with_special_namess, "enum_with_special_names");
-FATAL_STR(union_with_special_namess, "union_with_special_names");
-FATAL_STR(struct_with_special_namess, "struct_with_special_names");
-FATAL_STR(service_with_special_namess, "service_with_special_names");
-FATAL_STR(constant_with_special_names, "constant_with_special_name");
+FATAL_S(enum_with_special_namess, "enum_with_special_names");
+FATAL_S(union_with_special_namess, "union_with_special_names");
+FATAL_S(struct_with_special_namess, "struct_with_special_names");
+FATAL_S(service_with_special_namess, "service_with_special_names");
+FATAL_S(constant_with_special_names, "constant_with_special_name");
 
 TEST(fatal, tags) {
   EXPECT_SAME<cpp_s, reflection_tags::languages::cpp>();
@@ -132,55 +133,56 @@ TEST(fatal, metadata) {
   EXPECT_SAME<void, apache::thrift::try_reflect_module<int, void>>();
 
   EXPECT_SAME<
-    fatal::build_type_map<
-      cpp_s, cpp_ns,
-      cpp2_s, cpp2_ns,
-      d_s, d_2ns,
-      java_s, java_ns,
-      java_swift_s, java_swift_ns,
-      php_s, php_ns,
-      python_s, python_ns
+    fatal::map<
+      fatal::pair<cpp_s, cpp_ns>,
+      fatal::pair<cpp2_s, cpp2_ns>,
+      fatal::pair<d_s, d_2ns>,
+      fatal::pair<java_s, java_ns>,
+      fatal::pair<java_swift_s, java_swift_ns>,
+      fatal::pair<php_s, php_ns>,
+      fatal::pair<python_s, python_ns>
     >,
     info::namespaces
   >();
 
   EXPECT_SAME<
-    fatal::build_type_map<
-      enum1, enum1s,
-      enum2, enum2s,
-      enum3, enum3s,
-      enum_with_special_names, enum_with_special_namess
+    fatal::map<
+      fatal::pair<enum1, enum1s>,
+      fatal::pair<enum2, enum2s>,
+      fatal::pair<enum3, enum3s>,
+      fatal::pair<enum_with_special_names, enum_with_special_namess>
     >,
     info::enums
   >();
 
   EXPECT_SAME<
-    fatal::build_type_map<
-      union1, union1s,
-      union2, union2s,
-      union3, union3s,
-      unionA, unionAs,
-      union_with_special_names, union_with_special_namess
+    fatal::map<
+      fatal::pair<union1, union1s>,
+      fatal::pair<union2, union2s>,
+      fatal::pair<union3, union3s>,
+      fatal::pair<unionA, unionAs>,
+      fatal::pair<union_with_special_names, union_with_special_namess>
     >,
     info::unions
   >();
 
   EXPECT_SAME<
-    fatal::build_type_map<
-      structA, structAs,
-      structB, structBs,
-      structC, structCs,
-      struct1, struct1s,
-      struct2, struct2s,
-      struct3, struct3s,
-      struct_binary, struct_binarys,
-      struct_with_special_names, struct_with_special_namess
+    fatal::map<
+      fatal::pair<structA, structAs>,
+      fatal::pair<structB, structBs>,
+      fatal::pair<structC, structCs>,
+      fatal::pair<struct1, struct1s>,
+      fatal::pair<struct2, struct2s>,
+      fatal::pair<struct3, struct3s>,
+      fatal::pair<struct4, struct4s>,
+      fatal::pair<struct_binary, struct_binarys>,
+      fatal::pair<struct_with_special_names, struct_with_special_namess>
     >,
     info::structs
   >();
 
   EXPECT_SAME<
-    fatal::type_list<
+    fatal::list<
       service1s,
       service2s,
       service3s,

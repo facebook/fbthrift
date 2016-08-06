@@ -21,6 +21,8 @@
 #include <folly/Conv.h>
 
 #include <fatal/type/enum.h>
+#include <fatal/type/search.h>
+#include <fatal/type/sort.h>
 #include <fatal/type/transform.h>
 #include <fatal/type/variant_traits.h>
 
@@ -206,11 +208,10 @@ template <typename VariantTraits>
 struct debug_equals_variant_visitor {
   template <
     typename Id, typename Descriptor, std::size_t Index,
-    typename Needle, typename T, typename Callback
+    typename T, typename Callback
   >
   void operator ()(
-    fatal::indexed_type_pair_tag<Id, Descriptor, Index>,
-    Needle,
+    fatal::indexed_pair<Id, Descriptor, Index>,
     std::string &path,
     T const &lhs,
     T const &rhs,
@@ -221,7 +222,7 @@ struct debug_equals_variant_visitor {
     assert(Id::value == VariantTraits::get_id(rhs));
 
     using name = typename Descriptor::metadata::name;
-    scoped_path guard(path, name::z_data());
+    scoped_path guard(path, fatal::z_data<name>());
 
     using type_class = typename Descriptor::metadata::type_class;
     typename Descriptor::getter getter;
@@ -253,7 +254,7 @@ struct debug_equals_impl<type_class::variant> {
     }
 
     bool result = true;
-    traits::by_id::map::template binary_search<>::exact(
+    fatal::sorted_map_search<fatal::map_sort<typename traits::by_id::map>>(
       lhs.getType(),
       debug_equals_variant_visitor<traits>(),
       path,
@@ -270,7 +271,7 @@ struct debug_equals_impl<type_class::variant> {
 struct debug_equals_struct_visitor {
   template <typename Member, std::size_t Index, typename T, typename Callback>
   void operator ()(
-    fatal::indexed_type_tag<Member, Index>,
+    fatal::indexed<Member, Index>,
     std::string &path,
     T const &lhs,
     T const &rhs,
@@ -281,7 +282,7 @@ struct debug_equals_struct_visitor {
       return;
     }
 
-    scoped_path guard(path, Member::name::z_data());
+    scoped_path guard(path, fatal::z_data<typename Member::name>());
 
     using getter = typename Member::getter;
     result = debug_equals_impl<typename Member::type_class>::equals(
@@ -301,7 +302,7 @@ struct debug_equals_impl<type_class::structure> {
   ) {
     bool result = true;
 
-    reflect_struct<T>::members::mapped::foreach(
+    fatal::foreach<fatal::map_values<typename reflect_struct<T>::members>>(
       debug_equals_struct_visitor(),
       path, lhs, rhs, callback, result
     );

@@ -18,6 +18,7 @@
 
 #include <thrift/lib/cpp2/fatal/reflection.h>
 
+#include <fatal/type/search.h>
 #include <fatal/type/transform.h>
 
 #include <memory>
@@ -29,7 +30,10 @@
 
 namespace apache { namespace thrift {
 namespace detail {
-template <typename, typename> struct variant_helper;
+template <typename T, typename V>
+using variant_helper = typename reflect_union<
+  typename std::decay<V>::type
+>::traits;
 } // detail
 
 /**
@@ -84,10 +88,10 @@ template <typename, typename> struct variant_helper;
  */
 template <typename T, typename V>
 auto variant_get(V &&variant) -> decltype(
-  detail::variant_helper<T, V>::traits::by_type
+  detail::variant_helper<T, V>::by_type
     ::template get<T>(std::forward<V>(variant))
 ) {
-  using traits = typename detail::variant_helper<T, V>::traits;
+  using traits = detail::variant_helper<T, V>;
   assert(traits::get_id(variant) == traits::by_type::template id<T>::value);
   return traits::by_type::template get<T>(std::forward<V>(variant));
 }
@@ -124,10 +128,10 @@ auto variant_get(V &&variant) -> decltype(
  */
 template <typename T, typename V>
 auto variant_checked_get(V &&variant) -> decltype(
-  detail::variant_helper<T, V>::traits::by_type
+  detail::variant_helper<T, V>::by_type
     ::template get<T>(std::forward<V>(variant))
 ) {
-  using traits = typename detail::variant_helper<T, V>::traits;
+  using traits = detail::variant_helper<T, V>;
 
   if (traits::get_id(variant) != traits::by_type::template id<T>::value) {
     throw std::invalid_argument(
@@ -172,10 +176,10 @@ auto variant_checked_get(V &&variant) -> decltype(
 template <typename T, typename V>
 auto variant_try_get(V &variant) -> decltype(
   std::addressof(
-    detail::variant_helper<T, V>::traits::by_type::template get<T>(variant)
+    detail::variant_helper<T, V>::by_type::template get<T>(variant)
   )
 ) {
-  using traits = typename detail::variant_helper<T, V>::traits;
+  using traits = detail::variant_helper<T, V>;
 
   if (traits::get_id(variant) != traits::by_type::template id<T>::value) {
     return nullptr;
@@ -212,7 +216,7 @@ auto variant_try_get(V &variant) -> decltype(
 template <typename V, typename T>
 typename std::decay<T>::type &variant_set(V &variant, T &&value) {
   using type = typename std::decay<T>::type;
-  using by_type = typename detail::variant_helper<type, V>::traits::by_type;
+  using by_type = typename detail::variant_helper<type, V>::by_type;
 
   by_type::template set<type>(variant, std::forward<T>(value));
   return by_type::template get<type>(variant);
@@ -246,38 +250,12 @@ typename std::decay<T>::type &variant_set(V &variant, T &&value) {
  */
 template <typename T, typename V, typename... Args>
 T &variant_emplace(V &variant, Args &&...args) {
-  using by_type = typename detail::variant_helper<T, V>::traits::by_type;
+  using by_type = typename detail::variant_helper<T, V>::by_type;
 
   by_type::template set<T>(variant, std::forward<Args>(args)...);
   return by_type::template get<T>(variant);
 }
 
-////////////////////////////
-// IMPLEMENTATION DETAILS //
-////////////////////////////
-
-namespace detail {
-
-template <typename T, typename V>
-struct variant_helper {
-  using traits = typename reflect_union<typename std::decay<V>::type>::traits;
-
-private:
-  using count = typename traits::by_type::tags::template filter<
-    fatal::transform_alias<std::is_same, T>::template apply
-  >;
-
-  static_assert(
-    !count::empty,
-    "no fields found for type passed to variant_set"
-  );
-  static_assert(
-    count::size == 1,
-    "multiple fields found for type passed to variant_set"
-  );
-};
-
-} // detail
 }} // apache::thrift
 
 #endif // THRIFT_FATAL_VARIANT_H_

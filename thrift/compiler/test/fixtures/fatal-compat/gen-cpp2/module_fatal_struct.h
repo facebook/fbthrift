@@ -408,7 +408,7 @@ class structA_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structA_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_a__unique_annotations_keys;
       using values = structA_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_a__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -420,7 +420,7 @@ class structA_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structA_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b__unique_annotations_keys;
       using values = structA_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
     public:
@@ -436,7 +436,7 @@ class structA_test_cpp2_cpp_reflection_module__struct_unique_annotations {
     public:
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
-    using map = ::fatal::type_map<
+    using map = ::fatal::map<
     >;
   };
   public:
@@ -485,7 +485,7 @@ class structB_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structB_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_c__unique_annotations_keys;
       using values = structB_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_c__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -496,19 +496,19 @@ class structB_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       };
 
       struct structB_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_d__unique_annotations_values {
-        using another_annotation = ::fatal::constant_sequence<char, 'a', 'n', 'o', 't', 'h', 'e', 'r', ' ', 'v', 'a', 'l', 'u', 'e'>;
-        using some_annotation = ::fatal::constant_sequence<char, 's', 'o', 'm', 'e', ' ', 'v', 'a', 'l', 'u', 'e'>;
+        using another_annotation = ::fatal::sequence<char, 'a', 'n', 'o', 't', 'h', 'e', 'r', ' ', 'v', 'a', 'l', 'u', 'e'>;
+        using some_annotation = ::fatal::sequence<char, 's', 'o', 'm', 'e', ' ', 'v', 'a', 'l', 'u', 'e'>;
       };
 
       public:
       using keys = structB_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_d__unique_annotations_keys;
       using values = structB_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_d__unique_annotations_values;
-      using map = ::fatal::type_map<
-        ::fatal::type_pair<
+      using map = ::fatal::map<
+        ::fatal::pair<
           keys::another_annotation,
           values::another_annotation
         >,
-        ::fatal::type_pair<
+        ::fatal::pair<
           keys::some_annotation,
           values::some_annotation
         >
@@ -526,19 +526,19 @@ class structB_test_cpp2_cpp_reflection_module__struct_unique_annotations {
     };
 
     struct annotations__unique_annotations_values {
-      using some_annotation = ::fatal::constant_sequence<char, 't', 'h', 'i', 's', ' ', 'i', 's', ' ', 'i', 't', 's', ' ', 'v', 'a', 'l', 'u', 'e'>;
-      using some_other_annotation = ::fatal::constant_sequence<char, 't', 'h', 'i', 's', ' ', 'i', 's', ' ', 'i', 't', 's', ' ', 'o', 't', 'h', 'e', 'r', ' ', 'v', 'a', 'l', 'u', 'e'>;
+      using some_annotation = ::fatal::sequence<char, 't', 'h', 'i', 's', ' ', 'i', 's', ' ', 'i', 't', 's', ' ', 'v', 'a', 'l', 'u', 'e'>;
+      using some_other_annotation = ::fatal::sequence<char, 't', 'h', 'i', 's', ' ', 'i', 's', ' ', 'i', 't', 's', ' ', 'o', 't', 'h', 'e', 'r', ' ', 'v', 'a', 'l', 'u', 'e'>;
     };
 
     public:
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
-    using map = ::fatal::type_map<
-      ::fatal::type_pair<
+    using map = ::fatal::map<
+      ::fatal::pair<
         keys::some_annotation,
         values::some_annotation
       >,
-      ::fatal::type_pair<
+      ::fatal::pair<
         keys::some_other_annotation,
         values::some_other_annotation
       >
@@ -590,7 +590,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_a__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_a__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -602,7 +602,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -614,7 +614,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_c__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_c__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -626,7 +626,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_d__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_d__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -638,7 +638,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_e__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_e__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -650,7 +650,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_f__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_f__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -662,7 +662,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_g__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_g__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -674,7 +674,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_h__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_h__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -686,7 +686,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_i__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_i__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -698,7 +698,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -710,7 +710,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j1__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j1__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -722,7 +722,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j2__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j2__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -734,7 +734,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j3__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j3__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -746,7 +746,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -758,7 +758,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k1__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k1__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -770,7 +770,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k2__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k2__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -782,7 +782,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k3__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k3__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -794,7 +794,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -806,7 +806,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l1__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l1__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -818,7 +818,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l2__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l2__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -830,7 +830,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l3__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l3__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -842,7 +842,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_m1__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_m1__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -854,7 +854,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_m2__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_m2__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -866,7 +866,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_m3__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_m3__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -878,7 +878,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_n1__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_n1__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -890,7 +890,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_n2__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_n2__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -902,7 +902,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_n3__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_n3__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -914,7 +914,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_o1__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_o1__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -926,7 +926,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_o2__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_o2__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -938,7 +938,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_o3__unique_annotations_keys;
       using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_o3__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
     public:
@@ -982,7 +982,7 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
     public:
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
-    using map = ::fatal::type_map<
+    using map = ::fatal::map<
     >;
   };
   public:
@@ -1367,7 +1367,7 @@ class struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0__unique_annotations_keys;
       using values = struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1379,7 +1379,7 @@ class struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1__unique_annotations_keys;
       using values = struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1391,7 +1391,7 @@ class struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field2__unique_annotations_keys;
       using values = struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field2__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1403,7 +1403,7 @@ class struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3__unique_annotations_keys;
       using values = struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1415,7 +1415,7 @@ class struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field4__unique_annotations_keys;
       using values = struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field4__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1427,7 +1427,7 @@ class struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field5__unique_annotations_keys;
       using values = struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field5__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
     public:
@@ -1447,7 +1447,7 @@ class struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations {
     public:
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
-    using map = ::fatal::type_map<
+    using map = ::fatal::map<
     >;
   };
   public:
@@ -1544,7 +1544,7 @@ class struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldA__unique_annotations_keys;
       using values = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldA__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1556,7 +1556,7 @@ class struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldB__unique_annotations_keys;
       using values = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldB__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1568,7 +1568,7 @@ class struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldC__unique_annotations_keys;
       using values = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldC__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1580,7 +1580,7 @@ class struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldD__unique_annotations_keys;
       using values = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldD__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1592,7 +1592,7 @@ class struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldE__unique_annotations_keys;
       using values = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldE__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1604,7 +1604,7 @@ class struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldF__unique_annotations_keys;
       using values = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldF__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1616,7 +1616,7 @@ class struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldG__unique_annotations_keys;
       using values = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldG__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
     public:
@@ -1637,7 +1637,7 @@ class struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations {
     public:
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
-    using map = ::fatal::type_map<
+    using map = ::fatal::map<
     >;
   };
   public:
@@ -1746,7 +1746,7 @@ class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldA__unique_annotations_keys;
       using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldA__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1758,7 +1758,7 @@ class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldB__unique_annotations_keys;
       using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldB__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1770,7 +1770,7 @@ class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldC__unique_annotations_keys;
       using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldC__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1782,7 +1782,7 @@ class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldD__unique_annotations_keys;
       using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldD__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1794,7 +1794,7 @@ class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldE__unique_annotations_keys;
       using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldE__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1806,7 +1806,7 @@ class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldF__unique_annotations_keys;
       using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldF__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1818,7 +1818,7 @@ class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldG__unique_annotations_keys;
       using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldG__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1830,7 +1830,7 @@ class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldH__unique_annotations_keys;
       using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldH__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1842,7 +1842,7 @@ class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldI__unique_annotations_keys;
       using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldI__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1854,7 +1854,7 @@ class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldJ__unique_annotations_keys;
       using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldJ__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1866,7 +1866,7 @@ class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldK__unique_annotations_keys;
       using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldK__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1878,7 +1878,7 @@ class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldL__unique_annotations_keys;
       using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldL__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1890,7 +1890,7 @@ class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldM__unique_annotations_keys;
       using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldM__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1902,7 +1902,7 @@ class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldN__unique_annotations_keys;
       using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldN__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1914,7 +1914,7 @@ class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldO__unique_annotations_keys;
       using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldO__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1926,7 +1926,7 @@ class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldP__unique_annotations_keys;
       using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldP__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1938,7 +1938,7 @@ class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldQ__unique_annotations_keys;
       using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldQ__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
 
@@ -1950,7 +1950,7 @@ class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       public:
       using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldR__unique_annotations_keys;
       using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldR__unique_annotations_values;
-      using map = ::fatal::type_map<
+      using map = ::fatal::map<
       >;
     };
     public:
@@ -1982,7 +1982,7 @@ class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations {
     public:
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
-    using map = ::fatal::type_map<
+    using map = ::fatal::map<
     >;
   };
   public:
@@ -2218,12 +2218,12 @@ THRIFT_REGISTER_STRUCT_TRAITS(
   structA,
   thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::structA,
   thrift_fatal_impl_detail::structA_test_cpp2_cpp_reflection_module__struct_unique_member_info_list,
-  ::fatal::type_map<
-    ::fatal::type_pair<
+  ::fatal::map<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::a,
       thrift_fatal_impl_detail::structA_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::a
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::b,
       thrift_fatal_impl_detail::structA_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::b
     >
@@ -2239,12 +2239,12 @@ THRIFT_REGISTER_STRUCT_TRAITS(
   structB,
   thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::structB,
   thrift_fatal_impl_detail::structB_test_cpp2_cpp_reflection_module__struct_unique_member_info_list,
-  ::fatal::type_map<
-    ::fatal::type_pair<
+  ::fatal::map<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::c,
       thrift_fatal_impl_detail::structB_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::c
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::d,
       thrift_fatal_impl_detail::structB_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::d
     >
@@ -2260,124 +2260,124 @@ THRIFT_REGISTER_STRUCT_TRAITS(
   structC,
   thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::structC,
   thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list,
-  ::fatal::type_map<
-    ::fatal::type_pair<
+  ::fatal::map<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::a,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::a
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::b,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::b
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::c,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::c
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::d,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::d
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::e,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::e
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::f,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::f
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::g,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::g
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::h,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::h
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::i,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::i
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::j,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::j
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::j1,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::j1
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::j2,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::j2
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::j3,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::j3
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::k,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::k
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::k1,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::k1
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::k2,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::k2
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::k3,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::k3
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::l,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::l
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::l1,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::l1
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::l2,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::l2
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::l3,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::l3
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::m1,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::m1
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::m2,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::m2
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::m3,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::m3
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::n1,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::n1
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::n2,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::n2
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::n3,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::n3
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::o1,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::o1
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::o2,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::o2
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::o3,
       thrift_fatal_impl_detail::structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::o3
     >
@@ -2393,28 +2393,28 @@ THRIFT_REGISTER_STRUCT_TRAITS(
   struct1,
   thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct1,
   thrift_fatal_impl_detail::struct1_test_cpp2_cpp_reflection_module__struct_unique_member_info_list,
-  ::fatal::type_map<
-    ::fatal::type_pair<
+  ::fatal::map<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field0,
       thrift_fatal_impl_detail::struct1_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::field0
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field1,
       thrift_fatal_impl_detail::struct1_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::field1
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field2,
       thrift_fatal_impl_detail::struct1_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::field2
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field3,
       thrift_fatal_impl_detail::struct1_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::field3
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field4,
       thrift_fatal_impl_detail::struct1_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::field4
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field5,
       thrift_fatal_impl_detail::struct1_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::field5
     >
@@ -2430,32 +2430,32 @@ THRIFT_REGISTER_STRUCT_TRAITS(
   struct2,
   thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct2,
   thrift_fatal_impl_detail::struct2_test_cpp2_cpp_reflection_module__struct_unique_member_info_list,
-  ::fatal::type_map<
-    ::fatal::type_pair<
+  ::fatal::map<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldA,
       thrift_fatal_impl_detail::struct2_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldA
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldB,
       thrift_fatal_impl_detail::struct2_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldB
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldC,
       thrift_fatal_impl_detail::struct2_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldC
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldD,
       thrift_fatal_impl_detail::struct2_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldD
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldE,
       thrift_fatal_impl_detail::struct2_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldE
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldF,
       thrift_fatal_impl_detail::struct2_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldF
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldG,
       thrift_fatal_impl_detail::struct2_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldG
     >
@@ -2471,76 +2471,76 @@ THRIFT_REGISTER_STRUCT_TRAITS(
   struct3,
   thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct3,
   thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list,
-  ::fatal::type_map<
-    ::fatal::type_pair<
+  ::fatal::map<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldA,
       thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldA
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldB,
       thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldB
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldC,
       thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldC
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldD,
       thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldD
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldE,
       thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldE
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldF,
       thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldF
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldG,
       thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldG
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldH,
       thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldH
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldI,
       thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldI
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldJ,
       thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldJ
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldK,
       thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldK
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldL,
       thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldL
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldM,
       thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldM
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldN,
       thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldN
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldO,
       thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldO
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldP,
       thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldP
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldQ,
       thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldQ
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fieldR,
       thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::fieldR
     >

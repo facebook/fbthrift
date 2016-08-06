@@ -19,6 +19,8 @@
 #include <thrift/lib/cpp2/fatal/container_traits.h>
 
 #include <fatal/type/enum.h>
+#include <fatal/type/map.h>
+#include <fatal/type/search.h>
 #include <fatal/type/variant_traits.h>
 
 #include <stdexcept>
@@ -209,13 +211,9 @@ struct dynamic_converter_impl<type_class::set<ValueTypeClass>> {
 };
 
 struct to_dynamic_variant_visitor {
-  template <
-    typename Id, typename Descriptor, std::size_t Index,
-    typename Needle, typename T
-  >
+  template <typename Id, typename Descriptor, std::size_t Index, typename T>
   void operator ()(
-    fatal::indexed_type_pair_tag<Id, Descriptor, Index>,
-    Needle,
+    fatal::indexed_pair<Id, Descriptor, Index>,
     folly::dynamic &out,
     T const &input,
     dynamic_format format
@@ -232,14 +230,14 @@ template <typename VariantTraits>
 struct from_dynamic_variant_visitor {
   template <typename T, typename IdName>
   void operator ()(
-    fatal::type_tag<IdName>,
+    fatal::tag<IdName>,
     T &out,
     folly::dynamic const &input,
     dynamic_format format,
     format_adherence adherence
   ) const {
     using id_traits = fatal::enum_traits<typename VariantTraits::id>;
-    using id = typename id_traits::name_to_value::template get<IdName>;
+    using id = fatal::map_get<typename id_traits::name_to_value, IdName>;
     using descriptor = typename VariantTraits::by_id::template descriptor<id>;
 
     VariantTraits::by_id::template set<id>(out);
@@ -257,7 +255,7 @@ struct dynamic_converter_impl<type_class::variant> {
 
     out = folly::dynamic::object;
 
-    traits::by_id::map::template binary_search<>::exact(
+    fatal::sorted_map_search<typename traits::by_id::map>(
       input.getType(),
       to_dynamic_variant_visitor(),
       out,
@@ -285,11 +283,8 @@ struct dynamic_converter_impl<type_class::variant> {
     if (i == items.end()) {
       variant_traits::clear(out);
     } else {
-      using prefix_tree = typename id_traits::names::template apply<
-        fatal::build_type_prefix_tree<>::from
-      >;
       auto const type = i->first.stringPiece();
-      bool const found = prefix_tree::template match<>::exact(
+      bool const found = fatal::prefix_tree<typename id_traits::names>::find(
         type.begin(), type.end(),
         from_dynamic_variant_visitor<variant_traits>(),
         out, i->second,
@@ -306,7 +301,7 @@ struct dynamic_converter_impl<type_class::variant> {
 struct to_dynamic_struct_visitor {
   template <typename MemberInfo, std::size_t Index, typename T>
   void operator ()(
-    fatal::indexed_type_tag<MemberInfo, Index>,
+    fatal::indexed<MemberInfo, Index>,
     folly::dynamic &out,
     T const &input,
     dynamic_format format
@@ -324,7 +319,10 @@ struct to_dynamic_struct_visitor {
     }
 
     impl::to(
-      out[folly::StringPiece(MemberInfo::name::data(), MemberInfo::name::size)],
+      out[folly::StringPiece(
+        fatal::z_data<typename MemberInfo::name>(),
+        fatal::size<typename MemberInfo::name>::value
+      )],
       MemberInfo::getter::ref(input),
       format
     );
@@ -344,14 +342,14 @@ struct from_dynamic_struct_visitor {
 
   template <typename Member, typename T>
   void operator ()(
-    fatal::type_tag<Member>,
+    fatal::tag<Member>,
     T &out,
     folly::dynamic const &input,
     dynamic_format format,
     format_adherence adherence
   ) const {
     using rstruct = reflect_struct<T>;
-    using rmember = typename rstruct::members::template get<Member>;
+    using rmember = fatal::map_get<typename rstruct::members, Member>;
     using rgetter = typename rmember::getter;
     assign_is_set<T, rgetter, typename rmember::optional>(out, true);
     dynamic_converter_impl<typename rmember::type_class>::from(
@@ -365,7 +363,7 @@ struct dynamic_converter_impl<type_class::structure> {
   template <typename T>
   static void to(folly::dynamic &out, T const &input, dynamic_format format) {
     out = folly::dynamic::object;
-    reflect_struct<T>::members::mapped::foreach(
+    fatal::foreach<fatal::map_values<typename reflect_struct<T>::members>>(
       to_dynamic_struct_visitor(),
       out, input, format
     );
@@ -378,13 +376,11 @@ struct dynamic_converter_impl<type_class::structure> {
     dynamic_format format,
     format_adherence adherence
   ) {
-    using trie = typename reflect_struct<T>::members::keys::template apply<
-      fatal::build_type_prefix_tree<>::from
-    >;
-
     for (auto const &i: input.items()) {
       auto const member = i.first.stringPiece();
-      trie::template match<>::exact(
+      fatal::prefix_tree<
+        fatal::map_keys<typename reflect_struct<T>::members>
+      >::find(
         member.begin(), member.end(),
         from_dynamic_struct_visitor(),
         out, i.second,

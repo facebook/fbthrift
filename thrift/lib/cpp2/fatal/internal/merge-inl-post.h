@@ -50,7 +50,7 @@ struct merge_impl<type_class::structure> {
     using Src = typename std::conditional<Move, T, const T>::type;
     template <typename MemberInfo, std::size_t Index, typename T>
     void operator()(
-        fatal::indexed_type_tag<MemberInfo, Index>,
+        fatal::indexed<MemberInfo, Index>,
         Src<T>& src,
         T& dst) const {
       using mgetter = typename MemberInfo::getter;
@@ -67,11 +67,15 @@ struct merge_impl<type_class::structure> {
   };
   template <typename T>
   static void go(const T& src, T& dst) {
-    reflect_struct<T>::members::mapped::foreach(visitor<false>(), src, dst);
+    fatal::foreach<fatal::map_values<typename reflect_struct<T>::members>>(
+      visitor<false>(), src, dst
+    );
   }
   template <typename T>
   static void go(T&& src, T& dst) {
-    reflect_struct<T>::members::mapped::foreach(visitor<true>(), src, dst);
+    fatal::foreach<fatal::map_values<typename reflect_struct<T>::members>>(
+      visitor<true>(), src, dst
+    );
   }
 };
 

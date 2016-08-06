@@ -26,11 +26,11 @@
 namespace test_cpp2 {
 namespace cpp_reflection {
 
-FATAL_STR(union1s, "union1");
-FATAL_STR(uis, "ui");
-FATAL_STR(uds, "ud");
-FATAL_STR(uss, "us");
-FATAL_STR(ues, "ue");
+FATAL_S(union1s, "union1");
+FATAL_S(uis, "ui");
+FATAL_S(uds, "ud");
+FATAL_S(uss, "us");
+FATAL_S(ues, "ue");
 
 using uii = std::integral_constant<union1::Type, union1::Type::ui>;
 using udi = std::integral_constant<union1::Type, union1::Type::ud>;
@@ -50,13 +50,13 @@ TEST(fatal_union, variants) {
   EXPECT_SAME<uei, traits::ids::ue>();
 
   EXPECT_SAME<
-    fatal::type_list<uii, udi, usi, uei>,
-    traits::descriptors::transform<fatal::get_member_type::id>
+    fatal::list<uii, udi, usi, uei>,
+    fatal::transform<traits::descriptors, fatal::get_type::id>
   >();
 
   EXPECT_SAME<
-    fatal::type_list<std::int32_t, double, std::string, enum1>,
-    traits::descriptors::transform<fatal::get_member_type::type>
+    fatal::list<std::int32_t, double, std::string, enum1>,
+    fatal::transform<traits::descriptors, fatal::get_type::type>
   >();
 }
 
@@ -64,7 +64,7 @@ TEST(fatal_union, by_id) {
   using vtraits = fatal::variant_traits<union1>;
   using traits = vtraits::by_id;
 
-  EXPECT_SAME<fatal::type_list<uii, udi, usi, uei>, traits::tags>();
+  EXPECT_SAME<fatal::list<uii, udi, usi, uei>, traits::tags>();
 
   EXPECT_SAME<uii, traits::id<uii>>();
   EXPECT_SAME<udi, traits::id<udi>>();
@@ -151,7 +151,7 @@ TEST(fatal_union, by_type) {
   using traits = vtraits::by_type;
 
   EXPECT_SAME<
-    fatal::type_list<std::int32_t, double, std::string, enum1>,
+    fatal::list<std::int32_t, double, std::string, enum1>,
     traits::tags
   >();
 
@@ -235,24 +235,24 @@ TEST(fatal_union, by_type) {
   EXPECT_EQ(enum1::field1, traits::get<enum1>(ur));
 }
 
-FATAL_STR(unionA_annotation1k, "another.annotation");
-FATAL_STR(unionA_annotation1v, "some more text");
-FATAL_STR(unionA_annotation2k, "sample.annotation");
-FATAL_STR(unionA_annotation2v, "some text here");
+FATAL_S(unionA_annotation1k, "another.annotation");
+FATAL_S(unionA_annotation1v, "some more text");
+FATAL_S(unionA_annotation2k, "sample.annotation");
+FATAL_S(unionA_annotation2v, "some text here");
 
 TEST(fatal_union, annotations) {
   EXPECT_SAME<
-    fatal::type_map<>,
+    fatal::map<>,
     apache::thrift::reflect_union<union1>::annotations::map
   >();
 
   EXPECT_SAME<
-    fatal::type_map<>,
+    fatal::map<>,
     apache::thrift::reflect_union<union2>::annotations::map
   >();
 
   EXPECT_SAME<
-    fatal::type_map<>,
+    fatal::map<>,
     apache::thrift::reflect_union<union3>::annotations::map
   >();
 
@@ -264,9 +264,9 @@ TEST(fatal_union, annotations) {
   EXPECT_SAME<unionA_annotation2v, actual_unionA::values::sample_annotation>();
 
   EXPECT_SAME<
-    fatal::build_type_map<
-      unionA_annotation1k, unionA_annotation1v,
-      unionA_annotation2k, unionA_annotation2v
+    fatal::map<
+      fatal::pair<unionA_annotation1k, unionA_annotation1v>,
+      fatal::pair<unionA_annotation2k, unionA_annotation2v>
     >,
     actual_unionA::map
   >();

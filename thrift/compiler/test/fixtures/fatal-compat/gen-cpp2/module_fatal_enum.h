@@ -27,16 +27,16 @@ class enum1_enum_traits {
   using type = ::test_cpp1::cpp_reflection::enum1;
   using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum1;
   using str = enum1__struct_unique_strings_list;
-  using name_to_value = ::fatal::type_map<
-    ::fatal::type_pair<
+  using name_to_value = ::fatal::map<
+    ::fatal::pair<
       str::field0,
       std::integral_constant<type, type::field0>
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       str::field1,
       std::integral_constant<type, type::field1>
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       str::field2,
       std::integral_constant<type, type::field2>
     >
@@ -50,7 +50,7 @@ class enum1_enum_traits {
     public:
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
-    using map = ::fatal::type_map<
+    using map = ::fatal::map<
     >;
   };
 
@@ -87,16 +87,16 @@ class enum2_enum_traits {
   using type = ::test_cpp1::cpp_reflection::enum2;
   using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum2;
   using str = enum2__struct_unique_strings_list;
-  using name_to_value = ::fatal::type_map<
-    ::fatal::type_pair<
+  using name_to_value = ::fatal::map<
+    ::fatal::pair<
       str::field0_2,
       std::integral_constant<type, type::field0_2>
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       str::field1_2,
       std::integral_constant<type, type::field1_2>
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       str::field2_2,
       std::integral_constant<type, type::field2_2>
     >
@@ -110,7 +110,7 @@ class enum2_enum_traits {
     public:
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
-    using map = ::fatal::type_map<
+    using map = ::fatal::map<
     >;
   };
 
@@ -147,16 +147,16 @@ class enum3_enum_traits {
   using type = ::test_cpp1::cpp_reflection::enum3;
   using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum3;
   using str = enum3__struct_unique_strings_list;
-  using name_to_value = ::fatal::type_map<
-    ::fatal::type_pair<
+  using name_to_value = ::fatal::map<
+    ::fatal::pair<
       str::field0_3,
       std::integral_constant<type, type::field0_3>
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       str::field1_3,
       std::integral_constant<type, type::field1_3>
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       str::field2_3,
       std::integral_constant<type, type::field2_3>
     >
@@ -173,39 +173,39 @@ class enum3_enum_traits {
     };
 
     struct annotations__unique_annotations_values {
-      using _now_with_an_underscore = ::fatal::constant_sequence<char, '_', 'n', 'o', 'w', '.', 'w', 'i', 't', 'h', '.', 'a', 'n', '.', 'u', 'n', 'd', 'e', 'r', 's', 'c', 'o', 'r', 'e'>;
-      using another_there = ::fatal::constant_sequence<char, '.'>;
-      using duplicate_id_annotation_1 = ::fatal::constant_sequence<char, 'd', 'u', 'p', 'l', 'i', 'c', 'a', 't', 'e', ' ', 'i', 'd', ' ', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
-      using duplicate_id_annotation_2 = ::fatal::constant_sequence<char, 'd', 'u', 'p', 'l', 'i', 'c', 'a', 't', 'e', '.', 'i', 'd', '.', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
-      using one_here = ::fatal::constant_sequence<char, 'w', 'i', 't', 'h', ' ', 's', 'o', 'm', 'e', ' ', 'v', 'a', 'l', 'u', 'e', ' ', 'a', 's', 's', 'o', 'c', 'i', 'a', 't', 'e', 'd'>;
-      using yet_another = ::fatal::constant_sequence<char, 'a', 'n', 'd', ' ', 'y', 'e', 't', ' ', 'm', 'o', 'r', 'e', ' ', 't', 'e', 'x', 't', ' ', '-', ' ', 'i', 't', '\'', 's', ' ', 't', 'h', 'a', 't', ' ', 'e', 'a', 's', 'y'>;
+      using _now_with_an_underscore = ::fatal::sequence<char, '_', 'n', 'o', 'w', '.', 'w', 'i', 't', 'h', '.', 'a', 'n', '.', 'u', 'n', 'd', 'e', 'r', 's', 'c', 'o', 'r', 'e'>;
+      using another_there = ::fatal::sequence<char, '.'>;
+      using duplicate_id_annotation_1 = ::fatal::sequence<char, 'd', 'u', 'p', 'l', 'i', 'c', 'a', 't', 'e', ' ', 'i', 'd', ' ', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
+      using duplicate_id_annotation_2 = ::fatal::sequence<char, 'd', 'u', 'p', 'l', 'i', 'c', 'a', 't', 'e', '.', 'i', 'd', '.', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
+      using one_here = ::fatal::sequence<char, 'w', 'i', 't', 'h', ' ', 's', 'o', 'm', 'e', ' ', 'v', 'a', 'l', 'u', 'e', ' ', 'a', 's', 's', 'o', 'c', 'i', 'a', 't', 'e', 'd'>;
+      using yet_another = ::fatal::sequence<char, 'a', 'n', 'd', ' ', 'y', 'e', 't', ' ', 'm', 'o', 'r', 'e', ' ', 't', 'e', 'x', 't', ' ', '-', ' ', 'i', 't', '\'', 's', ' ', 't', 'h', 'a', 't', ' ', 'e', 'a', 's', 'y'>;
     };
 
     public:
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
-    using map = ::fatal::type_map<
-      ::fatal::type_pair<
+    using map = ::fatal::map<
+      ::fatal::pair<
         keys::_now_with_an_underscore,
         values::_now_with_an_underscore
       >,
-      ::fatal::type_pair<
+      ::fatal::pair<
         keys::another_there,
         values::another_there
       >,
-      ::fatal::type_pair<
+      ::fatal::pair<
         keys::duplicate_id_annotation_1,
         values::duplicate_id_annotation_1
       >,
-      ::fatal::type_pair<
+      ::fatal::pair<
         keys::duplicate_id_annotation_2,
         values::duplicate_id_annotation_2
       >,
-      ::fatal::type_pair<
+      ::fatal::pair<
         keys::one_here,
         values::one_here
       >,
-      ::fatal::type_pair<
+      ::fatal::pair<
         keys::yet_another,
         values::yet_another
       >

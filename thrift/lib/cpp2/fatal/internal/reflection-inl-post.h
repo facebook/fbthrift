@@ -31,42 +31,27 @@ struct is_set {
 };
 
 template <typename Owner, typename Getter>
-struct is_set<
-  Owner,
-  Getter,
-  false
-> {
+struct is_set<Owner, Getter, false> {
   constexpr static bool check(Owner const &) { return true; }
 };
 
 template <typename Owner, typename Getter, bool has_isset>
 struct mark_set {
-  constexpr static void mark(Owner& owner) {
+  static void mark(Owner& owner) {
     Getter::ref(owner.__isset) = true;
   }
 };
 
 template <typename Owner, typename Getter>
-struct mark_set<
-  Owner,
-  Getter,
-  false
-> {
-  constexpr static void mark(Owner& owner) {
-    // nop
-    return;
-  }
+struct mark_set<Owner, Getter, false> {
+  static void mark(Owner&) {}
 };
 
 template <typename, typename, bool has_isset>
 struct unmark_set;
 
 template <typename Owner, typename Getter>
-struct unmark_set<
-  Owner,
-  Getter,
-  true
-> {
+struct unmark_set<Owner, Getter, true> {
   constexpr static void mark(Owner& owner) {
     Getter::ref(owner.__isset) = false;
   }
@@ -146,52 +131,18 @@ struct reflect_type_class_impl {
   >::type;
 };
 
-template <typename, typename>
-struct reflect_module_tag_selector {
-  using type = void;
-};
-
-template <typename T>
-struct reflect_module_tag_impl {
-  template <typename = void>
-  struct get {
-    using type = typename reflect_module_tag_selector<
-      reflect_type_class<T>,
-      T
-    >::type;
-
-    static_assert(
-      !std::is_same<void, type>::value,
-      "given type has no reflection metadata or is not a struct, enum or union"
-    );
-  };
-
-  template <typename Default>
-  class try_get {
-    using impl = typename reflect_module_tag_selector<
-      reflect_type_class<T>,
-      T
-    >::type;
-
-  public:
-    using type = typename std::conditional<
-      std::is_same<void, impl>::value, Default, impl
-    >::type;
-  };
-};
-
-template <typename T>
-struct reflect_module_tag_selector<type_class::enumeration, T> {
+template <typename T, bool IsTry>
+struct reflect_module_tag_selector<type_class::enumeration, T, IsTry> {
   using type = typename fatal::enum_traits<T>::metadata::module;
 };
 
-template <typename T>
-struct reflect_module_tag_selector<type_class::variant, T> {
+template <typename T, bool IsTry>
+struct reflect_module_tag_selector<type_class::variant, T, IsTry> {
   using type = typename fatal::variant_traits<T>::metadata::module;
 };
 
-template <typename T>
-struct reflect_module_tag_selector<type_class::structure, T> {
+template <typename T, bool IsTry>
+struct reflect_module_tag_selector<type_class::structure, T, IsTry> {
   using type = typename reflect_struct<T>::module;
 };
 

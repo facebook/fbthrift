@@ -4383,15 +4383,15 @@ class CppGenerator(t_generator.Generator):
             entries = items[o][1]
             sns('  // {0}s'.format(o))
             if type(entries) == list:
-                sns('  ::fatal::type_list<')
+                sns('  ::fatal::list<')
             elif type(entries) == dict:
-                sns('  ::fatal::type_map<')
+                sns('  ::fatal::map<')
             for idx, i in enumerate(eorder):
                 if type(entries) == list:
                     sns('    {0}{1}'.format(
                         i[2], ',' if idx + 1 < len(entries) else ''))
                 elif type(entries) == dict:
-                    sns('    ::fatal::type_pair<{0}, {1}>{2}'.format(i,
+                    sns('    ::fatal::pair<{0}, {1}>{2}'.format(i,
                         entries[i][2], ',' if idx + 1 < len(entries) else ''))
             sns('  >{0}'.format(',' if item_idx + 1 < len(items) else ''))
         sns(');')
@@ -4434,7 +4434,7 @@ class CppGenerator(t_generator.Generator):
         return ''
 
     def _render_fatal_string(self, s):
-        result = "::fatal::constant_sequence<char"
+        result = "::fatal::sequence<char"
         for i in s:
             result += ", '"
             result += re.sub(r"(['\n\\])", r'\\\1', i)
@@ -4506,11 +4506,11 @@ class CppGenerator(t_generator.Generator):
             aclass('public:')
             aclass('using keys = {0};'.format(clsnmkeys))
             aclass('using values = {0};'.format(clsnmvalues))
-            aclass('using map = ::fatal::type_map<')
+            aclass('using map = ::fatal::map<')
             if annotations is not None:
                 for idx, i in enumerate(sorted(annotations.keys())):
                     identifier = self._get_fatal_string_short_id(i)
-                    aclass('  ::fatal::type_pair<')
+                    aclass('  ::fatal::pair<')
                     aclass('    keys::{0},'.format(identifier))
                     aclass('    values::{0}'.format(identifier))
                     comma = ',' if idx + 1 < len(annotations) else ''
@@ -4589,9 +4589,9 @@ class CppGenerator(t_generator.Generator):
                 t('using type = {0}::{1};'.format(scoped_ns, scoped_name))
                 t('using name = {0};'.format(self._set_fatal_string(name)))
                 t('using str = {0};'.format(strcls))
-                t('using name_to_value = ::fatal::type_map<')
+                t('using name_to_value = ::fatal::map<')
                 for idx, i in enumerate(members):
-                    t('  ::fatal::type_pair<')
+                    t('  ::fatal::pair<')
                     t('    str::{0},'.format(i.name))
                     t('    std::integral_constant<type, type::{0}>'
                         .format(i.name))
@@ -4702,7 +4702,7 @@ class CppGenerator(t_generator.Generator):
             t('using name = {0};'.format(self._set_fatal_string(union.name)))
             t('using id = type::Type;')
             t('using ids = {0};'.format(idscls))
-            t('using descriptors = ::fatal::type_list<')
+            t('using descriptors = ::fatal::list<')
             for idx, i in enumerate(union.members):
                 t('  ::fatal::variant_type_descriptor<')
                 t('    {0},'.format(self._type_name(i.type)))
@@ -4892,11 +4892,11 @@ class CppGenerator(t_generator.Generator):
             sns('  {0},'.format(self._get_fatal_string_id(i.name)))
             sns('  {0}::{1}_{2},'.format(
                 self.fatal_detail_ns, i.name, mnfclsprefix))
-            sns('  ::fatal::type_map<')
+            sns('  ::fatal::map<')
             annclsnm = '{0}::{1}_{2}'.format(
                 self.fatal_detail_ns, i.name, annclsprefix)
             for midx, m in enumerate(i.members):
-                sns('    ::fatal::type_pair<')
+                sns('    ::fatal::pair<')
                 sns('      {0},'.format(self._get_fatal_string_id(m.name)))
                 sns('      {0}::{1}_{2}<::fatal::identity>::{3}'.format(
                     self.fatal_detail_ns, i.name, mnfclsprefix, m.name))

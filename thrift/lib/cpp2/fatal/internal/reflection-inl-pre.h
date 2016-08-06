@@ -20,11 +20,25 @@
 # error "This file must be included from reflection.h"
 #endif
 
-namespace apache { namespace thrift {
-namespace detail { namespace reflection_impl {
+namespace apache { namespace thrift { namespace detail {
+
+template <typename, typename, bool IsTry, typename Default = void>
+struct reflect_module_tag_selector {
+  using type = Default;
+  static_assert(
+    IsTry,
+    "given type has no reflection metadata or is not a struct, enum or union"
+  );
+};
+
+template <typename> struct reflect_module_tag_get;
+template <typename, typename> struct reflect_module_tag_try_get;
+template <typename> struct reflect_type_class_impl;
 
 struct reflection_metadata_tag {};
 struct struct_traits_metadata_tag {};
+
+namespace reflection_impl {
 
 template <typename, typename, bool> struct is_set;
 template <typename, typename, bool> struct mark_set;
@@ -34,7 +48,7 @@ template <typename, typename, bool> struct unmark_set;
 
 #define THRIFT_REGISTER_REFLECTION_METADATA(Tag, ...) \
   FATAL_REGISTER_TYPE( \
-    ::apache::thrift::detail::reflection_impl::reflection_metadata_tag, \
+    ::apache::thrift::detail::reflection_metadata_tag, \
     Tag, \
     ::apache::thrift::reflected_module< \
       __VA_ARGS__ \
@@ -43,7 +57,7 @@ template <typename, typename, bool> struct unmark_set;
 
 #define THRIFT_REGISTER_STRUCT_TRAITS(Struct, ...) \
   FATAL_REGISTER_TYPE( \
-    ::apache::thrift::detail::reflection_impl::struct_traits_metadata_tag, \
+    ::apache::thrift::detail::struct_traits_metadata_tag, \
     Struct, \
     ::apache::thrift::reflected_struct< \
       Struct, \

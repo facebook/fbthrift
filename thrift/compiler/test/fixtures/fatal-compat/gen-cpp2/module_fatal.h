@@ -20,139 +20,139 @@ namespace test_cpp1 { namespace cpp_reflection {
 namespace thrift_fatal_impl_detail {
 
 struct test_cpp2_cpp_reflection_module__unique_strings_list {
-  using field2_3 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '2', '_', '3'>;
-  using field2_2 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '2', '_', '2'>;
-  using enum1 = ::fatal::constant_sequence<char, 'e', 'n', 'u', 'm', '1'>;
-  using enum2 = ::fatal::constant_sequence<char, 'e', 'n', 'u', 'm', '2'>;
-  using enum3 = ::fatal::constant_sequence<char, 'e', 'n', 'u', 'm', '3'>;
-  using us_3 = ::fatal::constant_sequence<char, 'u', 's', '_', '3'>;
-  using us_2 = ::fatal::constant_sequence<char, 'u', 's', '_', '2'>;
-  using field2 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '2'>;
-  using field3 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '3'>;
-  using field0 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '0'>;
-  using field1 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '1'>;
-  using field4 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '4'>;
-  using field5 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '5'>;
-  using fieldE = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'E'>;
-  using ui_3 = ::fatal::constant_sequence<char, 'u', 'i', '_', '3'>;
-  using ui_2 = ::fatal::constant_sequence<char, 'u', 'i', '_', '2'>;
-  using python = ::fatal::constant_sequence<char, 'p', 'y', 't', 'h', 'o', 'n'>;
-  using fieldP = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'P'>;
-  using fieldQ = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'Q'>;
-  using fieldJ = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'J'>;
-  using fieldK = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'K'>;
-  using fieldH = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'H'>;
-  using fieldI = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'I'>;
-  using fieldN = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'N'>;
-  using fieldO = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'O'>;
-  using fieldL = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'L'>;
-  using fieldM = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'M'>;
-  using fieldB = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'B'>;
-  using fieldC = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'C'>;
-  using fieldA = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'A'>;
-  using fieldF = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'F'>;
-  using fieldG = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'G'>;
-  using fieldD = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'D'>;
-  using test_py_cpp_reflection = ::fatal::constant_sequence<char, 't', 'e', 's', 't', '_', 'p', 'y', '.', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
-  using ue_3 = ::fatal::constant_sequence<char, 'u', 'e', '_', '3'>;
-  using ue_2 = ::fatal::constant_sequence<char, 'u', 'e', '_', '2'>;
-  using h = ::fatal::constant_sequence<char, 'h'>;
-  using field0_3 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '0', '_', '3'>;
-  using field0_2 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '0', '_', '2'>;
-  using l = ::fatal::constant_sequence<char, 'l'>;
-  using l2 = ::fatal::constant_sequence<char, 'l', '2'>;
-  using l3 = ::fatal::constant_sequence<char, 'l', '3'>;
-  using test_swift_cpp_reflection = ::fatal::constant_sequence<char, 't', 'e', 's', 't', '_', 's', 'w', 'i', 'f', 't', '.', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
-  using l1 = ::fatal::constant_sequence<char, 'l', '1'>;
-  using x = ::fatal::constant_sequence<char, 'x'>;
-  using unionA = ::fatal::constant_sequence<char, 'u', 'n', 'i', 'o', 'n', 'A'>;
-  using cpp2 = ::fatal::constant_sequence<char, 'c', 'p', 'p', '2'>;
-  using j1 = ::fatal::constant_sequence<char, 'j', '1'>;
-  using j2 = ::fatal::constant_sequence<char, 'j', '2'>;
-  using j3 = ::fatal::constant_sequence<char, 'j', '3'>;
-  using fieldR = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', 'R'>;
-  using n = ::fatal::constant_sequence<char, 'n'>;
-  using Type = ::fatal::constant_sequence<char, 'T', 'y', 'p', 'e'>;
-  using test_java_cpp_reflection = ::fatal::constant_sequence<char, 't', 'e', 's', 't', '_', 'j', 'a', 'v', 'a', '.', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
-  using methodF = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'F'>;
-  using methodD = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'D'>;
-  using methodE = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'E'>;
-  using methodB = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'B'>;
-  using methodC = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'C'>;
-  using methodA = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'A'>;
-  using o3 = ::fatal::constant_sequence<char, 'o', '3'>;
-  using o2 = ::fatal::constant_sequence<char, 'o', '2'>;
-  using o1 = ::fatal::constant_sequence<char, 'o', '1'>;
-  using test_cpp1__cpp_reflection = ::fatal::constant_sequence<char, 't', 'e', 's', 't', '_', 'c', 'p', 'p', '1', ':', ':', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
-  using method6 = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', '6'>;
-  using method4 = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', '4'>;
-  using method5 = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', '5'>;
-  using method2 = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', '2'>;
-  using method3 = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', '3'>;
-  using method1 = ::fatal::constant_sequence<char, 'm', 'e', 't', 'h', 'o', 'd', '1'>;
-  using test_php_cpp_reflection = ::fatal::constant_sequence<char, 't', 'e', 's', 't', '_', 'p', 'h', 'p', '_', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
-  using one_here = ::fatal::constant_sequence<char, 'o', 'n', 'e', '.', 'h', 'e', 'r', 'e'>;
-  using _now_with_an_underscore = ::fatal::constant_sequence<char, '_', 'n', 'o', 'w', '.', 'w', 'i', 't', 'h', '.', 'a', 'n', '.', 'u', 'n', 'd', 'e', 'r', 's', 'c', 'o', 'r', 'e'>;
-  using c = ::fatal::constant_sequence<char, 'c'>;
-  using g = ::fatal::constant_sequence<char, 'g'>;
-  using k = ::fatal::constant_sequence<char, 'k'>;
-  using java_swift = ::fatal::constant_sequence<char, 'j', 'a', 'v', 'a', '.', 's', 'w', 'i', 'f', 't'>;
-  using union1 = ::fatal::constant_sequence<char, 'u', 'n', 'i', 'o', 'n', '1'>;
-  using union3 = ::fatal::constant_sequence<char, 'u', 'n', 'i', 'o', 'n', '3'>;
-  using union2 = ::fatal::constant_sequence<char, 'u', 'n', 'i', 'o', 'n', '2'>;
-  using d = ::fatal::constant_sequence<char, 'd'>;
-  using test_cpp2__cpp_reflection = ::fatal::constant_sequence<char, 't', 'e', 's', 't', '_', 'c', 'p', 'p', '2', ':', ':', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
-  using struct2 = ::fatal::constant_sequence<char, 's', 't', 'r', 'u', 'c', 't', '2'>;
-  using struct3 = ::fatal::constant_sequence<char, 's', 't', 'r', 'u', 'c', 't', '3'>;
-  using struct1 = ::fatal::constant_sequence<char, 's', 't', 'r', 'u', 'c', 't', '1'>;
-  using java = ::fatal::constant_sequence<char, 'j', 'a', 'v', 'a'>;
-  using another_there = ::fatal::constant_sequence<char, 'a', 'n', 'o', 't', 'h', 'e', 'r', '.', 't', 'h', 'e', 'r', 'e'>;
-  using m1 = ::fatal::constant_sequence<char, 'm', '1'>;
-  using m3 = ::fatal::constant_sequence<char, 'm', '3'>;
-  using m2 = ::fatal::constant_sequence<char, 'm', '2'>;
-  using b = ::fatal::constant_sequence<char, 'b'>;
-  using some_annotation = ::fatal::constant_sequence<char, 's', 'o', 'm', 'e', '.', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
-  using f = ::fatal::constant_sequence<char, 'f'>;
-  using j = ::fatal::constant_sequence<char, 'j'>;
-  using structB = ::fatal::constant_sequence<char, 's', 't', 'r', 'u', 'c', 't', 'B'>;
-  using structC = ::fatal::constant_sequence<char, 's', 't', 'r', 'u', 'c', 't', 'C'>;
-  using us = ::fatal::constant_sequence<char, 'u', 's'>;
-  using structA = ::fatal::constant_sequence<char, 's', 't', 'r', 'u', 'c', 't', 'A'>;
-  using test_d_cpp_reflection = ::fatal::constant_sequence<char, 't', 'e', 's', 't', '_', 'd', '.', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
-  using ui = ::fatal::constant_sequence<char, 'u', 'i'>;
-  using ue = ::fatal::constant_sequence<char, 'u', 'e'>;
-  using ud = ::fatal::constant_sequence<char, 'u', 'd'>;
-  using z = ::fatal::constant_sequence<char, 'z'>;
-  using service3 = ::fatal::constant_sequence<char, 's', 'e', 'r', 'v', 'i', 'c', 'e', '3'>;
-  using service2 = ::fatal::constant_sequence<char, 's', 'e', 'r', 'v', 'i', 'c', 'e', '2'>;
-  using service1 = ::fatal::constant_sequence<char, 's', 'e', 'r', 'v', 'i', 'c', 'e', '1'>;
-  using constant1 = ::fatal::constant_sequence<char, 'c', 'o', 'n', 's', 't', 'a', 'n', 't', '1'>;
-  using duplicate_id_annotation_2 = ::fatal::constant_sequence<char, 'd', 'u', 'p', 'l', 'i', 'c', 'a', 't', 'e', '_', 'i', 'd', '_', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n', '_', '2'>;
-  using duplicate_id_annotation_1 = ::fatal::constant_sequence<char, 'd', 'u', 'p', 'l', 'i', 'c', 'a', 't', 'e', '_', 'i', 'd', '_', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n', '_', '1'>;
-  using constant2 = ::fatal::constant_sequence<char, 'c', 'o', 'n', 's', 't', 'a', 'n', 't', '2'>;
-  using some_other_annotation = ::fatal::constant_sequence<char, 's', 'o', 'm', 'e', '.', 'o', 't', 'h', 'e', 'r', '.', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
-  using s = ::fatal::constant_sequence<char, 's'>;
-  using k3 = ::fatal::constant_sequence<char, 'k', '3'>;
-  using k2 = ::fatal::constant_sequence<char, 'k', '2'>;
-  using k1 = ::fatal::constant_sequence<char, 'k', '1'>;
-  using field1_3 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '1', '_', '3'>;
-  using constant3 = ::fatal::constant_sequence<char, 'c', 'o', 'n', 's', 't', 'a', 'n', 't', '3'>;
-  using field1_2 = ::fatal::constant_sequence<char, 'f', 'i', 'e', 'l', 'd', '1', '_', '2'>;
-  using another_annotation = ::fatal::constant_sequence<char, 'a', 'n', 'o', 't', 'h', 'e', 'r', '.', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
-  using sample_annotation = ::fatal::constant_sequence<char, 's', 'a', 'm', 'p', 'l', 'e', '.', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
-  using y = ::fatal::constant_sequence<char, 'y'>;
-  using php = ::fatal::constant_sequence<char, 'p', 'h', 'p'>;
-  using a = ::fatal::constant_sequence<char, 'a'>;
-  using e = ::fatal::constant_sequence<char, 'e'>;
-  using i = ::fatal::constant_sequence<char, 'i'>;
-  using m = ::fatal::constant_sequence<char, 'm'>;
-  using yet_another = ::fatal::constant_sequence<char, 'y', 'e', 't', '.', 'a', 'n', 'o', 't', 'h', 'e', 'r'>;
-  using cpp = ::fatal::constant_sequence<char, 'c', 'p', 'p'>;
-  using n1 = ::fatal::constant_sequence<char, 'n', '1'>;
-  using n2 = ::fatal::constant_sequence<char, 'n', '2'>;
-  using n3 = ::fatal::constant_sequence<char, 'n', '3'>;
-  using ud_2 = ::fatal::constant_sequence<char, 'u', 'd', '_', '2'>;
-  using ud_3 = ::fatal::constant_sequence<char, 'u', 'd', '_', '3'>;
+  using field2_3 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '2', '_', '3'>;
+  using field2_2 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '2', '_', '2'>;
+  using enum1 = ::fatal::sequence<char, 'e', 'n', 'u', 'm', '1'>;
+  using enum2 = ::fatal::sequence<char, 'e', 'n', 'u', 'm', '2'>;
+  using enum3 = ::fatal::sequence<char, 'e', 'n', 'u', 'm', '3'>;
+  using us_3 = ::fatal::sequence<char, 'u', 's', '_', '3'>;
+  using us_2 = ::fatal::sequence<char, 'u', 's', '_', '2'>;
+  using field2 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '2'>;
+  using field3 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '3'>;
+  using field0 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '0'>;
+  using field1 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '1'>;
+  using field4 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '4'>;
+  using field5 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '5'>;
+  using fieldE = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'E'>;
+  using ui_3 = ::fatal::sequence<char, 'u', 'i', '_', '3'>;
+  using ui_2 = ::fatal::sequence<char, 'u', 'i', '_', '2'>;
+  using python = ::fatal::sequence<char, 'p', 'y', 't', 'h', 'o', 'n'>;
+  using fieldP = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'P'>;
+  using fieldQ = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'Q'>;
+  using fieldJ = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'J'>;
+  using fieldK = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'K'>;
+  using fieldH = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'H'>;
+  using fieldI = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'I'>;
+  using fieldN = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'N'>;
+  using fieldO = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'O'>;
+  using fieldL = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'L'>;
+  using fieldM = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'M'>;
+  using fieldB = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'B'>;
+  using fieldC = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'C'>;
+  using fieldA = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'A'>;
+  using fieldF = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'F'>;
+  using fieldG = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'G'>;
+  using fieldD = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'D'>;
+  using test_py_cpp_reflection = ::fatal::sequence<char, 't', 'e', 's', 't', '_', 'p', 'y', '.', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
+  using ue_3 = ::fatal::sequence<char, 'u', 'e', '_', '3'>;
+  using ue_2 = ::fatal::sequence<char, 'u', 'e', '_', '2'>;
+  using h = ::fatal::sequence<char, 'h'>;
+  using field0_3 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '0', '_', '3'>;
+  using field0_2 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '0', '_', '2'>;
+  using l = ::fatal::sequence<char, 'l'>;
+  using l2 = ::fatal::sequence<char, 'l', '2'>;
+  using l3 = ::fatal::sequence<char, 'l', '3'>;
+  using test_swift_cpp_reflection = ::fatal::sequence<char, 't', 'e', 's', 't', '_', 's', 'w', 'i', 'f', 't', '.', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
+  using l1 = ::fatal::sequence<char, 'l', '1'>;
+  using x = ::fatal::sequence<char, 'x'>;
+  using unionA = ::fatal::sequence<char, 'u', 'n', 'i', 'o', 'n', 'A'>;
+  using cpp2 = ::fatal::sequence<char, 'c', 'p', 'p', '2'>;
+  using j1 = ::fatal::sequence<char, 'j', '1'>;
+  using j2 = ::fatal::sequence<char, 'j', '2'>;
+  using j3 = ::fatal::sequence<char, 'j', '3'>;
+  using fieldR = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'R'>;
+  using n = ::fatal::sequence<char, 'n'>;
+  using Type = ::fatal::sequence<char, 'T', 'y', 'p', 'e'>;
+  using test_java_cpp_reflection = ::fatal::sequence<char, 't', 'e', 's', 't', '_', 'j', 'a', 'v', 'a', '.', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
+  using methodF = ::fatal::sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'F'>;
+  using methodD = ::fatal::sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'D'>;
+  using methodE = ::fatal::sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'E'>;
+  using methodB = ::fatal::sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'B'>;
+  using methodC = ::fatal::sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'C'>;
+  using methodA = ::fatal::sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'A'>;
+  using o3 = ::fatal::sequence<char, 'o', '3'>;
+  using o2 = ::fatal::sequence<char, 'o', '2'>;
+  using o1 = ::fatal::sequence<char, 'o', '1'>;
+  using test_cpp1__cpp_reflection = ::fatal::sequence<char, 't', 'e', 's', 't', '_', 'c', 'p', 'p', '1', ':', ':', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
+  using method6 = ::fatal::sequence<char, 'm', 'e', 't', 'h', 'o', 'd', '6'>;
+  using method4 = ::fatal::sequence<char, 'm', 'e', 't', 'h', 'o', 'd', '4'>;
+  using method5 = ::fatal::sequence<char, 'm', 'e', 't', 'h', 'o', 'd', '5'>;
+  using method2 = ::fatal::sequence<char, 'm', 'e', 't', 'h', 'o', 'd', '2'>;
+  using method3 = ::fatal::sequence<char, 'm', 'e', 't', 'h', 'o', 'd', '3'>;
+  using method1 = ::fatal::sequence<char, 'm', 'e', 't', 'h', 'o', 'd', '1'>;
+  using test_php_cpp_reflection = ::fatal::sequence<char, 't', 'e', 's', 't', '_', 'p', 'h', 'p', '_', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
+  using one_here = ::fatal::sequence<char, 'o', 'n', 'e', '.', 'h', 'e', 'r', 'e'>;
+  using _now_with_an_underscore = ::fatal::sequence<char, '_', 'n', 'o', 'w', '.', 'w', 'i', 't', 'h', '.', 'a', 'n', '.', 'u', 'n', 'd', 'e', 'r', 's', 'c', 'o', 'r', 'e'>;
+  using c = ::fatal::sequence<char, 'c'>;
+  using g = ::fatal::sequence<char, 'g'>;
+  using k = ::fatal::sequence<char, 'k'>;
+  using java_swift = ::fatal::sequence<char, 'j', 'a', 'v', 'a', '.', 's', 'w', 'i', 'f', 't'>;
+  using union1 = ::fatal::sequence<char, 'u', 'n', 'i', 'o', 'n', '1'>;
+  using union3 = ::fatal::sequence<char, 'u', 'n', 'i', 'o', 'n', '3'>;
+  using union2 = ::fatal::sequence<char, 'u', 'n', 'i', 'o', 'n', '2'>;
+  using d = ::fatal::sequence<char, 'd'>;
+  using test_cpp2__cpp_reflection = ::fatal::sequence<char, 't', 'e', 's', 't', '_', 'c', 'p', 'p', '2', ':', ':', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
+  using struct2 = ::fatal::sequence<char, 's', 't', 'r', 'u', 'c', 't', '2'>;
+  using struct3 = ::fatal::sequence<char, 's', 't', 'r', 'u', 'c', 't', '3'>;
+  using struct1 = ::fatal::sequence<char, 's', 't', 'r', 'u', 'c', 't', '1'>;
+  using java = ::fatal::sequence<char, 'j', 'a', 'v', 'a'>;
+  using another_there = ::fatal::sequence<char, 'a', 'n', 'o', 't', 'h', 'e', 'r', '.', 't', 'h', 'e', 'r', 'e'>;
+  using m1 = ::fatal::sequence<char, 'm', '1'>;
+  using m3 = ::fatal::sequence<char, 'm', '3'>;
+  using m2 = ::fatal::sequence<char, 'm', '2'>;
+  using b = ::fatal::sequence<char, 'b'>;
+  using some_annotation = ::fatal::sequence<char, 's', 'o', 'm', 'e', '.', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
+  using f = ::fatal::sequence<char, 'f'>;
+  using j = ::fatal::sequence<char, 'j'>;
+  using structB = ::fatal::sequence<char, 's', 't', 'r', 'u', 'c', 't', 'B'>;
+  using structC = ::fatal::sequence<char, 's', 't', 'r', 'u', 'c', 't', 'C'>;
+  using us = ::fatal::sequence<char, 'u', 's'>;
+  using structA = ::fatal::sequence<char, 's', 't', 'r', 'u', 'c', 't', 'A'>;
+  using test_d_cpp_reflection = ::fatal::sequence<char, 't', 'e', 's', 't', '_', 'd', '.', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
+  using ui = ::fatal::sequence<char, 'u', 'i'>;
+  using ue = ::fatal::sequence<char, 'u', 'e'>;
+  using ud = ::fatal::sequence<char, 'u', 'd'>;
+  using z = ::fatal::sequence<char, 'z'>;
+  using service3 = ::fatal::sequence<char, 's', 'e', 'r', 'v', 'i', 'c', 'e', '3'>;
+  using service2 = ::fatal::sequence<char, 's', 'e', 'r', 'v', 'i', 'c', 'e', '2'>;
+  using service1 = ::fatal::sequence<char, 's', 'e', 'r', 'v', 'i', 'c', 'e', '1'>;
+  using constant1 = ::fatal::sequence<char, 'c', 'o', 'n', 's', 't', 'a', 'n', 't', '1'>;
+  using duplicate_id_annotation_2 = ::fatal::sequence<char, 'd', 'u', 'p', 'l', 'i', 'c', 'a', 't', 'e', '_', 'i', 'd', '_', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n', '_', '2'>;
+  using duplicate_id_annotation_1 = ::fatal::sequence<char, 'd', 'u', 'p', 'l', 'i', 'c', 'a', 't', 'e', '_', 'i', 'd', '_', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n', '_', '1'>;
+  using constant2 = ::fatal::sequence<char, 'c', 'o', 'n', 's', 't', 'a', 'n', 't', '2'>;
+  using some_other_annotation = ::fatal::sequence<char, 's', 'o', 'm', 'e', '.', 'o', 't', 'h', 'e', 'r', '.', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
+  using s = ::fatal::sequence<char, 's'>;
+  using k3 = ::fatal::sequence<char, 'k', '3'>;
+  using k2 = ::fatal::sequence<char, 'k', '2'>;
+  using k1 = ::fatal::sequence<char, 'k', '1'>;
+  using field1_3 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '1', '_', '3'>;
+  using constant3 = ::fatal::sequence<char, 'c', 'o', 'n', 's', 't', 'a', 'n', 't', '3'>;
+  using field1_2 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '1', '_', '2'>;
+  using another_annotation = ::fatal::sequence<char, 'a', 'n', 'o', 't', 'h', 'e', 'r', '.', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
+  using sample_annotation = ::fatal::sequence<char, 's', 'a', 'm', 'p', 'l', 'e', '.', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
+  using y = ::fatal::sequence<char, 'y'>;
+  using php = ::fatal::sequence<char, 'p', 'h', 'p'>;
+  using a = ::fatal::sequence<char, 'a'>;
+  using e = ::fatal::sequence<char, 'e'>;
+  using i = ::fatal::sequence<char, 'i'>;
+  using m = ::fatal::sequence<char, 'm'>;
+  using yet_another = ::fatal::sequence<char, 'y', 'e', 't', '.', 'a', 'n', 'o', 't', 'h', 'e', 'r'>;
+  using cpp = ::fatal::sequence<char, 'c', 'p', 'p'>;
+  using n1 = ::fatal::sequence<char, 'n', '1'>;
+  using n2 = ::fatal::sequence<char, 'n', '2'>;
+  using n3 = ::fatal::sequence<char, 'n', '3'>;
+  using ud_2 = ::fatal::sequence<char, 'u', 'd', '_', '2'>;
+  using ud_3 = ::fatal::sequence<char, 'u', 'd', '_', '3'>;
 };
 
 } // thrift_fatal_impl_detail
@@ -217,45 +217,45 @@ public:
 THRIFT_REGISTER_REFLECTION_METADATA(
   module_tags::module,
   // languages
-  ::fatal::type_map<
-    ::fatal::type_pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::cpp, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_cpp1__cpp_reflection>,
-    ::fatal::type_pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::cpp2, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_cpp2__cpp_reflection>,
-    ::fatal::type_pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::d, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_d_cpp_reflection>,
-    ::fatal::type_pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::java, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_java_cpp_reflection>,
-    ::fatal::type_pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::java_swift, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_swift_cpp_reflection>,
-    ::fatal::type_pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::php, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_php_cpp_reflection>,
-    ::fatal::type_pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::python, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_py_cpp_reflection>
+  ::fatal::map<
+    ::fatal::pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::cpp, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_cpp1__cpp_reflection>,
+    ::fatal::pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::cpp2, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_cpp2__cpp_reflection>,
+    ::fatal::pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::d, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_d_cpp_reflection>,
+    ::fatal::pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::java, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_java_cpp_reflection>,
+    ::fatal::pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::java_swift, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_swift_cpp_reflection>,
+    ::fatal::pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::php, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_php_cpp_reflection>,
+    ::fatal::pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::python, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_py_cpp_reflection>
   >,
   // enums
-  ::fatal::type_map<
-    ::fatal::type_pair<enum1, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum1>,
-    ::fatal::type_pair<enum2, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum2>,
-    ::fatal::type_pair<enum3, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum3>
+  ::fatal::map<
+    ::fatal::pair<enum1, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum1>,
+    ::fatal::pair<enum2, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum2>,
+    ::fatal::pair<enum3, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum3>
   >,
   // unions
-  ::fatal::type_map<
-    ::fatal::type_pair<union1, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union1>,
-    ::fatal::type_pair<union2, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union2>,
-    ::fatal::type_pair<union3, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union3>,
-    ::fatal::type_pair<unionA, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::unionA>
+  ::fatal::map<
+    ::fatal::pair<union1, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union1>,
+    ::fatal::pair<union2, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union2>,
+    ::fatal::pair<union3, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union3>,
+    ::fatal::pair<unionA, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::unionA>
   >,
   // structs
-  ::fatal::type_map<
-    ::fatal::type_pair<structA, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::structA>,
-    ::fatal::type_pair<structB, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::structB>,
-    ::fatal::type_pair<structC, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::structC>,
-    ::fatal::type_pair<struct1, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct1>,
-    ::fatal::type_pair<struct2, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct2>,
-    ::fatal::type_pair<struct3, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct3>
+  ::fatal::map<
+    ::fatal::pair<structA, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::structA>,
+    ::fatal::pair<structB, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::structB>,
+    ::fatal::pair<structC, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::structC>,
+    ::fatal::pair<struct1, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct1>,
+    ::fatal::pair<struct2, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct2>,
+    ::fatal::pair<struct3, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct3>
   >,
   // constants
-  ::fatal::type_list<
+  ::fatal::list<
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::constant1,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::constant2,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::constant3
   >,
   // services
-  ::fatal::type_list<
+  ::fatal::list<
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::service1,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::service2,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::service3

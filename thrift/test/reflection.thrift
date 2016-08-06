@@ -152,15 +152,15 @@ struct struct3 {
   18: map<string, structB> fieldR
 }
 
-struct struct_binary {
-  1: binary bi
-}
-
 struct struct4 {
   1: required i32 field0
   2: optional string field1
   3: enum1 field2
   6: structA field3 (cpp2.ref = "true")
+}
+
+struct struct_binary {
+  1: binary bi
 }
 
 service service1 {

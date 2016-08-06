@@ -29,20 +29,20 @@ class union1_Type_enum_traits {
   using type = ::test_cpp2::cpp_reflection::union1::Type;
   using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
   using str = Type__struct_unique_strings_list;
-  using name_to_value = ::fatal::type_map<
-    ::fatal::type_pair<
+  using name_to_value = ::fatal::map<
+    ::fatal::pair<
       str::ui,
       std::integral_constant<type, type::ui>
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       str::ud,
       std::integral_constant<type, type::ud>
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       str::us,
       std::integral_constant<type, type::us>
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       str::ue,
       std::integral_constant<type, type::ue>
     >
@@ -56,7 +56,7 @@ class union1_Type_enum_traits {
     public:
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
-    using map = ::fatal::type_map<
+    using map = ::fatal::map<
     >;
   };
 
@@ -225,7 +225,7 @@ class union1_variant_traits {
   using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union1;
   using id = type::Type;
   using ids = union1__struct_unique_identifiers_list;
-  using descriptors = ::fatal::type_list<
+  using descriptors = ::fatal::list<
     ::fatal::variant_type_descriptor<
       int32_t,
       union1__struct_unique_identifiers_list::ui,
@@ -280,7 +280,7 @@ class union1_variant_traits {
     public:
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
-    using map = ::fatal::type_map<
+    using map = ::fatal::map<
     >;
   };
 
@@ -312,20 +312,20 @@ class union2_Type_enum_traits {
   using type = ::test_cpp2::cpp_reflection::union2::Type;
   using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
   using str = Type__struct_unique_strings_list;
-  using name_to_value = ::fatal::type_map<
-    ::fatal::type_pair<
+  using name_to_value = ::fatal::map<
+    ::fatal::pair<
       str::ui_2,
       std::integral_constant<type, type::ui_2>
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       str::ud_2,
       std::integral_constant<type, type::ud_2>
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       str::us_2,
       std::integral_constant<type, type::us_2>
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       str::ue_2,
       std::integral_constant<type, type::ue_2>
     >
@@ -339,7 +339,7 @@ class union2_Type_enum_traits {
     public:
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
-    using map = ::fatal::type_map<
+    using map = ::fatal::map<
     >;
   };
 
@@ -508,7 +508,7 @@ class union2_variant_traits {
   using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union2;
   using id = type::Type;
   using ids = union2__struct_unique_identifiers_list;
-  using descriptors = ::fatal::type_list<
+  using descriptors = ::fatal::list<
     ::fatal::variant_type_descriptor<
       int32_t,
       union2__struct_unique_identifiers_list::ui_2,
@@ -563,7 +563,7 @@ class union2_variant_traits {
     public:
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
-    using map = ::fatal::type_map<
+    using map = ::fatal::map<
     >;
   };
 
@@ -595,20 +595,20 @@ class union3_Type_enum_traits {
   using type = ::test_cpp2::cpp_reflection::union3::Type;
   using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
   using str = Type__struct_unique_strings_list;
-  using name_to_value = ::fatal::type_map<
-    ::fatal::type_pair<
+  using name_to_value = ::fatal::map<
+    ::fatal::pair<
       str::ui_3,
       std::integral_constant<type, type::ui_3>
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       str::ud_3,
       std::integral_constant<type, type::ud_3>
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       str::us_3,
       std::integral_constant<type, type::us_3>
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       str::ue_3,
       std::integral_constant<type, type::ue_3>
     >
@@ -622,7 +622,7 @@ class union3_Type_enum_traits {
     public:
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
-    using map = ::fatal::type_map<
+    using map = ::fatal::map<
     >;
   };
 
@@ -791,7 +791,7 @@ class union3_variant_traits {
   using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union3;
   using id = type::Type;
   using ids = union3__struct_unique_identifiers_list;
-  using descriptors = ::fatal::type_list<
+  using descriptors = ::fatal::list<
     ::fatal::variant_type_descriptor<
       int32_t,
       union3__struct_unique_identifiers_list::ui_3,
@@ -846,7 +846,7 @@ class union3_variant_traits {
     public:
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
-    using map = ::fatal::type_map<
+    using map = ::fatal::map<
     >;
   };
 
@@ -879,24 +879,24 @@ class unionA_Type_enum_traits {
   using type = ::test_cpp2::cpp_reflection::unionA::Type;
   using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
   using str = Type__struct_unique_strings_list;
-  using name_to_value = ::fatal::type_map<
-    ::fatal::type_pair<
+  using name_to_value = ::fatal::map<
+    ::fatal::pair<
       str::i,
       std::integral_constant<type, type::i>
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       str::d,
       std::integral_constant<type, type::d>
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       str::s,
       std::integral_constant<type, type::s>
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       str::e,
       std::integral_constant<type, type::e>
     >,
-    ::fatal::type_pair<
+    ::fatal::pair<
       str::a,
       std::integral_constant<type, type::a>
     >
@@ -910,7 +910,7 @@ class unionA_Type_enum_traits {
     public:
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
-    using map = ::fatal::type_map<
+    using map = ::fatal::map<
     >;
   };
 
@@ -1112,7 +1112,7 @@ class unionA_variant_traits {
   using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::unionA;
   using id = type::Type;
   using ids = unionA__struct_unique_identifiers_list;
-  using descriptors = ::fatal::type_list<
+  using descriptors = ::fatal::list<
     ::fatal::variant_type_descriptor<
       int32_t,
       unionA__struct_unique_identifiers_list::i,
@@ -1177,19 +1177,19 @@ class unionA_variant_traits {
     };
 
     struct annotations__unique_annotations_values {
-      using another_annotation = ::fatal::constant_sequence<char, 's', 'o', 'm', 'e', ' ', 'm', 'o', 'r', 'e', ' ', 't', 'e', 'x', 't'>;
-      using sample_annotation = ::fatal::constant_sequence<char, 's', 'o', 'm', 'e', ' ', 't', 'e', 'x', 't', ' ', 'h', 'e', 'r', 'e'>;
+      using another_annotation = ::fatal::sequence<char, 's', 'o', 'm', 'e', ' ', 'm', 'o', 'r', 'e', ' ', 't', 'e', 'x', 't'>;
+      using sample_annotation = ::fatal::sequence<char, 's', 'o', 'm', 'e', ' ', 't', 'e', 'x', 't', ' ', 'h', 'e', 'r', 'e'>;
     };
 
     public:
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
-    using map = ::fatal::type_map<
-      ::fatal::type_pair<
+    using map = ::fatal::map<
+      ::fatal::pair<
         keys::another_annotation,
         values::another_annotation
       >,
-      ::fatal::type_pair<
+      ::fatal::pair<
         keys::sample_annotation,
         values::sample_annotation
       >

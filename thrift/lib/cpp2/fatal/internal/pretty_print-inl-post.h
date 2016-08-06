@@ -19,6 +19,7 @@
 #include <thrift/lib/cpp2/fatal/container_traits.h>
 
 #include <fatal/type/enum.h>
+#include <fatal/type/search.h>
 #include <fatal/type/variant_traits.h>
 
 namespace apache { namespace thrift { namespace detail {
@@ -128,11 +129,10 @@ struct pretty_print_impl<type_class::set<ValueTypeClass>> {
 struct pretty_print_variant_visitor {
   template <
     typename Id, typename Descriptor, std::size_t Index,
-    typename OutputStream, typename Needle, typename T
+    typename OutputStream, typename T
   >
   void operator ()(
-    fatal::indexed_type_pair_tag<Id, Descriptor, Index>,
-    Needle,
+    fatal::indexed_pair<Id, Descriptor, Index>,
     OutputStream &&out,
     T const &what
   ) const {
@@ -155,7 +155,7 @@ struct pretty_print_impl<type_class::variant> {
   template <typename OutputStream, typename T>
   static void print(OutputStream &out, T const &what) {
     out << "<variant>{";
-    fatal::variant_traits<T>::by_id::map::template binary_search<>::exact(
+    fatal::sorted_map_search<typename fatal::variant_traits<T>::by_id::map>(
       what.getType(),
       pretty_print_variant_visitor(),
       out.start_scope(),
@@ -177,12 +177,12 @@ struct pretty_print_struct_visitor {
     typename OutputStream, typename T
   >
   void operator ()(
-    fatal::indexed_type_tag<MemberInfo, Index>,
+    fatal::indexed<MemberInfo, Index>,
     OutputStream &&out,
     T const &what
   ) const {
     auto scope = out.start_scope();
-    scope << MemberInfo::name::z_data() << ": ";
+    scope << fatal::z_data<typename MemberInfo::name>() << ": ";
     pretty_print_impl<typename MemberInfo::type_class>::print(
       scope, MemberInfo::getter::ref(what)
     );
@@ -193,7 +193,7 @@ struct pretty_print_struct_visitor {
   }
 };
 
-/**
+/*
  * Pretty print specialization for structures.
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
@@ -205,8 +205,8 @@ struct pretty_print_impl<type_class::structure> {
     out << "<struct>{";
     out.newline();
     using info = reflect_struct<T>;
-    info::members::mapped::foreach(
-      pretty_print_struct_visitor<info::members::size>(),
+    fatal::foreach<fatal::map_values<typename info::members>>(
+      pretty_print_struct_visitor<fatal::size<typename info::members>::value>(),
       out,
       what
     );
