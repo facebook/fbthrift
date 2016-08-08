@@ -7513,7 +7513,6 @@ std::string t_cpp_generator::generate_reflection_datatype(t_type* ttype) {
     f_reflection_impl_ << "  };" << endl;
 
     f_reflection_impl_ << "  dt.enumValues.insert("
-                       << "boost::container::ordered_unique_range_t(), "
                        << "enumValues, enumValues + "
                        << enumValues.size() << ");" << endl;
   }

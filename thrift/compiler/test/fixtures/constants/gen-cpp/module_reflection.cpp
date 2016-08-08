@@ -23,7 +23,7 @@ static void reflectionInitializer_16163282776448022760(::apache::thrift::reflect
     {"OCULUS", 2},
     {"WHATSAPP", 1},
   };
-  dt.enumValues.insert(boost::container::ordered_unique_range_t(), enumValues, enumValues + 4);
+  dt.enumValues.insert(enumValues, enumValues + 4);
 }
 
 static void  reflectionInitializer_16163282776448022760(::apache::thrift::reflection::Schema&);  // enum module.Company
@@ -73,7 +73,7 @@ static void reflectionInitializer_12670503349505482568(::apache::thrift::reflect
     {"NYC", 0},
     {"SEA", 2},
   };
-  dt.enumValues.insert(boost::container::ordered_unique_range_t(), enumValues, enumValues + 4);
+  dt.enumValues.insert(enumValues, enumValues + 4);
 }
 
 static void  reflectionInitializer_12670503349505482568(::apache::thrift::reflection::Schema&);  // enum module.City

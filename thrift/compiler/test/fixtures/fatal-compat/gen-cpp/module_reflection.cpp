@@ -73,7 +73,7 @@ static void reflectionInitializer_4992076682252594856(::apache::thrift::reflecti
     {"field1", 1},
     {"field2", 2},
   };
-  dt.enumValues.insert(boost::container::ordered_unique_range_t(), enumValues, enumValues + 3);
+  dt.enumValues.insert(enumValues, enumValues + 3);
 }
 
 // Reflection initializer for enum module.enum2
@@ -89,7 +89,7 @@ static void reflectionInitializer_6888467747342894920(::apache::thrift::reflecti
     {"field1_2", 1},
     {"field2_2", 2},
   };
-  dt.enumValues.insert(boost::container::ordered_unique_range_t(), enumValues, enumValues + 3);
+  dt.enumValues.insert(enumValues, enumValues + 3);
 }
 
 static void  reflectionInitializer_4992076682252594856(::apache::thrift::reflection::Schema&);  // enum module.enum1

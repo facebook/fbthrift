@@ -1,5 +1,4 @@
 cpp_include "<unordered_map>"
-cpp_include "<boost/container/flat_map.hpp>"
 
 namespace cpp apache.thrift.reflection
 
@@ -36,7 +35,7 @@ struct StructField {
   2: i64 type,
   3: string name,
   4: optional map<string, string>
-    ( cpp.template = "boost::container::flat_map" )
+    ( cpp.template = "std::unordered_map" )
     annotations,
   5: i16 order, // lexical order of this field, 0-based
 }
@@ -44,11 +43,11 @@ struct StructField {
 struct DataType {
   1: string name,
   2: optional map<i16, StructField>
-    ( cpp.template = "boost::container::flat_map" )
+    ( cpp.template = "std::unordered_map" )
     fields,
   3: optional i64 mapKeyType,
   4: optional i64 valueType,
-  5: optional map<string, i32> ( cpp.template = "boost::container::flat_map" )
+  5: optional map<string, i32> ( cpp.template = "std::unordered_map" )
     enumValues,
 }
 

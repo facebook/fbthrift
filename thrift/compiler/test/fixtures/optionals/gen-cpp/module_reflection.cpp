@@ -111,7 +111,7 @@ static void reflectionInitializer_11268218794008757992(::apache::thrift::reflect
     {"DOG", 1},
     {"TARANTULA", 3},
   };
-  dt.enumValues.insert(boost::container::ordered_unique_range_t(), enumValues, enumValues + 3);
+  dt.enumValues.insert(enumValues, enumValues + 3);
 }
 
 static void  reflectionInitializer_11268218794008757992(::apache::thrift::reflection::Schema&);  // enum module.Animal
