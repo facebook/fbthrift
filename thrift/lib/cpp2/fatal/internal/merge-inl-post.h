@@ -67,15 +67,13 @@ struct merge_impl<type_class::structure> {
   };
   template <typename T>
   static void go(const T& src, T& dst) {
-    fatal::foreach<fatal::map_values<typename reflect_struct<T>::members>>(
-      visitor<false>(), src, dst
-    );
+    using members = fatal::map_values<typename reflect_struct<T>::members>;
+    fatal::foreach<members>(visitor<false>(), src, dst);
   }
   template <typename T>
   static void go(T&& src, T& dst) {
-    fatal::foreach<fatal::map_values<typename reflect_struct<T>::members>>(
-      visitor<true>(), src, dst
-    );
+    using members = fatal::map_values<typename reflect_struct<T>::members>;
+    fatal::foreach<members>(visitor<true>(), src, dst);
   }
 };
 
