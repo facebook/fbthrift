@@ -45,7 +45,10 @@ class ThriftServer;
  * typically be around one Cpp2Worker thread per core.
  */
 class Cpp2Worker
-    : public wangle::Acceptor {
+    : public wangle::Acceptor,
+      private wangle::PeekingAcceptorHandshakeHelper::PeekCallback {
+ protected:
+  enum { kPeekCount = 9 };
  public:
 
   /**
@@ -61,6 +64,7 @@ class Cpp2Worker
              serverChannel = nullptr,
              folly::EventBase* eventBase = nullptr) :
     Acceptor(server->getServerSocketConfig()),
+    wangle::PeekingAcceptorHandshakeHelper::PeekCallback(kPeekCount),
     server_(server),
     activeRequests_(0),
     pendingCount_(0),
@@ -73,7 +77,7 @@ class Cpp2Worker
     } else if (!eventBase) {
       eventBase = folly::EventBaseManager::get()->getEventBase();
     }
-    Acceptor::init(nullptr, eventBase);
+    init(nullptr, eventBase);
 
     if (serverChannel) {
       // duplex
@@ -84,6 +88,14 @@ class Cpp2Worker
       eventBase->setObserver(observer);
     }
 
+  }
+
+  void init(
+      folly::AsyncServerSocket* serverSocket,
+      folly::EventBase* eventBase,
+      wangle::SSLStats* stats = nullptr) override {
+    securityProtocolCtxManager_.addPeeker(this);
+    Acceptor::init(serverSocket, eventBase, stats);
   }
 
   /**
@@ -116,28 +128,6 @@ class Cpp2Worker
     SecureTransportType type = SecureTransportType::TLS) noexcept override;
 
  protected:
-  enum { kPeekCount = 9 };
-  using PeekingHelper = wangle::PeekingAcceptorHandshakeHelper;
-
-  class PeekingCallback : public PeekingHelper::PeekCallback {
-   public:
-    PeekingCallback() : PeekingHelper::PeekCallback(kTLSPeekBytes) {}
-
-    virtual wangle::AcceptorHandshakeHelper::UniquePtr getHelper(
-        const std::vector<uint8_t>& bytes,
-        wangle::Acceptor* acceptor,
-        const folly::SocketAddress& clientAddr,
-        std::chrono::steady_clock::time_point acceptTime,
-        wangle::TransportInfo& tinfo) override;
-  };
-
-  /**
-   * The socket peeker to use to determine the type of incoming byte stream.
-   */
-  virtual PeekingHelper::PeekCallback* getPeekingHandshakeCallback() {
-    return &peekingCallback_;
-  }
-
   void onNewConnection(folly::AsyncTransportWrapper::UniquePtr,
                        const folly::SocketAddress*,
                        const std::string&,
@@ -188,52 +178,12 @@ class Cpp2Worker
   int pendingCount_;
   std::chrono::steady_clock::time_point pendingTime_;
 
-  PeekingCallback peekingCallback_;
-
-  void startHandshakeManager(
-      folly::AsyncSSLSocket::UniquePtr sslSock,
+  wangle::AcceptorHandshakeHelper::UniquePtr getHelper(
+      const std::vector<uint8_t>& bytes,
       wangle::Acceptor* acceptor,
       const folly::SocketAddress& clientAddr,
       std::chrono::steady_clock::time_point acceptTime,
-      wangle::TransportInfo& tinfo) noexcept override {
-
-    switch (getSSLPolicy()) {
-    default:
-    case SSLPolicy::DISABLED:
-      // No TLS, complete "handshake" and stay in STATE_UNENCRYPTED
-      sslConnectionReady(
-          std::move(sslSock),
-          clientAddr,
-          "",
-          SecureTransportType::NONE,
-          tinfo);
-      break;
-
-    case SSLPolicy::PERMITTED: {
-      // Peek and fall back to insecure if non-TLS bytes discovered
-      auto manager = new wangle::PeekingAcceptorHandshakeManager(
-          this,
-          clientAddr,
-          acceptTime,
-          tinfo,
-          getPeekingHandshakeCallback(),
-          getPeekingHandshakeCallback()->getBytesRequired()
-        );
-      manager->start(std::move(sslSock));
-      break;
-    }
-
-    case SSLPolicy::REQUIRED:
-      // Delegate to Acceptor, which always does TLS
-      wangle::Acceptor::startHandshakeManager(
-          std::move(sslSock),
-          acceptor,
-          clientAddr,
-          acceptTime,
-          tinfo);
-      break;
-    }
-  }
+      wangle::TransportInfo& tinfo) override;
 
   friend class Cpp2Connection;
   friend class ThriftServer;

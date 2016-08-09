@@ -166,23 +166,30 @@ void Cpp2Worker::updateSSLStats(
   }
 }
 
-wangle::AcceptorHandshakeHelper::UniquePtr
-Cpp2Worker::PeekingCallback::getHelper(
+wangle::AcceptorHandshakeHelper::UniquePtr Cpp2Worker::getHelper(
     const std::vector<uint8_t>& bytes,
     wangle::Acceptor* acceptor,
     const folly::SocketAddress& clientAddr,
     std::chrono::steady_clock::time_point acceptTime,
     wangle::TransportInfo& tinfo) {
-  if (TLSHelper::looksLikeTLS(bytes)) {
-    return wangle::AcceptorHandshakeHelper::UniquePtr(
-        new wangle::SSLAcceptorHandshakeHelper(
-            acceptor,
-            clientAddr,
-            acceptTime,
-            tinfo));
-  } else {
+  switch (getSSLPolicy()) {
+  case SSLPolicy::DISABLED:
     return wangle::AcceptorHandshakeHelper::UniquePtr(
         new wangle::UnencryptedAcceptorHandshakeHelper());
+
+  default:
+  case SSLPolicy::PERMITTED:
+    if (TLSHelper::looksLikeTLS(bytes)) {
+      // Returning null causes the higher layer to default to SSL.
+      return nullptr;
+    } else {
+      return wangle::AcceptorHandshakeHelper::UniquePtr(
+          new wangle::UnencryptedAcceptorHandshakeHelper());
+    }
+
+  case SSLPolicy::REQUIRED:
+    return nullptr;
+
   }
 }
 
