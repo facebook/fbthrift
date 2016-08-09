@@ -617,5 +617,12 @@ TEST(reflection, reflect_type_class) {
   >();
 }
 
+TEST(reflection, reflected_module_name) {
+  using module = test_cpp2::cpp_reflection::reflection_tags::module;
+  using module_meta = apache::thrift::reflect_module<module>;
+  const auto module_name = fatal::to_instance<std::string, module_meta::name>();
+  EXPECT_EQ("reflection", module_name);
+}
+
 } // namespace cpp_reflection {
 } // namespace test_cpp2 {

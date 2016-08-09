@@ -353,6 +353,7 @@ using reflect_type_class = typename detail::reflect_type_class_impl<T>::type;
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <
+  typename Name,
   typename Namespaces,
   typename Enums,
   typename Unions,
@@ -361,6 +362,29 @@ template <
   typename Services
 >
 struct reflected_module {
+  /**
+   * The name.
+   *
+   * A `fatal::constant_sequence` (compile-time string) representing the module
+   * name.
+   *
+   * Example:
+   *
+   *  // MyModule.thrift
+   *
+   *  namespace cpp2 My.Namespace
+   *  struct MyStruct {}
+   *
+   *  // C++
+   *
+   *  using info = reflect_module<My::Namespace::MyModule_tags::module>;
+   *  using name = typename info::name;
+   *  // yields `fatal::constant_sequence<
+   *  //   char, 'M', 'y', 'M', 'o', 'd', 'u', 'l', 'e',
+   *  // >`
+   */
+  using name = Name;
+
   /**
    * The map from language to namespace.
    *

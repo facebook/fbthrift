@@ -68,7 +68,7 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using unionA = ::fatal::sequence<char, 'u', 'n', 'i', 'o', 'n', 'A'>;
   using cpp2 = ::fatal::sequence<char, 'c', 'p', 'p', '2'>;
   using j1 = ::fatal::sequence<char, 'j', '1'>;
-  using j2 = ::fatal::sequence<char, 'j', '2'>;
+  using module = ::fatal::sequence<char, 'm', 'o', 'd', 'u', 'l', 'e'>;
   using j3 = ::fatal::sequence<char, 'j', '3'>;
   using fieldR = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'R'>;
   using n = ::fatal::sequence<char, 'n'>;
@@ -110,6 +110,7 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using m1 = ::fatal::sequence<char, 'm', '1'>;
   using m3 = ::fatal::sequence<char, 'm', '3'>;
   using m2 = ::fatal::sequence<char, 'm', '2'>;
+  using j2 = ::fatal::sequence<char, 'j', '2'>;
   using b = ::fatal::sequence<char, 'b'>;
   using some_annotation = ::fatal::sequence<char, 's', 'o', 'm', 'e', '.', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
   using f = ::fatal::sequence<char, 'f'>;
@@ -216,6 +217,7 @@ public:
 
 THRIFT_REGISTER_REFLECTION_METADATA(
   module_tags::module,
+  thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::module,
   // languages
   ::fatal::map<
     ::fatal::pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::cpp, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_cpp1__cpp_reflection>,

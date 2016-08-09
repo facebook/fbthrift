@@ -4316,6 +4316,8 @@ class CppGenerator(t_generator.Generator):
         self.fatal_str_map = {}
         self.fatal_str_uid = []
 
+        name_id = self._set_fatal_string(name)
+
         order = ['language', 'enum', 'union', 'struct', 'constant', 'service']
         items = {}
         items['language'] = self._generate_fatal_language(program)
@@ -4378,6 +4380,7 @@ class CppGenerator(t_generator.Generator):
         # Metadata registration
         sns('THRIFT_REGISTER_REFLECTION_METADATA(')
         sns('  {0},'.format(self.fatal_tag))
+        sns('  {0},'.format(name_id))
         for item_idx, o in enumerate(order):
             eorder = items[o][0]
             entries = items[o][1]
