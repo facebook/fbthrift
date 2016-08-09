@@ -116,12 +116,15 @@ class Cpp2Worker
     SecureTransportType type = SecureTransportType::TLS) noexcept override;
 
  protected:
-  using PeekingHelper = wangle::PeekingAcceptorHandshakeHelper<kTLSPeekBytes>;
+  enum { kPeekCount = 9 };
+  using PeekingHelper = wangle::PeekingAcceptorHandshakeHelper;
 
   class PeekingCallback : public PeekingHelper::PeekCallback {
    public:
+    PeekingCallback() : PeekingHelper::PeekCallback(kTLSPeekBytes) {}
+
     virtual wangle::AcceptorHandshakeHelper::UniquePtr getHelper(
-        std::array<uint8_t, kTLSPeekBytes> bytes,
+        const std::vector<uint8_t>& bytes,
         wangle::Acceptor* acceptor,
         const folly::SocketAddress& clientAddr,
         std::chrono::steady_clock::time_point acceptTime,
@@ -140,8 +143,6 @@ class Cpp2Worker
                        const std::string&,
                        SecureTransportType,
                        const wangle::TransportInfo&) override;
-
-  static bool looksLikeTLS(std::array<uint8_t, kTLSPeekBytes>& bytes);
 
   SSLPolicy getSSLPolicy() {
     return server_->getSSLPolicy();
@@ -210,12 +211,13 @@ class Cpp2Worker
 
     case SSLPolicy::PERMITTED: {
       // Peek and fall back to insecure if non-TLS bytes discovered
-      auto manager = new wangle::PeekingAcceptorHandshakeManager<kTLSPeekBytes>(
+      auto manager = new wangle::PeekingAcceptorHandshakeManager(
           this,
           clientAddr,
           acceptTime,
           tinfo,
-          getPeekingHandshakeCallback()
+          getPeekingHandshakeCallback(),
+          getPeekingHandshakeCallback()->getBytesRequired()
         );
       manager->start(std::move(sslSock));
       break;

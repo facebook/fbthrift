@@ -17,7 +17,7 @@
 #pragma once
 
 #include <folly/io/IOBuf.h>
-#include <array>
+#include <vector>
 
 namespace apache {
 namespace thrift {
@@ -34,7 +34,7 @@ class TLSHelper {
    * Checks whether or not the peeked bytes look like TLS bytes and not
    * thrift bytes.
    */
-  static bool looksLikeTLS(std::array<uint8_t, kTLSPeekBytes>& bytes);
+  static bool looksLikeTLS(const std::vector<uint8_t>& bytes);
 
   /**
    * Returns an alert message corresponding to an unexpected SSL message.

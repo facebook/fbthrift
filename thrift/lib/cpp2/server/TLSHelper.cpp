@@ -25,7 +25,8 @@ static constexpr uint8_t kAlertFatalType = 2;
 namespace apache {
 namespace thrift {
 
-bool TLSHelper::looksLikeTLS(std::array<uint8_t, kTLSPeekBytes>& bytes) {
+bool TLSHelper::looksLikeTLS(const std::vector<uint8_t>& bytes) {
+  CHECK_GE(bytes.size(), kTLSPeekBytes);
   // TLS starts as
   // 0: 0x16 - handshake protocol magic
   // 1: 0x03 - SSL version major

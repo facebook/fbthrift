@@ -34,7 +34,7 @@ namespace apache { namespace thrift {
  */
 class SSLRejectingManager
     : public wangle::ManagedConnection,
-      public wangle::SocketPeeker<kTLSPeekBytes>::Callback {
+      public wangle::SocketPeeker::Callback {
  public:
   SSLRejectingManager(
       wangle::Acceptor* acceptor,
@@ -60,12 +60,12 @@ class SSLRejectingManager
     CHECK(underlyingSocket) << "Underlying socket is not a AsyncSocket type";
     acceptor_->getConnectionManager()->addConnection(this, true);
     peeker_.reset(
-        new wangle::SocketPeeker<kTLSPeekBytes>(*underlyingSocket, this));
+        new wangle::SocketPeeker(*underlyingSocket, this, kTLSPeekBytes));
     peeker_->start();
   }
 
   void peekSuccess(
-      std::array<uint8_t, kTLSPeekBytes> peekBytes) noexcept override {
+      std::vector<uint8_t> peekBytes) noexcept override {
     folly::DelayedDestruction::DestructorGuard dg(this);
     peeker_ = nullptr;
     acceptor_->getConnectionManager()->removeConnection(this);
@@ -89,7 +89,7 @@ class SSLRejectingManager
   }
 
   void sendPlaintextTLSAlert(
-      const std::array<uint8_t, kTLSPeekBytes>& peekBytes) {
+      const std::vector<uint8_t>& peekBytes) {
     uint8_t major = peekBytes[1];
     uint8_t minor = peekBytes[2];
     auto alert = TLSHelper::getPlaintextAlert(
@@ -129,7 +129,7 @@ class SSLRejectingManager
  private:
   folly::AsyncTransportWrapper::UniquePtr socket_;
   std::shared_ptr<apache::thrift::server::TServerObserver> observer_;
-  typename wangle::SocketPeeker<kTLSPeekBytes>::UniquePtr peeker_;
+  typename wangle::SocketPeeker::UniquePtr peeker_;
 
   wangle::Acceptor* acceptor_;
   wangle::AcceptorHandshakeHelper::Callback* callback_;
