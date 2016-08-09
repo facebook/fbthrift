@@ -27,6 +27,7 @@
 #include <sys/stat.h>
 #include <sstream>
 #include <thrift/compiler/generate/t_generator.h>
+#include <thrift/compiler/generate/t_concat_generator.h>
 #include <thrift/compiler/platform.h>
 using namespace std;
 
@@ -34,13 +35,13 @@ using namespace std;
 /**
  * JSON code generator
  */
-class t_json_generator : public t_generator {
+class t_json_generator : public t_concat_generator {
  public:
   t_json_generator(
       t_program* program,
       const std::map<std::string, std::string>& /*parsed_options*/,
       const std::string& /*option_string*/)
-    : t_generator(program)
+    : t_concat_generator(program)
   {
     out_dir_base_ = "gen-json";
   }

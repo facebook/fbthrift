@@ -38,6 +38,7 @@
 #include <clocale>
 #include "t_generator.h"
 #include <thrift/compiler/platform.h>
+#include <thrift/compiler/generate/t_concat_generator.h>
 
 using std::map;
 using std::ofstream;
@@ -54,12 +55,12 @@ static std::string package_flag;
 /**
  * Go code generator.
  */
-class t_go_generator : public t_generator {
+class t_go_generator : public t_concat_generator {
 public:
   t_go_generator(t_program* program,
                  const std::map<std::string, std::string>& parsed_options,
                  const std::string& option_string)
-    : t_generator(program) {
+    : t_concat_generator(program) {
     (void)option_string;
     std::map<std::string, std::string>::const_iterator iter;
     out_dir_base_ = "gen-go";

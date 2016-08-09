@@ -24,6 +24,7 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <thrift/compiler/generate/t_generator.h>
+#include <thrift/compiler/generate/t_concat_generator.h>
 #include <thrift/compiler/platform.h>
 using namespace std;
 
@@ -32,13 +33,13 @@ using namespace std;
  * XSD generator, creates an XSD for the base types etc.
  *
  */
-class t_xsd_generator : public t_generator {
+class t_xsd_generator : public t_concat_generator {
  public:
   t_xsd_generator(
       t_program* program,
       const std::map<std::string, std::string>& /*parsed_options*/,
       const std::string& /*option_string*/)
-    : t_generator(program)
+    : t_concat_generator(program)
   {
     out_dir_base_ = "gen-xsd";
   }

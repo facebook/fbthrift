@@ -71,6 +71,11 @@ extern bool g_cpp_use_include_prefix;
 extern int g_debug;
 
 /**
+ * Use the new template-based code generator
+ */
+extern int g_mstch;
+
+/**
  * Warning level
  */
 extern int g_warn;

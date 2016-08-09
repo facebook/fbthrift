@@ -21,7 +21,7 @@
 # Please see doc/old-thrift-license.txt in the Thrift distribution for
 # details.
 
-AM_YFLAGS = -d 
+AM_YFLAGS = -d
 LIBS =
 BUILT_SOURCES =
 
@@ -42,6 +42,8 @@ thrift1_OBJDIR = obj
 
 thrift1_SOURCES = main.cc \
                  generate/t_generator.cc \
+                 generate/t_concat_generator.cc \
+                 generate/t_mstch_generator.cc \
                  globals.h \
                  main.h \
                  platform.h \
@@ -66,7 +68,9 @@ thrift1_SOURCES = main.cc \
                  parse/t_const_value.h \
                  generate/t_generator.h \
                  generate/t_oop_generator.h \
-                 generate/t_html_generator.h 
+                 generate/t_concat_generator.h \
+                 generate/t_mstch_generator.h \
+                 generate/t_html_generator.h
 
 # Specific client generator source
 thrift1_SOURCES += generate/t_cpp_generator.cc \
@@ -96,6 +100,6 @@ libparse_la_SOURCES = thrifty.yy \
                      thriftl.ll
 
 clean-local:
-	$(RM) thriftl.cc thrifty.cc thrifty.h version.h 
+	$(RM) thriftl.cc thrifty.cc thrifty.h version.h
 
 main.cc: version.h

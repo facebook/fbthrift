@@ -86,6 +86,11 @@ bool g_cpp_use_include_prefix = false;
 int g_debug = 0;
 
 /**
+ * Use the new template-based code generator
+ */
+int g_mstch;
+
+/**
  * Strictness level
  */
 int g_strict = 127;

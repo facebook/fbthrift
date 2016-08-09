@@ -78,6 +78,7 @@ static void usage() {
   fprintf(stderr, "  -v[erbose]  Verbose mode\n");
   fprintf(stderr, "  -r[ecurse]  Also generate included files\n");
   fprintf(stderr, "  -debug      Parse debug trace to stdout\n");
+  fprintf(stderr, "  -mstch      Use the experimental template-based generator\n");
   fprintf(stderr, "  --allow-neg-keys  Allow negative field keys (Used to "
           "preserve protocol\n");
   fprintf(stderr, "                compatibility with older .thrift files)\n");
@@ -244,6 +245,8 @@ int main(int argc, char** argv) {
 
       if (strcmp(arg, "-debug") == 0) {
         g_debug = 1;
+      } else if (strcmp(arg, "-mstch") == 0) {
+        g_mstch = 1;
       } else if (strcmp(arg, "-nowarn") == 0) {
         g_warn = 0;
       } else if (strcmp(arg, "-strict") == 0) {

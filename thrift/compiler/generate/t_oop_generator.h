@@ -25,6 +25,7 @@
 
 #include <thrift/compiler/globals.h>
 #include <thrift/compiler/generate/t_generator.h>
+#include <thrift/compiler/generate/t_concat_generator.h>
 
 #include <algorithm>
 
@@ -33,10 +34,10 @@
  * Specifically, most of this stuff is for C++/Java.
  *
  */
-class t_oop_generator : public t_generator {
+class t_oop_generator : public t_concat_generator {
  public:
   t_oop_generator(t_program* program) :
-    t_generator(program) {}
+    t_concat_generator(program) {}
 
   /**
    * Scoping, using curly braces!
@@ -75,4 +76,3 @@ class t_oop_generator : public t_generator {
 };
 
 #endif
-

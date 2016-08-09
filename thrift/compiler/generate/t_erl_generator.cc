@@ -27,6 +27,7 @@
 #include <sys/types.h>
 #include <sstream>
 #include <thrift/compiler/generate/t_generator.h>
+#include <thrift/compiler/generate/t_concat_generator.h>
 #include <thrift/compiler/platform.h>
 
 using namespace std;
@@ -36,13 +37,13 @@ using namespace std;
  * Erlang code generator.
  *
  */
-class t_erl_generator : public t_generator {
+class t_erl_generator : public t_concat_generator {
  public:
   t_erl_generator(
       t_program* program,
       const std::map<std::string, std::string>& /*parsed_options*/,
       const std::string& /*option_string*/)
-    : t_generator(program)
+    : t_concat_generator(program)
   {
     program_name_[0] = tolower(program_name_[0]);
     service_name_[0] = tolower(service_name_[0]);

@@ -27,6 +27,7 @@
 #include <algorithm>
 #include <set>
 #include <thrift/compiler/generate/t_generator.h>
+#include <thrift/compiler/generate/t_concat_generator.h>
 #include <thrift/compiler/platform.h>
 using namespace std;
 
@@ -40,13 +41,13 @@ static const char* py_reserved_keywords[] = {
  * Python code generator.
  *
  */
-class t_py_generator : public t_generator {
+class t_py_generator : public t_concat_generator {
  public:
   t_py_generator(
       t_program* program,
       const std::map<std::string, std::string>& parsed_options,
       const std::string& /*option_string*/)
-    : t_generator(program)
+    : t_concat_generator(program)
   {
     std::map<std::string, std::string>::const_iterator iter;
 
