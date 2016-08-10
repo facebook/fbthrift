@@ -77,6 +77,8 @@ struct structB {
 } (
   some.annotation = "this is its value",
   some.other.annotation = "this is its other value",
+  multi_line_annotation = "line one
+line two"
 )
 
 struct structC {

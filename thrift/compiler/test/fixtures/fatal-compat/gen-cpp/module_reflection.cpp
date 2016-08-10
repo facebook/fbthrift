@@ -1071,6 +1071,257 @@ void reflectionInitializer_16392874475279945260(::apache::thrift::reflection::Sc
   reflectionInitializer_7384876196182105420(schema);  // struct module.union1
 }
 
+static void  reflectionInitializer_4992076682252594856(::apache::thrift::reflection::Schema&);  // enum module.enum1
+void  reflectionInitializer_9663308154247018828(::apache::thrift::reflection::Schema&);  // struct module.structA
+// Reflection initializer for struct module.struct4
+void reflectionInitializer_7898252530621438604(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 7898252530621438604U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.struct4";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[1];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "field0";
+    f.order = 0;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[2];
+    f.isRequired = false;
+    f.type = 1U;
+    f.name = "field1";
+    f.order = 1;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[3];
+    f.isRequired = true;
+    f.type = 4992076682252594856U;
+    f.name = "field2";
+    f.order = 2;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[6];
+    f.isRequired = true;
+    f.type = 9663308154247018828U;
+    f.name = "field3";
+    f.order = 3;
+  }
+  reflectionInitializer_4992076682252594856(schema);  // enum module.enum1
+  reflectionInitializer_9663308154247018828(schema);  // struct module.structA
+}
+
+// Reflection initializer for struct module.struct_binary
+void reflectionInitializer_6812073435240150444(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 6812073435240150444U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.struct_binary";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[1];
+    f.isRequired = true;
+    f.type = 1U;
+    f.name = "bi";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.struct_with_special_names
+void reflectionInitializer_8634504681174503372(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 8634504681174503372U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.struct_with_special_names";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[1];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "get";
+    f.order = 0;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[2];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "getter";
+    f.order = 1;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[3];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "lists";
+    f.order = 2;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[4];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "maps";
+    f.order = 3;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[5];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "name";
+    f.order = 4;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[6];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "name_to_value";
+    f.order = 5;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[7];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "names";
+    f.order = 6;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[8];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "prefix_tree";
+    f.order = 7;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[9];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "sets";
+    f.order = 8;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[10];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "setter";
+    f.order = 9;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[11];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "str";
+    f.order = 10;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[12];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "strings";
+    f.order = 11;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[13];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "type";
+    f.order = 12;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[14];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "value";
+    f.order = 13;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[15];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "value_to_name";
+    f.order = 14;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[16];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "values";
+    f.order = 15;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[17];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "id";
+    f.order = 16;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[18];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "ids";
+    f.order = 17;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[19];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "descriptor";
+    f.order = 18;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[20];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "descriptors";
+    f.order = 19;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[21];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "key";
+    f.order = 20;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[22];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "keys";
+    f.order = 21;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[23];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "annotation";
+    f.order = 22;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[24];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "annotations";
+    f.order = 23;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[25];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "member";
+    f.order = 24;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[26];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "members";
+    f.order = 25;
+  }
+}
+
 // Reflection initializer for struct module.service1_method1_args
 void reflectionInitializer_1221581162559054604(::apache::thrift::reflection::Schema& schema) {
   const uint64_t id = 1221581162559054604U;
@@ -2119,6 +2370,968 @@ void reflectionInitializer_16146326422060352812(::apache::thrift::reflection::Sc
     f.order = 0;
   }
   reflectionInitializer_16392874475279945260(schema);  // struct module.struct3
+}
+
+// Reflection initializer for struct module.service_with_special_names_get_args
+void reflectionInitializer_1373511551720987884(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 1373511551720987884U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_get_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_get_pargs
+void reflectionInitializer_6180717848238773804(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 6180717848238773804U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_get_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_get_presult
+void reflectionInitializer_11646051635369598572(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 11646051635369598572U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_get_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_getter_args
+void reflectionInitializer_5841548007298017580(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 5841548007298017580U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_getter_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_getter_pargs
+void reflectionInitializer_1626803846620101004(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 1626803846620101004U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_getter_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_getter_presult
+void reflectionInitializer_8969449638576176396(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 8969449638576176396U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_getter_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_lists_args
+void reflectionInitializer_5732728134094404812(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 5732728134094404812U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_lists_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_lists_pargs
+void reflectionInitializer_11005640243407784812(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 11005640243407784812U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_lists_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_lists_presult
+void reflectionInitializer_3698312719729166668(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 3698312719729166668U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_lists_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_maps_args
+void reflectionInitializer_3351470906650519212(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 3351470906650519212U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_maps_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_maps_pargs
+void reflectionInitializer_13252849339744761324(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 13252849339744761324U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_maps_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_maps_presult
+void reflectionInitializer_7089921217987282892(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 7089921217987282892U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_maps_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_name_args
+void reflectionInitializer_11922926156328519820(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 11922926156328519820U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_name_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_name_pargs
+void reflectionInitializer_8032862167142743564(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 8032862167142743564U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_name_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_name_presult
+void reflectionInitializer_4476510193210978508(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 4476510193210978508U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_name_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_name_to_value_args
+void reflectionInitializer_6155512989613449804(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 6155512989613449804U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_name_to_value_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_name_to_value_pargs
+void reflectionInitializer_8237545762925274764(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 8237545762925274764U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_name_to_value_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_name_to_value_presult
+void reflectionInitializer_17212294354743603788(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 17212294354743603788U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_name_to_value_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_names_args
+void reflectionInitializer_9756879492097671468(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 9756879492097671468U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_names_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_names_pargs
+void reflectionInitializer_10586736841908509644(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 10586736841908509644U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_names_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_names_presult
+void reflectionInitializer_11207936718153437132(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 11207936718153437132U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_names_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_prefix_tree_args
+void reflectionInitializer_15677913871102706636(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 15677913871102706636U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_prefix_tree_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_prefix_tree_pargs
+void reflectionInitializer_18331187933004642700(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 18331187933004642700U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_prefix_tree_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_prefix_tree_presult
+void reflectionInitializer_16771581789976342828(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 16771581789976342828U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_prefix_tree_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_sets_args
+void reflectionInitializer_14231777332181685580(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 14231777332181685580U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_sets_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_sets_pargs
+void reflectionInitializer_3749180045256457292(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 3749180045256457292U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_sets_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_sets_presult
+void reflectionInitializer_4151785695256646572(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 4151785695256646572U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_sets_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_setter_args
+void reflectionInitializer_9870312273607259884(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 9870312273607259884U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_setter_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_setter_pargs
+void reflectionInitializer_13085949427034307116(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 13085949427034307116U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_setter_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_setter_presult
+void reflectionInitializer_3615611587777939756(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 3615611587777939756U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_setter_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_str_args
+void reflectionInitializer_9523889597948027724(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 9523889597948027724U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_str_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_str_pargs
+void reflectionInitializer_11104524594484825836(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 11104524594484825836U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_str_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_str_presult
+void reflectionInitializer_10019129158603438188(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 10019129158603438188U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_str_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_strings_args
+void reflectionInitializer_11558869670105657900(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 11558869670105657900U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_strings_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_strings_pargs
+void reflectionInitializer_9937103767805045164(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 9937103767805045164U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_strings_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_strings_presult
+void reflectionInitializer_6090313409056969900(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 6090313409056969900U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_strings_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_type_args
+void reflectionInitializer_15109213770833110476(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 15109213770833110476U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_type_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_type_pargs
+void reflectionInitializer_18298586877078455596(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 18298586877078455596U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_type_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_type_presult
+void reflectionInitializer_10509333716012291820(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 10509333716012291820U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_type_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_value_args
+void reflectionInitializer_3864619655954954348(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 3864619655954954348U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_value_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_value_pargs
+void reflectionInitializer_1945700546667119884(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 1945700546667119884U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_value_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_value_presult
+void reflectionInitializer_14418760717554044556(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 14418760717554044556U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_value_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_value_to_name_args
+void reflectionInitializer_17974119141925120876(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 17974119141925120876U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_value_to_name_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_value_to_name_pargs
+void reflectionInitializer_7019790290212150988(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 7019790290212150988U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_value_to_name_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_value_to_name_presult
+void reflectionInitializer_15398044640920953004(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 15398044640920953004U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_value_to_name_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_values_args
+void reflectionInitializer_3069345450276425100(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 3069345450276425100U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_values_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_values_pargs
+void reflectionInitializer_3546005976427740364(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 3546005976427740364U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_values_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_values_presult
+void reflectionInitializer_3563447443625046764(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 3563447443625046764U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_values_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_id_args
+void reflectionInitializer_8735572574444870700(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 8735572574444870700U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_id_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_id_pargs
+void reflectionInitializer_7139318446922995980(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 7139318446922995980U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_id_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_id_presult
+void reflectionInitializer_10614178590552322796(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 10614178590552322796U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_id_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_ids_args
+void reflectionInitializer_18283754767201791212(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 18283754767201791212U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_ids_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_ids_pargs
+void reflectionInitializer_17621159150274508076(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 17621159150274508076U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_ids_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_ids_presult
+void reflectionInitializer_9652207830689380876(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 9652207830689380876U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_ids_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_descriptor_args
+void reflectionInitializer_11888178329946336460(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 11888178329946336460U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_descriptor_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_descriptor_pargs
+void reflectionInitializer_10175935319856860844(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 10175935319856860844U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_descriptor_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_descriptor_presult
+void reflectionInitializer_17988834178275663756(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 17988834178275663756U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_descriptor_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_descriptors_args
+void reflectionInitializer_8146408518317640812(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 8146408518317640812U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_descriptors_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_descriptors_pargs
+void reflectionInitializer_147755538338568012(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 147755538338568012U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_descriptors_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_descriptors_presult
+void reflectionInitializer_9000437692453049900(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 9000437692453049900U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_descriptors_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_key_args
+void reflectionInitializer_1605840161292897484(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 1605840161292897484U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_key_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_key_pargs
+void reflectionInitializer_1242976451924902860(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 1242976451924902860U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_key_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_key_presult
+void reflectionInitializer_9390535927945279788(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 9390535927945279788U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_key_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_keys_args
+void reflectionInitializer_9648629972725083468(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 9648629972725083468U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_keys_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_keys_pargs
+void reflectionInitializer_16794217974532786508(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 16794217974532786508U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_keys_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_keys_presult
+void reflectionInitializer_11746734769662621452(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 11746734769662621452U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_keys_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_annotation_args
+void reflectionInitializer_15683333469201773708(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 15683333469201773708U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_annotation_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_annotation_pargs
+void reflectionInitializer_17332786171836213740(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 17332786171836213740U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_annotation_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_annotation_presult
+void reflectionInitializer_4139107230434154412(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 4139107230434154412U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_annotation_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_annotations_args
+void reflectionInitializer_17069873164792460620(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 17069873164792460620U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_annotations_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_annotations_pargs
+void reflectionInitializer_18318118632293507020(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 18318118632293507020U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_annotations_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_annotations_presult
+void reflectionInitializer_4043952334908702028(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 4043952334908702028U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_annotations_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_member_args
+void reflectionInitializer_3769000557722425548(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 3769000557722425548U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_member_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_member_pargs
+void reflectionInitializer_3801129748783201580(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 3801129748783201580U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_member_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_member_presult
+void reflectionInitializer_6342879103543108076(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 6342879103543108076U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_member_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.service_with_special_names_members_args
+void reflectionInitializer_15917542671561311212(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 15917542671561311212U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_members_args";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_members_pargs
+void reflectionInitializer_14009036600105297516(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 14009036600105297516U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_members_pargs";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+// Reflection initializer for struct module.service_with_special_names_members_presult
+void reflectionInitializer_2099147124458247276(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 2099147124458247276U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.service_with_special_names_members_presult";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[0];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "success";
+    f.order = 0;
+  }
 }
 
 }}} // namespace

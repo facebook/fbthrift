@@ -103,6 +103,82 @@ return findValue( ::test_cpp1::cpp_reflection::_enum3_NAMES_TO_VALUES, name, out
 }} // apache::thrift 
 
 namespace test_cpp1 { namespace cpp_reflection {
+const int _kenum_with_special_namesValues[] = {
+  get,
+  getter,
+  lists,
+  maps,
+  name,
+  name_to_value,
+  names,
+  prefix_tree,
+  sets,
+  setter,
+  str,
+  strings,
+  type,
+  value,
+  value_to_name,
+  values,
+  id,
+  ids,
+  descriptor,
+  descriptors,
+  key,
+  keys,
+  annotation,
+  annotations,
+  member,
+  members
+};
+
+const char* const _kenum_with_special_namesNames[] = {
+  "get",
+  "getter",
+  "lists",
+  "maps",
+  "name",
+  "name_to_value",
+  "names",
+  "prefix_tree",
+  "sets",
+  "setter",
+  "str",
+  "strings",
+  "type",
+  "value",
+  "value_to_name",
+  "values",
+  "id",
+  "ids",
+  "descriptor",
+  "descriptors",
+  "key",
+  "keys",
+  "annotation",
+  "annotations",
+  "member",
+  "members"
+};
+
+const std::map<int, const char*> _enum_with_special_names_VALUES_TO_NAMES(apache::thrift::TEnumIterator<int>(26, _kenum_with_special_namesValues, _kenum_with_special_namesNames), apache::thrift::TEnumIterator<int>(-1, NULL, NULL));
+
+const std::map<const char*, int, apache::thrift::ltstr> _enum_with_special_names_NAMES_TO_VALUES(apache::thrift::TEnumInverseIterator<int>(26, _kenum_with_special_namesValues, _kenum_with_special_namesNames), apache::thrift::TEnumInverseIterator<int>(-1, NULL, NULL));
+
+}} // namespace
+namespace apache { namespace thrift {
+template<>
+const char* TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum_with_special_names>::findName( ::test_cpp1::cpp_reflection::enum_with_special_names value) {
+return findName( ::test_cpp1::cpp_reflection::_enum_with_special_names_VALUES_TO_NAMES, value);
+} 
+
+template<>
+bool TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum_with_special_names>::findValue(const char* name,  ::test_cpp1::cpp_reflection::enum_with_special_names* out) {
+return findValue( ::test_cpp1::cpp_reflection::_enum_with_special_names_NAMES_TO_VALUES, name, out);
+} 
+}} // apache::thrift 
+
+namespace test_cpp1 { namespace cpp_reflection {
   void union1::readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts)
   {
     __clear();
@@ -4209,6 +4285,1873 @@ void merge(struct3&& from, struct3& to) {
   to.__isset.fieldQ = to.__isset.fieldQ || from.__isset.fieldQ;
   merge(std::move(from.fieldR), to.fieldR);
   to.__isset.fieldR = to.__isset.fieldR || from.__isset.fieldR;
+}
+
+const uint64_t struct4::_reflection_id;
+void struct4::_reflection_register(::apache::thrift::reflection::Schema& schema) {
+   ::test_cpp1::cpp_reflection::module_reflection_::reflectionInitializer_7898252530621438604(schema);
+}
+
+bool struct4::operator == (const struct4 & rhs) const {
+  if (!(this->field0 == rhs.field0))
+    return false;
+  if (__isset.field1 != rhs.__isset.field1)
+    return false;
+  else if (__isset.field1 && !(field1 == rhs.field1))
+    return false;
+  if (!(this->field2 == rhs.field2))
+    return false;
+  if (!(this->field3 == rhs.field3))
+    return false;
+  return true;
+}
+
+void struct4::readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts)
+{
+  folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len), opts);
+  if (parsed["field0"] != nullptr) {
+    int64_t _tmp573 = (int64_t)parsed["field0"].asInt();
+    if (imaxabs(_tmp573) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->field0 = (int32_t)_tmp573;
+    }
+  } else {
+    throw apache::thrift::TLibraryException("can't parse a required field!");
+  }
+  if (parsed["field1"] != nullptr) {
+    this->field1 = parsed["field1"].asString();
+    this->__isset.field1 = true;
+  } else {
+    this->__isset.field1 = false;
+  }
+  if (parsed["field2"] != nullptr) {
+    this->field2=(enum1)(int32_t)parsed["field2"].asInt();
+    this->__isset.field2 = true;
+  } else {
+    this->__isset.field2 = false;
+  }
+  if (parsed["field3"] != nullptr) {
+    this->field3.readFromJson(folly::toJson(parsed["field3"]).c_str(), opts);
+    this->__isset.field3 = true;
+  } else {
+    this->__isset.field3 = false;
+  }
+}
+void struct4::readFromJson(const char* jsonText, const folly::json::serialization_opts& opts)
+{
+  readFromJson(jsonText, strlen(jsonText), opts);
+}
+
+uint32_t struct4::read(apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
+  if (schema != nullptr) {
+     ::test_cpp1::cpp_reflection::module_reflection_::reflectionInitializer_7898252530621438604(*schema);
+    iprot->setNextStructType(struct4::_reflection_id);
+  }
+  xfer += iprot->readStructBegin(fname);
+
+  using apache::thrift::protocol::TProtocolException;
+
+
+  bool isset_field0 = false;
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->field0);
+          isset_field0 = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->field1);
+          this->__isset.field1 = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          int32_t ecast575;
+          xfer += iprot->readI32(ecast575);
+          this->field2 = (enum1)ecast575;
+          this->__isset.field2 = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 6:
+        if (ftype == apache::thrift::protocol::T_STRUCT) {
+          xfer += this->field3.read(iprot);
+          this->__isset.field3 = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  if (!isset_field0)
+    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'field0' was not found in serialized data! Struct: struct4");
+  return xfer;
+}
+
+void struct4::__clear() {
+  field0 = 0;
+  field1 = "";
+  field2 = static_cast<enum1>(0);
+  field3.__clear();
+  __isset.__clear();
+}
+uint32_t struct4::write(apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("struct4");
+  xfer += oprot->writeFieldBegin("field0", apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32(this->field0);
+  xfer += oprot->writeFieldEnd();
+  if (this->__isset.field1) {
+    xfer += oprot->writeFieldBegin("field1", apache::thrift::protocol::T_STRING, 2);
+    xfer += oprot->writeString(this->field1);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldBegin("field2", apache::thrift::protocol::T_I32, 3);
+  xfer += oprot->writeI32((int32_t)this->field2);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("field3", apache::thrift::protocol::T_STRUCT, 6);
+  xfer += this->field3.write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(struct4 &a, struct4 &b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+  swap(a.field0, b.field0);
+  swap(a.field1, b.field1);
+  swap(a.field2, b.field2);
+  swap(a.field3, b.field3);
+  swap(a.__isset, b.__isset);
+}
+
+void merge(const struct4& from, struct4& to) {
+  using apache::thrift::merge;
+  merge(from.field0, to.field0);
+  if (from.__isset.field1) {
+    merge(from.field1, to.field1);
+    to.__isset.field1 = true;
+  }
+  merge(from.field2, to.field2);
+  to.__isset.field2 = to.__isset.field2 || from.__isset.field2;
+  merge(from.field3, to.field3);
+  to.__isset.field3 = to.__isset.field3 || from.__isset.field3;
+}
+
+void merge(struct4&& from, struct4& to) {
+  using apache::thrift::merge;
+  merge(std::move(from.field0), to.field0);
+  if (from.__isset.field1) {
+    merge(std::move(from.field1), to.field1);
+    to.__isset.field1 = true;
+  }
+  merge(std::move(from.field2), to.field2);
+  to.__isset.field2 = to.__isset.field2 || from.__isset.field2;
+  merge(std::move(from.field3), to.field3);
+  to.__isset.field3 = to.__isset.field3 || from.__isset.field3;
+}
+
+const uint64_t struct_binary::_reflection_id;
+void struct_binary::_reflection_register(::apache::thrift::reflection::Schema& schema) {
+   ::test_cpp1::cpp_reflection::module_reflection_::reflectionInitializer_6812073435240150444(schema);
+}
+
+bool struct_binary::operator == (const struct_binary & rhs) const {
+  if (!(this->bi == rhs.bi))
+    return false;
+  return true;
+}
+
+void struct_binary::readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts)
+{
+  folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len), opts);
+  if (parsed["bi"] != nullptr) {
+    this->bi = parsed["bi"].asString();
+    this->__isset.bi = true;
+  } else {
+    this->__isset.bi = false;
+  }
+}
+void struct_binary::readFromJson(const char* jsonText, const folly::json::serialization_opts& opts)
+{
+  readFromJson(jsonText, strlen(jsonText), opts);
+}
+
+uint32_t struct_binary::read(apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
+  if (schema != nullptr) {
+     ::test_cpp1::cpp_reflection::module_reflection_::reflectionInitializer_6812073435240150444(*schema);
+    iprot->setNextStructType(struct_binary::_reflection_id);
+  }
+  xfer += iprot->readStructBegin(fname);
+
+  using apache::thrift::protocol::TProtocolException;
+
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readBinary(this->bi);
+          this->__isset.bi = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+void struct_binary::__clear() {
+  bi = "";
+  __isset.__clear();
+}
+uint32_t struct_binary::write(apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("struct_binary");
+  xfer += oprot->writeFieldBegin("bi", apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeBinary(this->bi);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(struct_binary &a, struct_binary &b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+  swap(a.bi, b.bi);
+  swap(a.__isset, b.__isset);
+}
+
+void merge(const struct_binary& from, struct_binary& to) {
+  using apache::thrift::merge;
+  merge(from.bi, to.bi);
+  to.__isset.bi = to.__isset.bi || from.__isset.bi;
+}
+
+void merge(struct_binary&& from, struct_binary& to) {
+  using apache::thrift::merge;
+  merge(std::move(from.bi), to.bi);
+  to.__isset.bi = to.__isset.bi || from.__isset.bi;
+}
+
+  void union_with_special_names::readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts)
+  {
+    __clear();
+    folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len), opts);
+    if (!parsed.isObject() || parsed.size() > 1) {
+      throw apache::thrift::TLibraryException("Can't parse union_with_special_names");
+    }
+
+    if (parsed.empty()) {
+      return;
+    }
+
+    if (parsed["get"] != nullptr) {
+      set_get();
+      int64_t _tmp577 = (int64_t)parsed["get"].asInt();
+      if (imaxabs(_tmp577) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.get = (int32_t)_tmp577;
+      }
+      return;
+    }
+    if (parsed["getter"] != nullptr) {
+      set_getter();
+      int64_t _tmp578 = (int64_t)parsed["getter"].asInt();
+      if (imaxabs(_tmp578) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.getter = (int32_t)_tmp578;
+      }
+      return;
+    }
+    if (parsed["lists"] != nullptr) {
+      set_lists();
+      int64_t _tmp579 = (int64_t)parsed["lists"].asInt();
+      if (imaxabs(_tmp579) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.lists = (int32_t)_tmp579;
+      }
+      return;
+    }
+    if (parsed["maps"] != nullptr) {
+      set_maps();
+      int64_t _tmp580 = (int64_t)parsed["maps"].asInt();
+      if (imaxabs(_tmp580) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.maps = (int32_t)_tmp580;
+      }
+      return;
+    }
+    if (parsed["name"] != nullptr) {
+      set_name();
+      int64_t _tmp581 = (int64_t)parsed["name"].asInt();
+      if (imaxabs(_tmp581) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.name = (int32_t)_tmp581;
+      }
+      return;
+    }
+    if (parsed["name_to_value"] != nullptr) {
+      set_name_to_value();
+      int64_t _tmp582 = (int64_t)parsed["name_to_value"].asInt();
+      if (imaxabs(_tmp582) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.name_to_value = (int32_t)_tmp582;
+      }
+      return;
+    }
+    if (parsed["names"] != nullptr) {
+      set_names();
+      int64_t _tmp583 = (int64_t)parsed["names"].asInt();
+      if (imaxabs(_tmp583) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.names = (int32_t)_tmp583;
+      }
+      return;
+    }
+    if (parsed["prefix_tree"] != nullptr) {
+      set_prefix_tree();
+      int64_t _tmp584 = (int64_t)parsed["prefix_tree"].asInt();
+      if (imaxabs(_tmp584) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.prefix_tree = (int32_t)_tmp584;
+      }
+      return;
+    }
+    if (parsed["sets"] != nullptr) {
+      set_sets();
+      int64_t _tmp585 = (int64_t)parsed["sets"].asInt();
+      if (imaxabs(_tmp585) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.sets = (int32_t)_tmp585;
+      }
+      return;
+    }
+    if (parsed["setter"] != nullptr) {
+      set_setter();
+      int64_t _tmp586 = (int64_t)parsed["setter"].asInt();
+      if (imaxabs(_tmp586) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.setter = (int32_t)_tmp586;
+      }
+      return;
+    }
+    if (parsed["str"] != nullptr) {
+      set_str();
+      int64_t _tmp587 = (int64_t)parsed["str"].asInt();
+      if (imaxabs(_tmp587) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.str = (int32_t)_tmp587;
+      }
+      return;
+    }
+    if (parsed["strings"] != nullptr) {
+      set_strings();
+      int64_t _tmp588 = (int64_t)parsed["strings"].asInt();
+      if (imaxabs(_tmp588) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.strings = (int32_t)_tmp588;
+      }
+      return;
+    }
+    if (parsed["type"] != nullptr) {
+      set_type();
+      int64_t _tmp589 = (int64_t)parsed["type"].asInt();
+      if (imaxabs(_tmp589) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.type = (int32_t)_tmp589;
+      }
+      return;
+    }
+    if (parsed["value"] != nullptr) {
+      set_value();
+      int64_t _tmp590 = (int64_t)parsed["value"].asInt();
+      if (imaxabs(_tmp590) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.value = (int32_t)_tmp590;
+      }
+      return;
+    }
+    if (parsed["value_to_name"] != nullptr) {
+      set_value_to_name();
+      int64_t _tmp591 = (int64_t)parsed["value_to_name"].asInt();
+      if (imaxabs(_tmp591) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.value_to_name = (int32_t)_tmp591;
+      }
+      return;
+    }
+    if (parsed["values"] != nullptr) {
+      set_values();
+      int64_t _tmp592 = (int64_t)parsed["values"].asInt();
+      if (imaxabs(_tmp592) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.values = (int32_t)_tmp592;
+      }
+      return;
+    }
+    if (parsed["id"] != nullptr) {
+      set_id();
+      int64_t _tmp593 = (int64_t)parsed["id"].asInt();
+      if (imaxabs(_tmp593) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.id = (int32_t)_tmp593;
+      }
+      return;
+    }
+    if (parsed["ids"] != nullptr) {
+      set_ids();
+      int64_t _tmp594 = (int64_t)parsed["ids"].asInt();
+      if (imaxabs(_tmp594) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.ids = (int32_t)_tmp594;
+      }
+      return;
+    }
+    if (parsed["descriptor"] != nullptr) {
+      set_descriptor();
+      int64_t _tmp595 = (int64_t)parsed["descriptor"].asInt();
+      if (imaxabs(_tmp595) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.descriptor = (int32_t)_tmp595;
+      }
+      return;
+    }
+    if (parsed["descriptors"] != nullptr) {
+      set_descriptors();
+      int64_t _tmp596 = (int64_t)parsed["descriptors"].asInt();
+      if (imaxabs(_tmp596) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.descriptors = (int32_t)_tmp596;
+      }
+      return;
+    }
+    if (parsed["key"] != nullptr) {
+      set_key();
+      int64_t _tmp597 = (int64_t)parsed["key"].asInt();
+      if (imaxabs(_tmp597) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.key = (int32_t)_tmp597;
+      }
+      return;
+    }
+    if (parsed["keys"] != nullptr) {
+      set_keys();
+      int64_t _tmp598 = (int64_t)parsed["keys"].asInt();
+      if (imaxabs(_tmp598) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.keys = (int32_t)_tmp598;
+      }
+      return;
+    }
+    if (parsed["annotation"] != nullptr) {
+      set_annotation();
+      int64_t _tmp599 = (int64_t)parsed["annotation"].asInt();
+      if (imaxabs(_tmp599) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.annotation = (int32_t)_tmp599;
+      }
+      return;
+    }
+    if (parsed["annotations"] != nullptr) {
+      set_annotations();
+      int64_t _tmp600 = (int64_t)parsed["annotations"].asInt();
+      if (imaxabs(_tmp600) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.annotations = (int32_t)_tmp600;
+      }
+      return;
+    }
+    if (parsed["member"] != nullptr) {
+      set_member();
+      int64_t _tmp601 = (int64_t)parsed["member"].asInt();
+      if (imaxabs(_tmp601) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.member = (int32_t)_tmp601;
+      }
+      return;
+    }
+    if (parsed["members"] != nullptr) {
+      set_members();
+      int64_t _tmp602 = (int64_t)parsed["members"].asInt();
+      if (imaxabs(_tmp602) > 0x7fffffffL) {
+        throw apache::thrift::TLibraryException("number exceeds limit in field");
+      } else {
+        this->value_.members = (int32_t)_tmp602;
+      }
+      return;
+    }
+  }
+  void union_with_special_names::readFromJson(const char* jsonText, const folly::json::serialization_opts& opts)
+  {
+    readFromJson(jsonText, strlen(jsonText), opts);
+  }
+
+uint32_t union_with_special_names::read(apache::thrift::protocol::TProtocol* iprot) {
+  uint32_t xfer = 0;
+  std::string fname;
+  apache::thrift::protocol::TType ftype;
+  int16_t fid;
+  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readFieldBegin(fname, ftype, fid);
+  if (ftype == apache::thrift::protocol::T_STOP) {
+    __clear();
+  } else {
+    switch (fid) {
+      case 1: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_get();
+          xfer += iprot->readI32(this->value_.get);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 2: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_getter();
+          xfer += iprot->readI32(this->value_.getter);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 3: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_lists();
+          xfer += iprot->readI32(this->value_.lists);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 4: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_maps();
+          xfer += iprot->readI32(this->value_.maps);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 5: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_name();
+          xfer += iprot->readI32(this->value_.name);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 6: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_name_to_value();
+          xfer += iprot->readI32(this->value_.name_to_value);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 7: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_names();
+          xfer += iprot->readI32(this->value_.names);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 8: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_prefix_tree();
+          xfer += iprot->readI32(this->value_.prefix_tree);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 9: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_sets();
+          xfer += iprot->readI32(this->value_.sets);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 10: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_setter();
+          xfer += iprot->readI32(this->value_.setter);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 11: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_str();
+          xfer += iprot->readI32(this->value_.str);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 12: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_strings();
+          xfer += iprot->readI32(this->value_.strings);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 13: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_type();
+          xfer += iprot->readI32(this->value_.type);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 14: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_value();
+          xfer += iprot->readI32(this->value_.value);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 15: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_value_to_name();
+          xfer += iprot->readI32(this->value_.value_to_name);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 16: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_values();
+          xfer += iprot->readI32(this->value_.values);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 17: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_id();
+          xfer += iprot->readI32(this->value_.id);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 18: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_ids();
+          xfer += iprot->readI32(this->value_.ids);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 19: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_descriptor();
+          xfer += iprot->readI32(this->value_.descriptor);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 20: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_descriptors();
+          xfer += iprot->readI32(this->value_.descriptors);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 21: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_key();
+          xfer += iprot->readI32(this->value_.key);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 22: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_keys();
+          xfer += iprot->readI32(this->value_.keys);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 23: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_annotation();
+          xfer += iprot->readI32(this->value_.annotation);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 24: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_annotations();
+          xfer += iprot->readI32(this->value_.annotations);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 25: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_member();
+          xfer += iprot->readI32(this->value_.member);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 26: {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          set_members();
+          xfer += iprot->readI32(this->value_.members);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      default: xfer += iprot->skip(ftype); break;
+    }
+    xfer += iprot->readFieldEnd();
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    xfer += iprot->readFieldEnd();
+  }
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t union_with_special_names::write(apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("union_with_special_names");
+  switch (type_) {
+    case Type::get: {
+      xfer += oprot->writeFieldBegin("get", apache::thrift::protocol::T_I32, 1);
+      xfer += oprot->writeI32(this->value_.get);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::getter: {
+      xfer += oprot->writeFieldBegin("getter", apache::thrift::protocol::T_I32, 2);
+      xfer += oprot->writeI32(this->value_.getter);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::lists: {
+      xfer += oprot->writeFieldBegin("lists", apache::thrift::protocol::T_I32, 3);
+      xfer += oprot->writeI32(this->value_.lists);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::maps: {
+      xfer += oprot->writeFieldBegin("maps", apache::thrift::protocol::T_I32, 4);
+      xfer += oprot->writeI32(this->value_.maps);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::name: {
+      xfer += oprot->writeFieldBegin("name", apache::thrift::protocol::T_I32, 5);
+      xfer += oprot->writeI32(this->value_.name);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::name_to_value: {
+      xfer += oprot->writeFieldBegin("name_to_value", apache::thrift::protocol::T_I32, 6);
+      xfer += oprot->writeI32(this->value_.name_to_value);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::names: {
+      xfer += oprot->writeFieldBegin("names", apache::thrift::protocol::T_I32, 7);
+      xfer += oprot->writeI32(this->value_.names);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::prefix_tree: {
+      xfer += oprot->writeFieldBegin("prefix_tree", apache::thrift::protocol::T_I32, 8);
+      xfer += oprot->writeI32(this->value_.prefix_tree);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::sets: {
+      xfer += oprot->writeFieldBegin("sets", apache::thrift::protocol::T_I32, 9);
+      xfer += oprot->writeI32(this->value_.sets);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::setter: {
+      xfer += oprot->writeFieldBegin("setter", apache::thrift::protocol::T_I32, 10);
+      xfer += oprot->writeI32(this->value_.setter);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::str: {
+      xfer += oprot->writeFieldBegin("str", apache::thrift::protocol::T_I32, 11);
+      xfer += oprot->writeI32(this->value_.str);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::strings: {
+      xfer += oprot->writeFieldBegin("strings", apache::thrift::protocol::T_I32, 12);
+      xfer += oprot->writeI32(this->value_.strings);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::type: {
+      xfer += oprot->writeFieldBegin("type", apache::thrift::protocol::T_I32, 13);
+      xfer += oprot->writeI32(this->value_.type);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::value: {
+      xfer += oprot->writeFieldBegin("value", apache::thrift::protocol::T_I32, 14);
+      xfer += oprot->writeI32(this->value_.value);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::value_to_name: {
+      xfer += oprot->writeFieldBegin("value_to_name", apache::thrift::protocol::T_I32, 15);
+      xfer += oprot->writeI32(this->value_.value_to_name);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::values: {
+      xfer += oprot->writeFieldBegin("values", apache::thrift::protocol::T_I32, 16);
+      xfer += oprot->writeI32(this->value_.values);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::id: {
+      xfer += oprot->writeFieldBegin("id", apache::thrift::protocol::T_I32, 17);
+      xfer += oprot->writeI32(this->value_.id);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::ids: {
+      xfer += oprot->writeFieldBegin("ids", apache::thrift::protocol::T_I32, 18);
+      xfer += oprot->writeI32(this->value_.ids);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::descriptor: {
+      xfer += oprot->writeFieldBegin("descriptor", apache::thrift::protocol::T_I32, 19);
+      xfer += oprot->writeI32(this->value_.descriptor);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::descriptors: {
+      xfer += oprot->writeFieldBegin("descriptors", apache::thrift::protocol::T_I32, 20);
+      xfer += oprot->writeI32(this->value_.descriptors);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::key: {
+      xfer += oprot->writeFieldBegin("key", apache::thrift::protocol::T_I32, 21);
+      xfer += oprot->writeI32(this->value_.key);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::keys: {
+      xfer += oprot->writeFieldBegin("keys", apache::thrift::protocol::T_I32, 22);
+      xfer += oprot->writeI32(this->value_.keys);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::annotation: {
+      xfer += oprot->writeFieldBegin("annotation", apache::thrift::protocol::T_I32, 23);
+      xfer += oprot->writeI32(this->value_.annotation);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::annotations: {
+      xfer += oprot->writeFieldBegin("annotations", apache::thrift::protocol::T_I32, 24);
+      xfer += oprot->writeI32(this->value_.annotations);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::member: {
+      xfer += oprot->writeFieldBegin("member", apache::thrift::protocol::T_I32, 25);
+      xfer += oprot->writeI32(this->value_.member);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::members: {
+      xfer += oprot->writeFieldBegin("members", apache::thrift::protocol::T_I32, 26);
+      xfer += oprot->writeI32(this->value_.members);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::__EMPTY__:;
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+const uint64_t struct_with_special_names::_reflection_id;
+void struct_with_special_names::_reflection_register(::apache::thrift::reflection::Schema& schema) {
+   ::test_cpp1::cpp_reflection::module_reflection_::reflectionInitializer_8634504681174503372(schema);
+}
+
+bool struct_with_special_names::operator == (const struct_with_special_names & rhs) const {
+  if (!(this->get == rhs.get))
+    return false;
+  if (!(this->getter == rhs.getter))
+    return false;
+  if (!(this->lists == rhs.lists))
+    return false;
+  if (!(this->maps == rhs.maps))
+    return false;
+  if (!(this->name == rhs.name))
+    return false;
+  if (!(this->name_to_value == rhs.name_to_value))
+    return false;
+  if (!(this->names == rhs.names))
+    return false;
+  if (!(this->prefix_tree == rhs.prefix_tree))
+    return false;
+  if (!(this->sets == rhs.sets))
+    return false;
+  if (!(this->setter == rhs.setter))
+    return false;
+  if (!(this->str == rhs.str))
+    return false;
+  if (!(this->strings == rhs.strings))
+    return false;
+  if (!(this->type == rhs.type))
+    return false;
+  if (!(this->value == rhs.value))
+    return false;
+  if (!(this->value_to_name == rhs.value_to_name))
+    return false;
+  if (!(this->values == rhs.values))
+    return false;
+  if (!(this->id == rhs.id))
+    return false;
+  if (!(this->ids == rhs.ids))
+    return false;
+  if (!(this->descriptor == rhs.descriptor))
+    return false;
+  if (!(this->descriptors == rhs.descriptors))
+    return false;
+  if (!(this->key == rhs.key))
+    return false;
+  if (!(this->keys == rhs.keys))
+    return false;
+  if (!(this->annotation == rhs.annotation))
+    return false;
+  if (!(this->annotations == rhs.annotations))
+    return false;
+  if (!(this->member == rhs.member))
+    return false;
+  if (!(this->members == rhs.members))
+    return false;
+  return true;
+}
+
+void struct_with_special_names::readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts)
+{
+  folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len), opts);
+  if (parsed["get"] != nullptr) {
+    int64_t _tmp604 = (int64_t)parsed["get"].asInt();
+    if (imaxabs(_tmp604) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->get = (int32_t)_tmp604;
+    }
+    this->__isset.get = true;
+  } else {
+    this->__isset.get = false;
+  }
+  if (parsed["getter"] != nullptr) {
+    int64_t _tmp605 = (int64_t)parsed["getter"].asInt();
+    if (imaxabs(_tmp605) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->getter = (int32_t)_tmp605;
+    }
+    this->__isset.getter = true;
+  } else {
+    this->__isset.getter = false;
+  }
+  if (parsed["lists"] != nullptr) {
+    int64_t _tmp606 = (int64_t)parsed["lists"].asInt();
+    if (imaxabs(_tmp606) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->lists = (int32_t)_tmp606;
+    }
+    this->__isset.lists = true;
+  } else {
+    this->__isset.lists = false;
+  }
+  if (parsed["maps"] != nullptr) {
+    int64_t _tmp607 = (int64_t)parsed["maps"].asInt();
+    if (imaxabs(_tmp607) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->maps = (int32_t)_tmp607;
+    }
+    this->__isset.maps = true;
+  } else {
+    this->__isset.maps = false;
+  }
+  if (parsed["name"] != nullptr) {
+    int64_t _tmp608 = (int64_t)parsed["name"].asInt();
+    if (imaxabs(_tmp608) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->name = (int32_t)_tmp608;
+    }
+    this->__isset.name = true;
+  } else {
+    this->__isset.name = false;
+  }
+  if (parsed["name_to_value"] != nullptr) {
+    int64_t _tmp609 = (int64_t)parsed["name_to_value"].asInt();
+    if (imaxabs(_tmp609) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->name_to_value = (int32_t)_tmp609;
+    }
+    this->__isset.name_to_value = true;
+  } else {
+    this->__isset.name_to_value = false;
+  }
+  if (parsed["names"] != nullptr) {
+    int64_t _tmp610 = (int64_t)parsed["names"].asInt();
+    if (imaxabs(_tmp610) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->names = (int32_t)_tmp610;
+    }
+    this->__isset.names = true;
+  } else {
+    this->__isset.names = false;
+  }
+  if (parsed["prefix_tree"] != nullptr) {
+    int64_t _tmp611 = (int64_t)parsed["prefix_tree"].asInt();
+    if (imaxabs(_tmp611) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->prefix_tree = (int32_t)_tmp611;
+    }
+    this->__isset.prefix_tree = true;
+  } else {
+    this->__isset.prefix_tree = false;
+  }
+  if (parsed["sets"] != nullptr) {
+    int64_t _tmp612 = (int64_t)parsed["sets"].asInt();
+    if (imaxabs(_tmp612) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->sets = (int32_t)_tmp612;
+    }
+    this->__isset.sets = true;
+  } else {
+    this->__isset.sets = false;
+  }
+  if (parsed["setter"] != nullptr) {
+    int64_t _tmp613 = (int64_t)parsed["setter"].asInt();
+    if (imaxabs(_tmp613) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->setter = (int32_t)_tmp613;
+    }
+    this->__isset.setter = true;
+  } else {
+    this->__isset.setter = false;
+  }
+  if (parsed["str"] != nullptr) {
+    int64_t _tmp614 = (int64_t)parsed["str"].asInt();
+    if (imaxabs(_tmp614) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->str = (int32_t)_tmp614;
+    }
+    this->__isset.str = true;
+  } else {
+    this->__isset.str = false;
+  }
+  if (parsed["strings"] != nullptr) {
+    int64_t _tmp615 = (int64_t)parsed["strings"].asInt();
+    if (imaxabs(_tmp615) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->strings = (int32_t)_tmp615;
+    }
+    this->__isset.strings = true;
+  } else {
+    this->__isset.strings = false;
+  }
+  if (parsed["type"] != nullptr) {
+    int64_t _tmp616 = (int64_t)parsed["type"].asInt();
+    if (imaxabs(_tmp616) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->type = (int32_t)_tmp616;
+    }
+    this->__isset.type = true;
+  } else {
+    this->__isset.type = false;
+  }
+  if (parsed["value"] != nullptr) {
+    int64_t _tmp617 = (int64_t)parsed["value"].asInt();
+    if (imaxabs(_tmp617) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->value = (int32_t)_tmp617;
+    }
+    this->__isset.value = true;
+  } else {
+    this->__isset.value = false;
+  }
+  if (parsed["value_to_name"] != nullptr) {
+    int64_t _tmp618 = (int64_t)parsed["value_to_name"].asInt();
+    if (imaxabs(_tmp618) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->value_to_name = (int32_t)_tmp618;
+    }
+    this->__isset.value_to_name = true;
+  } else {
+    this->__isset.value_to_name = false;
+  }
+  if (parsed["values"] != nullptr) {
+    int64_t _tmp619 = (int64_t)parsed["values"].asInt();
+    if (imaxabs(_tmp619) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->values = (int32_t)_tmp619;
+    }
+    this->__isset.values = true;
+  } else {
+    this->__isset.values = false;
+  }
+  if (parsed["id"] != nullptr) {
+    int64_t _tmp620 = (int64_t)parsed["id"].asInt();
+    if (imaxabs(_tmp620) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->id = (int32_t)_tmp620;
+    }
+    this->__isset.id = true;
+  } else {
+    this->__isset.id = false;
+  }
+  if (parsed["ids"] != nullptr) {
+    int64_t _tmp621 = (int64_t)parsed["ids"].asInt();
+    if (imaxabs(_tmp621) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->ids = (int32_t)_tmp621;
+    }
+    this->__isset.ids = true;
+  } else {
+    this->__isset.ids = false;
+  }
+  if (parsed["descriptor"] != nullptr) {
+    int64_t _tmp622 = (int64_t)parsed["descriptor"].asInt();
+    if (imaxabs(_tmp622) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->descriptor = (int32_t)_tmp622;
+    }
+    this->__isset.descriptor = true;
+  } else {
+    this->__isset.descriptor = false;
+  }
+  if (parsed["descriptors"] != nullptr) {
+    int64_t _tmp623 = (int64_t)parsed["descriptors"].asInt();
+    if (imaxabs(_tmp623) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->descriptors = (int32_t)_tmp623;
+    }
+    this->__isset.descriptors = true;
+  } else {
+    this->__isset.descriptors = false;
+  }
+  if (parsed["key"] != nullptr) {
+    int64_t _tmp624 = (int64_t)parsed["key"].asInt();
+    if (imaxabs(_tmp624) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->key = (int32_t)_tmp624;
+    }
+    this->__isset.key = true;
+  } else {
+    this->__isset.key = false;
+  }
+  if (parsed["keys"] != nullptr) {
+    int64_t _tmp625 = (int64_t)parsed["keys"].asInt();
+    if (imaxabs(_tmp625) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->keys = (int32_t)_tmp625;
+    }
+    this->__isset.keys = true;
+  } else {
+    this->__isset.keys = false;
+  }
+  if (parsed["annotation"] != nullptr) {
+    int64_t _tmp626 = (int64_t)parsed["annotation"].asInt();
+    if (imaxabs(_tmp626) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->annotation = (int32_t)_tmp626;
+    }
+    this->__isset.annotation = true;
+  } else {
+    this->__isset.annotation = false;
+  }
+  if (parsed["annotations"] != nullptr) {
+    int64_t _tmp627 = (int64_t)parsed["annotations"].asInt();
+    if (imaxabs(_tmp627) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->annotations = (int32_t)_tmp627;
+    }
+    this->__isset.annotations = true;
+  } else {
+    this->__isset.annotations = false;
+  }
+  if (parsed["member"] != nullptr) {
+    int64_t _tmp628 = (int64_t)parsed["member"].asInt();
+    if (imaxabs(_tmp628) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->member = (int32_t)_tmp628;
+    }
+    this->__isset.member = true;
+  } else {
+    this->__isset.member = false;
+  }
+  if (parsed["members"] != nullptr) {
+    int64_t _tmp629 = (int64_t)parsed["members"].asInt();
+    if (imaxabs(_tmp629) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->members = (int32_t)_tmp629;
+    }
+    this->__isset.members = true;
+  } else {
+    this->__isset.members = false;
+  }
+}
+void struct_with_special_names::readFromJson(const char* jsonText, const folly::json::serialization_opts& opts)
+{
+  readFromJson(jsonText, strlen(jsonText), opts);
+}
+
+uint32_t struct_with_special_names::read(apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
+  if (schema != nullptr) {
+     ::test_cpp1::cpp_reflection::module_reflection_::reflectionInitializer_8634504681174503372(*schema);
+    iprot->setNextStructType(struct_with_special_names::_reflection_id);
+  }
+  xfer += iprot->readStructBegin(fname);
+
+  using apache::thrift::protocol::TProtocolException;
+
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->get);
+          this->__isset.get = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->getter);
+          this->__isset.getter = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->lists);
+          this->__isset.lists = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 4:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->maps);
+          this->__isset.maps = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 5:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->name);
+          this->__isset.name = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 6:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->name_to_value);
+          this->__isset.name_to_value = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 7:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->names);
+          this->__isset.names = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 8:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->prefix_tree);
+          this->__isset.prefix_tree = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 9:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->sets);
+          this->__isset.sets = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 10:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->setter);
+          this->__isset.setter = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 11:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->str);
+          this->__isset.str = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 12:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->strings);
+          this->__isset.strings = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 13:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->type);
+          this->__isset.type = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 14:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->value);
+          this->__isset.value = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 15:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->value_to_name);
+          this->__isset.value_to_name = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 16:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->values);
+          this->__isset.values = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 17:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->id);
+          this->__isset.id = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 18:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->ids);
+          this->__isset.ids = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 19:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->descriptor);
+          this->__isset.descriptor = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 20:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->descriptors);
+          this->__isset.descriptors = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 21:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->key);
+          this->__isset.key = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 22:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->keys);
+          this->__isset.keys = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 23:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->annotation);
+          this->__isset.annotation = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 24:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->annotations);
+          this->__isset.annotations = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 25:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->member);
+          this->__isset.member = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 26:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->members);
+          this->__isset.members = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+void struct_with_special_names::__clear() {
+  get = 0;
+  getter = 0;
+  lists = 0;
+  maps = 0;
+  name = 0;
+  name_to_value = 0;
+  names = 0;
+  prefix_tree = 0;
+  sets = 0;
+  setter = 0;
+  str = 0;
+  strings = 0;
+  type = 0;
+  value = 0;
+  value_to_name = 0;
+  values = 0;
+  id = 0;
+  ids = 0;
+  descriptor = 0;
+  descriptors = 0;
+  key = 0;
+  keys = 0;
+  annotation = 0;
+  annotations = 0;
+  member = 0;
+  members = 0;
+  __isset.__clear();
+}
+uint32_t struct_with_special_names::write(apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("struct_with_special_names");
+  xfer += oprot->writeFieldBegin("get", apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32(this->get);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("getter", apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32(this->getter);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("lists", apache::thrift::protocol::T_I32, 3);
+  xfer += oprot->writeI32(this->lists);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("maps", apache::thrift::protocol::T_I32, 4);
+  xfer += oprot->writeI32(this->maps);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("name", apache::thrift::protocol::T_I32, 5);
+  xfer += oprot->writeI32(this->name);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("name_to_value", apache::thrift::protocol::T_I32, 6);
+  xfer += oprot->writeI32(this->name_to_value);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("names", apache::thrift::protocol::T_I32, 7);
+  xfer += oprot->writeI32(this->names);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("prefix_tree", apache::thrift::protocol::T_I32, 8);
+  xfer += oprot->writeI32(this->prefix_tree);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("sets", apache::thrift::protocol::T_I32, 9);
+  xfer += oprot->writeI32(this->sets);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("setter", apache::thrift::protocol::T_I32, 10);
+  xfer += oprot->writeI32(this->setter);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("str", apache::thrift::protocol::T_I32, 11);
+  xfer += oprot->writeI32(this->str);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("strings", apache::thrift::protocol::T_I32, 12);
+  xfer += oprot->writeI32(this->strings);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("type", apache::thrift::protocol::T_I32, 13);
+  xfer += oprot->writeI32(this->type);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("value", apache::thrift::protocol::T_I32, 14);
+  xfer += oprot->writeI32(this->value);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("value_to_name", apache::thrift::protocol::T_I32, 15);
+  xfer += oprot->writeI32(this->value_to_name);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("values", apache::thrift::protocol::T_I32, 16);
+  xfer += oprot->writeI32(this->values);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("id", apache::thrift::protocol::T_I32, 17);
+  xfer += oprot->writeI32(this->id);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("ids", apache::thrift::protocol::T_I32, 18);
+  xfer += oprot->writeI32(this->ids);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("descriptor", apache::thrift::protocol::T_I32, 19);
+  xfer += oprot->writeI32(this->descriptor);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("descriptors", apache::thrift::protocol::T_I32, 20);
+  xfer += oprot->writeI32(this->descriptors);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("key", apache::thrift::protocol::T_I32, 21);
+  xfer += oprot->writeI32(this->key);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("keys", apache::thrift::protocol::T_I32, 22);
+  xfer += oprot->writeI32(this->keys);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("annotation", apache::thrift::protocol::T_I32, 23);
+  xfer += oprot->writeI32(this->annotation);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("annotations", apache::thrift::protocol::T_I32, 24);
+  xfer += oprot->writeI32(this->annotations);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("member", apache::thrift::protocol::T_I32, 25);
+  xfer += oprot->writeI32(this->member);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("members", apache::thrift::protocol::T_I32, 26);
+  xfer += oprot->writeI32(this->members);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(struct_with_special_names &a, struct_with_special_names &b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+  swap(a.get, b.get);
+  swap(a.getter, b.getter);
+  swap(a.lists, b.lists);
+  swap(a.maps, b.maps);
+  swap(a.name, b.name);
+  swap(a.name_to_value, b.name_to_value);
+  swap(a.names, b.names);
+  swap(a.prefix_tree, b.prefix_tree);
+  swap(a.sets, b.sets);
+  swap(a.setter, b.setter);
+  swap(a.str, b.str);
+  swap(a.strings, b.strings);
+  swap(a.type, b.type);
+  swap(a.value, b.value);
+  swap(a.value_to_name, b.value_to_name);
+  swap(a.values, b.values);
+  swap(a.id, b.id);
+  swap(a.ids, b.ids);
+  swap(a.descriptor, b.descriptor);
+  swap(a.descriptors, b.descriptors);
+  swap(a.key, b.key);
+  swap(a.keys, b.keys);
+  swap(a.annotation, b.annotation);
+  swap(a.annotations, b.annotations);
+  swap(a.member, b.member);
+  swap(a.members, b.members);
+  swap(a.__isset, b.__isset);
+}
+
+void merge(const struct_with_special_names& from, struct_with_special_names& to) {
+  using apache::thrift::merge;
+  merge(from.get, to.get);
+  to.__isset.get = to.__isset.get || from.__isset.get;
+  merge(from.getter, to.getter);
+  to.__isset.getter = to.__isset.getter || from.__isset.getter;
+  merge(from.lists, to.lists);
+  to.__isset.lists = to.__isset.lists || from.__isset.lists;
+  merge(from.maps, to.maps);
+  to.__isset.maps = to.__isset.maps || from.__isset.maps;
+  merge(from.name, to.name);
+  to.__isset.name = to.__isset.name || from.__isset.name;
+  merge(from.name_to_value, to.name_to_value);
+  to.__isset.name_to_value = to.__isset.name_to_value || from.__isset.name_to_value;
+  merge(from.names, to.names);
+  to.__isset.names = to.__isset.names || from.__isset.names;
+  merge(from.prefix_tree, to.prefix_tree);
+  to.__isset.prefix_tree = to.__isset.prefix_tree || from.__isset.prefix_tree;
+  merge(from.sets, to.sets);
+  to.__isset.sets = to.__isset.sets || from.__isset.sets;
+  merge(from.setter, to.setter);
+  to.__isset.setter = to.__isset.setter || from.__isset.setter;
+  merge(from.str, to.str);
+  to.__isset.str = to.__isset.str || from.__isset.str;
+  merge(from.strings, to.strings);
+  to.__isset.strings = to.__isset.strings || from.__isset.strings;
+  merge(from.type, to.type);
+  to.__isset.type = to.__isset.type || from.__isset.type;
+  merge(from.value, to.value);
+  to.__isset.value = to.__isset.value || from.__isset.value;
+  merge(from.value_to_name, to.value_to_name);
+  to.__isset.value_to_name = to.__isset.value_to_name || from.__isset.value_to_name;
+  merge(from.values, to.values);
+  to.__isset.values = to.__isset.values || from.__isset.values;
+  merge(from.id, to.id);
+  to.__isset.id = to.__isset.id || from.__isset.id;
+  merge(from.ids, to.ids);
+  to.__isset.ids = to.__isset.ids || from.__isset.ids;
+  merge(from.descriptor, to.descriptor);
+  to.__isset.descriptor = to.__isset.descriptor || from.__isset.descriptor;
+  merge(from.descriptors, to.descriptors);
+  to.__isset.descriptors = to.__isset.descriptors || from.__isset.descriptors;
+  merge(from.key, to.key);
+  to.__isset.key = to.__isset.key || from.__isset.key;
+  merge(from.keys, to.keys);
+  to.__isset.keys = to.__isset.keys || from.__isset.keys;
+  merge(from.annotation, to.annotation);
+  to.__isset.annotation = to.__isset.annotation || from.__isset.annotation;
+  merge(from.annotations, to.annotations);
+  to.__isset.annotations = to.__isset.annotations || from.__isset.annotations;
+  merge(from.member, to.member);
+  to.__isset.member = to.__isset.member || from.__isset.member;
+  merge(from.members, to.members);
+  to.__isset.members = to.__isset.members || from.__isset.members;
+}
+
+void merge(struct_with_special_names&& from, struct_with_special_names& to) {
+  using apache::thrift::merge;
+  merge(std::move(from.get), to.get);
+  to.__isset.get = to.__isset.get || from.__isset.get;
+  merge(std::move(from.getter), to.getter);
+  to.__isset.getter = to.__isset.getter || from.__isset.getter;
+  merge(std::move(from.lists), to.lists);
+  to.__isset.lists = to.__isset.lists || from.__isset.lists;
+  merge(std::move(from.maps), to.maps);
+  to.__isset.maps = to.__isset.maps || from.__isset.maps;
+  merge(std::move(from.name), to.name);
+  to.__isset.name = to.__isset.name || from.__isset.name;
+  merge(std::move(from.name_to_value), to.name_to_value);
+  to.__isset.name_to_value = to.__isset.name_to_value || from.__isset.name_to_value;
+  merge(std::move(from.names), to.names);
+  to.__isset.names = to.__isset.names || from.__isset.names;
+  merge(std::move(from.prefix_tree), to.prefix_tree);
+  to.__isset.prefix_tree = to.__isset.prefix_tree || from.__isset.prefix_tree;
+  merge(std::move(from.sets), to.sets);
+  to.__isset.sets = to.__isset.sets || from.__isset.sets;
+  merge(std::move(from.setter), to.setter);
+  to.__isset.setter = to.__isset.setter || from.__isset.setter;
+  merge(std::move(from.str), to.str);
+  to.__isset.str = to.__isset.str || from.__isset.str;
+  merge(std::move(from.strings), to.strings);
+  to.__isset.strings = to.__isset.strings || from.__isset.strings;
+  merge(std::move(from.type), to.type);
+  to.__isset.type = to.__isset.type || from.__isset.type;
+  merge(std::move(from.value), to.value);
+  to.__isset.value = to.__isset.value || from.__isset.value;
+  merge(std::move(from.value_to_name), to.value_to_name);
+  to.__isset.value_to_name = to.__isset.value_to_name || from.__isset.value_to_name;
+  merge(std::move(from.values), to.values);
+  to.__isset.values = to.__isset.values || from.__isset.values;
+  merge(std::move(from.id), to.id);
+  to.__isset.id = to.__isset.id || from.__isset.id;
+  merge(std::move(from.ids), to.ids);
+  to.__isset.ids = to.__isset.ids || from.__isset.ids;
+  merge(std::move(from.descriptor), to.descriptor);
+  to.__isset.descriptor = to.__isset.descriptor || from.__isset.descriptor;
+  merge(std::move(from.descriptors), to.descriptors);
+  to.__isset.descriptors = to.__isset.descriptors || from.__isset.descriptors;
+  merge(std::move(from.key), to.key);
+  to.__isset.key = to.__isset.key || from.__isset.key;
+  merge(std::move(from.keys), to.keys);
+  to.__isset.keys = to.__isset.keys || from.__isset.keys;
+  merge(std::move(from.annotation), to.annotation);
+  to.__isset.annotation = to.__isset.annotation || from.__isset.annotation;
+  merge(std::move(from.annotations), to.annotations);
+  to.__isset.annotations = to.__isset.annotations || from.__isset.annotations;
+  merge(std::move(from.member), to.member);
+  to.__isset.member = to.__isset.member || from.__isset.member;
+  merge(std::move(from.members), to.members);
+  to.__isset.members = to.__isset.members || from.__isset.members;
 }
 
 }} // namespace

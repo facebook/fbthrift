@@ -1210,6 +1210,1367 @@ class unionA_variant_traits {
 };
 
 } // thrift_fatal_impl_detail
+namespace thrift_fatal_impl_detail {
+
+class union_with_special_names_Type_enum_traits {
+  struct Type__struct_unique_strings_list {
+    using get = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::get;
+    using getter = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::getter;
+    using lists = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::lists;
+    using maps = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::maps;
+    using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::name;
+    using name_to_value = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::name_to_value;
+    using names = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::names;
+    using prefix_tree = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::prefix_tree;
+    using sets = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::sets;
+    using setter = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::setter;
+    using str = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::str;
+    using strings = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::strings;
+    using type = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::type;
+    using value = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::value;
+    using value_to_name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::value_to_name;
+    using values = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::values;
+    using id = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::id;
+    using ids = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ids;
+    using descriptor = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::descriptor;
+    using descriptors = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::descriptors;
+    using key = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::key;
+    using keys = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::keys;
+    using annotation = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::annotation;
+    using annotations = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::annotations;
+    using member = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::member;
+    using members = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::members;
+  };
+
+  public:
+  using type = ::test_cpp2::cpp_reflection::union_with_special_names::Type;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
+  using str = Type__struct_unique_strings_list;
+  using name_to_value = ::fatal::map<
+    ::fatal::pair<
+      str::get,
+      std::integral_constant<type, type::get>
+    >,
+    ::fatal::pair<
+      str::getter,
+      std::integral_constant<type, type::getter>
+    >,
+    ::fatal::pair<
+      str::lists,
+      std::integral_constant<type, type::lists>
+    >,
+    ::fatal::pair<
+      str::maps,
+      std::integral_constant<type, type::maps>
+    >,
+    ::fatal::pair<
+      str::name,
+      std::integral_constant<type, type::name>
+    >,
+    ::fatal::pair<
+      str::name_to_value,
+      std::integral_constant<type, type::name_to_value>
+    >,
+    ::fatal::pair<
+      str::names,
+      std::integral_constant<type, type::names>
+    >,
+    ::fatal::pair<
+      str::prefix_tree,
+      std::integral_constant<type, type::prefix_tree>
+    >,
+    ::fatal::pair<
+      str::sets,
+      std::integral_constant<type, type::sets>
+    >,
+    ::fatal::pair<
+      str::setter,
+      std::integral_constant<type, type::setter>
+    >,
+    ::fatal::pair<
+      str::str,
+      std::integral_constant<type, type::str>
+    >,
+    ::fatal::pair<
+      str::strings,
+      std::integral_constant<type, type::strings>
+    >,
+    ::fatal::pair<
+      str::type,
+      std::integral_constant<type, type::type>
+    >,
+    ::fatal::pair<
+      str::value,
+      std::integral_constant<type, type::value>
+    >,
+    ::fatal::pair<
+      str::value_to_name,
+      std::integral_constant<type, type::value_to_name>
+    >,
+    ::fatal::pair<
+      str::values,
+      std::integral_constant<type, type::values>
+    >,
+    ::fatal::pair<
+      str::id,
+      std::integral_constant<type, type::id>
+    >,
+    ::fatal::pair<
+      str::ids,
+      std::integral_constant<type, type::ids>
+    >,
+    ::fatal::pair<
+      str::descriptor,
+      std::integral_constant<type, type::descriptor>
+    >,
+    ::fatal::pair<
+      str::descriptors,
+      std::integral_constant<type, type::descriptors>
+    >,
+    ::fatal::pair<
+      str::key,
+      std::integral_constant<type, type::key>
+    >,
+    ::fatal::pair<
+      str::keys,
+      std::integral_constant<type, type::keys>
+    >,
+    ::fatal::pair<
+      str::annotation,
+      std::integral_constant<type, type::annotation>
+    >,
+    ::fatal::pair<
+      str::annotations,
+      std::integral_constant<type, type::annotations>
+    >,
+    ::fatal::pair<
+      str::member,
+      std::integral_constant<type, type::member>
+    >,
+    ::fatal::pair<
+      str::members,
+      std::integral_constant<type, type::members>
+    >
+  >;
+
+  class annotations {
+    struct annotations__unique_annotations_keys {};
+
+    struct annotations__unique_annotations_values {};
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::map<
+    >;
+  };
+
+  static char const *to_string(type e, char const *fallback) {
+    switch (e) {
+      case type::get: return "get";
+      case type::getter: return "getter";
+      case type::lists: return "lists";
+      case type::maps: return "maps";
+      case type::name: return "name";
+      case type::name_to_value: return "name_to_value";
+      case type::names: return "names";
+      case type::prefix_tree: return "prefix_tree";
+      case type::sets: return "sets";
+      case type::setter: return "setter";
+      case type::str: return "str";
+      case type::strings: return "strings";
+      case type::type: return "type";
+      case type::value: return "value";
+      case type::value_to_name: return "value_to_name";
+      case type::values: return "values";
+      case type::id: return "id";
+      case type::ids: return "ids";
+      case type::descriptor: return "descriptor";
+      case type::descriptors: return "descriptors";
+      case type::key: return "key";
+      case type::keys: return "keys";
+      case type::annotation: return "annotation";
+      case type::annotations: return "annotations";
+      case type::member: return "member";
+      case type::members: return "members";
+      default: return fallback;
+    }
+  }
+};
+
+} // thrift_fatal_impl_detail
+
+FATAL_REGISTER_ENUM_TRAITS(
+  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union_with_special_names_Type_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+    module_tags::module,
+    ::apache::thrift::reflected_annotations<::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union_with_special_names_Type_enum_traits::annotations>,
+    static_cast<::apache::thrift::legacy_type_id_t>(0ull)
+  >
+);
+
+namespace thrift_fatal_impl_detail {
+
+class union_with_special_names_variant_traits {
+  struct union_with_special_names__struct_unique_identifiers_list {
+    using get = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::get>;
+    using getter = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::getter>;
+    using lists = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::lists>;
+    using maps = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::maps>;
+    using name = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::name>;
+    using name_to_value = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::name_to_value>;
+    using names = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::names>;
+    using prefix_tree = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::prefix_tree>;
+    using sets = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::sets>;
+    using setter = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::setter>;
+    using str = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::str>;
+    using strings = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::strings>;
+    using type = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::type>;
+    using value = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::value>;
+    using value_to_name = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::value_to_name>;
+    using values = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::values>;
+    using id = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::id>;
+    using ids = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::ids>;
+    using descriptor = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::descriptor>;
+    using descriptors = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::descriptors>;
+    using key = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::key>;
+    using keys = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::keys>;
+    using annotation = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::annotation>;
+    using annotations = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::annotations>;
+    using member = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::member>;
+    using members = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::members>;
+  };
+
+  struct union_with_special_names__struct_unique_getters_list {
+    struct get {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_get())
+      {
+        return variant.get_get();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_get())
+      {
+        return variant.mutable_get();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_get())
+      {
+        return std::move(variant).move_get();
+      }
+    };
+
+    struct getter {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_getter())
+      {
+        return variant.get_getter();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_getter())
+      {
+        return variant.mutable_getter();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_getter())
+      {
+        return std::move(variant).move_getter();
+      }
+    };
+
+    struct lists {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_lists())
+      {
+        return variant.get_lists();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_lists())
+      {
+        return variant.mutable_lists();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_lists())
+      {
+        return std::move(variant).move_lists();
+      }
+    };
+
+    struct maps {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_maps())
+      {
+        return variant.get_maps();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_maps())
+      {
+        return variant.mutable_maps();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_maps())
+      {
+        return std::move(variant).move_maps();
+      }
+    };
+
+    struct name {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_name())
+      {
+        return variant.get_name();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_name())
+      {
+        return variant.mutable_name();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_name())
+      {
+        return std::move(variant).move_name();
+      }
+    };
+
+    struct name_to_value {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_name_to_value())
+      {
+        return variant.get_name_to_value();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_name_to_value())
+      {
+        return variant.mutable_name_to_value();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_name_to_value())
+      {
+        return std::move(variant).move_name_to_value();
+      }
+    };
+
+    struct names {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_names())
+      {
+        return variant.get_names();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_names())
+      {
+        return variant.mutable_names();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_names())
+      {
+        return std::move(variant).move_names();
+      }
+    };
+
+    struct prefix_tree {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_prefix_tree())
+      {
+        return variant.get_prefix_tree();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_prefix_tree())
+      {
+        return variant.mutable_prefix_tree();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_prefix_tree())
+      {
+        return std::move(variant).move_prefix_tree();
+      }
+    };
+
+    struct sets {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_sets())
+      {
+        return variant.get_sets();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_sets())
+      {
+        return variant.mutable_sets();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_sets())
+      {
+        return std::move(variant).move_sets();
+      }
+    };
+
+    struct setter {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_setter())
+      {
+        return variant.get_setter();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_setter())
+      {
+        return variant.mutable_setter();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_setter())
+      {
+        return std::move(variant).move_setter();
+      }
+    };
+
+    struct str {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_str())
+      {
+        return variant.get_str();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_str())
+      {
+        return variant.mutable_str();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_str())
+      {
+        return std::move(variant).move_str();
+      }
+    };
+
+    struct strings {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_strings())
+      {
+        return variant.get_strings();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_strings())
+      {
+        return variant.mutable_strings();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_strings())
+      {
+        return std::move(variant).move_strings();
+      }
+    };
+
+    struct type {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_type())
+      {
+        return variant.get_type();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_type())
+      {
+        return variant.mutable_type();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_type())
+      {
+        return std::move(variant).move_type();
+      }
+    };
+
+    struct value {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_value())
+      {
+        return variant.get_value();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_value())
+      {
+        return variant.mutable_value();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_value())
+      {
+        return std::move(variant).move_value();
+      }
+    };
+
+    struct value_to_name {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_value_to_name())
+      {
+        return variant.get_value_to_name();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_value_to_name())
+      {
+        return variant.mutable_value_to_name();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_value_to_name())
+      {
+        return std::move(variant).move_value_to_name();
+      }
+    };
+
+    struct values {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_values())
+      {
+        return variant.get_values();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_values())
+      {
+        return variant.mutable_values();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_values())
+      {
+        return std::move(variant).move_values();
+      }
+    };
+
+    struct id {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_id())
+      {
+        return variant.get_id();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_id())
+      {
+        return variant.mutable_id();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_id())
+      {
+        return std::move(variant).move_id();
+      }
+    };
+
+    struct ids {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_ids())
+      {
+        return variant.get_ids();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_ids())
+      {
+        return variant.mutable_ids();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_ids())
+      {
+        return std::move(variant).move_ids();
+      }
+    };
+
+    struct descriptor {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_descriptor())
+      {
+        return variant.get_descriptor();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_descriptor())
+      {
+        return variant.mutable_descriptor();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_descriptor())
+      {
+        return std::move(variant).move_descriptor();
+      }
+    };
+
+    struct descriptors {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_descriptors())
+      {
+        return variant.get_descriptors();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_descriptors())
+      {
+        return variant.mutable_descriptors();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_descriptors())
+      {
+        return std::move(variant).move_descriptors();
+      }
+    };
+
+    struct key {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_key())
+      {
+        return variant.get_key();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_key())
+      {
+        return variant.mutable_key();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_key())
+      {
+        return std::move(variant).move_key();
+      }
+    };
+
+    struct keys {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_keys())
+      {
+        return variant.get_keys();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_keys())
+      {
+        return variant.mutable_keys();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_keys())
+      {
+        return std::move(variant).move_keys();
+      }
+    };
+
+    struct annotation {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_annotation())
+      {
+        return variant.get_annotation();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_annotation())
+      {
+        return variant.mutable_annotation();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_annotation())
+      {
+        return std::move(variant).move_annotation();
+      }
+    };
+
+    struct annotations {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_annotations())
+      {
+        return variant.get_annotations();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_annotations())
+      {
+        return variant.mutable_annotations();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_annotations())
+      {
+        return std::move(variant).move_annotations();
+      }
+    };
+
+    struct member {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_member())
+      {
+        return variant.get_member();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_member())
+      {
+        return variant.mutable_member();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_member())
+      {
+        return std::move(variant).move_member();
+      }
+    };
+
+    struct members {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_members())
+      {
+        return variant.get_members();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_members())
+      {
+        return variant.mutable_members();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_members())
+      {
+        return std::move(variant).move_members();
+      }
+    };
+  };
+
+  struct union_with_special_names__struct_unique_setters_list {
+    struct get {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_get(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_get(std::forward<Args>(args)...);
+      }
+    };
+
+    struct getter {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_getter(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_getter(std::forward<Args>(args)...);
+      }
+    };
+
+    struct lists {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_lists(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_lists(std::forward<Args>(args)...);
+      }
+    };
+
+    struct maps {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_maps(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_maps(std::forward<Args>(args)...);
+      }
+    };
+
+    struct name {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_name(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_name(std::forward<Args>(args)...);
+      }
+    };
+
+    struct name_to_value {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_name_to_value(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_name_to_value(std::forward<Args>(args)...);
+      }
+    };
+
+    struct names {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_names(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_names(std::forward<Args>(args)...);
+      }
+    };
+
+    struct prefix_tree {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_prefix_tree(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_prefix_tree(std::forward<Args>(args)...);
+      }
+    };
+
+    struct sets {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_sets(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_sets(std::forward<Args>(args)...);
+      }
+    };
+
+    struct setter {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_setter(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_setter(std::forward<Args>(args)...);
+      }
+    };
+
+    struct str {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_str(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_str(std::forward<Args>(args)...);
+      }
+    };
+
+    struct strings {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_strings(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_strings(std::forward<Args>(args)...);
+      }
+    };
+
+    struct type {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_type(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_type(std::forward<Args>(args)...);
+      }
+    };
+
+    struct value {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_value(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_value(std::forward<Args>(args)...);
+      }
+    };
+
+    struct value_to_name {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_value_to_name(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_value_to_name(std::forward<Args>(args)...);
+      }
+    };
+
+    struct values {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_values(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_values(std::forward<Args>(args)...);
+      }
+    };
+
+    struct id {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_id(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_id(std::forward<Args>(args)...);
+      }
+    };
+
+    struct ids {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_ids(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_ids(std::forward<Args>(args)...);
+      }
+    };
+
+    struct descriptor {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_descriptor(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_descriptor(std::forward<Args>(args)...);
+      }
+    };
+
+    struct descriptors {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_descriptors(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_descriptors(std::forward<Args>(args)...);
+      }
+    };
+
+    struct key {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_key(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_key(std::forward<Args>(args)...);
+      }
+    };
+
+    struct keys {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_keys(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_keys(std::forward<Args>(args)...);
+      }
+    };
+
+    struct annotation {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_annotation(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_annotation(std::forward<Args>(args)...);
+      }
+    };
+
+    struct annotations {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_annotations(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_annotations(std::forward<Args>(args)...);
+      }
+    };
+
+    struct member {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_member(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_member(std::forward<Args>(args)...);
+      }
+    };
+
+    struct members {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_members(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_members(std::forward<Args>(args)...);
+      }
+    };
+  };
+
+  public:
+  using type = ::test_cpp2::cpp_reflection::union_with_special_names;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union_with_special_names;
+  using id = type::Type;
+  using ids = union_with_special_names__struct_unique_identifiers_list;
+  using descriptors = ::fatal::list<
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::get,
+      union_with_special_names__struct_unique_getters_list::get,
+      union_with_special_names__struct_unique_setters_list::get,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::get,
+        1,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::getter,
+      union_with_special_names__struct_unique_getters_list::getter,
+      union_with_special_names__struct_unique_setters_list::getter,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::getter,
+        2,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::lists,
+      union_with_special_names__struct_unique_getters_list::lists,
+      union_with_special_names__struct_unique_setters_list::lists,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::lists,
+        3,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::maps,
+      union_with_special_names__struct_unique_getters_list::maps,
+      union_with_special_names__struct_unique_setters_list::maps,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::maps,
+        4,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::name,
+      union_with_special_names__struct_unique_getters_list::name,
+      union_with_special_names__struct_unique_setters_list::name,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::name,
+        5,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::name_to_value,
+      union_with_special_names__struct_unique_getters_list::name_to_value,
+      union_with_special_names__struct_unique_setters_list::name_to_value,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::name_to_value,
+        6,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::names,
+      union_with_special_names__struct_unique_getters_list::names,
+      union_with_special_names__struct_unique_setters_list::names,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::names,
+        7,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::prefix_tree,
+      union_with_special_names__struct_unique_getters_list::prefix_tree,
+      union_with_special_names__struct_unique_setters_list::prefix_tree,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::prefix_tree,
+        8,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::sets,
+      union_with_special_names__struct_unique_getters_list::sets,
+      union_with_special_names__struct_unique_setters_list::sets,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::sets,
+        9,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::setter,
+      union_with_special_names__struct_unique_getters_list::setter,
+      union_with_special_names__struct_unique_setters_list::setter,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::setter,
+        10,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::str,
+      union_with_special_names__struct_unique_getters_list::str,
+      union_with_special_names__struct_unique_setters_list::str,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::str,
+        11,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::strings,
+      union_with_special_names__struct_unique_getters_list::strings,
+      union_with_special_names__struct_unique_setters_list::strings,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::strings,
+        12,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::type,
+      union_with_special_names__struct_unique_getters_list::type,
+      union_with_special_names__struct_unique_setters_list::type,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::type,
+        13,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::value,
+      union_with_special_names__struct_unique_getters_list::value,
+      union_with_special_names__struct_unique_setters_list::value,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::value,
+        14,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::value_to_name,
+      union_with_special_names__struct_unique_getters_list::value_to_name,
+      union_with_special_names__struct_unique_setters_list::value_to_name,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::value_to_name,
+        15,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::values,
+      union_with_special_names__struct_unique_getters_list::values,
+      union_with_special_names__struct_unique_setters_list::values,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::values,
+        16,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::id,
+      union_with_special_names__struct_unique_getters_list::id,
+      union_with_special_names__struct_unique_setters_list::id,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::id,
+        17,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::ids,
+      union_with_special_names__struct_unique_getters_list::ids,
+      union_with_special_names__struct_unique_setters_list::ids,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ids,
+        18,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::descriptor,
+      union_with_special_names__struct_unique_getters_list::descriptor,
+      union_with_special_names__struct_unique_setters_list::descriptor,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::descriptor,
+        19,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::descriptors,
+      union_with_special_names__struct_unique_getters_list::descriptors,
+      union_with_special_names__struct_unique_setters_list::descriptors,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::descriptors,
+        20,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::key,
+      union_with_special_names__struct_unique_getters_list::key,
+      union_with_special_names__struct_unique_setters_list::key,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::key,
+        21,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::keys,
+      union_with_special_names__struct_unique_getters_list::keys,
+      union_with_special_names__struct_unique_setters_list::keys,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::keys,
+        22,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::annotation,
+      union_with_special_names__struct_unique_getters_list::annotation,
+      union_with_special_names__struct_unique_setters_list::annotation,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::annotation,
+        23,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::annotations,
+      union_with_special_names__struct_unique_getters_list::annotations,
+      union_with_special_names__struct_unique_setters_list::annotations,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::annotations,
+        24,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::member,
+      union_with_special_names__struct_unique_getters_list::member,
+      union_with_special_names__struct_unique_setters_list::member,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::member,
+        25,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_type_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::members,
+      union_with_special_names__struct_unique_getters_list::members,
+      union_with_special_names__struct_unique_setters_list::members,
+      ::apache::thrift::reflected_union_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::members,
+        26,
+        ::apache::thrift::type_class::integral
+      >
+    >
+  >;
+
+  class annotations {
+    struct annotations__unique_annotations_keys {};
+
+    struct annotations__unique_annotations_values {};
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::map<
+    >;
+  };
+
+  static id get_id(type const &variant) {
+    return variant.getType();
+  }
+
+  static bool empty(type const &variant) {
+    return variant.getType() == id::__EMPTY__;
+  }
+
+  static void clear(type &variant) {
+    return variant.__clear();
+  }
+};
+
+} // thrift_fatal_impl_detail
 
 FATAL_REGISTER_VARIANT_TRAITS(
   ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union1_variant_traits,
@@ -1241,6 +2602,14 @@ FATAL_REGISTER_VARIANT_TRAITS(
     module_tags::module,
     ::apache::thrift::reflected_annotations<::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::unionA_variant_traits::annotations>,
     static_cast<::apache::thrift::legacy_type_id_t>(7943717058393504940ull)
+  >
+);
+FATAL_REGISTER_VARIANT_TRAITS(
+  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union_with_special_names_variant_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+    module_tags::module,
+    ::apache::thrift::reflected_annotations<::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union_with_special_names_variant_traits::annotations>,
+    static_cast<::apache::thrift::legacy_type_id_t>(7581402120603624460ull)
   >
 );
 

@@ -20,6 +20,8 @@ struct module_constants {
   static constexpr char const* constant2() { return constant2_; }
   static constexpr enum1 const constant3_ = (enum1)0;
   static constexpr enum1 constant3() { return constant3_; }
+  static constexpr int32_t const constant_with_special_name_ = 42;
+  static constexpr int32_t constant_with_special_name() { return constant_with_special_name_; }
 };
 
 class __attribute__((__deprecated__("moduleConstants suffers from the 'static initialization order fiasco' (https://isocpp.org/wiki/faq/ctors#static-init-order) and may CRASH your program. Instead, use module_constants::CONSTANT_NAME()"))) moduleConstants {
@@ -29,6 +31,7 @@ public:
   int32_t constant1;
   std::string constant2;
   enum1 constant3;
+  int32_t constant_with_special_name;
 };
 
 }} // namespace

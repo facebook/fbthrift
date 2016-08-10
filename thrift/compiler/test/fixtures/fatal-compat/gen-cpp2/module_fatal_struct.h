@@ -69,6 +69,33 @@ struct test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list {
   FATAL_DATA_MEMBER_GETTER(fieldP, fieldP);
   FATAL_DATA_MEMBER_GETTER(fieldQ, fieldQ);
   FATAL_DATA_MEMBER_GETTER(fieldR, fieldR);
+  FATAL_DATA_MEMBER_GETTER(bi, bi);
+  FATAL_DATA_MEMBER_GETTER(get, get);
+  FATAL_DATA_MEMBER_GETTER(getter, getter);
+  FATAL_DATA_MEMBER_GETTER(lists, lists);
+  FATAL_DATA_MEMBER_GETTER(maps, maps);
+  FATAL_DATA_MEMBER_GETTER(name, name);
+  FATAL_DATA_MEMBER_GETTER(name_to_value, name_to_value);
+  FATAL_DATA_MEMBER_GETTER(names, names);
+  FATAL_DATA_MEMBER_GETTER(prefix_tree, prefix_tree);
+  FATAL_DATA_MEMBER_GETTER(sets, sets);
+  FATAL_DATA_MEMBER_GETTER(setter, setter);
+  FATAL_DATA_MEMBER_GETTER(str, str);
+  FATAL_DATA_MEMBER_GETTER(strings, strings);
+  FATAL_DATA_MEMBER_GETTER(type, type);
+  FATAL_DATA_MEMBER_GETTER(value, value);
+  FATAL_DATA_MEMBER_GETTER(value_to_name, value_to_name);
+  FATAL_DATA_MEMBER_GETTER(values, values);
+  FATAL_DATA_MEMBER_GETTER(id, id);
+  FATAL_DATA_MEMBER_GETTER(ids, ids);
+  FATAL_DATA_MEMBER_GETTER(descriptor, descriptor);
+  FATAL_DATA_MEMBER_GETTER(descriptors, descriptors);
+  FATAL_DATA_MEMBER_GETTER(key, key);
+  FATAL_DATA_MEMBER_GETTER(keys, keys);
+  FATAL_DATA_MEMBER_GETTER(annotation, annotation);
+  FATAL_DATA_MEMBER_GETTER(annotations, annotations);
+  FATAL_DATA_MEMBER_GETTER(member, member);
+  FATAL_DATA_MEMBER_GETTER(members, members);
 };
 
 struct test_cpp2_cpp_reflection_module__struct_unique_member_pod_list {
@@ -396,6 +423,168 @@ struct test_cpp2_cpp_reflection_module__struct_unique_member_pod_list {
     T_test_cpp2_cpp_reflection_module_struct_member_pod fieldR;
   };
 
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_bi {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod bi;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_get {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod get;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_getter {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod getter;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_lists {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod lists;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_maps {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod maps;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_name {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod name;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_name_to_value {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod name_to_value;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_names {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod names;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_prefix_tree {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod prefix_tree;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_sets {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod sets;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_setter {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod setter;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_str {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod str;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_strings {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod strings;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_type {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod type;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_value {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod value;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_value_to_name {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod value_to_name;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_values {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod values;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_id {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod id;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_ids {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod ids;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_descriptor {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod descriptor;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_descriptors {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod descriptors;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_key {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod key;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_keys {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod keys;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_annotation {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod annotation;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_annotations {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod annotations;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_member {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod member;
+  };
+
+  template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
+
+  struct test_cpp2_cpp_reflection_module_struct_member_pod_members {
+    T_test_cpp2_cpp_reflection_module_struct_member_pod members;
+  };
+
 };
 
 class structA_test_cpp2_cpp_reflection_module__struct_unique_annotations {
@@ -521,11 +710,13 @@ class structB_test_cpp2_cpp_reflection_module__struct_unique_annotations {
 
   class annotations {
     struct annotations__unique_annotations_keys {
+      using multi_line_annotation = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::multi_line_annotation;
       using some_annotation = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::some_annotation;
       using some_other_annotation = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::some_other_annotation;
     };
 
     struct annotations__unique_annotations_values {
+      using multi_line_annotation = ::fatal::sequence<char, 'l', 'i', 'n', 'e', ' ', 'o', 'n', 'e', '\n', 'l', 'i', 'n', 'e', ' ', 't', 'w', 'o'>;
       using some_annotation = ::fatal::sequence<char, 't', 'h', 'i', 's', ' ', 'i', 's', ' ', 'i', 't', 's', ' ', 'v', 'a', 'l', 'u', 'e'>;
       using some_other_annotation = ::fatal::sequence<char, 't', 'h', 'i', 's', ' ', 'i', 's', ' ', 'i', 't', 's', ' ', 'o', 't', 'h', 'e', 'r', ' ', 'v', 'a', 'l', 'u', 'e'>;
     };
@@ -534,6 +725,10 @@ class structB_test_cpp2_cpp_reflection_module__struct_unique_annotations {
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
     using map = ::fatal::map<
+      ::fatal::pair<
+        keys::multi_line_annotation,
+        values::multi_line_annotation
+      >,
       ::fatal::pair<
         keys::some_annotation,
         values::some_annotation
@@ -2213,6 +2408,862 @@ struct struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
   >>;
 };
 
+class struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations {
+  class struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members {
+    class struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0 {
+      struct struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0__unique_annotations_keys {};
+
+      struct struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0__unique_annotations_values {};
+
+      public:
+      using keys = struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0__unique_annotations_keys;
+      using values = struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1 {
+      struct struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1__unique_annotations_keys {};
+
+      struct struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1__unique_annotations_values {};
+
+      public:
+      using keys = struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1__unique_annotations_keys;
+      using values = struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field2 {
+      struct struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field2__unique_annotations_keys {};
+
+      struct struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field2__unique_annotations_values {};
+
+      public:
+      using keys = struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field2__unique_annotations_keys;
+      using values = struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field2__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3 {
+      struct struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3__unique_annotations_keys {};
+
+      struct struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3__unique_annotations_values {};
+
+      public:
+      using keys = struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3__unique_annotations_keys;
+      using values = struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+    public:
+    using field0 = ::apache::thrift::reflected_annotations<struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0>;
+    using field1 = ::apache::thrift::reflected_annotations<struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1>;
+    using field2 = ::apache::thrift::reflected_annotations<struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field2>;
+    using field3 = ::apache::thrift::reflected_annotations<struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3>;
+  };
+
+  class annotations {
+    struct annotations__unique_annotations_keys {};
+
+    struct annotations__unique_annotations_values {};
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::map<
+    >;
+  };
+  public:
+  using keys = annotations::keys;
+  using values = annotations::values;
+  using map = annotations::map;
+  using members = struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members;
+};
+
+template <template <typename> class module__struct_unique_member_info_list_arg_T>
+
+struct struct4_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
+  using field0 = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field0,
+    int32_t,
+    1,
+    ::apache::thrift::optionality::required,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::field0,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_field0,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::field0>,
+    struct4,
+    false
+  >>;
+  using field1 = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field1,
+    std::string,
+    2,
+    ::apache::thrift::optionality::optional,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::field1,
+          ::apache::thrift::type_class::string,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_field1,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::field1>,
+    struct4,
+    true
+  >>;
+  using field2 = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field2,
+     ::test_cpp2::cpp_reflection::enum1,
+    3,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::field2,
+          ::apache::thrift::type_class::enumeration,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_field2,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::field2>,
+    struct4,
+    true
+  >>;
+  using field3 = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field3,
+     ::test_cpp2::cpp_reflection::structA,
+    6,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::field3,
+          ::apache::thrift::type_class::structure,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_field3,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::field3>,
+    struct4,
+    true
+  >>;
+};
+
+class struct_binary_test_cpp2_cpp_reflection_module__struct_unique_annotations {
+  class struct_binary_test_cpp2_cpp_reflection_module__struct_unique_annotations_members {
+    class struct_binary_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_bi {
+      struct struct_binary_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_bi__unique_annotations_keys {};
+
+      struct struct_binary_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_bi__unique_annotations_values {};
+
+      public:
+      using keys = struct_binary_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_bi__unique_annotations_keys;
+      using values = struct_binary_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_bi__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+    public:
+    using bi = ::apache::thrift::reflected_annotations<struct_binary_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_bi>;
+  };
+
+  class annotations {
+    struct annotations__unique_annotations_keys {};
+
+    struct annotations__unique_annotations_values {};
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::map<
+    >;
+  };
+  public:
+  using keys = annotations::keys;
+  using values = annotations::values;
+  using map = annotations::map;
+  using members = struct_binary_test_cpp2_cpp_reflection_module__struct_unique_annotations_members;
+};
+
+template <template <typename> class module__struct_unique_member_info_list_arg_T>
+
+struct struct_binary_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
+  using bi = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::bi,
+    std::string,
+    1,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::bi,
+          ::apache::thrift::type_class::binary,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_bi,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_binary_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::bi>,
+    struct_binary,
+    true
+  >>;
+};
+
+class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations {
+  class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members {
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_get {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_get__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_get__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_get__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_get__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_getter {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_getter__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_getter__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_getter__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_getter__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_lists {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_lists__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_lists__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_lists__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_lists__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_maps {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_maps__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_maps__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_maps__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_maps__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_name {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_name__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_name__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_name__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_name__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_name_to_value {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_name_to_value__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_name_to_value__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_name_to_value__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_name_to_value__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_names {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_names__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_names__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_names__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_names__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_prefix_tree {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_prefix_tree__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_prefix_tree__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_prefix_tree__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_prefix_tree__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_sets {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_sets__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_sets__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_sets__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_sets__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_setter {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_setter__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_setter__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_setter__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_setter__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_str {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_str__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_str__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_str__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_str__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_strings {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_strings__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_strings__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_strings__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_strings__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_type {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_type__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_type__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_type__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_type__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_value {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_value__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_value__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_value__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_value__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_value_to_name {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_value_to_name__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_value_to_name__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_value_to_name__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_value_to_name__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_values {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_values__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_values__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_values__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_values__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_id {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_id__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_id__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_id__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_id__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_ids {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_ids__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_ids__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_ids__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_ids__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_descriptor {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_descriptor__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_descriptor__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_descriptor__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_descriptor__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_descriptors {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_descriptors__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_descriptors__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_descriptors__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_descriptors__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_key {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_key__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_key__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_key__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_key__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_keys {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_keys__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_keys__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_keys__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_keys__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_annotation {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_annotation__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_annotation__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_annotation__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_annotation__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_annotations {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_annotations__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_annotations__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_annotations__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_annotations__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_member {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_member__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_member__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_member__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_member__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+
+    class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_members {
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_members__unique_annotations_keys {};
+
+      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_members__unique_annotations_values {};
+
+      public:
+      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_members__unique_annotations_keys;
+      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_members__unique_annotations_values;
+      using map = ::fatal::map<
+      >;
+    };
+    public:
+    using get = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_get>;
+    using getter = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_getter>;
+    using lists = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_lists>;
+    using maps = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_maps>;
+    using name = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_name>;
+    using name_to_value = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_name_to_value>;
+    using names = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_names>;
+    using prefix_tree = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_prefix_tree>;
+    using sets = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_sets>;
+    using setter = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_setter>;
+    using str = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_str>;
+    using strings = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_strings>;
+    using type = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_type>;
+    using value = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_value>;
+    using value_to_name = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_value_to_name>;
+    using values = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_values>;
+    using id = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_id>;
+    using ids = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_ids>;
+    using descriptor = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_descriptor>;
+    using descriptors = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_descriptors>;
+    using key = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_key>;
+    using keys = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_keys>;
+    using annotation = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_annotation>;
+    using annotations = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_annotations>;
+    using member = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_member>;
+    using members = ::apache::thrift::reflected_annotations<struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_members>;
+  };
+
+  class annotations {
+    struct annotations__unique_annotations_keys {};
+
+    struct annotations__unique_annotations_values {};
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::map<
+    >;
+  };
+  public:
+  using keys = annotations::keys;
+  using values = annotations::values;
+  using map = annotations::map;
+  using members = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members;
+};
+
+template <template <typename> class module__struct_unique_member_info_list_arg_T>
+
+struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
+  using get = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::get,
+    int32_t,
+    1,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::get,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_get,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::get>,
+    struct_with_special_names,
+    true
+  >>;
+  using getter = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::getter,
+    int32_t,
+    2,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::getter,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_getter,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::getter>,
+    struct_with_special_names,
+    true
+  >>;
+  using lists = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::lists,
+    int32_t,
+    3,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::lists,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_lists,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::lists>,
+    struct_with_special_names,
+    true
+  >>;
+  using maps = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::maps,
+    int32_t,
+    4,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::maps,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_maps,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::maps>,
+    struct_with_special_names,
+    true
+  >>;
+  using name = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::name,
+    int32_t,
+    5,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::name,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_name,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::name>,
+    struct_with_special_names,
+    true
+  >>;
+  using name_to_value = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::name_to_value,
+    int32_t,
+    6,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::name_to_value,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_name_to_value,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::name_to_value>,
+    struct_with_special_names,
+    true
+  >>;
+  using names = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::names,
+    int32_t,
+    7,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::names,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_names,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::names>,
+    struct_with_special_names,
+    true
+  >>;
+  using prefix_tree = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::prefix_tree,
+    int32_t,
+    8,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::prefix_tree,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_prefix_tree,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::prefix_tree>,
+    struct_with_special_names,
+    true
+  >>;
+  using sets = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::sets,
+    int32_t,
+    9,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::sets,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_sets,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::sets>,
+    struct_with_special_names,
+    true
+  >>;
+  using setter = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::setter,
+    int32_t,
+    10,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::setter,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_setter,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::setter>,
+    struct_with_special_names,
+    true
+  >>;
+  using str = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::str,
+    int32_t,
+    11,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::str,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_str,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::str>,
+    struct_with_special_names,
+    true
+  >>;
+  using strings = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::strings,
+    int32_t,
+    12,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::strings,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_strings,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::strings>,
+    struct_with_special_names,
+    true
+  >>;
+  using type = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::type,
+    int32_t,
+    13,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::type,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_type,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::type>,
+    struct_with_special_names,
+    true
+  >>;
+  using value = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::value,
+    int32_t,
+    14,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::value,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_value,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::value>,
+    struct_with_special_names,
+    true
+  >>;
+  using value_to_name = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::value_to_name,
+    int32_t,
+    15,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::value_to_name,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_value_to_name,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::value_to_name>,
+    struct_with_special_names,
+    true
+  >>;
+  using values = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::values,
+    int32_t,
+    16,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::values,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_values,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::values>,
+    struct_with_special_names,
+    true
+  >>;
+  using id = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::id,
+    int32_t,
+    17,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::id,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_id,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::id>,
+    struct_with_special_names,
+    true
+  >>;
+  using ids = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ids,
+    int32_t,
+    18,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::ids,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_ids,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::ids>,
+    struct_with_special_names,
+    true
+  >>;
+  using descriptor = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::descriptor,
+    int32_t,
+    19,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::descriptor,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_descriptor,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::descriptor>,
+    struct_with_special_names,
+    true
+  >>;
+  using descriptors = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::descriptors,
+    int32_t,
+    20,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::descriptors,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_descriptors,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::descriptors>,
+    struct_with_special_names,
+    true
+  >>;
+  using key = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::key,
+    int32_t,
+    21,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::key,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_key,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::key>,
+    struct_with_special_names,
+    true
+  >>;
+  using keys = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::keys,
+    int32_t,
+    22,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::keys,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_keys,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::keys>,
+    struct_with_special_names,
+    true
+  >>;
+  using annotation = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::annotation,
+    int32_t,
+    23,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::annotation,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_annotation,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::annotation>,
+    struct_with_special_names,
+    true
+  >>;
+  using annotations = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::annotations,
+    int32_t,
+    24,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::annotations,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_annotations,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::annotations>,
+    struct_with_special_names,
+    true
+  >>;
+  using member = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::member,
+    int32_t,
+    25,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::member,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_member,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::member>,
+    struct_with_special_names,
+    true
+  >>;
+  using members = module__struct_unique_member_info_list_arg_T<::apache::thrift::reflected_struct_data_member<
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::members,
+    int32_t,
+    26,
+    ::apache::thrift::optionality::required_of_writer,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::members,
+          ::apache::thrift::type_class::integral,
+    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_members,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::members>,
+    struct_with_special_names,
+    true
+  >>;
+};
+
 } // thrift_fatal_impl_detail
 THRIFT_REGISTER_STRUCT_TRAITS(
   structA,
@@ -2550,6 +3601,169 @@ THRIFT_REGISTER_STRUCT_TRAITS(
     module_tags::module,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations>,
     static_cast<::apache::thrift::legacy_type_id_t>(16392874475279945260ull)
+  >
+);
+THRIFT_REGISTER_STRUCT_TRAITS(
+  struct4,
+  thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct4,
+  thrift_fatal_impl_detail::struct4_test_cpp2_cpp_reflection_module__struct_unique_member_info_list,
+  ::fatal::map<
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field0,
+      thrift_fatal_impl_detail::struct4_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::field0
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field1,
+      thrift_fatal_impl_detail::struct4_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::field1
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field2,
+      thrift_fatal_impl_detail::struct4_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::field2
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field3,
+      thrift_fatal_impl_detail::struct4_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::field3
+    >
+  >,
+  thrift_fatal_impl_detail::struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations::members,
+  ::apache::thrift::detail::type_common_metadata_impl<
+    module_tags::module,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations>,
+    static_cast<::apache::thrift::legacy_type_id_t>(7898252530621438604ull)
+  >
+);
+THRIFT_REGISTER_STRUCT_TRAITS(
+  struct_binary,
+  thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct_binary,
+  thrift_fatal_impl_detail::struct_binary_test_cpp2_cpp_reflection_module__struct_unique_member_info_list,
+  ::fatal::map<
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::bi,
+      thrift_fatal_impl_detail::struct_binary_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::bi
+    >
+  >,
+  thrift_fatal_impl_detail::struct_binary_test_cpp2_cpp_reflection_module__struct_unique_annotations::members,
+  ::apache::thrift::detail::type_common_metadata_impl<
+    module_tags::module,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_binary_test_cpp2_cpp_reflection_module__struct_unique_annotations>,
+    static_cast<::apache::thrift::legacy_type_id_t>(6812073435240150444ull)
+  >
+);
+THRIFT_REGISTER_STRUCT_TRAITS(
+  struct_with_special_names,
+  thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct_with_special_names,
+  thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list,
+  ::fatal::map<
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::get,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::get
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::getter,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::getter
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::lists,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::lists
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::maps,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::maps
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::name,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::name
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::name_to_value,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::name_to_value
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::names,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::names
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::prefix_tree,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::prefix_tree
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::sets,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::sets
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::setter,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::setter
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::str,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::str
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::strings,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::strings
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::type,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::type
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::value,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::value
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::value_to_name,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::value_to_name
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::values,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::values
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::id,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::id
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ids,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::ids
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::descriptor,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::descriptor
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::descriptors,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::descriptors
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::key,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::key
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::keys,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::keys
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::annotation,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::annotation
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::annotations,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::annotations
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::member,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::member
+    >,
+    ::fatal::pair<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::members,
+      thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_member_info_list<::fatal::identity>::members
+    >
+  >,
+  thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations::members,
+  ::apache::thrift::detail::type_common_metadata_impl<
+    module_tags::module,
+    ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations>,
+    static_cast<::apache::thrift::legacy_type_id_t>(8634504681174503372ull)
   >
 );
 

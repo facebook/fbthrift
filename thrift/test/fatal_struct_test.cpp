@@ -355,10 +355,12 @@ TEST(fatal_struct, struct1_sanity_check) {
   >();
 }
 
-FATAL_S(structB_annotation1k, "some.annotation");
-FATAL_S(structB_annotation1v, "this is its value");
-FATAL_S(structB_annotation2k, "some.other.annotation");
-FATAL_S(structB_annotation2v, "this is its other value");
+FATAL_S(structB_annotation1k, "multi_line_annotation");
+FATAL_S(structB_annotation1v, "line one\nline two");
+FATAL_S(structB_annotation2k, "some.annotation");
+FATAL_S(structB_annotation2v, "this is its value");
+FATAL_S(structB_annotation3k, "some.other.annotation");
+FATAL_S(structB_annotation3v, "this is its other value");
 
 TEST(fatal_struct, annotations) {
   EXPECT_SAME<
@@ -386,24 +388,33 @@ TEST(fatal_struct, annotations) {
 
   EXPECT_SAME<
     structB_annotation1k,
-    structB_annotations::keys::some_annotation
+    structB_annotations::keys::multi_line_annotation
   >();
   EXPECT_SAME<
     structB_annotation1v,
-    structB_annotations::values::some_annotation
+    structB_annotations::values::multi_line_annotation
   >();
   EXPECT_SAME<
     structB_annotation2k,
-    structB_annotations::keys::some_other_annotation
+    structB_annotations::keys::some_annotation
   >();
   EXPECT_SAME<
     structB_annotation2v,
+    structB_annotations::values::some_annotation
+  >();
+  EXPECT_SAME<
+    structB_annotation3k,
+    structB_annotations::keys::some_other_annotation
+  >();
+  EXPECT_SAME<
+    structB_annotation3v,
     structB_annotations::values::some_other_annotation
   >();
   EXPECT_SAME<
     fatal::map<
       fatal::pair<structB_annotation1k, structB_annotation1v>,
-      fatal::pair<structB_annotation2k, structB_annotation2v>
+      fatal::pair<structB_annotation2k, structB_annotation2v>,
+      fatal::pair<structB_annotation3k, structB_annotation3v>
     >,
     structB_annotations::map
   >();

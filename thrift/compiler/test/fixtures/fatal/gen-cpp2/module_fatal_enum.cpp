@@ -17,5 +17,8 @@ namespace thrift_fatal_impl_detail {
 namespace thrift_fatal_impl_detail {
 
 } // thrift_fatal_impl_detail
+namespace thrift_fatal_impl_detail {
+
+} // thrift_fatal_impl_detail
 
 }} // test_cpp2::cpp_reflection

@@ -4438,10 +4438,16 @@ class CppGenerator(t_generator.Generator):
 
     def _render_fatal_string(self, s):
         result = "::fatal::sequence<char"
+        substitutions = {
+            '\0': '\\0',
+            '\n': '\\n',
+            '\r': '\\r',
+            '\t': '\\t',
+            '\'': '\\\'',
+            '\\': '\\\\',
+        }
         for i in s:
-            result += ", '"
-            result += re.sub(r"(['\n\\])", r'\\\1', i)
-            result += "'"
+            result += ", '{0}'".format(substitutions.get(i, i))
         result += ">"
         return result
 

@@ -104,6 +104,54 @@ return  ::test_cpp1::cpp_reflection::enum3::field2_3;
 }} // apache:thrift
 
 namespace test_cpp1 { namespace cpp_reflection {
+enum enum_with_special_names {
+  get = 0,
+  getter = 1,
+  lists = 2,
+  maps = 3,
+  name = 4,
+  name_to_value = 5,
+  names = 6,
+  prefix_tree = 7,
+  sets = 8,
+  setter = 9,
+  str = 10,
+  strings = 11,
+  type = 12,
+  value = 13,
+  value_to_name = 14,
+  values = 15,
+  id = 16,
+  ids = 17,
+  descriptor = 18,
+  descriptors = 19,
+  key = 20,
+  keys = 21,
+  annotation = 22,
+  annotations = 23,
+  member = 24,
+  members = 25
+};
+
+extern const std::map<int, const char*> _enum_with_special_names_VALUES_TO_NAMES;
+
+extern const std::map<const char*, int, apache::thrift::ltstr> _enum_with_special_names_NAMES_TO_VALUES;
+
+}} // namespace
+namespace apache { namespace thrift { 
+template<>
+struct TEnumTraits< ::test_cpp1::cpp_reflection::enum_with_special_names> : public TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum_with_special_names>
+{
+inline static constexpr  ::test_cpp1::cpp_reflection::enum_with_special_names min() {
+return  ::test_cpp1::cpp_reflection::enum_with_special_names::get;
+}
+inline static constexpr  ::test_cpp1::cpp_reflection::enum_with_special_names max() {
+return  ::test_cpp1::cpp_reflection::enum_with_special_names::members;
+}
+};
+}} // apache:thrift
+
+namespace test_cpp1 { namespace cpp_reflection {
 class union1;
 
 class union2;
@@ -123,6 +171,14 @@ class struct1;
 class struct2;
 
 class struct3;
+
+class struct4;
+
+class struct_binary;
+
+class union_with_special_names;
+
+class struct_with_special_names;
 
 class union1 : public apache::thrift::TStructType<union1> {
  public:
@@ -2829,5 +2885,2307 @@ class struct3 : public apache::thrift::TStructType<struct3> {
 class struct3;
 void merge(const struct3& from, struct3& to);
 void merge(struct3&& from, struct3& to);
+void swap(struct4 &a, struct4 &b);
+
+class struct4 : public apache::thrift::TStructType<struct4> {
+ public:
+
+  static const uint64_t _reflection_id = 7898252530621438604U;
+  static void _reflection_register(::apache::thrift::reflection::Schema&);
+  struct4() : field0(0), field2(static_cast<enum1>(0)) {
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct4(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct4(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    field0 = arg.move();
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct4(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct4(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    field1 = arg.move();
+    __isset.field1 = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct4(
+    ::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct4(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    field2 = arg.move();
+    __isset.field2 = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct4(
+    ::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct4(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    field3 = arg.move();
+    __isset.field3 = true;
+  }
+
+  struct4(const struct4&) = default;
+  struct4& operator=(const struct4& src)= default;
+  struct4(struct4&&) = default;
+  struct4& operator=(struct4&&) = default;
+
+  void __clear();
+
+  virtual ~struct4() throw() {}
+
+  int32_t field0;
+  std::string field1;
+  enum1 field2;
+  structA field3;
+
+  struct __isset {
+    __isset() { __clear(); } 
+    void __clear() {
+      field1 = false;
+      field2 = false;
+      field3 = false;
+    }
+    bool field1;
+    bool field2;
+    bool field3;
+  } __isset;
+
+  bool operator == (const struct4 &) const;
+  bool operator != (const struct4& rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const struct4 & ) const;
+
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  uint32_t read(apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+class struct4;
+void merge(const struct4& from, struct4& to);
+void merge(struct4&& from, struct4& to);
+void swap(struct_binary &a, struct_binary &b);
+
+class struct_binary : public apache::thrift::TStructType<struct_binary> {
+ public:
+
+  static const uint64_t _reflection_id = 6812073435240150444U;
+  static void _reflection_register(::apache::thrift::reflection::Schema&);
+  struct_binary() {
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_binary(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_binary(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    bi = arg.move();
+    __isset.bi = true;
+  }
+
+  struct_binary(const struct_binary&) = default;
+  struct_binary& operator=(const struct_binary& src)= default;
+  struct_binary(struct_binary&&) = default;
+  struct_binary& operator=(struct_binary&&) = default;
+
+  void __clear();
+
+  virtual ~struct_binary() throw() {}
+
+  std::string bi;
+
+  struct __isset {
+    __isset() { __clear(); } 
+    void __clear() {
+      bi = false;
+    }
+    bool bi;
+  } __isset;
+
+  bool operator == (const struct_binary &) const;
+  bool operator != (const struct_binary& rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const struct_binary & ) const;
+
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  uint32_t read(apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+class struct_binary;
+void merge(const struct_binary& from, struct_binary& to);
+void merge(struct_binary&& from, struct_binary& to);
+class union_with_special_names : public apache::thrift::TStructType<union_with_special_names> {
+ public:
+  enum class Type {
+    __EMPTY__ = 0,
+    get = 1,
+    getter = 2,
+    lists = 3,
+    maps = 4,
+    name = 5,
+    name_to_value = 6,
+    names = 7,
+    prefix_tree = 8,
+    sets = 9,
+    setter = 10,
+    str = 11,
+    strings = 12,
+    type = 13,
+    value = 14,
+    value_to_name = 15,
+    values = 16,
+    id = 17,
+    ids = 18,
+    descriptor = 19,
+    descriptors = 20,
+    key = 21,
+    keys = 22,
+    annotation = 23,
+    annotations = 24,
+    member = 25,
+    members = 26,
+  };
+
+  union_with_special_names() : type_(Type::__EMPTY__) {}
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_get(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_getter(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_lists(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_maps(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_name(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_name_to_value(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_names(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<8, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_prefix_tree(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<9, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_sets(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<10, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_setter(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<11, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_str(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<12, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_strings(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<13, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_type(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<14, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_value(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<15, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_value_to_name(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<16, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_values(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<17, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_id(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<18, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_ids(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<19, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_descriptor(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<20, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_descriptors(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<21, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_key(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<22, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_keys(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<23, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_annotation(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<24, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_annotations(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<25, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_member(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<26, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_members(arg.move());
+  }
+  union_with_special_names(const union_with_special_names& rhs) : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch (rhs.type_) {
+      case Type::get: {
+        set_get(rhs.value_.get);
+        break;
+      }
+      case Type::getter: {
+        set_getter(rhs.value_.getter);
+        break;
+      }
+      case Type::lists: {
+        set_lists(rhs.value_.lists);
+        break;
+      }
+      case Type::maps: {
+        set_maps(rhs.value_.maps);
+        break;
+      }
+      case Type::name: {
+        set_name(rhs.value_.name);
+        break;
+      }
+      case Type::name_to_value: {
+        set_name_to_value(rhs.value_.name_to_value);
+        break;
+      }
+      case Type::names: {
+        set_names(rhs.value_.names);
+        break;
+      }
+      case Type::prefix_tree: {
+        set_prefix_tree(rhs.value_.prefix_tree);
+        break;
+      }
+      case Type::sets: {
+        set_sets(rhs.value_.sets);
+        break;
+      }
+      case Type::setter: {
+        set_setter(rhs.value_.setter);
+        break;
+      }
+      case Type::str: {
+        set_str(rhs.value_.str);
+        break;
+      }
+      case Type::strings: {
+        set_strings(rhs.value_.strings);
+        break;
+      }
+      case Type::type: {
+        set_type(rhs.value_.type);
+        break;
+      }
+      case Type::value: {
+        set_value(rhs.value_.value);
+        break;
+      }
+      case Type::value_to_name: {
+        set_value_to_name(rhs.value_.value_to_name);
+        break;
+      }
+      case Type::values: {
+        set_values(rhs.value_.values);
+        break;
+      }
+      case Type::id: {
+        set_id(rhs.value_.id);
+        break;
+      }
+      case Type::ids: {
+        set_ids(rhs.value_.ids);
+        break;
+      }
+      case Type::descriptor: {
+        set_descriptor(rhs.value_.descriptor);
+        break;
+      }
+      case Type::descriptors: {
+        set_descriptors(rhs.value_.descriptors);
+        break;
+      }
+      case Type::key: {
+        set_key(rhs.value_.key);
+        break;
+      }
+      case Type::keys: {
+        set_keys(rhs.value_.keys);
+        break;
+      }
+      case Type::annotation: {
+        set_annotation(rhs.value_.annotation);
+        break;
+      }
+      case Type::annotations: {
+        set_annotations(rhs.value_.annotations);
+        break;
+      }
+      case Type::member: {
+        set_member(rhs.value_.member);
+        break;
+      }
+      case Type::members: {
+        set_members(rhs.value_.members);
+        break;
+      }
+      default: assert(false);
+    }
+  }
+
+  union_with_special_names& operator=(const union_with_special_names& rhs) {
+    if (this == &rhs) { return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch (rhs.type_) {
+      case Type::get: {
+        set_get(rhs.value_.get);
+        break;
+      }
+      case Type::getter: {
+        set_getter(rhs.value_.getter);
+        break;
+      }
+      case Type::lists: {
+        set_lists(rhs.value_.lists);
+        break;
+      }
+      case Type::maps: {
+        set_maps(rhs.value_.maps);
+        break;
+      }
+      case Type::name: {
+        set_name(rhs.value_.name);
+        break;
+      }
+      case Type::name_to_value: {
+        set_name_to_value(rhs.value_.name_to_value);
+        break;
+      }
+      case Type::names: {
+        set_names(rhs.value_.names);
+        break;
+      }
+      case Type::prefix_tree: {
+        set_prefix_tree(rhs.value_.prefix_tree);
+        break;
+      }
+      case Type::sets: {
+        set_sets(rhs.value_.sets);
+        break;
+      }
+      case Type::setter: {
+        set_setter(rhs.value_.setter);
+        break;
+      }
+      case Type::str: {
+        set_str(rhs.value_.str);
+        break;
+      }
+      case Type::strings: {
+        set_strings(rhs.value_.strings);
+        break;
+      }
+      case Type::type: {
+        set_type(rhs.value_.type);
+        break;
+      }
+      case Type::value: {
+        set_value(rhs.value_.value);
+        break;
+      }
+      case Type::value_to_name: {
+        set_value_to_name(rhs.value_.value_to_name);
+        break;
+      }
+      case Type::values: {
+        set_values(rhs.value_.values);
+        break;
+      }
+      case Type::id: {
+        set_id(rhs.value_.id);
+        break;
+      }
+      case Type::ids: {
+        set_ids(rhs.value_.ids);
+        break;
+      }
+      case Type::descriptor: {
+        set_descriptor(rhs.value_.descriptor);
+        break;
+      }
+      case Type::descriptors: {
+        set_descriptors(rhs.value_.descriptors);
+        break;
+      }
+      case Type::key: {
+        set_key(rhs.value_.key);
+        break;
+      }
+      case Type::keys: {
+        set_keys(rhs.value_.keys);
+        break;
+      }
+      case Type::annotation: {
+        set_annotation(rhs.value_.annotation);
+        break;
+      }
+      case Type::annotations: {
+        set_annotations(rhs.value_.annotations);
+        break;
+      }
+      case Type::member: {
+        set_member(rhs.value_.member);
+        break;
+      }
+      case Type::members: {
+        set_members(rhs.value_.members);
+        break;
+      }
+      default: assert(false);
+    }
+    return *this;
+  }
+
+  union_with_special_names(union_with_special_names&& rhs) : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch (rhs.type_) {
+      case Type::get: {
+        set_get(std::move(rhs.value_.get));
+        break;
+      }
+      case Type::getter: {
+        set_getter(std::move(rhs.value_.getter));
+        break;
+      }
+      case Type::lists: {
+        set_lists(std::move(rhs.value_.lists));
+        break;
+      }
+      case Type::maps: {
+        set_maps(std::move(rhs.value_.maps));
+        break;
+      }
+      case Type::name: {
+        set_name(std::move(rhs.value_.name));
+        break;
+      }
+      case Type::name_to_value: {
+        set_name_to_value(std::move(rhs.value_.name_to_value));
+        break;
+      }
+      case Type::names: {
+        set_names(std::move(rhs.value_.names));
+        break;
+      }
+      case Type::prefix_tree: {
+        set_prefix_tree(std::move(rhs.value_.prefix_tree));
+        break;
+      }
+      case Type::sets: {
+        set_sets(std::move(rhs.value_.sets));
+        break;
+      }
+      case Type::setter: {
+        set_setter(std::move(rhs.value_.setter));
+        break;
+      }
+      case Type::str: {
+        set_str(std::move(rhs.value_.str));
+        break;
+      }
+      case Type::strings: {
+        set_strings(std::move(rhs.value_.strings));
+        break;
+      }
+      case Type::type: {
+        set_type(std::move(rhs.value_.type));
+        break;
+      }
+      case Type::value: {
+        set_value(std::move(rhs.value_.value));
+        break;
+      }
+      case Type::value_to_name: {
+        set_value_to_name(std::move(rhs.value_.value_to_name));
+        break;
+      }
+      case Type::values: {
+        set_values(std::move(rhs.value_.values));
+        break;
+      }
+      case Type::id: {
+        set_id(std::move(rhs.value_.id));
+        break;
+      }
+      case Type::ids: {
+        set_ids(std::move(rhs.value_.ids));
+        break;
+      }
+      case Type::descriptor: {
+        set_descriptor(std::move(rhs.value_.descriptor));
+        break;
+      }
+      case Type::descriptors: {
+        set_descriptors(std::move(rhs.value_.descriptors));
+        break;
+      }
+      case Type::key: {
+        set_key(std::move(rhs.value_.key));
+        break;
+      }
+      case Type::keys: {
+        set_keys(std::move(rhs.value_.keys));
+        break;
+      }
+      case Type::annotation: {
+        set_annotation(std::move(rhs.value_.annotation));
+        break;
+      }
+      case Type::annotations: {
+        set_annotations(std::move(rhs.value_.annotations));
+        break;
+      }
+      case Type::member: {
+        set_member(std::move(rhs.value_.member));
+        break;
+      }
+      case Type::members: {
+        set_members(std::move(rhs.value_.members));
+        break;
+      }
+      default: assert(false);
+    }
+    rhs.__clear();
+  }
+
+  union_with_special_names& operator=(union_with_special_names&& rhs) {
+    if (this == &rhs) { return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch (rhs.type_) {
+      case Type::get: {
+        set_get(std::move(rhs.value_.get));
+        break;
+      }
+      case Type::getter: {
+        set_getter(std::move(rhs.value_.getter));
+        break;
+      }
+      case Type::lists: {
+        set_lists(std::move(rhs.value_.lists));
+        break;
+      }
+      case Type::maps: {
+        set_maps(std::move(rhs.value_.maps));
+        break;
+      }
+      case Type::name: {
+        set_name(std::move(rhs.value_.name));
+        break;
+      }
+      case Type::name_to_value: {
+        set_name_to_value(std::move(rhs.value_.name_to_value));
+        break;
+      }
+      case Type::names: {
+        set_names(std::move(rhs.value_.names));
+        break;
+      }
+      case Type::prefix_tree: {
+        set_prefix_tree(std::move(rhs.value_.prefix_tree));
+        break;
+      }
+      case Type::sets: {
+        set_sets(std::move(rhs.value_.sets));
+        break;
+      }
+      case Type::setter: {
+        set_setter(std::move(rhs.value_.setter));
+        break;
+      }
+      case Type::str: {
+        set_str(std::move(rhs.value_.str));
+        break;
+      }
+      case Type::strings: {
+        set_strings(std::move(rhs.value_.strings));
+        break;
+      }
+      case Type::type: {
+        set_type(std::move(rhs.value_.type));
+        break;
+      }
+      case Type::value: {
+        set_value(std::move(rhs.value_.value));
+        break;
+      }
+      case Type::value_to_name: {
+        set_value_to_name(std::move(rhs.value_.value_to_name));
+        break;
+      }
+      case Type::values: {
+        set_values(std::move(rhs.value_.values));
+        break;
+      }
+      case Type::id: {
+        set_id(std::move(rhs.value_.id));
+        break;
+      }
+      case Type::ids: {
+        set_ids(std::move(rhs.value_.ids));
+        break;
+      }
+      case Type::descriptor: {
+        set_descriptor(std::move(rhs.value_.descriptor));
+        break;
+      }
+      case Type::descriptors: {
+        set_descriptors(std::move(rhs.value_.descriptors));
+        break;
+      }
+      case Type::key: {
+        set_key(std::move(rhs.value_.key));
+        break;
+      }
+      case Type::keys: {
+        set_keys(std::move(rhs.value_.keys));
+        break;
+      }
+      case Type::annotation: {
+        set_annotation(std::move(rhs.value_.annotation));
+        break;
+      }
+      case Type::annotations: {
+        set_annotations(std::move(rhs.value_.annotations));
+        break;
+      }
+      case Type::member: {
+        set_member(std::move(rhs.value_.member));
+        break;
+      }
+      case Type::members: {
+        set_members(std::move(rhs.value_.members));
+        break;
+      }
+      default: assert(false);
+    }
+    rhs.__clear();
+    return *this;
+  }
+
+
+  void __clear() {
+    if (type_ == Type::__EMPTY__) { return; }
+    switch (type_) {
+      case Type::get: {
+        
+        break;
+      }
+      case Type::getter: {
+        
+        break;
+      }
+      case Type::lists: {
+        
+        break;
+      }
+      case Type::maps: {
+        
+        break;
+      }
+      case Type::name: {
+        
+        break;
+      }
+      case Type::name_to_value: {
+        
+        break;
+      }
+      case Type::names: {
+        
+        break;
+      }
+      case Type::prefix_tree: {
+        
+        break;
+      }
+      case Type::sets: {
+        
+        break;
+      }
+      case Type::setter: {
+        
+        break;
+      }
+      case Type::str: {
+        
+        break;
+      }
+      case Type::strings: {
+        
+        break;
+      }
+      case Type::type: {
+        
+        break;
+      }
+      case Type::value: {
+        
+        break;
+      }
+      case Type::value_to_name: {
+        
+        break;
+      }
+      case Type::values: {
+        
+        break;
+      }
+      case Type::id: {
+        
+        break;
+      }
+      case Type::ids: {
+        
+        break;
+      }
+      case Type::descriptor: {
+        
+        break;
+      }
+      case Type::descriptors: {
+        
+        break;
+      }
+      case Type::key: {
+        
+        break;
+      }
+      case Type::keys: {
+        
+        break;
+      }
+      case Type::annotation: {
+        
+        break;
+      }
+      case Type::annotations: {
+        
+        break;
+      }
+      case Type::member: {
+        
+        break;
+      }
+      case Type::members: {
+        
+        break;
+      }
+      default: assert(false);
+    }
+    type_ = Type::__EMPTY__;
+  }
+  virtual ~union_with_special_names() throw() {
+    __clear();
+  }
+
+  union storage_type {
+    int32_t get;
+    int32_t getter;
+    int32_t lists;
+    int32_t maps;
+    int32_t name;
+    int32_t name_to_value;
+    int32_t names;
+    int32_t prefix_tree;
+    int32_t sets;
+    int32_t setter;
+    int32_t str;
+    int32_t strings;
+    int32_t type;
+    int32_t value;
+    int32_t value_to_name;
+    int32_t values;
+    int32_t id;
+    int32_t ids;
+    int32_t descriptor;
+    int32_t descriptors;
+    int32_t key;
+    int32_t keys;
+    int32_t annotation;
+    int32_t annotations;
+    int32_t member;
+    int32_t members;
+    
+    storage_type() {}
+    ~storage_type() {}
+  };
+
+  bool operator==(const union_with_special_names& rhs) const {
+    if (type_ != rhs.type_) { return false; }
+    switch (type_) {
+      case Type::get: {
+        return value_.get == rhs.value_.get;
+
+        break;
+      }
+      case Type::getter: {
+        return value_.getter == rhs.value_.getter;
+
+        break;
+      }
+      case Type::lists: {
+        return value_.lists == rhs.value_.lists;
+
+        break;
+      }
+      case Type::maps: {
+        return value_.maps == rhs.value_.maps;
+
+        break;
+      }
+      case Type::name: {
+        return value_.name == rhs.value_.name;
+
+        break;
+      }
+      case Type::name_to_value: {
+        return value_.name_to_value == rhs.value_.name_to_value;
+
+        break;
+      }
+      case Type::names: {
+        return value_.names == rhs.value_.names;
+
+        break;
+      }
+      case Type::prefix_tree: {
+        return value_.prefix_tree == rhs.value_.prefix_tree;
+
+        break;
+      }
+      case Type::sets: {
+        return value_.sets == rhs.value_.sets;
+
+        break;
+      }
+      case Type::setter: {
+        return value_.setter == rhs.value_.setter;
+
+        break;
+      }
+      case Type::str: {
+        return value_.str == rhs.value_.str;
+
+        break;
+      }
+      case Type::strings: {
+        return value_.strings == rhs.value_.strings;
+
+        break;
+      }
+      case Type::type: {
+        return value_.type == rhs.value_.type;
+
+        break;
+      }
+      case Type::value: {
+        return value_.value == rhs.value_.value;
+
+        break;
+      }
+      case Type::value_to_name: {
+        return value_.value_to_name == rhs.value_.value_to_name;
+
+        break;
+      }
+      case Type::values: {
+        return value_.values == rhs.value_.values;
+
+        break;
+      }
+      case Type::id: {
+        return value_.id == rhs.value_.id;
+
+        break;
+      }
+      case Type::ids: {
+        return value_.ids == rhs.value_.ids;
+
+        break;
+      }
+      case Type::descriptor: {
+        return value_.descriptor == rhs.value_.descriptor;
+
+        break;
+      }
+      case Type::descriptors: {
+        return value_.descriptors == rhs.value_.descriptors;
+
+        break;
+      }
+      case Type::key: {
+        return value_.key == rhs.value_.key;
+
+        break;
+      }
+      case Type::keys: {
+        return value_.keys == rhs.value_.keys;
+
+        break;
+      }
+      case Type::annotation: {
+        return value_.annotation == rhs.value_.annotation;
+
+        break;
+      }
+      case Type::annotations: {
+        return value_.annotations == rhs.value_.annotations;
+
+        break;
+      }
+      case Type::member: {
+        return value_.member == rhs.value_.member;
+
+        break;
+      }
+      case Type::members: {
+        return value_.members == rhs.value_.members;
+
+        break;
+      }
+      default: return true;
+    }
+  }
+
+  bool operator!=(const union_with_special_names& rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator<(const union_with_special_names& rhs) const {
+    if (type_ != rhs.type_) return type_ < rhs.type_;
+    switch (type_) {
+      case Type::get: {
+        return value_.get < rhs.value_.get;
+
+        break;
+      }
+      case Type::getter: {
+        return value_.getter < rhs.value_.getter;
+
+        break;
+      }
+      case Type::lists: {
+        return value_.lists < rhs.value_.lists;
+
+        break;
+      }
+      case Type::maps: {
+        return value_.maps < rhs.value_.maps;
+
+        break;
+      }
+      case Type::name: {
+        return value_.name < rhs.value_.name;
+
+        break;
+      }
+      case Type::name_to_value: {
+        return value_.name_to_value < rhs.value_.name_to_value;
+
+        break;
+      }
+      case Type::names: {
+        return value_.names < rhs.value_.names;
+
+        break;
+      }
+      case Type::prefix_tree: {
+        return value_.prefix_tree < rhs.value_.prefix_tree;
+
+        break;
+      }
+      case Type::sets: {
+        return value_.sets < rhs.value_.sets;
+
+        break;
+      }
+      case Type::setter: {
+        return value_.setter < rhs.value_.setter;
+
+        break;
+      }
+      case Type::str: {
+        return value_.str < rhs.value_.str;
+
+        break;
+      }
+      case Type::strings: {
+        return value_.strings < rhs.value_.strings;
+
+        break;
+      }
+      case Type::type: {
+        return value_.type < rhs.value_.type;
+
+        break;
+      }
+      case Type::value: {
+        return value_.value < rhs.value_.value;
+
+        break;
+      }
+      case Type::value_to_name: {
+        return value_.value_to_name < rhs.value_.value_to_name;
+
+        break;
+      }
+      case Type::values: {
+        return value_.values < rhs.value_.values;
+
+        break;
+      }
+      case Type::id: {
+        return value_.id < rhs.value_.id;
+
+        break;
+      }
+      case Type::ids: {
+        return value_.ids < rhs.value_.ids;
+
+        break;
+      }
+      case Type::descriptor: {
+        return value_.descriptor < rhs.value_.descriptor;
+
+        break;
+      }
+      case Type::descriptors: {
+        return value_.descriptors < rhs.value_.descriptors;
+
+        break;
+      }
+      case Type::key: {
+        return value_.key < rhs.value_.key;
+
+        break;
+      }
+      case Type::keys: {
+        return value_.keys < rhs.value_.keys;
+
+        break;
+      }
+      case Type::annotation: {
+        return value_.annotation < rhs.value_.annotation;
+
+        break;
+      }
+      case Type::annotations: {
+        return value_.annotations < rhs.value_.annotations;
+
+        break;
+      }
+      case Type::member: {
+        return value_.member < rhs.value_.member;
+
+        break;
+      }
+      case Type::members: {
+        return value_.members < rhs.value_.members;
+
+        break;
+      }
+      default: return false;
+    }
+    return false;
+  }
+
+  template<typename... T>
+  void set_get(T&&... t) {
+    __clear();
+    type_ = Type::get;
+    new (&value_.get) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_getter(T&&... t) {
+    __clear();
+    type_ = Type::getter;
+    new (&value_.getter) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_lists(T&&... t) {
+    __clear();
+    type_ = Type::lists;
+    new (&value_.lists) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_maps(T&&... t) {
+    __clear();
+    type_ = Type::maps;
+    new (&value_.maps) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_name(T&&... t) {
+    __clear();
+    type_ = Type::name;
+    new (&value_.name) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_name_to_value(T&&... t) {
+    __clear();
+    type_ = Type::name_to_value;
+    new (&value_.name_to_value) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_names(T&&... t) {
+    __clear();
+    type_ = Type::names;
+    new (&value_.names) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_prefix_tree(T&&... t) {
+    __clear();
+    type_ = Type::prefix_tree;
+    new (&value_.prefix_tree) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_sets(T&&... t) {
+    __clear();
+    type_ = Type::sets;
+    new (&value_.sets) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_setter(T&&... t) {
+    __clear();
+    type_ = Type::setter;
+    new (&value_.setter) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_str(T&&... t) {
+    __clear();
+    type_ = Type::str;
+    new (&value_.str) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_strings(T&&... t) {
+    __clear();
+    type_ = Type::strings;
+    new (&value_.strings) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_type(T&&... t) {
+    __clear();
+    type_ = Type::type;
+    new (&value_.type) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_value(T&&... t) {
+    __clear();
+    type_ = Type::value;
+    new (&value_.value) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_value_to_name(T&&... t) {
+    __clear();
+    type_ = Type::value_to_name;
+    new (&value_.value_to_name) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_values(T&&... t) {
+    __clear();
+    type_ = Type::values;
+    new (&value_.values) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_id(T&&... t) {
+    __clear();
+    type_ = Type::id;
+    new (&value_.id) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_ids(T&&... t) {
+    __clear();
+    type_ = Type::ids;
+    new (&value_.ids) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_descriptor(T&&... t) {
+    __clear();
+    type_ = Type::descriptor;
+    new (&value_.descriptor) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_descriptors(T&&... t) {
+    __clear();
+    type_ = Type::descriptors;
+    new (&value_.descriptors) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_key(T&&... t) {
+    __clear();
+    type_ = Type::key;
+    new (&value_.key) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_keys(T&&... t) {
+    __clear();
+    type_ = Type::keys;
+    new (&value_.keys) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_annotation(T&&... t) {
+    __clear();
+    type_ = Type::annotation;
+    new (&value_.annotation) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_annotations(T&&... t) {
+    __clear();
+    type_ = Type::annotations;
+    new (&value_.annotations) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_member(T&&... t) {
+    __clear();
+    type_ = Type::member;
+    new (&value_.member) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_members(T&&... t) {
+    __clear();
+    type_ = Type::members;
+    new (&value_.members) int32_t(std::forward<T>(t)...);
+  }
+
+  const int32_t& get_get() const {
+    assert(type_ == Type::get);
+    return value_.get;
+  }
+
+  const int32_t& get_getter() const {
+    assert(type_ == Type::getter);
+    return value_.getter;
+  }
+
+  const int32_t& get_lists() const {
+    assert(type_ == Type::lists);
+    return value_.lists;
+  }
+
+  const int32_t& get_maps() const {
+    assert(type_ == Type::maps);
+    return value_.maps;
+  }
+
+  const int32_t& get_name() const {
+    assert(type_ == Type::name);
+    return value_.name;
+  }
+
+  const int32_t& get_name_to_value() const {
+    assert(type_ == Type::name_to_value);
+    return value_.name_to_value;
+  }
+
+  const int32_t& get_names() const {
+    assert(type_ == Type::names);
+    return value_.names;
+  }
+
+  const int32_t& get_prefix_tree() const {
+    assert(type_ == Type::prefix_tree);
+    return value_.prefix_tree;
+  }
+
+  const int32_t& get_sets() const {
+    assert(type_ == Type::sets);
+    return value_.sets;
+  }
+
+  const int32_t& get_setter() const {
+    assert(type_ == Type::setter);
+    return value_.setter;
+  }
+
+  const int32_t& get_str() const {
+    assert(type_ == Type::str);
+    return value_.str;
+  }
+
+  const int32_t& get_strings() const {
+    assert(type_ == Type::strings);
+    return value_.strings;
+  }
+
+  const int32_t& get_type() const {
+    assert(type_ == Type::type);
+    return value_.type;
+  }
+
+  const int32_t& get_value() const {
+    assert(type_ == Type::value);
+    return value_.value;
+  }
+
+  const int32_t& get_value_to_name() const {
+    assert(type_ == Type::value_to_name);
+    return value_.value_to_name;
+  }
+
+  const int32_t& get_values() const {
+    assert(type_ == Type::values);
+    return value_.values;
+  }
+
+  const int32_t& get_id() const {
+    assert(type_ == Type::id);
+    return value_.id;
+  }
+
+  const int32_t& get_ids() const {
+    assert(type_ == Type::ids);
+    return value_.ids;
+  }
+
+  const int32_t& get_descriptor() const {
+    assert(type_ == Type::descriptor);
+    return value_.descriptor;
+  }
+
+  const int32_t& get_descriptors() const {
+    assert(type_ == Type::descriptors);
+    return value_.descriptors;
+  }
+
+  const int32_t& get_key() const {
+    assert(type_ == Type::key);
+    return value_.key;
+  }
+
+  const int32_t& get_keys() const {
+    assert(type_ == Type::keys);
+    return value_.keys;
+  }
+
+  const int32_t& get_annotation() const {
+    assert(type_ == Type::annotation);
+    return value_.annotation;
+  }
+
+  const int32_t& get_annotations() const {
+    assert(type_ == Type::annotations);
+    return value_.annotations;
+  }
+
+  const int32_t& get_member() const {
+    assert(type_ == Type::member);
+    return value_.member;
+  }
+
+  const int32_t& get_members() const {
+    assert(type_ == Type::members);
+    return value_.members;
+  }
+
+  int32_t& mutable_get() {
+    assert(type_ == Type::get);
+    return value_.get;
+  }
+
+  int32_t& mutable_getter() {
+    assert(type_ == Type::getter);
+    return value_.getter;
+  }
+
+  int32_t& mutable_lists() {
+    assert(type_ == Type::lists);
+    return value_.lists;
+  }
+
+  int32_t& mutable_maps() {
+    assert(type_ == Type::maps);
+    return value_.maps;
+  }
+
+  int32_t& mutable_name() {
+    assert(type_ == Type::name);
+    return value_.name;
+  }
+
+  int32_t& mutable_name_to_value() {
+    assert(type_ == Type::name_to_value);
+    return value_.name_to_value;
+  }
+
+  int32_t& mutable_names() {
+    assert(type_ == Type::names);
+    return value_.names;
+  }
+
+  int32_t& mutable_prefix_tree() {
+    assert(type_ == Type::prefix_tree);
+    return value_.prefix_tree;
+  }
+
+  int32_t& mutable_sets() {
+    assert(type_ == Type::sets);
+    return value_.sets;
+  }
+
+  int32_t& mutable_setter() {
+    assert(type_ == Type::setter);
+    return value_.setter;
+  }
+
+  int32_t& mutable_str() {
+    assert(type_ == Type::str);
+    return value_.str;
+  }
+
+  int32_t& mutable_strings() {
+    assert(type_ == Type::strings);
+    return value_.strings;
+  }
+
+  int32_t& mutable_type() {
+    assert(type_ == Type::type);
+    return value_.type;
+  }
+
+  int32_t& mutable_value() {
+    assert(type_ == Type::value);
+    return value_.value;
+  }
+
+  int32_t& mutable_value_to_name() {
+    assert(type_ == Type::value_to_name);
+    return value_.value_to_name;
+  }
+
+  int32_t& mutable_values() {
+    assert(type_ == Type::values);
+    return value_.values;
+  }
+
+  int32_t& mutable_id() {
+    assert(type_ == Type::id);
+    return value_.id;
+  }
+
+  int32_t& mutable_ids() {
+    assert(type_ == Type::ids);
+    return value_.ids;
+  }
+
+  int32_t& mutable_descriptor() {
+    assert(type_ == Type::descriptor);
+    return value_.descriptor;
+  }
+
+  int32_t& mutable_descriptors() {
+    assert(type_ == Type::descriptors);
+    return value_.descriptors;
+  }
+
+  int32_t& mutable_key() {
+    assert(type_ == Type::key);
+    return value_.key;
+  }
+
+  int32_t& mutable_keys() {
+    assert(type_ == Type::keys);
+    return value_.keys;
+  }
+
+  int32_t& mutable_annotation() {
+    assert(type_ == Type::annotation);
+    return value_.annotation;
+  }
+
+  int32_t& mutable_annotations() {
+    assert(type_ == Type::annotations);
+    return value_.annotations;
+  }
+
+  int32_t& mutable_member() {
+    assert(type_ == Type::member);
+    return value_.member;
+  }
+
+  int32_t& mutable_members() {
+    assert(type_ == Type::members);
+    return value_.members;
+  }
+
+  int32_t move_get() {
+    assert(type_ == Type::get);
+    return std::move(value_.get);
+  }
+
+  int32_t move_getter() {
+    assert(type_ == Type::getter);
+    return std::move(value_.getter);
+  }
+
+  int32_t move_lists() {
+    assert(type_ == Type::lists);
+    return std::move(value_.lists);
+  }
+
+  int32_t move_maps() {
+    assert(type_ == Type::maps);
+    return std::move(value_.maps);
+  }
+
+  int32_t move_name() {
+    assert(type_ == Type::name);
+    return std::move(value_.name);
+  }
+
+  int32_t move_name_to_value() {
+    assert(type_ == Type::name_to_value);
+    return std::move(value_.name_to_value);
+  }
+
+  int32_t move_names() {
+    assert(type_ == Type::names);
+    return std::move(value_.names);
+  }
+
+  int32_t move_prefix_tree() {
+    assert(type_ == Type::prefix_tree);
+    return std::move(value_.prefix_tree);
+  }
+
+  int32_t move_sets() {
+    assert(type_ == Type::sets);
+    return std::move(value_.sets);
+  }
+
+  int32_t move_setter() {
+    assert(type_ == Type::setter);
+    return std::move(value_.setter);
+  }
+
+  int32_t move_str() {
+    assert(type_ == Type::str);
+    return std::move(value_.str);
+  }
+
+  int32_t move_strings() {
+    assert(type_ == Type::strings);
+    return std::move(value_.strings);
+  }
+
+  int32_t move_type() {
+    assert(type_ == Type::type);
+    return std::move(value_.type);
+  }
+
+  int32_t move_value() {
+    assert(type_ == Type::value);
+    return std::move(value_.value);
+  }
+
+  int32_t move_value_to_name() {
+    assert(type_ == Type::value_to_name);
+    return std::move(value_.value_to_name);
+  }
+
+  int32_t move_values() {
+    assert(type_ == Type::values);
+    return std::move(value_.values);
+  }
+
+  int32_t move_id() {
+    assert(type_ == Type::id);
+    return std::move(value_.id);
+  }
+
+  int32_t move_ids() {
+    assert(type_ == Type::ids);
+    return std::move(value_.ids);
+  }
+
+  int32_t move_descriptor() {
+    assert(type_ == Type::descriptor);
+    return std::move(value_.descriptor);
+  }
+
+  int32_t move_descriptors() {
+    assert(type_ == Type::descriptors);
+    return std::move(value_.descriptors);
+  }
+
+  int32_t move_key() {
+    assert(type_ == Type::key);
+    return std::move(value_.key);
+  }
+
+  int32_t move_keys() {
+    assert(type_ == Type::keys);
+    return std::move(value_.keys);
+  }
+
+  int32_t move_annotation() {
+    assert(type_ == Type::annotation);
+    return std::move(value_.annotation);
+  }
+
+  int32_t move_annotations() {
+    assert(type_ == Type::annotations);
+    return std::move(value_.annotations);
+  }
+
+  int32_t move_member() {
+    assert(type_ == Type::member);
+    return std::move(value_.member);
+  }
+
+  int32_t move_members() {
+    assert(type_ == Type::members);
+    return std::move(value_.members);
+  }
+
+  Type getType() const { return type_; }
+
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  uint32_t read(apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+ private:
+  Type type_;
+  storage_type value_;
+
+};
+
+void swap(struct_with_special_names &a, struct_with_special_names &b);
+
+class struct_with_special_names : public apache::thrift::TStructType<struct_with_special_names> {
+ public:
+
+  static const uint64_t _reflection_id = 8634504681174503372U;
+  static void _reflection_register(::apache::thrift::reflection::Schema&);
+  struct_with_special_names() : get(0), getter(0), lists(0), maps(0), name(0), name_to_value(0), names(0), prefix_tree(0), sets(0), setter(0), str(0), strings(0), type(0), value(0), value_to_name(0), values(0), id(0), ids(0), descriptor(0), descriptors(0), key(0), keys(0), annotation(0), annotations(0), member(0), members(0) {
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    get = arg.move();
+    __isset.get = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    getter = arg.move();
+    __isset.getter = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    lists = arg.move();
+    __isset.lists = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    maps = arg.move();
+    __isset.maps = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    name = arg.move();
+    __isset.name = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    name_to_value = arg.move();
+    __isset.name_to_value = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    names = arg.move();
+    __isset.names = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<8, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    prefix_tree = arg.move();
+    __isset.prefix_tree = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<9, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    sets = arg.move();
+    __isset.sets = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<10, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    setter = arg.move();
+    __isset.setter = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<11, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    str = arg.move();
+    __isset.str = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<12, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    strings = arg.move();
+    __isset.strings = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<13, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    type = arg.move();
+    __isset.type = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<14, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    value = arg.move();
+    __isset.value = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<15, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    value_to_name = arg.move();
+    __isset.value_to_name = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<16, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    values = arg.move();
+    __isset.values = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<17, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    id = arg.move();
+    __isset.id = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<18, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    ids = arg.move();
+    __isset.ids = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<19, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    descriptor = arg.move();
+    __isset.descriptor = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<20, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    descriptors = arg.move();
+    __isset.descriptors = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<21, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    key = arg.move();
+    __isset.key = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<22, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    keys = arg.move();
+    __isset.keys = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<23, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    annotation = arg.move();
+    __isset.annotation = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<24, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    annotations = arg.move();
+    __isset.annotations = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<25, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    member = arg.move();
+    __isset.member = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_special_names(
+    ::apache::thrift::detail::argument_wrapper<26, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    members = arg.move();
+    __isset.members = true;
+  }
+
+  struct_with_special_names(const struct_with_special_names&) = default;
+  struct_with_special_names& operator=(const struct_with_special_names& src)= default;
+  struct_with_special_names(struct_with_special_names&&) = default;
+  struct_with_special_names& operator=(struct_with_special_names&&) = default;
+
+  void __clear();
+
+  virtual ~struct_with_special_names() throw() {}
+
+  int32_t get;
+  int32_t getter;
+  int32_t lists;
+  int32_t maps;
+  int32_t name;
+  int32_t name_to_value;
+  int32_t names;
+  int32_t prefix_tree;
+  int32_t sets;
+  int32_t setter;
+  int32_t str;
+  int32_t strings;
+  int32_t type;
+  int32_t value;
+  int32_t value_to_name;
+  int32_t values;
+  int32_t id;
+  int32_t ids;
+  int32_t descriptor;
+  int32_t descriptors;
+  int32_t key;
+  int32_t keys;
+  int32_t annotation;
+  int32_t annotations;
+  int32_t member;
+  int32_t members;
+
+  struct __isset {
+    __isset() { __clear(); } 
+    void __clear() {
+      get = false;
+      getter = false;
+      lists = false;
+      maps = false;
+      name = false;
+      name_to_value = false;
+      names = false;
+      prefix_tree = false;
+      sets = false;
+      setter = false;
+      str = false;
+      strings = false;
+      type = false;
+      value = false;
+      value_to_name = false;
+      values = false;
+      id = false;
+      ids = false;
+      descriptor = false;
+      descriptors = false;
+      key = false;
+      keys = false;
+      annotation = false;
+      annotations = false;
+      member = false;
+      members = false;
+    }
+    bool get;
+    bool getter;
+    bool lists;
+    bool maps;
+    bool name;
+    bool name_to_value;
+    bool names;
+    bool prefix_tree;
+    bool sets;
+    bool setter;
+    bool str;
+    bool strings;
+    bool type;
+    bool value;
+    bool value_to_name;
+    bool values;
+    bool id;
+    bool ids;
+    bool descriptor;
+    bool descriptors;
+    bool key;
+    bool keys;
+    bool annotation;
+    bool annotations;
+    bool member;
+    bool members;
+  } __isset;
+
+  bool operator == (const struct_with_special_names &) const;
+  bool operator != (const struct_with_special_names& rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const struct_with_special_names & ) const;
+
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  uint32_t read(apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+class struct_with_special_names;
+void merge(const struct_with_special_names& from, struct_with_special_names& to);
+void merge(struct_with_special_names&& from, struct_with_special_names& to);
 }} // namespace
 

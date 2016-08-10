@@ -108,6 +108,84 @@ template <> bool TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum3>::findValue
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
+enum_with_special_names _kenum_with_special_namesValues[] = {
+  enum_with_special_names::get,
+  enum_with_special_names::getter,
+  enum_with_special_names::lists,
+  enum_with_special_names::maps,
+  enum_with_special_names::name,
+  enum_with_special_names::name_to_value,
+  enum_with_special_names::names,
+  enum_with_special_names::prefix_tree,
+  enum_with_special_names::sets,
+  enum_with_special_names::setter,
+  enum_with_special_names::str,
+  enum_with_special_names::strings,
+  enum_with_special_names::type,
+  enum_with_special_names::value,
+  enum_with_special_names::value_to_name,
+  enum_with_special_names::values,
+  enum_with_special_names::id,
+  enum_with_special_names::ids,
+  enum_with_special_names::descriptor,
+  enum_with_special_names::descriptors,
+  enum_with_special_names::key,
+  enum_with_special_names::keys,
+  enum_with_special_names::annotation,
+  enum_with_special_names::annotations,
+  enum_with_special_names::member,
+  enum_with_special_names::members
+};
+
+const char* _kenum_with_special_namesNames[] = {
+  "get",
+  "getter",
+  "lists",
+  "maps",
+  "name",
+  "name_to_value",
+  "names",
+  "prefix_tree",
+  "sets",
+  "setter",
+  "str",
+  "strings",
+  "type",
+  "value",
+  "value_to_name",
+  "values",
+  "id",
+  "ids",
+  "descriptor",
+  "descriptors",
+  "key",
+  "keys",
+  "annotation",
+  "annotations",
+  "member",
+  "members"
+};
+
+const std::map<enum_with_special_names, const char*> _enum_with_special_names_VALUES_TO_NAMES(apache::thrift::TEnumIterator<enum_with_special_names>(26, _kenum_with_special_namesValues, _kenum_with_special_namesNames), apache::thrift::TEnumIterator<enum_with_special_names>(-1, nullptr, nullptr));
+const std::map<const char*, enum_with_special_names, apache::thrift::ltstr> _enum_with_special_names_NAMES_TO_VALUES(apache::thrift::TEnumInverseIterator<enum_with_special_names>(26, _kenum_with_special_namesValues, _kenum_with_special_namesNames), apache::thrift::TEnumInverseIterator<enum_with_special_names>(-1, nullptr, nullptr));
+
+}} // test_cpp2::cpp_reflection
+namespace std {
+
+} // std
+namespace apache { namespace thrift {
+
+template <> const char* TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum_with_special_names>::findName( ::test_cpp2::cpp_reflection::enum_with_special_names value) {
+  return findName( ::test_cpp2::cpp_reflection::_enum_with_special_names_VALUES_TO_NAMES, value);
+}
+
+template <> bool TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum_with_special_names>::findValue(const char* name,  ::test_cpp2::cpp_reflection::enum_with_special_names* outValue) {
+  return findValue( ::test_cpp2::cpp_reflection::_enum_with_special_names_NAMES_TO_VALUES, name, outValue);
+}
+
+}} // apache::thrift
+namespace test_cpp2 { namespace cpp_reflection {
+
 template uint32_t union1::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
 template uint32_t union1::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
 template uint32_t union1::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
@@ -1288,6 +1366,567 @@ void swap(struct3& a, struct3& b) {
   swap(a.fieldP, b.fieldP);
   swap(a.fieldQ, b.fieldQ);
   swap(a.fieldR, b.fieldR);
+  swap(a.__isset, b.__isset);
+}
+
+}} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace test_cpp2 { namespace cpp_reflection {
+
+template uint32_t struct4::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
+template uint32_t struct4::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t struct4::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t struct4::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t struct4::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
+template uint32_t struct4::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t struct4::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t struct4::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
+
+struct4::struct4(const struct4& src354) {
+  field0 = src354.field0;
+  field1 = src354.field1;
+  __isset.field1 = src354.__isset.field1;
+  field2 = src354.field2;
+  __isset.field2 = src354.__isset.field2;
+  if (src354.field3) field3.reset(new  ::test_cpp2::cpp_reflection::structA(*src354.field3));
+}
+
+struct4& struct4::operator=(const struct4& src355) {
+  struct4 tmp356(src355);
+  swap(*this, tmp356);
+  return *this;
+}
+
+void struct4::__clear() {
+  field0 = 0;
+  field1 = std::string();
+  field2 =  ::test_cpp2::cpp_reflection::enum1();
+  if (field3) ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::clear(field3.get());
+  __isset.__clear();
+}
+
+bool struct4::operator==(const struct4& rhs) const {
+  if (!((field0 == rhs.field0))) {
+    return false;
+  }
+  if (__isset.field1 != rhs.__isset.field1) {
+    return false;
+  }
+  else if (__isset.field1 && !((field1 == rhs.field1))) {
+    return false;
+  }
+  if (!((field2 == rhs.field2))) {
+    return false;
+  }
+  if (!(((field3 && rhs.field3 && *field3 == *rhs.field3) ||(!field3 && !rhs.field3)))) {
+    return false;
+  }
+  return true;
+}
+
+void swap(struct4& a, struct4& b) {
+  using ::std::swap;
+  swap(a.field0, b.field0);
+  swap(a.field1, b.field1);
+  swap(a.field2, b.field2);
+  swap(a.field3, b.field3);
+  swap(a.__isset, b.__isset);
+}
+
+}} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace test_cpp2 { namespace cpp_reflection {
+
+template uint32_t struct_binary::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
+template uint32_t struct_binary::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t struct_binary::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t struct_binary::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t struct_binary::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
+template uint32_t struct_binary::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t struct_binary::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t struct_binary::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
+
+void struct_binary::__clear() {
+  bi = std::string();
+  __isset.__clear();
+}
+
+bool struct_binary::operator==(const struct_binary& rhs) const {
+  if (!(apache::thrift::StringTraits<std::string>::isEqual(bi, rhs.bi))) {
+    return false;
+  }
+  return true;
+}
+
+void swap(struct_binary& a, struct_binary& b) {
+  using ::std::swap;
+  swap(a.bi, b.bi);
+  swap(a.__isset, b.__isset);
+}
+
+}} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace test_cpp2 { namespace cpp_reflection {
+
+template uint32_t union_with_special_names::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
+template uint32_t union_with_special_names::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t union_with_special_names::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t union_with_special_names::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t union_with_special_names::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
+template uint32_t union_with_special_names::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t union_with_special_names::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t union_with_special_names::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
+
+void union_with_special_names::__clear() {
+  if (type_ == Type::__EMPTY__) { return; }
+  switch(type_) {
+    case Type::get:
+    {
+      destruct(value_.get);
+      break;
+    }
+    case Type::getter:
+    {
+      destruct(value_.getter);
+      break;
+    }
+    case Type::lists:
+    {
+      destruct(value_.lists);
+      break;
+    }
+    case Type::maps:
+    {
+      destruct(value_.maps);
+      break;
+    }
+    case Type::name:
+    {
+      destruct(value_.name);
+      break;
+    }
+    case Type::name_to_value:
+    {
+      destruct(value_.name_to_value);
+      break;
+    }
+    case Type::names:
+    {
+      destruct(value_.names);
+      break;
+    }
+    case Type::prefix_tree:
+    {
+      destruct(value_.prefix_tree);
+      break;
+    }
+    case Type::sets:
+    {
+      destruct(value_.sets);
+      break;
+    }
+    case Type::setter:
+    {
+      destruct(value_.setter);
+      break;
+    }
+    case Type::str:
+    {
+      destruct(value_.str);
+      break;
+    }
+    case Type::strings:
+    {
+      destruct(value_.strings);
+      break;
+    }
+    case Type::type:
+    {
+      destruct(value_.type);
+      break;
+    }
+    case Type::value:
+    {
+      destruct(value_.value);
+      break;
+    }
+    case Type::value_to_name:
+    {
+      destruct(value_.value_to_name);
+      break;
+    }
+    case Type::values:
+    {
+      destruct(value_.values);
+      break;
+    }
+    case Type::id:
+    {
+      destruct(value_.id);
+      break;
+    }
+    case Type::ids:
+    {
+      destruct(value_.ids);
+      break;
+    }
+    case Type::descriptor:
+    {
+      destruct(value_.descriptor);
+      break;
+    }
+    case Type::descriptors:
+    {
+      destruct(value_.descriptors);
+      break;
+    }
+    case Type::key:
+    {
+      destruct(value_.key);
+      break;
+    }
+    case Type::keys:
+    {
+      destruct(value_.keys);
+      break;
+    }
+    case Type::annotation:
+    {
+      destruct(value_.annotation);
+      break;
+    }
+    case Type::annotations:
+    {
+      destruct(value_.annotations);
+      break;
+    }
+    case Type::member:
+    {
+      destruct(value_.member);
+      break;
+    }
+    case Type::members:
+    {
+      destruct(value_.members);
+      break;
+    }
+    default:
+    {
+      assert(false);
+      break;
+    }
+  }
+  type_ = Type::__EMPTY__;
+}
+
+bool union_with_special_names::operator==(const union_with_special_names& rhs) const {
+  if (type_ != rhs.type_) { return false; }
+  switch(type_) {
+    case Type::get:
+    {
+      return value_.get == rhs.value_.get;
+      break;
+    }
+    case Type::getter:
+    {
+      return value_.getter == rhs.value_.getter;
+      break;
+    }
+    case Type::lists:
+    {
+      return value_.lists == rhs.value_.lists;
+      break;
+    }
+    case Type::maps:
+    {
+      return value_.maps == rhs.value_.maps;
+      break;
+    }
+    case Type::name:
+    {
+      return value_.name == rhs.value_.name;
+      break;
+    }
+    case Type::name_to_value:
+    {
+      return value_.name_to_value == rhs.value_.name_to_value;
+      break;
+    }
+    case Type::names:
+    {
+      return value_.names == rhs.value_.names;
+      break;
+    }
+    case Type::prefix_tree:
+    {
+      return value_.prefix_tree == rhs.value_.prefix_tree;
+      break;
+    }
+    case Type::sets:
+    {
+      return value_.sets == rhs.value_.sets;
+      break;
+    }
+    case Type::setter:
+    {
+      return value_.setter == rhs.value_.setter;
+      break;
+    }
+    case Type::str:
+    {
+      return value_.str == rhs.value_.str;
+      break;
+    }
+    case Type::strings:
+    {
+      return value_.strings == rhs.value_.strings;
+      break;
+    }
+    case Type::type:
+    {
+      return value_.type == rhs.value_.type;
+      break;
+    }
+    case Type::value:
+    {
+      return value_.value == rhs.value_.value;
+      break;
+    }
+    case Type::value_to_name:
+    {
+      return value_.value_to_name == rhs.value_.value_to_name;
+      break;
+    }
+    case Type::values:
+    {
+      return value_.values == rhs.value_.values;
+      break;
+    }
+    case Type::id:
+    {
+      return value_.id == rhs.value_.id;
+      break;
+    }
+    case Type::ids:
+    {
+      return value_.ids == rhs.value_.ids;
+      break;
+    }
+    case Type::descriptor:
+    {
+      return value_.descriptor == rhs.value_.descriptor;
+      break;
+    }
+    case Type::descriptors:
+    {
+      return value_.descriptors == rhs.value_.descriptors;
+      break;
+    }
+    case Type::key:
+    {
+      return value_.key == rhs.value_.key;
+      break;
+    }
+    case Type::keys:
+    {
+      return value_.keys == rhs.value_.keys;
+      break;
+    }
+    case Type::annotation:
+    {
+      return value_.annotation == rhs.value_.annotation;
+      break;
+    }
+    case Type::annotations:
+    {
+      return value_.annotations == rhs.value_.annotations;
+      break;
+    }
+    case Type::member:
+    {
+      return value_.member == rhs.value_.member;
+      break;
+    }
+    case Type::members:
+    {
+      return value_.members == rhs.value_.members;
+      break;
+    }
+    default:
+    {
+      return true;
+      break;
+    }
+  }
+}
+
+void swap(union_with_special_names& a, union_with_special_names& b) {
+  union_with_special_names temp(std::move(a));
+  a = std::move(b);
+  b = std::move(temp);
+}
+
+}} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace test_cpp2 { namespace cpp_reflection {
+
+template uint32_t struct_with_special_names::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
+template uint32_t struct_with_special_names::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t struct_with_special_names::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t struct_with_special_names::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t struct_with_special_names::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
+template uint32_t struct_with_special_names::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t struct_with_special_names::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t struct_with_special_names::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
+
+void struct_with_special_names::__clear() {
+  get = 0;
+  getter = 0;
+  lists = 0;
+  maps = 0;
+  name = 0;
+  name_to_value = 0;
+  names = 0;
+  prefix_tree = 0;
+  sets = 0;
+  setter = 0;
+  str = 0;
+  strings = 0;
+  type = 0;
+  value = 0;
+  value_to_name = 0;
+  values = 0;
+  id = 0;
+  ids = 0;
+  descriptor = 0;
+  descriptors = 0;
+  key = 0;
+  keys = 0;
+  annotation = 0;
+  annotations = 0;
+  member = 0;
+  members = 0;
+  __isset.__clear();
+}
+
+bool struct_with_special_names::operator==(const struct_with_special_names& rhs) const {
+  if (!((get == rhs.get))) {
+    return false;
+  }
+  if (!((getter == rhs.getter))) {
+    return false;
+  }
+  if (!((lists == rhs.lists))) {
+    return false;
+  }
+  if (!((maps == rhs.maps))) {
+    return false;
+  }
+  if (!((name == rhs.name))) {
+    return false;
+  }
+  if (!((name_to_value == rhs.name_to_value))) {
+    return false;
+  }
+  if (!((names == rhs.names))) {
+    return false;
+  }
+  if (!((prefix_tree == rhs.prefix_tree))) {
+    return false;
+  }
+  if (!((sets == rhs.sets))) {
+    return false;
+  }
+  if (!((setter == rhs.setter))) {
+    return false;
+  }
+  if (!((str == rhs.str))) {
+    return false;
+  }
+  if (!((strings == rhs.strings))) {
+    return false;
+  }
+  if (!((type == rhs.type))) {
+    return false;
+  }
+  if (!((value == rhs.value))) {
+    return false;
+  }
+  if (!((value_to_name == rhs.value_to_name))) {
+    return false;
+  }
+  if (!((values == rhs.values))) {
+    return false;
+  }
+  if (!((id == rhs.id))) {
+    return false;
+  }
+  if (!((ids == rhs.ids))) {
+    return false;
+  }
+  if (!((descriptor == rhs.descriptor))) {
+    return false;
+  }
+  if (!((descriptors == rhs.descriptors))) {
+    return false;
+  }
+  if (!((key == rhs.key))) {
+    return false;
+  }
+  if (!((keys == rhs.keys))) {
+    return false;
+  }
+  if (!((annotation == rhs.annotation))) {
+    return false;
+  }
+  if (!((annotations == rhs.annotations))) {
+    return false;
+  }
+  if (!((member == rhs.member))) {
+    return false;
+  }
+  if (!((members == rhs.members))) {
+    return false;
+  }
+  return true;
+}
+
+void swap(struct_with_special_names& a, struct_with_special_names& b) {
+  using ::std::swap;
+  swap(a.get, b.get);
+  swap(a.getter, b.getter);
+  swap(a.lists, b.lists);
+  swap(a.maps, b.maps);
+  swap(a.name, b.name);
+  swap(a.name_to_value, b.name_to_value);
+  swap(a.names, b.names);
+  swap(a.prefix_tree, b.prefix_tree);
+  swap(a.sets, b.sets);
+  swap(a.setter, b.setter);
+  swap(a.str, b.str);
+  swap(a.strings, b.strings);
+  swap(a.type, b.type);
+  swap(a.value, b.value);
+  swap(a.value_to_name, b.value_to_name);
+  swap(a.values, b.values);
+  swap(a.id, b.id);
+  swap(a.ids, b.ids);
+  swap(a.descriptor, b.descriptor);
+  swap(a.descriptors, b.descriptors);
+  swap(a.key, b.key);
+  swap(a.keys, b.keys);
+  swap(a.annotation, b.annotation);
+  swap(a.annotations, b.annotations);
+  swap(a.member, b.member);
+  swap(a.members, b.members);
   swap(a.__isset, b.__isset);
 }
 

@@ -232,5 +232,203 @@ FATAL_REGISTER_ENUM_TRAITS(
     static_cast<::apache::thrift::legacy_type_id_t>(4626344424889780008ull)
   >
 );
+namespace thrift_fatal_impl_detail {
+
+class enum_with_special_names_enum_traits {
+  struct enum_with_special_names__struct_unique_strings_list {
+    using get = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::get;
+    using getter = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::getter;
+    using lists = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::lists;
+    using maps = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::maps;
+    using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::name;
+    using name_to_value = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::name_to_value;
+    using names = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::names;
+    using prefix_tree = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::prefix_tree;
+    using sets = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::sets;
+    using setter = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::setter;
+    using str = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::str;
+    using strings = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::strings;
+    using type = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::type;
+    using value = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::value;
+    using value_to_name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::value_to_name;
+    using values = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::values;
+    using id = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::id;
+    using ids = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ids;
+    using descriptor = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::descriptor;
+    using descriptors = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::descriptors;
+    using key = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::key;
+    using keys = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::keys;
+    using annotation = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::annotation;
+    using annotations = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::annotations;
+    using member = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::member;
+    using members = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::members;
+  };
+
+  public:
+  using type = ::test_cpp1::cpp_reflection::enum_with_special_names;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum_with_special_names;
+  using str = enum_with_special_names__struct_unique_strings_list;
+  using name_to_value = ::fatal::map<
+    ::fatal::pair<
+      str::get,
+      std::integral_constant<type, type::get>
+    >,
+    ::fatal::pair<
+      str::getter,
+      std::integral_constant<type, type::getter>
+    >,
+    ::fatal::pair<
+      str::lists,
+      std::integral_constant<type, type::lists>
+    >,
+    ::fatal::pair<
+      str::maps,
+      std::integral_constant<type, type::maps>
+    >,
+    ::fatal::pair<
+      str::name,
+      std::integral_constant<type, type::name>
+    >,
+    ::fatal::pair<
+      str::name_to_value,
+      std::integral_constant<type, type::name_to_value>
+    >,
+    ::fatal::pair<
+      str::names,
+      std::integral_constant<type, type::names>
+    >,
+    ::fatal::pair<
+      str::prefix_tree,
+      std::integral_constant<type, type::prefix_tree>
+    >,
+    ::fatal::pair<
+      str::sets,
+      std::integral_constant<type, type::sets>
+    >,
+    ::fatal::pair<
+      str::setter,
+      std::integral_constant<type, type::setter>
+    >,
+    ::fatal::pair<
+      str::str,
+      std::integral_constant<type, type::str>
+    >,
+    ::fatal::pair<
+      str::strings,
+      std::integral_constant<type, type::strings>
+    >,
+    ::fatal::pair<
+      str::type,
+      std::integral_constant<type, type::type>
+    >,
+    ::fatal::pair<
+      str::value,
+      std::integral_constant<type, type::value>
+    >,
+    ::fatal::pair<
+      str::value_to_name,
+      std::integral_constant<type, type::value_to_name>
+    >,
+    ::fatal::pair<
+      str::values,
+      std::integral_constant<type, type::values>
+    >,
+    ::fatal::pair<
+      str::id,
+      std::integral_constant<type, type::id>
+    >,
+    ::fatal::pair<
+      str::ids,
+      std::integral_constant<type, type::ids>
+    >,
+    ::fatal::pair<
+      str::descriptor,
+      std::integral_constant<type, type::descriptor>
+    >,
+    ::fatal::pair<
+      str::descriptors,
+      std::integral_constant<type, type::descriptors>
+    >,
+    ::fatal::pair<
+      str::key,
+      std::integral_constant<type, type::key>
+    >,
+    ::fatal::pair<
+      str::keys,
+      std::integral_constant<type, type::keys>
+    >,
+    ::fatal::pair<
+      str::annotation,
+      std::integral_constant<type, type::annotation>
+    >,
+    ::fatal::pair<
+      str::annotations,
+      std::integral_constant<type, type::annotations>
+    >,
+    ::fatal::pair<
+      str::member,
+      std::integral_constant<type, type::member>
+    >,
+    ::fatal::pair<
+      str::members,
+      std::integral_constant<type, type::members>
+    >
+  >;
+
+  class annotations {
+    struct annotations__unique_annotations_keys {};
+
+    struct annotations__unique_annotations_values {};
+
+    public:
+    using keys = annotations__unique_annotations_keys;
+    using values = annotations__unique_annotations_values;
+    using map = ::fatal::map<
+    >;
+  };
+
+  static char const *to_string(type e, char const *fallback) {
+    switch (e) {
+      case type::get: return "get";
+      case type::getter: return "getter";
+      case type::lists: return "lists";
+      case type::maps: return "maps";
+      case type::name: return "name";
+      case type::name_to_value: return "name_to_value";
+      case type::names: return "names";
+      case type::prefix_tree: return "prefix_tree";
+      case type::sets: return "sets";
+      case type::setter: return "setter";
+      case type::str: return "str";
+      case type::strings: return "strings";
+      case type::type: return "type";
+      case type::value: return "value";
+      case type::value_to_name: return "value_to_name";
+      case type::values: return "values";
+      case type::id: return "id";
+      case type::ids: return "ids";
+      case type::descriptor: return "descriptor";
+      case type::descriptors: return "descriptors";
+      case type::key: return "key";
+      case type::keys: return "keys";
+      case type::annotation: return "annotation";
+      case type::annotations: return "annotations";
+      case type::member: return "member";
+      case type::members: return "members";
+      default: return fallback;
+    }
+  }
+};
+
+} // thrift_fatal_impl_detail
+
+FATAL_REGISTER_ENUM_TRAITS(
+  ::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::enum_with_special_names_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+    module_tags::module,
+    ::apache::thrift::reflected_annotations<::test_cpp1::cpp_reflection::thrift_fatal_impl_detail::enum_with_special_names_enum_traits::annotations>,
+    static_cast<::apache::thrift::legacy_type_id_t>(958943865626138984ull)
+  >
+);
 
 }} // test_cpp1::cpp_reflection
