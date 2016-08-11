@@ -30,12 +30,6 @@
 #include <thrift/lib/cpp/protocol/TCompactProtocol.h>
 #include <thrift/lib/cpp/util/THttpParser.h>
 
-#ifdef HAVE_QUICKLZ
-extern "C" {
-#include <quicklz.h> // nolint
-}
-#endif
-
 #include <algorithm>
 #include <cassert>
 #include <string>
@@ -581,32 +575,9 @@ unique_ptr<IOBuf> THeader::untransform(
 
       buf = std::move(out);
     } else if (transId == QLZ_TRANSFORM) {
-      buf->coalesce(); // probably needed for uncompression
-      const char *src = (const char *)buf->data();
-      size_t length = buf->length();
-#ifdef HAVE_QUICKLZ
-      // according to QLZ spec, the size info is stored in first 9 bytes
-      if (length < 9 || qlz_size_compressed(src) != length) {
-        throw TApplicationException(TApplicationException::MISSING_RESULT,
-                                    "Error in qlz decompress: bad size");
-      }
-
-      size_t uncompressed_sz = qlz_size_decompressed(src);
-      const unique_ptr<qlz_state_decompress> state(new qlz_state_decompress);
-
-      unique_ptr<IOBuf> out(IOBuf::create(uncompressed_sz));
-      out->append(uncompressed_sz);
-
-      bool success = (qlz_decompress(src,
-                                     out->writableData(),
-                                     state.get()) == uncompressed_sz);
-      if (!success) {
-        throw TApplicationException(TApplicationException::MISSING_RESULT,
-                                    "Error in qlz decompress");
-      }
-      buf = std::move(out);
-#endif
-
+      throw TApplicationException(TApplicationException::MISSING_RESULT,
+                                  "QuickLZ is not supported anymore due to a"
+                                  " critical flaw in the library");
     } else {
       throw TApplicationException(TApplicationException::MISSING_RESULT,
                                 "Unknown transform");
@@ -719,32 +690,9 @@ unique_ptr<IOBuf> THeader::transform(unique_ptr<IOBuf> buf,
       out->append(compressed_sz);
       buf = std::move(out);
     } else if (transId == QLZ_TRANSFORM) {
-      if (dataSize < minCompressBytes) {
-        it = writeTrans.erase(it);
-        continue;
-      }
-
-      // max is 400B greater than uncompressed size based on QuickLZ spec
-      size_t maxCompressedLength = buf->length() + 400;
-      unique_ptr<IOBuf> out(IOBuf::create(maxCompressedLength));
-
-#ifdef HAVE_QUICKLZ
-      const unique_ptr<qlz_state_compress> state(new qlz_state_compress);
-
-      const char *src = (const char *)buf->data();
-      char *dst = (char *)out->writableData();
-
-      size_t compressed_sz = qlz_compress(
-        src, dst, buf->length(), state.get());
-
-      if (compressed_sz > maxCompressedLength) {
-        throw TTransportException(TTransportException::CORRUPTED_DATA,
-                                  "Error in qlz compress");
-      }
-
-      out->append(compressed_sz);
-#endif
-      buf = std::move(out);
+      throw TTransportException(TTransportException::CORRUPTED_DATA,
+                                "QuickLZ is not supported anymore due to a"
+                                " critical flaw in the library");
     } else {
       throw TTransportException(TTransportException::CORRUPTED_DATA,
                                 "Unknown transform");

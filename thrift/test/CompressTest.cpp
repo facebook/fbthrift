@@ -131,10 +131,6 @@ BENCHMARK(BM_Snappy, iters) {
   testMessage(3, iters, true);
 }
 
-BENCHMARK(BM_Qlz, iters) {
-  testMessage(4, iters, true);
-}
-
 // Test a 'hard' to compress message, more random.
 
 BENCHMARK(BM_UncompressedBinaryHard, iters) {
@@ -151,10 +147,6 @@ BENCHMARK(BM_ZlibHard, iters) {
 
 BENCHMARK(BM_SnappyHard, iters) {
   testMessage(3, iters, false);
-}
-
-BENCHMARK(BM_QlzHard, iters) {
-  testMessage(4, iters, false);
 }
 
 TEST(chained, none) {

@@ -73,7 +73,7 @@ using apache::thrift::protocol::T_BINARY_PROTOCOL;
  * Class that will take an IOBuf and wrap it in some thrift headers.
  * see thrift/doc/HeaderFormat.txt for details.
  *
- * Supports transforms: zlib snappy qlz
+ * Supports transforms: zlib snappy
  * Supports headers: http-style key/value per request and per connection
  * other: Protocol Id and seq ID in header.
  *
@@ -213,7 +213,7 @@ class THeader {
     ZLIB_TRANSFORM = 0x01,
     HMAC_TRANSFORM = 0x02, // Deprecated and no longer supported
     SNAPPY_TRANSFORM = 0x03,
-    QLZ_TRANSFORM = 0x04,
+    QLZ_TRANSFORM = 0x04, // Deprecated and no longer supported
   };
 
   /* IOBuf interface */

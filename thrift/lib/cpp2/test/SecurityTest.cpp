@@ -220,12 +220,6 @@ TEST(Security, CompressionSnappy) {
   });
 }
 
-TEST(Security, DISABLED_CompressionQlz) {
-  runTest([](HeaderClientChannel* channel) {
-    channel->setTransform(transport::THeader::QLZ_TRANSFORM);
-  });
-}
-
 TEST(Security, ProtocolBinary) {
   runTest([](HeaderClientChannel* channel) {
     channel->setProtocolId(protocol::T_BINARY_PROTOCOL);

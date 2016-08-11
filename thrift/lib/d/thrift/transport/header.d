@@ -40,9 +40,9 @@ final class THeaderTransport : TBaseFramedTransport {
   enum Transform : ubyte {
     None = 0x00,
     Zlib = 0x01,
-    HMAC = 0x02,
+    HMAC = 0x02, // Deprecated and no longer supported
     Snappy = 0x03,
-    QLZ = 0x04,
+    QLZ = 0x04, // Deprecated and no longer supported
   }
 
   enum Info {
