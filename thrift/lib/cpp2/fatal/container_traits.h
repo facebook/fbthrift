@@ -30,7 +30,8 @@
 namespace apache { namespace thrift {
 
 // Update `thrift_string_traits` documentation in `reflection.h` after making
-// any changes to the interface
+// any changes to the interface, and `test_thrift_string_traits` in
+// `traits_test_helpers.h`.
 template <typename C, typename T, typename A>
 struct thrift_string_traits<std::basic_string<C, T, A>> {
   using type = std::basic_string<C, T, A>;
@@ -56,6 +57,9 @@ struct thrift_string_traits<std::basic_string<C, T, A>> {
   static value_type const *c_str(type const &what) { return what.c_str(); }
 };
 
+// Update `thrift_string_traits` documentation in `reflection.h` after making
+// any changes to the interface, and `test_thrift_string_traits` in
+// `traits_test_helpers.h`.
 template <>
 struct thrift_string_traits<folly::fbstring> {
   using type = folly::fbstring;
@@ -82,7 +86,8 @@ struct thrift_string_traits<folly::fbstring> {
 };
 
 // Update `thrift_list_traits` documentation in `reflection.h` after making
-// any changes to the interface
+// any changes to the interface, and test_thrift_list_traits in
+// `traits_test_helpers.h`.
 template <typename T, typename A>
 struct thrift_list_traits<std::vector<T, A>> {
   using type = std::vector<T, A>;
@@ -112,6 +117,9 @@ struct thrift_list_traits<std::vector<T, A>> {
   static size_type size(type const &what) { return what.size(); }
 };
 
+// Update `thrift_set_traits` documentation in `reflection.h` after making
+// any changes to the interface, and `test_thrift_set_traits` in
+// `traits_test_helpers.h`.
 template <typename K, typename C, typename A>
 struct thrift_set_traits<std::set<K, C, A>> {
   using type = std::set<K, C, A>;
@@ -132,6 +140,12 @@ struct thrift_set_traits<std::set<K, C, A>> {
 
   static void clear(type &what) { what.clear(); }
   static bool empty(type const &what) { return what.empty(); }
+  static iterator find(type &what, value_type const &val) {
+    return what.find(val);
+  }
+  static const_iterator find(type const &what, value_type const &val) {
+    return what.find(val);
+  }
   static iterator insert(
       type &what, const_iterator position, value_type const &val) {
     return what.insert(position, val);
@@ -144,7 +158,8 @@ struct thrift_set_traits<std::set<K, C, A>> {
 };
 
 // Update `thrift_set_traits` documentation in `reflection.h` after making
-// any changes to the interface
+// any changes to the interface, and `test_thrift_set_traits` in
+// `traits_test_helpers.h`.
 template <typename K, typename H, typename E, typename A>
 struct thrift_set_traits<std::unordered_set<K, H, E, A>> {
   using type = std::unordered_set<K, H, E, A>;
@@ -168,6 +183,12 @@ struct thrift_set_traits<std::unordered_set<K, H, E, A>> {
 
   static void clear(type &what) { what.clear(); }
   static bool empty(type const &what) { return what.empty(); }
+  static iterator find(type &what, value_type const &val) {
+    return what.find(val);
+  }
+  static const_iterator find(type const &what, value_type const &val) {
+    return what.find(val);
+  }
   static iterator insert(
       type &what, const_iterator position, value_type const &val) {
     return what.insert(position, val);
@@ -179,6 +200,9 @@ struct thrift_set_traits<std::unordered_set<K, H, E, A>> {
   static size_type size(type const &what) { return what.size(); }
 };
 
+// Update `thrift_map_traits` documentation in `reflection.h` after making
+// any changes to the interface, and `test_thrift_map_traits` in
+// `traits_test_helpers.h`.
 template <typename K, typename T, typename C, typename A>
 struct thrift_map_traits<std::map<K, T, C, A>> {
   using type = std::map<K, T, C, A>;
@@ -209,6 +233,10 @@ struct thrift_map_traits<std::map<K, T, C, A>> {
 
   static void clear(type &what) { what.clear(); }
   static bool empty(type const &what) { return what.empty(); }
+  static iterator find(type &what, key_type const &k) { return what.find(k); }
+  static const_iterator find(type const &what, key_type const &k) {
+    return what.find(k);
+  }
   static mapped_type& get_or_create(type &what, key_type const &k) {
     return what[k];
   }
@@ -219,7 +247,8 @@ struct thrift_map_traits<std::map<K, T, C, A>> {
 };
 
 // Update `thrift_map_traits` documentation in `reflection.h` after making
-// any changes to the interface
+// any changes to the interface, and `test_thrift_map_traits` in
+// `traits_test_helpers.h`.
 template <typename K, typename T, typename H, typename E, typename A>
 struct thrift_map_traits<std::unordered_map<K, T, H, E, A>> {
   using type = std::unordered_map<K, T, H, E, A>;
@@ -250,6 +279,10 @@ struct thrift_map_traits<std::unordered_map<K, T, H, E, A>> {
 
   static void clear(type &what) { what.clear(); }
   static bool empty(type const &what) { return what.empty(); }
+  static iterator find(type &what, key_type const &k) { return what.find(k); }
+  static const_iterator find(type const &what, key_type const &k) {
+    return what.find(k);
+  }
   static mapped_type& get_or_create(type &what, key_type const &k) {
     return what[k];
   }

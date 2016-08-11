@@ -133,6 +133,25 @@ struct debug_equals_impl<type_class::list<ValueTypeClass>> {
   }
 };
 
+template <typename Type, typename>
+struct debug_equals_impl_pretty {
+  static std::string go(Type const &v) {
+    return pretty_string(v);
+  }
+};
+template <typename Type>
+struct debug_equals_impl_pretty<Type, type_class::string> {
+  static std::string go(Type const &v) {
+    return folly::to<std::string>(v);
+  }
+};
+template <>
+struct debug_equals_impl_pretty<std::string, type_class::string> {
+  static std::string const &go(std::string const &v) {
+    return v;
+  }
+};
+
 template <typename KeyTypeClass, typename MappedTypeClass>
 struct debug_equals_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
   template <typename T, typename Callback>
@@ -143,31 +162,48 @@ struct debug_equals_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
     Callback &&callback
   ) {
     using traits = thrift_map_traits<T>;
+    using key_type = typename traits::key_type;
+    using mapped_impl = debug_equals_impl<MappedTypeClass>;
+    using pretty_key = debug_equals_impl_pretty<key_type, KeyTypeClass>;
 
     if (traits::size(lhs) != traits::size(rhs)) {
       callback(lhs, rhs, path, "size mismatch");
-      return false;
     }
-    auto l = traits::begin(lhs);
     auto const le = traits::end(lhs);
-    auto r = traits::begin(rhs);
     auto const re = traits::end(rhs);
-    for (std::size_t index = 0; l != le && r != re; ++l, ++r, ++index) {
-      scoped_path guard(path, index);
 
-      bool const equals = debug_equals_impl<KeyTypeClass>::equals(
-        path, traits::key(l), traits::key(r), callback
-      ) && debug_equals_impl<MappedTypeClass>::equals(
-        path, traits::mapped(l), traits::mapped(r), callback
-      );
+    bool equals = true;
 
-      if (!equals) {
-        return false;
+    for (auto l = traits::begin(lhs); l != le; ++l) {
+      auto const &key = traits::key(l);
+      scoped_path guard(path, pretty_key::go(key));
+      if (traits::find(rhs, key) == re) {
+        equals = false;
+        callback(lhs, rhs, path, "missing");
       }
     }
-    assert(l == le);
-    assert(r == re);
-    return true;
+
+    for (auto r = traits::begin(rhs); r != re; ++r) {
+      auto const &key = traits::key(r);
+      scoped_path guard(path, pretty_key::go(key));
+      if (traits::find(lhs, key) == le) {
+        equals = false;
+        callback(lhs, rhs, path, "extra");
+      }
+    }
+
+    for (auto l = traits::begin(lhs); l != le; ++l) {
+      auto const &key = traits::key(l);
+      auto r = traits::find(rhs, key);
+      if (r != re) {
+        scoped_path guard(path, pretty_key::go(key));
+        auto const& lv = traits::mapped(l);
+        auto const& rv = traits::mapped(r);
+        equals &= mapped_impl::equals(path, lv, rv, callback);
+      }
+    }
+
+    return equals;
   }
 };
 
@@ -181,26 +217,35 @@ struct debug_equals_impl<type_class::set<ValueTypeClass>> {
     Callback &&callback
   ) {
     using traits = thrift_set_traits<T>;
+    using value_type = typename traits::value_type;
+    using pretty_value = debug_equals_impl_pretty<value_type, ValueTypeClass>;
 
     if (traits::size(lhs) != traits::size(rhs)) {
       callback(lhs, rhs, path, "size mismatch");
-      return false;
     }
 
-    auto l = traits::begin(lhs);
     auto const le = traits::end(lhs);
-    auto r = traits::begin(rhs);
     auto const re = traits::end(rhs);
-    for (std::size_t index = 0; l != le && r != re; ++l, ++r, ++index) {
-      scoped_path guard(path, index);
 
-      if (!debug_equals_impl<ValueTypeClass>::equals(path, *l, *r, callback)) {
-        return false;
+    bool equals = true;
+
+    for (auto l = traits::begin(lhs); l != le; ++l) {
+      scoped_path guard(path, pretty_value::go(*l));
+      if (traits::find(rhs, *l) == re) {
+        equals = false;
+        callback(lhs, rhs, path, "missing");
       }
     }
-    assert(l == le);
-    assert(r == re);
-    return true;
+
+    for (auto r = traits::begin(rhs); r != re; ++r) {
+      scoped_path guard(path, pretty_value::go(*r));
+      if (traits::find(lhs, *r) == le) {
+        equals = false;
+        callback(lhs, rhs, path, "extra");
+      }
+    }
+
+    return equals;
   }
 };
 

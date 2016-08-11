@@ -22,6 +22,9 @@
 
 namespace apache { namespace thrift {
 
+// Update `thrift_set_traits` documentation in `reflection.h` after making
+// any changes to the interface, and `test_thrift_set_traits` in
+// `traits_test_helpers.h`.
 template <typename T, typename C, typename A, typename G>
 struct thrift_set_traits<folly::sorted_vector_set<T, C, A, G>> {
   using type = folly::sorted_vector_set<T, C, A, G>;
@@ -42,6 +45,10 @@ struct thrift_set_traits<folly::sorted_vector_set<T, C, A, G>> {
 
   static void clear(type &what) { what.clear(); }
   static bool empty(type const &what) { return what.empty(); }
+  static iterator find(type &what, key_type const &k) { return what.find(k); }
+  static const_iterator find(type const &what, key_type const &k) {
+    return what.find(k);
+  }
   static iterator insert(
       type &what, const_iterator position, value_type const &val) {
     return what.insert(position, val);
@@ -53,6 +60,9 @@ struct thrift_set_traits<folly::sorted_vector_set<T, C, A, G>> {
   static size_type size(type const &what) { return what.size(); }
 };
 
+// Update `thrift_map_traits` documentation in `reflection.h` after making
+// any changes to the interface, and `test_thrift_map_traits` in
+// `traits_test_helpers.h`.
 template <typename K, typename V, typename C, typename A, typename G>
 struct thrift_map_traits<folly::sorted_vector_map<K, V, C, A, G>> {
   using type = folly::sorted_vector_map<K, V, C, A, G>;
@@ -83,6 +93,10 @@ struct thrift_map_traits<folly::sorted_vector_map<K, V, C, A, G>> {
 
   static void clear(type &what) { what.clear(); }
   static bool empty(type const &what) { return what.empty(); }
+  static iterator find(type &what, key_type const &k) { return what.find(k); }
+  static const_iterator find(type const &what, key_type const &k) {
+    return what.find(k);
+  }
   static mapped_type& get_or_create(type &what, key_type const &k) {
     return what[k];
   }

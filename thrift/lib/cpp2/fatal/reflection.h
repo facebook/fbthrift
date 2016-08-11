@@ -2096,10 +2096,14 @@ template <typename> struct thrift_list_traits;
  *
  *    static void clear(type &what) { what.clear(); }
  *    static bool empty(type const &what) { return what.empty(); }
+ *    static iterator find(type &what, value_type const &val) {
+ *      return what.find(val); }
+ *    static const_iterator find(type const &what, value_type const &val) {
+ *      return what.find(val); }
  *    static iterator insert(
  *        type &what, const_iterator position, value_type const &val) {
  *      return what.insert(position, val); }
- *    static iteratorinsert(
+ *    static iterator insert(
  *        type &what, const_iterator position, value_type &&val) {
  *      return what.insert(position, std::move(e)); }
  *    static size_type size(type const &what) { return what.size(); }
@@ -2148,13 +2152,18 @@ template <typename> struct thrift_set_traits;
  *    static const_iterator cend(type const &what) { return what.end(); }
  *    static const_iterator end(type const &what) { return what.end(); }
  *
- *    key_const_reference key(const_iterator i) { return i->first; }
- *    key_const_reference key(iterator i) { return i->first; }
- *    mapped_const_reference mapped(const_iterator i) { return i->second; }
- *    mapped_reference mapped(iterator i) { return i->second; }
+ *    static key_const_reference key(const_iterator i) { return i->first; }
+ *    static key_const_reference key(iterator i) { return i->first; }
+ *    static mapped_const_reference mapped(const_iterator i) {
+ *      return i->second; }
+ *    static mapped_reference mapped(iterator i) { return i->second; }
  *
  *    static void clear(type &what) { what.clear(); }
  *    static bool empty(type const &what) { return what.empty(); }
+ *    static iterator find(type &what, key_type const &k) {
+ *      return what.find(k); }
+ *    static const_iterator find(type const &what, key_type const &k) {
+ *      return what.find(k); }
  *    static mapped_type& get_or_create(type &what, key_type const &k) {
  *      return what[k]; }
  *    static mapped_type& get_or_create(type &what, key_type &&k) {

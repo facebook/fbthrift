@@ -190,12 +190,27 @@ TEST(fatal_debug, fieldI) {
 TEST(fatal_debug, fieldM) {
   auto pod = test_data();
   pod.fieldM.clear();
-  TEST_IMPL(pod, "<root>.fieldM");
+  TEST_IMPL(
+      pod,
+      "<root>.fieldM" /* size-mismatch */,
+      "<root>.fieldM.2" /* extra */,
+      "<root>.fieldM.4" /* extra */,
+      "<root>.fieldM.6" /* extra */,
+      "<root>.fieldM.8" /* extra */);
   pod.fieldM.insert(11);
   pod.fieldM.insert(12);
   pod.fieldM.insert(13);
   pod.fieldM.insert(14);
-  TEST_IMPL(pod, "<root>.fieldM.0");
+  TEST_IMPL(
+      pod,
+      "<root>.fieldM.11" /* missing */,
+      "<root>.fieldM.12" /* missing */,
+      "<root>.fieldM.13" /* missing */,
+      "<root>.fieldM.14" /* missing */,
+      "<root>.fieldM.2" /* extra */,
+      "<root>.fieldM.4" /* extra */,
+      "<root>.fieldM.6" /* extra */,
+      "<root>.fieldM.8" /* extra */);
   pod.fieldM = test_data().fieldM;
   TEST_IMPL(pod);
 }
@@ -203,7 +218,12 @@ TEST(fatal_debug, fieldM) {
 TEST(fatal_debug, fieldQ) {
   auto pod = test_data();
   pod.fieldQ.clear();
-  TEST_IMPL(pod, "<root>.fieldQ");
+  TEST_IMPL(
+      pod,
+      "<root>.fieldQ" /* size-mismatch */,
+      "<root>.fieldQ.a1" /* extra */,
+      "<root>.fieldQ.a2" /* extra */,
+      "<root>.fieldQ.a3" /* extra */);
   structA a1;
   a1.a = 1;
   a1.b = "1";
@@ -216,7 +236,14 @@ TEST(fatal_debug, fieldQ) {
   pod.fieldQ["A1"] = a1;
   pod.fieldQ["A2"] = a2;
   pod.fieldQ["A3"] = a3;
-  TEST_IMPL(pod, "<root>.fieldQ.0");
+  TEST_IMPL(
+      pod,
+      "<root>.fieldQ.A1" /* missing */,
+      "<root>.fieldQ.A2" /* missing */,
+      "<root>.fieldQ.A3" /* missing */,
+      "<root>.fieldQ.a1" /* extra */,
+      "<root>.fieldQ.a2" /* extra */,
+      "<root>.fieldQ.a3" /* extra */);
   pod.fieldQ = test_data().fieldQ;
   TEST_IMPL(pod);
 }

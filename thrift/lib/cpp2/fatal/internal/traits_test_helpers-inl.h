@@ -311,6 +311,15 @@ void test_thrift_set_traits() {
     EXPECT_TRUE(traits::empty(s));
     EXPECT_EQ(0, s.size());
   }
+
+  {
+    T s(detail::test_data::primes.begin(), detail::test_data::primes.end());
+    T const &sconst = s;
+    auto k = 17;
+    EXPECT_EQ(1, s.count(k));
+    EXPECT_EQ(s.find(k), traits::find(s, k));
+    EXPECT_EQ(sconst.find(k), traits::find(sconst, k));
+  }
 }
 
 template <typename T>
@@ -372,6 +381,18 @@ void test_thrift_map_traits() {
     EXPECT_EQ(s.size(), traits::size(s));
     EXPECT_TRUE(traits::empty(s));
     EXPECT_EQ(0, s.size());
+  }
+
+  {
+    T s(
+      detail::test_data::primes_2x.begin(),
+      detail::test_data::primes_2x.end()
+    );
+    T const &sconst = s;
+    auto k = 17;
+    EXPECT_EQ(1, s.count(k));
+    EXPECT_EQ(s.find(17), traits::find(s, 17));
+    EXPECT_EQ(sconst.find(17), traits::find(sconst, 17));
   }
 }
 
