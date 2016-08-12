@@ -29,11 +29,6 @@
 
 namespace test_cpp2 { namespace simple_cpp_reflection {
 
-// TODO: undef this once union deserialization has a fix
-// this basically disables testing unions, because unions are broken
-// in the JSON readers when using the legacy deserializer
-#define UNIONS_STILL_BROKEN
-
 TYPED_TEST_CASE(MultiProtocolTest, protocol_type_pairs);
 TYPED_TEST_CASE(CompareProtocolTest, protocol_type_pairs);
 
@@ -209,7 +204,6 @@ TYPED_TEST(CompareProtocolTest, test_struct_xfer) {
   expect_same_serialized_size(a1, this->st1.writer);
 }
 
-#ifndef UNIONS_STILL_BROKEN
 TYPED_TEST(CompareProtocolTest, test_union_xfer) {
   union1 a1, a2, b1, b2;
   a1.set_field_i64(0x1ABBADABAD00);
@@ -218,6 +212,9 @@ TYPED_TEST(CompareProtocolTest, test_union_xfer) {
   const std::size_t nwx = serializer_write(a2, this->st2.writer);
   EXPECT_EQ(lwx, nwx);
 
+  this->prep_read();
+  this->debug_buffer();
+
   const std::size_t lrx = b1.read(&this->st1.reader);
   const std::size_t nrx = serializer_read(b2, this->st2.reader);
   EXPECT_EQ(lrx, nrx);
@@ -225,7 +222,6 @@ TYPED_TEST(CompareProtocolTest, test_union_xfer) {
 
   expect_same_serialized_size(a1, this->st1.writer);
 }
-#endif /* UNIONS_STILL_BROKEN */
 
 namespace {
   const std::array<uint8_t, 5> test_buffer{{0xBA, 0xDB, 0xEE, 0xF0, 0x42}};

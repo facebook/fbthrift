@@ -726,9 +726,8 @@ public:
       xfer += protocol.readFieldEnd();
       xfer += protocol.readFieldBegin(fname, ftype, fid);
       if(UNLIKELY(ftype != protocol::T_STOP)) {
-        // TODO: TProtocolException::throwUnionMissingStop() once
-        // union deserialization is fixed
-        xfer += protocol.readFieldEnd();
+        using apache::thrift::protocol::TProtocolException;
+        TProtocolException::throwUnionMissingStop();
       }
       xfer += protocol.readStructEnd();
     }
