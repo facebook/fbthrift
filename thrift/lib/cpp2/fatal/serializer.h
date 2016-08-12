@@ -19,7 +19,7 @@
 #include <thrift/lib/cpp2/fatal/reflection.h>
 #include <thrift/lib/cpp2/fatal/container_traits.h>
 #include <vector>
-#include <array>
+#include <bitset>
 #include <iostream>
 #include <type_traits>
 #include <iterator>
@@ -865,7 +865,7 @@ private:
   using required_fields = fatal::first<all_fields>;
   using optional_fields = fatal::second<all_fields>;
 
-  using isset_array = std::array<bool, fatal::size<required_fields>::value>;
+  using isset_array = std::bitset<fatal::size<required_fields>::value>;
 
   // mapping member fname -> fid
   struct member_fname_to_fid {
@@ -946,7 +946,8 @@ public:
     isset_array required_isset = {};
 
     xfer += protocol.readStructBegin(fname);
-    DVLOG(3) << "start reading struct: " << fname;
+    DVLOG(3) << "start reading struct: " << fname << " ("
+      << fatal::z_data<typename traits::name>() << ")";
 
     while(true) {
       xfer += protocol.readFieldBegin(fname, ftype, fid);
@@ -992,8 +993,8 @@ public:
       xfer += protocol.readFieldEnd();
     }
 
-    for(bool matched : required_isset) {
-      if(!matched) {
+    for(std::size_t idx = 0; idx < required_isset.size(); idx++) {
+      if(!required_isset[idx]) {
         throw apache::thrift::TProtocolException(
           TProtocolException::MISSING_REQUIRED_FIELD,
           "Required field was not found in serialized data!");
