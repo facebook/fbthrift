@@ -21,7 +21,8 @@ sudo yum install -y \
     snappy-devel \
     libgsasl-devel \
     numactl-devel \
-    numactl-libs
+    numactl-libs \
+    cmake
 
 # no rpm for this?
 if [ ! -e double-conversion ]; then
@@ -34,3 +35,4 @@ echo "Fetching double-conversion from git (yum failed)"
 fi
 
 install_folly centos  # needs git
+install_mstch centos  # needs git, cmake

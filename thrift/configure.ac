@@ -116,6 +116,8 @@ if test "$with_cpp" = "yes";  then
              [Please install snappy library])])
   AC_CHECK_LIB([wangle], [getenv], [], [AC_MSG_ERROR(
              [Please install the wangle library from https://github.com/facebook/wangle])])
+  AC_CHECK_LIB([mstch], [getenv], [], [AC_MSG_ERROR(
+             [Please install the mstch libarary from https://github.com/no1msd/mstch])])
 
   AC_CHECK_LIB([numa], [numa_available],[
     AC_CHECK_HEADER([numa.h], [
@@ -145,6 +147,9 @@ if test "$with_cpp" = "yes";  then
     AC_MSG_ERROR([Please install libsnappy-dev])
   ], [])
 
+  AC_CHECK_HEADERS([mstch/mstch.hpp], [], [
+    AC_MSG_ERROR([Please install mstch])
+  ], [])
 
   AX_LIB_ZLIB([1.2.3])
   have_zlib=$success

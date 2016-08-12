@@ -92,8 +92,10 @@ thrift1_SOURCES += generate/t_cpp_generator.cc \
                   generate/t_js_generator.cc \
                   generate/t_android_lite_generator.cc
 
-thrift1_LDFLAGS = -lfolly -lcrypto -lglog
+thrift1_LDFLAGS = -lfolly -lcrypto -lglog -lmstch
 thrift1_LDADD = @LEXLIB@ libparse.la libthriftcompilerbase.la
+
+template_dir = $(pkgdatadir)/templates
 
 libparse_la_CPPFLAGS = $(AM_CPPFLAGS) -DTHRIFTY_HH=\"thrift/compiler/thrifty.hh\"
 libparse_la_SOURCES = thrifty.yy \
