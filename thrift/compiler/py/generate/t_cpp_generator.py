@@ -3178,7 +3178,10 @@ class CppGenerator(t_generator.Generator):
         # Eat the stop byte that terminates union content
         if obj.is_union:
             s1('xfer += iprot->readFieldBegin(fname, ftype, fid);')
-            s1('xfer += iprot->readFieldEnd();')
+            with s1('if (UNLIKELY(ftype != {proto_ns}::T_STOP))'
+                    .format(proto_ns="apache::thrift::protocol")).scope:
+                s1('using apache::thrift::protocol::TProtocolException;')
+                s1('TProtocolException::throwUnionMissingStop();')
         if struct_options.has_serialized_fields:
             with s1('if (fserialized)').scope:
                 out('iprot->readFromPositionAndAppend(fbegin, serialized);')

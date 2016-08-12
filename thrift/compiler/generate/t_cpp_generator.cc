@@ -1992,7 +1992,12 @@ void t_cpp_generator::generate_union_reader(ofstream& out,
 
   indent(out) << "xfer += iprot->readFieldEnd();" << endl;
   indent(out) << "xfer += iprot->readFieldBegin(fname, ftype, fid);" << endl;
-  indent(out) << "xfer += iprot->readFieldEnd();" << endl;
+  indent(out) << "if (UNLIKELY(ftype != apache::thrift::protocol::T_STOP)) {"
+              << endl;
+  indent(out) << "  using apache::thrift::protocol::TProtocolException;"
+              << endl;
+  indent(out) << "  TProtocolException::throwUnionMissingStop();" << endl;
+  indent(out) << "}" << endl;
   indent_down();
   indent(out) << "}" << endl;
 

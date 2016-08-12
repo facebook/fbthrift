@@ -117,7 +117,10 @@ uint32_t ComplexUnion::read(apache::thrift::protocol::TProtocol* iprot) {
     }
     xfer += iprot->readFieldEnd();
     xfer += iprot->readFieldBegin(fname, ftype, fid);
-    xfer += iprot->readFieldEnd();
+    if (UNLIKELY(ftype != apache::thrift::protocol::T_STOP)) {
+      using apache::thrift::protocol::TProtocolException;
+      TProtocolException::throwUnionMissingStop();
+    }
   }
   xfer += iprot->readStructEnd();
 

@@ -96,6 +96,8 @@ class TProtocolException : public apache::thrift::TLibraryException {
     }
   }
 
+  [[noreturn]] static void throwUnionMissingStop();
+
  protected:
   /**
    * Error code

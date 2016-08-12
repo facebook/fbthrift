@@ -275,7 +275,10 @@ uint32_t union1::read(apache::thrift::protocol::TProtocol* iprot) {
     }
     xfer += iprot->readFieldEnd();
     xfer += iprot->readFieldBegin(fname, ftype, fid);
-    xfer += iprot->readFieldEnd();
+    if (UNLIKELY(ftype != apache::thrift::protocol::T_STOP)) {
+      using apache::thrift::protocol::TProtocolException;
+      TProtocolException::throwUnionMissingStop();
+    }
   }
   xfer += iprot->readStructEnd();
 
@@ -413,7 +416,10 @@ uint32_t union2::read(apache::thrift::protocol::TProtocol* iprot) {
     }
     xfer += iprot->readFieldEnd();
     xfer += iprot->readFieldBegin(fname, ftype, fid);
-    xfer += iprot->readFieldEnd();
+    if (UNLIKELY(ftype != apache::thrift::protocol::T_STOP)) {
+      using apache::thrift::protocol::TProtocolException;
+      TProtocolException::throwUnionMissingStop();
+    }
   }
   xfer += iprot->readStructEnd();
 
@@ -551,7 +557,10 @@ uint32_t union3::read(apache::thrift::protocol::TProtocol* iprot) {
     }
     xfer += iprot->readFieldEnd();
     xfer += iprot->readFieldBegin(fname, ftype, fid);
-    xfer += iprot->readFieldEnd();
+    if (UNLIKELY(ftype != apache::thrift::protocol::T_STOP)) {
+      using apache::thrift::protocol::TProtocolException;
+      TProtocolException::throwUnionMissingStop();
+    }
   }
   xfer += iprot->readStructEnd();
 
@@ -840,7 +849,10 @@ uint32_t unionA::read(apache::thrift::protocol::TProtocol* iprot) {
     }
     xfer += iprot->readFieldEnd();
     xfer += iprot->readFieldBegin(fname, ftype, fid);
-    xfer += iprot->readFieldEnd();
+    if (UNLIKELY(ftype != apache::thrift::protocol::T_STOP)) {
+      using apache::thrift::protocol::TProtocolException;
+      TProtocolException::throwUnionMissingStop();
+    }
   }
   xfer += iprot->readStructEnd();
 

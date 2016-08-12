@@ -6,6 +6,14 @@ struct SubStruct {
   12: string mySubString = "foobar",
 }
 
+union SubUnion {
+  209: string text,
+}
+
+const SubUnion kSubUnion = {
+  "text": "glorious",
+}
+
 struct OneOfEach {
   1: bool myBool = 1,
   2: byte myByte = 17,
@@ -30,4 +38,5 @@ struct OneOfEach {
     "baz",
   ],
   11: SubStruct myStruct,
+  12: SubUnion myUnion = kSubUnion,
 }
