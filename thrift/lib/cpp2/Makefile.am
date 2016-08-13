@@ -85,6 +85,9 @@ thrift2include_fatal_HEADERS = \
 	fatal/internal/folly_dynamic-inl-post.h \
 	fatal/folly_dynamic.h \
 	fatal/indenter.h \
+	fatal/internal/legacy_reflection-inl-pre.h \
+	fatal/internal/legacy_reflection-inl-post.h \
+	fatal/legacy_reflection.h \
 	fatal/internal/merge-inl-pre.h \
 	fatal/internal/merge-inl-post.h \
 	fatal/merge.h \
@@ -98,6 +101,9 @@ thrift2include_fatal_HEADERS = \
 	fatal/internal/traits_test_helpers-inl.h \
 	fatal/internal/test_helpers.h \
 	fatal/variant.h
+
+thrift2include_fatal_SOURCES = \
+	fatal/legacy_reflection.cpp
 
 thrift2include_serverdir = $(thrift2includedir)/server
 
