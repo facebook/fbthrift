@@ -54,8 +54,6 @@ class RecursiveStruct;
 
 class StructWithContainers;
 
-class StructWithSharedConst;
-
 class MyUnion : public apache::thrift::TStructType<MyUnion> {
  public:
   enum class Type {
@@ -744,85 +742,5 @@ class StructWithContainers : public apache::thrift::TStructType<StructWithContai
 class StructWithContainers;
 void merge(const StructWithContainers& from, StructWithContainers& to);
 void merge(StructWithContainers&& from, StructWithContainers& to);
-void swap(StructWithSharedConst &a, StructWithSharedConst &b);
-
-class StructWithSharedConst : public apache::thrift::TStructType<StructWithSharedConst> {
- public:
-
-  static const uint64_t _reflection_id = 17232433652683371404U;
-  static void _reflection_register(::apache::thrift::reflection::Schema&);
-  StructWithSharedConst() {
-  }
-  template <
-    typename T__ThriftWrappedArgument__Ctor,
-    typename... Args__ThriftWrappedArgument__Ctor
-  >
-  explicit StructWithSharedConst(
-    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
-    Args__ThriftWrappedArgument__Ctor&&... args
-  ):
-    StructWithSharedConst(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    opt_shared_const = arg.move();
-  }
-  template <
-    typename T__ThriftWrappedArgument__Ctor,
-    typename... Args__ThriftWrappedArgument__Ctor
-  >
-  explicit StructWithSharedConst(
-    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg,
-    Args__ThriftWrappedArgument__Ctor&&... args
-  ):
-    StructWithSharedConst(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    shared_const = arg.move();
-  }
-  template <
-    typename T__ThriftWrappedArgument__Ctor,
-    typename... Args__ThriftWrappedArgument__Ctor
-  >
-  explicit StructWithSharedConst(
-    ::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg,
-    Args__ThriftWrappedArgument__Ctor&&... args
-  ):
-    StructWithSharedConst(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    req_shared_const = arg.move();
-  }
-
-  StructWithSharedConst(const StructWithSharedConst&) = default;
-  StructWithSharedConst& operator=(const StructWithSharedConst& src)= default;
-  StructWithSharedConst(StructWithSharedConst&&) = default;
-  StructWithSharedConst& operator=(StructWithSharedConst&&) = default;
-
-  void __clear();
-
-  virtual ~StructWithSharedConst() throw() {}
-
-  std::shared_ptr<const MyField> opt_shared_const;
-  std::shared_ptr<const MyField> shared_const;
-  std::shared_ptr<const MyField> req_shared_const;
-
-  struct __isset {
-    __isset() { __clear(); } 
-    void __clear() {
-    }
-  } __isset;
-
-  bool operator == (const StructWithSharedConst &) const;
-  bool operator != (const StructWithSharedConst& rhs) const {
-    return !(*this == rhs);
-  }
-
-  bool operator < (const StructWithSharedConst & ) const;
-
-  uint32_t read(apache::thrift::protocol::TProtocol* iprot);
-  uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
-
-};
-
-class StructWithSharedConst;
-void merge(const StructWithSharedConst& from, StructWithSharedConst& to);
-void merge(StructWithSharedConst&& from, StructWithSharedConst& to);
 
 
