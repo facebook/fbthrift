@@ -405,7 +405,7 @@ TEST_P(SharedServerTests, ThriftServerSizeLimits) {
 namespace {
 class MyExecutor : public folly::Executor {
  public:
-  void add(std::function<void()> f) override {
+  void add(folly::Func f) override {
     calls++;
     f();
   }
@@ -431,8 +431,8 @@ TEST_P(SharedServerTests, PoolExecutorTest) {
 namespace {
 class FiberExecutor : public folly::Executor {
  public:
-  void add(std::function<void()> f) override {
-    folly::fibers::getFiberManager(*wangle::getEventBase()).add(f);
+  void add(folly::Func f) override {
+    folly::fibers::getFiberManager(*wangle::getEventBase()).add(std::move(f));
   }
 };
 }
