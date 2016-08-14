@@ -359,16 +359,16 @@ struct helper {
   static constexpr auto is_known =
     !std::is_same<reflect_type_class<T>, type_class::unknown>::value;
   static_assert(is_known, "legacy_reflection: missing reflection metadata");
-  using impl = impl<T, reflect_type_class<T>>;
-  static constexpr auto is_complete = fatal::is_complete<impl>::value;
+  using type_impl = impl<T, reflect_type_class<T>>;
+  static constexpr auto is_complete = fatal::is_complete<type_impl>::value;
   static_assert(is_complete, "legacy_reflection: incomplete handler");
 
-  static void register_into(schema_t& schema) { impl::go(schema); }
+  static void register_into(schema_t& schema) { type_impl::go(schema); }
   static constexpr folly::StringPiece name() {
-    using rname = to_c_array<typename impl::rname>;
+    using rname = to_c_array<typename type_impl::rname>;
     return {rname::data, rname::size};
   }
-  static id_t id() { return impl::rid(); }
+  static id_t id() { return type_impl::rid(); }
 };
 
 }
