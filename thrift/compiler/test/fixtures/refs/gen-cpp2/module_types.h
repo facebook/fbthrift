@@ -23,6 +23,7 @@ class MyStruct;
 class StructWithUnion;
 class RecursiveStruct;
 class StructWithContainers;
+class StructWithSharedConst;
 
 enum class TypedEnum : short {
   VAL1 = 0,
@@ -906,6 +907,99 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::StructWit
 }
 
 template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::StructWithContainers>::serializedSizeZC(Protocol const* proto,  ::cpp2::StructWithContainers const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace cpp2 {
+
+class StructWithSharedConst : private apache::thrift::detail::st::ComparisonOperators<StructWithSharedConst> {
+ public:
+
+  StructWithSharedConst() {}
+  // FragileConstructor for use in initialization lists only
+
+  StructWithSharedConst(apache::thrift::FragileConstructor, std::shared_ptr<const  ::cpp2::MyField> opt_shared_const__arg, std::shared_ptr<const  ::cpp2::MyField> shared_const__arg, std::shared_ptr<const  ::cpp2::MyField> req_shared_const__arg) :
+      opt_shared_const(std::move(opt_shared_const__arg)),
+      shared_const(std::move(shared_const__arg)),
+      req_shared_const(std::move(req_shared_const__arg)) {}
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  StructWithSharedConst(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    StructWithSharedConst(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    opt_shared_const = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  StructWithSharedConst(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    StructWithSharedConst(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    shared_const = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  StructWithSharedConst(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    StructWithSharedConst(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    req_shared_const = arg.move();
+  }
+
+  StructWithSharedConst(StructWithSharedConst&&) = default;
+
+  StructWithSharedConst(const StructWithSharedConst&) = default;
+
+  StructWithSharedConst& operator=(StructWithSharedConst&&) = default;
+
+  StructWithSharedConst& operator=(const StructWithSharedConst&) = default;
+  void __clear();
+
+  virtual ~StructWithSharedConst() throw() {}
+
+  std::shared_ptr<const  ::cpp2::MyField> opt_shared_const;
+  std::shared_ptr<const  ::cpp2::MyField> shared_const;
+  std::shared_ptr<const  ::cpp2::MyField> req_shared_const;
+
+  struct __isset {
+    void __clear() {}
+
+  } __isset;
+  bool operator==(const StructWithSharedConst& rhs) const;
+  bool operator < (const StructWithSharedConst& rhs) const;
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+};
+
+void swap(StructWithSharedConst& a, StructWithSharedConst& b);
+
+} // cpp2
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::cpp2::StructWithSharedConst>::clear( ::cpp2::StructWithSharedConst* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::StructWithSharedConst>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::StructWithSharedConst>::write(Protocol* proto,  ::cpp2::StructWithSharedConst const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::StructWithSharedConst>::read(Protocol* proto,  ::cpp2::StructWithSharedConst* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::StructWithSharedConst>::serializedSize(Protocol const* proto,  ::cpp2::StructWithSharedConst const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::StructWithSharedConst>::serializedSizeZC(Protocol const* proto,  ::cpp2::StructWithSharedConst const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

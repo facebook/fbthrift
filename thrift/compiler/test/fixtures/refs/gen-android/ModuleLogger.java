@@ -261,6 +261,33 @@ public class ModuleLogger {
         break;
       }
       
+      case StructWithSharedConst: {
+        oprot.writeStructBegin(new TStruct("StructWithSharedConst"));
+        if (mMap.containsKey(Module.StructWithSharedConst_opt_shared_const) && mMap.get(Module.StructWithSharedConst_opt_shared_const) != null) {
+          writeFieldBegin(oprot, Module.StructWithSharedConst_opt_shared_const);
+          ((ModuleLogger) mMap.get(Module.StructWithSharedConst_opt_shared_const)).write(oprot);
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.StructWithSharedConst_shared_const) && mMap.get(Module.StructWithSharedConst_shared_const) != null) {
+          writeFieldBegin(oprot, Module.StructWithSharedConst_shared_const);
+          ((ModuleLogger) mMap.get(Module.StructWithSharedConst_shared_const)).write(oprot);
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.StructWithSharedConst_req_shared_const) && mMap.get(Module.StructWithSharedConst_req_shared_const) != null) {
+          writeFieldBegin(oprot, Module.StructWithSharedConst_req_shared_const);
+          ((ModuleLogger) mMap.get(Module.StructWithSharedConst_req_shared_const)).write(oprot);
+          oprot.writeFieldEnd();
+        } else {
+          throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Required field 'StructWithSharedConst.req_shared_const' was not present!");
+        }
+      
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        break;
+      }
+      
       
     }
   }

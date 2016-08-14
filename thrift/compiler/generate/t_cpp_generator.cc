@@ -346,8 +346,12 @@ class t_cpp_generator : public t_oop_generator {
                                    bool include_values,
                                    const char* typed_name = nullptr);
 
-  bool is_reference(const t_field* f) const {
+bool is_reference(const t_field* f) const {
     return !cpp_ref_type(f, "").empty();
+  }
+
+  bool is_const_shared_ptr(const t_field* f) const {
+    return cpp_ref_type(f, "") == "std::shared_ptr<const >";
   }
 
   bool is_required(const t_field* f) const {
@@ -3216,7 +3220,12 @@ void t_cpp_generator::generate_struct_clear(ofstream& out,
       } else if (t->is_struct() || t->is_xception()) {
         auto ref = is_reference(*m_iter);
         if (ref) {
-          indent(out) << "if (" << name << ") " << name << "->__clear();" << endl;
+          if (is_const_shared_ptr(*m_iter)) {
+            indent(out) << name << ".reset();" << endl;
+          } else {
+            indent(out) << "if (" << name << ") " << name << "->__clear();" <<
+                endl;
+          }
         } else {
           indent(out) << name << ".__clear();" << endl;
         }
