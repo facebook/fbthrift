@@ -122,17 +122,16 @@ class Cpp2Worker
    * SSL stats hook
    */
   void updateSSLStats(
-      const folly::AsyncTransportWrapper* sock,
-      std::chrono::milliseconds acceptLatency,
-      wangle::SSLErrorEnum error,
-      wangle::SecureTransportType type = wangle::SecureTransportType::TLS)
-    noexcept override;
+    const folly::AsyncTransportWrapper* sock,
+    std::chrono::milliseconds acceptLatency,
+    wangle::SSLErrorEnum error,
+    SecureTransportType type = SecureTransportType::TLS) noexcept override;
 
  protected:
   void onNewConnection(folly::AsyncTransportWrapper::UniquePtr,
                        const folly::SocketAddress*,
                        const std::string&,
-                       wangle::SecureTransportType,
+                       SecureTransportType,
                        const wangle::TransportInfo&) override;
 
   SSLPolicy getSSLPolicy() {
@@ -143,7 +142,7 @@ class Cpp2Worker
       folly::AsyncTransportWrapper::UniquePtr sock,
       const folly::SocketAddress& clientAddr,
       const std::string& nextProtocolName,
-      wangle::SecureTransportType secureTransportType,
+      SecureTransportType secureTransportType,
       wangle::TransportInfo& tinfo) override;
 
  private:
