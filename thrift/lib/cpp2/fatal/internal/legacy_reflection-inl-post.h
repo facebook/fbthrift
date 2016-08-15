@@ -53,6 +53,7 @@ struct c_array {
   using type = T;
   static constexpr auto size = sizeof...(Values);
   static constexpr T data[size] = {Values...};
+  static constexpr folly::Range<const type*> range() { return {data, size}; }
 };
 template <typename T, T... Values>
 constexpr T c_array<T, Values...>::data[c_array<T, Values...>::size];
@@ -169,13 +170,13 @@ struct impl<T, type_class::enumeration> {
   using rname = get_type_full_name<rkind, module_meta, typename meta::traits>;
   static id_t rid() {
     static const auto storage =
-      get_type_id(type_t::TYPE_ENUM, fatal::z_data<rname>());
+      get_type_id(type_t::TYPE_ENUM, to_c_array<rname>::range());
     return storage;
   }
   static void go(schema_t& schema) {
     using enum_map = typename meta::traits::name_to_value;
     registering_datatype(
-        schema, fatal::z_data<rname>(), rid(), [&](datatype_t& dt) {
+        schema, to_c_array<rname>::range(), rid(), [&](datatype_t& dt) {
       dt.__isset.enumValues = true;
       fatal::foreach<fatal::sequence_map_sort<enum_map>>(visitor(), dt);
     });
@@ -210,13 +211,13 @@ struct impl<T, type_class::structure> {
   using rname = get_type_full_name<rkind, module_meta, meta>;
   static id_t rid() {
     static const auto storage =
-      get_type_id(type_t::TYPE_STRUCT, fatal::z_data<rname>());
+      get_type_id(type_t::TYPE_STRUCT, to_c_array<rname>::range());
     return storage;
   }
   static void go(schema_t& schema) {
     using members = typename meta::members;
     registering_datatype(
-        schema, fatal::z_data<rname>(), rid(), [&](datatype_t& dt) {
+        schema, to_c_array<rname>::range(), rid(), [&](datatype_t& dt) {
       dt.__isset.fields = true;
       fatal::foreach<fatal::map_values<members>>(visitor(), schema, dt);
     });
@@ -251,12 +252,12 @@ struct impl<T, type_class::variant> {
   using rname = get_type_full_name<rkind, module_meta, typename meta::traits>;
   static id_t rid() {
     static const auto storage =
-      get_type_id(type_t::TYPE_STRUCT, fatal::z_data<rname>());
+      get_type_id(type_t::TYPE_STRUCT, to_c_array<rname>::range());
     return storage;
   }
   static void go(schema_t& schema) {
     registering_datatype(
-        schema, fatal::z_data<rname>(), rid(), [&](datatype_t& dt) {
+        schema, to_c_array<rname>::range(), rid(), [&](datatype_t& dt) {
       dt.__isset.fields = true;
       fatal::foreach<typename meta::traits::descriptors>(visitor(), schema, dt);
     });
@@ -275,12 +276,12 @@ struct impl<T, type_class::list<ValueTypeClass>> {
   using rname = get_container_name<rkind, typename value_impl::rname>;
   static id_t rid() {
     static const auto storage =
-      get_type_id(type_t::TYPE_LIST, fatal::z_data<rname>());
+      get_type_id(type_t::TYPE_LIST, to_c_array<rname>::range());
     return storage;
   }
   static void go(schema_t& schema) {
     registering_datatype(
-        schema, fatal::z_data<rname>(), rid(), [&](datatype_t& dt) {
+        schema, to_c_array<rname>::range(), rid(), [&](datatype_t& dt) {
       dt.__isset.valueType = true;
       dt.valueType = value_impl::rid();
       legacy_reflection<value_type>::register_into(schema);
@@ -300,12 +301,12 @@ struct impl<T, type_class::set<ValueTypeClass>> {
   using rname = get_container_name<rkind, typename value_impl::rname>;
   static id_t rid() {
     static const auto storage =
-      get_type_id(type_t::TYPE_SET, fatal::z_data<rname>());
+      get_type_id(type_t::TYPE_SET, to_c_array<rname>::range());
     return storage;
   }
   static void go(schema_t& schema) {
     registering_datatype(
-        schema, fatal::z_data<rname>(), rid(), [&](datatype_t& dt) {
+        schema, to_c_array<rname>::range(), rid(), [&](datatype_t& dt) {
       dt.__isset.valueType = true;
       dt.valueType = value_impl::rid();
       legacy_reflection<value_type>::register_into(schema);
@@ -331,12 +332,12 @@ struct impl<T, type_class::map<KeyTypeClass, MappedTypeClass>> {
     rkind, typename key_impl::rname, typename mapped_impl::rname>;
   static id_t rid() {
     static const auto storage =
-      get_type_id(type_t::TYPE_MAP, fatal::z_data<rname>());
+      get_type_id(type_t::TYPE_MAP, to_c_array<rname>::range());
     return storage;
   }
   static void go(schema_t& schema) {
     registering_datatype(
-        schema, fatal::z_data<rname>(), rid(), [&](datatype_t& dt) {
+        schema, to_c_array<rname>::range(), rid(), [&](datatype_t& dt) {
       dt.__isset.mapKeyType = true;
       dt.mapKeyType = key_impl::rid();
       dt.__isset.valueType = true;
@@ -365,8 +366,7 @@ struct helper {
 
   static void register_into(schema_t& schema) { type_impl::go(schema); }
   static constexpr folly::StringPiece name() {
-    using rname = to_c_array<typename type_impl::rname>;
-    return {rname::data, rname::size};
+    return to_c_array<typename type_impl::rname>::range();
   }
   static id_t id() { return type_impl::rid(); }
 };
