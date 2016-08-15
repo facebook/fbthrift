@@ -100,10 +100,12 @@ void StructUsingOtherNamespace::__clear() {
 uint32_t StructUsingOtherNamespace::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("StructUsingOtherNamespace");
-  xfer += oprot->writeFieldBegin("other", apache::thrift::protocol::T_STRUCT, 1);
-  if (this->other) {xfer += this->other->write(oprot); 
+  if (this->other) {
+    xfer += oprot->writeFieldBegin("other", apache::thrift::protocol::T_STRUCT, 1);
+    if (this->other) {xfer += this->other->write(oprot); 
 } else {oprot->writeStructBegin("Included"); oprot->writeStructEnd(); oprot->writeFieldStop();}
-  xfer += oprot->writeFieldEnd();
+    xfer += oprot->writeFieldEnd();
+  }
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;

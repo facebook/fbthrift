@@ -393,18 +393,24 @@ void MyStruct::__clear() {
 uint32_t MyStruct::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("MyStruct");
-  xfer += oprot->writeFieldBegin("opt_ref", apache::thrift::protocol::T_STRUCT, 1);
-  if (this->opt_ref) {xfer += this->opt_ref->write(oprot); 
+  if (this->opt_ref) {
+    xfer += oprot->writeFieldBegin("opt_ref", apache::thrift::protocol::T_STRUCT, 1);
+    if (this->opt_ref) {xfer += this->opt_ref->write(oprot); 
 } else {oprot->writeStructBegin("MyField"); oprot->writeStructEnd(); oprot->writeFieldStop();}
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("ref", apache::thrift::protocol::T_STRUCT, 2);
-  if (this->ref) {xfer += this->ref->write(oprot); 
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->ref) {
+    xfer += oprot->writeFieldBegin("ref", apache::thrift::protocol::T_STRUCT, 2);
+    if (this->ref) {xfer += this->ref->write(oprot); 
 } else {oprot->writeStructBegin("MyField"); oprot->writeStructEnd(); oprot->writeFieldStop();}
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("req_ref", apache::thrift::protocol::T_STRUCT, 3);
-  if (this->req_ref) {xfer += this->req_ref->write(oprot); 
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->req_ref) {
+    xfer += oprot->writeFieldBegin("req_ref", apache::thrift::protocol::T_STRUCT, 3);
+    if (this->req_ref) {xfer += this->req_ref->write(oprot); 
 } else {oprot->writeStructBegin("MyField"); oprot->writeStructEnd(); oprot->writeFieldStop();}
-  xfer += oprot->writeFieldEnd();
+    xfer += oprot->writeFieldEnd();
+  }
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -546,10 +552,12 @@ void StructWithUnion::__clear() {
 uint32_t StructWithUnion::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("StructWithUnion");
-  xfer += oprot->writeFieldBegin("u", apache::thrift::protocol::T_STRUCT, 1);
-  if (this->u) {xfer += this->u->write(oprot); 
+  if (this->u) {
+    xfer += oprot->writeFieldBegin("u", apache::thrift::protocol::T_STRUCT, 1);
+    if (this->u) {xfer += this->u->write(oprot); 
 } else {oprot->writeStructBegin("MyUnion"); oprot->writeStructEnd(); oprot->writeFieldStop();}
-  xfer += oprot->writeFieldEnd();
+    xfer += oprot->writeFieldEnd();
+  }
   xfer += oprot->writeFieldBegin("aDouble", apache::thrift::protocol::T_DOUBLE, 2);
   xfer += oprot->writeDouble(this->aDouble);
   xfer += oprot->writeFieldEnd();
@@ -1101,144 +1109,160 @@ void StructWithContainers::__clear() {
 uint32_t StructWithContainers::write(apache::thrift::protocol::TProtocol* oprot) const {
   uint32_t xfer = 0;
   xfer += oprot->writeStructBegin("StructWithContainers");
-  xfer += oprot->writeFieldBegin("list_ref", apache::thrift::protocol::T_LIST, 1);
-  {
-    if (this->list_ref) {
-      const auto& _rtype102 = *this->list_ref;
-      xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, _rtype102.size());
-      std::vector<int32_t> ::const_iterator _iter103;
-      for (_iter103 = _rtype102.begin(); _iter103 != _rtype102.end(); ++_iter103)
-      {
-        xfer += oprot->writeI32((*_iter103));
+  if (this->list_ref) {
+    xfer += oprot->writeFieldBegin("list_ref", apache::thrift::protocol::T_LIST, 1);
+    {
+      if (this->list_ref) {
+        const auto& _rtype102 = *this->list_ref;
+        xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, _rtype102.size());
+        std::vector<int32_t> ::const_iterator _iter103;
+        for (_iter103 = _rtype102.begin(); _iter103 != _rtype102.end(); ++_iter103)
+        {
+          xfer += oprot->writeI32((*_iter103));
+        }
+        xfer += oprot->writeListEnd();
+      } else {
+        xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, 0);
+        xfer += oprot->writeListEnd();
       }
-      xfer += oprot->writeListEnd();
-    } else {
-      xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, 0);
-      xfer += oprot->writeListEnd();
     }
+    xfer += oprot->writeFieldEnd();
   }
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("set_ref", apache::thrift::protocol::T_SET, 2);
-  {
-    if (this->set_ref) {
-      const auto& _rtype104 = *this->set_ref;
-      xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I32, _rtype104.size());
-      std::set<int32_t> ::const_iterator _iter105;
-      for (_iter105 = _rtype104.begin(); _iter105 != _rtype104.end(); ++_iter105)
-      {
-        xfer += oprot->writeI32((*_iter105));
+  if (this->set_ref) {
+    xfer += oprot->writeFieldBegin("set_ref", apache::thrift::protocol::T_SET, 2);
+    {
+      if (this->set_ref) {
+        const auto& _rtype104 = *this->set_ref;
+        xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I32, _rtype104.size());
+        std::set<int32_t> ::const_iterator _iter105;
+        for (_iter105 = _rtype104.begin(); _iter105 != _rtype104.end(); ++_iter105)
+        {
+          xfer += oprot->writeI32((*_iter105));
+        }
+        xfer += oprot->writeSetEnd();
+      } else {
+        xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I32, 0);
+        xfer += oprot->writeListEnd();
       }
-      xfer += oprot->writeSetEnd();
-    } else {
-      xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I32, 0);
-      xfer += oprot->writeListEnd();
     }
+    xfer += oprot->writeFieldEnd();
   }
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("map_ref", apache::thrift::protocol::T_MAP, 3);
-  {
-    if (this->map_ref) {
-      const auto& _rtype106 = *this->map_ref;
-      xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, _rtype106.size());
-      std::map<int32_t, int32_t> ::const_iterator _iter107;
-      for (_iter107 = _rtype106.begin(); _iter107 != _rtype106.end(); ++_iter107)
-      {
-        xfer += oprot->writeI32(_iter107->first);
-        xfer += oprot->writeI32(_iter107->second);
+  if (this->map_ref) {
+    xfer += oprot->writeFieldBegin("map_ref", apache::thrift::protocol::T_MAP, 3);
+    {
+      if (this->map_ref) {
+        const auto& _rtype106 = *this->map_ref;
+        xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, _rtype106.size());
+        std::map<int32_t, int32_t> ::const_iterator _iter107;
+        for (_iter107 = _rtype106.begin(); _iter107 != _rtype106.end(); ++_iter107)
+        {
+          xfer += oprot->writeI32(_iter107->first);
+          xfer += oprot->writeI32(_iter107->second);
+        }
+        xfer += oprot->writeMapEnd();
+      } else {
+        xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, 0);
+        xfer += oprot->writeMapEnd();
       }
-      xfer += oprot->writeMapEnd();
-    } else {
-      xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, 0);
-      xfer += oprot->writeMapEnd();
     }
+    xfer += oprot->writeFieldEnd();
   }
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("list_ref_unique", apache::thrift::protocol::T_LIST, 4);
-  {
-    if (this->list_ref_unique) {
-      const auto& _rtype108 = *this->list_ref_unique;
-      xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, _rtype108.size());
-      std::vector<int32_t> ::const_iterator _iter109;
-      for (_iter109 = _rtype108.begin(); _iter109 != _rtype108.end(); ++_iter109)
-      {
-        xfer += oprot->writeI32((*_iter109));
+  if (this->list_ref_unique) {
+    xfer += oprot->writeFieldBegin("list_ref_unique", apache::thrift::protocol::T_LIST, 4);
+    {
+      if (this->list_ref_unique) {
+        const auto& _rtype108 = *this->list_ref_unique;
+        xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, _rtype108.size());
+        std::vector<int32_t> ::const_iterator _iter109;
+        for (_iter109 = _rtype108.begin(); _iter109 != _rtype108.end(); ++_iter109)
+        {
+          xfer += oprot->writeI32((*_iter109));
+        }
+        xfer += oprot->writeListEnd();
+      } else {
+        xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, 0);
+        xfer += oprot->writeListEnd();
       }
-      xfer += oprot->writeListEnd();
-    } else {
-      xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, 0);
-      xfer += oprot->writeListEnd();
     }
+    xfer += oprot->writeFieldEnd();
   }
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("set_ref_shared", apache::thrift::protocol::T_SET, 5);
-  {
-    if (this->set_ref_shared) {
-      const auto& _rtype110 = *this->set_ref_shared;
-      xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I32, _rtype110.size());
-      std::set<int32_t> ::const_iterator _iter111;
-      for (_iter111 = _rtype110.begin(); _iter111 != _rtype110.end(); ++_iter111)
-      {
-        xfer += oprot->writeI32((*_iter111));
+  if (this->set_ref_shared) {
+    xfer += oprot->writeFieldBegin("set_ref_shared", apache::thrift::protocol::T_SET, 5);
+    {
+      if (this->set_ref_shared) {
+        const auto& _rtype110 = *this->set_ref_shared;
+        xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I32, _rtype110.size());
+        std::set<int32_t> ::const_iterator _iter111;
+        for (_iter111 = _rtype110.begin(); _iter111 != _rtype110.end(); ++_iter111)
+        {
+          xfer += oprot->writeI32((*_iter111));
+        }
+        xfer += oprot->writeSetEnd();
+      } else {
+        xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I32, 0);
+        xfer += oprot->writeListEnd();
       }
-      xfer += oprot->writeSetEnd();
-    } else {
-      xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I32, 0);
-      xfer += oprot->writeListEnd();
     }
+    xfer += oprot->writeFieldEnd();
   }
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("map_ref_custom", apache::thrift::protocol::T_MAP, 6);
-  {
-    if (this->map_ref_custom) {
-      const auto& _rtype112 = *this->map_ref_custom;
-      xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, _rtype112.size());
-      const std::map<int32_t, int32_t>::const_iterator _iter113;
-      for (_iter113 = _rtype112.begin(); _iter113 != _rtype112.end(); ++_iter113)
-      {
-        xfer += oprot->writeI32(_iter113->first);
-        xfer += oprot->writeI32(_iter113->second);
+  if (this->map_ref_custom) {
+    xfer += oprot->writeFieldBegin("map_ref_custom", apache::thrift::protocol::T_MAP, 6);
+    {
+      if (this->map_ref_custom) {
+        const auto& _rtype112 = *this->map_ref_custom;
+        xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, _rtype112.size());
+        const std::map<int32_t, int32_t>::const_iterator _iter113;
+        for (_iter113 = _rtype112.begin(); _iter113 != _rtype112.end(); ++_iter113)
+        {
+          xfer += oprot->writeI32(_iter113->first);
+          xfer += oprot->writeI32(_iter113->second);
+        }
+        xfer += oprot->writeMapEnd();
+      } else {
+        xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, 0);
+        xfer += oprot->writeMapEnd();
       }
-      xfer += oprot->writeMapEnd();
-    } else {
-      xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, 0);
-      xfer += oprot->writeMapEnd();
     }
+    xfer += oprot->writeFieldEnd();
   }
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("list_ref_shared_const", apache::thrift::protocol::T_LIST, 7);
-  {
-    if (this->list_ref_shared_const) {
-      const auto& _rtype114 = *this->list_ref_shared_const;
-      xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, _rtype114.size());
-      std::vector<int32_t> ::const_iterator _iter115;
-      for (_iter115 = _rtype114.begin(); _iter115 != _rtype114.end(); ++_iter115)
-      {
-        xfer += oprot->writeI32((*_iter115));
+  if (this->list_ref_shared_const) {
+    xfer += oprot->writeFieldBegin("list_ref_shared_const", apache::thrift::protocol::T_LIST, 7);
+    {
+      if (this->list_ref_shared_const) {
+        const auto& _rtype114 = *this->list_ref_shared_const;
+        xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, _rtype114.size());
+        std::vector<int32_t> ::const_iterator _iter115;
+        for (_iter115 = _rtype114.begin(); _iter115 != _rtype114.end(); ++_iter115)
+        {
+          xfer += oprot->writeI32((*_iter115));
+        }
+        xfer += oprot->writeListEnd();
+      } else {
+        xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, 0);
+        xfer += oprot->writeListEnd();
       }
-      xfer += oprot->writeListEnd();
-    } else {
-      xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, 0);
-      xfer += oprot->writeListEnd();
     }
+    xfer += oprot->writeFieldEnd();
   }
-  xfer += oprot->writeFieldEnd();
-  xfer += oprot->writeFieldBegin("set_custom_ref", apache::thrift::protocol::T_SET, 8);
-  {
-    if (this->set_custom_ref) {
-      const auto& _rtype116 = *this->set_custom_ref;
-      xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I32, _rtype116.size());
-      std::set<int32_t> ::const_iterator _iter117;
-      for (_iter117 = _rtype116.begin(); _iter117 != _rtype116.end(); ++_iter117)
-      {
-        xfer += oprot->writeI32((*_iter117));
+  if (this->set_custom_ref) {
+    xfer += oprot->writeFieldBegin("set_custom_ref", apache::thrift::protocol::T_SET, 8);
+    {
+      if (this->set_custom_ref) {
+        const auto& _rtype116 = *this->set_custom_ref;
+        xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I32, _rtype116.size());
+        std::set<int32_t> ::const_iterator _iter117;
+        for (_iter117 = _rtype116.begin(); _iter117 != _rtype116.end(); ++_iter117)
+        {
+          xfer += oprot->writeI32((*_iter117));
+        }
+        xfer += oprot->writeSetEnd();
+      } else {
+        xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I32, 0);
+        xfer += oprot->writeListEnd();
       }
-      xfer += oprot->writeSetEnd();
-    } else {
-      xfer += oprot->writeSetBegin(apache::thrift::protocol::T_I32, 0);
-      xfer += oprot->writeListEnd();
     }
+    xfer += oprot->writeFieldEnd();
   }
-  xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;

@@ -3525,6 +3525,10 @@ void t_cpp_generator::generate_struct_writer(ofstream& out,
       indent(out) << "if (this->__isset." << (*f_iter)->get_name() << ") {" << endl;
       indent_up();
       needs_closing_brace = true;
+    } else if (is_reference(*f_iter)) {
+      indent(out) << "if (this->" << (*f_iter)->get_name() << ") {" << endl;
+      indent_up();
+      needs_closing_brace = true;
     } else if (try_terse_write_predicate(out, *f_iter, pointers, terse_writes,
                                          predicate)) {
       indent(out) << "if (" << predicate << ") {" << endl;
@@ -3532,11 +3536,10 @@ void t_cpp_generator::generate_struct_writer(ofstream& out,
       needs_closing_brace = true;
     }
     // Write field header
-    out <<
-      indent() << "xfer += oprot->writeFieldBegin(" <<
-      "\"" << (*f_iter)->get_name() << "\", " <<
-      type_to_enum((*f_iter)->get_type()) << ", " <<
-      (*f_iter)->get_key() << ");" << endl;
+    out << indent() << "xfer += oprot->writeFieldBegin("
+        << "\"" << (*f_iter)->get_name() << "\", "
+        << type_to_enum((*f_iter)->get_type()) << ", " << (*f_iter)->get_key()
+        << ");" << endl;
     // Write field contents
     if (pointers && !get_true_type((*f_iter)->get_type())->is_xception()) {
       generate_serialize_field(out, *f_iter, "(*(this->", "))");
