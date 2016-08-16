@@ -19,7 +19,7 @@
 #include <memory>
 #include <folly/Memory.h>
 #include <folly/io/async/EventBase.h>
-#include <folly/io/async/AsyncServerSocket.h>
+#include <folly/io/async/test/ScopedBoundPort.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
@@ -37,32 +37,6 @@ using namespace apache::thrift::transport;
 using namespace testing;
 
 using CSR = ClientReceiveState;
-
-//  This binds to an ephemeral port but does not listen.
-//  We therefore know at least one port which is guaranteed not to be listening.
-//  Useful for testing server-down cases.
-class PortHolder {
- public:
-  PortHolder() {
-    th_ = thread([&]{ eb_.loopForever(); });
-    eb_.waitUntilRunning();
-    sock_ = AsyncServerSocket::newSocket(&eb_);
-    sock_->bind(0);
-  }
-  ~PortHolder() {
-    eb_.terminateLoopSoon();
-    th_.join();
-  }
-  folly::SocketAddress getAddress() {
-    folly::SocketAddress ret;
-    sock_->getAddress(&ret);
-    return ret;
-  }
- private:
-  EventBase eb_;
-  thread th_;
-  shared_ptr<AsyncServerSocket> sock_;
-};
 
 class TestServiceServerMock : public TestServiceSvIf {
  public:
@@ -88,9 +62,9 @@ class FunctionSendCallbackTest : public Test {
 };
 
 TEST_F(FunctionSendCallbackTest, with_missing_server_fails) {
-  PortHolder ph;
+  ScopedBoundPort bound;
   exception_wrapper exn;
-  sendOnewayMessage(ph.getAddress(), [&](CSR&& state) {
+  sendOnewayMessage(bound.getAddress(), [&](CSR&& state) {
       exn = state.exceptionWrapper();
   });
   EXPECT_TRUE(bool(exn));
