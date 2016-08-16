@@ -73,16 +73,36 @@ class t_mstch_generator : public t_generator {
     this->record_genfile(path.string());
   }
 
-  virtual mstch::map dump(const t_program&) const;
-  virtual mstch::map dump(const t_struct&) const;
-  virtual mstch::map dump(const t_field&) const;
-  virtual mstch::map dump(const t_type&) const;
-  virtual mstch::map dump(const t_enum&) const;
-  virtual mstch::map dump(const t_service&) const;
-  virtual mstch::map dump(const t_function&) const;
-  virtual mstch::map dump(const t_typedef&) const;
-  virtual mstch::map dump(const t_const&) const;
-  virtual mstch::map dump(const t_const_value&) const;
+  /**
+   * Subclasses should call the dump functions to convert elements
+   * of the Thrift AST into maps that can be passed into mstch.
+   */
+  mstch::map dump(const t_program&) const;
+  mstch::map dump(const t_struct&) const;
+  mstch::map dump(const t_field&) const;
+  mstch::map dump(const t_type&) const;
+  mstch::map dump(const t_enum&) const;
+  mstch::map dump(const t_service&) const;
+  mstch::map dump(const t_function&) const;
+  mstch::map dump(const t_typedef&) const;
+  mstch::map dump(const t_const&) const;
+  mstch::map dump(const t_const_value&) const;
+
+  /**
+   * Subclasses should override these functions to extend the behavior of
+   * the dump functions. These will be passed the map after the default
+   * dump has run, and can modify the maps in whichever ways necessary.
+   */
+  virtual mstch::map extend_program(mstch::map, const t_program&) const;
+  virtual mstch::map extend_struct(mstch::map, const t_struct&) const;
+  virtual mstch::map extend_field(mstch::map, const t_field&) const;
+  virtual mstch::map extend_type(mstch::map, const t_type&) const;
+  virtual mstch::map extend_enum(mstch::map, const t_enum&) const;
+  virtual mstch::map extend_service(mstch::map, const t_service&) const;
+  virtual mstch::map extend_function(mstch::map, const t_function&) const;
+  virtual mstch::map extend_typedef(mstch::map, const t_typedef&) const;
+  virtual mstch::map extend_const(mstch::map, const t_const&) const;
+  virtual mstch::map extend_const_value(mstch::map, const t_const_value&) const;
 
   template <typename T>
   mstch::array dump_vector(std::vector<T*> elems) const {

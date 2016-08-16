@@ -38,26 +38,31 @@ t_mstch_generator::t_mstch_generator(
 }
 
 mstch::map t_mstch_generator::dump(const t_program& program) const {
-  return mstch::map{
-      {"program:name", program.get_name()},
-      {"program:path", program.get_path()},
-      {"program:outPath", program.get_out_path()},
-      {"program:namespace", program.get_namespace()},
-      {"program:includePrefix", program.get_include_prefix()},
-      {"program:structs", this->dump_vector(program.get_structs())},
-      {"program:exceptions", this->dump_vector(program.get_xceptions())},
-      {"program:enums", this->dump_vector(program.get_enums())},
-      {"program:services", this->dump_vector(program.get_services())},
-      {"program:typedefs", this->dump_vector(program.get_typedefs())},
-      {"program:consts", this->dump_vector(program.get_consts())},
-  };
+  return this->extend_program(
+      {
+          {"program:name", program.get_name()},
+          {"program:path", program.get_path()},
+          {"program:outPath", program.get_out_path()},
+          {"program:namespace", program.get_namespace()},
+          {"program:includePrefix", program.get_include_prefix()},
+          {"program:structs", this->dump_vector(program.get_structs())},
+          {"program:exceptions", this->dump_vector(program.get_xceptions())},
+          {"program:enums", this->dump_vector(program.get_enums())},
+          {"program:services", this->dump_vector(program.get_services())},
+          {"program:typedefs", this->dump_vector(program.get_typedefs())},
+          {"program:consts", this->dump_vector(program.get_consts())},
+      },
+      program);
 }
 
 mstch::map t_mstch_generator::dump(const t_struct& strct) const {
-  return mstch::map{
-      {"struct:name", strct.get_name()},
-      {"struct:fields", this->dump_vector(strct.get_sorted_members())},
-  };
+  return this->extend_struct(
+      {
+          {"struct:name", strct.get_name()},
+          {"struct:fields", this->dump_vector(strct.get_sorted_members())},
+          {"struct:exception?", strct.is_xception()},
+      },
+      strct);
 }
 
 mstch::map t_mstch_generator::dump(const t_field& field) const {
@@ -82,18 +87,20 @@ mstch::map t_mstch_generator::dump(const t_field& field) const {
       break;
   }
 
-  return result;
+  return this->extend_field(result, field);
 }
 
 mstch::map t_mstch_generator::dump(const t_type& type) const {
-  return mstch::map{
-      {"type:name", type.get_name()},
-  };
+  return this->extend_type(
+      {
+          {"type:name", type.get_name()},
+      },
+      type);
 }
 
 mstch::map t_mstch_generator::dump(const t_enum& enm) const {
   // TODO
-  return {};
+  return this->extend_enum({}, enm);
 }
 
 mstch::map t_mstch_generator::dump(const t_service& service) const {
@@ -108,23 +115,26 @@ mstch::map t_mstch_generator::dump(const t_service& service) const {
     result.insert({"service:extends", this->dump(*extends)});
   }
 
-  return result;
+  return this->extend_service(std::move(result), service);
 }
 
 mstch::map t_mstch_generator::dump(const t_function& function) const {
-  return mstch::map{
-      {"function:name", function.get_name()},
-      {"function:returnType", this->dump(*function.get_returntype())},
-      {"function:args",
-       this->dump_vector(function.get_arglist()->get_members())}};
+  return this->extend_function(
+      {{"function:name", function.get_name()},
+       {"function:returnType", this->dump(*function.get_returntype())},
+       {"function:args",
+        this->dump_vector(function.get_arglist()->get_members())}},
+      function);
 }
 
 mstch::map t_mstch_generator::dump(const t_const& cnst) const {
-  return mstch::map{
-      {"const:type", this->dump(*cnst.get_type())},
-      {"const:name", cnst.get_name()},
-      {"const:value", this->dump(*cnst.get_value())},
-  };
+  return this->extend_const(
+      {
+          {"const:type", this->dump(*cnst.get_type())},
+          {"const:name", cnst.get_name()},
+          {"const:value", this->dump(*cnst.get_value())},
+      },
+      cnst);
 }
 
 mstch::map t_mstch_generator::dump(const t_const_value& value) const {
@@ -171,12 +181,63 @@ mstch::map t_mstch_generator::dump(const t_const_value& value) const {
       failure("Unhandled t_const_value_type %d\n", value.get_type());
   }
 
-  return result;
+  return this->extend_const_value(std::move(result), value);
 }
 
 mstch::map t_mstch_generator::dump(const t_typedef& typdef) const {
   // TODO
-  return {};
+  return this->extend_typedef({}, typdef);
+}
+
+// Extenders, by default do no extending
+
+mstch::map t_mstch_generator::extend_program(mstch::map map, const t_program&)
+    const {
+  return map;
+}
+
+mstch::map t_mstch_generator::extend_struct(mstch::map map, const t_struct&)
+    const {
+  return map;
+}
+
+mstch::map t_mstch_generator::extend_field(mstch::map map, const t_field&)
+    const {
+  return map;
+}
+
+mstch::map t_mstch_generator::extend_type(mstch::map map, const t_type&) const {
+  return map;
+}
+
+mstch::map t_mstch_generator::extend_enum(mstch::map map, const t_enum&) const {
+  return map;
+}
+
+mstch::map t_mstch_generator::extend_service(mstch::map map, const t_service&)
+    const {
+  return map;
+}
+
+mstch::map t_mstch_generator::extend_function(mstch::map map, const t_function&)
+    const {
+  return map;
+}
+
+mstch::map t_mstch_generator::extend_typedef(mstch::map map, const t_typedef&)
+    const {
+  return map;
+}
+
+mstch::map t_mstch_generator::extend_const(mstch::map map, const t_const&)
+    const {
+  return map;
+}
+
+mstch::map t_mstch_generator::extend_const_value(
+    mstch::map map,
+    const t_const_value&) const {
+  return map;
 }
 
 void t_mstch_generator::gen_template_map(boost::filesystem::path prefix) {
