@@ -131,7 +131,7 @@ public abstract class TUnion<Me extends TUnion<Me>> implements TBase {
       return lastComparison;
     }
 
-    return TBaseHelper.compareToUnchecked(this, other);
+    return TBaseHelper.compareToUnchecked(this.getFieldValue(), other.getFieldValue());
   }
 
   protected boolean equalsNobinaryImpl(Me other) {
