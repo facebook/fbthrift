@@ -117,6 +117,26 @@ TEST(ThriftServer, CompressionClientTest) {
   }
 }
 
+TEST(ThriftServer, ResponseTooBigTest) {
+  ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
+  runner.getThriftServer().setMaxResponseSize(4096);
+  folly::EventBase eb;
+  auto client = runner.newClient<TestServiceAsyncClient>(eb);
+
+  std::string request(4096, 'a');
+  std::string response;
+  try {
+    client->sync_echoRequest(response, request);
+    ADD_FAILURE() << "should throw";
+  } catch (const TApplicationException& tae) {
+    EXPECT_EQ(
+        tae.getType(),
+        TApplicationException::TApplicationExceptionType::INTERNAL_ERROR);
+  } catch (...) {
+    ADD_FAILURE() << "unexpected exception thrown";
+  }
+}
+
 class ConnCallback : public TAsyncSocket::ConnectCallback {
  public:
   void connectSuccess() noexcept override {

@@ -196,6 +196,10 @@ class BaseThriftServer : public apache::thrift::server::TServer {
   // setters.
   std::atomic<bool> configMutable_{true};
 
+  // Max response size allowed. This is the size of the serialized and
+  // transformed response, headers not included. 0 (default) means no limit.
+  uint64_t maxResponseSize_ = 0;
+
   BaseThriftServer()
       : apache::thrift::server::TServer(std::shared_ptr<server::TProcessor>()) {
   }
@@ -306,6 +310,10 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    * @param maxRequests new setting for maximum # of active requests.
    */
   void setMaxRequests(uint32_t maxRequests) { maxRequests_ = maxRequests; }
+
+  uint64_t getMaxResponseSize() const { return maxResponseSize_; }
+
+  void setMaxResponseSize(uint64_t size) { maxResponseSize_ = size; }
 
   /**
    * NOTE: low hanging perf fruit. In a test this was roughly a 10%

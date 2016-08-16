@@ -79,6 +79,7 @@ Cpp2Connection::Cpp2Connection(
   channel_->setDefaultWriteTransforms(
     worker_->getServer()->getDefaultWriteTransforms()
   );
+
   auto observer = worker->getServer()->getObserver();
   if (observer) {
     channel_->setSampleRate(observer->getSampleRate());
@@ -479,9 +480,23 @@ void Cpp2Connection::Cpp2Request::sendReply(
   if (req_->isActive()) {
     setLoadHeader();
     auto observer = connection_->getWorker()->getServer()->getObserver().get();
-    req_->sendReply(
-      std::move(buf),
-      prepareSendCallback(sendCallback, observer));
+    auto maxResponseSize =
+      connection_->getWorker()->getServer()->getMaxResponseSize();
+    if (maxResponseSize != 0 &&
+        buf->computeChainDataLength() > maxResponseSize) {
+      req_->sendErrorWrapped(
+          folly::make_exception_wrapper<TApplicationException>(
+            TApplicationException::TApplicationExceptionType::INTERNAL_ERROR,
+            "Response size too big"),
+          kResponseTooBigErrorCode,
+          reqContext_.getMethodName(),
+          reqContext_.getProtoSeqId(),
+          prepareSendCallback(sendCallback, observer));
+    } else {
+      req_->sendReply(
+          std::move(buf),
+          prepareSendCallback(sendCallback, observer));
+    }
     cancelTimeout();
     if (observer) {
       observer->sentReply();
