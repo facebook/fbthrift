@@ -28,10 +28,6 @@
 // version.h
 #define THRIFT_VERSION "facebook"
 
-/**
- * Base class for a thrift code generator. This class defines the minimal
- * specification that a code generator needs to meet.
- */
 class t_generator {
  public:
   explicit t_generator(t_program* program) : program_(program) {

@@ -58,11 +58,6 @@ t_generator* t_generator_registry::get_generator(
     }
   }
 
-  // If using the mstch generator, return the generator now
-  if (g_mstch) {
-    return new t_mstch_generator(program, language, parsed_options, options);
-  }
-
   gen_map_t& the_map = get_generator_map();
   gen_map_t::iterator iter = the_map.find(language);
 

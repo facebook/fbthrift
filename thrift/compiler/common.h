@@ -55,6 +55,11 @@ extern string g_curdir;
 extern string g_curpath;
 
 /**
+ * Directory containing template files
+ */
+extern string g_template_dir;
+
+/**
  * Search path for inclusions
  */
 extern vector<string> g_incl_searchpath;
@@ -69,11 +74,6 @@ extern bool g_cpp_use_include_prefix;
  * Global debug state
  */
 extern int g_debug;
-
-/**
- * Use the new template-based code generator
- */
-extern int g_mstch;
 
 /**
  * Warning level

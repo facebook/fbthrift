@@ -70,6 +70,7 @@ static void usage() {
   fprintf(stderr, "  -o dir      Set the output directory for gen-* packages\n");
   fprintf(stderr, "               (default: current directory)\n");
   fprintf(stderr, "  -out dir    Set the output location for generated files\n");
+  fprintf(stderr, "  -templates dir    Set the directory containing mstch templates\n");
   fprintf(stderr, "               (no gen-* folder will be created)\n");
   fprintf(stderr, "  -I dir      Add a directory to the list of directories\n");
   fprintf(stderr, "                searched for include directives\n");
@@ -78,7 +79,6 @@ static void usage() {
   fprintf(stderr, "  -v[erbose]  Verbose mode\n");
   fprintf(stderr, "  -r[ecurse]  Also generate included files\n");
   fprintf(stderr, "  -debug      Parse debug trace to stdout\n");
-  fprintf(stderr, "  -mstch      Use the experimental template-based generator\n");
   fprintf(stderr, "  --allow-neg-keys  Allow negative field keys (Used to "
           "preserve protocol\n");
   fprintf(stderr, "                compatibility with older .thrift files)\n");
@@ -245,8 +245,6 @@ int main(int argc, char** argv) {
 
       if (strcmp(arg, "-debug") == 0) {
         g_debug = 1;
-      } else if (strcmp(arg, "-mstch") == 0) {
-        g_mstch = 1;
       } else if (strcmp(arg, "-nowarn") == 0) {
         g_warn = 0;
       } else if (strcmp(arg, "-strict") == 0) {
@@ -338,6 +336,14 @@ int main(int argc, char** argv) {
           usage();
         }
         g_incl_searchpath.push_back(arg);
+      } else if (strcmp(arg, "-templates") == 0) {
+        arg = argv[++i];
+        if (arg == nullptr) {
+          fprintf(stderr, "-templates: missing template directory");
+          usage();
+        }
+        g_template_dir = arg;
+
       } else if (strcmp(arg, "-o") == 0 || (strcmp(arg, "-out") == 0)) {
         out_path_is_absolute = (strcmp(arg, "-out") == 0) ? true : false;
         arg = argv[++i];
@@ -524,7 +530,13 @@ int main(int argc, char** argv) {
   yylineno = 1;
 
   // Generate it!
-  bool success = generate(program, generator_strings, argv);
+  bool success;
+  try {
+    success = generate(program, generator_strings, argv);
+  } catch (const std::exception &e) {
+    std::cerr << e.what() << std::endl;
+    std::exit(1);
+  }
 
   // Clean up. Who am I kidding... this program probably orphans heap memory
   // all over the place, but who cares because it is about to exit and it is

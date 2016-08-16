@@ -70,6 +70,11 @@ string g_curdir;
 string g_curpath;
 
 /**
+ * Directory containing template files
+ */
+string g_template_dir;
+
+/**
  * Search path for inclusions
  */
 vector<string> g_incl_searchpath;
@@ -84,11 +89,6 @@ bool g_cpp_use_include_prefix = false;
  * Global debug state
  */
 int g_debug = 0;
-
-/**
- * Use the new template-based code generator
- */
-int g_mstch;
 
 /**
  * Strictness level
