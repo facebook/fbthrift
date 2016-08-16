@@ -40,6 +40,15 @@ struct StructWithContainers {
       (cpp.ref_type = "std::auto_ptr", cpp2.ref_type = "std::auto_ptr")
 }
 
+struct StructWithSharedConst {
+  1: optional MyField opt_shared_const
+      (cpp.ref_type = "shared_const", cpp2.ref_type = "shared_const")
+  2: MyField shared_const
+      (cpp.ref_type = "shared_const", cpp2.ref_type = "shared_const")
+  3: required MyField req_shared_const
+      (cpp.ref_type = "shared_const", cpp2.ref_type = "shared_const")
+}
+
 enum TypedEnum {
   VAL1,
   VAL2,

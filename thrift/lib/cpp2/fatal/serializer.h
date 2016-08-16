@@ -572,21 +572,23 @@ struct deref <
   PtrType,
   enable_if_smart_pointer<PtrType>
 > {
-  using T = typename PtrType::element_type;
-  static T& clear_and_get(PtrType& in) {
-    clear(in);
+  using T = typename std::remove_const<typename PtrType::element_type>::type;
+  static T& clear_and_get(std::shared_ptr<T const>& in) {
+    auto t = std::make_shared<T>();
+    auto ret = t.get();
+    in = std::move(t);
+    return *ret;
+  }
+  static T& clear_and_get(std::shared_ptr<T>& in) {
+    in = std::make_shared<T>();
+    return *in;
+  }
+  static T& clear_and_get(std::unique_ptr<T>& in) {
+    in = std::make_unique<T>();
     return *in;
   }
   static T const& get_const(PtrType const& in) {
     return *in;
-  }
-
-private:
-  static void clear(std::shared_ptr<T>& in) {
-    in = std::make_shared<T>();
-  }
-  static void clear(std::unique_ptr<T>& in) {
-    in = std::make_unique<T>();
   }
 };
 
@@ -1059,7 +1061,8 @@ private:
     Protocol, Member, type_class::structure, PtrType, Methods, opt,
     detail::enable_if_smart_pointer<PtrType>
   > {
-    using struct_type  = typename PtrType::element_type;
+    using struct_type =
+        typename std::remove_const<typename PtrType::element_type>::type;
 
     static
     std::size_t write(Protocol& protocol, PtrType const& in) {
@@ -1216,7 +1219,8 @@ private:
     ZeroCopy, Protocol, Member, type_class::structure, PtrType, Methods, opt,
     detail::enable_if_smart_pointer<PtrType>
   > {
-    using struct_type = typename PtrType::element_type;
+    using struct_type =
+        typename std::remove_const<typename PtrType::element_type>::type;
 
     static
     std::size_t size(Protocol& protocol, PtrType const& in) {

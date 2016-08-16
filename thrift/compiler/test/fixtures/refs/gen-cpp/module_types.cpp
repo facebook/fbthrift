@@ -1307,4 +1307,190 @@ void merge(StructWithContainers&& from, StructWithContainers& to) {
   merge(std::move(from.set_custom_ref), to.set_custom_ref);
 }
 
+const uint64_t StructWithSharedConst::_reflection_id;
+void StructWithSharedConst::_reflection_register(::apache::thrift::reflection::Schema& schema) {
+   ::module_reflection_::reflectionInitializer_17232433652683371404(schema);
+}
+
+bool StructWithSharedConst::operator == (const StructWithSharedConst & rhs) const {
+  if (bool(opt_shared_const) != bool(rhs.opt_shared_const))
+    return false;
+  else if (bool(opt_shared_const) && !(*opt_shared_const == *rhs.opt_shared_const))
+    return false;
+  if (bool(shared_const) != bool(rhs.shared_const))
+    return false;
+  else if (bool(shared_const) && !(*shared_const == *rhs.shared_const))
+    return false;
+  if (bool(req_shared_const) != bool(rhs.req_shared_const))
+    return false;
+  else if (bool(req_shared_const) && !(*req_shared_const == *rhs.req_shared_const))
+    return false;
+  return true;
+}
+
+uint32_t StructWithSharedConst::read(apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
+  if (schema != nullptr) {
+     ::module_reflection_::reflectionInitializer_17232433652683371404(*schema);
+    iprot->setNextStructType(StructWithSharedConst::_reflection_id);
+  }
+  xfer += iprot->readStructBegin(fname);
+
+  using apache::thrift::protocol::TProtocolException;
+
+  std::exception_ptr exception;
+
+  bool isset_req_shared_const = false;
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == apache::thrift::protocol::T_STRUCT) {
+          try {
+            using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->opt_shared_const)>::type::element_type>::type;
+            std::unique_ptr<element_type> _ptype119(new element_type());
+            xfer += _ptype119->read(iprot);
+            this->opt_shared_const = std::move(_ptype119);
+            if (false) {
+            } else if (this->opt_shared_const->__isset.opt_value) {
+            } else if (this->opt_shared_const->__isset.value) {
+            } else { this->opt_shared_const = nullptr; }
+          } catch (const TProtocolException& e) {
+            if (e.getType() != TProtocolException::MISSING_REQUIRED_FIELD) {
+              throw;
+            }
+            exception = std::current_exception();
+          }
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == apache::thrift::protocol::T_STRUCT) {
+          try {
+            using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->shared_const)>::type::element_type>::type;
+            std::unique_ptr<element_type> _ptype120(new element_type());
+            xfer += _ptype120->read(iprot);
+            this->shared_const = std::move(_ptype120);
+            if (false) {
+            } else if (this->shared_const->__isset.opt_value) {
+            } else if (this->shared_const->__isset.value) {
+            } else { this->shared_const = nullptr; }
+          } catch (const TProtocolException& e) {
+            if (e.getType() != TProtocolException::MISSING_REQUIRED_FIELD) {
+              throw;
+            }
+            exception = std::current_exception();
+          }
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == apache::thrift::protocol::T_STRUCT) {
+          try {
+            using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->req_shared_const)>::type::element_type>::type;
+            std::unique_ptr<element_type> _ptype121(new element_type());
+            xfer += _ptype121->read(iprot);
+            this->req_shared_const = std::move(_ptype121);
+            if (false) {
+            } else if (this->req_shared_const->__isset.opt_value) {
+            } else if (this->req_shared_const->__isset.value) {
+            } else { this->req_shared_const = nullptr; }
+          } catch (const TProtocolException& e) {
+            if (e.getType() != TProtocolException::MISSING_REQUIRED_FIELD) {
+              throw;
+            }
+            exception = std::current_exception();
+          }
+          isset_req_shared_const = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  if (exception != std::exception_ptr()) {
+    std::rethrow_exception(exception);
+  }
+  if (!isset_req_shared_const)
+    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_shared_const' was not found in serialized data! Struct: StructWithSharedConst");
+  return xfer;
+}
+
+void StructWithSharedConst::__clear() {
+  opt_shared_const.reset();
+  shared_const.reset();
+  req_shared_const.reset();
+  __isset.__clear();
+}
+uint32_t StructWithSharedConst::write(apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("StructWithSharedConst");
+  if (this->opt_shared_const) {
+    xfer += oprot->writeFieldBegin("opt_shared_const", apache::thrift::protocol::T_STRUCT, 1);
+    if (this->opt_shared_const) {xfer += this->opt_shared_const->write(oprot); 
+} else {oprot->writeStructBegin("MyField"); oprot->writeStructEnd(); oprot->writeFieldStop();}
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->shared_const) {
+    xfer += oprot->writeFieldBegin("shared_const", apache::thrift::protocol::T_STRUCT, 2);
+    if (this->shared_const) {xfer += this->shared_const->write(oprot); 
+} else {oprot->writeStructBegin("MyField"); oprot->writeStructEnd(); oprot->writeFieldStop();}
+    xfer += oprot->writeFieldEnd();
+  }
+  if (this->req_shared_const) {
+    xfer += oprot->writeFieldBegin("req_shared_const", apache::thrift::protocol::T_STRUCT, 3);
+    if (this->req_shared_const) {xfer += this->req_shared_const->write(oprot); 
+} else {oprot->writeStructBegin("MyField"); oprot->writeStructEnd(); oprot->writeFieldStop();}
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(StructWithSharedConst &a, StructWithSharedConst &b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+  swap(a.opt_shared_const, b.opt_shared_const);
+  swap(a.shared_const, b.shared_const);
+  swap(a.req_shared_const, b.req_shared_const);
+  swap(a.__isset, b.__isset);
+}
+
+void merge(const StructWithSharedConst& from, StructWithSharedConst& to) {
+  using apache::thrift::merge;
+  merge(from.opt_shared_const, to.opt_shared_const);
+  merge(from.shared_const, to.shared_const);
+  merge(from.req_shared_const, to.req_shared_const);
+}
+
+void merge(StructWithSharedConst&& from, StructWithSharedConst& to) {
+  using apache::thrift::merge;
+  merge(std::move(from.opt_shared_const), to.opt_shared_const);
+  merge(std::move(from.shared_const), to.shared_const);
+  merge(std::move(from.req_shared_const), to.req_shared_const);
+}
+
 

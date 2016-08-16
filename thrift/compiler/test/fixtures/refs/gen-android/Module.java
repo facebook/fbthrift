@@ -18,7 +18,7 @@ import com.facebook.thrift.lite.annotations.*;
 public class Module {
 
   public enum EventType {
-    MyUnion, MyField, MyStruct, StructWithUnion, RecursiveStruct, StructWithContainers;
+    MyUnion, MyField, MyStruct, StructWithUnion, RecursiveStruct, StructWithContainers, StructWithSharedConst;
   }
 
   @TOptional("MyUnion")
@@ -81,5 +81,14 @@ public class Module {
   @TOptional("StructWithContainers")
   public static final ThriftProperty<Set<Integer>> StructWithContainers_set_custom_ref =
       new ThriftProperty<Set<Integer>>("set_custom_ref", TType.SET, (short) 8);
+  @TOptional("StructWithSharedConst")
+  public static final ThriftProperty<ModuleLogger> StructWithSharedConst_opt_shared_const =
+      new ThriftProperty<ModuleLogger>("opt_shared_const", TType.STRUCT, (short) 1);
+  @TOptional("StructWithSharedConst")
+  public static final ThriftProperty<ModuleLogger> StructWithSharedConst_shared_const =
+      new ThriftProperty<ModuleLogger>("shared_const", TType.STRUCT, (short) 2);
+  @TRequired("StructWithSharedConst")
+  public static final ThriftProperty<ModuleLogger> StructWithSharedConst_req_shared_const =
+      new ThriftProperty<ModuleLogger>("req_shared_const", TType.STRUCT, (short) 3);
   
 }

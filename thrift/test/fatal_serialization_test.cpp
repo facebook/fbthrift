@@ -288,6 +288,30 @@ TYPED_TEST(MultiProtocolTest, shared_ptr_test) {
   expect_same_serialized_size(a, this->writer);
 }
 
+TYPED_TEST(MultiProtocolTest, shared_const_ptr_test) {
+  struct8 a, b;
+
+  auto def_field = std::make_unique<smallstruct>();
+  def_field->f1 = 10;
+  a.def_field = std::move(def_field);
+
+  auto opt_field = std::make_unique<smallstruct>();
+  opt_field->f1 = 20;
+  a.opt_field = std::move(opt_field);
+
+  auto req_field = std::make_unique<smallstruct>();
+  req_field->f1 = 30;
+  a.req_field = std::move(req_field);
+
+  serializer_write(a, this->writer);
+  this->prep_read();
+  this->debug_buffer();
+  serializer_read(b, this->reader);
+
+  EXPECT_EQ(a, b);
+  expect_same_serialized_size(a, this->writer);
+}
+
 template <typename Pair>
 class UnionTest : public TypedTestCommon<Pair> {
 protected:

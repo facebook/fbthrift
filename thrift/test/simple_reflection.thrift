@@ -108,3 +108,12 @@ struct struct7 {
   14: required smallstruct field14 (cpp2.ref="true")
   15:          smallstruct field15 (cpp2.ref="true")
 }
+
+struct struct8 {
+  1: smallstruct def_field
+    (cpp2.ref_type = "shared_const")
+  2: optional smallstruct opt_field
+    (cpp2.ref_type = "shared_const")
+  3: required smallstruct req_field
+    (cpp2.ref_type = "shared_const")
+}

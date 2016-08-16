@@ -311,6 +311,9 @@ class CppGenerator(t_generator.Generator):
     def _is_reference(self, f):
         return self._cpp_ref_type(f, '') is not None
 
+    def _is_const_shared_ptr(self, f):
+        return self._cpp_ref_type(f, '') == 'std::shared_ptr<const >'
+
     def _is_optional_wrapped(self, f):
         return f.req == e_req.optional and self.flag_optionals
 
@@ -2613,11 +2616,15 @@ class CppGenerator(t_generator.Generator):
                                     member.type.as_struct)
                                 if len(stype.members) > 0:
                                     if self._is_reference(member):
-                                        out(('if ({1}) ' +
-                                             '::apache::thrift::Cpp2Ops< {0}>' +
-                                             '::clear({1}.get());').format(
-                                                 self._type_name(member.type),
-                                                                 name))
+                                        if self._is_const_shared_ptr(member):
+                                            out('{0}.reset();'.format(name))
+                                        else:
+                                            out(('if ({1}) ::apache::thrift' +
+                                                 '::Cpp2Ops< {0}>' +
+                                                 '::clear({1}.get());').format(
+                                                     self._type_name(
+                                                         member.type),
+                                                     name))
                                     else:
                                         out(('::apache::thrift::Cpp2Ops< {0}>' +
                                              '::clear(&{1});').format(

@@ -401,4 +401,47 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace cpp2 {
 
+template uint32_t StructWithSharedConst::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
+template uint32_t StructWithSharedConst::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t StructWithSharedConst::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t StructWithSharedConst::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t StructWithSharedConst::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
+template uint32_t StructWithSharedConst::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t StructWithSharedConst::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t StructWithSharedConst::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
+
+void StructWithSharedConst::__clear() {
+  opt_shared_const.reset();
+  shared_const.reset();
+  req_shared_const.reset();
+  __isset.__clear();
+}
+
+bool StructWithSharedConst::operator==(const StructWithSharedConst& rhs) const {
+  if (!(((opt_shared_const && rhs.opt_shared_const && *opt_shared_const == *rhs.opt_shared_const) ||(!opt_shared_const && !rhs.opt_shared_const)))) {
+    return false;
+  }
+  if (!(((shared_const && rhs.shared_const && *shared_const == *rhs.shared_const) ||(!shared_const && !rhs.shared_const)))) {
+    return false;
+  }
+  if (!(((req_shared_const && rhs.req_shared_const && *req_shared_const == *rhs.req_shared_const) ||(!req_shared_const && !rhs.req_shared_const)))) {
+    return false;
+  }
+  return true;
+}
+
+void swap(StructWithSharedConst& a, StructWithSharedConst& b) {
+  using ::std::swap;
+  swap(a.opt_shared_const, b.opt_shared_const);
+  swap(a.shared_const, b.shared_const);
+  swap(a.req_shared_const, b.req_shared_const);
+  swap(a.__isset, b.__isset);
+}
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
 } // cpp2

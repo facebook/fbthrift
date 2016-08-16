@@ -306,5 +306,47 @@ void reflectionInitializer_18101585657679500556(::apache::thrift::reflection::Sc
   reflectionInitializer_7009713166249494859(schema);  // map<i32, i32>
 }
 
+void  reflectionInitializer_16778989117799402412(::apache::thrift::reflection::Schema&);  // struct module.MyField
+// Reflection initializer for struct module.StructWithSharedConst
+void reflectionInitializer_17232433652683371404(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 17232433652683371404U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.StructWithSharedConst";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[1];
+    f.isRequired = false;
+    f.type = 16778989117799402412U;
+    f.name = "opt_shared_const";
+    f.order = 0;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref_type"] = "shared_const";
+    f.annotations["cpp2.ref_type"] = "shared_const";
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[2];
+    f.isRequired = true;
+    f.type = 16778989117799402412U;
+    f.name = "shared_const";
+    f.order = 1;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref_type"] = "shared_const";
+    f.annotations["cpp2.ref_type"] = "shared_const";
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[3];
+    f.isRequired = true;
+    f.type = 16778989117799402412U;
+    f.name = "req_shared_const";
+    f.order = 2;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref_type"] = "shared_const";
+    f.annotations["cpp2.ref_type"] = "shared_const";
+  }
+  reflectionInitializer_16778989117799402412(schema);  // struct module.MyField
+}
+
 }
 
