@@ -65,11 +65,12 @@ class TestJSONGenerate(unittest.TestCase):
         return output_path
 
     def testGen(self):
+        thrift_compiler = self.getThriftCompiler()
         for thriftFile in self.thriftFiles + self.unsupportedThriftFiles:
             path = 'thrift/test/' + thriftFile + '.thrift'
             self.assertTrue(os.path.exists(path))
             proc = subprocess.Popen(
-                ['_bin/thrift/compiler/thrift', '-gen', 'json', path],
+                [thrift_compiler, '-gen', 'json', path],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.STDOUT)
             output = proc.communicate()[0]
@@ -85,6 +86,22 @@ class TestJSONGenerate(unittest.TestCase):
             path = 'gen-json/' + JSONFile + '.json'
             jsonData = open(path)
             self.assertRaises(TypeError, json.loads, jsonData)
+
+    def getThriftCompiler(self):
+        # Use the $THRIFT_COMPILER environment variable if it is set
+        # This will normally be set when run via buck.
+        path = os.environ.get('THRIFT_COMPILER')
+        if path is not None:
+            return path
+
+        # Otherwise try to find the compiler location automatically.
+        # This makes testing easier when the test program is run manually.
+        for build_dir in ('buck-out/gen', '_bin'):
+            path = os.path.join(build_dir, 'thrift/compiler/thrift')
+            if os.access(path, os.X_OK):
+                return path
+
+        raise Exception('unable to find the thrift compiler')
 
 if __name__ == '__main__':
     unittest.main()

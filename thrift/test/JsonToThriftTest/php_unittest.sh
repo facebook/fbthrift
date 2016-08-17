@@ -1,10 +1,15 @@
 #!/bin/sh
 set -e
 
+THRIFT_COMPILER="$1"
+if [ -z "$THRIFT_COMPILER" ]; then
+  echo "Missing argument: path to thrift compiler must be specified" >&2
+  exit 1
+fi
+
 WORK="$(mktemp -d -t thrift.test.JsonToThriftTest.php_unittest.XXXXXX)"
 trap 'rm -rf "$WORK"' EXIT
 
-COMPILER=_bin/thrift/compiler/thrift
 SRC_ROOT="$WORK/src"
 PACKAGE_ROOT="$WORK/packages"
 HERE="$(pwd -L)"
@@ -28,7 +33,8 @@ find "$SRC_ROOT" -name '*.thrift' | while read -r THRIFT; do
   BASENAME="$(basename "$THRIFT" .thrift)"
   (echo "$EXCLUSIONS" | grep --line-regexp "$BASENAME" > /dev/null) && continue
   mkdir -p "$PACKAGE_ROOT/$BASENAME"
-  $COMPILER -out "$PACKAGE_ROOT/$BASENAME" -I "$SRC_ROOT" --gen php:json "$THRIFT"
+  "$THRIFT_COMPILER" -out "$PACKAGE_ROOT/$BASENAME" -I "$SRC_ROOT" \
+    --gen php:json "$THRIFT"
 done
 
 /home/engshare/svnroot/tfb/trunk/www/scripts/bin/hphpi \
