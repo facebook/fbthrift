@@ -132,7 +132,6 @@ class SSLRejectingManager
   typename wangle::SocketPeeker::UniquePtr peeker_;
 
   wangle::Acceptor* acceptor_;
-  wangle::AcceptorHandshakeHelper::Callback* callback_;
   folly::SocketAddress clientAddr_;
   std::string nextProtocolName_;
   SecureTransportType secureTransportType_;
