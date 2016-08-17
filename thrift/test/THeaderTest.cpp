@@ -408,3 +408,32 @@ TEST(THeaderTest, unframedBadRead) {
       protocol->readMessageBegin(name, messageType, seqId),
       TTransportException);
 }
+
+TEST(THeaderTest, removeBadHeaderStringSize) {
+  uint8_t badHeader[] = {
+    0x00, 0x00, 0x00, 0x13, // Frame size is corrupted here
+    0x0F, 0xFF, 0x00, 0x00, // THRIFT_HEADER_CLIENT_TYPE
+    0x00, 0x00, 0x00, 0x00,
+    0x00, 0x01, // Header size
+    0x00, // Proto ID
+    0x00, // Num transforms
+    0x01, // Info ID Key value
+    0x01, // Num headers
+    0xFF, 0xFF, 0xFF, 0xFF, // Malformed varint32 string size
+    0x00 // String should go here
+  };
+  folly::IOBufQueue queue;
+  std::unique_ptr<folly::IOBuf> corruptBuf =
+    folly::IOBuf::create(sizeof(badHeader));
+  corruptBuf->append(sizeof(badHeader));
+  memcpy(corruptBuf->writableData(), badHeader, sizeof(badHeader));
+  queue.append(std::move(corruptBuf));
+  // Try to remove the bad header
+  THeader header;
+  size_t needed;
+  std::map<std::string, std::string> persistentHeaders;
+  EXPECT_THROW(
+    corruptBuf = header.removeHeader(&queue, needed, persistentHeaders),
+    TTransportException
+  );
+}
