@@ -373,4 +373,26 @@ struct helper {
 
 }
 
+template <typename T>
+void legacy_reflection<T>::register_into(legacy_reflection_schema_t& schema) {
+  legacy_reflection_detail::helper<T>::register_into(schema);
+}
+
+template <typename T>
+legacy_reflection_schema_t legacy_reflection<T>::schema() {
+  legacy_reflection_schema_t schema;
+  register_into(schema);
+  return schema;
+}
+
+template <typename T>
+constexpr folly::StringPiece legacy_reflection<T>::name() {
+  return legacy_reflection_detail::helper<T>::name();
+}
+
+template <typename T>
+legacy_reflection_id_t legacy_reflection<T>::id() {
+  return legacy_reflection_detail::helper<T>::id();
+}
+
 }}

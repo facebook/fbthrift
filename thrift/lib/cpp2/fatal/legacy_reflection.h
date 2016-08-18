@@ -84,9 +84,7 @@ struct legacy_reflection {
    *  WARNING: This function uses a hash function implemented by OpenSSL; which
    *  is not thread-safe until OpenSSL is initialized.
    */
-  static void register_into(legacy_reflection_schema_t& schema) {
-    legacy_reflection_detail::helper<T>::register_into(schema);
-  }
+  static void register_into(legacy_reflection_schema_t& schema);
 
   /***
    *  Returns legacy metadata about Thrift type `T`, and all Thrift types
@@ -120,11 +118,7 @@ struct legacy_reflection {
    *  WARNING: This function uses a hash function implemented by OpenSSL; which
    *  is not thread-safe until OpenSSL is initialized.
    */
-  static legacy_reflection_schema_t schema() {
-    legacy_reflection_schema_t schema;
-    register_into(schema);
-    return schema;
-  }
+  static legacy_reflection_schema_t schema();
 
   /***
    *  Returns the legacy reflection name of a Thrift type `T` using Thrift's
@@ -146,9 +140,7 @@ struct legacy_reflection {
    *    //  Writes the log line:
    *    //    struct MyModule.MyStruct
    */
-  static constexpr folly::StringPiece name() {
-    return legacy_reflection_detail::helper<T>::name();
-  }
+  static constexpr folly::StringPiece name();
 
   /***
    *  Returns the legacy reflection id of a Thrift type `T` using Thrift's
@@ -172,9 +164,7 @@ struct legacy_reflection {
    *  WARNING: This function uses a hash function implemented by OpenSSL; which
    *  is not thread-safe until OpenSSL is initialized.
    */
-  static legacy_reflection_id_t id() {
-    return legacy_reflection_detail::helper<T>::id();
-  }
+  static legacy_reflection_id_t id();
 
 };
 

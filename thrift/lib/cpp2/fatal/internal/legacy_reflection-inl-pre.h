@@ -20,9 +20,6 @@ namespace apache { namespace thrift {
 
 namespace legacy_reflection_detail {
 
-template <typename T>
-struct helper;
-
 }
 
 }}
