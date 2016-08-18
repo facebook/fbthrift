@@ -39,7 +39,7 @@ void t_mstch_html_generator::generate_program() {
   mstch::map root = this->dump(*this->get_program());
 
   // Generate index.html
-  auto index_tpl = this->get_template("index.html.mustache");
+  auto index_tpl = this->get_template("index.html");
   auto index = mstch::render(index_tpl, root);
   this->write_output("index.html", index);
 
