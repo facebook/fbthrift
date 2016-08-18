@@ -32,6 +32,8 @@ struct struct1 {
   9: string field8 # default requiredness type field
   # this generates an invalid thrift definition, so it won't be tested
   // 10: string field9 (cpp.ref = "true", cpp2.ref = "true")
+
+  11: required list<bool> field10
 }
 
 struct struct2 {

@@ -56,6 +56,8 @@ void init_struct_1(struct1& a) {
   a.field7 = 0xCAFEBABEA4DAFACE;
   a.field8 = "this field isn't set";
 
+  a.field10 = {true, false, true, false, false, true, true};
+
   a.__isset.field1 = true;
   a.__isset.field2 = true;
   a.field6.__isset.nfield00 = true;
@@ -87,6 +89,7 @@ TYPED_TEST(MultiProtocolTest, test_serialization) {
   EXPECT_EQ(a.field6, b.field6);
   EXPECT_EQ(a.field7, b.field7);
   EXPECT_EQ(a.field8, b.field8); // default fields are always written out
+  EXPECT_EQ(a.field10, b.field10);
 
   EXPECT_EQ(true, b.__isset.field1);
   EXPECT_EQ(true, b.__isset.field2);
