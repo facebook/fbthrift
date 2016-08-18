@@ -52,6 +52,8 @@ def read_lines(path):
 exe = os.path.join(os.getcwd(), sys.argv[0])
 buildDir = sys.argv[1] if len(sys.argv) > 1 else 'buck-out/gen'
 thriftRel = os.path.join(buildDir, 'thrift/compiler/thrift')
+templatesRel = os.path.join(buildDir, 'thrift/compiler/generate/templates')
+templates = ascend_find_dir(exe, templatesRel)
 thrift = ascend_find_exe(exe, thriftRel)
 fixtureDir = ascend_find_dir(exe, 'thrift/compiler/test/fixtures')
 fixtureNames = [
@@ -75,7 +77,7 @@ for name in fixtureNames:
             join = "," if ":" in args[0] else ":"
             args[0] = args[0] + join + extra
         subprocess.check_call(
-            [thrift, "-r", "--gen"] + args,
+            [thrift, "-r", "--templates", templates, "--gen"] + args,
             cwd=cwd,
             close_fds=True,
         )

@@ -77,6 +77,9 @@ def init_parser():
             dest="outputDir", default='.',
             help='Set the output directory for gen-* packages (default:'
             'current directory)')),
+        (['--templates'], dict(metavar='dir',
+            default='.',
+            help='Directory with templates for template-based generators')),
         (['--out'], {}),
         (['-I'], dict(metavar='dir', dest="includeDirs", action="append",
             help='Add a directory to the list of directories searched for'
