@@ -378,6 +378,11 @@ unique_ptr<IOBuf> THeader::removeHeader(
 }
 
 static string getString(RWPrivateCursor& c, size_t sz) {
+  if (!c.canAdvance(sz)) {
+   throw TTransportException(TTransportException::CORRUPTED_DATA,
+     folly::stringPrintf("String size %zu is larger than available %zu bytes",
+       sz, c.totalLength()));
+  }
   char strdata[sz];
   c.pull(strdata, sz);
   string str(strdata, sz);
