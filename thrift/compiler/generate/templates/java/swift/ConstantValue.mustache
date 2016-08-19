@@ -14,11 +14,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+}}{{!
+
+  Note:
+
   This template works by simultaneously traversing the `type` and `value` maps
   so that the type of the constant is known. Before including this template,
   open constant:type and constant:value. On recursive calls, make sure to open
   the next subtree's :type and :value elements as well. See the section titled
   'Map Constants' for an example.
+
 
   Integer constants
 }}{{#type:byte?}}{{value:integerValue}}{{/type:byte?}}{{!
