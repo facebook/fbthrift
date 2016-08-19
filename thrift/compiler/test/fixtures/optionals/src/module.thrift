@@ -1,3 +1,5 @@
+namespace java.swift test.fixtures.optionals
+
 struct Color {
   1: double red;
   2: double green;

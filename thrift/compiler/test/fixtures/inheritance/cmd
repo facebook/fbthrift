@@ -1,1 +1,2 @@
 cpp2 src/module.thrift
+mstch_swift src/module.thrift

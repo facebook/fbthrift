@@ -2,3 +2,4 @@ hs src/module.thrift
 py src/module.thrift
 android_lite src/module.thrift
 cocoa:import_path=thrift src/module.thrift
+mstch_swift src/module.thrift

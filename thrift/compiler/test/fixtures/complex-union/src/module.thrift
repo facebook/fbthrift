@@ -1,3 +1,5 @@
+namespace java.swift test.fixtures.complex_union
+
 union ComplexUnion {
   1: i64 intValue;
   2: string stringValue;

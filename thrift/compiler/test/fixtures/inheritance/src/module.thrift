@@ -1,3 +1,5 @@
+namespace java.swift test.fixtures.inheritance
+
 service MyRoot {
   void do_root(),
 }

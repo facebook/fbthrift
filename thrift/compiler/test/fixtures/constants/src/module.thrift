@@ -1,3 +1,5 @@
+namespace java.swift test.fixtures.constants
+
 const i32 myInt = 1337;
 const string name = "Mark Zuckerberg";
 const list<map<string, i32>> states = [

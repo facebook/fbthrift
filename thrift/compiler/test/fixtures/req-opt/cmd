@@ -1,1 +1,2 @@
 cocoa:nullability src/module.thrift
+mstch_swift src/module.thrift

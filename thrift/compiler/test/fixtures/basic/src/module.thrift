@@ -1,3 +1,5 @@
+namespace java.swift test.fixtures.basic
+
 enum MyEnum {
   MyValue1,
   MyValue2,

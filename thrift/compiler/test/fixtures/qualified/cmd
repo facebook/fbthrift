@@ -1,2 +1,3 @@
 hs src/module2.thrift
 cpp src/module2.thrift
+mstch_swift src/module2.thrift

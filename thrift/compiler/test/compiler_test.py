@@ -26,6 +26,18 @@ def ascend_find_exe(path, target):
             return None
         path = parent
 
+def ascend_find_dir(path, target):
+    if not os.path.isdir(path):
+        path = os.path.dirname(path)
+    while True:
+        test = os.path.join(path, target)
+        if os.path.isdir(test):
+            return test
+        parent = os.path.dirname(path)
+        if os.path.samefile(parent, path):
+            return None
+        path = parent
+
 def read_file(path):
     with open(path, 'r') as f:
         return f.read()
@@ -57,6 +69,9 @@ def parse_manifest(raw):
 exe = os.path.join(os.getcwd(), sys.argv[0])
 thrift = ascend_find_exe(exe, 'thrift')
 fixtureDir = 'fixtures'
+
+templateDir = ascend_find_dir(exe, 'thrift/compiler/generate/templates')
+
 manifest = parse_manifest(read_resource(os.path.join(fixtureDir, 'MANIFEST')))
 fixtureNames = manifest.keys()
 
@@ -95,7 +110,7 @@ class CompilerTest(unittest.TestCase):
                 join = "," if ":" in args[0] else ":"
                 args[0] = args[0] + join + extra
             subprocess.check_call(
-                [thrift, '-r', '--gen'] + args,
+                [thrift, '-r', '--templates', templateDir, '--gen'] + args,
                 cwd=self.tmp,
                 close_fds=True,
             )

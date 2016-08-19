@@ -2,6 +2,7 @@ namespace cpp MODULE0
 namespace cpp2 module0
 namespace java module0
 namespace py module0
+namespace java.swift test.fixtures.module0
 
 struct Struct {
  1: i32 first,

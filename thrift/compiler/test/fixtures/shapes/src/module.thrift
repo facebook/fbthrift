@@ -1,3 +1,5 @@
+namespace java.swift test.fixtures.shapes
+
 enum Enum {
   ENUM = 1;
 }

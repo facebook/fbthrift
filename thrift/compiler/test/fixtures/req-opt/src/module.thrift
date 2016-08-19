@@ -1,3 +1,4 @@
+namespace java.swift test.fixtures.req_opt
 namespace cocoa example
 
 struct Foo {
