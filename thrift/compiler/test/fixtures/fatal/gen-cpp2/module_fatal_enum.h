@@ -6,6 +6,7 @@
  */
 #pragma once
 
+#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_types.h"
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_fatal.h"
 
 #include <fatal/type/enum.h>

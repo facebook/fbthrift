@@ -11,10 +11,11 @@
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <folly/futures/Future.h>
-#include "thrift/compiler/test/fixtures/fatal-compat/gen-cpp2/module_types.h"
 
 #include "thrift/compiler/test/fixtures/fatal-compat/gen-cpp/service1.h"
 
+
+#include "thrift/compiler/test/fixtures/fatal-compat/gen-cpp2/module_types.h"
 
 namespace folly {
   class IOBuf;

@@ -834,6 +834,8 @@ template <
   template <template <typename> class> class MembersInfo,
   typename Info,
   typename MembersAnnotations,
+  typename RequiredFields,
+  typename NonRequiredFields,
   typename Metadata
 >
 struct reflected_struct {
@@ -1024,6 +1026,9 @@ struct reflected_struct {
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
   using legacy_id = typename Metadata::legacy_id;
+
+  using required_fields = RequiredFields;
+  using nonrequired_fields = NonRequiredFields;
 };
 
 /**

@@ -119,3 +119,8 @@ struct struct8 {
   3: required smallstruct req_field
     (cpp2.ref_type = "shared_const")
 }
+
+exception except1 {
+  1: i32 field1
+  2: string field2
+}

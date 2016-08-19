@@ -23,8 +23,6 @@
 
 #include <gtest/gtest.h>
 
-namespace test_cpp2 { namespace simple_cpp_reflection {
-
 /* using override */
 using namespace apache::thrift;
 
@@ -103,6 +101,3 @@ struct CompareProtocolTest : public ::testing::Test {
     st2.debug_buffer();
   }
 };
-
-
-}} // test_cpp2::simple_cpp_reflection

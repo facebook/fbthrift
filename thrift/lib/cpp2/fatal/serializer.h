@@ -23,6 +23,7 @@
 #include <iostream>
 #include <type_traits>
 #include <iterator>
+#include <memory>
 
 #include <fatal/type/string_lookup.h>
 #include <fatal/type/call_traits.h>
@@ -162,7 +163,7 @@ REGISTER_OVERLOAD(string, std::string, String, T_STRING);
 REGISTER_BINARY(std::string,                   Binary, T_STRING);
 REGISTER_BINARY(folly::IOBuf,                  Binary, T_STRING);
 REGISTER_BINARY(std::unique_ptr<folly::IOBuf>, Binary, T_STRING);
-
+REGISTER_BINARY(folly::basic_fbstring<char>,   Binary, T_STRING);
 #undef REGISTER_BINARY
 #undef REGISTER_OVERLOAD_ZC // this naming sure isn't confusing, no sir
 #undef REGISTER_OVERLOAD_SS_COMMON
@@ -193,7 +194,33 @@ template <typename T>
 using disable_if_smart_pointer =
   typename std::enable_if<!is_smart_pointer<T>::value>::type;
 
-} // namespace detail {
+  // enums, unions, and structs from IDLs without fatal metadata might
+  // be included in e,u,s from IDLs with fatal metadata. If those fields
+  // don't have fatal metadata, we fall back to using their legacy generated
+  // read/write/serializedSize(ZC) methods.
+  template <typename Type, protocol::TType TTypeValue>
+  struct legacy_fallback_methods {
+    constexpr static protocol::TType ttype_value = TTypeValue;
+
+    template <typename Protocol>
+    static std::size_t read(Protocol& protocol, Type& out) {
+      return Cpp2Ops<Type>::read(&protocol, &out);
+    }
+    template <typename Protocol>
+    static std::size_t write(Protocol& protocol, Type const& in) {
+      return Cpp2Ops<Type>::write(&protocol, &in);
+    }
+    template <bool ZeroCopy, typename Protocol>
+    static std::size_t serialized_size(Protocol& protocol, Type const& in) {
+      if(ZeroCopy) {
+        return Cpp2Ops<Type>::serializedSizeZC(&protocol, &in);
+      }
+      else {
+        return Cpp2Ops<Type>::serializedSize(&protocol, &in);
+      }
+    }
+  };
+} /* namespace detail */
 
 // handle dereferencing smart pointers
 template <
@@ -234,8 +261,15 @@ template<typename Type>
 struct protocol_methods<type_class::enumeration, Type> {
   constexpr static protocol::TType ttype_value = protocol::T_I32;
 
-  using int_type = typename std::underlying_type<Type>::type;
+  // enums are guarenteed to inherit from uint32_t, so we can be assured
+  // that the bytes coming off the wire are still uint32_t even though
+  // we read them with readI32
+  using enum_type = typename std::underlying_type<Type>::type;
+  using int_type = std::int32_t;
   using int_methods = protocol_methods<type_class::integral, int_type>;
+
+  static_assert(sizeof(enum_type) == sizeof(int_type),
+    "underlying enum type doesn't have width of int32_t");
 
   template <typename Protocol>
   static std::size_t read(Protocol& protocol, Type& out) {
@@ -263,12 +297,12 @@ template<typename ElemClass, typename Type>
 struct protocol_methods<type_class::list<ElemClass>, Type> {
   constexpr static protocol::TType ttype_value = protocol::T_LIST;
 
-  using elem_type   = typename Type::value_type;
-  using elem_tclass = ElemClass;
-  static_assert(!std::is_same<elem_tclass, type_class::unknown>(),
+  using elem_type = typename Type::value_type;
+
+  static_assert(!std::is_same<ElemClass, type_class::unknown>(),
     "Unable to serialize unknown list element");
 
-  using elem_methods = protocol_methods<elem_tclass, elem_type>;
+  using elem_methods = protocol_methods<ElemClass, elem_type>;
 
   template <typename Protocol>
   static std::size_t read(Protocol& protocol, Type& out) {
@@ -349,10 +383,10 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
   // TODO: fair amount of shared code bewteen this and specialization for
   // type_class::list
   using elem_type   = typename Type::value_type;
-  using elem_tclass = ElemClass;
-  static_assert(!std::is_same<elem_tclass, type_class::unknown>(),
+
+  static_assert(!std::is_same<ElemClass, type_class::unknown>(),
     "Unable to serialize unknown type");
-  using elem_methods = protocol_methods<elem_tclass, elem_type>;
+  using elem_methods = protocol_methods<ElemClass, elem_type>;
 
 private:
   template <typename Protocol>
@@ -423,19 +457,20 @@ template <typename KeyClass, typename MappedClass, typename Type>
 struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
   constexpr static protocol::TType ttype_value = protocol::T_MAP;
 
-  using key_type    = typename Type::key_type;
-  using key_tclass  = KeyClass;
+  using key_type    = typename std::decay<decltype(
+    std::declval<Type>().begin()->first
+  )>::type;
+  using mapped_type    = typename std::decay<decltype(
+    std::declval<Type>().begin()->second
+  )>::type;
 
-  using mapped_type   = typename Type::mapped_type;
-  using mapped_tclass = MappedClass;
-
-  static_assert(!std::is_same<key_tclass, type_class::unknown>(),
+  static_assert(!std::is_same<KeyClass, type_class::unknown>(),
     "Unable to serialize unknown key type in map");
-  static_assert(!std::is_same<mapped_tclass, type_class::unknown>(),
+  static_assert(!std::is_same<MappedClass, type_class::unknown>(),
     "Unable to serialize unknown mapped type in map");
 
-    using key_methods    = protocol_methods<key_tclass, key_type>;
-    using mapped_methods = protocol_methods<mapped_tclass, mapped_type>;
+    using key_methods    = protocol_methods<KeyClass, key_type>;
+    using mapped_methods = protocol_methods<MappedClass, mapped_type>;
 
 private:
   template <typename Protocol>
@@ -532,6 +567,13 @@ struct is_required_field :
     MemberInfo::optional::value == optionality::required
   > {};
 
+template <typename MemberInfo>
+struct is_not_required_field :
+  std::integral_constant<
+    bool,
+    MemberInfo::optional::value != optionality::required
+  > {};
+
 // marks isset either on the required field array,
 // or the appropriate member within the Struct being read
 template <
@@ -617,9 +659,26 @@ struct deref <
 
 } // namespace detail
 
+// specialization for variants (Thrift unions) which don't have Fatal
+// metadata generated
+template <typename Union>
+struct protocol_methods <
+  type_class::variant,
+  Union,
+  typename std::enable_if<
+    !apache::thrift::is_reflectable_union<Union>::value
+  >::type
+> : detail::legacy_fallback_methods<Union, protocol::T_STRUCT> {};
+
 // specialization for variants (Thrift unions)
 template <typename Union>
-struct protocol_methods<type_class::variant, Union> {
+struct protocol_methods <
+  type_class::variant,
+  Union,
+  typename std::enable_if<
+    apache::thrift::is_reflectable_union<Union>::value
+  >::type
+> {
   constexpr static protocol::TType ttype_value = protocol::T_STRUCT; // overlaps
 
   // using traits = reflect_union<Union>;
@@ -693,7 +752,6 @@ struct protocol_methods<type_class::variant, Union> {
       Union& obj
     ) const {
       using descriptor = fatal::map_get<fid_to_descriptor_map, Fid>;
-      constexpr field_id_t fid = Fid::value;
 
       using field_methods = protocol_methods<
           typename descriptor::metadata::type_class,
@@ -800,9 +858,6 @@ public:
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, Union const& in) {
     std::size_t xfer = 0;
-    DVLOG(3) << "begin writing union: "
-      << fatal::z_data<typename traits::name>()
-      << ", type: " << in.getType();
     xfer += protocol.writeStructBegin(fatal::z_data<typename traits::name>());
     fatal::sorted_search<sorted_ids>(
       in.getType(),
@@ -870,9 +925,25 @@ public:
   }
 };
 
+// specialization for structs, from IDLs without fatal metadata
+template <typename Struct>
+struct protocol_methods <
+  type_class::structure,
+  Struct,
+  typename std::enable_if<
+    !apache::thrift::is_reflectable_struct<Struct>::value
+  >::type
+> : public detail::legacy_fallback_methods<Struct, protocol::T_STRUCT> {};
+
 // specialization for structs
 template <typename Struct>
-struct protocol_methods<type_class::structure, Struct> {
+struct protocol_methods <
+  type_class::structure,
+  Struct,
+  typename std::enable_if<
+    apache::thrift::is_reflectable_struct<Struct>::value
+  >::type
+> {
   constexpr static protocol::TType ttype_value = protocol::T_STRUCT;
 
 private:
@@ -882,12 +953,8 @@ private:
   using member_names = fatal::map_keys<typename traits::members>;
 
   // fatal::type_list
-  using all_fields = fatal::partition<
-    fatal::map_values<typename traits::members>,
-    fatal::applier<detail::is_required_field>
-  >;
-  using required_fields = fatal::first<all_fields>;
-  using optional_fields = fatal::second<all_fields>;
+  using required_fields = typename traits::required_fields;
+  using optional_fields = typename traits::nonrequired_fields;
 
   using isset_array = std::bitset<fatal::size<required_fields>::value>;
 
@@ -928,8 +995,7 @@ private:
       Struct& obj,
       isset_array& required_isset)
     {
-      constexpr field_id_t fid = Fid::value;
-      // fatal::map {std::integral_constant<field_id_t, Id> => MemberInfo}
+      // fatal::map {std::integral_constant<field_id_t, fid> => MemberInfo}
       using id_to_member_map = fatal::as_map<
         fatal::map_values<typename traits::members>,
         fatal::get_type::id
@@ -990,7 +1056,11 @@ public:
         auto found_ = fatal::prefix_tree<member_names>::find(
           fname.begin(), fname.end(), member_fname_to_fid(), fid, ftype
         );
-        assert(found_ == 1);
+        if(found_ != 1) {
+          xfer += protocol.skip(ftype);
+          xfer += protocol.readFieldEnd();
+          continue;
+        }
       }
 
       using sorted_fids  = fatal::sort<

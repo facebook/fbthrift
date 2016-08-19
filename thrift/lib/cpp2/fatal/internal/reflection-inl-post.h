@@ -52,7 +52,7 @@ struct unmark_set;
 
 template <typename Owner, typename Getter>
 struct unmark_set<Owner, Getter, true> {
-  constexpr static void mark(Owner& owner) {
+  static void mark(Owner& owner) {
     Getter::ref(owner.__isset) = false;
   }
 };

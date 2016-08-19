@@ -17,6 +17,12 @@
 #include <thrift/test/gen-cpp2/simple_reflection_fatal_types.h>
 #include <thrift/test/gen-cpp2/simple_reflection_types_custom_protocol.h>
 
+#include <thrift/test/gen-cpp2/service_reflection_fatal_types.h>
+#include <thrift/test/gen-cpp2/service_reflection_types_custom_protocol.h>
+
+#include <thrift/test/gen-cpp2/EnumTest_fatal_types.h>
+#include <thrift/test/gen-cpp2/EnumTest_types_custom_protocol.h>
+
 #include <thrift/lib/cpp2/fatal/serializer.h>
 #include <thrift/lib/cpp2/fatal/pretty_print.h>
 #include <thrift/lib/cpp2/fatal/internal/test_helpers.h>
@@ -27,22 +33,58 @@
 
 #include <iomanip>
 
-namespace test_cpp2 { namespace simple_cpp_reflection {
 
 TYPED_TEST_CASE(MultiProtocolTest, protocol_type_pairs);
 TYPED_TEST_CASE(CompareProtocolTest, protocol_type_pairs);
 
+// using apache::thrift::serializer_read;
+// using apache::thrift::serializer_write;
+// using apache::thrift::serializer_serialized_size;
+// using apache::thrift::serializer_serialized_size_zc;
+
 template <typename Type, typename Protocol>
 void expect_same_serialized_size(Type& type, Protocol& protocol) {
   EXPECT_EQ(
-    type.serializedSize(&protocol),
+    Cpp2Ops<Type>::serializedSize(&protocol, &type),
     serializer_serialized_size(type, protocol)
   );
   EXPECT_EQ(
-    type.serializedSizeZC(&protocol),
+    Cpp2Ops<Type>::serializedSizeZC(&protocol, &type),
     serializer_serialized_size_zc(type, protocol)
   );
 }
+
+namespace cpp2 {
+TYPED_TEST(MultiProtocolTest, test_compat) {
+  // from EnumTest.thrift (compiled with fatal,compatibility)
+  MyStruct a;
+  serializer_write(a, this->writer);
+  this->prep_read();
+  this->debug_buffer();
+
+  MyStruct b;
+  serializer_read(a, this->reader);
+  EXPECT_EQ(a, b);
+  expect_same_serialized_size(a, this->writer);
+}
+} // namespace cpp2
+
+// simply tests if we can compile the structs related to services
+namespace service_reflection { namespace cpp2 {
+TYPED_TEST(MultiProtocolTest, service_reflection_test) {
+  struct1 a;
+  serializer_write(a, this->writer);
+  this->prep_read();
+  this->debug_buffer();
+
+  struct1 b;
+  serializer_read(b, this->reader);
+  EXPECT_EQ(a, b);
+  expect_same_serialized_size(a, this->writer);
+}
+}} // namespcae service_reflection::cpp2
+
+namespace test_cpp2 { namespace simple_cpp_reflection {
 
 void init_struct_1(struct1& a) {
   a.field0 = 10;

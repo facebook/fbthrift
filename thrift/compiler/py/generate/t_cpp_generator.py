@@ -104,6 +104,7 @@ class CppGenerator(t_generator.Generator):
         'optionals': "produce folly::Optional<...> for optional members",
         'fatal': 'uses the Fatal library to generate reflection metadata',
         'namespace_cpp': 'skip the cpp2 namespace component (temporary hack)',
+        'lean_mean_meta_machine': 'use templated Fatal metadata based codegen',
     }
     _out_dir_base = 'gen-cpp2'
     _compatibility_dir_base = 'gen-cpp'
@@ -127,11 +128,13 @@ class CppGenerator(t_generator.Generator):
     def __init__(self, *args, **kwargs):
         # super constructor
         t_generator.Generator.__init__(self, *args, **kwargs)
+
         prefix = self._flags.get('include_prefix')
         if isinstance(prefix, basestring):
             self.program.include_prefix = prefix
         terse_writes = self._flags.get('terse_writes')
         self.safe_terse_writes = (terse_writes == 'safe')
+
         if self.flag_json:
             self.protocols = copy.deepcopy(CppGenerator.protocols)
             self.protocols.append(
@@ -616,9 +619,6 @@ class CppGenerator(t_generator.Generator):
             s('#include <thrift/lib/cpp/TApplicationException.h>')
         s('#include <thrift/lib/cpp2/async/FutureRequest.h>')
         s('#include <folly/futures/Future.h>')
-        s('#include "{0}"'.format(self._with_include_prefix(self._program,
-                                                             self._program.name
-                                                             + '_types.h')))
         print >>self._custom_protocol_h, \
                 '#include "{0}"'.format(self._with_include_prefix(
                     self._program,
@@ -662,6 +662,11 @@ class CppGenerator(t_generator.Generator):
                     '#include "{0}_custom_protocol.h"'.format(
                             self._with_include_prefix(service.extends.program,
                                                       service.extends.name))
+        # include our types last, which might depend on types in custom headers
+        s()
+        s('#include "{0}_types.h"'.format(
+            self._with_include_prefix(self._program, self._program.name)))
+
         s()
         s('namespace folly { ')
         s('  class IOBuf;')
@@ -696,6 +701,8 @@ class CppGenerator(t_generator.Generator):
             # Include the types.tcc file from the types header file
             s = self._service_global
             s()
+            if self.flag_lean_mean_meta_machine:
+                s('#include "{0}"'.format(self._fatal_header()))
             s('#include "{0}.tcc"'.format(
                 self._with_include_prefix(self._program, service.name)))
             self._service_global.release()
@@ -746,7 +753,8 @@ class CppGenerator(t_generator.Generator):
                                                    swap=False,
                                                    result=False,
                                                    to_additional=True,
-                                                   simplejson=False)
+                                                   simplejson=False,
+                                                   is_service_helper=True)
                 arglist.name = "{0}_{1}_pargs".format(service.name, function.name)
                 self._generate_struct_complete(s, arglist,
                                                is_exception=False,
@@ -757,7 +765,8 @@ class CppGenerator(t_generator.Generator):
                                                result=False,
                                                has_isset=False,
                                                to_additional=True,
-                                               simplejson=False)
+                                               simplejson=False,
+                                               is_service_helper=True)
                 arglist.name = name_orig
             else:
                 def generate_pargs(suffix, pargs):
@@ -798,7 +807,8 @@ class CppGenerator(t_generator.Generator):
                                                    swap=False,
                                                    result=True,
                                                    to_additional=True,
-                                                   simplejson=False)
+                                                   simplejson=False,
+                                                   is_service_helper=True)
                 else:
                     flist = ['apache::thrift::FieldData<{0}, '
                              'apache::thrift::protocol::T_STRUCT, {1}>'.format(
@@ -2338,7 +2348,8 @@ class CppGenerator(t_generator.Generator):
     def _generate_struct_complete(self, s, obj, is_exception,
                                   pointers, read, write, swap,
                                   result, has_isset=True,
-                                  to_additional=False, simplejson=True):
+                                  to_additional=False, simplejson=True,
+                                  is_service_helper=False):
         def output(data):
             if to_additional:
                 print >>self._additional_outputs[-1], data
@@ -2394,13 +2405,17 @@ class CppGenerator(t_generator.Generator):
             s('typedef{0} {1};'.format(base, obj.name))
 
             if read:
-                self._generate_struct_reader(s, obj, pointers,
-                                             has_isset=has_isset)
+                self._generate_struct_reader(
+                                         s, obj, pointers,
+                                         has_isset=has_isset,
+                                         is_service_helper=is_service_helper)
             if write:
                 for zc in False, True:
                     self._generate_struct_compute_length(
-                            s, obj, pointers, result, zero_copy=zc)
-                self._generate_struct_writer(s, obj, pointers, result)
+                            s, obj, pointers, result, zero_copy=zc,
+                            is_service_helper=is_service_helper)
+                self._generate_struct_writer(s, obj, pointers, result,
+                    is_service_helper=is_service_helper)
             return
 
         extends = [
@@ -3055,7 +3070,8 @@ class CppGenerator(t_generator.Generator):
     # ======================================================================
 
     def _generate_struct_reader(self, scope, obj,
-                                pointers=False, has_isset=True):
+                                pointers=False, has_isset=True,
+                                is_service_helper=False):
         if self.flag_optionals:
             has_isset = False
         this = 'this'
@@ -3073,6 +3089,14 @@ class CppGenerator(t_generator.Generator):
                            output=self._out_tcc)
         if obj.is_union:
             has_isset = False
+
+        if self.flag_lean_mean_meta_machine and not is_service_helper:
+            s = d.scope
+            with s:
+                s('return ::apache::thrift::serializer_read(*{}, *iprot);'.
+                    format(this))
+            return
+
         fields = obj.members
 
         struct_options = self._get_serialized_fields_options(obj)
@@ -3456,7 +3480,8 @@ class CppGenerator(t_generator.Generator):
     def _generate_struct_compute_length(self, scope, obj,
                                         pointers=False,
                                         result=False,
-                                        zero_copy=False):
+                                        zero_copy=False,
+                                        is_service_helper=False):
         method = "serializedSizeZC" if zero_copy else "serializedSize"
         this = 'this'
         if self.flag_compatibility:
@@ -3476,6 +3501,19 @@ class CppGenerator(t_generator.Generator):
         struct_options = self._get_serialized_fields_options(obj)
 
         s = d.scope
+
+        if self.flag_lean_mean_meta_machine and not is_service_helper:
+            with s:
+                if zero_copy:
+                    s('return ::apache::thrift::'
+                      'serializer_serialized_size_zc(*{}, *prot_);'.format(
+                        this))
+                else:
+                    s('return ::apache::thrift::'
+                      'serializer_serialized_size(*{}, *prot_);'.format(
+                        this))
+            return
+
         if struct_options.has_serialized_fields:
             with s('if ({0}->{1} && '
                     'prot_->protocolType() != {0}->{2})'.format(
@@ -3598,7 +3636,8 @@ class CppGenerator(t_generator.Generator):
         return s
 
     def _generate_struct_writer(self, scope, obj, pointers=False,
-                                result=False):
+                                result=False,
+                                is_service_helper=False):
         'Generates the write function.'
         this = 'this'
         if self.flag_compatibility:
@@ -3613,7 +3652,14 @@ class CppGenerator(t_generator.Generator):
             d = scope.defn('template <class Protocol_>\nuint32_t {name}'
                            '(Protocol_* prot_) const', name='write',
                            output=self._out_tcc)
+
         s = d.scope
+        if self.flag_lean_mean_meta_machine and not is_service_helper:
+            with s:
+                s("return ::apache::thrift::serializer_write(*{}, *prot_);".
+                    format(this))
+            return
+
         name = obj.name
         fields = filter(self._should_generate_field, obj.members)
 
@@ -4293,17 +4339,19 @@ class CppGenerator(t_generator.Generator):
         ns = self._get_original_namespace()
         self.fatal_detail_ns = 'thrift_fatal_impl_detail'
         context = self._make_context(name + '_fatal', tcc=False)
+        context.omit_include = True
         with get_global_scope(CppPrimitiveFactory, context) as sg:
-            sg('#include "{0}"'.format(self._with_include_prefix(
-                self._program, name + '_types.h')))
-            sg()
             sg('#include <thrift/lib/cpp2/fatal/reflection.h>')
             sg()
             sg('#include <fatal/type/list.h>')
             sg('#include <fatal/type/map.h>')
             sg('#include <fatal/type/pair.h>')
             sg('#include <fatal/type/sequence.h>')
+
             sg()
+            sg('#include "{0}"'.format(self._with_include_prefix(
+                self._program, name + '_types.h')))
+
             if len(ns) > 0:
                 with sg.namespace(ns).scope as sns:
                     self._generate_fatal_impl(sns, program)
@@ -4313,6 +4361,8 @@ class CppGenerator(t_generator.Generator):
                 with sg.namespace(self._get_namespace()).scope as sns:
                     sns('using {0} = {1}::{0};'.format(
                         self.fatal_tags_class, ns.replace('.', '::')))
+            sg('#include "{0}_fatal_types.h"'.format(
+                self._with_include_prefix(self._program, name)))
 
     def _generate_fatal_impl(self, sns, program):
         name = self._program.name
@@ -4347,6 +4397,8 @@ class CppGenerator(t_generator.Generator):
         # Combo include: all
         context_cmb_all = self._make_context(name + '_fatal_all', tcc=False)
         with get_global_scope(CppPrimitiveFactory, context_cmb_all) as sg:
+            sg('#include "{0}_types.h"'.format(
+                self._with_include_prefix(self._program, name)))
             for what in ['types', 'constant', 'service']:
                 sg('#include "{0}"'.format(self._with_include_prefix(
                     self._program, name + '_fatal_' + what + '.h')))
@@ -4569,7 +4621,10 @@ class CppGenerator(t_generator.Generator):
         context = self._make_context(name + '_fatal_enum', tcc=False)
         with get_global_scope(CppPrimitiveFactory, context) as sg:
             sg('#include "{0}"'.format(self._with_include_prefix(
-                self._program, name + '_fatal.h')))
+                self._program, name + '_types.h')))
+
+            sg('#include "{0}"'.format(self._fatal_header()))
+
             sg()
             sg('#include <fatal/type/enum.h>')
             sg()
@@ -4651,7 +4706,9 @@ class CppGenerator(t_generator.Generator):
         context = self._make_context(name + '_fatal_union', tcc=False)
         with get_global_scope(CppPrimitiveFactory, context) as sg:
             sg('#include "{0}"'.format(self._with_include_prefix(
-                self._program, name + '_fatal.h')))
+                self._program, name + '_types.h')))
+
+            sg('#include "{0}"'.format(self._fatal_header()))
             sg()
             sg('#include <fatal/type/enum.h>')
             sg('#include <fatal/type/variant_traits.h>')
@@ -4793,15 +4850,23 @@ class CppGenerator(t_generator.Generator):
                 .format(field.name))
             scope('}')
 
+    def _fatal_header(self):
+        return "{0}_fatal.h".format(self._with_include_prefix(
+            self._program, self._program.name))
+
     def _generate_fatal_struct(self, program):
         name = self._program.name
         ns = self._get_original_namespace()
         context = self._make_context(name + '_fatal_struct', tcc=False)
         with get_global_scope(CppPrimitiveFactory, context) as sg:
             sg('#include "{0}"'.format(self._with_include_prefix(
-                self._program, name + '_fatal.h')))
+                self._program, name + '_types.h')))
+            sg()
+            sg('#include "{0}"'.format(self._fatal_header()))
             sg()
             sg('#include <fatal/type/traits.h>')
+            sg('#include <fatal/type/list.h>')
+            sg('#include <fatal/type/map.h>')
             sg()
             if len(ns) > 0:
                 with sg.namespace(ns).scope as sns:
@@ -4820,9 +4885,17 @@ class CppGenerator(t_generator.Generator):
             safe_ns, name)
         mnfclsprefix = '{0}_{1}__struct_unique_member_info_list'.format(
             safe_ns, name)
+
+        structs = []
+        for struct in program.structs:
+            structs.append(struct)
+        for exception in program.exceptions:
+            structs.append(exception)
+
         with sns.namespace(self.fatal_detail_ns).scope as detail:
             members = []
-            for i in program.structs:
+
+            for i in structs:
                 if i.is_union:
                     continue
                 self._set_fatal_string(i.name)
@@ -4840,7 +4913,7 @@ class CppGenerator(t_generator.Generator):
                     with detail.cls('struct {0}_{1}_struct_member_pod_{2}'
                       .format(safe_ns, name, i)).scope as pod:
                         pod('{0} {1};'.format(pod_arg, i))
-            for i in program.structs:
+            for i in structs:
                 if i.is_union:
                     continue
                 with detail.cls('class {0}_{1}'.format(
@@ -4898,19 +4971,32 @@ class CppGenerator(t_generator.Generator):
                         cmnf('  {0}'.format(
                             'true' if self._has_isset(m) else 'false'))
                         cmnf('>>;')
+
+        def render_member_list(struct, member_list):
+            sns('  ::fatal::list<')
+            for midx, m in enumerate(member_list):
+                sns('      {0}::{1}_{2}<::fatal::identity>::{3}{4}'.format(
+                    self.fatal_detail_ns, struct.name, mnfclsprefix, m.name,
+                    ',' if midx+1 < len(member_list) else ''))
+            sns('  >,')
+
         result = {}
         order = []
-        for i in program.structs:
+        for i in structs:
             if i.is_union:
                 continue
             string_ref = self._set_fatal_string(i.name)
             result[i.name] = (i.name, string_ref, string_ref)
             order.append(i.name)
             sns('THRIFT_REGISTER_STRUCT_TRAITS(')
+            # Struct
             sns('  {0},'.format(i.name))
+            # Name
             sns('  {0},'.format(self._get_fatal_string_id(i.name)))
+            # MembersInfo
             sns('  {0}::{1}_{2},'.format(
                 self.fatal_detail_ns, i.name, mnfclsprefix))
+            # Info
             sns('  ::fatal::map<')
             annclsnm = '{0}::{1}_{2}'.format(
                 self.fatal_detail_ns, i.name, annclsprefix)
@@ -4921,7 +5007,16 @@ class CppGenerator(t_generator.Generator):
                     self.fatal_detail_ns, i.name, mnfclsprefix, m.name))
                 sns('    >{0}'.format(',' if midx + 1 < len(i.members) else ''))
             sns('  >,')
+            # MembersAnnotations
             sns('  {0}::members,'.format(annclsnm))
+
+            required_members = [m for m in i.members if m.req == e_req.required]
+            nonreq_members = [m for m in i.members if m.req != e_req.required]
+            # RequiredFields
+            render_member_list(i, required_members)
+            # NonRequiredFields
+            render_member_list(i, nonreq_members)
+            # Metadata
             self._render_fatal_type_common_metadata(
                 annclsnm, i.type_id, sns, '  ')
             sns(');')
@@ -4959,7 +5054,10 @@ class CppGenerator(t_generator.Generator):
         context = self._make_context(name + '_fatal_service', tcc=False)
         with get_global_scope(CppPrimitiveFactory, context) as sg:
             sg('#include "{0}"'.format(self._with_include_prefix(
-                self._program, name + '_fatal.h')))
+                self._program, name + '_types.h')))
+            if self.flag_lean_mean_meta_machine:
+                sg('#include "{0}"'.format(self._fatal_header()))
+
             sg()
             if len(ns) > 0:
                 with sg.namespace(ns).scope as sns:
@@ -5067,17 +5165,20 @@ class CppGenerator(t_generator.Generator):
         context = self._make_context(name + '_types', tcc=True,
                                      custom_protocol=True)
         s = self._types_global = get_global_scope(CppPrimitiveFactory, context)
+
         self._types_out_impl = types_out_impl = context.impl
         self._types_out_h = types_out_h = context.h
         self._out_tcc = types_out_tcc = context.tcc
         self._generated_types = []
         # Enter the scope (prints guard)
         s.acquire()
+
         # Include base types
         s('#include <thrift/lib/cpp2/Thrift.h>')
         s('#include <thrift/lib/cpp2/protocol/Protocol.h>')
         if not self.flag_bootstrap:
             s('#include <thrift/lib/cpp/TApplicationException.h>')
+
         if self.flag_optionals:
             s('#include <folly/Optional.h>')
         s('#include <folly/io/IOBuf.h>')
@@ -5095,9 +5196,11 @@ class CppGenerator(t_generator.Generator):
             print >>context.custom_protocol_h, \
                     '#include "{0}_types_custom_protocol.h"'.format(
                             self._with_include_prefix(inc, inc.name))
+
         for _, b, _ in self.protocols:
             print >>types_out_tcc, \
                     '#include <thrift/lib/cpp2/protocol/{0}.h>'.format(b)
+
         s()
         # Include custom headers
         for inc in self._program.cpp_includes:
@@ -5108,6 +5211,13 @@ class CppGenerator(t_generator.Generator):
         s()
         # The swap() code needs <algorithm> for std::swap()
         print >>types_out_impl, '#include <algorithm>\n'
+
+        fatal_header = '#include "{0}"'.format(self._fatal_header())
+        if self.flag_lean_mean_meta_machine:
+            print >>types_out_impl, fatal_header
+            print >>context.custom_protocol_h, fatal_header
+            print >>types_out_tcc, fatal_header
+            print >>types_out_tcc, '#include <thrift/lib/cpp2/fatal/serializer.h>'
 
         # using directives
         s()
@@ -5127,7 +5237,10 @@ class CppGenerator(t_generator.Generator):
             s()
             s('#include "{0}_types.tcc"'.format(
                 self._with_include_prefix(self._program, self._program.name)))
+
+        if self.flag_implicit_templates:
             self._types_global.release()
+
 
     def _generate_comment(self, text, style='auto'):
         'Style = block, line or auto'

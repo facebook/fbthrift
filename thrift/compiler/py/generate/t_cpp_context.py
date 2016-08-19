@@ -338,6 +338,7 @@ class CppOutputContext(OutputContext):
 
     def __init__(self, output_cpp, output_h, output_tcc, header_path,
             additional_outputs=[], custom_protocol_h=None):
+        self.omit_include = False
         self._output_cpp = output_cpp
         self._output_h = output_h
         self._output_tcc = output_tcc
@@ -409,8 +410,9 @@ class CppOutputContext(OutputContext):
                 print >>self._custom_protocol_h, '#include "{0}.tcc"\n'.format(
                         self._header_path)
             # include h in cpp
-            print >>self._output_cpp, '#include "{0}.h"\n'.format(
-                        self._header_path)
+            if not self.omit_include:
+                print >>self._output_cpp, '#include "{0}.h"\n'.format(
+                            self._header_path)
             for output in self._additional_outputs:
                 print >>output, '#include "{0}.h"\n'.format(
                     self._header_path)

@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-#include <thrift/test/gen-cpp2/simple_reflection_fatal.h>
-#include <thrift/test/gen-cpp2/simple_reflection_fatal_struct.h>
+#include <thrift/test/gen-cpp2/simple_reflection_types.h>
+#include <thrift/test/gen-cpp2/simple_reflection_types_custom_protocol.h>
 #include <thrift/test/gen-cpp2/simple_reflection_fatal_types.h>
-#include <thrift/test/gen-cpp2/simple_reflection_types.tcc>
 
 #include <thrift/lib/cpp2/fatal/internal/test_helpers.h>
 #include <thrift/lib/cpp2/fatal/populator.h>

@@ -6,8 +6,6 @@
  */
 #pragma once
 
-#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_types.h"
-
 #include <thrift/lib/cpp2/fatal/reflection.h>
 
 #include <fatal/type/list.h>
@@ -15,6 +13,7 @@
 #include <fatal/type/pair.h>
 #include <fatal/type/sequence.h>
 
+#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_types.h"
 namespace test_cpp2 { namespace cpp_reflection {
 
 namespace thrift_fatal_impl_detail {
@@ -315,3 +314,4 @@ THRIFT_REGISTER_REFLECTION_METADATA(
 );
 
 }} // test_cpp2::cpp_reflection
+#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_fatal_types.h"

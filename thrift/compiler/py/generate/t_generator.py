@@ -40,6 +40,14 @@ class Generator(object):
         self._flags = flags
         self._tmp = 0
 
+        if self.flag_lean_mean_meta_machine:
+            assert self.flag_fatal
+
+        # temporary: all libraries that generate fatal metadata
+        # will use new serializer
+        # if self._flag('fatal'):
+        #   self._flags['lean_mean_meta_machine'] = True
+
     def _flag(self, flag):
         ret = self._flags.get(flag)
         return ret if ret != '' else True
