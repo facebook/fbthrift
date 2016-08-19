@@ -124,6 +124,24 @@ using safe_overload_t = typename std::enable_if<
   detail::is_safe_overload<Class, Args...>::type::value
 >::type;
 
+// HACK: Disable the default merge() for cpp2-generated types.
+//
+// The default implementation is wrong - it just copies/moves the source
+// wholesale - and blindly upgrading from legacy cpp to cpp2 would change the
+// behavior of merge over generated types to the default implementation without
+// any warning.
+//
+// If there is code that needs to mimick the behavior of merge(), there is
+// another implementation called merge_into that may be used. It requires static
+// reflection metatypes. For more details, see: thrift/lib/cpp2/fatal/merge.h.
+//
+// If there is code that needs merge() available via ADL, an overload of merge()
+// should be made in the namespace of the argument types, and its implementation
+// may simply forward to merge_into.
+template <typename T>
+struct MergeTrait<T, typename std::enable_if<
+      std::is_base_of<detail::st::ComparisonOperators<T>, T>::value>::type>;
+
 }} // apache::thrift
 
 #endif // #ifndef THRIFT_CPP2_H_

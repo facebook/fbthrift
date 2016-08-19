@@ -333,7 +333,7 @@ inline void reallyClear(ThriftContainer& container) {
  *    is overwritten.
  *  - map_merge and set_merge for associative containers.
  */
-template <typename T>
+template <typename T, typename = void>
 struct MergeTrait {
   using default_merge = void;
 };
