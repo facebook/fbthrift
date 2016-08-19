@@ -1,0 +1,64 @@
+{{!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+}}package {{service:javaPackage}};
+
+import com.facebook.swift.codec.*;
+import com.facebook.swift.codec.ThriftField.Requiredness;
+import com.facebook.swift.service.*;
+import com.google.common.util.concurrent.ListenableFuture;
+import java.io.*;
+import java.util.*;
+
+@ThriftService("{{service:javaCapitalName}}"){{! TODO t12384098: Java Swift services use wrong name in annotation }}
+public interface {{service:javaCapitalName}}{{#service:extends}} extends {{service:javaPackage}}.{{service:javaCapitalName}}{{/service:extends}}
+{
+    @ThriftService("{{service:javaCapitalName}}"){{! TODO t12384098: Java Swift services use wrong name in annotation }}
+    public interface Async{{#service:extends}} extends {{service:javaPackage}}.{{service:javaCapitalName}}.Async{{/service:extends}}
+    {
+        {{#service:functions}}
+        @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
+                      oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#struct:fields}}{{#first?}},
+                      exception = { {{/first?}}
+                          @ThriftException(type={{#field:type}}{{> Type}}{{/field:type}}.class, id={{field:key}}){{^last?}},{{/last?}}{{#last?}}
+                      }{{/last?}}{{/struct:fields}}{{/function:exceptions}})
+        ListenableFuture<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}(
+            {{#function:args}}
+            @ThriftField(value={{field:key}}, name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}
+            {{/function:args}}
+        ){{#function:exceptions}}{{#struct:fields}}{{#first?}} throws {{/first?}}{{#field:type}}{{> BoxedType}}{{/field:type}}{{^last?}}, {{/last?}}{{/struct:fields}}{{/function:exceptions}};
+        {{^last?}}{{! TODO t12383908: Fix spacing in mstch Swift generators }}
+
+        {{/last?}}
+        {{/service:functions}}
+    }
+    {{#service:functions}}
+    {{^first?}}{{! TODO t12383908: Fix spacing in mstch Swift generators }}
+
+    {{/first?}}
+    @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
+                  oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#struct:fields}}{{#first?}},
+                  exception = { {{/first?}}
+                      @ThriftException(type={{#field:type}}{{> Type}}{{/field:type}}.class, id={{field:key}}){{^last?}},{{/last?}}{{#last?}}
+                  }{{/last?}}{{/struct:fields}}{{/function:exceptions}})
+    {{#function:returnType}}{{> Type}}{{/function:returnType}} {{function:javaName}}(
+        {{#function:args}}
+        @ThriftField(value={{field:key}}, name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}
+        {{/function:args}}
+    ){{#function:exceptions}}{{#struct:fields}}{{#first?}} throws {{/first?}}{{#field:type}}{{> BoxedType}}{{/field:type}}{{^last?}}, {{/last?}}{{/struct:fields}}{{/function:exceptions}};
+
+    {{/service:functions}}
+}

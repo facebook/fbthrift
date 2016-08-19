@@ -89,6 +89,7 @@ thrift1_SOURCES += generate/t_cpp_generator.cc \
                   generate/t_hs_generator.cc \
                   generate/t_xsd_generator.cc \
                   generate/t_html_generator.cc \
+                  generate/t_mstch_swift_generator.cc \
                   generate/t_js_generator.cc \
                   generate/t_android_lite_generator.cc
 
@@ -96,6 +97,19 @@ thrift1_LDFLAGS = -lfolly -lcrypto -lglog -lmstch
 thrift1_LDADD = @LEXLIB@ libparse.la libthriftcompilerbase.la
 
 template_dir = $(pkgdatadir)/templates
+
+java_swift_dir = $(template_dir)/java/swift
+java_swift__DATA = generate/templates/java/swift/boxedType.mustache \
+                   generate/templates/java/swift/constants.mustache \
+                   generate/templates/java/swift/constantValue.mustache \
+                   generate/templates/java/swift/enum.mustache \
+                   generate/templates/java/swift/fieldType.mustache \
+                   generate/templates/java/swift/object.mustache \
+                   generate/templates/java/swift/requiredness.mustache \
+                   generate/templates/java/swift/service.mustache \
+                   generate/templates/java/swift/struct.mustache \
+                   generate/templates/java/swift/type.mustache \
+                   generate/templates/java/swift/union.mustache
 
 libparse_la_CPPFLAGS = $(AM_CPPFLAGS) -DTHRIFTY_HH=\"thrift/compiler/thrifty.hh\"
 libparse_la_SOURCES = thrifty.yy \

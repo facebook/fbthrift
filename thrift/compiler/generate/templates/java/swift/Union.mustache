@@ -1,0 +1,78 @@
+{{!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+}}package {{struct:javaPackage}};
+
+import com.facebook.swift.codec.*;
+import com.facebook.swift.codec.ThriftField.Requiredness;
+import com.facebook.swift.codec.ThriftField.Recursiveness;
+import java.util.*;
+
+import static com.google.common.base.MoreObjects.toStringHelper;
+
+@ThriftUnion("{{struct:name}}")
+public final class {{struct:javaCapitalName}}
+{
+    private final Object value;
+    private final int id;
+    private final String name;
+
+    {{#struct:fields}}
+
+    @ThriftConstructor
+    public {{struct:javaCapitalName}}(final {{> FieldType}} {{field:javaName}}) {
+        this.value = {{field:javaName}};
+        this.id = {{field:key}};
+        this.name = "{{field:name}}";
+    }
+    {{/struct:fields}}
+    {{#struct:fields}}
+
+    @ThriftField(value={{field:key}}, name="{{field:name}}", requiredness={{> Requiredness}})
+    public {{#field:type}}{{> Type}} {{#type:bool?}}is{{/type:bool?}}{{^type:bool?}}get{{/type:bool?}}{{/field:type}}{{field:javaCapitalName}}() {
+        if (this.id != {{field:key}}) {
+            throw new IllegalStateException("Not a {{field:name}} element!");
+        }
+        return ({{> FieldType}}) value;
+    }
+
+    public boolean isSet{{field:javaCapitalName}}() {
+        return this.id == {{field:key}};
+    }
+    {{/struct:fields}}
+
+    @ThriftUnionId
+    public int getThriftId()
+    {
+        return this.id;
+    }
+
+    public String getThriftName()
+    {
+        return this.name;
+    }
+
+    @Override
+    public String toString()
+    {
+        return toStringHelper(this)
+            .add("value", value)
+            .add("id", id)
+            .add("name", name)
+            .add("type", value == null ? "<null>" : value.getClass().getSimpleName())
+            .toString();
+    }
+}
