@@ -4938,16 +4938,12 @@ class CppGenerator(t_generator.Generator):
                     cann('using values = annotations::values;')
                     cann('using map = annotations::map;')
                     cann('using members = {0};'.format(members_class))
-                transform_arg = '{0}__struct_unique_member_info_list_arg_T' \
-                  .format(name)
-                detail('template <template <typename> class {0}>'.format(
-                    transform_arg))
                 with detail.cls(('struct {0}_{1}').format(
                         i.name, mnfclsprefix)).scope as cmnf:
                     for m in i.members:
-                        cmnf(('using {0} = {1}<'
+                        cmnf(('using {0} = '
                             '::apache::thrift::reflected_struct_data_member<')
-                            .format(m.name, transform_arg))
+                            .format(m.name))
                         cmnf('')
                         cmnf('  {0},'.format(self._get_fatal_string_id(m.name)))
                         cmnf('  {0},'.format(self._type_name(m.type)))
@@ -4970,12 +4966,12 @@ class CppGenerator(t_generator.Generator):
                         # HasIsSet
                         cmnf('  {0}'.format(
                             'true' if self._has_isset(m) else 'false'))
-                        cmnf('>>;')
+                        cmnf('>;')
 
         def render_member_list(struct, member_list):
             sns('  ::fatal::list<')
             for midx, m in enumerate(member_list):
-                sns('      {0}::{1}_{2}<::fatal::identity>::{3}{4}'.format(
+                sns('      {0}::{1}_{2}::{3}{4}'.format(
                     self.fatal_detail_ns, struct.name, mnfclsprefix, m.name,
                     ',' if midx+1 < len(member_list) else ''))
             sns('  >,')
@@ -5003,7 +4999,7 @@ class CppGenerator(t_generator.Generator):
             for midx, m in enumerate(i.members):
                 sns('    ::fatal::pair<')
                 sns('      {0},'.format(self._get_fatal_string_id(m.name)))
-                sns('      {0}::{1}_{2}<::fatal::identity>::{3}'.format(
+                sns('      {0}::{1}_{2}::{3}'.format(
                     self.fatal_detail_ns, i.name, mnfclsprefix, m.name))
                 sns('    >{0}'.format(',' if midx + 1 < len(i.members) else ''))
             sns('  >,')

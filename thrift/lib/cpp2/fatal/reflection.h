@@ -831,7 +831,7 @@ struct reflected_annotations {
 template <
   typename Struct,
   typename Name,
-  template <template <typename> class> class MembersInfo,
+  typename MembersInfo,
   typename Info,
   typename MembersAnnotations,
   typename RequiredFields,
@@ -901,45 +901,17 @@ struct reflected_struct {
    *  using info = reflect_struct<MyStruct>;
    *
    *  // yields `fatal::sequence<char, 'a'>`
-   *  using result1 = info::member<>::a::name;
+   *  using result1 = info::member::a::name;
    *
    *  // yields `std::int32_t`
-   *  using result2 = info::member<>::a::type;
+   *  using result2 = info::member::a::type;
    *
    *  // yields `1`
-   *  using result3 = info::member<>::a::id::value;
+   *  using result3 = info::member::a::id::value;
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  template <template <typename> class Transform = fatal::identity>
-  using member = MembersInfo<Transform>;
-
-  /**
-   * An implementation defined type that provides the names for each data member
-   * as a member type alias with the same name.
-   *
-   * These type aliases are used as the key for the various type maps offered by
-   * the `reflected_struct` class.
-   *
-   * The names are represented by a `fatal::sequence` of type `char`
-   * (a compile-time string).
-   *
-   * Example:
-   *
-   *  using info = reflect_struct<MyStruct>;
-   *
-   *  // yields `fatal::sequence<char, 'a'>`
-   *  using result1 = info::names::a;
-   *
-   *  // yields `fatal::sequence<char, 'b'>`
-   *  using result2 = info::names::b;
-   *
-   *  // yields "c"
-   *  auto result3 = fatal::z_data<info::names::c>();
-   *
-   * @author: Marcelo Juchem <marcelo@fb.com>
-   */
-  using names = member<fatal::get_member_type::name>;
+  using member = MembersInfo;
 
   /**
    * A `fatal::map` from the data member name to the corresponding metadata
@@ -952,7 +924,7 @@ struct reflected_struct {
    *
    *  using info = reflect_struct<MyStruct>;
    *
-   *  using member = info::members<info::names::b>;
+   *  using member = info::member::b;
    *
    *  // yields "b"
    *  auto result1 = fatal::z_data<member::name>();
@@ -966,22 +938,6 @@ struct reflected_struct {
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
   using members = Info;
-
-  /**
-   * A `fatal::map` from the data member name to the data member type.
-   *
-   * Example:
-   *
-   *  using info = reflect_struct<MyStruct>;
-   *
-   *  // yields `double`
-   *  using result = info::types::get<info::names::c>;
-   *
-   * @author: Marcelo Juchem <marcelo@fb.com>
-   */
-  using types = fatal::map_transform<
-    members, fatal::identity, fatal::get_type::type
-  >;
 
   /**
    * An instantiation of `reflected_annotations` representing the annotations
@@ -1072,7 +1028,7 @@ struct reflected_struct_data_member {
    *  // C++
    *
    *  using info = reflect_struct<MyStruct>;
-   *  using member = info::types::members<info::names::fieldC>;
+   *  using member = info::member::fieldC;
    *
    *  // yields `fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', 'C'>`
    *  using result1 = member::name;
@@ -1102,7 +1058,7 @@ struct reflected_struct_data_member {
    *  // C++
    *
    *  using info = reflect_struct<MyStruct>;
-   *  using member = info::types::members<info::names::fieldC>;
+   *  using member = info::member::fieldC;
    *
    *  // yields `double`
    *  using result1 = member::type;
@@ -1130,7 +1086,7 @@ struct reflected_struct_data_member {
    *  // C++
    *
    *  using info = reflect_struct<MyStruct>;
-   *  using member = info::types::members<info::names::fieldC>;
+   *  using member = info::member::fieldC;
    *
    *  // yields `std::integral_constant<field_id_t, 3>`
    *  using result1 = member::id;
@@ -1161,9 +1117,9 @@ struct reflected_struct_data_member {
    *  // C++
    *
    *  using info = reflect_struct<MyStruct>;
-   *  using a = info::types::members<info::names::fieldA>;
-   *  using b = info::types::members<info::names::fieldB>;
-   *  using c = info::types::members<info::names::fieldC>;
+   *  using a = info::member::fieldA;
+   *  using b = info::member::fieldB;
+   *  using c = info::member::fieldC;
    *
    *  // yields `std::integral_constant<optionality, optionality::required>`
    *  using result1 = a::required;
@@ -1203,7 +1159,7 @@ struct reflected_struct_data_member {
    *  // C++
    *
    *  using info = reflect_struct<MyStruct>;
-   *  using member = info::types::members<info::names::fieldC>;
+   *  using member = info::member::fieldC;
    *  using getter = member::getter;
    *
    *  MyStruct pod;
@@ -1241,7 +1197,7 @@ struct reflected_struct_data_member {
    *  // C++
    *
    *  using info = reflect_struct<MyStruct>;
-   *  using member = info::types::members<info::names::fieldC>;
+   *  using member = info::member::fieldC;
    *
    *  // yields `type_class::floating_point`
    *  using result1 = member::type_class;
@@ -1273,7 +1229,7 @@ struct reflected_struct_data_member {
    *  // C++
    *
    *  using info = reflect_struct<MyStruct>;
-   *  using member = info::types::members<info::names::fieldC>;
+   *  using member = info::member::fieldC;
    *
    *  member::pod<> original;
    *
@@ -1309,7 +1265,7 @@ struct reflected_struct_data_member {
    *  // MyModule.cpp
    *
    *  using info = reflect_struct<MyStruct>;
-   *  using member = info::types::members<info::names::fieldC>;
+   *  using member = info::member::fieldC;
    *
    *  // yields `fatal::sequence<char,
    *  //   's', 'o', 'm', 'e', ' ', 'n', 'o', 't', 'e', 's'
@@ -1337,7 +1293,7 @@ struct reflected_struct_data_member {
    *  // MyModule.cpp
    *
    *  using info = reflect_struct<MyStruct>;
-   *  using member = info::types::members<info::names::field>;
+   *  using member = info::member::field;
    *
    *  MyStruct pod;
    *
@@ -1373,7 +1329,7 @@ struct reflected_struct_data_member {
    *  // MyModule.cpp
    *
    *  using info = reflect_struct<MyStruct>;
-   *  using member = info::types::members<info::names::field>;
+   *  using member = info::types::members<info::member::field::name>;
    *
    * MyStruct pod;
    *
@@ -1403,7 +1359,7 @@ struct reflected_struct_data_member {
    *  // MyModule.cpp
    *
    *  using info = reflect_struct<MyStruct>;
-   *  using member = info::types::members<info::names::field>;
+   *  using member = info::types::members<info::member::field::name>;
    *
    * MyStruct pod;
    *
@@ -1447,7 +1403,7 @@ struct reflected_struct_data_member {
  *  using info = reflect_struct<My::Namespace::MyStruct>;
  *
  *  // yields `3`
- *  auto result = info::members::size;
+ *  auto result = fatal::size<info::members>::value;
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
@@ -1487,7 +1443,7 @@ using reflect_struct = fatal::registry_lookup<
  *  using info = reflect_struct<My::Namespace::MyStruct>;
  *
  *  // yields `3`
- *  auto result = info::members::size;
+ *  auto result = fatal::size<info::members>::value;
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */

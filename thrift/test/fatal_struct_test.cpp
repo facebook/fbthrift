@@ -57,36 +57,12 @@ TEST(fatal_struct, struct1_sanity_check) {
   EXPECT_SAME<traits, apache::thrift::try_reflect_struct<struct1, void>>();
   EXPECT_SAME<void, apache::thrift::try_reflect_struct<int, void>>();
 
-  EXPECT_SAME<field0s, traits::names::field0>();
-  EXPECT_SAME<field1s, traits::names::field1>();
-  EXPECT_SAME<field2s, traits::names::field2>();
-  EXPECT_SAME<field3s, traits::names::field3>();
-  EXPECT_SAME<field4s, traits::names::field4>();
-  EXPECT_SAME<field5s, traits::names::field5>();
-
-  EXPECT_SAME<
-    fatal::map<
-      fatal::pair<field0s, std::int32_t>,
-      fatal::pair<field1s, std::string>,
-      fatal::pair<field2s, enum1>,
-      fatal::pair<field3s, enum2>,
-      fatal::pair<field4s, union1>,
-      fatal::pair<field5s, union2>
-    >,
-    traits::types
-  >();
-
-  EXPECT_SAME<
-    fatal::list<
-      field0s,
-      field1s,
-      field2s,
-      field3s,
-      field4s,
-      field5s
-    >,
-    fatal::map_keys<traits::members>
-  >();
+  EXPECT_SAME<field0s, traits::member::field0::name>();
+  EXPECT_SAME<field1s, traits::member::field1::name>();
+  EXPECT_SAME<field2s, traits::member::field2::name>();
+  EXPECT_SAME<field3s, traits::member::field3::name>();
+  EXPECT_SAME<field4s, traits::member::field4::name>();
+  EXPECT_SAME<field5s, traits::member::field5::name>();
 
   struct1 pod;
   pod.field0 = 19;
@@ -98,52 +74,46 @@ TEST(fatal_struct, struct1_sanity_check) {
 
   EXPECT_EQ(
     pod.field0,
-    (fatal::map_get<traits::members, traits::names::field0>::getter::ref(pod))
+    traits::member::field0::getter::ref(pod)
   );
   EXPECT_EQ(
     pod.field1,
-    (fatal::map_get<traits::members, traits::names::field1>::getter::ref(pod))
+    traits::member::field1::getter::ref(pod)
   );
   EXPECT_EQ(
     pod.field2,
-    (fatal::map_get<traits::members, traits::names::field2>::getter::ref(pod))
+    traits::member::field2::getter::ref(pod)
   );
   EXPECT_EQ(
     pod.field3,
-    (fatal::map_get<traits::members, traits::names::field3>::getter::ref(pod))
+    traits::member::field3::getter::ref(pod)
   );
   EXPECT_EQ(
     pod.field4,
-    (fatal::map_get<traits::members, traits::names::field4>::getter::ref(pod))
+    traits::member::field4::getter::ref(pod)
   );
   EXPECT_EQ(
     pod.field5,
-    (fatal::map_get<traits::members, traits::names::field5>::getter::ref(pod))
+    traits::member::field5::getter::ref(pod)
   );
 
-  fatal::map_get<traits::members, traits::names::field0>::getter::ref(pod)
-    = 98;
+  traits::member::field0::getter::ref(pod) = 98;
   EXPECT_EQ(98, pod.field0);
 
-  fatal::map_get<traits::members, traits::names::field1>::getter::ref(pod)
-    = "test";
+  traits::member::field1::getter::ref(pod) = "test";
   EXPECT_EQ("test", pod.field1);
 
-  fatal::map_get<traits::members, traits::names::field2>::getter::ref(pod)
-    = enum1::field0;
+  traits::member::field2::getter::ref(pod) = enum1::field0;
   EXPECT_EQ(enum1::field0, pod.field2);
 
-  fatal::map_get<traits::members, traits::names::field3>::getter::ref(pod)
-    = enum2::field2_2;
+  traits::member::field3::getter::ref(pod) = enum2::field2_2;
   EXPECT_EQ(enum2::field2_2, pod.field3);
 
-  fatal::map_get<traits::members, traits::names::field4>::getter::ref(pod)
-    .set_ui(56);
+  traits::member::field4::getter::ref(pod).set_ui(56);
   EXPECT_EQ(union1::Type::ui, pod.field4.getType());
   EXPECT_EQ(56, pod.field4.get_ui());
 
-  fatal::map_get<traits::members, traits::names::field5>::getter::ref(pod)
-    .set_ue_2(enum1::field1);
+  traits::member::field5::getter::ref(pod).set_ue_2(enum1::field1);
   EXPECT_EQ(union2::Type::ue_2, pod.field5.getType());
   EXPECT_EQ(enum1::field1, pod.field5.get_ue_2());
 
@@ -195,38 +165,62 @@ TEST(fatal_struct, struct1_sanity_check) {
 
   EXPECT_EQ(
     98,
-    (fatal::map_get<traits::members, traits::names::field0>::getter::ref(pod))
+    ( fatal::map_get<
+        traits::members,
+        traits::member::field0::name
+      >::getter::ref(pod))
   );
   EXPECT_EQ(
     "test",
-    (fatal::map_get<traits::members, traits::names::field1>::getter::ref(pod))
+    ( fatal::map_get<
+        traits::members,
+        traits::member::field1::name
+      >::getter::ref(pod))
   );
   EXPECT_EQ(
     enum1::field0,
-    (fatal::map_get<traits::members, traits::names::field2>::getter::ref(pod))
+    ( fatal::map_get<
+        traits::members,
+        traits::member::field2::name
+      >::getter::ref(pod))
   );
   EXPECT_EQ(
     enum2::field2_2,
-    (fatal::map_get<traits::members, traits::names::field3>::getter::ref(pod))
+    ( fatal::map_get<
+        traits::members,
+        traits::member::field3::name
+      >::getter::ref(pod))
   );
   EXPECT_EQ(
     union1::Type::ui,
-    (fatal::map_get<traits::members, traits::names::field4>::getter::ref(pod)
+    ( fatal::map_get<
+        traits::members,
+        traits::member::field4::name
+      >::getter::ref(pod)
       .getType())
   );
   EXPECT_EQ(
     56,
-    (fatal::map_get<traits::members, traits::names::field4>::getter::ref(pod)
+    ( fatal::map_get<
+        traits::members,
+        traits::member::field4::name
+      >::getter::ref(pod)
       .get_ui())
   );
   EXPECT_EQ(
     union2::Type::ue_2,
-    (fatal::map_get<traits::members, traits::names::field5>::getter::ref(pod)
+    ( fatal::map_get<
+        traits::members,
+        traits::member::field5::name
+      >::getter::ref(pod)
       .getType())
   );
   EXPECT_EQ(
     enum1::field1,
-    (fatal::map_get<traits::members, traits::names::field5>::getter::ref(pod)
+    ( fatal::map_get<
+        traits::members,
+        traits::member::field5::name
+      >::getter::ref(pod)
       .get_ue_2())
   );
 
@@ -330,28 +324,28 @@ TEST(fatal_struct, struct1_sanity_check) {
   >();
 
   EXPECT_SAME<
-    traits::member<>::field0,
-    fatal::map_get<traits::members, traits::names::field0>
+    traits::member::field0,
+    fatal::map_get<traits::members, traits::member::field0::name>
   >();
   EXPECT_SAME<
-    traits::member<>::field1,
-    fatal::map_get<traits::members, traits::names::field1>
+    traits::member::field1,
+    fatal::map_get<traits::members, traits::member::field1::name>
   >();
   EXPECT_SAME<
-    traits::member<>::field2,
-    fatal::map_get<traits::members, traits::names::field2>
+    traits::member::field2,
+    fatal::map_get<traits::members, traits::member::field2::name>
   >();
   EXPECT_SAME<
-    traits::member<>::field3,
-    fatal::map_get<traits::members, traits::names::field3>
+    traits::member::field3,
+    fatal::map_get<traits::members, traits::member::field3::name>
   >();
   EXPECT_SAME<
-    traits::member<>::field4,
-    fatal::map_get<traits::members, traits::names::field4>
+    traits::member::field4,
+    fatal::map_get<traits::members, traits::member::field4::name>
   >();
   EXPECT_SAME<
-    traits::member<>::field5,
-    fatal::map_get<traits::members, traits::names::field5>
+    traits::member::field5,
+    fatal::map_get<traits::members, traits::member::field5::name>
   >();
 }
 
@@ -436,10 +430,10 @@ TEST(fatal_struct, member_annotations) {
   EXPECT_SAME<fatal::map<>, info::members_annotations::c::map>();
   EXPECT_SAME<
     fatal::map<>,
-    fatal::map_get<info::members, info::names::c>::annotations::map
+    fatal::map_get<info::members, info::member::c::name>::annotations::map
   >();
 
-  using annotations_d = fatal::map_get<info::members, info::names::d>
+  using annotations_d = fatal::map_get<info::members, info::member::d::name>
     ::annotations;
   using expected_d_map = fatal::map<
     fatal::pair<structBd_annotation1k, structBd_annotation1v>,
@@ -486,11 +480,11 @@ TEST(fatal_struct, member_annotations) {
 
 TEST(fatal_struct, set_methods) {
   using info = apache::thrift::reflect_struct<struct4>;
-  using req_field = fatal::map_get<info::members, info::names::field0>;
-  using opt_field = fatal::map_get<info::members, info::names::field1>;
-  using def_field = fatal::map_get<info::members, info::names::field2>;
+  using req_field = fatal::map_get<info::members, info::member::field0::name>;
+  using opt_field = fatal::map_get<info::members, info::member::field1::name>;
+  using def_field = fatal::map_get<info::members, info::member::field2::name>;
 
-  using ref_field = fatal::map_get<info::members, info::names::field3>;
+  using ref_field = fatal::map_get<info::members, info::member::field3::name>;
 
   struct4 a;
   EXPECT_EQ(true, req_field::is_set(a));
