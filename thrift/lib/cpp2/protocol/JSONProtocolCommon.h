@@ -128,6 +128,10 @@ class JSONProtocolWriterCommon {
   };
 
   std::list<Context> context;
+
+ private:
+  uint32_t writeJSONDoubleInternal(double dbl);
+  uint32_t writeJSONIntInternal(int64_t num);
 };
 
 class JSONProtocolReaderCommon {

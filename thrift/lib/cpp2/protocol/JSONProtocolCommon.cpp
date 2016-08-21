@@ -16,6 +16,49 @@
 
 #include <thrift/lib/cpp2/protocol/JSONProtocolCommon.h>
 
+#include <type_traits>
+
+namespace {
+
+class WrappedIOBufQueueAppender {
+ public:
+  explicit WrappedIOBufQueueAppender(folly::io::QueueAppender& out)
+      : out_(out) {}
+
+  void append(const char* s, const size_t n) {
+    if (n == 0)
+      return;
+    out_.push(reinterpret_cast<const uint8_t*>(CHECK_NOTNULL(s)), n);
+    length_ += n;
+  }
+
+  void push_back(const char c) {
+    append(&c, 1);
+  }
+
+  WrappedIOBufQueueAppender& operator+=(const char c) {
+    push_back(c);
+    return *this;
+  }
+
+  size_t size() const {
+    return length_;
+  }
+
+ private:
+  folly::io::QueueAppender& out_;
+  size_t length_ = 0;
+};
+
+}  // namespace
+
+namespace folly {
+
+template <>
+struct IsSomeString<WrappedIOBufQueueAppender> : std::true_type {};
+
+}  // namespace folly
+
 namespace apache { namespace thrift {
 
 // This table describes the handling for the first 0x30 characters
@@ -36,5 +79,22 @@ constexpr folly::StringPiece JSONProtocolReaderCommon::kEscapeChars;
 const uint8_t JSONProtocolReaderCommon::kEscapeCharVals[8] = {
   '"', '\\', '/', '\b', '\f', '\n', '\r', '\t',
 };
+
+uint32_t JSONProtocolWriterCommon::writeJSONDoubleInternal(double dbl) {
+  WrappedIOBufQueueAppender appender(out_);
+  folly::toAppend(dbl, &appender);
+  return appender.size();
+}
+
+uint32_t JSONProtocolWriterCommon::writeJSONIntInternal(int64_t num) {
+  WrappedIOBufQueueAppender appender(out_);
+  if (!context.empty() && context.back().type == ContextType::MAP &&
+      context.back().meta % 2 == 1) {
+    folly::toAppend('"', num, '"', &appender);
+  } else {
+    folly::toAppend(num, &appender);
+  }
+  return appender.size();
+}
 
 }}

@@ -348,16 +348,7 @@ uint32_t JSONProtocolWriterCommon::writeJSONBool(bool val) {
 }
 
 uint32_t JSONProtocolWriterCommon::writeJSONInt(int64_t num) {
-  std::string serialized;
-  if (!context.empty() &&
-      context.back().type == ContextType::MAP &&
-      context.back().meta % 2 == 1) {
-    serialized = folly::to<std::string>('"', num, '"');
-  } else {
-    serialized = folly::to<std::string>(num);
-  }
-  out_.push((const uint8_t*)serialized.c_str(), serialized.length());
-  return serialized.length();
+  return writeJSONIntInternal(num);
 }
 
 template<typename T>
@@ -369,9 +360,7 @@ uint32_t JSONProtocolWriterCommon::writeJSONDouble(T dbl) {
   } else if (std::isnan(dbl)) {
     return writeJSONString(TJSONProtocol::kThriftNan);
   } else {
-    auto serialized = folly::to<std::string>(dbl);
-    out_.push((const uint8_t*)serialized.c_str(), serialized.length());
-    return serialized.length();
+    return writeJSONDoubleInternal(dbl);
   }
 }
 
