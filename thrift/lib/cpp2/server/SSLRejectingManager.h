@@ -40,7 +40,7 @@ class SSLRejectingManager
       wangle::Acceptor* acceptor,
       const folly::SocketAddress& clientAddr,
       const std::string& nextProtocolName,
-      wangle::SecureTransportType secureTransportType,
+      SecureTransportType secureTransportType,
       wangle::TransportInfo tinfo)
       : acceptor_(acceptor),
         clientAddr_(clientAddr),
@@ -134,7 +134,7 @@ class SSLRejectingManager
   wangle::Acceptor* acceptor_;
   folly::SocketAddress clientAddr_;
   std::string nextProtocolName_;
-  wangle::SecureTransportType secureTransportType_;
+  SecureTransportType secureTransportType_;
   wangle::TransportInfo tinfo_;
 };
 }}
