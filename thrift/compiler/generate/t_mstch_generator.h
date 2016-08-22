@@ -27,11 +27,14 @@
 
 #include <thrift/compiler/generate/t_generator.h>
 
+#include <folly/Optional.h>
+
 class t_mstch_generator : public t_generator {
  public:
   t_mstch_generator(
       t_program* program,
-      boost::filesystem::path template_prefix);
+      boost::filesystem::path template_prefix,
+      std::map<std::string, std::string> parsed_options);
 
  protected:
   /**
@@ -40,18 +43,15 @@ class t_mstch_generator : public t_generator {
   boost::filesystem::path template_dir_;
 
   /**
+   * Option pairs specified on command line for influencing generation behavior
+   */
+  const std::map<std::string, std::string> parsed_options_;
+
+  /**
    * Fetches a particular template from the template map, throwing an error
    * if the template doesn't exist
    */
-  const std::string& get_template(const std::string& template_name) const {
-    auto itr = this->template_map_.find(template_name);
-    if (itr == this->template_map_.end()) {
-      std::ostringstream err;
-      err << "Could not find template \"" << template_name << "\"";
-      throw std::runtime_error{err.str()};
-    }
-    return itr->second;
-  }
+  const std::string& get_template(const std::string& template_name) const;
 
   /**
    * Returns the map of (file_name, template_contents) for each template
@@ -65,13 +65,12 @@ class t_mstch_generator : public t_generator {
    * Write an output file with the given contents to a path
    * under the output directory.
    */
-  void write_output(boost::filesystem::path path, const std::string& data) {
-    path = boost::filesystem::path{this->get_out_dir()} / path;
-    boost::filesystem::create_directories(path.parent_path());
-    std::ofstream ofs{path.string()};
-    ofs << data;
-    this->record_genfile(path.string());
-  }
+  void write_output(boost::filesystem::path path, const std::string& data);
+
+  /**
+   * Dump map of command line flags passed to generator
+   */
+  mstch::map dump_options() const;
 
   /**
    * Subclasses should call the dump functions to convert elements
@@ -123,6 +122,8 @@ class t_mstch_generator : public t_generator {
     return result;
   }
 
+  folly::Optional<std::string> get_option(const std::string& key) const;
+
  private:
   std::map<std::string, std::string> template_map_;
 
@@ -131,13 +132,7 @@ class t_mstch_generator : public t_generator {
   /**
    * For every key in the map, prepends a prefix to that key for mstch.
    */
-  static mstch::map prepend_prefix(const std::string& prefix, mstch::map map) {
-    mstch::map res{};
-    for (auto& pair : map) {
-      res.emplace(prefix + ":" + pair.first, std::move(pair.second));
-    }
-    return res;
-  }
+  static mstch::map prepend_prefix(const std::string& prefix, mstch::map map);
 
   template <typename T>
   static const T* as_const_pointer(const T* x) {

@@ -25,7 +25,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
       t_program* program,
       const std::map<std::string, std::string>& parsed_options,
       const std::string& option_string)
-      : t_mstch_generator(program, "java/swift") {
+      : t_mstch_generator(program, "java/swift", parsed_options) {
     this->out_dir_base_ = "gen-swift";
   }
 

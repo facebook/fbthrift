@@ -27,8 +27,11 @@
 
 t_mstch_generator::t_mstch_generator(
     t_program* program,
-    boost::filesystem::path template_prefix)
-    : t_generator(program), template_dir_(g_template_dir) {
+    boost::filesystem::path template_prefix,
+    std::map<std::string, std::string> parsed_options)
+    : t_generator(program),
+      template_dir_(g_template_dir),
+      parsed_options_(std::move(parsed_options)) {
   if (this->template_dir_ == "") {
     std::string s = "Must set template directory when using mstch generator";
     throw std::runtime_error{s};
@@ -271,6 +274,14 @@ mstch::map t_mstch_generator::dump(const t_typedef& typdef) const {
   return this->prepend_prefix("typedef", std::move(result));
 }
 
+mstch::map t_mstch_generator::dump_options() const {
+  mstch::map result;
+  for (auto& elem : this->parsed_options_) {
+    result.emplace(elem.first, elem.second);
+  }
+  return this->prepend_prefix("option", std::move(result));
+}
+
 // Extenders, by default do no extending
 
 mstch::map t_mstch_generator::extend_program(const t_program&) const {
@@ -336,4 +347,44 @@ void t_mstch_generator::gen_template_map(
       this->template_map_.emplace(elem.path().stem().string(), std::move(tpl));
     }
   }
+}
+
+const std::string& t_mstch_generator::get_template(
+    const std::string& template_name) const {
+  auto itr = this->template_map_.find(template_name);
+  if (itr == this->template_map_.end()) {
+    std::ostringstream err;
+    err << "Could not find template \"" << template_name << "\"";
+    throw std::runtime_error{err.str()};
+  }
+  return itr->second;
+}
+
+void t_mstch_generator::write_output(
+    boost::filesystem::path path,
+    const std::string& data) {
+  path = boost::filesystem::path{this->get_out_dir()} / path;
+  boost::filesystem::create_directories(path.parent_path());
+  std::ofstream ofs{path.string()};
+  ofs << data;
+  this->record_genfile(path.string());
+}
+
+folly::Optional<std::string> t_mstch_generator::get_option(
+    const std::string& key) const {
+  auto itr = this->parsed_options_.find(key);
+  if (itr == this->parsed_options_.end()) {
+    return folly::none;
+  }
+  return itr->second;
+}
+
+mstch::map t_mstch_generator::prepend_prefix(
+    const std::string& prefix,
+    mstch::map map) {
+  mstch::map res{};
+  for (auto& pair : map) {
+    res.emplace(prefix + ":" + pair.first, std::move(pair.second));
+  }
+  return res;
 }
