@@ -68,7 +68,9 @@ class t_mstch_swift_generator : public t_mstch_generator {
     // Sort constant members to match java swift generator
     auto constants = program.get_consts();
     std::sort(
-        constants.begin(), constants.end(), [](const auto& x, const auto& y) {
+        constants.begin(),
+        constants.end(),
+        [](const t_const* x, const t_const* y) {
           return std::less<std::string>{}(x->get_name(), y->get_name());
         });
     return mstch::map{
