@@ -52,7 +52,7 @@ void Cpp2Worker::onNewConnection(
   folly::AsyncTransportWrapper::UniquePtr sock,
   const folly::SocketAddress* addr,
   const std::string& nextProtocolName,
-  SecureTransportType secureProtocolType,
+  wangle::SecureTransportType secureProtocolType,
   const wangle::TransportInfo& tinfo) {
 
   auto observer = server_->getObserver();
@@ -91,7 +91,7 @@ void Cpp2Worker::plaintextConnectionReady(
     folly::AsyncTransportWrapper::UniquePtr sock,
     const folly::SocketAddress& clientAddr,
     const std::string& nextProtocolName,
-    SecureTransportType secureTransportType,
+    wangle::SecureTransportType secureTransportType,
     wangle::TransportInfo& tinfo) {
   auto asyncSocket =
     sock->getUnderlyingTransport<folly::AsyncSocket>();
@@ -147,7 +147,7 @@ void Cpp2Worker::updateSSLStats(
   const folly::AsyncTransportWrapper* sock,
   std::chrono::milliseconds acceptLatency,
   wangle::SSLErrorEnum error,
-  SecureTransportType type) noexcept {
+  wangle::SecureTransportType type) noexcept {
   auto socket = sock->getUnderlyingTransport<folly::AsyncSSLSocket>();
   if (!socket) {
     return;
