@@ -99,17 +99,17 @@ thrift1_LDADD = @LEXLIB@ libparse.la libthriftcompilerbase.la
 template_dir = $(pkgdatadir)/templates
 
 java_swift_dir = $(template_dir)/java/swift
-java_swift__DATA = generate/templates/java/swift/boxedType.mustache \
-                   generate/templates/java/swift/constants.mustache \
-                   generate/templates/java/swift/constantValue.mustache \
-                   generate/templates/java/swift/enum.mustache \
-                   generate/templates/java/swift/fieldType.mustache \
-                   generate/templates/java/swift/object.mustache \
-                   generate/templates/java/swift/requiredness.mustache \
-                   generate/templates/java/swift/service.mustache \
-                   generate/templates/java/swift/struct.mustache \
-                   generate/templates/java/swift/type.mustache \
-                   generate/templates/java/swift/union.mustache
+java_swift__DATA = generate/templates/java/swift/BoxedType.mustache \
+                   generate/templates/java/swift/Constants.mustache \
+                   generate/templates/java/swift/ConstantValue.mustache \
+                   generate/templates/java/swift/Enum.mustache \
+                   generate/templates/java/swift/FieldType.mustache \
+                   generate/templates/java/swift/Object.mustache \
+                   generate/templates/java/swift/Requiredness.mustache \
+                   generate/templates/java/swift/Service.mustache \
+                   generate/templates/java/swift/Struct.mustache \
+                   generate/templates/java/swift/Type.mustache \
+                   generate/templates/java/swift/Union.mustache
 
 libparse_la_CPPFLAGS = $(AM_CPPFLAGS) -DTHRIFTY_HH=\"thrift/compiler/thrifty.hh\"
 libparse_la_SOURCES = thrifty.yy \
