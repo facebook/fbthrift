@@ -31,9 +31,11 @@ bin_PROGRAMS = thrift1
 
 noinst_LTLIBRARIES = libparse.la libthriftcompilerbase.la
 
-libthriftcompilerbase_la_SOURCES = common.cc \
-				   parse/t_type.cc \
-			           parse/t_typedef.cc
+libthriftcompilerbase_la_SOURCES = \
+        common.cc \
+        parse/t_type.cc \
+        parse/t_service.cc \
+        parse/t_typedef.cc
 
 libthriftcompilerbase_la_LDFLAGS = -lcrypto
 

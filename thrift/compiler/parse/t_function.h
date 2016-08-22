@@ -25,6 +25,8 @@
 #include <thrift/compiler/parse/t_struct.h>
 #include <thrift/compiler/parse/t_doc.h>
 
+extern int yylineno;
+
 /**
  * Representation of a function. Key parts are return type, function name,
  * optional modifiers, and an argument list, which is implemented as a thrift
@@ -102,12 +104,15 @@ class t_function : public t_doc {
   }
 
  private:
+  friend class t_service;
+
   t_type* returntype_;
   std::string name_;
   t_struct* arglist_;
   t_struct* xceptions_;
   t_type* annotations_;
   bool oneway_;
+  int lineno_{yylineno};
 };
 
 #endif

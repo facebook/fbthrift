@@ -43,7 +43,6 @@ class t_service : public t_type {
   }
 
   void add_function(t_function* func) {
-    _throw_if_function_duplicate(func);
     functions_.push_back(func);
   }
 
@@ -55,22 +54,6 @@ class t_service : public t_type {
     return extends_;
   }
 
-  /**
-   * Throws an exception if the parameter function is already in the vector
-   *
-   * @param t_function* Function struct pointer
-   */
-  void _throw_if_function_duplicate(t_function* func) {
-    if (std::any_of(
-            functions_.begin(), functions_.end(), [func](t_function* other) {
-              return func->get_name() == other->get_name();
-            })) {
-      throw std::runtime_error(
-          "Duplicate function defined (" + func->get_name() +
-          "). Thrift's wire protocol does not support this.");
-    }
-  }
-
   TypeValue get_type_value() const override { return t_types::TYPE_SERVICE; }
 
   std::string get_full_name() const override {
@@ -80,6 +63,8 @@ class t_service : public t_type {
   std::string get_impl_full_name() const override {
     return make_full_name("service");
   }
+
+  void validate() const;
 
  private:
   std::vector<t_function*> functions_;

@@ -962,6 +962,7 @@ Service:
       if ($9) {
         $$->annotations_ = $9->annotations_;
       }
+      $$->validate();
     }
 
 FlagArgs:
