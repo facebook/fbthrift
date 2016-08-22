@@ -96,6 +96,7 @@ class t_type : public t_doc {
   virtual bool is_map()            const { return false; }
   virtual bool is_stream()         const { return false; }
   virtual bool is_service()        const { return false; }
+  virtual bool is_binary()         const { return false; }
 
   t_program* get_program() {
     return program_;

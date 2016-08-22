@@ -93,7 +93,8 @@ mstch::map t_mstch_generator::dump(const t_type& type) const {
       {"name", type.get_name()},
 
       {"void?", type.is_void()},
-      {"string?", type.is_string()},
+      {"string?", type.is_string() && !type.is_binary()},
+      {"binary?", type.is_string() && type.is_binary()},
       {"bool?", type.is_bool()},
       {"byte?", type.is_byte()},
       {"i16?", type.is_i16()},

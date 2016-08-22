@@ -91,7 +91,7 @@ class t_base_type : public t_type {
     binary_ = val;
   }
 
-  bool is_binary() const {
+  bool is_binary() const override {
     return (base_ == TYPE_STRING) && binary_;
   }
 

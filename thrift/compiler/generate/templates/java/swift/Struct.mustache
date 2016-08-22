@@ -100,7 +100,8 @@ public final class {{struct:javaCapitalName}}{{#struct:exception?}} extends Exce
 
         return
             {{#struct:fields}}
-            Objects.equals({{field:javaName}}, other.{{field:javaName}}){{^last?}} &&{{/last?}}{{#last?}};{{/last?}}
+            {{#field:type}}{{#type:binary?}}Arrays{{/type:binary?}}{{^type:binary?}}Objects{{/type:binary?}}{{/field:type}}{{!
+            }}.equals({{field:javaName}}, other.{{field:javaName}}){{^last?}} &&{{/last?}}{{#last?}};{{/last?}}
             {{/struct:fields}}
             {{^struct:fields}}
             true;
