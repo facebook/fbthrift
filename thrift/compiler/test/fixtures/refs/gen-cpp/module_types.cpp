@@ -744,7 +744,8 @@ StructWithContainers::StructWithContainers(const StructWithContainers& src19) {
   set_ref_shared = src19.set_ref_shared;
   map_ref_custom = src19.map_ref_custom;
   list_ref_shared_const = src19.list_ref_shared_const;
-  set_custom_ref = src19.set_custom_ref;
+  if (src19.set_custom_ref)
+    set_custom_ref.reset(new std::set<int32_t> (*src19.set_custom_ref));
 }
 bool StructWithContainers::operator == (const StructWithContainers & rhs) const {
   if (bool(list_ref) != bool(rhs.list_ref))

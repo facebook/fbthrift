@@ -298,8 +298,8 @@ void reflectionInitializer_18101585657679500556(::apache::thrift::reflection::Sc
     f.name = "set_custom_ref";
     f.order = 7;
     f.__isset.annotations = true;
-    f.annotations["cpp.ref_type"] = "std::auto_ptr";
-    f.annotations["cpp2.ref_type"] = "std::auto_ptr";
+    f.annotations["cpp.ref_type"] = "std::unique_ptr";
+    f.annotations["cpp2.ref_type"] = "std::unique_ptr";
   }
   reflectionInitializer_10941653322204590122(schema);  // set<i32>
   reflectionInitializer_12058391220869880681(schema);  // list<i32>

@@ -37,7 +37,7 @@ struct StructWithContainers {
   7: list<i32> list_ref_shared_const
       (cpp.ref_type = "shared_const", cpp2.ref_type = "shared_const")
   8: set<i32> set_custom_ref
-      (cpp.ref_type = "std::auto_ptr", cpp2.ref_type = "std::auto_ptr")
+      (cpp.ref_type = "std::unique_ptr", cpp2.ref_type = "std::unique_ptr")
 }
 
 struct StructWithSharedConst {

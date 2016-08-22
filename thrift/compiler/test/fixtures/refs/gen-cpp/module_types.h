@@ -721,7 +721,7 @@ class StructWithContainers : public apache::thrift::TStructType<StructWithContai
   std::shared_ptr<std::set<int32_t> > set_ref_shared;
   std::shared_ptr<const std::map<int32_t, int32_t>> map_ref_custom;
   std::shared_ptr<const std::vector<int32_t> > list_ref_shared_const;
-  std::auto_ptr<std::set<int32_t> > set_custom_ref;
+  std::unique_ptr<std::set<int32_t> > set_custom_ref;
 
   struct __isset {
     __isset() { __clear(); } 

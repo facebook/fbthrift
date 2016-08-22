@@ -333,7 +333,7 @@ StructWithContainers::StructWithContainers(const StructWithContainers& src18) {
   set_ref_shared = src18.set_ref_shared;
   map_ref_custom = src18.map_ref_custom;
   list_ref_shared_const = src18.list_ref_shared_const;
-  set_custom_ref = src18.set_custom_ref;
+  if (src18.set_custom_ref) set_custom_ref.reset(new std::set<int32_t>(*src18.set_custom_ref));
 }
 
 StructWithContainers& StructWithContainers::operator=(const StructWithContainers& src19) {

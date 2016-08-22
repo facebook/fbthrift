@@ -761,7 +761,7 @@ class StructWithContainers : private apache::thrift::detail::st::ComparisonOpera
   StructWithContainers() {}
   // FragileConstructor for use in initialization lists only
 
-  StructWithContainers(apache::thrift::FragileConstructor, std::unique_ptr<std::vector<int32_t>> list_ref__arg, std::unique_ptr<std::set<int32_t>> set_ref__arg, std::unique_ptr<std::map<int32_t, int32_t>> map_ref__arg, std::unique_ptr<std::vector<int32_t>> list_ref_unique__arg, std::shared_ptr<std::set<int32_t>> set_ref_shared__arg, std::shared_ptr<const std::map<int32_t, int32_t>> map_ref_custom__arg, std::shared_ptr<const std::vector<int32_t>> list_ref_shared_const__arg, std::auto_ptr<std::set<int32_t>> set_custom_ref__arg) :
+  StructWithContainers(apache::thrift::FragileConstructor, std::unique_ptr<std::vector<int32_t>> list_ref__arg, std::unique_ptr<std::set<int32_t>> set_ref__arg, std::unique_ptr<std::map<int32_t, int32_t>> map_ref__arg, std::unique_ptr<std::vector<int32_t>> list_ref_unique__arg, std::shared_ptr<std::set<int32_t>> set_ref_shared__arg, std::shared_ptr<const std::map<int32_t, int32_t>> map_ref_custom__arg, std::shared_ptr<const std::vector<int32_t>> list_ref_shared_const__arg, std::unique_ptr<std::set<int32_t>> set_custom_ref__arg) :
       list_ref(std::move(list_ref__arg)),
       set_ref(std::move(set_ref__arg)),
       map_ref(std::move(map_ref__arg)),
@@ -835,7 +835,7 @@ class StructWithContainers : private apache::thrift::detail::st::ComparisonOpera
   std::shared_ptr<std::set<int32_t>> set_ref_shared;
   std::shared_ptr<const std::map<int32_t, int32_t>> map_ref_custom;
   std::shared_ptr<const std::vector<int32_t>> list_ref_shared_const;
-  std::auto_ptr<std::set<int32_t>> set_custom_ref;
+  std::unique_ptr<std::set<int32_t>> set_custom_ref;
 
   struct __isset {
     void __clear() {}
