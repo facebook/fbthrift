@@ -184,13 +184,13 @@ class SerializableDynamic {
         break;
 
       case folly::dynamic::Type::DOUBLE:
-        xfer += p->writeFieldBegin("boolean", protocol::T_DOUBLE, 3);
+        xfer += p->writeFieldBegin("doubl", protocol::T_DOUBLE, 3);
         xfer += p->writeDouble(value_.asDouble());
         xfer += p->writeFieldEnd();
         break;
 
       case folly::dynamic::Type::STRING:
-        xfer += p->writeFieldBegin("boolean", protocol::T_STRING, 4);
+        xfer += p->writeFieldBegin("str", protocol::T_STRING, 4);
         xfer += p->writeString(value_.asString());
         xfer += p->writeFieldEnd();
         break;
@@ -282,12 +282,12 @@ inline uint32_t Cpp2Ops< SerializableDynamic>::serializedSize(
       break;
 
     case folly::dynamic::Type::DOUBLE:
-      xfer += p->serializedFieldSize("boolean", protocol::T_DOUBLE, 3);
+      xfer += p->serializedFieldSize("doubl", protocol::T_DOUBLE, 3);
       xfer += p->serializedSizeDouble(obj->value_.asDouble());
       break;
 
     case folly::dynamic::Type::STRING:
-      xfer += p->serializedFieldSize("boolean", protocol::T_STRING, 4);
+      xfer += p->serializedFieldSize("str", protocol::T_STRING, 4);
       xfer += p->serializedSizeString(obj->value_.asString());
       break;
 
@@ -379,6 +379,7 @@ inline uint32_t Cpp2Ops< SerializableDynamic>::read(
         break;
       }
       case 4:
+      case 7:  // binary is handled as a string on the write
       {
         if (ftype == protocol::T_STRING) {
           std::string value;
