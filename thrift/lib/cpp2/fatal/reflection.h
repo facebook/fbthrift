@@ -1971,6 +1971,31 @@ using is_reflectable_union = fatal::has_variant_traits<T>;
  */
 template <typename> struct thrift_string_traits;
 
+template <typename String>
+struct thrift_string_traits_std {
+  using type = String;
+
+  using value_type = typename type::value_type;
+  using size_type = typename type::size_type;
+  using iterator = typename type::iterator;
+  using const_iterator = typename type::const_iterator;
+
+  static iterator begin(type &what) { return what.begin(); }
+  static iterator end(type &what) { return what.end(); }
+
+  static const_iterator cbegin(type const &what) { return what.begin(); }
+  static const_iterator begin(type const &what) { return what.begin(); }
+  static const_iterator cend(type const &what) { return what.end(); }
+  static const_iterator end(type const &what) { return what.end(); }
+
+  static void clear(type &what) { what.clear(); }
+  static bool empty(type const &what) { return what.empty(); }
+  static size_type size(type const &what) { return what.size(); }
+
+  static value_type const *data(type const &what) { return what.data(); }
+  static value_type const *c_str(type const &what) { return what.c_str(); }
+};
+
 /**
  * This is the type trait class that provides uniform interface to the
  * properties and functionality of list types.
@@ -2017,6 +2042,35 @@ template <typename> struct thrift_string_traits;
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename> struct thrift_list_traits;
+
+template <typename List>
+struct thrift_list_traits_std {
+  using type = List;
+
+  using value_type = typename type::value_type;
+  using size_type = typename type::size_type;
+  using iterator = typename type::iterator;
+  using const_iterator = typename type::const_iterator;
+
+  static iterator begin(type &what) { return what.begin(); }
+  static iterator end(type &what) { return what.end(); }
+
+  static const_iterator cbegin(type const &what) { return what.begin(); }
+  static const_iterator begin(type const &what) { return what.begin(); }
+  static const_iterator cend(type const &what) { return what.end(); }
+  static const_iterator end(type const &what) { return what.end(); }
+
+  static void clear(type &what) { what.clear(); }
+  static bool empty(type const &what) { return what.empty(); }
+  static void push_back(type &what, value_type const &val) {
+    what.push_back(val);
+  }
+  static void push_back(type &what, value_type &&val) {
+    what.push_back(std::move(val));
+  }
+  static void reserve(type &what, size_type size) { what.reserve(size); }
+  static size_type size(type const &what) { return what.size(); }
+};
 
 /**
  * This is the type trait class that provides uniform interface to the
@@ -2073,6 +2127,43 @@ template <typename> struct thrift_list_traits;
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename> struct thrift_set_traits;
+
+template <typename Set>
+struct thrift_set_traits_std {
+  using type = Set;
+
+  using key_type = typename type::key_type;
+  using value_type = typename type::value_type;
+  using size_type = typename type::size_type;
+  using iterator = typename type::iterator;
+  using const_iterator = typename type::const_iterator;
+
+  static iterator begin(type &what) { return what.begin(); }
+  static iterator end(type &what) { return what.end(); }
+
+  static const_iterator cbegin(type const &what) { return what.begin(); }
+  static const_iterator begin(type const &what) { return what.begin(); }
+  static const_iterator cend(type const &what) { return what.end(); }
+  static const_iterator end(type const &what) { return what.end(); }
+
+  static void clear(type &what) { what.clear(); }
+  static bool empty(type const &what) { return what.empty(); }
+  static iterator find(type &what, value_type const &val) {
+    return what.find(val);
+  }
+  static const_iterator find(type const &what, value_type const &val) {
+    return what.find(val);
+  }
+  static iterator insert(
+      type &what, const_iterator position, value_type const &val) {
+    return what.insert(position, val);
+  }
+  static iterator insert(
+      type &what, const_iterator position, value_type &&val) {
+    return what.insert(position, std::move(val));
+  }
+  static size_type size(type const &what) { return what.size(); }
+};
 
 /**
  * This is the type trait class that provides uniform interface to the
@@ -2135,6 +2226,49 @@ template <typename> struct thrift_set_traits;
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename> struct thrift_map_traits;
+
+template <typename Map>
+struct thrift_map_traits_std {
+  using type = Map;
+
+  using key_type = typename type::key_type;
+  using mapped_type = typename type::mapped_type;
+  using value_type = typename type::value_type;
+  using size_type = typename type::size_type;
+  using iterator = typename type::iterator;
+  using const_iterator = typename type::const_iterator;
+
+  using key_const_reference = key_type const &;
+  using mapped_const_reference = mapped_type const &;
+  using mapped_reference = mapped_type &;
+
+  static iterator begin(type &what) { return what.begin(); }
+  static iterator end(type &what) { return what.end(); }
+
+  static const_iterator cbegin(type const &what) { return what.begin(); }
+  static const_iterator begin(type const &what) { return what.begin(); }
+  static const_iterator cend(type const &what) { return what.end(); }
+  static const_iterator end(type const &what) { return what.end(); }
+
+  static key_const_reference key(const_iterator i) { return i->first; }
+  static key_const_reference key(iterator i) { return i->first; }
+  static mapped_const_reference mapped(const_iterator i) { return i->second; }
+  static mapped_reference mapped(iterator i) { return i->second; }
+
+  static void clear(type &what) { what.clear(); }
+  static bool empty(type const &what) { return what.empty(); }
+  static iterator find(type &what, key_type const &k) { return what.find(k); }
+  static const_iterator find(type const &what, key_type const &k) {
+    return what.find(k);
+  }
+  static mapped_type& get_or_create(type &what, key_type const &k) {
+    return what[k];
+  }
+  static mapped_type& get_or_create(type &what, key_type &&k) {
+    return what[std::move(k)];
+  }
+  static size_type size(type const &what) { return what.size(); }
+};
 
 }} // apache::thrift
 

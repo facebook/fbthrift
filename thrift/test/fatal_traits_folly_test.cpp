@@ -20,6 +20,10 @@
 namespace test_cpp2 {
 namespace cpp_reflection {
 
+TEST(reflection, thrift_fbstring_traits) {
+  apache::thrift::test_thrift_string_traits<folly::fbstring>();
+}
+
 TEST(reflection, thrift_sorted_vector_set_traits) {
   apache::thrift::test_thrift_set_traits<folly::sorted_vector_set<int>>();
 }
