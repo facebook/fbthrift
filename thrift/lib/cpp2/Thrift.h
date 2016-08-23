@@ -19,6 +19,7 @@
 
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/protocol/TType.h>
+#include <thrift/lib/cpp2/util/MapCopy.h>
 
 #include <initializer_list>
 #include <utility>

@@ -1384,18 +1384,18 @@ template uint32_t struct4::write<apache::thrift::CompactProtocolWriter>(apache::
 template uint32_t struct4::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t struct4::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
 
-struct4::struct4(const struct4& src354) {
-  field0 = src354.field0;
-  field1 = src354.field1;
-  __isset.field1 = src354.__isset.field1;
-  field2 = src354.field2;
-  __isset.field2 = src354.__isset.field2;
-  if (src354.field3) field3.reset(new  ::test_cpp2::cpp_reflection::structA(*src354.field3));
+struct4::struct4(const struct4& src384) {
+  field0 = src384.field0;
+  field1 = src384.field1;
+  __isset.field1 = src384.__isset.field1;
+  field2 = src384.field2;
+  __isset.field2 = src384.__isset.field2;
+  if (src384.field3) field3.reset(new  ::test_cpp2::cpp_reflection::structA(*src384.field3));
 }
 
-struct4& struct4::operator=(const struct4& src355) {
-  struct4 tmp356(src355);
-  swap(*this, tmp356);
+struct4& struct4::operator=(const struct4& src385) {
+  struct4 tmp386(src385);
+  swap(*this, tmp386);
   return *this;
 }
 

@@ -139,6 +139,36 @@ TYPED_TEST(MultiProtocolTest, test_serialization) {
   EXPECT_EQ(true, b.__isset.field8);
 }
 
+TYPED_TEST(MultiProtocolTest, test_legacy_serialization) {
+  // test/reflection.thrift
+  struct1 a;
+  init_struct_1(a);
+
+  serializer_write(a, this->writer);
+  this->prep_read();
+
+  struct1 b;
+  b.read(&this->reader);
+
+  EXPECT_EQ(a.field0, b.field0);
+  EXPECT_EQ(a.field1, b.field1);
+  EXPECT_EQ(a.field2, b.field2);
+  EXPECT_EQ(a.field3, b.field3);
+  EXPECT_EQ(a.field4, b.field4);
+  EXPECT_EQ(a.field5, b.field5);
+
+  EXPECT_EQ(a.field6.nfield00, b.field6.nfield00);
+  EXPECT_EQ(a.field6.nfield01, b.field6.nfield01);
+  EXPECT_EQ(a.field6, b.field6);
+  EXPECT_EQ(a.field7, b.field7);
+  EXPECT_EQ(a.field8, b.field8); // default fields are always written out
+
+  EXPECT_EQ(true, b.__isset.field1);
+  EXPECT_EQ(true, b.__isset.field2);
+  EXPECT_EQ(true, b.__isset.field7);
+  EXPECT_EQ(true, b.__isset.field8);
+}
+
 TYPED_TEST(MultiProtocolTest, test_other_containers) {
   struct4 a, b;
 
@@ -243,9 +273,44 @@ TYPED_TEST(CompareProtocolTest, test_struct_xfer) {
 
   const std::size_t legacy_read_xfer = b1.read(&this->st1.reader);
   const std::size_t new_read_xfer    = serializer_read(b2, this->st2.reader);
+
   EXPECT_EQ(legacy_read_xfer, new_read_xfer);
   EXPECT_EQ(b1, b2);
 
+  expect_same_serialized_size(a1, this->st1.writer);
+}
+
+TYPED_TEST(CompareProtocolTest, test_larger_containers) {
+  struct1 a1;
+  struct1 a2;
+  init_struct_1(a1);
+  init_struct_1(a2);
+
+  std::map<int32_t, std::string> large_map;
+  for(int32_t i = 0; i < 1000; i++) {
+    large_map.emplace(i, std::string("string"));
+  }
+
+  a1.field5 = large_map;
+  a2.field5 = large_map;
+
+  EXPECT_EQ(a1, a2);
+  EXPECT_EQ(
+    a1.write(&this->st1.writer),
+    serializer_write(a2, this->st2.writer)
+  );
+
+  this->prep_read();
+  this->debug_buffer();
+
+  struct1 b1;
+  struct1 b2;
+
+  EXPECT_EQ(
+    b1.read(&this->st1.reader),
+    serializer_read(b2, this->st2.reader)
+  );
+  EXPECT_EQ(b1, b2);
   expect_same_serialized_size(a1, this->st1.writer);
 }
 

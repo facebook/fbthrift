@@ -3414,22 +3414,52 @@ class CppGenerator(t_generator.Generator):
                                                             cont_ref, use_push,
                                                             i)
         with s('else'):
+            # set up temporary vector to contain sorted key/value pairs
+            key_reader = None
+            val_reader = None
+            if cont.is_map:
+                # lambdas passed to deserialization routine
+                key_reader = self.tmp('_kreader')
+                val_reader = self.tmp('_vreader')
+
+                # args passed to lambdas
+                key_var = self.tmp('_key')
+                val_var = self.tmp('_val')
+                key_field = frontend.t_field(cont.key_type, key_var)
+                val_field = frontend.t_field(cont.value_type, val_var)
+
+                with s('auto const {0} = [&xfer, &iprot](auto& {1})'.format(
+                    key_reader, key_var
+                )):
+                    self._generate_deserialize_field(out(), key_field)
+                s(';')
+
+                with s('auto const {0} = [&xfer, &iprot](auto& {1})'.format(
+                    val_reader, val_var
+                )):
+                    self._generate_deserialize_field(out(), val_field)
+                s(';')
+
             if cont.is_list and not use_push:
                 s('{0}.resize({1});'.format(cont_ref, size))
             elif ((cont.is_map and cont.as_map.is_unordered) or
                   (cont.is_set and cont.as_set.is_unordered)):
                 s('{0}.reserve({1});'.format(cont_ref, size))
-            with s('for ({0} = 0; {0} < {1}; ++{0})'.format(i, size)):
-                if cont.is_map:
-                    self._generate_deserialize_map_element(
-                            out(), cont.as_map, cont_ref)
-                elif cont.is_set:
-                    self._generate_deserialize_set_element(
-                            out(), cont.as_set, cont_ref)
-                elif cont.is_list:
-                    self._generate_deserialize_list_element(out(), cont.as_list,
-                                                            cont_ref, use_push,
-                                                            i)
+
+            if cont.is_set or cont.is_list:
+                with s('for ({0} = 0; {0} < {1}; ++{0})'.format(i, size)):
+                    if cont.is_set:
+                        self._generate_deserialize_set_element(
+                                out(), cont.as_set, cont_ref)
+                    elif cont.is_list:
+                        self._generate_deserialize_list_element(
+                            out(), cont.as_list, cont_ref, use_push, i)
+            if cont.is_map:
+                s('::apache::thrift::'
+                  'deserialize_known_length_map('
+                  '{0}, {1}, {2}, {3});'.format(
+                    cont_ref, size, key_reader, val_reader));
+
         if pointer:
             s('{0} = std::move({1});'.format(prefix, ptrtype))
 
