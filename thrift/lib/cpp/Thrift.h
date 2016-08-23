@@ -349,15 +349,7 @@ inline typename MergeTrait<T>::default_merge merge(T&& from, T& to) {
 }
 
 template <typename T>
-inline void merge(const std::unique_ptr<T>& from, std::unique_ptr<T>& to) {
-  if (from) {
-    if (to) {
-      merge(*from, *to);
-    } else {
-      to.reset(new T(*from));
-    }
-  }
-}
+inline void merge(const std::unique_ptr<T>& from, std::unique_ptr<T>& to);
 
 template <typename T, typename A>
 inline void merge(const std::vector<T, A>& from, std::vector<T, A>& to) {
@@ -410,6 +402,17 @@ template <typename T>
 inline typename MergeTrait<T>::map_merge merge(T&& from, T& to) {
   for (auto&& kv : from) {
     merge(std::move(kv.second), to[kv.first]);
+  }
+}
+
+template <typename T>
+inline void merge(const std::unique_ptr<T>& from, std::unique_ptr<T>& to) {
+  if (from) {
+    if (to) {
+      merge(*from, *to);
+    } else {
+      to.reset(new T(*from));
+    }
   }
 }
 
