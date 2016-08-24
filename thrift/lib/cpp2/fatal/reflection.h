@@ -1954,8 +1954,8 @@ using is_reflectable_union = fatal::has_variant_traits<T>;
  *    static iterator begin(type &what) { return what.begin(); }
  *    static iterator end(type &what) { return what.end(); }
  *
- *    static const_iterator cbegin(type const &what) { return what.begin(); }
- *    static const_iterator begin(type const &what) { return what.begin(); }
+ *    static const_iterator cbegin(type const &what) { return what.cbegin(); }
+ *    static const_iterator begin(type const &what) { return what.cbegin(); }
  *    static const_iterator cend(type const &what) { return what.end(); }
  *    static const_iterator end(type const &what) { return what.end(); }
  *
@@ -1983,9 +1983,9 @@ struct thrift_string_traits_std {
   static iterator begin(type &what) { return what.begin(); }
   static iterator end(type &what) { return what.end(); }
 
-  static const_iterator cbegin(type const &what) { return what.begin(); }
+  static const_iterator cbegin(type const &what) { return what.cbegin(); }
   static const_iterator begin(type const &what) { return what.begin(); }
-  static const_iterator cend(type const &what) { return what.end(); }
+  static const_iterator cend(type const &what) { return what.cend(); }
   static const_iterator end(type const &what) { return what.end(); }
 
   static void clear(type &what) { what.clear(); }
@@ -2024,9 +2024,9 @@ struct thrift_string_traits_std {
  *    static iterator begin(type &what) { return what.begin(); }
  *    static iterator end(type &what) { return what.end(); }
  *
- *    static const_iterator cbegin(type const &what) { return what.begin(); }
+ *    static const_iterator cbegin(type const &what) { return what.cbegin(); }
  *    static const_iterator begin(type const &what) { return what.begin(); }
- *    static const_iterator cend(type const &what) { return what.end(); }
+ *    static const_iterator cend(type const &what) { return what.cend(); }
  *    static const_iterator end(type const &what) { return what.end(); }
  *
  *    static void clear(type &what) { what.clear(); }
@@ -2055,9 +2055,9 @@ struct thrift_list_traits_std {
   static iterator begin(type &what) { return what.begin(); }
   static iterator end(type &what) { return what.end(); }
 
-  static const_iterator cbegin(type const &what) { return what.begin(); }
+  static const_iterator cbegin(type const &what) { return what.cbegin(); }
   static const_iterator begin(type const &what) { return what.begin(); }
-  static const_iterator cend(type const &what) { return what.end(); }
+  static const_iterator cend(type const &what) { return what.cend(); }
   static const_iterator end(type const &what) { return what.end(); }
 
   static void clear(type &what) { what.clear(); }
@@ -2104,9 +2104,9 @@ struct thrift_list_traits_std {
  *    static iterator begin(type &what) { return what.begin(); }
  *    static iterator end(type &what) { return what.end(); }
  *
- *    static const_iterator cbegin(type const &what) { return what.begin(); }
+ *    static const_iterator cbegin(type const &what) { return what.cbegin(); }
  *    static const_iterator begin(type const &what) { return what.begin(); }
- *    static const_iterator cend(type const &what) { return what.end(); }
+ *    static const_iterator cend(type const &what) { return what.cend(); }
  *    static const_iterator end(type const &what) { return what.end(); }
  *
  *    static void clear(type &what) { what.clear(); }
@@ -2141,9 +2141,9 @@ struct thrift_set_traits_std {
   static iterator begin(type &what) { return what.begin(); }
   static iterator end(type &what) { return what.end(); }
 
-  static const_iterator cbegin(type const &what) { return what.begin(); }
+  static const_iterator cbegin(type const &what) { return what.cbegin(); }
   static const_iterator begin(type const &what) { return what.begin(); }
-  static const_iterator cend(type const &what) { return what.end(); }
+  static const_iterator cend(type const &what) { return what.cend(); }
   static const_iterator end(type const &what) { return what.end(); }
 
   static void clear(type &what) { what.clear(); }
@@ -2199,9 +2199,9 @@ struct thrift_set_traits_std {
  *    static iterator begin(type &what) { return what.begin(); }
  *    static iterator end(type &what) { return what.end(); }
  *
- *    static const_iterator cbegin(type const &what) { return what.begin(); }
+ *    static const_iterator cbegin(type const &what) { return what.cbegin(); }
  *    static const_iterator begin(type const &what) { return what.begin(); }
- *    static const_iterator cend(type const &what) { return what.end(); }
+ *    static const_iterator cend(type const &what) { return what.cend(); }
  *    static const_iterator end(type const &what) { return what.end(); }
  *
  *    static key_const_reference key(const_iterator i) { return i->first; }
@@ -2245,9 +2245,9 @@ struct thrift_map_traits_std {
   static iterator begin(type &what) { return what.begin(); }
   static iterator end(type &what) { return what.end(); }
 
-  static const_iterator cbegin(type const &what) { return what.begin(); }
+  static const_iterator cbegin(type const &what) { return what.cbegin(); }
   static const_iterator begin(type const &what) { return what.begin(); }
-  static const_iterator cend(type const &what) { return what.end(); }
+  static const_iterator cend(type const &what) { return what.cend(); }
   static const_iterator end(type const &what) { return what.end(); }
 
   static key_const_reference key(const_iterator i) { return i->first; }
