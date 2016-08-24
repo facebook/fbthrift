@@ -337,14 +337,16 @@ void t_mstch_generator::gen_template_map(
     const boost::filesystem::path& prefix) {
   auto template_dir = this->template_dir_ / prefix;
   this->template_map_ = {};
-  for (auto& elem : boost::filesystem::directory_iterator(template_dir)) {
-    if (boost::filesystem::is_regular_file(elem.path()) &&
-        boost::filesystem::extension(elem.path()) == ".mustache") {
-      std::ifstream ifs{elem.path().string()};
+  for (auto itr = boost::filesystem::directory_iterator{template_dir};
+       itr != boost::filesystem::directory_iterator{};
+       ++itr) {
+    if (boost::filesystem::is_regular_file(itr->path()) &&
+        boost::filesystem::extension(itr->path()) == ".mustache") {
+      std::ifstream ifs{itr->path().string()};
       auto tpl = std::string{std::istreambuf_iterator<char>(ifs),
                              std::istreambuf_iterator<char>()};
 
-      this->template_map_.emplace(elem.path().stem().string(), std::move(tpl));
+      this->template_map_.emplace(itr->path().stem().string(), std::move(tpl));
     }
   }
 }
