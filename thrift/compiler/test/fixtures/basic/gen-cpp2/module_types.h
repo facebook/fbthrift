@@ -12,6 +12,7 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
 
+#include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 
 
 
@@ -149,6 +150,14 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
 };
 
 void swap(MyStruct& a, MyStruct& b);
+extern template uint32_t MyStruct::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t MyStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t MyStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t MyStruct::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace apache { namespace thrift {

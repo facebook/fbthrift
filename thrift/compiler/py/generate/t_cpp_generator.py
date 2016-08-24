@@ -2350,54 +2350,53 @@ class CppGenerator(t_generator.Generator):
                                   result, has_isset=True,
                                   to_additional=False, simplejson=True,
                                   is_service_helper=False):
-        def output(data):
-            if to_additional:
-                print >>self._additional_outputs[-1], data
-            else:
-                s.impl(data)
-
         self._generated_types.append(obj)
 
-        if not self.flag_implicit_templates:
-            for a,b,c in self.protocols:
-                if a == 'simple_json' and not simplejson:
-                    continue
-                if not self.flag_compatibility:
-                    output(("template uint32_t {1}::read<"
-                            "apache::thrift::{0}Reader>"
-                            "(apache::thrift::{0}Reader*);").format(
-                                    b, obj.name))
+        def output(data):
+            if to_additional:
+                print >>self._additional_outputs[-1], data + ';'
+            elif is_service_helper:
+                s.impl(data)
+            else:
+                # this writes both the extern, and the explicit instantiation
+                # of the template to the .h and .cpp file, respectively
+                s.extern(data)
 
-                    output(("template uint32_t {1}::write<"
-                            "apache::thrift::{0}Writer"">("
-                            "apache::thrift::{0}Writer*) const;").format(
-                                    b, obj.name))
-                    output(("template uint32_t {1}::serializedSize"
-                            "<apache::thrift::{0}Writer>("
-                            "apache::thrift::{0}Writer const*)"
-                            " const;").format(b, obj.name))
-                    output(("template uint32_t {1}::serializedSizeZC"
-                            "<apache::thrift::{0}Writer>("
-                            "apache::thrift::{0}Writer const*) const;").format(
-                                    b, obj.name))
-                else:
-                    output(("template uint32_t {1}_read<"
-                            "apache::thrift::{0}Reader>("
-                            "apache::thrift::{0}Reader*, {1}*);").format(
-                                    b, obj.name))
-                    output(("template uint32_t {1}_write<"
-                            "apache::thrift::{0}Writer>("
-                            "apache::thrift::{0}Writer*, const {1}*);").format(
-                                    b, obj.name))
-                    output(("template uint32_t {1}_serializedSize<"
-                            "apache::thrift::{0}Writer>("
-                            "apache::thrift::{0}Writer const*, "
-                            "const {1}*);").format(
-                                    b, obj.name))
-                    output(("template uint32_t {1}_serializedSizeZC<"
-                            "apache::thrift::{0}Writer>("
-                            "apache::thrift::{0}Writer const*, "
-                            "const {1}*);").format(b, obj.name))
+        # generate explicit and extern template instantiations for
+        # {Binary,Compact}Protocol
+        def write_extern_templates():
+            if not self.flag_implicit_templates:
+                for a,b,c in self.protocols:
+                    if a == 'simple_json' and not simplejson:
+                        continue
+                    if not self.flag_compatibility:
+                        output(("template uint32_t {1}::read<>"
+                                "(apache::thrift::{0}Reader*)").format(
+                                        b, obj.name))
+
+                        output(("template uint32_t {1}::write<>"
+                                "(apache::thrift::{0}Writer*) const").format(
+                                        b, obj.name))
+                        output(("template uint32_t {1}::serializedSize<>"
+                                "(apache::thrift::{0}Writer const*)"
+                                " const").format(b, obj.name))
+                        output(("template uint32_t {1}::serializedSizeZC<>"
+                                "(apache::thrift::{0}Writer const*) const").
+                                    format(b, obj.name))
+                    else:
+                        output(("template uint32_t {1}_read<>"
+                                "(apache::thrift::{0}Reader*, {1}*)").format(
+                                        b, obj.name))
+                        output(("template uint32_t {1}_write<>"
+                                "(apache::thrift::{0}Writer*, const {1}*)").
+                                    format(b, obj.name))
+                        output(("template uint32_t {1}_serializedSize<>"
+                                "(apache::thrift::{0}Writer const*, "
+                                "const {1}*)").format(
+                                        b, obj.name))
+                        output(("template uint32_t {1}_serializedSizeZC<>"
+                                "(apache::thrift::{0}Writer const*, "
+                                "const {1}*)").format(b, obj.name))
 
         if self.flag_compatibility:
             base = self._namespace_prefix(
@@ -2416,6 +2415,7 @@ class CppGenerator(t_generator.Generator):
                             is_service_helper=is_service_helper)
                 self._generate_struct_writer(s, obj, pointers, result,
                     is_service_helper=is_service_helper)
+            write_extern_templates()
             return
 
         extends = [
@@ -3064,6 +3064,7 @@ class CppGenerator(t_generator.Generator):
                                 self._serialized_fields_protocol_name))
                         out('swap(a.{0}, b.{0});'.format(
                                 self._serialized_fields_name))
+        write_extern_templates()
 
     # ======================================================================
     # DESERIALIZATION CODE
@@ -5225,9 +5226,11 @@ class CppGenerator(t_generator.Generator):
 
         for _, b, _ in self.protocols:
             print >>types_out_tcc, \
-                    '#include <thrift/lib/cpp2/protocol/{0}.h>'.format(b)
+                '#include <thrift/lib/cpp2/protocol/{0}.h>'. format(b)
 
+        s("#include <thrift/lib/cpp2/GeneratedHeaderHelper.h>")
         s()
+
         # Include custom headers
         for inc in self._program.cpp_includes:
             if inc.startswith('<'):
@@ -5236,7 +5239,7 @@ class CppGenerator(t_generator.Generator):
                 s('#include "{0}"'.format(inc))
         s()
         # The swap() code needs <algorithm> for std::swap()
-        print >>types_out_impl, '#include <algorithm>\n'
+        print >>types_out_impl, '\n#include <algorithm>\n'
 
         fatal_header = '#include "{0}"'.format(self._fatal_header())
         if self.flag_lean_mean_meta_machine:

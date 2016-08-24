@@ -12,6 +12,7 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
 
+#include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 
 
 
@@ -59,6 +60,14 @@ class Banal : private apache::thrift::detail::st::ComparisonOperators<Banal>, pu
 };
 
 void swap(Banal& a, Banal& b);
+extern template uint32_t Banal::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t Banal::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t Banal::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t Banal::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t Banal::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t Banal::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t Banal::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t Banal::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace apache { namespace thrift {
@@ -151,6 +160,14 @@ class Fiery : private apache::thrift::detail::st::ComparisonOperators<Fiery>, pu
 };
 
 void swap(Fiery& a, Fiery& b);
+extern template uint32_t Fiery::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t Fiery::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t Fiery::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t Fiery::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t Fiery::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t Fiery::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t Fiery::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t Fiery::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace apache { namespace thrift {

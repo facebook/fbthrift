@@ -8,18 +8,10 @@
 
 #include "thrift/compiler/test/fixtures/namespace-cpp/gen-cpp2/present_types.tcc"
 
+
 #include <algorithm>
 
 namespace foo { namespace bar {
-
-template uint32_t MyData::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
-template uint32_t MyData::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t MyData::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t MyData::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t MyData::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
-template uint32_t MyData::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t MyData::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t MyData::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
 
 void MyData::__clear() {
   datum = std::string();
@@ -38,6 +30,15 @@ void swap(MyData& a, MyData& b) {
   swap(a.datum, b.datum);
   swap(a.__isset, b.__isset);
 }
+
+template uint32_t MyData::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t MyData::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t MyData::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t MyData::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t MyData::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t MyData::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t MyData::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t MyData::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // foo::bar
 namespace apache { namespace thrift {

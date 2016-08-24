@@ -8,18 +8,10 @@
 
 #include "thrift/compiler/test/fixtures/empty-struct/gen-cpp2/module_types.tcc"
 
+
 #include <algorithm>
 
 namespace cpp2 {
-
-template uint32_t Empty::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
-template uint32_t Empty::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t Empty::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Empty::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Empty::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
-template uint32_t Empty::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t Empty::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t Empty::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
 
 bool Empty::operator==(const Empty& /* rhs */) const {
   return true;
@@ -28,6 +20,15 @@ bool Empty::operator==(const Empty& /* rhs */) const {
 void swap(Empty& a, Empty& b) {
   using ::std::swap;
 }
+
+template uint32_t Empty::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t Empty::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t Empty::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Empty::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Empty::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t Empty::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t Empty::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t Empty::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace apache { namespace thrift {

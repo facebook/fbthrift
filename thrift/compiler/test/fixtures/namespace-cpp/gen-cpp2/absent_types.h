@@ -12,6 +12,7 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
 
+#include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 
 
 
@@ -90,6 +91,14 @@ class MyData : private apache::thrift::detail::st::ComparisonOperators<MyData> {
 };
 
 void swap(MyData& a, MyData& b);
+extern template uint32_t MyData::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t MyData::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t MyData::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t MyData::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t MyData::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t MyData::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t MyData::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t MyData::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 namespace apache { namespace thrift {
 
 template <> inline void Cpp2Ops< ::MyData>::clear( ::MyData* obj) {

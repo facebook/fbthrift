@@ -12,6 +12,7 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
 
+#include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 
 
 
@@ -200,6 +201,14 @@ class Internship : private apache::thrift::detail::st::ComparisonOperators<Inter
 };
 
 void swap(Internship& a, Internship& b);
+extern template uint32_t Internship::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t Internship::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t Internship::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t Internship::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t Internship::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t Internship::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t Internship::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t Internship::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace apache { namespace thrift {
@@ -300,6 +309,14 @@ class UnEnumStruct : private apache::thrift::detail::st::ComparisonOperators<UnE
 };
 
 void swap(UnEnumStruct& a, UnEnumStruct& b);
+extern template uint32_t UnEnumStruct::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t UnEnumStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t UnEnumStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t UnEnumStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t UnEnumStruct::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t UnEnumStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t UnEnumStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t UnEnumStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace apache { namespace thrift {
@@ -409,6 +426,14 @@ class Range : private apache::thrift::detail::st::ComparisonOperators<Range> {
 };
 
 void swap(Range& a, Range& b);
+extern template uint32_t Range::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t Range::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t Range::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t Range::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t Range::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t Range::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t Range::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t Range::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace apache { namespace thrift {

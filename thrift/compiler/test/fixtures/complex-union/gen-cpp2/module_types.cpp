@@ -8,18 +8,10 @@
 
 #include "thrift/compiler/test/fixtures/complex-union/gen-cpp2/module_types.tcc"
 
+
 #include <algorithm>
 
 namespace cpp2 {
-
-template uint32_t ComplexUnion::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
-template uint32_t ComplexUnion::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t ComplexUnion::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t ComplexUnion::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t ComplexUnion::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
-template uint32_t ComplexUnion::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t ComplexUnion::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t ComplexUnion::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
 
 void ComplexUnion::__clear() {
   if (type_ == Type::__EMPTY__) { return; }
@@ -99,6 +91,15 @@ void swap(ComplexUnion& a, ComplexUnion& b) {
   a = std::move(b);
   b = std::move(temp);
 }
+
+template uint32_t ComplexUnion::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t ComplexUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t ComplexUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t ComplexUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t ComplexUnion::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t ComplexUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t ComplexUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t ComplexUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace apache { namespace thrift {

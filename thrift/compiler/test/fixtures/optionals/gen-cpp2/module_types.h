@@ -13,6 +13,7 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
 
+#include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 
 
 
@@ -140,6 +141,14 @@ class Color : private apache::thrift::detail::st::ComparisonOperators<Color> {
 };
 
 void swap(Color& a, Color& b);
+extern template uint32_t Color::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t Color::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t Color::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t Color::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t Color::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t Color::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t Color::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t Color::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace apache { namespace thrift {
@@ -236,6 +245,14 @@ class Vehicle : private apache::thrift::detail::st::ComparisonOperators<Vehicle>
 };
 
 void swap(Vehicle& a, Vehicle& b);
+extern template uint32_t Vehicle::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t Vehicle::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t Vehicle::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t Vehicle::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t Vehicle::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t Vehicle::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t Vehicle::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t Vehicle::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace apache { namespace thrift {
@@ -381,6 +398,14 @@ class Person : private apache::thrift::detail::st::ComparisonOperators<Person> {
 };
 
 void swap(Person& a, Person& b);
+extern template uint32_t Person::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t Person::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t Person::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t Person::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t Person::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t Person::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t Person::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t Person::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace apache { namespace thrift {

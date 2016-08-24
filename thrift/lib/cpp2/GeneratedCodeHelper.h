@@ -18,15 +18,9 @@
 #include <folly/futures/Future.h>
 #include <folly/Traits.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <type_traits>
-
-namespace folly {
-class IOBufQueue;
-namespace io {
-class QueueAppender;
-} // io
-} // folly
 
 namespace apache { namespace thrift {
 
@@ -854,14 +848,6 @@ class Cpp2Ops<std::unique_ptr<folly::IOBuf>> {
     return prot->serializedSizeZCBinary(*value);
   }
 };
-
-class BinaryProtocolReader;
-class BinaryProtocolWriter;
-class CompactProtocolReader;
-template <class Appender, class Storage>
-class CompactProtocolWriterImpl;
-using CompactProtocolWriter
-    = CompactProtocolWriterImpl<folly::io::QueueAppender, folly::IOBufQueue>;
 
 //  AsyncProcessor helpers
 namespace detail { namespace ap {

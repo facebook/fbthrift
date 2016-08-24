@@ -8,6 +8,7 @@
 
 #include "thrift/compiler/test/fixtures/optionals/gen-cpp2/module_types.tcc"
 
+
 #include <algorithm>
 
 namespace cpp2 {
@@ -44,15 +45,6 @@ template <> bool TEnumTraitsBase< ::cpp2::Animal>::findValue(const char* name,  
 }} // apache::thrift
 namespace cpp2 {
 
-template uint32_t Color::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
-template uint32_t Color::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t Color::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Color::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Color::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
-template uint32_t Color::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t Color::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t Color::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
-
 void Color::__clear() {
   red = 0;
   green = 0;
@@ -84,20 +76,20 @@ void swap(Color& a, Color& b) {
   swap(a.alpha, b.alpha);
 }
 
+template uint32_t Color::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t Color::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t Color::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Color::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Color::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t Color::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t Color::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t Color::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 } // cpp2
 namespace apache { namespace thrift {
 
 }} // apache::thrift
 namespace cpp2 {
-
-template uint32_t Vehicle::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
-template uint32_t Vehicle::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t Vehicle::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Vehicle::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Vehicle::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
-template uint32_t Vehicle::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t Vehicle::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t Vehicle::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
 
 void Vehicle::__clear() {
   ::apache::thrift::Cpp2Ops<  ::cpp2::Color>::clear(&color);
@@ -130,20 +122,20 @@ void swap(Vehicle& a, Vehicle& b) {
   swap(a.name, b.name);
 }
 
+template uint32_t Vehicle::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t Vehicle::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t Vehicle::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Vehicle::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Vehicle::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t Vehicle::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t Vehicle::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t Vehicle::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 } // cpp2
 namespace apache { namespace thrift {
 
 }} // apache::thrift
 namespace cpp2 {
-
-template uint32_t Person::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
-template uint32_t Person::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t Person::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Person::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Person::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
-template uint32_t Person::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t Person::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t Person::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
 
 void Person::__clear() {
   id = 0;
@@ -205,6 +197,15 @@ void swap(Person& a, Person& b) {
   swap(a.afraidOfAnimal, b.afraidOfAnimal);
   swap(a.vehicles, b.vehicles);
 }
+
+template uint32_t Person::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t Person::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t Person::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Person::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Person::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t Person::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t Person::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t Person::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace apache { namespace thrift {

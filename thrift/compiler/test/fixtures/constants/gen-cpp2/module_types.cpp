@@ -8,6 +8,7 @@
 
 #include "thrift/compiler/test/fixtures/constants/gen-cpp2/module_types.tcc"
 
+
 #include <algorithm>
 
 namespace cpp2 {
@@ -80,15 +81,6 @@ template <> bool TEnumTraitsBase< ::cpp2::Company>::findValue(const char* name, 
 }} // apache::thrift
 namespace cpp2 {
 
-template uint32_t Internship::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
-template uint32_t Internship::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t Internship::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Internship::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Internship::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
-template uint32_t Internship::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t Internship::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t Internship::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
-
 void Internship::__clear() {
   weeks = 0;
   title = std::string();
@@ -120,20 +112,20 @@ void swap(Internship& a, Internship& b) {
   swap(a.__isset, b.__isset);
 }
 
+template uint32_t Internship::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t Internship::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t Internship::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Internship::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Internship::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t Internship::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t Internship::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t Internship::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 } // cpp2
 namespace apache { namespace thrift {
 
 }} // apache::thrift
 namespace cpp2 {
-
-template uint32_t UnEnumStruct::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
-template uint32_t UnEnumStruct::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t UnEnumStruct::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t UnEnumStruct::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t UnEnumStruct::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
-template uint32_t UnEnumStruct::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t UnEnumStruct::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t UnEnumStruct::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
 
 void UnEnumStruct::__clear() {
   city = static_cast< ::cpp2::City>(-1);
@@ -153,20 +145,20 @@ void swap(UnEnumStruct& a, UnEnumStruct& b) {
   swap(a.__isset, b.__isset);
 }
 
+template uint32_t UnEnumStruct::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t UnEnumStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t UnEnumStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t UnEnumStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t UnEnumStruct::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t UnEnumStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t UnEnumStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t UnEnumStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
 } // cpp2
 namespace apache { namespace thrift {
 
 }} // apache::thrift
 namespace cpp2 {
-
-template uint32_t Range::read<apache::thrift::BinaryProtocolReader>(apache::thrift::BinaryProtocolReader*);
-template uint32_t Range::write<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t Range::serializedSize<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Range::serializedSizeZC<apache::thrift::BinaryProtocolWriter>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Range::read<apache::thrift::CompactProtocolReader>(apache::thrift::CompactProtocolReader*);
-template uint32_t Range::write<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t Range::serializedSize<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t Range::serializedSizeZC<apache::thrift::CompactProtocolWriter>(apache::thrift::CompactProtocolWriter const*) const;
 
 void Range::__clear() {
   min = 0;
@@ -188,6 +180,15 @@ void swap(Range& a, Range& b) {
   swap(a.min, b.min);
   swap(a.max, b.max);
 }
+
+template uint32_t Range::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t Range::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t Range::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Range::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Range::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t Range::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t Range::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t Range::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace apache { namespace thrift {

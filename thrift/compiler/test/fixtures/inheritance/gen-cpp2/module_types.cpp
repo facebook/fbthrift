@@ -8,6 +8,7 @@
 
 #include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/module_types.tcc"
 
+
 #include <algorithm>
 
 namespace cpp2 {
