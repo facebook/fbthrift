@@ -19,19 +19,49 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/replace.hpp>
 
+#include <folly/Conv.h>
+#include <folly/Optional.h>
+
 class t_mstch_swift_generator : public t_mstch_generator {
  public:
   t_mstch_swift_generator(
       t_program* program,
       const std::map<std::string, std::string>& parsed_options,
       const std::string& option_string)
-      : t_mstch_generator(program, "java/swift", parsed_options) {
+      : t_mstch_generator(program, "java/swift", parsed_options),
+        default_package_(this->get_option("default_package")),
+        namespace_identifier_(
+            this->get_option("use_java_namespace") ? "java" : "java.swift") {
     this->out_dir_base_ = "gen-swift";
   }
 
   void generate_program() override;
 
  protected:
+  const folly::Optional<std::string> default_package_;
+
+  const std::string namespace_identifier_;
+
+  /**
+   * Gets the swift namespace, or, if it doesn't exist, uses the default.
+   * If no default specified, throws runtime error
+   */
+  std::string get_namespace_or_default(const t_program& prog) const {
+    const auto& prog_namespace =
+        prog.get_namespace(this->namespace_identifier_);
+    if (prog_namespace != "") {
+      return prog_namespace;
+    } else if (default_package_.hasValue()) {
+      return default_package_.value();
+    } else {
+      throw std::runtime_error{folly::to<std::string>(
+          "No namespace '",
+          this->namespace_identifier_,
+          "' in ",
+          prog.get_name())};
+    }
+  }
+
   /*
    * Generate multiple Java items according to the given template. Writes
    * output to package_dir underneath the global output directory.
@@ -43,7 +73,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
     auto& tpl = this->get_template(tpl_path);
     for (const T* item : items) {
       auto package_dir =
-          package_to_path(item->get_program()->get_namespace("java.swift"));
+          package_to_path(this->get_namespace_or_default(*item->get_program()));
       auto filename = this->mangle_java_name(item->get_name(), true) + ".java";
       auto rendered_item =
           mstch::render(tpl, this->dump(*item), this->get_template_map());
@@ -56,7 +86,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
       // Only generate Constants.java if we actually have constants
       return;
     }
-    auto package_dir = package_to_path(prog.get_namespace("java.swift"));
+    auto package_dir = package_to_path(this->get_namespace_or_default(prog));
     auto rendered = mstch::render(
         this->get_template("Constants"),
         this->dump(prog),
@@ -74,14 +104,14 @@ class t_mstch_swift_generator : public t_mstch_generator {
           return std::less<std::string>{}(x->get_name(), y->get_name());
         });
     return mstch::map{
-        {"javaPackage", program.get_namespace("java.swift")},
+        {"javaPackage", this->get_namespace_or_default(program)},
         {"sortedConstants", this->dump_vector(constants)},
     };
   }
 
   mstch::map extend_struct(const t_struct& strct) const override {
     mstch::map result{
-        {"javaPackage", strct.get_program()->get_namespace("java.swift")},
+        {"javaPackage", this->get_namespace_or_default(*strct.get_program())},
     };
     this->add_java_names(result, strct.get_name());
     return result;
@@ -89,7 +119,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
 
   mstch::map extend_service(const t_service& service) const override {
     mstch::map result{
-        {"javaPackage", service.get_program()->get_namespace("java.swift")},
+        {"javaPackage", this->get_namespace_or_default(*service.get_program())},
     };
     this->add_java_names(result, service.get_name());
     return result;
@@ -109,7 +139,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
 
   mstch::map extend_enum(const t_enum& enm) const override {
     mstch::map result{
-        {"javaPackage", enm.get_program()->get_namespace("java.swift")},
+        {"javaPackage", this->get_namespace_or_default(*enm.get_program())},
     };
     this->add_java_names(result, enm.get_name());
     return result;
