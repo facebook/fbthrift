@@ -193,6 +193,7 @@ Headers::Headers(const folly::SocketAddress& local,
 }
 
 void Headers::setTcpFlagsImpl(tcphdr* tcp, Headers::TcpFlags flags) {
+#ifdef THRIFT_PCAP_LOGGING_SUPPORTED
   tcp->syn = tcp->ack = tcp->fin = tcp->rst = 0;
   switch (flags) {
   case SYN: tcp->syn = 1; break;
@@ -201,6 +202,7 @@ void Headers::setTcpFlagsImpl(tcphdr* tcp, Headers::TcpFlags flags) {
   case FIN: tcp->fin = tcp->ack = 1; break;
   case RST: tcp->rst = tcp->ack = 1; break;
   }
+#endif
 }
 
 void Headers::setTcpFlags(TcpFlags flags) {
