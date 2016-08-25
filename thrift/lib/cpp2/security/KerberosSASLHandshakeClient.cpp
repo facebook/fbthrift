@@ -420,6 +420,9 @@ void KerberosSASLHandshakeClient::handleResponse(const string& msg) {
       // Should not call this function if in INIT state
       assert(false);
     case ESTABLISH_CONTEXT:
+      if (msg.length() == 0) {
+        throw TKerberosException("Security negotiation failed, empty response");
+      }
       logger_->logEnd("first_rtt");
       logger_->logStart("prepare_second_request");
       assert(contextStatus_ == GSS_S_CONTINUE_NEEDED);
