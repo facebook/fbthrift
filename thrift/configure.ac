@@ -128,6 +128,8 @@ if test "$with_cpp" = "yes";  then
   ])
 
   AX_BOOST_THREAD
+  AX_BOOST_FILESYSTEM
+  AX_BOOST_SYSTEM
 
   AX_LIB_EVENT([1.0])
   have_libevent=$success

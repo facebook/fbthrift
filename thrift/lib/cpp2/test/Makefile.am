@@ -48,6 +48,6 @@ gen-cpp2/InstalledCheck_types.cpp: InstalledCheck.thrift
 	$(PY_RUN_ENV) $(PYTHON) -mthrift_compiler.main --gen cpp2 InstalledCheck.thrift
 
 InstalledCheck: gen-cpp2/TestService.cpp
-	$(CXX) $(CXXFLAGS) -o InstalledCheck $(LDFLAGS) -L@prefix@/lib $(CPPFLAGS) -I@prefix@/include -I../../../../ InstalledCheck.cpp util/TestInterface.cpp gen-cpp2/InstalledCheck_types.cpp gen-cpp2/TestService.cpp gen-cpp2/TestService_client.cpp -lthriftprotocol -lthriftcpp2 -lthrift -lfolly -lglog -lboost_system $(BOOST_THREAD_LIB) -lpthread -lm -ldouble-conversion -lssl -lcrypto
+	$(CXX) $(CXXFLAGS) -o InstalledCheck $(LDFLAGS) -L@prefix@/lib $(CPPFLAGS) -I@prefix@/include -I../../../../ InstalledCheck.cpp util/TestInterface.cpp gen-cpp2/InstalledCheck_types.cpp gen-cpp2/TestService.cpp gen-cpp2/TestService_client.cpp -lthriftprotocol -lthriftcpp2 -lthrift -lfolly -lglog $(BOOST_SYSTEM_LIB) $(BOOST_THREAD_LIB) -lpthread -lm -ldouble-conversion -lssl -lcrypto
 
 installcheck: gen-cpp2/InstalledCheck_types.cpp InstalledCheck
