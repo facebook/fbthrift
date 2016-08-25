@@ -14,8 +14,7 @@ union Dynamic {
   1: bool boolean;
   2: i64 integer;
   3: double doubl;
-  4: string str;
+  4: binary str;
   5: list<Dynamic> arr;
   6: map<string, Dynamic> object;
-  7: binary bin;
 } (cpp.type = "::apache::thrift::SerializableDynamic")

@@ -86,7 +86,7 @@ class SerializableDynamic {
           break;
         }
         case 3:
-       {
+        {
           if (ftype == protocol::T_DOUBLE) {
             double value;
             xfer += iprot->readDouble(value);
@@ -379,7 +379,6 @@ inline uint32_t Cpp2Ops< SerializableDynamic>::read(
         break;
       }
       case 4:
-      case 7:  // binary is handled as a string on the write
       {
         if (ftype == protocol::T_STRING) {
           std::string value;
