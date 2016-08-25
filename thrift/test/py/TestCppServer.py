@@ -423,37 +423,6 @@ class SSLHeaderTestServer(TestServer):
     def tearDown(self):
         os.remove(self.ticket_file.name)
 
-    def testValidateSSL(self):
-        valid, msg = self.server.validateSSLConfig({})
-        self.assertFalse(valid)
-        self.assertIsNotNone(msg)
-
-        cfg = TSSLConfig()
-        valid, msg = self.server.validateSSLConfig(cfg)
-        self.assertTrue(valid)
-        self.assertIsNone(msg)
-
-        cfg.key_path = 'thrift/test/py/test_cert.pem'
-        valid, msg = self.server.validateSSLConfig(cfg)
-        self.assertFalse(valid)
-        self.assertIsNotNone(msg)
-
-        cfg.key_path = ''
-        cfg.cert_path = 'thrift/test/py/test_cert.pem'
-        valid, msg = self.server.validateSSLConfig(cfg)
-        self.assertFalse(valid)
-        self.assertIsNotNone(msg)
-
-        cfg.key_path = cfg.cert_path
-        valid, msg = self.server.validateSSLConfig(cfg)
-        self.assertTrue(valid)
-        self.assertIsNone(msg)
-
-        cfg.client_ca_path = 'thrift/test/should/not/exist.pem'
-        valid, msg = self.server.validateSSLConfig(cfg)
-        self.assertFalse(valid)
-        self.assertIsNotNone(msg)
-
 if __name__ == '__main__':
     rc = MainProgram(sys.argv).run()
     sys.exit(rc)

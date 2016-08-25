@@ -447,42 +447,6 @@ public:
     getServeEventBase()->loopForever();
   }
 
-  object validateCppSSLConfig(object sslConfig) {
-    auto certPath = getStringAttrSafe(sslConfig, "cert_path");
-    auto keyPath = getStringAttrSafe(sslConfig, "key_path");
-    if (certPath.empty() ^ keyPath.empty()) {
-      std::string err = "cert_path and key_path must both be populated or " \
-        "both be empty.";
-      return boost::python::make_tuple(false, err);
-    }
-    auto dummyContext = std::make_shared<SSLContext>();
-    if (!certPath.empty()) {
-      try {
-        dummyContext->loadPrivateKey(keyPath.c_str());
-        dummyContext->loadCertificate(certPath.c_str());
-      } catch (const std::exception& ex) {
-        std::string err
-          = folly::to<std::string>("failed to load key ", keyPath,
-                                   " or cert ", certPath, " with exception: ",
-                                   ex.what());
-        return boost::python::make_tuple(false, err);
-      }
-    }
-    auto clientCaFile = getStringAttrSafe(sslConfig, "client_ca_path");
-    if (!clientCaFile.empty()) {
-      try {
-        dummyContext->loadTrustedCertificates(clientCaFile.c_str());
-      } catch (std::exception& ex) {
-        std::string err
-          = folly::to<std::string>("failed to load client ca file ",
-                                   clientCaFile, " with exception: ",
-                                   ex.what());
-        return boost::python::make_tuple(false, err);
-      }
-    }
-    return boost::python::make_tuple(true, object());
-  }
-
   void setCppSSLConfig(object sslConfig) {
     auto certPath = getStringAttrSafe(sslConfig, "cert_path");
     auto keyPath = getStringAttrSafe(sslConfig, "key_path");
@@ -651,7 +615,6 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
     .def("setCppSSLCacheOptions", &CppServerWrapper::setCppSSLCacheOptions)
     .def("setCppFastOpenOptions", &CppServerWrapper::setCppFastOpenOptions)
     .def("getCppTicketSeeds", &CppServerWrapper::getCppTicketSeeds)
-    .def("validateCppSSLConfig", &CppServerWrapper::validateCppSSLConfig)
 
     // methods directly passed to the C++ impl
     .def("setup", &CppServerWrapper::setup)

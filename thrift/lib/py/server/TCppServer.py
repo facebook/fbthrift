@@ -177,11 +177,6 @@ class TCppServer(CppServerWrapper, TServer):
     def getTicketSeeds(self):
         return self.getCppTicketSeeds()
 
-    def validateSSLConfig(self, config):
-        if not isinstance(config, TSSLConfig):
-            return (False, "Config must be of type TSSLConfig")
-        return self.validateCppSSLConfig(config)
-
     def setup(self):
         if self._setup_done:
             return
