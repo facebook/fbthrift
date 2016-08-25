@@ -2627,9 +2627,7 @@ class CppGenerator(t_generator.Generator):
                                         member, explicit=True)
                                 out('{0} = {1};'.format(name, dval))
                             elif t.is_struct or t.is_xception:
-                                stype = self._get_true_type(
-                                    member.type.as_struct)
-                                if len(stype.members) > 0:
+                                if t.members:
                                     if self._is_reference(member):
                                         if self._is_const_shared_ptr(member):
                                             out('{0}.reset();'.format(name))
