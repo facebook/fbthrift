@@ -35,3 +35,15 @@ install_folly() {
   sudo ldconfig
   popd
 }
+
+install_wangle() {
+  pushd .
+  git clone https://github.com/facebook/wangle
+  cd wangle/wangle
+  WANGLE_VERSION="$(cat "$BUILD_DIR"/WANGLE_VERSION)"
+  git checkout "$WANGLE_VERSION"
+  cmake .
+  make
+  sudo make install
+  popd
+}

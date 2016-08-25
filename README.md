@@ -1,4 +1,4 @@
-FBThrift: Facebook's branch of apache thrift
+FBThrift: Facebook's branch of apache thrift [![Build Status](https://travis-ci.org/facebook/fbthrift.svg?branch=master)](https://travis-ci.org/facebook/fbthrift)
 --------------------------------------------
 
 The main focus of this package is the new C++ server, under thrift/lib/cpp2.  This repo also contains a branch of the rest of apache thrift's repo with any changes Facebook has made, however the build system only supports cpp2.

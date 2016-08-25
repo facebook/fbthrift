@@ -35,7 +35,7 @@ frontend_la_SOURCES = compiler.cc
 frontend_la_CPPFLAGS = $(AM_CPPFLAGS) $(PYTHON_CPPFLAGS)
 frontend_la_LDFLAGS = \
         -module -avoid-version -no-undefined \
-        -l$(BOOST_PYTHON_LIB) $(PYTHON_LDFLAGS)
+        -l$(BOOST_PYTHON_LIB) $(PYTHON_LDFLAGS) -lfolly
 frontend_la_LIBADD = ../libparse.la ../libthriftcompilerbase.la
 
 all-local: frontend.la
