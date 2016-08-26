@@ -18,4 +18,19 @@ public enum Company
     {
         return value;
     }
+
+    public static Company fromInteger(int n) {
+        switch (n) {
+        case 0:
+            return FACEBOOK;
+        case 1:
+            return WHATSAPP;
+        case 2:
+            return OCULUS;
+        case 3:
+            return INSTAGRAM;
+        default:
+            return null;
+        }
+    }
 }

@@ -36,4 +36,15 @@ public enum {{enum:javaCapitalName}}
     {
         return value;
     }
+
+    public static {{enum:javaCapitalName}} fromInteger(int n) {
+        switch (n) {
+        {{#enum:values}}
+        case {{value:value}}:
+            return {{value:javaConstantName}};
+        {{/enum:values}}
+        default:
+            return null;
+        }
+    }
 }

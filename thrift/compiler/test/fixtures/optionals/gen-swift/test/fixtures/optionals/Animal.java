@@ -18,4 +18,17 @@ public enum Animal
     {
         return value;
     }
+
+    public static Animal fromInteger(int n) {
+        switch (n) {
+        case 1:
+            return DOG;
+        case 2:
+            return CAT;
+        case 3:
+            return TARANTULA;
+        default:
+            return null;
+        }
+    }
 }

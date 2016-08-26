@@ -12,7 +12,7 @@ public final class Constants
     public static final test.fixtures.module0.Struct c0 = ;
 
     public static final List<test.fixtures.module0.Enum> e0s = ImmutableList.<test.fixtures.module0.Enum>builder()
-        .add()
-        .add()
+        .add(test.fixtures.module0.Enum.fromInteger(1))
+        .add(test.fixtures.module0.Enum.fromInteger(3))
         .build();
 }

@@ -18,4 +18,15 @@ public enum MyEnum
     {
         return value;
     }
+
+    public static MyEnum fromInteger(int n) {
+        switch (n) {
+        case 0:
+            return MY_VALUE1;
+        case 1:
+            return MY_VALUE2;
+        default:
+            return null;
+        }
+    }
 }

@@ -18,4 +18,13 @@ public enum Enum
     {
         return value;
     }
+
+    public static Enum fromInteger(int n) {
+        switch (n) {
+        case 1:
+            return ENUM;
+        default:
+            return null;
+        }
+    }
 }

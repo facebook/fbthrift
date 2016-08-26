@@ -85,4 +85,7 @@
 }}{{/type:set?}}{{!
 
   Typedef Constants
-}}{{#type:typedef?}}{{#type:typedefType}}{{> ConstantValue}}{{/type:typedefType}}{{/type:typedef?}}
+}}{{#type:typedef?}}{{#type:typedefType}}{{> ConstantValue}}{{/type:typedefType}}{{/type:typedef?}}{{!
+
+  Enum constants
+}}{{#type:enum?}}{{> BoxedType}}.fromInteger({{value:integerValue}}){{/type:enum?}}

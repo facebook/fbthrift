@@ -18,4 +18,19 @@ public enum City
     {
         return value;
     }
+
+    public static City fromInteger(int n) {
+        switch (n) {
+        case 0:
+            return NYC;
+        case 1:
+            return MPK;
+        case 2:
+            return SEA;
+        case 3:
+            return LON;
+        default:
+            return null;
+        }
+    }
 }
