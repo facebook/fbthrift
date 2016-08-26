@@ -120,6 +120,7 @@ thrift2include_utildir = $(thrift2includedir)/util
 
 thrift2include_util_HEADERS = \
 	util/FilePoller.h \
+	util/MapCopy.h \
 	util/ScopedServerInterfaceThread.h \
 	util/ScopedServerInterfaceThread-inl.h
 
