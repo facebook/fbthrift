@@ -19,6 +19,7 @@
 #include <thrift/lib/cpp2/fatal/reflection.h>
 
 #include <folly/FBString.h>
+#include <folly/small_vector.h>
 #include <folly/sorted_vector_types.h>
 
 namespace apache { namespace thrift {
@@ -26,6 +27,10 @@ namespace apache { namespace thrift {
 template <typename C, typename T, typename A, typename S>
 struct thrift_string_traits<folly::basic_fbstring<C, T, A, S>>
     : thrift_string_traits_std<folly::basic_fbstring<C, T, A, S>> {};
+
+template<class T, std::size_t M, class A, class B, class C>
+struct thrift_list_traits<folly::small_vector<T, M, A, B, C>>
+    : thrift_list_traits_std<folly::small_vector<T, M, A, B, C>> {};
 
 template <typename T, typename C, typename A, typename G>
 struct thrift_set_traits<folly::sorted_vector_set<T, C, A, G>>
