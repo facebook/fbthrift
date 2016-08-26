@@ -18,6 +18,7 @@
 
 #include <thrift/lib/cpp2/fatal/reflection.h>
 
+#include <deque>
 #include <map>
 #include <set>
 #include <string>
@@ -30,6 +31,10 @@ namespace apache { namespace thrift {
 template <typename C, typename T, typename A>
 struct thrift_string_traits<std::basic_string<C, T, A>>
     : thrift_string_traits_std<std::basic_string<C, T, A>> {};
+
+template <typename T, typename A>
+struct thrift_list_traits<std::deque<T, A>>
+    : thrift_list_traits_std<std::deque<T, A>> {};
 
 template <typename T, typename A>
 struct thrift_list_traits<std::vector<T, A>>

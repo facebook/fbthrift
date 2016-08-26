@@ -17,8 +17,18 @@
 #include <thrift/lib/cpp2/fatal/container_traits.h>
 #include <thrift/lib/cpp2/fatal/traits_test_helpers.h>
 
+namespace std {
+static void PrintTo(deque<int>::iterator it, ostream* o) {
+  *o << "deque-iterator<" << *it << ">";
+}
+}
+
 namespace test_cpp2 {
 namespace cpp_reflection {
+
+TEST(reflection, thrift_std_deque_traits) {
+  apache::thrift::test_thrift_list_traits<std::deque<int>>();
+}
 
 TEST(reflection, thrift_std_vector_traits) {
   apache::thrift::test_thrift_list_traits<std::vector<int>>();
