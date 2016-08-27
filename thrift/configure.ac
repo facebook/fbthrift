@@ -370,7 +370,6 @@ AC_CHECK_FUNCS([strtol])
 AC_CHECK_FUNCS([sqrt])
 dnl The following functions are optional.
 AC_CHECK_FUNCS([alarm])
-AC_CHECK_FUNCS([clock_gettime])
 AC_CHECK_FUNCS([sched_get_priority_min])
 AC_CHECK_FUNCS([sched_get_priority_max])
 
