@@ -17,6 +17,7 @@ _configs.sed
 /thrift/Makefile
 /thrift/compiler/Makefile
 /thrift/compiler/py/Makefile
+/thrift/compiler/py/dist
 /thrift/compiler/version.h
 /thrift/config.h
 /thrift/lib/cpp/thrift_config.h
