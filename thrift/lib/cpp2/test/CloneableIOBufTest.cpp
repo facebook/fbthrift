@@ -28,7 +28,7 @@ using namespace apache::thrift;
 TEST(CloneableIOBufTest, UniquePtrCompatibility) {
   CloneableIOBuf ptr(IOBuf::copyBuffer("Test string"));
   EXPECT_NE(nullptr, ptr.get());
-  CloneableIOBuf ptr2 = std::move(ptr);
+  CloneableIOBuf ptr2(std::move(ptr));
   EXPECT_EQ(nullptr, ptr.get());
   EXPECT_NE(nullptr, ptr2.get());
   swap(ptr, ptr2);
