@@ -173,7 +173,7 @@ libthriftprotocol_la_SOURCES = Version.cpp \
                                protocol/SimpleJSONProtocol.cpp \
                                protocol/VirtualProtocol.cpp
 
-libthriftprotocol_la_LIBADD = $(FOLLY_LIBS) $(BOOST_SYSTEM_LIB)
+libthriftprotocol_la_LIBADD = $(FOLLY_LIBS) $(BOOST_SYSTEM_LIB) -ldouble-conversion
 
 libthriftprotocol_la_LDFLAGS = -no-undefined \
                                -avoid-version \
@@ -240,6 +240,7 @@ libthriftcpp2_la_LIBADD = \
 	$(FOLLY_LIBS) \
 	-lkrb5 \
 	-lgssapi_krb5 \
+	-ldouble-conversion \
 	$(BOOST_SYSTEM_LIB) \
 	$(BOOST_THREAD_LIB)
 
