@@ -111,7 +111,8 @@ java_swift__DATA = generate/templates/java/swift/BoxedType.mustache \
                    generate/templates/java/swift/Service.mustache \
                    generate/templates/java/swift/Struct.mustache \
                    generate/templates/java/swift/Type.mustache \
-                   generate/templates/java/swift/Union.mustache
+                   generate/templates/java/swift/Union.mustache \
+                   generate/templates/java/swift/ThriftFieldAnnotation.mustache
 
 libparse_la_CPPFLAGS = $(AM_CPPFLAGS) -DTHRIFTY_HH=\"thrift/compiler/thrifty.hh\"
 libparse_la_SOURCES = thrifty.yy \

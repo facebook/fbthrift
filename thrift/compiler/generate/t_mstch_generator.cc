@@ -47,11 +47,11 @@ mstch::map t_mstch_generator::dump(const t_program& program) const {
       {"outPath", program.get_out_path()},
       {"namespace", program.get_namespace()},
       {"includePrefix", program.get_include_prefix()},
-      {"structs", this->dump_vector(program.get_objects())},
-      {"enums", this->dump_vector(program.get_enums())},
-      {"services", this->dump_vector(program.get_services())},
-      {"typedefs", this->dump_vector(program.get_typedefs())},
-      {"constants", this->dump_vector(program.get_consts())},
+      {"structs", this->dump_elems(program.get_objects())},
+      {"enums", this->dump_elems(program.get_enums())},
+      {"services", this->dump_elems(program.get_services())},
+      {"typedefs", this->dump_elems(program.get_typedefs())},
+      {"constants", this->dump_elems(program.get_consts())},
   };
 
   mstch::map extension = this->extend_program(program);
@@ -64,10 +64,11 @@ mstch::map t_mstch_generator::dump(const t_struct& strct, bool shallow) const {
       {"name", strct.get_name()},
       {"fields",
        shallow ? static_cast<mstch::node>(false)
-               : this->dump_vector(strct.get_members())},
+               : this->dump_elems(strct.get_members())},
       {"exception?", strct.is_xception()},
       {"union?", strct.is_union()},
       {"plain?", !strct.is_xception() && !strct.is_union()},
+      {"annotations", this->dump_elems(strct.annotations_)},
   };
 
   mstch::map extension = this->extend_struct(strct);
@@ -84,6 +85,7 @@ mstch::map t_mstch_generator::dump(const t_field& field) const {
       {"required?", req == t_field::e_req::T_REQUIRED},
       {"optional?", req == t_field::e_req::T_OPTIONAL},
       {"optInReqOut?", req == t_field::e_req::T_OPT_IN_REQ_OUT},
+      {"annotations", this->dump_elems(field.annotations_)},
   };
 
   mstch::map extension = this->extend_field(field);
@@ -94,6 +96,7 @@ mstch::map t_mstch_generator::dump(const t_field& field) const {
 mstch::map t_mstch_generator::dump(const t_type& type) const {
   mstch::map result{
       {"name", type.get_name()},
+      {"annotations", this->dump_elems(type.annotations_)},
 
       {"void?", type.is_void()},
       {"string?", type.is_string() && !type.is_binary()},
@@ -156,7 +159,8 @@ mstch::map t_mstch_generator::dump(const t_type& type) const {
 mstch::map t_mstch_generator::dump(const t_enum& enm) const {
   mstch::map result{
       {"name", enm.get_name()},
-      {"values", this->dump_vector(enm.get_constants())},
+      {"values", this->dump_elems(enm.get_constants())},
+      {"annotations", this->dump_elems(enm.annotations_)},
   };
 
   mstch::map extension = this->extend_enum(enm);
@@ -178,7 +182,8 @@ mstch::map t_mstch_generator::dump(const t_service& service) const {
   t_service* extends = service.get_extends();
   mstch::map result{
       {"name", service.get_name()},
-      {"functions", this->dump_vector(service.get_functions())},
+      {"annotations", this->dump_elems(service.annotations_)},
+      {"functions", this->dump_elems(service.get_functions())},
       {"extends?", extends != nullptr},
       {"extends",
        extends ? static_cast<mstch::node>(this->dump(*extends)) : false},
@@ -195,7 +200,12 @@ mstch::map t_mstch_generator::dump(const t_function& function) const {
       {"oneway?", function.is_oneway()},
       {"returnType", this->dump(*function.get_returntype())},
       {"exceptions", this->dump(*function.get_xceptions())},
-      {"args", this->dump_vector(function.get_arglist()->get_members())}};
+      {"annotations",
+       function.get_annotations()
+           ? this->dump_elems(function.get_annotations()->annotations_)
+           : static_cast<mstch::node>(false)},
+      {"args", this->dump_elems(function.get_arglist()->get_members())},
+  };
 
   mstch::map extension = this->extend_function(function);
   result.insert(extension.begin(), extension.end());
@@ -238,10 +248,10 @@ mstch::map t_mstch_generator::dump(const t_const_value& value) const {
       result.emplace("stringValue", value.get_string());
       break;
     case cv::CV_MAP:
-      result.emplace("mapElements", this->dump_vector(value.get_map()));
+      result.emplace("mapElements", this->dump_elems(value.get_map()));
       break;
     case cv::CV_LIST:
-      result.emplace("listElements", this->dump_vector(value.get_list()));
+      result.emplace("listElements", this->dump_elems(value.get_list()));
       break;
     default:
       std::ostringstream err;
@@ -262,6 +272,15 @@ mstch::map t_mstch_generator::dump(
   mstch::map extension = this->extend_const_value_map_elem(pair);
   result.insert(extension.begin(), extension.end());
   return this->prepend_prefix("element", std::move(result));
+}
+
+mstch::map t_mstch_generator::dump(const annotation& pair) const {
+  mstch::map result{
+      {"key", pair.first}, {"value", pair.second},
+  };
+  mstch::map extension = this->extend_annotation(pair);
+  result.insert(extension.begin(), extension.end());
+  return this->prepend_prefix("annotation", std::move(result));
 }
 
 mstch::map t_mstch_generator::dump(const t_typedef& typdef) const {
@@ -330,6 +349,10 @@ mstch::map t_mstch_generator::extend_const_value(const t_const_value&) const {
 
 mstch::map t_mstch_generator::extend_const_value_map_elem(
     const std::map<t_const_value*, t_const_value*>::value_type&) const {
+  return {};
+}
+
+mstch::map t_mstch_generator::extend_annotation(const annotation&) const {
   return {};
 }
 

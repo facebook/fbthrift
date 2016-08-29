@@ -35,7 +35,7 @@ public final class {{struct:javaCapitalName}}{{#struct:exception?}} extends Exce
     @ThriftConstructor
     public {{struct:javaCapitalName}}(
         {{#struct:fields}}
-        @ThriftField(value={{field:key}}, name="{{field:name}}", requiredness={{> Requiredness}}) final {{> FieldType}} {{field:javaName}}{{^last?}},{{/last?}}
+        {{> ThriftFieldAnnotation}} final {{> FieldType}} {{field:javaName}}{{^last?}},{{/last?}}
         {{/struct:fields}}
     ) {
         {{#struct:fields}}
@@ -72,7 +72,8 @@ public final class {{struct:javaCapitalName}}{{#struct:exception?}} extends Exce
 
     private final {{> FieldType}} {{field:javaName}};
 
-    @ThriftField(value={{field:key}}, name="{{field:name}}", requiredness={{> Requiredness}})
+    {{> ThriftFieldAnnotation}}
+
     public {{> FieldType}} {{#field:type}}{{#type:bool?}}is{{/type:bool?}}{{^type:bool?}}get{{/type:bool?}}{{/field:type}}{{field:javaCapitalName}}() { return {{field:javaName}}; }
     {{/struct:fields}}
     {{^struct:exception?}}

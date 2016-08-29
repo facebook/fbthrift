@@ -105,7 +105,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
         });
     return mstch::map{
         {"javaPackage", this->get_namespace_or_default(program)},
-        {"sortedConstants", this->dump_vector(constants)},
+        {"sortedConstants", this->dump_elems(constants)},
     };
   }
 

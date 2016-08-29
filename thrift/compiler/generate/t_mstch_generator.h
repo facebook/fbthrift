@@ -90,6 +90,9 @@ class t_mstch_generator : public t_generator {
   mstch::map dump(
       const std::map<t_const_value*, t_const_value*>::value_type&) const;
 
+  using annotation = std::pair<std::string, std::string>;
+  mstch::map dump(const annotation&) const;
+
   /**
    * Subclasses should override these functions to extend the behavior of
    * the dump functions. These will be passed the map after the default
@@ -108,15 +111,17 @@ class t_mstch_generator : public t_generator {
   virtual mstch::map extend_const_value(const t_const_value&) const;
   virtual mstch::map extend_const_value_map_elem(
       const std::map<t_const_value*, t_const_value*>::value_type&) const;
+  virtual mstch::map extend_annotation(const annotation&) const;
 
-  template <typename T>
-  mstch::array dump_vector(const std::vector<T>& elems) const {
+  template <typename container>
+  mstch::array dump_elems(const container& elems) const {
+    using T = typename container::value_type;
     mstch::array result{};
-    for (typename std::vector<T>::size_type i = 0; i < elems.size(); i++) {
+    for (auto itr = elems.begin(); itr != elems.end(); ++itr) {
       auto map = this->dump(
-          *as_const_pointer<typename std::remove_pointer<T>::type>(elems[i]));
-      map.emplace("first?", i == 0);
-      map.emplace("last?", i == elems.size() - 1);
+          *as_const_pointer<typename std::remove_pointer<T>::type>(*itr));
+      map.emplace("first?", itr == elems.begin());
+      map.emplace("last?", std::next(itr) == elems.end());
       result.push_back(map);
     }
     return result;
