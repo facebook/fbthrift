@@ -98,7 +98,7 @@ libthriftz_la_SOURCES = \
 
 
 # Flags for the various libraries
-libthrift_la_LIBADD     = $(FOLLY_LIBS) -lboost_system $(BOOST_THREAD_LIB)
+libthrift_la_LIBADD     = $(FOLLY_LIBS) $(BOOST_SYSTEM_LIB) $(BOOST_THREAD_LIB)
 
 libthriftz_la_CPPFLAGS  = $(AM_CPPFLAGS) $(ZLIB_CPPFLAGS)
 libthriftz_la_CXXFLAGS  = $(AM_CXXFLAGS)

@@ -45,7 +45,7 @@ all-local: frontend.la
 
 # Note, not install-exec-hook, see the comment above
 install-exec-am:
-	mkdir -p $(PY_INSTALL_HOME)/lib/python
+	test -z "$(PY_INSTALL_HOME)" || mkdir -p $(PY_INSTALL_HOME)/lib/python
 	test -z "$(PY_CUSTOM_SITE_PKGS)" || mkdir -p $(PY_CUSTOM_SITE_PKGS)
 	$(PY_RUN_ENV) $(PYTHON) setup.py install $(PY_INSTALL_ARGS)
 
