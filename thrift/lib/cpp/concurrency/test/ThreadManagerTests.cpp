@@ -39,6 +39,15 @@ using namespace apache::thrift::concurrency;
 
 DECLARE_bool(thrift_numa_enabled);
 
+class ThreadManagerTest : public testing::Test {
+ public:
+  ~ThreadManagerTest() override {
+    ThreadManager::setObserver(nullptr);
+  }
+ private:
+  google::FlagSaver flagsaver_;
+};
+
 // Loops until x==y for up to timeout ms.
 // The end result is the same as of {EXPECT,ASSERT}_EQ(x,y)
 // (depending on OP) if x!=y after the timeout passes
@@ -205,7 +214,7 @@ static void loadTest(size_t numTasks, int64_t timeout, size_t numWorkers) {
   EXPECT_LT(waitTimeUs, idealAvgWaitUs * 1.10);
 }
 
-TEST(ThreadManagerTest, LoadTest) {
+TEST_F(ThreadManagerTest, LoadTest) {
   size_t numTasks = 10000;
   int64_t timeout = 50;
   size_t numWorkers = 100;
@@ -355,7 +364,7 @@ static void blockTest(int64_t /*timeout*/, size_t numWorkers) {
   CHECK_EQUAL_TIMEOUT(threadManager->totalTaskCount(), 0);
 }
 
-TEST(ThreadManagerTest, BlockTest) {
+TEST_F(ThreadManagerTest, BlockTest) {
   int64_t timeout = 50;
   size_t numWorkers = 100;
   blockTest(timeout, numWorkers);
@@ -428,7 +437,7 @@ static void expireTest(int64_t numWorkers, int64_t expirationTimeMs) {
   }
 }
 
-TEST(ThreadManagerTest, ExpireTest) {
+TEST_F(ThreadManagerTest, ExpireTest) {
   int64_t numWorkers = 100;
   int64_t expireTimeMs = 50;
   expireTest(numWorkers, expireTimeMs);
@@ -541,7 +550,7 @@ class WorkerCountChanger : public Runnable {
 
 // Run lots of tasks, while several threads are all changing
 // the number of worker threads.
-TEST(ThreadManagerTest, AddRemoveWorker) {
+TEST_F(ThreadManagerTest, AddRemoveWorker) {
   // Number of tasks to run
   int64_t numTasks = 100000;
   // Minimum number of workers to keep at any point in time
@@ -596,7 +605,7 @@ TEST(ThreadManagerTest, AddRemoveWorker) {
   EXPECT_EQ(0, currentTaskObjects);
 }
 
-TEST(ThreadManagerTest, NeverStartedTest) {
+TEST_F(ThreadManagerTest, NeverStartedTest) {
   // Test destroying a ThreadManager that was never started.
   // This ensures that calling stop() on an unstarted ThreadManager works
   // properly.
@@ -612,7 +621,7 @@ TEST(ThreadManagerTest, NeverStartedTest) {
   }
 }
 
-TEST(ThreadManagerTest, OnlyStartedTest) {
+TEST_F(ThreadManagerTest, OnlyStartedTest) {
   // Destroy a ThreadManager that has a ThreadFactory and was started.
   for (int i = 0; i < 1000; ++i) {
     auto threadManager = ThreadManager::newSimpleThreadManager(10);
@@ -647,7 +656,7 @@ class TestObserver : public ThreadManager::Observer {
   std::string expectedName;
 };
 
-TEST(ThreadManagerTest, NumaThreadManagerTest) {
+TEST_F(ThreadManagerTest, NumaThreadManagerTest) {
   google::FlagSaver saver;
   FLAGS_thrift_numa_enabled = true;
 
@@ -765,13 +774,13 @@ class DummyFailureClass {
   std::shared_ptr<ThreadManager> threadManager_;
 };
 
-TEST(ThreadManagerTest, ThreadStartFailureTest) {
+TEST_F(ThreadManagerTest, ThreadStartFailureTest) {
   for (int i = 0; i < 10; i++) {
     EXPECT_THROW(DummyFailureClass(), int);
   }
 }
 
-TEST(ThreadManagerTest, NumaThreadManagerBind) {
+TEST_F(ThreadManagerTest, NumaThreadManagerBind) {
   google::FlagSaver saver;
   FLAGS_thrift_numa_enabled = true;
 
@@ -790,7 +799,7 @@ TEST(ThreadManagerTest, NumaThreadManagerBind) {
   numa->join();
 }
 
-TEST(ThreadManagerTest, ObserverTest) {
+TEST_F(ThreadManagerTest, ObserverTest) {
   int64_t timeout = 1000;
   auto observer = std::make_shared<TestObserver>(1000, "foo");
   ThreadManager::setObserver(observer);
@@ -809,7 +818,42 @@ TEST(ThreadManagerTest, ObserverTest) {
   EXPECT_EQ(1, observer->timesCalled);
 }
 
-TEST(ThreadManagerTest, PosixThreadFactoryPriority) {
+TEST_F(ThreadManagerTest, ObserverAssignedAfterStart) {
+  class MyTask : public Runnable {
+   public:
+    void run() override {}
+  };
+  class MyObserver : public ThreadManager::Observer {
+   public:
+    MyObserver(std::string name, std::shared_ptr<std::string> tgt) :
+      name_(std::move(name)), tgt_(std::move(tgt)) {}
+    void preRun(folly::RequestContext*) override {}
+    void postRun(
+        folly::RequestContext*,
+        const ThreadManager::RunStats&) override {
+      *tgt_ = name_;
+    }
+   private:
+    std::string name_;
+    std::shared_ptr<std::string> tgt_;
+  };
+
+  // start a tm
+  auto tm = ThreadManager::newSimpleThreadManager(1);
+  tm->setNamePrefix("foo");
+  tm->threadFactory(std::make_shared<PosixThreadFactory>());
+  tm->start();
+  // set the observer w/ observable side-effect
+  auto tgt = std::make_shared<std::string>();
+  ThreadManager::setObserver(std::make_shared<MyObserver>("bar", tgt));
+  // add a task - observable side-effect should trigger
+  tm->add(std::make_shared<MyTask>());
+  tm->join();
+  // confirm the side-effect
+  EXPECT_EQ("bar", *tgt);
+}
+
+TEST_F(ThreadManagerTest, PosixThreadFactoryPriority) {
   auto getNiceValue = [](PosixThreadFactory::PRIORITY prio) -> int {
     PosixThreadFactory factory(PosixThreadFactory::OTHER, prio);
     factory.setDetached(false);
