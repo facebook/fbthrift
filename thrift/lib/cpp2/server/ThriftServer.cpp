@@ -514,12 +514,15 @@ void ThriftServer::updateTicketSeeds(wangle::TLSTicketKeySeeds seeds) {
     if (!acceptor) {
       return;
     }
-    auto ctxMgr = acceptor->getSSLContextManager();
     auto evb = acceptor->getEventBase();
-    if (!ctxMgr || !evb) {
+    if (!evb) {
       return;
     }
-    evb->runImmediatelyOrRunInEventBaseThreadAndWait([&] {
+    evb->runInEventBaseThread([acceptor, seeds] {
+      auto ctxMgr = acceptor->getSSLContextManager();
+      if (!ctxMgr) {
+        return;
+      }
       ctxMgr->reloadTLSTicketKeys(
           seeds.oldSeeds, seeds.currentSeeds, seeds.newSeeds);
     });
@@ -528,7 +531,16 @@ void ThriftServer::updateTicketSeeds(wangle::TLSTicketKeySeeds seeds) {
 
 void ThriftServer::updateTLSCert() {
   forEachWorker([&](wangle::Acceptor* acceptor) {
-    acceptor->resetSSLContextConfigs();
+    if (!acceptor) {
+      return;
+    }
+    auto evb = acceptor->getEventBase();
+    if (!evb) {
+      return;
+    }
+    evb->runInEventBaseThread([acceptor] {
+      acceptor->resetSSLContextConfigs();
+    });
   });
 }
 
