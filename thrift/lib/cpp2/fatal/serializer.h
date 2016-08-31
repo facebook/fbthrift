@@ -1102,7 +1102,7 @@ public:
 private:
   template <
     typename Protocol,
-    typename Member,
+    typename MemberFid,
     typename TypeClass,
     typename MemberType,
     typename Methods,
@@ -1114,7 +1114,7 @@ private:
   // generic field writer
   template <
     typename Protocol,
-    typename Member,
+    typename MemberFid,
     typename TypeClass,
     typename MemberType,
     typename Methods,
@@ -1122,9 +1122,11 @@ private:
   >
   struct field_writer
   <
-    Protocol, Member, TypeClass, MemberType, Methods, opt,
+    Protocol, MemberFid, TypeClass, MemberType, Methods, opt,
     detail::disable_if_smart_pointer<MemberType>
   > {
+    using Member = fatal::map_get<typename traits::members, MemberFid>;
+
     static std::size_t write(Protocol& protocol, MemberType const& in) {
       std::size_t xfer = 0;
       // TODO: can maybe get rid of get_const?
@@ -1145,17 +1147,18 @@ private:
   // writer for default/required ref structrs
   template <
     typename Protocol,
-    typename Member,
+    typename MemberFid,
     typename PtrType,
     typename Methods,
     optionality opt
   >
   struct field_writer <
-    Protocol, Member, type_class::structure, PtrType, Methods, opt,
+    Protocol, MemberFid, type_class::structure, PtrType, Methods, opt,
     detail::enable_if_smart_pointer<PtrType>
   > {
     using struct_type =
         typename std::remove_const<typename PtrType::element_type>::type;
+    using Member = fatal::map_get<typename traits::members, MemberFid>;
 
     static
     std::size_t write(Protocol& protocol, PtrType const& in) {
@@ -1166,7 +1169,7 @@ private:
       if(in) {
         xfer += field_writer<
           Protocol,
-          Member,
+          MemberFid,
           type_class::structure,
           struct_type,
           Methods,
@@ -1196,12 +1199,12 @@ private:
   // writer for optional ref structs
   template <
     typename Protocol,
-    typename Member,
+    typename MemberFid,
     typename PtrType,
     typename Methods
   >
   struct field_writer <
-    Protocol, Member, type_class::structure, PtrType, Methods,
+    Protocol, MemberFid, type_class::structure, PtrType, Methods,
     optionality::optional,
     detail::enable_if_smart_pointer<PtrType>
   > {
@@ -1209,7 +1212,7 @@ private:
       if(in) {
         return field_writer<
           Protocol,
-          Member,
+          MemberFid,
           type_class::structure,
           PtrType,
           Methods,
@@ -1223,13 +1226,15 @@ private:
   };
 
   struct member_writer {
-    template <typename Member, std::size_t Index, typename Protocol>
+    template <typename MemberFid, std::size_t Index, typename Protocol>
     void operator()(
-      fatal::indexed<Member, Index>,
+      fatal::indexed<MemberFid, Index>,
       Protocol& protocol,
       Struct const& in,
       std::size_t& xfer)
     {
+      using Member = fatal::map_get<typename traits::members, MemberFid>;
+
       using methods = protocol_methods<
         typename Member::type_class,
         typename Member::type
@@ -1249,7 +1254,7 @@ private:
 
         xfer += field_writer<
           Protocol,
-          Member,
+          MemberFid,
           typename Member::type_class,
           member_type,
           methods,
@@ -1261,7 +1266,7 @@ private:
   template <
     bool ZeroCopy,
     typename Protocol,
-    typename Member,
+    typename MemberFid,
     typename TypeClass,
     typename MemberType,
     typename Methods,
@@ -1274,16 +1279,18 @@ private:
   template <
     bool ZeroCopy,
     typename Protocol,
-    typename Member,
+    typename MemberFid,
     typename TypeClass,
     typename MemberType,
     typename Methods,
     optionality opt
   >
   struct field_size <
-    ZeroCopy, Protocol, Member, TypeClass, MemberType, Methods, opt,
+    ZeroCopy, Protocol, MemberFid, TypeClass, MemberType, Methods, opt,
     detail::disable_if_smart_pointer<MemberType>
   > {
+    using Member = fatal::map_get<typename traits::members, MemberFid>;
+
     static std::size_t size(Protocol& protocol, MemberType const& in) {
       std::size_t xfer = 0;
       xfer += protocol.serializedFieldSize(
@@ -1303,17 +1310,18 @@ private:
   template <
     bool ZeroCopy,
     typename Protocol,
-    typename Member,
+    typename MemberFid,
     typename PtrType,
     typename Methods,
     optionality opt
   >
   struct field_size <
-    ZeroCopy, Protocol, Member, type_class::structure, PtrType, Methods, opt,
+    ZeroCopy, Protocol, MemberFid, type_class::structure, PtrType, Methods, opt,
     detail::enable_if_smart_pointer<PtrType>
   > {
     using struct_type =
         typename std::remove_const<typename PtrType::element_type>::type;
+    using Member = fatal::map_get<typename traits::members, MemberFid>;
 
     static
     std::size_t size(Protocol& protocol, PtrType const& in) {
@@ -1322,7 +1330,7 @@ private:
         xfer += field_size<
           ZeroCopy,
           Protocol,
-          Member,
+          MemberFid,
           type_class::structure,
           struct_type,
           Methods,
@@ -1351,12 +1359,12 @@ private:
   template <
     bool ZeroCopy,
     typename Protocol,
-    typename Member,
+    typename MemberFid,
     typename PtrType,
     typename Methods
   >
   struct field_size <
-    ZeroCopy, Protocol, Member, type_class::structure, PtrType, Methods,
+    ZeroCopy, Protocol, MemberFid, type_class::structure, PtrType, Methods,
     optionality::optional,
     detail::enable_if_smart_pointer<PtrType>
   > {
@@ -1365,7 +1373,7 @@ private:
         return field_size<
           ZeroCopy,
           Protocol,
-          Member,
+          MemberFid,
           type_class::structure,
           PtrType,
           Methods,
@@ -1380,13 +1388,14 @@ private:
 
   template <bool ZeroCopy>
   struct member_size {
-    template <typename Member, std::size_t Index, typename Protocol>
+    template <typename MemberFid, std::size_t Index, typename Protocol>
     void inline operator()(
-      fatal::indexed<Member, Index>,
+      fatal::indexed<MemberFid, Index>,
       Protocol& protocol,
       Struct const& in,
       std::size_t& xfer)
     {
+      using Member = fatal::map_get<typename traits::members, MemberFid>;
       using methods = protocol_methods<
         typename Member::type_class,
         typename Member::type
@@ -1398,7 +1407,7 @@ private:
       xfer += field_size <
         ZeroCopy,
         Protocol,
-        Member,
+        MemberFid,
         typename Member::type_class,
         member_type,
         methods,
@@ -1412,7 +1421,7 @@ public:
     std::size_t xfer = 0;
 
     xfer += protocol.writeStructBegin(fatal::z_data<typename traits::name>());
-    fatal::foreach<fatal::map_values<typename traits::members>>(
+    fatal::foreach<fatal::map_keys<typename traits::members>>(
       member_writer(), protocol, in, xfer
     );
     xfer += protocol.writeFieldStop();
@@ -1425,7 +1434,7 @@ public:
     std::size_t xfer = 0;
     xfer += protocol.serializedStructSize(
       fatal::z_data<typename traits::name>());
-    fatal::foreach<fatal::map_values<typename traits::members>>(
+    fatal::foreach<fatal::map_keys<typename traits::members>>(
       member_size<ZeroCopy>(), protocol, in, xfer
     );
     xfer += protocol.serializedSizeStop();
