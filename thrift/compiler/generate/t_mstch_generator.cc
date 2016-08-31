@@ -413,3 +413,10 @@ mstch::map t_mstch_generator::prepend_prefix(
   }
   return res;
 }
+
+std::string t_mstch_generator::render(
+    const std::string& tpl,
+    const mstch::node& context) const {
+  return mstch::render(
+      this->get_template(tpl), context, this->get_template_map());
+}

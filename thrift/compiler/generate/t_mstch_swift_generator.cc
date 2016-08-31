@@ -70,13 +70,12 @@ class t_mstch_swift_generator : public t_mstch_generator {
   void generate_items(
       const std::string& tpl_path,
       const std::vector<T*>& items) {
-    auto& tpl = this->get_template(tpl_path);
     for (const T* item : items) {
       auto package_dir =
           package_to_path(this->get_namespace_or_default(*item->get_program()));
       auto filename = this->mangle_java_name(item->get_name(), true) + ".java";
-      auto rendered_item =
-          mstch::render(tpl, this->dump(*item), this->get_template_map());
+
+      auto rendered_item = this->render(tpl_path, this->dump(*item));
       this->write_output(package_dir / filename, rendered_item);
     }
   }
@@ -87,10 +86,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
       return;
     }
     auto package_dir = package_to_path(this->get_namespace_or_default(prog));
-    auto rendered = mstch::render(
-        this->get_template("Constants"),
-        this->dump(prog),
-        this->get_template_map());
+    auto rendered = this->render("Constants", this->dump(prog));
     this->write_output(package_dir / "Constants.java", rendered);
   }
 

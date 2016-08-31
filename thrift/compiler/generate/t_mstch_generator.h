@@ -62,6 +62,12 @@ class t_mstch_generator : public t_generator {
   }
 
   /**
+   * Render the mstch template with name `tpl_name` in the given context.
+   */
+  std::string render(const std::string& tpl_name, const mstch::node& context)
+      const;
+
+  /**
    * Write an output file with the given contents to a path
    * under the output directory.
    */
