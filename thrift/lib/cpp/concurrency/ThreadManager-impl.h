@@ -44,12 +44,14 @@ class ThreadManager::Task {
   };
 
   Task(shared_ptr<Runnable> runnable,
-       const std::chrono::milliseconds& expiration)
+       const std::chrono::milliseconds& expiration,
+       std::shared_ptr<ThreadManager::Observer> observer)
     : runnable_(std::move(runnable))
     , queueBeginTime_(SystemClock::now())
     , expireTime_(expiration > std::chrono::milliseconds::zero() ?
                   queueBeginTime_ + expiration : SystemClockTimePoint())
-    , context_(folly::RequestContext::saveContext()) {}
+    , context_(folly::RequestContext::saveContext())
+    , observer_(std::move(observer)) {}
 
   ~Task() {}
 
@@ -82,11 +84,16 @@ class ThreadManager::Task {
     return context_;
   }
 
+  const std::shared_ptr<ThreadManager::Observer>& getObserverPtrRef() const {
+    return observer_;
+  }
+
  private:
   shared_ptr<Runnable> runnable_;
   SystemClockTimePoint queueBeginTime_;
   SystemClockTimePoint expireTime_;
   std::shared_ptr<folly::RequestContext> context_;
+  std::shared_ptr<ThreadManager::Observer> observer_;
 };
 
 template <typename SemType>
@@ -96,9 +103,10 @@ class ThreadManager::ImplT : public ThreadManager  {
   class Worker;
 
  public:
-  ImplT(size_t pendingTaskCountMaxArg = 0,
-       bool enableTaskStats = false,
-       size_t maxQueueLen = 0) :
+  explicit ImplT(
+      size_t pendingTaskCountMaxArg = 0,
+      bool enableTaskStats = false,
+      size_t maxQueueLen = 0) :
     workerCount_(0),
     intendedWorkerCount_(0),
     idleCount_(0),
@@ -242,6 +250,7 @@ class ThreadManager::ImplT : public ThreadManager  {
   void removeWorkerImpl(size_t value, bool afterTasks = false);
   void maybeNotifyMaxMonitor(bool shouldLock);
   bool shouldStop();
+  std::shared_ptr<Observer> getObserver();
 
   size_t workerCount_;
   // intendedWorkerCount_ tracks the number of worker threads that we currently

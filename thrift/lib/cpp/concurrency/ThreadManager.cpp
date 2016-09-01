@@ -43,18 +43,30 @@ using std::dynamic_pointer_cast;
 using std::unique_ptr;
 using folly::RequestContext;
 
-folly::RWSpinLock ThreadManager::observerLock_;
-std::shared_ptr<ThreadManager::Observer> ThreadManager::observer_;
+folly::Synchronized<ThreadManager::ObserverFactoryWithWatchers, std::mutex>
+  ThreadManager::observerFactoryWithWatchers_{};
 
 shared_ptr<ThreadManager> ThreadManager::newThreadManager() {
   return make_shared<ThreadManager::Impl>();
 }
 
-void ThreadManager::setObserver(
-    std::shared_ptr<ThreadManager::Observer> observer) {
-  {
-    folly::RWSpinLock::WriteHolder g(observerLock_);
-    observer_.swap(observer);
-  }
+void ThreadManager::setObserver(shared_ptr<Observer> observer) {
+  setObserverFactory(
+      !observer ? nullptr :
+      std::make_shared<SingletonObserverFactory>(std::move(observer)));
 }
+
+void ThreadManager::setObserverFactory(shared_ptr<ObserverFactory> factory) {
+  auto locked = observerFactoryWithWatchers_.lock();
+  for (auto watcher : locked->watchers) {
+    watcher->setObserverFromFactory(factory);
+  }
+  locked->factory = std::move(factory);
+}
+
+void ThreadManager::setObserverFromFactory(
+    const shared_ptr<ObserverFactory>& factory) {
+  observer_ = !factory ? nullptr : factory->getObserver(*this);
+}
+
 }}} // apache::thrift::concurrency
