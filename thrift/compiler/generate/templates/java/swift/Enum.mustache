@@ -21,7 +21,7 @@ import com.facebook.swift.codec.*;
 public enum {{enum:javaCapitalName}}
 {
 {{#enum:values}}{{#first?}}    {{/first?}}{{! TODO t12383908: Fix spacing in mstch Swift generators
-    }}{{value:javaConstantName}}({{value:value}}){{^last?}}, {{/last?}}{{!
+    }}{{enumValue:javaConstantName}}({{enumValue:value}}){{^last?}}, {{/last?}}{{!
     }}{{/enum:values}};
 
     private final int value;
@@ -40,8 +40,8 @@ public enum {{enum:javaCapitalName}}
     public static {{enum:javaCapitalName}} fromInteger(int n) {
         switch (n) {
         {{#enum:values}}
-        case {{value:value}}:
-            return {{value:javaConstantName}};
+        case {{enumValue:value}}:
+            return {{enumValue:javaConstantName}};
         {{/enum:values}}
         default:
             return null;

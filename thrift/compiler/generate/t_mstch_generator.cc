@@ -175,7 +175,7 @@ mstch::map t_mstch_generator::dump(const t_enum_value& val) const {
 
   mstch::map extension = this->extend_enum_value(val);
   result.insert(extension.begin(), extension.end());
-  return this->prepend_prefix("value", std::move(result));
+  return this->prepend_prefix("enumValue", std::move(result));
 }
 
 mstch::map t_mstch_generator::dump(const t_service& service) const {
@@ -199,7 +199,7 @@ mstch::map t_mstch_generator::dump(const t_function& function) const {
       {"name", function.get_name()},
       {"oneway?", function.is_oneway()},
       {"returnType", this->dump(*function.get_returntype())},
-      {"exceptions", this->dump(*function.get_xceptions())},
+      {"exceptions", this->dump_elems(function.get_xceptions()->get_members())},
       {"annotations",
        function.get_annotations()
            ? this->dump_elems(function.get_annotations()->annotations_)

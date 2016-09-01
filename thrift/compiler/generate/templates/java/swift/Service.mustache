@@ -31,15 +31,15 @@ public interface {{service:javaCapitalName}}{{#service:extends}} extends {{servi
     {
         {{#service:functions}}
         @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
-                      oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#struct:fields}}{{#first?}},
+                      oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
                       exception = { {{/first?}}
                           @ThriftException(type={{#field:type}}{{> Type}}{{/field:type}}.class, id={{field:key}}){{^last?}},{{/last?}}{{#last?}}
-                      }{{/last?}}{{/struct:fields}}{{/function:exceptions}})
+                      }{{/last?}}{{/function:exceptions}})
         ListenableFuture<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}(
             {{#function:args}}
             @ThriftField(value={{field:key}}, name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}
             {{/function:args}}
-        ){{#function:exceptions}}{{#struct:fields}}{{#first?}} throws {{/first?}}{{#field:type}}{{> BoxedType}}{{/field:type}}{{^last?}}, {{/last?}}{{/struct:fields}}{{/function:exceptions}};
+        ){{#function:exceptions}}{{#first?}} throws {{/first?}}{{#field:type}}{{> BoxedType}}{{/field:type}}{{^last?}}, {{/last?}}{{/function:exceptions}};
         {{^last?}}{{! TODO t12383908: Fix spacing in mstch Swift generators }}
 
         {{/last?}}
@@ -50,15 +50,15 @@ public interface {{service:javaCapitalName}}{{#service:extends}} extends {{servi
 
     {{/first?}}
     @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
-                  oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#struct:fields}}{{#first?}},
+                  oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
                   exception = { {{/first?}}
                       @ThriftException(type={{#field:type}}{{> Type}}{{/field:type}}.class, id={{field:key}}){{^last?}},{{/last?}}{{#last?}}
-                  }{{/last?}}{{/struct:fields}}{{/function:exceptions}})
+                  }{{/last?}}{{/function:exceptions}})
     {{#function:returnType}}{{> Type}}{{/function:returnType}} {{function:javaName}}(
         {{#function:args}}
         @ThriftField(value={{field:key}}, name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}
         {{/function:args}}
-    ){{#function:exceptions}}{{#struct:fields}}{{#first?}} throws {{/first?}}{{#field:type}}{{> BoxedType}}{{/field:type}}{{^last?}}, {{/last?}}{{/struct:fields}}{{/function:exceptions}};
+    ){{#function:exceptions}}{{#first?}} throws {{/first?}}{{#field:type}}{{> BoxedType}}{{/field:type}}{{^last?}}, {{/last?}}{{/function:exceptions}};
 
     {{/service:functions}}
 }
