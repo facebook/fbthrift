@@ -3,7 +3,7 @@ FBThrift: Facebook's branch of apache thrift [![Build Status](https://travis-ci.
 
 The main focus of this package is the new C++ server, under thrift/lib/cpp2.  This repo also contains a branch of the rest of apache thrift's repo with any changes Facebook has made, however the build system only supports cpp2.
 
-Apache thrift is at http://thrift.apache.org/
+Apache thrift is at https://thrift.apache.org/
 
 Building
 --------
@@ -13,7 +13,7 @@ Note that under GCC, you probably need at least 2GB of memory to compile fbthrif
 Dependencies
 ------------
 
- - Facebook's folly library: http://www.github.com/facebook/folly
+ - Facebook's folly library: https://github.com/facebook/folly
 
  - In addition to the packages required for building folly, Ubuntu 13.10 and
    14.04 require the following packages (feel free to cut and paste the apt-get
