@@ -284,7 +284,7 @@ struct dynamic_converter_impl<type_class::variant> {
       variant_traits::clear(out);
     } else {
       auto const type = i->first.stringPiece();
-      bool const found = fatal::prefix_tree<typename id_traits::names>::find(
+      bool const found = fatal::trie_find<typename id_traits::names>(
         type.begin(), type.end(),
         from_dynamic_variant_visitor<variant_traits>(),
         out, i->second,
@@ -378,9 +378,7 @@ struct dynamic_converter_impl<type_class::structure> {
   ) {
     for (auto const &i: input.items()) {
       auto const member = i.first.stringPiece();
-      fatal::prefix_tree<
-        fatal::map_keys<typename reflect_struct<T>::members>
-      >::find(
+      fatal::trie_find<fatal::map_keys<typename reflect_struct<T>::members>>(
         member.begin(), member.end(),
         from_dynamic_struct_visitor(),
         out, i.second,

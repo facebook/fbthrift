@@ -20,19 +20,18 @@
 #include <thrift/lib/cpp2/fatal/container_traits.h>
 #include <thrift/lib/cpp2/fatal/serializer.h>
 
-#include <vector>
+#include <algorithm>
 #include <array>
 #include <iostream>
-#include <type_traits>
 #include <iterator>
-#include <algorithm>
 #include <random>
+#include <type_traits>
+#include <vector>
 
 #include <folly/io/Cursor.h>
 
 #include <fatal/type/array.h>
 #include <fatal/type/convert.h>
-#include <fatal/type/prefix_tree.h>
 
 namespace apache { namespace thrift { namespace populator {
 
@@ -389,7 +388,6 @@ public:
     >;
 
     // std::array of field_id_t
-    auto const fids = fatal::as_array<fids_seq>::get;
     auto const range = populator_opts::range<std::size_t>(
       0,
       fatal::size<fids_seq>::value - !fatal::empty<fids_seq>::value
@@ -397,7 +395,7 @@ public:
     auto const selected = detail::rand_in_range(rng, range);
 
     fatal::sorted_search<fids_seq>(
-      fids[selected],
+      fatal::as_array<fids_seq>::data[selected],
       write_member_by_fid(),
       rng,
       opts,

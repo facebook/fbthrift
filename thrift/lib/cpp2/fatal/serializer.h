@@ -16,18 +16,19 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/fatal/reflection.h>
 #include <thrift/lib/cpp2/fatal/container_traits.h>
-#include <vector>
-#include <bitset>
-#include <iostream>
-#include <type_traits>
-#include <iterator>
-#include <memory>
+#include <thrift/lib/cpp2/fatal/reflection.h>
 
-#include <fatal/type/string_lookup.h>
 #include <fatal/type/call_traits.h>
 #include <fatal/type/map.h>
+#include <fatal/type/trie.h>
+
+#include <bitset>
+#include <iostream>
+#include <iterator>
+#include <memory>
+#include <type_traits>
+#include <vector>
 
 namespace apache { namespace thrift {
 
@@ -787,7 +788,7 @@ public:
       if(fid == std::numeric_limits<int16_t>::min()) {
         // if so, look up fid via fname
         assert(fname != "");
-        auto found_ = fatal::prefix_tree<id_name_strs>::find(
+        auto found_ = fatal::trie_find<id_name_strs>(
           fname.begin(), fname.end(), member_fname_to_fid(), fid, ftype
         );
         assert(found_ == 1);
@@ -1053,7 +1054,7 @@ public:
       if(fid == std::numeric_limits<int16_t>::min()) {
         // if so, look up fid via fname
         assert(fname != "");
-        auto found_ = fatal::prefix_tree<member_names>::find(
+        auto found_ = fatal::trie_find<member_names>(
           fname.begin(), fname.end(), member_fname_to_fid(), fid, ftype
         );
         if(found_ != 1) {
