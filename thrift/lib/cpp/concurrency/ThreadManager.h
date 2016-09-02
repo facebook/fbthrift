@@ -27,7 +27,6 @@
 #include <folly/io/async/Request.h>
 #include <folly/LifoSem.h>
 #include <folly/RWSpinLock.h>
-#include <folly/Synchronized.h>
 #include <folly/portability/GFlags.h>
 #include <folly/portability/Unistd.h>
 #include <wangle/concurrent/Codel.h>
@@ -258,43 +257,6 @@ class ThreadManager : public folly::Executor {
     virtual void postRun(folly::RequestContext*, const RunStats&) = 0;
   };
 
-  class ObserverFactory {
-   public:
-    virtual ~ObserverFactory() = default;
-    virtual std::shared_ptr<Observer> getObserver(
-        const ThreadManager&) const = 0;
-  };
-
-  class SingletonObserverFactory : public ObserverFactory {
-   public:
-    explicit SingletonObserverFactory(std::shared_ptr<Observer> observer)
-        : observer_(std::move(observer)) {}
-    std::shared_ptr<Observer> getObserver(
-        const ThreadManager&) const override {
-      return observer_;
-    }
-   private:
-    std::shared_ptr<Observer> observer_;
-  };
-
-  /**
-   * Sets the global observer-factory.
-   *
-   * Each running ThreadManager instance gets its own per-instance observer. A
-   * running ThreadManager instance is one that has start()-ed and has not yet
-   * stop()-ed.
-   *
-   * When a ThreadManager start()-s, it gets an observer from the observer-
-   * factory. When the global observer-factory is changed, all running
-   * ThreadManager instances get new per-instance observers.
-   *
-   * A nullptr factory is interpreted as a factory returning nullptr observers.
-   */
-  static void setObserverFactory(std::shared_ptr<ObserverFactory> factory);
-
-  /**
-   * Forwards to setObserverFactory with a SingletonObserverFactory instance.
-   */
   static void setObserver(std::shared_ptr<Observer> observer);
 
   virtual void enableCodel(bool) = 0;
@@ -307,38 +269,8 @@ class ThreadManager : public folly::Executor {
   typedef ImplT<folly::LifoSem> Impl;
 
  protected:
-
-  /**
-   * Sets the per-instance observer based on the factory. Called only while
-   * observerFactoryWithWatchers_ is locked.
-   */
-  void setObserverFromFactory(const std::shared_ptr<ObserverFactory>& factory);
-
-  /**
-   * The per-instance observer.
-   *
-   * Lock ordering: Locks may be taken alone. Write locks may also be taken
-   * while observerFactoryWithWatchers_ is locked.
-   */
-  folly::Synchronized<std::shared_ptr<Observer>> observer_;
-
-  /**
-   * The global observer-factory. Setting this also creates new observers for
-   * all running ThreadManager instances.
-   */
-  struct ObserverFactoryWithWatchers {
-    std::shared_ptr<ObserverFactory> factory;
-    std::unordered_set<ThreadManager*> watchers;
-  };
-  /**
-   * Lock ordering: Must never be taken while any per-instance observer lock is
-   * taken in the same thread.
-   *
-   * While this lock is held, per-instance observer write locks may also be
-   * taken and released.
-   */
-  static folly::Synchronized<ObserverFactoryWithWatchers, std::mutex>
-    observerFactoryWithWatchers_;
+  static folly::RWSpinLock observerLock_;
+  static std::shared_ptr<Observer> observer_;
 };
 
 /**

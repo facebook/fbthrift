@@ -42,7 +42,7 @@ DECLARE_bool(thrift_numa_enabled);
 class ThreadManagerTest : public testing::Test {
  public:
   ~ThreadManagerTest() override {
-    ThreadManager::setObserverFactory(nullptr);
+    ThreadManager::setObserver(nullptr);
   }
  private:
   google::FlagSaver flagsaver_;
@@ -851,76 +851,6 @@ TEST_F(ThreadManagerTest, ObserverAssignedAfterStart) {
   tm->join();
   // confirm the side-effect
   EXPECT_EQ("bar", *tgt);
-}
-
-TEST_F(ThreadManagerTest, ObserverAssignedWhileTaskRunning) {
-  class MyTask : public Runnable {
-   public:
-    void run() override {}
-  };
-  class MyTaskWaiter : public Runnable {
-   public:
-    MyTaskWaiter(
-        std::shared_ptr<folly::Baton<>> running,
-        std::shared_ptr<folly::Baton<>> proceed) :
-      running_(std::move(running)),
-      proceed_(std::move(proceed)) {}
-    void run() override {
-      running_->post();
-      if (!proceed_->timed_wait(std::chrono::seconds(1))) {
-        throw std::runtime_error("waited too long");
-      }
-    }
-   private:
-    std::shared_ptr<folly::Baton<>> running_;
-    std::shared_ptr<folly::Baton<>> proceed_;
-  };
-  class MyObserver : public ThreadManager::Observer {
-   public:
-    MyObserver(std::string name, std::shared_ptr<std::string> tgt) :
-      name_(std::move(name)), tgt_(tgt) {}
-    void preRun(folly::RequestContext*) override {}
-    void postRun(
-        folly::RequestContext*,
-        const ThreadManager::RunStats&) override {
-      *tgt_ = name_;
-    }
-   private:
-    std::string name_;
-    std::shared_ptr<std::string> tgt_;
-    std::shared_ptr<folly::Baton<>> running_;
-  };
-
-  // start a tm with the observer w/ observable side-effect
-  auto bar = std::make_shared<std::string>();
-  ThreadManager::setObserver(std::make_shared<MyObserver>("bar", bar));
-  // start a tm - enqueued tasks should be observed by it
-  auto tm = ThreadManager::newSimpleThreadManager(1);
-  tm->setNamePrefix("foo");
-  tm->threadFactory(std::make_shared<PosixThreadFactory>());
-  tm->start();
-  // add a task - observable side-effect should trigger
-  auto running = std::make_shared<folly::Baton<>>();
-  auto proceed = std::make_shared<folly::Baton<>>();
-  tm->add(std::make_shared<MyTaskWaiter>(running, proceed));
-  if (!running->timed_wait(std::chrono::seconds(1))) {
-    throw std::runtime_error("waited too long");
-  }
-  // while the task is running but before it is done,
-  // set a new observer w/ different observable side-effect
-  // we expect the first observer to trigger
-  // and add another task - second observer should trigger
-  auto wiz = std::make_shared<std::string>();
-  ThreadManager::setObserver(std::make_shared<MyObserver>("wiz", wiz));
-  tm->add(std::make_shared<MyTask>());
-  proceed->post();
-  tm->join();
-  // confirm the side-effect from the first observer for the first task
-  // (main check)
-  EXPECT_EQ("bar", *bar);
-  // confirm the side-effect frmo the second observer for the second task
-  // (sanity check)
-  EXPECT_EQ("wiz", *wiz);
 }
 
 TEST_F(ThreadManagerTest, PosixThreadFactoryPriority) {

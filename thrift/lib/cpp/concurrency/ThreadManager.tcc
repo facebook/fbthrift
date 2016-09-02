@@ -111,9 +111,12 @@ class ThreadManager::ImplT<SemType>::Worker : public Runnable {
           }
         }
 
-        auto& observer = task->getObserverPtrRef();
-        if (observer) {
-          observer->preRun(task->getContext().get());
+        if (manager_->observer_) {
+          // Hold lock to ensure that observer_ does not get deleted
+          folly::RWSpinLock::ReadHolder g(manager_->observerLock_);
+          if (manager_->observer_) {
+            manager_->observer_->preRun(task->getContext().get());
+          }
         }
       }
 
@@ -225,11 +228,6 @@ void ThreadManager::ImplT<SemType>::start() {
     if (threadFactory_ == nullptr) {
       throw InvalidArgumentException();
     }
-    {
-      auto locked = observerFactoryWithWatchers_.lock();
-      setObserverFromFactory(locked->factory);
-      locked->watchers.insert(this);
-    }
     state_ = ThreadManager::STARTED;
     monitor_.notifyAll();
   }
@@ -258,8 +256,6 @@ void ThreadManager::ImplT<SemType>::stopImpl(bool joinArg) {
       while (tasks_.read(task)) { }
     }
     state_ = ThreadManager::STOPPED;
-    observerFactoryWithWatchers_.lock()->watchers.erase(this);
-    observer_ = nullptr;
     monitor_.notifyAll();
     g.release();
   } else {
@@ -371,9 +367,8 @@ void ThreadManager::ImplT<SemType>::add(shared_ptr<Runnable> value,
     }
   }
 
-  auto expiration_ms = std::chrono::milliseconds{expiration};
-  auto task = folly::make_unique<Task>(
-      std::move(value), expiration_ms, observer_.copy());
+  auto task = folly::make_unique<Task>(std::move(value),
+                                       std::chrono::milliseconds{expiration});
   if (!tasks_.write(std::move(task))) {
     LOG(ERROR) << "Failed to enqueue item. Increase maxQueueLen?";
     throw TooManyPendingTasksException();
@@ -398,8 +393,8 @@ bool ThreadManager::ImplT<SemType>::tryAdd(shared_ptr<Runnable> value) {
     return false;
   }
 
-  auto task = folly::make_unique<Task>(
-      std::move(value), std::chrono::milliseconds{0}, observer_.copy());
+  auto task = folly::make_unique<Task>(std::move(value),
+                                       std::chrono::milliseconds{0});
   if (!tasks_.write(std::move(task))) {
     return false;
   }
@@ -577,11 +572,18 @@ void ThreadManager::ImplT<SemType>::reportTaskStats(
     ++numTasks_;
   }
 
-  auto& observer = task.getObserverPtrRef();
-  if (observer) {
-    observer->postRun(
-        task.getContext().get(),
-        {namePrefix_, queueBegin, workBegin, workEnd});
+  // Optimistic check lock free
+  if (ThreadManager::ImplT<SemType>::observer_) {
+    // Hold lock to ensure that observer_ does not get deleted.
+    folly::RWSpinLock::ReadHolder g(ThreadManager::ImplT<SemType>::observerLock_);
+    if (ThreadManager::ImplT<SemType>::observer_) {
+      // Note: We are assuming the namePrefix_ does not change after the thread is
+      // started.
+      // TODO: enforce this.
+      ThreadManager::ImplT<SemType>::observer_->postRun(
+          task.getContext().get(),
+          {namePrefix_, queueBegin, workBegin, workEnd});
+    }
   }
 }
 
