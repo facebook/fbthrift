@@ -141,7 +141,8 @@ REGISTER_FP(float,        Float,  T_FLOAT);
 
 // TODO: might not need to specialize on std::string, but rather
 // just the string typeclass
-REGISTER_OVERLOAD(string, std::string, String, T_STRING);
+REGISTER_OVERLOAD(string, std::string,     String, T_STRING);
+REGISTER_OVERLOAD(string, folly::fbstring, String, T_STRING);
 
 #undef REGISTER_OVERLOAD
 
@@ -164,7 +165,7 @@ REGISTER_OVERLOAD(string, std::string, String, T_STRING);
 REGISTER_BINARY(std::string,                   Binary, T_STRING);
 REGISTER_BINARY(folly::IOBuf,                  Binary, T_STRING);
 REGISTER_BINARY(std::unique_ptr<folly::IOBuf>, Binary, T_STRING);
-REGISTER_BINARY(folly::basic_fbstring<char>,   Binary, T_STRING);
+REGISTER_BINARY(folly::fbstring,               Binary, T_STRING);
 #undef REGISTER_BINARY
 #undef REGISTER_OVERLOAD_ZC // this naming sure isn't confusing, no sir
 #undef REGISTER_OVERLOAD_SS_COMMON
