@@ -107,8 +107,11 @@ class ComplexUnion implements IThriftStruct, IThriftUnion<ComplexUnionEnum> {
   }
 
   public function get_intValue(): int {
-    invariant($this->_type === ComplexUnionEnum::intValue,
-      'get_intValue called on an instance of ComplexUnion whose current type is' . $this->_type);
+    invariant(
+      $this->_type === ComplexUnionEnum::intValue,
+      'get_intValue called on an instance of ComplexUnion whose current type is %s',
+      $this->_type,
+    );
     return nullthrows($this->intValue);
   }
 
@@ -119,8 +122,11 @@ class ComplexUnion implements IThriftStruct, IThriftUnion<ComplexUnionEnum> {
   }
 
   public function get_stringValue(): string {
-    invariant($this->_type === ComplexUnionEnum::stringValue,
-      'get_stringValue called on an instance of ComplexUnion whose current type is' . $this->_type);
+    invariant(
+      $this->_type === ComplexUnionEnum::stringValue,
+      'get_stringValue called on an instance of ComplexUnion whose current type is %s',
+      $this->_type,
+    );
     return nullthrows($this->stringValue);
   }
 
@@ -131,8 +137,11 @@ class ComplexUnion implements IThriftStruct, IThriftUnion<ComplexUnionEnum> {
   }
 
   public function get_intListValue(): Vector<int> {
-    invariant($this->_type === ComplexUnionEnum::intListValue,
-      'get_intListValue called on an instance of ComplexUnion whose current type is' . $this->_type);
+    invariant(
+      $this->_type === ComplexUnionEnum::intListValue,
+      'get_intListValue called on an instance of ComplexUnion whose current type is %s',
+      $this->_type,
+    );
     return nullthrows($this->intListValue);
   }
 
@@ -143,8 +152,11 @@ class ComplexUnion implements IThriftStruct, IThriftUnion<ComplexUnionEnum> {
   }
 
   public function get_stringListValue(): Vector<string> {
-    invariant($this->_type === ComplexUnionEnum::stringListValue,
-      'get_stringListValue called on an instance of ComplexUnion whose current type is' . $this->_type);
+    invariant(
+      $this->_type === ComplexUnionEnum::stringListValue,
+      'get_stringListValue called on an instance of ComplexUnion whose current type is %s',
+      $this->_type,
+    );
     return nullthrows($this->stringListValue);
   }
 
@@ -155,8 +167,11 @@ class ComplexUnion implements IThriftStruct, IThriftUnion<ComplexUnionEnum> {
   }
 
   public function get_stringRef(): string {
-    invariant($this->_type === ComplexUnionEnum::stringRef,
-      'get_stringRef called on an instance of ComplexUnion whose current type is' . $this->_type);
+    invariant(
+      $this->_type === ComplexUnionEnum::stringRef,
+      'get_stringRef called on an instance of ComplexUnion whose current type is %s',
+      $this->_type,
+    );
     return nullthrows($this->stringRef);
   }
 

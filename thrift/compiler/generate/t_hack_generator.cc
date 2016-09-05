@@ -1973,13 +1973,15 @@ void t_hack_generator::generate_php_union_methods(ofstream& out,
     indent(out) << "public function get_" << fieldName << "(): " << typehint <<
         " {" << endl;
     indent_up();
-    indent(out) << "invariant($this->_type === " << enumName << "::" <<
-        fieldName << "," << endl;
+    indent(out) << "invariant(" << endl;
     indent_up();
+    indent(out) << "$this->_type === " << enumName << "::" << fieldName <<
+        "," << endl;
     indent(out) << "'get_" << fieldName << " called on an instance of " <<
-        tstruct->get_name() << " whose current type is' . $this->_type);" <<
-        endl;
+        tstruct->get_name() << " whose current type is %s'," << endl;
+    indent(out) << "$this->_type," << endl;
     indent_down();
+    indent(out) << ");" << endl;
     indent(out) << "return nullthrows($this->" << fieldName << ");" << endl;
     indent_down();
     indent(out) << "}" << endl << endl;
