@@ -17,6 +17,8 @@
 #include <thrift/compiler/generate/t_mstch_generator.h>
 
 #include <boost/algorithm/string/replace.hpp>
+#include <boost/algorithm/string/split.hpp>
+#include <boost/algorithm/string/classification.hpp>
 
 namespace {
 
@@ -36,39 +38,36 @@ class t_mstch_py3_generator : public t_mstch_generator {
     }
 
     void generate_program() override;
-    mstch::map extend_struct(const t_struct& strct) const override;
+    mstch::map extend_program(const t_program&) const override;
 
   protected:
-    void generate_structs(const vector<t_struct*>& structs);
-
-  private:
-    string _to_cpp_namespace(string cpp_namespace) const;
+    void generate_structs(const t_program&);
 };
 
-mstch::map t_mstch_py3_generator::extend_struct(const t_struct& strct) const {
-  auto program = strct.get_program();
-  auto cpp_namespace = program->get_namespace("cpp2");
-  boost::algorithm::replace_all(cpp_namespace, ".", "::");
+mstch::map t_mstch_py3_generator::extend_program(const t_program& program) const {
+  auto cpp_namespace = program.get_namespace("cpp2");
+
+  vector<string> ns;
+  boost::algorithm::split(ns, cpp_namespace, boost::algorithm::is_any_of("."));
+
   mstch::map result {
-    {"includePrefix", program->get_include_prefix()},
-    {"programName", program->get_name()},
-    {"cppNamespace", cpp_namespace}
+    {"cppNamespaces?", cpp_namespace != ""},
+    {"cppNamespaces", this->dump_elems(ns)},
   };
   return result;
 }
 
-void t_mstch_py3_generator::generate_structs(const vector<t_struct*>& structs) {
-  for (const auto strct : structs) {
-    auto struct_context = this->dump(*strct);
-    auto rendered_struct = this->render("Struct_pxd", struct_context);
-    auto filename = "cy_" + strct->get_program()->get_name() + "_types.pxd";
-    this->write_output(filename, rendered_struct);
-  }
+void t_mstch_py3_generator::generate_structs(const t_program& program) {
+  std::string rendered_output = "";
+  auto context = this->dump(program);
+  rendered_output += this->render("Struct.pxd", context);
+  auto filename = "cy_" + program.get_name() + "_types.pxd";
+  this->write_output(filename, rendered_output);
 }
 
 void t_mstch_py3_generator::generate_program() {
   mstch::config::escape = [](const std::string& s) { return s; };
-  this->generate_structs(this->get_program()->get_objects());
+  this->generate_structs(*this->get_program());
 }
 
 THRIFT_REGISTER_GENERATOR(

@@ -15,18 +15,4 @@
   limitations under the License.
 
 }}
-
-from libcpp.string cimport string
-from libc.stdint cimport int16_t, int32_t, int64_t
-
-{{!
-
-
-A trickier problem will be making them cimport dependent struct headers
-}}
-
-cdef extern from "{{struct:includePrefix}}gen_cpp2/{{struct:programName}}_types.h"{{#struct:cppNamespace}} namespace "{{struct:cppNamespace}}"{{/struct:cppNamespace}}:
-    cdef cppclass cSharedStruct "{{#struct:cppNamespace}}{{struct:cppNamespace}}::{{/struct:cppNamespace}}{{struct:name}}":
-    {{#struct:fields}}
-        {{> FieldType_pxd}} {{field:name}}
-    {{/struct:fields}}
+{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}
