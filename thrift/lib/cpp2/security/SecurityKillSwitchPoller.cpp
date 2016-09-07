@@ -18,6 +18,8 @@
 #include <thrift/lib/cpp2/security/SecurityKillSwitch.h>
 #include <folly/Singleton.h>
 
+#include <gflags/gflags.h>
+
 DEFINE_string(
     thrift_security_tls_kill_switch_file,
     "/var/thrift_security/disable_thrift_security_tls",

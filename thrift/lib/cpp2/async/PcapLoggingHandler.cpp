@@ -28,6 +28,7 @@
 #include <time.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <gflags/gflags.h>
 
 // For reallllly old systems, sigh
 #ifndef O_CLOEXEC
