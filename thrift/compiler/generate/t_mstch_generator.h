@@ -98,6 +98,7 @@ class t_mstch_generator : public t_generator {
 
   using annotation = std::pair<std::string, std::string>;
   mstch::map dump(const annotation&) const;
+  mstch::map dump(const string&) const;
 
   /**
    * Subclasses should override these functions to extend the behavior of

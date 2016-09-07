@@ -293,6 +293,11 @@ mstch::map t_mstch_generator::dump(const t_typedef& typdef) const {
   return this->prepend_prefix("typedef", std::move(result));
 }
 
+mstch::map t_mstch_generator::dump(const string& value) const {
+  mstch::map result{{"value", value}};
+  return result;
+}
+
 mstch::map t_mstch_generator::dump_options() const {
   mstch::map result;
   for (auto& elem : this->parsed_options_) {
