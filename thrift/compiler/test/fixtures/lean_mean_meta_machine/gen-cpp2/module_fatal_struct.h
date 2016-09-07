@@ -3894,3 +3894,6 @@ THRIFT_REGISTER_STRUCT_TRAITS(
 );
 
 }} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift { namespace detail {
+
+}}} // apache::thrift::detail

@@ -26,6 +26,7 @@ namespace apache { namespace thrift { namespace reflection {
 class Schema;
 }}}
 
+#include "thrift/test/fatal_custom_types.h"
 
 namespace test_cpp1 { namespace cpp_reflection {
 
@@ -179,6 +180,8 @@ class struct_binary;
 class union_with_special_names;
 
 class struct_with_special_names;
+
+typedef test_cpp_reflection::custom_structA my_structA;
 
 class union1 : public apache::thrift::TStructType<union1> {
  public:

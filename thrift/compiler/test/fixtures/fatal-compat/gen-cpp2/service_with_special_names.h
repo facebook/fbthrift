@@ -14,6 +14,7 @@
 
 #include "thrift/compiler/test/fixtures/fatal-compat/gen-cpp/service_with_special_names.h"
 
+#include "thrift/test/fatal_custom_types.h"
 
 #include "thrift/compiler/test/fixtures/fatal-compat/gen-cpp2/module_types.h"
 

@@ -4619,10 +4619,10 @@ class CppGenerator(t_generator.Generator):
         return class_name
 
     def _render_fatal_type_common_metadata(self, annotations_class, legacyid,
-      scope, indent):
+                                           scope, indent, ns_prefix=''):
         scope('{0}::apache::thrift::detail::type_common_metadata_impl<'.format(
             indent))
-        scope('{0}  {1},'.format(indent, self.fatal_tag))
+        scope('{0}  {1}{2},'.format(indent, ns_prefix, self.fatal_tag))
         scope('{0}  ::apache::thrift::reflected_annotations<{1}>,'
             .format(indent, annotations_class))
         scope('{0}  static_cast<::apache::thrift::legacy_type_id_t>({1}ull)'
@@ -4897,11 +4897,14 @@ class CppGenerator(t_generator.Generator):
             sg('#include <fatal/type/list.h>')
             sg('#include <fatal/type/map.h>')
             sg()
+            result = None
             if len(ns) > 0:
                 with sg.namespace(ns).scope as sns:
-                    return self._generate_fatal_struct_impl(sns, program)
+                    result = self._generate_fatal_struct_impl(sns, program)
             else:
-                return self._generate_fatal_struct_impl(sg, program)
+                result = self._generate_fatal_struct_impl(sg, program)
+            return self._generate_fatal_typedef_impl(
+                sg, program, result[0], result[1], result[2])
 
     def _generate_fatal_struct_impl(self, sns, program):
         name = self._program.name
@@ -4921,9 +4924,21 @@ class CppGenerator(t_generator.Generator):
         for exception in program.exceptions:
             structs.append(exception)
 
+        aliases = []
+        for i in program.typedefs:
+            alias = i.type
+            if alias.is_typedef and 'cpp.type' in alias.annotations:
+                ttype = i.type
+                while ttype.is_typedef:
+                    ttype = ttype.type
+                if not (ttype.is_struct or ttype.is_xception):
+                    continue
+                ns_prefix = self._namespace_prefix(
+                    self._get_original_namespace())
+                aliases.append((i, alias, ttype, ns_prefix))
+
         with sns.namespace(self.fatal_detail_ns).scope as detail:
             members = []
-
             for i in structs:
                 if i.is_union:
                     continue
@@ -4996,13 +5011,43 @@ class CppGenerator(t_generator.Generator):
                         cmnf('  {0}'.format(
                             'true' if self._has_isset(m) else 'false'))
                         cmnf('>;')
+            for i, alias, ttype, ns_prefix in aliases:
+                self._set_fatal_string(i.symbolic)
+                with detail.cls(('struct {0}_{1}').format(
+                        i.symbolic, mnfclsprefix)).scope as cmnf:
+                    for m in ttype.members:
+                        cmnf(('using {0} = '
+                              '::apache::thrift::reflected_struct_data_member<')
+                              .format(m.name))
+                        cmnf('')
+                        cmnf('  {0},'.format(self._get_fatal_string_id(m.name)))
+                        cmnf('  decltype(static_cast<{0} *>(nullptr)->{1}),'
+                             .format(i.symbolic, m.name))
+                        cmnf('  {0},'.format(m.key))
+                        cmnf('  ::apache::thrift::optionality::required,')
+                        cmnf('  {0}::{1}::{2},'.format(
+                             self.fatal_detail_ns, dtmclsprefix, m.name))
+                        cmnf('        {0},'.format(
+                             self._render_fatal_type_class(m.type)))
+                        cmnf('  {0}::{1}::{2}_{3}_struct_member_pod_{4},'
+                             .format(self.fatal_detail_ns, mpdclsprefix,
+                                     safe_ns, name, m.name))
+                        cmnf('  ::apache::thrift::reflected_annotations<'
+                             '{0}::{1}_{2}::members::{3}>,'
+                             .format(self.fatal_detail_ns, ttype.name,
+                                     annclsprefix, m.name))
+                        # Owner
+                        cmnf('  {0},'.format(i.symbolic))
+                        # HasIsSet
+                        cmnf('  false')
+                        cmnf('>;')
 
-        def render_member_list(struct, member_list):
+        def render_member_list(type_name, member_list):
             sns('  ::fatal::list<')
             for midx, m in enumerate(member_list):
                 sns('      {0}::{1}_{2}::{3}{4}'.format(
-                    self.fatal_detail_ns, struct.name, mnfclsprefix, m.name,
-                    ',' if midx+1 < len(member_list) else ''))
+                    self.fatal_detail_ns, type_name, mnfclsprefix, m.name,
+                    ',' if midx + 1 < len(member_list) else ''))
             sns('  >,')
 
         result = {}
@@ -5038,13 +5083,68 @@ class CppGenerator(t_generator.Generator):
             required_members = [m for m in i.members if m.req == e_req.required]
             nonreq_members = [m for m in i.members if m.req != e_req.required]
             # RequiredFields
-            render_member_list(i, required_members)
+            render_member_list(i.name, required_members)
             # NonRequiredFields
-            render_member_list(i, nonreq_members)
+            render_member_list(i.name, nonreq_members)
             # Metadata
             self._render_fatal_type_common_metadata(
                 annclsnm, i.type_id, sns, '  ')
             sns(');')
+
+        return (aliases, order, result)
+
+    def _generate_fatal_typedef_impl(self, sg, program, aliases, order, result):
+        name = self._program.name
+        safe_ns = self._get_namespace().replace('.', '_')
+        annclsprefix = '{0}_{1}__struct_unique_annotations'.format(
+            safe_ns, name)
+        mnfclsprefix = '{0}_{1}__struct_unique_member_info_list'.format(
+            safe_ns, name)
+        with sg.namespace('apache.thrift.detail').scope as detail:
+            for i, alias, ttype, ns_prefix in aliases:
+                string_ref = self._set_fatal_string(i.symbolic)
+                result[i.symbolic] = (i.symbolic, string_ref, string_ref)
+                order.append(i.symbolic)
+                detail('THRIFT_REGISTER_STRUCT_TRAITS(')
+                # Struct
+                detail('  {0}{1},'.format(ns_prefix, i.symbolic))
+                # Name
+                detail('  {0}{1},'.format(ns_prefix, self._get_fatal_string_id(
+                    i.symbolic)))
+                # MembersInfo
+                detail('  {0}{1}::{2}_{3},'.format(
+                    ns_prefix, self.fatal_detail_ns, i.symbolic, mnfclsprefix))
+                # Info
+                detail('  ::fatal::map<')
+                annclsnm = '{0}{1}::{2}_{3}'.format(
+                    ns_prefix, self.fatal_detail_ns, ttype.name, annclsprefix)
+                for midx, m in enumerate(ttype.members):
+                    detail('    ::fatal::pair<')
+                    detail('      {0}{1},'.format(ns_prefix,
+                           self._get_fatal_string_id(m.name)))
+                    detail('      {0}{1}::{2}_{3}::{4}'.format(
+                           ns_prefix, self.fatal_detail_ns,
+                           i.symbolic, mnfclsprefix, m.name))
+                    detail('    >{0}'.format(
+                           ',' if midx + 1 < len(ttype.members) else ''))
+                detail('  >,')
+                # MembersAnnotations
+                detail('  {0}::members,'.format(annclsnm))
+                # RequiredFields
+                detail('  ::fatal::list<')
+                for midx, m in enumerate(ttype.members):
+                    detail('      {0}{1}::{2}_{3}::{4}{5}'.format(
+                           ns_prefix, self.fatal_detail_ns,
+                           i.symbolic, mnfclsprefix, m.name,
+                           ',' if midx + 1 < len(ttype.members) else ''))
+                detail('  >,')
+                # NonRequiredFields
+                detail('  ::fatal::list<>,')
+                # Metadata
+                self._render_fatal_type_common_metadata(
+                    annclsnm, ttype.type_id, detail, '  ', ns_prefix)
+                detail(');')
+
         return (order, result)
 
     def _generate_fatal_constant(self, program):

@@ -6,6 +6,8 @@ namespace java.swift test_swift.cpp_reflection
 namespace php test_php.cpp_reflection
 namespace python test_py.cpp_reflection
 
+cpp_include "thrift/test/fatal_custom_types.h"
+
 enum enum1 {
   field0,
   field1,
@@ -56,6 +58,10 @@ struct structA {
   1: i32 a
   2: string b
 }
+
+typedef structA (
+  cpp.type = "test_cpp_reflection::custom_structA"
+) my_structA
 
 union unionA {
   1: i32 i

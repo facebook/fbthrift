@@ -13,3 +13,6 @@ namespace thrift_fatal_impl_detail {
 } // thrift_fatal_impl_detail
 
 }} // test_cpp1::cpp_reflection
+namespace apache { namespace thrift { namespace detail {
+
+}}} // apache::thrift::detail

@@ -1307,7 +1307,8 @@ struct reflected_struct_data_member {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  static bool is_set(Owner const &owner) {
+  template <typename T>
+  static bool is_set(T const &owner) {
     return detail::reflection_impl::is_set<
         Owner, getter, HasIsSet
       >::check(owner);
@@ -1339,7 +1340,8 @@ struct reflected_struct_data_member {
    *
    * @author: Dylan Knutson <dymk@fb.com>
    */
-  static void mark_set(Owner& owner) {
+  template <typename T>
+  static void mark_set(T& owner) {
     detail::reflection_impl::mark_set<Owner, getter, HasIsSet>::mark(owner);
   }
 
@@ -1369,7 +1371,8 @@ struct reflected_struct_data_member {
    *
    * @author: Dylan Knutson <dymk@fb.com>
    */
-  static void unmark_set(Owner& owner) {
+  template <typename T>
+  static void unmark_set(T& owner) {
     detail::reflection_impl::unmark_set<Owner, getter, HasIsSet>::mark(owner);
   }
 };

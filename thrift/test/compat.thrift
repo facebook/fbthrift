@@ -6,6 +6,8 @@ namespace java.swift test_swift.cpp_compat
 namespace php test_php.cpp_compat
 namespace python test_py.cpp_compat
 
+cpp_include "thrift/test/fatal_custom_types.h"
+
 enum compat_enum1 {
   field0,
   field1,
@@ -56,6 +58,10 @@ struct compat_structA {
   1: i32 a
   2: string b
 }
+
+typedef compat_structA (
+  cpp.type = "test_cpp_reflection::custom_compat_structA"
+) my_compat_structA
 
 union compat_unionA {
   1: i32 i

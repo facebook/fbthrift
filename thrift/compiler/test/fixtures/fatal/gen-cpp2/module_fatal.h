@@ -101,6 +101,7 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using s = ::fatal::sequence<char, 's'>;
   using bi = ::fatal::sequence<char, 'b', 'i'>;
   using test_php_cpp_reflection = ::fatal::sequence<char, 't', 'e', 's', 't', '_', 'p', 'h', 'p', '_', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
+  using my_structA = ::fatal::sequence<char, 'm', 'y', '_', 's', 't', 'r', 'u', 'c', 't', 'A'>;
   using key = ::fatal::sequence<char, 'k', 'e', 'y'>;
   using one_here = ::fatal::sequence<char, 'o', 'n', 'e', '.', 'h', 'e', 'r', 'e'>;
   using _now_with_an_underscore = ::fatal::sequence<char, '_', 'n', 'o', 'w', '.', 'w', 'i', 't', 'h', '.', 'a', 'n', '.', 'u', 'n', 'd', 'e', 'r', 's', 'c', 'o', 'r', 'e'>;
@@ -228,6 +229,7 @@ class module_tags {
     using struct4 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct4;
     using struct_binary = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct_binary;
     using struct_with_special_names = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct_with_special_names;
+    using my_structA = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::my_structA;
   };
 
   struct test_cpp2_cpp_reflection_module__unique_constants_list {
@@ -295,7 +297,8 @@ THRIFT_REGISTER_REFLECTION_METADATA(
     ::fatal::pair<struct3, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct3>,
     ::fatal::pair<struct4, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct4>,
     ::fatal::pair<struct_binary, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct_binary>,
-    ::fatal::pair<struct_with_special_names, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct_with_special_names>
+    ::fatal::pair<struct_with_special_names, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::struct_with_special_names>,
+    ::fatal::pair<my_structA, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::my_structA>
   >,
   // constants
   ::fatal::list<

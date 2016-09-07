@@ -14,6 +14,7 @@
 
 #include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 
+#include "thrift/test/fatal_custom_types.h"
 
 
 namespace test_cpp2 { namespace cpp_reflection {
@@ -183,6 +184,8 @@ template <> constexpr  ::test_cpp2::cpp_reflection::enum_with_special_names TEnu
 
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
+
+typedef test_cpp_reflection::custom_structA my_structA;
 
 class union1 : private apache::thrift::detail::st::ComparisonOperators<union1> {
  public:

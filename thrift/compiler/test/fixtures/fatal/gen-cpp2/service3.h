@@ -13,6 +13,7 @@
 #include <folly/futures/Future.h>
 
 
+#include "thrift/test/fatal_custom_types.h"
 
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_types.h"
 
