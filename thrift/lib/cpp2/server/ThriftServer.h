@@ -177,7 +177,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   // HeaderServerChannel and Cpp2Worker to use for a duplex server
   // (used by client). Both are nullptr for a regular server.
   std::shared_ptr<HeaderServerChannel> serverChannel_;
-  std::unique_ptr<Cpp2Worker> duplexWorker_;
+  std::shared_ptr<Cpp2Worker> duplexWorker_;
 
   bool isDuplex_ = false;   // is server in duplex mode? (used by server)
 

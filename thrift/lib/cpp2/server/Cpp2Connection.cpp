@@ -53,7 +53,7 @@ bool Cpp2Connection::isClientLocal(const folly::SocketAddress& clientAddr,
 Cpp2Connection::Cpp2Connection(
   const std::shared_ptr<TAsyncSocket>& asyncSocket,
   const folly::SocketAddress* address,
-  Cpp2Worker* worker,
+  std::shared_ptr<Cpp2Worker> worker,
   const std::shared_ptr<HeaderServerChannel>& serverChannel)
     : processor_(worker->getServer()->getCpp2Processor())
     , duplexChannel_(worker->getServer()->isDuplex() ?
@@ -65,22 +65,22 @@ Cpp2Connection::Cpp2Connection(
                std::shared_ptr<HeaderServerChannel>(
                    new HeaderServerChannel(asyncSocket),
                    folly::DelayedDestruction::Destructor()))
-    , worker_(worker)
+    , worker_(std::move(worker))
     , context_(address,
                asyncSocket.get(),
                channel_->getSaslServer(),
-               worker->getServer()->getEventBaseManager(),
+               worker_->getServer()->getEventBaseManager(),
                duplexChannel_ ? duplexChannel_->getClientChannel() : nullptr)
     , socket_(asyncSocket)
     , threadManager_(worker_->getServer()->getThreadManager()) {
 
-  channel_->setQueueSends(worker->getServer()->getQueueSends());
+  channel_->setQueueSends(worker_->getServer()->getQueueSends());
   channel_->setMinCompressBytes(worker_->getServer()->getMinCompressBytes());
   channel_->setDefaultWriteTransforms(
     worker_->getServer()->getDefaultWriteTransforms()
   );
 
-  auto observer = worker->getServer()->getObserver();
+  auto observer = worker_->getServer()->getObserver();
   if (observer) {
     channel_->setSampleRate(observer->getSampleRate());
   }
@@ -127,7 +127,7 @@ Cpp2Connection::Cpp2Connection(
     channel_->setSecurityPolicy(THRIFT_SECURITY_DISABLED);
   }
 
-  auto handler = worker->getServer()->getEventHandler();
+  auto handler = worker_->getServer()->getEventHandler();
   if (handler) {
     handler->newConnection(&context_);
   }

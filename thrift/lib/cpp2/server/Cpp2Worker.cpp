@@ -76,7 +76,7 @@ void Cpp2Worker::onNewConnection(
   asyncSocket->setIsAccepted(true);
   asyncSocket->setShutdownSocketSet(server_->shutdownSocketSet_.get());
   std::shared_ptr<Cpp2Connection> result(
-    new Cpp2Connection(asyncSocket, addr, this));
+    new Cpp2Connection(asyncSocket, addr, shared_from_this()));
   Acceptor::addConnection(result.get());
   result->addConnection(result);
   result->start();
@@ -112,7 +112,7 @@ void Cpp2Worker::useExistingChannel(
   folly::SocketAddress address;
 
   auto conn = std::make_shared<Cpp2Connection>(
-      nullptr, &address, this, serverChannel);
+      nullptr, &address, shared_from_this(), serverChannel);
   Acceptor::getConnectionManager()
     ->addConnection(conn.get(), false);
   conn->addConnection(conn);

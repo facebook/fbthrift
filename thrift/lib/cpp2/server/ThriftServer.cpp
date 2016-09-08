@@ -86,7 +86,7 @@ class ThriftAcceptorFactory : public wangle::AcceptorFactory {
 
   std::shared_ptr<wangle::Acceptor> newAcceptor(
       folly::EventBase* eventBase) override {
-    return std::make_shared<Cpp2Worker>(server_, nullptr, eventBase);
+    return Cpp2Worker::create(server_, nullptr, eventBase);
   }
  private:
   ThriftServer* server_;
@@ -391,7 +391,7 @@ void ThriftServer::setup() {
 
     } else {
       CHECK(configMutable());
-      duplexWorker_ = folly::make_unique<Cpp2Worker>(this, serverChannel_);
+      duplexWorker_ = Cpp2Worker::create(this, serverChannel_);
       // we don't control the EventBase for the duplexWorker, so when we shut
       // it down, we need to ensure there's no delay
       duplexWorker_->setGracefulShutdownTimeout(std::chrono::milliseconds(0));

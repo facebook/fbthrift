@@ -46,11 +46,12 @@ class ThriftServer;
  */
 class Cpp2Worker
     : public wangle::Acceptor,
-      private wangle::PeekingAcceptorHandshakeHelper::PeekCallback {
+      private wangle::PeekingAcceptorHandshakeHelper::PeekCallback,
+      public std::enable_shared_from_this<Cpp2Worker> {
  protected:
   enum { kPeekCount = 9 };
+  struct DoNotUse {};
  public:
-
   /**
    * Cpp2Worker is the actual server object for existing connections.
    * One or more of these should be created by ThriftServer (one per
@@ -59,35 +60,13 @@ class Cpp2Worker
    * @param server the ThriftServer which created us.
    * @param serverChannel existing server channel to use, only for duplex server
    */
-  explicit Cpp2Worker(ThriftServer* server,
-             const std::shared_ptr<HeaderServerChannel>&
-             serverChannel = nullptr,
-             folly::EventBase* eventBase = nullptr) :
-    Acceptor(server->getServerSocketConfig()),
-    wangle::PeekingAcceptorHandshakeHelper::PeekCallback(kPeekCount),
-    server_(server),
-    activeRequests_(0),
-    pendingCount_(0),
-    pendingTime_(std::chrono::steady_clock::now()) {
-    auto observer =
-      std::dynamic_pointer_cast<folly::EventBaseObserver>(
-      server_->getObserver());
-    if (serverChannel) {
-      eventBase = serverChannel->getEventBase();
-    } else if (!eventBase) {
-      eventBase = folly::EventBaseManager::get()->getEventBase();
-    }
-    init(nullptr, eventBase);
-
-    if (serverChannel) {
-      // duplex
-      useExistingChannel(serverChannel);
-    }
-
-    if (observer) {
-      eventBase->setObserver(observer);
-    }
-
+  static std::shared_ptr<Cpp2Worker>
+  create(ThriftServer* server,
+         const std::shared_ptr<HeaderServerChannel>& serverChannel = nullptr,
+         folly::EventBase* eventBase = nullptr) {
+    std::shared_ptr<Cpp2Worker> worker(new Cpp2Worker(server, {}));
+    worker->construct(server, serverChannel, eventBase);
+    return worker;
   }
 
   void init(
@@ -129,6 +108,39 @@ class Cpp2Worker
     noexcept override;
 
  protected:
+  Cpp2Worker(ThriftServer* server,
+             DoNotUse /* ignored, never call constructor directly */) :
+    Acceptor(server->getServerSocketConfig()),
+    wangle::PeekingAcceptorHandshakeHelper::PeekCallback(kPeekCount),
+    server_(server),
+    activeRequests_(0),
+    pendingCount_(0),
+    pendingTime_(std::chrono::steady_clock::now()) {
+  }
+
+  void construct(ThriftServer* server,
+                 const std::shared_ptr<HeaderServerChannel>& serverChannel,
+                 folly::EventBase* eventBase) {
+    auto observer =
+      std::dynamic_pointer_cast<folly::EventBaseObserver>(
+        server_->getObserver());
+    if (serverChannel) {
+      eventBase = serverChannel->getEventBase();
+    } else if (!eventBase) {
+      eventBase = folly::EventBaseManager::get()->getEventBase();
+    }
+    init(nullptr, eventBase);
+
+    if (serverChannel) {
+      // duplex
+      useExistingChannel(serverChannel);
+    }
+
+    if (observer) {
+      eventBase->setObserver(observer);
+    }
+  }
+
   void onNewConnection(folly::AsyncTransportWrapper::UniquePtr,
                        const folly::SocketAddress*,
                        const std::string&,

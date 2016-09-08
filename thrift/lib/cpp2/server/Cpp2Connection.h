@@ -60,7 +60,7 @@ class Cpp2Connection
   Cpp2Connection(
     const std::shared_ptr<apache::thrift::async::TAsyncSocket>& asyncSocket,
       const folly::SocketAddress* address,
-      Cpp2Worker* worker,
+      std::shared_ptr<Cpp2Worker> worker,
       const std::shared_ptr<HeaderServerChannel>& serverChannel = nullptr);
 
   /// Destructor -- close down the connection.
@@ -106,9 +106,9 @@ class Cpp2Connection
   std::unique_ptr<DuplexChannel> duplexChannel_;
   std::shared_ptr<apache::thrift::HeaderServerChannel> channel_;
 
-  Cpp2Worker* worker_;
+  std::shared_ptr<Cpp2Worker> worker_;
   Cpp2Worker* getWorker() {
-    return worker_;
+    return worker_.get();
   }
   Cpp2ConnContext context_;
 
