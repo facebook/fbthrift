@@ -27,7 +27,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.zip.*;
 
+import com.facebook.thrift.TApplicationException;
+import com.facebook.thrift.TException;
 import com.facebook.thrift.protocol.TBinaryProtocol;
+import com.facebook.thrift.protocol.TCompactProtocol;
+import com.facebook.thrift.protocol.TMessage;
+import com.facebook.thrift.protocol.TMessageType;
+
 import org.iq80.snappy.Snappy;
 import org.iq80.snappy.CorruptionException;
 
@@ -594,6 +600,35 @@ public class THeaderTransport extends TFramedTransport {
   }
 
   public void flushImpl(boolean oneway) throws TTransportException {
+    try {
+      // Check if this is a TApplicationException
+      TApplicationException tae = null;
+      byte[] buf = writeBuffer_.get();
+      int len = writeBuffer_.len();
+      if (len >= 2 && buf[0] == TCompactProtocol.PROTOCOL_ID &&
+          ((buf[1] >> TCompactProtocol.TYPE_SHIFT_AMOUNT) & 0x03) == TMessageType.EXCEPTION) {
+        // Compact
+        TCompactProtocol proto = new TCompactProtocol(new TMemoryInputTransport(buf));
+        @SuppressWarnings("unused")
+        TMessage msg = proto.readMessageBegin();
+        tae = TApplicationException.read(proto);
+      } else if (len >= 4 && ((buf[0] << 24) | (buf[1] << 16)) == TBinaryProtocol.VERSION_1 &&
+          buf[3] == TMessageType.EXCEPTION) {
+        // Binary
+        TBinaryProtocol proto = new TBinaryProtocol(new TMemoryInputTransport(buf));
+        @SuppressWarnings("unused")
+        TMessage msg = proto.readMessageBegin();
+        tae = TApplicationException.read(proto);
+      }
+
+      if (tae != null) {
+        writeHeaders.putIfAbsent("uex", "TApplicationException");
+        writeHeaders.putIfAbsent("uexw", tae.getMessage() == null ? "[null]" : tae.getMessage());
+      }
+    } catch (TException e) {
+      // Failed parsing a TApplicationException, so don't write headers
+    }
+
     ByteBuffer frame = ByteBuffer.wrap(writeBuffer_.get());
     frame.limit(writeBuffer_.len());
     writeBuffer_.reset();
