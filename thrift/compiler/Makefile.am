@@ -115,6 +115,16 @@ java_swift__DATA = generate/templates/java/swift/BoxedType.mustache \
                    generate/templates/java/swift/Union.mustache \
                    generate/templates/java/swift/ThriftFieldAnnotation.mustache
 
+py3_dir = $(template_dir)/py3
+py3__DATA = generate/templates/py3/CppNamespace.mustache \
+                    generate/templates/py3/OneServiceWrapper.cpp.mustache \
+                    generate/templates/py3/OneStruct.pxd.mustache \
+                    generate/templates/py3/ServiceWrapper.h.mustache \
+                    generate/templates/py3/FieldType.pxd.mustache \
+                    generate/templates/py3/OneServiceWrapper.h.mustache \
+                    generate/templates/py3/ServiceWrapper.cpp.mustache \
+                    generate/templates/py3/Struct.pxd.mustache
+
 libparse_la_CPPFLAGS = $(AM_CPPFLAGS) -DTHRIFTY_HH=\"thrift/compiler/thrifty.hh\"
 libparse_la_SOURCES = thrifty.yy \
                      thriftl.ll
