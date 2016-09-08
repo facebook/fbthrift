@@ -16,13 +16,18 @@
 
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
 
+#include <memory>
+#include <utility>
+
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/server/TServer.h>
-#include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/util/ServerCreator.h>
+#include <folly/ScopeGuard.h>
+#include <folly/SocketAddress.h>
 
 using std::shared_ptr;
+using std::weak_ptr;
 using namespace apache::thrift::concurrency;
 using namespace apache::thrift::server;
 using namespace apache::thrift::transport;
@@ -40,8 +45,9 @@ class ScopedServerThread::Helper : public Runnable,
  public:
   Helper() : state_(STATE_NOT_STARTED) {}
 
-  void init(const shared_ptr<TServer>& server,
-            const shared_ptr<Helper>& self);
+  ~Helper();
+
+  void init(shared_ptr<TServer> server);
 
   void run() override;
 
@@ -68,9 +74,7 @@ class ScopedServerThread::Helper : public Runnable,
    */
   void waitUntilStarted();
 
-  void preServe(const folly::SocketAddress* address) override;
-
-  const std::shared_ptr<TServer>& getServer() const {
+  const shared_ptr<TServer>& getServer() const {
     return server_;
   }
 
@@ -79,6 +83,14 @@ class ScopedServerThread::Helper : public Runnable,
     STATE_NOT_STARTED,
     STATE_RUNNING,
     STATE_START_ERROR
+  };
+
+  class EventHandler : public TServerEventHandler {
+   public:
+    explicit EventHandler(Helper& outer) : outer_(outer) {}
+    void preServe(const folly::SocketAddress* address) override;
+   private:
+    Helper& outer_;
   };
 
   // Helper class to polymorphically re-throw a saved exception type
@@ -121,8 +133,8 @@ class ScopedServerThread::Helper : public Runnable,
 
   template<typename ExceptionT>
   void handleServeError(const ExceptionT& x) {
-    if (eventHandler_) {
-      eventHandler_->handleServeError(x);
+    if (eventHandler_ && *eventHandler_) {
+      (*eventHandler_)->handleServeError(x);
     }
 
     Synchronized s(stateMonitor_);
@@ -145,23 +157,30 @@ class ScopedServerThread::Helper : public Runnable,
   Monitor stateMonitor_;
 
   shared_ptr<TServer> server_;
-  shared_ptr<TServerEventHandler> eventHandler_;
+  // If the server event handler has been intercepted, then this field will be
+  // set to the replaced event handler, which could be nullptr.
+  folly::Optional<shared_ptr<TServerEventHandler>> eventHandler_;
   shared_ptr<SavedException> savedError_;
   folly::SocketAddress address_;
 };
 
-void ScopedServerThread::Helper::init(const shared_ptr<TServer>& server,
-                                      const shared_ptr<Helper>& self) {
-  // This function takes self as an argument since we need a shared_ptr to
-  // ourself.
-  server_ = server;
+ScopedServerThread::Helper::~Helper() {
+  if (eventHandler_) {
+    // The EventHandler instance must be replaced, because its reference to
+    // this object is about to become a dangling reference.
+    server_->setServerEventHandler(*eventHandler_);
+  }
+}
+
+void ScopedServerThread::Helper::init(shared_ptr<TServer> server) {
+  server_ = std::move(server);
 
   // Install ourself as the server event handler, so that our preServe() method
   // will be called once we've successfully bound to the port and are about to
   // start listening. If there is already an installed event handler, uninstall
   // it, but remember it so we can re-install it once the server starts.
   eventHandler_ = server_->getEventHandler();
-  server_->setServerEventHandler(self);
+  server_->setServerEventHandler(std::make_shared<EventHandler>(*this));
 }
 
 void ScopedServerThread::Helper::run() {
@@ -196,23 +215,29 @@ void ScopedServerThread::Helper::waitUntilStarted() {
   }
 }
 
-void ScopedServerThread::Helper::preServe(const folly::SocketAddress* address) {
+void ScopedServerThread::Helper::EventHandler::preServe(
+    const folly::SocketAddress* address) {
   // Save a copy of the address
-  address_ = *address;
+  outer_.address_ = *address;
 
+  // The eventHandler_ should have been assigned in init, even if it is only
+  // set to an empty shared_ptr.
+  CHECK(outer_.eventHandler_);
+  auto eventHandler = *outer_.eventHandler_;
   // Re-install the old eventHandler_.
-  server_->setServerEventHandler(eventHandler_);
-  if (eventHandler_) {
-    // Invoke preServe() on eventHandler_,
+  outer_.server_->setServerEventHandler(eventHandler);
+  outer_.eventHandler_ = folly::none;
+  if (eventHandler) {
+    // Invoke preServe() on eventHandler,
     // since we intercepted the real preServe() call.
-    eventHandler_->preServe(address);
+    eventHandler->preServe(address);
   }
 
   // Inform the main thread that the server has started
-  concurrency::Synchronized s(stateMonitor_);
-  assert(state_ == STATE_NOT_STARTED);
-  state_ = STATE_RUNNING;
-  stateMonitor_.notify();
+  concurrency::Synchronized s(outer_.stateMonitor_);
+  assert(outer_.state_ == STATE_NOT_STARTED);
+  outer_.state_ = STATE_RUNNING;
+  outer_.stateMonitor_.notify();
 }
 
 /*
@@ -226,8 +251,8 @@ ScopedServerThread::ScopedServerThread(ServerCreator* serverCreator) {
   start(serverCreator);
 }
 
-ScopedServerThread::ScopedServerThread(const shared_ptr<TServer>& server) {
-  start(server);
+ScopedServerThread::ScopedServerThread(shared_ptr<TServer> server) {
+  start(std::move(server));
 }
 
 ScopedServerThread::~ScopedServerThread() {
@@ -238,7 +263,7 @@ void ScopedServerThread::start(ServerCreator* serverCreator) {
   start(serverCreator->createServer());
 }
 
-void ScopedServerThread::start(const shared_ptr<TServer>& server) {
+void ScopedServerThread::start(shared_ptr<TServer> server) {
   if (helper_) {
     throw TLibraryException("ScopedServerThread is already running");
   }
@@ -247,24 +272,26 @@ void ScopedServerThread::start(const shared_ptr<TServer>& server) {
   // TServerEventHandler objects, so we have to allocate Helper on the heap,
   // rather than having it as a member variable or deriving from Runnable and
   // TServerEventHandler ourself.
-  helper_.reset(new Helper);
+  auto helper = std::make_shared<Helper>();
 
-  try {
-    helper_->init(server, helper_);
+  helper->init(std::move(server));
 
-    // Start the thread
-    PosixThreadFactory threadFactory;
-    threadFactory.setDetached(false);
-    thread_ = threadFactory.newThread(helper_);
-    thread_->start();
+  // Start the thread
+  PosixThreadFactory threadFactory;
+  threadFactory.setDetached(false);
+  auto thread = threadFactory.newThread(helper);
+  thread->start();
+  auto threadGuard = folly::makeGuard([&] {
+    helper->stop();
+    thread->join();
+  });
 
-    // Wait for the server to start
-    helper_->waitUntilStarted();
-  } catch (...) {
-    // Clear helper_ before re-raising the error.
-    helper_.reset();
-    throw;
-  }
+  // Wait for the server to start
+  helper->waitUntilStarted();
+
+  helper_ = std::move(helper);
+  thread_ = std::move(thread);
+  threadGuard.dismiss();
 }
 
 void ScopedServerThread::stop() {
@@ -292,16 +319,16 @@ const folly::SocketAddress* ScopedServerThread::getAddress() const {
   return helper_->getAddress();
 }
 
-std::weak_ptr<TServer> ScopedServerThread::getServer() const {
+weak_ptr<TServer> ScopedServerThread::getServer() const {
   if (!helper_) {
-    return std::weak_ptr<server::TServer>();
+    return weak_ptr<server::TServer>();
   }
   return helper_->getServer();
 }
 
-ServerStartHelper::ServerStartHelper(const shared_ptr<TServer>& server) {
+ServerStartHelper::ServerStartHelper(shared_ptr<TServer> server) {
   helper_ = std::make_shared<ScopedServerThread::Helper>();
-  helper_->init(server, helper_);
+  helper_->init(std::move(server));
 }
 
 void ServerStartHelper::waitUntilStarted() {
