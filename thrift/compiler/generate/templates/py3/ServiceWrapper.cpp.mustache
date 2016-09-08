@@ -15,4 +15,16 @@
   limitations under the License.
 
 }}
-{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}
+#include <{{program:includePrefix}}gen_py3/{{program:name}}_service_wrapper.h>
+
+{{#program:cppNamespaces}}namespace {{value}} {
+{{/program:cppNamespaces}}
+{{#program:services}}
+{{> OneServiceWrapper.cpp}}
+{{^last?}}
+
+{{/last?}}
+{{/program:services}}{{!
+}}{{#program:cppNamespaces}}
+} // namespace {{value}}
+{{/program:cppNamespaces}}

@@ -13,11 +13,24 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-
 }}
-from libcpp.string cimport string
-from libc.stdint cimport int16_t, int32_t, int64_t
-{{program:structs}}
-{{#program:structs}}
-{{> OneStruct.pxd}}
-{{/program:structs}}
+#pragma once
+{{#program:services}}
+#include <{{program:includePrefix}}gen_cpp2/{{service:name}}.h>
+{{/program:services}}
+#include <Python.h>
+#include <memory.h>
+
+{{#program:cppNamespaces}}namespace {{value}} {
+{{/program:cppNamespaces}}
+
+{{#program:services}}
+{{> OneServiceWrapper.h}}
+{{^last?}}
+
+
+{{/last?}}
+{{/program:services}}{{!
+}}{{#program:cppNamespaces}}
+} // namespace {{value}}
+{{/program:cppNamespaces}}

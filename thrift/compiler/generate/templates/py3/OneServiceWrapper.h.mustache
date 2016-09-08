@@ -15,9 +15,13 @@
   limitations under the License.
 
 }}
-from libcpp.string cimport string
-from libc.stdint cimport int16_t, int32_t, int64_t
-{{program:structs}}
-{{#program:structs}}
-{{> OneStruct.pxd}}
-{{/program:structs}}
+class {{service:name}}Wrapper : public {{service:name}}SvAsyncIf {
+  private:
+    PyObject *if_object;
+  public:
+    explicit {{service:name}}Wrapper(PyObject *if_object);
+    virtual ~{{service:name}}Wrapper();
+    {{!functions here}}
+}
+
+std::shared_ptr<ServerInterface> {{service:name}}Interface(PyObject *if_object);

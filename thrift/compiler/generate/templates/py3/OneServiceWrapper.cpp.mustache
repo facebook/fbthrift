@@ -15,9 +15,16 @@
   limitations under the License.
 
 }}
-from libcpp.string cimport string
-from libc.stdint cimport int16_t, int32_t, int64_t
-{{program:structs}}
-{{#program:structs}}
-{{> OneStruct.pxd}}
-{{/program:structs}}
+
+{{service:name}}Wrapper::{{service:name}}Wrapper(PyObject *obj)
+  : if_object(obj)
+  {
+    Py_XINCREF(this->if_object);
+  }
+
+{{service:name}}Wrapper::~{{service:name}}Wrapper() {
+    Py_XDECREF(this->if_object);
+}
+{{!functions here}}
+
+std::shared_ptr<ServerInterface> {{service:name}}Interface(PyObject *if_object);

@@ -42,32 +42,45 @@ class t_mstch_py3_generator : public t_mstch_generator {
 
   protected:
     void generate_structs(const t_program&);
+    void generate_services(const t_program&);
 };
 
 mstch::map t_mstch_py3_generator::extend_program(const t_program& program) const {
   auto cpp_namespace = program.get_namespace("cpp2");
-
   vector<string> ns;
-  boost::algorithm::split(ns, cpp_namespace, boost::algorithm::is_any_of("."));
+  if (cpp_namespace != "") {
+    boost::algorithm::split(ns, cpp_namespace, boost::algorithm::is_any_of("."));
+  }
 
   mstch::map result {
-    {"cppNamespaces?", cpp_namespace != ""},
+    {"cppNamespaces?", !cpp_namespace.empty()},
     {"cppNamespaces", this->dump_elems(ns)},
   };
   return result;
 }
 
 void t_mstch_py3_generator::generate_structs(const t_program& program) {
-  std::string rendered_output = "";
   auto context = this->dump(program);
-  rendered_output += this->render("Struct.pxd", context);
+  auto rendered_output = this->render("Struct.pxd", context);
   auto filename = "cy_" + program.get_name() + "_types.pxd";
   this->write_output(filename, rendered_output);
+}
+
+void t_mstch_py3_generator::generate_services(const t_program& program) {
+  auto context = this->dump(program);
+
+  auto rendered_headers = this->render("ServiceWrapper.h", context);
+  auto rendered_cpp = this->render("ServiceWrapper.cpp", context);
+
+  auto filename = this->get_program()->get_name() + "_service_wrapper";
+  this->write_output(filename + ".h", rendered_headers);
+  this->write_output(filename + ".cpp", rendered_cpp);
 }
 
 void t_mstch_py3_generator::generate_program() {
   mstch::config::escape = [](const std::string& s) { return s; };
   this->generate_structs(*this->get_program());
+  this->generate_services(*this->get_program());
 }
 
 THRIFT_REGISTER_GENERATOR(
