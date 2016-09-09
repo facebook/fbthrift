@@ -19,7 +19,6 @@
 #include <thrift/lib/cpp2/fatal/container_traits.h>
 
 #include <fatal/type/enum.h>
-#include <fatal/type/map.h>
 #include <fatal/type/search.h>
 #include <fatal/type/variant_traits.h>
 
@@ -211,9 +210,9 @@ struct dynamic_converter_impl<type_class::set<ValueTypeClass>> {
 };
 
 struct to_dynamic_variant_visitor {
-  template <typename Id, typename Descriptor, std::size_t Index, typename T>
+  template <typename Descriptor, std::size_t Index, typename T>
   void operator ()(
-    fatal::indexed_pair<Id, Descriptor, Index>,
+    fatal::indexed<Descriptor, Index>,
     folly::dynamic &out,
     T const &input,
     dynamic_format format
@@ -236,8 +235,8 @@ struct from_dynamic_variant_visitor {
     dynamic_format format,
     format_adherence adherence
   ) const {
-    using id_traits = fatal::enum_traits<typename VariantTraits::id>;
-    using id = fatal::map_get<typename id_traits::name_to_value, IdName>;
+    using id = typename fatal::enum_traits<typename VariantTraits::id>
+      ::template value_of<IdName>;
     using descriptor = typename VariantTraits::by_id::template descriptor<id>;
 
     VariantTraits::by_id::template set<id>(out);
@@ -251,11 +250,14 @@ template <>
 struct dynamic_converter_impl<type_class::variant> {
   template <typename T>
   static void to(folly::dynamic &out, T const &input, dynamic_format format) {
-    using traits = fatal::variant_traits<T>;
+    using namespace fatal;
 
     out = folly::dynamic::object;
 
-    fatal::sorted_map_search<typename traits::by_id::map>(
+    sorted_search<
+      sort<typename variant_traits<T>::descriptors, less, get_type::id>,
+      get_type::id::apply
+    >(
       input.getType(),
       to_dynamic_variant_visitor(),
       out,
@@ -348,8 +350,11 @@ struct from_dynamic_struct_visitor {
     dynamic_format format,
     format_adherence adherence
   ) const {
-    using rstruct = reflect_struct<T>;
-    using rmember = fatal::map_get<typename rstruct::members, Member>;
+    using rmember = fatal::get<
+      typename reflect_struct<T>::members,
+      Member,
+      fatal::get_type::name
+    >;
     using rgetter = typename rmember::getter;
     assign_is_set<T, rgetter, typename rmember::optional>(out, true);
     dynamic_converter_impl<typename rmember::type_class>::from(
@@ -363,7 +368,7 @@ struct dynamic_converter_impl<type_class::structure> {
   template <typename T>
   static void to(folly::dynamic &out, T const &input, dynamic_format format) {
     out = folly::dynamic::object;
-    fatal::foreach<fatal::map_values<typename reflect_struct<T>::members>>(
+    fatal::foreach<typename reflect_struct<T>::members>(
       to_dynamic_struct_visitor(),
       out, input, format
     );
@@ -377,8 +382,11 @@ struct dynamic_converter_impl<type_class::structure> {
     format_adherence adherence
   ) {
     for (auto const &i: input.items()) {
+      using namespace fatal;
       auto const member = i.first.stringPiece();
-      fatal::trie_find<fatal::map_keys<typename reflect_struct<T>::members>>(
+      trie_find<
+        transform<typename reflect_struct<T>::members, get_type::name::apply>
+      >(
         member.begin(), member.end(),
         from_dynamic_struct_visitor(),
         out, i.second,

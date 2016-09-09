@@ -135,7 +135,7 @@ TEST(fatal, metadata) {
   EXPECT_SAME<void, apache::thrift::try_reflect_module<int, void>>();
 
   EXPECT_SAME<
-    fatal::map<
+    fatal::list<
       fatal::pair<cpp_s, cpp_ns>,
       fatal::pair<cpp2_s, cpp2_ns>,
       fatal::pair<d_s, d_2ns>,
@@ -148,7 +148,7 @@ TEST(fatal, metadata) {
   >();
 
   EXPECT_SAME<
-    fatal::map<
+    fatal::list<
       fatal::pair<enum1, enum1s>,
       fatal::pair<enum2, enum2s>,
       fatal::pair<enum3, enum3s>,
@@ -158,7 +158,7 @@ TEST(fatal, metadata) {
   >();
 
   EXPECT_SAME<
-    fatal::map<
+    fatal::list<
       fatal::pair<union1, union1s>,
       fatal::pair<union2, union2s>,
       fatal::pair<union3, union3s>,
@@ -169,7 +169,7 @@ TEST(fatal, metadata) {
   >();
 
   EXPECT_SAME<
-    fatal::map<
+    fatal::list<
       fatal::pair<structA, structAs>,
       fatal::pair<structB, structBs>,
       fatal::pair<structC, structCs>,

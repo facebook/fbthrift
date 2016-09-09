@@ -29,10 +29,6 @@ FATAL_S(field0s, "field0");
 FATAL_S(field1s, "field1");
 FATAL_S(field2s, "field2");
 
-using field0v = std::integral_constant<enum1, enum1::field0>;
-using field1v = std::integral_constant<enum1, enum1::field1>;
-using field2v = std::integral_constant<enum1, enum1::field2>;
-
 TEST(fatal_enum, sanity_check) {
   using traits = fatal::enum_traits<enum1>;
 
@@ -44,26 +40,28 @@ TEST(fatal_enum, sanity_check) {
   EXPECT_SAME<field1s, traits::str::field1>();
   EXPECT_SAME<field2s, traits::str::field2>();
 
-  EXPECT_SAME<
-    fatal::map<
-      fatal::pair<field0s, field0v>,
-      fatal::pair<field1s, field1v>,
-      fatal::pair<field2s, field2v>
-    >,
-    traits::name_to_value
-  >();
-
-  EXPECT_SAME<
-    fatal::map<
-      fatal::pair<field0v, field0s>,
-      fatal::pair<field1v, field1s>,
-      fatal::pair<field2v, field2s>
-    >,
-    traits::value_to_name
-  >();
-
   EXPECT_SAME<fatal::list<field0s, field1s, field2s>, traits::names>();
-  EXPECT_SAME<fatal::list<field0v, field1v, field2v>, traits::values>();
+  EXPECT_SAME<
+    fatal::sequence<enum1, enum1::field0, enum1::field1, enum1::field2>,
+    traits::values
+  >();
+
+  EXPECT_SAME<field0s, traits::name_of<enum1::field0>>();
+  EXPECT_SAME<field1s, traits::name_of<enum1::field1>>();
+  EXPECT_SAME<field2s, traits::name_of<enum1::field2>>();
+
+  EXPECT_SAME<
+    std::integral_constant<enum1, enum1::field0>,
+    traits::value_of<field0s>
+  >();
+  EXPECT_SAME<
+    std::integral_constant<enum1, enum1::field1>,
+    traits::value_of<field1s>
+  >();
+  EXPECT_SAME<
+    std::integral_constant<enum1, enum1::field2>,
+    traits::value_of<field2s>
+  >();
 
   EXPECT_EQ("field0", fatal::enum_to_string(enum1::field0));
   EXPECT_EQ("field1", fatal::enum_to_string(enum1::field1));
@@ -106,12 +104,12 @@ FATAL_S(enum3_annotation6v, "and yet more text - it's that easy");
 
 TEST(fatal_enum, annotations) {
   EXPECT_SAME<
-    fatal::map<>,
+    fatal::list<>,
     apache::thrift::reflect_enum<enum1>::annotations::map
   >();
 
   EXPECT_SAME<
-    fatal::map<>,
+    fatal::list<>,
     apache::thrift::reflect_enum<enum2>::annotations::map
   >();
 
@@ -167,7 +165,7 @@ TEST(fatal_enum, annotations) {
   >();
 
   EXPECT_SAME<
-    fatal::map<
+    fatal::list<
       fatal::pair<enum3_annotation1k, enum3_annotation1v>,
       fatal::pair<enum3_annotation2k, enum3_annotation2v>,
       fatal::pair<enum3_annotation3k, enum3_annotation3v>,

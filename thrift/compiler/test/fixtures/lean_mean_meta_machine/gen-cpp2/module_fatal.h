@@ -9,7 +9,6 @@
 #include <thrift/lib/cpp2/fatal/reflection.h>
 
 #include <fatal/type/list.h>
-#include <fatal/type/map.h>
 #include <fatal/type/pair.h>
 #include <fatal/type/sequence.h>
 
@@ -261,7 +260,7 @@ THRIFT_REGISTER_REFLECTION_METADATA(
   module_tags::module,
   thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::module,
   // languages
-  ::fatal::map<
+  ::fatal::list<
     ::fatal::pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::cpp, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_cpp1__cpp_reflection>,
     ::fatal::pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::cpp2, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_cpp2__cpp_reflection>,
     ::fatal::pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::d, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_d_cpp_reflection>,
@@ -271,14 +270,14 @@ THRIFT_REGISTER_REFLECTION_METADATA(
     ::fatal::pair<thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::python, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::test_py_cpp_reflection>
   >,
   // enums
-  ::fatal::map<
+  ::fatal::list<
     ::fatal::pair<enum1, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum1>,
     ::fatal::pair<enum2, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum2>,
     ::fatal::pair<enum3, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum3>,
     ::fatal::pair<enum_with_special_names, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum_with_special_names>
   >,
   // unions
-  ::fatal::map<
+  ::fatal::list<
     ::fatal::pair<union1, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union1>,
     ::fatal::pair<union2, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union2>,
     ::fatal::pair<union3, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union3>,
@@ -286,7 +285,7 @@ THRIFT_REGISTER_REFLECTION_METADATA(
     ::fatal::pair<union_with_special_names, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union_with_special_names>
   >,
   // structs
-  ::fatal::map<
+  ::fatal::list<
     ::fatal::pair<structA, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::structA>,
     ::fatal::pair<structB, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::structB>,
     ::fatal::pair<structC, thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::structC>,

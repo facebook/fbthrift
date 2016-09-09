@@ -51,20 +51,18 @@ TEST(fatal_union, variants) {
 
   EXPECT_SAME<
     fatal::list<uii, udi, usi, uei>,
-    fatal::transform<traits::descriptors, fatal::get_type::id>
+    fatal::transform<traits::descriptors, fatal::get_type::id::apply>
   >();
 
   EXPECT_SAME<
     fatal::list<std::int32_t, double, std::string, enum1>,
-    fatal::transform<traits::descriptors, fatal::get_type::type>
+    fatal::transform<traits::descriptors, fatal::get_type::type::apply>
   >();
 }
 
 TEST(fatal_union, by_id) {
   using vtraits = fatal::variant_traits<union1>;
   using traits = vtraits::by_id;
-
-  EXPECT_SAME<fatal::list<uii, udi, usi, uei>, traits::tags>();
 
   EXPECT_SAME<uii, traits::id<uii>>();
   EXPECT_SAME<udi, traits::id<udi>>();
@@ -149,11 +147,6 @@ TEST(fatal_union, by_id) {
 TEST(fatal_union, by_type) {
   using vtraits = fatal::variant_traits<union1>;
   using traits = vtraits::by_type;
-
-  EXPECT_SAME<
-    fatal::list<std::int32_t, double, std::string, enum1>,
-    traits::tags
-  >();
 
   EXPECT_SAME<uii, traits::id<std::int32_t>>();
   EXPECT_SAME<udi, traits::id<double>>();
@@ -242,17 +235,17 @@ FATAL_S(unionA_annotation2v, "some text here");
 
 TEST(fatal_union, annotations) {
   EXPECT_SAME<
-    fatal::map<>,
+    fatal::list<>,
     apache::thrift::reflect_union<union1>::annotations::map
   >();
 
   EXPECT_SAME<
-    fatal::map<>,
+    fatal::list<>,
     apache::thrift::reflect_union<union2>::annotations::map
   >();
 
   EXPECT_SAME<
-    fatal::map<>,
+    fatal::list<>,
     apache::thrift::reflect_union<union3>::annotations::map
   >();
 
@@ -264,7 +257,7 @@ TEST(fatal_union, annotations) {
   EXPECT_SAME<unionA_annotation2v, actual_unionA::values::sample_annotation>();
 
   EXPECT_SAME<
-    fatal::map<
+    fatal::list<
       fatal::pair<unionA_annotation1k, unionA_annotation1v>,
       fatal::pair<unionA_annotation2k, unionA_annotation2v>
     >,

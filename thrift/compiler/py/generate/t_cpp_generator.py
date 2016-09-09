@@ -4373,7 +4373,6 @@ class CppGenerator(t_generator.Generator):
             sg('#include <thrift/lib/cpp2/fatal/reflection.h>')
             sg()
             sg('#include <fatal/type/list.h>')
-            sg('#include <fatal/type/map.h>')
             sg('#include <fatal/type/pair.h>')
             sg('#include <fatal/type/sequence.h>')
 
@@ -4476,17 +4475,15 @@ class CppGenerator(t_generator.Generator):
             eorder = items[o][0]
             entries = items[o][1]
             sns('  // {0}s'.format(o))
-            if type(entries) == list:
-                sns('  ::fatal::list<')
-            elif type(entries) == dict:
-                sns('  ::fatal::map<')
+            sns('  ::fatal::list<')
             for idx, i in enumerate(eorder):
                 if type(entries) == list:
                     sns('    {0}{1}'.format(
                         i[2], ',' if idx + 1 < len(entries) else ''))
                 elif type(entries) == dict:
-                    sns('    ::fatal::pair<{0}, {1}>{2}'.format(i,
-                        entries[i][2], ',' if idx + 1 < len(entries) else ''))
+                    sns('    ::fatal::pair<{0}, {1}>{2}'
+                        .format(i, entries[i][2],
+                                ',' if idx + 1 < len(entries) else ''))
             sns('  >{0}'.format(',' if item_idx + 1 < len(items) else ''))
         sns(');')
 
@@ -4606,7 +4603,7 @@ class CppGenerator(t_generator.Generator):
             aclass('public:')
             aclass('using keys = {0};'.format(clsnmkeys))
             aclass('using values = {0};'.format(clsnmvalues))
-            aclass('using map = ::fatal::map<')
+            aclass('using map = ::fatal::list<')
             if annotations is not None:
                 for idx, i in enumerate(sorted(annotations.keys())):
                     identifier = self._get_fatal_string_short_id(i)
@@ -4692,13 +4689,16 @@ class CppGenerator(t_generator.Generator):
                 t('using type = {0}::{1};'.format(scoped_ns, scoped_name))
                 t('using name = {0};'.format(self._set_fatal_string(name)))
                 t('using str = {0};'.format(strcls))
-                t('using name_to_value = ::fatal::map<')
+                t('using names = ::fatal::list<')
                 for idx, i in enumerate(members):
-                    t('  ::fatal::pair<')
-                    t('    str::{0},'.format(i.name))
-                    t('    std::integral_constant<type, type::{0}>'
-                        .format(i.name))
-                    t('  >{0}'.format(',' if idx + 1 < len(members) else ''))
+                    t('    str::{0}{1}'
+                        .format(i.name, ',' if idx + 1 < len(members) else ''))
+                t('>;')
+                t('using values = ::fatal::sequence<')
+                t('  type{0}'.format(',' if len(members) > 0 else ''))
+                for idx, i in enumerate(members):
+                    t('  type::{0}{1}'
+                        .format(i.name, ',' if idx + 1 < len(members) else ''))
                 t('>;')
                 t()
                 self._render_fatal_annotations(annotations, 'annotations', t)
@@ -4895,7 +4895,6 @@ class CppGenerator(t_generator.Generator):
             sg()
             sg('#include <fatal/type/traits.h>')
             sg('#include <fatal/type/list.h>')
-            sg('#include <fatal/type/map.h>')
             sg()
             result = None
             if len(ns) > 0:
@@ -5067,25 +5066,19 @@ class CppGenerator(t_generator.Generator):
             sns('  {0}::{1}_{2},'.format(
                 self.fatal_detail_ns, i.name, mnfclsprefix))
             # Info
-            sns('  ::fatal::map<')
+            sns('  ::fatal::list<')
             annclsnm = '{0}::{1}_{2}'.format(
                 self.fatal_detail_ns, i.name, annclsprefix)
             for midx, m in enumerate(i.members):
-                sns('    ::fatal::pair<')
-                sns('      {0},'.format(self._get_fatal_string_id(m.name)))
-                sns('      {0}::{1}_{2}::{3}'.format(
-                    self.fatal_detail_ns, i.name, mnfclsprefix, m.name))
-                sns('    >{0}'.format(',' if midx + 1 < len(i.members) else ''))
+                sns('      {0}::{1}_{2}::{3}{4}'.format(
+                    self.fatal_detail_ns, i.name, mnfclsprefix, m.name,
+                    ',' if midx + 1 < len(i.members) else ''))
             sns('  >,')
             # MembersAnnotations
             sns('  {0}::members,'.format(annclsnm))
 
             required_members = [m for m in i.members if m.req == e_req.required]
             nonreq_members = [m for m in i.members if m.req != e_req.required]
-            # RequiredFields
-            render_member_list(i.name, required_members)
-            # NonRequiredFields
-            render_member_list(i.name, nonreq_members)
             # Metadata
             self._render_fatal_type_common_metadata(
                 annclsnm, i.type_id, sns, '  ')
@@ -5115,31 +5108,17 @@ class CppGenerator(t_generator.Generator):
                 detail('  {0}{1}::{2}_{3},'.format(
                     ns_prefix, self.fatal_detail_ns, i.symbolic, mnfclsprefix))
                 # Info
-                detail('  ::fatal::map<')
+                detail('  ::fatal::list<')
                 annclsnm = '{0}{1}::{2}_{3}'.format(
                     ns_prefix, self.fatal_detail_ns, ttype.name, annclsprefix)
-                for midx, m in enumerate(ttype.members):
-                    detail('    ::fatal::pair<')
-                    detail('      {0}{1},'.format(ns_prefix,
-                           self._get_fatal_string_id(m.name)))
-                    detail('      {0}{1}::{2}_{3}::{4}'.format(
-                           ns_prefix, self.fatal_detail_ns,
-                           i.symbolic, mnfclsprefix, m.name))
-                    detail('    >{0}'.format(
-                           ',' if midx + 1 < len(ttype.members) else ''))
-                detail('  >,')
-                # MembersAnnotations
-                detail('  {0}::members,'.format(annclsnm))
-                # RequiredFields
-                detail('  ::fatal::list<')
                 for midx, m in enumerate(ttype.members):
                     detail('      {0}{1}::{2}_{3}::{4}{5}'.format(
                            ns_prefix, self.fatal_detail_ns,
                            i.symbolic, mnfclsprefix, m.name,
                            ',' if midx + 1 < len(ttype.members) else ''))
                 detail('  >,')
-                # NonRequiredFields
-                detail('  ::fatal::list<>,')
+                # MembersAnnotations
+                detail('  {0}::members,'.format(annclsnm))
                 # Metadata
                 self._render_fatal_type_common_metadata(
                     annclsnm, ttype.type_id, detail, '  ', ns_prefix)

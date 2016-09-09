@@ -158,12 +158,12 @@ struct impl<T, type_class::enumeration> {
   using meta = reflect_enum<T>;
   using module_meta = reflect_module<typename meta::module>;
   struct visitor {
-    template <typename Name, typename Value, size_t Index>
+    template <typename Name, size_t Index>
     void operator()(
-        fatal::indexed_pair<Name, Value, Index>,
+        fatal::indexed<Name, Index>,
         datatype_t& dt) {
       dt.enumValues[fatal::to_instance<std::string, Name>()] =
-        int(Value::value);
+        int(meta::traits::template value_of<Name>::value);
     }
   };
   FATAL_S(rkind, "enum");
@@ -174,11 +174,13 @@ struct impl<T, type_class::enumeration> {
     return storage;
   }
   static void go(schema_t& schema) {
-    using enum_map = typename meta::traits::name_to_value;
     registering_datatype(
         schema, to_c_array<rname>::range(), rid(), [&](datatype_t& dt) {
       dt.__isset.enumValues = true;
-      fatal::foreach<fatal::sequence_map_sort<enum_map>>(visitor(), dt);
+      fatal::foreach<fatal::sort<
+        typename meta::traits::names,
+        fatal::sequence_compare<fatal::less>
+      >>(visitor(), dt);
     });
   }
 };
@@ -215,11 +217,10 @@ struct impl<T, type_class::structure> {
     return storage;
   }
   static void go(schema_t& schema) {
-    using members = typename meta::members;
     registering_datatype(
         schema, to_c_array<rname>::range(), rid(), [&](datatype_t& dt) {
       dt.__isset.fields = true;
-      fatal::foreach<fatal::map_values<members>>(visitor(), schema, dt);
+      fatal::foreach<typename meta::members>(visitor(), schema, dt);
     });
   }
 };

@@ -128,11 +128,11 @@ struct pretty_print_impl<type_class::set<ValueTypeClass>> {
  */
 struct pretty_print_variant_visitor {
   template <
-    typename Id, typename Descriptor, std::size_t Index,
+    typename Descriptor, std::size_t Index,
     typename OutputStream, typename T
   >
   void operator ()(
-    fatal::indexed_pair<Id, Descriptor, Index>,
+    fatal::indexed<Descriptor, Index>,
     OutputStream &&out,
     T const &what
   ) const {
@@ -154,8 +154,12 @@ template <>
 struct pretty_print_impl<type_class::variant> {
   template <typename OutputStream, typename T>
   static void print(OutputStream &out, T const &what) {
+    using namespace fatal;
     out << "<variant>{";
-    fatal::sorted_map_search<typename fatal::variant_traits<T>::by_id::map>(
+    sorted_search<
+      sort<typename variant_traits<T>::descriptors, less, get_type::id>,
+      get_type::id::apply
+    >(
       what.getType(),
       pretty_print_variant_visitor(),
       out.start_scope(),
@@ -205,7 +209,7 @@ struct pretty_print_impl<type_class::structure> {
     out << "<struct>{";
     out.newline();
     using info = reflect_struct<T>;
-    fatal::foreach<fatal::map_values<typename info::members>>(
+    fatal::foreach<typename info::members>(
       pretty_print_struct_visitor<fatal::size<typename info::members>::value>(),
       out,
       what

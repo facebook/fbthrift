@@ -59,87 +59,107 @@ TEST(fatal_typedef, my_structA_sanity_check) {
   traits::member::b::getter::ref(pod) = "test";
   EXPECT_EQ("test", pod.b);
 
-  EXPECT_SAME<field_as, fatal::map_get<traits::members, field_as>::name>();
-  EXPECT_SAME<field_bs, fatal::map_get<traits::members, field_bs>::name>();
+  EXPECT_SAME<
+    field_as,
+    fatal::get<traits::members, field_as, fatal::get_type::name>::name
+  >();
+  EXPECT_SAME<
+    field_bs,
+    fatal::get<traits::members, field_bs, fatal::get_type::name>::name
+  >();
 
-  EXPECT_SAME<std::int32_t, fatal::map_get<traits::members, field_as>::type>();
-  EXPECT_SAME<std::string, fatal::map_get<traits::members, field_bs>::type>();
+  EXPECT_SAME<
+    std::int32_t,
+    fatal::get<traits::members, field_as, fatal::get_type::name>::type
+  >();
+  EXPECT_SAME<
+    std::string,
+    fatal::get<traits::members, field_bs, fatal::get_type::name>::type
+  >();
 
-  EXPECT_SAME<field_id<1>, fatal::map_get<traits::members, field_as>::id>();
-  EXPECT_SAME<field_id<2>, fatal::map_get<traits::members, field_bs>::id>();
+  EXPECT_SAME<
+    field_id<1>,
+    fatal::get<traits::members, field_as, fatal::get_type::name>::id
+  >();
+  EXPECT_SAME<
+    field_id<2>,
+    fatal::get<traits::members, field_bs, fatal::get_type::name>::id
+  >();
 
   EXPECT_SAME<
     required<apache::thrift::optionality::required>,
-    fatal::map_get<traits::members, field_as>::optional
+    fatal::get<traits::members, field_as, fatal::get_type::name>::optional
   >();
   EXPECT_SAME<
     required<apache::thrift::optionality::required>,
-    fatal::map_get<traits::members, field_bs>::optional
+    fatal::get<traits::members, field_bs, fatal::get_type::name>::optional
   >();
 
   EXPECT_EQ(
     98,
-    (fatal::map_get<
+    (fatal::get<
         traits::members,
-        traits::member::a::name
+        traits::member::a::name,
+        fatal::get_type::name
       >::getter::ref(pod))
   );
   EXPECT_EQ(
     "test",
-    ( fatal::map_get<
+    ( fatal::get<
         traits::members,
-        traits::member::b::name
+        traits::member::b::name,
+        fatal::get_type::name
       >::getter::ref(pod))
   );
 
   EXPECT_SAME<
     apache::thrift::type_class::integral,
-    fatal::map_get<traits::members, field_as>::type_class
+    fatal::get<traits::members, field_as, fatal::get_type::name>::type_class
   >();
   EXPECT_SAME<
     apache::thrift::type_class::string,
-    fatal::map_get<traits::members, field_bs>::type_class
+    fatal::get<traits::members, field_bs, fatal::get_type::name>::type_class
   >();
 
   EXPECT_SAME<
     std::int32_t,
-    decltype(
-      std::declval<fatal::map_get<traits::members, field_as>::pod<>>().a
-    )
+    decltype(std::declval<
+      fatal::get<traits::members, field_as, fatal::get_type::name>::pod<>
+    >().a)
   >();
   EXPECT_SAME<
     std::string,
-    decltype(
-      std::declval<fatal::map_get<traits::members, field_bs>::pod<>>().b
-    )
+    decltype(std::declval<
+      fatal::get<traits::members, field_bs, fatal::get_type::name>::pod<>
+    >().b)
   >();
 
   EXPECT_SAME<
     bool,
-    decltype(
-      std::declval<fatal::map_get<traits::members, field_as>::pod<bool>>().a
-    )
+    decltype(std::declval<
+      fatal::get<traits::members, field_as, fatal::get_type::name>::pod<bool>
+    >().a)
   >();
   EXPECT_SAME<
     bool,
-    decltype(
-      std::declval<fatal::map_get<traits::members, field_bs>::pod<bool>>().b
-    )
+    decltype(std::declval<
+      fatal::get<traits::members, field_bs, fatal::get_type::name>::pod<bool>
+    >().b)
   >();
 
   EXPECT_SAME<
     traits::member::a,
-    fatal::map_get<traits::members, traits::member::a::name>
+    fatal::get<traits::members, traits::member::a::name, fatal::get_type::name>
   >();
   EXPECT_SAME<
     traits::member::b,
-    fatal::map_get<traits::members, traits::member::b::name>
+    fatal::get<traits::members, traits::member::b::name, fatal::get_type::name>
   >();
 }
 
 TEST(fatal_typedef, annotations) {
   EXPECT_SAME<
-    fatal::map<>,
+    fatal::list<>,
     apache::thrift::reflect_struct<my_structA>::annotations::map
   >();
 }
@@ -147,14 +167,18 @@ TEST(fatal_typedef, annotations) {
 TEST(fatal_typedef, member_annotations) {
   using info = apache::thrift::reflect_struct<my_structA>;
 
-  EXPECT_SAME<fatal::map<>, info::members_annotations::a::map>();
-  EXPECT_SAME<fatal::map<>, info::members_annotations::b::map>();
+  EXPECT_SAME<fatal::list<>, info::members_annotations::a::map>();
+  EXPECT_SAME<fatal::list<>, info::members_annotations::b::map>();
 }
 
 TEST(fatal_typedef, is_set_methods) {
   using info = apache::thrift::reflect_struct<my_structA>;
-  using field_a = fatal::map_get<info::members, info::member::a::name>;
-  using field_b = fatal::map_get<info::members, info::member::b::name>;
+  using field_a = fatal::get<
+    info::members, info::member::a::name, fatal::get_type::name
+  >;
+  using field_b = fatal::get<
+    info::members, info::member::b::name, fatal::get_type::name
+  >;
 
   my_structA pod;
 

@@ -20,7 +20,6 @@
 #include <thrift/lib/cpp2/fatal/reflection.h>
 
 #include <fatal/type/call_traits.h>
-#include <fatal/type/map.h>
 #include <fatal/type/trie.h>
 
 #include <bitset>
@@ -562,43 +561,39 @@ namespace detail {
 
 // helper predicate for determining if a struct's MemberInfo is required
 // to be read out of the protocol
-template <typename MemberInfo>
-struct is_required_field :
-  std::integral_constant<
+struct is_required_field {
+  template <typename MemberInfo>
+  using apply = std::integral_constant<
     bool,
     MemberInfo::optional::value == optionality::required
-  > {};
-
-template <typename MemberInfo>
-struct is_not_required_field :
-  std::integral_constant<
-    bool,
-    MemberInfo::optional::value != optionality::required
-  > {};
+  >;
+};
 
 // marks isset either on the required field array,
 // or the appropriate member within the Struct being read
 template <
-  optionality opt,
+  std::underlying_type<optionality>::type Optional,
   typename,
   typename MemberInfo,
   typename isset_array,
   typename Struct
 >
-typename std::enable_if<opt != optionality::required>::type
-mark_isset(isset_array& /*isset*/, Struct& obj) {
+typename std::enable_if<
+  static_cast<optionality>(Optional) != optionality::required
+>::type mark_isset(isset_array& /*isset*/, Struct& obj) {
   MemberInfo::mark_set(obj);
 }
 
 template <
-  optionality opt,
+  std::underlying_type<optionality>::type Optional,
   typename required_fields,
   typename MemberInfo,
   typename isset_array,
   typename Struct
 >
-typename std::enable_if<opt == optionality::required>::type
-mark_isset(isset_array& isset, Struct& /*obj*/) {
+typename std::enable_if<
+  static_cast<optionality>(Optional) == optionality::required
+>::type mark_isset(isset_array& isset, Struct& /*obj*/) {
   using fid_idx = fatal::index_of<required_fields, MemberInfo>;
   static_assert(fid_idx::value != fatal::size<required_fields>::value,
     "internal error: didn't find reqired field");
@@ -606,8 +601,10 @@ mark_isset(isset_array& isset, Struct& /*obj*/) {
   isset[fid_idx::value] = true;
 }
 
-template <typename T>
-using extract_descriptor_fid = typename T::metadata::id;
+struct extract_descriptor_fid {
+  template <typename T>
+  using apply = typename T::metadata::id;
+};
 
 template <typename T, typename Enable = void>
 struct deref;
@@ -686,25 +683,14 @@ struct protocol_methods <
   // using traits = reflect_union<Union>;
   using traits = fatal::variant_traits<Union>;
   using enum_traits = fatal::enum_traits<typename traits::id>;
-  using id_name_strs = typename enum_traits::names;
-
-  // Field ID -> descriptor
-  using fid_to_descriptor_map = fatal::as_map<
-    typename traits::descriptors,
-    detail::extract_descriptor_fid
-  >;
 
   // Union.Type id -> descriptor
   using sorted_ids = fatal::sort<
-    fatal::transform<typename traits::descriptors, fatal::get_type::id>
-  >;
-  using id_to_descriptor_map = fatal::as_map<
-    typename traits::descriptors,
-    fatal::get_type::id
+    fatal::transform<typename traits::descriptors, fatal::get_type::id::apply>
   >;
 
   private:
-    // Visitor for a fatal prefix tree of union field names,
+    // Visitor for a trie of union field names,
     // for mapping member field `fname` to  field `fid` and `ftype`
   struct member_fname_to_fid {
     template <typename TString>
@@ -713,13 +699,10 @@ struct protocol_methods <
       field_id_t& fid,
       protocol::TType& ftype)
     {
-      using enum_value = fatal::map_get<
-        typename enum_traits::name_to_value,
-        TString
-      >;
-      using descriptor = fatal::map_get<
-        typename traits::by_id::map,
-        enum_value
+      using descriptor = fatal::get<
+        typename traits::descriptors,
+        typename enum_traits::template value_of<TString>,
+        fatal::get_type::id
       >;
 
       using field_type   = typename descriptor::type;
@@ -740,7 +723,7 @@ struct protocol_methods <
     }
   };
 
-  // Visitor for a fatal binary search on (sorted) field IDs,
+  // Visitor for a binary search on (sorted) field IDs,
   // sets the field `Fid` on the Union `obj` when called
   template <typename Protocol>
   struct set_member_by_fid {
@@ -753,7 +736,8 @@ struct protocol_methods <
       Protocol& protocol,
       Union& obj
     ) const {
-      using descriptor = fatal::map_get<fid_to_descriptor_map, Fid>;
+      using descriptor = fatal::get<
+        typename traits::descriptors, Fid, detail::extract_descriptor_fid>;
 
       using field_methods = protocol_methods<
           typename descriptor::metadata::type_class,
@@ -789,16 +773,17 @@ public:
       if(fid == std::numeric_limits<int16_t>::min()) {
         // if so, look up fid via fname
         assert(fname != "");
-        auto found_ = fatal::trie_find<id_name_strs>(
+        using id_name_strs = typename enum_traits::names;
+        auto const found = fatal::trie_find<id_name_strs>(
           fname.begin(), fname.end(), member_fname_to_fid(), fid, ftype
         );
-        assert(found_ == 1);
+        assert(found);
       }
 
       using sorted_fids = fatal::sort<
         fatal::transform<
           typename traits::descriptors,
-          detail::extract_descriptor_fid
+          detail::extract_descriptor_fid::apply
         >
       >;
       if(!fatal::sorted_search<sorted_fids>(
@@ -828,7 +813,9 @@ private:
       Protocol& protocol,
       Union const& obj
     ) {
-      using descriptor = fatal::map_get<id_to_descriptor_map, Id>;
+      using descriptor = fatal::get<
+        typename traits::descriptors, Id, fatal::get_type::id>;
+
       typename descriptor::getter getter;
       using methods = protocol_methods<
         typename descriptor::metadata::type_class,
@@ -883,7 +870,8 @@ private:
       Union const& obj
     )
     {
-      using descriptor = fatal::map_get<id_to_descriptor_map, Id>;
+      using descriptor = fatal::get<
+        typename traits::descriptors, Id, fatal::get_type::id>;
       typename descriptor::getter getter;
       using methods = protocol_methods<
         typename descriptor::metadata::type_class,
@@ -951,12 +939,12 @@ struct protocol_methods <
 private:
   using traits = apache::thrift::reflect_struct<Struct>;
 
-  // fatal::type_list
-  using member_names = fatal::map_keys<typename traits::members>;
-
-  // fatal::type_list
-  using required_fields = typename traits::required_fields;
-  using optional_fields = typename traits::nonrequired_fields;
+  using all_fields = fatal::partition<
+    typename traits::members,
+    detail::is_required_field
+  >;
+  using required_fields = fatal::first<all_fields>;
+  using optional_fields = fatal::second<all_fields>;
 
   using isset_array = std::bitset<fatal::size<required_fields>::value>;
 
@@ -967,7 +955,8 @@ private:
       fatal::tag<TString>,
       field_id_t& fid,
       protocol::TType& ftype) {
-      using member = fatal::map_get<typename traits::members, TString>;
+      using member = fatal::get<
+        typename traits::members, TString, fatal::get_type::name>;
       fid = member::id::value;
       ftype = protocol_methods<
         typename member::type_class,
@@ -997,12 +986,8 @@ private:
       Struct& obj,
       isset_array& required_isset)
     {
-      // fatal::map {std::integral_constant<field_id_t, fid> => MemberInfo}
-      using id_to_member_map = fatal::as_map<
-        fatal::map_values<typename traits::members>,
-        fatal::get_type::id
-      >;
-      using member = fatal::map_get<id_to_member_map, Fid>;
+      using member = fatal::get<
+        typename traits::members, Fid, fatal::get_type::id>;
       using getter = typename member::getter;
 
       using protocol_method = protocol_methods<
@@ -1014,7 +999,9 @@ private:
 
       if(ftype == protocol_method::ttype_value) {
         detail::mark_isset<
-            member::optional::value,
+            static_cast<std::underlying_type<optionality>::type>(
+              member::optional::value
+            ),
             required_fields,
             member
           >(required_isset, obj);
@@ -1031,6 +1018,7 @@ private:
 public:
   template <typename Protocol>
   static std::size_t read(Protocol& protocol, Struct& out) {
+    using namespace fatal;
     std::size_t xfer = 0;
     std::string fname;
     apache::thrift::protocol::TType ftype = protocol::T_STOP;
@@ -1039,7 +1027,7 @@ public:
 
     xfer += protocol.readStructBegin(fname);
     DVLOG(3) << "start reading struct: " << fname << " ("
-      << fatal::z_data<typename traits::name>() << ")";
+      << z_data<typename traits::name>() << ")";
 
     while(true) {
       xfer += protocol.readFieldBegin(fname, ftype, fid);
@@ -1055,23 +1043,20 @@ public:
       if(fid == std::numeric_limits<int16_t>::min()) {
         // if so, look up fid via fname
         assert(fname != "");
-        auto found_ = fatal::trie_find<member_names>(
-          fname.begin(), fname.end(), member_fname_to_fid(), fid, ftype
-        );
-        if(found_ != 1) {
+        auto found_ = trie_find<
+          transform<typename traits::members, get_type::name::apply>
+        >(fname.begin(), fname.end(), member_fname_to_fid(), fid, ftype);
+        if (!found_) {
           xfer += protocol.skip(ftype);
           xfer += protocol.readFieldEnd();
           continue;
         }
       }
 
-      using sorted_fids  = fatal::sort<
-        fatal::transform<
-          fatal::map_values<typename traits::members>,
-          fatal::get_type::id
-        >
+      using sorted_fids  = sort<
+        transform<typename traits::members, get_type::id::apply>
       >;
-      if(!fatal::sorted_search<sorted_fids>(
+      if(!sorted_search<sorted_fids>(
           fid,
           set_member_by_fid(),
           ftype,
@@ -1104,11 +1089,11 @@ public:
 private:
   template <
     typename Protocol,
-    typename MemberFid,
+    field_id_t MemberFid,
     typename TypeClass,
     typename MemberType,
     typename Methods,
-    optionality optional,
+    std::underlying_type<optionality>::type Optional,
     typename Enable = void
   >
   struct field_writer;
@@ -1116,18 +1101,21 @@ private:
   // generic field writer
   template <
     typename Protocol,
-    typename MemberFid,
+    field_id_t MemberFid,
     typename TypeClass,
     typename MemberType,
     typename Methods,
-    optionality opt
+    std::underlying_type<optionality>::type Optional
   >
-  struct field_writer
-  <
-    Protocol, MemberFid, TypeClass, MemberType, Methods, opt,
+  struct field_writer<
+    Protocol, MemberFid, TypeClass, MemberType, Methods, Optional,
     detail::disable_if_smart_pointer<MemberType>
   > {
-    using Member = fatal::map_get<typename traits::members, MemberFid>;
+    using Member = fatal::get<
+      typename traits::members,
+      std::integral_constant<field_id_t, MemberFid>,
+      fatal::get_type::id
+    >;
 
     static std::size_t write(Protocol& protocol, MemberType const& in) {
       std::size_t xfer = 0;
@@ -1149,18 +1137,22 @@ private:
   // writer for default/required ref structrs
   template <
     typename Protocol,
-    typename MemberFid,
+    field_id_t MemberFid,
     typename PtrType,
     typename Methods,
-    optionality opt
+    std::underlying_type<optionality>::type Optional
   >
-  struct field_writer <
-    Protocol, MemberFid, type_class::structure, PtrType, Methods, opt,
+  struct field_writer<
+    Protocol, MemberFid, type_class::structure, PtrType, Methods, Optional,
     detail::enable_if_smart_pointer<PtrType>
   > {
     using struct_type =
         typename std::remove_const<typename PtrType::element_type>::type;
-    using Member = fatal::map_get<typename traits::members, MemberFid>;
+    using Member = fatal::get<
+      typename traits::members,
+      std::integral_constant<field_id_t, MemberFid>,
+      fatal::get_type::id
+    >;
 
     static
     std::size_t write(Protocol& protocol, PtrType const& in) {
@@ -1175,7 +1167,7 @@ private:
           type_class::structure,
           struct_type,
           Methods,
-          opt
+          Optional
         >::write(protocol, *in);
       }
       else {
@@ -1201,13 +1193,13 @@ private:
   // writer for optional ref structs
   template <
     typename Protocol,
-    typename MemberFid,
+    field_id_t MemberFid,
     typename PtrType,
     typename Methods
   >
-  struct field_writer <
+  struct field_writer<
     Protocol, MemberFid, type_class::structure, PtrType, Methods,
-    optionality::optional,
+    static_cast<std::underlying_type<optionality>::type>(optionality::optional),
     detail::enable_if_smart_pointer<PtrType>
   > {
     static std::size_t write(Protocol& protocol, PtrType const& in) {
@@ -1218,7 +1210,9 @@ private:
           type_class::structure,
           PtrType,
           Methods,
-          optionality::required
+          static_cast<std::underlying_type<optionality>::type>(
+            optionality::required
+          )
         >::write(protocol, in);
       }
       else {
@@ -1228,24 +1222,22 @@ private:
   };
 
   struct member_writer {
-    template <typename MemberFid, std::size_t Index, typename Protocol>
+    template <typename Member, std::size_t Index, typename Protocol>
     void operator()(
-      fatal::indexed<MemberFid, Index>,
+      fatal::indexed<Member, Index>,
       Protocol& protocol,
       Struct const& in,
       std::size_t& xfer)
     {
-      using Member = fatal::map_get<typename traits::members, MemberFid>;
-
       using methods = protocol_methods<
         typename Member::type_class,
         typename Member::type
       >;
 
       if(
-        (Member::optional::value == optionality::required_of_writer) ||
-        Member::is_set(in))
-      {
+        (Member::optional::value == optionality::required_of_writer)
+        || Member::is_set(in)
+      ) {
         DVLOG(3) << "start field write: "
           << fatal::z_data<typename Member::name>()
           << " ttype:" << methods::ttype_value
@@ -1256,11 +1248,14 @@ private:
 
         xfer += field_writer<
           Protocol,
-          MemberFid,
+          Member::id::value,
           typename Member::type_class,
           member_type,
           methods,
-          Member::optional::value>::write(protocol, got);
+          static_cast<std::underlying_type<optionality>::type>(
+            Member::optional::value
+          )
+        >::write(protocol, got);
       }
     }
   };
@@ -1268,11 +1263,11 @@ private:
   template <
     bool ZeroCopy,
     typename Protocol,
-    typename MemberFid,
+    field_id_t MemberFid,
     typename TypeClass,
     typename MemberType,
     typename Methods,
-    optionality,
+    std::underlying_type<optionality>::type,
     typename Enable = void
   >
   struct field_size;
@@ -1281,17 +1276,21 @@ private:
   template <
     bool ZeroCopy,
     typename Protocol,
-    typename MemberFid,
+    field_id_t MemberFid,
     typename TypeClass,
     typename MemberType,
     typename Methods,
-    optionality opt
+    std::underlying_type<optionality>::type Optional
   >
-  struct field_size <
-    ZeroCopy, Protocol, MemberFid, TypeClass, MemberType, Methods, opt,
+  struct field_size<
+    ZeroCopy, Protocol, MemberFid, TypeClass, MemberType, Methods, Optional,
     detail::disable_if_smart_pointer<MemberType>
   > {
-    using Member = fatal::map_get<typename traits::members, MemberFid>;
+    using Member = fatal::get<
+      typename traits::members,
+      std::integral_constant<field_id_t, MemberFid>,
+      fatal::get_type::id
+    >;
 
     static std::size_t size(Protocol& protocol, MemberType const& in) {
       std::size_t xfer = 0;
@@ -1312,18 +1311,22 @@ private:
   template <
     bool ZeroCopy,
     typename Protocol,
-    typename MemberFid,
+    field_id_t MemberFid,
     typename PtrType,
     typename Methods,
-    optionality opt
+    std::underlying_type<optionality>::type Optional
   >
-  struct field_size <
-    ZeroCopy, Protocol, MemberFid, type_class::structure, PtrType, Methods, opt,
-    detail::enable_if_smart_pointer<PtrType>
+  struct field_size<
+    ZeroCopy, Protocol, MemberFid, type_class::structure, PtrType, Methods,
+    Optional, detail::enable_if_smart_pointer<PtrType>
   > {
     using struct_type =
         typename std::remove_const<typename PtrType::element_type>::type;
-    using Member = fatal::map_get<typename traits::members, MemberFid>;
+    using Member = fatal::get<
+      typename traits::members,
+      std::integral_constant<field_id_t, MemberFid>,
+      fatal::get_type::id
+    >;
 
     static
     std::size_t size(Protocol& protocol, PtrType const& in) {
@@ -1336,7 +1339,7 @@ private:
           type_class::structure,
           struct_type,
           Methods,
-          opt
+          Optional
         >::size(protocol, *in);
       }
       else {
@@ -1361,13 +1364,13 @@ private:
   template <
     bool ZeroCopy,
     typename Protocol,
-    typename MemberFid,
+    field_id_t MemberFid,
     typename PtrType,
     typename Methods
   >
-  struct field_size <
+  struct field_size<
     ZeroCopy, Protocol, MemberFid, type_class::structure, PtrType, Methods,
-    optionality::optional,
+    static_cast<std::underlying_type<optionality>::type>(optionality::optional),
     detail::enable_if_smart_pointer<PtrType>
   > {
     static std::size_t size(Protocol& protocol, PtrType const& in) {
@@ -1379,7 +1382,9 @@ private:
           type_class::structure,
           PtrType,
           Methods,
-          optionality::required
+          static_cast<std::underlying_type<optionality>::type>(
+            optionality::required
+          )
         >::size(protocol, in);
       }
       else {
@@ -1390,14 +1395,13 @@ private:
 
   template <bool ZeroCopy>
   struct member_size {
-    template <typename MemberFid, std::size_t Index, typename Protocol>
+    template <typename Member, std::size_t Index, typename Protocol>
     void inline operator()(
-      fatal::indexed<MemberFid, Index>,
+      fatal::indexed<Member, Index>,
       Protocol& protocol,
       Struct const& in,
       std::size_t& xfer)
     {
-      using Member = fatal::map_get<typename traits::members, MemberFid>;
       using methods = protocol_methods<
         typename Member::type_class,
         typename Member::type
@@ -1406,14 +1410,17 @@ private:
       auto const& got = Member::getter::ref(in);
       using member_type = typename std::decay<decltype(got)>::type;
 
-      xfer += field_size <
+      xfer += field_size<
         ZeroCopy,
         Protocol,
-        MemberFid,
+        Member::id::value,
         typename Member::type_class,
         member_type,
         methods,
-        Member::optional::value>::size(protocol, got);
+        static_cast<std::underlying_type<optionality>::type>(
+          Member::optional::value
+        )
+      >::size(protocol, got);
     }
   };
 
@@ -1423,7 +1430,7 @@ public:
     std::size_t xfer = 0;
 
     xfer += protocol.writeStructBegin(fatal::z_data<typename traits::name>());
-    fatal::foreach<fatal::map_keys<typename traits::members>>(
+    fatal::foreach<typename traits::members>(
       member_writer(), protocol, in, xfer
     );
     xfer += protocol.writeFieldStop();
@@ -1436,7 +1443,7 @@ public:
     std::size_t xfer = 0;
     xfer += protocol.serializedStructSize(
       fatal::z_data<typename traits::name>());
-    fatal::foreach<fatal::map_keys<typename traits::members>>(
+    fatal::foreach<typename traits::members>(
       member_size<ZeroCopy>(), protocol, in, xfer
     );
     xfer += protocol.serializedSizeStop();

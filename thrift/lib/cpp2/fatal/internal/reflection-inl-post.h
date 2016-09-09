@@ -156,7 +156,7 @@ template <>
 struct reflected_annotations<void> {
   struct keys {};
   struct values {};
-  using map = fatal::type_map<>;
+  using map = fatal::list<>;
 };
 
 }} // apache::thrift

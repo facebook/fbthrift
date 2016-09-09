@@ -28,19 +28,16 @@ class enum1_enum_traits {
   using type = ::test_cpp2::cpp_reflection::enum1;
   using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum1;
   using str = enum1__struct_unique_strings_list;
-  using name_to_value = ::fatal::map<
-    ::fatal::pair<
+  using names = ::fatal::list<
       str::field0,
-      std::integral_constant<type, type::field0>
-    >,
-    ::fatal::pair<
       str::field1,
-      std::integral_constant<type, type::field1>
-    >,
-    ::fatal::pair<
-      str::field2,
-      std::integral_constant<type, type::field2>
-    >
+      str::field2
+  >;
+  using values = ::fatal::sequence<
+    type,
+    type::field0,
+    type::field1,
+    type::field2
   >;
 
   class annotations {
@@ -51,7 +48,7 @@ class enum1_enum_traits {
     public:
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
-    using map = ::fatal::map<
+    using map = ::fatal::list<
     >;
   };
 
@@ -88,19 +85,16 @@ class enum2_enum_traits {
   using type = ::test_cpp2::cpp_reflection::enum2;
   using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum2;
   using str = enum2__struct_unique_strings_list;
-  using name_to_value = ::fatal::map<
-    ::fatal::pair<
+  using names = ::fatal::list<
       str::field0_2,
-      std::integral_constant<type, type::field0_2>
-    >,
-    ::fatal::pair<
       str::field1_2,
-      std::integral_constant<type, type::field1_2>
-    >,
-    ::fatal::pair<
-      str::field2_2,
-      std::integral_constant<type, type::field2_2>
-    >
+      str::field2_2
+  >;
+  using values = ::fatal::sequence<
+    type,
+    type::field0_2,
+    type::field1_2,
+    type::field2_2
   >;
 
   class annotations {
@@ -111,7 +105,7 @@ class enum2_enum_traits {
     public:
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
-    using map = ::fatal::map<
+    using map = ::fatal::list<
     >;
   };
 
@@ -148,19 +142,16 @@ class enum3_enum_traits {
   using type = ::test_cpp2::cpp_reflection::enum3;
   using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum3;
   using str = enum3__struct_unique_strings_list;
-  using name_to_value = ::fatal::map<
-    ::fatal::pair<
+  using names = ::fatal::list<
       str::field0_3,
-      std::integral_constant<type, type::field0_3>
-    >,
-    ::fatal::pair<
       str::field1_3,
-      std::integral_constant<type, type::field1_3>
-    >,
-    ::fatal::pair<
-      str::field2_3,
-      std::integral_constant<type, type::field2_3>
-    >
+      str::field2_3
+  >;
+  using values = ::fatal::sequence<
+    type,
+    type::field0_3,
+    type::field1_3,
+    type::field2_3
   >;
 
   class annotations {
@@ -185,7 +176,7 @@ class enum3_enum_traits {
     public:
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
-    using map = ::fatal::map<
+    using map = ::fatal::list<
       ::fatal::pair<
         keys::_now_with_an_underscore,
         values::_now_with_an_underscore
@@ -269,111 +260,62 @@ class enum_with_special_names_enum_traits {
   using type = ::test_cpp2::cpp_reflection::enum_with_special_names;
   using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum_with_special_names;
   using str = enum_with_special_names__struct_unique_strings_list;
-  using name_to_value = ::fatal::map<
-    ::fatal::pair<
+  using names = ::fatal::list<
       str::get,
-      std::integral_constant<type, type::get>
-    >,
-    ::fatal::pair<
       str::getter,
-      std::integral_constant<type, type::getter>
-    >,
-    ::fatal::pair<
       str::lists,
-      std::integral_constant<type, type::lists>
-    >,
-    ::fatal::pair<
       str::maps,
-      std::integral_constant<type, type::maps>
-    >,
-    ::fatal::pair<
       str::name,
-      std::integral_constant<type, type::name>
-    >,
-    ::fatal::pair<
       str::name_to_value,
-      std::integral_constant<type, type::name_to_value>
-    >,
-    ::fatal::pair<
       str::names,
-      std::integral_constant<type, type::names>
-    >,
-    ::fatal::pair<
       str::prefix_tree,
-      std::integral_constant<type, type::prefix_tree>
-    >,
-    ::fatal::pair<
       str::sets,
-      std::integral_constant<type, type::sets>
-    >,
-    ::fatal::pair<
       str::setter,
-      std::integral_constant<type, type::setter>
-    >,
-    ::fatal::pair<
       str::str,
-      std::integral_constant<type, type::str>
-    >,
-    ::fatal::pair<
       str::strings,
-      std::integral_constant<type, type::strings>
-    >,
-    ::fatal::pair<
       str::type,
-      std::integral_constant<type, type::type>
-    >,
-    ::fatal::pair<
       str::value,
-      std::integral_constant<type, type::value>
-    >,
-    ::fatal::pair<
       str::value_to_name,
-      std::integral_constant<type, type::value_to_name>
-    >,
-    ::fatal::pair<
       str::values,
-      std::integral_constant<type, type::values>
-    >,
-    ::fatal::pair<
       str::id,
-      std::integral_constant<type, type::id>
-    >,
-    ::fatal::pair<
       str::ids,
-      std::integral_constant<type, type::ids>
-    >,
-    ::fatal::pair<
       str::descriptor,
-      std::integral_constant<type, type::descriptor>
-    >,
-    ::fatal::pair<
       str::descriptors,
-      std::integral_constant<type, type::descriptors>
-    >,
-    ::fatal::pair<
       str::key,
-      std::integral_constant<type, type::key>
-    >,
-    ::fatal::pair<
       str::keys,
-      std::integral_constant<type, type::keys>
-    >,
-    ::fatal::pair<
       str::annotation,
-      std::integral_constant<type, type::annotation>
-    >,
-    ::fatal::pair<
       str::annotations,
-      std::integral_constant<type, type::annotations>
-    >,
-    ::fatal::pair<
       str::member,
-      std::integral_constant<type, type::member>
-    >,
-    ::fatal::pair<
-      str::members,
-      std::integral_constant<type, type::members>
-    >
+      str::members
+  >;
+  using values = ::fatal::sequence<
+    type,
+    type::get,
+    type::getter,
+    type::lists,
+    type::maps,
+    type::name,
+    type::name_to_value,
+    type::names,
+    type::prefix_tree,
+    type::sets,
+    type::setter,
+    type::str,
+    type::strings,
+    type::type,
+    type::value,
+    type::value_to_name,
+    type::values,
+    type::id,
+    type::ids,
+    type::descriptor,
+    type::descriptors,
+    type::key,
+    type::keys,
+    type::annotation,
+    type::annotations,
+    type::member,
+    type::members
   >;
 
   class annotations {
@@ -384,7 +326,7 @@ class enum_with_special_names_enum_traits {
     public:
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
-    using map = ::fatal::map<
+    using map = ::fatal::list<
     >;
   };
 

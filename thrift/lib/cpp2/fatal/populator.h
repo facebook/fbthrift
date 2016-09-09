@@ -16,8 +16,8 @@
 
 #pragma once
 
-#include <thrift/lib/cpp2/fatal/reflection.h>
 #include <thrift/lib/cpp2/fatal/container_traits.h>
+#include <thrift/lib/cpp2/fatal/reflection.h>
 #include <thrift/lib/cpp2/fatal/serializer.h>
 
 #include <algorithm>
@@ -330,12 +330,6 @@ template <typename Union>
 struct populator_methods<type_class::variant, Union> {
   using traits = fatal::variant_traits<Union>;
 
-  // Field ID -> descriptor
-  using fid_to_descriptor_map = fatal::as_map<
-    typename traits::descriptors,
-    detail::extract_descriptor_fid
-  >;
-
 private:
   struct write_member_by_fid {
     template <typename Fid, std::size_t Index, typename Rng>
@@ -345,7 +339,8 @@ private:
       populator_opts const& opts,
       Union& obj
     ) {
-      using descriptor = fatal::map_get<fid_to_descriptor_map, Fid>;
+      using descriptor = fatal::get<
+        typename traits::descriptors, Fid, detail::extract_descriptor_fid>;
       using methods = populator_methods<
         typename descriptor::metadata::type_class,
         typename descriptor::type>;
@@ -380,7 +375,7 @@ public:
       fatal::as_sequence<
         fatal::transform<
           typename traits::descriptors,
-          detail::extract_descriptor_fid
+          detail::extract_descriptor_fid::apply
         >,
         fatal::sequence,
         field_id_t
@@ -412,8 +407,8 @@ private:
   using traits = apache::thrift::reflect_struct<Struct>;
 
   using all_fields = fatal::partition<
-    fatal::map_values<typename traits::members>,
-    fatal::applier<detail::is_required_field>
+    typename traits::members,
+    detail::is_required_field
   >;
   using required_fields = fatal::first<all_fields>;
   using optional_fields = fatal::second<all_fields>;
@@ -551,7 +546,7 @@ private:
 public:
   template <typename Rng>
   static void populate(Rng& rng, populator_opts const& opts, Struct& out) {
-    fatal::foreach<fatal::map_values<typename traits::members>>(
+    fatal::foreach<typename traits::members>(
       member_populator(), rng, opts, out
     );
   }

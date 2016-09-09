@@ -252,19 +252,19 @@ struct debug_equals_impl<type_class::set<ValueTypeClass>> {
 template <typename VariantTraits>
 struct debug_equals_variant_visitor {
   template <
-    typename Id, typename Descriptor, std::size_t Index,
+    typename Descriptor, std::size_t Index,
     typename T, typename Callback
   >
   void operator ()(
-    fatal::indexed_pair<Id, Descriptor, Index>,
+    fatal::indexed<Descriptor, Index>,
     std::string &path,
     T const &lhs,
     T const &rhs,
     Callback &&callback,
     bool &result
   ) const {
-    assert(Id::value == VariantTraits::get_id(lhs));
-    assert(Id::value == VariantTraits::get_id(rhs));
+    assert(Descriptor::id::value == VariantTraits::get_id(lhs));
+    assert(Descriptor::id::value == VariantTraits::get_id(rhs));
 
     using name = typename Descriptor::metadata::name;
     scoped_path guard(path, fatal::z_data<name>());
@@ -286,12 +286,13 @@ struct debug_equals_impl<type_class::variant> {
     T const &rhs,
     Callback &&callback
   ) {
-    using traits = fatal::variant_traits<T>;
+    using namespace fatal;
+    using traits = variant_traits<T>;
 
     if (traits::get_id(lhs) != traits::get_id(rhs)) {
       callback(
-        fatal::enum_to_string(traits::get_id(lhs), "<unknown>"),
-        fatal::enum_to_string(traits::get_id(rhs), "<unknown>"),
+        enum_to_string(traits::get_id(lhs), "<unknown>"),
+        enum_to_string(traits::get_id(rhs), "<unknown>"),
         path,
         "variant stored type mismatch"
       );
@@ -299,7 +300,10 @@ struct debug_equals_impl<type_class::variant> {
     }
 
     bool result = true;
-    fatal::sorted_map_search<fatal::map_sort<typename traits::by_id::map>>(
+    sorted_search<
+      sort<typename traits::descriptors, less, get_type::id>,
+      get_type::id::apply
+    >(
       lhs.getType(),
       debug_equals_variant_visitor<traits>(),
       path,
@@ -347,7 +351,7 @@ struct debug_equals_impl<type_class::structure> {
   ) {
     bool result = true;
 
-    fatal::foreach<fatal::map_values<typename reflect_struct<T>::members>>(
+    fatal::foreach<typename reflect_struct<T>::members>(
       debug_equals_struct_visitor(),
       path, lhs, rhs, callback, result
     );
