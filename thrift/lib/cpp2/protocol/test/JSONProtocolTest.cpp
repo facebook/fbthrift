@@ -452,6 +452,30 @@ TEST_F(JSONProtocolTest, readString) {
   }));
 }
 
+TEST_F(JSONProtocolTest, readString_raw) {
+  auto input = R"("\u0019\u0002\u0000\u0000")";
+  auto expected = string("\x19\x02\x00\x00", 4);
+  EXPECT_EQ(expected, reading_cpp1<string>(input, [](P1& p) {
+        return returning([&](string& _) { p.readString(_); });
+  }));
+  EXPECT_EQ(expected, reading_cpp2<string>(input, [](R2& p) {
+        p.setAllowDecodeUTF8(false);
+        return returning([&](string& _) { p.readString(_); });
+  }));
+}
+
+TEST_F(JSONProtocolTest, readString_utf8) {
+  auto input = R"("\u263A")";
+  auto expected = string(u8"\u263A");
+  EXPECT_EQ(expected, reading_cpp1<string>(input, [](P1& p) {
+        p.allowDecodeUTF8(true);
+        return returning([&](string& _) { p.readString(_); });
+  }));
+  EXPECT_EQ(expected, reading_cpp2<string>(input, [](R2& p) {
+        return returning([&](string& _) { p.readString(_); });
+  }));
+}
+
 TEST_F(JSONProtocolTest, readBinary) {
   auto input = R"("Zm9vYmFy")";
   auto expected = "foobar";
