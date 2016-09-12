@@ -116,7 +116,7 @@ java_swift__DATA = generate/templates/java/swift/BoxedType.mustache \
                    generate/templates/java/swift/ThriftFieldAnnotation.mustache
 
 py3_dir = $(template_dir)/py3
-py3__DATA = generate/templates/py3/CppNamespace.mustache \
+py3__DATA = \
                     generate/templates/py3/OneServiceWrapper.cpp.mustache \
                     generate/templates/py3/OneStruct.pxd.mustache \
                     generate/templates/py3/ServiceWrapper.h.mustache \
