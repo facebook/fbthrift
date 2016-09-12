@@ -17,5 +17,9 @@
 }}{{#type:i16?}}int16_t{{/type:i16?}}{{!
 }}{{#type:i32?}}int32_t{{/type:i32?}}{{!
 }}{{#type:i64?}}int64_t{{/type:i64?}}{{!
-}}{{#type:string?}}string{{/type:string?}}{{!
-}}{{#type:struct}}{{struct:name}}{{/type:struct}}
+}}{{#type:bool?}}bool{{/type:bool?}}{{!
+}}{{#type:string?}}std::unique_ptr<std::string>{{/type:string?}}{{!
+}}{{#type:struct}}std::unique_ptr<{{!
+  }}{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}{{!
+  }}>{{/type:struct}}{{!
+}}{{#type:void?}}folly::Unit{{/type:void?}}

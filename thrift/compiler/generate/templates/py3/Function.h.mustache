@@ -14,8 +14,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#type:i16?}}int16_t{{/type:i16?}}{{!
-}}{{#type:i32?}}int32_t{{/type:i32?}}{{!
-}}{{#type:i64?}}int64_t{{/type:i64?}}{{!
-}}{{#type:string?}}string{{/type:string?}}{{!
-}}{{#type:struct}}{{struct:name}}{{/type:struct}}
+}}
+{{#function:returnType}}folly::Future<{{> FieldTypeArg.h}}>{{/function:returnType}}{{!
+  }} future_{{function:name}}({{!
+  }}{{#function:args}}
+  {{#field:type}}{{> FieldTypeArg.h}}{{/field:type}}{{!
+  }} {{field:name}}{{^last?}},{{/last?}}{{!
+}}{{/function:args}}
+);

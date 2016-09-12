@@ -21,7 +21,8 @@ class {{service:name}}Wrapper : public {{service:name}}SvAsyncIf {
   public:
     explicit {{service:name}}Wrapper(PyObject *if_object);
     virtual ~{{service:name}}Wrapper();
-    {{!functions here}}
-}
+    {{#service:functions}}
+    {{> Function.h}}
+{{/service:functions}}}
 
 std::shared_ptr<ServerInterface> {{service:name}}Interface(PyObject *if_object);
