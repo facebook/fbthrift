@@ -1,0 +1,62 @@
+{{!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+}}
+from libcpp.memory cimport shared_ptr
+from libcpp.string cimport string
+from libc.stdint cimport int16_t, int32_t, int64_t
+
+from cy_{{program:name}}_types cimport ({{!
+}}{{#program:structs}}
+  c{{struct:name}}{{^last?}},{{/last?}}{{!
+}}{{/program:structs}})
+
+{{#program:structs}}
+cdef class {{struct:name}}:
+    cdef shared_ptr[c{{struct:name}}] c_{{struct:name}}
+    {{!Memoized Python wrappers of struct fields, created lazily}}
+    {{#struct:fields}}
+    {{#field:type}}{{#type:struct}}
+    cdef {{struct:name}} __{{field:name}}
+    {{/type:struct}}{{/field:type}}
+    {{/struct:fields}}
+
+    def __init__(self, {{#struct:fields}}{{!
+        }}{{#field:type}}{{> FieldType.pxd}}{{/field:type}}{{!
+        }} {{field:name}}{{^last?}}, {{/last?}}{{!
+        }}{{/struct:fields}}):
+        {{#struct:fields}}
+        {{#field:type}}
+        {{> FieldTypeAssign.pxi}}
+        {{/field:type}}
+        {{/struct:fields}}
+
+    @staticmethod
+    cdef create(shared_ptr[c{{struct:name}}] c_{{struct:name}}):
+        inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}})
+        inst.c_{{struct:name}} = c_{{struct:name}}
+
+        {{#struct:fields}}
+        @property
+        def {{field:name}}(self):
+            {{#field:type}}
+            {{> StructGetter.pxi}}
+
+            {{/field:type}}
+
+        {{/struct:fields}}
+
+{{/program:structs}}
