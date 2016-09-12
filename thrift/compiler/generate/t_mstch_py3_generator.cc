@@ -43,6 +43,14 @@ class t_mstch_py3_generator : public t_mstch_generator {
   protected:
     void generate_structs(const t_program&);
     void generate_services(const t_program&);
+
+  private:
+    template <typename T>
+    void render_to_file(
+      const T& obj,
+      const std::string& template_name,
+      const std::string& filename
+    );
 };
 
 mstch::map t_mstch_py3_generator::extend_program(const t_program& program) const {
@@ -60,27 +68,32 @@ mstch::map t_mstch_py3_generator::extend_program(const t_program& program) const
 }
 
 void t_mstch_py3_generator::generate_structs(const t_program& program) {
-  auto context = this->dump(program);
-  auto rendered_output = this->render("Struct.pxd", context);
   auto filename = "cy_" + program.get_name() + "_types.pxd";
-  this->write_output(filename, rendered_output);
+  this->render_to_file(program, "Struct.pxd", filename);
 }
 
 void t_mstch_py3_generator::generate_services(const t_program& program) {
+  auto basename = this->get_program()->get_name() + "_service_wrapper";
+  this->render_to_file(program, "ServiceWrapper.h", basename + ".h");
+  this->render_to_file(program, "ServiceWrapper.cpp", basename + ".cpp");
   auto context = this->dump(program);
-
-  auto rendered_headers = this->render("ServiceWrapper.h", context);
-  auto rendered_cpp = this->render("ServiceWrapper.cpp", context);
-
-  auto filename = this->get_program()->get_name() + "_service_wrapper";
-  this->write_output(filename + ".h", rendered_headers);
-  this->write_output(filename + ".cpp", rendered_cpp);
 }
 
 void t_mstch_py3_generator::generate_program() {
   mstch::config::escape = [](const std::string& s) { return s; };
   this->generate_structs(*this->get_program());
   this->generate_services(*this->get_program());
+}
+
+template <typename T>
+void t_mstch_py3_generator::render_to_file(
+  const T& obj,
+  const std::string& template_name,
+  const std::string& filename
+) {
+  auto context = this->dump(obj);
+  auto rendered_context = this->render(template_name, context);
+  this->write_output(filename, rendered_context);
 }
 
 THRIFT_REGISTER_GENERATOR(
