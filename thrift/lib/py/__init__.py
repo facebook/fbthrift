@@ -18,3 +18,4 @@
 #
 
 __all__ = ['Thrift', 'TSCons']
+trollius = False

@@ -1970,7 +1970,8 @@ void t_py_generator::generate_service(t_service* tservice) {
 
   if (gen_asyncio_) {
     f_service_ <<
-    "if six.PY3:" << endl <<
+    "import thrift" << endl <<
+    "if six.PY3 and not thrift.trollius:" << endl <<
     "  import asyncio" << endl <<
     "  from thrift.util.asyncio import call_as_future" << endl <<
     "else:" << endl <<

@@ -1,9 +1,15 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 
+from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+from __future__ import unicode_literals
 import functools
 import logging
 import time
 import unittest
+import thrift
+thrift.trollius = True
 
 from ThriftTest import ThriftTest
 from ThriftTest.ttypes import Xception, Xtruct

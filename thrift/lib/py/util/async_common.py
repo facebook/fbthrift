@@ -16,6 +16,7 @@ import logging
 import struct
 import warnings
 
+import thrift
 from collections import defaultdict
 from io import BytesIO
 from thrift.protocol.THeaderProtocol import THeaderProtocolFactory
@@ -30,7 +31,7 @@ from thrift.Thrift import (
     TMessageType,
 )
 
-if six.PY3:
+if six.PY3 and not thrift.trollius:
     import asyncio
 else:
     import trollius as asyncio

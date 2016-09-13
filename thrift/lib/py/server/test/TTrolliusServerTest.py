@@ -13,7 +13,10 @@ from trollius import (
     From,
     Return,
 )
+from six import itervalues
 
+import thrift
+thrift.trollius = True
 from thrift_asyncio.tutorial import Calculator as AsyncCalculator
 from thrift.protocol.THeaderProtocol import THeaderProtocolFactory
 from thrift.server.test.handler import CalculatorHandler
@@ -29,7 +32,7 @@ class TTrolliusServerTest(unittest.TestCase):
     def _get_listening_port(self, server):
         ports = [
             handle.getsockname()[1]
-            for handle in server.socket.handles.itervalues()
+            for handle in itervalues(server.socket.handles)
             if handle.family == socket.AF_INET6
         ]
         if ports:
