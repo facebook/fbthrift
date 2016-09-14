@@ -8,7 +8,6 @@ from cy_module_types cimport (
 cdef class MyStruct:
     cdef shared_ptr[cMyStruct] c_MyStruct
 
-
     def __init__(self, int64_t MyIntField, string MyStringField):
         self.c_MyStruct.get().MyIntField = MyIntField
         if MyStringField is not None:
