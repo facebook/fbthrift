@@ -622,8 +622,12 @@ public class THeaderTransport extends TFramedTransport {
       }
 
       if (tae != null) {
-        writeHeaders.putIfAbsent("uex", "TApplicationException");
-        writeHeaders.putIfAbsent("uexw", tae.getMessage() == null ? "[null]" : tae.getMessage());
+        if (!writeHeaders.containsKey("uex")) {
+          writeHeaders.put("uex", "TApplicationException");
+        }
+        if (!writeHeaders.containsKey("uexw")) {
+          writeHeaders.put("uexw", tae.getMessage() == null ? "[null]" : tae.getMessage());
+        }
       }
     } catch (TException e) {
       // Failed parsing a TApplicationException, so don't write headers
