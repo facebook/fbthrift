@@ -256,7 +256,7 @@ class ContextStack {
   ~ContextStack() {
     if (handlers_) {
       for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->freeContext(ctxs_[i], method_);
+        (*handlers_)[i]->freeContext(ctxs_[i], getMethod());
       }
     }
   }
@@ -264,7 +264,7 @@ class ContextStack {
   void preWrite() {
     if (handlers_) {
       for (size_t  i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->preWrite(ctxs_[i], method_);
+        (*handlers_)[i]->preWrite(ctxs_[i], getMethod());
       }
     }
   }
@@ -272,7 +272,7 @@ class ContextStack {
   void onWriteData(const SerializedMessage& msg) {
     if (handlers_) {
       for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->onWriteData(ctxs_[i], method_, msg);
+        (*handlers_)[i]->onWriteData(ctxs_[i], getMethod(), msg);
       }
     }
   }
@@ -280,7 +280,7 @@ class ContextStack {
   void postWrite(uint32_t bytes) {
     if (handlers_) {
       for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->postWrite(ctxs_[i], method_, bytes);
+        (*handlers_)[i]->postWrite(ctxs_[i], getMethod(), bytes);
       }
     }
   }
@@ -288,7 +288,7 @@ class ContextStack {
   void preRead() {
     if (handlers_) {
       for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->preRead(ctxs_[i], method_);
+        (*handlers_)[i]->preRead(ctxs_[i], getMethod());
       }
     }
   }
@@ -296,7 +296,7 @@ class ContextStack {
   void onReadData(const SerializedMessage& msg) {
     if (handlers_) {
       for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->onReadData(ctxs_[i], method_, msg);
+        (*handlers_)[i]->onReadData(ctxs_[i], getMethod(), msg);
       }
     }
   }
@@ -304,7 +304,7 @@ class ContextStack {
   void postRead(apache::thrift::transport::THeader* header, uint32_t bytes) {
     if (handlers_) {
       for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->postRead(ctxs_[i], method_, header, bytes);
+        (*handlers_)[i]->postRead(ctxs_[i], getMethod(), header, bytes);
       }
     }
   }
@@ -312,7 +312,7 @@ class ContextStack {
   void handlerError() {
     if (handlers_) {
       for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->handlerError(ctxs_[i], method_);
+        (*handlers_)[i]->handlerError(ctxs_[i], getMethod());
       }
     }
   }
@@ -320,7 +320,7 @@ class ContextStack {
   void handlerErrorWrapped(const folly::exception_wrapper& ew) {
     if (handlers_) {
       for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->handlerErrorWrapped(ctxs_[i], method_, ew);
+        (*handlers_)[i]->handlerErrorWrapped(ctxs_[i], getMethod(), ew);
       }
     }
   }
@@ -328,7 +328,7 @@ class ContextStack {
   void userException(const std::string& ex, const std::string& ex_what) {
     if (handlers_) {
       for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->userException(ctxs_[i], method_, ex, ex_what);
+        (*handlers_)[i]->userException(ctxs_[i], getMethod(), ex, ex_what);
       }
     }
   }
@@ -336,7 +336,8 @@ class ContextStack {
   void userExceptionWrapped(bool declared, const folly::exception_wrapper& ew) {
     if (handlers_) {
       for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->userExceptionWrapped(ctxs_[i], method_, declared, ew);
+        (*handlers_)[i]->userExceptionWrapped(
+          ctxs_[i], getMethod(), declared, ew);
       }
     }
   }
@@ -345,13 +346,13 @@ class ContextStack {
   void asyncComplete() {
     if (handlers_) {
       for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->asyncComplete(ctxs_[i], method_);
+        (*handlers_)[i]->asyncComplete(ctxs_[i], getMethod());
       }
     }
   }
 
   const char* getMethod() {
-    return method_;
+    return method_.c_str();
   }
 
  private:
@@ -359,7 +360,7 @@ class ContextStack {
   std::shared_ptr<
     std::vector<std::shared_ptr<TProcessorEventHandler>>
     >handlers_;
-  const char* method_;
+  std::string method_;
 };
 
 class EventHandlerBase {

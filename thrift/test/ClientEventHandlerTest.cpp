@@ -74,7 +74,7 @@ class ClientEventHandler : public TProcessorEventHandler {
 
   void preRead(void* ctx, const char* fn_name) override {
     contextCalls++;
-    EXPECT_EQ(fn_name, "Service.echoVoid");
+    EXPECT_STREQ(fn_name, "Service.echoVoid");
     EXPECT_EQ(contextCalls, 3);
   }
 
@@ -83,27 +83,27 @@ class ClientEventHandler : public TProcessorEventHandler {
                 apache::thrift::transport::THeader* header,
                 uint32_t bytes) override {
     contextCalls++;
-    EXPECT_EQ(fn_name, "Service.echoVoid");
+    EXPECT_STREQ(fn_name, "Service.echoVoid");
     EXPECT_GT(bytes, 20); // check we read something
     EXPECT_EQ(contextCalls, 4);
    }
 
    void preWrite(void* ctx, const char* fn_name) override {
     contextCalls++;
-    EXPECT_EQ(fn_name, "Service.echoVoid");
+    EXPECT_STREQ(fn_name, "Service.echoVoid");
     EXPECT_EQ(contextCalls, 1);
   }
 
   void postWrite(void* ctx, const char* fn_name, uint32_t bytes) override {
     contextCalls++;
-    EXPECT_EQ(fn_name, "Service.echoVoid");
+    EXPECT_STREQ(fn_name, "Service.echoVoid");
     EXPECT_GT(bytes, 20); // check we wrote something
     EXPECT_EQ(contextCalls, 2);
   }
 
   void handlerError(void* ctx, const char* fn_name) override {
     contextCalls++;
-    EXPECT_EQ(fn_name, "Service.echoVoid");
+    EXPECT_STREQ(fn_name, "Service.echoVoid");
   }
 
   void checkContextCalls() {
@@ -119,7 +119,7 @@ class ServerEventHandler : public TProcessorEventHandler {
 
   void preRead(void* ctx, const char* fn_name) override {
     contextCalls++;
-    EXPECT_EQ(fn_name, "Service.echoVoid");
+    EXPECT_STREQ(fn_name, "Service.echoVoid");
     EXPECT_EQ(contextCalls, 1);
   }
 
@@ -128,27 +128,27 @@ class ServerEventHandler : public TProcessorEventHandler {
                 apache::thrift::transport::THeader* header,
                 uint32_t bytes) override {
     contextCalls++;
-    EXPECT_EQ(fn_name, "Service.echoVoid");
+    EXPECT_STREQ(fn_name, "Service.echoVoid");
     EXPECT_GT(bytes, 20); // check we read something
     EXPECT_EQ(contextCalls, 2);
    }
 
    void preWrite(void* ctx, const char* fn_name) override {
     contextCalls++;
-    EXPECT_EQ(fn_name, "Service.echoVoid");
+    EXPECT_STREQ(fn_name, "Service.echoVoid");
     EXPECT_EQ(contextCalls, 3);
   }
 
   void postWrite(void* ctx, const char* fn_name, uint32_t bytes) override {
     contextCalls++;
-    EXPECT_EQ(fn_name, "Service.echoVoid");
+    EXPECT_STREQ(fn_name, "Service.echoVoid");
     EXPECT_GT(bytes, 20); // check we wrote something
     EXPECT_EQ(contextCalls, 4);
   }
 
   void handlerError(void* ctx, const char* fn_name) override {
     contextCalls++;
-    EXPECT_EQ(fn_name, "Service.echoVoid");
+    EXPECT_STREQ(fn_name, "Service.echoVoid");
   }
 
   void checkContextCalls() {
