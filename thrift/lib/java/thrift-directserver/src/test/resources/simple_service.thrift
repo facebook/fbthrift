@@ -7,7 +7,7 @@
 
 include "common/fb303/if/fb303.thrift"
 
-namespace java com.facebook.thrift.direct_server.tests
+namespace java com.facebook.thrift.direct_server
 
 struct SimpleRequest {
   1: bool    true_or_false,
