@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.facebook</groupId>
+    <artifactId>facebook-oss-pom</artifactId>
+    <version>12</version>
+  </parent>
+
+  <groupId>com.facebook</groupId>
+  <artifactId>thrift-root</artifactId>
+  <packaging>pom</packaging>
+  <version>1.0-SNAPSHOT</version>
+
+  <properties>
+    <fb.check.skip-extended>true</fb.check.skip-extended>
+    <project.build.targetJdk>1.8</project.build.targetJdk>
+  </properties>
+
+  <modules>
+    <module>thrift</module>
+    <module>thrift-directserver</module>
+  </modules>
+</project>
