@@ -25,6 +25,10 @@
 {{service:name}}Wrapper::~{{service:name}}Wrapper() {
     Py_XDECREF(this->if_object);
 }
-{{!functions here}}
 
-std::shared_ptr<ServerInterface> {{service:name}}Interface(PyObject *if_object);
+{{#service:functions}}
+{{> Function.cpp}}
+{{/service:functions}}
+std::shared_ptr<ServerInterface> {{service:name}}Interface(PyObject *if_object) {
+  return std::make_shared<{{service:name}}Wrapper>(if_object);
+}

@@ -22,7 +22,10 @@ class {{service:name}}Wrapper : public {{service:name}}SvAsyncIf {
     explicit {{service:name}}Wrapper(PyObject *if_object);
     virtual ~{{service:name}}Wrapper();
     {{#service:functions}}
-    {{> Function.h}}
-{{/service:functions}}}
+      folly::Future<{{#function:returnType}}{{> FieldTypeArg.h}}{{/function:returnType}}>{{!
+      }} future_{{function:name}}({{#function:args}}
+        {{#field:type}}{{> FieldTypeArg.h}}{{/field:type}} {{field:name}}{{^last?}},{{/last?}}{{#last?}}
+      {{/last?}}{{/function:args}});
+{{/service:functions}}};
 
 std::shared_ptr<ServerInterface> {{service:name}}Interface(PyObject *if_object);
