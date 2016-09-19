@@ -220,6 +220,12 @@ TEST(Security, CompressionSnappy) {
   });
 }
 
+TEST(Security, CompressionZstd) {
+  runTest([](HeaderClientChannel* channel) {
+    channel->setTransform(transport::THeader::ZSTD_TRANSFORM);
+  });
+}
+
 TEST(Security, ProtocolBinary) {
   runTest([](HeaderClientChannel* channel) {
     channel->setProtocolId(protocol::T_BINARY_PROTOCOL);

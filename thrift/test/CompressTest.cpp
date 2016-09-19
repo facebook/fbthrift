@@ -131,6 +131,10 @@ BENCHMARK(BM_Snappy, iters) {
   testMessage(3, iters, true);
 }
 
+BENCHMARK(BM_Zstd, iters) {
+  testMessage(5, iters, true);
+}
+
 // Test a 'hard' to compress message, more random.
 
 BENCHMARK(BM_UncompressedBinaryHard, iters) {
@@ -149,6 +153,10 @@ BENCHMARK(BM_SnappyHard, iters) {
   testMessage(3, iters, false);
 }
 
+BENCHMARK(BM_ZstdHard, iters) {
+  testMessage(5, iters, false);
+}
+
 TEST(chained, none) {
   testChainedCompression(0, 1000);
 }
@@ -159,6 +167,10 @@ TEST(chained, zlib) {
 
 TEST(chained, snappy) {
   testChainedCompression(3, 1000);
+}
+
+TEST(chained, zstd) {
+  testChainedCompression(5, 1000);
 }
 
 TEST(sdf, sdfsd) {

@@ -43,6 +43,7 @@ final class THeaderTransport : TBaseFramedTransport {
     HMAC = 0x02, // Deprecated and no longer supported
     Snappy = 0x03,
     QLZ = 0x04, // Deprecated and no longer supported
+    Zstd = 0x05,
   }
 
   enum Info {
