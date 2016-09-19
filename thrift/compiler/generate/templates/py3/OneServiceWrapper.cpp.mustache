@@ -27,7 +27,20 @@
 }
 
 {{#service:functions}}
-{{> Function.cpp}}
+folly::Future<{{#function:returnType}}{{> CppFieldType}}{{/function:returnType}}>{{!
+}} {{service:name}}Wrapper::future_{{function:name}}({{#function:args}}
+  {{#field:type}}{{> CppFieldType}}{{/field:type}} {{field:name}}{{^last?}},{{/last?}}{{#last?}}
+{{/last?}}{{/function:args}}) {
+  auto promise = make_shared<{{!
+  }}{{#function:returnType}}folly::Promise<{{>CppFieldType}}>{{/function:returnType}}>();
+  call_cy_{{service:name}}_{{function:name}}(
+    this->if_object,
+    promise{{#function:args}},
+    {{field:name}}{{/function:args}}
+  );
+  return promise->getFuture();
+}
+
 {{/service:functions}}
 std::shared_ptr<ServerInterface> {{service:name}}Interface(PyObject *if_object) {
   return std::make_shared<{{service:name}}Wrapper>(if_object);

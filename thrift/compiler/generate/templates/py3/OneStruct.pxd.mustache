@@ -18,6 +18,6 @@
     cdef cppclass c{{struct:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}":
         c{{struct:name}}() except +
     {{#struct:fields}}
-        {{#field:type}}{{> FieldType.pxd}}{{/field:type}} {{field:name}}
+        {{#field:type}}{{> CythonFieldType}}{{/field:type}} {{field:name}}
     {{/struct:fields}}
 
