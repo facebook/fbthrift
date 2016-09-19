@@ -26,12 +26,12 @@ sudo yum install -y \
 
 # no rpm for this?
 if [ ! -e double-conversion ]; then
-echo "Fetching double-conversion from git (yum failed)"
-    git clone https://github.com/floitsch/double-conversion.git double-conversion
-    cd double-conversion
-    cmake . -DBUILD_SHARED_LIBS=ON
-    sudo make install
-    cd ..
+  echo "Fetching double-conversion from git (yum failed)"
+  git clone https://github.com/floitsch/double-conversion.git double-conversion
+  cd double-conversion
+  cmake . -DBUILD_SHARED_LIBS=ON
+  sudo make install
+  cd ..
 fi
 
 install_folly centos  # needs git

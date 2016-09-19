@@ -9,7 +9,9 @@ cd "$BUILD_DIR/deps"
 
 install_mstch() {
   pushd .
-  git clone https://github.com/no1msd/mstch
+  if [[ ! -e "mstch" ]]; then
+    git clone https://github.com/no1msd/mstch
+  fi
   cd mstch
   cmake .
   make
@@ -19,7 +21,9 @@ install_mstch() {
 
 install_folly() {
   pushd .
-  git clone https://github.com/facebook/folly
+  if [[ ! -e "folly" ]]; then
+    git clone https://github.com/facebook/folly
+  fi
   cd folly/folly
   FOLLY_VERSION="$(cat "$BUILD_DIR"/FOLLY_VERSION)"  # on own line for set -e
   git checkout "$FOLLY_VERSION"
@@ -38,7 +42,9 @@ install_folly() {
 
 install_wangle() {
   pushd .
-  git clone https://github.com/facebook/wangle
+  if [[ ! -e "wangle" ]]; then
+    git clone https://github.com/facebook/wangle
+  fi
   cd wangle/wangle
   WANGLE_VERSION="$(cat "$BUILD_DIR"/WANGLE_VERSION)"
   git checkout "$WANGLE_VERSION"
