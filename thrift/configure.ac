@@ -88,7 +88,10 @@ AX_BOOST_BASE([1.40.0])
 if test "x$succeeded" != "xyes" ; then
   AC_MSG_ERROR([Please install libboost-dev-all])
 fi
+
+AX_BOOST_FILESYSTEM
 AX_BOOST_PYTHON
+AX_BOOST_SYSTEM
 
 if test "x$LEX" != xflex; then
   AC_MSG_ERROR([Please install flex])
@@ -107,6 +110,9 @@ CPPFLAGS="$FOLLY_INCLUDES $CPPFLAGS"
 AC_CHECK_LIB([glog],[openlog],[],[AC_MSG_ERROR(
            [Please install google-glog library])])
 
+AC_CHECK_LIB([mstch], [getenv], [], [AC_MSG_ERROR(
+           [Please install the mstch libarary from https://github.com/no1msd/mstch])])
+
 have_cpp=yes
 have_libnuma=no
 if test "$with_cpp" = "yes";  then
@@ -116,8 +122,6 @@ if test "$with_cpp" = "yes";  then
              [Please install snappy library])])
   AC_CHECK_LIB([wangle], [getenv], [], [AC_MSG_ERROR(
              [Please install the wangle library from https://github.com/facebook/wangle])])
-  AC_CHECK_LIB([mstch], [getenv], [], [AC_MSG_ERROR(
-             [Please install the mstch libarary from https://github.com/no1msd/mstch])])
 
   AC_CHECK_LIB([numa], [numa_available],[
     AC_CHECK_HEADER([numa.h], [
@@ -128,8 +132,6 @@ if test "$with_cpp" = "yes";  then
   ])
 
   AX_BOOST_THREAD
-  AX_BOOST_FILESYSTEM
-  AX_BOOST_SYSTEM
 
   AX_LIB_EVENT([1.0])
   have_libevent=$success
