@@ -20,7 +20,7 @@ from libcpp.memory cimport shared_ptr
 from cy_thrift_server cimport cServerInterface
 
 {{#program:services}}
-from cy_{{program:name}}_services cimport c{{service:name}}SvIf
+from {{program:name}}_services cimport c{{service:name}}SvIf
 {{/program:services}}
 
 cdef extern from "{{program:includePrefix}}gen_py3/{{program:name}}_service_wrapper.h"{{!

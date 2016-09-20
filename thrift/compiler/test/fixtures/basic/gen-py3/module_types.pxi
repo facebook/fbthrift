@@ -2,7 +2,7 @@ from libcpp.memory cimport shared_ptr
 from libcpp.string cimport string
 from libc.stdint cimport int16_t, int32_t, int64_t
 
-from cy_module_types cimport (
+from module_types cimport (
   cMyStruct)
 
 cdef class MyStruct:

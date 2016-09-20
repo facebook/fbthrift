@@ -1,5 +1,5 @@
-#include <src/gen-py3/module_service_wrapper.h>
-#include <src/gen-py3/cy_module_service_wrapper.h>
+#include <src/gen-py3/module_services_wrapper.h>
+#include <src/gen-py3/module_server.h>
 
 namespace cpp2 {
 

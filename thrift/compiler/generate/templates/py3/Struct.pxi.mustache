@@ -19,7 +19,7 @@ from libcpp.memory cimport shared_ptr
 from libcpp.string cimport string
 from libc.stdint cimport int16_t, int32_t, int64_t
 
-from cy_{{program:name}}_types cimport ({{!
+from {{program:name}}_types cimport ({{!
 }}{{#program:structs}}
   c{{struct:name}}{{^last?}},{{/last?}}{{!
 }}{{/program:structs}})

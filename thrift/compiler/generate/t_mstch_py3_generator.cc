@@ -75,7 +75,7 @@ mstch::map t_mstch_py3_generator::extend_program(const t_program& program) const
 }
 
 void t_mstch_py3_generator::generate_structs(const t_program& program) {
-  auto basename = "cy_" + program.get_name() + "_types";
+  auto basename = program.get_name() + "_types";
   this->render_to_file(program, "Struct.pxd", basename + ".pxd");
   this->render_to_file(program, "Struct.pxi", basename + ".pxi");
 }
@@ -83,12 +83,12 @@ void t_mstch_py3_generator::generate_structs(const t_program& program) {
 void t_mstch_py3_generator::generate_services(const t_program& program) {
   this->render_to_file(
     program,
-    "Service.pxd",
-    "cy_" + this->get_program()->get_name() + "_services.pxd");
-  auto basename = this->get_program()->get_name() + "_service_wrapper";
-  this->render_to_file(program, "ServiceWrapper.h", basename + ".h");
-  this->render_to_file(program, "ServiceWrapper.cpp", basename + ".cpp");
-  this->render_to_file(program, "ServiceWrapper.pxd", basename + ".pxd");
+    "Services.pxd",
+    this->get_program()->get_name() + "_services.pxd");
+  auto basename = this->get_program()->get_name() + "_services_wrapper";
+  this->render_to_file(program, "ServicesWrapper.h", basename + ".h");
+  this->render_to_file(program, "ServicesWrapper.cpp", basename + ".cpp");
+  this->render_to_file(program, "ServicesWrapper.pxd", basename + ".pxd");
 }
 
 void t_mstch_py3_generator::generate_program() {
