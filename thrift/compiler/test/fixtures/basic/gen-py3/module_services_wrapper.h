@@ -6,7 +6,7 @@
 
 namespace cpp2 {
 
-class MyServiceWrapper : public MyServiceSvAsyncIf {
+class MyServiceWrapper : public MyServiceSvIf {
   private:
     PyObject *if_object;
   public:
@@ -30,10 +30,10 @@ class MyServiceWrapper : public MyServiceSvAsyncIf {
       );
 };
 
-std::shared_ptr<ServerInterface> MyServiceInterface(PyObject *if_object);
+std::shared_ptr<apache::thrift::ServerInterface> MyServiceInterface(PyObject *if_object);
 
 
-class MyServiceFastWrapper : public MyServiceFastSvAsyncIf {
+class MyServiceFastWrapper : public MyServiceFastSvIf {
   private:
     PyObject *if_object;
   public:
@@ -57,5 +57,5 @@ class MyServiceFastWrapper : public MyServiceFastSvAsyncIf {
       );
 };
 
-std::shared_ptr<ServerInterface> MyServiceFastInterface(PyObject *if_object);
+std::shared_ptr<apache::thrift::ServerInterface> MyServiceFastInterface(PyObject *if_object);
 } // namespace cpp2

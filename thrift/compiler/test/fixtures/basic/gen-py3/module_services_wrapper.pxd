@@ -5,7 +5,7 @@ from cy_thrift_server cimport cServerInterface
 from module_services cimport cMyServiceSvIf
 from module_services cimport cMyServiceFastSvIf
 
-cdef extern from "src/gen_py3/module_service_wrapper.h" namespace "cpp2":
+cdef extern from "src/gen-py3/module_services_wrapper.h" namespace "cpp2":
     cdef cppclass cMyServiceWrapper "cpp2::MyService"(cMyServiceSvIf):
         pass
 

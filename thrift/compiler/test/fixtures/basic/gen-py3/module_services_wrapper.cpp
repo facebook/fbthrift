@@ -1,5 +1,6 @@
 #include <src/gen-py3/module_services_wrapper.h>
 #include <src/gen-py3/module_server.h>
+#include <thrift/lib/cpp2/async/AsyncProcessor.h>
 
 namespace cpp2 {
 
@@ -14,7 +15,7 @@ MyServiceWrapper::~MyServiceWrapper() {
 }
 
 folly::Future<folly::Unit> MyServiceWrapper::future_ping() {
-  auto promise = make_shared<folly::Promise<folly::Unit>>();
+  auto promise = std::make_shared<folly::Promise<folly::Unit>>();
   call_cy_MyService_ping(
     this->if_object,
     promise
@@ -23,7 +24,7 @@ folly::Future<folly::Unit> MyServiceWrapper::future_ping() {
 }
 
 folly::Future<std::unique_ptr<std::string>> MyServiceWrapper::future_getRandomData() {
-  auto promise = make_shared<folly::Promise<std::unique_ptr<std::string>>>();
+  auto promise = std::make_shared<folly::Promise<std::unique_ptr<std::string>>>();
   call_cy_MyService_getRandomData(
     this->if_object,
     promise
@@ -34,7 +35,7 @@ folly::Future<std::unique_ptr<std::string>> MyServiceWrapper::future_getRandomDa
 folly::Future<bool> MyServiceWrapper::future_hasDataById(
   int64_t id
 ) {
-  auto promise = make_shared<folly::Promise<bool>>();
+  auto promise = std::make_shared<folly::Promise<bool>>();
   call_cy_MyService_hasDataById(
     this->if_object,
     promise,
@@ -46,7 +47,7 @@ folly::Future<bool> MyServiceWrapper::future_hasDataById(
 folly::Future<std::unique_ptr<std::string>> MyServiceWrapper::future_getDataById(
   int64_t id
 ) {
-  auto promise = make_shared<folly::Promise<std::unique_ptr<std::string>>>();
+  auto promise = std::make_shared<folly::Promise<std::unique_ptr<std::string>>>();
   call_cy_MyService_getDataById(
     this->if_object,
     promise,
@@ -59,7 +60,7 @@ folly::Future<folly::Unit> MyServiceWrapper::future_putDataById(
   int64_t id,
   std::unique_ptr<std::string> data
 ) {
-  auto promise = make_shared<folly::Promise<folly::Unit>>();
+  auto promise = std::make_shared<folly::Promise<folly::Unit>>();
   call_cy_MyService_putDataById(
     this->if_object,
     promise,
@@ -73,7 +74,7 @@ folly::Future<folly::Unit> MyServiceWrapper::future_lobDataById(
   int64_t id,
   std::unique_ptr<std::string> data
 ) {
-  auto promise = make_shared<folly::Promise<folly::Unit>>();
+  auto promise = std::make_shared<folly::Promise<folly::Unit>>();
   call_cy_MyService_lobDataById(
     this->if_object,
     promise,
@@ -83,7 +84,7 @@ folly::Future<folly::Unit> MyServiceWrapper::future_lobDataById(
   return promise->getFuture();
 }
 
-std::shared_ptr<ServerInterface> MyServiceInterface(PyObject *if_object) {
+std::shared_ptr<apache::thrift::ServerInterface> MyServiceInterface(PyObject *if_object) {
   return std::make_shared<MyServiceWrapper>(if_object);
 }
 
@@ -99,7 +100,7 @@ MyServiceFastWrapper::~MyServiceFastWrapper() {
 }
 
 folly::Future<folly::Unit> MyServiceFastWrapper::future_ping() {
-  auto promise = make_shared<folly::Promise<folly::Unit>>();
+  auto promise = std::make_shared<folly::Promise<folly::Unit>>();
   call_cy_MyServiceFast_ping(
     this->if_object,
     promise
@@ -108,7 +109,7 @@ folly::Future<folly::Unit> MyServiceFastWrapper::future_ping() {
 }
 
 folly::Future<std::unique_ptr<std::string>> MyServiceFastWrapper::future_getRandomData() {
-  auto promise = make_shared<folly::Promise<std::unique_ptr<std::string>>>();
+  auto promise = std::make_shared<folly::Promise<std::unique_ptr<std::string>>>();
   call_cy_MyServiceFast_getRandomData(
     this->if_object,
     promise
@@ -119,7 +120,7 @@ folly::Future<std::unique_ptr<std::string>> MyServiceFastWrapper::future_getRand
 folly::Future<bool> MyServiceFastWrapper::future_hasDataById(
   int64_t id
 ) {
-  auto promise = make_shared<folly::Promise<bool>>();
+  auto promise = std::make_shared<folly::Promise<bool>>();
   call_cy_MyServiceFast_hasDataById(
     this->if_object,
     promise,
@@ -131,7 +132,7 @@ folly::Future<bool> MyServiceFastWrapper::future_hasDataById(
 folly::Future<std::unique_ptr<std::string>> MyServiceFastWrapper::future_getDataById(
   int64_t id
 ) {
-  auto promise = make_shared<folly::Promise<std::unique_ptr<std::string>>>();
+  auto promise = std::make_shared<folly::Promise<std::unique_ptr<std::string>>>();
   call_cy_MyServiceFast_getDataById(
     this->if_object,
     promise,
@@ -144,7 +145,7 @@ folly::Future<folly::Unit> MyServiceFastWrapper::future_putDataById(
   int64_t id,
   std::unique_ptr<std::string> data
 ) {
-  auto promise = make_shared<folly::Promise<folly::Unit>>();
+  auto promise = std::make_shared<folly::Promise<folly::Unit>>();
   call_cy_MyServiceFast_putDataById(
     this->if_object,
     promise,
@@ -158,7 +159,7 @@ folly::Future<folly::Unit> MyServiceFastWrapper::future_lobDataById(
   int64_t id,
   std::unique_ptr<std::string> data
 ) {
-  auto promise = make_shared<folly::Promise<folly::Unit>>();
+  auto promise = std::make_shared<folly::Promise<folly::Unit>>();
   call_cy_MyServiceFast_lobDataById(
     this->if_object,
     promise,
@@ -168,7 +169,7 @@ folly::Future<folly::Unit> MyServiceFastWrapper::future_lobDataById(
   return promise->getFuture();
 }
 
-std::shared_ptr<ServerInterface> MyServiceFastInterface(PyObject *if_object) {
+std::shared_ptr<apache::thrift::ServerInterface> MyServiceFastInterface(PyObject *if_object) {
   return std::make_shared<MyServiceFastWrapper>(if_object);
 }
 } // namespace cpp2

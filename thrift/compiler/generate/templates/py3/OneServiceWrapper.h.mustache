@@ -15,7 +15,7 @@
   limitations under the License.
 
 }}
-class {{service:name}}Wrapper : public {{service:name}}SvAsyncIf {
+class {{service:name}}Wrapper : public {{service:name}}SvIf {
   private:
     PyObject *if_object;
   public:
@@ -28,4 +28,4 @@ class {{service:name}}Wrapper : public {{service:name}}SvAsyncIf {
       {{/last?}}{{/function:args}});
 {{/service:functions}}};
 
-std::shared_ptr<ServerInterface> {{service:name}}Interface(PyObject *if_object);
+std::shared_ptr<apache::thrift::ServerInterface> {{service:name}}Interface(PyObject *if_object);

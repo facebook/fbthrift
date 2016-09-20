@@ -31,7 +31,7 @@ folly::Future<{{#function:returnType}}{{> CppFieldType}}{{/function:returnType}}
 }} {{service:name}}Wrapper::future_{{function:name}}({{#function:args}}
   {{#field:type}}{{> CppFieldType}}{{/field:type}} {{field:name}}{{^last?}},{{/last?}}{{#last?}}
 {{/last?}}{{/function:args}}) {
-  auto promise = make_shared<{{!
+  auto promise = std::make_shared<{{!
   }}{{#function:returnType}}folly::Promise<{{>CppFieldType}}>{{/function:returnType}}>();
   call_cy_{{service:name}}_{{function:name}}(
     this->if_object,
@@ -42,6 +42,6 @@ folly::Future<{{#function:returnType}}{{> CppFieldType}}{{/function:returnType}}
 }
 
 {{/service:functions}}
-std::shared_ptr<ServerInterface> {{service:name}}Interface(PyObject *if_object) {
+std::shared_ptr<apache::thrift::ServerInterface> {{service:name}}Interface(PyObject *if_object) {
   return std::make_shared<{{service:name}}Wrapper>(if_object);
 }

@@ -1,13 +1,13 @@
 from cy_thrift_server cimport cServerInterface
 
-cdef extern from "src/gen_cpp2/MyService.h" namespace "cpp2":
+cdef extern from "src/gen-cpp2/MyService.h" namespace "cpp2":
     cdef cppclass cMyServiceSvAsyncIf "cpp2::MyServiceSvAsyncIf":
       pass
 
     cdef cppclass cMyServiceSvIf "cpp2::MyServiceSvIf"(cMyServiceSvAsyncIf, cServerInterface):
       pass
 
-cdef extern from "src/gen_cpp2/MyServiceFast.h" namespace "cpp2":
+cdef extern from "src/gen-cpp2/MyServiceFast.h" namespace "cpp2":
     cdef cppclass cMyServiceFastSvAsyncIf "cpp2::MyServiceFastSvAsyncIf":
       pass
 

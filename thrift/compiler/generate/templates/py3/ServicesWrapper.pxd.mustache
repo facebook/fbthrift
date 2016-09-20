@@ -23,7 +23,7 @@ from cy_thrift_server cimport cServerInterface
 from {{program:name}}_services cimport c{{service:name}}SvIf
 {{/program:services}}
 
-cdef extern from "{{program:includePrefix}}gen_py3/{{program:name}}_service_wrapper.h"{{!
+cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}_services_wrapper.h"{{!
 }} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":
 {{#program:services}}
     cdef cppclass c{{service:name}}Wrapper "{{!
