@@ -133,3 +133,5 @@ clean-local:
 	$(RM) thriftl.cc thrifty.cc thrifty.h version.h
 
 main.cc: version.h
+
+thriftl.cc: thrifty.hh
