@@ -43,6 +43,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
   protected:
     void generate_structs(const t_program&);
     void generate_services(const t_program&);
+    void generate_promises(const t_program&);
 
   private:
     template <typename T>
@@ -91,10 +92,33 @@ void t_mstch_py3_generator::generate_services(const t_program& program) {
   this->render_to_file(program, "ServicesWrapper.pxd", basename + ".pxd");
 }
 
+void t_mstch_py3_generator::generate_promises(const t_program& program) {
+  mstch::array distinct_return_types;
+  std::set<string> visited_names;
+
+  for (const auto service : program.get_services()) {
+    for (const auto function : service->get_functions()) {
+      const auto returntype = function->get_returntype();
+      if (!visited_names.count(returntype->get_name())) {
+        distinct_return_types.push_back(this->dump(*returntype));
+        visited_names.insert(returntype->get_name());
+      }
+    }
+  }
+
+  mstch::map context {
+    {"returnTypes", distinct_return_types},
+  };
+
+  auto rendered_context = this->render("CythonPromises", context);
+  this->write_output(this->get_program()->get_name() + "_promises.pxi", rendered_context);
+}
+
 void t_mstch_py3_generator::generate_program() {
   mstch::config::escape = [](const std::string& s) { return s; };
   this->generate_structs(*this->get_program());
   this->generate_services(*this->get_program());
+  this->generate_promises(*this->get_program());
 }
 
 template <typename T>
