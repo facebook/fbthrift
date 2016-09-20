@@ -88,6 +88,7 @@ void t_mstch_py3_generator::generate_services(const t_program& program) {
   auto basename = this->get_program()->get_name() + "_service_wrapper";
   this->render_to_file(program, "ServiceWrapper.h", basename + ".h");
   this->render_to_file(program, "ServiceWrapper.cpp", basename + ".cpp");
+  this->render_to_file(program, "ServiceWrapper.pxd", basename + ".pxd");
 }
 
 void t_mstch_py3_generator::generate_program() {
