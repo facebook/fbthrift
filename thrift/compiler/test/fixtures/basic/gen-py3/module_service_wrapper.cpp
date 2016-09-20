@@ -1,6 +1,7 @@
 #include <src/gen-py3/module_service_wrapper.h>
 #include <src/gen-py3/cy_module_service_wrapper.h>
 
+namespace cpp2 {
 
 MyServiceWrapper::MyServiceWrapper(PyObject *obj)
   : if_object(obj)
@@ -170,3 +171,4 @@ folly::Future<folly::Unit> MyServiceFastWrapper::future_lobDataById(
 std::shared_ptr<ServerInterface> MyServiceFastInterface(PyObject *if_object) {
   return std::make_shared<MyServiceFastWrapper>(if_object);
 }
+} // namespace cpp2

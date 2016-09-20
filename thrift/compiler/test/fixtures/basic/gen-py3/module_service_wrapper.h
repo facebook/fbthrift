@@ -4,6 +4,7 @@
 #include <Python.h>
 #include <memory.h>
 
+namespace cpp2 {
 
 class MyServiceWrapper : public MyServiceSvAsyncIf {
   private:
@@ -57,3 +58,4 @@ class MyServiceFastWrapper : public MyServiceFastSvAsyncIf {
 };
 
 std::shared_ptr<ServerInterface> MyServiceFastInterface(PyObject *if_object);
+} // namespace cpp2

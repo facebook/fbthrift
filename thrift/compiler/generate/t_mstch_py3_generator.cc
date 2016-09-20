@@ -55,10 +55,17 @@ class t_mstch_py3_generator : public t_mstch_generator {
 
 mstch::map t_mstch_py3_generator::extend_program(const t_program& program) const {
   auto cpp_namespace = program.get_namespace("cpp2");
-  vector<string> ns;
-  if (cpp_namespace != "") {
-    boost::algorithm::split(ns, cpp_namespace, boost::algorithm::is_any_of("."));
+  if (cpp_namespace == "") {
+    cpp_namespace = program.get_namespace("cpp");
+    if (cpp_namespace == "") {
+      cpp_namespace = "cpp2";
+    }
+    else {
+      cpp_namespace = cpp_namespace + "cpp2";
+    }
   }
+  vector<string> ns;
+  boost::algorithm::split(ns, cpp_namespace, boost::algorithm::is_any_of("."));
 
   mstch::map result {
     {"cppNamespaces?", !cpp_namespace.empty()},

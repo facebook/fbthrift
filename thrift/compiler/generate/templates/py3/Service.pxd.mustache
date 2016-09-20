@@ -19,8 +19,7 @@ from cy_thrift_server cimport cServerInterface
 
 {{#program:services}}
 cdef extern from "{{program:includePrefix}}gen_cpp2/{{service:name}}.h"{{!
-  }}{{#program:cppNamespaces}}{{#first?}} namespace "{{/first?}}{{!
-  }}{{value}}{{^last?}}::{{/last?}}{{#last?}}"{{/last?}}{{/program:cppNamespaces}}:
+  }} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":
     cdef cppclass c{{service:name}}SvAsyncIf {{!
       }}"{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{!
       }}{{service:name}}SvAsyncIf":
