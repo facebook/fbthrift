@@ -1,4 +1,4 @@
-from cy_thrift_server cimport cServerInterface
+from py3_thrift_server cimport cServerInterface
 
 cdef extern from "src/gen-cpp2/MyService.h" namespace "cpp2":
     cdef cppclass cMyServiceSvAsyncIf "cpp2::MyServiceSvAsyncIf":

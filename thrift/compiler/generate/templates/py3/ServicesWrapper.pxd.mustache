@@ -17,7 +17,7 @@
 }}
 from cpython.ref cimport PyObject
 from libcpp.memory cimport shared_ptr
-from cy_thrift_server cimport cServerInterface
+from py3_thrift_server cimport cServerInterface
 
 {{#program:services}}
 from {{program:name}}_services cimport c{{service:name}}SvIf
