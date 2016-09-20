@@ -19,7 +19,7 @@ from libcpp.string cimport string
 from libc.stdint cimport int16_t, int32_t, int64_t
 
 cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
-}}{{#program:cppNamespaces}}{{#first?}} namespace "{{/first?}}{{value}}{{^last}}::{{/last?}}{{#last?}}"{{/last?}}{{/program:cppNamespaces}}:
+}}{{#program:cppNamespaces}}{{#first?}} namespace "{{/first?}}{{value}}{{^last?}}::{{/last?}}{{#last?}}"{{/last?}}{{/program:cppNamespaces}}:
 {{#program:structs}}
 {{> OneStruct.pxd}}
 {{/program:structs}}

@@ -74,10 +74,13 @@ void t_mstch_py3_generator::generate_structs(const t_program& program) {
 }
 
 void t_mstch_py3_generator::generate_services(const t_program& program) {
+  this->render_to_file(
+    program,
+    "Service.pxd",
+    "cy_" + this->get_program()->get_name() + "_services.pxd");
   auto basename = this->get_program()->get_name() + "_service_wrapper";
   this->render_to_file(program, "ServiceWrapper.h", basename + ".h");
   this->render_to_file(program, "ServiceWrapper.cpp", basename + ".cpp");
-  auto context = this->dump(program);
 }
 
 void t_mstch_py3_generator::generate_program() {
