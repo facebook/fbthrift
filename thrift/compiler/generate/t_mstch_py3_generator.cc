@@ -90,6 +90,7 @@ void t_mstch_py3_generator::generate_services(const t_program& program) {
   this->render_to_file(program, "ServicesWrapper.h", basename + ".h");
   this->render_to_file(program, "ServicesWrapper.cpp", basename + ".cpp");
   this->render_to_file(program, "ServicesWrapper.pxd", basename + ".pxd");
+  this->render_to_file(program, "ServiceCallbacks.pxi", basename + ".pxi");
 }
 
 void t_mstch_py3_generator::generate_promises(const t_program& program) {

@@ -1,9 +1,9 @@
 
 cdef class Promise_void:
-    cdef shared_ptr[cFollyPromise[]] cPromise
+    cdef shared_ptr[cFollyPromise[cFollyUnit]] cPromise
 
     @staticmethod
-    cdef create(shared_ptr[cFollyPromise[]] cPromise):
+    cdef create(shared_ptr[cFollyPromise[cFollyUnit]] cPromise):
         inst = <Promise_void>Promise_void.__new__(Promise_void)
         inst.cPromise = cPromise
         return inst
