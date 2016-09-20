@@ -177,7 +177,7 @@ libthriftprotocol_la_SOURCES = Version.cpp \
 libthriftprotocol_la_LIBADD = $(FOLLY_LIBS) $(BOOST_SYSTEM_LIB) -ldouble-conversion
 
 libthriftprotocol_la_LDFLAGS = -no-undefined \
-                               -avoid-version \
+                               -version-info $(LT_VERSION) \
                                $(BOOST_LDFLAGS)
 
 libthriftprotocol_la_CPPFLAGS = $(AM_CPPFLAGS) -I../cpp
