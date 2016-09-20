@@ -3,7 +3,8 @@ from libcpp.string cimport string
 from libc.stdint cimport int16_t, int32_t, int64_t
 
 from module_types cimport (
-  cMyStruct)
+  cMyStruct
+)
 
 cdef class MyStruct:
     cdef shared_ptr[cMyStruct] c_MyStruct

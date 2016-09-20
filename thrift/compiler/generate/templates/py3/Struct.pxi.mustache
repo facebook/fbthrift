@@ -19,10 +19,10 @@ from libcpp.memory cimport shared_ptr
 from libcpp.string cimport string
 from libc.stdint cimport int16_t, int32_t, int64_t
 
-from {{program:name}}_types cimport ({{!
-}}{{#program:structs}}
-  c{{struct:name}}{{^last?}},{{/last?}}{{!
-}}{{/program:structs}})
+{{#program:structs}}
+{{#first?}}from {{program:name}}_types cimport ({{/first?}}
+  c{{struct:name}}{{^last?}},{{/last?}}
+{{#last?}}){{/last?}}{{/program:structs}}
 
 {{#program:structs}}
 cdef class {{struct:name}}:
