@@ -9,7 +9,7 @@ from module_types cimport (
 cdef class MyStruct:
     cdef shared_ptr[cMyStruct] c_MyStruct
 
-    def __init__(self, int64_t MyIntField, string MyStringField):
+    def __init__(self, int64_t MyIntField, unique_ptr[string] MyStringField):
         self.c_MyStruct.get().MyIntField = MyIntField
         if MyStringField is not None:
             self.c_MyStruct.get().MyStringField = MyStringField.encode()

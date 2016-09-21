@@ -14,7 +14,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#type:i16?}}result{{/type:i16?}}{{!
-}}{{#type:i32?}}result{{/type:i32?}}{{!
-}}{{#type:i64?}}result{{/type:i64?}}{{!
+}}{{#type:i16?}}<int16_t> result{{/type:i16?}}{{!
+}}{{#type:i32?}}<int32_t> result{{/type:i32?}}{{!
+}}{{#type:i64?}}<int64_t> result{{/type:i64?}}{{!
+}}{{#type:string?}}make_unique[string](<string> result.encode('UTF-8')){{/type:string?}}{{!
 }}{{#type:void?}}c_unit{{/type:void?}}

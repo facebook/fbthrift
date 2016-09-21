@@ -65,7 +65,7 @@ folly::Future<folly::Unit> MyServiceWrapper::future_putDataById(
     this->if_object,
     promise,
     id,
-    data
+    std::move(data)
   );
   return promise->getFuture();
 }
@@ -79,7 +79,7 @@ folly::Future<folly::Unit> MyServiceWrapper::future_lobDataById(
     this->if_object,
     promise,
     id,
-    data
+    std::move(data)
   );
   return promise->getFuture();
 }
@@ -150,7 +150,7 @@ folly::Future<folly::Unit> MyServiceFastWrapper::future_putDataById(
     this->if_object,
     promise,
     id,
-    data
+    std::move(data)
   );
   return promise->getFuture();
 }
@@ -164,7 +164,7 @@ folly::Future<folly::Unit> MyServiceFastWrapper::future_lobDataById(
     this->if_object,
     promise,
     id,
-    data
+    std::move(data)
   );
   return promise->getFuture();
 }

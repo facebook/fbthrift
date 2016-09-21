@@ -5,5 +5,5 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
     cdef cppclass cMyStruct "cpp2::MyStruct":
         cMyStruct() except +
         int64_t MyIntField
-        string MyStringField
+        unique_ptr[string] MyStringField
 

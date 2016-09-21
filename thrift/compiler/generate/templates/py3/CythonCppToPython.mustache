@@ -14,9 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#type:i16?}}int16_t{{/type:i16?}}{{!
-}}{{#type:i32?}}int32_t{{/type:i32?}}{{!
-}}{{#type:i64?}}int64_t{{/type:i64?}}{{!
-}}{{#type:string?}}unique_ptr[string]{{/type:string?}}{{!
-}}{{#type:struct}}unique_ptr[{{struct:name}}]{{/type:struct}}{{!
-}}{{#type:void?}}cFollyUnit{{/type:void?}}
+}}    {{#type:i16?}}arg_{{field:name}} = {{field:name}}{{/type:i16?}}{{!
+}}{{#type:i32?}}arg_{{field:name}} = {{field:name}}{{/type:i32?}}{{!
+}}{{#type:i64?}}arg_{{field:name}} = {{field:name}}{{/type:i64?}}{{!
+}}{{#type:string?}}arg_{{field:name}} = (deref({{field:name}}.get())).decode(){{/type:string?}}

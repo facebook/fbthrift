@@ -36,7 +36,8 @@ folly::Future<{{#function:returnType}}{{> CppFieldType}}{{/function:returnType}}
   call_cy_{{service:name}}_{{function:name}}(
     this->if_object,
     promise{{#function:args}},
-    {{field:name}}{{/function:args}}
+    {{#field:type}}{{> CppPassField}}{{/field:type}}{{/function:args}}
+
   );
   return promise->getFuture();
 }

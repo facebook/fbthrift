@@ -9,10 +9,10 @@ cdef class Promise_void:
         return inst
 
 cdef class Promise_string:
-    cdef shared_ptr[cFollyPromise[string]] cPromise
+    cdef shared_ptr[cFollyPromise[unique_ptr[string]]] cPromise
 
     @staticmethod
-    cdef create(shared_ptr[cFollyPromise[string]] cPromise):
+    cdef create(shared_ptr[cFollyPromise[unique_ptr[string]]] cPromise):
         inst = <Promise_string>Promise_string.__new__(Promise_string)
         inst.cPromise = cPromise
         return inst
