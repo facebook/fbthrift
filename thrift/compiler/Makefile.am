@@ -119,10 +119,10 @@ py3_dir = $(template_dir)/py3
 py3__DATA = \
                     generate/templates/py3/OneServiceWrapper.cpp.mustache \
                     generate/templates/py3/OneStruct.pxd.mustache \
-                    generate/templates/py3/ServiceWrapper.h.mustache \
-                    generate/templates/py3/FieldType.pxd.mustache \
+                    generate/templates/py3/ServicesWrapper.h.mustache \
+                    generate/templates/py3/CppFieldType.mustache \
                     generate/templates/py3/OneServiceWrapper.h.mustache \
-                    generate/templates/py3/ServiceWrapper.cpp.mustache \
+                    generate/templates/py3/ServicesWrapper.cpp.mustache \
                     generate/templates/py3/Struct.pxd.mustache
 
 libparse_la_CPPFLAGS = $(AM_CPPFLAGS) -DTHRIFTY_HH=\"thrift/compiler/thrifty.hh\"
