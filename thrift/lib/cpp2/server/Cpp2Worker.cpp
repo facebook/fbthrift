@@ -120,7 +120,7 @@ void Cpp2Worker::useExistingChannel(
   conn->start();
 }
 
-int Cpp2Worker::pendingCount() {
+int Cpp2Worker::computePendingCount() {
   // Only recalculate once every pending_interval
   if (FLAGS_pending_interval > 0) {
     auto now = std::chrono::steady_clock::now();

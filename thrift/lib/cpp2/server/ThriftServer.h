@@ -170,6 +170,10 @@ class ThriftServer : public apache::thrift::BaseThriftServer
 
   bool queueSends_ = true;
 
+  // Whether or not we should try to approximate pending IO events for
+  // load balancing and load shedding
+  bool trackPendingIO_ = false;
+
   bool stopWorkersOnStopListening_ = true;
 
   std::shared_ptr<wangle::IOThreadPoolExecutor> acceptPool_;
@@ -665,6 +669,22 @@ class ThriftServer : public apache::thrift::BaseThriftServer
 
   bool getQueueSends() {
     return queueSends_;
+  }
+
+  /**
+   * Set whether or not we should try to approximate pending IO events for
+   * load balancing and load shedding.
+   */
+  void setTrackPendingIO(bool trackPendingIO) {
+    trackPendingIO_ = trackPendingIO;
+  }
+
+  /**
+   * Get whether or not we should try to approximate pending IO events for
+   * load balancing and load shedding.
+   */
+  bool getTrackPendingIO() const {
+    return trackPendingIO_;
   }
 
   /**

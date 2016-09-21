@@ -90,7 +90,7 @@ class Cpp2Worker
    * Count the number of pending fds. Used for overload detection.
    * Not thread-safe.
    */
-  int pendingCount();
+  int computePendingCount();
 
   /**
    * Cached pending count. Thread-safe.

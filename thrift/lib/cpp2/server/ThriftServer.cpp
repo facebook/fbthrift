@@ -498,6 +498,9 @@ void ThriftServer::immediateShutdown(bool abortConnections) {
 
 int32_t ThriftServer::getPendingCount() const {
   int32_t count = 0;
+  if (!trackPendingIO_) { // Ignore pending
+    return 0;
+  }
   if (!getIOGroupSafe()) { // Not enabled in duplex mode
     return 0;
   }

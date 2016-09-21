@@ -328,6 +328,9 @@ void Cpp2Connection::requestReceived(
         hreq->getHeader(), context_.getPeerAddress());
   }
 
+  if (server->getTrackPendingIO()) {
+    worker_->computePendingCount();
+  }
   if (server->isOverloaded(hreq->getHeader())) {
     killRequest(*req,
         TApplicationException::TApplicationExceptionType::LOADSHEDDING,
