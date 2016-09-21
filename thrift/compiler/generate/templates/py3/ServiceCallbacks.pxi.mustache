@@ -19,6 +19,7 @@ import asyncio
 import functools
 from libcpp.memory cimport shared_ptr, unique_ptr
 
+
 {{#program:services}}
 {{#service:functions}}
 cdef public void call_cy_{{service:name}}_{{function:name}}(
@@ -30,7 +31,7 @@ cdef public void call_cy_{{service:name}}_{{function:name}}(
     promise = Promise_{{#function:returnType}}{{type:name}}{{/function:returnType}}.create(cPromise)
     # TODO: Wrap arguments in Python struct
     {{#function:args}}
-    # <Python Type> arg_{{field:name}} = {{field:name}}
+    arg_{{field:name}} = {{field:name}}
     {{/function:args}}
 
     #TODO: asyncio.run_coroutine_threadsafe... after Python 3.5.2 lands
@@ -38,11 +39,10 @@ cdef public void call_cy_{{service:name}}_{{function:name}}(
         asyncio.ensure_future,
         {{service:name}}_{{function:name}}_coro(
             self,
-            promise,
-            {{#function:args}}
-            arg_{{field:name}},
-            {{/function:args}}
-    ), loop=self.loop)
+            promise{{#function:args}},
+            arg_{{field:name}}
+            {{/function:args}}),
+        loop=self.loop)
     self.loop.call_soon_threadsafe(func)
 
 async def {{service:name}}_{{function:name}}_coro(
@@ -52,8 +52,8 @@ async def {{service:name}}_{{function:name}}_coro(
     {{#field:type}}{{>CythonFieldType}}{{/field:type}} {{field:name}}{{/function:args}}
 ):
     result = await self.{{function:name}}({{#function:args}}{{field:name}}{{/function:args}})
-    cResult = None   # TODO: Look up the correct return value on the returned struct
-    promise.cPromise.get().setValue(<{{#function:returnType}}{{> CythonFieldType}}{{/function:returnType}}> result)
+    cResult = {{#function:returnType}}{{> CythonReturnValue}}{{/function:returnType}}
+    promise.cPromise.get().setValue(<{{#function:returnType}}{{> CythonFieldType}}{{/function:returnType}}> cResult)
 
 {{/service:functions}}
 {{/program:services}}
