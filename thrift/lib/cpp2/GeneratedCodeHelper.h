@@ -866,6 +866,7 @@ struct helper {
 
   static void process_exn(
       const char* func,
+      const TApplicationException::TApplicationExceptionType type,
       const std::string& msg,
       std::unique_ptr<ResponseChannel::Request> req,
       Cpp2RequestContext* ctx,
@@ -900,8 +901,9 @@ process_missing(
     int32_t protoSeqId) {
   using h = helper_r<ProtocolReader>;
   const char* fn = "process";
+  auto type = TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD;
   const auto msg = folly::sformat("Method name {} not found", fname);
-  return h::process_exn(fn, msg, std::move(req), ctx, eb, protoSeqId);
+  return h::process_exn(fn, type, msg, std::move(req), ctx, eb, protoSeqId);
 }
 
 template <class ProtocolReader, class Processor>

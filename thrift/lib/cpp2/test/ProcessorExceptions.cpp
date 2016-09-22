@@ -28,6 +28,7 @@
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/SampleService.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/SampleService2.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/SampleService3.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
@@ -74,8 +75,7 @@ int32_t call_return42(std::function<void(MyArgs2&)> isset_cb) {
   apache::thrift::TestThriftServerFactory<SampleServiceHandler> factory;
   ScopedServerThread sst(factory.create());
   folly::EventBase base;
-  std::shared_ptr<TAsyncSocket> socket(
-    TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  auto socket(TAsyncSocket::newSocket(&base, *sst.getAddress()));
 
   SampleService2AsyncClient client(HeaderClientChannel::newChannel(socket));
 
@@ -160,6 +160,29 @@ TEST(ProcessorExceptionTest, throw_if_map_inner_required_missing) {
 TEST(ProcessorExceptionTest, throw_if_map_key_required_missing) {
   EXPECT_THROW(call_return42([] (MyArgs2& a) {a.__isset.complex_key = false;}),
     TApplicationException);
+}
+
+TEST(ProcessorExceptionTest, throw_if_method_missing) {
+  apache::thrift::TestThriftServerFactory<SampleServiceHandler> factory;
+  ScopedServerThread sst(factory.create());
+  folly::EventBase base;
+  auto socket(TAsyncSocket::newSocket(&base, *sst.getAddress()));
+  SampleService3AsyncClient client(HeaderClientChannel::newChannel(socket));
+
+  try {
+    // call a method that doesn't exist on the server but exists on the client
+    client.sync_doNothing();
+    ADD_FAILURE() << "Expected call_doNothing to throw";
+  } catch (TApplicationException& t) {
+    EXPECT_STREQ("Method name doNothing not found", t.what());
+    EXPECT_EQ(
+        TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD,
+        t.getType());
+  } catch (std::exception& e) {
+    ADD_FAILURE()
+        << "Wrong exception thrown, expected TApplicationException, got "
+        << e.what();
+  }
 }
 
 TEST(ProcessorExceptionTest, throw_if_map_key_inner_required_missing) {

@@ -53,6 +53,7 @@ IOBufQueue helper<ProtocolReader, ProtocolWriter>::write_exn(
 template <typename ProtocolReader, typename ProtocolWriter>
 void helper<ProtocolReader, ProtocolWriter>::process_exn(
     const char* func,
+    const TApplicationException::TApplicationExceptionType type,
     const string& msg,
     unique_ptr<ResponseChannel::Request> req,
     Cpp2RequestContext* ctx,
@@ -61,7 +62,7 @@ void helper<ProtocolReader, ProtocolWriter>::process_exn(
   ProtocolWriter oprot;
   if (req) {
     LOG(ERROR) << msg << " in function " << func;
-    TApplicationException x(msg);
+    TApplicationException x(type, msg);
     IOBufQueue queue = helper_w<ProtocolWriter>::write_exn(
         func, &oprot, protoSeqId, nullptr, x);
     queue.append(THeader::transform(
@@ -99,14 +100,18 @@ bool deserializeMessageBegin(
     ctx->setMessageBeginSize(bytes);
   } catch (const TException& ex) {
     LOG(ERROR) << "received invalid message from client: " << ex.what();
+    auto type =
+        TApplicationException::TApplicationExceptionType::UNKNOWN;
     const char* msg = "invalid message from client";
-    h::process_exn(fn, msg, std::move(req), ctx, eb, protoSeqId);
+    h::process_exn(fn, type, msg, std::move(req), ctx, eb, protoSeqId);
     return false;
   }
   if (mtype != T_CALL && mtype != T_ONEWAY) {
     LOG(ERROR) << "received invalid message of type " << mtype;
+    auto type =
+        TApplicationException::TApplicationExceptionType::INVALID_MESSAGE_TYPE;
     const char* msg = "invalid message arguments";
-    h::process_exn(fn, msg, std::move(req), ctx, eb, protoSeqId);
+    h::process_exn(fn, type, msg, std::move(req), ctx, eb, protoSeqId);
     return false;
   }
 

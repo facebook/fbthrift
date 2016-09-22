@@ -24,7 +24,6 @@ service SampleService {
   i32 return42(1: MyArgs unused, 2: i32 iii);
 }
 
-
 # These versions are identical, but the fields are optional
 # See comment at the top of ProcessorExceptions.cpp for the reason
 struct Inner2 {
@@ -45,4 +44,8 @@ struct MyArgs2 {
 
 service SampleService2 {
   i32 return42(1: MyArgs2 unused, 2: i32 iii);
+}
+
+service SampleService3 {
+  void doNothing();
 }
