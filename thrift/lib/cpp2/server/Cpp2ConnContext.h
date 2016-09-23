@@ -57,6 +57,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
       socket->getLocalAddress(&localAddress_);
       if (auto sslSocket = dynamic_cast<const async::TAsyncSSLSocket*>(socket)) {
         peerCert_ = sslSocket->getPeerCert();
+        isTls_ = true;
       }
     }
   }
@@ -109,6 +110,10 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     return client;
   }
 
+  bool isTls() const {
+    return isTls_;
+  }
+
  private:
   const apache::thrift::SaslServer* saslServer_;
   folly::EventBaseManager* manager_;
@@ -116,6 +121,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   std::shared_ptr<RequestChannel> duplexChannel_;
   std::shared_ptr<TClientBase> duplexClient_;
   std::shared_ptr<X509> peerCert_;
+  bool isTls_{false};
 };
 
 // Request-specific context
