@@ -71,7 +71,6 @@ class ThriftServerCallback : public node::ObjectWrap {
 
   static Handle<Value> sendReply(const Arguments& args) {
     auto obj = ObjectWrap::Unwrap<ThriftServerCallback>(args.This());
-    auto r = folly::makeMoveWrapper(std::move(obj->req_));
     Local<Object> bufferObj = args[0]->ToObject();
     char* bufferData = node::Buffer::Data(bufferObj);
     size_t bufferLen = node::Buffer::Length(bufferObj);
@@ -80,9 +79,9 @@ class ThriftServerCallback : public node::ObjectWrap {
         folly::IOBuf::copyBuffer(bufferData, bufferLen),
         obj->reqCtx_->getHeader()->getWriteTransforms(),
         obj->reqCtx_->getHeader()->getMinCompressBytes());
-    auto iobufMw = folly::makeMoveWrapper(std::move(iobuf));
-    obj->eb_->runInEventBaseThread([=]() mutable {
-        (*r)->sendReply(std::move(*iobufMw));
+    obj->eb_->runInEventBaseThread(
+      [r = std::move(obj->req_), iobuf = std::move(iobuf)]() mutable {
+        r->sendReply(std::move(iobuf));
     });
     return args.This();
   }
@@ -121,21 +120,20 @@ class NodeProcessor : public apache::thrift::AsyncProcessor {
                folly::EventBase* eb,
                apache::thrift::concurrency::ThreadManager* tm) override {
 
-    auto reqd = folly::makeMoveWrapper(std::move(req));
-    auto bufd = folly::makeMoveWrapper(std::move(buf));
-    integrated_uv_event_base->runInEventBaseThread([=]() mutable {
+    integrated_uv_event_base->runInEventBaseThread(
+      [=, req = std::move(req), buf = std::move(buf)]() mutable {
         HandleScope scope;
-        (*bufd)->coalesce();
+        buf->coalesce();
         uint64_t resp;
         char* data;
 
         void *user_data = NULL;
 
-        assert((*bufd)->length() > 0);
-        node::Buffer* inBuffer = node::Buffer::New((*bufd)->length());
+        assert(buf->length() > 0);
+        node::Buffer* inBuffer = node::Buffer::New(buf->length());
         assert(inBuffer);
         memcpy(
-          node::Buffer::Data(inBuffer), (*bufd)->data(), (*bufd)->length());
+          node::Buffer::Data(inBuffer), buf->data(), buf->length());
 
         Local<Object> globalObj = Context::GetCurrent()->Global();
         Local<Function> bufferConstructor = Local<Function>::Cast(
@@ -143,7 +141,7 @@ class NodeProcessor : public apache::thrift::AsyncProcessor {
 
         Handle<Value> constructorArgs[3] = {
           inBuffer->handle_,
-          v8::Integer::New((*bufd)->length()),
+          v8::Integer::New(buf->length()),
           v8::Integer::New(0) };
         Local<Object> bufin = bufferConstructor->NewInstance(
           3, constructorArgs);
@@ -151,7 +149,7 @@ class NodeProcessor : public apache::thrift::AsyncProcessor {
         auto callback = ThriftServerCallback::NewInstance();
         ThriftServerCallback::setRequest(
           callback,
-          std::move(*reqd),
+          std::move(req),
           context,
           eb);
 

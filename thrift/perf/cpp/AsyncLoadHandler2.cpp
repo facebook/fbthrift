@@ -86,11 +86,11 @@ void AsyncLoadHandler2::sync_burn(int64_t microseconds) {
 
 folly::Future<folly::Unit>
 AsyncLoadHandler2::future_burn(int64_t microseconds) {
-  folly::MoveWrapper<folly::Promise<folly::Unit>> promise;
-  auto future = promise->getFuture();
+  folly::Promise<folly::Unit> promise;
+  auto future = promise.getFuture();
 
   sync_burn(microseconds);
-  promise->setValue();
+  promise.setValue();
 
   return future;
 }
@@ -101,11 +101,11 @@ void AsyncLoadHandler2::sync_onewayBurn(int64_t microseconds) {
 
 folly::Future<folly::Unit>
 AsyncLoadHandler2::future_onewayBurn(int64_t microseconds) {
-  folly::MoveWrapper<folly::Promise<folly::Unit>> promise;
-  auto future = promise->getFuture();
+  folly::Promise<folly::Unit> promise;
+  auto future = promise.getFuture();
 
   sync_onewayBurn(microseconds);
-  promise->setValue();
+  promise.setValue();
 
   return future;
 }
@@ -195,17 +195,14 @@ void AsyncLoadHandler2::sync_echo(
 folly::Future<std::unique_ptr<std::string>>
 AsyncLoadHandler2::future_echo(
     std::unique_ptr<std::string> data) {
-  folly::MoveWrapper<
-    folly::Promise<std::unique_ptr<std::string>>> promise;
-  auto future = promise->getFuture();
-  auto wrapped_data =
-    folly::MoveWrapper<std::unique_ptr<std::string>>(std::move(data));
+  folly::Promise<std::unique_ptr<std::string>> promise;
+  auto future = promise.getFuture();
 
   folly::via(folly::RequestEventBase::get()).then(
-    [this, promise, wrapped_data]() mutable {
+    [this, promise = std::move(promise), data = std::move(data)]() mutable {
       std::string output;
-      sync_echo(output, std::move(*wrapped_data));
-      promise->setValue(folly::make_unique<std::string>(std::move(output)));
+      sync_echo(output, std::move(data));
+      promise.setValue(folly::make_unique<std::string>(std::move(output)));
     });
 
   return future;

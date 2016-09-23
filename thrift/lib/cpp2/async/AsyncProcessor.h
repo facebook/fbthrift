@@ -203,7 +203,6 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       bool oneway,
       ProcessFunc processFunc,
       ChildType* childClass) {
-    using folly::makeMoveWrapper;
     if (oneway) {
       if (!req->isOneway()) {
         req->sendReply(std::unique_ptr<folly::IOBuf>());
@@ -217,25 +216,25 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
         std::make_shared<apache::thrift::PriorityEventTask>(
           pri,
           [=]() mutable {
-            auto req_mw = folly::makeMoveWrapper(
-              std::unique_ptr<apache::thrift::ResponseChannel::Request>(preq));
-            if ((*req_mw)->getTimestamps().processBegin != 0) {
+            auto rq =
+              std::unique_ptr<apache::thrift::ResponseChannel::Request>(preq);
+            if (rq->getTimestamps().processBegin != 0) {
               // Since this request was queued, reset the processBegin
               // time to the actual start time, and not the queue time.
-              (*req_mw)->getTimestamps().processBegin =
+              rq->getTimestamps().processBegin =
                 apache::thrift::concurrency::Util::currentTimeUsec();
             }
             // Oneway request won't be canceled if expired. see
             // D1006482 for furhter details.  TODO: fix this
             if (!oneway) {
-              if (!(*req_mw)->isActive()) {
-                eb->runInEventBaseThread([=]() mutable {
-                  delete req_mw->release();
+              if (!rq->isActive()) {
+                eb->runInEventBaseThread([rq = std::move(rq)]() mutable {
+                  rq.reset();
                 });
                 return;
               }
             }
-            (childClass->*processFunc)(std::move(*req_mw), std::move(*buf_mw),
+            (childClass->*processFunc)(std::move(rq), std::move(*buf_mw),
                         std::move(*iprot_holder), ctx, eb, tm);
 
           },

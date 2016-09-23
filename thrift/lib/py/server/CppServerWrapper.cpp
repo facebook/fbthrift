@@ -314,12 +314,13 @@ public:
                     if (!(*req_mw)->isActive()) {
                       return;
                     }
-                    auto q_mw = folly::makeMoveWrapper(THeader::transform(
+                    auto q = THeader::transform(
                           std::move(outbuf),
                           context->getHeader()->getWriteTransforms(),
-                          context->getHeader()->getMinCompressBytes()));
-                    eb->runInEventBaseThread([req_mw, q_mw]() mutable {
-                        (*req_mw)->sendReply(q_mw.move());
+                          context->getHeader()->getMinCompressBytes());
+                    eb->runInEventBaseThread(
+                      [req_mw, q = std::move(q)]() mutable {
+                        (*req_mw)->sendReply(std::move(q));
                     });
                   } catch (const std::exception& e) {
                     if (!oneway) {

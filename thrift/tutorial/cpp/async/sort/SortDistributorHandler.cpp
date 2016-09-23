@@ -77,9 +77,7 @@ Future<vector<int32_t>> SortDistributorHandler::future_sort(
             values.begin() + a,
             values.begin() + std::min(values.size(), b));
         // Issue a request from the IO thread for each chunk.
-        auto chunkm = makeMoveWrapper(move(chunk));
-        return via(eb, [=]() mutable {
-            auto chunk = chunkm.move();
+        return via(eb, [=, chunk = std::move(chunk)]() mutable {
             auto client = make_unique<SorterAsyncClient>(
                 HeaderClientChannel::newChannel(
                   async::TAsyncSocket::newSocket(
