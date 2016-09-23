@@ -154,7 +154,7 @@ class THeader {
    */
   std::unique_ptr<THeader> clone();
 
-  uint16_t getNumTransforms(std::vector<uint16_t>& transforms) const {
+  static uint16_t getNumTransforms(const std::vector<uint16_t>& transforms) {
     return transforms.size();
   }
 
@@ -209,12 +209,15 @@ class THeader {
   void setSequenceNumber(uint32_t sid) { this->seqId = sid; }
 
   enum TRANSFORMS {
-    NONE = 0x0,
+    NONE = 0x00,
     ZLIB_TRANSFORM = 0x01,
-    HMAC_TRANSFORM = 0x02, // Deprecated and no longer supported
+    HMAC_TRANSFORM = 0x02,         // Deprecated and no longer supported
     SNAPPY_TRANSFORM = 0x03,
-    QLZ_TRANSFORM = 0x04, // Deprecated and no longer supported
+    QLZ_TRANSFORM = 0x04,          // Deprecated and no longer supported
     ZSTD_TRANSFORM = 0x05,
+
+    // DO NOT USE. Sentinel value for enum count. Always keep as last value.
+    TRANSFORMS_COUNT = 0x06,
   };
 
   /* IOBuf interface */
@@ -274,6 +277,9 @@ class THeader {
 
   void setHttpClientParser(
       std::shared_ptr<apache::thrift::util::THttpClientParser>);
+
+  // Utility method for converting TRANSFORMS enum to string
+  static const std::string& getStringTransform(TRANSFORMS transform);
 
   static CLIENT_TYPE getClientType(uint32_t f, uint32_t s);
 
@@ -369,6 +375,11 @@ class THeader {
       END        // signal the end of infoIds we can handle
     };
   };
+
+private:
+  static const std::vector<std::string> TRANSFORMS_STRING_LIST;
+
+  friend class THeaderTest_transform_Test;
 };
 
 }}} // apache::thrift::transport

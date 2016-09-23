@@ -1114,4 +1114,17 @@ void THeader::setHttpClientParser(shared_ptr<THttpClientParser> parser) {
   httpClientParser_ = parser;
 }
 
+const std::vector<std::string> THeader::TRANSFORMS_STRING_LIST = {
+  "none",
+  "zlib",
+  "hmac",
+  "snappy",
+  "qlz",
+  "zstd",
+};
+
+const std::string& THeader::getStringTransform(TRANSFORMS transform) {
+  return TRANSFORMS_STRING_LIST.at(transform);
+}
+
 }}} // apache::thrift::transport

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+ // Note: Below methods don't work for class scoped enums
+
 #ifndef THRIFT_UTIL_ENUMUTILS_H_
 #define THRIFT_UTIL_ENUMUTILS_H_ 1
 

@@ -31,6 +31,8 @@ using namespace apache::thrift;
 using namespace folly;
 using namespace apache::thrift::transport;
 
+namespace apache { namespace thrift { namespace transport {
+
 TEST(THeaderTest, largetransform) {
   THeader header;
   header.setTransform(THeader::ZLIB_TRANSFORM); // ZLib flag
@@ -80,3 +82,16 @@ TEST(THeaderTest, http_clear_header) {
 
   EXPECT_TRUE(header.isWriteHeadersEmpty());
 }
+
+TEST(THeaderTest, transform) {
+  // Ensure TRANSFORMS enum and TRANSFORMS_STRING_LIST is aligned.
+  EXPECT_EQ(
+    static_cast<THeader::TRANSFORMS>(THeader::TRANSFORMS_STRING_LIST.size()),
+    THeader::TRANSFORMS::TRANSFORMS_COUNT);
+
+  // Simple test for TRANSFORMS enum to string conversion
+  EXPECT_EQ(
+    THeader::getStringTransform(THeader::TRANSFORMS::ZLIB_TRANSFORM), "zlib");
+}
+
+}}}
