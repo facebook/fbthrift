@@ -11,6 +11,7 @@ import math
 
 from thrift.protocol import TSimpleJSONProtocol
 from thrift.transport.TTransport import TMemoryBuffer
+from thrift.util import Serializer
 
 from SimpleJSONRead.ttypes import SomeStruct, Stuff
 
@@ -129,6 +130,15 @@ class TestSimpleJSONRead(unittest.TestCase):
         self.assertEqual(stuff_read.aListOfStruct[1].anInteger, 11)
         self.assertEqual(stuff_read.aListOfStruct[1].aMap["bye"], 1.0)
         self.assertEqual(stuff_read.anotherString, "Hey")
+
+    def test_deserializer(self):
+        j = '{"aShort": 1, "anInteger": 2, "aLong": 3}'
+        stuff = Stuff()
+        Serializer.deserialize(
+            TSimpleJSONProtocol.TSimpleJSONProtocolFactory(), j, stuff)
+        self.assertEqual(stuff.aShort, 1)
+        self.assertEqual(stuff.anInteger, 2)
+        self.assertEqual(stuff.aLong, 3)
 
 if __name__ == '__main__':
     unittest.main()

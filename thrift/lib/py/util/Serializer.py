@@ -40,7 +40,10 @@ def deserialize(protocol_factory, data, thr_out):
     protocol factory and a TMemoryBuffer.  returns its thr_out
     argument."""
     transport = TTransport.TMemoryBuffer(data)
-    protocol = protocol_factory.getProtocol(transport)
+    try:
+        protocol = protocol_factory.getProtocol(transport, thr_out.thrift_spec)
+    except TypeError:
+        protocol = protocol_factory.getProtocol(transport)
     if isinstance(protocol, THeaderProtocol.THeaderProtocol):
         # this reads the THeader headers to detect what the underlying
         # protocol is, as well as looking at transforms, etc.
