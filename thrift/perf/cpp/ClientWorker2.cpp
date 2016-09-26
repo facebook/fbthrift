@@ -58,7 +58,7 @@ std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
       }
     }
     if (config->useSSLTFO()) {
-      configs["enable_ssl_tfo"] = "true";
+      configs["tls_fastopen"] = "true";
     }
     channel = facebook::servicerouter::cpp2::getClientFactory()
       .getChannel(config->srTier(), ebm_.getEventBase(), options, configs);
