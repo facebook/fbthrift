@@ -1747,8 +1747,8 @@ void t_py_generator::generate_fastproto_read(ofstream& out,
     "[self.__class__, self.thrift_spec, " <<
     (tstruct->is_union() ? "True" : "False") << "], " <<
     "utf8strings=UTF8STRINGS, protoid=0)" << endl;
-  indent(out) <<
-    "return" << endl;
+  indent(out) << "self.checkRequired()" << endl;
+  indent(out) << "return" << endl;
   indent_down();
 
   indent(out) <<
@@ -1766,8 +1766,8 @@ void t_py_generator::generate_fastproto_read(ofstream& out,
     "[self.__class__, self.thrift_spec, " <<
     (tstruct->is_union() ? "True" : "False") << "], " <<
     "utf8strings=UTF8STRINGS, protoid=2)" << endl;
-  indent(out) <<
-    "return" << endl;
+  indent(out) << "self.checkRequired()" << endl;
+  indent(out) << "return" << endl;
   indent_down();
 }
 
@@ -1842,10 +1842,12 @@ void t_py_generator::generate_py_struct_reader(ofstream& out,
 
     indent_down();
 
-    indent(out) <<
-      "iprot.readStructEnd()" << endl;
+    indent(out) << "iprot.readStructEnd()" << endl;
+    indent(out) << "self.checkRequired()" << endl << endl;
+  indent_down();
 
-
+  indent(out) << "def checkRequired(self):" << endl;
+  indent_up();
   // The code that checks for the require field
   for (f_iter = fields.begin(); f_iter != fields.end(); ++f_iter) {
     if ((*f_iter)->get_req() == t_field::T_REQUIRED) {
@@ -1863,8 +1865,9 @@ void t_py_generator::generate_py_struct_reader(ofstream& out,
       out << endl;
     }
   }
+  indent(out) << "return" << endl;
+  indent_down();
 
-    indent_down();
   out << endl;
 }
 

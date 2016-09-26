@@ -1,5 +1,5 @@
 struct AStruct {
-  1: string aString,
+  1: required string aString,
   2: i32 anInteger,
 }
 
@@ -17,6 +17,11 @@ struct OneOfEach {
   11: set<string> aSet,
   12: map<string, i32> aMap,
   13: AStruct aStruct,
+}
+
+struct Required {
+  1: required i32 anInteger,
+  2: AStruct aStruct,
 }
 
 union TestUnion {

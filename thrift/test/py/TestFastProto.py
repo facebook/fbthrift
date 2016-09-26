@@ -12,11 +12,12 @@ if sys.version_info[0] >= 3:
 else:
     from cStringIO import StringIO
 
-from thrift.protocol import fastproto, TBinaryProtocol, TCompactProtocol
+from thrift.protocol import fastproto, TBinaryProtocol, TCompactProtocol, \
+        TProtocol
 from thrift.transport.TTransport import TMemoryBuffer
 
 from FastProto.ttypes import AStruct, OneOfEach, TestUnion, StructWithUnion, \
-        NegativeFieldId
+        NegativeFieldId, Required
 
 class ReadOnlyBufferWithRefill(TMemoryBuffer):
     def __init__(self, index, value=None):
@@ -68,6 +69,21 @@ class AbstractTest():
         self.assertEqual(len(trans._readBuffer.read()), 0)
         if split != 1.0:
             self.assertEqual(1, trans.refill_called)
+
+    def encode_and_decode(self, obj):
+        trans = TMemoryBuffer()
+        if self.PROTO == 0:
+            proto = TBinaryProtocol.TBinaryProtocol(trans)
+        else:
+            proto = TCompactProtocol.TCompactProtocol(trans)
+
+        obj.write(proto)
+
+        obj_new = obj.__class__()
+        trans = TMemoryBuffer(trans.getvalue())
+        proto = proto.__class__(trans)
+
+        obj_new.read(proto)
 
     def buildOneOfEach(self):
         return OneOfEach(
@@ -143,6 +159,16 @@ class AbstractTest():
     def test_empty_container(self):
         self.encode_helper(OneOfEach(aSet=set(), aList=[], aMap={}))
         self.decode_helper(OneOfEach(aSet=set(), aList=[], aMap={}))
+
+    def test_required(self):
+        with self.assertRaises(TProtocol.TProtocolException):
+            aStruct = AStruct(anInteger=1)
+            self.encode_and_decode(aStruct)
+
+        with self.assertRaises(TProtocol.TProtocolException):
+            aStruct = AStruct(aString="")
+            required = Required(aStruct=aStruct)
+            self.encode_and_decode(required)
 
 class FastBinaryTest(AbstractTest, unittest.TestCase):
     PROTO = 0
