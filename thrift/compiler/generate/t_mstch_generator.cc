@@ -391,13 +391,13 @@ const std::string& t_mstch_generator::get_template(
 }
 
 void t_mstch_generator::write_output(
-    boost::filesystem::path path,
+    const boost::filesystem::path& path,
     const std::string& data) {
-  path = boost::filesystem::path{this->get_out_dir()} / path;
-  boost::filesystem::create_directories(path.parent_path());
-  std::ofstream ofs{path.string()};
+  auto abs_path = boost::filesystem::path{this->get_out_dir()} / path;
+  boost::filesystem::create_directories(abs_path.parent_path());
+  std::ofstream ofs{abs_path.string()};
   ofs << data;
-  this->record_genfile(path.string());
+  this->record_genfile(abs_path.string());
 }
 
 folly::Optional<std::string> t_mstch_generator::get_option(
@@ -420,8 +420,15 @@ mstch::map t_mstch_generator::prepend_prefix(
 }
 
 std::string t_mstch_generator::render(
-    const std::string& tpl,
+    const std::string& template_name,
     const mstch::node& context) const {
   return mstch::render(
-      this->get_template(tpl), context, this->get_template_map());
+      this->get_template(template_name), context, this->get_template_map());
+}
+
+void t_mstch_generator::render_to_file(
+    const mstch::map& context,
+    const std::string& template_name,
+    const boost::filesystem::path& path) {
+  write_output(path, render(template_name, context));
 }

@@ -62,16 +62,42 @@ class t_mstch_generator : public t_generator {
   }
 
   /**
-   * Render the mstch template with name `tpl_name` in the given context.
+   * Render the mstch template with name `template_name` in the given context.
    */
-  std::string render(const std::string& tpl_name, const mstch::node& context)
-      const;
+  std::string render(
+      const std::string& template_name,
+      const mstch::node& context) const;
 
   /**
    * Write an output file with the given contents to a path
    * under the output directory.
    */
-  void write_output(boost::filesystem::path path, const std::string& data);
+  void write_output(
+      const boost::filesystem::path& path,
+      const std::string& data);
+
+  /**
+   * Render the mstch template with name `template_name` in the given context
+   * and write to a path under the output directory. Same as calling `render`
+   * and `write_output` in succession.
+   */
+  void render_to_file(
+      const mstch::map& context,
+      const std::string& template_name,
+      const boost::filesystem::path& path);
+
+  /**
+   * Render the mstch template with name `template_name` in the context of the
+   * given Thrift AST and write to a path under the output directory. Same as
+   * calling `dump` and `render` and `write_output` in succession.
+   */
+  template <typename T>
+  void render_to_file(
+      const T& obj,
+      const std::string& template_name,
+      const boost::filesystem::path& path) {
+    this->render_to_file(this->dump(obj), template_name, path);
+  }
 
   /**
    * Dump map of command line flags passed to generator

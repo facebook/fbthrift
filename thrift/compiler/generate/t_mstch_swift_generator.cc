@@ -75,8 +75,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
           package_to_path(this->get_namespace_or_default(*item->get_program()));
       auto filename = this->mangle_java_name(item->get_name(), true) + ".java";
 
-      auto rendered_item = this->render(tpl_path, this->dump(*item));
-      this->write_output(package_dir / filename, rendered_item);
+      this->render_to_file(*item, tpl_path, package_dir / filename);
     }
   }
 
@@ -86,8 +85,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
       return;
     }
     auto package_dir = package_to_path(this->get_namespace_or_default(prog));
-    auto rendered = this->render("Constants", this->dump(prog));
-    this->write_output(package_dir / "Constants.java", rendered);
+    this->render_to_file(prog, "Constants", package_dir / "Constants.java");
   }
 
   mstch::map extend_program(const t_program& program) const override {

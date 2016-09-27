@@ -44,14 +44,6 @@ class t_mstch_py3_generator : public t_mstch_generator {
     void generate_structs(const t_program&);
     void generate_services(const t_program&);
     void generate_promises(const t_program&);
-
-  private:
-    template <typename T>
-    void render_to_file(
-      const T& obj,
-      const std::string& template_name,
-      const std::string& filename
-    );
 };
 
 mstch::map t_mstch_py3_generator::extend_program(const t_program& program) const {
@@ -122,17 +114,6 @@ void t_mstch_py3_generator::generate_program() {
   this->generate_structs(*this->get_program());
   this->generate_services(*this->get_program());
   this->generate_promises(*this->get_program());
-}
-
-template <typename T>
-void t_mstch_py3_generator::render_to_file(
-  const T& obj,
-  const std::string& template_name,
-  const std::string& filename
-) {
-  auto context = this->dump(obj);
-  auto rendered_context = this->render(template_name, context);
-  this->write_output(filename, rendered_context);
 }
 
 THRIFT_REGISTER_GENERATOR(
