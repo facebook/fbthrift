@@ -28,10 +28,12 @@
 t_mstch_generator::t_mstch_generator(
     t_program* program,
     boost::filesystem::path template_prefix,
-    std::map<std::string, std::string> parsed_options)
+    std::map<std::string, std::string> parsed_options,
+    bool convert_delimiter)
     : t_generator(program),
       template_dir_(g_template_dir),
-      parsed_options_(std::move(parsed_options)) {
+      parsed_options_(std::move(parsed_options)),
+      convert_delimiter_(convert_delimiter) {
   if (this->template_dir_ == "") {
     std::string s = "Must set template directory when using mstch generator";
     throw std::runtime_error{s};
@@ -373,6 +375,9 @@ void t_mstch_generator::gen_template_map(
       std::ifstream ifs{itr->path().string()};
       auto tpl = std::string{std::istreambuf_iterator<char>(ifs),
                              std::istreambuf_iterator<char>()};
+      if (convert_delimiter_) {
+        tpl = "{{=<% %>=}}\n" + tpl;
+      }
 
       this->template_map_.emplace(itr->path().stem().string(), std::move(tpl));
     }

@@ -104,7 +104,7 @@ class CompilerTest(unittest.TestCase):
         cmds = read_lines(os.path.join(self.tmp, 'cmd'))
         for cmd in cmds:
             args = shlex.split(cmd.strip())
-            if args[0].startswith("cpp"):
+            if "cpp" in args[0]:
                 path = os.path.join("thrift/compiler/test/fixtures", name)
                 extra = "include_prefix=" + path
                 join = "," if ":" in args[0] else ":"

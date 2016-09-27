@@ -34,7 +34,8 @@ class t_mstch_generator : public t_generator {
   t_mstch_generator(
       t_program* program,
       boost::filesystem::path template_prefix,
-      std::map<std::string, std::string> parsed_options);
+      std::map<std::string, std::string> parsed_options,
+      bool convert_delimiter = false);
 
  protected:
   /**
@@ -153,17 +154,25 @@ class t_mstch_generator : public t_generator {
     for (auto itr = elems.begin(); itr != elems.end(); ++itr) {
       auto map = this->dump(
           *as_const_pointer<typename std::remove_pointer<T>::type>(*itr));
-      map.emplace("first?", itr == elems.begin());
-      map.emplace("last?", std::next(itr) == elems.end());
       result.push_back(map);
     }
+    add_first_last(result);
     return result;
+  }
+
+  void add_first_last(mstch::array& elems) const {
+    for (auto itr = elems.begin(); itr != elems.end(); ++itr) {
+      boost::get<mstch::map>(*itr).emplace("first?", itr == elems.begin());
+      boost::get<mstch::map>(*itr).emplace("last?",
+                                           std::next(itr) == elems.end());
+    }
   }
 
   folly::Optional<std::string> get_option(const std::string& key) const;
 
  private:
   std::map<std::string, std::string> template_map_;
+  bool convert_delimiter_;
 
   void gen_template_map(const boost::filesystem::path& template_prefix);
 

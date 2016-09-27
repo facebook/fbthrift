@@ -1,0 +1,355 @@
+<%!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+%>
+<% > Autogen%>
+#pragma once
+
+#include <thrift/lib/cpp2/ServiceIncludes.h>
+#include <thrift/lib/cpp2/async/HeaderChannel.h>
+#include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp2/async/FutureRequest.h>
+#include <folly/futures/Future.h>
+
+
+<%#service:extends%>
+#include "<%service:programIncludePrefix%><%service:name%>.h"
+<%/service:extends%>
+
+#include "<%service:programIncludePrefix%><%service:programName%>_types.h"
+
+namespace folly {
+  class IOBuf;
+  class IOBufQueue;
+}
+namespace apache { namespace thrift {
+  class Cpp2RequestContext;
+  class BinaryProtocolReader;
+  class CompactProtocolReader;
+  namespace transport { class THeader; }
+}}
+
+<%#service:namespaces%>
+namespace <%namespace:name%> {<%^last?%> <%/last?%><%!
+%><%/service:namespaces%>
+
+class <%service:name%>SvAsyncIf {
+ public:
+  virtual ~<%service:name%>SvAsyncIf() {}
+  <%#service:functions%>
+  virtual void <% > AsyncSvFn%> = 0;<%!
+
+  %>
+  virtual void async_<%function:name%>(<% > AsyncSvFnArgs%>) = delete;<%!
+
+  %>
+  virtual <%!
+  %><%#function:stackArgs?%><% > FutureReturnType%> <%/function:stackArgs?%><%!
+  %><%^function:stackArgs?%><%!
+      %><% > FutureUniquePtrReturnType%> <%!
+  %><%/function:stackArgs?%><%!
+  %>future_<%function:name%>(<% > FnArgs%>) = 0;
+  <%/service:functions%>
+};
+
+class <%service:name%>AsyncProcessor;
+
+class <%service:name%>SvIf : public <%service:name%>SvAsyncIf, <%!
+%><%#service:extends?%><%!
+    %>virtual public <%!
+    %><%#service:extends%><% > QualifiedName%><%/service:extends%>SvIf<%!
+%><%/service:extends?%><%!
+%><%^service:extends?%><%!
+    %>public apache::thrift::ServerInterface<%!
+%><%/service:extends?%> {
+ public:
+  typedef <%service:name%>AsyncProcessor ProcessorType;
+
+  virtual ~<%service:name%>SvIf() {}
+  virtual std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor();
+  <%#service:functions%>
+  virtual <% > ReturnType%> <%!
+      %><%function:name%>(<% > SyncArgList%>);
+  <%#function:stackArgs?%><% > FutureReturnType%> <%/function:stackArgs?%><%!
+      %><%^function:stackArgs?%><%!
+          %><% > FutureUniquePtrReturnType%> <%!
+      %><%/function:stackArgs?%><%!
+      %>future_<%function:name%>(<% > FnArgs%>);
+  virtual void <% > AsyncSvFn%>;
+  <%/service:functions%>
+};
+
+class <%service:name%>SvNull : public <%service:name%>SvIf<%!
+%><%#service:extends?%><%!
+    %>, virtual public <%!
+    %><%#service:extends%><% > QualifiedName%><%/service:extends%>SvIf<%!
+%><%/service:extends?%> {
+ public:
+  virtual ~<%service:name%>SvNull() {}
+  <%#service:functions%>
+  <%^function:eb?%>
+  virtual <% > ReturnType%> <%!
+      %><%function:name%>(<% > SyncArgList%>);
+  <%/function:eb?%>
+  <%/service:functions%>
+};
+
+class <%service:name%>AsyncProcessor : public <%!
+%><%#service:extends?%><%!
+    %><%#service:extends%><% > QualifiedName%><%/service:extends%><%!
+    %>AsyncProcessor<%!
+%><%/service:extends?%><%!
+%><%^service:extends?%><%!
+    %>::apache::thrift::GeneratedAsyncProcessor<%!
+%><%/service:extends?%><%!
+%> {
+ public:
+  virtual const char* getServiceName();
+  using BaseAsyncProcessor = <%!
+  %><%#service:extends?%><%!
+      %><%#service:extends%><% > QualifiedName%><%/service:extends%><%!
+      %>AsyncProcessor;<%!
+  %><%/service:extends?%><%!
+  %><%^service:extends?%>void;<%/service:extends?%>
+ protected:
+  <%service:name%>SvIf* iface_;
+  virtual folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, <%!
+      %>apache::thrift::protocol::PROTOCOL_TYPES protType);
+ public:
+  virtual void process(<%!
+      %>std::unique_ptr<apache::thrift::ResponseChannel::Request> req, <%!
+      %>std::unique_ptr<folly::IOBuf> buf, <%!
+      %>apache::thrift::protocol::PROTOCOL_TYPES protType, <%!
+      %>apache::thrift::Cpp2RequestContext* context, <%!
+      %>folly::EventBase* eb, <%!
+      %>apache::thrift::concurrency::ThreadManager* tm);
+ protected:
+  virtual bool isOnewayMethod(const folly::IOBuf* buf, <%!
+      %>const apache::thrift::transport::THeader* header);
+ private:
+  static std::unordered_set<std::string> onewayMethods_;
+  static std::unordered_map<std::string, int16_t> cacheKeyMap_;<%!
+
+ %>
+ <%#service:protocols%>
+ public:
+  using <%protocol:longName%>ProcessFunc = <%!
+      %>ProcessFunc<<%service:name%>AsyncProcessor, <%!
+      %>apache::thrift::<%protocol:longName%>Reader>;
+  using <%protocol:longName%>ProcessMap = <%!
+      %>ProcessMap<<%protocol:longName%>ProcessFunc>;
+  static const <%service:name%>AsyncProcessor::<%!
+      %><%protocol:longName%>ProcessMap& <%!
+      %>get<%protocol:longName%>ProcessMap();
+ private:
+  static <%service:name%>AsyncProcessor::<%protocol:longName%>ProcessMap <%!
+      %><%protocol:name%>ProcessMap_;
+ <%/service:protocols%><%!
+
+ %>
+ private:
+  <%#service:functions%>
+  <%^function:eb?%>
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void _processInThread_<%function:name%>(<%!
+      %>std::unique_ptr<apache::thrift::ResponseChannel::Request> req, <%!
+      %>std::unique_ptr<folly::IOBuf> buf, <%!
+      %>std::unique_ptr<ProtocolIn_> iprot, <%!
+      %>apache::thrift::Cpp2RequestContext* ctx, <%!
+      %>folly::EventBase* eb, <%!
+      %>apache::thrift::concurrency::ThreadManager* tm);
+  <%/function:eb?%><%!
+
+  %>
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_<%function:name%>(<%!
+      %>std::unique_ptr<apache::thrift::ResponseChannel::Request> req, <%!
+      %>std::unique_ptr<folly::IOBuf> buf, <%!
+      %>std::unique_ptr<ProtocolIn_> iprot,<%! TODO fix spacing
+      %>apache::thrift::Cpp2RequestContext* ctx,<%! TODO fix spacing
+      %>folly::EventBase* eb, <%!
+      %>apache::thrift::concurrency::ThreadManager* tm);<%!
+
+  %>
+  <%^function:oneway?%>
+  template <class ProtocolIn_, class ProtocolOut_>
+  static folly::IOBufQueue return_<%function:name%>(int32_t protoSeqId, <%!
+      %>apache::thrift::ContextStack* ctx<%!
+      %><%#function:returnType%><%!
+        %><%^type:void?%><%!
+          %>, <% > Type%> const& _return<%!
+        %><%/type:void?%><%!
+      %><%/function:returnType%><%!
+      %>);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_<%function:name%>(<%!
+      %>std::unique_ptr<apache::thrift::ResponseChannel::Request> req,<%! TODO
+      %>int32_t protoSeqId,<%! TODO fix spacing
+      %>apache::thrift::ContextStack* ctx,<%! TODO fix spacing
+      %>std::exception_ptr ep,<%! TODO fix spacing
+      %>apache::thrift::Cpp2RequestContext* reqCtx);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_<%function:name%>(<%!
+      %>std::unique_ptr<apache::thrift::ResponseChannel::Request> req,<%! TODO
+      %>int32_t protoSeqId,<%! TODO fix spacing
+      %>apache::thrift::ContextStack* ctx,<%! TODO fix spacing
+      %>folly::exception_wrapper ew,<%! TODO fix spacing
+      %>apache::thrift::Cpp2RequestContext* reqCtx);<%!
+
+  %>
+  <%/function:oneway?%>
+  <%/service:functions%>
+ public:
+  <%service:name%>AsyncProcessor(<%service:name%>SvIf* iface) :
+  <%#service:extends?%>
+      <%#service:extends%><% > QualifiedName%><%/service:extends%><%!
+      %>AsyncProcessor(iface),
+  <%/service:extends?%>
+      iface_(iface) {}
+
+  virtual ~<%service:name%>AsyncProcessor() {}
+};
+
+class <%service:name%>AsyncClient : public <%!
+%><%#service:extends?%><%!
+    %><%#service:extends%><% > QualifiedName%><%/service:extends%>AsyncClient<%!
+%><%/service:extends?%><%!
+%><%^service:extends?%><%!
+    %>apache::thrift::TClientBase<%!
+%><%/service:extends?%> {
+ public:
+  virtual const char* getServiceName();
+  typedef std::unique_ptr<apache::thrift::RequestChannel, <%!
+      %>folly::DelayedDestruction::Destructor> channel_ptr;
+
+  virtual ~<%service:name%>AsyncClient() {}
+
+  <%service:name%>AsyncClient(std::shared_ptr<apache::thrift::RequestChannel><%!
+      %> channel) :
+  <%#service:extends?%>
+      <%#service:extends%><% > QualifiedName%><%/service:extends%><%!
+      %>AsyncClient(channel) {}
+  <%/service:extends?%>
+  <%^service:extends?%>
+      channel_(channel) {
+    connectionContext_.reset(new apache::thrift::Cpp2ConnContext);
+  }
+
+  apache::thrift::RequestChannel*  getChannel() {
+    return this->channel_.get();
+  }
+
+  apache::thrift::HeaderChannel*  getHeaderChannel() {
+    return dynamic_cast<apache::thrift::HeaderChannel*>(this->channel_.get());
+  }
+  <%/service:extends?%>
+  <%#service:functions%>
+  virtual void <%function:name%>(<%!
+      %>std::unique_ptr<apache::thrift::RequestCallback> callback<%!
+      %><% > CommaIfArgs%><% > StackArgList%>);
+  virtual void <%function:name%>(<%!
+      %>apache::thrift::RpcOptions& rpcOptions, <%!
+      %>std::unique_ptr<apache::thrift::RequestCallback> callback<%!
+      %><% > CommaIfArgs%><% > StackArgList%>);
+  virtual <% > ReturnType%> sync_<%function:name%>(<%!
+      %><%#function:complexReturnType?%><%!
+          %><% > ComplexOutParamType%><%!
+          %><% > CommaIfArgs%><%!
+      %><%/function:complexReturnType?%><%!
+      %><% > StackArgList%>);
+  virtual <% > ReturnType%> sync_<%function:name%>(<%!
+      %>apache::thrift::RpcOptions& rpcOptions<%!
+      %><%#function:complexReturnType?%><%!
+          %>, <% > ComplexOutParamType%><%!
+      %><%/function:complexReturnType?%><%!
+      %><% > CommaIfArgs%><%!
+      %><% > StackArgList%>);
+  virtual <% > FutureReturnType%> future_<%function:name%>(<%!
+      %><% > StackArgList%>);
+  virtual <% > FutureReturnType%> future_<%function:name%>(<%!
+      %>apache::thrift::RpcOptions& rpcOptions<% > CommaIfArgs%><%!
+      %><% > StackArgList%>);<%!
+
+  %>
+  <%^function:oneway?%>
+  virtual <% > HeaderFutureReturnType%> header_future_<%function:name%>(<%!
+      %>apache::thrift::RpcOptions& rpcOptions<% > CommaIfArgs%><%!
+      %><% > StackArgList%>);
+  <%/function:oneway?%><%!
+
+  %>
+  virtual void <%function:name%>(std::function<void (<%!
+      %>::apache::thrift::ClientReceiveState&&)> callback<%!
+      %><% > CommaIfArgs%><% > StackArgList%>);<%!
+
+  %>
+  <%^function:oneway?%>
+  static folly::exception_wrapper recv_wrapped_<%function:name%>(<%!
+      %><% > WrappedReturnType%>::apache::thrift::ClientReceiveState& state);
+  static <% > ReturnType%> recv_<%function:name%>(<%!
+      %><%#function:complexReturnType?%><%!
+          %><% > ComplexOutParamType%>, <%!
+      %><%/function:complexReturnType?%><%!
+      %>::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual <% > ReturnType%> recv_instance_<%function:name%>(<%!
+      %><%#function:complexReturnType?%><%!
+          %><% > ComplexOutParamType%>, <%!
+      %><%/function:complexReturnType?%><%!
+      %>::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_<%function:name%>(<%!
+      %><% > WrappedReturnType%>::apache::thrift::ClientReceiveState& state);
+  <%/function:oneway?%><%!
+
+  %>
+  template <typename Protocol_>
+  void <%function:name%>T(Protocol_* prot, <%!
+      %>apache::thrift::RpcOptions& rpcOptions, <%!
+      %>std::unique_ptr<apache::thrift::RequestCallback> callback<%!
+      %><% > CommaIfArgs%><% > StackArgList%>);<%!
+
+  %>
+  <%^function:oneway?%>
+  template <typename Protocol_>
+  static folly::exception_wrapper recv_wrapped_<%function:name%>T(<%!
+      %>Protocol_* prot, <% > WrappedReturnType%><%!
+      %>::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  static <% > ReturnType%> recv_<%function:name%>T(Protocol_* prot, <%!
+      %><%#function:complexReturnType?%><%!
+          %><% > ComplexOutParamType%>, <%!
+      %><%/function:complexReturnType?%><%!
+      %>::apache::thrift::ClientReceiveState& state);
+  <%/function:oneway?%><%!
+
+  %>
+  <%/service:functions%>
+ <%^service:extends?%>
+ protected:
+  std::unique_ptr<apache::thrift::Cpp2ConnContext> connectionContext_;
+  std::shared_ptr<apache::thrift::RequestChannel> channel_;
+ <%/service:extends?%>
+};
+
+<%#service:namespaces%>
+}<%/service:namespaces%><%!
+%> // <%!
+%><%#service:namespaces%><%!
+    %><%namespace:name%><%^last?%>::<%/last?%><%!
+%><%/service:namespaces%>
+namespace apache { namespace thrift {
+
+}} // apache::thrift
