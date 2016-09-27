@@ -28,11 +28,11 @@ using type_t = reflection::Type;
 // strings
 
 namespace str {
-FATAL_S(space, " ");
-FATAL_S(dot, ".");
 FATAL_S(angle_l, "<");
 FATAL_S(angle_r, ">");
 FATAL_S(comma, ",");
+FATAL_S(dot, ".");
+FATAL_S(space, " ");
 }
 
 // utils
@@ -76,6 +76,16 @@ void registering_datatype(
   schema.names[dt.name] = rid;
   f(dt);
 }
+
+// helper
+//
+// The impl::go functions may recurse to other impl::go functions, but only
+// indirectly through legacy_reflection<T>::register_into, which calls this
+// helper for all the assertions. This permits explicit template instantiations
+// of legacy_reflection to reduce the overall template recursion depth.
+
+template <typename T, typename = void>
+struct helper;
 
 // impl
 //
@@ -196,15 +206,12 @@ struct impl<T, type_class::structure> {
         schema_t& schema,
         datatype_t& dt) {
       using type = typename MemberInfo::type;
-      using type_impl = impl<type, typename MemberInfo::type_class>;
-      static_assert(
-          fatal::is_complete<type_impl>::value,
-          "legacy_reflection: incomplete handler");
+      using type_helper = helper<type>;
       using member_name = typename MemberInfo::name;
-      legacy_reflection<type>::register_into(schema);
+      type_helper::register_into(schema);
       auto& f = dt.fields[MemberInfo::id::value];
       f.isRequired = MemberInfo::optional::value != optionality::optional;
-      f.type = type_impl::rid();
+      f.type = type_helper::id();
       f.name = fatal::to_instance<std::string, member_name>();
       f.order = Index;
     }
@@ -236,15 +243,12 @@ struct impl<T, type_class::variant> {
         schema_t& schema,
         datatype_t& dt) {
       using type = typename MemberInfo::type;
-      using type_impl = impl<type, typename MemberInfo::metadata::type_class>;
-      static_assert(
-          fatal::is_complete<type_impl>::value,
-          "legacy_reflection: incomplete handler");
+      using type_helper = helper<type>;
       using member_name = typename MemberInfo::metadata::name;
-      legacy_reflection<type>::register_into(schema);
+      type_helper::register_into(schema);
       auto& f = dt.fields[MemberInfo::metadata::id::value];
       f.isRequired = true;
-      f.type = type_impl::rid();
+      f.type = type_helper::id();
       f.name = fatal::to_instance<std::string, member_name>();
       f.order = Index;
     }
@@ -269,12 +273,9 @@ template <typename T, typename ValueTypeClass>
 struct impl<T, type_class::list<ValueTypeClass>> {
   using traits = thrift_list_traits<T>;
   using value_type = typename traits::value_type;
-  using value_impl = impl<value_type, reflect_type_class<value_type>>;
-  static_assert(
-      fatal::is_complete<value_impl>::value,
-      "legacy_reflection: incomplete handler");
+  using value_helper = helper<value_type>;
   FATAL_S(rkind, "list");
-  using rname = get_container_name<rkind, typename value_impl::rname>;
+  using rname = get_container_name<rkind, typename value_helper::name>;
   static id_t rid() {
     static const auto storage =
       get_type_id(type_t::TYPE_LIST, to_c_array<rname>::range());
@@ -284,7 +285,7 @@ struct impl<T, type_class::list<ValueTypeClass>> {
     registering_datatype(
         schema, to_c_array<rname>::range(), rid(), [&](datatype_t& dt) {
       dt.__isset.valueType = true;
-      dt.valueType = value_impl::rid();
+      dt.valueType = value_helper::id();
       legacy_reflection<value_type>::register_into(schema);
     });
   }
@@ -294,12 +295,9 @@ template <typename T, typename ValueTypeClass>
 struct impl<T, type_class::set<ValueTypeClass>> {
   using traits = thrift_set_traits<T>;
   using value_type = typename traits::value_type;
-  using value_impl = impl<value_type, reflect_type_class<value_type>>;
-  static_assert(
-      fatal::is_complete<value_impl>::value,
-      "legacy_reflection: incomplete handler");
+  using value_helper = helper<value_type>;
   FATAL_S(rkind, "set");
-  using rname = get_container_name<rkind, typename value_impl::rname>;
+  using rname = get_container_name<rkind, typename value_helper::name>;
   static id_t rid() {
     static const auto storage =
       get_type_id(type_t::TYPE_SET, to_c_array<rname>::range());
@@ -309,7 +307,7 @@ struct impl<T, type_class::set<ValueTypeClass>> {
     registering_datatype(
         schema, to_c_array<rname>::range(), rid(), [&](datatype_t& dt) {
       dt.__isset.valueType = true;
-      dt.valueType = value_impl::rid();
+      dt.valueType = value_helper::id();
       legacy_reflection<value_type>::register_into(schema);
     });
   }
@@ -319,18 +317,12 @@ template <typename T, typename KeyTypeClass, typename MappedTypeClass>
 struct impl<T, type_class::map<KeyTypeClass, MappedTypeClass>> {
   using traits = thrift_map_traits<T>;
   using key_type = typename traits::key_type;
-  using key_impl = impl<key_type, reflect_type_class<key_type>>;
-  static_assert(
-      fatal::is_complete<key_impl>::value,
-      "legacy_reflection: incomplete handler");
+  using key_helper = helper<key_type>;
   using mapped_type = typename traits::mapped_type;
-  using mapped_impl = impl<mapped_type, reflect_type_class<mapped_type>>;
-  static_assert(
-      fatal::is_complete<mapped_impl>::value,
-      "legacy_reflection: incomplete handler");
+  using mapped_helper = helper<mapped_type>;
   FATAL_S(rkind, "map");
   using rname = get_map_container_name<
-    rkind, typename key_impl::rname, typename mapped_impl::rname>;
+    rkind, typename key_helper::name, typename mapped_helper::name>;
   static id_t rid() {
     static const auto storage =
       get_type_id(type_t::TYPE_MAP, to_c_array<rname>::range());
@@ -340,39 +332,51 @@ struct impl<T, type_class::map<KeyTypeClass, MappedTypeClass>> {
     registering_datatype(
         schema, to_c_array<rname>::range(), rid(), [&](datatype_t& dt) {
       dt.__isset.mapKeyType = true;
-      dt.mapKeyType = key_impl::rid();
+      dt.mapKeyType = key_helper::id();
       dt.__isset.valueType = true;
-      dt.valueType = mapped_impl::rid();
+      dt.valueType = mapped_helper::id();
       legacy_reflection<key_type>::register_into(schema);
       legacy_reflection<mapped_type>::register_into(schema);
     });
   }
 };
 
-// helper
-//
-// The impl::go functions may recurse to other impl::go functions, but only
-// indirectly through legacy_reflection<T>::register_into, which calls this
-// helper for all the assertions. This permits explicit template instantiations
-// of legacy_reflection to reduce the overall template recursion depth.
+template <typename T>
+using is_known = std::integral_constant<bool,
+      !std::is_same<reflect_type_class<T>, type_class::unknown>::value>;
 
 template <typename T>
-struct helper {
-  static constexpr auto is_known =
-    !std::is_same<reflect_type_class<T>, type_class::unknown>::value;
-  static_assert(is_known, "legacy_reflection: missing reflection metadata");
-  using type_impl = impl<T, reflect_type_class<T>>;
-  static constexpr auto is_complete = fatal::is_complete<type_impl>::value;
-  static_assert(is_complete, "legacy_reflection: incomplete handler");
+using is_complete = fatal::is_complete<impl<T, reflect_type_class<T>>>;
 
+// helper
+
+template <typename T>
+struct helper<T, typename std::enable_if<
+    is_known<T>::value && is_complete<T>::value>::type> {
+  using type_impl = impl<T, reflect_type_class<T>>;
   static void register_into(schema_t& schema) { type_impl::go(schema); }
-  static constexpr folly::StringPiece name() {
-    return to_c_array<typename type_impl::rname>::range();
-  }
+  using name = typename type_impl::rname;
   static id_t id() { return type_impl::rid(); }
 };
 
+template <typename T>
+struct helper<T, typename std::enable_if<
+    !(is_known<T>::value && is_complete<T>::value)>::type> {
+  static_assert(
+      is_known<T>::value,
+      "legacy_reflection: missing reflection metadata");
+  static_assert(
+      !is_known<T>::value || is_complete<T>::value,
+      "legacy_reflection: incomplete handler");
+
+  static void register_into(schema_t&) {}
+  using name = fatal::sequence<char>;
+  static id_t id() { return {}; }
+};
+
 }
+
+// legacy_reflection
 
 template <typename T>
 void legacy_reflection<T>::register_into(legacy_reflection_schema_t& schema) {
@@ -388,7 +392,8 @@ legacy_reflection_schema_t legacy_reflection<T>::schema() {
 
 template <typename T>
 constexpr folly::StringPiece legacy_reflection<T>::name() {
-  return legacy_reflection_detail::helper<T>::name();
+  using name = typename legacy_reflection_detail::helper<T>::name;
+  return legacy_reflection_detail::to_c_array<name>::range();
 }
 
 template <typename T>
