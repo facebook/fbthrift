@@ -84,11 +84,6 @@ TEST(THeaderTest, http_clear_header) {
 }
 
 TEST(THeaderTest, transform) {
-  // Ensure TRANSFORMS enum and TRANSFORMS_STRING_LIST is aligned.
-  EXPECT_EQ(
-    static_cast<THeader::TRANSFORMS>(THeader::TRANSFORMS_STRING_LIST.size()),
-    THeader::TRANSFORMS::TRANSFORMS_COUNT);
-
   // Simple test for TRANSFORMS enum to string conversion
   EXPECT_EQ(
     THeader::getStringTransform(THeader::TRANSFORMS::ZLIB_TRANSFORM), "zlib");

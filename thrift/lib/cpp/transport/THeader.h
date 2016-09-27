@@ -22,6 +22,7 @@
 #include <vector>
 
 #include <folly/Optional.h>
+#include <folly/String.h>
 #include <folly/portability/Unistd.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
@@ -217,7 +218,7 @@ class THeader {
     ZSTD_TRANSFORM = 0x05,
 
     // DO NOT USE. Sentinel value for enum count. Always keep as last value.
-    TRANSFORMS_COUNT = 0x06,
+    TRANSFORM_LAST_FIELD = 0x06,
   };
 
   /* IOBuf interface */
@@ -279,7 +280,8 @@ class THeader {
       std::shared_ptr<apache::thrift::util::THttpClientParser>);
 
   // Utility method for converting TRANSFORMS enum to string
-  static const std::string& getStringTransform(TRANSFORMS transform);
+  static const folly::StringPiece getStringTransform(
+      const TRANSFORMS transform);
 
   static CLIENT_TYPE getClientType(uint32_t f, uint32_t s);
 
@@ -376,10 +378,6 @@ class THeader {
     };
   };
 
-private:
-  static const std::vector<std::string> TRANSFORMS_STRING_LIST;
-
-  friend class THeaderTest_transform_Test;
 };
 
 }}} // apache::thrift::transport

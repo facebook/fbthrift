@@ -1114,17 +1114,23 @@ void THeader::setHttpClientParser(shared_ptr<THttpClientParser> parser) {
   httpClientParser_ = parser;
 }
 
-const std::vector<std::string> THeader::TRANSFORMS_STRING_LIST = {
-  "none",
-  "zlib",
-  "hmac",
-  "snappy",
-  "qlz",
-  "zstd",
+static constexpr folly::StringPiece TRANSFORMS_STRING_LIST[] = {
+  folly::StringPiece("none"),
+  folly::StringPiece("zlib"),
+  folly::StringPiece("hmac"),
+  folly::StringPiece("snappy"),
+  folly::StringPiece("qlz"),
+  folly::StringPiece("zstd"),
 };
 
-const std::string& THeader::getStringTransform(TRANSFORMS transform) {
-  return TRANSFORMS_STRING_LIST.at(transform);
+const folly::StringPiece THeader::getStringTransform(
+    const TRANSFORMS transform) {
+  constexpr const std::size_t num_string_transforms =
+    sizeof(TRANSFORMS_STRING_LIST)/sizeof(folly::StringPiece);
+  static_assert(
+    num_string_transforms == THeader::TRANSFORMS::TRANSFORM_LAST_FIELD,
+    "TRANSFORMS enum and TRANSFORMS_STRING_LIST mismatch");
+  return TRANSFORMS_STRING_LIST[transform];
 }
 
 }}} // apache::thrift::transport
