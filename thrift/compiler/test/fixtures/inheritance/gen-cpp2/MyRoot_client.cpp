@@ -49,8 +49,8 @@ void MyRootAsyncClient::sync_do_root() {
 
 void MyRootAsyncClient::sync_do_root(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback0 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  do_root(rpcOptions, std::move(callback0));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  do_root(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -70,19 +70,19 @@ folly::Future<folly::Unit> MyRootAsyncClient::future_do_root() {
 }
 
 folly::Future<folly::Unit> MyRootAsyncClient::future_do_root(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<folly::Unit> promise1;
-  auto future2 = promise1.getFuture();
-  auto callback3 = folly::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(promise1), recv_wrapped_do_root, channel_);
-  do_root(rpcOptions, std::move(callback3));
-  return future2;
+  folly::Promise<folly::Unit> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_do_root, channel_);
+  do_root(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyRootAsyncClient::header_future_do_root(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> promise4;
-  auto future5 = promise4.getFuture();
-  auto callback6 = folly::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(promise4), recv_wrapped_do_root, channel_);
-  do_root(rpcOptions, std::move(callback6));
-  return future5;
+  folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_do_root, channel_);
+  do_root(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void MyRootAsyncClient::do_root(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {

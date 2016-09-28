@@ -1618,15 +1618,13 @@ class CppGenerator(t_generator.Generator):
             else:
                 out('apache::thrift::ClientReceiveState _returnState;')
 
-                sync_callback_name = self.tmp("callback")
-                out("auto {sync_callback_name} = "
+                out("auto callback = "
                     "folly::make_unique<apache::thrift::ClientSyncCallback>("
                     "&_returnState, getChannel()->getEventBase(), {isOneWay});"
-                  .format(sync_callback_name=sync_callback_name,
-                      isOneWay=str(function.oneway).lower()))
+                  .format(isOneWay=str(function.oneway).lower()))
 
                 args = ["rpcOptions",
-                        "std::move({0})".format(sync_callback_name)]
+                        "std::move(callback)"]
                 args.extend(common_args)
                 args_list = ", ".join(args)
 
@@ -1712,50 +1710,40 @@ class CppGenerator(t_generator.Generator):
                 for arg in function.arglist.members:
                     common_args.append(arg.name)
 
-                promise_name = self.tmp("promise")
-
                 return_type = _lift_unit(self._type_name(function.returntype))
 
                 if header:
-                    out("folly::Promise<std::pair<{type}, std::unique_ptr<apache::thrift::transport::THeader>>> {promise};"
-                            .format(type=return_type, promise=promise_name))
+                    out("folly::Promise<std::pair<{type}, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;"
+                            .format(type=return_type))
                 else:
-                    out("folly::Promise<{type}> {promise};"
-                            .format(type=return_type, promise=promise_name))
+                    out("folly::Promise<{type}> _promise;"
+                            .format(type=return_type))
 
-                future_name = self.tmp("future")
-                out("auto {future} = {promise}.getFuture();"
-                  .format(future=future_name, promise=promise_name))
+                out("auto _future = _promise.getFuture();")
 
                 args = ["rpcOptions"]
                 end_args = []
 
-                callback = self.tmp("callback")
-
                 if function.oneway:
-                    out("auto {callback} = "
+                    out("auto callback = "
                         "folly::make_unique<apache::thrift::OneWayFutureCallback>("
-                        "std::move({promise}), channel_);"
-                        .format(callback=callback,
-                                promise=promise_name))
+                        "std::move(_promise), channel_);")
 
-                    args.append("std::move({0})".format(callback))
+                    args.append("std::move(callback)")
 
                 else:
                     if header:
                         future_cb_name = "HeaderFutureCallback"
                     else:
                         future_cb_name = "FutureCallback"
-                    out("auto {callback} = "
+                    out("auto callback = "
                         "folly::make_unique<apache::thrift::{future_cb}<{type}>>("
-                        "std::move({promise}), recv_wrapped_{name}, channel_);"
-                        .format(callback=callback,
-                                future_cb=future_cb_name,
+                        "std::move(_promise), recv_wrapped_{name}, channel_);"
+                        .format(future_cb=future_cb_name,
                                 type=return_type,
-                                promise=promise_name,
                                 name=function.name))
 
-                    args.append("std::move({0})".format(callback))
+                    args.append("std::move(callback)")
 
                 args.extend(common_args)
                 args.extend(end_args)
@@ -1764,7 +1752,7 @@ class CppGenerator(t_generator.Generator):
                 out("{name}({args_list});".format(name=function.name,
                                                 args_list=args_list))
 
-                out("return {0};".format(future_name))
+                out("return _future;")
 
     def _generate_client_streaming_function(self, service, function,
                                             uses_rpc_options=False):

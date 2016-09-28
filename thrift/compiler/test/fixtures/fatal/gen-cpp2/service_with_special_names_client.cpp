@@ -49,8 +49,8 @@ int32_t service_with_special_namesAsyncClient::sync_get() {
 
 int32_t service_with_special_namesAsyncClient::sync_get(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback515 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  get(rpcOptions, std::move(callback515));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  get(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -70,19 +70,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_get() {
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_get(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise516;
-  auto future517 = promise516.getFuture();
-  auto callback518 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise516), recv_wrapped_get, channel_);
-  get(rpcOptions, std::move(callback518));
-  return future517;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_get, channel_);
+  get(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_get(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise519;
-  auto future520 = promise519.getFuture();
-  auto callback521 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise519), recv_wrapped_get, channel_);
-  get(rpcOptions, std::move(callback521));
-  return future520;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_get, channel_);
+  get(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::get(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -165,8 +165,8 @@ int32_t service_with_special_namesAsyncClient::sync_getter() {
 
 int32_t service_with_special_namesAsyncClient::sync_getter(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback522 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  getter(rpcOptions, std::move(callback522));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  getter(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -186,19 +186,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_getter() {
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_getter(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise523;
-  auto future524 = promise523.getFuture();
-  auto callback525 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise523), recv_wrapped_getter, channel_);
-  getter(rpcOptions, std::move(callback525));
-  return future524;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_getter, channel_);
+  getter(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_getter(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise526;
-  auto future527 = promise526.getFuture();
-  auto callback528 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise526), recv_wrapped_getter, channel_);
-  getter(rpcOptions, std::move(callback528));
-  return future527;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_getter, channel_);
+  getter(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::getter(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -281,8 +281,8 @@ int32_t service_with_special_namesAsyncClient::sync_lists() {
 
 int32_t service_with_special_namesAsyncClient::sync_lists(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback529 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  lists(rpcOptions, std::move(callback529));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  lists(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -302,19 +302,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_lists() {
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_lists(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise530;
-  auto future531 = promise530.getFuture();
-  auto callback532 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise530), recv_wrapped_lists, channel_);
-  lists(rpcOptions, std::move(callback532));
-  return future531;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_lists, channel_);
+  lists(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_lists(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise533;
-  auto future534 = promise533.getFuture();
-  auto callback535 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise533), recv_wrapped_lists, channel_);
-  lists(rpcOptions, std::move(callback535));
-  return future534;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_lists, channel_);
+  lists(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::lists(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -397,8 +397,8 @@ int32_t service_with_special_namesAsyncClient::sync_maps() {
 
 int32_t service_with_special_namesAsyncClient::sync_maps(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback536 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  maps(rpcOptions, std::move(callback536));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  maps(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -418,19 +418,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_maps() {
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_maps(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise537;
-  auto future538 = promise537.getFuture();
-  auto callback539 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise537), recv_wrapped_maps, channel_);
-  maps(rpcOptions, std::move(callback539));
-  return future538;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_maps, channel_);
+  maps(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_maps(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise540;
-  auto future541 = promise540.getFuture();
-  auto callback542 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise540), recv_wrapped_maps, channel_);
-  maps(rpcOptions, std::move(callback542));
-  return future541;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_maps, channel_);
+  maps(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::maps(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -513,8 +513,8 @@ int32_t service_with_special_namesAsyncClient::sync_name() {
 
 int32_t service_with_special_namesAsyncClient::sync_name(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback543 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  name(rpcOptions, std::move(callback543));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  name(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -534,19 +534,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_name() {
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_name(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise544;
-  auto future545 = promise544.getFuture();
-  auto callback546 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise544), recv_wrapped_name, channel_);
-  name(rpcOptions, std::move(callback546));
-  return future545;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_name, channel_);
+  name(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_name(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise547;
-  auto future548 = promise547.getFuture();
-  auto callback549 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise547), recv_wrapped_name, channel_);
-  name(rpcOptions, std::move(callback549));
-  return future548;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_name, channel_);
+  name(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::name(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -629,8 +629,8 @@ int32_t service_with_special_namesAsyncClient::sync_name_to_value() {
 
 int32_t service_with_special_namesAsyncClient::sync_name_to_value(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback550 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  name_to_value(rpcOptions, std::move(callback550));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  name_to_value(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -650,19 +650,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_name_to_val
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_name_to_value(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise551;
-  auto future552 = promise551.getFuture();
-  auto callback553 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise551), recv_wrapped_name_to_value, channel_);
-  name_to_value(rpcOptions, std::move(callback553));
-  return future552;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_name_to_value, channel_);
+  name_to_value(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_name_to_value(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise554;
-  auto future555 = promise554.getFuture();
-  auto callback556 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise554), recv_wrapped_name_to_value, channel_);
-  name_to_value(rpcOptions, std::move(callback556));
-  return future555;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_name_to_value, channel_);
+  name_to_value(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::name_to_value(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -745,8 +745,8 @@ int32_t service_with_special_namesAsyncClient::sync_names() {
 
 int32_t service_with_special_namesAsyncClient::sync_names(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback557 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  names(rpcOptions, std::move(callback557));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  names(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -766,19 +766,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_names() {
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_names(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise558;
-  auto future559 = promise558.getFuture();
-  auto callback560 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise558), recv_wrapped_names, channel_);
-  names(rpcOptions, std::move(callback560));
-  return future559;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_names, channel_);
+  names(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_names(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise561;
-  auto future562 = promise561.getFuture();
-  auto callback563 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise561), recv_wrapped_names, channel_);
-  names(rpcOptions, std::move(callback563));
-  return future562;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_names, channel_);
+  names(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::names(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -861,8 +861,8 @@ int32_t service_with_special_namesAsyncClient::sync_prefix_tree() {
 
 int32_t service_with_special_namesAsyncClient::sync_prefix_tree(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback564 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  prefix_tree(rpcOptions, std::move(callback564));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  prefix_tree(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -882,19 +882,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_prefix_tree
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_prefix_tree(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise565;
-  auto future566 = promise565.getFuture();
-  auto callback567 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise565), recv_wrapped_prefix_tree, channel_);
-  prefix_tree(rpcOptions, std::move(callback567));
-  return future566;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_prefix_tree, channel_);
+  prefix_tree(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_prefix_tree(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise568;
-  auto future569 = promise568.getFuture();
-  auto callback570 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise568), recv_wrapped_prefix_tree, channel_);
-  prefix_tree(rpcOptions, std::move(callback570));
-  return future569;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_prefix_tree, channel_);
+  prefix_tree(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::prefix_tree(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -977,8 +977,8 @@ int32_t service_with_special_namesAsyncClient::sync_sets() {
 
 int32_t service_with_special_namesAsyncClient::sync_sets(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback571 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  sets(rpcOptions, std::move(callback571));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  sets(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -998,19 +998,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_sets() {
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_sets(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise572;
-  auto future573 = promise572.getFuture();
-  auto callback574 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise572), recv_wrapped_sets, channel_);
-  sets(rpcOptions, std::move(callback574));
-  return future573;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_sets, channel_);
+  sets(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_sets(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise575;
-  auto future576 = promise575.getFuture();
-  auto callback577 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise575), recv_wrapped_sets, channel_);
-  sets(rpcOptions, std::move(callback577));
-  return future576;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_sets, channel_);
+  sets(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::sets(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -1093,8 +1093,8 @@ int32_t service_with_special_namesAsyncClient::sync_setter() {
 
 int32_t service_with_special_namesAsyncClient::sync_setter(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback578 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  setter(rpcOptions, std::move(callback578));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  setter(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -1114,19 +1114,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_setter() {
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_setter(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise579;
-  auto future580 = promise579.getFuture();
-  auto callback581 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise579), recv_wrapped_setter, channel_);
-  setter(rpcOptions, std::move(callback581));
-  return future580;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_setter, channel_);
+  setter(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_setter(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise582;
-  auto future583 = promise582.getFuture();
-  auto callback584 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise582), recv_wrapped_setter, channel_);
-  setter(rpcOptions, std::move(callback584));
-  return future583;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_setter, channel_);
+  setter(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::setter(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -1209,8 +1209,8 @@ int32_t service_with_special_namesAsyncClient::sync_str() {
 
 int32_t service_with_special_namesAsyncClient::sync_str(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback585 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  str(rpcOptions, std::move(callback585));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  str(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -1230,19 +1230,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_str() {
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_str(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise586;
-  auto future587 = promise586.getFuture();
-  auto callback588 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise586), recv_wrapped_str, channel_);
-  str(rpcOptions, std::move(callback588));
-  return future587;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_str, channel_);
+  str(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_str(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise589;
-  auto future590 = promise589.getFuture();
-  auto callback591 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise589), recv_wrapped_str, channel_);
-  str(rpcOptions, std::move(callback591));
-  return future590;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_str, channel_);
+  str(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::str(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -1325,8 +1325,8 @@ int32_t service_with_special_namesAsyncClient::sync_strings() {
 
 int32_t service_with_special_namesAsyncClient::sync_strings(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback592 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  strings(rpcOptions, std::move(callback592));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  strings(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -1346,19 +1346,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_strings() {
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_strings(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise593;
-  auto future594 = promise593.getFuture();
-  auto callback595 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise593), recv_wrapped_strings, channel_);
-  strings(rpcOptions, std::move(callback595));
-  return future594;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_strings, channel_);
+  strings(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_strings(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise596;
-  auto future597 = promise596.getFuture();
-  auto callback598 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise596), recv_wrapped_strings, channel_);
-  strings(rpcOptions, std::move(callback598));
-  return future597;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_strings, channel_);
+  strings(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::strings(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -1441,8 +1441,8 @@ int32_t service_with_special_namesAsyncClient::sync_type() {
 
 int32_t service_with_special_namesAsyncClient::sync_type(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback599 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  type(rpcOptions, std::move(callback599));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  type(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -1462,19 +1462,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_type() {
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_type(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise600;
-  auto future601 = promise600.getFuture();
-  auto callback602 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise600), recv_wrapped_type, channel_);
-  type(rpcOptions, std::move(callback602));
-  return future601;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_type, channel_);
+  type(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_type(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise603;
-  auto future604 = promise603.getFuture();
-  auto callback605 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise603), recv_wrapped_type, channel_);
-  type(rpcOptions, std::move(callback605));
-  return future604;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_type, channel_);
+  type(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::type(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -1557,8 +1557,8 @@ int32_t service_with_special_namesAsyncClient::sync_value() {
 
 int32_t service_with_special_namesAsyncClient::sync_value(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback606 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  value(rpcOptions, std::move(callback606));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  value(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -1578,19 +1578,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_value() {
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_value(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise607;
-  auto future608 = promise607.getFuture();
-  auto callback609 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise607), recv_wrapped_value, channel_);
-  value(rpcOptions, std::move(callback609));
-  return future608;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_value, channel_);
+  value(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_value(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise610;
-  auto future611 = promise610.getFuture();
-  auto callback612 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise610), recv_wrapped_value, channel_);
-  value(rpcOptions, std::move(callback612));
-  return future611;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_value, channel_);
+  value(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::value(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -1673,8 +1673,8 @@ int32_t service_with_special_namesAsyncClient::sync_value_to_name() {
 
 int32_t service_with_special_namesAsyncClient::sync_value_to_name(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback613 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  value_to_name(rpcOptions, std::move(callback613));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  value_to_name(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -1694,19 +1694,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_value_to_na
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_value_to_name(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise614;
-  auto future615 = promise614.getFuture();
-  auto callback616 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise614), recv_wrapped_value_to_name, channel_);
-  value_to_name(rpcOptions, std::move(callback616));
-  return future615;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_value_to_name, channel_);
+  value_to_name(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_value_to_name(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise617;
-  auto future618 = promise617.getFuture();
-  auto callback619 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise617), recv_wrapped_value_to_name, channel_);
-  value_to_name(rpcOptions, std::move(callback619));
-  return future618;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_value_to_name, channel_);
+  value_to_name(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::value_to_name(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -1789,8 +1789,8 @@ int32_t service_with_special_namesAsyncClient::sync_values() {
 
 int32_t service_with_special_namesAsyncClient::sync_values(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback620 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  values(rpcOptions, std::move(callback620));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  values(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -1810,19 +1810,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_values() {
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_values(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise621;
-  auto future622 = promise621.getFuture();
-  auto callback623 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise621), recv_wrapped_values, channel_);
-  values(rpcOptions, std::move(callback623));
-  return future622;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_values, channel_);
+  values(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_values(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise624;
-  auto future625 = promise624.getFuture();
-  auto callback626 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise624), recv_wrapped_values, channel_);
-  values(rpcOptions, std::move(callback626));
-  return future625;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_values, channel_);
+  values(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::values(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -1905,8 +1905,8 @@ int32_t service_with_special_namesAsyncClient::sync_id() {
 
 int32_t service_with_special_namesAsyncClient::sync_id(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback627 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  id(rpcOptions, std::move(callback627));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  id(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -1926,19 +1926,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_id() {
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_id(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise628;
-  auto future629 = promise628.getFuture();
-  auto callback630 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise628), recv_wrapped_id, channel_);
-  id(rpcOptions, std::move(callback630));
-  return future629;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_id, channel_);
+  id(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_id(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise631;
-  auto future632 = promise631.getFuture();
-  auto callback633 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise631), recv_wrapped_id, channel_);
-  id(rpcOptions, std::move(callback633));
-  return future632;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_id, channel_);
+  id(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::id(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -2021,8 +2021,8 @@ int32_t service_with_special_namesAsyncClient::sync_ids() {
 
 int32_t service_with_special_namesAsyncClient::sync_ids(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback634 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  ids(rpcOptions, std::move(callback634));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  ids(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -2042,19 +2042,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_ids() {
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_ids(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise635;
-  auto future636 = promise635.getFuture();
-  auto callback637 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise635), recv_wrapped_ids, channel_);
-  ids(rpcOptions, std::move(callback637));
-  return future636;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_ids, channel_);
+  ids(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_ids(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise638;
-  auto future639 = promise638.getFuture();
-  auto callback640 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise638), recv_wrapped_ids, channel_);
-  ids(rpcOptions, std::move(callback640));
-  return future639;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_ids, channel_);
+  ids(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::ids(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -2137,8 +2137,8 @@ int32_t service_with_special_namesAsyncClient::sync_descriptor() {
 
 int32_t service_with_special_namesAsyncClient::sync_descriptor(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback641 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  descriptor(rpcOptions, std::move(callback641));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  descriptor(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -2158,19 +2158,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_descriptor(
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_descriptor(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise642;
-  auto future643 = promise642.getFuture();
-  auto callback644 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise642), recv_wrapped_descriptor, channel_);
-  descriptor(rpcOptions, std::move(callback644));
-  return future643;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_descriptor, channel_);
+  descriptor(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_descriptor(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise645;
-  auto future646 = promise645.getFuture();
-  auto callback647 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise645), recv_wrapped_descriptor, channel_);
-  descriptor(rpcOptions, std::move(callback647));
-  return future646;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_descriptor, channel_);
+  descriptor(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::descriptor(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -2253,8 +2253,8 @@ int32_t service_with_special_namesAsyncClient::sync_descriptors() {
 
 int32_t service_with_special_namesAsyncClient::sync_descriptors(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback648 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  descriptors(rpcOptions, std::move(callback648));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  descriptors(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -2274,19 +2274,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_descriptors
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_descriptors(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise649;
-  auto future650 = promise649.getFuture();
-  auto callback651 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise649), recv_wrapped_descriptors, channel_);
-  descriptors(rpcOptions, std::move(callback651));
-  return future650;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_descriptors, channel_);
+  descriptors(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_descriptors(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise652;
-  auto future653 = promise652.getFuture();
-  auto callback654 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise652), recv_wrapped_descriptors, channel_);
-  descriptors(rpcOptions, std::move(callback654));
-  return future653;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_descriptors, channel_);
+  descriptors(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::descriptors(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -2369,8 +2369,8 @@ int32_t service_with_special_namesAsyncClient::sync_key() {
 
 int32_t service_with_special_namesAsyncClient::sync_key(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback655 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  key(rpcOptions, std::move(callback655));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  key(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -2390,19 +2390,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_key() {
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_key(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise656;
-  auto future657 = promise656.getFuture();
-  auto callback658 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise656), recv_wrapped_key, channel_);
-  key(rpcOptions, std::move(callback658));
-  return future657;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_key, channel_);
+  key(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_key(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise659;
-  auto future660 = promise659.getFuture();
-  auto callback661 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise659), recv_wrapped_key, channel_);
-  key(rpcOptions, std::move(callback661));
-  return future660;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_key, channel_);
+  key(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::key(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -2485,8 +2485,8 @@ int32_t service_with_special_namesAsyncClient::sync_keys() {
 
 int32_t service_with_special_namesAsyncClient::sync_keys(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback662 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  keys(rpcOptions, std::move(callback662));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  keys(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -2506,19 +2506,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_keys() {
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_keys(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise663;
-  auto future664 = promise663.getFuture();
-  auto callback665 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise663), recv_wrapped_keys, channel_);
-  keys(rpcOptions, std::move(callback665));
-  return future664;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_keys, channel_);
+  keys(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_keys(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise666;
-  auto future667 = promise666.getFuture();
-  auto callback668 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise666), recv_wrapped_keys, channel_);
-  keys(rpcOptions, std::move(callback668));
-  return future667;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_keys, channel_);
+  keys(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::keys(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -2601,8 +2601,8 @@ int32_t service_with_special_namesAsyncClient::sync_annotation() {
 
 int32_t service_with_special_namesAsyncClient::sync_annotation(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback669 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  annotation(rpcOptions, std::move(callback669));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  annotation(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -2622,19 +2622,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_annotation(
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_annotation(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise670;
-  auto future671 = promise670.getFuture();
-  auto callback672 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise670), recv_wrapped_annotation, channel_);
-  annotation(rpcOptions, std::move(callback672));
-  return future671;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_annotation, channel_);
+  annotation(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_annotation(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise673;
-  auto future674 = promise673.getFuture();
-  auto callback675 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise673), recv_wrapped_annotation, channel_);
-  annotation(rpcOptions, std::move(callback675));
-  return future674;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_annotation, channel_);
+  annotation(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::annotation(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -2717,8 +2717,8 @@ int32_t service_with_special_namesAsyncClient::sync_annotations() {
 
 int32_t service_with_special_namesAsyncClient::sync_annotations(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback676 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  annotations(rpcOptions, std::move(callback676));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  annotations(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -2738,19 +2738,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_annotations
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_annotations(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise677;
-  auto future678 = promise677.getFuture();
-  auto callback679 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise677), recv_wrapped_annotations, channel_);
-  annotations(rpcOptions, std::move(callback679));
-  return future678;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_annotations, channel_);
+  annotations(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_annotations(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise680;
-  auto future681 = promise680.getFuture();
-  auto callback682 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise680), recv_wrapped_annotations, channel_);
-  annotations(rpcOptions, std::move(callback682));
-  return future681;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_annotations, channel_);
+  annotations(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::annotations(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -2833,8 +2833,8 @@ int32_t service_with_special_namesAsyncClient::sync_member() {
 
 int32_t service_with_special_namesAsyncClient::sync_member(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback683 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  member(rpcOptions, std::move(callback683));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  member(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -2854,19 +2854,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_member() {
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_member(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise684;
-  auto future685 = promise684.getFuture();
-  auto callback686 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise684), recv_wrapped_member, channel_);
-  member(rpcOptions, std::move(callback686));
-  return future685;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_member, channel_);
+  member(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_member(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise687;
-  auto future688 = promise687.getFuture();
-  auto callback689 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise687), recv_wrapped_member, channel_);
-  member(rpcOptions, std::move(callback689));
-  return future688;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_member, channel_);
+  member(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::member(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
@@ -2949,8 +2949,8 @@ int32_t service_with_special_namesAsyncClient::sync_members() {
 
 int32_t service_with_special_namesAsyncClient::sync_members(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback690 = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  members(rpcOptions, std::move(callback690));
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  members(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
@@ -2970,19 +2970,19 @@ folly::Future<int32_t> service_with_special_namesAsyncClient::future_members() {
 }
 
 folly::Future<int32_t> service_with_special_namesAsyncClient::future_members(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<int32_t> promise691;
-  auto future692 = promise691.getFuture();
-  auto callback693 = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(promise691), recv_wrapped_members, channel_);
-  members(rpcOptions, std::move(callback693));
-  return future692;
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::FutureCallback<int32_t>>(std::move(_promise), recv_wrapped_members, channel_);
+  members(rpcOptions, std::move(callback));
+  return _future;
 }
 
 folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> service_with_special_namesAsyncClient::header_future_members(apache::thrift::RpcOptions& rpcOptions) {
-  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> promise694;
-  auto future695 = promise694.getFuture();
-  auto callback696 = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(promise694), recv_wrapped_members, channel_);
-  members(rpcOptions, std::move(callback696));
-  return future695;
+  folly::Promise<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<int32_t>>(std::move(_promise), recv_wrapped_members, channel_);
+  members(rpcOptions, std::move(callback));
+  return _future;
 }
 
 void service_with_special_namesAsyncClient::members(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
