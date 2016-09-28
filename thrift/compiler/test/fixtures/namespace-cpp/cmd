@@ -1,2 +1,4 @@
 cpp2:namespace_cpp src/present.thrift
 cpp2:namespace_cpp src/absent.thrift
+mstch_cpp2:namespace_cpp src/present.thrift
+mstch_cpp2:namespace_cpp src/absent.thrift
