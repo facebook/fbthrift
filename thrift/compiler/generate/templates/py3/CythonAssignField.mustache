@@ -15,19 +15,19 @@
   limitations under the License.
 
 }}{{#type:i16?}}{{!
-}}self.c_{{struct:name}}.get().{{field:name}} = {{field:name}}{{!
+}}deref(self.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
 }}{{/type:i16?}}{{!
 }}{{#type:i32?}}{{!
-}}self.c_{{struct:name}}.get().{{field:name}} = {{field:name}}{{!
+}}deref(self.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
 }}{{/type:i32?}}{{!
 }}{{#type:i64?}}{{!
-}}self.c_{{struct:name}}.get().{{field:name}} = {{field:name}}{{!
+}}deref(self.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
 }}{{/type:i64?}}{{!
 }}{{#type:string?}}{{!
 }}if {{field:name}} is not None:
-    self.c_{{struct:name}}.get().{{field:name}} = {{field:name}}.encode(){{!
+    deref(self.c_{{struct:name}}).{{field:name}} = make_shared[string](<string> {{field:name}}.encode('UTF-8')){{!
 }}{{/type:string?}}{{!
 }}{{#type:struct?}}{{!
-}}self.c_{{struct:name}}.get().{{field:name}} = {{!
+}}deref(self.c_{{struct:name}}).{{field:name}} = {{!
   }}{{field:name}}.c_{{#field:type}}{{type:name}}{{/field:type}}{{!
 }}{{/type:struct?}}

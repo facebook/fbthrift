@@ -1,6 +1,7 @@
-from libcpp.memory cimport shared_ptr
+from libcpp.memory cimport shared_ptr, make_shared
 from libcpp.string cimport string
 from libc.stdint cimport int16_t, int32_t, int64_t
+from cython.operator cimport dereference as deref
 
 from module_types cimport (
   cMyStruct
@@ -9,10 +10,10 @@ from module_types cimport (
 cdef class MyStruct:
     cdef shared_ptr[cMyStruct] c_MyStruct
 
-    def __init__(self, int64_t MyIntField, unique_ptr[string] MyStringField):
-        self.c_MyStruct.get().MyIntField = MyIntField
+    def __init__(self, int MyIntField, str MyStringField):
+        deref(self.c_MyStruct).MyIntField = MyIntField
         if MyStringField is not None:
-            self.c_MyStruct.get().MyStringField = MyStringField.encode()
+            deref(self.c_MyStruct).MyStringField = make_shared[string](<string> MyStringField.encode('UTF-8'))
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] c_MyStruct):

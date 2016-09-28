@@ -15,9 +15,10 @@
   limitations under the License.
 
 }}
-from libcpp.memory cimport shared_ptr
+from libcpp.memory cimport shared_ptr, make_shared
 from libcpp.string cimport string
 from libc.stdint cimport int16_t, int32_t, int64_t
+from cython.operator cimport dereference as deref
 
 {{#program:structs}}
 {{#first?}}from {{program:name}}_types cimport ({{/first?}}
@@ -35,7 +36,7 @@ cdef class {{struct:name}}:
     {{/struct:fields}}
 
     def __init__(self, {{#struct:fields}}{{!
-    }}{{#field:type}}{{> CythonFieldType}}{{/field:type}}{{!
+    }}{{#field:type}}{{> PythonFieldType}}{{/field:type}}{{!
         }} {{field:name}}{{^last?}}, {{/last?}}{{!
         }}{{/struct:fields}}):
         {{#struct:fields}}

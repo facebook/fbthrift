@@ -14,10 +14,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}
-    cdef cppclass c{{struct:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}":
-        c{{struct:name}}() except +
-    {{#struct:fields}}
-        {{#field:type}}{{> CythonStructReferenceType}}{{/field:type}} {{field:name}}
-    {{/struct:fields}}
-
+}}{{#type:i16?}}int{{/type:i16?}}{{!
+}}{{#type:i32?}}int{{/type:i32?}}{{!
+}}{{#type:i64?}}int{{/type:i64?}}{{!
+}}{{#type:string?}}str{{/type:string?}}{{!
+}}{{#type:struct}}{{struct:name}}{{/type:struct}}{{!
+}}{{#type:void?}}cFollyUnit{{/type:void?}}
