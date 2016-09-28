@@ -33,7 +33,7 @@ namespace apache { namespace thrift { namespace detail {
 
 template <typename LHS, typename RHS>
 void compare_elements_eq(LHS const &lhs, RHS const &rhs) {
-  EXPECT_EQ(lhs, rhs);
+  EXPECT_EQ(lhs, static_cast<LHS>(rhs));
 }
 
 template <typename LHSF, typename LHSS, typename RHSF, typename RHSS>
@@ -94,7 +94,7 @@ void compare_elements_eq(
       (EXPECTED).end() \
     ); \
     for (auto const ee = expected.end(); ai != ae; ++ai) { \
-      auto const e = expected.find(*ai); \
+      auto const e = expected.find(static_cast<expected_type>(*ai)); \
       ASSERT_NE(ee, e); \
       ::apache::thrift::detail::compare_elements_eq(*e, *ai); \
     } \
@@ -102,12 +102,54 @@ void compare_elements_eq(
 
 #define THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(TRAITS, EXPECTED, CONTAINER) \
   do { \
-    THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL2( \
-      TRAITS, EXPECTED, CONTAINER, cbegin, cend \
+    { \
+      SCOPED_TRACE("const"); \
+      THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL2( \
+        TRAITS, EXPECTED, CONTAINER, cbegin, cend \
+      ); \
+    } \
+    { \
+      SCOPED_TRACE("mutable"); \
+      THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL2( \
+        TRAITS, EXPECTED, CONTAINER, begin, end \
+      ); \
+    } \
+  } while (false)
+
+#define THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL2_TRAITS( \
+  TRAITS, EXPECTED, CONTAINER, BEGIN, END \
+) \
+  do { \
+    auto ai = TRAITS::BEGIN(CONTAINER); \
+    auto ae = TRAITS::END(CONTAINER); \
+    EXPECT_EQ(CONTAINER.size(), std::distance(ai, ae)); \
+    using expected_type = typename TRAITS::value_type; \
+    std::unordered_set<expected_type> const expected( \
+      (EXPECTED).begin(), \
+      (EXPECTED).end() \
     ); \
-    THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL2( \
-      TRAITS, EXPECTED, CONTAINER, begin, end \
-    ); \
+    for (auto const ee = expected.end(); ai != ae; ++ai) { \
+      auto const e = expected.find(expected_type(*ai)); \
+      ASSERT_NE(ee, e); \
+      ::apache::thrift::detail::compare_elements_eq(*e, *ai); \
+    } \
+  } while (false)
+
+#define THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL_TRAITS( \
+    TRAITS, EXPECTED, CONTAINER) \
+  do { \
+    { \
+      SCOPED_TRACE("const"); \
+      THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL2_TRAITS( \
+        TRAITS, EXPECTED, CONTAINER, cbegin, cend \
+      ); \
+    } \
+    { \
+      SCOPED_TRACE("mutable"); \
+      THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL2_TRAITS( \
+        TRAITS, EXPECTED, CONTAINER, begin, end \
+      ); \
+    } \
   } while (false)
 
 template <typename Traits, typename T, typename Iterator>
@@ -170,7 +212,7 @@ void test_thrift_list_traits() {
 
   {
     T s(detail::test_data::primes.begin(), detail::test_data::primes.end());
-    THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(traits, s, s);
+    THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL_TRAITS(traits, s, s);
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(
       traits, detail::test_data::primes, s
     );
@@ -185,7 +227,7 @@ void test_thrift_list_traits() {
       detail::test_data::primes.begin(),
       detail::test_data::primes.end()
     );
-    THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(traits, s, s);
+    THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL_TRAITS(traits, s, s);
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(
       traits, detail::test_data::primes, s
     );
@@ -283,7 +325,7 @@ void test_thrift_set_traits() {
 
   {
     T s(detail::test_data::primes.begin(), detail::test_data::primes.end());
-    THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(traits, s, s);
+    THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL_TRAITS(traits, s, s);
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(
       traits, detail::test_data::primes, s
     );
@@ -294,7 +336,7 @@ void test_thrift_set_traits() {
       detail::test_data::primes.begin(),
       detail::test_data::primes.end()
     );
-    THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(traits, s, s);
+    THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL_TRAITS(traits, s, s);
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(
       traits, detail::test_data::primes, s
     );
@@ -338,7 +380,7 @@ void test_thrift_map_traits() {
       detail::test_data::primes_2x.begin(),
       detail::test_data::primes_2x.end()
     );
-    THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(traits, s, s);
+    THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL_TRAITS(traits, s, s);
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(
       traits, detail::test_data::primes_2x, s
     );
@@ -362,7 +404,7 @@ void test_thrift_map_traits() {
       detail::test_data::primes_2x.begin(),
       detail::test_data::primes_2x.end()
     );
-    THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(traits, s, s);
+    THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL_TRAITS(traits, s, s);
     THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL(
       traits, detail::test_data::primes_2x, s
     );
@@ -396,6 +438,8 @@ void test_thrift_map_traits() {
   }
 }
 
+#undef THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL_TRAITS
+#undef THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL2_TRAITS
 #undef THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL
 #undef THRIFT_COMPARE_UNORDERED_CONTAINERS_IMPL2
 #undef THRIFT_COMPARE_CONTAINER_TO_ITERATORS_IMPL
