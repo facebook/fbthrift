@@ -86,7 +86,7 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
 }
 
 void NestedContainersAsyncClient::mapList(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::map<int32_t, std::vector<int32_t>>& foo) {
-  mapList(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)),foo);
+  mapList(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), foo);
 }
 
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_mapList(::apache::thrift::ClientReceiveState& state) {
@@ -200,7 +200,7 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
 }
 
 void NestedContainersAsyncClient::mapSet(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::map<int32_t, std::set<int32_t>>& foo) {
-  mapSet(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)),foo);
+  mapSet(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), foo);
 }
 
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_mapSet(::apache::thrift::ClientReceiveState& state) {
@@ -314,7 +314,7 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
 }
 
 void NestedContainersAsyncClient::listMap(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::vector<std::map<int32_t, int32_t>>& foo) {
-  listMap(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)),foo);
+  listMap(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), foo);
 }
 
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_listMap(::apache::thrift::ClientReceiveState& state) {
@@ -428,7 +428,7 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
 }
 
 void NestedContainersAsyncClient::listSet(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::vector<std::set<int32_t>>& foo) {
-  listSet(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)),foo);
+  listSet(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), foo);
 }
 
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_listSet(::apache::thrift::ClientReceiveState& state) {
@@ -542,7 +542,7 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
 }
 
 void NestedContainersAsyncClient::turtles(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>& foo) {
-  turtles(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)),foo);
+  turtles(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), foo);
 }
 
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_turtles(::apache::thrift::ClientReceiveState& state) {

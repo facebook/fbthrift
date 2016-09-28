@@ -1953,7 +1953,7 @@ class CppGenerator(t_generator.Generator):
         args = ["folly::make_unique<apache::thrift::FunctionReplyCallback>("
                 "std::move(callback))"]
         args.extend([arg.name for arg in function.arglist.members])
-        args_list = ",".join(args)
+        args_list = ", ".join(args)
 
         name = name_prefix + function.name
 
