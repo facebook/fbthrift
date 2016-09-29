@@ -121,10 +121,20 @@ class CompilerTest(unittest.TestCase):
         ).splitlines()
         gens = [gen.split('/', 1)[1] for gen in gens]
         try:
-            self.assertEqual(sorted(gens), sorted(manifest[name]))
+            # TODO: We are currently comparing mstch_cpp2 to the cpp2 files,
+            # but only checking that each file we have generated is the same as
+            # the existing cpp2 implementation. There is no check that we are
+            # generating all of the correct files (because we aren't yet).
+            # When we migrate to mstch completely for cpp2, we should remove
+            # this logic
+            sorted_gens = sorted(gens)
+            sorted_non_mstch_cpp2_gens = [g for g in sorted_gens
+                if "mstch_cpp2" not in g]
+            self.assertEqual(sorted_non_mstch_cpp2_gens, sorted(manifest[name]))
             for gen in gens:
                 genc = read_file(os.path.join(self.tmp, gen))
-                fixc = read_resource(os.path.join(fixtureChildDir, gen))
+                compare_rel = gen.replace('mstch_cpp2', 'cpp2')
+                fixc = read_resource(os.path.join(fixtureChildDir, compare_rel))
                 self.assertMultiLineEqual(genc, fixc)
         except Exception as e:
             print(self.MSG, file=sys.stderr)

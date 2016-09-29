@@ -52,7 +52,9 @@ t_mstch_cpp2_generator::t_mstch_cpp2_generator(
     const std::map<std::string, std::string>& parsed_options,
     const std::string& /*option_string*/)
     : t_mstch_generator(program, "cpp2", parsed_options, true) {
-  this->out_dir_base_ = "gen-cpp2";
+  // TODO: use gen-cpp2 when this implementation is ready to replace the
+  // old python implementation.
+  this->out_dir_base_ = "gen-mstch_cpp2";
 
   auto include_prefix = this->get_option("include_prefix");
   if (include_prefix) {
@@ -183,7 +185,7 @@ std::string t_mstch_cpp2_generator::get_include_prefix(
   if (get_program()->is_out_path_absolute()) {
     return path.string();
   }
-  return (path / out_dir_base_).string() + "/";
+  return (path / "gen-cpp2").string() + "/";
 }
 
 }
