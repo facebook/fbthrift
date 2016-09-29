@@ -68,7 +68,8 @@ void Cpp2Worker::onNewConnection(
 
   TAsyncSocket* tsock = dynamic_cast<TAsyncSocket*>(sock.release());
   CHECK(tsock);
-  auto asyncSocket = std::shared_ptr<TAsyncSocket>(tsock, TAsyncSocket::Destructor());
+  auto asyncSocket = std::shared_ptr<TAsyncSocket>(
+    tsock, TAsyncSocket::Destructor());
 
   VLOG(4) << "Cpp2Worker: Creating connection for socket " <<
     asyncSocket->getFd();
@@ -81,9 +82,12 @@ void Cpp2Worker::onNewConnection(
   result->addConnection(result);
   result->start();
 
-  VLOG(4) << "created connection for fd " << asyncSocket->getFd();
+  VLOG(4) << "Cpp2Worker: created connection for socket " <<
+    asyncSocket->getFd();
   if (observer) {
     observer->connAccepted();
+    observer->activeConnections(
+      getConnectionManager()->getNumConnections() * server_->nWorkers_);
   }
 }
 

@@ -59,6 +59,8 @@ class TServerObserver {
 
   virtual void connRejected() {}
 
+  virtual void activeConnections(int32_t /*numConnections*/) {}
+
   virtual void saslError() {}
 
   virtual void saslFallBack() {}
