@@ -19,6 +19,16 @@ install_mstch() {
   popd
 }
 
+install_zstd() {
+  pushd .
+  if [[ ! -e 'zstd' ]]; then
+    git clone https://github.com/facebook/zstd.git ./zstd
+  fi
+  cd zstd
+  sudo make install
+  popd
+}
+
 install_folly() {
   pushd .
   if [[ ! -e "folly" ]]; then
