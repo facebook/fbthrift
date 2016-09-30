@@ -18,6 +18,7 @@ sudo apt-get install git cmake
 install_folly ubuntu_12.04  # needs git
 install_mstch ubuntu_12.04  # needs git, cmake
 install_wangle ubuntu_12.04
+install_zstd ubuntu_12.04
 
 # Uses PPAs set up by folly.  TODO: According to the fbthrift docs,
 # pkg-config is missing.  However, things seem to build fine...
