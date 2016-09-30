@@ -266,14 +266,14 @@ class <%service:name%>AsyncClient : public <%!
       %><% > CommaIfArgs%><% > StackArgList%>);
   virtual <% > ReturnType%> sync_<%function:name%>(<%!
       %><%#function:complexReturnType?%><%!
-          %><% > ComplexOutParamType%><%!
+          %><% > OutParamType%><%!
           %><% > CommaIfArgs%><%!
       %><%/function:complexReturnType?%><%!
       %><% > StackArgList%>);
   virtual <% > ReturnType%> sync_<%function:name%>(<%!
       %>apache::thrift::RpcOptions& rpcOptions<%!
       %><%#function:complexReturnType?%><%!
-          %>, <% > ComplexOutParamType%><%!
+          %>, <% > OutParamType%><%!
       %><%/function:complexReturnType?%><%!
       %><% > CommaIfArgs%><%!
       %><% > StackArgList%>);
@@ -301,13 +301,13 @@ class <%service:name%>AsyncClient : public <%!
       %><% > WrappedReturnType%>::apache::thrift::ClientReceiveState& state);
   static <% > ReturnType%> recv_<%function:name%>(<%!
       %><%#function:complexReturnType?%><%!
-          %><% > ComplexOutParamType%>, <%!
+          %><% > OutParamType%>, <%!
       %><%/function:complexReturnType?%><%!
       %>::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
   virtual <% > ReturnType%> recv_instance_<%function:name%>(<%!
       %><%#function:complexReturnType?%><%!
-          %><% > ComplexOutParamType%>, <%!
+          %><% > OutParamType%>, <%!
       %><%/function:complexReturnType?%><%!
       %>::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_<%function:name%>(<%!
@@ -330,7 +330,7 @@ class <%service:name%>AsyncClient : public <%!
   template <typename Protocol_>
   static <% > ReturnType%> recv_<%function:name%>T(Protocol_* prot, <%!
       %><%#function:complexReturnType?%><%!
-          %><% > ComplexOutParamType%>, <%!
+          %><% > OutParamType%>, <%!
       %><%/function:complexReturnType?%><%!
       %>::apache::thrift::ClientReceiveState& state);
   <%/function:oneway?%><%!

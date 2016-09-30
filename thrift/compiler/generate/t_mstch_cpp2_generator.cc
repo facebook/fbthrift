@@ -79,16 +79,17 @@ void t_mstch_cpp2_generator::generate_program() {
 }
 
 mstch::map t_mstch_cpp2_generator::extend_service(const t_service& svc) const {
-  const std::vector<std::pair<std::string, std::string>> protocols = {
-    {"binary", "BinaryProtocol"},
-    {"compact", "CompactProtocol"},
+  const std::vector<std::array<std::string, 3>> protocols = {
+    {"binary", "BinaryProtocol", "T_BINARY_PROTOCOL"},
+    {"compact", "CompactProtocol", "T_COMPACT_PROTOCOL"},
   };
 
   mstch::array v{};
   for (auto it = protocols.begin(); it != protocols.end(); ++it) {
     mstch::map m;
-    m.emplace("protocol:name", it->first);
-    m.emplace("protocol:longName", it->second);
+    m.emplace("protocol:name", it->at(0));
+    m.emplace("protocol:longName", it->at(1));
+    m.emplace("protocol:enum", it->at(2));
     v.push_back(m);
   }
   add_first_last(v);
@@ -143,8 +144,9 @@ bool t_mstch_cpp2_generator::get_is_stack_args() const {
 }
 
 void t_mstch_cpp2_generator::generate_service(t_service* service) {
-  auto path = boost::filesystem::path(service->get_name() + ".h");
-  render_to_file(*service, "Service.h", path);
+  auto name = service->get_name();
+  render_to_file(*service, "Service.h", name + ".h");
+  render_to_file(*service, "Service_client.cpp", name + "_client.cpp");
 }
 
 mstch::array t_mstch_cpp2_generator::get_namespace(

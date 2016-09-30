@@ -14,4 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>folly::Future<<% > BoxedFutureType%>>
+%><%#function:returnType%><%!
+    %><%#type:void?%>folly::Unit<%/type:void?%><%!
+    %><%^type:void?%><% > Type%><%/type:void?%><%!
+%><%/function:returnType%>

@@ -1,0 +1,275 @@
+<%!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+%>
+<% > Autogen%>
+#include "<%service:programIncludePrefix%><%service:name%>.h"
+
+#include "<%service:programIncludePrefix%><%service:name%>.tcc"
+
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+<%#service:namespaces%>
+namespace <%namespace:name%> {<%^last?%> <%/last?%><%!
+%><%/service:namespaces%>
+
+const char* <%service:name%>AsyncClient::getServiceName() {
+  return "<%service:name%>";
+}
+
+<%#service:functions%>
+void <%service:name%>AsyncClient::<%function:name%>(<%!
+    %>std::unique_ptr<apache::thrift::RequestCallback> callback<%!
+    %><% > CommaIfArgs%><% > StackArgList%>) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  <%function:name%>(rpcOptions, std::move(callback)<%!
+    %><% > CommaIfArgs%><% > ArgList%>);
+}
+
+void <%service:name%>AsyncClient::<%function:name%>(<%!
+    %>apache::thrift::RpcOptions& rpcOptions, <%!
+    %>std::unique_ptr<apache::thrift::RequestCallback> callback<%!
+    %><% > CommaIfArgs%><% > StackArgList%>) {
+  switch(getChannel()->getProtocolId()) {
+  <%#service:protocols%>
+    case apache::thrift::protocol::<%protocol:enum%>:
+    {
+      apache::thrift::<%protocol:longName%>Writer writer;
+      <%function:name%>T(&writer, rpcOptions, std::move(callback)<%!
+      %><% > CommaIfArgs%><% > ArgList%>);
+      break;
+    }
+  <%/service:protocols%>
+    default:
+    {
+      throw apache::thrift::TApplicationException("Could not find Protocol");
+    }
+  }
+}
+
+<% > ReturnType%> <%service:name%>AsyncClient::sync_<%function:name%>(<%!
+    %><%#function:complexReturnType?%><%!
+        %><% > OutParamType%><%!
+        %><% > CommaIfArgs%><%!
+    %><%/function:complexReturnType?%><%!
+    %><% > StackArgList%>) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  <%!
+  %><%^function:complexReturnType?%><%!
+      %><%#function:returnType%><%!
+          %><%^type:void?%><%!
+              %>return <%!
+          %><%/type:void?%><%!
+      %><%/function:returnType%><%!
+  %><%/function:complexReturnType?%><%!
+  %>sync_<%function:name%>(rpcOptions<%!
+  %><%#function:complexReturnType?%><%!
+      %>, _return<%!
+  %><%/function:complexReturnType?%><%!
+  %><% > CommaIfArgs%><% > ArgList%>);
+}
+
+<% > ReturnType%> <%service:name%>AsyncClient::sync_<%function:name%>(<%!
+    %>apache::thrift::RpcOptions& rpcOptions<%!
+    %><%#function:complexReturnType?%><%!
+        %>, <% > OutParamType%><%!
+    %><%/function:complexReturnType?%><%!
+    %><% > CommaIfArgs%><% > StackArgList%>) {
+  apache::thrift::ClientReceiveState _returnState;
+  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(<%!
+      %>&_returnState, getChannel()->getEventBase(), <%!
+      %><%#function:oneway?%>true<%/function:oneway?%><%!
+      %><%^function:oneway?%>false<%/function:oneway?%>);
+  <%function:name%>(rpcOptions, std::move(callback)<%!
+      %><% > CommaIfArgs%><% > ArgList%>);
+  getChannel()->getEventBase()->loopForever();
+  <%^function:oneway?%>
+  SCOPE_EXIT {
+    if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
+      rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
+    }
+  };
+  if (!_returnState.buf()) {
+    assert(_returnState.exception());
+    std::rethrow_exception(_returnState.exception());
+  }
+  <%!
+  %><%^function:complexReturnType?%><%!
+      %><%#function:returnType%><%!
+          %><%^type:void?%>return <%/type:void?%><%!
+      %><%/function:returnType%><%!
+  %><%/function:complexReturnType?%><%!
+  %>recv_<%function:name%>(<%!
+      %><%#function:complexReturnType?%><%!
+          %>_return, <%!
+      %><%/function:complexReturnType?%><%!
+      %>_returnState);
+  <%/function:oneway?%>
+}
+
+<% > FutureReturnType%> <%service:name%>AsyncClient::future_<%!
+    %><%function:name%>(<% > StackArgList%>) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return future_<%function:name%>(rpcOptions<%!
+      %><% > CommaIfArgs%><% > ArgList%>);
+}
+
+<% > FutureReturnType%> <%service:name%>AsyncClient::future_<%!
+    %><%function:name%>(apache::thrift::RpcOptions& rpcOptions<%!
+    %><% > CommaIfArgs%><% > StackArgList%>) {
+  folly::Promise<<% > BoxedFutureType%>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::<%!
+      %><%#function:oneway?%><%!
+          %>OneWayFutureCallback>(std::move(_promise), channel_);<%!
+      %><%/function:oneway?%><%!
+      %><%^function:oneway?%><%!
+          %>FutureCallback<<% > BoxedFutureType%>>>(std::move(_promise), <%!
+          %>recv_wrapped_<%function:name%>, channel_);<%!
+      %><%/function:oneway?%>
+  <%function:name%>(rpcOptions, std::move(callback)<% > CommaIfArgs%><%!
+      %><% > ArgList%>);
+  return _future;
+}
+<%^function:oneway?%>
+
+<% > HeaderFutureReturnType %> <%service:name%>AsyncClient::<%!
+    %>header_future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<%!
+    %><% > CommaIfArgs%><% > StackArgList%>) {
+  folly::Promise<<% > HeaderFuturePair%>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<<%!
+      %><% > BoxedFutureType%>>>(std::move(_promise), <%!
+      %>recv_wrapped_<%function:name%>, channel_);
+  <%function:name%>(rpcOptions, std::move(callback)<%!
+      %><% > CommaIfArgs%><% > ArgList%>);
+  return _future;
+}
+<%/function:oneway?%>
+
+void <%service:name%>AsyncClient::<%function:name%>(<%!
+    %>std::function<void (::apache::thrift::ClientReceiveState&&)> callback<%!
+    %><% > CommaIfArgs%><% > StackArgList%>) {
+  <%function:name%>(folly::make_unique<apache::thrift::FunctionReplyCallback><%!
+      %>(std::move(callback))<% > CommaIfArgs%><% > ArgList%>);
+}
+<%^function:oneway?%>
+
+folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%!
+    %><%function:name%>(<%!
+    %><%#function:returnType%><%!
+        %><%^type:void?%><% > OutParamType%>, <%/type:void?%><%!
+    %><%/function:returnType%><%!
+    %>::apache::thrift::ClientReceiveState& state) {
+  auto ew = state.exceptionWrapper();
+  if (ew) {
+    return ew;
+  }
+  if (!state.buf()) {
+    return folly::make_exception_wrapper<<%!
+        %>apache::thrift::TApplicationException>("recv_ called without result");
+  }
+  switch(state.protocolId()) {
+  <%#service:protocols%>
+    case apache::thrift::protocol::<%protocol:enum%>:
+    {
+      apache::thrift::<%protocol:longName%>Reader reader;
+      return recv_wrapped_<%function:name%>T(&reader, <%!
+          %><%#function:returnType%><%!
+              %><%^type:void?%>_return, <%/type:void?%><%!
+          %><%/function:returnType%>state);
+    }
+  <%/service:protocols%>
+    default:
+    {
+    }
+  }
+  return folly::make_exception_wrapper<<%!
+      %>apache::thrift::TApplicationException>("Could not find Protocol");
+}
+
+<% > ReturnType%> <%service:name%>AsyncClient::recv_<%function:name%>(<%!
+    %><%#function:complexReturnType?%><%!
+        %><% > OutParamType%>, <%!
+    %><%/function:complexReturnType?%><%!
+    %>::apache::thrift::ClientReceiveState& state) {
+  <%^function:complexReturnType?%>
+  <%#function:returnType%>
+  <%^type:void?%>
+  <% > Type%> _return;
+  <%/type:void?%>
+  <%/function:returnType%>
+  <%/function:complexReturnType?%>
+  auto ew = recv_wrapped_<%function:name%>(<%!
+      %><%#function:returnType%><%!
+          %><%^type:void?%>_return, <%/type:void?%><%!
+      %><%/function:returnType%>state);
+  if (ew) {
+    ew.throwException();
+  }
+  <%^function:complexReturnType?%>
+  <%#function:returnType%>
+  <%^type:void?%>
+  return _return;
+  <%/type:void?%>
+  <%/function:returnType%>
+  <%/function:complexReturnType?%>
+}
+
+<% > ReturnType%> <%service:name%>AsyncClient::recv_instance_<%!
+    %><%function:name%>(<%!
+    %><%#function:complexReturnType?%><%!
+        %><% > OutParamType%>, <%!
+    %><%/function:complexReturnType?%><%!
+    %>::apache::thrift::ClientReceiveState& state) {
+  <%#function:complexReturnType?%>
+  return recv_<%function:name%>(_return, state);
+  <%/function:complexReturnType?%>
+  <%^function:complexReturnType?%>
+  <%#function:returnType%>
+  <%#type:void?%>
+  recv_<%function:name%>(state);
+  <%/type:void?%>
+  <%^type:void?%>
+  return recv_<%function:name%>(state);
+  <%/type:void?%>
+  <%/function:returnType%>
+  <%/function:complexReturnType?%>
+}
+
+folly::exception_wrapper <%service:name%>AsyncClient::recv_instance_wrapped_<%!
+    %><%function:name%>(<%!
+    %><%#function:returnType%><%!
+        %><%^type:void?%><% > OutParamType%>, <%/type:void?%><%!
+    %><%/function:returnType%><%!
+    %>::apache::thrift::ClientReceiveState& state) {
+  return recv_wrapped_<%function:name%>(<%!
+      %><%#function:returnType%><%!
+          %><%^type:void?%>_return, <%/type:void?%><%!
+      %><%/function:returnType%>state);
+}
+<%/function:oneway?%>
+
+<%/service:functions%>
+<%#service:namespaces%>
+}<%/service:namespaces%><%!
+%> // <%!
+%><%#service:namespaces%><%!
+    %><%namespace:name%><%^last?%>::<%/last?%><%!
+%><%/service:namespaces%>
+namespace apache { namespace thrift {
+
+}} // apache::thrift
