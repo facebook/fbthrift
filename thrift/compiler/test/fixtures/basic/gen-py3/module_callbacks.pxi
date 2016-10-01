@@ -10,7 +10,6 @@ cdef public void call_cy_MyService_ping(
 ) with gil:
     promise = Promise_void.create(cPromise)
 
-    #TODO: asyncio.run_coroutine_threadsafe... after Python 3.5.2 lands
     func = functools.partial(
         asyncio.ensure_future,
         MyService_ping_coro(
@@ -32,7 +31,6 @@ cdef public void call_cy_MyService_getRandomData(
 ) with gil:
     promise = Promise_string.create(cPromise)
 
-    #TODO: asyncio.run_coroutine_threadsafe... after Python 3.5.2 lands
     func = functools.partial(
         asyncio.ensure_future,
         MyService_getRandomData_coro(
@@ -56,7 +54,6 @@ cdef public void call_cy_MyService_hasDataById(
     promise = Promise_bool.create(cPromise)
     arg_id = id
 
-    #TODO: asyncio.run_coroutine_threadsafe... after Python 3.5.2 lands
     func = functools.partial(
         asyncio.ensure_future,
         MyService_hasDataById_coro(
@@ -83,7 +80,6 @@ cdef public void call_cy_MyService_getDataById(
     promise = Promise_string.create(cPromise)
     arg_id = id
 
-    #TODO: asyncio.run_coroutine_threadsafe... after Python 3.5.2 lands
     func = functools.partial(
         asyncio.ensure_future,
         MyService_getDataById_coro(
@@ -112,7 +108,6 @@ cdef public void call_cy_MyService_putDataById(
     arg_id = id
     arg_data = (deref(data.get())).decode()
 
-    #TODO: asyncio.run_coroutine_threadsafe... after Python 3.5.2 lands
     func = functools.partial(
         asyncio.ensure_future,
         MyService_putDataById_coro(
@@ -144,7 +139,6 @@ cdef public void call_cy_MyService_lobDataById(
     arg_id = id
     arg_data = (deref(data.get())).decode()
 
-    #TODO: asyncio.run_coroutine_threadsafe... after Python 3.5.2 lands
     func = functools.partial(
         asyncio.ensure_future,
         MyService_lobDataById_coro(
@@ -172,7 +166,6 @@ cdef public void call_cy_MyServiceFast_ping(
 ) with gil:
     promise = Promise_void.create(cPromise)
 
-    #TODO: asyncio.run_coroutine_threadsafe... after Python 3.5.2 lands
     func = functools.partial(
         asyncio.ensure_future,
         MyServiceFast_ping_coro(
@@ -194,7 +187,6 @@ cdef public void call_cy_MyServiceFast_getRandomData(
 ) with gil:
     promise = Promise_string.create(cPromise)
 
-    #TODO: asyncio.run_coroutine_threadsafe... after Python 3.5.2 lands
     func = functools.partial(
         asyncio.ensure_future,
         MyServiceFast_getRandomData_coro(
@@ -218,7 +210,6 @@ cdef public void call_cy_MyServiceFast_hasDataById(
     promise = Promise_bool.create(cPromise)
     arg_id = id
 
-    #TODO: asyncio.run_coroutine_threadsafe... after Python 3.5.2 lands
     func = functools.partial(
         asyncio.ensure_future,
         MyServiceFast_hasDataById_coro(
@@ -245,7 +236,6 @@ cdef public void call_cy_MyServiceFast_getDataById(
     promise = Promise_string.create(cPromise)
     arg_id = id
 
-    #TODO: asyncio.run_coroutine_threadsafe... after Python 3.5.2 lands
     func = functools.partial(
         asyncio.ensure_future,
         MyServiceFast_getDataById_coro(
@@ -274,7 +264,6 @@ cdef public void call_cy_MyServiceFast_putDataById(
     arg_id = id
     arg_data = (deref(data.get())).decode()
 
-    #TODO: asyncio.run_coroutine_threadsafe... after Python 3.5.2 lands
     func = functools.partial(
         asyncio.ensure_future,
         MyServiceFast_putDataById_coro(
@@ -306,7 +295,6 @@ cdef public void call_cy_MyServiceFast_lobDataById(
     arg_id = id
     arg_data = (deref(data.get())).decode()
 
-    #TODO: asyncio.run_coroutine_threadsafe... after Python 3.5.2 lands
     func = functools.partial(
         asyncio.ensure_future,
         MyServiceFast_lobDataById_coro(

@@ -17,4 +17,5 @@
 }}    {{#type:i16?}}{{field:name}}{{/type:i16?}}{{!
 }}{{#type:i32?}}{{field:name}}{{/type:i32?}}{{!
 }}{{#type:i64?}}{{field:name}}{{/type:i64?}}{{!
-}}{{#type:string?}}std::move({{field:name}}){{/type:string?}}
+}}{{#type:string?}}std::move({{field:name}}){{/type:string?}}{{!
+}}{{#type:struct}}std::move({{field:name}}){{/type:struct}}

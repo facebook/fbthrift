@@ -19,8 +19,16 @@ from libcpp.string cimport string
 from libc.stdint cimport int16_t, int32_t, int64_t
 from libcpp.memory cimport shared_ptr, unique_ptr
 
+{{#program:structs}}
+{{#first?}}
 cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
 }} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":
-{{#program:structs}}
+{{/first?}}
 {{> OneStruct.pxd}}
+{{/program:structs}}
+
+{{#program:structs}}
+{{#first?}}cdef extern from "<utility>" namespace "std" nogil:{{/first?}}
+    cdef shared_ptr[c{{struct:name}}] move(unique_ptr[c{{struct:name}}])
+    cdef shared_ptr[c{{struct:name}}] move(shared_ptr[c{{struct:name}}])
 {{/program:structs}}

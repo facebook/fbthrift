@@ -21,8 +21,9 @@ from libc.stdint cimport int16_t, int32_t, int64_t
 from cython.operator cimport dereference as deref
 
 {{#program:structs}}
-{{#first?}}from {{program:name}}_types cimport ({{/first?}}
-  c{{struct:name}}{{^last?}},{{/last?}}
+{{#first?}}from {{program:name}}_types cimport (
+    move,{{/first?}}
+    c{{struct:name}}{{^last?}},{{/last?}}
 {{#last?}}){{/last?}}{{/program:structs}}
 
 {{#program:structs}}
@@ -49,15 +50,16 @@ cdef class {{struct:name}}:
     cdef create(shared_ptr[c{{struct:name}}] c_{{struct:name}}):
         inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}})
         inst.c_{{struct:name}} = c_{{struct:name}}
+        return inst
 
-        {{#struct:fields}}
-        @property
-        def {{field:name}}(self):
-            {{#field:type}}
-            {{> CythonStructGetter}}
+    {{#struct:fields}}
+    @property
+    def {{field:name}}(self):
+        {{#field:type}}
+        {{> CythonStructGetter}}
 
-            {{/field:type}}
+        {{/field:type}}
 
-        {{/struct:fields}}
+    {{/struct:fields}}
 
 {{/program:structs}}

@@ -17,4 +17,5 @@
 }}    {{#type:i16?}}arg_{{field:name}} = {{field:name}}{{/type:i16?}}{{!
 }}{{#type:i32?}}arg_{{field:name}} = {{field:name}}{{/type:i32?}}{{!
 }}{{#type:i64?}}arg_{{field:name}} = {{field:name}}{{/type:i64?}}{{!
-}}{{#type:string?}}arg_{{field:name}} = (deref({{field:name}}.get())).decode(){{/type:string?}}
+}}{{#type:string?}}arg_{{field:name}} = (deref({{field:name}}.get())).decode(){{/type:string?}}{{!
+}}{{#type:struct}}arg_{{field:name}} = {{type:name}}.create(move({{field:name}})){{/type:struct}}

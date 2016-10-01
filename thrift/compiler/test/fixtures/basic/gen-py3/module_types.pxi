@@ -4,7 +4,8 @@ from libc.stdint cimport int16_t, int32_t, int64_t
 from cython.operator cimport dereference as deref
 
 from module_types cimport (
-  cMyStruct
+    move,
+    cMyStruct
 )
 
 cdef class MyStruct:
@@ -19,13 +20,14 @@ cdef class MyStruct:
     cdef create(shared_ptr[cMyStruct] c_MyStruct):
         inst = <MyStruct>MyStruct.__new__(MyStruct)
         inst.c_MyStruct = c_MyStruct
+        return inst
 
-        @property
-        def MyIntField(self):
-            return self.c_MyStruct.get().MyIntField
+    @property
+    def MyIntField(self):
+        return self.c_MyStruct.get().MyIntField
 
-        @property
-        def MyStringField(self):
-            return self.c_MyStruct.get().MyStringField.decode()
+    @property
+    def MyStringField(self):
+        return self.c_MyStruct.get().MyStringField.decode()
 
 

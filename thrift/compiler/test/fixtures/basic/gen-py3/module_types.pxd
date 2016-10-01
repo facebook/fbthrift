@@ -8,3 +8,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         int64_t MyIntField
         shared_ptr[string] MyStringField
 
+
+cdef extern from "<utility>" namespace "std" nogil:
+    cdef shared_ptr[cMyStruct] move(unique_ptr[cMyStruct])
+    cdef shared_ptr[cMyStruct] move(shared_ptr[cMyStruct])

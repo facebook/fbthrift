@@ -34,7 +34,7 @@ cdef public void call_cy_{{service:name}}_{{function:name}}(
     {{#field:type}}{{>CythonCppToPython}}{{/field:type}}
     {{/function:args}}
 
-    #TODO: asyncio.run_coroutine_threadsafe... after Python 3.5.2 lands
+    {{!#TODO: asyncio.run_coroutine_threadsafe... after Python 3.5.2 lands}}
     func = functools.partial(
         asyncio.ensure_future,
         {{service:name}}_{{function:name}}_coro(
