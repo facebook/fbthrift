@@ -84,17 +84,26 @@ mstch::map t_mstch_cpp2_generator::extend_service(const t_service& svc) const {
     {"compact", "CompactProtocol", "T_COMPACT_PROTOCOL"},
   };
 
-  mstch::array v{};
+  mstch::array protocol_array{};
   for (auto it = protocols.begin(); it != protocols.end(); ++it) {
     mstch::map m;
     m.emplace("protocol:name", it->at(0));
     m.emplace("protocol:longName", it->at(1));
     m.emplace("protocol:enum", it->at(2));
-    v.push_back(m);
+    protocol_array.push_back(m);
   }
-  add_first_last(v);
+  add_first_last(protocol_array);
+
+  mstch::array oneway_functions_array{};
+  for (auto fn : svc.get_functions()) {
+    if (fn->is_oneway()) {
+      oneway_functions_array.push_back(this->dump(*fn));
+    }
+  }
+  add_first_last(oneway_functions_array);
   return mstch::map {
-    {"protocols", v},
+    {"onewayfunctions", oneway_functions_array},
+    {"protocols", protocol_array},
     {"programName", svc.get_program()->get_name()},
     {"programIncludePrefix", this->get_include_prefix(*svc.get_program())},
     {"namespaces", this->get_namespace(*svc.get_program())},
@@ -145,6 +154,7 @@ bool t_mstch_cpp2_generator::get_is_stack_args() const {
 
 void t_mstch_cpp2_generator::generate_service(t_service* service) {
   auto name = service->get_name();
+  render_to_file(*service, "Service.cpp", name + ".cpp");
   render_to_file(*service, "Service.h", name + ".h");
   render_to_file(*service, "Service_client.cpp", name + "_client.cpp");
 }
