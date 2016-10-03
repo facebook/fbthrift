@@ -242,6 +242,11 @@ struct pretty_print_impl {
   static void print(OutputStream &out, T const &what) {
     out << what;
   }
+
+  template <typename OutputStream>
+  static void print(OutputStream &out, bool const what) {
+    out << (what ? "true" : "false");
+  }
 };
 
 }}} // apache::thrift::detail
