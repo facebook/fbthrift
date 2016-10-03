@@ -45,6 +45,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   std::string get_include_prefix(const t_program& program) const;
 
   bool use_include_prefix_ = false;
+  std::vector<std::array<std::string, 3>> protocols_;
 };
 
 t_mstch_cpp2_generator::t_mstch_cpp2_generator(
@@ -55,6 +56,10 @@ t_mstch_cpp2_generator::t_mstch_cpp2_generator(
   // TODO: use gen-cpp2 when this implementation is ready to replace the
   // old python implementation.
   this->out_dir_base_ = "gen-mstch_cpp2";
+  this->protocols_ = {
+    {{"binary", "BinaryProtocol", "T_BINARY_PROTOCOL"}},
+    {{"compact", "CompactProtocol", "T_COMPACT_PROTOCOL"}},
+  };
 
   auto include_prefix = this->get_option("include_prefix");
   if (include_prefix) {
@@ -79,13 +84,9 @@ void t_mstch_cpp2_generator::generate_program() {
 }
 
 mstch::map t_mstch_cpp2_generator::extend_service(const t_service& svc) const {
-  const std::vector<std::array<std::string, 3>> protocols = {
-    {"binary", "BinaryProtocol", "T_BINARY_PROTOCOL"},
-    {"compact", "CompactProtocol", "T_COMPACT_PROTOCOL"},
-  };
 
   mstch::array protocol_array{};
-  for (auto it = protocols.begin(); it != protocols.end(); ++it) {
+  for (auto it = protocols_.begin(); it != protocols_.end(); ++it) {
     mstch::map m;
     m.emplace("protocol:name", it->at(0));
     m.emplace("protocol:longName", it->at(1));
@@ -102,11 +103,12 @@ mstch::map t_mstch_cpp2_generator::extend_service(const t_service& svc) const {
   }
   add_first_last(oneway_functions_array);
   return mstch::map {
+    {"namespaces", this->get_namespace(*svc.get_program())},
     {"onewayfunctions", oneway_functions_array},
     {"protocols", protocol_array},
     {"programName", svc.get_program()->get_name()},
     {"programIncludePrefix", this->get_include_prefix(*svc.get_program())},
-    {"namespaces", this->get_namespace(*svc.get_program())},
+    {"separate_processmap", (bool)this->get_option("separate_processmap")},
   };
 }
 
@@ -157,6 +159,17 @@ void t_mstch_cpp2_generator::generate_service(t_service* service) {
   render_to_file(*service, "Service.cpp", name + ".cpp");
   render_to_file(*service, "Service.h", name + ".h");
   render_to_file(*service, "Service_client.cpp", name + "_client.cpp");
+
+  for (const auto& protocol : protocols_) {
+    auto m = dump(*service);
+    m.emplace("protocol:name", protocol.at(0));
+    m.emplace("protocol:longName", protocol.at(1));
+    m.emplace("protocol:enum", protocol.at(2));
+    render_to_file(
+        m,
+        "Service_processmap_protocol.cpp",
+        name + "_processmap_" + protocol.at(0) + ".cpp");
+  }
 }
 
 mstch::array t_mstch_cpp2_generator::get_namespace(

@@ -71,6 +71,8 @@ for name in fixtureNames:
     cmds = read_lines(os.path.join(cwd, 'cmd'))
     for cmd in cmds:
         args = shlex.split(cmd.strip())
+        if "mstch_cpp2" in args[0]:
+            continue
         if "cpp" in args[0]:
             path = os.path.join("thrift/compiler/test/fixtures", name)
             extra = "include_prefix=" + path
