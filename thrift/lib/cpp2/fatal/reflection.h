@@ -122,7 +122,7 @@ using legacy_type_id_t = std::uint64_t;
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-struct type_class {
+namespace type_class {
   /**
    * Represents types unknown to the reflection framework.
    *
@@ -258,7 +258,7 @@ struct type_class {
      */
     using mapped_type_class = MappedTypeClass;
   };
-};
+} // type_class
 
 /**
  * Represents whether a field is required to be set in a given structure or not.
