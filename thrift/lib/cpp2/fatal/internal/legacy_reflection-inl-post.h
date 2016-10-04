@@ -234,7 +234,7 @@ struct impl<T, type_class::structure> {
 
 template <typename T>
 struct impl<T, type_class::variant> {
-  using meta = reflect_union<T>;
+  using meta = reflect_variant<T>;
   using module_meta = reflect_module<typename meta::module>;
   struct visitor {
     template <typename MemberInfo, size_t Index>

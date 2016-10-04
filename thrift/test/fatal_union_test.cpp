@@ -236,20 +236,20 @@ FATAL_S(unionA_annotation2v, "some text here");
 TEST(fatal_union, annotations) {
   EXPECT_SAME<
     fatal::list<>,
-    apache::thrift::reflect_union<union1>::annotations::map
+    apache::thrift::reflect_variant<union1>::annotations::map
   >();
 
   EXPECT_SAME<
     fatal::list<>,
-    apache::thrift::reflect_union<union2>::annotations::map
+    apache::thrift::reflect_variant<union2>::annotations::map
   >();
 
   EXPECT_SAME<
     fatal::list<>,
-    apache::thrift::reflect_union<union3>::annotations::map
+    apache::thrift::reflect_variant<union3>::annotations::map
   >();
 
-  using actual_unionA = apache::thrift::reflect_union<unionA>::annotations;
+  using actual_unionA = apache::thrift::reflect_variant<unionA>::annotations;
 
   EXPECT_SAME<unionA_annotation1k, actual_unionA::keys::another_annotation>();
   EXPECT_SAME<unionA_annotation1v, actual_unionA::values::another_annotation>();

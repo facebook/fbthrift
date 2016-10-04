@@ -31,7 +31,7 @@
 namespace apache { namespace thrift {
 namespace detail {
 template <typename T, typename V>
-using variant_helper = typename reflect_union<
+using variant_helper = typename reflect_variant<
   typename std::decay<V>::type
 >::traits;
 } // detail

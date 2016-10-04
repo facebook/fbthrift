@@ -680,7 +680,6 @@ struct protocol_methods <
 > {
   constexpr static protocol::TType ttype_value = protocol::T_STRUCT; // overlaps
 
-  // using traits = reflect_union<Union>;
   using traits = fatal::variant_traits<Union>;
   using enum_traits = fatal::enum_traits<typename traits::id>;
 

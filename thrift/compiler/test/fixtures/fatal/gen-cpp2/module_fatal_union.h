@@ -227,7 +227,7 @@ class union1_variant_traits {
       union1__struct_unique_identifiers_list::ui,
       union1__struct_unique_getters_list::ui,
       union1__struct_unique_setters_list::ui,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui,
         1,
         ::apache::thrift::type_class::integral
@@ -238,7 +238,7 @@ class union1_variant_traits {
       union1__struct_unique_identifiers_list::ud,
       union1__struct_unique_getters_list::ud,
       union1__struct_unique_setters_list::ud,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud,
         2,
         ::apache::thrift::type_class::floating_point
@@ -249,7 +249,7 @@ class union1_variant_traits {
       union1__struct_unique_identifiers_list::us,
       union1__struct_unique_getters_list::us,
       union1__struct_unique_setters_list::us,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::us,
         3,
         ::apache::thrift::type_class::string
@@ -260,7 +260,7 @@ class union1_variant_traits {
       union1__struct_unique_identifiers_list::ue,
       union1__struct_unique_getters_list::ue,
       union1__struct_unique_setters_list::ue,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue,
         4,
         ::apache::thrift::type_class::enumeration
@@ -505,7 +505,7 @@ class union2_variant_traits {
       union2__struct_unique_identifiers_list::ui_2,
       union2__struct_unique_getters_list::ui_2,
       union2__struct_unique_setters_list::ui_2,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui_2,
         1,
         ::apache::thrift::type_class::integral
@@ -516,7 +516,7 @@ class union2_variant_traits {
       union2__struct_unique_identifiers_list::ud_2,
       union2__struct_unique_getters_list::ud_2,
       union2__struct_unique_setters_list::ud_2,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud_2,
         2,
         ::apache::thrift::type_class::floating_point
@@ -527,7 +527,7 @@ class union2_variant_traits {
       union2__struct_unique_identifiers_list::us_2,
       union2__struct_unique_getters_list::us_2,
       union2__struct_unique_setters_list::us_2,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::us_2,
         3,
         ::apache::thrift::type_class::string
@@ -538,7 +538,7 @@ class union2_variant_traits {
       union2__struct_unique_identifiers_list::ue_2,
       union2__struct_unique_getters_list::ue_2,
       union2__struct_unique_setters_list::ue_2,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue_2,
         4,
         ::apache::thrift::type_class::enumeration
@@ -783,7 +783,7 @@ class union3_variant_traits {
       union3__struct_unique_identifiers_list::ui_3,
       union3__struct_unique_getters_list::ui_3,
       union3__struct_unique_setters_list::ui_3,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui_3,
         1,
         ::apache::thrift::type_class::integral
@@ -794,7 +794,7 @@ class union3_variant_traits {
       union3__struct_unique_identifiers_list::ud_3,
       union3__struct_unique_getters_list::ud_3,
       union3__struct_unique_setters_list::ud_3,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud_3,
         2,
         ::apache::thrift::type_class::floating_point
@@ -805,7 +805,7 @@ class union3_variant_traits {
       union3__struct_unique_identifiers_list::us_3,
       union3__struct_unique_getters_list::us_3,
       union3__struct_unique_setters_list::us_3,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::us_3,
         3,
         ::apache::thrift::type_class::string
@@ -816,7 +816,7 @@ class union3_variant_traits {
       union3__struct_unique_identifiers_list::ue_3,
       union3__struct_unique_getters_list::ue_3,
       union3__struct_unique_setters_list::ue_3,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue_3,
         4,
         ::apache::thrift::type_class::enumeration
@@ -1097,7 +1097,7 @@ class unionA_variant_traits {
       unionA__struct_unique_identifiers_list::i,
       unionA__struct_unique_getters_list::i,
       unionA__struct_unique_setters_list::i,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::i,
         1,
         ::apache::thrift::type_class::integral
@@ -1108,7 +1108,7 @@ class unionA_variant_traits {
       unionA__struct_unique_identifiers_list::d,
       unionA__struct_unique_getters_list::d,
       unionA__struct_unique_setters_list::d,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::d,
         2,
         ::apache::thrift::type_class::floating_point
@@ -1119,7 +1119,7 @@ class unionA_variant_traits {
       unionA__struct_unique_identifiers_list::s,
       unionA__struct_unique_getters_list::s,
       unionA__struct_unique_setters_list::s,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::s,
         3,
         ::apache::thrift::type_class::string
@@ -1130,7 +1130,7 @@ class unionA_variant_traits {
       unionA__struct_unique_identifiers_list::e,
       unionA__struct_unique_getters_list::e,
       unionA__struct_unique_setters_list::e,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::e,
         4,
         ::apache::thrift::type_class::enumeration
@@ -1141,7 +1141,7 @@ class unionA_variant_traits {
       unionA__struct_unique_identifiers_list::a,
       unionA__struct_unique_getters_list::a,
       unionA__struct_unique_setters_list::a,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::a,
         5,
         ::apache::thrift::type_class::structure
@@ -2192,7 +2192,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::get,
       union_with_special_names__struct_unique_getters_list::get,
       union_with_special_names__struct_unique_setters_list::get,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::get,
         1,
         ::apache::thrift::type_class::integral
@@ -2203,7 +2203,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::getter,
       union_with_special_names__struct_unique_getters_list::getter,
       union_with_special_names__struct_unique_setters_list::getter,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::getter,
         2,
         ::apache::thrift::type_class::integral
@@ -2214,7 +2214,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::lists,
       union_with_special_names__struct_unique_getters_list::lists,
       union_with_special_names__struct_unique_setters_list::lists,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::lists,
         3,
         ::apache::thrift::type_class::integral
@@ -2225,7 +2225,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::maps,
       union_with_special_names__struct_unique_getters_list::maps,
       union_with_special_names__struct_unique_setters_list::maps,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::maps,
         4,
         ::apache::thrift::type_class::integral
@@ -2236,7 +2236,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::name,
       union_with_special_names__struct_unique_getters_list::name,
       union_with_special_names__struct_unique_setters_list::name,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::name,
         5,
         ::apache::thrift::type_class::integral
@@ -2247,7 +2247,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::name_to_value,
       union_with_special_names__struct_unique_getters_list::name_to_value,
       union_with_special_names__struct_unique_setters_list::name_to_value,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::name_to_value,
         6,
         ::apache::thrift::type_class::integral
@@ -2258,7 +2258,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::names,
       union_with_special_names__struct_unique_getters_list::names,
       union_with_special_names__struct_unique_setters_list::names,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::names,
         7,
         ::apache::thrift::type_class::integral
@@ -2269,7 +2269,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::prefix_tree,
       union_with_special_names__struct_unique_getters_list::prefix_tree,
       union_with_special_names__struct_unique_setters_list::prefix_tree,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::prefix_tree,
         8,
         ::apache::thrift::type_class::integral
@@ -2280,7 +2280,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::sets,
       union_with_special_names__struct_unique_getters_list::sets,
       union_with_special_names__struct_unique_setters_list::sets,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::sets,
         9,
         ::apache::thrift::type_class::integral
@@ -2291,7 +2291,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::setter,
       union_with_special_names__struct_unique_getters_list::setter,
       union_with_special_names__struct_unique_setters_list::setter,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::setter,
         10,
         ::apache::thrift::type_class::integral
@@ -2302,7 +2302,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::str,
       union_with_special_names__struct_unique_getters_list::str,
       union_with_special_names__struct_unique_setters_list::str,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::str,
         11,
         ::apache::thrift::type_class::integral
@@ -2313,7 +2313,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::strings,
       union_with_special_names__struct_unique_getters_list::strings,
       union_with_special_names__struct_unique_setters_list::strings,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::strings,
         12,
         ::apache::thrift::type_class::integral
@@ -2324,7 +2324,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::type,
       union_with_special_names__struct_unique_getters_list::type,
       union_with_special_names__struct_unique_setters_list::type,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::type,
         13,
         ::apache::thrift::type_class::integral
@@ -2335,7 +2335,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::value,
       union_with_special_names__struct_unique_getters_list::value,
       union_with_special_names__struct_unique_setters_list::value,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::value,
         14,
         ::apache::thrift::type_class::integral
@@ -2346,7 +2346,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::value_to_name,
       union_with_special_names__struct_unique_getters_list::value_to_name,
       union_with_special_names__struct_unique_setters_list::value_to_name,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::value_to_name,
         15,
         ::apache::thrift::type_class::integral
@@ -2357,7 +2357,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::values,
       union_with_special_names__struct_unique_getters_list::values,
       union_with_special_names__struct_unique_setters_list::values,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::values,
         16,
         ::apache::thrift::type_class::integral
@@ -2368,7 +2368,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::id,
       union_with_special_names__struct_unique_getters_list::id,
       union_with_special_names__struct_unique_setters_list::id,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::id,
         17,
         ::apache::thrift::type_class::integral
@@ -2379,7 +2379,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::ids,
       union_with_special_names__struct_unique_getters_list::ids,
       union_with_special_names__struct_unique_setters_list::ids,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ids,
         18,
         ::apache::thrift::type_class::integral
@@ -2390,7 +2390,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::descriptor,
       union_with_special_names__struct_unique_getters_list::descriptor,
       union_with_special_names__struct_unique_setters_list::descriptor,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::descriptor,
         19,
         ::apache::thrift::type_class::integral
@@ -2401,7 +2401,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::descriptors,
       union_with_special_names__struct_unique_getters_list::descriptors,
       union_with_special_names__struct_unique_setters_list::descriptors,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::descriptors,
         20,
         ::apache::thrift::type_class::integral
@@ -2412,7 +2412,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::key,
       union_with_special_names__struct_unique_getters_list::key,
       union_with_special_names__struct_unique_setters_list::key,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::key,
         21,
         ::apache::thrift::type_class::integral
@@ -2423,7 +2423,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::keys,
       union_with_special_names__struct_unique_getters_list::keys,
       union_with_special_names__struct_unique_setters_list::keys,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::keys,
         22,
         ::apache::thrift::type_class::integral
@@ -2434,7 +2434,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::annotation,
       union_with_special_names__struct_unique_getters_list::annotation,
       union_with_special_names__struct_unique_setters_list::annotation,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::annotation,
         23,
         ::apache::thrift::type_class::integral
@@ -2445,7 +2445,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::annotations,
       union_with_special_names__struct_unique_getters_list::annotations,
       union_with_special_names__struct_unique_setters_list::annotations,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::annotations,
         24,
         ::apache::thrift::type_class::integral
@@ -2456,7 +2456,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::member,
       union_with_special_names__struct_unique_getters_list::member,
       union_with_special_names__struct_unique_setters_list::member,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::member,
         25,
         ::apache::thrift::type_class::integral
@@ -2467,7 +2467,7 @@ class union_with_special_names_variant_traits {
       union_with_special_names__struct_unique_identifiers_list::members,
       union_with_special_names__struct_unique_getters_list::members,
       union_with_special_names__struct_unique_setters_list::members,
-      ::apache::thrift::reflected_union_member_metadata<
+      ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::members,
         26,
         ::apache::thrift::type_class::integral

@@ -1697,13 +1697,13 @@ using is_reflectable_enum = fatal::has_enum_traits<T>;
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename T>
-struct reflected_union {
+struct reflected_variant {
   /**
    * A type alias for the union itself.
    *
    * Example:
    *
-   *  using info = reflect_union<MyUnion>;
+   *  using info = reflect_variant<MyUnion>;
    *
    *  // yields `MyUnion`
    *  using result = info::type;
@@ -1719,7 +1719,7 @@ struct reflected_union {
    *
    * Example:
    *
-   *  using info = reflect_union<MyUnion>;
+   *  using info = reflect_variant<MyUnion>;
    *  using traits = info::traits;
    *
    *  // yields `MyUnion::Type::a`
@@ -1735,7 +1735,7 @@ struct reflected_union {
    *
    * Example:
    *
-   *  using info = reflect_union<MyUnion>;
+   *  using info = reflect_variant<MyUnion>;
    *
    *  // yields `My::Namespace::MyModule_tags::module`
    *  using result = info::module;
@@ -1750,7 +1750,7 @@ struct reflected_union {
    *
    * Example:
    *
-   *  using info = reflect_union<MyUnion>;
+   *  using info = reflect_variant<MyUnion>;
    *
    *  // yields `fatal::sequence<char,
    *  //   'a', 'n', 'o', 't', 'h', 'e', 'r', ' ', 'v', 'a', 'l', 'u', 'e'
@@ -1772,13 +1772,13 @@ struct reflected_union {
 };
 
 /**
- * Retrieves reflection metadata (as a `reflected_union`) associated with the
+ * Retrieves reflection metadata (as a `reflected_variant`) associated with the
  * given union.
  *
  * If the given type is not a Thrift union, or if there's no reflection
  * metadata available for it, compilation will fail.
  *
- * See the documentation on `reflected_union` (above) for more information on
+ * See the documentation on `reflected_variant` (above) for more information on
  * the returned type.
  *
  * Example:
@@ -1797,7 +1797,7 @@ struct reflected_union {
  *  //////////////////
  *  // whatever.cpp //
  *  //////////////////
- *  using info = reflect_union<My::Namespace::MyUnion>;
+ *  using info = reflect_variant<My::Namespace::MyUnion>;
  *
  *  // yields `MyUnion`
  *  auto result = info::type;
@@ -1805,7 +1805,7 @@ struct reflected_union {
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename T>
-using reflect_union = reflected_union<T>;
+using reflect_variant = reflected_variant<T>;
 
 /**
  * Represents Thrift specific metadata for a given union's member.
@@ -1830,7 +1830,7 @@ using reflect_union = reflected_union<T>;
  *  //////////////////
  *  // whatever.cpp //
  *  //////////////////
- *  using info = reflect_union<My::Namespace::MyUnion>;
+ *  using info = reflect_variant<My::Namespace::MyUnion>;
  *  using metadata = info::by_type<double>::metadata;
  *
  *  // yields "c"
@@ -1839,13 +1839,13 @@ using reflect_union = reflected_union<T>;
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename Name, field_id_t Id, typename TypeClass>
-struct reflected_union_member_metadata {
+struct reflected_variant_member_metadata {
   /**
    * A compile-time string representing the name of this member.
    *
    * Example:
    *
-   *  using info = reflect_union<My::Namespace::MyUnion>;
+   *  using info = reflect_variant<My::Namespace::MyUnion>;
    *
    *  // yields "c"
    *  auto result = fatal::z_data<info::by_type<double>::metadata::name>();
@@ -1860,7 +1860,7 @@ struct reflected_union_member_metadata {
    *
    * Example:
    *
-   *  using info = reflect_union<My::Namespace::MyUnion>;
+   *  using info = reflect_variant<My::Namespace::MyUnion>;
    *
    *  // yields `3`
    *  auto result = info::by_type<double>::metadata::id::value;
@@ -1874,7 +1874,7 @@ struct reflected_union_member_metadata {
    *
    * Example:
    *
-   *  using info = reflect_union<My::Namespace::MyUnion>;
+   *  using info = reflect_variant<My::Namespace::MyUnion>;
    *
    *  // yields `type_class::floating_point`
    *  auto result = info::by_type<double>::metadata::id;

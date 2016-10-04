@@ -4802,7 +4802,7 @@ class CppGenerator(t_generator.Generator):
                 t('    {0}::{1},'.format(idscls, i.name))
                 t('    {0}::{1},'.format(getcls, i.name))
                 t('    {0}::{1},'.format(setcls, i.name))
-                t('    ::apache::thrift::reflected_union_member_metadata<')
+                t('    ::apache::thrift::reflected_variant_member_metadata<')
                 t('      {0},'.format(self._get_fatal_string_id(i.name)))
                 t('      {0},'.format(i.key))
                 t('      {0}'.format(self._render_fatal_type_class(i.type)))
