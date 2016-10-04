@@ -1769,6 +1769,87 @@ struct reflected_variant {
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
   using legacy_id = typename traits::metadata::legacy_id;
+
+  /**
+   * Gets the member descriptor for the field with given `Name`.
+   *
+   * See `fatal::variant_type_descriptor`, from the Fatal library, for more
+   * information.
+   *
+   * Example:
+   *
+   *  using id_traits = fatal::enum_traits<MyUnion::Type>;
+   *  using info = reflect_variant<MyUnion>;
+   *  using member_info = info::by_name<id_traits::str::a>;
+   *
+   *  MyUnion u;
+   *  u.set_a(10);
+   *
+   *  // yields `10`
+   *  auto result = member_info::get(u);
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  template <typename Name>
+  using by_name = fatal::get<
+    typename traits::descriptors,
+    Name,
+    detail::reflection_impl::variant_member_name
+  >;
+
+  /**
+   * Gets the member descriptor for the field with given `TypeId`.
+   *
+   * See `fatal::variant_type_descriptor`, from the Fatal library, for more
+   * information.
+   *
+   * Example:
+   *
+   *  using id_traits = fatal::enum_traits<MyUnion::Type>;
+   *  using info = reflect_variant<MyUnion>;
+   *  using member_info = info::by_type_id<MyUnion::Type::a>;
+   *
+   *  MyUnion u;
+   *  u.set_a(10);
+   *
+   *  // yields `10`
+   *  auto result = member_info::get(u);
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  template <typename type::Type TypeId>
+  using by_type_id = fatal::get<
+    typename traits::descriptors,
+    std::integral_constant<typename type::Type, TypeId>,
+    fatal::get_type::id
+  >;
+
+  /**
+   * Gets the member descriptor for the field with given `FieldId`.
+   *
+   * See `fatal::variant_type_descriptor`, from the Fatal library, for more
+   * information.
+   *
+   * Example:
+   *
+   *  using id_traits = fatal::enum_traits<MyUnion::Type>;
+   *  using info = reflect_variant<MyUnion>;
+   *  using member_info = info::by_field_id<1>;
+   *
+   *  MyUnion u;
+   *  u.set_a(10);
+   *
+   *  // yields `10`
+   *  auto result = member_info::get(u);
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  template <field_id_t FieldId>
+  using by_field_id = fatal::get<
+    typename traits::descriptors,
+    std::integral_constant<field_id_t, FieldId>,
+    detail::reflection_impl::variant_member_field_id
+  >;
 };
 
 /**

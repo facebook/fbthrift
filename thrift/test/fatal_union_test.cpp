@@ -265,5 +265,39 @@ TEST(fatal_union, annotations) {
   >();
 }
 
+TEST(fatal_union, by_name) {
+  using id_traits = fatal::enum_traits<union1::Type>;
+  using info = apache::thrift::reflect_variant<union1>;
+  using member_info = info::by_name<id_traits::str::ui>;
+
+  union1 u;
+  u.set_ui(10);
+
+  ASSERT_EQ(u.getType(), union1::Type::ui);
+  EXPECT_EQ(10, member_info::get(u));
+}
+
+TEST(fatal_union, by_type_id) {
+  using info = apache::thrift::reflect_variant<union1>;
+  using member_info = info::by_type_id<union1::Type::ui>;
+
+  union1 u;
+  u.set_ui(10);
+
+  ASSERT_EQ(u.getType(), union1::Type::ui);
+  EXPECT_EQ(10, member_info::get(u));
+}
+
+TEST(fatal_union, by_field_id) {
+  using info = apache::thrift::reflect_variant<union1>;
+  using member_info = info::by_field_id<1>;
+
+  union1 u;
+  u.set_ui(10);
+
+  ASSERT_EQ(u.getType(), union1::Type::ui);
+  EXPECT_EQ(10, member_info::get(u));
+}
+
 } // namespace cpp_reflection {
 } // namespace test_cpp2 {

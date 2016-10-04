@@ -44,6 +44,16 @@ template <typename, typename, bool> struct is_set;
 template <typename, typename, bool> struct mark_set;
 template <typename, typename, bool> struct unmark_set;
 
+struct variant_member_name {
+  template <typename Descriptor>
+  using apply = typename Descriptor::metadata::name;
+};
+
+struct variant_member_field_id {
+  template <typename Descriptor>
+  using apply = typename Descriptor::metadata::id;
+};
+
 }} // detail::reflection_impl
 
 #define THRIFT_REGISTER_REFLECTION_METADATA(Tag, ...) \
