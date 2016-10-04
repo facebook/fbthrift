@@ -109,6 +109,9 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 }
 {symbol}             { return yytext[0];                }
 
+"false"              { yylval.iconst=0; return tok_int_constant; }
+"true"               { yylval.iconst=1; return tok_int_constant; }
+
 "namespace"          { return tok_namespace;            }
 "cpp_namespace"      { return tok_cpp_namespace;        }
 "cpp_include"        { return tok_cpp_include;          }
@@ -199,7 +202,6 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "except"             { thrift_reserved_keyword(yytext); }
 "exec"               { thrift_reserved_keyword(yytext); }
 "extern"             { thrift_reserved_keyword(yytext); }
-"false"              { thrift_reserved_keyword(yytext); }
 "finally"            { thrift_reserved_keyword(yytext); }
 "for"                { thrift_reserved_keyword(yytext); }
 "foreach"            { thrift_reserved_keyword(yytext); }
@@ -239,7 +241,6 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "this"               { thrift_reserved_keyword(yytext); }
 "throw"              { thrift_reserved_keyword(yytext); }
 "transient"          { thrift_reserved_keyword(yytext); }
-"true"               { thrift_reserved_keyword(yytext); }
 "try"                { thrift_reserved_keyword(yytext); }
 "unsigned"           { thrift_reserved_keyword(yytext); }
 "var"                { thrift_reserved_keyword(yytext); }
