@@ -159,6 +159,9 @@ void t_mstch_cpp2_generator::generate_service(t_service* service) {
   render_to_file(*service, "Service.cpp", name + ".cpp");
   render_to_file(*service, "Service.h", name + ".h");
   render_to_file(*service, "Service_client.cpp", name + "_client.cpp");
+  render_to_file(*service,
+                 "Service_custom_protocol.h",
+                 name + "_custom_protocol.h");
 
   for (const auto& protocol : protocols_) {
     auto m = dump(*service);
