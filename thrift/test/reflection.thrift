@@ -167,6 +167,14 @@ struct struct4 {
   6: structA field3 (cpp2.ref = "true")
 }
 
+struct struct5 {
+  1: required i32 field0
+  2: optional string field1
+  3: enum1 field2
+  4: structA field3 (annotate_here = "with text")
+  5: structB field4
+}
+
 struct struct_binary {
   1: binary bi
 }
