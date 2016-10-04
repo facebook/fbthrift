@@ -222,7 +222,7 @@ class union1_variant_traits {
   using id = type::Type;
   using ids = union1__struct_unique_identifiers_list;
   using descriptors = ::fatal::list<
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union1__struct_unique_identifiers_list::ui,
       union1__struct_unique_getters_list::ui,
@@ -233,7 +233,7 @@ class union1_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       double,
       union1__struct_unique_identifiers_list::ud,
       union1__struct_unique_getters_list::ud,
@@ -244,7 +244,7 @@ class union1_variant_traits {
         ::apache::thrift::type_class::floating_point
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       std::string,
       union1__struct_unique_identifiers_list::us,
       union1__struct_unique_getters_list::us,
@@ -255,7 +255,7 @@ class union1_variant_traits {
         ::apache::thrift::type_class::string
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
        ::test_cpp2::cpp_reflection::enum1,
       union1__struct_unique_identifiers_list::ue,
       union1__struct_unique_getters_list::ue,
@@ -500,7 +500,7 @@ class union2_variant_traits {
   using id = type::Type;
   using ids = union2__struct_unique_identifiers_list;
   using descriptors = ::fatal::list<
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union2__struct_unique_identifiers_list::ui_2,
       union2__struct_unique_getters_list::ui_2,
@@ -511,7 +511,7 @@ class union2_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       double,
       union2__struct_unique_identifiers_list::ud_2,
       union2__struct_unique_getters_list::ud_2,
@@ -522,7 +522,7 @@ class union2_variant_traits {
         ::apache::thrift::type_class::floating_point
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       std::string,
       union2__struct_unique_identifiers_list::us_2,
       union2__struct_unique_getters_list::us_2,
@@ -533,7 +533,7 @@ class union2_variant_traits {
         ::apache::thrift::type_class::string
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
        ::test_cpp2::cpp_reflection::enum1,
       union2__struct_unique_identifiers_list::ue_2,
       union2__struct_unique_getters_list::ue_2,
@@ -778,7 +778,7 @@ class union3_variant_traits {
   using id = type::Type;
   using ids = union3__struct_unique_identifiers_list;
   using descriptors = ::fatal::list<
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union3__struct_unique_identifiers_list::ui_3,
       union3__struct_unique_getters_list::ui_3,
@@ -789,7 +789,7 @@ class union3_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       double,
       union3__struct_unique_identifiers_list::ud_3,
       union3__struct_unique_getters_list::ud_3,
@@ -800,7 +800,7 @@ class union3_variant_traits {
         ::apache::thrift::type_class::floating_point
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       std::string,
       union3__struct_unique_identifiers_list::us_3,
       union3__struct_unique_getters_list::us_3,
@@ -811,7 +811,7 @@ class union3_variant_traits {
         ::apache::thrift::type_class::string
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
        ::test_cpp2::cpp_reflection::enum1,
       union3__struct_unique_identifiers_list::ue_3,
       union3__struct_unique_getters_list::ue_3,
@@ -1092,7 +1092,7 @@ class unionA_variant_traits {
   using id = type::Type;
   using ids = unionA__struct_unique_identifiers_list;
   using descriptors = ::fatal::list<
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       unionA__struct_unique_identifiers_list::i,
       unionA__struct_unique_getters_list::i,
@@ -1103,7 +1103,7 @@ class unionA_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       double,
       unionA__struct_unique_identifiers_list::d,
       unionA__struct_unique_getters_list::d,
@@ -1114,7 +1114,7 @@ class unionA_variant_traits {
         ::apache::thrift::type_class::floating_point
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       std::string,
       unionA__struct_unique_identifiers_list::s,
       unionA__struct_unique_getters_list::s,
@@ -1125,7 +1125,7 @@ class unionA_variant_traits {
         ::apache::thrift::type_class::string
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
        ::test_cpp2::cpp_reflection::enum1,
       unionA__struct_unique_identifiers_list::e,
       unionA__struct_unique_getters_list::e,
@@ -1136,7 +1136,7 @@ class unionA_variant_traits {
         ::apache::thrift::type_class::enumeration
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
        ::test_cpp2::cpp_reflection::structA,
       unionA__struct_unique_identifiers_list::a,
       unionA__struct_unique_getters_list::a,
@@ -2187,7 +2187,7 @@ class union_with_special_names_variant_traits {
   using id = type::Type;
   using ids = union_with_special_names__struct_unique_identifiers_list;
   using descriptors = ::fatal::list<
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::get,
       union_with_special_names__struct_unique_getters_list::get,
@@ -2198,7 +2198,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::getter,
       union_with_special_names__struct_unique_getters_list::getter,
@@ -2209,7 +2209,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::lists,
       union_with_special_names__struct_unique_getters_list::lists,
@@ -2220,7 +2220,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::maps,
       union_with_special_names__struct_unique_getters_list::maps,
@@ -2231,7 +2231,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::name,
       union_with_special_names__struct_unique_getters_list::name,
@@ -2242,7 +2242,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::name_to_value,
       union_with_special_names__struct_unique_getters_list::name_to_value,
@@ -2253,7 +2253,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::names,
       union_with_special_names__struct_unique_getters_list::names,
@@ -2264,7 +2264,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::prefix_tree,
       union_with_special_names__struct_unique_getters_list::prefix_tree,
@@ -2275,7 +2275,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::sets,
       union_with_special_names__struct_unique_getters_list::sets,
@@ -2286,7 +2286,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::setter,
       union_with_special_names__struct_unique_getters_list::setter,
@@ -2297,7 +2297,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::str,
       union_with_special_names__struct_unique_getters_list::str,
@@ -2308,7 +2308,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::strings,
       union_with_special_names__struct_unique_getters_list::strings,
@@ -2319,7 +2319,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::type,
       union_with_special_names__struct_unique_getters_list::type,
@@ -2330,7 +2330,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::value,
       union_with_special_names__struct_unique_getters_list::value,
@@ -2341,7 +2341,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::value_to_name,
       union_with_special_names__struct_unique_getters_list::value_to_name,
@@ -2352,7 +2352,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::values,
       union_with_special_names__struct_unique_getters_list::values,
@@ -2363,7 +2363,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::id,
       union_with_special_names__struct_unique_getters_list::id,
@@ -2374,7 +2374,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::ids,
       union_with_special_names__struct_unique_getters_list::ids,
@@ -2385,7 +2385,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::descriptor,
       union_with_special_names__struct_unique_getters_list::descriptor,
@@ -2396,7 +2396,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::descriptors,
       union_with_special_names__struct_unique_getters_list::descriptors,
@@ -2407,7 +2407,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::key,
       union_with_special_names__struct_unique_getters_list::key,
@@ -2418,7 +2418,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::keys,
       union_with_special_names__struct_unique_getters_list::keys,
@@ -2429,7 +2429,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::annotation,
       union_with_special_names__struct_unique_getters_list::annotation,
@@ -2440,7 +2440,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::annotations,
       union_with_special_names__struct_unique_getters_list::annotations,
@@ -2451,7 +2451,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::member,
       union_with_special_names__struct_unique_getters_list::member,
@@ -2462,7 +2462,7 @@ class union_with_special_names_variant_traits {
         ::apache::thrift::type_class::integral
       >
     >,
-    ::fatal::variant_type_descriptor<
+    ::fatal::variant_member_descriptor<
       int32_t,
       union_with_special_names__struct_unique_identifiers_list::members,
       union_with_special_names__struct_unique_getters_list::members,

@@ -4797,7 +4797,7 @@ class CppGenerator(t_generator.Generator):
             t('using ids = {0};'.format(idscls))
             t('using descriptors = ::fatal::list<')
             for idx, i in enumerate(union.members):
-                t('  ::fatal::variant_type_descriptor<')
+                t('  ::fatal::variant_member_descriptor<')
                 t('    {0},'.format(self._type_name(i.type)))
                 t('    {0}::{1},'.format(idscls, i.name))
                 t('    {0}::{1},'.format(getcls, i.name))

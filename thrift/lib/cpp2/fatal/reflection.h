@@ -1810,7 +1810,7 @@ using reflect_union = reflected_union<T>;
 /**
  * Represents Thrift specific metadata for a given union's member.
  *
- * This is exposed as the metadata for Fatal's `variant_type_descriptor`.
+ * This is exposed as the metadata for Fatal's `variant_member_descriptor`.
  *
  * For the examples below, consider code generated for this Thrift file:
  *
