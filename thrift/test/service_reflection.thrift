@@ -20,7 +20,7 @@ struct struct1 {
   4: enum2 field4
 }
 
-service service1 {
+service service_1 {
   void method1();
   void method2(1: i32 x, 2: struct1 y, 3: double z);
   i32 method3();

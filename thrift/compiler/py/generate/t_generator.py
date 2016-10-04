@@ -41,12 +41,12 @@ class Generator(object):
         self._tmp = 0
 
         if self.flag_lean_mean_meta_machine:
-            assert self.flag_fatal
-
-        # temporary: all libraries that generate fatal metadata
-        # will use new serializer
-        # if self._flag('fatal'):
-        #   self._flags['lean_mean_meta_machine'] = True
+            if 'fatal' not in self._flags:
+                self._flags['fatal'] = ''
+            self.flag_fatal = True
+            if 'reflection' not in self._flags:
+                self._flags['reflection'] = ''
+            self.flag_reflection = True
 
     def _flag(self, flag):
         ret = self._flags.get(flag)
@@ -92,7 +92,7 @@ class Generator(object):
         self._generate_consts(program.consts)
         if self._flag('frozen2'):
             self._generate_layouts(program.objects)
-        if self.flag_fatal:
+        if self.flag_fatal or self.flag_reflection:
             self._generate_fatal(program)
         self.close_generator()
 

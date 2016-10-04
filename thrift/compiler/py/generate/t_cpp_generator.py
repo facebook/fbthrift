@@ -102,7 +102,8 @@ class CppGenerator(t_generator.Generator):
                                'instead of explicitly',
         'separate_processmap': "generate processmap in separate files",
         'optionals': "produce folly::Optional<...> for optional members",
-        'fatal': 'uses the Fatal library to generate reflection metadata',
+        'fatal': '(deprecated) use `reflection` instead',
+        'reflection': 'generate static reflection metadata',
         'namespace_cpp': 'skip the cpp2 namespace component (temporary hack)',
         'lean_mean_meta_machine': 'use templated Fatal metadata based codegen',
     }
