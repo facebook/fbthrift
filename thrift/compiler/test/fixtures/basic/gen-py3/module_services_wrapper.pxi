@@ -48,7 +48,7 @@ async def MyService_getRandomData_coro(
 
 cdef public void call_cy_MyService_hasDataById(
     object self,
-    shared_ptr[cFollyPromise[]] cPromise,
+    shared_ptr[cFollyPromise[cbool]] cPromise,
     int64_t id
 ) with gil:
     promise = Promise_bool.create(cPromise)
@@ -70,7 +70,7 @@ async def MyService_hasDataById_coro(
 ):
     result = await self.hasDataById(
         id)
-    deref(promise.cPromise).setValue()
+    deref(promise.cPromise).setValue(<cbool> result)
 
 cdef public void call_cy_MyService_getDataById(
     object self,
@@ -204,7 +204,7 @@ async def MyServiceFast_getRandomData_coro(
 
 cdef public void call_cy_MyServiceFast_hasDataById(
     object self,
-    shared_ptr[cFollyPromise[]] cPromise,
+    shared_ptr[cFollyPromise[cbool]] cPromise,
     int64_t id
 ) with gil:
     promise = Promise_bool.create(cPromise)
@@ -226,7 +226,7 @@ async def MyServiceFast_hasDataById_coro(
 ):
     result = await self.hasDataById(
         id)
-    deref(promise.cPromise).setValue()
+    deref(promise.cPromise).setValue(<cbool> result)
 
 cdef public void call_cy_MyServiceFast_getDataById(
     object self,

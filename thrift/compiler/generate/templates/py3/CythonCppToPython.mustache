@@ -14,8 +14,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}    {{#type:i16?}}arg_{{field:name}} = {{field:name}}{{/type:i16?}}{{!
+}}    {{#type:bool?}}arg_{{field:name}} = {{field:name}}{{/type:bool?}}{{!
+}}{{#type:byte?}}arg_{{field:name}} = {{field:name}}{{/type:byte?}}{{!
+}}{{#type:i16?}}arg_{{field:name}} = {{field:name}}{{/type:i16?}}{{!
 }}{{#type:i32?}}arg_{{field:name}} = {{field:name}}{{/type:i32?}}{{!
 }}{{#type:i64?}}arg_{{field:name}} = {{field:name}}{{/type:i64?}}{{!
+}}{{#type:double?}}arg_{{field:name}} = {{field:name}}{{/type:double?}}{{!
 }}{{#type:string?}}arg_{{field:name}} = (deref({{field:name}}.get())).decode(){{/type:string?}}{{!
 }}{{#type:struct}}arg_{{field:name}} = {{type:name}}.create(move({{field:name}})){{/type:struct}}

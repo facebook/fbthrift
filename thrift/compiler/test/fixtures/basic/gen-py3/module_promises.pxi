@@ -18,10 +18,10 @@ cdef class Promise_string:
         return inst
 
 cdef class Promise_bool:
-    cdef shared_ptr[cFollyPromise[]] cPromise
+    cdef shared_ptr[cFollyPromise[cbool]] cPromise
 
     @staticmethod
-    cdef create(shared_ptr[cFollyPromise[]] cPromise):
+    cdef create(shared_ptr[cFollyPromise[cbool]] cPromise):
         inst = <Promise_bool>Promise_bool.__new__(Promise_bool)
         inst.cPromise = cPromise
         return inst

@@ -14,8 +14,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}    {{#type:i16?}}{{field:name}}{{/type:i16?}}{{!
+}}    {{#type:bool?}}{{field:name}}{{/type:bool?}}{{!
+}}{{#type:byte?}}{{field:name}}{{/type:byte?}}{{!
+}}{{#type:i16?}}{{field:name}}{{/type:i16?}}{{!
 }}{{#type:i32?}}{{field:name}}{{/type:i32?}}{{!
 }}{{#type:i64?}}{{field:name}}{{/type:i64?}}{{!
+}}{{#type:double?}}{{field:name}}{{/type:double?}}{{!
 }}{{#type:string?}}std::move({{field:name}}){{/type:string?}}{{!
 }}{{#type:struct}}std::move({{field:name}}){{/type:struct}}

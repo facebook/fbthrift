@@ -14,6 +14,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+}}{{#type:bool?}}{{!
+}}deref(self.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
+}}{{/type:bool?}}{{!
+}}{{#type:byte?}}{{!
+}}deref(self.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
+}}{{/type:byte?}}{{!
 }}{{#type:i16?}}{{!
 }}deref(self.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
 }}{{/type:i16?}}{{!

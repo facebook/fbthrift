@@ -14,21 +14,29 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}
-{{#type:i16?}}{{!
-}}return self.c_{{struct:name}}.get().{{field:name}}{{!
+}}{{#type:bool?}}{{!
+  }}return <pbool> self.c_{{struct:name}}.get().{{field:name}}{{!
+}}{{/type:bool?}}{{!
+}}{{#type:byte?}}{{!
+  }}return self.c_{{struct:name}}.get().{{field:name}}{{!
+}}{{/type:byte?}}{{!
+}}{{#type:i16?}}{{!
+  }}return self.c_{{struct:name}}.get().{{field:name}}{{!
 }}{{/type:i16?}}{{!
 }}{{#type:i32?}}{{!
-}}return self.c_{{struct:name}}.get().{{field:name}}{{!
+  }}return self.c_{{struct:name}}.get().{{field:name}}{{!
 }}{{/type:i32?}}{{!
 }}{{#type:i64?}}{{!
-}}return self.c_{{struct:name}}.get().{{field:name}}{{!
+  }}return self.c_{{struct:name}}.get().{{field:name}}{{!
 }}{{/type:i64?}}{{!
+}}{{#type:double?}}{{!
+  }}return self.c_{{struct:name}}.get().{{field:name}}{{!
+}}{{/type:double?}}{{!
 }}{{#type:string?}}{{!
-}}return self.c_{{struct:name}}.get().{{field:name}}.decode(){{!
+  }}return self.c_{{struct:name}}.get().{{field:name}}.decode(){{!
 }}{{/type:string?}}{{!
 }}{{#type:struct?}}{{!
-}}if self.__{{field:name}} is None:
+  }}if self.__{{field:name}} is None:
     self.__{{field:name}} = {{#type:struct}}{{struct:name}}{{/type:struct}}({{!
     }}self.c_{{struct:name}}.get().{{field:name}})
 return self.__{{field:name}}
