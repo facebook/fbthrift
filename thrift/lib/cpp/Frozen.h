@@ -342,27 +342,31 @@ struct FrozenRange {
     return begin_.get()[i];
   }
 
-  template<class Range,
-           class = decltype(std::declval<Range>().begin())>
-  bool operator<(const Range& range) const {
-    using range_iterator = typename Range::const_iterator;
-    return folly::Range<const_iterator>(this->begin(), this->end())
-         < folly::Range<range_iterator>(range.begin(), range.end());
+  template <class T>
+  bool operator<(const FrozenRange<T>& other) const {
+    return range() < other.range();
   }
 
-  template<class Range,
-           class = decltype(std::declval<Range>().begin())>
-  bool operator>(const Range& range) const {
-    using range_iterator = typename Range::const_iterator;
-    return folly::Range<range_iterator>(range.begin(), range.end())
-         < folly::Range<const_iterator>(this->begin(), this->end());
+  template <class T>
+  bool operator>(const FrozenRange<T>& other) const {
+    return range() > other.range();
   }
 
-  template<class Range,
-           class = decltype(std::declval<Range>().begin())>
-  bool operator==(const Range& range) const {
-    return size() == range.size() && std::equal(this->begin(), this->end(),
-                                                range.begin());
+  template <class T>
+  bool operator==(const FrozenRange<T>& other) const {
+    return range() == other.range();
+  }
+
+  bool operator<(folly::StringPiece other) const {
+    return range() < other;
+  }
+
+  bool operator>(folly::StringPiece other) const {
+    return range() > other;
+  }
+
+  bool operator==(folly::StringPiece other) const {
+    return range() == other;
   }
 
   folly::Range<const_iterator> range() const {
