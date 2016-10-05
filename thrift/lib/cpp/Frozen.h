@@ -611,14 +611,30 @@ struct BlockIndex {
   static constexpr int kSize = sizeof(uint64_t) * 8;
 };
 
-}
+// Do NOT use this hash function anywhere else (hint use folly::Hash instead).
+// Used here because the result of this function dictates frozen layout.
+struct DeprecatedStringPieceHash {
+  std::size_t operator()(const folly::StringPiece str) const {
+    const auto size = str.size();
+    const auto data = str.data();
+    // Taken from fbi/nstring.h:
+    //    Quick and dirty bernstein hash...fine for short ascii strings
+    uint32_t hash = 5381;
+    for (size_t ix = 0; ix < size; ix++) {
+      hash = ((hash << 5) + hash) + data[ix];
+    }
+    return static_cast<std::size_t>(hash);
+  }
+};
+
+} // detail
 
 inline size_t frozenHash(folly::StringPiece sp) {
-  return folly::StringPieceHash()(sp);
+  return detail::DeprecatedStringPieceHash()(sp);
 }
 
 inline size_t frozenHash(const FrozenRange<char>& fr) {
-  return folly::StringPieceHash()(fr.range());
+  return detail::DeprecatedStringPieceHash()(fr.range());
 }
 
 inline size_t frozenHash(size_t i) {
