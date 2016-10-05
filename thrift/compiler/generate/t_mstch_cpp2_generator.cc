@@ -30,6 +30,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   void generate_program() override;
 
  protected:
+  mstch::map extend_program(const t_program&) const override;
   mstch::map extend_service(const t_service&) const override;
   mstch::map extend_function(const t_function&) const override;
   mstch::map extend_struct(const t_struct&) const override;
@@ -44,7 +45,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   mstch::array get_namespace(const t_program& program) const;
   std::string get_include_prefix(const t_program& program) const;
 
-  bool use_include_prefix_ = false;
+  folly::Optional<std::string> include_prefix_;
   std::vector<std::array<std::string, 3>> protocols_;
 };
 
@@ -61,13 +62,7 @@ t_mstch_cpp2_generator::t_mstch_cpp2_generator(
     {{"compact", "CompactProtocol", "T_COMPACT_PROTOCOL"}},
   };
 
-  auto include_prefix = this->get_option("include_prefix");
-  if (include_prefix) {
-    use_include_prefix_ = true;
-    if (*include_prefix != "") {
-      program->set_include_prefix(*include_prefix);
-    }
-  }
+  include_prefix_ = this->get_option("include_prefix");
 }
 
 void t_mstch_cpp2_generator::generate_program() {
@@ -81,6 +76,13 @@ void t_mstch_cpp2_generator::generate_program() {
   for (const auto& service : services ) {
     this->generate_service(service);
   }
+}
+
+mstch::map t_mstch_cpp2_generator::extend_program(
+    const t_program& program) const {
+  mstch::map m;
+  m.emplace("normalizedIncludePrefix", this->get_include_prefix(program));
+  return m;
 }
 
 mstch::map t_mstch_cpp2_generator::extend_service(const t_service& svc) const {
@@ -109,6 +111,7 @@ mstch::map t_mstch_cpp2_generator::extend_service(const t_service& svc) const {
     {"programName", svc.get_program()->get_name()},
     {"programIncludePrefix", this->get_include_prefix(*svc.get_program())},
     {"separate_processmap", (bool)this->get_option("separate_processmap")},
+    {"thriftIncludes", this->dump_elems(svc.get_program()->get_includes())},
   };
 }
 
@@ -202,15 +205,19 @@ mstch::array t_mstch_cpp2_generator::get_namespace(
 std::string t_mstch_cpp2_generator::get_include_prefix(
     const t_program& program) const {
   string include_prefix = program.get_include_prefix();
+  if (&program == this->get_program() &&
+      include_prefix_ && *include_prefix_ != "") {
+    include_prefix = *include_prefix_;
+  }
   auto path = boost::filesystem::path(include_prefix);
-  if (!use_include_prefix_ || path.is_absolute()) {
+  if (!include_prefix_ || path.is_absolute()) {
     return "";
   }
 
   if (!path.has_stem()) {
     return "";
   }
-  if (get_program()->is_out_path_absolute()) {
+  if (program.is_out_path_absolute()) {
     return path.string();
   }
   return (path / "gen-cpp2").string() + "/";

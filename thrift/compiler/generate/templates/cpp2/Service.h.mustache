@@ -24,6 +24,9 @@
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <folly/futures/Future.h>
 
+<%#service:thriftIncludes%>
+#include "<%program:normalizedIncludePrefix%><%program:name%>_types.h"
+<%/service:thriftIncludes%>
 
 <%#service:extends%>
 #include "<%service:programIncludePrefix%><%service:name%>.h"
