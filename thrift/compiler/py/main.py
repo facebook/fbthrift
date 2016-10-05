@@ -170,6 +170,8 @@ def parseParameters(parser, args):
         raise ArgumentError('Output directory is not a directory.')
     if not os.access(opts.outputDir, os.W_OK | os.X_OK):
         raise ArgumentError('Output directory is not writeable.')
+    if opts.recurse:
+        raise ArgumentError('Recurse is not allowed with py generators')
 
     return dict(
         to_generate=to_generate,
@@ -209,12 +211,6 @@ class Configuration(object):
         from thrift_compiler.frontend import t_program
         assert isinstance(program, t_program)
         assert isinstance(languages, dict)
-
-        if self.recurse:
-            for inc in program.includes:
-                # Propagate output path from parent to child programs
-                inc.out_path = program.out_path
-                self.generate(inc, languages)
 
         # Generate code
 

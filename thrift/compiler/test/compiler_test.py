@@ -104,13 +104,22 @@ class CompilerTest(unittest.TestCase):
         cmds = read_lines(os.path.join(self.tmp, 'cmd'))
         for cmd in cmds:
             args = shlex.split(cmd.strip())
+            base_args = [thrift, '-r', '--templates', templateDir, '--gen']
             if "cpp" in args[0]:
                 path = os.path.join("thrift/compiler/test/fixtures", name)
                 extra = "include_prefix=" + path
                 join = "," if ":" in args[0] else ":"
                 args[0] = args[0] + join + extra
+            if ("cpp2" in args[0] and "mstch" not in args[0]) or \
+               ("schema" in args[0]):
+                # do not recurse in py generators. This is a hack because there
+                # is a bug in the python generator that appears hard to fix.
+                # This is a workaround. In future, we will use mstch, and the
+                # mstch generator does not have this issue.
+                base_args.remove('-r')
+
             subprocess.check_call(
-                [thrift, '-r', '--templates', templateDir, '--gen'] + args,
+                base_args + args,
                 cwd=self.tmp,
                 close_fds=True,
             )

@@ -1,5 +1,8 @@
-hs src/module.thrift
-py src/module.thrift
+hs src/service.thrift
+py src/service.thrift
 android_lite src/module.thrift
-cocoa:import_path=thrift src/module.thrift
-mstch_swift src/module.thrift
+cocoa:import_path=thrift src/service.thrift
+mstch_swift src/service.thrift
+cpp2 src/service.thrift
+cpp2 src/module.thrift
+cpp2 src/includes.thrift
