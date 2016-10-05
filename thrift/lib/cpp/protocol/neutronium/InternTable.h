@@ -23,9 +23,11 @@
 #include <memory>
 #include <unordered_map>
 #include <vector>
+
+#include <folly/Hash.h>
 #include <folly/Range.h>
-#include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
+#include <folly/io/IOBuf.h>
 
 namespace apache {
 namespace thrift {
@@ -86,9 +88,8 @@ class InternTable {
   std::unique_ptr<folly::IOBuf> head_;
   std::vector<folly::StringPiece> strings_;
 
-  typedef
-    std::unordered_map<folly::StringPiece, uint32_t, folly::StringPieceHash>
-    StringMap;
+  typedef std::unordered_map<folly::StringPiece, uint32_t, folly::Hash>
+      StringMap;
 
   // Only allocate writer if needed (when actually add()ing)
   struct Writer {
