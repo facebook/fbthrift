@@ -36,4 +36,5 @@ fi
 
 install_folly centos  # needs git
 install_mstch centos  # needs git, cmake
+install_zstd centos   # needs git
 install_wangle centos

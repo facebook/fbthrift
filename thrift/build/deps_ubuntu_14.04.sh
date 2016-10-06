@@ -9,5 +9,6 @@ sudo apt-get install -y libdouble-conversion-dev libssl-dev make zip git \
 
 install_folly ubuntu_14.04  # needs git
 install_mstch ubuntu_14.04  # needs git, cmake
+install_zstd ubuntu_14.04   # needs git
 install_wangle ubuntu_14.04 # needs git, cmake
 

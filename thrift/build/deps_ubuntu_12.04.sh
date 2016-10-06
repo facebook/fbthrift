@@ -17,6 +17,7 @@ sudo apt-get install git cmake
 # Folly sets up a bunch of other dependencies, so install it right after git.
 install_folly ubuntu_12.04  # needs git
 install_mstch ubuntu_12.04  # needs git, cmake
+install_zstd ubuntu_12.04   # needs git
 install_wangle ubuntu_12.04
 
 # Uses PPAs set up by folly.  TODO: According to the fbthrift docs,
