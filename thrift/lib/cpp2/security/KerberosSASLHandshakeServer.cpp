@@ -227,7 +227,6 @@ std::unique_ptr<std::string> KerberosSASLHandshakeServer::getTokenToSend() {
 }
 
 void KerberosSASLHandshakeServer::handleResponse(const string& msg) {
-  unique_ptr<IOBuf> unwrapped_security_layer_msg;
   switch(phase_) {
     case INIT:
       initServer();
