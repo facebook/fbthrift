@@ -106,6 +106,11 @@ public class TProtocolUtil {
         prot.readDouble();
         break;
       }
+    case TType.FLOAT:
+      {
+        prot.readFloat();
+        break;
+      }
     case TType.STRING:
       {
         prot.readBinary();
