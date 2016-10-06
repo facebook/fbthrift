@@ -583,6 +583,14 @@ def getResult_result__init__(self, success=None,):
 getResult_result.__init__ = getResult_result__init__
 
 class Client(Iface):
+  def __enter__(self):
+    return self
+
+  def __exit__(self, type, value, tb):
+    self._iprot.trans.close()
+    if self._iprot is not self._oprot:
+      self._oprot.trans.close()
+
   def __init__(self, iprot, oprot=None):
     self._iprot = self._oprot = iprot
     if oprot != None:

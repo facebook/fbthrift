@@ -2160,6 +2160,21 @@ void t_py_generator::generate_service_client(t_service* tservice) {
   }
   indent_up();
   generate_python_docstring(f_service_, tservice);
+  // Context Handlers
+  if (!gen_twisted_ && !gen_asyncio_) {
+    f_service_ <<
+      indent() << "def __enter__(self):" << endl <<
+      indent() << "  return self" << endl <<
+      endl;
+    f_service_ <<
+      indent() << "def __exit__(self, type, value, tb):" << endl <<
+      indent() << "  self._iprot.trans.close()" << endl <<
+      indent() << "  if self._iprot is not self._oprot:" << endl <<
+      indent() << "    self._oprot.trans.close()" << endl <<
+      endl;
+  }
+
+
 
   // Constructor function
   if (gen_twisted_) {
