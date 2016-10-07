@@ -292,7 +292,7 @@ class t_d_generator : public t_oop_generator {
     // Write the method metadata.
     ostringstream meta;
     indent_up();
-    bool first = true;
+    bool first_fn = true;
     for (fn_iter = functions.begin(); fn_iter != functions.end(); ++fn_iter) {
       if ((*fn_iter)->get_arglist()->get_members().empty() &&
         (*fn_iter)->get_xceptions()->get_members().empty() &&
@@ -300,8 +300,8 @@ class t_d_generator : public t_oop_generator {
         continue;
       }
 
-      if (first) {
-        first = false;
+      if (first_fn) {
+        first_fn = false;
       } else {
         meta << ",";
       }
@@ -311,12 +311,12 @@ class t_d_generator : public t_oop_generator {
       indent_up();
       indent(meta) << "[";
 
-      bool first = true;
+      bool first_param = true;
       const vector<t_field*> &params = (*fn_iter)->get_arglist()->get_members();
       vector<t_field*>::const_iterator p_iter;
       for (p_iter = params.begin(); p_iter != params.end(); ++p_iter) {
-        if (first) {
-          first = false;
+        if (first_param) {
+          first_param = false;
         } else {
           meta << ", ";
         }
@@ -481,11 +481,13 @@ class t_d_generator : public t_oop_generator {
     }
     indent_up();
 
-    // Declare all fields.
-    vector<t_field*>::const_iterator m_iter;
-    for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
-      indent(out) << render_type_name((*m_iter)->get_type()) << " " <<
-        get_name(*m_iter) << ";" << endl;
+    { // separate scope to avoid shadowing "m_iter" below.
+      // Declare all fields.
+      vector<t_field*>::const_iterator m_iter;
+      for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+        indent(out) << render_type_name((*m_iter)->get_type()) << " " <<
+          get_name(*m_iter) << ";" << endl;
+      }
     }
 
     if (!members.empty()) indent(out) << endl;
@@ -796,4 +798,3 @@ class t_d_generator : public t_oop_generator {
 };
 
 THRIFT_REGISTER_GENERATOR(d, "D", "")
-

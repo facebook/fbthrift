@@ -912,16 +912,16 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
   int32_t maxValue = std::numeric_limits<int32_t>::min();
 
   for (auto& ev : constants) {
-    const std::string& name = ev->get_name();
+    const std::string& const_name = ev->get_name();
     int32_t value = ev->get_value();
     // <=, >= so we capture the names in case we actually use
     // numeric_limits<int32_t>::max / min as values
     if (value <= minValue) {
-      minName = name;
+      minName = const_name;
       minValue = value;
     }
     if (value >= maxValue) {
-      maxName = name;
+      maxName = const_name;
       maxValue = value;
     }
   }
@@ -4246,9 +4246,9 @@ void t_cpp_generator::generate_service_null(t_service* tservice, string style) {
       if (returntype->is_void()) {
         f_header_ << indent() << "return cob();" << endl;
     } else {
-      t_field returnfield(returntype, "_return");
+      t_field rf(returntype, "_return");
       f_header_ <<
-        indent() << declare_field(&returnfield, true) << endl <<
+        indent() << declare_field(&rf, true) << endl <<
         indent() << "return cob(_return);" << endl;
     }
 
@@ -7398,12 +7398,12 @@ std::string t_cpp_generator::generate_reflection_datatype(t_type* ttype) {
 
   std::map<std::string, t_type*> deps;
 
-  auto gen_dep = [&] (t_type* ttype) mutable -> TypeInfo {
-    auto initializer = generate_reflection_datatype(ttype);
+  auto gen_dep = [&] (t_type* tt) mutable -> TypeInfo {
+    auto initializer = generate_reflection_datatype(tt);
     if (!initializer.empty()) {
-      deps[initializer] = ttype;
+      deps[initializer] = tt;
     }
-    return {ttype->get_type_id(), ttype->get_full_name()};
+    return {tt->get_type_id(), tt->get_full_name()};
   };
 
   std::map<std::string, int32_t> enumValues;
@@ -7437,9 +7437,9 @@ std::string t_cpp_generator::generate_reflection_datatype(t_type* ttype) {
     throw "compiler error: weird type? " + ttype->get_name();
   }
 
-  auto maybePrintStatic = [this](t_type* ttype) {
-    ttype = get_true_type(ttype);
-    if (!ttype->is_struct() && !ttype->is_xception()) {
+  auto maybePrintStatic = [this](t_type* tt) {
+    tt = get_true_type(tt);
+    if (!tt->is_struct() && !tt->is_xception()) {
       f_reflection_impl_ << "static ";
     }
   };

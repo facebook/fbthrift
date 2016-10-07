@@ -2708,17 +2708,17 @@ void t_java_generator::generate_process_function(t_service* tservice,
 
   string argsname = tfunction->get_name() + "_args";
   string resultname = tfunction->get_name() + "_result";
-  string pservice_func_name = "\"" + tservice->get_name() + "." + tfunction->get_name() + "\"";
+  string pservice_fn_name = "\"" + tservice->get_name() + "." + tfunction->get_name() + "\"";
   f_service_ <<
     indent() << "Object handler_ctx = event_handler_.getContext("
-             << pservice_func_name << ", server_ctx);" << endl <<
+             << pservice_fn_name << ", server_ctx);" << endl <<
     indent() << argsname << " args = new " << argsname << "();" << endl <<
     indent() << "event_handler_.preRead(handler_ctx, "
-             << pservice_func_name << ");" << endl <<
+             << pservice_fn_name << ");" << endl <<
     indent() << "args.read(iprot);" << endl <<
     indent() << "iprot.readMessageEnd();" << endl <<
     indent() << "event_handler_.postRead(handler_ctx, "
-             << pservice_func_name << ", args);" << endl;
+             << pservice_fn_name << ", args);" << endl;
 
   t_struct* xs = tfunction->get_xceptions();
   const std::vector<t_field*>& xceptions = xs->get_members();
@@ -2819,16 +2819,16 @@ void t_java_generator::generate_process_function(t_service* tservice,
     return;
   }
 
-  //string pservice_func_name = "\"" + tservice->get_name() + "." + tfunction->get_name() + "\"";
+  //string pservice_fn_name = "\"" + tservice->get_name() + "." + tfunction->get_name() + "\"";
   f_service_ <<
     indent() << "event_handler_.preWrite(handler_ctx, "
-             << pservice_func_name << ", result);" << endl <<
+             << pservice_fn_name << ", result);" << endl <<
     indent() << "oprot.writeMessageBegin(new TMessage(\"" << tfunction->get_name() << "\", TMessageType.REPLY, seqid));" << endl <<
     indent() << "result.write(oprot);" << endl <<
     indent() << "oprot.writeMessageEnd();" << endl <<
     indent() << "oprot.getTransport().flush();" << endl <<
     indent() << "event_handler_.postWrite(handler_ctx, "
-             << pservice_func_name << ", result);" << endl;
+             << pservice_fn_name << ", result);" << endl;
 
   // Close function
   scope_down(f_service_);

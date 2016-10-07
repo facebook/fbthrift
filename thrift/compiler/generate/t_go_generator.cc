@@ -1490,7 +1490,7 @@ void t_go_generator::generate_go_struct_reader(ofstream& out,
     string field_type_name(publicize((*f_iter)->get_type()->get_name()));
     string field_name(publicize((*f_iter)->get_name()));
     string field_method_prefix("ReadField");
-    int32_t field_id = (*f_iter)->get_key();
+    field_id = (*f_iter)->get_key();
 
     if (field_id < 0) {
       field_method_prefix += "_";
@@ -1519,8 +1519,8 @@ void t_go_generator::generate_go_struct_writer(ofstream& out,
   indent(out) << "func (p *" << tstruct_name << ") Write(oprot thrift.TProtocol) error {" << endl;
   indent_up();
   if (tstruct->is_union() && uses_countsetfields) {
-    std::string tstruct_name(publicize(tstruct->get_name()));
-    out << indent() << "if c := p.CountSetFields" << tstruct_name << "(); c != 1 {" << endl
+    std::string pub_tstruct_name(publicize(tstruct->get_name()));
+    out << indent() << "if c := p.CountSetFields" << pub_tstruct_name << "(); c != 1 {" << endl
         << indent() << "  return fmt.Errorf(\"%T write union: exactly one field must be set (%d set).\", p, c)" << endl
         << indent() << "}" << endl;
   }

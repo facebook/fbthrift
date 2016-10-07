@@ -1884,8 +1884,8 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
             val_type->is_struct()) {
           val  << "->map(" << endl;
           indent_up();
-          t_name_generator namer;
-          generate_php_struct_shape_collection_value_lambda(val, namer, val_type);
+          t_name_generator ngen;
+          generate_php_struct_shape_collection_value_lambda(val, ngen, val_type);
           indent_down();
           indent(val) << ")" << (nullable ? "?" :"") << "->toArray()," << endl;
         } else {

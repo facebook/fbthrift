@@ -1284,12 +1284,12 @@ void t_hs_generator::generate_service_client(t_service* tservice) {
   string extends = "";
   string exports = "";
 
-  bool first = true;
+  bool first_fn = true;
   for (f_iter = functions.begin(); f_iter != functions.end(); ++f_iter) {
-    exports += (first ? "" : ",");
-    string funname = (*f_iter)->get_name();
-    exports += decapitalize(funname);
-    first = false;
+    exports += (first_fn ? "" : ",");
+    string fn_name = (*f_iter)->get_name();
+    exports += decapitalize(fn_name);
+    first_fn = false;
   }
 
   string sname = capitalize(service_name_);
@@ -1378,11 +1378,12 @@ void t_hs_generator::generate_service_client(t_service* tservice) {
       string resultname = capitalize((*f_iter)->get_name() + "_result");
       t_struct noargs(program_);
 
-      string funname = string("recv_") + (*f_iter)->get_name();
-      t_function recv_function((*f_iter)->get_returntype(), funname, &noargs);
+      string recv_fn_name = string("recv_") + (*f_iter)->get_name();
+      t_function recv_function((*f_iter)->get_returntype(), recv_fn_name,
+                               &noargs);
 
       // Open function
-      indent(f_client_) << funname << " ip =" << nl;
+      indent(f_client_) << recv_fn_name << " ip =" << nl;
       indent_up();
 
       indent(f_client_) << "Thrift.readMessage ip "
