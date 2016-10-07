@@ -240,6 +240,14 @@ query_result.thrift_field_annotations = {
 }
 
 class Client(Iface):
+  def __enter__(self):
+    return self
+
+  def __exit__(self, type, value, tb):
+    self._iprot.trans.close()
+    if self._iprot is not self._oprot:
+      self._oprot.trans.close()
+
   def __init__(self, iprot, oprot=None):
     self._iprot = self._oprot = iprot
     if oprot != None:
