@@ -267,7 +267,7 @@ std::vector<Krb5Principal> Krb5CCacheStore::getServicePrincipalList() {
   std::vector<Krb5Principal> services;
   folly::SharedMutex::ReadHolder lock(serviceDataMapLock_);
   for (auto& data : serviceDataMap_) {
-    folly::SharedMutex::ReadHolder lock(data.second->lockCache);
+    folly::SharedMutex::ReadHolder cache_lock(data.second->lockCache);
     if (!data.second->cache) {
       continue;
     }
