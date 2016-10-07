@@ -643,7 +643,6 @@ TSocket::Options TSocket::getCurrentSocketOptions() {
   size_t bufSize;
   struct linger l;
   int ret = 0;
-  int errno_copy;
 
   // ConnTimeout
   ro.connTimeout = options_.connTimeout;
@@ -654,7 +653,7 @@ TSocket::Options TSocket::getCurrentSocketOptions() {
   *optlen = sizeof(s);
   ret = getsockopt(socket_, SOL_SOCKET, SO_SNDTIMEO, &s, optlen);
   if (ret == -1) {
-    errno_copy = errno;  // Copy errno because we're allocating memory.
+    int errno_copy = errno;  // Copy errno because we're allocating memory.
     GlobalOutput.perror("TSocket::SendTimeout getsockopt() " +
         getSocketInfo(), errno_copy);
   } else {
@@ -667,7 +666,7 @@ TSocket::Options TSocket::getCurrentSocketOptions() {
   *optlen = sizeof(s);
   ret = getsockopt(socket_, SOL_SOCKET, SO_RCVTIMEO, &s, optlen);
   if (ret == -1) {
-    errno_copy = errno;  // Copy errno because we're allocating memory.
+    int errno_copy = errno;  // Copy errno because we're allocating memory.
     GlobalOutput.perror("TSocket::RecvTimeout getsockopt() " +
         getSocketInfo(), errno_copy);
   } else {
