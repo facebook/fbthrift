@@ -590,7 +590,7 @@ void NestedContainersAsyncClient::mapListT(Protocol_* prot, apache::thrift::RpcO
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "NestedContainers.mapList", connectionContext_.get());
   NestedContainers_mapList_pargs args;
   args.get<0>().value = const_cast<std::map<int32_t, std::vector<int32_t>>*>(&foo);
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "mapList", [](Protocol_* prot, NestedContainers_mapList_pargs& args) { args.write(prot); }, [](Protocol_* prot, NestedContainers_mapList_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "mapList", [](Protocol_* p, NestedContainers_mapList_pargs& a) { a.write(p); }, [](Protocol_* p, NestedContainers_mapList_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -662,7 +662,7 @@ void NestedContainersAsyncClient::mapSetT(Protocol_* prot, apache::thrift::RpcOp
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "NestedContainers.mapSet", connectionContext_.get());
   NestedContainers_mapSet_pargs args;
   args.get<0>().value = const_cast<std::map<int32_t, std::set<int32_t>>*>(&foo);
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "mapSet", [](Protocol_* prot, NestedContainers_mapSet_pargs& args) { args.write(prot); }, [](Protocol_* prot, NestedContainers_mapSet_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "mapSet", [](Protocol_* p, NestedContainers_mapSet_pargs& a) { a.write(p); }, [](Protocol_* p, NestedContainers_mapSet_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -734,7 +734,7 @@ void NestedContainersAsyncClient::listMapT(Protocol_* prot, apache::thrift::RpcO
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "NestedContainers.listMap", connectionContext_.get());
   NestedContainers_listMap_pargs args;
   args.get<0>().value = const_cast<std::vector<std::map<int32_t, int32_t>>*>(&foo);
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "listMap", [](Protocol_* prot, NestedContainers_listMap_pargs& args) { args.write(prot); }, [](Protocol_* prot, NestedContainers_listMap_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "listMap", [](Protocol_* p, NestedContainers_listMap_pargs& a) { a.write(p); }, [](Protocol_* p, NestedContainers_listMap_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -806,7 +806,7 @@ void NestedContainersAsyncClient::listSetT(Protocol_* prot, apache::thrift::RpcO
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "NestedContainers.listSet", connectionContext_.get());
   NestedContainers_listSet_pargs args;
   args.get<0>().value = const_cast<std::vector<std::set<int32_t>>*>(&foo);
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "listSet", [](Protocol_* prot, NestedContainers_listSet_pargs& args) { args.write(prot); }, [](Protocol_* prot, NestedContainers_listSet_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "listSet", [](Protocol_* p, NestedContainers_listSet_pargs& a) { a.write(p); }, [](Protocol_* p, NestedContainers_listSet_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -878,7 +878,7 @@ void NestedContainersAsyncClient::turtlesT(Protocol_* prot, apache::thrift::RpcO
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "NestedContainers.turtles", connectionContext_.get());
   NestedContainers_turtles_pargs args;
   args.get<0>().value = const_cast<std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>*>(&foo);
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "turtles", [](Protocol_* prot, NestedContainers_turtles_pargs& args) { args.write(prot); }, [](Protocol_* prot, NestedContainers_turtles_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "turtles", [](Protocol_* p, NestedContainers_turtles_pargs& a) { a.write(p); }, [](Protocol_* p, NestedContainers_turtles_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 

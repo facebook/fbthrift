@@ -359,7 +359,7 @@ void MyServiceFastAsyncClient::hasDataByIdT(Protocol_* prot, apache::thrift::Rpc
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyServiceFast.hasDataById", connectionContext_.get());
   MyServiceFast_hasDataById_pargs args;
   args.get<0>().value = &id;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "hasDataById", [](Protocol_* prot, MyServiceFast_hasDataById_pargs& args) { args.write(prot); }, [](Protocol_* prot, MyServiceFast_hasDataById_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "hasDataById", [](Protocol_* p, MyServiceFast_hasDataById_pargs& a) { a.write(p); }, [](Protocol_* p, MyServiceFast_hasDataById_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -442,7 +442,7 @@ void MyServiceFastAsyncClient::getDataByIdT(Protocol_* prot, apache::thrift::Rpc
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyServiceFast.getDataById", connectionContext_.get());
   MyServiceFast_getDataById_pargs args;
   args.get<0>().value = &id;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "getDataById", [](Protocol_* prot, MyServiceFast_getDataById_pargs& args) { args.write(prot); }, [](Protocol_* prot, MyServiceFast_getDataById_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "getDataById", [](Protocol_* p, MyServiceFast_getDataById_pargs& a) { a.write(p); }, [](Protocol_* p, MyServiceFast_getDataById_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -524,7 +524,7 @@ void MyServiceFastAsyncClient::putDataByIdT(Protocol_* prot, apache::thrift::Rpc
   MyServiceFast_putDataById_pargs args;
   args.get<0>().value = &id;
   args.get<1>().value = const_cast<std::string*>(&data);
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "putDataById", [](Protocol_* prot, MyServiceFast_putDataById_pargs& args) { args.write(prot); }, [](Protocol_* prot, MyServiceFast_putDataById_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "putDataById", [](Protocol_* p, MyServiceFast_putDataById_pargs& a) { a.write(p); }, [](Protocol_* p, MyServiceFast_putDataById_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -597,7 +597,7 @@ void MyServiceFastAsyncClient::lobDataByIdT(Protocol_* prot, apache::thrift::Rpc
   MyServiceFast_lobDataById_pargs args;
   args.get<0>().value = &id;
   args.get<1>().value = const_cast<std::string*>(&data);
-  apache::thrift::clientSendT<true>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "lobDataById", [](Protocol_* prot, MyServiceFast_lobDataById_pargs& args) { args.write(prot); }, [](Protocol_* prot, MyServiceFast_lobDataById_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<true>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "lobDataById", [](Protocol_* p, MyServiceFast_lobDataById_pargs& a) { a.write(p); }, [](Protocol_* p, MyServiceFast_lobDataById_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 

@@ -1900,15 +1900,15 @@ class CppGenerator(t_generator.Generator):
                         field.name))
 
             if self.flag_compatibility:
-                sizer = '[](Protocol_* prot, {0}& args) ' \
-                        '{{ return {0}_serializedSizeZC(prot, &args); }}'
-                writer = '[](Protocol_* prot, {0}& args) ' \
-                         '{{ {0}_write(prot, &args); }}'
+                sizer = '[](Protocol_* p, {0}& a) ' \
+                        '{{ return {0}_serializedSizeZC(p, &a); }}'
+                writer = '[](Protocol_* p, {0}& a) ' \
+                         '{{ {0}_write(p, &a); }}'
             else:
-                sizer = '[](Protocol_* prot, {0}& args) ' \
-                        '{{ return args.serializedSizeZC(prot); }}'
-                writer = '[](Protocol_* prot, {0}& args) ' \
-                         '{{ args.write(prot); }}'
+                sizer = '[](Protocol_* p, {0}& a) ' \
+                        '{{ return a.serializedSizeZC(p); }}'
+                writer = '[](Protocol_* p, {0}& a) ' \
+                         '{{ a.write(p); }}'
             sizer = sizer.format(pargs_class)
             writer = writer.format(pargs_class)
 

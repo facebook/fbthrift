@@ -135,7 +135,7 @@ void MyRootAsyncClient::do_rootT(Protocol_* prot, apache::thrift::RpcOptions& rp
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyRoot.do_root", connectionContext_.get());
   MyRoot_do_root_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "do_root", [](Protocol_* prot, MyRoot_do_root_pargs& args) { args.write(prot); }, [](Protocol_* prot, MyRoot_do_root_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "do_root", [](Protocol_* p, MyRoot_do_root_pargs& a) { a.write(p); }, [](Protocol_* p, MyRoot_do_root_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 

@@ -2962,7 +2962,7 @@ void service_with_special_namesAsyncClient::getT(Protocol_* prot, apache::thrift
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.get", connectionContext_.get());
   service_with_special_names_get_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "get", [](Protocol_* prot, service_with_special_names_get_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_get_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "get", [](Protocol_* p, service_with_special_names_get_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_get_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -3044,7 +3044,7 @@ void service_with_special_namesAsyncClient::getterT(Protocol_* prot, apache::thr
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.getter", connectionContext_.get());
   service_with_special_names_getter_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "getter", [](Protocol_* prot, service_with_special_names_getter_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_getter_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "getter", [](Protocol_* p, service_with_special_names_getter_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_getter_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -3126,7 +3126,7 @@ void service_with_special_namesAsyncClient::listsT(Protocol_* prot, apache::thri
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.lists", connectionContext_.get());
   service_with_special_names_lists_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "lists", [](Protocol_* prot, service_with_special_names_lists_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_lists_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "lists", [](Protocol_* p, service_with_special_names_lists_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_lists_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -3208,7 +3208,7 @@ void service_with_special_namesAsyncClient::mapsT(Protocol_* prot, apache::thrif
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.maps", connectionContext_.get());
   service_with_special_names_maps_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "maps", [](Protocol_* prot, service_with_special_names_maps_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_maps_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "maps", [](Protocol_* p, service_with_special_names_maps_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_maps_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -3290,7 +3290,7 @@ void service_with_special_namesAsyncClient::nameT(Protocol_* prot, apache::thrif
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.name", connectionContext_.get());
   service_with_special_names_name_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "name", [](Protocol_* prot, service_with_special_names_name_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_name_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "name", [](Protocol_* p, service_with_special_names_name_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_name_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -3372,7 +3372,7 @@ void service_with_special_namesAsyncClient::name_to_valueT(Protocol_* prot, apac
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.name_to_value", connectionContext_.get());
   service_with_special_names_name_to_value_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "name_to_value", [](Protocol_* prot, service_with_special_names_name_to_value_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_name_to_value_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "name_to_value", [](Protocol_* p, service_with_special_names_name_to_value_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_name_to_value_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -3454,7 +3454,7 @@ void service_with_special_namesAsyncClient::namesT(Protocol_* prot, apache::thri
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.names", connectionContext_.get());
   service_with_special_names_names_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "names", [](Protocol_* prot, service_with_special_names_names_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_names_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "names", [](Protocol_* p, service_with_special_names_names_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_names_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -3536,7 +3536,7 @@ void service_with_special_namesAsyncClient::prefix_treeT(Protocol_* prot, apache
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.prefix_tree", connectionContext_.get());
   service_with_special_names_prefix_tree_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "prefix_tree", [](Protocol_* prot, service_with_special_names_prefix_tree_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_prefix_tree_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "prefix_tree", [](Protocol_* p, service_with_special_names_prefix_tree_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_prefix_tree_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -3618,7 +3618,7 @@ void service_with_special_namesAsyncClient::setsT(Protocol_* prot, apache::thrif
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.sets", connectionContext_.get());
   service_with_special_names_sets_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "sets", [](Protocol_* prot, service_with_special_names_sets_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_sets_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "sets", [](Protocol_* p, service_with_special_names_sets_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_sets_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -3700,7 +3700,7 @@ void service_with_special_namesAsyncClient::setterT(Protocol_* prot, apache::thr
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.setter", connectionContext_.get());
   service_with_special_names_setter_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "setter", [](Protocol_* prot, service_with_special_names_setter_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_setter_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "setter", [](Protocol_* p, service_with_special_names_setter_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_setter_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -3782,7 +3782,7 @@ void service_with_special_namesAsyncClient::strT(Protocol_* prot, apache::thrift
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.str", connectionContext_.get());
   service_with_special_names_str_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "str", [](Protocol_* prot, service_with_special_names_str_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_str_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "str", [](Protocol_* p, service_with_special_names_str_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_str_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -3864,7 +3864,7 @@ void service_with_special_namesAsyncClient::stringsT(Protocol_* prot, apache::th
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.strings", connectionContext_.get());
   service_with_special_names_strings_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "strings", [](Protocol_* prot, service_with_special_names_strings_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_strings_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "strings", [](Protocol_* p, service_with_special_names_strings_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_strings_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -3946,7 +3946,7 @@ void service_with_special_namesAsyncClient::typeT(Protocol_* prot, apache::thrif
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.type", connectionContext_.get());
   service_with_special_names_type_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "type", [](Protocol_* prot, service_with_special_names_type_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_type_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "type", [](Protocol_* p, service_with_special_names_type_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_type_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -4028,7 +4028,7 @@ void service_with_special_namesAsyncClient::valueT(Protocol_* prot, apache::thri
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.value", connectionContext_.get());
   service_with_special_names_value_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "value", [](Protocol_* prot, service_with_special_names_value_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_value_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "value", [](Protocol_* p, service_with_special_names_value_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_value_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -4110,7 +4110,7 @@ void service_with_special_namesAsyncClient::value_to_nameT(Protocol_* prot, apac
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.value_to_name", connectionContext_.get());
   service_with_special_names_value_to_name_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "value_to_name", [](Protocol_* prot, service_with_special_names_value_to_name_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_value_to_name_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "value_to_name", [](Protocol_* p, service_with_special_names_value_to_name_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_value_to_name_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -4192,7 +4192,7 @@ void service_with_special_namesAsyncClient::valuesT(Protocol_* prot, apache::thr
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.values", connectionContext_.get());
   service_with_special_names_values_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "values", [](Protocol_* prot, service_with_special_names_values_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_values_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "values", [](Protocol_* p, service_with_special_names_values_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_values_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -4274,7 +4274,7 @@ void service_with_special_namesAsyncClient::idT(Protocol_* prot, apache::thrift:
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.id", connectionContext_.get());
   service_with_special_names_id_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "id", [](Protocol_* prot, service_with_special_names_id_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_id_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "id", [](Protocol_* p, service_with_special_names_id_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_id_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -4356,7 +4356,7 @@ void service_with_special_namesAsyncClient::idsT(Protocol_* prot, apache::thrift
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.ids", connectionContext_.get());
   service_with_special_names_ids_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "ids", [](Protocol_* prot, service_with_special_names_ids_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_ids_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "ids", [](Protocol_* p, service_with_special_names_ids_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_ids_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -4438,7 +4438,7 @@ void service_with_special_namesAsyncClient::descriptorT(Protocol_* prot, apache:
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.descriptor", connectionContext_.get());
   service_with_special_names_descriptor_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "descriptor", [](Protocol_* prot, service_with_special_names_descriptor_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_descriptor_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "descriptor", [](Protocol_* p, service_with_special_names_descriptor_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_descriptor_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -4520,7 +4520,7 @@ void service_with_special_namesAsyncClient::descriptorsT(Protocol_* prot, apache
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.descriptors", connectionContext_.get());
   service_with_special_names_descriptors_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "descriptors", [](Protocol_* prot, service_with_special_names_descriptors_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_descriptors_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "descriptors", [](Protocol_* p, service_with_special_names_descriptors_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_descriptors_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -4602,7 +4602,7 @@ void service_with_special_namesAsyncClient::keyT(Protocol_* prot, apache::thrift
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.key", connectionContext_.get());
   service_with_special_names_key_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "key", [](Protocol_* prot, service_with_special_names_key_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_key_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "key", [](Protocol_* p, service_with_special_names_key_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_key_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -4684,7 +4684,7 @@ void service_with_special_namesAsyncClient::keysT(Protocol_* prot, apache::thrif
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.keys", connectionContext_.get());
   service_with_special_names_keys_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "keys", [](Protocol_* prot, service_with_special_names_keys_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_keys_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "keys", [](Protocol_* p, service_with_special_names_keys_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_keys_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -4766,7 +4766,7 @@ void service_with_special_namesAsyncClient::annotationT(Protocol_* prot, apache:
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.annotation", connectionContext_.get());
   service_with_special_names_annotation_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "annotation", [](Protocol_* prot, service_with_special_names_annotation_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_annotation_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "annotation", [](Protocol_* p, service_with_special_names_annotation_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_annotation_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -4848,7 +4848,7 @@ void service_with_special_namesAsyncClient::annotationsT(Protocol_* prot, apache
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.annotations", connectionContext_.get());
   service_with_special_names_annotations_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "annotations", [](Protocol_* prot, service_with_special_names_annotations_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_annotations_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "annotations", [](Protocol_* p, service_with_special_names_annotations_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_annotations_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -4930,7 +4930,7 @@ void service_with_special_namesAsyncClient::memberT(Protocol_* prot, apache::thr
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.member", connectionContext_.get());
   service_with_special_names_member_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "member", [](Protocol_* prot, service_with_special_names_member_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_member_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "member", [](Protocol_* p, service_with_special_names_member_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_member_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -5012,7 +5012,7 @@ void service_with_special_namesAsyncClient::membersT(Protocol_* prot, apache::th
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service_with_special_names.members", connectionContext_.get());
   service_with_special_names_members_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "members", [](Protocol_* prot, service_with_special_names_members_pargs& args) { args.write(prot); }, [](Protocol_* prot, service_with_special_names_members_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "members", [](Protocol_* p, service_with_special_names_members_pargs& a) { a.write(p); }, [](Protocol_* p, service_with_special_names_members_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 

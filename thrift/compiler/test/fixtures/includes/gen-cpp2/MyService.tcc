@@ -141,7 +141,7 @@ void MyServiceAsyncClient::queryT(Protocol_* prot, apache::thrift::RpcOptions& r
   MyService_query_pargs args;
   args.get<0>().value = const_cast< ::cpp2::MyStruct*>(&s);
   args.get<1>().value = const_cast< ::cpp2::Included*>(&i);
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "query", [](Protocol_* prot, MyService_query_pargs& args) { args.write(prot); }, [](Protocol_* prot, MyService_query_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "query", [](Protocol_* p, MyService_query_pargs& a) { a.write(p); }, [](Protocol_* p, MyService_query_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 

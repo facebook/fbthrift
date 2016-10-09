@@ -532,7 +532,7 @@ void RaiserAsyncClient::doBlandT(Protocol_* prot, apache::thrift::RpcOptions& rp
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "Raiser.doBland", connectionContext_.get());
   Raiser_doBland_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "doBland", [](Protocol_* prot, Raiser_doBland_pargs& args) { args.write(prot); }, [](Protocol_* prot, Raiser_doBland_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "doBland", [](Protocol_* p, Raiser_doBland_pargs& a) { a.write(p); }, [](Protocol_* p, Raiser_doBland_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -603,7 +603,7 @@ void RaiserAsyncClient::doRaiseT(Protocol_* prot, apache::thrift::RpcOptions& rp
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "Raiser.doRaise", connectionContext_.get());
   Raiser_doRaise_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "doRaise", [](Protocol_* prot, Raiser_doRaise_pargs& args) { args.write(prot); }, [](Protocol_* prot, Raiser_doRaise_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "doRaise", [](Protocol_* p, Raiser_doRaise_pargs& a) { a.write(p); }, [](Protocol_* p, Raiser_doRaise_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -682,7 +682,7 @@ void RaiserAsyncClient::get200T(Protocol_* prot, apache::thrift::RpcOptions& rpc
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "Raiser.get200", connectionContext_.get());
   Raiser_get200_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "get200", [](Protocol_* prot, Raiser_get200_pargs& args) { args.write(prot); }, [](Protocol_* prot, Raiser_get200_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "get200", [](Protocol_* p, Raiser_get200_pargs& a) { a.write(p); }, [](Protocol_* p, Raiser_get200_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -762,7 +762,7 @@ void RaiserAsyncClient::get500T(Protocol_* prot, apache::thrift::RpcOptions& rpc
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "Raiser.get500", connectionContext_.get());
   Raiser_get500_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "get500", [](Protocol_* prot, Raiser_get500_pargs& args) { args.write(prot); }, [](Protocol_* prot, Raiser_get500_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "get500", [](Protocol_* p, Raiser_get500_pargs& a) { a.write(p); }, [](Protocol_* p, Raiser_get500_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 

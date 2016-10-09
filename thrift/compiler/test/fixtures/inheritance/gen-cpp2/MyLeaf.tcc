@@ -135,7 +135,7 @@ void MyLeafAsyncClient::do_leafT(Protocol_* prot, apache::thrift::RpcOptions& rp
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyLeaf.do_leaf", connectionContext_.get());
   MyLeaf_do_leaf_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "do_leaf", [](Protocol_* prot, MyLeaf_do_leaf_pargs& args) { args.write(prot); }, [](Protocol_* prot, MyLeaf_do_leaf_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "do_leaf", [](Protocol_* p, MyLeaf_do_leaf_pargs& a) { a.write(p); }, [](Protocol_* p, MyLeaf_do_leaf_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 

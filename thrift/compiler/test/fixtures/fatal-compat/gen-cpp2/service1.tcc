@@ -1683,7 +1683,7 @@ void service1AsyncClient::method1T(Protocol_* prot, apache::thrift::RpcOptions& 
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service1.method1", connectionContext_.get());
   service1_method1_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "method1", [](Protocol_* prot, service1_method1_pargs& args) { service1_method1_pargs_write(prot, &args); }, [](Protocol_* prot, service1_method1_pargs& args) { return service1_method1_pargs_serializedSizeZC(prot, &args); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "method1", [](Protocol_* p, service1_method1_pargs& a) { service1_method1_pargs_write(p, &a); }, [](Protocol_* p, service1_method1_pargs& a) { return service1_method1_pargs_serializedSizeZC(p, &a); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -1757,7 +1757,7 @@ void service1AsyncClient::method2T(Protocol_* prot, apache::thrift::RpcOptions& 
   args.x = &x;
   args.y = const_cast< ::test_cpp2::cpp_reflection::struct1*>(&y);
   args.z = &z;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "method2", [](Protocol_* prot, service1_method2_pargs& args) { service1_method2_pargs_write(prot, &args); }, [](Protocol_* prot, service1_method2_pargs& args) { return service1_method2_pargs_serializedSizeZC(prot, &args); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "method2", [](Protocol_* p, service1_method2_pargs& a) { service1_method2_pargs_write(p, &a); }, [](Protocol_* p, service1_method2_pargs& a) { return service1_method2_pargs_serializedSizeZC(p, &a); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -1828,7 +1828,7 @@ void service1AsyncClient::method3T(Protocol_* prot, apache::thrift::RpcOptions& 
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service1.method3", connectionContext_.get());
   service1_method3_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "method3", [](Protocol_* prot, service1_method3_pargs& args) { service1_method3_pargs_write(prot, &args); }, [](Protocol_* prot, service1_method3_pargs& args) { return service1_method3_pargs_serializedSizeZC(prot, &args); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "method3", [](Protocol_* p, service1_method3_pargs& a) { service1_method3_pargs_write(p, &a); }, [](Protocol_* p, service1_method3_pargs& a) { return service1_method3_pargs_serializedSizeZC(p, &a); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -1913,7 +1913,7 @@ void service1AsyncClient::method4T(Protocol_* prot, apache::thrift::RpcOptions& 
   args.i = &i;
   args.j = const_cast< ::test_cpp2::cpp_reflection::struct1*>(&j);
   args.k = &k;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "method4", [](Protocol_* prot, service1_method4_pargs& args) { service1_method4_pargs_write(prot, &args); }, [](Protocol_* prot, service1_method4_pargs& args) { return service1_method4_pargs_serializedSizeZC(prot, &args); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "method4", [](Protocol_* p, service1_method4_pargs& a) { service1_method4_pargs_write(p, &a); }, [](Protocol_* p, service1_method4_pargs& a) { return service1_method4_pargs_serializedSizeZC(p, &a); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -1995,7 +1995,7 @@ void service1AsyncClient::method5T(Protocol_* prot, apache::thrift::RpcOptions& 
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "service1.method5", connectionContext_.get());
   service1_method5_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "method5", [](Protocol_* prot, service1_method5_pargs& args) { service1_method5_pargs_write(prot, &args); }, [](Protocol_* prot, service1_method5_pargs& args) { return service1_method5_pargs_serializedSizeZC(prot, &args); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "method5", [](Protocol_* p, service1_method5_pargs& a) { service1_method5_pargs_write(p, &a); }, [](Protocol_* p, service1_method5_pargs& a) { return service1_method5_pargs_serializedSizeZC(p, &a); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
@@ -2078,7 +2078,7 @@ void service1AsyncClient::method6T(Protocol_* prot, apache::thrift::RpcOptions& 
   args.l = &l;
   args.m = const_cast< ::test_cpp2::cpp_reflection::struct1*>(&m);
   args.n = &n;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "method6", [](Protocol_* prot, service1_method6_pargs& args) { service1_method6_pargs_write(prot, &args); }, [](Protocol_* prot, service1_method6_pargs& args) { return service1_method6_pargs_serializedSizeZC(prot, &args); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "method6", [](Protocol_* p, service1_method6_pargs& a) { service1_method6_pargs_write(p, &a); }, [](Protocol_* p, service1_method6_pargs& a) { return service1_method6_pargs_serializedSizeZC(p, &a); });
   connectionContext_->setRequestHeader(nullptr);
 }
 

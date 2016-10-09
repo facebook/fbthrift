@@ -135,7 +135,7 @@ void MyNodeAsyncClient::do_midT(Protocol_* prot, apache::thrift::RpcOptions& rpc
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyNode.do_mid", connectionContext_.get());
   MyNode_do_mid_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "do_mid", [](Protocol_* prot, MyNode_do_mid_pargs& args) { args.write(prot); }, [](Protocol_* prot, MyNode_do_mid_pargs& args) { return args.serializedSizeZC(prot); });
+  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "do_mid", [](Protocol_* p, MyNode_do_mid_pargs& a) { a.write(p); }, [](Protocol_* p, MyNode_do_mid_pargs& a) { return a.serializedSizeZC(p); });
   connectionContext_->setRequestHeader(nullptr);
 }
 
