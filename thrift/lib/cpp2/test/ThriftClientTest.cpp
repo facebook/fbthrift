@@ -26,20 +26,6 @@ using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;
 using namespace apache::thrift::transport;
 
-namespace {
-
-//  Until we can use move captures....
-template <class T, class F>
-void eb_delay(EventBase* eb, milliseconds delay, unique_ptr<T> x, F&& f) {
-  eb->runAfterDelay(
-      [ f = std::forward<F>(f), x = std::move(x) ]() mutable {
-        f(std::move(x));
-      },
-      delay.count());
-}
-
-}
-
 class ThriftClientTest : public testing::Test {};
 
 TEST_F(ThriftClientTest, FutureCapturesChannel) {
@@ -87,9 +73,9 @@ TEST_F(ThriftClientTest, SyncRpcOptionsTimeout) {
     void async_eb_eventBaseAsync(
         unique_ptr<HandlerCallback<unique_ptr<string>>> cb) override {
       auto eb = cb->getEventBase();
-      eb_delay(eb, delay_, move(cb), [](decltype(cb) cb) {
-          cb->result("hello world");
-      });
+      eb->runAfterDelay([cb = move(cb)] {
+        cb->result("hello world");
+      }, delay_.count());
     }
   private:
     milliseconds delay_;
