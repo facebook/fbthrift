@@ -1,5 +1,7 @@
 import asyncio
 import functools
+import sys
+import traceback
 from libcpp.memory cimport shared_ptr, unique_ptr
 from cython.operator import dereference as deref
 
@@ -22,8 +24,18 @@ async def MyService_ping_coro(
     object self,
     Promise_void promise
 ):
-    result = await self.ping()
-    deref(promise.cPromise).setValue(c_unit)
+    try:
+      result = await self.ping()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler ping:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(c_unit)
 
 cdef public void call_cy_MyService_getRandomData(
     object self,
@@ -43,8 +55,18 @@ async def MyService_getRandomData_coro(
     object self,
     Promise_string promise
 ):
-    result = await self.getRandomData()
-    deref(promise.cPromise).setValue(make_unique[string](<string> result.encode('UTF-8')))
+    try:
+      result = await self.getRandomData()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler getRandomData:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(make_unique[string](<string> result.encode('UTF-8')))
 
 cdef public void call_cy_MyService_hasDataById(
     object self,
@@ -68,9 +90,19 @@ async def MyService_hasDataById_coro(
     Promise_bool promise,
     id
 ):
-    result = await self.hasDataById(
-        id)
-    deref(promise.cPromise).setValue(<cbool> result)
+    try:
+      result = await self.hasDataById(
+          id)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler hasDataById:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(<cbool> result)
 
 cdef public void call_cy_MyService_getDataById(
     object self,
@@ -94,9 +126,19 @@ async def MyService_getDataById_coro(
     Promise_string promise,
     id
 ):
-    result = await self.getDataById(
-        id)
-    deref(promise.cPromise).setValue(make_unique[string](<string> result.encode('UTF-8')))
+    try:
+      result = await self.getDataById(
+          id)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler getDataById:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(make_unique[string](<string> result.encode('UTF-8')))
 
 cdef public void call_cy_MyService_putDataById(
     object self,
@@ -124,10 +166,20 @@ async def MyService_putDataById_coro(
     id,
     data
 ):
-    result = await self.putDataById(
-        id,
-        data)
-    deref(promise.cPromise).setValue(c_unit)
+    try:
+      result = await self.putDataById(
+          id,
+          data)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler putDataById:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(c_unit)
 
 cdef public void call_cy_MyService_lobDataById(
     object self,
@@ -155,10 +207,20 @@ async def MyService_lobDataById_coro(
     id,
     data
 ):
-    result = await self.lobDataById(
-        id,
-        data)
-    deref(promise.cPromise).setValue(c_unit)
+    try:
+      result = await self.lobDataById(
+          id,
+          data)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler lobDataById:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(c_unit)
 
 cdef public void call_cy_MyServiceFast_ping(
     object self,
@@ -178,8 +240,18 @@ async def MyServiceFast_ping_coro(
     object self,
     Promise_void promise
 ):
-    result = await self.ping()
-    deref(promise.cPromise).setValue(c_unit)
+    try:
+      result = await self.ping()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler ping:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(c_unit)
 
 cdef public void call_cy_MyServiceFast_getRandomData(
     object self,
@@ -199,8 +271,18 @@ async def MyServiceFast_getRandomData_coro(
     object self,
     Promise_string promise
 ):
-    result = await self.getRandomData()
-    deref(promise.cPromise).setValue(make_unique[string](<string> result.encode('UTF-8')))
+    try:
+      result = await self.getRandomData()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler getRandomData:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(make_unique[string](<string> result.encode('UTF-8')))
 
 cdef public void call_cy_MyServiceFast_hasDataById(
     object self,
@@ -224,9 +306,19 @@ async def MyServiceFast_hasDataById_coro(
     Promise_bool promise,
     id
 ):
-    result = await self.hasDataById(
-        id)
-    deref(promise.cPromise).setValue(<cbool> result)
+    try:
+      result = await self.hasDataById(
+          id)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler hasDataById:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(<cbool> result)
 
 cdef public void call_cy_MyServiceFast_getDataById(
     object self,
@@ -250,9 +342,19 @@ async def MyServiceFast_getDataById_coro(
     Promise_string promise,
     id
 ):
-    result = await self.getDataById(
-        id)
-    deref(promise.cPromise).setValue(make_unique[string](<string> result.encode('UTF-8')))
+    try:
+      result = await self.getDataById(
+          id)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler getDataById:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(make_unique[string](<string> result.encode('UTF-8')))
 
 cdef public void call_cy_MyServiceFast_putDataById(
     object self,
@@ -280,10 +382,20 @@ async def MyServiceFast_putDataById_coro(
     id,
     data
 ):
-    result = await self.putDataById(
-        id,
-        data)
-    deref(promise.cPromise).setValue(c_unit)
+    try:
+      result = await self.putDataById(
+          id,
+          data)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler putDataById:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(c_unit)
 
 cdef public void call_cy_MyServiceFast_lobDataById(
     object self,
@@ -311,8 +423,18 @@ async def MyServiceFast_lobDataById_coro(
     id,
     data
 ):
-    result = await self.lobDataById(
-        id,
-        data)
-    deref(promise.cPromise).setValue(c_unit)
+    try:
+      result = await self.lobDataById(
+          id,
+          data)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler lobDataById:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(c_unit)
 

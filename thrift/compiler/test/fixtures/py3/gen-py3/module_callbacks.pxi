@@ -1,5 +1,7 @@
 import asyncio
 import functools
+import sys
+import traceback
 from libcpp.memory cimport shared_ptr, unique_ptr
 from cython.operator import dereference as deref
 
@@ -22,8 +24,18 @@ async def SimpleService_get_five_coro(
     object self,
     Promise_i32 promise
 ):
-    result = await self.get_five()
-    deref(promise.cPromise).setValue(<int32_t> result)
+    try:
+      result = await self.get_five()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler get_five:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(<int32_t> result)
 
 cdef public void call_cy_SimpleService_add_five(
     object self,
@@ -47,9 +59,19 @@ async def SimpleService_add_five_coro(
     Promise_i32 promise,
     num
 ):
-    result = await self.add_five(
-        num)
-    deref(promise.cPromise).setValue(<int32_t> result)
+    try:
+      result = await self.add_five(
+          num)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler add_five:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(<int32_t> result)
 
 cdef public void call_cy_SimpleService_do_nothing(
     object self,
@@ -69,8 +91,18 @@ async def SimpleService_do_nothing_coro(
     object self,
     Promise_void promise
 ):
-    result = await self.do_nothing()
-    deref(promise.cPromise).setValue(c_unit)
+    try:
+      result = await self.do_nothing()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler do_nothing:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(c_unit)
 
 cdef public void call_cy_SimpleService_concat(
     object self,
@@ -98,10 +130,20 @@ async def SimpleService_concat_coro(
     first,
     second
 ):
-    result = await self.concat(
-        first,
-        second)
-    deref(promise.cPromise).setValue(make_unique[string](<string> result.encode('UTF-8')))
+    try:
+      result = await self.concat(
+          first,
+          second)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler concat:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(make_unique[string](<string> result.encode('UTF-8')))
 
 cdef public void call_cy_SimpleService_get_value(
     object self,
@@ -125,7 +167,17 @@ async def SimpleService_get_value_coro(
     Promise_i32 promise,
     simple_struct
 ):
-    result = await self.get_value(
-        simple_struct)
-    deref(promise.cPromise).setValue(<int32_t> result)
+    try:
+      result = await self.get_value(
+          simple_struct)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler get_value:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(<int32_t> result)
 

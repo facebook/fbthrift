@@ -17,6 +17,8 @@
 }}
 import asyncio
 import functools
+import sys
+import traceback
 from libcpp.memory cimport shared_ptr, unique_ptr
 from cython.operator import dereference as deref
 
@@ -50,9 +52,19 @@ async def {{service:name}}_{{function:name}}_coro(
     }} promise{{#function:args}},
     {{field:name}}{{/function:args}}
 ):
-    result = await self.{{function:name}}({{#function:args}}
-        {{field:name}}{{^last?}},{{/last?}}{{/function:args}})
-    deref(promise.cPromise).setValue({{#function:returnType}}{{> CythonReturnValue}}{{/function:returnType}})
+    try:
+      result = await self.{{function:name}}({{#function:args}}
+          {{field:name}}{{^last?}},{{/last?}}{{/function:args}})
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler {{service:name.}}{{function:name}}:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue({{#function:returnType}}{{> CythonReturnValue}}{{/function:returnType}})
 
 {{/service:functions}}
 {{/program:services}}
