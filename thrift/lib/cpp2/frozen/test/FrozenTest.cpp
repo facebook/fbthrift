@@ -235,7 +235,7 @@ TEST(Frozen, BigMap) {
   for (int i = 0; i < 1000; ++i) {
     auto& place = t.places[i * i * i % 757368944];
     place.name = folly::to<std::string>(i);
-    for (int i = 0; i < 200; ++i) {
+    for (int j = 0; j < 200; ++j) {
       ++place.popularityByHour[rand() % (24 * 7)];
     }
   }

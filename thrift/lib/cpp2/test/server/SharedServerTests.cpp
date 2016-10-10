@@ -332,8 +332,6 @@ TEST_P(SharedServerTests, OverloadTest) {
 
   init();
 
-  std::string response;
-
   auto tval = 10000;
   int too_full = 0;
   int exception_headers = 0;
