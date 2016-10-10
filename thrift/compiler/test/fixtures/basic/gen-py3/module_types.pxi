@@ -13,11 +13,15 @@ from module_types cimport (
 cdef class MyStruct:
     cdef shared_ptr[cMyStruct] c_MyStruct
 
-    def __init__(self, int MyIntField, str MyStringField):
+    def __init__(
+        self,
+        int MyIntField,
+        str MyStringField
+    ):
         deref(self.c_MyStruct).MyIntField = MyIntField
         if MyStringField is not None:
             deref(self.c_MyStruct).MyStringField = make_shared[string](<string> MyStringField.encode('UTF-8'))
-
+        
     @staticmethod
     cdef create(shared_ptr[cMyStruct] c_MyStruct):
         inst = <MyStruct>MyStruct.__new__(MyStruct)

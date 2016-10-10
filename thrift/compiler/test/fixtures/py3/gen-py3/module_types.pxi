@@ -13,10 +13,14 @@ from module_types cimport (
 cdef class SimpleStruct:
     cdef shared_ptr[cSimpleStruct] c_SimpleStruct
 
-    def __init__(self, int key, int value):
+    def __init__(
+        self,
+        int key,
+        int value
+    ):
         deref(self.c_SimpleStruct).key = key
         deref(self.c_SimpleStruct).value = value
-
+        
     @staticmethod
     cdef create(shared_ptr[cSimpleStruct] c_SimpleStruct):
         inst = <SimpleStruct>SimpleStruct.__new__(SimpleStruct)

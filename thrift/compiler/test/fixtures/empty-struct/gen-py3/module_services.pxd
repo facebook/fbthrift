@@ -1,0 +1,2 @@
+from py3_thrift_server cimport cServerInterface
+

@@ -25,8 +25,8 @@ from cython.operator cimport dereference as deref
 {{#program:structs}}
 {{#first?}}from {{program:name}}_types cimport (
     move,{{/first?}}
-    c{{struct:name}}{{^last?}},{{/last?}}
-{{#last?}}){{/last?}}{{/program:structs}}
+    c{{struct:name}}{{^last?}},{{/last?}}{{#last?}}
+){{/last?}}{{/program:structs}}
 
 {{#program:structs}}
 cdef class {{struct:name}}:
@@ -38,15 +38,18 @@ cdef class {{struct:name}}:
     {{/type:struct}}{{/field:type}}
     {{/struct:fields}}
 
-    def __init__(self, {{#struct:fields}}{{!
-    }}{{#field:type}}{{> PythonFieldType}}{{/field:type}}{{!
-        }} {{field:name}}{{^last?}}, {{/last?}}{{!
-        }}{{/struct:fields}}):
+    def __init__(
+        self{{#struct:fields}},
+        {{#field:type}}{{> PythonFieldType}}{{/field:type}}{{!
+        }} {{field:name}}{{/struct:fields}}
+    ):
         {{#struct:fields}}
         {{#field:type}}
         {{> CythonAssignField}}
         {{/field:type}}
         {{/struct:fields}}
+        {{^struct:fields}}pass
+{{/struct:fields}}
 
     @staticmethod
     cdef create(shared_ptr[c{{struct:name}}] c_{{struct:name}}):

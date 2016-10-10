@@ -35,3 +35,6 @@ cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}_services_wra
       }}"{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{!
       }}{{service:name}}Interface"(PyObject *if_object)
 {{/program:services}}
+{{^program:services}}
+    pass
+{{/program:services}}
