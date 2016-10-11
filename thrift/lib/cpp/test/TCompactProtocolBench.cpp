@@ -97,9 +97,9 @@ BENCHMARK(TCompactProtocol_deserialize_empty, kiters) {
   ser.serialize(data, &buf);
   braces.dismiss();
   while (iters--) {
-    ThriftSerializerCompact<> ser;
-    Empty data;
-    ser.deserialize(buf, &data);
+    ThriftSerializerCompact<> s;
+    Empty empty;
+    s.deserialize(buf, &empty);
   }
   braces.rehire();
 }
@@ -111,8 +111,8 @@ BENCHMARK(TCompactProtocol_serialize_empty, kiters) {
   braces.dismiss();
   while (iters--) {
     ThriftSerializerCompact<> ser;
-    string buf;
-    ser.serialize(data, &buf);
+    string str;
+    ser.serialize(data, &str);
   }
   braces.rehire();
 }
@@ -126,9 +126,9 @@ BENCHMARK(TCompactProtocol_deserialize_shallow, kiters) {
   ser.serialize(data, &buf);
   braces.dismiss();
   while (iters--) {
-    ThriftSerializerCompact<> ser;
+    ThriftSerializerCompact<> s;
     Deep data;
-    ser.deserialize(buf, &data);
+    s.deserialize(buf, &data);
   }
   braces.rehire();
 }
@@ -155,9 +155,9 @@ BENCHMARK(TCompactProtocol_deserialize_deep, kiters) {
   ser.serialize(data, &buf);
   braces.dismiss();
   while (iters--) {
-    ThriftSerializerCompact<> ser;
-    Deep data;
-    ser.deserialize(buf, &data);
+    ThriftSerializerCompact<> s;
+    Deep deep;
+    s.deserialize(buf, &deep);
   }
   braces.rehire();
 }

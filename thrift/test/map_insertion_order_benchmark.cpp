@@ -86,9 +86,9 @@ std::size_t do_bench(
 #define BODY_SORTED(size) \
   BODY_SETUP(size) \
   while(iters--) { \
-    auto const ret = do_bench(data, braces, [&](auto& m, auto& data) { \
-      for (auto& i : data) { \
-        m.emplace(std::move(i)); \
+    auto const ret = do_bench(data, braces, [&](auto& m2, auto& d2) { \
+      for (auto& i : d2) { \
+        m2.emplace(std::move(i)); \
       }  \
     });  \
     assert(size == ret); \
@@ -97,9 +97,9 @@ std::size_t do_bench(
 #define BODY_LEVEL(size) \
   BODY_SETUP(size) \
   while(iters--) { \
-    auto const ret = do_bench(data, braces, [&](auto& m, auto& data) { \
-      auto tmp_data = data; \
-      apache::thrift::move_ordered_map_vec(m, tmp_data); \
+    auto const ret = do_bench(data, braces, [&](auto& m2, auto& d2) { \
+      auto tmp_data = d2; \
+      apache::thrift::move_ordered_map_vec(m2, tmp_data); \
     });  \
     assert(size == ret); \
   }

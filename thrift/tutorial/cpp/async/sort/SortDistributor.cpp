@@ -77,8 +77,8 @@ int main(int argc, char* argv[]) {
   for (int n = optind; n < argc; ++n) {
     // Parse the hostname:port argument
     string host = "127.0.0.1";
-    uint16_t port = 12345;
-    if (util_parse_host_port(argv[n], &host, &port) != 0) {
+    uint16_t p = 12345;
+    if (util_parse_host_port(argv[n], &host, &p) != 0) {
       cerr << "error: invalid address \"" << argv[n] << "\"" << endl;
       return 1;
     }

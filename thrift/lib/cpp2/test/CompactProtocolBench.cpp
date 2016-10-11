@@ -117,9 +117,9 @@ BENCHMARK(CompactProtocolReader_deserialize_empty, kiters) {
   auto buf = bufq.move();
   braces.dismiss();
   while (iters--) {
-    CompactSerializer ser;
-    Empty data;
-    ser.deserialize(buf.get(), data);
+    CompactSerializer s;
+    Empty empty;
+    s.deserialize(buf.get(), empty);
   }
   braces.rehire();
 }
@@ -147,9 +147,9 @@ BENCHMARK(CompactProtocolReader_deserialize_shallow, kiters) {
   auto buf = bufq.move();
   braces.dismiss();
   while (iters--) {
-    CompactSerializer ser;
+    CompactSerializer s;
     Deep data;
-    ser.deserialize(buf.get(), data);
+    s.deserialize(buf.get(), data);
   }
   braces.rehire();
 }
@@ -177,9 +177,9 @@ BENCHMARK(CompactProtocolReader_deserialize_deep, kiters) {
   auto buf = bufq.move();
   braces.dismiss();
   while (iters--) {
-    CompactSerializer ser;
-    Deep data;
-    ser.deserialize(buf.get(), data);
+    CompactSerializer s;
+    Deep deep;
+    s.deserialize(buf.get(), deep);
   }
   braces.rehire();
 }
