@@ -438,6 +438,56 @@ T thaw(T value) {
 };
 
 /**
+ * Internal utility for recursively maximizing child fields.
+ *
+ * Lays out 'field' at position 'fieldPos', then recurse into the field value
+ * to adjust 'field.layout'.
+ */
+template <class T, class Layout>
+FieldPosition maximizeField(FieldPosition fieldPos, Field<T, Layout>& field) {
+  auto& layout = field.layout;
+  bool inlineBits = layout.size == 0;
+  FieldPosition nextPos = fieldPos;
+  if (inlineBits) {
+    //  candidate for inlining, place at offset zero and continue
+    FieldPosition inlinedField(0, fieldPos.bitOffset);
+    FieldPosition after = layout.maximize();
+    if (after.offset) {
+      // consumed full bytes for layout, can't be inlined
+      inlineBits = false;
+    } else {
+      // only consumed bits, layout at bit offset
+      layout.resize(after, true);
+      field.pos = inlinedField;
+      nextPos.bitOffset += layout.bits;
+    }
+  }
+  if (!inlineBits) {
+    FieldPosition normalField(fieldPos.offset, 0);
+    FieldPosition after = layout.maximize();
+    layout.resize(after, false);
+    field.pos = normalField;
+    nextPos.offset += layout.size;
+  }
+  return nextPos;
+}
+
+/**
+ * The maximumally sized layout for type T. That is, the layout which can
+ * accomodate all values of type T, as opposed to only a particular example
+ * value.
+ */
+template<class T>
+Layout<T> maximumLayout() {
+  Layout<T> layout;
+  // layout all fields, recursively
+  layout.resize(layout.maximize(), false);
+  // layout once again to reflect now-uninlined fields
+  layout.resize(layout.maximize(), false);
+  return layout;
+}
+
+/**
  * LayoutRoot calculates the layout necessary to store a given object,
  * recursively. The logic of layout should closely match that of freezing.
  */
@@ -480,7 +530,7 @@ class LayoutRoot {
   }
 
   /**
-   * Internal utility for recursing into child fields.
+   * Internal utility for recrusively laying out child fields.
    *
    * Lays out 'field' at position 'fieldPos', then recurse into the field value
    * to adjust 'field.layout'.
@@ -601,9 +651,7 @@ class FreezeRoot {
   void freezeField(FreezePosition self,
                    const Field<T, Layout>& field,
                    const Arg& value) {
-    if (!field.layout.empty()) {
-      field.layout.freeze(*this, value, self(field.pos));
-    }
+    field.layout.freeze(*this, value, self(field.pos));
   }
 
   template <class T, class Layout>
@@ -659,7 +707,7 @@ class ByteRangeFreezer final : public FreezeRoot {
     range.reset(write_.begin(), n);
     if (n) {
       if (n > write_.size() || origin > write_.begin()) {
-        throw LayoutException();
+        throw std::length_error("Insufficient buffer allocated");
       }
       distance = write_.begin() - origin;
       write_.advance(n);

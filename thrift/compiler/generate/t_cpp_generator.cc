@@ -2772,6 +2772,7 @@ void t_cpp_generator::generate_frozen2_struct_definition(t_struct* tstruct) {
   // TODO(5484874): Put these back in the .cpp after compilation is separated.
   f_types_layouts_ << endl;
   for (auto step : {make_pair("CTOR", "CTOR_FIELD{_opt}({name}, {id})"),
+                    make_pair("MAXIMIZE", "MAXIMIZE_FIELD({name})"),
                     make_pair("LAYOUT", "LAYOUT_FIELD{_opt}({name})"),
                     make_pair("FREEZE", "FREEZE_FIELD{_opt}({name})"),
                     make_pair("THAW", "THAW_FIELD{_opt}({name})"),

@@ -52,11 +52,11 @@ struct SortedTableLayout : public ArrayLayout<T, Item> {
   }
 
   FieldPosition layoutItems(LayoutRoot& root,
-                            const T& coll,
+      const T& coll,
                             LayoutPosition self,
                             FieldPosition pos,
-                            LayoutPosition write,
-                            FieldPosition writeStep) final {
+      LayoutPosition write,
+      FieldPosition writeStep) final {
     std::vector<const Item*> index;
     maybeIndex(coll, index);
 

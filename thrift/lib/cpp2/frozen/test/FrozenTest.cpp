@@ -31,7 +31,24 @@ using namespace apache::thrift;
 using namespace frozen;
 using namespace util;
 
-example2::EveryLayout stressValue = [] {
+example1::EveryLayout stressValue1 = [] {
+  example1::EveryLayout x;
+  x.aBool = true;
+  x.aInt = 2;
+  x.aList = {3, 5};
+  x.aSet = {7, 11};
+  x.aHashSet = {13, 17};
+  x.aMap = {{19, 23}, {29, 31}};
+  x.aHashMap = {{37, 41}, {43, 47}};
+  x.optInt = 53;
+  x.__isset.optInt = true;
+  x.aFloat = 59.61;
+  x.optMap = {{2, 4}, {3, 9}};
+  x.__isset.optMap = true;
+  return x;
+}();
+
+example2::EveryLayout stressValue2 = [] {
   example2::EveryLayout x;
   x.aBool = true;
   x.aInt = 2;
@@ -205,6 +222,51 @@ TEST(Frozen, NoLayout) {
   EXPECT_EQ(std::set<int>(), Layout<std::set<int>>().view(null).thaw());
   EXPECT_EQ((std::map<int, int>()),
             (Layout<std::map<int, int>>().view(null).thaw()));
+
+  Layout<example2::Person1> emptyPersonLayout;
+  std::array<uint8_t, 100> storage;
+  folly::MutableByteRange bytes(storage.begin(), storage.end());
+  EXPECT_THROW(
+      ByteRangeFreezer::freeze(emptyPersonLayout, tom1, bytes),
+      LayoutException);
+}
+
+template<class T>
+void testMaxLayout(const T& value) {
+  auto minLayout = Layout<T>();
+  auto valLayout = minLayout;
+  auto maxLayout = maximumLayout<T>();
+  LayoutRoot::layout(value, valLayout);
+  EXPECT_GT(valLayout.size, 0);
+  ASSERT_GT(maxLayout.size, 0);
+  std::array<uint8_t, 1000> storage;
+  folly::MutableByteRange bytes(storage.begin(), storage.end());
+  EXPECT_THROW(
+      ByteRangeFreezer::freeze(minLayout, value, bytes),
+      LayoutException);
+  auto f = ByteRangeFreezer::freeze(maxLayout, value, bytes);
+  auto check = f.thaw();
+  EXPECT_EQ(value, check);
+}
+
+TEST(Frozen, MaxLayoutVector) {
+  testMaxLayout(std::vector<int>{99, 24});
+}
+
+TEST(Frozen, MaxLayoutPairTree) {
+  using std::make_pair;
+  auto p1 = make_pair(5, 2.3);
+  auto p2 = make_pair(4, p1);
+  auto p3 = make_pair(3, p2);
+  auto p4 = make_pair(2, p3);
+  auto p5 = make_pair(1, p4);
+  auto p6 = make_pair(0, p5);
+  testMaxLayout(p6);
+}
+
+TEST(Frozen, MaxLayoutStress) {
+  testMaxLayout(stressValue1);
+  testMaxLayout(stressValue2);
 }
 
 TEST(Frozen, String) {
@@ -278,17 +340,12 @@ std::string toString(const T& x) {
   return xStr.str();
 }
 
-#define EXPECT_PRINTED_EQ(a, b)                                           \
-  {                                                                       \
-    auto aStr = toString(a), bStr = toString(b);                          \
-    EXPECT_TRUE(aStr == bStr) << "\n" << #a << ": " << aStr << "\n" << #b \
-                              << ": " << bStr;                            \
-  }
+#define EXPECT_PRINTED_EQ(a, b) EXPECT_EQ(toString(a), toString(b))
 
 TEST(Frozen, SchemaSaving) {
   // calculate a layout
   Layout<example2::EveryLayout> stressLayoutCalculated;
-  CHECK(LayoutRoot::layout(stressValue, stressLayoutCalculated));
+  CHECK(LayoutRoot::layout(stressValue2, stressLayoutCalculated));
 
   // save it
   schema::MemorySchema schemaSaved;
@@ -320,7 +377,7 @@ TEST(Frozen, SchemaConversion) {
   schema::Schema schema;
 
   Layout<example2::EveryLayout> stressLayoutCalculated;
-  CHECK(LayoutRoot::layout(stressValue, stressLayoutCalculated));
+  CHECK(LayoutRoot::layout(stressValue2, stressLayoutCalculated));
 
   schema::MemorySchema schemaSaved;
   saveRoot(stressLayoutCalculated, schemaSaved);
@@ -354,7 +411,7 @@ TEST(Frozen, DedupedSchema) {
     EXPECT_LE(schema.getLayouts().size(), 7); // 13 layouts originally
   }
   {
-    auto l = layout(stressValue);
+    auto l = layout(stressValue2);
     schema::MemorySchema schema;
     saveRoot(l, schema);
     EXPECT_LE(schema.getLayouts().size(), 24); // 49 layouts originally

@@ -25,6 +25,12 @@ struct BoolLayout : public LayoutBase {
 
   BoolLayout() : LayoutBase(typeid(T)) {}
 
+  FieldPosition maximize() {
+    FieldPosition pos = startFieldPosition();
+    ++pos.bitOffset;
+    return pos;
+  }
+
   FieldPosition layout(LayoutRoot& root, const T& o, LayoutPosition self) {
     FieldPosition pos = startFieldPosition();
     if (o) {

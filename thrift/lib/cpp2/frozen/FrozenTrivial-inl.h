@@ -28,8 +28,12 @@ struct TrivialLayout : public LayoutBase {
   typedef LayoutBase Base;
   TrivialLayout() : LayoutBase(typeid(T)) {}
 
-  FieldPosition layout(LayoutRoot& root, const T& o, LayoutPosition start) {
+  FieldPosition maximize() {
     return FieldPosition(sizeof(T), 0);
+  }
+
+  FieldPosition layout(LayoutRoot& root, const T& o, LayoutPosition start) {
+    return maximize();
   }
 
   void freeze(FreezeRoot& root, const T& o, FreezePosition self) const {

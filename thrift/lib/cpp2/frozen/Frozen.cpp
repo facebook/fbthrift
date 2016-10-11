@@ -72,6 +72,13 @@ void LayoutBase::clear() {
 
 namespace detail {
 
+FieldPosition BlockLayout::maximize() {
+  FieldPosition pos = startFieldPosition();
+  FROZEN_MAXIMIZE_FIELD(mask);
+  FROZEN_MAXIMIZE_FIELD(offset);
+  return pos;
+}
+
 FieldPosition BlockLayout::layout(LayoutRoot& root,
                                   const T& x,
                                   LayoutPosition self) {

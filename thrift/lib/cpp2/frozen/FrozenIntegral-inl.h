@@ -38,6 +38,12 @@ struct PackedIntegerLayout : public LayoutBase {
   PackedIntegerLayout() : LayoutBase(typeid(T)) {}
   explicit PackedIntegerLayout(const std::type_info& type) : LayoutBase(type) {}
 
+  FieldPosition maximize() {
+    FieldPosition pos = startFieldPosition();
+    pos.bitOffset += sizeof(T) * 8;
+    return pos;
+  }
+
   FieldPosition layout(LayoutRoot& root, const T& x, LayoutPosition self) {
     FieldPosition pos = startFieldPosition();
     if (x) {
@@ -47,14 +53,16 @@ struct PackedIntegerLayout : public LayoutBase {
   }
 
   void freeze(FreezeRoot& root, const T& x, FreezePosition self) const {
-    DCHECK_LE(bitsNeeded(x), bits) << x;
+    if (bitsNeeded(x) > bits) {
+      throw LayoutException();
+    }
     if (!bits) {
       return;
     }
     folly::Bits<folly::Unaligned<T>>::set(
         reinterpret_cast<folly::Unaligned<T>*>(self.start),
         self.bitOffset,
-        this->bits,
+        bits,
         x);
   }
 
@@ -90,8 +98,6 @@ struct PackedIntegerLayout : public LayoutBase {
 }
 
 template <class T>
-struct Layout<T,
-              typename std::enable_if<std::is_integral<
-                  T>::value>::type> : detail::PackedIntegerLayout<T> {};
-
+struct Layout<T, typename std::enable_if<std::is_integral<T>::value>::type>
+    : detail::PackedIntegerLayout<T> {};
 }}}

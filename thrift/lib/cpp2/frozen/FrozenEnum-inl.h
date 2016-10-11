@@ -26,6 +26,10 @@ struct EnumLayout : public PackedIntegerLayout<Underlying> {
   typedef PackedIntegerLayout<Underlying> Base;
   EnumLayout() : Base(typeid(T)) {}
 
+  FieldPosition maximize() {
+    return Base::maximize();
+  }
+
   FieldPosition layout(LayoutRoot& root, const T& o, LayoutPosition self) {
     return Base::layout(root, static_cast<Underlying>(o),self);
   }

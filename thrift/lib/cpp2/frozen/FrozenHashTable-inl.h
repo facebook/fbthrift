@@ -32,6 +32,7 @@ struct BlockLayout : public LayoutBase {
   BlockLayout()
       : LayoutBase(typeid(T)), maskField(1, "mask"), offsetField(2, "offset") {}
 
+  FieldPosition maximize();
   FieldPosition layout(LayoutRoot& root, const T& o, LayoutPosition self);
   void freeze(FreezeRoot& root, const T& o, FreezePosition self) const;
   void print(std::ostream& os, int level) const final;
@@ -86,6 +87,12 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
                          "sparseTable") // continue field ids from ArrayLayout
   {}
 
+  FieldPosition maximize() {
+    FieldPosition pos = ArrayLayout<T, Item>::maximize();
+    FROZEN_MAXIMIZE_FIELD(sparseTable);
+    return pos;
+  }
+
   static size_t blockCount(size_t size) {
     // LF = Load Factor, BPE = bits/entry
     // 1.5 => 66% LF => 3 bpe, 3 probes expected
@@ -132,11 +139,11 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
   }
 
   FieldPosition layoutItems(LayoutRoot& root,
-                            const T& coll,
-                            LayoutPosition self,
-                            FieldPosition pos,
-                            LayoutPosition write,
-                            FieldPosition writeStep) final {
+      const T& coll,
+      LayoutPosition self,
+      FieldPosition pos,
+      LayoutPosition write,
+      FieldPosition writeStep) final {
     std::vector<const Item*> index;
     std::vector<Block> sparseTable;
     buildIndex(coll, index, sparseTable);

@@ -36,6 +36,13 @@ struct PairLayout : public LayoutBase {
         firstField(1, "first"),
         secondField(2, "second") {}
 
+  FieldPosition maximize() {
+    FieldPosition pos = startFieldPosition();
+    FROZEN_MAXIMIZE_FIELD(first);
+    FROZEN_MAXIMIZE_FIELD(second);
+    return pos;
+  }
+
   FieldPosition layout(LayoutRoot& root,
                        const std::pair<First, Second>& o,
                        LayoutPosition self) {

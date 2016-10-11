@@ -37,6 +37,14 @@ struct ArrayLayout : public LayoutBase {
         countField(2, "count"),
         itemField(3, "item") {}
 
+  FieldPosition maximize() {
+    FieldPosition pos = startFieldPosition();
+    pos = maximizeField(pos, distanceField);
+    pos = maximizeField(pos, countField);
+    maximizeField(FieldPosition(), itemField);
+    return pos;
+  }
+
   FieldPosition layout(LayoutRoot& root, const T& coll, LayoutPosition self) {
     FieldPosition pos = startFieldPosition();
     size_t n = coll.size();
@@ -57,11 +65,11 @@ struct ArrayLayout : public LayoutBase {
   }
 
   virtual FieldPosition layoutItems(LayoutRoot& root,
-                                    const T& coll,
+      const T& coll,
                                     LayoutPosition self,
                                     FieldPosition pos,
-                                    LayoutPosition write,
-                                    FieldPosition writeStep) {
+      LayoutPosition write,
+      FieldPosition writeStep) {
     FieldPosition noField; // not really used
     for (const auto& it : coll) {
       root.layoutField(write, noField, this->itemField, it);

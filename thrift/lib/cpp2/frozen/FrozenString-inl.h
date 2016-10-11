@@ -59,6 +59,13 @@ struct StringLayout : public LayoutBase {
         distanceField(1, "distance"),
         countField(2, "count") {}
 
+  FieldPosition maximize() {
+    FieldPosition pos = startFieldPosition();
+    FROZEN_MAXIMIZE_FIELD(distance);
+    FROZEN_MAXIMIZE_FIELD(count);
+    return pos;
+  }
+
   FieldPosition layout(LayoutRoot& root, const T& o, LayoutPosition self) {
     FieldPosition pos = startFieldPosition();
     size_t n = Helper::size(o);

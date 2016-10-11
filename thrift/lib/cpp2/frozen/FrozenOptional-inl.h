@@ -29,6 +29,13 @@ struct OptionalLayout : public LayoutBase {
   OptionalLayout()
       : LayoutBase(typeid(T)), issetField(1, "isset"), valueField(2, "value") {}
 
+  FieldPosition maximize() {
+    FieldPosition pos = startFieldPosition();
+    FROZEN_MAXIMIZE_FIELD(isset);
+    FROZEN_MAXIMIZE_FIELD(value);
+    return pos;
+  }
+
   FieldPosition layout(LayoutRoot& root,
                        const folly::Optional<T>& o,
                        LayoutPosition self) {

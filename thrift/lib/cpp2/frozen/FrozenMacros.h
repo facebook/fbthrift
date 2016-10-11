@@ -51,6 +51,7 @@
     typedef Layout LayoutSelf;                                               \
     Layout();                                                                \
     typedef TYPE T;                                                          \
+    FieldPosition maximize();                                                \
     FieldPosition layout(LayoutRoot& root, const T& x, LayoutPosition self); \
     void freeze(FreezeRoot& root, const T& x, FreezePosition self) const;    \
     void thaw(ViewPosition self, T& out) const;                              \
@@ -64,6 +65,15 @@
 #define FROZEN_CTOR_FIELD_REQ FROZEN_CTOR_FIELD
 #define FROZEN_CTOR(TYPE, ...) \
   inline Layout<TYPE>::Layout() : LayoutBase(typeid(TYPE)) __VA_ARGS__ {}
+
+#define FROZEN_MAXIMIZE_FIELD(NAME) pos = maximizeField(pos, this->NAME##Field);
+
+#define FROZEN_MAXIMIZE(TYPE, ...)                \
+  inline FieldPosition Layout<TYPE>::maximize() { \
+    FieldPosition pos = startFieldPosition();     \
+    __VA_ARGS__;                                  \
+    return pos;                                   \
+  }
 
 #define FROZEN_LAYOUT_FIELD(NAME) \
   pos = root.layoutField(self, pos, this->NAME##Field, x.NAME);

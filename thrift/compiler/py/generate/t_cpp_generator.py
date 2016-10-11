@@ -4044,6 +4044,7 @@ class CppGenerator(t_generator.Generator):
 
         for (typeFmt, fieldFmt) in [
                 ('CTOR', 'CTOR_FIELD{_opt}({name}, {id})'),
+                ('MAXIMIZE', 'MAXIMIZE_FIELD({name})'),
                 ('LAYOUT', 'LAYOUT_FIELD{_opt}({name})'),
                 ('FREEZE', 'FREEZE_FIELD{_opt}({name})'),
                 ('THAW', 'THAW_FIELD{_opt}({name})'),
