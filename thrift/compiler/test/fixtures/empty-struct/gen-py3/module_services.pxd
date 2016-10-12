@@ -1,2 +1,2 @@
-from py3_thrift_server cimport cServerInterface
+from thrift.lib.py3.thrift_server cimport cServerInterface
 

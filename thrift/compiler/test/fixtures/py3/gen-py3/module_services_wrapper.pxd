@@ -1,6 +1,6 @@
 from cpython.ref cimport PyObject
 from libcpp.memory cimport shared_ptr
-from py3_thrift_server cimport cServerInterface
+from thrift.lib.py3.thrift_server cimport cServerInterface
 
 from module_services cimport cSimpleServiceSvIf
 

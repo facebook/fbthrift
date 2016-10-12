@@ -1,4 +1,4 @@
-from libcpp.memory cimport shared_ptr, make_shared
+from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from cpython cimport bool as pbool

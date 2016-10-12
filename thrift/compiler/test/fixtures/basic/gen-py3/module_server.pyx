@@ -1,5 +1,9 @@
 from cpython.ref cimport PyObject
-include "thriftlib/py3_thrift_server.pxi"
+from thrift.lib.py3.thrift_server cimport (
+  ServiceInterface,
+  cTApplicationException
+)
+from folly_futures cimport cFollyPromise, cFollyUnit, c_unit
 include "module_types.pxi"
 include "module_promises.pxi"
 include "module_callbacks.pxi"
