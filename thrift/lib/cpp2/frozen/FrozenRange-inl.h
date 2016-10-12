@@ -212,8 +212,8 @@ struct ArrayLayout : public LayoutBase {
     class Iterator : public std::iterator<std::random_access_iterator_tag,
                                           ItemView,
                                           std::ptrdiff_t,
-                                          void,
-                                          void> {
+                                          ItemView,
+                                          ItemView> {
      public:
       Iterator(const byte* data, size_t index, const Layout<Item>* itemLayout)
           : index_(index),
