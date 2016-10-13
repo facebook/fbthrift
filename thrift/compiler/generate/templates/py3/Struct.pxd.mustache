@@ -32,5 +32,13 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
 {{#program:structs}}
 {{#first?}}cdef extern from "<utility>" namespace "std" nogil:{{/first?}}
     cdef shared_ptr[c{{struct:name}}] move(unique_ptr[c{{struct:name}}])
-    cdef shared_ptr[c{{struct:name}}] move(shared_ptr[c{{struct:name}}])
+{{/program:structs}}
+
+{{#program:structs}}
+cdef class {{struct:name}}:
+    cdef shared_ptr[c{{struct:name}}] c_{{struct:name}}
+
+    @staticmethod
+    cdef create(shared_ptr[c{{struct:name}}] c_{{struct:name}})
+
 {{/program:structs}}

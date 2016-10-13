@@ -13,4 +13,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cSimpleStruct] move(unique_ptr[cSimpleStruct])
-    cdef shared_ptr[cSimpleStruct] move(shared_ptr[cSimpleStruct])
+
+cdef class SimpleStruct:
+    cdef shared_ptr[cSimpleStruct] c_SimpleStruct
+
+    @staticmethod
+    cdef create(shared_ptr[cSimpleStruct] c_SimpleStruct)
+

@@ -23,14 +23,12 @@ from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from cython.operator cimport dereference as deref
 
 {{#program:structs}}
-{{#first?}}from {{program:name}}_types cimport (
-    move,{{/first?}}
+{{#first?}}from {{program:name}}_types cimport ({{/first?}}
     c{{struct:name}}{{^last?}},{{/last?}}{{#last?}}
 ){{/last?}}{{/program:structs}}
 
 {{#program:structs}}
 cdef class {{struct:name}}:
-    cdef shared_ptr[c{{struct:name}}] c_{{struct:name}}
     {{!Memoized Python wrappers of struct fields, created lazily}}
     {{#struct:fields}}
     {{#field:type}}{{#type:struct}}

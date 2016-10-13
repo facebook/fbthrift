@@ -70,7 +70,7 @@ mstch::map t_mstch_py3_generator::extend_program(const t_program& program) const
 void t_mstch_py3_generator::generate_structs(const t_program& program) {
   auto basename = program.get_name() + "_types";
   this->render_to_file(program, "Struct.pxd", basename + ".pxd");
-  this->render_to_file(program, "Struct.pxi", basename + ".pxi");
+  this->render_to_file(program, "Struct.pyx", basename + ".pyx");
 }
 
 void t_mstch_py3_generator::generate_services(const t_program& program) {

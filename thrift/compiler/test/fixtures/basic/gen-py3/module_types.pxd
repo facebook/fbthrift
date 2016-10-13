@@ -13,4 +13,10 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cMyStruct] move(unique_ptr[cMyStruct])
-    cdef shared_ptr[cMyStruct] move(shared_ptr[cMyStruct])
+
+cdef class MyStruct:
+    cdef shared_ptr[cMyStruct] c_MyStruct
+
+    @staticmethod
+    cdef create(shared_ptr[cMyStruct] c_MyStruct)
+

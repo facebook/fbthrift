@@ -6,12 +6,10 @@ from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from cython.operator cimport dereference as deref
 
 from module_types cimport (
-    move,
     cSimpleStruct
 )
 
 cdef class SimpleStruct:
-    cdef shared_ptr[cSimpleStruct] c_SimpleStruct
 
     def __init__(
         self,

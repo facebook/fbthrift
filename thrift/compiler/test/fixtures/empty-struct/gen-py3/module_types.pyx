@@ -6,12 +6,10 @@ from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from cython.operator cimport dereference as deref
 
 from module_types cimport (
-    move,
     cEmpty
 )
 
 cdef class Empty:
-    cdef shared_ptr[cEmpty] c_Empty
 
     def __init__(
         self
