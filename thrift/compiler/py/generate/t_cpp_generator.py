@@ -104,7 +104,6 @@ class CppGenerator(t_generator.Generator):
         'optionals': "produce folly::Optional<...> for optional members",
         'fatal': '(deprecated) use `reflection` instead',
         'reflection': 'generate static reflection metadata',
-        'namespace_cpp': 'skip the cpp2 namespace component (temporary hack)',
         'lean_mean_meta_machine': 'use templated Fatal metadata based codegen',
     }
     _out_dir_base = 'gen-cpp2'
@@ -353,8 +352,7 @@ class CppGenerator(t_generator.Generator):
             return ns
         ns = program.get_namespace('cpp')
         parts = filter(None, ns.split('.'))
-        if not self.flag_namespace_cpp:
-            parts.append('cpp2')
+        parts.append('cpp2')
         return '.'.join(parts)
 
     def _namespace_prefix(self, ns):
