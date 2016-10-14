@@ -24,6 +24,22 @@ class SimpleServiceWrapper : public SimpleServiceSvIf {
       folly::Future<int32_t> future_get_value(
         std::unique_ptr<py3::simple::SimpleStruct> simple_struct
       );
+      folly::Future<bool> future_negate(
+        bool input
+      );
+      folly::Future<int8_t> future_tiny(
+        int8_t input
+      );
+      folly::Future<int16_t> future_small(
+        int16_t input
+      );
+      folly::Future<int64_t> future_big(
+        int64_t input
+      );
+      folly::Future<double> future_two(
+        double input
+      );
+      folly::Future<int32_t> future_unexpected_exception();
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object);

@@ -71,6 +71,75 @@ folly::Future<int32_t> SimpleServiceWrapper::future_get_value(
   return promise->getFuture();
 }
 
+folly::Future<bool> SimpleServiceWrapper::future_negate(
+  bool input
+) {
+  auto promise = std::make_shared<folly::Promise<bool>>();
+  call_cy_SimpleService_negate(
+    this->if_object,
+    promise,
+    input
+  );
+  return promise->getFuture();
+}
+
+folly::Future<int8_t> SimpleServiceWrapper::future_tiny(
+  int8_t input
+) {
+  auto promise = std::make_shared<folly::Promise<int8_t>>();
+  call_cy_SimpleService_tiny(
+    this->if_object,
+    promise,
+    input
+  );
+  return promise->getFuture();
+}
+
+folly::Future<int16_t> SimpleServiceWrapper::future_small(
+  int16_t input
+) {
+  auto promise = std::make_shared<folly::Promise<int16_t>>();
+  call_cy_SimpleService_small(
+    this->if_object,
+    promise,
+    input
+  );
+  return promise->getFuture();
+}
+
+folly::Future<int64_t> SimpleServiceWrapper::future_big(
+  int64_t input
+) {
+  auto promise = std::make_shared<folly::Promise<int64_t>>();
+  call_cy_SimpleService_big(
+    this->if_object,
+    promise,
+    input
+  );
+  return promise->getFuture();
+}
+
+folly::Future<double> SimpleServiceWrapper::future_two(
+  double input
+) {
+  auto promise = std::make_shared<folly::Promise<double>>();
+  call_cy_SimpleService_two(
+    this->if_object,
+    promise,
+    input
+  );
+  return promise->getFuture();
+}
+
+folly::Future<int32_t> SimpleServiceWrapper::future_unexpected_exception() {
+  auto promise = std::make_shared<folly::Promise<int32_t>>();
+  call_cy_SimpleService_unexpected_exception(
+    this->if_object,
+    promise
+  );
+  return promise->getFuture();
+}
+
 std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object) {
   return std::make_shared<SimpleServiceWrapper>(if_object);
 }

@@ -174,3 +174,214 @@ async def SimpleService_get_value_coro(
     else:
         deref(promise.cPromise).setValue(<int32_t> result)
 
+cdef public void call_cy_SimpleService_negate(
+    object self,
+    shared_ptr[cFollyPromise[cbool]] cPromise,
+    cbool input
+) with gil:
+    promise = Promise_bool.create(cPromise)
+    arg_input = input
+
+    func = functools.partial(
+        asyncio.ensure_future,
+        SimpleService_negate_coro(
+            self,
+            promise,
+            arg_input),
+        loop=self.loop)
+    self.loop.call_soon_threadsafe(func)
+
+async def SimpleService_negate_coro(
+    object self,
+    Promise_bool promise,
+    input
+):
+    try:
+      result = await self.negate(
+          input)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler negate:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(<cbool> result)
+
+cdef public void call_cy_SimpleService_tiny(
+    object self,
+    shared_ptr[cFollyPromise[int8_t]] cPromise,
+    int8_t input
+) with gil:
+    promise = Promise_byte.create(cPromise)
+    arg_input = input
+
+    func = functools.partial(
+        asyncio.ensure_future,
+        SimpleService_tiny_coro(
+            self,
+            promise,
+            arg_input),
+        loop=self.loop)
+    self.loop.call_soon_threadsafe(func)
+
+async def SimpleService_tiny_coro(
+    object self,
+    Promise_byte promise,
+    input
+):
+    try:
+      result = await self.tiny(
+          input)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler tiny:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(<int8_t> result)
+
+cdef public void call_cy_SimpleService_small(
+    object self,
+    shared_ptr[cFollyPromise[int16_t]] cPromise,
+    int16_t input
+) with gil:
+    promise = Promise_i16.create(cPromise)
+    arg_input = input
+
+    func = functools.partial(
+        asyncio.ensure_future,
+        SimpleService_small_coro(
+            self,
+            promise,
+            arg_input),
+        loop=self.loop)
+    self.loop.call_soon_threadsafe(func)
+
+async def SimpleService_small_coro(
+    object self,
+    Promise_i16 promise,
+    input
+):
+    try:
+      result = await self.small(
+          input)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler small:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(<int16_t> result)
+
+cdef public void call_cy_SimpleService_big(
+    object self,
+    shared_ptr[cFollyPromise[int64_t]] cPromise,
+    int64_t input
+) with gil:
+    promise = Promise_i64.create(cPromise)
+    arg_input = input
+
+    func = functools.partial(
+        asyncio.ensure_future,
+        SimpleService_big_coro(
+            self,
+            promise,
+            arg_input),
+        loop=self.loop)
+    self.loop.call_soon_threadsafe(func)
+
+async def SimpleService_big_coro(
+    object self,
+    Promise_i64 promise,
+    input
+):
+    try:
+      result = await self.big(
+          input)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler big:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(<int64_t> result)
+
+cdef public void call_cy_SimpleService_two(
+    object self,
+    shared_ptr[cFollyPromise[double]] cPromise,
+    double input
+) with gil:
+    promise = Promise_double.create(cPromise)
+    arg_input = input
+
+    func = functools.partial(
+        asyncio.ensure_future,
+        SimpleService_two_coro(
+            self,
+            promise,
+            arg_input),
+        loop=self.loop)
+    self.loop.call_soon_threadsafe(func)
+
+async def SimpleService_two_coro(
+    object self,
+    Promise_double promise,
+    input
+):
+    try:
+      result = await self.two(
+          input)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler two:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(<double> result)
+
+cdef public void call_cy_SimpleService_unexpected_exception(
+    object self,
+    shared_ptr[cFollyPromise[int32_t]] cPromise
+) with gil:
+    promise = Promise_i32.create(cPromise)
+
+    func = functools.partial(
+        asyncio.ensure_future,
+        SimpleService_unexpected_exception_coro(
+            self,
+            promise),
+        loop=self.loop)
+    self.loop.call_soon_threadsafe(func)
+
+async def SimpleService_unexpected_exception_coro(
+    object self,
+    Promise_i32 promise
+):
+    try:
+      result = await self.unexpected_exception()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler unexpected_exception:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(<int32_t> result)
+

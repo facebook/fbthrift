@@ -13,11 +13,19 @@ cdef class SimpleStruct:
 
     def __init__(
         self,
-        int key,
-        int value
+         is_on,
+         tiny_int,
+        int small_int,
+        int nice_sized_int,
+        int big_int,
+         real
     ):
-        deref(self.c_SimpleStruct).key = key
-        deref(self.c_SimpleStruct).value = value
+        deref(self.c_SimpleStruct).is_on = is_on
+        deref(self.c_SimpleStruct).tiny_int = tiny_int
+        deref(self.c_SimpleStruct).small_int = small_int
+        deref(self.c_SimpleStruct).nice_sized_int = nice_sized_int
+        deref(self.c_SimpleStruct).big_int = big_int
+        
         
     @staticmethod
     cdef create(shared_ptr[cSimpleStruct] c_SimpleStruct):
@@ -26,11 +34,27 @@ cdef class SimpleStruct:
         return inst
 
     @property
-    def key(self):
-        return self.c_SimpleStruct.get().key
+    def is_on(self):
+        return <pbool> self.c_SimpleStruct.get().is_on
 
     @property
-    def value(self):
-        return self.c_SimpleStruct.get().value
+    def tiny_int(self):
+        return self.c_SimpleStruct.get().tiny_int
+
+    @property
+    def small_int(self):
+        return self.c_SimpleStruct.get().small_int
+
+    @property
+    def nice_sized_int(self):
+        return self.c_SimpleStruct.get().nice_sized_int
+
+    @property
+    def big_int(self):
+        return self.c_SimpleStruct.get().big_int
+
+    @property
+    def real(self):
+        return self.c_SimpleStruct.get().real
 
 

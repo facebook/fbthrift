@@ -7,8 +7,12 @@ from libcpp.memory cimport shared_ptr, unique_ptr
 cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
     cdef cppclass cSimpleStruct "py3::simple::SimpleStruct":
         cSimpleStruct() except +
-        int32_t key
-        int32_t value
+        cbool is_on
+        int8_t tiny_int
+        int16_t small_int
+        int32_t nice_sized_int
+        int64_t big_int
+        double real
 
 
 cdef extern from "<utility>" namespace "std" nogil:
