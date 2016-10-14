@@ -15,8 +15,8 @@
   limitations under the License.
 
 }}
+{{#program:returnTypes}}
 
-{{#returnTypes}}
 cdef class Promise_{{type:name}}:
     cdef shared_ptr[cFollyPromise[{{>CythonFieldType}}]] cPromise
 
@@ -27,5 +27,4 @@ cdef class Promise_{{type:name}}:
         }}Promise_{{type:name}})
         inst.cPromise = cPromise
         return inst
-
-{{/returnTypes}}
+{{/program:returnTypes}}

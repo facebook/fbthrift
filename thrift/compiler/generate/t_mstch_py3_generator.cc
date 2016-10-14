@@ -43,7 +43,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
   protected:
     void generate_structs(const t_program&);
     void generate_services(const t_program&);
-    void generate_promises(const t_program&);
+    mstch::array get_return_types(const t_program&) const;
 };
 
 mstch::map t_mstch_py3_generator::extend_program(const t_program& program) const {
@@ -61,7 +61,7 @@ mstch::map t_mstch_py3_generator::extend_program(const t_program& program) const
   boost::algorithm::split(ns, cpp_namespace, boost::algorithm::is_any_of("."));
 
   mstch::map result {
-    {"cppNamespaces?", !cpp_namespace.empty()},
+    {"returnTypes", this->get_return_types(program)},
     {"cppNamespaces", this->dump_elems(ns)},
   };
   return result;
@@ -77,17 +77,18 @@ void t_mstch_py3_generator::generate_services(const t_program& program) {
   auto name = this->get_program()->get_name();
   this->render_to_file(program, "Services.pxd", name + "_services.pxd");
   this->render_to_file(
-    program, "ServiceCallbacks.pxi", name + "_callbacks.pxi");
+    program, "ServiceCallbacks", name + "_callbacks.pyx");
   auto basename = name + "_services_wrapper";
   this->render_to_file(program, "ServicesWrapper.h", basename + ".h");
   this->render_to_file(program, "ServicesWrapper.cpp", basename + ".cpp");
   this->render_to_file(program, "ServicesWrapper.pxd", basename + ".pxd");
-  this->render_to_file(program, "ServiceCallbacks.pxi", basename + ".pxi");
   this->render_to_file(program, "CythonServer.pyx", name + "_server.pyx");
 
 }
 
-void t_mstch_py3_generator::generate_promises(const t_program& program) {
+mstch::array t_mstch_py3_generator::get_return_types(
+  const t_program& program
+) const {
   mstch::array distinct_return_types;
   std::set<string> visited_names;
 
@@ -100,20 +101,13 @@ void t_mstch_py3_generator::generate_promises(const t_program& program) {
       }
     }
   }
-
-  mstch::map context {
-    {"returnTypes", distinct_return_types},
-  };
-
-  auto rendered_context = this->render("CythonPromises", context);
-  this->write_output(this->get_program()->get_name() + "_promises.pxi", rendered_context);
+  return distinct_return_types;
 }
 
 void t_mstch_py3_generator::generate_program() {
   mstch::config::escape = [](const std::string& s) { return s; };
   this->generate_structs(*this->get_program());
   this->generate_services(*this->get_program());
-  this->generate_promises(*this->get_program());
 }
 
 THRIFT_REGISTER_GENERATOR(

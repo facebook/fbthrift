@@ -27,6 +27,12 @@ from thrift.lib.py3.thrift_server cimport (
   cTApplicationException
 )
 from folly_futures cimport cFollyPromise, cFollyUnit, c_unit
+
+import asyncio
+import functools
+import sys
+import traceback
+
 {{#program:structs}}
 {{#first?}}from {{program:name}}_types cimport (
     move,{{/first?}}
@@ -34,9 +40,8 @@ from folly_futures cimport cFollyPromise, cFollyUnit, c_unit
     c{{struct:name}}{{^last?}},{{/last?}}{{#last?}}
 ){{/last?}}{{/program:structs}}
 
-include "{{program:name}}_promises.pxi"
-include "{{program:name}}_callbacks.pxi"
-
+{{> CythonPromises}}
+{{> ServiceCallbacks}}
 
 {{#program:services}}
 from {{program:name}}_services_wrapper cimport c{{service:name}}Interface

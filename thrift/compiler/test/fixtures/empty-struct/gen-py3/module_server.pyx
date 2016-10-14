@@ -10,14 +10,18 @@ from thrift.lib.py3.thrift_server cimport (
   cTApplicationException
 )
 from folly_futures cimport cFollyPromise, cFollyUnit, c_unit
+
+import asyncio
+import functools
+import sys
+import traceback
+
 from module_types cimport (
     move,
     Empty,
     cEmpty
 )
 
-include "module_promises.pxi"
-include "module_callbacks.pxi"
 
 
 
