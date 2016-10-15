@@ -39,11 +39,21 @@ class t_mstch_py3_generator : public t_mstch_generator {
 
     void generate_program() override;
     mstch::map extend_program(const t_program&) const override;
+    mstch::map extend_type(const t_type&) const override;
 
   protected:
     void generate_structs(const t_program&);
     void generate_services(const t_program&);
     mstch::array get_return_types(const t_program&) const;
+    mstch::array get_container_types(const t_program&) const;
+    string flatten_type_name(const t_type&) const;
+
+  private:
+    void load_container_type(
+      vector<t_type*>& container_types,
+      std::set<string>& visited_names,
+      t_type* type
+    ) const;
 };
 
 mstch::map t_mstch_py3_generator::extend_program(const t_program& program) const {
@@ -62,7 +72,15 @@ mstch::map t_mstch_py3_generator::extend_program(const t_program& program) const
 
   mstch::map result {
     {"returnTypes", this->get_return_types(program)},
+    {"containerTypes", this->get_container_types(program)},
     {"cppNamespaces", this->dump_elems(ns)},
+  };
+  return result;
+}
+
+mstch::map  t_mstch_py3_generator::extend_type(const t_type& type) const {
+  mstch::map result {
+    {"flat_name", this->flatten_type_name(type)},
   };
   return result;
 }
@@ -76,8 +94,6 @@ void t_mstch_py3_generator::generate_structs(const t_program& program) {
 void t_mstch_py3_generator::generate_services(const t_program& program) {
   auto name = this->get_program()->get_name();
   this->render_to_file(program, "Services.pxd", name + "_services.pxd");
-  this->render_to_file(
-    program, "ServiceCallbacks", name + "_callbacks.pyx");
   auto basename = name + "_services_wrapper";
   this->render_to_file(program, "ServicesWrapper.h", basename + ".h");
   this->render_to_file(program, "ServicesWrapper.cpp", basename + ".cpp");
@@ -102,6 +118,71 @@ mstch::array t_mstch_py3_generator::get_return_types(
     }
   }
   return distinct_return_types;
+}
+
+mstch::array t_mstch_py3_generator::get_container_types(
+  const t_program& program
+) const {
+  vector<t_type*> container_types;
+  std::set<string> visited_names;
+
+  for (const auto service : program.get_services()) {
+    for (const auto function : service->get_functions()) {
+      for (const auto field : function->get_arglist()->get_members()) {
+        auto arg_type = field->get_type();
+        this->load_container_type(
+          container_types,
+          visited_names,
+          arg_type
+        );
+      }
+      auto return_type = function->get_returntype();
+      this->load_container_type(container_types, visited_names, return_type);
+    }
+  }
+  for (const auto object :program.get_objects()) {
+    for (const auto field : object->get_members()) {
+      auto ref_type = field->get_type();
+      this->load_container_type(container_types, visited_names, ref_type);
+    }
+  }
+  return this->dump_elems(container_types);
+}
+
+void t_mstch_py3_generator::load_container_type(
+  vector<t_type*>& container_types,
+  std::set<string>& visited_names,
+  t_type* type
+) const {
+  if (!type->is_container()) return;
+  string flat_name = this->flatten_type_name(*type);
+  if (visited_names.count(flat_name)) return;
+
+  visited_names.insert(flat_name);
+  container_types.push_back(type);
+}
+
+string t_mstch_py3_generator::flatten_type_name(const t_type& type) const {
+    if (type.is_list()) {
+      return "List__" + this->flatten_type_name(
+        *dynamic_cast<const t_list&>(type).get_elem_type()
+      );
+  } else if (type.is_set()) {
+    return "Set__" + this->flatten_type_name(
+      *dynamic_cast<const t_set&>(type).get_elem_type()
+    );
+  } else if (type.is_map()) {
+      return ("Map__" +
+        this->flatten_type_name(
+          *dynamic_cast<const t_map&>(type).get_key_type()
+        ) + "_" +
+        this->flatten_type_name(
+          *dynamic_cast<const t_map&>(type).get_val_type()
+        )
+      );
+  } else {
+    return type.get_name();
+  }
 }
 
 void t_mstch_py3_generator::generate_program() {
