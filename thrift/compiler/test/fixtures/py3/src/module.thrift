@@ -1,5 +1,9 @@
 namespace cpp2 py3.simple
 
+exception SimpleException {
+  1: i16 err_code
+}
+
 struct SimpleStruct {
   1: bool is_on
   2: byte tiny_int
@@ -20,5 +24,6 @@ service SimpleService {
   i16 small(1: i16 input)
   i64 big(1: i64 input)
   double two(1: double input)
+  void expected_exception() throws (1: SimpleException se)
   i32 unexpected_exception()
 }

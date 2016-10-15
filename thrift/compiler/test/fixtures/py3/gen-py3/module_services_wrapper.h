@@ -39,6 +39,7 @@ class SimpleServiceWrapper : public SimpleServiceSvIf {
       folly::Future<double> future_two(
         double input
       );
+      folly::Future<folly::Unit> future_expected_exception();
       folly::Future<int32_t> future_unexpected_exception();
 };
 

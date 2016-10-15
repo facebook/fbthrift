@@ -4,10 +4,32 @@ from libcpp cimport bool as cbool
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from cython.operator cimport dereference as deref
+from thrift.lib.py3.thrift_server cimport TException
 
 from module_types cimport (
+    cSimpleException,
     cSimpleStruct
 )
+
+cdef class SimpleException(TException):
+
+    def __init__(
+        self,
+        int err_code
+    ):
+        self.c_SimpleException = make_shared[cSimpleException]()
+        deref(self.c_SimpleException).err_code = err_code
+        
+    @staticmethod
+    cdef create(shared_ptr[cSimpleException] c_SimpleException):
+        inst = <SimpleException>SimpleException.__new__(SimpleException)
+        inst.c_SimpleException = c_SimpleException
+        return inst
+
+    @property
+    def err_code(self):
+        return self.c_SimpleException.get().err_code
+
 
 cdef class SimpleStruct:
 
@@ -20,6 +42,7 @@ cdef class SimpleStruct:
         int big_int,
          real
     ):
+        self.c_SimpleStruct = make_shared[cSimpleStruct]()
         deref(self.c_SimpleStruct).is_on = is_on
         deref(self.c_SimpleStruct).tiny_int = tiny_int
         deref(self.c_SimpleStruct).small_int = small_int

@@ -20,6 +20,7 @@ from libcpp cimport bool as cbool
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.memory cimport shared_ptr, unique_ptr
+from thrift.lib.py3.thrift_server cimport cTException, TException
 
 {{#program:structs}}
 {{#first?}}
@@ -31,11 +32,10 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
 
 {{#program:structs}}
 {{#first?}}cdef extern from "<utility>" namespace "std" nogil:{{/first?}}
-    cdef shared_ptr[c{{struct:name}}] move(unique_ptr[c{{struct:name}}])
-{{/program:structs}}
+    cdef shared_ptr[c{{struct:name}}] move(unique_ptr[c{{struct:name}}]){{/program:structs}}
 
 {{#program:structs}}
-cdef class {{struct:name}}:
+cdef class {{struct:name}}{{#struct:exception?}}(TException){{/struct:exception?}}:
     cdef shared_ptr[c{{struct:name}}] c_{{struct:name}}
 
     @staticmethod

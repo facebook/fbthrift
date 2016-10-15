@@ -48,6 +48,12 @@ async def {{service:name}}_{{function:name}}_coro(
     try:
       result = await self.{{function:name}}({{#function:args}}
           {{field:name}}{{^last?}},{{/last?}}{{/function:args}})
+    {{#function:exceptions}}
+    {{#field:type}}
+    except {{type:name}} as ex:
+        deref(promise.cPromise).setException(deref((<{{type:name}}> ex).c_{{type:name}}.get()))
+    {{/field:type}}
+    {{/function:exceptions}}
     except Exception as ex:
         print(
             "Unexpected error in service handler {{service:name.}}{{function:name}}:",

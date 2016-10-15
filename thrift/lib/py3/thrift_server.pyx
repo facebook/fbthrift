@@ -4,7 +4,6 @@ from libcpp.memory cimport unique_ptr, make_unique, shared_ptr
 from thrift_server cimport (
     cThriftServer,
     cServerInterface,
-    cTApplicationException,
     ServiceInterface
 )
 from folly_futures cimport cFollyPromise, cFollyUnit, c_unit

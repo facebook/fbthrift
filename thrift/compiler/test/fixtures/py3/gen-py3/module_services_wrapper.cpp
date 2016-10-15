@@ -131,6 +131,15 @@ folly::Future<double> SimpleServiceWrapper::future_two(
   return promise->getFuture();
 }
 
+folly::Future<folly::Unit> SimpleServiceWrapper::future_expected_exception() {
+  auto promise = std::make_shared<folly::Promise<folly::Unit>>();
+  call_cy_SimpleService_expected_exception(
+    this->if_object,
+    promise
+  );
+  return promise->getFuture();
+}
+
 folly::Future<int32_t> SimpleServiceWrapper::future_unexpected_exception() {
   auto promise = std::make_shared<folly::Promise<int32_t>>();
   call_cy_SimpleService_unexpected_exception(

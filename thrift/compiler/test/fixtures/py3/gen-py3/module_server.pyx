@@ -18,6 +18,8 @@ import traceback
 
 from module_types cimport (
     move,
+    SimpleException,
+    cSimpleException,
     SimpleStruct,
     cSimpleStruct
 )
@@ -450,6 +452,39 @@ async def SimpleService_two_coro(
     else:
         deref(promise.cPromise).setValue(<double> result)
 
+cdef public void call_cy_SimpleService_expected_exception(
+    object self,
+    shared_ptr[cFollyPromise[cFollyUnit]] cPromise
+) with gil:
+    promise = Promise_void.create(cPromise)
+
+    func = functools.partial(
+        asyncio.ensure_future,
+        SimpleService_expected_exception_coro(
+            self,
+            promise),
+        loop=self.loop)
+    self.loop.call_soon_threadsafe(func)
+
+async def SimpleService_expected_exception_coro(
+    object self,
+    Promise_void promise
+):
+    try:
+      result = await self.expected_exception()
+    except SimpleException as ex:
+        deref(promise.cPromise).setException(deref((<SimpleException> ex).c_SimpleException.get()))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler expected_exception:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(c_unit)
+
 cdef public void call_cy_SimpleService_unexpected_exception(
     object self,
     shared_ptr[cFollyPromise[int32_t]] cPromise
@@ -548,6 +583,11 @@ cdef class SimpleServiceInterface(ServiceInterface):
             self,
             input):
         raise NotImplementedError("async def two is not implemented")
+
+
+    async def expected_exception(
+            self):
+        raise NotImplementedError("async def expected_exception is not implemented")
 
 
     async def unexpected_exception(

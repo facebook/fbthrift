@@ -21,6 +21,7 @@ from libcpp cimport bool as cbool
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from cython.operator cimport dereference as deref
+from thrift.lib.py3.thrift_server cimport TException
 
 {{#program:structs}}
 {{#first?}}from {{program:name}}_types cimport ({{/first?}}
@@ -28,7 +29,7 @@ from cython.operator cimport dereference as deref
 ){{/last?}}{{/program:structs}}
 
 {{#program:structs}}
-cdef class {{struct:name}}:
+cdef class {{struct:name}}{{#struct:exception?}}(TException){{/struct:exception?}}:
     {{!Memoized Python wrappers of struct fields, created lazily}}
     {{#struct:fields}}
     {{#field:type}}{{#type:struct}}
@@ -41,6 +42,7 @@ cdef class {{struct:name}}:
         {{#field:type}}{{> PythonFieldType}}{{/field:type}}{{!
         }} {{field:name}}{{/struct:fields}}
     ):
+        self.c_{{struct:name}} = make_shared[c{{struct:name}}]()
         {{#struct:fields}}
         {{#field:type}}
         {{> CythonAssignField}}
