@@ -54,47 +54,44 @@ class NestedContainersAsyncProcessor;
 class NestedContainersSvIf : public NestedContainersSvAsyncIf, public apache::thrift::ServerInterface {
  public:
   typedef NestedContainersAsyncProcessor ProcessorType;
-
-  virtual ~NestedContainersSvIf() {}
-  virtual std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor();
+  std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   virtual void mapList(std::unique_ptr<std::map<int32_t, std::vector<int32_t>>> /*foo*/);
-  folly::Future<folly::Unit> future_mapList(std::unique_ptr<std::map<int32_t, std::vector<int32_t>>> foo);
-  virtual void async_tm_mapList(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<std::map<int32_t, std::vector<int32_t>>> foo);
+  folly::Future<folly::Unit> future_mapList(std::unique_ptr<std::map<int32_t, std::vector<int32_t>>> foo) override;
+  void async_tm_mapList(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<std::map<int32_t, std::vector<int32_t>>> foo) override;
   virtual void mapSet(std::unique_ptr<std::map<int32_t, std::set<int32_t>>> /*foo*/);
-  folly::Future<folly::Unit> future_mapSet(std::unique_ptr<std::map<int32_t, std::set<int32_t>>> foo);
-  virtual void async_tm_mapSet(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<std::map<int32_t, std::set<int32_t>>> foo);
+  folly::Future<folly::Unit> future_mapSet(std::unique_ptr<std::map<int32_t, std::set<int32_t>>> foo) override;
+  void async_tm_mapSet(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<std::map<int32_t, std::set<int32_t>>> foo) override;
   virtual void listMap(std::unique_ptr<std::vector<std::map<int32_t, int32_t>>> /*foo*/);
-  folly::Future<folly::Unit> future_listMap(std::unique_ptr<std::vector<std::map<int32_t, int32_t>>> foo);
-  virtual void async_tm_listMap(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<std::vector<std::map<int32_t, int32_t>>> foo);
+  folly::Future<folly::Unit> future_listMap(std::unique_ptr<std::vector<std::map<int32_t, int32_t>>> foo) override;
+  void async_tm_listMap(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<std::vector<std::map<int32_t, int32_t>>> foo) override;
   virtual void listSet(std::unique_ptr<std::vector<std::set<int32_t>>> /*foo*/);
-  folly::Future<folly::Unit> future_listSet(std::unique_ptr<std::vector<std::set<int32_t>>> foo);
-  virtual void async_tm_listSet(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<std::vector<std::set<int32_t>>> foo);
+  folly::Future<folly::Unit> future_listSet(std::unique_ptr<std::vector<std::set<int32_t>>> foo) override;
+  void async_tm_listSet(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<std::vector<std::set<int32_t>>> foo) override;
   virtual void turtles(std::unique_ptr<std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>> /*foo*/);
-  folly::Future<folly::Unit> future_turtles(std::unique_ptr<std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>> foo);
-  virtual void async_tm_turtles(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>> foo);
+  folly::Future<folly::Unit> future_turtles(std::unique_ptr<std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>> foo) override;
+  void async_tm_turtles(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>> foo) override;
 };
 
 class NestedContainersSvNull : public NestedContainersSvIf {
  public:
-  virtual ~NestedContainersSvNull() {}
-  virtual void mapList(std::unique_ptr<std::map<int32_t, std::vector<int32_t>>> /*foo*/);
-  virtual void mapSet(std::unique_ptr<std::map<int32_t, std::set<int32_t>>> /*foo*/);
-  virtual void listMap(std::unique_ptr<std::vector<std::map<int32_t, int32_t>>> /*foo*/);
-  virtual void listSet(std::unique_ptr<std::vector<std::set<int32_t>>> /*foo*/);
-  virtual void turtles(std::unique_ptr<std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>> /*foo*/);
+  void mapList(std::unique_ptr<std::map<int32_t, std::vector<int32_t>>> /*foo*/) override;
+  void mapSet(std::unique_ptr<std::map<int32_t, std::set<int32_t>>> /*foo*/) override;
+  void listMap(std::unique_ptr<std::vector<std::map<int32_t, int32_t>>> /*foo*/) override;
+  void listSet(std::unique_ptr<std::vector<std::set<int32_t>>> /*foo*/) override;
+  void turtles(std::unique_ptr<std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>> /*foo*/) override;
 };
 
 class NestedContainersAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
  public:
-  virtual const char* getServiceName();
+  const char* getServiceName() override;
   using BaseAsyncProcessor = void;
  protected:
   NestedContainersSvIf* iface_;
-  virtual folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType);
+  folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) override;
  public:
-  virtual void process(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void process(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
  protected:
-  virtual bool isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header);
+  bool isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header) override;
  private:
   static std::unordered_set<std::string> onewayMethods_;
   static std::unordered_map<std::string, int16_t> cacheKeyMap_;

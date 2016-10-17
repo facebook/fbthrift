@@ -106,6 +106,8 @@ class Definition(Primitive):
         if self.pure_virtual:
             context.h.write(" = 0;")
             write_defn = False
+        elif self.override:
+            context.h.write(" override")
         elif self.default:
             context.h.write(" = default;")
             write_defn = False

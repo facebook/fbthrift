@@ -44,31 +44,28 @@ class MyServiceAsyncProcessor;
 class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerInterface {
  public:
   typedef MyServiceAsyncProcessor ProcessorType;
-
-  virtual ~MyServiceSvIf() {}
-  virtual std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor();
+  std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   virtual void query(std::unique_ptr< ::cpp2::MyStruct> /*s*/, std::unique_ptr< ::cpp2::Included> /*i*/);
-  folly::Future<folly::Unit> future_query(std::unique_ptr< ::cpp2::MyStruct> s, std::unique_ptr< ::cpp2::Included> i);
-  virtual void async_tm_query(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::cpp2::MyStruct> s, std::unique_ptr< ::cpp2::Included> i);
+  folly::Future<folly::Unit> future_query(std::unique_ptr< ::cpp2::MyStruct> s, std::unique_ptr< ::cpp2::Included> i) override;
+  void async_tm_query(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::cpp2::MyStruct> s, std::unique_ptr< ::cpp2::Included> i) override;
 };
 
 class MyServiceSvNull : public MyServiceSvIf {
  public:
-  virtual ~MyServiceSvNull() {}
-  virtual void query(std::unique_ptr< ::cpp2::MyStruct> /*s*/, std::unique_ptr< ::cpp2::Included> /*i*/);
+  void query(std::unique_ptr< ::cpp2::MyStruct> /*s*/, std::unique_ptr< ::cpp2::Included> /*i*/) override;
 };
 
 class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
  public:
-  virtual const char* getServiceName();
+  const char* getServiceName() override;
   using BaseAsyncProcessor = void;
  protected:
   MyServiceSvIf* iface_;
-  virtual folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType);
+  folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) override;
  public:
-  virtual void process(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void process(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
  protected:
-  virtual bool isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header);
+  bool isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header) override;
  private:
   static std::unordered_set<std::string> onewayMethods_;
   static std::unordered_map<std::string, int16_t> cacheKeyMap_;

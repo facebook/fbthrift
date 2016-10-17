@@ -937,9 +937,6 @@ class CppGenerator(t_generator.Generator):
                 self._type_name(service.extends) + "SvIf"
         with s.cls(class_signature):
             out().label('public:')
-            out().defn('~{0}()'.format(classname), name=classname,
-                   modifiers='virtual',
-                   in_header=True).scope.empty()
             for function in service.functions:
                 if not self._is_processed_in_eb(function) and \
                    not self._is_stream_type(function.returntype):
@@ -948,7 +945,7 @@ class CppGenerator(t_generator.Generator):
                                                                  function,
                                                                  True),
                             name=function.name,
-                            modifiers='virtual'):
+                            override=True):
                         if not function.oneway and \
                           not function.returntype.is_void and \
                           not self._is_complex_type(function.returntype):
@@ -1006,13 +1003,11 @@ class CppGenerator(t_generator.Generator):
         with s.cls(class_signature):
             out().label('public:')
             out('typedef ' + service.name + 'AsyncProcessor ProcessorType;')
-            out().defn('~{0}()'.format(classname), name=classname,
-                   modifiers='virtual',
-                   in_header=True).scope.empty()
-            with out().defn('std::unique_ptr<apache::thrift::AsyncProcessor>' +
-                        ' {name}()',
-                        name='getProcessor',
-                        modifiers='virtual'):
+            with out().defn(
+                    'std::unique_ptr<apache::thrift::AsyncProcessor>' +
+                    ' {name}()',
+                    name='getProcessor',
+                    override=True):
                 out('return folly::make_unique<{klass}AsyncProcessor>(this);'
                     .format(klass=service.name))
             for function in service.functions:
@@ -1031,7 +1026,7 @@ class CppGenerator(t_generator.Generator):
     def _generate_server_future_function(self, service, function):
         name = "future_" + function.name
         sig = self._get_process_function_signature_future(service, function)
-        with out().defn(sig, name=name):
+        with out().defn(sig, name=name, override=True):
             rettype = self._type_name(function.returntype)
             if self.flag_stack_arguments:
                 args = [m.name for m in function.arglist.members]
@@ -1093,10 +1088,10 @@ class CppGenerator(t_generator.Generator):
         out(s.format(ns=ns, f=f, n=function.name, a=", ".join(args)))
 
     def _generate_server_async_function(self, service, function):
-        with out().defn(self._get_process_function_signature_async(service,
-                                                                   function),
-                    name=self._get_async_func_name(function),
-                    modifiers='virtual'):
+        with out().defn(
+                self._get_process_function_signature_async(service, function),
+                name=self._get_async_func_name(function),
+                override=True):
             self._generate_server_async_function_future(function)
 
     def _get_process_function_signature_async(self, service, function):
@@ -1276,8 +1271,10 @@ class CppGenerator(t_generator.Generator):
                 'AsyncProcessor'
         with s.cls(class_signature):
             out().label('public:')
-            with out().defn('const char* {name}()', name='getServiceName',
-                        modifiers='virtual'):
+            with out().defn(
+                    'const char* {name}()',
+                    name='getServiceName',
+                    override=True):
                 out("return \"{0}\";".format(service.name))
 
             base_of = lambda n: "{}AsyncProcessor".format(self._type_name(n))
@@ -1287,35 +1284,38 @@ class CppGenerator(t_generator.Generator):
             out().label('protected:')
 
             out('{0}SvIf* iface_;'.format(service.name))
-            with out().defn('folly::Optional<std::string> {name}(' +
-                        'folly::IOBuf* buf, ' +
-                        'apache::thrift::protocol::PROTOCOL_TYPES protType)',
-                        name='getCacheKey',
-                        modifiers='virtual'):
+            with out().defn(
+                    'folly::Optional<std::string> {name}(' +
+                    'folly::IOBuf* buf, ' +
+                    'apache::thrift::protocol::PROTOCOL_TYPES protType)',
+                    name='getCacheKey',
+                    override=True):
                 out('return apache::thrift::detail::ap::get_cache_key(' +
                     'buf, protType, cacheKeyMap_);')
 
             out().label('public:')
 
-            with out().defn('void {name}(std::unique_ptr<' +
-                        'apache::thrift::ResponseChannel::Request> req, ' +
-                        'std::unique_ptr<folly::IOBuf> buf, ' +
-                        'apache::thrift::protocol::PROTOCOL_TYPES protType, ' +
-                        'apache::thrift::Cpp2RequestContext* context, ' +
-                        'folly::EventBase* eb, ' +
-                        'apache::thrift::concurrency::ThreadManager* tm)',
-                        name='process',
-                        modifiers='virtual'):
+            with out().defn(
+                    'void {name}(std::unique_ptr<' +
+                    'apache::thrift::ResponseChannel::Request> req, ' +
+                    'std::unique_ptr<folly::IOBuf> buf, ' +
+                    'apache::thrift::protocol::PROTOCOL_TYPES protType, ' +
+                    'apache::thrift::Cpp2RequestContext* context, ' +
+                    'folly::EventBase* eb, ' +
+                    'apache::thrift::concurrency::ThreadManager* tm)',
+                    name='process',
+                    override=True):
                 out('apache::thrift::detail::ap::process(' +
                     'this, std::move(req), std::move(buf), protType, ' +
                     'context, eb, tm);')
 
             out().label('protected:')
 
-            with out().defn('bool {name}(const folly::IOBuf* buf, ' +
+            with out().defn(
+                    'bool {name}(const folly::IOBuf* buf, ' +
                     'const apache::thrift::transport::THeader* header)',
-                        name='isOnewayMethod',
-                        modifiers='virtual'):
+                    name='isOnewayMethod',
+                    override=True):
                 out('return apache::thrift::detail::ap::is_oneway_method(' +
                     'buf, header, onewayMethods_);')
 

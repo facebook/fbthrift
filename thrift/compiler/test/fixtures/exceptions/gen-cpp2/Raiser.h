@@ -51,43 +51,40 @@ class RaiserAsyncProcessor;
 class RaiserSvIf : public RaiserSvAsyncIf, public apache::thrift::ServerInterface {
  public:
   typedef RaiserAsyncProcessor ProcessorType;
-
-  virtual ~RaiserSvIf() {}
-  virtual std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor();
+  std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   virtual void doBland();
-  folly::Future<folly::Unit> future_doBland();
-  virtual void async_tm_doBland(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
+  folly::Future<folly::Unit> future_doBland() override;
+  void async_tm_doBland(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
   virtual void doRaise();
-  folly::Future<folly::Unit> future_doRaise();
-  virtual void async_tm_doRaise(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
+  folly::Future<folly::Unit> future_doRaise() override;
+  void async_tm_doRaise(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
   virtual void get200(std::string& /*_return*/);
-  folly::Future<std::unique_ptr<std::string>> future_get200();
-  virtual void async_tm_get200(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback);
+  folly::Future<std::unique_ptr<std::string>> future_get200() override;
+  void async_tm_get200(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) override;
   virtual void get500(std::string& /*_return*/);
-  folly::Future<std::unique_ptr<std::string>> future_get500();
-  virtual void async_tm_get500(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback);
+  folly::Future<std::unique_ptr<std::string>> future_get500() override;
+  void async_tm_get500(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) override;
 };
 
 class RaiserSvNull : public RaiserSvIf {
  public:
-  virtual ~RaiserSvNull() {}
-  virtual void doBland();
-  virtual void doRaise();
-  virtual void get200(std::string& /*_return*/);
-  virtual void get500(std::string& /*_return*/);
+  void doBland() override;
+  void doRaise() override;
+  void get200(std::string& /*_return*/) override;
+  void get500(std::string& /*_return*/) override;
 };
 
 class RaiserAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
  public:
-  virtual const char* getServiceName();
+  const char* getServiceName() override;
   using BaseAsyncProcessor = void;
  protected:
   RaiserSvIf* iface_;
-  virtual folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType);
+  folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) override;
  public:
-  virtual void process(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void process(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
  protected:
-  virtual bool isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header);
+  bool isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header) override;
  private:
   static std::unordered_set<std::string> onewayMethods_;
   static std::unordered_map<std::string, int16_t> cacheKeyMap_;

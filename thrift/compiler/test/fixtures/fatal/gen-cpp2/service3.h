@@ -58,51 +58,48 @@ class service3AsyncProcessor;
 class service3SvIf : public service3SvAsyncIf, public apache::thrift::ServerInterface {
  public:
   typedef service3AsyncProcessor ProcessorType;
-
-  virtual ~service3SvIf() {}
-  virtual std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor();
+  std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   virtual void methodA();
-  folly::Future<folly::Unit> future_methodA();
-  virtual void async_tm_methodA(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
+  folly::Future<folly::Unit> future_methodA() override;
+  void async_tm_methodA(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
   virtual void methodB(int32_t /*x*/, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> /*y*/, double /*z*/);
-  folly::Future<folly::Unit> future_methodB(int32_t x, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> y, double z);
-  virtual void async_tm_methodB(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int32_t x, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> y, double z);
+  folly::Future<folly::Unit> future_methodB(int32_t x, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> y, double z) override;
+  void async_tm_methodB(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int32_t x, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> y, double z) override;
   virtual int32_t methodC();
-  folly::Future<int32_t> future_methodC();
-  virtual void async_tm_methodC(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback);
+  folly::Future<int32_t> future_methodC() override;
+  void async_tm_methodC(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
   virtual int32_t methodD(int32_t /*i*/, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> /*j*/, double /*k*/);
-  folly::Future<int32_t> future_methodD(int32_t i, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> j, double k);
-  virtual void async_tm_methodD(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback, int32_t i, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> j, double k);
+  folly::Future<int32_t> future_methodD(int32_t i, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> j, double k) override;
+  void async_tm_methodD(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback, int32_t i, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> j, double k) override;
   virtual void methodE( ::test_cpp2::cpp_reflection::struct2& /*_return*/);
-  folly::Future<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>> future_methodE();
-  virtual void async_tm_methodE(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>>> callback);
+  folly::Future<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>> future_methodE() override;
+  void async_tm_methodE(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>>> callback) override;
   virtual void methodF( ::test_cpp2::cpp_reflection::struct3& /*_return*/, int32_t /*l*/, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> /*m*/, double /*n*/);
-  folly::Future<std::unique_ptr< ::test_cpp2::cpp_reflection::struct3>> future_methodF(int32_t l, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> m, double n);
-  virtual void async_tm_methodF(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::test_cpp2::cpp_reflection::struct3>>> callback, int32_t l, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> m, double n);
+  folly::Future<std::unique_ptr< ::test_cpp2::cpp_reflection::struct3>> future_methodF(int32_t l, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> m, double n) override;
+  void async_tm_methodF(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::test_cpp2::cpp_reflection::struct3>>> callback, int32_t l, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> m, double n) override;
 };
 
 class service3SvNull : public service3SvIf {
  public:
-  virtual ~service3SvNull() {}
-  virtual void methodA();
-  virtual void methodB(int32_t /*x*/, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> /*y*/, double /*z*/);
-  virtual int32_t methodC();
-  virtual int32_t methodD(int32_t /*i*/, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> /*j*/, double /*k*/);
-  virtual void methodE( ::test_cpp2::cpp_reflection::struct2& /*_return*/);
-  virtual void methodF( ::test_cpp2::cpp_reflection::struct3& /*_return*/, int32_t /*l*/, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> /*m*/, double /*n*/);
+  void methodA() override;
+  void methodB(int32_t /*x*/, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> /*y*/, double /*z*/) override;
+  int32_t methodC() override;
+  int32_t methodD(int32_t /*i*/, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> /*j*/, double /*k*/) override;
+  void methodE( ::test_cpp2::cpp_reflection::struct2& /*_return*/) override;
+  void methodF( ::test_cpp2::cpp_reflection::struct3& /*_return*/, int32_t /*l*/, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> /*m*/, double /*n*/) override;
 };
 
 class service3AsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
  public:
-  virtual const char* getServiceName();
+  const char* getServiceName() override;
   using BaseAsyncProcessor = void;
  protected:
   service3SvIf* iface_;
-  virtual folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType);
+  folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) override;
  public:
-  virtual void process(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void process(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
  protected:
-  virtual bool isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header);
+  bool isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header) override;
  private:
   static std::unordered_set<std::string> onewayMethods_;
   static std::unordered_map<std::string, int16_t> cacheKeyMap_;

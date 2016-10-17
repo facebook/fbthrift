@@ -43,31 +43,28 @@ class MyLeafAsyncProcessor;
 class MyLeafSvIf : public MyLeafSvAsyncIf, virtual public  ::cpp2::MyNodeSvIf {
  public:
   typedef MyLeafAsyncProcessor ProcessorType;
-
-  virtual ~MyLeafSvIf() {}
-  virtual std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor();
+  std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   virtual void do_leaf();
-  folly::Future<folly::Unit> future_do_leaf();
-  virtual void async_tm_do_leaf(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback);
+  folly::Future<folly::Unit> future_do_leaf() override;
+  void async_tm_do_leaf(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
 };
 
 class MyLeafSvNull : public MyLeafSvIf, virtual public  ::cpp2::MyNodeSvIf {
  public:
-  virtual ~MyLeafSvNull() {}
-  virtual void do_leaf();
+  void do_leaf() override;
 };
 
 class MyLeafAsyncProcessor : public  ::cpp2::MyNodeAsyncProcessor {
  public:
-  virtual const char* getServiceName();
+  const char* getServiceName() override;
   using BaseAsyncProcessor =  ::cpp2::MyNodeAsyncProcessor;
  protected:
   MyLeafSvIf* iface_;
-  virtual folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType);
+  folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) override;
  public:
-  virtual void process(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void process(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
  protected:
-  virtual bool isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header);
+  bool isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header) override;
  private:
   static std::unordered_set<std::string> onewayMethods_;
   static std::unordered_map<std::string, int16_t> cacheKeyMap_;

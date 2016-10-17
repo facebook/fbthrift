@@ -124,6 +124,8 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
  public:
   ~GeneratedAsyncProcessor() override {}
 
+  virtual const char* getServiceName() = 0;
+
   template <typename Derived, typename ProtocolReader>
   using ProcessFunc = void(Derived::*)(
       std::unique_ptr<apache::thrift::ResponseChannel::Request>,
@@ -136,6 +138,9 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
   using ProcessMap = std::unordered_map<std::string, ProcessFunc>;
 
  protected:
+  virtual folly::Optional<std::string> getCacheKey(
+      folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) = 0;
+
   template <typename ProtocolIn, typename Args>
   static void deserializeRequest(Args& args,
                                  folly::IOBuf* buf,

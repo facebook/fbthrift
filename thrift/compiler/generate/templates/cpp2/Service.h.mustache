@@ -80,9 +80,7 @@ class <%service:name%>SvIf : public <%service:name%>SvAsyncIf, <%!
 %><%/service:extends?%> {
  public:
   typedef <%service:name%>AsyncProcessor ProcessorType;
-
-  virtual ~<%service:name%>SvIf() {}
-  virtual std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor();
+  std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   <%#service:functions%>
   virtual <% > ReturnType%> <%!
       %><%function:name%>(<% > SyncArgList%>);
@@ -90,8 +88,8 @@ class <%service:name%>SvIf : public <%service:name%>SvAsyncIf, <%!
       %><%^function:stackArgs?%><%!
           %><% > FutureUniquePtrReturnType%> <%!
       %><%/function:stackArgs?%><%!
-      %>future_<%function:name%>(<% > FnArgs%>);
-  virtual void <% > AsyncSvFn%>;
+      %>future_<%function:name%>(<% > FnArgs%>) override;
+  void <% > AsyncSvFn%> override;
   <%/service:functions%>
 };
 
@@ -101,11 +99,10 @@ class <%service:name%>SvNull : public <%service:name%>SvIf<%!
     %><%#service:extends%><% > QualifiedName%><%/service:extends%>SvIf<%!
 %><%/service:extends?%> {
  public:
-  virtual ~<%service:name%>SvNull() {}
   <%#service:functions%>
   <%^function:eb?%>
-  virtual <% > ReturnType%> <%!
-      %><%function:name%>(<% > SyncArgList%>);
+  <% > ReturnType%> <%!
+      %><%function:name%>(<% > SyncArgList%>) override;
   <%/function:eb?%>
   <%/service:functions%>
 };
@@ -120,7 +117,7 @@ class <%service:name%>AsyncProcessor : public <%!
 %><%/service:extends?%><%!
 %> {
  public:
-  virtual const char* getServiceName();
+  const char* getServiceName() override;
   using BaseAsyncProcessor = <%!
   %><%#service:extends?%><%!
       %><%#service:extends%><% > QualifiedName%><%/service:extends%><%!
@@ -129,19 +126,19 @@ class <%service:name%>AsyncProcessor : public <%!
   %><%^service:extends?%>void;<%/service:extends?%>
  protected:
   <%service:name%>SvIf* iface_;
-  virtual folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, <%!
-      %>apache::thrift::protocol::PROTOCOL_TYPES protType);
+  folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, <%!
+      %>apache::thrift::protocol::PROTOCOL_TYPES protType) override;
  public:
-  virtual void process(<%!
+  void process(<%!
       %>std::unique_ptr<apache::thrift::ResponseChannel::Request> req, <%!
       %>std::unique_ptr<folly::IOBuf> buf, <%!
       %>apache::thrift::protocol::PROTOCOL_TYPES protType, <%!
       %>apache::thrift::Cpp2RequestContext* context, <%!
       %>folly::EventBase* eb, <%!
-      %>apache::thrift::concurrency::ThreadManager* tm);
+      %>apache::thrift::concurrency::ThreadManager* tm) override;
  protected:
-  virtual bool isOnewayMethod(const folly::IOBuf* buf, <%!
-      %>const apache::thrift::transport::THeader* header);
+  bool isOnewayMethod(const folly::IOBuf* buf, <%!
+      %>const apache::thrift::transport::THeader* header) override;
  private:
   static std::unordered_set<std::string> onewayMethods_;
   static std::unordered_map<std::string, int16_t> cacheKeyMap_;<%!
