@@ -60,16 +60,22 @@
     __VA_ARGS__                                                              \
   };
 
+#define FROZEN_TYPE_EXTERN(TYPE)                \
+  extern template struct Layout<TYPE, void>;
+
+#define FROZEN_TYPE_INSTANTIATE(TYPE)           \
+  template struct Layout<TYPE, void>;
+
 #define FROZEN_CTOR_FIELD(NAME, ID) , NAME##Field(ID, #NAME)
 #define FROZEN_CTOR_FIELD_OPT(NAME, ID) , NAME##Field(ID, #NAME)
 #define FROZEN_CTOR_FIELD_REQ FROZEN_CTOR_FIELD
 #define FROZEN_CTOR(TYPE, ...) \
-  inline Layout<TYPE>::Layout() : LayoutBase(typeid(TYPE)) __VA_ARGS__ {}
+  Layout<TYPE>::Layout() : LayoutBase(typeid(TYPE)) __VA_ARGS__ {}
 
 #define FROZEN_MAXIMIZE_FIELD(NAME) pos = maximizeField(pos, this->NAME##Field);
 
 #define FROZEN_MAXIMIZE(TYPE, ...)                \
-  inline FieldPosition Layout<TYPE>::maximize() { \
+  FieldPosition Layout<TYPE>::maximize() {        \
     FieldPosition pos = startFieldPosition();     \
     __VA_ARGS__;                                  \
     return pos;                                   \
@@ -83,7 +89,7 @@
 #define FROZEN_LAYOUT_FIELD_REQ FROZEN_LAYOUT_FIELD
 
 #define FROZEN_LAYOUT(TYPE, ...)                           \
-  inline FieldPosition Layout<TYPE>::layout(                      \
+  FieldPosition Layout<TYPE>::layout(                      \
       LayoutRoot& root, const T& x, LayoutPosition self) { \
     FieldPosition pos = startFieldPosition();              \
     __VA_ARGS__;                                           \
@@ -97,7 +103,7 @@
 #define FROZEN_FREEZE_FIELD_REQ FROZEN_FREEZE_FIELD
 
 #define FROZEN_FREEZE(TYPE, ...)                                 \
-  inline void Layout<TYPE>::freeze(                                     \
+  void Layout<TYPE>::freeze(                                     \
       FreezeRoot& root, const T& x, FreezePosition self) const { \
     __VA_ARGS__;                                                 \
   }
@@ -110,19 +116,19 @@
 #define FROZEN_THAW_FIELD_REQ(NAME) \
   thawField(self, this->NAME##Field, out.NAME);
 #define FROZEN_THAW(TYPE, ...)                                      \
-  inline void Layout<TYPE>::thaw(ViewPosition self, T& out) const { \
+  void Layout<TYPE>::thaw(ViewPosition self, T& out) const {        \
     __VA_ARGS__;                                                    \
   }
 #define FROZEN_DEBUG_FIELD(NAME) this->NAME##Field.print(os, level + 1);
 #define FROZEN_DEBUG(TYPE, ...)                                 \
-  inline void Layout<TYPE>::print(std::ostream& os, int level) const { \
+  void Layout<TYPE>::print(std::ostream& os, int level) const { \
     LayoutBase::print(os, level);                               \
     os << #TYPE;                                                \
     __VA_ARGS__                                                 \
   }
 #define FROZEN_CLEAR_FIELD(NAME) this->NAME##Field.clear();
 #define FROZEN_CLEAR(TYPE, ...) \
-  inline void Layout<TYPE>::clear() {  \
+  void Layout<TYPE>::clear() {  \
     LayoutBase::clear();        \
     __VA_ARGS__                 \
   }

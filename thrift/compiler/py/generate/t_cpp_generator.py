@@ -4039,6 +4039,7 @@ class CppGenerator(t_generator.Generator):
             load=visitFields(
                 '\n  FROZEN_LOAD_INLINE({fields})',
                 '\n    FROZEN_LOAD_FIELD({name}, {id})')))
+        s('FROZEN_TYPE_EXTERN({});'.format(type_name))
 
         for (typeFmt, fieldFmt) in [
                 ('CTOR', 'CTOR_FIELD{_opt}({name}, {id})'),
@@ -4048,9 +4049,10 @@ class CppGenerator(t_generator.Generator):
                 ('THAW', 'THAW_FIELD{_opt}({name})'),
                 ('DEBUG', 'DEBUG_FIELD({name})'),
                 ('CLEAR', 'CLEAR_FIELD({name})')]:
-            # TODO(5484874): Put these back in the .cpp
-            s(visitFields('FROZEN_' + typeFmt + '({type},{fields})',
-                          '\n  FROZEN_' + fieldFmt))
+            s.impl(visitFields('FROZEN_' + typeFmt + '({type},{fields})',
+                               '\n  FROZEN_' + fieldFmt))
+
+        s.impl('FROZEN_TYPE_INSTANTIATE({});'.format(type_name))
 
     def _generate_hash_equal_to(self, obj):
         # Don't generate these declarations if in compatibility mode since
@@ -4234,9 +4236,6 @@ class CppGenerator(t_generator.Generator):
         if not self.flag_frozen2:
             return
         context = self._make_context(self._program.name + '_layouts')
-        # TODO(5484874): Remove this hack, which supresses the #include of
-        #                layouts.h
-        print >> context.impl, '#if 0 // all layouts inlined in layouts.h'
         s = get_global_scope(CppPrimitiveFactory, context)
         if self.flag_compatibility:
             # Delegate to cpp1 layouts
@@ -4253,7 +4252,6 @@ class CppGenerator(t_generator.Generator):
             with s.namespace('apache.thrift.frozen').scope:
                 for obj in objects:
                     self._generate_frozen_layout(obj, out())
-        print >> context.impl, '\n#endif'
 
     def _generate_consts(self, constants):
         name = self._program.name
