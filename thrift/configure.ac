@@ -111,7 +111,7 @@ AC_CHECK_LIB([glog],[openlog],[],[AC_MSG_ERROR(
            [Please install google-glog library])])
 
 AC_CHECK_LIB([mstch], [getenv], [], [AC_MSG_ERROR(
-           [Please install the mstch libarary from https://github.com/no1msd/mstch])])
+           [Please install the mstch library from https://github.com/no1msd/mstch])])
 
 have_cpp=yes
 have_libnuma=no

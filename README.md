@@ -61,6 +61,8 @@ dependencies (like `folly`).
     - libsnappy-dev
     - libsasl2-dev
 
+[Mstch](https://github.com/no1msd/mstch) also needs to be installed.
+
 Docs
 ----
 

@@ -121,7 +121,7 @@ py3__DATA = \
                     generate/templates/py3/OneStruct.pxd.mustache \
                     generate/templates/py3/Struct.pxd.mustache \
                     generate/templates/py3/CppFieldType.mustache \
-                    generate/templates/py3/ServiceCallbacks.pxi.mustache \
+                    generate/templates/py3/ServiceCallbacks.mustache \
                     generate/templates/py3/CythonFieldType.mustache \
                     generate/templates/py3/CythonServer.pyx.mustache \
                     generate/templates/py3/CythonStructGetter.mustache \
@@ -131,7 +131,7 @@ py3__DATA = \
                     generate/templates/py3/CythonPromises.mustache \
                     generate/templates/py3/Services.pxd.mustache \
                     generate/templates/py3/ServicesWrapper.h.mustache \
-                    generate/templates/py3/Struct.pxi.mustache \
+                    generate/templates/py3/Struct.pxd.mustache \
                     generate/templates/py3/ServicesWrapper.cpp.mustache \
                     generate/templates/py3/OneServiceWrapper.cpp.mustache \
                     generate/templates/py3/CythonAssignField.mustache \
