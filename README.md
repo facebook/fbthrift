@@ -66,3 +66,8 @@ Docs
 
 Some docs on the new cpp2 server are at:
 https://github.com/facebook/fbthrift/blob/master/thrift/doc/Cpp2.md
+
+C++ Static Reflection
+---------------------
+
+Information regarding C++ Static Reflection support can be found under the [static reflection library directory](thrift/lib/cpp2/fatal/), in the corresponding [`README` file](thrift/lib/cpp2/fatal/README.md).
