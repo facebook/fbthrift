@@ -100,13 +100,13 @@ class NestedContainersAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
   using BinaryProtocolProcessMap = ProcessMap<BinaryProtocolProcessFunc>;
   static const NestedContainersAsyncProcessor::BinaryProtocolProcessMap& getBinaryProtocolProcessMap();
  private:
-  static NestedContainersAsyncProcessor::BinaryProtocolProcessMap binaryProcessMap_;
+  static const NestedContainersAsyncProcessor::BinaryProtocolProcessMap binaryProcessMap_;
  public:
   using CompactProtocolProcessFunc = ProcessFunc<NestedContainersAsyncProcessor, apache::thrift::CompactProtocolReader>;
   using CompactProtocolProcessMap = ProcessMap<CompactProtocolProcessFunc>;
   static const NestedContainersAsyncProcessor::CompactProtocolProcessMap& getCompactProtocolProcessMap();
  private:
-  static NestedContainersAsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
+  static const NestedContainersAsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_mapList(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

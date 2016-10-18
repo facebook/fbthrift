@@ -455,7 +455,7 @@ const service_with_special_namesAsyncProcessor::BinaryProtocolProcessMap& servic
   return binaryProcessMap_;
 }
 
-service_with_special_namesAsyncProcessor::BinaryProtocolProcessMap service_with_special_namesAsyncProcessor::binaryProcessMap_ {
+const service_with_special_namesAsyncProcessor::BinaryProtocolProcessMap service_with_special_namesAsyncProcessor::binaryProcessMap_ {
   {"get", &service_with_special_namesAsyncProcessor::_processInThread_get<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"getter", &service_with_special_namesAsyncProcessor::_processInThread_getter<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"lists", &service_with_special_namesAsyncProcessor::_processInThread_lists<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
@@ -487,7 +487,7 @@ const service_with_special_namesAsyncProcessor::CompactProtocolProcessMap& servi
   return compactProcessMap_;
 }
 
-service_with_special_namesAsyncProcessor::CompactProtocolProcessMap service_with_special_namesAsyncProcessor::compactProcessMap_ {
+const service_with_special_namesAsyncProcessor::CompactProtocolProcessMap service_with_special_namesAsyncProcessor::compactProcessMap_ {
   {"get", &service_with_special_namesAsyncProcessor::_processInThread_get<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"getter", &service_with_special_namesAsyncProcessor::_processInThread_getter<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"lists", &service_with_special_namesAsyncProcessor::_processInThread_lists<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},

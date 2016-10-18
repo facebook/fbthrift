@@ -89,13 +89,13 @@ class MyServiceFastAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   using BinaryProtocolProcessMap = ProcessMap<BinaryProtocolProcessFunc>;
   static const MyServiceFastAsyncProcessor::BinaryProtocolProcessMap& getBinaryProtocolProcessMap();
  private:
-  static MyServiceFastAsyncProcessor::BinaryProtocolProcessMap binaryProcessMap_;
+  static const MyServiceFastAsyncProcessor::BinaryProtocolProcessMap binaryProcessMap_;
  public:
   using CompactProtocolProcessFunc = ProcessFunc<MyServiceFastAsyncProcessor, apache::thrift::CompactProtocolReader>;
   using CompactProtocolProcessMap = ProcessMap<CompactProtocolProcessFunc>;
   static const MyServiceFastAsyncProcessor::CompactProtocolProcessMap& getCompactProtocolProcessMap();
  private:
-  static MyServiceFastAsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
+  static const MyServiceFastAsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_hasDataById(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

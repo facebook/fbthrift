@@ -10,7 +10,7 @@
 
 namespace cpp2 {
 
-MyServiceFastAsyncProcessor::BinaryProtocolProcessMap MyServiceFastAsyncProcessor::binaryProcessMap_ {
+const MyServiceFastAsyncProcessor::BinaryProtocolProcessMap MyServiceFastAsyncProcessor::binaryProcessMap_ {
   {"ping", &MyServiceFastAsyncProcessor::process_ping<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"getRandomData", &MyServiceFastAsyncProcessor::process_getRandomData<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"hasDataById", &MyServiceFastAsyncProcessor::process_hasDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},

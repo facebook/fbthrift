@@ -73,13 +73,13 @@ class MyNodeAsyncProcessor : public  ::cpp2::MyRootAsyncProcessor {
   using BinaryProtocolProcessMap = ProcessMap<BinaryProtocolProcessFunc>;
   static const MyNodeAsyncProcessor::BinaryProtocolProcessMap& getBinaryProtocolProcessMap();
  private:
-  static MyNodeAsyncProcessor::BinaryProtocolProcessMap binaryProcessMap_;
+  static const MyNodeAsyncProcessor::BinaryProtocolProcessMap binaryProcessMap_;
  public:
   using CompactProtocolProcessFunc = ProcessFunc<MyNodeAsyncProcessor, apache::thrift::CompactProtocolReader>;
   using CompactProtocolProcessMap = ProcessMap<CompactProtocolProcessFunc>;
   static const MyNodeAsyncProcessor::CompactProtocolProcessMap& getCompactProtocolProcessMap();
  private:
-  static MyNodeAsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
+  static const MyNodeAsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_do_mid(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

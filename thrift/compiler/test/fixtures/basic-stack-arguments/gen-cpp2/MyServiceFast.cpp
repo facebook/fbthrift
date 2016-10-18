@@ -89,7 +89,7 @@ const MyServiceFastAsyncProcessor::BinaryProtocolProcessMap& MyServiceFastAsyncP
   return binaryProcessMap_;
 }
 
-MyServiceFastAsyncProcessor::BinaryProtocolProcessMap MyServiceFastAsyncProcessor::binaryProcessMap_ {
+const MyServiceFastAsyncProcessor::BinaryProtocolProcessMap MyServiceFastAsyncProcessor::binaryProcessMap_ {
   {"hasDataById", &MyServiceFastAsyncProcessor::process_hasDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"getDataById", &MyServiceFastAsyncProcessor::process_getDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"putDataById", &MyServiceFastAsyncProcessor::process_putDataById<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
@@ -99,7 +99,7 @@ const MyServiceFastAsyncProcessor::CompactProtocolProcessMap& MyServiceFastAsync
   return compactProcessMap_;
 }
 
-MyServiceFastAsyncProcessor::CompactProtocolProcessMap MyServiceFastAsyncProcessor::compactProcessMap_ {
+const MyServiceFastAsyncProcessor::CompactProtocolProcessMap MyServiceFastAsyncProcessor::compactProcessMap_ {
   {"hasDataById", &MyServiceFastAsyncProcessor::process_hasDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"getDataById", &MyServiceFastAsyncProcessor::process_getDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"putDataById", &MyServiceFastAsyncProcessor::process_putDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},

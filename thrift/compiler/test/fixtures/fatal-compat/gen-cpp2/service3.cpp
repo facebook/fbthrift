@@ -127,7 +127,7 @@ const service3AsyncProcessor::BinaryProtocolProcessMap& service3AsyncProcessor::
   return binaryProcessMap_;
 }
 
-service3AsyncProcessor::BinaryProtocolProcessMap service3AsyncProcessor::binaryProcessMap_ {
+const service3AsyncProcessor::BinaryProtocolProcessMap service3AsyncProcessor::binaryProcessMap_ {
   {"methodA", &service3AsyncProcessor::_processInThread_methodA<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"methodB", &service3AsyncProcessor::_processInThread_methodB<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"methodC", &service3AsyncProcessor::_processInThread_methodC<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
@@ -139,7 +139,7 @@ const service3AsyncProcessor::CompactProtocolProcessMap& service3AsyncProcessor:
   return compactProcessMap_;
 }
 
-service3AsyncProcessor::CompactProtocolProcessMap service3AsyncProcessor::compactProcessMap_ {
+const service3AsyncProcessor::CompactProtocolProcessMap service3AsyncProcessor::compactProcessMap_ {
   {"methodA", &service3AsyncProcessor::_processInThread_methodA<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"methodB", &service3AsyncProcessor::_processInThread_methodB<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"methodC", &service3AsyncProcessor::_processInThread_methodC<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},

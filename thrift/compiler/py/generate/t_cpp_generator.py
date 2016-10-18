@@ -1366,7 +1366,7 @@ class CppGenerator(t_generator.Generator):
                                 modifiers='static'):
                     out('return {proto}ProcessMap_;'.format(proto=shortprot))
                 out().label('private:')
-                process_map = out().defn(map_type + ' {name}',
+                process_map = out().defn('const ' + map_type + ' {name}',
                                          name=map_name,
                                          modifiers='static')
                 if self.flag_separate_processmap:

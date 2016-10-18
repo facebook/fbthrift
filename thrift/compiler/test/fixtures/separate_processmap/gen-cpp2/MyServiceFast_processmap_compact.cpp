@@ -10,7 +10,7 @@
 
 namespace cpp2 {
 
-MyServiceFastAsyncProcessor::CompactProtocolProcessMap MyServiceFastAsyncProcessor::compactProcessMap_ {
+const MyServiceFastAsyncProcessor::CompactProtocolProcessMap MyServiceFastAsyncProcessor::compactProcessMap_ {
   {"ping", &MyServiceFastAsyncProcessor::process_ping<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"getRandomData", &MyServiceFastAsyncProcessor::process_getRandomData<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"hasDataById", &MyServiceFastAsyncProcessor::process_hasDataById<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},

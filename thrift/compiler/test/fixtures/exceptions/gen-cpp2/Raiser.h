@@ -93,13 +93,13 @@ class RaiserAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
   using BinaryProtocolProcessMap = ProcessMap<BinaryProtocolProcessFunc>;
   static const RaiserAsyncProcessor::BinaryProtocolProcessMap& getBinaryProtocolProcessMap();
  private:
-  static RaiserAsyncProcessor::BinaryProtocolProcessMap binaryProcessMap_;
+  static const RaiserAsyncProcessor::BinaryProtocolProcessMap binaryProcessMap_;
  public:
   using CompactProtocolProcessFunc = ProcessFunc<RaiserAsyncProcessor, apache::thrift::CompactProtocolReader>;
   using CompactProtocolProcessMap = ProcessMap<CompactProtocolProcessFunc>;
   static const RaiserAsyncProcessor::CompactProtocolProcessMap& getCompactProtocolProcessMap();
  private:
-  static RaiserAsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
+  static const RaiserAsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_doBland(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

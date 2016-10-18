@@ -95,7 +95,7 @@ const RaiserAsyncProcessor::BinaryProtocolProcessMap& RaiserAsyncProcessor::getB
   return binaryProcessMap_;
 }
 
-RaiserAsyncProcessor::BinaryProtocolProcessMap RaiserAsyncProcessor::binaryProcessMap_ {
+const RaiserAsyncProcessor::BinaryProtocolProcessMap RaiserAsyncProcessor::binaryProcessMap_ {
   {"doBland", &RaiserAsyncProcessor::_processInThread_doBland<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"doRaise", &RaiserAsyncProcessor::_processInThread_doRaise<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"get200", &RaiserAsyncProcessor::_processInThread_get200<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
@@ -105,7 +105,7 @@ const RaiserAsyncProcessor::CompactProtocolProcessMap& RaiserAsyncProcessor::get
   return compactProcessMap_;
 }
 
-RaiserAsyncProcessor::CompactProtocolProcessMap RaiserAsyncProcessor::compactProcessMap_ {
+const RaiserAsyncProcessor::CompactProtocolProcessMap RaiserAsyncProcessor::compactProcessMap_ {
   {"doBland", &RaiserAsyncProcessor::_processInThread_doBland<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"doRaise", &RaiserAsyncProcessor::_processInThread_doRaise<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"get200", &RaiserAsyncProcessor::_processInThread_get200<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},

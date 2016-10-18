@@ -247,13 +247,13 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   using BinaryProtocolProcessMap = ProcessMap<BinaryProtocolProcessFunc>;
   static const service_with_special_namesAsyncProcessor::BinaryProtocolProcessMap& getBinaryProtocolProcessMap();
  private:
-  static service_with_special_namesAsyncProcessor::BinaryProtocolProcessMap binaryProcessMap_;
+  static const service_with_special_namesAsyncProcessor::BinaryProtocolProcessMap binaryProcessMap_;
  public:
   using CompactProtocolProcessFunc = ProcessFunc<service_with_special_namesAsyncProcessor, apache::thrift::CompactProtocolReader>;
   using CompactProtocolProcessMap = ProcessMap<CompactProtocolProcessFunc>;
   static const service_with_special_namesAsyncProcessor::CompactProtocolProcessMap& getCompactProtocolProcessMap();
  private:
-  static service_with_special_namesAsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
+  static const service_with_special_namesAsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_get(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

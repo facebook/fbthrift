@@ -53,14 +53,14 @@ const MyRootAsyncProcessor::BinaryProtocolProcessMap& MyRootAsyncProcessor::getB
   return binaryProcessMap_;
 }
 
-MyRootAsyncProcessor::BinaryProtocolProcessMap MyRootAsyncProcessor::binaryProcessMap_ {
+const MyRootAsyncProcessor::BinaryProtocolProcessMap MyRootAsyncProcessor::binaryProcessMap_ {
   {"do_root", &MyRootAsyncProcessor::_processInThread_do_root<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}
 };
 const MyRootAsyncProcessor::CompactProtocolProcessMap& MyRootAsyncProcessor::getCompactProtocolProcessMap() {
   return compactProcessMap_;
 }
 
-MyRootAsyncProcessor::CompactProtocolProcessMap MyRootAsyncProcessor::compactProcessMap_ {
+const MyRootAsyncProcessor::CompactProtocolProcessMap MyRootAsyncProcessor::compactProcessMap_ {
   {"do_root", &MyRootAsyncProcessor::_processInThread_do_root<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>}
 };
 

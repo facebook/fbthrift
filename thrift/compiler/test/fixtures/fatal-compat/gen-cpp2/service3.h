@@ -218,13 +218,13 @@ class service3AsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor 
   using BinaryProtocolProcessMap = ProcessMap<BinaryProtocolProcessFunc>;
   static const service3AsyncProcessor::BinaryProtocolProcessMap& getBinaryProtocolProcessMap();
  private:
-  static service3AsyncProcessor::BinaryProtocolProcessMap binaryProcessMap_;
+  static const service3AsyncProcessor::BinaryProtocolProcessMap binaryProcessMap_;
  public:
   using CompactProtocolProcessFunc = ProcessFunc<service3AsyncProcessor, apache::thrift::CompactProtocolReader>;
   using CompactProtocolProcessMap = ProcessMap<CompactProtocolProcessFunc>;
   static const service3AsyncProcessor::CompactProtocolProcessMap& getCompactProtocolProcessMap();
  private:
-  static service3AsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
+  static const service3AsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_methodA(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
