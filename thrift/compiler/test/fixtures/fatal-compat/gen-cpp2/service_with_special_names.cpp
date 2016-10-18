@@ -481,8 +481,9 @@ const service_with_special_namesAsyncProcessor::BinaryProtocolProcessMap service
   {"annotation", &service_with_special_namesAsyncProcessor::_processInThread_annotation<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"annotations", &service_with_special_namesAsyncProcessor::_processInThread_annotations<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"member", &service_with_special_namesAsyncProcessor::_processInThread_member<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"members", &service_with_special_namesAsyncProcessor::_processInThread_members<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}
+  {"members", &service_with_special_namesAsyncProcessor::_processInThread_members<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
+
 const service_with_special_namesAsyncProcessor::CompactProtocolProcessMap& service_with_special_namesAsyncProcessor::getCompactProtocolProcessMap() {
   return compactProcessMap_;
 }
@@ -513,7 +514,7 @@ const service_with_special_namesAsyncProcessor::CompactProtocolProcessMap servic
   {"annotation", &service_with_special_namesAsyncProcessor::_processInThread_annotation<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"annotations", &service_with_special_namesAsyncProcessor::_processInThread_annotations<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"member", &service_with_special_namesAsyncProcessor::_processInThread_member<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"members", &service_with_special_namesAsyncProcessor::_processInThread_members<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>}
+  {"members", &service_with_special_namesAsyncProcessor::_processInThread_members<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 }} // test_cpp2::cpp_reflection

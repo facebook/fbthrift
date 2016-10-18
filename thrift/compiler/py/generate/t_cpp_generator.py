@@ -1373,15 +1373,17 @@ class CppGenerator(t_generator.Generator):
                     process_map.output = self._additional_outputs[prot]
                 if prot < 1:  # TODO: fix build tool to use more than 2 outputs
                     prot = prot + 1
-                process_map.epilogue = ';'
+                process_map.epilogue = ';\n\n'
 
                 with process_map:
-                    out(',\n'.join('{"' + function.name + '", &' +
-                        service.name + 'AsyncProcessor::' +
-                        self._get_handler_function_name(function) +
-                        '<apache::thrift::{0}Reader, '
-                        'apache::thrift::{0}Writer>}}'.format(protname)
-                            for function in service.functions))
+                    p = service.name + 'AsyncProcessor'
+                    r = 'apache::thrift::{prot}Reader'.format(prot=protname)
+                    w = 'apache::thrift::{prot}Writer'.format(prot=protname)
+                    for function in service.functions:
+                        n = function.name
+                        f = self._get_handler_function_name(function)
+                        fp = '&{p}::{f}<{r}, {w}>'.format(p=p, f=f, r=r, w=w)
+                        out('{{"{n}", {fp}}},'.format(n=n, fp=fp))
 
             out().label('private:')
             for function in service.functions:

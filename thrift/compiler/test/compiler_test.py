@@ -144,6 +144,8 @@ class CompilerTest(unittest.TestCase):
                 genc = read_file(os.path.join(self.tmp, gen))
                 compare_rel = gen.replace('mstch_cpp2', 'cpp2')
                 fixc = read_resource(os.path.join(fixtureChildDir, compare_rel))
+                if genc != fixc:
+                    print(os.path.join(name, gen), file=sys.stderr)
                 self.assertMultiLineEqual(genc, fixc)
         except Exception as e:
             print(self.MSG, file=sys.stderr)
