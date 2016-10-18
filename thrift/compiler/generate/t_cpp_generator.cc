@@ -2768,18 +2768,18 @@ void t_cpp_generator::generate_frozen2_struct_definition(t_struct* tstruct) {
   f_types_layouts_ << endl;
 
   // Implementation
-  for (auto step : {make_pair("CTOR", "CTOR_FIELD{_opt}({name}, {id})"),
-                    make_pair("MAXIMIZE", "MAXIMIZE_FIELD({name})"),
-                    make_pair("LAYOUT", "LAYOUT_FIELD{_opt}({name})"),
-                    make_pair("FREEZE", "FREEZE_FIELD{_opt}({name})"),
-                    make_pair("THAW", "THAW_FIELD{_opt}({name})"),
-                    make_pair("DEBUG", "DEBUG_FIELD({name})"),
-                    make_pair("CLEAR", "CLEAR_FIELD({name})")}) {
-    f_types_layouts_impl_ <<
-        folly::format("FROZEN_{}({},", step.first, structName);
+  for (auto step :
+       {make_pair("FROZEN_CTOR", "FROZEN_CTOR_FIELD{_opt}({name}, {id})"),
+        make_pair("FROZEN_MAXIMIZE", "FROZEN_MAXIMIZE_FIELD({name})"),
+        make_pair("FROZEN_LAYOUT", "FROZEN_LAYOUT_FIELD{_opt}({name})"),
+        make_pair("FROZEN_FREEZE", "FROZEN_FREEZE_FIELD{_opt}({name})"),
+        make_pair("FROZEN_THAW", "FROZEN_THAW_FIELD{_opt}({name})"),
+        make_pair("FROZEN_DEBUG", "FROZEN_DEBUG_FIELD({name})"),
+        make_pair("FROZEN_CLEAR", "FROZEN_CLEAR_FIELD({name})")}) {
+    f_types_layouts_impl_ << folly::format("{}({},", step.first, structName);
     for (const t_field* field : members) {
       emitFieldFormat(
-          f_types_layouts_impl_, string("\n  FROZEN_") + step.second, field);
+          f_types_layouts_impl_, string("\n  ") + step.second, field);
     }
     f_types_layouts_impl_ << ")\n";
   }

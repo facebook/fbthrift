@@ -4042,15 +4042,15 @@ class CppGenerator(t_generator.Generator):
         s('FROZEN_TYPE_EXTERN({});'.format(type_name))
 
         for (typeFmt, fieldFmt) in [
-                ('CTOR', 'CTOR_FIELD{_opt}({name}, {id})'),
-                ('MAXIMIZE', 'MAXIMIZE_FIELD({name})'),
-                ('LAYOUT', 'LAYOUT_FIELD{_opt}({name})'),
-                ('FREEZE', 'FREEZE_FIELD{_opt}({name})'),
-                ('THAW', 'THAW_FIELD{_opt}({name})'),
-                ('DEBUG', 'DEBUG_FIELD({name})'),
-                ('CLEAR', 'CLEAR_FIELD({name})')]:
-            s.impl(visitFields('FROZEN_' + typeFmt + '({type},{fields})',
-                               '\n  FROZEN_' + fieldFmt))
+                ('FROZEN_CTOR', 'FROZEN_CTOR_FIELD{_opt}({name}, {id})'),
+                ('FROZEN_MAXIMIZE', 'FROZEN_MAXIMIZE_FIELD({name})'),
+                ('FROZEN_LAYOUT', 'FROZEN_LAYOUT_FIELD{_opt}({name})'),
+                ('FROZEN_FREEZE', 'FROZEN_FREEZE_FIELD{_opt}({name})'),
+                ('FROZEN_THAW', 'FROZEN_THAW_FIELD{_opt}({name})'),
+                ('FROZEN_DEBUG', 'FROZEN_DEBUG_FIELD({name})'),
+                ('FROZEN_CLEAR', 'FROZEN_CLEAR_FIELD({name})')]:
+            s.impl(visitFields(typeFmt + '({type},{fields})',
+                               '\n  ' + fieldFmt))
 
         s.impl('FROZEN_TYPE_INSTANTIATE({});'.format(type_name))
 
