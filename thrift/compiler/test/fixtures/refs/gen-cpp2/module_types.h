@@ -507,10 +507,10 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
   }
 
   MyStruct(MyStruct&&) = default;
-  MyStruct(const MyStruct& src0);
+  MyStruct(const MyStruct& src);
 
   MyStruct& operator=(MyStruct&&) = default;
-  MyStruct& operator=(const MyStruct& src1);
+  MyStruct& operator=(const MyStruct& src);
   void __clear();
 
   virtual ~MyStruct() throw() {}
@@ -612,10 +612,10 @@ class StructWithUnion : private apache::thrift::detail::st::ComparisonOperators<
   }
 
   StructWithUnion(StructWithUnion&&) = default;
-  StructWithUnion(const StructWithUnion& src6);
+  StructWithUnion(const StructWithUnion& src);
 
   StructWithUnion& operator=(StructWithUnion&&) = default;
-  StructWithUnion& operator=(const StructWithUnion& src7);
+  StructWithUnion& operator=(const StructWithUnion& src);
   void __clear();
 
   virtual ~StructWithUnion() throw() {}
@@ -861,10 +861,10 @@ class StructWithContainers : private apache::thrift::detail::st::ComparisonOpera
   }
 
   StructWithContainers(StructWithContainers&&) = default;
-  StructWithContainers(const StructWithContainers& src18);
+  StructWithContainers(const StructWithContainers& src);
 
   StructWithContainers& operator=(StructWithContainers&&) = default;
-  StructWithContainers& operator=(const StructWithContainers& src19);
+  StructWithContainers& operator=(const StructWithContainers& src);
   void __clear();
 
   virtual ~StructWithContainers() throw() {}

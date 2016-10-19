@@ -4193,9 +4193,9 @@ uint32_t struct4::read(Protocol_* iprot) {
       case 3:
       {
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast387;
-          xfer += iprot->readI32(ecast387);
-          this->field2 = ( ::test_cpp2::cpp_reflection::enum1)ecast387;
+          int32_t ecast384;
+          xfer += iprot->readI32(ecast384);
+          this->field2 = ( ::test_cpp2::cpp_reflection::enum1)ecast384;
           this->__isset.field2 = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -4206,9 +4206,9 @@ uint32_t struct4::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->field3)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype388(new element_type());
-          xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::read(iprot, _ptype388.get());
-          this->field3 = std::move(_ptype388);
+          std::unique_ptr<element_type> _ptype385(new element_type());
+          xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::read(iprot, _ptype385.get());
+          this->field3 = std::move(_ptype385);
         } else {
           xfer += iprot->skip(ftype);
         }

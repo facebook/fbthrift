@@ -3619,10 +3619,10 @@ class struct4 : private apache::thrift::detail::st::ComparisonOperators<struct4>
   }
 
   struct4(struct4&&) = default;
-  struct4(const struct4& src384);
+  struct4(const struct4& src);
 
   struct4& operator=(struct4&&) = default;
-  struct4& operator=(const struct4& src385);
+  struct4& operator=(const struct4& src);
   void __clear();
 
   virtual ~struct4() throw() {}

@@ -2549,25 +2549,24 @@ class CppGenerator(t_generator.Generator):
                         if self._apply_unique_ptr_hack(member):
                             needs_copy_constructor = True
                     if needs_copy_constructor:
-                        src = self.tmp('src')
-                        with struct.defn('{{name}}(const {0}& {1})'
-                                         .format(obj.name, src),
+                        with struct.defn('{{name}}(const {0}& src)'
+                                         .format(obj.name),
                                          name=obj.name):
                             for member in members:
                                 # custom hacky logic for unique_ptr copying
                                 # it would be much better to use a
                                 # copyable wrapper instead
                                 if self._apply_unique_ptr_hack(member):
-                                    out("if ({2}.{0}) {0}.reset("
-                                        "new {1}(*{2}.{0}));".format(
+                                    out("if (src.{0}) {0}.reset("
+                                        "new {1}(*src.{0}));".format(
                                         member.name, self._type_name(
-                                            member.type), src))
+                                            member.type)))
                                 else:
-                                    out("{0} = {1}.{0};".format(
-                                        member.name, src))
+                                    out("{0} = src.{0};".format(
+                                        member.name))
                                 if self._has_isset(member):
-                                    out('__isset.{0} = {1}.__isset.{0};'.format(
-                                        member.name, src))
+                                    out('__isset.{0} = src.__isset.{0};'.format(
+                                        member.name))
                     else:
                         c = struct.defn(
                             '{name}(const {name}&)',
@@ -2576,14 +2575,12 @@ class CppGenerator(t_generator.Generator):
                                 name=obj.name, in_header=True, default=True)
                 if is_copyable:
                     if needs_copy_constructor:
-                        src = self.tmp('src')
-                        tmp = self.tmp('tmp')
-                        with struct.defn('{0}& {{name}}(const {0}& {1})'
-                                         .format(obj.name, src),
+                        with struct.defn('{0}& {{name}}(const {0}& src)'
+                                         .format(obj.name),
                                          name='operator='):
-                            out('{name} {tmp}({src});'.format(
-                                name=obj.name, tmp=tmp, src=src))
-                            out('swap(*this, {tmp});'.format(tmp=tmp))
+                            out('{name} tmp(src);'.format(
+                                name=obj.name))
+                            out('swap(*this, tmp);')
                             out('return *this;')
                     else:
                         c = struct.defn('{name}& operator=(const {name}&)',

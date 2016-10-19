@@ -153,15 +153,15 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace cpp2 {
 
-MyStruct::MyStruct(const MyStruct& src0) {
-  if (src0.opt_ref) opt_ref.reset(new  ::cpp2::MyField(*src0.opt_ref));
-  if (src0.ref) ref.reset(new  ::cpp2::MyField(*src0.ref));
-  if (src0.req_ref) req_ref.reset(new  ::cpp2::MyField(*src0.req_ref));
+MyStruct::MyStruct(const MyStruct& src) {
+  if (src.opt_ref) opt_ref.reset(new  ::cpp2::MyField(*src.opt_ref));
+  if (src.ref) ref.reset(new  ::cpp2::MyField(*src.ref));
+  if (src.req_ref) req_ref.reset(new  ::cpp2::MyField(*src.req_ref));
 }
 
-MyStruct& MyStruct::operator=(const MyStruct& src1) {
-  MyStruct tmp2(src1);
-  swap(*this, tmp2);
+MyStruct& MyStruct::operator=(const MyStruct& src) {
+  MyStruct tmp(src);
+  swap(*this, tmp);
   return *this;
 }
 
@@ -208,17 +208,17 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace cpp2 {
 
-StructWithUnion::StructWithUnion(const StructWithUnion& src6) {
-  if (src6.u) u.reset(new  ::cpp2::MyUnion(*src6.u));
-  aDouble = src6.aDouble;
-  __isset.aDouble = src6.__isset.aDouble;
-  f = src6.f;
-  __isset.f = src6.__isset.f;
+StructWithUnion::StructWithUnion(const StructWithUnion& src) {
+  if (src.u) u.reset(new  ::cpp2::MyUnion(*src.u));
+  aDouble = src.aDouble;
+  __isset.aDouble = src.__isset.aDouble;
+  f = src.f;
+  __isset.f = src.__isset.f;
 }
 
-StructWithUnion& StructWithUnion::operator=(const StructWithUnion& src7) {
-  StructWithUnion tmp8(src7);
-  swap(*this, tmp8);
+StructWithUnion& StructWithUnion::operator=(const StructWithUnion& src) {
+  StructWithUnion tmp(src);
+  swap(*this, tmp);
   return *this;
 }
 
@@ -317,20 +317,20 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace cpp2 {
 
-StructWithContainers::StructWithContainers(const StructWithContainers& src18) {
-  if (src18.list_ref) list_ref.reset(new std::vector<int32_t>(*src18.list_ref));
-  if (src18.set_ref) set_ref.reset(new std::set<int32_t>(*src18.set_ref));
-  if (src18.map_ref) map_ref.reset(new std::map<int32_t, int32_t>(*src18.map_ref));
-  if (src18.list_ref_unique) list_ref_unique.reset(new std::vector<int32_t>(*src18.list_ref_unique));
-  set_ref_shared = src18.set_ref_shared;
-  map_ref_custom = src18.map_ref_custom;
-  list_ref_shared_const = src18.list_ref_shared_const;
-  if (src18.set_custom_ref) set_custom_ref.reset(new std::set<int32_t>(*src18.set_custom_ref));
+StructWithContainers::StructWithContainers(const StructWithContainers& src) {
+  if (src.list_ref) list_ref.reset(new std::vector<int32_t>(*src.list_ref));
+  if (src.set_ref) set_ref.reset(new std::set<int32_t>(*src.set_ref));
+  if (src.map_ref) map_ref.reset(new std::map<int32_t, int32_t>(*src.map_ref));
+  if (src.list_ref_unique) list_ref_unique.reset(new std::vector<int32_t>(*src.list_ref_unique));
+  set_ref_shared = src.set_ref_shared;
+  map_ref_custom = src.map_ref_custom;
+  list_ref_shared_const = src.list_ref_shared_const;
+  if (src.set_custom_ref) set_custom_ref.reset(new std::set<int32_t>(*src.set_custom_ref));
 }
 
-StructWithContainers& StructWithContainers::operator=(const StructWithContainers& src19) {
-  StructWithContainers tmp20(src19);
-  swap(*this, tmp20);
+StructWithContainers& StructWithContainers::operator=(const StructWithContainers& src) {
+  StructWithContainers tmp(src);
+  swap(*this, tmp);
   return *this;
 }
 

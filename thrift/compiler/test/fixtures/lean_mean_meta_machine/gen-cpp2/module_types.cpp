@@ -1377,18 +1377,18 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
-struct4::struct4(const struct4& src0) {
-  field0 = src0.field0;
-  field1 = src0.field1;
-  __isset.field1 = src0.__isset.field1;
-  field2 = src0.field2;
-  __isset.field2 = src0.__isset.field2;
-  if (src0.field3) field3.reset(new  ::test_cpp2::cpp_reflection::structA(*src0.field3));
+struct4::struct4(const struct4& src) {
+  field0 = src.field0;
+  field1 = src.field1;
+  __isset.field1 = src.__isset.field1;
+  field2 = src.field2;
+  __isset.field2 = src.__isset.field2;
+  if (src.field3) field3.reset(new  ::test_cpp2::cpp_reflection::structA(*src.field3));
 }
 
-struct4& struct4::operator=(const struct4& src1) {
-  struct4 tmp2(src1);
-  swap(*this, tmp2);
+struct4& struct4::operator=(const struct4& src) {
+  struct4 tmp(src);
+  swap(*this, tmp);
   return *this;
 }
 
