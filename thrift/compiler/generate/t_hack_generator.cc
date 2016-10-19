@@ -116,7 +116,10 @@ class t_hack_generator : public t_oop_generator {
   void generate_php_type_spec(std::ofstream& out, t_type* t);
   void generate_php_struct_spec(std::ofstream& out, t_struct* tstruct);
   void generate_php_struct_struct_trait(std::ofstream& out, t_struct* tstruct);
-  void generate_php_structural_id(std::ofstream& out, t_struct* tstruct);
+  void generate_php_structural_id(
+      std::ofstream& out,
+      t_struct* tstruct,
+      bool asFunction);
 
   /**
    * Service-level generation functions
@@ -1925,10 +1928,22 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
  * for information about the structural ID.
  */
 void t_hack_generator::generate_php_structural_id(ofstream& out,
-                                                  t_struct* tstruct) {
-  indent(out) << "const int STRUCTURAL_ID = "
-              << generate_structural_id(tstruct->get_members()) << ";"
-              << endl;
+                                                  t_struct* tstruct,
+                                                  bool asFunction) {
+  if (asFunction) {
+    indent(out) << "static function getStructuralID(): int {" << endl;
+    indent_up();
+    indent(out) << "return "
+                << generate_structural_id(tstruct->get_members())
+                << ";"
+                << endl;
+    indent_down();
+    indent(out) << "}" << endl;
+  } else {
+    indent(out) << "const int STRUCTURAL_ID = "
+                << generate_structural_id(tstruct->get_members()) << ";"
+                << endl;
+  }
 }
 
 void t_hack_generator::generate_php_struct_definition(ofstream& out,
@@ -2025,10 +2040,16 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
 
+  bool generateAsTrait =
+    tstruct->annotations_.find("php.trait") != tstruct->annotations_.end();
+
   generate_php_docstring(out, tstruct);
-  out <<
-    "class " << php_namespace(tstruct->get_program()) << tstruct->get_name();
-  if (is_exception) {
+  out << (generateAsTrait ? "trait " : "class ")
+      << php_namespace(tstruct->get_program())
+      << tstruct->get_name();
+  if (generateAsTrait) {
+    out << "Trait";
+  } else if (is_exception) {
     out << " extends TException";
   }
   out << " implements IThriftStruct";
@@ -2044,6 +2065,10 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
   out << " {" << endl;
   indent_up();
 
+  if (generateAsTrait && is_exception) {
+    indent(out) << "require extends TException;" << endl;
+  }
+
   generate_php_struct_struct_trait(out, tstruct);
   generate_php_struct_spec(out, tstruct);
 
@@ -2051,7 +2076,7 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
     generate_php_struct_shape_spec(out, tstruct);
   }
 
-  generate_php_structural_id(out, tstruct);
+  generate_php_structural_id(out, tstruct, generateAsTrait);
 
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     t_type* t = get_true_type((*m_iter)->get_type());
