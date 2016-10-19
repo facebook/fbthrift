@@ -257,6 +257,13 @@ void Cpp2Connection::killRequest(
 // Response Channel callbacks
 void Cpp2Connection::requestReceived(
   unique_ptr<ResponseChannel::Request>&& req) {
+  auto reqCtx = std::make_shared<folly::RequestContext>();
+  auto handler = worker_->getServer()->getEventHandler();
+  if (handler) {
+    handler->connectionNewRequest(&context_, reqCtx.get());
+  }
+  folly::RequestContextScopeGuard rctx(reqCtx);
+
   auto server = worker_->getServer();
   auto observer = server->getObserver();
 
@@ -357,7 +364,6 @@ void Cpp2Connection::requestReceived(
   // and will be released after deserializeRequest.
   unique_ptr<folly::IOBuf> buf = hreq->extractBuf();
 
-  folly::RequestContextScopeGuard rctx;
   Cpp2Request* t2r = new Cpp2Request(std::move(req), this_);
   auto up2r = std::unique_ptr<ResponseChannel::Request>(t2r);
   activeRequests_.insert(t2r);
