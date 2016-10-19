@@ -171,14 +171,25 @@ class Definition(Primitive):
 
 
 class Class(Primitive):
-    _classRegex = re.compile('(class|struct) (\w+(\s*::(\s*\w+))*)')
+    # String Format: type folly abspath::name
+    # Example: class FOLLY_DEPRECATE("msg") classname::function : extrastuff
+    _pattern_type = "(?P<type>class |struct )"
+    _pattern_folly = "(?P<folly>\w+\(.*?\) )*"
+    _pattern_name = "(?:\s*(?P<name>\w+))"
+    _pattern_scope = "(?:\s*::{pname})*".format(pname=_pattern_name)
+    _pattern_abspath = "(?P<abspath>\w+{pscope})".format(pscope=_pattern_scope)
+    _pattern = "{ptype}{pfolly}{pabspath}".format(
+        ptype=_pattern_type,
+        pfolly=_pattern_folly,
+        pabspath=_pattern_abspath)
+    _classRegex = re.compile(_pattern, re.S)
 
     def _write(self, context):
         # deduce name
         m = self._classRegex.match(str(self))
         if not m:
             raise SyntaxError("C++ class/struct incorrectly defined")
-        self.name, self.abspath = m.group(4, 2)
+        self.name, self.abspath = m.group('name', 'abspath')
         # this is magic! Basically what it does it it checks if we're
         # already on an empty line. If we are not then we introduce a
         # newline before the class defn

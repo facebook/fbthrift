@@ -2415,7 +2415,21 @@ class CppGenerator(t_generator.Generator):
             extends += ['public apache::thrift::TException']
         extends = ' : ' + ', '.join(extends)
         # Open struct def
-        struct = s.cls('class {0}{1}'.format(obj.name, extends)).scope
+        class_signature = 'class '
+
+        deprecated = ''
+        if 'deprecated' in obj.annotations:
+            deprecated += 'FOLLY_DEPRECATED(\n  "'
+            # For annotations that don't specify a value to the 'key: "value"'
+            # pair, Thrift assigns the string "1" as a default value.
+            if obj.annotations['deprecated'] != "1":
+                deprecated += obj.annotations['deprecated']
+            else:
+                deprecated += 'class {0} is deprecated'.format(obj.name)
+            deprecated += '"\n) '
+
+        class_signature += deprecated + obj.name + extends
+        struct = s.cls(class_signature).scope
         struct.acquire()
         struct.label('public:')
         # Get members
