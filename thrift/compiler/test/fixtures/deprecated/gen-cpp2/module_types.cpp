@@ -17,7 +17,6 @@ void House::__clear() {
   id = 0;
   houseName = std::string();
   houseColors.clear();
-  __isset.__clear();
 }
 
 bool House::operator==(const House& rhs) const {
@@ -27,21 +26,10 @@ bool House::operator==(const House& rhs) const {
   if (!((houseName == rhs.houseName))) {
     return false;
   }
-  if (__isset.houseColors != rhs.__isset.houseColors) {
-    return false;
-  }
-  else if (__isset.houseColors && !((houseColors == rhs.houseColors))) {
+  if (!((houseColors == rhs.houseColors))) {
     return false;
   }
   return true;
-}
-
-const std::set< ::cpp2::ColorID>* House::get_houseColors() const& {
-  return __isset.houseColors ? std::addressof(houseColors) : nullptr;
-}
-
-std::set< ::cpp2::ColorID>* House::get_houseColors() & {
-  return __isset.houseColors ? std::addressof(houseColors) : nullptr;
 }
 
 void swap(House& a, House& b) {
@@ -49,7 +37,6 @@ void swap(House& a, House& b) {
   swap(a.id, b.id);
   swap(a.houseName, b.houseName);
   swap(a.houseColors, b.houseColors);
-  swap(a.__isset, b.__isset);
 }
 
 template uint32_t House::read<>(apache::thrift::BinaryProtocolReader*);
@@ -70,7 +57,6 @@ namespace cpp2 {
 void Field::__clear() {
   id = 0;
   fieldType = 5;
-  __isset.__clear();
 }
 
 bool Field::operator==(const Field& rhs) const {
@@ -87,7 +73,6 @@ void swap(Field& a, Field& b) {
   using ::std::swap;
   swap(a.id, b.id);
   swap(a.fieldType, b.fieldType);
-  swap(a.__isset, b.__isset);
 }
 
 template uint32_t Field::read<>(apache::thrift::BinaryProtocolReader*);

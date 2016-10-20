@@ -9,6 +9,7 @@
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp/TApplicationException.h>
+#include <folly/Optional.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
 
@@ -34,31 +35,24 @@ class FOLLY_DEPRECATED(
   House(apache::thrift::FragileConstructor,  ::cpp2::ColorID id__arg, std::string houseName__arg, std::set< ::cpp2::ColorID> houseColors__arg) :
       id(std::move(id__arg)),
       houseName(std::move(houseName__arg)),
-      houseColors(std::move(houseColors__arg)) {
-    __isset.id = true;
-    __isset.houseName = true;
-    __isset.houseColors = true;
-  }
+      houseColors(std::move(houseColors__arg)) {}
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   House(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     House(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     id = arg.move();
-    __isset.id = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   House(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     House(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     houseName = arg.move();
-    __isset.houseName = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   House(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     House(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     houseColors = arg.move();
-    __isset.houseColors = true;
   }
 
   House(House&&) = default;
@@ -74,51 +68,9 @@ class FOLLY_DEPRECATED(
 
    ::cpp2::ColorID id;
   std::string houseName;
-  std::set< ::cpp2::ColorID> houseColors;
-
-  struct __isset {
-    void __clear() {
-      id = false;
-      houseName = false;
-      houseColors = false;
-    }
-
-    bool id = false;
-    bool houseName = false;
-    bool houseColors = false;
-  } __isset;
+  folly::Optional<std::set< ::cpp2::ColorID>> houseColors;
   bool operator==(const House& rhs) const;
   bool operator < (const House& rhs) const;
-
-   ::cpp2::ColorID get_id() const {
-    return id;
-  }
-
-   ::cpp2::ColorID& set_id( ::cpp2::ColorID id_) {
-    id = id_;
-    __isset.id = true;
-    return id;
-  }
-
-  const std::string& get_houseName() const& {
-    return houseName;
-  }
-
-  std::string get_houseName() && {
-    return std::move(houseName);
-  }
-
-  template <typename T_House_houseName_struct_setter>
-  std::string& set_houseName(T_House_houseName_struct_setter&& houseName_) {
-    houseName = std::forward<T_House_houseName_struct_setter>(houseName_);
-    __isset.houseName = true;
-    return houseName;
-  }
-  const std::set< ::cpp2::ColorID>* get_houseColors() const&;
-  std::set< ::cpp2::ColorID>* get_houseColors() &;
-  std::set< ::cpp2::ColorID>* get_houseColors() && = delete;
-  template <typename T_House_houseColors_struct_setter>
-  std::set< ::cpp2::ColorID>& set_houseColors(T_House_houseColors_struct_setter&& houseColors_);
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -182,23 +134,18 @@ class FOLLY_DEPRECATED(
 
   Field(apache::thrift::FragileConstructor,  ::cpp2::ColorID id__arg, int32_t fieldType__arg) :
       id(std::move(id__arg)),
-      fieldType(std::move(fieldType__arg)) {
-    __isset.id = true;
-    __isset.fieldType = true;
-  }
+      fieldType(std::move(fieldType__arg)) {}
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   Field(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     Field(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     id = arg.move();
-    __isset.id = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   Field(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     Field(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     fieldType = arg.move();
-    __isset.fieldType = true;
   }
 
   Field(Field&&) = default;
@@ -214,38 +161,8 @@ class FOLLY_DEPRECATED(
 
    ::cpp2::ColorID id;
   int32_t fieldType;
-
-  struct __isset {
-    void __clear() {
-      id = false;
-      fieldType = false;
-    }
-
-    bool id = false;
-    bool fieldType = false;
-  } __isset;
   bool operator==(const Field& rhs) const;
   bool operator < (const Field& rhs) const;
-
-   ::cpp2::ColorID get_id() const {
-    return id;
-  }
-
-   ::cpp2::ColorID& set_id( ::cpp2::ColorID id_) {
-    id = id_;
-    __isset.id = true;
-    return id;
-  }
-
-  int32_t get_fieldType() const {
-    return fieldType;
-  }
-
-  int32_t& set_fieldType(int32_t fieldType_) {
-    fieldType = fieldType_;
-    __isset.fieldType = true;
-    return fieldType;
-  }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

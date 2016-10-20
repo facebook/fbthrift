@@ -1,1 +1,1 @@
-cpp2 src/module.thrift
+cpp2:optionals src/module.thrift
