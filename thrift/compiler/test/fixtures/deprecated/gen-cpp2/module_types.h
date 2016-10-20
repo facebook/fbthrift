@@ -18,94 +18,107 @@
 
 namespace cpp2 {
 
-class struct_dep;
-class struct_dep_msg;
+class House;
+class Field;
+typedef int64_t ColorID;
 
 class FOLLY_DEPRECATED(
-  "class struct_dep is deprecated"
-) struct_dep : private apache::thrift::detail::st::ComparisonOperators<struct_dep> {
+  "class House is deprecated"
+) House : private apache::thrift::detail::st::ComparisonOperators<House> {
  public:
 
-  struct_dep() :
-      a(0),
-      b(0) {}
+  House() :
+      id(0) {}
   // FragileConstructor for use in initialization lists only
 
-  struct_dep(apache::thrift::FragileConstructor, int32_t a__arg, double b__arg) :
-      a(std::move(a__arg)),
-      b(std::move(b__arg)) {
-    __isset.a = true;
-    __isset.b = true;
+  House(apache::thrift::FragileConstructor,  ::cpp2::ColorID id__arg, std::string houseName__arg, std::set< ::cpp2::ColorID> houseColors__arg) :
+      id(std::move(id__arg)),
+      houseName(std::move(houseName__arg)),
+      houseColors(std::move(houseColors__arg)) {
+    __isset.id = true;
+    __isset.houseName = true;
+    __isset.houseColors = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_dep(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_dep(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  House(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    House(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
-    a = arg.move();
-    __isset.a = true;
+    id = arg.move();
+    __isset.id = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_dep(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_dep(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  House(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    House(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
-    b = arg.move();
-    __isset.b = true;
+    houseName = arg.move();
+    __isset.houseName = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  House(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    House(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    houseColors = arg.move();
+    __isset.houseColors = true;
   }
 
-  struct_dep(struct_dep&&) = default;
+  House(House&&) = default;
 
-  struct_dep(const struct_dep&) = default;
+  House(const House&) = default;
 
-  struct_dep& operator=(struct_dep&&) = default;
+  House& operator=(House&&) = default;
 
-  struct_dep& operator=(const struct_dep&) = default;
+  House& operator=(const House&) = default;
   void __clear();
 
-  virtual ~struct_dep() throw() {}
+  virtual ~House() throw() {}
 
-  int32_t a;
-  double b;
+   ::cpp2::ColorID id;
+  std::string houseName;
+  std::set< ::cpp2::ColorID> houseColors;
 
   struct __isset {
     void __clear() {
-      a = false;
-      b = false;
+      id = false;
+      houseName = false;
+      houseColors = false;
     }
 
-    bool a = false;
-    bool b = false;
+    bool id = false;
+    bool houseName = false;
+    bool houseColors = false;
   } __isset;
-  bool operator==(const struct_dep& rhs) const;
+  bool operator==(const House& rhs) const;
+  bool operator < (const House& rhs) const;
 
-  bool operator < (const struct_dep& rhs) const {
-    if (!(a == rhs.a)) {
-      return a < rhs.a;
-    }
-    if (!(b == rhs.b)) {
-      return b < rhs.b;
-    }
-    return false;
+   ::cpp2::ColorID get_id() const {
+    return id;
   }
 
-  int32_t get_a() const {
-    return a;
+   ::cpp2::ColorID& set_id( ::cpp2::ColorID id_) {
+    id = id_;
+    __isset.id = true;
+    return id;
   }
 
-  int32_t& set_a(int32_t a_) {
-    a = a_;
-    __isset.a = true;
-    return a;
+  const std::string& get_houseName() const& {
+    return houseName;
   }
 
-  double get_b() const {
-    return b;
+  std::string get_houseName() && {
+    return std::move(houseName);
   }
 
-  double& set_b(double b_) {
-    b = b_;
-    __isset.b = true;
-    return b;
+  template <typename T_House_houseName_struct_setter>
+  std::string& set_houseName(T_House_houseName_struct_setter&& houseName_) {
+    houseName = std::forward<T_House_houseName_struct_setter>(houseName_);
+    __isset.houseName = true;
+    return houseName;
   }
+  const std::set< ::cpp2::ColorID>* get_houseColors() const&;
+  std::set< ::cpp2::ColorID>* get_houseColors() &;
+  std::set< ::cpp2::ColorID>* get_houseColors() && = delete;
+  template <typename T_House_houseColors_struct_setter>
+  std::set< ::cpp2::ColorID>& set_houseColors(T_House_houseColors_struct_setter&& houseColors_);
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -117,40 +130,40 @@ class FOLLY_DEPRECATED(
   uint32_t write(Protocol_* prot_) const;
 };
 
-void swap(struct_dep& a, struct_dep& b);
-extern template uint32_t struct_dep::read<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t struct_dep::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t struct_dep::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t struct_dep::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t struct_dep::read<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t struct_dep::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t struct_dep::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t struct_dep::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+void swap(House& a, House& b);
+extern template uint32_t House::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t House::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t House::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t House::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t House::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t House::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t House::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t House::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::cpp2::struct_dep>::clear( ::cpp2::struct_dep* obj) {
+template <> inline void Cpp2Ops< ::cpp2::House>::clear( ::cpp2::House* obj) {
   return obj->__clear();
 }
 
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::struct_dep>::thriftType() {
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::House>::thriftType() {
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::struct_dep>::write(Protocol* proto,  ::cpp2::struct_dep const* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::House>::write(Protocol* proto,  ::cpp2::House const* obj) {
   return obj->write(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::struct_dep>::read(Protocol* proto,  ::cpp2::struct_dep* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::House>::read(Protocol* proto,  ::cpp2::House* obj) {
   return obj->read(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::struct_dep>::serializedSize(Protocol const* proto,  ::cpp2::struct_dep const* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::House>::serializedSize(Protocol const* proto,  ::cpp2::House const* obj) {
   return obj->serializedSize(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::struct_dep>::serializedSizeZC(Protocol const* proto,  ::cpp2::struct_dep const* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::House>::serializedSizeZC(Protocol const* proto,  ::cpp2::House const* obj) {
   return obj->serializedSizeZC(proto);
 }
 
@@ -159,88 +172,79 @@ namespace cpp2 {
 
 class FOLLY_DEPRECATED(
   "No longer supported"
-) struct_dep_msg : private apache::thrift::detail::st::ComparisonOperators<struct_dep_msg> {
+) Field : private apache::thrift::detail::st::ComparisonOperators<Field> {
  public:
 
-  struct_dep_msg() :
-      a(0),
-      b(0) {}
+  Field() :
+      id(0),
+      fieldType(5) {}
   // FragileConstructor for use in initialization lists only
 
-  struct_dep_msg(apache::thrift::FragileConstructor, int32_t a__arg, double b__arg) :
-      a(std::move(a__arg)),
-      b(std::move(b__arg)) {
-    __isset.a = true;
-    __isset.b = true;
+  Field(apache::thrift::FragileConstructor,  ::cpp2::ColorID id__arg, int32_t fieldType__arg) :
+      id(std::move(id__arg)),
+      fieldType(std::move(fieldType__arg)) {
+    __isset.id = true;
+    __isset.fieldType = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_dep_msg(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_dep_msg(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  Field(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Field(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
-    a = arg.move();
-    __isset.a = true;
+    id = arg.move();
+    __isset.id = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  struct_dep_msg(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    struct_dep_msg(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  Field(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Field(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
-    b = arg.move();
-    __isset.b = true;
+    fieldType = arg.move();
+    __isset.fieldType = true;
   }
 
-  struct_dep_msg(struct_dep_msg&&) = default;
+  Field(Field&&) = default;
 
-  struct_dep_msg(const struct_dep_msg&) = default;
+  Field(const Field&) = default;
 
-  struct_dep_msg& operator=(struct_dep_msg&&) = default;
+  Field& operator=(Field&&) = default;
 
-  struct_dep_msg& operator=(const struct_dep_msg&) = default;
+  Field& operator=(const Field&) = default;
   void __clear();
 
-  virtual ~struct_dep_msg() throw() {}
+  virtual ~Field() throw() {}
 
-  int32_t a;
-  double b;
+   ::cpp2::ColorID id;
+  int32_t fieldType;
 
   struct __isset {
     void __clear() {
-      a = false;
-      b = false;
+      id = false;
+      fieldType = false;
     }
 
-    bool a = false;
-    bool b = false;
+    bool id = false;
+    bool fieldType = false;
   } __isset;
-  bool operator==(const struct_dep_msg& rhs) const;
+  bool operator==(const Field& rhs) const;
+  bool operator < (const Field& rhs) const;
 
-  bool operator < (const struct_dep_msg& rhs) const {
-    if (!(a == rhs.a)) {
-      return a < rhs.a;
-    }
-    if (!(b == rhs.b)) {
-      return b < rhs.b;
-    }
-    return false;
+   ::cpp2::ColorID get_id() const {
+    return id;
   }
 
-  int32_t get_a() const {
-    return a;
+   ::cpp2::ColorID& set_id( ::cpp2::ColorID id_) {
+    id = id_;
+    __isset.id = true;
+    return id;
   }
 
-  int32_t& set_a(int32_t a_) {
-    a = a_;
-    __isset.a = true;
-    return a;
+  int32_t get_fieldType() const {
+    return fieldType;
   }
 
-  double get_b() const {
-    return b;
-  }
-
-  double& set_b(double b_) {
-    b = b_;
-    __isset.b = true;
-    return b;
+  int32_t& set_fieldType(int32_t fieldType_) {
+    fieldType = fieldType_;
+    __isset.fieldType = true;
+    return fieldType;
   }
 
   template <class Protocol_>
@@ -253,40 +257,40 @@ class FOLLY_DEPRECATED(
   uint32_t write(Protocol_* prot_) const;
 };
 
-void swap(struct_dep_msg& a, struct_dep_msg& b);
-extern template uint32_t struct_dep_msg::read<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t struct_dep_msg::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t struct_dep_msg::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t struct_dep_msg::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t struct_dep_msg::read<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t struct_dep_msg::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t struct_dep_msg::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t struct_dep_msg::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+void swap(Field& a, Field& b);
+extern template uint32_t Field::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t Field::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t Field::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t Field::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t Field::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t Field::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t Field::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t Field::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::cpp2::struct_dep_msg>::clear( ::cpp2::struct_dep_msg* obj) {
+template <> inline void Cpp2Ops< ::cpp2::Field>::clear( ::cpp2::Field* obj) {
   return obj->__clear();
 }
 
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::struct_dep_msg>::thriftType() {
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::Field>::thriftType() {
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::struct_dep_msg>::write(Protocol* proto,  ::cpp2::struct_dep_msg const* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Field>::write(Protocol* proto,  ::cpp2::Field const* obj) {
   return obj->write(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::struct_dep_msg>::read(Protocol* proto,  ::cpp2::struct_dep_msg* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Field>::read(Protocol* proto,  ::cpp2::Field* obj) {
   return obj->read(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::struct_dep_msg>::serializedSize(Protocol const* proto,  ::cpp2::struct_dep_msg const* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Field>::serializedSize(Protocol const* proto,  ::cpp2::Field const* obj) {
   return obj->serializedSize(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::struct_dep_msg>::serializedSizeZC(Protocol const* proto,  ::cpp2::struct_dep_msg const* obj) {
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Field>::serializedSizeZC(Protocol const* proto,  ::cpp2::Field const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

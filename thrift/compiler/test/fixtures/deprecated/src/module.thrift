@@ -1,9 +1,12 @@
-struct struct_dep {
-  1: i32 a
-  2: double b
+typedef i64 ColorID
+
+struct House {
+  1: ColorID id,
+  2: string houseName,
+  3: optional set<ColorID> houseColors
 } (deprecated)
 
-struct struct_dep_msg {
-  1: i32 a
-  2: double b
+struct Field {
+  1: ColorID id,
+  2: i32 fieldType = 5
 } (deprecated="No longer supported")

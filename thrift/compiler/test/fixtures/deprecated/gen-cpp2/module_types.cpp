@@ -13,37 +13,53 @@
 
 namespace cpp2 {
 
-void struct_dep::__clear() {
-  a = 0;
-  b = 0;
+void House::__clear() {
+  id = 0;
+  houseName = std::string();
+  houseColors.clear();
   __isset.__clear();
 }
 
-bool struct_dep::operator==(const struct_dep& rhs) const {
-  if (!((a == rhs.a))) {
+bool House::operator==(const House& rhs) const {
+  if (!((id == rhs.id))) {
     return false;
   }
-  if (!((b == rhs.b))) {
+  if (!((houseName == rhs.houseName))) {
+    return false;
+  }
+  if (__isset.houseColors != rhs.__isset.houseColors) {
+    return false;
+  }
+  else if (__isset.houseColors && !((houseColors == rhs.houseColors))) {
     return false;
   }
   return true;
 }
 
-void swap(struct_dep& a, struct_dep& b) {
+const std::set< ::cpp2::ColorID>* House::get_houseColors() const& {
+  return __isset.houseColors ? std::addressof(houseColors) : nullptr;
+}
+
+std::set< ::cpp2::ColorID>* House::get_houseColors() & {
+  return __isset.houseColors ? std::addressof(houseColors) : nullptr;
+}
+
+void swap(House& a, House& b) {
   using ::std::swap;
-  swap(a.a, b.a);
-  swap(a.b, b.b);
+  swap(a.id, b.id);
+  swap(a.houseName, b.houseName);
+  swap(a.houseColors, b.houseColors);
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t struct_dep::read<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t struct_dep::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t struct_dep::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t struct_dep::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t struct_dep::read<>(apache::thrift::CompactProtocolReader*);
-template uint32_t struct_dep::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t struct_dep::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t struct_dep::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t House::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t House::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t House::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t House::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t House::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t House::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t House::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t House::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace apache { namespace thrift {
@@ -51,37 +67,37 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace cpp2 {
 
-void struct_dep_msg::__clear() {
-  a = 0;
-  b = 0;
+void Field::__clear() {
+  id = 0;
+  fieldType = 5;
   __isset.__clear();
 }
 
-bool struct_dep_msg::operator==(const struct_dep_msg& rhs) const {
-  if (!((a == rhs.a))) {
+bool Field::operator==(const Field& rhs) const {
+  if (!((id == rhs.id))) {
     return false;
   }
-  if (!((b == rhs.b))) {
+  if (!((fieldType == rhs.fieldType))) {
     return false;
   }
   return true;
 }
 
-void swap(struct_dep_msg& a, struct_dep_msg& b) {
+void swap(Field& a, Field& b) {
   using ::std::swap;
-  swap(a.a, b.a);
-  swap(a.b, b.b);
+  swap(a.id, b.id);
+  swap(a.fieldType, b.fieldType);
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t struct_dep_msg::read<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t struct_dep_msg::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t struct_dep_msg::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t struct_dep_msg::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t struct_dep_msg::read<>(apache::thrift::CompactProtocolReader*);
-template uint32_t struct_dep_msg::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t struct_dep_msg::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t struct_dep_msg::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t Field::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t Field::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t Field::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Field::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Field::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t Field::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t Field::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t Field::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace apache { namespace thrift {

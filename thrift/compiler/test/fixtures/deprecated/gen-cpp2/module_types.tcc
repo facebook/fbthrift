@@ -18,8 +18,15 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 namespace cpp2 {
 
+template <typename T_House_houseColors_struct_setter>
+std::set< ::cpp2::ColorID>& House::set_houseColors(T_House_houseColors_struct_setter&& houseColors_) {
+  houseColors = std::forward<T_House_houseColors_struct_setter>(houseColors_);
+  __isset.houseColors = true;
+  return houseColors;
+}
+
 template <class Protocol_>
-uint32_t struct_dep::read(Protocol_* iprot) {
+uint32_t House::read(Protocol_* iprot) {
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -36,21 +43,25 @@ uint32_t struct_dep::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (fname == "a") {
+      if (fname == "id") {
         fid = 1;
-        ftype = apache::thrift::protocol::T_I32;
+        ftype = apache::thrift::protocol::T_I64;
       }
-      else if (fname == "b") {
+      else if (fname == "houseName") {
         fid = 2;
-        ftype = apache::thrift::protocol::T_DOUBLE;
+        ftype = apache::thrift::protocol::T_STRING;
+      }
+      else if (fname == "houseColors") {
+        fid = 3;
+        ftype = apache::thrift::protocol::T_SET;
       }
     }
     switch (fid) {
       case 1:
       {
-        if (ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32(this->a);
-          this->__isset.a = true;
+        if (ftype == apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->id);
+          this->__isset.id = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -58,9 +69,38 @@ uint32_t struct_dep::read(Protocol_* iprot) {
       }
       case 2:
       {
-        if (ftype == apache::thrift::protocol::T_DOUBLE) {
-          xfer += iprot->readDouble(this->b);
-          this->__isset.b = true;
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->houseName);
+          this->__isset.houseName = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 3:
+      {
+        if (ftype == apache::thrift::protocol::T_SET) {
+          this->houseColors = std::set< ::cpp2::ColorID>();
+          uint32_t _size0;
+          apache::thrift::protocol::TType _etype3;
+          xfer += iprot->readSetBegin(_etype3, _size0);
+          uint32_t _i4;
+          if (_size0 == std::numeric_limits<uint32_t>::max()) {
+            for (_i4 = 0; iprot->peekSet(); _i4++) {
+               ::cpp2::ColorID _elem5;
+              xfer += iprot->readI64(_elem5);
+              this->houseColors.insert(std::move(_elem5));
+            }
+          }
+          else {
+            for (_i4 = 0; _i4 < _size0; ++_i4) {
+               ::cpp2::ColorID _elem6;
+              xfer += iprot->readI64(_elem6);
+              this->houseColors.insert(std::move(_elem6));
+            }
+          }
+          xfer += iprot->readSetEnd();
+          this->__isset.houseColors = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -80,39 +120,64 @@ uint32_t struct_dep::read(Protocol_* iprot) {
 }
 
 template <class Protocol_>
-uint32_t struct_dep::serializedSize(Protocol_ const* prot_) const {
+uint32_t House::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
-  xfer += prot_->serializedStructSize("struct_dep");
-  xfer += prot_->serializedFieldSize("a", apache::thrift::protocol::T_I32, 1);
-  xfer += prot_->serializedSizeI32(this->a);
-  xfer += prot_->serializedFieldSize("b", apache::thrift::protocol::T_DOUBLE, 2);
-  xfer += prot_->serializedSizeDouble(this->b);
+  xfer += prot_->serializedStructSize("House");
+  xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I64, 1);
+  xfer += prot_->serializedSizeI64(this->id);
+  xfer += prot_->serializedFieldSize("houseName", apache::thrift::protocol::T_STRING, 2);
+  xfer += prot_->serializedSizeString(this->houseName);
+  if (this->__isset.houseColors) {
+    xfer += prot_->serializedFieldSize("houseColors", apache::thrift::protocol::T_SET, 3);
+    xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I64, this->houseColors.size());
+    for (auto _iter7 = this->houseColors.begin(); _iter7 != this->houseColors.end(); ++_iter7) {
+      xfer += prot_->serializedSizeI64((*_iter7));
+    }
+    xfer += prot_->serializedSizeSetEnd();
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t struct_dep::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t House::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
-  xfer += prot_->serializedStructSize("struct_dep");
-  xfer += prot_->serializedFieldSize("a", apache::thrift::protocol::T_I32, 1);
-  xfer += prot_->serializedSizeI32(this->a);
-  xfer += prot_->serializedFieldSize("b", apache::thrift::protocol::T_DOUBLE, 2);
-  xfer += prot_->serializedSizeDouble(this->b);
+  xfer += prot_->serializedStructSize("House");
+  xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I64, 1);
+  xfer += prot_->serializedSizeI64(this->id);
+  xfer += prot_->serializedFieldSize("houseName", apache::thrift::protocol::T_STRING, 2);
+  xfer += prot_->serializedSizeString(this->houseName);
+  if (this->__isset.houseColors) {
+    xfer += prot_->serializedFieldSize("houseColors", apache::thrift::protocol::T_SET, 3);
+    xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I64, this->houseColors.size());
+    for (auto _iter8 = this->houseColors.begin(); _iter8 != this->houseColors.end(); ++_iter8) {
+      xfer += prot_->serializedSizeI64((*_iter8));
+    }
+    xfer += prot_->serializedSizeSetEnd();
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t struct_dep::write(Protocol_* prot_) const {
+uint32_t House::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("struct_dep");
-  xfer += prot_->writeFieldBegin("a", apache::thrift::protocol::T_I32, 1);
-  xfer += prot_->writeI32(this->a);
+  xfer += prot_->writeStructBegin("House");
+  xfer += prot_->writeFieldBegin("id", apache::thrift::protocol::T_I64, 1);
+  xfer += prot_->writeI64(this->id);
   xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("b", apache::thrift::protocol::T_DOUBLE, 2);
-  xfer += prot_->writeDouble(this->b);
+  xfer += prot_->writeFieldBegin("houseName", apache::thrift::protocol::T_STRING, 2);
+  xfer += prot_->writeString(this->houseName);
   xfer += prot_->writeFieldEnd();
+  if (this->__isset.houseColors) {
+    xfer += prot_->writeFieldBegin("houseColors", apache::thrift::protocol::T_SET, 3);
+    xfer += prot_->writeSetBegin(apache::thrift::protocol::T_I64, this->houseColors.size());
+    for (auto _iter9 = this->houseColors.begin(); _iter9 != this->houseColors.end(); ++_iter9) {
+      xfer += prot_->writeI64((*_iter9));
+    }
+    xfer += prot_->writeSetEnd();
+    xfer += prot_->writeFieldEnd();
+  }
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
@@ -125,7 +190,7 @@ namespace apache { namespace thrift {
 namespace cpp2 {
 
 template <class Protocol_>
-uint32_t struct_dep_msg::read(Protocol_* iprot) {
+uint32_t Field::read(Protocol_* iprot) {
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -142,21 +207,21 @@ uint32_t struct_dep_msg::read(Protocol_* iprot) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (fname == "a") {
+      if (fname == "id") {
         fid = 1;
-        ftype = apache::thrift::protocol::T_I32;
+        ftype = apache::thrift::protocol::T_I64;
       }
-      else if (fname == "b") {
+      else if (fname == "fieldType") {
         fid = 2;
-        ftype = apache::thrift::protocol::T_DOUBLE;
+        ftype = apache::thrift::protocol::T_I32;
       }
     }
     switch (fid) {
       case 1:
       {
-        if (ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32(this->a);
-          this->__isset.a = true;
+        if (ftype == apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->id);
+          this->__isset.id = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -164,9 +229,9 @@ uint32_t struct_dep_msg::read(Protocol_* iprot) {
       }
       case 2:
       {
-        if (ftype == apache::thrift::protocol::T_DOUBLE) {
-          xfer += iprot->readDouble(this->b);
-          this->__isset.b = true;
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->fieldType);
+          this->__isset.fieldType = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -186,38 +251,38 @@ uint32_t struct_dep_msg::read(Protocol_* iprot) {
 }
 
 template <class Protocol_>
-uint32_t struct_dep_msg::serializedSize(Protocol_ const* prot_) const {
+uint32_t Field::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
-  xfer += prot_->serializedStructSize("struct_dep_msg");
-  xfer += prot_->serializedFieldSize("a", apache::thrift::protocol::T_I32, 1);
-  xfer += prot_->serializedSizeI32(this->a);
-  xfer += prot_->serializedFieldSize("b", apache::thrift::protocol::T_DOUBLE, 2);
-  xfer += prot_->serializedSizeDouble(this->b);
+  xfer += prot_->serializedStructSize("Field");
+  xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I64, 1);
+  xfer += prot_->serializedSizeI64(this->id);
+  xfer += prot_->serializedFieldSize("fieldType", apache::thrift::protocol::T_I32, 2);
+  xfer += prot_->serializedSizeI32(this->fieldType);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t struct_dep_msg::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t Field::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
-  xfer += prot_->serializedStructSize("struct_dep_msg");
-  xfer += prot_->serializedFieldSize("a", apache::thrift::protocol::T_I32, 1);
-  xfer += prot_->serializedSizeI32(this->a);
-  xfer += prot_->serializedFieldSize("b", apache::thrift::protocol::T_DOUBLE, 2);
-  xfer += prot_->serializedSizeDouble(this->b);
+  xfer += prot_->serializedStructSize("Field");
+  xfer += prot_->serializedFieldSize("id", apache::thrift::protocol::T_I64, 1);
+  xfer += prot_->serializedSizeI64(this->id);
+  xfer += prot_->serializedFieldSize("fieldType", apache::thrift::protocol::T_I32, 2);
+  xfer += prot_->serializedSizeI32(this->fieldType);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t struct_dep_msg::write(Protocol_* prot_) const {
+uint32_t Field::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("struct_dep_msg");
-  xfer += prot_->writeFieldBegin("a", apache::thrift::protocol::T_I32, 1);
-  xfer += prot_->writeI32(this->a);
+  xfer += prot_->writeStructBegin("Field");
+  xfer += prot_->writeFieldBegin("id", apache::thrift::protocol::T_I64, 1);
+  xfer += prot_->writeI64(this->id);
   xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("b", apache::thrift::protocol::T_DOUBLE, 2);
-  xfer += prot_->writeDouble(this->b);
+  xfer += prot_->writeFieldBegin("fieldType", apache::thrift::protocol::T_I32, 2);
+  xfer += prot_->writeI32(this->fieldType);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
