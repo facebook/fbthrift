@@ -4582,6 +4582,37 @@ class CppGenerator(t_generator.Generator):
                 "unknown required qualifier"
             return 'required_of_writer'
 
+    def _render_fatal_structured_annotation(self, what, out, indent, comma):
+        t = type(what)
+        comma = ',' if comma else ''
+
+        if t == bool:
+            out('{0}::std::{1}_type{2}'.format(
+                indent, 'true' if what else 'false', comma))
+        elif t == int:
+            out('{0}::std::integral_constant< ::std::{1}max_t, {2}>{3}'.format(
+                indent, 'int' if what < 0 else 'uint', what, comma))
+        elif t == list or t == set:
+            out('{0}::fatal::list<'.format(indent))
+            for i, k in enumerate(what):
+                self._render_fatal_structured_annotation(k, out, indent + '  ',
+                                                         i + 1 < len(what))
+            out('{0}>{1}'.format(indent, comma))
+        elif t == dict:
+            out('{0}::fatal::list<'.format(indent))
+            for i, (k, v) in enumerate(sorted(what.iteritems())):
+                out('{0}  ::fatal::pair<'.format(indent))
+                self._render_fatal_structured_annotation(k, out,
+                                                         indent + '    ', True)
+                self._render_fatal_structured_annotation(v, out,
+                                                         indent + '    ', False)
+                out('{0}  >{1}'.format(indent,
+                                       ',' if i + 1 < len(what) else ''))
+            out('{0}>{1}'.format(indent, comma))
+        else:  # treat as string
+            out('{0}{1}{2}'.format(indent, self._render_fatal_string(str(what)),
+                comma))
+
     def _render_fatal_annotations(self, annotations, class_name, scope):
         clsnmkeys = '{0}__unique_annotations_keys'.format(class_name)
         clsnmvalues = '{0}__unique_annotations_values'.format(class_name)
@@ -4604,13 +4635,25 @@ class CppGenerator(t_generator.Generator):
             aclass('using values = {0};'.format(clsnmvalues))
             aclass('using map = ::fatal::list<')
             if annotations is not None:
+                import json
                 for idx, i in enumerate(sorted(annotations.keys())):
+                    structured = None
+                    try:
+                        structured = json.loads(annotations[i])
+                    except ValueError:
+                        pass
+
                     identifier = self._get_fatal_string_short_id(i)
-                    aclass('  ::fatal::pair<')
+                    aclass('  ::apache::thrift::annotation<')
                     aclass('    keys::{0},'.format(identifier))
-                    aclass('    values::{0}'.format(identifier))
-                    comma = ',' if idx + 1 < len(annotations) else ''
-                    aclass('  >{0}'.format(comma))
+                    aclass('    values::{0}{1}'
+                           .format(identifier,
+                                   '' if structured is None else ','))
+                    if structured is not None:
+                        self._render_fatal_structured_annotation(
+                            structured, aclass, '    ', False)
+                    aclass('  >{0}'
+                           .format(',' if idx + 1 < len(annotations) else ''))
             aclass('>;')
         return class_name
 

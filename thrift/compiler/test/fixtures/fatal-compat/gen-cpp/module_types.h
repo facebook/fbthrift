@@ -175,7 +175,11 @@ class struct3;
 
 class struct4;
 
+class struct5;
+
 class struct_binary;
+
+class annotated;
 
 class union_with_special_names;
 
@@ -2992,6 +2996,126 @@ class struct4 : public apache::thrift::TStructType<struct4> {
 class struct4;
 void merge(const struct4& from, struct4& to);
 void merge(struct4&& from, struct4& to);
+void swap(struct5 &a, struct5 &b);
+
+class struct5 : public apache::thrift::TStructType<struct5> {
+ public:
+
+  static const uint64_t _reflection_id = 16358384009565610188U;
+  static void _reflection_register(::apache::thrift::reflection::Schema&);
+  struct5() : field0(0), field2(static_cast<enum1>(0)) {
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct5(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct5(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    field0 = arg.move();
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct5(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct5(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    field1 = arg.move();
+    __isset.field1 = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct5(
+    ::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct5(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    field2 = arg.move();
+    __isset.field2 = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct5(
+    ::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct5(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    field3 = arg.move();
+    __isset.field3 = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct5(
+    ::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct5(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    field4 = arg.move();
+    __isset.field4 = true;
+  }
+
+  struct5(const struct5&) = default;
+  struct5& operator=(const struct5& src)= default;
+  struct5(struct5&&) = default;
+  struct5& operator=(struct5&&) = default;
+
+  void __clear();
+
+  virtual ~struct5() throw() {}
+
+  int32_t field0;
+  std::string field1;
+  enum1 field2;
+  structA field3;
+  structB field4;
+
+  struct __isset {
+    __isset() { __clear(); } 
+    void __clear() {
+      field1 = false;
+      field2 = false;
+      field3 = false;
+      field4 = false;
+    }
+    bool field1;
+    bool field2;
+    bool field3;
+    bool field4;
+  } __isset;
+
+  bool operator == (const struct5 &) const;
+  bool operator != (const struct5& rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const struct5 & ) const;
+
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  uint32_t read(apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+class struct5;
+void merge(const struct5& from, struct5& to);
+void merge(struct5&& from, struct5& to);
 void swap(struct_binary &a, struct_binary &b);
 
 class struct_binary : public apache::thrift::TStructType<struct_binary> {
@@ -3051,6 +3175,65 @@ class struct_binary : public apache::thrift::TStructType<struct_binary> {
 class struct_binary;
 void merge(const struct_binary& from, struct_binary& to);
 void merge(struct_binary&& from, struct_binary& to);
+void swap(annotated &a, annotated &b);
+
+class annotated : public apache::thrift::TStructType<annotated> {
+ public:
+
+  static const uint64_t _reflection_id = 300598955218934796U;
+  static void _reflection_register(::apache::thrift::reflection::Schema&);
+  annotated() : a(0) {
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit annotated(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    annotated(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    a = arg.move();
+    __isset.a = true;
+  }
+
+  annotated(const annotated&) = default;
+  annotated& operator=(const annotated& src)= default;
+  annotated(annotated&&) = default;
+  annotated& operator=(annotated&&) = default;
+
+  void __clear();
+
+  virtual ~annotated() throw() {}
+
+  int32_t a;
+
+  struct __isset {
+    __isset() { __clear(); } 
+    void __clear() {
+      a = false;
+    }
+    bool a;
+  } __isset;
+
+  bool operator == (const annotated &) const;
+  bool operator != (const annotated& rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const annotated & ) const;
+
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  uint32_t read(apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+class annotated;
+void merge(const annotated& from, annotated& to);
+void merge(annotated&& from, annotated& to);
 class union_with_special_names : public apache::thrift::TStructType<union_with_special_names> {
  public:
   enum class Type {

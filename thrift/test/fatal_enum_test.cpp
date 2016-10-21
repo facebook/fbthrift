@@ -166,12 +166,30 @@ TEST(fatal_enum, annotations) {
 
   EXPECT_SAME<
     fatal::list<
-      fatal::pair<enum3_annotation1k, enum3_annotation1v>,
-      fatal::pair<enum3_annotation2k, enum3_annotation2v>,
-      fatal::pair<enum3_annotation3k, enum3_annotation3v>,
-      fatal::pair<enum3_annotation4k, enum3_annotation4v>,
-      fatal::pair<enum3_annotation5k, enum3_annotation5v>,
-      fatal::pair<enum3_annotation6k, enum3_annotation6v>
+      apache::thrift::annotation<
+        enum3_annotation1k,
+        enum3_annotation1v
+      >,
+      apache::thrift::annotation<
+        enum3_annotation2k,
+        enum3_annotation2v
+      >,
+      apache::thrift::annotation<
+        enum3_annotation3k,
+        enum3_annotation3v
+      >,
+      apache::thrift::annotation<
+        enum3_annotation4k,
+        enum3_annotation4v
+      >,
+      apache::thrift::annotation<
+        enum3_annotation5k,
+        enum3_annotation5v
+      >,
+      apache::thrift::annotation<
+        enum3_annotation6k,
+        enum3_annotation6v
+      >
     >,
     enum3_annotations::map
   >();

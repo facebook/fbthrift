@@ -178,6 +178,21 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
+template uint32_t struct5_read<>(apache::thrift::BinaryProtocolReader*, struct5*);
+template uint32_t struct5_write<>(apache::thrift::BinaryProtocolWriter*, const struct5*);
+template uint32_t struct5_serializedSize<>(apache::thrift::BinaryProtocolWriter const*, const struct5*);
+template uint32_t struct5_serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*, const struct5*);
+template uint32_t struct5_read<>(apache::thrift::CompactProtocolReader*, struct5*);
+template uint32_t struct5_write<>(apache::thrift::CompactProtocolWriter*, const struct5*);
+template uint32_t struct5_serializedSize<>(apache::thrift::CompactProtocolWriter const*, const struct5*);
+template uint32_t struct5_serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*, const struct5*);
+
+}} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace test_cpp2 { namespace cpp_reflection {
+
 template uint32_t struct_binary_read<>(apache::thrift::BinaryProtocolReader*, struct_binary*);
 template uint32_t struct_binary_write<>(apache::thrift::BinaryProtocolWriter*, const struct_binary*);
 template uint32_t struct_binary_serializedSize<>(apache::thrift::BinaryProtocolWriter const*, const struct_binary*);
@@ -186,6 +201,21 @@ template uint32_t struct_binary_read<>(apache::thrift::CompactProtocolReader*, s
 template uint32_t struct_binary_write<>(apache::thrift::CompactProtocolWriter*, const struct_binary*);
 template uint32_t struct_binary_serializedSize<>(apache::thrift::CompactProtocolWriter const*, const struct_binary*);
 template uint32_t struct_binary_serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*, const struct_binary*);
+
+}} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace test_cpp2 { namespace cpp_reflection {
+
+template uint32_t annotated_read<>(apache::thrift::BinaryProtocolReader*, annotated*);
+template uint32_t annotated_write<>(apache::thrift::BinaryProtocolWriter*, const annotated*);
+template uint32_t annotated_serializedSize<>(apache::thrift::BinaryProtocolWriter const*, const annotated*);
+template uint32_t annotated_serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*, const annotated*);
+template uint32_t annotated_read<>(apache::thrift::CompactProtocolReader*, annotated*);
+template uint32_t annotated_write<>(apache::thrift::CompactProtocolWriter*, const annotated*);
+template uint32_t annotated_serializedSize<>(apache::thrift::CompactProtocolWriter const*, const annotated*);
+template uint32_t annotated_serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*, const annotated*);
 
 }} // test_cpp2::cpp_reflection
 namespace apache { namespace thrift {

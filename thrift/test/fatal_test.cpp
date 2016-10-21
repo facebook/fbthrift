@@ -56,6 +56,7 @@ FATAL_S(struct3s, "struct3");
 FATAL_S(struct4s, "struct4");
 FATAL_S(struct5s, "struct5");
 FATAL_S(struct_binarys, "struct_binary");
+FATAL_S(annotateds, "annotated");
 FATAL_S(my_structAs, "my_structA");
 
 FATAL_S(constant1s, "constant1");
@@ -103,6 +104,7 @@ TEST(fatal, tags) {
   EXPECT_SAME<struct2s, reflection_tags::structs::struct2>();
   EXPECT_SAME<struct3s, reflection_tags::structs::struct3>();
   EXPECT_SAME<struct_binarys, reflection_tags::structs::struct_binary>();
+  EXPECT_SAME<annotateds, reflection_tags::structs::annotated>();
   EXPECT_SAME<
     struct_with_special_namess,
     reflection_tags::structs::struct_with_special_names
@@ -180,6 +182,7 @@ TEST(fatal, metadata) {
       fatal::pair<struct4, struct4s>,
       fatal::pair<struct5, struct5s>,
       fatal::pair<struct_binary, struct_binarys>,
+      fatal::pair<annotated, annotateds>,
       fatal::pair<struct_with_special_names, struct_with_special_namess>,
       fatal::pair<my_structA, my_structAs>
     >,
@@ -230,6 +233,7 @@ TEST(fatal, reflect_module_tag) {
   EXPECT_SAME<tag, apache::thrift::reflect_module_tag<struct2>>();
   EXPECT_SAME<tag, apache::thrift::reflect_module_tag<struct3>>();
   EXPECT_SAME<tag, apache::thrift::reflect_module_tag<struct_binary>>();
+  EXPECT_SAME<tag, apache::thrift::reflect_module_tag<annotated>>();
   EXPECT_SAME<
     tag,
     apache::thrift::reflect_module_tag<struct_with_special_names>
@@ -261,8 +265,11 @@ TEST(fatal, try_reflect_module_tag) {
   EXPECT_SAME<tag, apache::thrift::try_reflect_module_tag<struct1, void>>();
   EXPECT_SAME<tag, apache::thrift::try_reflect_module_tag<struct2, void>>();
   EXPECT_SAME<tag, apache::thrift::try_reflect_module_tag<struct3, void>>();
-  EXPECT_SAME<tag, apache::thrift::try_reflect_module_tag<
-    struct_binary, void>>();
+  EXPECT_SAME<
+    tag,
+    apache::thrift::try_reflect_module_tag<struct_binary, void>
+  >();
+  EXPECT_SAME<tag, apache::thrift::try_reflect_module_tag<annotated, void>>();
   EXPECT_SAME<
     tag,
     apache::thrift::try_reflect_module_tag<struct_with_special_names, void>

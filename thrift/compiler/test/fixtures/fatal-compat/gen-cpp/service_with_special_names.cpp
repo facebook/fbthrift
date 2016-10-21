@@ -3467,9 +3467,9 @@ void service_with_special_namesClient::send_get()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes648 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes654 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes648);
+  if (ctx) ctx->postWrite(_bytes654);
   return;
 }
 
@@ -3576,9 +3576,9 @@ void service_with_special_namesClient::send_getter()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes649 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes655 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes649);
+  if (ctx) ctx->postWrite(_bytes655);
   return;
 }
 
@@ -3685,9 +3685,9 @@ void service_with_special_namesClient::send_lists()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes650 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes656 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes650);
+  if (ctx) ctx->postWrite(_bytes656);
   return;
 }
 
@@ -3794,9 +3794,9 @@ void service_with_special_namesClient::send_maps()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes651 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes657 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes651);
+  if (ctx) ctx->postWrite(_bytes657);
   return;
 }
 
@@ -3903,9 +3903,9 @@ void service_with_special_namesClient::send_name()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes652 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes658 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes652);
+  if (ctx) ctx->postWrite(_bytes658);
   return;
 }
 
@@ -4012,9 +4012,9 @@ void service_with_special_namesClient::send_name_to_value()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes653 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes659 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes653);
+  if (ctx) ctx->postWrite(_bytes659);
   return;
 }
 
@@ -4121,9 +4121,9 @@ void service_with_special_namesClient::send_names()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes654 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes660 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes654);
+  if (ctx) ctx->postWrite(_bytes660);
   return;
 }
 
@@ -4230,9 +4230,9 @@ void service_with_special_namesClient::send_prefix_tree()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes655 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes661 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes655);
+  if (ctx) ctx->postWrite(_bytes661);
   return;
 }
 
@@ -4339,9 +4339,9 @@ void service_with_special_namesClient::send_sets()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes656 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes662 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes656);
+  if (ctx) ctx->postWrite(_bytes662);
   return;
 }
 
@@ -4448,9 +4448,9 @@ void service_with_special_namesClient::send_setter()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes657 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes663 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes657);
+  if (ctx) ctx->postWrite(_bytes663);
   return;
 }
 
@@ -4557,9 +4557,9 @@ void service_with_special_namesClient::send_str()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes658 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes664 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes658);
+  if (ctx) ctx->postWrite(_bytes664);
   return;
 }
 
@@ -4666,9 +4666,9 @@ void service_with_special_namesClient::send_strings()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes659 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes665 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes659);
+  if (ctx) ctx->postWrite(_bytes665);
   return;
 }
 
@@ -4775,9 +4775,9 @@ void service_with_special_namesClient::send_type()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes660 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes666 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes660);
+  if (ctx) ctx->postWrite(_bytes666);
   return;
 }
 
@@ -4884,9 +4884,9 @@ void service_with_special_namesClient::send_value()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes661 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes667 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes661);
+  if (ctx) ctx->postWrite(_bytes667);
   return;
 }
 
@@ -4993,9 +4993,9 @@ void service_with_special_namesClient::send_value_to_name()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes662 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes668 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes662);
+  if (ctx) ctx->postWrite(_bytes668);
   return;
 }
 
@@ -5102,9 +5102,9 @@ void service_with_special_namesClient::send_values()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes663 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes669 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes663);
+  if (ctx) ctx->postWrite(_bytes669);
   return;
 }
 
@@ -5211,9 +5211,9 @@ void service_with_special_namesClient::send_id()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes664 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes670 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes664);
+  if (ctx) ctx->postWrite(_bytes670);
   return;
 }
 
@@ -5320,9 +5320,9 @@ void service_with_special_namesClient::send_ids()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes665 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes671 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes665);
+  if (ctx) ctx->postWrite(_bytes671);
   return;
 }
 
@@ -5429,9 +5429,9 @@ void service_with_special_namesClient::send_descriptor()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes666 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes672 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes666);
+  if (ctx) ctx->postWrite(_bytes672);
   return;
 }
 
@@ -5538,9 +5538,9 @@ void service_with_special_namesClient::send_descriptors()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes667 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes673 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes667);
+  if (ctx) ctx->postWrite(_bytes673);
   return;
 }
 
@@ -5647,9 +5647,9 @@ void service_with_special_namesClient::send_key()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes668 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes674 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes668);
+  if (ctx) ctx->postWrite(_bytes674);
   return;
 }
 
@@ -5756,9 +5756,9 @@ void service_with_special_namesClient::send_keys()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes669 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes675 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes669);
+  if (ctx) ctx->postWrite(_bytes675);
   return;
 }
 
@@ -5865,9 +5865,9 @@ void service_with_special_namesClient::send_annotation()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes670 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes676 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes670);
+  if (ctx) ctx->postWrite(_bytes676);
   return;
 }
 
@@ -5974,9 +5974,9 @@ void service_with_special_namesClient::send_annotations()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes671 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes677 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes671);
+  if (ctx) ctx->postWrite(_bytes677);
   return;
 }
 
@@ -6083,9 +6083,9 @@ void service_with_special_namesClient::send_member()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes672 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes678 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes672);
+  if (ctx) ctx->postWrite(_bytes678);
   return;
 }
 
@@ -6192,9 +6192,9 @@ void service_with_special_namesClient::send_members()
   args.write(oprot_);
 
   oprot_->writeMessageEnd();
-  uint32_t _bytes673 = oprot_->getTransport()->writeEnd();
+  uint32_t _bytes679 = oprot_->getTransport()->writeEnd();
   oprot_->getTransport()->flush();
-  if (ctx) ctx->postWrite(_bytes673);
+  if (ctx) ctx->postWrite(_bytes679);
   return;
 }
 

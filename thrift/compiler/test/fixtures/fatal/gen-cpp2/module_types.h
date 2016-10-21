@@ -30,7 +30,9 @@ class struct1;
 class struct2;
 class struct3;
 class struct4;
+class struct5;
 class struct_binary;
+class annotated;
 class union_with_special_names;
 class struct_with_special_names;
 
@@ -3729,6 +3731,186 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
+class struct5 : private apache::thrift::detail::st::ComparisonOperators<struct5> {
+ public:
+
+  struct5() :
+      field0(0),
+      field2( ::test_cpp2::cpp_reflection::enum1()) {}
+  // FragileConstructor for use in initialization lists only
+
+  struct5(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg,  ::test_cpp2::cpp_reflection::structA field3__arg,  ::test_cpp2::cpp_reflection::structB field4__arg) :
+      field0(std::move(field0__arg)),
+      field1(std::move(field1__arg)),
+      field2(std::move(field2__arg)),
+      field3(std::move(field3__arg)),
+      field4(std::move(field4__arg)) {
+    __isset.field1 = true;
+    __isset.field2 = true;
+    __isset.field3 = true;
+    __isset.field4 = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  struct5(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    struct5(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    field0 = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  struct5(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    struct5(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    field1 = arg.move();
+    __isset.field1 = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  struct5(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    struct5(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    field2 = arg.move();
+    __isset.field2 = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  struct5(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    struct5(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    field3 = arg.move();
+    __isset.field3 = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  struct5(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    struct5(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    field4 = arg.move();
+    __isset.field4 = true;
+  }
+
+  struct5(struct5&&) = default;
+
+  struct5(const struct5&) = default;
+
+  struct5& operator=(struct5&&) = default;
+
+  struct5& operator=(const struct5&) = default;
+  void __clear();
+
+  virtual ~struct5() throw() {}
+
+  int32_t field0;
+  std::string field1;
+   ::test_cpp2::cpp_reflection::enum1 field2;
+   ::test_cpp2::cpp_reflection::structA field3;
+   ::test_cpp2::cpp_reflection::structB field4;
+
+  struct __isset {
+    void __clear() {
+      field1 = false;
+      field2 = false;
+      field3 = false;
+      field4 = false;
+    }
+
+    bool field1 = false;
+    bool field2 = false;
+    bool field3 = false;
+    bool field4 = false;
+  } __isset;
+  bool operator==(const struct5& rhs) const;
+  bool operator < (const struct5& rhs) const;
+
+  int32_t get_field0() const {
+    return field0;
+  }
+
+  int32_t& set_field0(int32_t field0_) {
+    field0 = field0_;
+    return field0;
+  }
+
+  const std::string* get_field1() const& {
+    return __isset.field1 ? std::addressof(field1) : nullptr;
+  }
+
+  std::string* get_field1() & {
+    return __isset.field1 ? std::addressof(field1) : nullptr;
+  }
+  std::string* get_field1() && = delete;
+
+  template <typename T_struct5_field1_struct_setter>
+  std::string& set_field1(T_struct5_field1_struct_setter&& field1_) {
+    field1 = std::forward<T_struct5_field1_struct_setter>(field1_);
+    __isset.field1 = true;
+    return field1;
+  }
+
+   ::test_cpp2::cpp_reflection::enum1 get_field2() const {
+    return field2;
+  }
+
+   ::test_cpp2::cpp_reflection::enum1& set_field2( ::test_cpp2::cpp_reflection::enum1 field2_) {
+    field2 = field2_;
+    __isset.field2 = true;
+    return field2;
+  }
+  const  ::test_cpp2::cpp_reflection::structA& get_field3() const&;
+   ::test_cpp2::cpp_reflection::structA get_field3() &&;
+  template <typename T_struct5_field3_struct_setter>
+   ::test_cpp2::cpp_reflection::structA& set_field3(T_struct5_field3_struct_setter&& field3_);
+  const  ::test_cpp2::cpp_reflection::structB& get_field4() const&;
+   ::test_cpp2::cpp_reflection::structB get_field4() &&;
+  template <typename T_struct5_field4_struct_setter>
+   ::test_cpp2::cpp_reflection::structB& set_field4(T_struct5_field4_struct_setter&& field4_);
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+};
+
+void swap(struct5& a, struct5& b);
+extern template uint32_t struct5::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t struct5::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t struct5::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t struct5::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t struct5::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t struct5::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t struct5::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t struct5::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::test_cpp2::cpp_reflection::struct5>::clear( ::test_cpp2::cpp_reflection::struct5* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp2::cpp_reflection::struct5>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct5>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::struct5 const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct5>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::struct5* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct5>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::struct5 const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct5>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::struct5 const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace test_cpp2 { namespace cpp_reflection {
+
 class struct_binary : private apache::thrift::detail::st::ComparisonOperators<struct_binary> {
  public:
 
@@ -3835,6 +4017,114 @@ template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_
 }
 
 template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct_binary>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::struct_binary const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace test_cpp2 { namespace cpp_reflection {
+
+class annotated : private apache::thrift::detail::st::ComparisonOperators<annotated> {
+ public:
+
+  annotated() :
+      a(0) {}
+  // FragileConstructor for use in initialization lists only
+
+  annotated(apache::thrift::FragileConstructor, int32_t a__arg) :
+      a(std::move(a__arg)) {
+    __isset.a = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  annotated(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    annotated(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    a = arg.move();
+    __isset.a = true;
+  }
+
+  annotated(annotated&&) = default;
+
+  annotated(const annotated&) = default;
+
+  annotated& operator=(annotated&&) = default;
+
+  annotated& operator=(const annotated&) = default;
+  void __clear();
+
+  virtual ~annotated() throw() {}
+
+  int32_t a;
+
+  struct __isset {
+    void __clear() {
+      a = false;
+    }
+
+    bool a = false;
+  } __isset;
+  bool operator==(const annotated& rhs) const;
+
+  bool operator < (const annotated& rhs) const {
+    if (!(a == rhs.a)) {
+      return a < rhs.a;
+    }
+    return false;
+  }
+
+  int32_t get_a() const {
+    return a;
+  }
+
+  int32_t& set_a(int32_t a_) {
+    a = a_;
+    __isset.a = true;
+    return a;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+};
+
+void swap(annotated& a, annotated& b);
+extern template uint32_t annotated::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t annotated::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t annotated::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t annotated::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t annotated::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t annotated::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t annotated::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t annotated::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::test_cpp2::cpp_reflection::annotated>::clear( ::test_cpp2::cpp_reflection::annotated* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp2::cpp_reflection::annotated>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::annotated>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::annotated const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::annotated>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::annotated* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::annotated>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::annotated const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::annotated>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::annotated const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

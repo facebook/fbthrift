@@ -691,6 +691,92 @@ using try_reflect_module_tag = typename detail::reflect_module_tag_selector<
 >::type;
 
 /**
+ * Represents an annotation from `reflected_annotations::map`.
+ *
+ * For the examples below, consider code generated for this Thrift file:
+ *
+ *  struct Foo {
+ *    1: i32 z
+ *  } (
+ *    a = '{not a valid format}',
+ *    b = '{"valid": "format", "foo": 10, "bar": true, "x": [-5, 0, 5]}',
+ *    c = '"hello"'
+ *  }
+ *
+ * @author: Marcelo Juchem <marcelo@fb.com>
+ */
+template <typename Key, typename Value, typename Structured = void>
+struct annotation {
+  /**
+   * Represents the annotation key as a compile-time string, in the form of a
+   * `fatal::sequence` of type `char`.
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using key = Key;
+
+  /**
+   * Represents the annotation value as a compile-time string, in the form of a
+   * `fatal::sequence` of type `char`.
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using value = Value;
+
+  /**
+   * The structured annotation value, if it represents a valid JSON subset,
+   * otherwise it's `void`, representing a non-structured annotation.
+   *
+   * A valid JSON subset includes only integrals, booleans, strings, lists and
+   * dictionaries. No floating point numbers are supported.
+   *
+   * Dictionary keys will be laid out in sorted order.
+   *
+   * Example:
+   *
+   *  using info = reflect_struct<Foo>::annotations;
+   *  using a = fatal::get<info::map, info::keys::a>;
+   *
+   *  // yields `void`
+   *  using result1 = a::structured;
+   *
+   *  using b = fatal::get<info::map, info::keys::b>;
+   *
+   *  // yields `fatal::list<
+   *  //  fatal::pair<
+   *  //    fatal::sequence<char, 'b', 'a', 'r'>,
+   *  //    std::true_type
+   *  //  >,
+   *  //  fatal::pair<
+   *  //    fatal::sequence<char, 'f', 'o', 'o'>,
+   *  //    std::integral_constant<std::uintmax_t, 10>
+   *  //  >,
+   *  //  fatal::pair<
+   *  //    fatal::sequence<char, 'v', 'a', 'l', 'i', 'd'>,
+   *  //    fatal::sequence<char, 'f', 'o', 'r', 'm', 'a', 't'>
+   *  //  >,
+   *  //  fatal::pair<
+   *  //    fatal::sequence<char, 'x'>,
+   *  //    fatal::list<
+   *  //      std::integral_constant<std::intmax_t, -5>,
+   *  //      std::integral_constant<std::uintmax_t, 0>,
+   *  //      std::integral_constant<std::uintmax_t, 5>
+   *  //    >
+   *  //  >
+   *  // >`
+   *  using result2 = b::structured;
+   *
+   *  using c = fatal::get<info::map, info::keys::c>;
+   *
+   *  // yields `fatal::sequence<char, 'h', 'e', 'l', 'l', 'o'>`
+   *  using result3 = c::structured;
+   *
+   * @author: Marcelo Juchem <marcelo@fb.com>
+   */
+  using structured  = Structured;
+};
+
+/**
  * Holds reflection metadata for annotations.
  *
  * For the examples below, consider code generated for this Thrift file:
@@ -767,11 +853,10 @@ struct reflected_annotations {
   using values = typename Metadata::values;
 
   /**
-   * A list of pairs representing the annotations declared in the Thrift file,
-   * sorted by keys.
+   * A list of `annotation` representing the annotations declared in the Thrift
+   * file, sorted by keys.
    *
-   * Both the keys and the values of this map are compile-time strings
-   * represented by `fatal::sequence` of type `char`.
+   * See the `annotation` type for more information.
    *
    * Example:
    *
@@ -783,7 +868,7 @@ struct reflected_annotations {
    *  // yields `fatal::sequence<char,
    *  //   'a', 'n', 'o', 't', 'h', 'e', 'r', ' ', 'v', 'a', 'l', 'u', 'e'
    *  // >`
-   *  using result1 = fatal::get<annotations::map, key>;
+   *  using result1 = fatal::get<annotations::map, key>::value;
    *
    *  // yields `fatal::sequence<char,
    *  //   's', 'o', 'm', 'e', ' ', 'v', 'a', 'l', 'u', 'e'
@@ -791,7 +876,7 @@ struct reflected_annotations {
    *  using result2 = fatal::get<
    *    annotations::map,
    *    annotations::keys::some_annotation
-   *  >;
+   *  >::value;
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */

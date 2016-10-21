@@ -1113,6 +1113,59 @@ void reflectionInitializer_7898252530621438604(::apache::thrift::reflection::Sch
   reflectionInitializer_9663308154247018828(schema);  // struct module.structA
 }
 
+void  reflectionInitializer_10239267202130913964(::apache::thrift::reflection::Schema&);  // struct module.structB
+static void  reflectionInitializer_4992076682252594856(::apache::thrift::reflection::Schema&);  // enum module.enum1
+void  reflectionInitializer_9663308154247018828(::apache::thrift::reflection::Schema&);  // struct module.structA
+// Reflection initializer for struct module.struct5
+void reflectionInitializer_16358384009565610188(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 16358384009565610188U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.struct5";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[1];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "field0";
+    f.order = 0;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[2];
+    f.isRequired = false;
+    f.type = 1U;
+    f.name = "field1";
+    f.order = 1;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[3];
+    f.isRequired = true;
+    f.type = 4992076682252594856U;
+    f.name = "field2";
+    f.order = 2;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[4];
+    f.isRequired = true;
+    f.type = 9663308154247018828U;
+    f.name = "field3";
+    f.order = 3;
+    f.__isset.annotations = true;
+    f.annotations["annotate_here"] = "with text";
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[5];
+    f.isRequired = true;
+    f.type = 10239267202130913964U;
+    f.name = "field4";
+    f.order = 4;
+  }
+  reflectionInitializer_10239267202130913964(schema);  // struct module.structB
+  reflectionInitializer_4992076682252594856(schema);  // enum module.enum1
+  reflectionInitializer_9663308154247018828(schema);  // struct module.structA
+}
+
 // Reflection initializer for struct module.struct_binary
 void reflectionInitializer_6812073435240150444(::apache::thrift::reflection::Schema& schema) {
   const uint64_t id = 6812073435240150444U;
@@ -1127,6 +1180,34 @@ void reflectionInitializer_6812073435240150444(::apache::thrift::reflection::Sch
     f.type = 1U;
     f.name = "bi";
     f.order = 0;
+  }
+}
+
+// Reflection initializer for struct module.annotated
+void reflectionInitializer_300598955218934796(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 300598955218934796U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.annotated";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[1];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "a";
+    f.order = 0;
+    f.__isset.annotations = true;
+    f.annotations["m_b_false"] = "false";
+    f.annotations["m_b_true"] = "true";
+    f.annotations["m_int"] = "10";
+    f.annotations["m_int_list"] = "[-1, 2, 3]";
+    f.annotations["m_int_map"] = "{\"a\": 1, \"b\": -2, \"c\": -3}";
+    f.annotations["m_mixed_list"] = "[\"a\", 1, \"b\", 2]";
+    f.annotations["m_mixed_map"] = "{\"a\": -2, \"b\": \"B\", \"c\": 3}";
+    f.annotations["m_str_list"] = "[\"a\", \"b\", \"c\"]";
+    f.annotations["m_str_map"] = "{\"a\": \"A\", \"b\": \"B\", \"c\": \"C\"}";
+    f.annotations["m_string"] = "\"hello\"";
   }
 }
 

@@ -4496,6 +4496,228 @@ void merge(struct4&& from, struct4& to) {
   to.__isset.field3 = to.__isset.field3 || from.__isset.field3;
 }
 
+const uint64_t struct5::_reflection_id;
+void struct5::_reflection_register(::apache::thrift::reflection::Schema& schema) {
+   ::test_cpp1::cpp_reflection::module_reflection_::reflectionInitializer_16358384009565610188(schema);
+}
+
+bool struct5::operator == (const struct5 & rhs) const {
+  if (!(this->field0 == rhs.field0))
+    return false;
+  if (__isset.field1 != rhs.__isset.field1)
+    return false;
+  else if (__isset.field1 && !(field1 == rhs.field1))
+    return false;
+  if (!(this->field2 == rhs.field2))
+    return false;
+  if (!(this->field3 == rhs.field3))
+    return false;
+  if (!(this->field4 == rhs.field4))
+    return false;
+  return true;
+}
+
+void struct5::readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts)
+{
+  folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len), opts);
+  if (parsed["field0"] != nullptr) {
+    int64_t _tmp577 = (int64_t)parsed["field0"].asInt();
+    if (imaxabs(_tmp577) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->field0 = (int32_t)_tmp577;
+    }
+  } else {
+    throw apache::thrift::TLibraryException("can't parse a required field!");
+  }
+  if (parsed["field1"] != nullptr) {
+    this->field1 = parsed["field1"].asString();
+    this->__isset.field1 = true;
+  } else {
+    this->__isset.field1 = false;
+  }
+  if (parsed["field2"] != nullptr) {
+    this->field2=(enum1)(int32_t)parsed["field2"].asInt();
+    this->__isset.field2 = true;
+  } else {
+    this->__isset.field2 = false;
+  }
+  if (parsed["field3"] != nullptr) {
+    this->field3.readFromJson(folly::toJson(parsed["field3"]).c_str(), opts);
+    this->__isset.field3 = true;
+  } else {
+    this->__isset.field3 = false;
+  }
+  if (parsed["field4"] != nullptr) {
+    this->field4.readFromJson(folly::toJson(parsed["field4"]).c_str(), opts);
+    this->__isset.field4 = true;
+  } else {
+    this->__isset.field4 = false;
+  }
+}
+void struct5::readFromJson(const char* jsonText, const folly::json::serialization_opts& opts)
+{
+  readFromJson(jsonText, strlen(jsonText), opts);
+}
+
+uint32_t struct5::read(apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
+  if (schema != nullptr) {
+     ::test_cpp1::cpp_reflection::module_reflection_::reflectionInitializer_16358384009565610188(*schema);
+    iprot->setNextStructType(struct5::_reflection_id);
+  }
+  xfer += iprot->readStructBegin(fname);
+
+  using apache::thrift::protocol::TProtocolException;
+
+
+  bool isset_field0 = false;
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->field0);
+          isset_field0 = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->field1);
+          this->__isset.field1 = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          int32_t ecast579;
+          xfer += iprot->readI32(ecast579);
+          this->field2 = (enum1)ecast579;
+          this->__isset.field2 = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 4:
+        if (ftype == apache::thrift::protocol::T_STRUCT) {
+          xfer += this->field3.read(iprot);
+          this->__isset.field3 = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 5:
+        if (ftype == apache::thrift::protocol::T_STRUCT) {
+          xfer += this->field4.read(iprot);
+          this->__isset.field4 = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  if (!isset_field0)
+    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'field0' was not found in serialized data! Struct: struct5");
+  return xfer;
+}
+
+void struct5::__clear() {
+  field0 = 0;
+  field1 = "";
+  field2 = static_cast<enum1>(0);
+  field3.__clear();
+  field4.__clear();
+  __isset.__clear();
+}
+uint32_t struct5::write(apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("struct5");
+  xfer += oprot->writeFieldBegin("field0", apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32(this->field0);
+  xfer += oprot->writeFieldEnd();
+  if (this->__isset.field1) {
+    xfer += oprot->writeFieldBegin("field1", apache::thrift::protocol::T_STRING, 2);
+    xfer += oprot->writeString(this->field1);
+    xfer += oprot->writeFieldEnd();
+  }
+  xfer += oprot->writeFieldBegin("field2", apache::thrift::protocol::T_I32, 3);
+  xfer += oprot->writeI32((int32_t)this->field2);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("field3", apache::thrift::protocol::T_STRUCT, 4);
+  xfer += this->field3.write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("field4", apache::thrift::protocol::T_STRUCT, 5);
+  xfer += this->field4.write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(struct5 &a, struct5 &b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+  swap(a.field0, b.field0);
+  swap(a.field1, b.field1);
+  swap(a.field2, b.field2);
+  swap(a.field3, b.field3);
+  swap(a.field4, b.field4);
+  swap(a.__isset, b.__isset);
+}
+
+void merge(const struct5& from, struct5& to) {
+  using apache::thrift::merge;
+  merge(from.field0, to.field0);
+  if (from.__isset.field1) {
+    merge(from.field1, to.field1);
+    to.__isset.field1 = true;
+  }
+  merge(from.field2, to.field2);
+  to.__isset.field2 = to.__isset.field2 || from.__isset.field2;
+  merge(from.field3, to.field3);
+  to.__isset.field3 = to.__isset.field3 || from.__isset.field3;
+  merge(from.field4, to.field4);
+  to.__isset.field4 = to.__isset.field4 || from.__isset.field4;
+}
+
+void merge(struct5&& from, struct5& to) {
+  using apache::thrift::merge;
+  merge(std::move(from.field0), to.field0);
+  if (from.__isset.field1) {
+    merge(std::move(from.field1), to.field1);
+    to.__isset.field1 = true;
+  }
+  merge(std::move(from.field2), to.field2);
+  to.__isset.field2 = to.__isset.field2 || from.__isset.field2;
+  merge(std::move(from.field3), to.field3);
+  to.__isset.field3 = to.__isset.field3 || from.__isset.field3;
+  merge(std::move(from.field4), to.field4);
+  to.__isset.field4 = to.__isset.field4 || from.__isset.field4;
+}
+
 const uint64_t struct_binary::_reflection_id;
 void struct_binary::_reflection_register(::apache::thrift::reflection::Schema& schema) {
    ::test_cpp1::cpp_reflection::module_reflection_::reflectionInitializer_6812073435240150444(schema);
@@ -4603,6 +4825,118 @@ void merge(struct_binary&& from, struct_binary& to) {
   to.__isset.bi = to.__isset.bi || from.__isset.bi;
 }
 
+const uint64_t annotated::_reflection_id;
+void annotated::_reflection_register(::apache::thrift::reflection::Schema& schema) {
+   ::test_cpp1::cpp_reflection::module_reflection_::reflectionInitializer_300598955218934796(schema);
+}
+
+bool annotated::operator == (const annotated & rhs) const {
+  if (!(this->a == rhs.a))
+    return false;
+  return true;
+}
+
+void annotated::readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts)
+{
+  folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len), opts);
+  if (parsed["a"] != nullptr) {
+    int64_t _tmp582 = (int64_t)parsed["a"].asInt();
+    if (imaxabs(_tmp582) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->a = (int32_t)_tmp582;
+    }
+    this->__isset.a = true;
+  } else {
+    this->__isset.a = false;
+  }
+}
+void annotated::readFromJson(const char* jsonText, const folly::json::serialization_opts& opts)
+{
+  readFromJson(jsonText, strlen(jsonText), opts);
+}
+
+uint32_t annotated::read(apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
+  if (schema != nullptr) {
+     ::test_cpp1::cpp_reflection::module_reflection_::reflectionInitializer_300598955218934796(*schema);
+    iprot->setNextStructType(annotated::_reflection_id);
+  }
+  xfer += iprot->readStructBegin(fname);
+
+  using apache::thrift::protocol::TProtocolException;
+
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->a);
+          this->__isset.a = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+void annotated::__clear() {
+  a = 0;
+  __isset.__clear();
+}
+uint32_t annotated::write(apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("annotated");
+  xfer += oprot->writeFieldBegin("a", apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32(this->a);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(annotated &a, annotated &b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+  swap(a.a, b.a);
+  swap(a.__isset, b.__isset);
+}
+
+void merge(const annotated& from, annotated& to) {
+  using apache::thrift::merge;
+  merge(from.a, to.a);
+  to.__isset.a = to.__isset.a || from.__isset.a;
+}
+
+void merge(annotated&& from, annotated& to) {
+  using apache::thrift::merge;
+  merge(std::move(from.a), to.a);
+  to.__isset.a = to.__isset.a || from.__isset.a;
+}
+
   void union_with_special_names::readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts)
   {
     __clear();
@@ -4617,261 +4951,261 @@ void merge(struct_binary&& from, struct_binary& to) {
 
     if (parsed["get"] != nullptr) {
       set_get();
-      int64_t _tmp577 = (int64_t)parsed["get"].asInt();
-      if (imaxabs(_tmp577) > 0x7fffffffL) {
+      int64_t _tmp583 = (int64_t)parsed["get"].asInt();
+      if (imaxabs(_tmp583) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.get = (int32_t)_tmp577;
+        this->value_.get = (int32_t)_tmp583;
       }
       return;
     }
     if (parsed["getter"] != nullptr) {
       set_getter();
-      int64_t _tmp578 = (int64_t)parsed["getter"].asInt();
-      if (imaxabs(_tmp578) > 0x7fffffffL) {
+      int64_t _tmp584 = (int64_t)parsed["getter"].asInt();
+      if (imaxabs(_tmp584) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.getter = (int32_t)_tmp578;
+        this->value_.getter = (int32_t)_tmp584;
       }
       return;
     }
     if (parsed["lists"] != nullptr) {
       set_lists();
-      int64_t _tmp579 = (int64_t)parsed["lists"].asInt();
-      if (imaxabs(_tmp579) > 0x7fffffffL) {
+      int64_t _tmp585 = (int64_t)parsed["lists"].asInt();
+      if (imaxabs(_tmp585) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.lists = (int32_t)_tmp579;
+        this->value_.lists = (int32_t)_tmp585;
       }
       return;
     }
     if (parsed["maps"] != nullptr) {
       set_maps();
-      int64_t _tmp580 = (int64_t)parsed["maps"].asInt();
-      if (imaxabs(_tmp580) > 0x7fffffffL) {
+      int64_t _tmp586 = (int64_t)parsed["maps"].asInt();
+      if (imaxabs(_tmp586) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.maps = (int32_t)_tmp580;
+        this->value_.maps = (int32_t)_tmp586;
       }
       return;
     }
     if (parsed["name"] != nullptr) {
       set_name();
-      int64_t _tmp581 = (int64_t)parsed["name"].asInt();
-      if (imaxabs(_tmp581) > 0x7fffffffL) {
+      int64_t _tmp587 = (int64_t)parsed["name"].asInt();
+      if (imaxabs(_tmp587) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.name = (int32_t)_tmp581;
+        this->value_.name = (int32_t)_tmp587;
       }
       return;
     }
     if (parsed["name_to_value"] != nullptr) {
       set_name_to_value();
-      int64_t _tmp582 = (int64_t)parsed["name_to_value"].asInt();
-      if (imaxabs(_tmp582) > 0x7fffffffL) {
+      int64_t _tmp588 = (int64_t)parsed["name_to_value"].asInt();
+      if (imaxabs(_tmp588) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.name_to_value = (int32_t)_tmp582;
+        this->value_.name_to_value = (int32_t)_tmp588;
       }
       return;
     }
     if (parsed["names"] != nullptr) {
       set_names();
-      int64_t _tmp583 = (int64_t)parsed["names"].asInt();
-      if (imaxabs(_tmp583) > 0x7fffffffL) {
+      int64_t _tmp589 = (int64_t)parsed["names"].asInt();
+      if (imaxabs(_tmp589) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.names = (int32_t)_tmp583;
+        this->value_.names = (int32_t)_tmp589;
       }
       return;
     }
     if (parsed["prefix_tree"] != nullptr) {
       set_prefix_tree();
-      int64_t _tmp584 = (int64_t)parsed["prefix_tree"].asInt();
-      if (imaxabs(_tmp584) > 0x7fffffffL) {
+      int64_t _tmp590 = (int64_t)parsed["prefix_tree"].asInt();
+      if (imaxabs(_tmp590) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.prefix_tree = (int32_t)_tmp584;
+        this->value_.prefix_tree = (int32_t)_tmp590;
       }
       return;
     }
     if (parsed["sets"] != nullptr) {
       set_sets();
-      int64_t _tmp585 = (int64_t)parsed["sets"].asInt();
-      if (imaxabs(_tmp585) > 0x7fffffffL) {
+      int64_t _tmp591 = (int64_t)parsed["sets"].asInt();
+      if (imaxabs(_tmp591) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.sets = (int32_t)_tmp585;
+        this->value_.sets = (int32_t)_tmp591;
       }
       return;
     }
     if (parsed["setter"] != nullptr) {
       set_setter();
-      int64_t _tmp586 = (int64_t)parsed["setter"].asInt();
-      if (imaxabs(_tmp586) > 0x7fffffffL) {
+      int64_t _tmp592 = (int64_t)parsed["setter"].asInt();
+      if (imaxabs(_tmp592) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.setter = (int32_t)_tmp586;
+        this->value_.setter = (int32_t)_tmp592;
       }
       return;
     }
     if (parsed["str"] != nullptr) {
       set_str();
-      int64_t _tmp587 = (int64_t)parsed["str"].asInt();
-      if (imaxabs(_tmp587) > 0x7fffffffL) {
+      int64_t _tmp593 = (int64_t)parsed["str"].asInt();
+      if (imaxabs(_tmp593) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.str = (int32_t)_tmp587;
+        this->value_.str = (int32_t)_tmp593;
       }
       return;
     }
     if (parsed["strings"] != nullptr) {
       set_strings();
-      int64_t _tmp588 = (int64_t)parsed["strings"].asInt();
-      if (imaxabs(_tmp588) > 0x7fffffffL) {
+      int64_t _tmp594 = (int64_t)parsed["strings"].asInt();
+      if (imaxabs(_tmp594) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.strings = (int32_t)_tmp588;
+        this->value_.strings = (int32_t)_tmp594;
       }
       return;
     }
     if (parsed["type"] != nullptr) {
       set_type();
-      int64_t _tmp589 = (int64_t)parsed["type"].asInt();
-      if (imaxabs(_tmp589) > 0x7fffffffL) {
+      int64_t _tmp595 = (int64_t)parsed["type"].asInt();
+      if (imaxabs(_tmp595) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.type = (int32_t)_tmp589;
+        this->value_.type = (int32_t)_tmp595;
       }
       return;
     }
     if (parsed["value"] != nullptr) {
       set_value();
-      int64_t _tmp590 = (int64_t)parsed["value"].asInt();
-      if (imaxabs(_tmp590) > 0x7fffffffL) {
+      int64_t _tmp596 = (int64_t)parsed["value"].asInt();
+      if (imaxabs(_tmp596) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.value = (int32_t)_tmp590;
+        this->value_.value = (int32_t)_tmp596;
       }
       return;
     }
     if (parsed["value_to_name"] != nullptr) {
       set_value_to_name();
-      int64_t _tmp591 = (int64_t)parsed["value_to_name"].asInt();
-      if (imaxabs(_tmp591) > 0x7fffffffL) {
+      int64_t _tmp597 = (int64_t)parsed["value_to_name"].asInt();
+      if (imaxabs(_tmp597) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.value_to_name = (int32_t)_tmp591;
+        this->value_.value_to_name = (int32_t)_tmp597;
       }
       return;
     }
     if (parsed["values"] != nullptr) {
       set_values();
-      int64_t _tmp592 = (int64_t)parsed["values"].asInt();
-      if (imaxabs(_tmp592) > 0x7fffffffL) {
+      int64_t _tmp598 = (int64_t)parsed["values"].asInt();
+      if (imaxabs(_tmp598) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.values = (int32_t)_tmp592;
+        this->value_.values = (int32_t)_tmp598;
       }
       return;
     }
     if (parsed["id"] != nullptr) {
       set_id();
-      int64_t _tmp593 = (int64_t)parsed["id"].asInt();
-      if (imaxabs(_tmp593) > 0x7fffffffL) {
+      int64_t _tmp599 = (int64_t)parsed["id"].asInt();
+      if (imaxabs(_tmp599) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.id = (int32_t)_tmp593;
+        this->value_.id = (int32_t)_tmp599;
       }
       return;
     }
     if (parsed["ids"] != nullptr) {
       set_ids();
-      int64_t _tmp594 = (int64_t)parsed["ids"].asInt();
-      if (imaxabs(_tmp594) > 0x7fffffffL) {
+      int64_t _tmp600 = (int64_t)parsed["ids"].asInt();
+      if (imaxabs(_tmp600) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.ids = (int32_t)_tmp594;
+        this->value_.ids = (int32_t)_tmp600;
       }
       return;
     }
     if (parsed["descriptor"] != nullptr) {
       set_descriptor();
-      int64_t _tmp595 = (int64_t)parsed["descriptor"].asInt();
-      if (imaxabs(_tmp595) > 0x7fffffffL) {
+      int64_t _tmp601 = (int64_t)parsed["descriptor"].asInt();
+      if (imaxabs(_tmp601) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.descriptor = (int32_t)_tmp595;
+        this->value_.descriptor = (int32_t)_tmp601;
       }
       return;
     }
     if (parsed["descriptors"] != nullptr) {
       set_descriptors();
-      int64_t _tmp596 = (int64_t)parsed["descriptors"].asInt();
-      if (imaxabs(_tmp596) > 0x7fffffffL) {
+      int64_t _tmp602 = (int64_t)parsed["descriptors"].asInt();
+      if (imaxabs(_tmp602) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.descriptors = (int32_t)_tmp596;
+        this->value_.descriptors = (int32_t)_tmp602;
       }
       return;
     }
     if (parsed["key"] != nullptr) {
       set_key();
-      int64_t _tmp597 = (int64_t)parsed["key"].asInt();
-      if (imaxabs(_tmp597) > 0x7fffffffL) {
+      int64_t _tmp603 = (int64_t)parsed["key"].asInt();
+      if (imaxabs(_tmp603) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.key = (int32_t)_tmp597;
+        this->value_.key = (int32_t)_tmp603;
       }
       return;
     }
     if (parsed["keys"] != nullptr) {
       set_keys();
-      int64_t _tmp598 = (int64_t)parsed["keys"].asInt();
-      if (imaxabs(_tmp598) > 0x7fffffffL) {
+      int64_t _tmp604 = (int64_t)parsed["keys"].asInt();
+      if (imaxabs(_tmp604) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.keys = (int32_t)_tmp598;
+        this->value_.keys = (int32_t)_tmp604;
       }
       return;
     }
     if (parsed["annotation"] != nullptr) {
       set_annotation();
-      int64_t _tmp599 = (int64_t)parsed["annotation"].asInt();
-      if (imaxabs(_tmp599) > 0x7fffffffL) {
+      int64_t _tmp605 = (int64_t)parsed["annotation"].asInt();
+      if (imaxabs(_tmp605) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.annotation = (int32_t)_tmp599;
+        this->value_.annotation = (int32_t)_tmp605;
       }
       return;
     }
     if (parsed["annotations"] != nullptr) {
       set_annotations();
-      int64_t _tmp600 = (int64_t)parsed["annotations"].asInt();
-      if (imaxabs(_tmp600) > 0x7fffffffL) {
+      int64_t _tmp606 = (int64_t)parsed["annotations"].asInt();
+      if (imaxabs(_tmp606) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.annotations = (int32_t)_tmp600;
+        this->value_.annotations = (int32_t)_tmp606;
       }
       return;
     }
     if (parsed["member"] != nullptr) {
       set_member();
-      int64_t _tmp601 = (int64_t)parsed["member"].asInt();
-      if (imaxabs(_tmp601) > 0x7fffffffL) {
+      int64_t _tmp607 = (int64_t)parsed["member"].asInt();
+      if (imaxabs(_tmp607) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.member = (int32_t)_tmp601;
+        this->value_.member = (int32_t)_tmp607;
       }
       return;
     }
     if (parsed["members"] != nullptr) {
       set_members();
-      int64_t _tmp602 = (int64_t)parsed["members"].asInt();
-      if (imaxabs(_tmp602) > 0x7fffffffL) {
+      int64_t _tmp608 = (int64_t)parsed["members"].asInt();
+      if (imaxabs(_tmp608) > 0x7fffffffL) {
         throw apache::thrift::TLibraryException("number exceeds limit in field");
       } else {
-        this->value_.members = (int32_t)_tmp602;
+        this->value_.members = (int32_t)_tmp608;
       }
       return;
     }
@@ -5372,286 +5706,286 @@ void struct_with_special_names::readFromJson(const char* jsonText, size_t len, c
 {
   folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len), opts);
   if (parsed["get"] != nullptr) {
-    int64_t _tmp604 = (int64_t)parsed["get"].asInt();
-    if (imaxabs(_tmp604) > 0x7fffffffL) {
+    int64_t _tmp610 = (int64_t)parsed["get"].asInt();
+    if (imaxabs(_tmp610) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->get = (int32_t)_tmp604;
+      this->get = (int32_t)_tmp610;
     }
     this->__isset.get = true;
   } else {
     this->__isset.get = false;
   }
   if (parsed["getter"] != nullptr) {
-    int64_t _tmp605 = (int64_t)parsed["getter"].asInt();
-    if (imaxabs(_tmp605) > 0x7fffffffL) {
+    int64_t _tmp611 = (int64_t)parsed["getter"].asInt();
+    if (imaxabs(_tmp611) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->getter = (int32_t)_tmp605;
+      this->getter = (int32_t)_tmp611;
     }
     this->__isset.getter = true;
   } else {
     this->__isset.getter = false;
   }
   if (parsed["lists"] != nullptr) {
-    int64_t _tmp606 = (int64_t)parsed["lists"].asInt();
-    if (imaxabs(_tmp606) > 0x7fffffffL) {
+    int64_t _tmp612 = (int64_t)parsed["lists"].asInt();
+    if (imaxabs(_tmp612) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->lists = (int32_t)_tmp606;
+      this->lists = (int32_t)_tmp612;
     }
     this->__isset.lists = true;
   } else {
     this->__isset.lists = false;
   }
   if (parsed["maps"] != nullptr) {
-    int64_t _tmp607 = (int64_t)parsed["maps"].asInt();
-    if (imaxabs(_tmp607) > 0x7fffffffL) {
+    int64_t _tmp613 = (int64_t)parsed["maps"].asInt();
+    if (imaxabs(_tmp613) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->maps = (int32_t)_tmp607;
+      this->maps = (int32_t)_tmp613;
     }
     this->__isset.maps = true;
   } else {
     this->__isset.maps = false;
   }
   if (parsed["name"] != nullptr) {
-    int64_t _tmp608 = (int64_t)parsed["name"].asInt();
-    if (imaxabs(_tmp608) > 0x7fffffffL) {
+    int64_t _tmp614 = (int64_t)parsed["name"].asInt();
+    if (imaxabs(_tmp614) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->name = (int32_t)_tmp608;
+      this->name = (int32_t)_tmp614;
     }
     this->__isset.name = true;
   } else {
     this->__isset.name = false;
   }
   if (parsed["name_to_value"] != nullptr) {
-    int64_t _tmp609 = (int64_t)parsed["name_to_value"].asInt();
-    if (imaxabs(_tmp609) > 0x7fffffffL) {
+    int64_t _tmp615 = (int64_t)parsed["name_to_value"].asInt();
+    if (imaxabs(_tmp615) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->name_to_value = (int32_t)_tmp609;
+      this->name_to_value = (int32_t)_tmp615;
     }
     this->__isset.name_to_value = true;
   } else {
     this->__isset.name_to_value = false;
   }
   if (parsed["names"] != nullptr) {
-    int64_t _tmp610 = (int64_t)parsed["names"].asInt();
-    if (imaxabs(_tmp610) > 0x7fffffffL) {
+    int64_t _tmp616 = (int64_t)parsed["names"].asInt();
+    if (imaxabs(_tmp616) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->names = (int32_t)_tmp610;
+      this->names = (int32_t)_tmp616;
     }
     this->__isset.names = true;
   } else {
     this->__isset.names = false;
   }
   if (parsed["prefix_tree"] != nullptr) {
-    int64_t _tmp611 = (int64_t)parsed["prefix_tree"].asInt();
-    if (imaxabs(_tmp611) > 0x7fffffffL) {
+    int64_t _tmp617 = (int64_t)parsed["prefix_tree"].asInt();
+    if (imaxabs(_tmp617) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->prefix_tree = (int32_t)_tmp611;
+      this->prefix_tree = (int32_t)_tmp617;
     }
     this->__isset.prefix_tree = true;
   } else {
     this->__isset.prefix_tree = false;
   }
   if (parsed["sets"] != nullptr) {
-    int64_t _tmp612 = (int64_t)parsed["sets"].asInt();
-    if (imaxabs(_tmp612) > 0x7fffffffL) {
+    int64_t _tmp618 = (int64_t)parsed["sets"].asInt();
+    if (imaxabs(_tmp618) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->sets = (int32_t)_tmp612;
+      this->sets = (int32_t)_tmp618;
     }
     this->__isset.sets = true;
   } else {
     this->__isset.sets = false;
   }
   if (parsed["setter"] != nullptr) {
-    int64_t _tmp613 = (int64_t)parsed["setter"].asInt();
-    if (imaxabs(_tmp613) > 0x7fffffffL) {
+    int64_t _tmp619 = (int64_t)parsed["setter"].asInt();
+    if (imaxabs(_tmp619) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->setter = (int32_t)_tmp613;
+      this->setter = (int32_t)_tmp619;
     }
     this->__isset.setter = true;
   } else {
     this->__isset.setter = false;
   }
   if (parsed["str"] != nullptr) {
-    int64_t _tmp614 = (int64_t)parsed["str"].asInt();
-    if (imaxabs(_tmp614) > 0x7fffffffL) {
+    int64_t _tmp620 = (int64_t)parsed["str"].asInt();
+    if (imaxabs(_tmp620) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->str = (int32_t)_tmp614;
+      this->str = (int32_t)_tmp620;
     }
     this->__isset.str = true;
   } else {
     this->__isset.str = false;
   }
   if (parsed["strings"] != nullptr) {
-    int64_t _tmp615 = (int64_t)parsed["strings"].asInt();
-    if (imaxabs(_tmp615) > 0x7fffffffL) {
+    int64_t _tmp621 = (int64_t)parsed["strings"].asInt();
+    if (imaxabs(_tmp621) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->strings = (int32_t)_tmp615;
+      this->strings = (int32_t)_tmp621;
     }
     this->__isset.strings = true;
   } else {
     this->__isset.strings = false;
   }
   if (parsed["type"] != nullptr) {
-    int64_t _tmp616 = (int64_t)parsed["type"].asInt();
-    if (imaxabs(_tmp616) > 0x7fffffffL) {
+    int64_t _tmp622 = (int64_t)parsed["type"].asInt();
+    if (imaxabs(_tmp622) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->type = (int32_t)_tmp616;
+      this->type = (int32_t)_tmp622;
     }
     this->__isset.type = true;
   } else {
     this->__isset.type = false;
   }
   if (parsed["value"] != nullptr) {
-    int64_t _tmp617 = (int64_t)parsed["value"].asInt();
-    if (imaxabs(_tmp617) > 0x7fffffffL) {
+    int64_t _tmp623 = (int64_t)parsed["value"].asInt();
+    if (imaxabs(_tmp623) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->value = (int32_t)_tmp617;
+      this->value = (int32_t)_tmp623;
     }
     this->__isset.value = true;
   } else {
     this->__isset.value = false;
   }
   if (parsed["value_to_name"] != nullptr) {
-    int64_t _tmp618 = (int64_t)parsed["value_to_name"].asInt();
-    if (imaxabs(_tmp618) > 0x7fffffffL) {
+    int64_t _tmp624 = (int64_t)parsed["value_to_name"].asInt();
+    if (imaxabs(_tmp624) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->value_to_name = (int32_t)_tmp618;
+      this->value_to_name = (int32_t)_tmp624;
     }
     this->__isset.value_to_name = true;
   } else {
     this->__isset.value_to_name = false;
   }
   if (parsed["values"] != nullptr) {
-    int64_t _tmp619 = (int64_t)parsed["values"].asInt();
-    if (imaxabs(_tmp619) > 0x7fffffffL) {
+    int64_t _tmp625 = (int64_t)parsed["values"].asInt();
+    if (imaxabs(_tmp625) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->values = (int32_t)_tmp619;
+      this->values = (int32_t)_tmp625;
     }
     this->__isset.values = true;
   } else {
     this->__isset.values = false;
   }
   if (parsed["id"] != nullptr) {
-    int64_t _tmp620 = (int64_t)parsed["id"].asInt();
-    if (imaxabs(_tmp620) > 0x7fffffffL) {
+    int64_t _tmp626 = (int64_t)parsed["id"].asInt();
+    if (imaxabs(_tmp626) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->id = (int32_t)_tmp620;
+      this->id = (int32_t)_tmp626;
     }
     this->__isset.id = true;
   } else {
     this->__isset.id = false;
   }
   if (parsed["ids"] != nullptr) {
-    int64_t _tmp621 = (int64_t)parsed["ids"].asInt();
-    if (imaxabs(_tmp621) > 0x7fffffffL) {
+    int64_t _tmp627 = (int64_t)parsed["ids"].asInt();
+    if (imaxabs(_tmp627) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->ids = (int32_t)_tmp621;
+      this->ids = (int32_t)_tmp627;
     }
     this->__isset.ids = true;
   } else {
     this->__isset.ids = false;
   }
   if (parsed["descriptor"] != nullptr) {
-    int64_t _tmp622 = (int64_t)parsed["descriptor"].asInt();
-    if (imaxabs(_tmp622) > 0x7fffffffL) {
+    int64_t _tmp628 = (int64_t)parsed["descriptor"].asInt();
+    if (imaxabs(_tmp628) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->descriptor = (int32_t)_tmp622;
+      this->descriptor = (int32_t)_tmp628;
     }
     this->__isset.descriptor = true;
   } else {
     this->__isset.descriptor = false;
   }
   if (parsed["descriptors"] != nullptr) {
-    int64_t _tmp623 = (int64_t)parsed["descriptors"].asInt();
-    if (imaxabs(_tmp623) > 0x7fffffffL) {
+    int64_t _tmp629 = (int64_t)parsed["descriptors"].asInt();
+    if (imaxabs(_tmp629) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->descriptors = (int32_t)_tmp623;
+      this->descriptors = (int32_t)_tmp629;
     }
     this->__isset.descriptors = true;
   } else {
     this->__isset.descriptors = false;
   }
   if (parsed["key"] != nullptr) {
-    int64_t _tmp624 = (int64_t)parsed["key"].asInt();
-    if (imaxabs(_tmp624) > 0x7fffffffL) {
+    int64_t _tmp630 = (int64_t)parsed["key"].asInt();
+    if (imaxabs(_tmp630) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->key = (int32_t)_tmp624;
+      this->key = (int32_t)_tmp630;
     }
     this->__isset.key = true;
   } else {
     this->__isset.key = false;
   }
   if (parsed["keys"] != nullptr) {
-    int64_t _tmp625 = (int64_t)parsed["keys"].asInt();
-    if (imaxabs(_tmp625) > 0x7fffffffL) {
+    int64_t _tmp631 = (int64_t)parsed["keys"].asInt();
+    if (imaxabs(_tmp631) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->keys = (int32_t)_tmp625;
+      this->keys = (int32_t)_tmp631;
     }
     this->__isset.keys = true;
   } else {
     this->__isset.keys = false;
   }
   if (parsed["annotation"] != nullptr) {
-    int64_t _tmp626 = (int64_t)parsed["annotation"].asInt();
-    if (imaxabs(_tmp626) > 0x7fffffffL) {
+    int64_t _tmp632 = (int64_t)parsed["annotation"].asInt();
+    if (imaxabs(_tmp632) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->annotation = (int32_t)_tmp626;
+      this->annotation = (int32_t)_tmp632;
     }
     this->__isset.annotation = true;
   } else {
     this->__isset.annotation = false;
   }
   if (parsed["annotations"] != nullptr) {
-    int64_t _tmp627 = (int64_t)parsed["annotations"].asInt();
-    if (imaxabs(_tmp627) > 0x7fffffffL) {
+    int64_t _tmp633 = (int64_t)parsed["annotations"].asInt();
+    if (imaxabs(_tmp633) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->annotations = (int32_t)_tmp627;
+      this->annotations = (int32_t)_tmp633;
     }
     this->__isset.annotations = true;
   } else {
     this->__isset.annotations = false;
   }
   if (parsed["member"] != nullptr) {
-    int64_t _tmp628 = (int64_t)parsed["member"].asInt();
-    if (imaxabs(_tmp628) > 0x7fffffffL) {
+    int64_t _tmp634 = (int64_t)parsed["member"].asInt();
+    if (imaxabs(_tmp634) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->member = (int32_t)_tmp628;
+      this->member = (int32_t)_tmp634;
     }
     this->__isset.member = true;
   } else {
     this->__isset.member = false;
   }
   if (parsed["members"] != nullptr) {
-    int64_t _tmp629 = (int64_t)parsed["members"].asInt();
-    if (imaxabs(_tmp629) > 0x7fffffffL) {
+    int64_t _tmp635 = (int64_t)parsed["members"].asInt();
+    if (imaxabs(_tmp635) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->members = (int32_t)_tmp629;
+      this->members = (int32_t)_tmp635;
     }
     this->__isset.members = true;
   } else {

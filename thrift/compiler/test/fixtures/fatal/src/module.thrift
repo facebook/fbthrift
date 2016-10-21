@@ -167,9 +167,43 @@ struct struct4 {
   6: structA field3 (cpp2.ref = "true")
 }
 
+struct struct5 {
+  1: required i32 field0
+  2: optional string field1
+  3: enum1 field2
+  4: structA field3 (annotate_here = "with text")
+  5: structB field4
+}
+
 struct struct_binary {
   1: binary bi
 }
+
+struct annotated {
+  1: i32 a (
+    m_b_false = 'false',
+    m_b_true = 'true',
+    m_int = '10',
+    m_string = '"hello"',
+    m_int_list = '[-1, 2, 3]',
+    m_str_list = '["a", "b", "c"]',
+    m_mixed_list = '["a", 1, "b", 2]',
+    m_int_map = '{"a": 1, "b": -2, "c": -3}',
+    m_str_map = '{"a": "A", "b": "B", "c": "C"}',
+    m_mixed_map = '{"a": -2, "b": "B", "c": 3}'
+  )
+} (
+  s_b_false = 'false',
+  s_b_true = 'true',
+  s_int = '10',
+  s_string = '"hello"',
+  s_int_list = '[-1, 2, 3]',
+  s_str_list = '["a", "b", "c"]',
+  s_mixed_list = '["a", 1, "b", 2]',
+  s_int_map = '{"a": 1, "b": -2, "c": -3}',
+  s_str_map = '{"a": "A", "b": "B", "c": "C"}',
+  s_mixed_map = '{"a": -2, "b": "B", "c": 3}'
+)
 
 service service1 {
   void method1();

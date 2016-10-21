@@ -177,27 +177,27 @@ class enum3_enum_traits {
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
     using map = ::fatal::list<
-      ::fatal::pair<
+      ::apache::thrift::annotation<
         keys::_now_with_an_underscore,
         values::_now_with_an_underscore
       >,
-      ::fatal::pair<
+      ::apache::thrift::annotation<
         keys::another_there,
         values::another_there
       >,
-      ::fatal::pair<
+      ::apache::thrift::annotation<
         keys::duplicate_id_annotation_1,
         values::duplicate_id_annotation_1
       >,
-      ::fatal::pair<
+      ::apache::thrift::annotation<
         keys::duplicate_id_annotation_2,
         values::duplicate_id_annotation_2
       >,
-      ::fatal::pair<
+      ::apache::thrift::annotation<
         keys::one_here,
         values::one_here
       >,
-      ::fatal::pair<
+      ::apache::thrift::annotation<
         keys::yet_another,
         values::yet_another
       >

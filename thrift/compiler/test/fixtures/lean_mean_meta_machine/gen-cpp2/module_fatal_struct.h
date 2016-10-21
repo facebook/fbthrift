@@ -694,11 +694,11 @@ class structB_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       using keys = structB_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_d__unique_annotations_keys;
       using values = structB_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_d__unique_annotations_values;
       using map = ::fatal::list<
-        ::fatal::pair<
+        ::apache::thrift::annotation<
           keys::another_annotation,
           values::another_annotation
         >,
-        ::fatal::pair<
+        ::apache::thrift::annotation<
           keys::some_annotation,
           values::some_annotation
         >
@@ -726,15 +726,15 @@ class structB_test_cpp2_cpp_reflection_module__struct_unique_annotations {
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
     using map = ::fatal::list<
-      ::fatal::pair<
+      ::apache::thrift::annotation<
         keys::multi_line_annotation,
         values::multi_line_annotation
       >,
-      ::fatal::pair<
+      ::apache::thrift::annotation<
         keys::some_annotation,
         values::some_annotation
       >,
-      ::fatal::pair<
+      ::apache::thrift::annotation<
         keys::some_other_annotation,
         values::some_other_annotation
       >
@@ -2450,9 +2450,10 @@ class struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations {
       using keys = struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3__unique_annotations_keys;
       using values = struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3__unique_annotations_values;
       using map = ::fatal::list<
-        ::fatal::pair<
+        ::apache::thrift::annotation<
           keys::cpp2_ref,
-          values::cpp2_ref
+          values::cpp2_ref,
+          ::std::true_type
         >
       >;
     };

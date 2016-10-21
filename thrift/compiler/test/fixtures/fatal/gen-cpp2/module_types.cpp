@@ -1442,6 +1442,78 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
+void struct5::__clear() {
+  field0 = 0;
+  field1 = std::string();
+  field2 =  ::test_cpp2::cpp_reflection::enum1();
+  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::clear(&field3);
+  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structB>::clear(&field4);
+  __isset.__clear();
+}
+
+bool struct5::operator==(const struct5& rhs) const {
+  if (!((field0 == rhs.field0))) {
+    return false;
+  }
+  if (__isset.field1 != rhs.__isset.field1) {
+    return false;
+  }
+  else if (__isset.field1 && !((field1 == rhs.field1))) {
+    return false;
+  }
+  if (!((field2 == rhs.field2))) {
+    return false;
+  }
+  if (!((field3 == rhs.field3))) {
+    return false;
+  }
+  if (!((field4 == rhs.field4))) {
+    return false;
+  }
+  return true;
+}
+
+const  ::test_cpp2::cpp_reflection::structA& struct5::get_field3() const& {
+  return field3;
+}
+
+ ::test_cpp2::cpp_reflection::structA struct5::get_field3() && {
+  return std::move(field3);
+}
+
+const  ::test_cpp2::cpp_reflection::structB& struct5::get_field4() const& {
+  return field4;
+}
+
+ ::test_cpp2::cpp_reflection::structB struct5::get_field4() && {
+  return std::move(field4);
+}
+
+void swap(struct5& a, struct5& b) {
+  using ::std::swap;
+  swap(a.field0, b.field0);
+  swap(a.field1, b.field1);
+  swap(a.field2, b.field2);
+  swap(a.field3, b.field3);
+  swap(a.field4, b.field4);
+  swap(a.__isset, b.__isset);
+}
+
+template uint32_t struct5::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t struct5::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t struct5::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t struct5::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t struct5::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t struct5::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t struct5::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t struct5::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace test_cpp2 { namespace cpp_reflection {
+
 void struct_binary::__clear() {
   bi = std::string();
   __isset.__clear();
@@ -1468,6 +1540,39 @@ template uint32_t struct_binary::read<>(apache::thrift::CompactProtocolReader*);
 template uint32_t struct_binary::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t struct_binary::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t struct_binary::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace test_cpp2 { namespace cpp_reflection {
+
+void annotated::__clear() {
+  a = 0;
+  __isset.__clear();
+}
+
+bool annotated::operator==(const annotated& rhs) const {
+  if (!((a == rhs.a))) {
+    return false;
+  }
+  return true;
+}
+
+void swap(annotated& a, annotated& b) {
+  using ::std::swap;
+  swap(a.a, b.a);
+  swap(a.__isset, b.__isset);
+}
+
+template uint32_t annotated::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t annotated::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t annotated::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t annotated::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t annotated::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t annotated::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t annotated::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t annotated::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }} // test_cpp2::cpp_reflection
 namespace apache { namespace thrift {

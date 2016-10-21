@@ -1164,11 +1164,11 @@ class unionA_variant_traits {
     using keys = annotations__unique_annotations_keys;
     using values = annotations__unique_annotations_values;
     using map = ::fatal::list<
-      ::fatal::pair<
+      ::apache::thrift::annotation<
         keys::another_annotation,
         values::another_annotation
       >,
-      ::fatal::pair<
+      ::apache::thrift::annotation<
         keys::sample_annotation,
         values::sample_annotation
       >

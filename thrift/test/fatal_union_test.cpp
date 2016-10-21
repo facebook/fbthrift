@@ -258,8 +258,14 @@ TEST(fatal_union, annotations) {
 
   EXPECT_SAME<
     fatal::list<
-      fatal::pair<unionA_annotation1k, unionA_annotation1v>,
-      fatal::pair<unionA_annotation2k, unionA_annotation2v>
+      apache::thrift::annotation<
+        unionA_annotation1k,
+        unionA_annotation1v
+      >,
+      apache::thrift::annotation<
+        unionA_annotation2k,
+        unionA_annotation2v
+      >
     >,
     actual_unionA::map
   >();
