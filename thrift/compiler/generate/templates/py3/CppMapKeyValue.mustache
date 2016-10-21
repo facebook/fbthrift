@@ -14,11 +14,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#type:bool?}}item{{/type:bool?}}{{!
-}}{{#type:byte?}}item{{/type:byte?}}{{!
-}}{{#type:i16?}}item{{/type:i16?}}{{!
-}}{{#type:i32?}}item{{/type:i32?}}{{!
-}}{{#type:i64?}}item{{/type:i64?}}{{!
-}}{{#type:double?}}item{{/type:double?}}{{!
-}}{{#type:string?}}item.encode(){{/type:string?}}{{!
-}}{{#type:struct}}deref((<{{struct:name}}> item).c_{{struct:name}}){{/type:struct}}
+}}{{!
+Assuming type is a container that is a map, output the key and value separated
+by a comma, as required in a c++ header or source file. This is just a
+convenience to make the code a bit easier to read in all the places its called.
+}}{{#type:keyType}}{{> ContainerCppFieldType}}{{/type:keyType}},{{!
+}}{{#type:valueType}}{{>ContainerCppFieldType}}{{/type:valueType}}

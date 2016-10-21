@@ -21,5 +21,7 @@
 }}{{#type:i64?}}{{field:name}}{{/type:i64?}}{{!
 }}{{#type:double?}}{{field:name}}{{/type:double?}}{{!
 }}{{#type:string?}}std::move({{field:name}}){{/type:string?}}{{!
-}}{{#type:struct?}}std::move({{field:name}}){{/type:struct?}}{{
-}}{{#type:list?}}std::move({{field:name}}){{/type:list?}}
+}}{{#type:struct?}}std::move({{field:name}}){{/type:struct?}}{{!
+}}{{#type:list?}}std::move({{field:name}}){{/type:list?}}{{!
+}}{{#type:set?}}std::move({{field:name}}){{/type:set?}}{{!
+}}{{#type:map?}}std::move({{field:name}}){{/type:map?}}

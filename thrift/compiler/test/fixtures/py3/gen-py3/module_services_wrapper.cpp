@@ -216,6 +216,70 @@ folly::Future<int32_t> SimpleServiceWrapper::future_count_structs(
   return promise->getFuture();
 }
 
+folly::Future<int32_t> SimpleServiceWrapper::future_sum_set(
+  std::unique_ptr<std::set<int32_t>> numbers
+) {
+  auto promise = std::make_shared<folly::Promise<int32_t>>();
+  call_cy_SimpleService_sum_set(
+    this->if_object,
+    promise,
+    std::move(numbers)
+  );
+  return promise->getFuture();
+}
+
+folly::Future<bool> SimpleServiceWrapper::future_contains_word(
+  std::unique_ptr<std::set<std::string>> words,
+  std::unique_ptr<std::string> word
+) {
+  auto promise = std::make_shared<folly::Promise<bool>>();
+  call_cy_SimpleService_contains_word(
+    this->if_object,
+    promise,
+    std::move(words),
+    std::move(word)
+  );
+  return promise->getFuture();
+}
+
+folly::Future<std::unique_ptr<std::string>> SimpleServiceWrapper::future_get_map_value(
+  std::unique_ptr<std::map<std::string,std::string>> words,
+  std::unique_ptr<std::string> key
+) {
+  auto promise = std::make_shared<folly::Promise<std::unique_ptr<std::string>>>();
+  call_cy_SimpleService_get_map_value(
+    this->if_object,
+    promise,
+    std::move(words),
+    std::move(key)
+  );
+  return promise->getFuture();
+}
+
+folly::Future<int16_t> SimpleServiceWrapper::future_map_length(
+  std::unique_ptr<std::map<std::string,py3::simple::SimpleStruct>> items
+) {
+  auto promise = std::make_shared<folly::Promise<int16_t>>();
+  call_cy_SimpleService_map_length(
+    this->if_object,
+    promise,
+    std::move(items)
+  );
+  return promise->getFuture();
+}
+
+folly::Future<int16_t> SimpleServiceWrapper::future_sum_map_values(
+  std::unique_ptr<std::map<std::string,int16_t>> items
+) {
+  auto promise = std::make_shared<folly::Promise<int16_t>>();
+  call_cy_SimpleService_sum_map_values(
+    this->if_object,
+    promise,
+    std::move(items)
+  );
+  return promise->getFuture();
+}
+
 std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object) {
   return std::make_shared<SimpleServiceWrapper>(if_object);
 }

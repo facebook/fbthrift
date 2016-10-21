@@ -27,4 +27,10 @@
 }}{{#type:listElemType}}{{!
   }}std::unique_ptr<std::vector<{{>ContainerCppFieldType}}>>{{!
   }}{{/type:listElemType}}{{!
+}}{{#type:setElemType}}{{!
+  }}std::unique_ptr<std::set<{{>ContainerCppFieldType}}>>{{!
+  }}{{/type:setElemType}}{{!
+}}{{#type:map?}}{{!
+  }}std::unique_ptr<std::map<{{> CppMapKeyValue}}>>{{!
+  }}{{/type:map?}}{{!
 }}{{#type:void?}}folly::Unit{{/type:void?}}

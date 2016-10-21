@@ -11,6 +11,8 @@ from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
+from libcpp.set cimport set as cset
+from libcpp.map cimport map as cmap, pair as cpair
 from thrift.lib.py3.thrift_server cimport cTException, TException
 
 
@@ -29,5 +31,6 @@ cdef class MyStruct:
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] c_MyStruct)
+
 
 

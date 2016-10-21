@@ -13,7 +13,7 @@ from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from cython.operator cimport dereference as deref
 from thrift.lib.py3.thrift_server cimport TException
 
-from collections.abc import Sequence
+from collections.abc import Sequence, Set, Mapping
 
 from module_types cimport (
     cSimpleException,
@@ -113,7 +113,6 @@ cdef class List__i16:
 
 Sequence.register(List__i16)
 
-
 cdef class List__i32:
     def __init__(self, items=None):
         self._vector = make_shared[vector[int32_t]]()
@@ -135,7 +134,6 @@ cdef class List__i32:
         return deref(self._vector).size()
 
 Sequence.register(List__i32)
-
 
 cdef class List__i64:
     def __init__(self, items=None):
@@ -159,7 +157,6 @@ cdef class List__i64:
 
 Sequence.register(List__i64)
 
-
 cdef class List__string:
     def __init__(self, items=None):
         self._vector = make_shared[vector[string]]()
@@ -181,7 +178,6 @@ cdef class List__string:
         return deref(self._vector).size()
 
 Sequence.register(List__string)
-
 
 cdef class List__SimpleStruct:
     def __init__(self, items=None):
@@ -205,4 +201,143 @@ cdef class List__SimpleStruct:
 
 Sequence.register(List__SimpleStruct)
 
+cdef class Set__i32:
+    def __init__(self, items=None):
+        self._set = make_shared[cset[int32_t]]()
+        if items:
+            for item in items:
+                deref(self._set).insert(item)
+
+    @staticmethod
+    cdef create(shared_ptr[cset[int32_t]] c_items):
+        inst = <Set__i32>Set__i32.__new__(Set__i32)
+        inst._set = c_items
+        return inst
+
+    def __contains__(self, int item):
+        return pbool(deref(self._set).count(item))
+
+    def __len__(self):
+        return deref(self._set).size()
+
+    def __iter__(self):
+        for citem in deref(self._set):
+            yield citem
+
+Set.register(Set__i32)
+
+cdef class Set__string:
+    def __init__(self, items=None):
+        self._set = make_shared[cset[string]]()
+        if items:
+            for item in items:
+                deref(self._set).insert(item.encode())
+
+    @staticmethod
+    cdef create(shared_ptr[cset[string]] c_items):
+        inst = <Set__string>Set__string.__new__(Set__string)
+        inst._set = c_items
+        return inst
+
+    def __contains__(self, str item):
+        return pbool(deref(self._set).count(item.encode()))
+
+    def __len__(self):
+        return deref(self._set).size()
+
+    def __iter__(self):
+        for citem in deref(self._set):
+            yield citem.decode()
+
+Set.register(Set__string)
+
+cdef class Map__string_string:
+    def __init__(self, items=None):
+
+        self._map = make_shared[cmap[string,string]]()
+        if items:
+            for key, item in items.items():
+                deref(self._map).insert(cpair[string,string](key.encode(), item.encode()))
+
+    @staticmethod
+    cdef create(shared_ptr[cmap[string,string]] c_items):
+        inst = <Map__string_string>Map__string_string.__new__(Map__string_string)
+        inst._map = c_items
+        return inst
+
+    def __getitem__(self, str key):
+        cdef string ckey = key.encode()
+        cdef string citem = deref(self._map)[ckey]
+        return citem.decode()
+
+    def __len__(self):
+        return deref(self._map).size()
+
+    def __iter__(self):
+        cdef string citem
+        for pair in deref(self._map):
+            citem = pair.first
+            yield citem.decode()
+
+Mapping.register(Map__string_string)
+
+cdef class Map__string_SimpleStruct:
+    def __init__(self, items=None):
+
+        self._map = make_shared[cmap[string,cSimpleStruct]]()
+        if items:
+            for key, item in items.items():
+                deref(self._map).insert(cpair[string,cSimpleStruct](key.encode(), deref((<SimpleStruct> item).c_SimpleStruct)))
+
+    @staticmethod
+    cdef create(shared_ptr[cmap[string,cSimpleStruct]] c_items):
+        inst = <Map__string_SimpleStruct>Map__string_SimpleStruct.__new__(Map__string_SimpleStruct)
+        inst._map = c_items
+        return inst
+
+    def __getitem__(self, str key):
+        cdef string ckey = key.encode()
+        cdef cSimpleStruct citem = deref(self._map)[ckey]
+        return SimpleStruct.create(make_shared[cSimpleStruct](citem))
+
+    def __len__(self):
+        return deref(self._map).size()
+
+    def __iter__(self):
+        cdef string citem
+        for pair in deref(self._map):
+            citem = pair.first
+            yield citem.decode()
+
+Mapping.register(Map__string_SimpleStruct)
+
+cdef class Map__string_i16:
+    def __init__(self, items=None):
+
+        self._map = make_shared[cmap[string,int16_t]]()
+        if items:
+            for key, item in items.items():
+                deref(self._map).insert(cpair[string,int16_t](key.encode(), item))
+
+    @staticmethod
+    cdef create(shared_ptr[cmap[string,int16_t]] c_items):
+        inst = <Map__string_i16>Map__string_i16.__new__(Map__string_i16)
+        inst._map = c_items
+        return inst
+
+    def __getitem__(self, str key):
+        cdef string ckey = key.encode()
+        cdef int16_t citem = deref(self._map)[ckey]
+        return citem
+
+    def __len__(self):
+        return deref(self._map).size()
+
+    def __iter__(self):
+        cdef string citem
+        for pair in deref(self._map):
+            citem = pair.first
+            yield citem.decode()
+
+Mapping.register(Map__string_i16)
 

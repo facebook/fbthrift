@@ -11,6 +11,8 @@ from libcpp cimport bool as cbool
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.vector cimport vector
+from libcpp.set cimport set as cset
+from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
 from thrift.lib.py3.thrift_server cimport (
@@ -36,7 +38,12 @@ from module_types cimport (
     List__i32,
     List__i64,
     List__string,
-    List__SimpleStruct
+    List__SimpleStruct,
+    Set__i32,
+    Set__string,
+    Map__string_string,
+    Map__string_SimpleStruct,
+    Map__string_i16
 )
 
 from module_services_wrapper cimport cSimpleServiceInterface
@@ -713,6 +720,196 @@ async def SimpleService_count_structs_coro(
     else:
         deref(promise.cPromise).setValue(<int32_t> result)
 
+cdef public void call_cy_SimpleService_sum_set(
+    object self,
+    shared_ptr[cFollyPromise[int32_t]] cPromise,
+    unique_ptr[cset[int32_t]] numbers
+) with gil:
+    promise = Promise_i32.create(cPromise)
+    arg_numbers = Set__i32.create(move(numbers))
+
+    func = functools.partial(
+        asyncio.ensure_future,
+        SimpleService_sum_set_coro(
+            self,
+            promise,
+            arg_numbers),
+        loop=self.loop)
+    self.loop.call_soon_threadsafe(func)
+
+async def SimpleService_sum_set_coro(
+    object self,
+    Promise_i32 promise,
+    numbers
+):
+    try:
+      result = await self.sum_set(
+          numbers)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler sum_set:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(<int32_t> result)
+
+cdef public void call_cy_SimpleService_contains_word(
+    object self,
+    shared_ptr[cFollyPromise[cbool]] cPromise,
+    unique_ptr[cset[string]] words,
+    unique_ptr[string] word
+) with gil:
+    promise = Promise_bool.create(cPromise)
+    arg_words = Set__string.create(move(words))
+    arg_word = (deref(word.get())).decode()
+
+    func = functools.partial(
+        asyncio.ensure_future,
+        SimpleService_contains_word_coro(
+            self,
+            promise,
+            arg_words,
+            arg_word),
+        loop=self.loop)
+    self.loop.call_soon_threadsafe(func)
+
+async def SimpleService_contains_word_coro(
+    object self,
+    Promise_bool promise,
+    words,
+    word
+):
+    try:
+      result = await self.contains_word(
+          words,
+          word)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler contains_word:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(<cbool> result)
+
+cdef public void call_cy_SimpleService_get_map_value(
+    object self,
+    shared_ptr[cFollyPromise[unique_ptr[string]]] cPromise,
+    unique_ptr[cmap[string,string]] words,
+    unique_ptr[string] key
+) with gil:
+    promise = Promise_string.create(cPromise)
+    arg_words = Map__string_string.create(move(words))
+    arg_key = (deref(key.get())).decode()
+
+    func = functools.partial(
+        asyncio.ensure_future,
+        SimpleService_get_map_value_coro(
+            self,
+            promise,
+            arg_words,
+            arg_key),
+        loop=self.loop)
+    self.loop.call_soon_threadsafe(func)
+
+async def SimpleService_get_map_value_coro(
+    object self,
+    Promise_string promise,
+    words,
+    key
+):
+    try:
+      result = await self.get_map_value(
+          words,
+          key)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler get_map_value:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(make_unique[string](<string> result.encode('UTF-8')))
+
+cdef public void call_cy_SimpleService_map_length(
+    object self,
+    shared_ptr[cFollyPromise[int16_t]] cPromise,
+    unique_ptr[cmap[string,cSimpleStruct]] items
+) with gil:
+    promise = Promise_i16.create(cPromise)
+    arg_items = Map__string_SimpleStruct.create(move(items))
+
+    func = functools.partial(
+        asyncio.ensure_future,
+        SimpleService_map_length_coro(
+            self,
+            promise,
+            arg_items),
+        loop=self.loop)
+    self.loop.call_soon_threadsafe(func)
+
+async def SimpleService_map_length_coro(
+    object self,
+    Promise_i16 promise,
+    items
+):
+    try:
+      result = await self.map_length(
+          items)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler map_length:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(<int16_t> result)
+
+cdef public void call_cy_SimpleService_sum_map_values(
+    object self,
+    shared_ptr[cFollyPromise[int16_t]] cPromise,
+    unique_ptr[cmap[string,int16_t]] items
+) with gil:
+    promise = Promise_i16.create(cPromise)
+    arg_items = Map__string_i16.create(move(items))
+
+    func = functools.partial(
+        asyncio.ensure_future,
+        SimpleService_sum_map_values_coro(
+            self,
+            promise,
+            arg_items),
+        loop=self.loop)
+    self.loop.call_soon_threadsafe(func)
+
+async def SimpleService_sum_map_values_coro(
+    object self,
+    Promise_i16 promise,
+    items
+):
+    try:
+      result = await self.sum_map_values(
+          items)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler sum_map_values:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(<int16_t> result)
+
 
 cdef class SimpleServiceInterface(ServiceInterface):
     def __cinit__(self):
@@ -818,5 +1015,37 @@ cdef class SimpleServiceInterface(ServiceInterface):
             self,
             items):
         raise NotImplementedError("async def count_structs is not implemented")
+
+
+    async def sum_set(
+            self,
+            numbers):
+        raise NotImplementedError("async def sum_set is not implemented")
+
+
+    async def contains_word(
+            self,
+            words,
+            word):
+        raise NotImplementedError("async def contains_word is not implemented")
+
+
+    async def get_map_value(
+            self,
+            words,
+            key):
+        raise NotImplementedError("async def get_map_value is not implemented")
+
+
+    async def map_length(
+            self,
+            items):
+        raise NotImplementedError("async def map_length is not implemented")
+
+
+    async def sum_map_values(
+            self,
+            items):
+        raise NotImplementedError("async def sum_map_values is not implemented")
 
 

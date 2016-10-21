@@ -31,4 +31,9 @@ service SimpleService {
   i32 sum_i64_list(1: list<i64> numbers)
   string concat_many(1: list<string> words)
   i32 count_structs(1: list<SimpleStruct> items)
+  i32 sum_set(1: set<i32> numbers)
+  bool contains_word(1: set<string> words, 2: string word)
+  string get_map_value(1: map<string,string> words, 2: string key)
+  i16 map_length(1: map<string,SimpleStruct> items)
+  i16 sum_map_values(1: map<string,i16> items)
 }

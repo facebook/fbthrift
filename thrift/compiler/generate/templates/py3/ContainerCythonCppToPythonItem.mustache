@@ -14,6 +14,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+}}{{!
+
+Usually included in places where a container item is being processed. You have
+access to a C object and need to return or convert it to a Python object. The
+type in this case is probably a type:listElemType, type:setElemType,
+type:keyType, or type:valueType.
+
+By convention, it assumes the c++ structure that is being manipulated is named
+citem.
+
 }}{{#type:bool?}}citem{{/type:bool?}}{{!
 }}{{#type:byte?}}citem{{/type:byte?}}{{!
 }}{{#type:i16?}}citem{{/type:i16?}}{{!

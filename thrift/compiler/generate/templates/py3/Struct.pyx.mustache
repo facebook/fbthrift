@@ -25,7 +25,7 @@ from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from cython.operator cimport dereference as deref
 from thrift.lib.py3.thrift_server cimport TException
 
-from collections.abc import Sequence
+from collections.abc import Sequence, Set, Mapping
 
 {{#program:structs}}
 {{#first?}}from {{program:name}}_types cimport ({{/first?}}
@@ -80,7 +80,7 @@ cdef class {{type:flat_name}}:
         self._vector = make_shared[vector[{{#type:listElemType}}{{> ContainerCythonFieldType}}{{/type:listElemType}}]]()
         if items:
             for item in items:
-                deref(self._vector).push_back({{#type:listElemType}}{{> CythonPythonToCpp}}{{/type:listElemType}})
+                deref(self._vector).push_back({{#type:listElemType}}{{> CythonPythonToCppItem}}{{/type:listElemType}})
 
     @staticmethod
     cdef create(shared_ptr[vector[{{#type:listElemType}}{{> ContainerCythonFieldType}}{{/type:listElemType}}]] c_items):
@@ -90,13 +90,68 @@ cdef class {{type:flat_name}}:
 
     def __getitem__(self, int index):
         cdef {{#type:listElemType}}{{> ContainerCythonFieldType}}{{/type:listElemType}} citem = deref(self._vector).at(index)
-        return {{#type:listElemType}}{{> ContainerCythonCppToPython}}{{/type:listElemType}}
+        return {{#type:listElemType}}{{> ContainerCythonCppToPythonItem}}{{/type:listElemType}}
 
     def __len__(self):
         return deref(self._vector).size()
 
 Sequence.register({{type:flat_name}})
 {{/type:list?}}
+{{#type:set?}}
+    def __init__(self, items=None):
+        self._set = make_shared[cset[{{#type:setElemType}}{{> ContainerCythonFieldType}}{{/type:setElemType}}]]()
+        if items:
+            for item in items:
+                deref(self._set).insert({{#type:setElemType}}{{> CythonPythonToCppItem}}{{/type:setElemType}})
 
+    @staticmethod
+    cdef create(shared_ptr[cset[{{#type:setElemType}}{{> ContainerCythonFieldType}}{{/type:setElemType}}]] c_items):
+        inst = <{{type:flat_name}}>{{type:flat_name}}.__new__({{type:flat_name}})
+        inst._set = c_items
+        return inst
+
+    def __contains__(self, {{#type:setElemType}}{{> PythonFieldType}}{{/type:setElemType}} item):
+        return pbool(deref(self._set).count({{#type:setElemType}}{{>CythonPythonToCppItem}}{{/type:setElemType}}))
+
+    def __len__(self):
+        return deref(self._set).size()
+
+    def __iter__(self):
+        for citem in deref(self._set):
+            yield {{#type:setElemType}}{{> ContainerCythonCppToPythonItem}}{{/type:setElemType}}
+
+Set.register({{type:flat_name}})
+{{/type:set?}}
+{{#type:map?}}
+    def __init__(self, items=None):
+
+        self._map = make_shared[cmap[{{> CythonMapKeyValue}}]]()
+        if items:
+            for key, item in items.items():
+                deref(self._map).insert(cpair[{{> CythonMapKeyValue}}]({{#type:keyType}}{{> CythonPythonToCppKey}}{{/type:keyType}}, {{!
+                  }}{{#type:valueType}}{{> CythonPythonToCppItem}}{{/type:valueType}}))
+
+    @staticmethod
+    cdef create(shared_ptr[cmap[{{> CythonMapKeyValue}}]] c_items):
+        inst = <{{type:flat_name}}>{{type:flat_name}}.__new__({{type:flat_name}})
+        inst._map = c_items
+        return inst
+
+    def __getitem__(self, {{#type:keyType}}{{> PythonFieldType}}{{/type:keyType}} key):
+        cdef {{#type:keyType}}{{> ContainerCythonFieldType}} ckey = {{> CythonPythonToCppKey}}{{/type:keyType}}
+        cdef {{#type:valueType}}{{> ContainerCythonFieldType}} citem = deref(self._map)[ckey]{{/type:valueType}}
+        return {{#type:valueType}}{{> ContainerCythonCppToPythonItem}}{{/type:valueType}}
+
+    def __len__(self):
+        return deref(self._map).size()
+
+    def __iter__(self):
+        cdef {{#type:keyType}}{{> ContainerCythonFieldType}}{{/type:keyType}} citem
+        for pair in deref(self._map):
+            citem = pair.first
+            yield {{#type:keyType}}{{> ContainerCythonCppToPythonItem}}{{/type:keyType}}
+
+Mapping.register({{type:flat_name}})
+{{/type:map?}}
 
 {{/program:containerTypes}}
