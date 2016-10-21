@@ -118,7 +118,7 @@ void <%service:name%>AsyncProcessor::process(<%!
       %>protType, context, eb, tm);
 }
 
-bool <%service:name%>AsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, <%! 
+bool <%service:name%>AsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, <%!
     %>const apache::thrift::transport::THeader* header) {
   return apache::thrift::detail::ap::is_oneway_method(buf, header, <%!
       %>onewayMethods_);

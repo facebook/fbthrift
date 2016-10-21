@@ -468,6 +468,8 @@ class CppOutputContext(OutputContext):
 
     def _exit_scope_handler(self, scope, physical_scope=True):
         if scope.parent is None:
+            # Make sure file is newline terminated.
+            self.outputs.line_feed()
             return
 
         if physical_scope:

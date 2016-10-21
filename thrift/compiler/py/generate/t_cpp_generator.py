@@ -683,31 +683,31 @@ class CppGenerator(t_generator.Generator):
         s()
 
         # Open namespace
-        s = s.namespace(self._get_namespace()).scope
-        s.acquire()
+        ns = s.namespace(self._get_namespace()).scope
+        ns.acquire()
 
-        self._generate_service_helpers(service, s)
-        self._generate_service_server_interface_async(service, s)
-        s('class ' + service.name + 'AsyncProcessor;')
-        self._generate_service_server_interface(service, s)
-        self._generate_service_server_null(service, s)
-        self._generate_processor(service, s)
-        self._generate_service_client(service, s)
+        self._generate_service_helpers(service, ns)
+        self._generate_service_server_interface_async(service, ns)
+        ns('class ' + service.name + 'AsyncProcessor;')
+        self._generate_service_server_interface(service, ns)
+        self._generate_service_server_null(service, ns)
+        self._generate_processor(service, ns)
+        self._generate_service_client(service, ns)
 
         # make sure that the main types namespace is closed
-        s.release()
+        ns.release()
 
         self._generate_service_helpers_serializers(service, s)
 
         if self.flag_implicit_templates:
             # Include the types.tcc file from the types header file
-            s = self._service_global
             s()
             if self.flag_lean_mean_meta_machine:
                 s('#include "{0}"'.format(self._fatal_header()))
             s('#include "{0}.tcc"'.format(
                 self._with_include_prefix(self._program, service.name)))
-            self._service_global.release()
+        # Make sure file scope is closed.
+        s.release()
 
     def _generate_service_helpers_serializers(self, service, s):
         s = s.namespace('apache.thrift').scope
@@ -5398,8 +5398,7 @@ class CppGenerator(t_generator.Generator):
             s('#include "{0}_types.tcc"'.format(
                 self._with_include_prefix(self._program, self._program.name)))
 
-        if self.flag_implicit_templates:
-            self._types_global.release()
+        self._types_global.release()
 
 
     def _generate_comment(self, text, style='auto'):
