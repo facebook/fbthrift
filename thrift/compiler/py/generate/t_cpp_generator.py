@@ -547,7 +547,8 @@ class CppGenerator(t_generator.Generator):
         self._types_scope(txt)
 
     def _declare_field(self, field, pointer=False, constant=False,
-                        reference=False, optional_wrapped=False):
+                        reference=False, optional_wrapped=False,
+                        deprecated=False):
         # I removed the 'init' argument, as all inits happen in default
         # constructor
         result = ''
@@ -560,6 +561,8 @@ class CppGenerator(t_generator.Generator):
             result += '&'
         if optional_wrapped:
             result = "folly::Optional<" + result + ">"
+        if deprecated:
+            result += ' ' + deprecated
         result += ' ' + field.name
         if not reference:
             result += ';'
@@ -2351,6 +2354,21 @@ class CppGenerator(t_generator.Generator):
                 # of the template to the .h and .cpp file, respectively
                 s.extern(data)
 
+        def check_if_deprecated(typename, obj_name, annotations):
+            deprecated = ''
+            if 'deprecated' in annotations:
+                deprecated += 'FOLLY_DEPRECATED(\n  "'
+                # For annotations that don't specify a value to the
+                # 'key: "value"' pair, Thrift assigns the string "1"
+                # as a default value.
+                if annotations['deprecated'] != "1":
+                    deprecated += annotations['deprecated']
+                else:
+                    deprecated += \
+                        '{0} {1} is deprecated'.format(typename, obj_name)
+                deprecated += '"\n) '
+            return(deprecated)
+
         # generate explicit and extern template instantiations for
         # {Binary,Compact}Protocol
         def write_extern_templates():
@@ -2417,17 +2435,7 @@ class CppGenerator(t_generator.Generator):
         # Open struct def
         class_signature = 'class '
 
-        deprecated = ''
-        if 'deprecated' in obj.annotations:
-            deprecated += 'FOLLY_DEPRECATED(\n  "'
-            # For annotations that don't specify a value to the 'key: "value"'
-            # pair, Thrift assigns the string "1" as a default value.
-            if obj.annotations['deprecated'] != "1":
-                deprecated += obj.annotations['deprecated']
-            else:
-                deprecated += 'class {0} is deprecated'.format(obj.name)
-            deprecated += '"\n) '
-
+        deprecated = check_if_deprecated('class', obj.name, obj.annotations)
         class_signature += deprecated + obj.name + extends
         struct = s.cls(class_signature).scope
         struct.acquire()
@@ -2673,11 +2681,15 @@ class CppGenerator(t_generator.Generator):
 
         # Declare all fields.
         for member in members:
+            t = self._get_true_type(member.type)
+            typename = self._field_type_name(member, member.type)
+            deprecated = check_if_deprecated(
+                typename, member.name, member.annotations)
             s1(self._declare_field(
                 member,
                 pointers and not member.type.is_xception,
                 not read, False,
-                self._is_optional_wrapped(member)))
+                self._is_optional_wrapped(member), deprecated))
 
         if s1 is not struct:
             s1()

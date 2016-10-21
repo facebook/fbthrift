@@ -68,7 +68,9 @@ class FOLLY_DEPRECATED(
 
    ::cpp2::ColorID id;
   std::string houseName;
-  folly::Optional<std::set< ::cpp2::ColorID>> houseColors;
+  folly::Optional<std::set< ::cpp2::ColorID>> FOLLY_DEPRECATED(
+    "Not used anymore"
+  )  houseColors;
   bool operator==(const House& rhs) const;
   bool operator < (const House& rhs) const;
 
@@ -160,7 +162,9 @@ class FOLLY_DEPRECATED(
   virtual ~Field() throw() {}
 
    ::cpp2::ColorID id;
-  int32_t fieldType;
+  int32_t FOLLY_DEPRECATED(
+    "int32_t fieldType is deprecated"
+  )  fieldType;
   bool operator==(const Field& rhs) const;
   bool operator < (const Field& rhs) const;
 
