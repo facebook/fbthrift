@@ -694,14 +694,12 @@ cdef public void call_cy_SimpleService_sum_set(
     promise = Promise_i32.create(cPromise)
     arg_numbers = Set__i32.create(move(numbers))
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         SimpleService_sum_set_coro(
             self,
             promise,
             arg_numbers),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def SimpleService_sum_set_coro(
     object self,
@@ -732,15 +730,13 @@ cdef public void call_cy_SimpleService_contains_word(
     arg_words = Set__string.create(move(words))
     arg_word = (deref(word.get())).decode()
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         SimpleService_contains_word_coro(
             self,
             promise,
             arg_words,
             arg_word),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def SimpleService_contains_word_coro(
     object self,
@@ -773,15 +769,13 @@ cdef public void call_cy_SimpleService_get_map_value(
     arg_words = Map__string_string.create(move(words))
     arg_key = (deref(key.get())).decode()
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         SimpleService_get_map_value_coro(
             self,
             promise,
             arg_words,
             arg_key),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def SimpleService_get_map_value_coro(
     object self,
@@ -812,14 +806,12 @@ cdef public void call_cy_SimpleService_map_length(
     promise = Promise_i16.create(cPromise)
     arg_items = Map__string_SimpleStruct.create(move(items))
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         SimpleService_map_length_coro(
             self,
             promise,
             arg_items),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def SimpleService_map_length_coro(
     object self,
@@ -848,14 +840,12 @@ cdef public void call_cy_SimpleService_sum_map_values(
     promise = Promise_i16.create(cPromise)
     arg_items = Map__string_i16.create(move(items))
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         SimpleService_sum_map_values_coro(
             self,
             promise,
             arg_items),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def SimpleService_sum_map_values_coro(
     object self,

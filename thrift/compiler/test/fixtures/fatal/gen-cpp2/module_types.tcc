@@ -4392,9 +4392,9 @@ uint32_t struct5::read(Protocol_* iprot) {
       case 3:
       {
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast389;
-          xfer += iprot->readI32(ecast389);
-          this->field2 = ( ::test_cpp2::cpp_reflection::enum1)ecast389;
+          int32_t ecast386;
+          xfer += iprot->readI32(ecast386);
+          this->field2 = ( ::test_cpp2::cpp_reflection::enum1)ecast386;
           this->__isset.field2 = true;
         } else {
           xfer += iprot->skip(ftype);
