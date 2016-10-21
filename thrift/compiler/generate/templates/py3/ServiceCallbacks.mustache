@@ -14,6 +14,20 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+}}{{!
+
+Included from CythonServices.pyx, this file defines the core adapter between
+the C++ service and the Python handler. The C++ classes defined in
+ServicesWrapper.h and ServicesWrapper.cpp call into this file using a generated
+header. It calls into the call_cy_.... functions, passing it a promise and
+the arguments. That function wraps the promise and arguments in Python types
+appropriately, then passes them into a coroutine defined in this same file.
+
+That coroutine then looks up the handler coroutine, which does the appropriate
+work and then returns a Python value. The coroutine accesses the C++ promise
+from the Python wrapper of that promise that was passed into the coroutine and
+sets the converted value on that promise.
+
 }}
 
 {{#program:services}}

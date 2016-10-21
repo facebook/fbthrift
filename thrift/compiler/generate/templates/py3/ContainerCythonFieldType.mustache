@@ -14,6 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+}}{{!
+
+This is used to declare a cython type that is referring to or wrapping a
+c++ object. Most of the values are direct references to variables imported
+from libcpp and friends. Structs are the special case, as they refer to the
+struct by name as defined in the pxd file, with a 'c' prefix.
+
+This file is included from pyx and pxd files.
+
 }}{{#type:bool?}}bool{{/type:bool?}}{{!
 }}{{#type:byte?}}int8_t{{/type:byte?}}{{!
 }}{{#type:i16?}}int16_t{{/type:i16?}}{{!

@@ -14,6 +14,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+}}{{!
+
+Included in structs to specify a Python type. Typically this is used in
+a method declaration to indicate what kind of object Cython can accept.
+It is also used in certain cast situations where we have received a PyObject
+and need to refer to a C member on that object. We have to cast the object in
+order to be aware that it even has that member.
+
 }}{{#type:i16?}}int{{/type:i16?}}{{!
 }}{{#type:i32?}}int{{/type:i32?}}{{!
 }}{{#type:i64?}}int{{/type:i64?}}{{!

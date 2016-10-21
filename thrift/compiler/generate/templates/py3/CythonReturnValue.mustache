@@ -14,6 +14,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+}}{{!
+
+Called specifically when setting the result on a promise. It casts the Python
+value returned by the coroutine into the appropriate format to be returned
+to the client.
+
 }}{{#type:bool?}}<cbool> result{{/type:bool?}}{{!
 }}{{#type:byte?}}<int8_t> result{{/type:byte?}}{{!
 }}{{#type:i16?}}<int16_t> result{{/type:i16?}}{{!

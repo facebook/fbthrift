@@ -14,6 +14,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+}}{{!
+
+Called specifically from Struct.pyx when initializing the individual attributes
+on a struct from an existing struct passed in by the user.
+
 }}{{#type:bool?}}{{!
 }}deref(self.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
 }}{{/type:bool?}}{{!

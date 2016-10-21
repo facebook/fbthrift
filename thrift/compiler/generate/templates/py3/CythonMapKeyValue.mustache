@@ -15,8 +15,10 @@
   limitations under the License.
 
 }}{{!
+
 Assuming type is a container that is a map, output the key and value separated
 by a comma for Cython code. This is just a convenience to make the code a bit
 easier to read in all the places its called.
+
 }}{{#type:keyType}}{{> ContainerCythonFieldType}}{{/type:keyType}},{{!
 }}{{#type:valueType}}{{>ContainerCythonFieldType}}{{/type:valueType}}

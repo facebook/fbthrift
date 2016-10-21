@@ -14,6 +14,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+}}{{!
+
+This file defines types as they would appear in a C++ header or source file.
+It is mostly used in the ServicesWrapper templates. strings, structs, and
+containers are stored as unique_ptr. The container types include another file
+to define the types that go in those containers.
+
 }}{{#type:bool?}}bool{{/type:bool?}}{{!
 }}{{#type:byte?}}int8_t{{/type:byte?}}{{!
 }}{{#type:i16?}}int16_t{{/type:i16?}}{{!

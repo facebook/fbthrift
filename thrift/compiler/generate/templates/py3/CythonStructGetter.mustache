@@ -14,6 +14,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+}}{{!
+
+Included on Cython structs in properties for retrieving child values from
+that struct. Most types can be returned directly and converted to python objects
+by Cython. Complex objects need to be wrapped or decoded appropriately. Structs
+are special because we try to memoize their wrappers on the parent handler
+if they have been previously retrieved.
+
 }}{{#type:bool?}}{{!
   }}return <pbool> self.c_{{struct:name}}.get().{{field:name}}{{!
 }}{{/type:bool?}}{{!

@@ -14,6 +14,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+}}{{!
+
+Used in cases where we have a C++ object defined in Cython code and we need
+to create or return a Python object. For complex objects, a Python wrapper
+is initialized; for simple objects it can be returned directly. Strings need
+to be converted from unicode to binary representation.
+
 }}{{#type:bool?}}{{field:name}}{{/type:bool?}}{{!
 }}{{#type:byte?}}{{field:name}}{{/type:byte?}}{{!
 }}{{#type:i16?}}{{field:name}}{{/type:i16?}}{{!

@@ -14,6 +14,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+}}{{!
+
+Used on structs to define the type of a referred object. This is necessarily
+different from CythonFieldType, because the objects stored on a struct are
+typically shared_ptr instead of the unique_ptr that comes in from the C++
+server.
+
 }}{{#type:bool?}}cbool{{/type:bool?}}{{!
 }}{{#type:byte?}}int8_t{{/type:byte?}}{{!
 }}{{#type:i16?}}int16_t{{/type:i16?}}{{!

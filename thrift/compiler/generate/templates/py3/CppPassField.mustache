@@ -14,6 +14,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+}}{{!
+
+defines how a variable in a field should be passed into another c++ function
+from the current function. ie, when calling some_func(a, b, c), the variables
+a, b, and c would be written using this file. Most variables can be passed
+as themselves by value, but the complex types are unique_ptr values and
+need to be moved to the called function.
+
 }}    {{#type:bool?}}{{field:name}}{{/type:bool?}}{{!
 }}{{#type:byte?}}{{field:name}}{{/type:byte?}}{{!
 }}{{#type:i16?}}{{field:name}}{{/type:i16?}}{{!
