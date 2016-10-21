@@ -27,3 +27,6 @@ service MyServiceFast {
   void putDataById(1: i64 id, 2: string data) (thread='eb')
   oneway void lobDataById(1: i64 id, 2: string data) (thread='eb')
 }
+
+service MyServiceEmpty {
+}

@@ -179,4 +179,19 @@ folly::Future<folly::Unit> MyServiceFastWrapper::future_lobDataById(
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceFastInterface(PyObject *if_object) {
   return std::make_shared<MyServiceFastWrapper>(if_object);
 }
+
+
+MyServiceEmptyWrapper::MyServiceEmptyWrapper(PyObject *obj)
+  : if_object(obj)
+  {
+    Py_XINCREF(this->if_object);
+  }
+
+MyServiceEmptyWrapper::~MyServiceEmptyWrapper() {
+    Py_XDECREF(this->if_object);
+}
+
+std::shared_ptr<apache::thrift::ServerInterface> MyServiceEmptyInterface(PyObject *if_object) {
+  return std::make_shared<MyServiceEmptyWrapper>(if_object);
+}
 } // namespace cpp2

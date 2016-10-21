@@ -11,6 +11,7 @@ from thrift.lib.py3.thrift_server cimport cServerInterface
 
 from module_services cimport cMyServiceSvIf
 from module_services cimport cMyServiceFastSvIf
+from module_services cimport cMyServiceEmptySvIf
 
 cdef extern from "src/gen-py3/module_services_wrapper.h" namespace "cpp2":
     cdef cppclass cMyServiceWrapper "cpp2::MyService"(cMyServiceSvIf):
@@ -21,3 +22,7 @@ cdef extern from "src/gen-py3/module_services_wrapper.h" namespace "cpp2":
         pass
 
     shared_ptr[cServerInterface] cMyServiceFastInterface "cpp2::MyServiceFastInterface"(PyObject *if_object)
+    cdef cppclass cMyServiceEmptyWrapper "cpp2::MyServiceEmpty"(cMyServiceEmptySvIf):
+        pass
+
+    shared_ptr[cServerInterface] cMyServiceEmptyInterface "cpp2::MyServiceEmptyInterface"(PyObject *if_object)

@@ -8,6 +8,7 @@
 #pragma once
 #include <src/gen-cpp2/MyService.h>
 #include <src/gen-cpp2/MyServiceFast.h>
+#include <src/gen-cpp2/MyServiceEmpty.h>
 #include <Python.h>
 #include <memory.h>
 
@@ -65,4 +66,15 @@ class MyServiceFastWrapper : public MyServiceFastSvIf {
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceFastInterface(PyObject *if_object);
+
+
+class MyServiceEmptyWrapper : public MyServiceEmptySvIf {
+  private:
+    PyObject *if_object;
+  public:
+    explicit MyServiceEmptyWrapper(PyObject *if_object);
+    virtual ~MyServiceEmptyWrapper();
+};
+
+std::shared_ptr<apache::thrift::ServerInterface> MyServiceEmptyInterface(PyObject *if_object);
 } // namespace cpp2

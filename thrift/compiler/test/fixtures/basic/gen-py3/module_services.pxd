@@ -21,3 +21,10 @@ cdef extern from "src/gen-cpp2/MyServiceFast.h" namespace "cpp2":
     cdef cppclass cMyServiceFastSvIf "cpp2::MyServiceFastSvIf"(cMyServiceFastSvAsyncIf, cServerInterface):
       pass
 
+cdef extern from "src/gen-cpp2/MyServiceEmpty.h" namespace "cpp2":
+    cdef cppclass cMyServiceEmptySvAsyncIf "cpp2::MyServiceEmptySvAsyncIf":
+      pass
+
+    cdef cppclass cMyServiceEmptySvIf "cpp2::MyServiceEmptySvIf"(cMyServiceEmptySvAsyncIf, cServerInterface):
+      pass
+

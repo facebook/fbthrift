@@ -34,6 +34,7 @@ from module_types cimport (
 
 from module_services_wrapper cimport cMyServiceInterface
 from module_services_wrapper cimport cMyServiceFastInterface
+from module_services_wrapper cimport cMyServiceEmptyInterface
 
 
 cdef class Promise_void:
@@ -557,4 +558,11 @@ cdef class MyServiceFastInterface(ServiceInterface):
             data):
         raise NotImplementedError("async def lobDataById is not implemented")
 
+
+cdef class MyServiceEmptyInterface(ServiceInterface):
+    def __cinit__(self):
+        self.interface_wrapper = cMyServiceEmptyInterface(<PyObject *> self)
+
+    def __init__(self, loop=None):
+        self.loop = loop or asyncio.get_event_loop()
 

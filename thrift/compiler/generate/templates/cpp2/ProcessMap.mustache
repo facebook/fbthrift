@@ -16,12 +16,12 @@
 
 %>
 const <%service:name%>AsyncProcessor::<%protocol:longName%>ProcessMap <%!
-    %><%service:name%>AsyncProcessor::<%protocol:name%>ProcessMap_ {
-  <%#service:functions%>
+    %><%service:name%>AsyncProcessor::<%protocol:name%>ProcessMap_ {<%!
+%><%#service:functions%>
   {"<%function:name%>", &<%service:name%>AsyncProcessor::<%!
       %><%#function:eb?%>process_<%/function:eb?%><%!
       %><%^function:eb?%>_processInThread_<%/function:eb?%><%!
       %><%function:name%><apache::thrift::<%protocol:longName%>Reader, <%!
-      %>apache::thrift::<%protocol:longName%>Writer>},
-  <%/service:functions%>
-};
+      %>apache::thrift::<%protocol:longName%>Writer>},<%#last?%>
+<%/last?%><%/service:functions%><%!
+%>};
