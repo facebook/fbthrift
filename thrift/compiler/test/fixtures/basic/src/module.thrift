@@ -30,3 +30,12 @@ service MyServiceFast {
 
 service MyServiceEmpty {
 }
+
+service MyServicePrioParent {
+  void ping() (priority = 'IMPORTANT')
+  void pong() (priority = 'HIGH_IMPORTANT')
+} (priority = 'HIGH')
+
+service MyServicePrioChild extends MyServicePrioParent {
+  void pang() (priority = 'BEST_EFFORT')
+}

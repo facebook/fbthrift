@@ -9,6 +9,8 @@
 #include <src/gen-cpp2/MyService.h>
 #include <src/gen-cpp2/MyServiceFast.h>
 #include <src/gen-cpp2/MyServiceEmpty.h>
+#include <src/gen-cpp2/MyServicePrioParent.h>
+#include <src/gen-cpp2/MyServicePrioChild.h>
 #include <Python.h>
 #include <memory.h>
 
@@ -77,4 +79,29 @@ class MyServiceEmptyWrapper : public MyServiceEmptySvIf {
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceEmptyInterface(PyObject *if_object);
+
+
+class MyServicePrioParentWrapper : public MyServicePrioParentSvIf {
+  private:
+    PyObject *if_object;
+  public:
+    explicit MyServicePrioParentWrapper(PyObject *if_object);
+    virtual ~MyServicePrioParentWrapper();
+      folly::Future<folly::Unit> future_ping();
+      folly::Future<folly::Unit> future_pong();
+};
+
+std::shared_ptr<apache::thrift::ServerInterface> MyServicePrioParentInterface(PyObject *if_object);
+
+
+class MyServicePrioChildWrapper : public MyServicePrioChildSvIf {
+  private:
+    PyObject *if_object;
+  public:
+    explicit MyServicePrioChildWrapper(PyObject *if_object);
+    virtual ~MyServicePrioChildWrapper();
+      folly::Future<folly::Unit> future_pang();
+};
+
+std::shared_ptr<apache::thrift::ServerInterface> MyServicePrioChildInterface(PyObject *if_object);
 } // namespace cpp2

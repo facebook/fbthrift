@@ -35,6 +35,8 @@ from module_types cimport (
 from module_services_wrapper cimport cMyServiceInterface
 from module_services_wrapper cimport cMyServiceFastInterface
 from module_services_wrapper cimport cMyServiceEmptyInterface
+from module_services_wrapper cimport cMyServicePrioParentInterface
+from module_services_wrapper cimport cMyServicePrioChildInterface
 
 
 cdef class Promise_void:
@@ -472,6 +474,93 @@ async def MyServiceFast_lobDataById_coro(
     else:
         deref(promise.cPromise).setValue(c_unit)
 
+cdef public void call_cy_MyServicePrioParent_ping(
+    object self,
+    shared_ptr[cFollyPromise[cFollyUnit]] cPromise
+) with gil:
+    promise = Promise_void.create(cPromise)
+
+    asyncio.run_coroutine_threadsafe(
+        MyServicePrioParent_ping_coro(
+            self,
+            promise),
+        loop=self.loop)
+
+async def MyServicePrioParent_ping_coro(
+    object self,
+    Promise_void promise
+):
+    try:
+      result = await self.ping()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler ping:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(c_unit)
+
+cdef public void call_cy_MyServicePrioParent_pong(
+    object self,
+    shared_ptr[cFollyPromise[cFollyUnit]] cPromise
+) with gil:
+    promise = Promise_void.create(cPromise)
+
+    asyncio.run_coroutine_threadsafe(
+        MyServicePrioParent_pong_coro(
+            self,
+            promise),
+        loop=self.loop)
+
+async def MyServicePrioParent_pong_coro(
+    object self,
+    Promise_void promise
+):
+    try:
+      result = await self.pong()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler pong:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(c_unit)
+
+cdef public void call_cy_MyServicePrioChild_pang(
+    object self,
+    shared_ptr[cFollyPromise[cFollyUnit]] cPromise
+) with gil:
+    promise = Promise_void.create(cPromise)
+
+    asyncio.run_coroutine_threadsafe(
+        MyServicePrioChild_pang_coro(
+            self,
+            promise),
+        loop=self.loop)
+
+async def MyServicePrioChild_pang_coro(
+    object self,
+    Promise_void promise
+):
+    try:
+      result = await self.pang()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler pang:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(c_unit)
+
 
 cdef class MyServiceInterface(ServiceInterface):
     def __cinit__(self):
@@ -565,4 +654,33 @@ cdef class MyServiceEmptyInterface(ServiceInterface):
 
     def __init__(self, loop=None):
         self.loop = loop or asyncio.get_event_loop()
+
+cdef class MyServicePrioParentInterface(ServiceInterface):
+    def __cinit__(self):
+        self.interface_wrapper = cMyServicePrioParentInterface(<PyObject *> self)
+
+    def __init__(self, loop=None):
+        self.loop = loop or asyncio.get_event_loop()
+
+    async def ping(
+            self):
+        raise NotImplementedError("async def ping is not implemented")
+
+
+    async def pong(
+            self):
+        raise NotImplementedError("async def pong is not implemented")
+
+
+cdef class MyServicePrioChildInterface(ServiceInterface):
+    def __cinit__(self):
+        self.interface_wrapper = cMyServicePrioChildInterface(<PyObject *> self)
+
+    def __init__(self, loop=None):
+        self.loop = loop or asyncio.get_event_loop()
+
+    async def pang(
+            self):
+        raise NotImplementedError("async def pang is not implemented")
+
 

@@ -194,4 +194,61 @@ MyServiceEmptyWrapper::~MyServiceEmptyWrapper() {
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceEmptyInterface(PyObject *if_object) {
   return std::make_shared<MyServiceEmptyWrapper>(if_object);
 }
+
+
+MyServicePrioParentWrapper::MyServicePrioParentWrapper(PyObject *obj)
+  : if_object(obj)
+  {
+    Py_XINCREF(this->if_object);
+  }
+
+MyServicePrioParentWrapper::~MyServicePrioParentWrapper() {
+    Py_XDECREF(this->if_object);
+}
+
+folly::Future<folly::Unit> MyServicePrioParentWrapper::future_ping() {
+  auto promise = std::make_shared<folly::Promise<folly::Unit>>();
+  call_cy_MyServicePrioParent_ping(
+    this->if_object,
+    promise
+  );
+  return promise->getFuture();
+}
+
+folly::Future<folly::Unit> MyServicePrioParentWrapper::future_pong() {
+  auto promise = std::make_shared<folly::Promise<folly::Unit>>();
+  call_cy_MyServicePrioParent_pong(
+    this->if_object,
+    promise
+  );
+  return promise->getFuture();
+}
+
+std::shared_ptr<apache::thrift::ServerInterface> MyServicePrioParentInterface(PyObject *if_object) {
+  return std::make_shared<MyServicePrioParentWrapper>(if_object);
+}
+
+
+MyServicePrioChildWrapper::MyServicePrioChildWrapper(PyObject *obj)
+  : if_object(obj)
+  {
+    Py_XINCREF(this->if_object);
+  }
+
+MyServicePrioChildWrapper::~MyServicePrioChildWrapper() {
+    Py_XDECREF(this->if_object);
+}
+
+folly::Future<folly::Unit> MyServicePrioChildWrapper::future_pang() {
+  auto promise = std::make_shared<folly::Promise<folly::Unit>>();
+  call_cy_MyServicePrioChild_pang(
+    this->if_object,
+    promise
+  );
+  return promise->getFuture();
+}
+
+std::shared_ptr<apache::thrift::ServerInterface> MyServicePrioChildInterface(PyObject *if_object) {
+  return std::make_shared<MyServicePrioChildWrapper>(if_object);
+}
 } // namespace cpp2

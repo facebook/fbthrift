@@ -28,3 +28,17 @@ cdef extern from "src/gen-cpp2/MyServiceEmpty.h" namespace "cpp2":
     cdef cppclass cMyServiceEmptySvIf "cpp2::MyServiceEmptySvIf"(cMyServiceEmptySvAsyncIf, cServerInterface):
       pass
 
+cdef extern from "src/gen-cpp2/MyServicePrioParent.h" namespace "cpp2":
+    cdef cppclass cMyServicePrioParentSvAsyncIf "cpp2::MyServicePrioParentSvAsyncIf":
+      pass
+
+    cdef cppclass cMyServicePrioParentSvIf "cpp2::MyServicePrioParentSvIf"(cMyServicePrioParentSvAsyncIf, cServerInterface):
+      pass
+
+cdef extern from "src/gen-cpp2/MyServicePrioChild.h" namespace "cpp2":
+    cdef cppclass cMyServicePrioChildSvAsyncIf "cpp2::MyServicePrioChildSvAsyncIf":
+      pass
+
+    cdef cppclass cMyServicePrioChildSvIf "cpp2::MyServicePrioChildSvIf"(cMyServicePrioChildSvAsyncIf, cServerInterface):
+      pass
+
