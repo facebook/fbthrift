@@ -24,4 +24,7 @@
 }}{{#type:struct}}std::unique_ptr<{{!
   }}{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}{{!
   }}>{{/type:struct}}{{!
+}}{{#type:listElemType}}{{!
+  }}std::unique_ptr<std::vector<{{>ContainerCppFieldType}}>>{{!
+  }}{{/type:listElemType}}{{!
 }}{{#type:void?}}folly::Unit{{/type:void?}}

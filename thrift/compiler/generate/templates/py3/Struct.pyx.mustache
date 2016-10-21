@@ -25,6 +25,8 @@ from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from cython.operator cimport dereference as deref
 from thrift.lib.py3.thrift_server cimport TException
 
+from collections.abc import Sequence
+
 {{#program:structs}}
 {{#first?}}from {{program:name}}_types cimport ({{/first?}}
     c{{struct:name}}{{^last?}},{{/last?}}{{#last?}}
@@ -70,3 +72,31 @@ cdef class {{struct:name}}{{#struct:exception?}}(TException){{/struct:exception?
     {{/struct:fields}}
 
 {{/program:structs}}
+
+{{#program:containerTypes}}
+cdef class {{type:flat_name}}:
+{{#type:list?}}
+    def __init__(self, items=None):
+        self._vector = make_shared[vector[{{#type:listElemType}}{{> ContainerCythonFieldType}}{{/type:listElemType}}]]()
+        if items:
+            for item in items:
+                deref(self._vector).push_back({{#type:listElemType}}{{> CythonPythonToCpp}}{{/type:listElemType}})
+
+    @staticmethod
+    cdef create(shared_ptr[vector[{{#type:listElemType}}{{> ContainerCythonFieldType}}{{/type:listElemType}}]] c_items):
+        inst = <{{type:flat_name}}>{{type:flat_name}}.__new__({{type:flat_name}})
+        inst._vector = c_items
+        return inst
+
+    def __getitem__(self, int index):
+        cdef {{#type:listElemType}}{{> ContainerCythonFieldType}}{{/type:listElemType}} citem = deref(self._vector).at(index)
+        return {{#type:listElemType}}{{> ContainerCythonCppToPython}}{{/type:listElemType}}
+
+    def __len__(self):
+        return deref(self._vector).size()
+
+Sequence.register({{type:flat_name}})
+{{/type:list?}}
+
+
+{{/program:containerTypes}}

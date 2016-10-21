@@ -10,6 +10,7 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
+from libcpp.vector cimport vector
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
 from thrift.lib.py3.thrift_server cimport (
@@ -30,6 +31,15 @@ from module_types cimport (
     SimpleStruct,
     cSimpleStruct
 )
+from module_types cimport (
+    List__i16,
+    List__i32,
+    List__i64,
+    List__string,
+    List__SimpleStruct
+)
+
+from module_services_wrapper cimport cSimpleServiceInterface
 
 
 cdef class Promise_i32:
@@ -523,8 +533,186 @@ async def SimpleService_unexpected_exception_coro(
     else:
         deref(promise.cPromise).setValue(<int32_t> result)
 
+cdef public void call_cy_SimpleService_sum_i16_list(
+    object self,
+    shared_ptr[cFollyPromise[int32_t]] cPromise,
+    unique_ptr[vector[int16_t]] numbers
+) with gil:
+    promise = Promise_i32.create(cPromise)
+    arg_numbers = List__i16.create(move(numbers))
 
-from module_services_wrapper cimport cSimpleServiceInterface
+    func = functools.partial(
+        asyncio.ensure_future,
+        SimpleService_sum_i16_list_coro(
+            self,
+            promise,
+            arg_numbers),
+        loop=self.loop)
+    self.loop.call_soon_threadsafe(func)
+
+async def SimpleService_sum_i16_list_coro(
+    object self,
+    Promise_i32 promise,
+    numbers
+):
+    try:
+      result = await self.sum_i16_list(
+          numbers)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler sum_i16_list:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(<int32_t> result)
+
+cdef public void call_cy_SimpleService_sum_i32_list(
+    object self,
+    shared_ptr[cFollyPromise[int32_t]] cPromise,
+    unique_ptr[vector[int32_t]] numbers
+) with gil:
+    promise = Promise_i32.create(cPromise)
+    arg_numbers = List__i32.create(move(numbers))
+
+    func = functools.partial(
+        asyncio.ensure_future,
+        SimpleService_sum_i32_list_coro(
+            self,
+            promise,
+            arg_numbers),
+        loop=self.loop)
+    self.loop.call_soon_threadsafe(func)
+
+async def SimpleService_sum_i32_list_coro(
+    object self,
+    Promise_i32 promise,
+    numbers
+):
+    try:
+      result = await self.sum_i32_list(
+          numbers)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler sum_i32_list:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(<int32_t> result)
+
+cdef public void call_cy_SimpleService_sum_i64_list(
+    object self,
+    shared_ptr[cFollyPromise[int32_t]] cPromise,
+    unique_ptr[vector[int64_t]] numbers
+) with gil:
+    promise = Promise_i32.create(cPromise)
+    arg_numbers = List__i64.create(move(numbers))
+
+    func = functools.partial(
+        asyncio.ensure_future,
+        SimpleService_sum_i64_list_coro(
+            self,
+            promise,
+            arg_numbers),
+        loop=self.loop)
+    self.loop.call_soon_threadsafe(func)
+
+async def SimpleService_sum_i64_list_coro(
+    object self,
+    Promise_i32 promise,
+    numbers
+):
+    try:
+      result = await self.sum_i64_list(
+          numbers)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler sum_i64_list:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(<int32_t> result)
+
+cdef public void call_cy_SimpleService_concat_many(
+    object self,
+    shared_ptr[cFollyPromise[unique_ptr[string]]] cPromise,
+    unique_ptr[vector[string]] words
+) with gil:
+    promise = Promise_string.create(cPromise)
+    arg_words = List__string.create(move(words))
+
+    func = functools.partial(
+        asyncio.ensure_future,
+        SimpleService_concat_many_coro(
+            self,
+            promise,
+            arg_words),
+        loop=self.loop)
+    self.loop.call_soon_threadsafe(func)
+
+async def SimpleService_concat_many_coro(
+    object self,
+    Promise_string promise,
+    words
+):
+    try:
+      result = await self.concat_many(
+          words)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler concat_many:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(make_unique[string](<string> result.encode('UTF-8')))
+
+cdef public void call_cy_SimpleService_count_structs(
+    object self,
+    shared_ptr[cFollyPromise[int32_t]] cPromise,
+    unique_ptr[vector[cSimpleStruct]] items
+) with gil:
+    promise = Promise_i32.create(cPromise)
+    arg_items = List__SimpleStruct.create(move(items))
+
+    func = functools.partial(
+        asyncio.ensure_future,
+        SimpleService_count_structs_coro(
+            self,
+            promise,
+            arg_items),
+        loop=self.loop)
+    self.loop.call_soon_threadsafe(func)
+
+async def SimpleService_count_structs_coro(
+    object self,
+    Promise_i32 promise,
+    items
+):
+    try:
+      result = await self.count_structs(
+          items)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler count_structs:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(<int32_t> result)
+
 
 cdef class SimpleServiceInterface(ServiceInterface):
     def __cinit__(self):
@@ -600,5 +788,35 @@ cdef class SimpleServiceInterface(ServiceInterface):
     async def unexpected_exception(
             self):
         raise NotImplementedError("async def unexpected_exception is not implemented")
+
+
+    async def sum_i16_list(
+            self,
+            numbers):
+        raise NotImplementedError("async def sum_i16_list is not implemented")
+
+
+    async def sum_i32_list(
+            self,
+            numbers):
+        raise NotImplementedError("async def sum_i32_list is not implemented")
+
+
+    async def sum_i64_list(
+            self,
+            numbers):
+        raise NotImplementedError("async def sum_i64_list is not implemented")
+
+
+    async def concat_many(
+            self,
+            words):
+        raise NotImplementedError("async def concat_many is not implemented")
+
+
+    async def count_structs(
+            self,
+            items):
+        raise NotImplementedError("async def count_structs is not implemented")
 
 

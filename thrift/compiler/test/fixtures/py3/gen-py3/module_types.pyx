@@ -13,6 +13,8 @@ from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from cython.operator cimport dereference as deref
 from thrift.lib.py3.thrift_server cimport TException
 
+from collections.abc import Sequence
+
 from module_types cimport (
     cSimpleException,
     cSimpleStruct
@@ -86,5 +88,121 @@ cdef class SimpleStruct:
     @property
     def real(self):
         return self.c_SimpleStruct.get().real
+
+
+
+cdef class List__i16:
+    def __init__(self, items=None):
+        self._vector = make_shared[vector[int16_t]]()
+        if items:
+            for item in items:
+                deref(self._vector).push_back(item)
+
+    @staticmethod
+    cdef create(shared_ptr[vector[int16_t]] c_items):
+        inst = <List__i16>List__i16.__new__(List__i16)
+        inst._vector = c_items
+        return inst
+
+    def __getitem__(self, int index):
+        cdef int16_t citem = deref(self._vector).at(index)
+        return citem
+
+    def __len__(self):
+        return deref(self._vector).size()
+
+Sequence.register(List__i16)
+
+
+cdef class List__i32:
+    def __init__(self, items=None):
+        self._vector = make_shared[vector[int32_t]]()
+        if items:
+            for item in items:
+                deref(self._vector).push_back(item)
+
+    @staticmethod
+    cdef create(shared_ptr[vector[int32_t]] c_items):
+        inst = <List__i32>List__i32.__new__(List__i32)
+        inst._vector = c_items
+        return inst
+
+    def __getitem__(self, int index):
+        cdef int32_t citem = deref(self._vector).at(index)
+        return citem
+
+    def __len__(self):
+        return deref(self._vector).size()
+
+Sequence.register(List__i32)
+
+
+cdef class List__i64:
+    def __init__(self, items=None):
+        self._vector = make_shared[vector[int64_t]]()
+        if items:
+            for item in items:
+                deref(self._vector).push_back(item)
+
+    @staticmethod
+    cdef create(shared_ptr[vector[int64_t]] c_items):
+        inst = <List__i64>List__i64.__new__(List__i64)
+        inst._vector = c_items
+        return inst
+
+    def __getitem__(self, int index):
+        cdef int64_t citem = deref(self._vector).at(index)
+        return citem
+
+    def __len__(self):
+        return deref(self._vector).size()
+
+Sequence.register(List__i64)
+
+
+cdef class List__string:
+    def __init__(self, items=None):
+        self._vector = make_shared[vector[string]]()
+        if items:
+            for item in items:
+                deref(self._vector).push_back(item.encode())
+
+    @staticmethod
+    cdef create(shared_ptr[vector[string]] c_items):
+        inst = <List__string>List__string.__new__(List__string)
+        inst._vector = c_items
+        return inst
+
+    def __getitem__(self, int index):
+        cdef string citem = deref(self._vector).at(index)
+        return citem.decode()
+
+    def __len__(self):
+        return deref(self._vector).size()
+
+Sequence.register(List__string)
+
+
+cdef class List__SimpleStruct:
+    def __init__(self, items=None):
+        self._vector = make_shared[vector[cSimpleStruct]]()
+        if items:
+            for item in items:
+                deref(self._vector).push_back(deref((<SimpleStruct> item).c_SimpleStruct))
+
+    @staticmethod
+    cdef create(shared_ptr[vector[cSimpleStruct]] c_items):
+        inst = <List__SimpleStruct>List__SimpleStruct.__new__(List__SimpleStruct)
+        inst._vector = c_items
+        return inst
+
+    def __getitem__(self, int index):
+        cdef cSimpleStruct citem = deref(self._vector).at(index)
+        return SimpleStruct.create(make_shared[cSimpleStruct](citem))
+
+    def __len__(self):
+        return deref(self._vector).size()
+
+Sequence.register(List__SimpleStruct)
 
 

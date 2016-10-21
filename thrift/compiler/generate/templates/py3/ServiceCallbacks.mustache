@@ -26,9 +26,7 @@ cdef public void call_cy_{{service:name}}_{{function:name}}(
 ) with gil:
     promise = Promise_{{#function:returnType}}{{type:name}}{{/function:returnType}}.create(cPromise)
     {{#function:args}}
-    {{#field:type}}{{>CythonCppToPython}}{{/field:type}}
-    {{/function:args}}
-
+    arg_{{field:name}} = {{#field:type}}{{>CythonCppToPython}}{{/field:type}}{{/function:args}}
     {{!#TODO: asyncio.run_coroutine_threadsafe... after Python 3.5.2 lands}}
     func = functools.partial(
         asyncio.ensure_future,

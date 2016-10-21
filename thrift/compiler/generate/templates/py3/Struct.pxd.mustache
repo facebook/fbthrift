@@ -22,7 +22,9 @@ from libcpp cimport bool as cbool
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.memory cimport shared_ptr, unique_ptr
+from libcpp.vector cimport vector
 from thrift.lib.py3.thrift_server cimport cTException, TException
+
 
 {{#program:structs}}
 {{#first?}}
@@ -44,3 +46,17 @@ cdef class {{struct:name}}{{#struct:exception?}}(TException){{/struct:exception?
     cdef create(shared_ptr[c{{struct:name}}] c_{{struct:name}})
 
 {{/program:structs}}
+
+{{#program:containerTypes}}
+cdef class {{type:flat_name}}:
+{{#type:listElemType}}
+    cdef shared_ptr[vector[{{> ContainerCythonFieldType}}]] _vector
+    @staticmethod
+    cdef create(shared_ptr[vector[{{> ContainerCythonFieldType}}]])
+{{/type:listElemType}}
+
+
+{{/program:containerTypes}}{{#program:containerTypes}}
+{{#first?}}cdef extern from "<utility>" namespace "std" nogil:{{/first?}}
+{{#type:listElemType}}    cdef shared_ptr[vector[{{> ContainerCythonFieldType}}]] {{!
+}}move(unique_ptr[vector[{{> ContainerCythonFieldType}}]]){{/type:listElemType}}{{/program:containerTypes}}

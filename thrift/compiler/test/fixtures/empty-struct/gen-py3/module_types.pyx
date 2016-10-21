@@ -13,6 +13,8 @@ from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from cython.operator cimport dereference as deref
 from thrift.lib.py3.thrift_server cimport TException
 
+from collections.abc import Sequence
+
 from module_types cimport (
     cEmpty
 )
@@ -30,5 +32,6 @@ cdef class Empty:
         inst = <Empty>Empty.__new__(Empty)
         inst.c_Empty = c_Empty
         return inst
+
 
 

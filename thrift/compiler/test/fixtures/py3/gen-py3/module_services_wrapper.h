@@ -48,6 +48,21 @@ class SimpleServiceWrapper : public SimpleServiceSvIf {
       );
       folly::Future<folly::Unit> future_expected_exception();
       folly::Future<int32_t> future_unexpected_exception();
+      folly::Future<int32_t> future_sum_i16_list(
+        std::unique_ptr<std::vector<int16_t>> numbers
+      );
+      folly::Future<int32_t> future_sum_i32_list(
+        std::unique_ptr<std::vector<int32_t>> numbers
+      );
+      folly::Future<int32_t> future_sum_i64_list(
+        std::unique_ptr<std::vector<int64_t>> numbers
+      );
+      folly::Future<std::unique_ptr<std::string>> future_concat_many(
+        std::unique_ptr<std::vector<std::string>> words
+      );
+      folly::Future<int32_t> future_count_structs(
+        std::unique_ptr<std::vector<py3::simple::SimpleStruct>> items
+      );
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object);

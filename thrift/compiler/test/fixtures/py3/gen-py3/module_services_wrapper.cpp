@@ -156,6 +156,66 @@ folly::Future<int32_t> SimpleServiceWrapper::future_unexpected_exception() {
   return promise->getFuture();
 }
 
+folly::Future<int32_t> SimpleServiceWrapper::future_sum_i16_list(
+  std::unique_ptr<std::vector<int16_t>> numbers
+) {
+  auto promise = std::make_shared<folly::Promise<int32_t>>();
+  call_cy_SimpleService_sum_i16_list(
+    this->if_object,
+    promise,
+    std::move(numbers)
+  );
+  return promise->getFuture();
+}
+
+folly::Future<int32_t> SimpleServiceWrapper::future_sum_i32_list(
+  std::unique_ptr<std::vector<int32_t>> numbers
+) {
+  auto promise = std::make_shared<folly::Promise<int32_t>>();
+  call_cy_SimpleService_sum_i32_list(
+    this->if_object,
+    promise,
+    std::move(numbers)
+  );
+  return promise->getFuture();
+}
+
+folly::Future<int32_t> SimpleServiceWrapper::future_sum_i64_list(
+  std::unique_ptr<std::vector<int64_t>> numbers
+) {
+  auto promise = std::make_shared<folly::Promise<int32_t>>();
+  call_cy_SimpleService_sum_i64_list(
+    this->if_object,
+    promise,
+    std::move(numbers)
+  );
+  return promise->getFuture();
+}
+
+folly::Future<std::unique_ptr<std::string>> SimpleServiceWrapper::future_concat_many(
+  std::unique_ptr<std::vector<std::string>> words
+) {
+  auto promise = std::make_shared<folly::Promise<std::unique_ptr<std::string>>>();
+  call_cy_SimpleService_concat_many(
+    this->if_object,
+    promise,
+    std::move(words)
+  );
+  return promise->getFuture();
+}
+
+folly::Future<int32_t> SimpleServiceWrapper::future_count_structs(
+  std::unique_ptr<std::vector<py3::simple::SimpleStruct>> items
+) {
+  auto promise = std::make_shared<folly::Promise<int32_t>>();
+  call_cy_SimpleService_count_structs(
+    this->if_object,
+    promise,
+    std::move(items)
+  );
+  return promise->getFuture();
+}
+
 std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object) {
   return std::make_shared<SimpleServiceWrapper>(if_object);
 }

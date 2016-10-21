@@ -10,6 +10,7 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
+from libcpp.vector cimport vector
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
 from thrift.lib.py3.thrift_server cimport (
@@ -28,6 +29,9 @@ from module_types cimport (
     MyStruct,
     cMyStruct
 )
+
+from module_services_wrapper cimport cMyServiceInterface
+from module_services_wrapper cimport cMyServiceFastInterface
 
 
 cdef class Promise_void:
@@ -489,9 +493,6 @@ async def MyServiceFast_lobDataById_coro(
     else:
         deref(promise.cPromise).setValue(c_unit)
 
-
-from module_services_wrapper cimport cMyServiceInterface
-from module_services_wrapper cimport cMyServiceFastInterface
 
 cdef class MyServiceInterface(ServiceInterface):
     def __cinit__(self):

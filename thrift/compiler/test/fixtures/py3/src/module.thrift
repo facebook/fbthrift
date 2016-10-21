@@ -26,4 +26,9 @@ service SimpleService {
   double two(1: double input)
   void expected_exception() throws (1: SimpleException se)
   i32 unexpected_exception()
+  i32 sum_i16_list(1: list<i16> numbers)
+  i32 sum_i32_list(1: list<i32> numbers)
+  i32 sum_i64_list(1: list<i64> numbers)
+  string concat_many(1: list<string> words)
+  i32 count_structs(1: list<SimpleStruct> items)
 }

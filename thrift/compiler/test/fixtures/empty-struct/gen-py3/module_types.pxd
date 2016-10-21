@@ -10,7 +10,9 @@ from libcpp cimport bool as cbool
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.memory cimport shared_ptr, unique_ptr
+from libcpp.vector cimport vector
 from thrift.lib.py3.thrift_server cimport cTException, TException
+
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
     cdef cppclass cEmpty "cpp2::Empty":
@@ -25,4 +27,5 @@ cdef class Empty:
 
     @staticmethod
     cdef create(shared_ptr[cEmpty] c_Empty)
+
 

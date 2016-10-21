@@ -22,6 +22,7 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
+from libcpp.vector cimport vector
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
 from thrift.lib.py3.thrift_server cimport (
@@ -41,13 +42,19 @@ import traceback
     {{struct:name}},
     c{{struct:name}}{{^last?}},{{/last?}}{{#last?}}
 ){{/last?}}{{/program:structs}}
-
-{{> CythonPromises}}
-{{> ServiceCallbacks}}
+{{#program:containerTypes}}
+{{#first?}}from {{program:name}}_types cimport (
+    {{/first?}}
+    {{type:flat_name}}{{^last?}},{{/last?}}{{#last?}}
+){{/last?}}
+{{/program:containerTypes}}
 
 {{#program:services}}
 from {{program:name}}_services_wrapper cimport c{{service:name}}Interface
 {{/program:services}}
+
+{{> CythonPromises}}
+{{> ServiceCallbacks}}
 
 {{#program:services}}
 cdef class {{service:name}}Interface(ServiceInterface):
