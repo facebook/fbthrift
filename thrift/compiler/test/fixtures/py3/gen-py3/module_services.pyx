@@ -127,13 +127,11 @@ cdef public void call_cy_SimpleService_get_five(
 ) with gil:
     promise = Promise_i32.create(cPromise)
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         SimpleService_get_five_coro(
             self,
             promise),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def SimpleService_get_five_coro(
     object self,
@@ -160,14 +158,12 @@ cdef public void call_cy_SimpleService_add_five(
     promise = Promise_i32.create(cPromise)
     arg_num = num
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         SimpleService_add_five_coro(
             self,
             promise,
             arg_num),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def SimpleService_add_five_coro(
     object self,
@@ -194,13 +190,11 @@ cdef public void call_cy_SimpleService_do_nothing(
 ) with gil:
     promise = Promise_void.create(cPromise)
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         SimpleService_do_nothing_coro(
             self,
             promise),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def SimpleService_do_nothing_coro(
     object self,
@@ -229,15 +223,13 @@ cdef public void call_cy_SimpleService_concat(
     arg_first = (deref(first.get())).decode()
     arg_second = (deref(second.get())).decode()
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         SimpleService_concat_coro(
             self,
             promise,
             arg_first,
             arg_second),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def SimpleService_concat_coro(
     object self,
@@ -268,14 +260,12 @@ cdef public void call_cy_SimpleService_get_value(
     promise = Promise_i32.create(cPromise)
     arg_simple_struct = SimpleStruct.create(move(simple_struct))
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         SimpleService_get_value_coro(
             self,
             promise,
             arg_simple_struct),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def SimpleService_get_value_coro(
     object self,
@@ -304,14 +294,12 @@ cdef public void call_cy_SimpleService_negate(
     promise = Promise_bool.create(cPromise)
     arg_input = input
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         SimpleService_negate_coro(
             self,
             promise,
             arg_input),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def SimpleService_negate_coro(
     object self,
@@ -340,14 +328,12 @@ cdef public void call_cy_SimpleService_tiny(
     promise = Promise_byte.create(cPromise)
     arg_input = input
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         SimpleService_tiny_coro(
             self,
             promise,
             arg_input),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def SimpleService_tiny_coro(
     object self,
@@ -376,14 +362,12 @@ cdef public void call_cy_SimpleService_small(
     promise = Promise_i16.create(cPromise)
     arg_input = input
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         SimpleService_small_coro(
             self,
             promise,
             arg_input),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def SimpleService_small_coro(
     object self,
@@ -412,14 +396,12 @@ cdef public void call_cy_SimpleService_big(
     promise = Promise_i64.create(cPromise)
     arg_input = input
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         SimpleService_big_coro(
             self,
             promise,
             arg_input),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def SimpleService_big_coro(
     object self,
@@ -448,14 +430,12 @@ cdef public void call_cy_SimpleService_two(
     promise = Promise_double.create(cPromise)
     arg_input = input
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         SimpleService_two_coro(
             self,
             promise,
             arg_input),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def SimpleService_two_coro(
     object self,
@@ -482,13 +462,11 @@ cdef public void call_cy_SimpleService_expected_exception(
 ) with gil:
     promise = Promise_void.create(cPromise)
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         SimpleService_expected_exception_coro(
             self,
             promise),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def SimpleService_expected_exception_coro(
     object self,
@@ -515,13 +493,11 @@ cdef public void call_cy_SimpleService_unexpected_exception(
 ) with gil:
     promise = Promise_i32.create(cPromise)
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         SimpleService_unexpected_exception_coro(
             self,
             promise),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def SimpleService_unexpected_exception_coro(
     object self,
@@ -548,14 +524,12 @@ cdef public void call_cy_SimpleService_sum_i16_list(
     promise = Promise_i32.create(cPromise)
     arg_numbers = List__i16.create(move(numbers))
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         SimpleService_sum_i16_list_coro(
             self,
             promise,
             arg_numbers),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def SimpleService_sum_i16_list_coro(
     object self,
@@ -584,14 +558,12 @@ cdef public void call_cy_SimpleService_sum_i32_list(
     promise = Promise_i32.create(cPromise)
     arg_numbers = List__i32.create(move(numbers))
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         SimpleService_sum_i32_list_coro(
             self,
             promise,
             arg_numbers),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def SimpleService_sum_i32_list_coro(
     object self,
@@ -620,14 +592,12 @@ cdef public void call_cy_SimpleService_sum_i64_list(
     promise = Promise_i32.create(cPromise)
     arg_numbers = List__i64.create(move(numbers))
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         SimpleService_sum_i64_list_coro(
             self,
             promise,
             arg_numbers),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def SimpleService_sum_i64_list_coro(
     object self,
@@ -656,14 +626,12 @@ cdef public void call_cy_SimpleService_concat_many(
     promise = Promise_string.create(cPromise)
     arg_words = List__string.create(move(words))
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         SimpleService_concat_many_coro(
             self,
             promise,
             arg_words),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def SimpleService_concat_many_coro(
     object self,
@@ -692,14 +660,12 @@ cdef public void call_cy_SimpleService_count_structs(
     promise = Promise_i32.create(cPromise)
     arg_items = List__SimpleStruct.create(move(items))
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         SimpleService_count_structs_coro(
             self,
             promise,
             arg_items),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def SimpleService_count_structs_coro(
     object self,

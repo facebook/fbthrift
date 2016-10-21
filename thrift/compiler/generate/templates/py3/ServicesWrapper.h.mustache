@@ -27,7 +27,20 @@
 {{/program:cppNamespaces}}
 
 {{#program:services}}
-{{> OneServiceWrapper.h}}
+class {{service:name}}Wrapper : public {{service:name}}SvIf {
+  private:
+    PyObject *if_object;
+  public:
+    explicit {{service:name}}Wrapper(PyObject *if_object);
+    virtual ~{{service:name}}Wrapper();
+    {{#service:functions}}
+      folly::Future<{{#function:returnType}}{{> CppFieldType}}{{/function:returnType}}>{{!
+      }} future_{{function:name}}({{#function:args}}
+        {{#field:type}}{{> CppFieldType}}{{/field:type}} {{field:name}}{{^last?}},{{/last?}}{{#last?}}
+      {{/last?}}{{/function:args}});
+{{/service:functions}}};
+
+std::shared_ptr<apache::thrift::ServerInterface> {{service:name}}Interface(PyObject *if_object);
 {{^last?}}
 
 

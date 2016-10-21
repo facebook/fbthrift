@@ -27,15 +27,12 @@ cdef public void call_cy_{{service:name}}_{{function:name}}(
     promise = Promise_{{#function:returnType}}{{type:name}}{{/function:returnType}}.create(cPromise)
     {{#function:args}}
     arg_{{field:name}} = {{#field:type}}{{>CythonCppToPython}}{{/field:type}}{{/function:args}}
-    {{!#TODO: asyncio.run_coroutine_threadsafe... after Python 3.5.2 lands}}
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         {{service:name}}_{{function:name}}_coro(
             self,
             promise{{#function:args}},
             arg_{{field:name}}{{/function:args}}),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def {{service:name}}_{{function:name}}_coro(
     object self,

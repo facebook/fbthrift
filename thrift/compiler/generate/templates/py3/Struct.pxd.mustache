@@ -33,7 +33,12 @@ from thrift.lib.py3.thrift_server cimport cTException, TException
 cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
 }} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":
 {{/first?}}
-{{> OneStruct.pxd}}
+    cdef cppclass c{{struct:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}"{{#struct:exception?}}(cTException){{/struct:exception?}}:
+        c{{struct:name}}() except +
+    {{#struct:fields}}
+        {{#field:type}}{{> CythonStructReferenceType}}{{/field:type}} {{field:name}}
+    {{/struct:fields}}
+
 {{/program:structs}}
 
 {{#program:structs}}

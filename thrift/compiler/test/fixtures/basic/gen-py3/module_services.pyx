@@ -69,13 +69,11 @@ cdef public void call_cy_MyService_ping(
 ) with gil:
     promise = Promise_void.create(cPromise)
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         MyService_ping_coro(
             self,
             promise),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def MyService_ping_coro(
     object self,
@@ -100,13 +98,11 @@ cdef public void call_cy_MyService_getRandomData(
 ) with gil:
     promise = Promise_string.create(cPromise)
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         MyService_getRandomData_coro(
             self,
             promise),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def MyService_getRandomData_coro(
     object self,
@@ -133,14 +129,12 @@ cdef public void call_cy_MyService_hasDataById(
     promise = Promise_bool.create(cPromise)
     arg_id = id
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         MyService_hasDataById_coro(
             self,
             promise,
             arg_id),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def MyService_hasDataById_coro(
     object self,
@@ -169,14 +163,12 @@ cdef public void call_cy_MyService_getDataById(
     promise = Promise_string.create(cPromise)
     arg_id = id
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         MyService_getDataById_coro(
             self,
             promise,
             arg_id),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def MyService_getDataById_coro(
     object self,
@@ -207,15 +199,13 @@ cdef public void call_cy_MyService_putDataById(
     arg_id = id
     arg_data = (deref(data.get())).decode()
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         MyService_putDataById_coro(
             self,
             promise,
             arg_id,
             arg_data),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def MyService_putDataById_coro(
     object self,
@@ -248,15 +238,13 @@ cdef public void call_cy_MyService_lobDataById(
     arg_id = id
     arg_data = (deref(data.get())).decode()
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         MyService_lobDataById_coro(
             self,
             promise,
             arg_id,
             arg_data),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def MyService_lobDataById_coro(
     object self,
@@ -285,13 +273,11 @@ cdef public void call_cy_MyServiceFast_ping(
 ) with gil:
     promise = Promise_void.create(cPromise)
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         MyServiceFast_ping_coro(
             self,
             promise),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def MyServiceFast_ping_coro(
     object self,
@@ -316,13 +302,11 @@ cdef public void call_cy_MyServiceFast_getRandomData(
 ) with gil:
     promise = Promise_string.create(cPromise)
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         MyServiceFast_getRandomData_coro(
             self,
             promise),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def MyServiceFast_getRandomData_coro(
     object self,
@@ -349,14 +333,12 @@ cdef public void call_cy_MyServiceFast_hasDataById(
     promise = Promise_bool.create(cPromise)
     arg_id = id
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         MyServiceFast_hasDataById_coro(
             self,
             promise,
             arg_id),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def MyServiceFast_hasDataById_coro(
     object self,
@@ -385,14 +367,12 @@ cdef public void call_cy_MyServiceFast_getDataById(
     promise = Promise_string.create(cPromise)
     arg_id = id
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         MyServiceFast_getDataById_coro(
             self,
             promise,
             arg_id),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def MyServiceFast_getDataById_coro(
     object self,
@@ -423,15 +403,13 @@ cdef public void call_cy_MyServiceFast_putDataById(
     arg_id = id
     arg_data = (deref(data.get())).decode()
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         MyServiceFast_putDataById_coro(
             self,
             promise,
             arg_id,
             arg_data),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def MyServiceFast_putDataById_coro(
     object self,
@@ -464,15 +442,13 @@ cdef public void call_cy_MyServiceFast_lobDataById(
     arg_id = id
     arg_data = (deref(data.get())).decode()
 
-    func = functools.partial(
-        asyncio.ensure_future,
+    asyncio.run_coroutine_threadsafe(
         MyServiceFast_lobDataById_coro(
             self,
             promise,
             arg_id,
             arg_data),
         loop=self.loop)
-    self.loop.call_soon_threadsafe(func)
 
 async def MyServiceFast_lobDataById_coro(
     object self,
