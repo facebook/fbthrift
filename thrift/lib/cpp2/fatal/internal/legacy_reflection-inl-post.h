@@ -167,15 +167,6 @@ template <typename T>
 struct impl<T, type_class::enumeration> {
   using meta = reflect_enum<T>;
   using module_meta = reflect_module<typename meta::module>;
-  struct visitor {
-    template <typename Name, size_t Index>
-    void operator()(
-        fatal::indexed<Name, Index>,
-        datatype_t& dt) {
-      dt.enumValues[fatal::to_instance<std::string, Name>()] =
-        int(meta::traits::template value_of<Name>::value);
-    }
-  };
   FATAL_S(rkind, "enum");
   using rname = get_type_full_name<rkind, module_meta, typename meta::traits>;
   static id_t rid() {
@@ -186,11 +177,12 @@ struct impl<T, type_class::enumeration> {
   static void go(schema_t& schema) {
     registering_datatype(
         schema, to_c_array<rname>::range(), rid(), [&](datatype_t& dt) {
+      using names = typename meta::traits::array::names;
+      using values = typename meta::traits::array::values;
       dt.__isset.enumValues = true;
-      fatal::foreach<fatal::sort<
-        typename meta::traits::names,
-        fatal::sequence_compare<fatal::less>
-      >>(visitor(), dt);
+      for (size_t i = 0; i < values::size::value; ++i) {
+        dt.enumValues[names::data[i]] = int(values::data[i]);
+      }
     });
   }
 };
