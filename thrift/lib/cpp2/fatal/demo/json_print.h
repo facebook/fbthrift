@@ -154,7 +154,7 @@ struct printer<apache::thrift::type_class::variant> {
   template <typename T>
   static void print(T const &what) {
     std::cout << '{';
-    fatal::sort_and_search<
+    fatal::scalar_search<
       typename fatal::variant_traits<T>::descriptors,
       fatal::get_type::id
     >(what.getType(), variant_member_printer(), what);

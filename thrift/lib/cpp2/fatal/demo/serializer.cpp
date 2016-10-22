@@ -320,7 +320,7 @@ template <>
 struct serializer<type_class::variant> {
   template <typename T>
   static void serialize(T const &what, data_writer &writer) {
-    bool found = fatal::sort_and_search<
+    bool found = fatal::scalar_search<
       typename fatal::variant_traits<T>::descriptors,
       fatal::get_type::id
     >(what.getType(), variant_member_serializer(), what, writer);
