@@ -30,10 +30,18 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
         int64_t big_int
         double real
 
+    cdef cppclass cComplexStruct "py3::simple::ComplexStruct":
+        cComplexStruct() except +
+        cSimpleStruct structOne
+        cSimpleStruct structTwo
+        int32_t an_integer
+        string name
+
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cSimpleException] move(unique_ptr[cSimpleException])
     cdef shared_ptr[cSimpleStruct] move(unique_ptr[cSimpleStruct])
+    cdef shared_ptr[cComplexStruct] move(unique_ptr[cComplexStruct])
 
 cdef class SimpleException(TException):
     cdef shared_ptr[cSimpleException] c_SimpleException
@@ -46,6 +54,14 @@ cdef class SimpleStruct:
 
     @staticmethod
     cdef create(shared_ptr[cSimpleStruct] c_SimpleStruct)
+
+cdef class ComplexStruct:
+    cdef shared_ptr[cComplexStruct] c_ComplexStruct
+    cdef SimpleStruct __structOne
+    cdef SimpleStruct __structTwo
+
+    @staticmethod
+    cdef create(shared_ptr[cComplexStruct] c_ComplexStruct)
 
 
 cdef class List__i16:

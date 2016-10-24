@@ -80,6 +80,12 @@ class SimpleServiceWrapper : public SimpleServiceSvIf {
       folly::Future<int16_t> future_sum_map_values(
         std::unique_ptr<std::map<std::string,int16_t>> items
       );
+      folly::Future<int32_t> future_complex_sum_i32(
+        std::unique_ptr<py3::simple::ComplexStruct> counter
+      );
+      folly::Future<std::unique_ptr<std::string>> future_repeat_name(
+        std::unique_ptr<py3::simple::ComplexStruct> counter
+      );
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object);

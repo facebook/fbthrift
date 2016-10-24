@@ -44,8 +44,9 @@ if they have been previously retrieved.
   }}return self.c_{{struct:name}}.get().{{field:name}}.decode(){{!
 }}{{/type:string?}}{{!
 }}{{#type:struct?}}{{!
-  }}if self.__{{field:name}} is None:
-    self.__{{field:name}} = {{#type:struct}}{{struct:name}}{{/type:struct}}({{!
-    }}self.c_{{struct:name}}.get().{{field:name}})
+}}cdef shared_ptr[c{{#type:struct}}{{struct:name}}{{/type:struct}}] item
+if self.__{{field:name}} is None:
+    item = make_shared[c{{#type:struct}}{{struct:name}}{{/type:struct}}](deref(self.c_{{struct:name}}).{{field:name}})
+    self.__{{field:name}} = {{#type:struct}}{{struct:name}}{{/type:struct}}.create(item)
 return self.__{{field:name}}
 {{/type:struct?}}

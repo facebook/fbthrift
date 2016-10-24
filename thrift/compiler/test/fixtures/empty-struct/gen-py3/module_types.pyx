@@ -20,7 +20,6 @@ from module_types cimport (
 )
 
 cdef class Empty:
-
     def __init__(
         self
     ):

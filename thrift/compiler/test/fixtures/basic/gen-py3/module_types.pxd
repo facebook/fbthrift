@@ -20,7 +20,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
     cdef cppclass cMyStruct "cpp2::MyStruct":
         cMyStruct() except +
         int64_t MyIntField
-        shared_ptr[string] MyStringField
+        string MyStringField
 
 
 cdef extern from "<utility>" namespace "std" nogil:

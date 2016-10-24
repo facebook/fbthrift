@@ -31,7 +31,9 @@ from module_types cimport (
     SimpleException,
     cSimpleException,
     SimpleStruct,
-    cSimpleStruct
+    cSimpleStruct,
+    ComplexStruct,
+    cComplexStruct
 )
 from module_types cimport (
     List__i16,
@@ -866,6 +868,74 @@ async def SimpleService_sum_map_values_coro(
     else:
         deref(promise.cPromise).setValue(<int16_t> result)
 
+cdef public void call_cy_SimpleService_complex_sum_i32(
+    object self,
+    shared_ptr[cFollyPromise[int32_t]] cPromise,
+    unique_ptr[cComplexStruct] counter
+) with gil:
+    promise = Promise_i32.create(cPromise)
+    arg_counter = ComplexStruct.create(move(counter))
+
+    asyncio.run_coroutine_threadsafe(
+        SimpleService_complex_sum_i32_coro(
+            self,
+            promise,
+            arg_counter),
+        loop=self.loop)
+
+async def SimpleService_complex_sum_i32_coro(
+    object self,
+    Promise_i32 promise,
+    counter
+):
+    try:
+      result = await self.complex_sum_i32(
+          counter)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler complex_sum_i32:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(<int32_t> result)
+
+cdef public void call_cy_SimpleService_repeat_name(
+    object self,
+    shared_ptr[cFollyPromise[unique_ptr[string]]] cPromise,
+    unique_ptr[cComplexStruct] counter
+) with gil:
+    promise = Promise_string.create(cPromise)
+    arg_counter = ComplexStruct.create(move(counter))
+
+    asyncio.run_coroutine_threadsafe(
+        SimpleService_repeat_name_coro(
+            self,
+            promise,
+            arg_counter),
+        loop=self.loop)
+
+async def SimpleService_repeat_name_coro(
+    object self,
+    Promise_string promise,
+    counter
+):
+    try:
+      result = await self.repeat_name(
+          counter)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler repeat_name:",
+            file=sys.stderr)
+        traceback.print_exc()
+        deref(promise.cPromise).setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        deref(promise.cPromise).setValue(make_unique[string](<string> result.encode('UTF-8')))
+
 
 cdef class SimpleServiceInterface(ServiceInterface):
     def __cinit__(self):
@@ -1003,5 +1073,17 @@ cdef class SimpleServiceInterface(ServiceInterface):
             self,
             items):
         raise NotImplementedError("async def sum_map_values is not implemented")
+
+
+    async def complex_sum_i32(
+            self,
+            counter):
+        raise NotImplementedError("async def complex_sum_i32 is not implemented")
+
+
+    async def repeat_name(
+            self,
+            counter):
+        raise NotImplementedError("async def repeat_name is not implemented")
 
 

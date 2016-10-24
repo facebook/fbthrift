@@ -17,11 +17,11 @@ from collections.abc import Sequence, Set, Mapping
 
 from module_types cimport (
     cSimpleException,
-    cSimpleStruct
+    cSimpleStruct,
+    cComplexStruct
 )
 
 cdef class SimpleException(TException):
-
     def __init__(
         self,
         int err_code
@@ -41,7 +41,6 @@ cdef class SimpleException(TException):
 
 
 cdef class SimpleStruct:
-
     def __init__(
         self,
          is_on,
@@ -88,6 +87,54 @@ cdef class SimpleStruct:
     @property
     def real(self):
         return self.c_SimpleStruct.get().real
+
+
+cdef class ComplexStruct:
+    def __init__(
+        self,
+        SimpleStruct structOne,
+        SimpleStruct structTwo,
+        int an_integer,
+        str name
+    ):
+        self.c_ComplexStruct = make_shared[cComplexStruct]()
+        deref(self.c_ComplexStruct).structOne = deref(structOne.c_SimpleStruct)
+        deref(self.c_ComplexStruct).structTwo = deref(structTwo.c_SimpleStruct)
+        deref(self.c_ComplexStruct).an_integer = an_integer
+        if name is not None:
+            deref(self.c_ComplexStruct).name = name.encode('UTF-8')
+        
+    @staticmethod
+    cdef create(shared_ptr[cComplexStruct] c_ComplexStruct):
+        inst = <ComplexStruct>ComplexStruct.__new__(ComplexStruct)
+        inst.c_ComplexStruct = c_ComplexStruct
+        return inst
+
+    @property
+    def structOne(self):
+        cdef shared_ptr[cSimpleStruct] item
+        if self.__structOne is None:
+            item = make_shared[cSimpleStruct](deref(self.c_ComplexStruct).structOne)
+            self.__structOne = SimpleStruct.create(item)
+        return self.__structOne
+        
+
+    @property
+    def structTwo(self):
+        cdef shared_ptr[cSimpleStruct] item
+        if self.__structTwo is None:
+            item = make_shared[cSimpleStruct](deref(self.c_ComplexStruct).structTwo)
+            self.__structTwo = SimpleStruct.create(item)
+        return self.__structTwo
+        
+
+    @property
+    def an_integer(self):
+        return self.c_ComplexStruct.get().an_integer
+
+    @property
+    def name(self):
+        return self.c_ComplexStruct.get().name.decode()
 
 
 

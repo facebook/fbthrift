@@ -20,7 +20,6 @@ from module_types cimport (
 )
 
 cdef class MyStruct:
-
     def __init__(
         self,
         int MyIntField,
@@ -29,7 +28,7 @@ cdef class MyStruct:
         self.c_MyStruct = make_shared[cMyStruct]()
         deref(self.c_MyStruct).MyIntField = MyIntField
         if MyStringField is not None:
-            deref(self.c_MyStruct).MyStringField = make_shared[string](<string> MyStringField.encode('UTF-8'))
+            deref(self.c_MyStruct).MyStringField = MyStringField.encode('UTF-8')
         
     @staticmethod
     cdef create(shared_ptr[cMyStruct] c_MyStruct):

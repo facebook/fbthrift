@@ -51,13 +51,6 @@ from collections.abc import Sequence, Set, Mapping
 
 {{#program:structs}}
 cdef class {{struct:name}}{{#struct:exception?}}(TException){{/struct:exception?}}:
-    {{!Memoized Python wrappers of struct fields, created lazily}}
-    {{#struct:fields}}
-    {{#field:type}}{{#type:struct}}
-    cdef {{struct:name}} __{{field:name}}
-    {{/type:struct}}{{/field:type}}
-    {{/struct:fields}}
-
     def __init__(
         self{{#struct:fields}},
         {{#field:type}}{{> PythonFieldType}}{{/field:type}}{{!

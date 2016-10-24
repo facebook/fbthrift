@@ -13,6 +13,13 @@ struct SimpleStruct {
   6: double real
 }
 
+struct ComplexStruct {
+  1: SimpleStruct structOne
+  2: SimpleStruct structTwo
+  3: i32 an_integer
+  4: string name
+}
+
 service SimpleService {
   i32 get_five()
   i32 add_five(1: i32 num)
@@ -36,4 +43,6 @@ service SimpleService {
   string get_map_value(1: map<string,string> words, 2: string key)
   i16 map_length(1: map<string,SimpleStruct> items)
   i16 sum_map_values(1: map<string,i16> items)
+  i32 complex_sum_i32(1: ComplexStruct counter)
+  string repeat_name(1: ComplexStruct counter)
 }

@@ -280,6 +280,30 @@ folly::Future<int16_t> SimpleServiceWrapper::future_sum_map_values(
   return promise->getFuture();
 }
 
+folly::Future<int32_t> SimpleServiceWrapper::future_complex_sum_i32(
+  std::unique_ptr<py3::simple::ComplexStruct> counter
+) {
+  auto promise = std::make_shared<folly::Promise<int32_t>>();
+  call_cy_SimpleService_complex_sum_i32(
+    this->if_object,
+    promise,
+    std::move(counter)
+  );
+  return promise->getFuture();
+}
+
+folly::Future<std::unique_ptr<std::string>> SimpleServiceWrapper::future_repeat_name(
+  std::unique_ptr<py3::simple::ComplexStruct> counter
+) {
+  auto promise = std::make_shared<folly::Promise<std::unique_ptr<std::string>>>();
+  call_cy_SimpleService_repeat_name(
+    this->if_object,
+    promise,
+    std::move(counter)
+  );
+  return promise->getFuture();
+}
+
 std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object) {
   return std::make_shared<SimpleServiceWrapper>(if_object);
 }

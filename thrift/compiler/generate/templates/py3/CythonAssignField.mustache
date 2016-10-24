@@ -36,9 +36,9 @@ on a struct from an existing struct passed in by the user.
 }}{{/type:i64?}}{{!
 }}{{#type:string?}}{{!
 }}if {{field:name}} is not None:
-    deref(self.c_{{struct:name}}).{{field:name}} = make_shared[string](<string> {{field:name}}.encode('UTF-8')){{!
+    deref(self.c_{{struct:name}}).{{field:name}} = {{field:name}}.encode('UTF-8'){{!
 }}{{/type:string?}}{{!
 }}{{#type:struct?}}{{!
 }}deref(self.c_{{struct:name}}).{{field:name}} = {{!
-  }}{{field:name}}.c_{{#field:type}}{{type:name}}{{/field:type}}{{!
+  }}deref({{field:name}}.c_{{#field:type}}{{type:name}}{{/field:type}}){{!
 }}{{/type:struct?}}
