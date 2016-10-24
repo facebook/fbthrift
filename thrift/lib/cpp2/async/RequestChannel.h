@@ -21,6 +21,7 @@
 #include <memory>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp/Thrift.h>
+#include <folly/Function.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/Request.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
@@ -162,7 +163,7 @@ class RequestCallback {
 };
 
 /* FunctionReplyCallback is meant to make RequestCallback easy to use
- * with std::function objects.  It is slower than implementing
+ * with folly::Function objects.  It is slower than implementing
  * RequestCallback directly.  It also throws the specific error
  * away, since there is no place to save it in a backwards
  * compatible way to thrift1.  It is still logged, though.
@@ -172,8 +173,8 @@ class RequestCallback {
 class FunctionReplyCallback : public RequestCallback {
  public:
   explicit FunctionReplyCallback(
-    std::function<void (ClientReceiveState&&)> callback)
-      : callback_(callback) {}
+    folly::Function<void (ClientReceiveState&&)> callback)
+      : callback_(std::move(callback)) {}
   void replyReceived(ClientReceiveState&& state) override {
     callback_(std::move(state));
   }
@@ -186,14 +187,14 @@ class FunctionReplyCallback : public RequestCallback {
   void requestSent() override {}
 
 private:
-  std::function<void (ClientReceiveState&&)> callback_;
+  folly::Function<void (ClientReceiveState&&)> callback_;
 };
 
 /* Useful for oneway methods. */
 class FunctionSendCallback : public RequestCallback {
  public:
   explicit FunctionSendCallback(
-    std::function<void (ClientReceiveState&&)>&& callback)
+    folly::Function<void (ClientReceiveState&&)>&& callback)
       : callback_(std::move(callback)) {}
   void requestSent() override {
     auto cb = std::move(callback_);
@@ -205,7 +206,7 @@ class FunctionSendCallback : public RequestCallback {
   }
   void replyReceived(ClientReceiveState&& /*state*/) override {}
  private:
-  std::function<void (ClientReceiveState&&)> callback_;
+  folly::Function<void (ClientReceiveState&&)> callback_;
 };
 
 class CloseCallback {
