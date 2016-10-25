@@ -29,7 +29,6 @@
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <folly/String.h>
-#include <folly/MoveWrapper.h>
 #include <folly/futures/Future.h>
 #include <wangle/deprecated/rx/Observer.h>
 
@@ -37,7 +36,7 @@ namespace apache { namespace thrift {
 
 class EventTask : public virtual apache::thrift::concurrency::Runnable {
  public:
-  EventTask(std::function<void()>&& taskFunc,
+  EventTask(folly::Function<void()>&& taskFunc,
   apache::thrift::ResponseChannel::Request* req,
     folly::EventBase* base,
     bool oneway)
@@ -77,7 +76,7 @@ class EventTask : public virtual apache::thrift::concurrency::Runnable {
   }
 
  private:
-  std::function<void()> taskFunc_;
+  folly::Function<void()> taskFunc_;
   apache::thrift::ResponseChannel::Request* req_;
   folly::EventBase* base_;
   bool oneway_;
@@ -88,7 +87,7 @@ class PriorityEventTask : public apache::thrift::concurrency::PriorityRunnable,
  public:
   PriorityEventTask(
     apache::thrift::concurrency::PriorityThreadManager::PRIORITY priority,
-    std::function<void()>&& taskFunc,
+    folly::Function<void()>&& taskFunc,
     apache::thrift::ResponseChannel::Request* req,
     folly::EventBase* base,
     bool oneway)
@@ -214,13 +213,11 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       }
     }
     auto preq = req.get();
-    auto iprot_holder = folly::makeMoveWrapper(std::move(iprot));
-    auto buf_mw = folly::makeMoveWrapper(std::move(buf));
     try {
       tm->add(
         std::make_shared<apache::thrift::PriorityEventTask>(
           pri,
-          [=]() mutable {
+          [=, iprot = std::move(iprot), buf = std::move(buf)]() mutable {
             auto rq =
               std::unique_ptr<apache::thrift::ResponseChannel::Request>(preq);
             if (rq->getTimestamps().processBegin != 0) {
@@ -239,8 +236,8 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
                 return;
               }
             }
-            (childClass->*processFunc)(std::move(rq), std::move(*buf_mw),
-                        std::move(*iprot_holder), ctx, eb, tm);
+            (childClass->*processFunc)(std::move(rq), std::move(buf),
+                        std::move(iprot), ctx, eb, tm);
 
           },
           preq, eb, oneway),
