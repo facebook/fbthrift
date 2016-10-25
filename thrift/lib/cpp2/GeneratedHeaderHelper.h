@@ -30,10 +30,7 @@ class SimpleJSONProtocolWriter;
 class BinaryProtocolReader;
 class BinaryProtocolWriter;
 class CompactProtocolReader;
-template <typename, typename>
-class CompactProtocolWriterImpl;
-using CompactProtocolWriter =
-    CompactProtocolWriterImpl<folly::io::QueueAppender, folly::IOBufQueue>;
+class CompactProtocolWriter;
 
 } // thrift
 } // apache

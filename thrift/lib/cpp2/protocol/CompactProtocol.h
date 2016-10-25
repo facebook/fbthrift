@@ -92,14 +92,13 @@ class CompactProtocolReader;
 /**
  * C++ Implementation of the Compact Protocol as described in THRIFT-110
  */
-template <class Appender, class Storage>
-class CompactProtocolWriterImpl {
+class CompactProtocolWriter {
 
  public:
 
   using ProtocolReader = CompactProtocolReader;
 
-  explicit CompactProtocolWriterImpl(
+  explicit CompactProtocolWriter(
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER)
       : out_(nullptr, 0)
       , sharing_(sharing)
@@ -110,13 +109,13 @@ class CompactProtocolWriterImpl {
   }
 
   /**
-   * The Storage itself is managed by the caller.
+   * The IOBufQueue itself is managed by the caller.
    * It must exist for the life of the CompactProtocol as well,
    * or until the output is reset with setOutput/Input(NULL), or
    * set to some other backing storage buffer.
    */
   inline void setOutput(
-      Storage* storage,
+      IOBufQueue* storage,
       size_t maxGrowth = std::numeric_limits<size_t>::max()) {
     // Allocate 16KB at a time; leave some room for the IOBuf overhead
     constexpr size_t kDesiredGrowth = (1 << 14) - 64;
@@ -214,7 +213,7 @@ class CompactProtocolWriterImpl {
    * folly::io::QueueAppender, notably, reset(), push(), and
    * write()/writeBE()/writeLE().
    */
-  Appender out_;
+  QueueAppender out_;
   ExternalBufferSharing sharing_;
 
   struct {
@@ -226,9 +225,6 @@ class CompactProtocolWriterImpl {
   detail::compact::SimpleStack<int16_t, 10> lastField_;
   int16_t lastFieldId_;
 };
-
-using CompactProtocolWriter
-    = CompactProtocolWriterImpl<QueueAppender, IOBufQueue>;
 
 class CompactProtocolReader {
 
