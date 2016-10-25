@@ -880,3 +880,44 @@ TEST_F(ThreadManagerTest, PosixThreadFactoryPriority) {
     }
   }).join();
 }
+
+TEST_F(ThreadManagerTest, PriorityThreadManagerWorkerCount) {
+  auto threadManager = PriorityThreadManager::newPriorityThreadManager({{
+      1 /*HIGH_IMPORTANT*/,
+      2 /*HIGH*/,
+      3 /*IMPORTANT*/,
+      4 /*NORMAL*/,
+      5 /*BEST_EFFORT*/
+  }});
+  threadManager->start();
+
+  EXPECT_EQ(1, threadManager->workerCount(PRIORITY::HIGH_IMPORTANT));
+  EXPECT_EQ(2, threadManager->workerCount(PRIORITY::HIGH));
+  EXPECT_EQ(3, threadManager->workerCount(PRIORITY::IMPORTANT));
+  EXPECT_EQ(4, threadManager->workerCount(PRIORITY::NORMAL));
+  EXPECT_EQ(5, threadManager->workerCount(PRIORITY::BEST_EFFORT));
+
+  threadManager->addWorker(PRIORITY::HIGH_IMPORTANT, 1);
+  threadManager->addWorker(PRIORITY::HIGH, 1);
+  threadManager->addWorker(PRIORITY::IMPORTANT, 1);
+  threadManager->addWorker(PRIORITY::NORMAL, 1);
+  threadManager->addWorker(PRIORITY::BEST_EFFORT, 1);
+
+  EXPECT_EQ(2, threadManager->workerCount(PRIORITY::HIGH_IMPORTANT));
+  EXPECT_EQ(3, threadManager->workerCount(PRIORITY::HIGH));
+  EXPECT_EQ(4, threadManager->workerCount(PRIORITY::IMPORTANT));
+  EXPECT_EQ(5, threadManager->workerCount(PRIORITY::NORMAL));
+  EXPECT_EQ(6, threadManager->workerCount(PRIORITY::BEST_EFFORT));
+
+  threadManager->removeWorker(PRIORITY::HIGH_IMPORTANT, 1);
+  threadManager->removeWorker(PRIORITY::HIGH, 1);
+  threadManager->removeWorker(PRIORITY::IMPORTANT, 1);
+  threadManager->removeWorker(PRIORITY::NORMAL, 1);
+  threadManager->removeWorker(PRIORITY::BEST_EFFORT, 1);
+
+  EXPECT_EQ(1, threadManager->workerCount(PRIORITY::HIGH_IMPORTANT));
+  EXPECT_EQ(2, threadManager->workerCount(PRIORITY::HIGH));
+  EXPECT_EQ(3, threadManager->workerCount(PRIORITY::IMPORTANT));
+  EXPECT_EQ(4, threadManager->workerCount(PRIORITY::NORMAL));
+  EXPECT_EQ(5, threadManager->workerCount(PRIORITY::BEST_EFFORT));
+}

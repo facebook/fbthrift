@@ -296,6 +296,9 @@ class PriorityThreadManager : public ThreadManager {
   using ThreadManager::removeWorker;
   virtual void removeWorker(PRIORITY priority, size_t value) = 0;
 
+  using ThreadManager::workerCount;
+  virtual size_t workerCount(PRIORITY priority) = 0;
+
   using ThreadManager::add;
   virtual void add(PRIORITY priority,
                    std::shared_ptr<Runnable> task,

@@ -699,6 +699,10 @@ class PriorityThreadManager::PriorityImplT : public PriorityThreadManager {
     managers_[priority]->removeWorker(value);
   }
 
+  size_t workerCount(PRIORITY priority) override {
+    return managers_[priority]->workerCount();
+  }
+
   STATE state() const override {
     size_t started = 0;
     Guard g(mutex_);
