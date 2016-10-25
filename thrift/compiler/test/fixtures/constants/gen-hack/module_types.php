@@ -22,19 +22,19 @@ enum Company: int {
 }
 type CompanyType = Company;
 
-class Internship implements IThriftStruct {
+class Internship implements \IThriftStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'weeks',
-      'type' => TType::I32,
+      'type' => \TType::I32,
       ),
     2 => array(
       'var' => 'title',
-      'type' => TType::STRING,
+      'type' => \TType::STRING,
       ),
     3 => array(
       'var' => 'employer',
-      'type' => TType::I32,
+      'type' => \TType::I32,
       'enum' => 'Company',
       ),
     );
@@ -66,7 +66,7 @@ class Internship implements IThriftStruct {
     return 'Internship';
   }
 
-  public function read(TProtocol $input): int {
+  public function read(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -76,7 +76,7 @@ class Internship implements IThriftStruct {
     while (true)
     {
       $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
+      if ($ftype == \TType::STOP) {
         break;
       }
       if (!$fid && $fname !== null) {
@@ -88,7 +88,7 @@ class Internship implements IThriftStruct {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::I32) {
+          if ($ftype == \TType::I32) {
             $xfer += $input->readI32($this->weeks);
             $weeks__isset = true;
           } else {
@@ -96,14 +96,14 @@ class Internship implements IThriftStruct {
           }
           break;
         case 2:
-          if ($ftype == TType::STRING) {
+          if ($ftype == \TType::STRING) {
             $xfer += $input->readString($this->title);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 3:
-          if ($ftype == TType::I32) {
+          if ($ftype == \TType::I32) {
             $_val0 = null;
             $xfer += $input->readI32($_val0);
             $this->employer = Company::coerce($_val0);
@@ -120,29 +120,29 @@ class Internship implements IThriftStruct {
     }
     $xfer += $input->readStructEnd();
     if (!$weeks__isset) {
-      throw new TProtocolException("Required field 'weeks' was not found in serialized data! Struct: Internship", TProtocolException::MISSING_REQUIRED_FIELD);
+      throw new \TProtocolException("Required field 'weeks' was not found in serialized data! Struct: Internship", \TProtocolException::MISSING_REQUIRED_FIELD);
     }
     return $xfer;
   }
 
-  public function write(TProtocol $output): int {
+  public function write(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('Internship');
     if ($this->weeks !== null) {
       $_val0 = $this->weeks;
-      $xfer += $output->writeFieldBegin('weeks', TType::I32, 1);
+      $xfer += $output->writeFieldBegin('weeks', \TType::I32, 1);
       $xfer += $output->writeI32($_val0);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->title !== null) {
       $_val1 = $this->title;
-      $xfer += $output->writeFieldBegin('title', TType::STRING, 2);
+      $xfer += $output->writeFieldBegin('title', \TType::STRING, 2);
       $xfer += $output->writeString($_val1);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->employer !== null) {
       $_val2 = Company::assert($this->employer);
-      $xfer += $output->writeFieldBegin('employer', TType::I32, 3);
+      $xfer += $output->writeFieldBegin('employer', \TType::I32, 3);
       $xfer += $output->writeI32($_val2);
       $xfer += $output->writeFieldEnd();
     }
@@ -153,11 +153,11 @@ class Internship implements IThriftStruct {
 
 }
 
-class UnEnumStruct implements IThriftStruct {
+class UnEnumStruct implements \IThriftStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'city',
-      'type' => TType::I32,
+      'type' => \TType::I32,
       'enum' => 'City',
       ),
     );
@@ -179,7 +179,7 @@ class UnEnumStruct implements IThriftStruct {
     return 'UnEnumStruct';
   }
 
-  public function read(TProtocol $input): int {
+  public function read(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -188,7 +188,7 @@ class UnEnumStruct implements IThriftStruct {
     while (true)
     {
       $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
+      if ($ftype == \TType::STOP) {
         break;
       }
       if (!$fid && $fname !== null) {
@@ -200,7 +200,7 @@ class UnEnumStruct implements IThriftStruct {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::I32) {
+          if ($ftype == \TType::I32) {
             $_val0 = null;
             $xfer += $input->readI32($_val0);
             $this->city = City::coerce($_val0);
@@ -219,12 +219,12 @@ class UnEnumStruct implements IThriftStruct {
     return $xfer;
   }
 
-  public function write(TProtocol $output): int {
+  public function write(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('UnEnumStruct');
     if ($this->city !== null) {
       $_val0 = City::assert($this->city);
-      $xfer += $output->writeFieldBegin('city', TType::I32, 1);
+      $xfer += $output->writeFieldBegin('city', \TType::I32, 1);
       $xfer += $output->writeI32($_val0);
       $xfer += $output->writeFieldEnd();
     }
@@ -235,15 +235,15 @@ class UnEnumStruct implements IThriftStruct {
 
 }
 
-class Range implements IThriftStruct {
+class Range implements \IThriftStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'min',
-      'type' => TType::I32,
+      'type' => \TType::I32,
       ),
     2 => array(
       'var' => 'max',
-      'type' => TType::I32,
+      'type' => \TType::I32,
       ),
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -271,7 +271,7 @@ class Range implements IThriftStruct {
     return 'Range';
   }
 
-  public function read(TProtocol $input): int {
+  public function read(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -282,7 +282,7 @@ class Range implements IThriftStruct {
     while (true)
     {
       $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
+      if ($ftype == \TType::STOP) {
         break;
       }
       if (!$fid && $fname !== null) {
@@ -294,7 +294,7 @@ class Range implements IThriftStruct {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::I32) {
+          if ($ftype == \TType::I32) {
             $xfer += $input->readI32($this->min);
             $min__isset = true;
           } else {
@@ -302,7 +302,7 @@ class Range implements IThriftStruct {
           }
           break;
         case 2:
-          if ($ftype == TType::I32) {
+          if ($ftype == \TType::I32) {
             $xfer += $input->readI32($this->max);
             $max__isset = true;
           } else {
@@ -317,26 +317,26 @@ class Range implements IThriftStruct {
     }
     $xfer += $input->readStructEnd();
     if (!$min__isset) {
-      throw new TProtocolException("Required field 'min' was not found in serialized data! Struct: Range", TProtocolException::MISSING_REQUIRED_FIELD);
+      throw new \TProtocolException("Required field 'min' was not found in serialized data! Struct: Range", \TProtocolException::MISSING_REQUIRED_FIELD);
     }
     if (!$max__isset) {
-      throw new TProtocolException("Required field 'max' was not found in serialized data! Struct: Range", TProtocolException::MISSING_REQUIRED_FIELD);
+      throw new \TProtocolException("Required field 'max' was not found in serialized data! Struct: Range", \TProtocolException::MISSING_REQUIRED_FIELD);
     }
     return $xfer;
   }
 
-  public function write(TProtocol $output): int {
+  public function write(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('Range');
     if ($this->min !== null) {
       $_val0 = $this->min;
-      $xfer += $output->writeFieldBegin('min', TType::I32, 1);
+      $xfer += $output->writeFieldBegin('min', \TType::I32, 1);
       $xfer += $output->writeI32($_val0);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->max !== null) {
       $_val1 = $this->max;
-      $xfer += $output->writeFieldBegin('max', TType::I32, 2);
+      $xfer += $output->writeFieldBegin('max', \TType::I32, 2);
       $xfer += $output->writeI32($_val1);
       $xfer += $output->writeFieldEnd();
     }

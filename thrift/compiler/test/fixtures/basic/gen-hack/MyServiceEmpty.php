@@ -6,10 +6,10 @@
  *  @generated
  */
 
-interface MyServiceEmptyAsyncIf extends IThriftAsyncIf {
+interface MyServiceEmptyAsyncIf extends \IThriftAsyncIf {
 }
 
-interface MyServiceEmptyIf extends IThriftSyncIf {
+interface MyServiceEmptyIf extends \IThriftSyncIf {
 }
 
 trait MyServiceEmptyClientBase {

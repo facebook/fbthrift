@@ -32,28 +32,28 @@ trait MyServicePrioChildClientBase {
     $args = new MyServicePrioChild_pang_args();
     try {
       $this->eventHandler_->preSend('pang', $args, $currentseqid);
-      if ($this->output_ instanceof TBinaryProtocolAccelerated)
+      if ($this->output_ instanceof \TBinaryProtocolAccelerated)
       {
-        thrift_protocol_write_binary($this->output_, 'pang', TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+        thrift_protocol_write_binary($this->output_, 'pang', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
       }
-      else if ($this->output_ instanceof TCompactProtocolAccelerated)
+      else if ($this->output_ instanceof \TCompactProtocolAccelerated)
       {
-        thrift_protocol_write_compact($this->output_, 'pang', TMessageType::CALL, $args, $currentseqid, false);
+        thrift_protocol_write_compact($this->output_, 'pang', \TMessageType::CALL, $args, $currentseqid, false);
       }
       else
       {
-        $this->output_->writeMessageBegin('pang', TMessageType::CALL, $currentseqid);
+        $this->output_->writeMessageBegin('pang', \TMessageType::CALL, $currentseqid);
         $args->write($this->output_);
         $this->output_->writeMessageEnd();
         $this->output_->getTransport()->flush();
       }
-    } catch (THandlerShortCircuitException $ex) {
+    } catch (\THandlerShortCircuitException $ex) {
       switch ($ex->resultType) {
-        case THandlerShortCircuitException::R_EXPECTED_EX:
-        case THandlerShortCircuitException::R_UNEXPECTED_EX:
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
           $this->eventHandler_->sendError('pang', $args, $currentseqid, $ex->result);
           throw $ex->result;
-        case THandlerShortCircuitException::R_SUCCESS:
+        case \THandlerShortCircuitException::R_SUCCESS:
         default:
           $this->eventHandler_->postSend('pang', $args, $currentseqid);
           return $currentseqid;
@@ -69,9 +69,9 @@ trait MyServicePrioChildClientBase {
   protected function recvImpl_pang(?int $expectedsequenceid = null): void {
     try {
       $this->eventHandler_->preRecv('pang', $expectedsequenceid);
-      if ($this->input_ instanceof TBinaryProtocolAccelerated) {
+      if ($this->input_ instanceof \TBinaryProtocolAccelerated) {
         $result = thrift_protocol_read_binary($this->input_, 'MyServicePrioChild_pang_result', $this->input_->isStrictRead());
-      } else if ($this->input_ instanceof TCompactProtocolAccelerated)
+      } else if ($this->input_ instanceof \TCompactProtocolAccelerated)
       {
         $result = thrift_protocol_read_compact($this->input_, 'MyServicePrioChild_pang_result');
       }
@@ -82,8 +82,8 @@ trait MyServicePrioChildClientBase {
         $mtype = 0;
 
         $this->input_->readMessageBegin($fname, $mtype, $rseqid);
-        if ($mtype == TMessageType::EXCEPTION) {
-          $x = new TApplicationException();
+        if ($mtype == \TMessageType::EXCEPTION) {
+          $x = new \TApplicationException();
           $x->read($this->input_);
           $this->input_->readMessageEnd();
           throw $x;
@@ -92,18 +92,18 @@ trait MyServicePrioChildClientBase {
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
-          throw new TProtocolException("pang failed: sequence id is out of order");
+          throw new \TProtocolException("pang failed: sequence id is out of order");
         }
       }
-    } catch (THandlerShortCircuitException $ex) {
+    } catch (\THandlerShortCircuitException $ex) {
       switch ($ex->resultType) {
-        case THandlerShortCircuitException::R_EXPECTED_EX:
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
           $this->eventHandler_->recvException('pang', $expectedsequenceid, $ex->result);
           throw $ex->result;
-        case THandlerShortCircuitException::R_UNEXPECTED_EX:
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
           $this->eventHandler_->recvError('pang', $expectedsequenceid, $ex->result);
           throw $ex->result;
-        case THandlerShortCircuitException::R_SUCCESS:
+        case \THandlerShortCircuitException::R_SUCCESS:
         default:
           $this->eventHandler_->postRecv('pang', $expectedsequenceid, $ex->result);
           return;
@@ -164,15 +164,15 @@ class MyServicePrioChildClient extends MyServicePrioParentClient implements MySe
 
 abstract class MyServicePrioChildAsyncProcessorBase extends MyServicePrioParentAsyncProcessorBase {
   abstract const type TThriftIf as MyServicePrioChildAsyncIf;
-  protected async function process_pang(int $seqid, TProtocol $input, TProtocol $output): Awaitable<void> {
+  protected async function process_pang(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
     $handler_ctx = $this->eventHandler_->getHandlerContext('pang');
-    $reply_type = TMessageType::REPLY;
+    $reply_type = \TMessageType::REPLY;
 
     $this->eventHandler_->preRead($handler_ctx, 'pang', array());
 
-    if ($input instanceof TBinaryProtocolAccelerated) {
+    if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServicePrioChild_pang_args');
-    } else if ($input instanceof TCompactProtocolAccelerated) {
+    } else if ($input instanceof \TCompactProtocolAccelerated) {
       $args = thrift_protocol_read_compact_struct($input, 'MyServicePrioChild_pang_args');
     } else {
       $args = new MyServicePrioChild_pang_args();
@@ -186,16 +186,16 @@ abstract class MyServicePrioChildAsyncProcessorBase extends MyServicePrioParentA
       await $this->handler->pang();
       $this->eventHandler_->postExec($handler_ctx, 'pang', $result);
     } catch (Exception $ex) {
-      $reply_type = TMessageType::EXCEPTION;
+      $reply_type = \TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'pang', $ex);
-      $result = new TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
     $this->eventHandler_->preWrite($handler_ctx, 'pang', $result);
-    if ($output instanceof TBinaryProtocolAccelerated)
+    if ($output instanceof \TBinaryProtocolAccelerated)
     {
       thrift_protocol_write_binary($output, 'pang', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
-    else if ($output instanceof TCompactProtocolAccelerated)
+    else if ($output instanceof \TCompactProtocolAccelerated)
     {
       thrift_protocol_write_compact($output, 'pang', $reply_type, $result, $seqid);
     }
@@ -215,15 +215,15 @@ class MyServicePrioChildAsyncProcessor extends MyServicePrioChildAsyncProcessorB
 
 abstract class MyServicePrioChildSyncProcessorBase extends MyServicePrioParentSyncProcessorBase {
   abstract const type TThriftIf as MyServicePrioChildIf;
-  protected function process_pang(int $seqid, TProtocol $input, TProtocol $output): void {
+  protected function process_pang(int $seqid, \TProtocol $input, \TProtocol $output): void {
     $handler_ctx = $this->eventHandler_->getHandlerContext('pang');
-    $reply_type = TMessageType::REPLY;
+    $reply_type = \TMessageType::REPLY;
 
     $this->eventHandler_->preRead($handler_ctx, 'pang', array());
 
-    if ($input instanceof TBinaryProtocolAccelerated) {
+    if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServicePrioChild_pang_args');
-    } else if ($input instanceof TCompactProtocolAccelerated) {
+    } else if ($input instanceof \TCompactProtocolAccelerated) {
       $args = thrift_protocol_read_compact_struct($input, 'MyServicePrioChild_pang_args');
     } else {
       $args = new MyServicePrioChild_pang_args();
@@ -237,16 +237,16 @@ abstract class MyServicePrioChildSyncProcessorBase extends MyServicePrioParentSy
       $this->handler->pang();
       $this->eventHandler_->postExec($handler_ctx, 'pang', $result);
     } catch (Exception $ex) {
-      $reply_type = TMessageType::EXCEPTION;
+      $reply_type = \TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'pang', $ex);
-      $result = new TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
     $this->eventHandler_->preWrite($handler_ctx, 'pang', $result);
-    if ($output instanceof TBinaryProtocolAccelerated)
+    if ($output instanceof \TBinaryProtocolAccelerated)
     {
       thrift_protocol_write_binary($output, 'pang', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
-    else if ($output instanceof TCompactProtocolAccelerated)
+    else if ($output instanceof \TCompactProtocolAccelerated)
     {
       thrift_protocol_write_compact($output, 'pang', $reply_type, $result, $seqid);
     }
@@ -268,7 +268,7 @@ class MyServicePrioChildProcessor extends MyServicePrioChildSyncProcessor {}
 
 // HELPER FUNCTIONS AND STRUCTURES
 
-class MyServicePrioChild_pang_args implements IThriftStruct, IThriftShapishStruct {
+class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStruct {
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -301,7 +301,7 @@ class MyServicePrioChild_pang_args implements IThriftStruct, IThriftShapishStruc
     return shape(
     );
   }
-  public function read(TProtocol $input): int {
+  public function read(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -310,7 +310,7 @@ class MyServicePrioChild_pang_args implements IThriftStruct, IThriftShapishStruc
     while (true)
     {
       $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
+      if ($ftype == \TType::STOP) {
         break;
       }
       if (!$fid && $fname !== null) {
@@ -331,7 +331,7 @@ class MyServicePrioChild_pang_args implements IThriftStruct, IThriftShapishStruc
     return $xfer;
   }
 
-  public function write(TProtocol $output): int {
+  public function write(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyServicePrioChild_pang_args');
     $xfer += $output->writeFieldStop();
@@ -341,7 +341,7 @@ class MyServicePrioChild_pang_args implements IThriftStruct, IThriftShapishStruc
 
 }
 
-class MyServicePrioChild_pang_result implements IThriftStruct, IThriftShapishStruct {
+class MyServicePrioChild_pang_result implements \IThriftStruct, \IThriftShapishStruct {
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -355,7 +355,7 @@ class MyServicePrioChild_pang_result implements IThriftStruct, IThriftShapishStr
     return 'MyServicePrioChild_pang_result';
   }
 
-  public function read(TProtocol $input): int {
+  public function read(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -364,7 +364,7 @@ class MyServicePrioChild_pang_result implements IThriftStruct, IThriftShapishStr
     while (true)
     {
       $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
+      if ($ftype == \TType::STOP) {
         break;
       }
       if (!$fid && $fname !== null) {
@@ -385,7 +385,7 @@ class MyServicePrioChild_pang_result implements IThriftStruct, IThriftShapishStr
     return $xfer;
   }
 
-  public function write(TProtocol $output): int {
+  public function write(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyServicePrioChild_pang_result');
     $xfer += $output->writeFieldStop();

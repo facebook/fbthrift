@@ -6,7 +6,7 @@
  *  @generated
  */
 
-interface MyServiceFastAsyncIf extends IThriftAsyncIf {
+interface MyServiceFastAsyncIf extends \IThriftAsyncIf {
   /**
    * Original thrift definition:-
    * void
@@ -52,7 +52,7 @@ interface MyServiceFastAsyncIf extends IThriftAsyncIf {
   public function lobDataById(int $id, string $data): Awaitable<void>;
 }
 
-interface MyServiceFastIf extends IThriftSyncIf {
+interface MyServiceFastIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
    * void
@@ -106,28 +106,28 @@ trait MyServiceFastClientBase {
     $args = new MyServiceFast_ping_args();
     try {
       $this->eventHandler_->preSend('ping', $args, $currentseqid);
-      if ($this->output_ instanceof TBinaryProtocolAccelerated)
+      if ($this->output_ instanceof \TBinaryProtocolAccelerated)
       {
-        thrift_protocol_write_binary($this->output_, 'ping', TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+        thrift_protocol_write_binary($this->output_, 'ping', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
       }
-      else if ($this->output_ instanceof TCompactProtocolAccelerated)
+      else if ($this->output_ instanceof \TCompactProtocolAccelerated)
       {
-        thrift_protocol_write_compact($this->output_, 'ping', TMessageType::CALL, $args, $currentseqid, false);
+        thrift_protocol_write_compact($this->output_, 'ping', \TMessageType::CALL, $args, $currentseqid, false);
       }
       else
       {
-        $this->output_->writeMessageBegin('ping', TMessageType::CALL, $currentseqid);
+        $this->output_->writeMessageBegin('ping', \TMessageType::CALL, $currentseqid);
         $args->write($this->output_);
         $this->output_->writeMessageEnd();
         $this->output_->getTransport()->flush();
       }
-    } catch (THandlerShortCircuitException $ex) {
+    } catch (\THandlerShortCircuitException $ex) {
       switch ($ex->resultType) {
-        case THandlerShortCircuitException::R_EXPECTED_EX:
-        case THandlerShortCircuitException::R_UNEXPECTED_EX:
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
           $this->eventHandler_->sendError('ping', $args, $currentseqid, $ex->result);
           throw $ex->result;
-        case THandlerShortCircuitException::R_SUCCESS:
+        case \THandlerShortCircuitException::R_SUCCESS:
         default:
           $this->eventHandler_->postSend('ping', $args, $currentseqid);
           return $currentseqid;
@@ -143,9 +143,9 @@ trait MyServiceFastClientBase {
   protected function recvImpl_ping(?int $expectedsequenceid = null): void {
     try {
       $this->eventHandler_->preRecv('ping', $expectedsequenceid);
-      if ($this->input_ instanceof TBinaryProtocolAccelerated) {
+      if ($this->input_ instanceof \TBinaryProtocolAccelerated) {
         $result = thrift_protocol_read_binary($this->input_, 'MyServiceFast_ping_result', $this->input_->isStrictRead());
-      } else if ($this->input_ instanceof TCompactProtocolAccelerated)
+      } else if ($this->input_ instanceof \TCompactProtocolAccelerated)
       {
         $result = thrift_protocol_read_compact($this->input_, 'MyServiceFast_ping_result');
       }
@@ -156,8 +156,8 @@ trait MyServiceFastClientBase {
         $mtype = 0;
 
         $this->input_->readMessageBegin($fname, $mtype, $rseqid);
-        if ($mtype == TMessageType::EXCEPTION) {
-          $x = new TApplicationException();
+        if ($mtype == \TMessageType::EXCEPTION) {
+          $x = new \TApplicationException();
           $x->read($this->input_);
           $this->input_->readMessageEnd();
           throw $x;
@@ -166,18 +166,18 @@ trait MyServiceFastClientBase {
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
-          throw new TProtocolException("ping failed: sequence id is out of order");
+          throw new \TProtocolException("ping failed: sequence id is out of order");
         }
       }
-    } catch (THandlerShortCircuitException $ex) {
+    } catch (\THandlerShortCircuitException $ex) {
       switch ($ex->resultType) {
-        case THandlerShortCircuitException::R_EXPECTED_EX:
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
           $this->eventHandler_->recvException('ping', $expectedsequenceid, $ex->result);
           throw $ex->result;
-        case THandlerShortCircuitException::R_UNEXPECTED_EX:
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
           $this->eventHandler_->recvError('ping', $expectedsequenceid, $ex->result);
           throw $ex->result;
-        case THandlerShortCircuitException::R_SUCCESS:
+        case \THandlerShortCircuitException::R_SUCCESS:
         default:
           $this->eventHandler_->postRecv('ping', $expectedsequenceid, $ex->result);
           return;
@@ -195,28 +195,28 @@ return;
     $args = new MyServiceFast_getRandomData_args();
     try {
       $this->eventHandler_->preSend('getRandomData', $args, $currentseqid);
-      if ($this->output_ instanceof TBinaryProtocolAccelerated)
+      if ($this->output_ instanceof \TBinaryProtocolAccelerated)
       {
-        thrift_protocol_write_binary($this->output_, 'getRandomData', TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+        thrift_protocol_write_binary($this->output_, 'getRandomData', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
       }
-      else if ($this->output_ instanceof TCompactProtocolAccelerated)
+      else if ($this->output_ instanceof \TCompactProtocolAccelerated)
       {
-        thrift_protocol_write_compact($this->output_, 'getRandomData', TMessageType::CALL, $args, $currentseqid, false);
+        thrift_protocol_write_compact($this->output_, 'getRandomData', \TMessageType::CALL, $args, $currentseqid, false);
       }
       else
       {
-        $this->output_->writeMessageBegin('getRandomData', TMessageType::CALL, $currentseqid);
+        $this->output_->writeMessageBegin('getRandomData', \TMessageType::CALL, $currentseqid);
         $args->write($this->output_);
         $this->output_->writeMessageEnd();
         $this->output_->getTransport()->flush();
       }
-    } catch (THandlerShortCircuitException $ex) {
+    } catch (\THandlerShortCircuitException $ex) {
       switch ($ex->resultType) {
-        case THandlerShortCircuitException::R_EXPECTED_EX:
-        case THandlerShortCircuitException::R_UNEXPECTED_EX:
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
           $this->eventHandler_->sendError('getRandomData', $args, $currentseqid, $ex->result);
           throw $ex->result;
-        case THandlerShortCircuitException::R_SUCCESS:
+        case \THandlerShortCircuitException::R_SUCCESS:
         default:
           $this->eventHandler_->postSend('getRandomData', $args, $currentseqid);
           return $currentseqid;
@@ -232,9 +232,9 @@ return;
   protected function recvImpl_getRandomData(?int $expectedsequenceid = null): string {
     try {
       $this->eventHandler_->preRecv('getRandomData', $expectedsequenceid);
-      if ($this->input_ instanceof TBinaryProtocolAccelerated) {
+      if ($this->input_ instanceof \TBinaryProtocolAccelerated) {
         $result = thrift_protocol_read_binary($this->input_, 'MyServiceFast_getRandomData_result', $this->input_->isStrictRead());
-      } else if ($this->input_ instanceof TCompactProtocolAccelerated)
+      } else if ($this->input_ instanceof \TCompactProtocolAccelerated)
       {
         $result = thrift_protocol_read_compact($this->input_, 'MyServiceFast_getRandomData_result');
       }
@@ -245,8 +245,8 @@ return;
         $mtype = 0;
 
         $this->input_->readMessageBegin($fname, $mtype, $rseqid);
-        if ($mtype == TMessageType::EXCEPTION) {
-          $x = new TApplicationException();
+        if ($mtype == \TMessageType::EXCEPTION) {
+          $x = new \TApplicationException();
           $x->read($this->input_);
           $this->input_->readMessageEnd();
           throw $x;
@@ -255,18 +255,18 @@ return;
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
-          throw new TProtocolException("getRandomData failed: sequence id is out of order");
+          throw new \TProtocolException("getRandomData failed: sequence id is out of order");
         }
       }
-    } catch (THandlerShortCircuitException $ex) {
+    } catch (\THandlerShortCircuitException $ex) {
       switch ($ex->resultType) {
-        case THandlerShortCircuitException::R_EXPECTED_EX:
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
           $this->eventHandler_->recvException('getRandomData', $expectedsequenceid, $ex->result);
           throw $ex->result;
-        case THandlerShortCircuitException::R_UNEXPECTED_EX:
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
           $this->eventHandler_->recvError('getRandomData', $expectedsequenceid, $ex->result);
           throw $ex->result;
-        case THandlerShortCircuitException::R_SUCCESS:
+        case \THandlerShortCircuitException::R_SUCCESS:
         default:
           $this->eventHandler_->postRecv('getRandomData', $expectedsequenceid, $ex->result);
           return $ex->result;
@@ -280,7 +280,7 @@ return;
       $this->eventHandler_->postRecv('getRandomData', $expectedsequenceid, $success);
       return $success;
     }
-    $x = new TApplicationException("getRandomData failed: unknown result", TApplicationException::MISSING_RESULT);
+    $x = new \TApplicationException("getRandomData failed: unknown result", \TApplicationException::MISSING_RESULT);
     $this->eventHandler_->recvError('getRandomData', $expectedsequenceid, $x);
     throw $x;
   }
@@ -291,28 +291,28 @@ return;
     $args->id = $id;
     try {
       $this->eventHandler_->preSend('hasDataById', $args, $currentseqid);
-      if ($this->output_ instanceof TBinaryProtocolAccelerated)
+      if ($this->output_ instanceof \TBinaryProtocolAccelerated)
       {
-        thrift_protocol_write_binary($this->output_, 'hasDataById', TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+        thrift_protocol_write_binary($this->output_, 'hasDataById', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
       }
-      else if ($this->output_ instanceof TCompactProtocolAccelerated)
+      else if ($this->output_ instanceof \TCompactProtocolAccelerated)
       {
-        thrift_protocol_write_compact($this->output_, 'hasDataById', TMessageType::CALL, $args, $currentseqid, false);
+        thrift_protocol_write_compact($this->output_, 'hasDataById', \TMessageType::CALL, $args, $currentseqid, false);
       }
       else
       {
-        $this->output_->writeMessageBegin('hasDataById', TMessageType::CALL, $currentseqid);
+        $this->output_->writeMessageBegin('hasDataById', \TMessageType::CALL, $currentseqid);
         $args->write($this->output_);
         $this->output_->writeMessageEnd();
         $this->output_->getTransport()->flush();
       }
-    } catch (THandlerShortCircuitException $ex) {
+    } catch (\THandlerShortCircuitException $ex) {
       switch ($ex->resultType) {
-        case THandlerShortCircuitException::R_EXPECTED_EX:
-        case THandlerShortCircuitException::R_UNEXPECTED_EX:
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
           $this->eventHandler_->sendError('hasDataById', $args, $currentseqid, $ex->result);
           throw $ex->result;
-        case THandlerShortCircuitException::R_SUCCESS:
+        case \THandlerShortCircuitException::R_SUCCESS:
         default:
           $this->eventHandler_->postSend('hasDataById', $args, $currentseqid);
           return $currentseqid;
@@ -328,9 +328,9 @@ return;
   protected function recvImpl_hasDataById(?int $expectedsequenceid = null): bool {
     try {
       $this->eventHandler_->preRecv('hasDataById', $expectedsequenceid);
-      if ($this->input_ instanceof TBinaryProtocolAccelerated) {
+      if ($this->input_ instanceof \TBinaryProtocolAccelerated) {
         $result = thrift_protocol_read_binary($this->input_, 'MyServiceFast_hasDataById_result', $this->input_->isStrictRead());
-      } else if ($this->input_ instanceof TCompactProtocolAccelerated)
+      } else if ($this->input_ instanceof \TCompactProtocolAccelerated)
       {
         $result = thrift_protocol_read_compact($this->input_, 'MyServiceFast_hasDataById_result');
       }
@@ -341,8 +341,8 @@ return;
         $mtype = 0;
 
         $this->input_->readMessageBegin($fname, $mtype, $rseqid);
-        if ($mtype == TMessageType::EXCEPTION) {
-          $x = new TApplicationException();
+        if ($mtype == \TMessageType::EXCEPTION) {
+          $x = new \TApplicationException();
           $x->read($this->input_);
           $this->input_->readMessageEnd();
           throw $x;
@@ -351,18 +351,18 @@ return;
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
-          throw new TProtocolException("hasDataById failed: sequence id is out of order");
+          throw new \TProtocolException("hasDataById failed: sequence id is out of order");
         }
       }
-    } catch (THandlerShortCircuitException $ex) {
+    } catch (\THandlerShortCircuitException $ex) {
       switch ($ex->resultType) {
-        case THandlerShortCircuitException::R_EXPECTED_EX:
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
           $this->eventHandler_->recvException('hasDataById', $expectedsequenceid, $ex->result);
           throw $ex->result;
-        case THandlerShortCircuitException::R_UNEXPECTED_EX:
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
           $this->eventHandler_->recvError('hasDataById', $expectedsequenceid, $ex->result);
           throw $ex->result;
-        case THandlerShortCircuitException::R_SUCCESS:
+        case \THandlerShortCircuitException::R_SUCCESS:
         default:
           $this->eventHandler_->postRecv('hasDataById', $expectedsequenceid, $ex->result);
           return $ex->result;
@@ -376,7 +376,7 @@ return;
       $this->eventHandler_->postRecv('hasDataById', $expectedsequenceid, $success);
       return $success;
     }
-    $x = new TApplicationException("hasDataById failed: unknown result", TApplicationException::MISSING_RESULT);
+    $x = new \TApplicationException("hasDataById failed: unknown result", \TApplicationException::MISSING_RESULT);
     $this->eventHandler_->recvError('hasDataById', $expectedsequenceid, $x);
     throw $x;
   }
@@ -387,28 +387,28 @@ return;
     $args->id = $id;
     try {
       $this->eventHandler_->preSend('getDataById', $args, $currentseqid);
-      if ($this->output_ instanceof TBinaryProtocolAccelerated)
+      if ($this->output_ instanceof \TBinaryProtocolAccelerated)
       {
-        thrift_protocol_write_binary($this->output_, 'getDataById', TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+        thrift_protocol_write_binary($this->output_, 'getDataById', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
       }
-      else if ($this->output_ instanceof TCompactProtocolAccelerated)
+      else if ($this->output_ instanceof \TCompactProtocolAccelerated)
       {
-        thrift_protocol_write_compact($this->output_, 'getDataById', TMessageType::CALL, $args, $currentseqid, false);
+        thrift_protocol_write_compact($this->output_, 'getDataById', \TMessageType::CALL, $args, $currentseqid, false);
       }
       else
       {
-        $this->output_->writeMessageBegin('getDataById', TMessageType::CALL, $currentseqid);
+        $this->output_->writeMessageBegin('getDataById', \TMessageType::CALL, $currentseqid);
         $args->write($this->output_);
         $this->output_->writeMessageEnd();
         $this->output_->getTransport()->flush();
       }
-    } catch (THandlerShortCircuitException $ex) {
+    } catch (\THandlerShortCircuitException $ex) {
       switch ($ex->resultType) {
-        case THandlerShortCircuitException::R_EXPECTED_EX:
-        case THandlerShortCircuitException::R_UNEXPECTED_EX:
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
           $this->eventHandler_->sendError('getDataById', $args, $currentseqid, $ex->result);
           throw $ex->result;
-        case THandlerShortCircuitException::R_SUCCESS:
+        case \THandlerShortCircuitException::R_SUCCESS:
         default:
           $this->eventHandler_->postSend('getDataById', $args, $currentseqid);
           return $currentseqid;
@@ -424,9 +424,9 @@ return;
   protected function recvImpl_getDataById(?int $expectedsequenceid = null): string {
     try {
       $this->eventHandler_->preRecv('getDataById', $expectedsequenceid);
-      if ($this->input_ instanceof TBinaryProtocolAccelerated) {
+      if ($this->input_ instanceof \TBinaryProtocolAccelerated) {
         $result = thrift_protocol_read_binary($this->input_, 'MyServiceFast_getDataById_result', $this->input_->isStrictRead());
-      } else if ($this->input_ instanceof TCompactProtocolAccelerated)
+      } else if ($this->input_ instanceof \TCompactProtocolAccelerated)
       {
         $result = thrift_protocol_read_compact($this->input_, 'MyServiceFast_getDataById_result');
       }
@@ -437,8 +437,8 @@ return;
         $mtype = 0;
 
         $this->input_->readMessageBegin($fname, $mtype, $rseqid);
-        if ($mtype == TMessageType::EXCEPTION) {
-          $x = new TApplicationException();
+        if ($mtype == \TMessageType::EXCEPTION) {
+          $x = new \TApplicationException();
           $x->read($this->input_);
           $this->input_->readMessageEnd();
           throw $x;
@@ -447,18 +447,18 @@ return;
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
-          throw new TProtocolException("getDataById failed: sequence id is out of order");
+          throw new \TProtocolException("getDataById failed: sequence id is out of order");
         }
       }
-    } catch (THandlerShortCircuitException $ex) {
+    } catch (\THandlerShortCircuitException $ex) {
       switch ($ex->resultType) {
-        case THandlerShortCircuitException::R_EXPECTED_EX:
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
           $this->eventHandler_->recvException('getDataById', $expectedsequenceid, $ex->result);
           throw $ex->result;
-        case THandlerShortCircuitException::R_UNEXPECTED_EX:
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
           $this->eventHandler_->recvError('getDataById', $expectedsequenceid, $ex->result);
           throw $ex->result;
-        case THandlerShortCircuitException::R_SUCCESS:
+        case \THandlerShortCircuitException::R_SUCCESS:
         default:
           $this->eventHandler_->postRecv('getDataById', $expectedsequenceid, $ex->result);
           return $ex->result;
@@ -472,7 +472,7 @@ return;
       $this->eventHandler_->postRecv('getDataById', $expectedsequenceid, $success);
       return $success;
     }
-    $x = new TApplicationException("getDataById failed: unknown result", TApplicationException::MISSING_RESULT);
+    $x = new \TApplicationException("getDataById failed: unknown result", \TApplicationException::MISSING_RESULT);
     $this->eventHandler_->recvError('getDataById', $expectedsequenceid, $x);
     throw $x;
   }
@@ -484,28 +484,28 @@ return;
     $args->data = $data;
     try {
       $this->eventHandler_->preSend('putDataById', $args, $currentseqid);
-      if ($this->output_ instanceof TBinaryProtocolAccelerated)
+      if ($this->output_ instanceof \TBinaryProtocolAccelerated)
       {
-        thrift_protocol_write_binary($this->output_, 'putDataById', TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+        thrift_protocol_write_binary($this->output_, 'putDataById', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
       }
-      else if ($this->output_ instanceof TCompactProtocolAccelerated)
+      else if ($this->output_ instanceof \TCompactProtocolAccelerated)
       {
-        thrift_protocol_write_compact($this->output_, 'putDataById', TMessageType::CALL, $args, $currentseqid, false);
+        thrift_protocol_write_compact($this->output_, 'putDataById', \TMessageType::CALL, $args, $currentseqid, false);
       }
       else
       {
-        $this->output_->writeMessageBegin('putDataById', TMessageType::CALL, $currentseqid);
+        $this->output_->writeMessageBegin('putDataById', \TMessageType::CALL, $currentseqid);
         $args->write($this->output_);
         $this->output_->writeMessageEnd();
         $this->output_->getTransport()->flush();
       }
-    } catch (THandlerShortCircuitException $ex) {
+    } catch (\THandlerShortCircuitException $ex) {
       switch ($ex->resultType) {
-        case THandlerShortCircuitException::R_EXPECTED_EX:
-        case THandlerShortCircuitException::R_UNEXPECTED_EX:
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
           $this->eventHandler_->sendError('putDataById', $args, $currentseqid, $ex->result);
           throw $ex->result;
-        case THandlerShortCircuitException::R_SUCCESS:
+        case \THandlerShortCircuitException::R_SUCCESS:
         default:
           $this->eventHandler_->postSend('putDataById', $args, $currentseqid);
           return $currentseqid;
@@ -521,9 +521,9 @@ return;
   protected function recvImpl_putDataById(?int $expectedsequenceid = null): void {
     try {
       $this->eventHandler_->preRecv('putDataById', $expectedsequenceid);
-      if ($this->input_ instanceof TBinaryProtocolAccelerated) {
+      if ($this->input_ instanceof \TBinaryProtocolAccelerated) {
         $result = thrift_protocol_read_binary($this->input_, 'MyServiceFast_putDataById_result', $this->input_->isStrictRead());
-      } else if ($this->input_ instanceof TCompactProtocolAccelerated)
+      } else if ($this->input_ instanceof \TCompactProtocolAccelerated)
       {
         $result = thrift_protocol_read_compact($this->input_, 'MyServiceFast_putDataById_result');
       }
@@ -534,8 +534,8 @@ return;
         $mtype = 0;
 
         $this->input_->readMessageBegin($fname, $mtype, $rseqid);
-        if ($mtype == TMessageType::EXCEPTION) {
-          $x = new TApplicationException();
+        if ($mtype == \TMessageType::EXCEPTION) {
+          $x = new \TApplicationException();
           $x->read($this->input_);
           $this->input_->readMessageEnd();
           throw $x;
@@ -544,18 +544,18 @@ return;
         $result->read($this->input_);
         $this->input_->readMessageEnd();
         if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
-          throw new TProtocolException("putDataById failed: sequence id is out of order");
+          throw new \TProtocolException("putDataById failed: sequence id is out of order");
         }
       }
-    } catch (THandlerShortCircuitException $ex) {
+    } catch (\THandlerShortCircuitException $ex) {
       switch ($ex->resultType) {
-        case THandlerShortCircuitException::R_EXPECTED_EX:
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
           $this->eventHandler_->recvException('putDataById', $expectedsequenceid, $ex->result);
           throw $ex->result;
-        case THandlerShortCircuitException::R_UNEXPECTED_EX:
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
           $this->eventHandler_->recvError('putDataById', $expectedsequenceid, $ex->result);
           throw $ex->result;
-        case THandlerShortCircuitException::R_SUCCESS:
+        case \THandlerShortCircuitException::R_SUCCESS:
         default:
           $this->eventHandler_->postRecv('putDataById', $expectedsequenceid, $ex->result);
           return;
@@ -575,28 +575,28 @@ return;
     $args->data = $data;
     try {
       $this->eventHandler_->preSend('lobDataById', $args, $currentseqid);
-      if ($this->output_ instanceof TBinaryProtocolAccelerated)
+      if ($this->output_ instanceof \TBinaryProtocolAccelerated)
       {
-        thrift_protocol_write_binary($this->output_, 'lobDataById', TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), true);
+        thrift_protocol_write_binary($this->output_, 'lobDataById', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), true);
       }
-      else if ($this->output_ instanceof TCompactProtocolAccelerated)
+      else if ($this->output_ instanceof \TCompactProtocolAccelerated)
       {
-        thrift_protocol_write_compact($this->output_, 'lobDataById', TMessageType::CALL, $args, $currentseqid, true);
+        thrift_protocol_write_compact($this->output_, 'lobDataById', \TMessageType::CALL, $args, $currentseqid, true);
       }
       else
       {
-        $this->output_->writeMessageBegin('lobDataById', TMessageType::CALL, $currentseqid);
+        $this->output_->writeMessageBegin('lobDataById', \TMessageType::CALL, $currentseqid);
         $args->write($this->output_);
         $this->output_->writeMessageEnd();
         $this->output_->getTransport()->onewayFlush();
       }
-    } catch (THandlerShortCircuitException $ex) {
+    } catch (\THandlerShortCircuitException $ex) {
       switch ($ex->resultType) {
-        case THandlerShortCircuitException::R_EXPECTED_EX:
-        case THandlerShortCircuitException::R_UNEXPECTED_EX:
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
           $this->eventHandler_->sendError('lobDataById', $args, $currentseqid, $ex->result);
           throw $ex->result;
-        case THandlerShortCircuitException::R_SUCCESS:
+        case \THandlerShortCircuitException::R_SUCCESS:
         default:
           $this->eventHandler_->postSend('lobDataById', $args, $currentseqid);
           return $currentseqid;
@@ -818,15 +818,15 @@ class MyServiceFastClient extends ThriftClientBase implements MyServiceFastIf {
 
 abstract class MyServiceFastAsyncProcessorBase extends ThriftAsyncProcessor {
   abstract const type TThriftIf as MyServiceFastAsyncIf;
-  protected async function process_ping(int $seqid, TProtocol $input, TProtocol $output): Awaitable<void> {
+  protected async function process_ping(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
     $handler_ctx = $this->eventHandler_->getHandlerContext('ping');
-    $reply_type = TMessageType::REPLY;
+    $reply_type = \TMessageType::REPLY;
 
     $this->eventHandler_->preRead($handler_ctx, 'ping', array());
 
-    if ($input instanceof TBinaryProtocolAccelerated) {
+    if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServiceFast_ping_args');
-    } else if ($input instanceof TCompactProtocolAccelerated) {
+    } else if ($input instanceof \TCompactProtocolAccelerated) {
       $args = thrift_protocol_read_compact_struct($input, 'MyServiceFast_ping_args');
     } else {
       $args = new MyServiceFast_ping_args();
@@ -840,16 +840,16 @@ abstract class MyServiceFastAsyncProcessorBase extends ThriftAsyncProcessor {
       await $this->handler->ping();
       $this->eventHandler_->postExec($handler_ctx, 'ping', $result);
     } catch (Exception $ex) {
-      $reply_type = TMessageType::EXCEPTION;
+      $reply_type = \TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'ping', $ex);
-      $result = new TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
     $this->eventHandler_->preWrite($handler_ctx, 'ping', $result);
-    if ($output instanceof TBinaryProtocolAccelerated)
+    if ($output instanceof \TBinaryProtocolAccelerated)
     {
       thrift_protocol_write_binary($output, 'ping', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
-    else if ($output instanceof TCompactProtocolAccelerated)
+    else if ($output instanceof \TCompactProtocolAccelerated)
     {
       thrift_protocol_write_compact($output, 'ping', $reply_type, $result, $seqid);
     }
@@ -862,15 +862,15 @@ abstract class MyServiceFastAsyncProcessorBase extends ThriftAsyncProcessor {
     }
     $this->eventHandler_->postWrite($handler_ctx, 'ping', $result);
   }
-  protected async function process_getRandomData(int $seqid, TProtocol $input, TProtocol $output): Awaitable<void> {
+  protected async function process_getRandomData(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
     $handler_ctx = $this->eventHandler_->getHandlerContext('getRandomData');
-    $reply_type = TMessageType::REPLY;
+    $reply_type = \TMessageType::REPLY;
 
     $this->eventHandler_->preRead($handler_ctx, 'getRandomData', array());
 
-    if ($input instanceof TBinaryProtocolAccelerated) {
+    if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServiceFast_getRandomData_args');
-    } else if ($input instanceof TCompactProtocolAccelerated) {
+    } else if ($input instanceof \TCompactProtocolAccelerated) {
       $args = thrift_protocol_read_compact_struct($input, 'MyServiceFast_getRandomData_args');
     } else {
       $args = new MyServiceFast_getRandomData_args();
@@ -884,16 +884,16 @@ abstract class MyServiceFastAsyncProcessorBase extends ThriftAsyncProcessor {
       $result->success = await $this->handler->getRandomData();
       $this->eventHandler_->postExec($handler_ctx, 'getRandomData', $result);
     } catch (Exception $ex) {
-      $reply_type = TMessageType::EXCEPTION;
+      $reply_type = \TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'getRandomData', $ex);
-      $result = new TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
     $this->eventHandler_->preWrite($handler_ctx, 'getRandomData', $result);
-    if ($output instanceof TBinaryProtocolAccelerated)
+    if ($output instanceof \TBinaryProtocolAccelerated)
     {
       thrift_protocol_write_binary($output, 'getRandomData', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
-    else if ($output instanceof TCompactProtocolAccelerated)
+    else if ($output instanceof \TCompactProtocolAccelerated)
     {
       thrift_protocol_write_compact($output, 'getRandomData', $reply_type, $result, $seqid);
     }
@@ -906,15 +906,15 @@ abstract class MyServiceFastAsyncProcessorBase extends ThriftAsyncProcessor {
     }
     $this->eventHandler_->postWrite($handler_ctx, 'getRandomData', $result);
   }
-  protected async function process_hasDataById(int $seqid, TProtocol $input, TProtocol $output): Awaitable<void> {
+  protected async function process_hasDataById(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
     $handler_ctx = $this->eventHandler_->getHandlerContext('hasDataById');
-    $reply_type = TMessageType::REPLY;
+    $reply_type = \TMessageType::REPLY;
 
     $this->eventHandler_->preRead($handler_ctx, 'hasDataById', array());
 
-    if ($input instanceof TBinaryProtocolAccelerated) {
+    if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServiceFast_hasDataById_args');
-    } else if ($input instanceof TCompactProtocolAccelerated) {
+    } else if ($input instanceof \TCompactProtocolAccelerated) {
       $args = thrift_protocol_read_compact_struct($input, 'MyServiceFast_hasDataById_args');
     } else {
       $args = new MyServiceFast_hasDataById_args();
@@ -928,16 +928,16 @@ abstract class MyServiceFastAsyncProcessorBase extends ThriftAsyncProcessor {
       $result->success = await $this->handler->hasDataById($args->id);
       $this->eventHandler_->postExec($handler_ctx, 'hasDataById', $result);
     } catch (Exception $ex) {
-      $reply_type = TMessageType::EXCEPTION;
+      $reply_type = \TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'hasDataById', $ex);
-      $result = new TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
     $this->eventHandler_->preWrite($handler_ctx, 'hasDataById', $result);
-    if ($output instanceof TBinaryProtocolAccelerated)
+    if ($output instanceof \TBinaryProtocolAccelerated)
     {
       thrift_protocol_write_binary($output, 'hasDataById', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
-    else if ($output instanceof TCompactProtocolAccelerated)
+    else if ($output instanceof \TCompactProtocolAccelerated)
     {
       thrift_protocol_write_compact($output, 'hasDataById', $reply_type, $result, $seqid);
     }
@@ -950,15 +950,15 @@ abstract class MyServiceFastAsyncProcessorBase extends ThriftAsyncProcessor {
     }
     $this->eventHandler_->postWrite($handler_ctx, 'hasDataById', $result);
   }
-  protected async function process_getDataById(int $seqid, TProtocol $input, TProtocol $output): Awaitable<void> {
+  protected async function process_getDataById(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
     $handler_ctx = $this->eventHandler_->getHandlerContext('getDataById');
-    $reply_type = TMessageType::REPLY;
+    $reply_type = \TMessageType::REPLY;
 
     $this->eventHandler_->preRead($handler_ctx, 'getDataById', array());
 
-    if ($input instanceof TBinaryProtocolAccelerated) {
+    if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServiceFast_getDataById_args');
-    } else if ($input instanceof TCompactProtocolAccelerated) {
+    } else if ($input instanceof \TCompactProtocolAccelerated) {
       $args = thrift_protocol_read_compact_struct($input, 'MyServiceFast_getDataById_args');
     } else {
       $args = new MyServiceFast_getDataById_args();
@@ -972,16 +972,16 @@ abstract class MyServiceFastAsyncProcessorBase extends ThriftAsyncProcessor {
       $result->success = await $this->handler->getDataById($args->id);
       $this->eventHandler_->postExec($handler_ctx, 'getDataById', $result);
     } catch (Exception $ex) {
-      $reply_type = TMessageType::EXCEPTION;
+      $reply_type = \TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'getDataById', $ex);
-      $result = new TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
     $this->eventHandler_->preWrite($handler_ctx, 'getDataById', $result);
-    if ($output instanceof TBinaryProtocolAccelerated)
+    if ($output instanceof \TBinaryProtocolAccelerated)
     {
       thrift_protocol_write_binary($output, 'getDataById', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
-    else if ($output instanceof TCompactProtocolAccelerated)
+    else if ($output instanceof \TCompactProtocolAccelerated)
     {
       thrift_protocol_write_compact($output, 'getDataById', $reply_type, $result, $seqid);
     }
@@ -994,15 +994,15 @@ abstract class MyServiceFastAsyncProcessorBase extends ThriftAsyncProcessor {
     }
     $this->eventHandler_->postWrite($handler_ctx, 'getDataById', $result);
   }
-  protected async function process_putDataById(int $seqid, TProtocol $input, TProtocol $output): Awaitable<void> {
+  protected async function process_putDataById(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
     $handler_ctx = $this->eventHandler_->getHandlerContext('putDataById');
-    $reply_type = TMessageType::REPLY;
+    $reply_type = \TMessageType::REPLY;
 
     $this->eventHandler_->preRead($handler_ctx, 'putDataById', array());
 
-    if ($input instanceof TBinaryProtocolAccelerated) {
+    if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServiceFast_putDataById_args');
-    } else if ($input instanceof TCompactProtocolAccelerated) {
+    } else if ($input instanceof \TCompactProtocolAccelerated) {
       $args = thrift_protocol_read_compact_struct($input, 'MyServiceFast_putDataById_args');
     } else {
       $args = new MyServiceFast_putDataById_args();
@@ -1016,16 +1016,16 @@ abstract class MyServiceFastAsyncProcessorBase extends ThriftAsyncProcessor {
       await $this->handler->putDataById($args->id, $args->data);
       $this->eventHandler_->postExec($handler_ctx, 'putDataById', $result);
     } catch (Exception $ex) {
-      $reply_type = TMessageType::EXCEPTION;
+      $reply_type = \TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'putDataById', $ex);
-      $result = new TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
     $this->eventHandler_->preWrite($handler_ctx, 'putDataById', $result);
-    if ($output instanceof TBinaryProtocolAccelerated)
+    if ($output instanceof \TBinaryProtocolAccelerated)
     {
       thrift_protocol_write_binary($output, 'putDataById', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
-    else if ($output instanceof TCompactProtocolAccelerated)
+    else if ($output instanceof \TCompactProtocolAccelerated)
     {
       thrift_protocol_write_compact($output, 'putDataById', $reply_type, $result, $seqid);
     }
@@ -1038,15 +1038,15 @@ abstract class MyServiceFastAsyncProcessorBase extends ThriftAsyncProcessor {
     }
     $this->eventHandler_->postWrite($handler_ctx, 'putDataById', $result);
   }
-  protected async function process_lobDataById(int $seqid, TProtocol $input, TProtocol $output): Awaitable<void> {
+  protected async function process_lobDataById(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
     $handler_ctx = $this->eventHandler_->getHandlerContext('lobDataById');
-    $reply_type = TMessageType::REPLY;
+    $reply_type = \TMessageType::REPLY;
 
     $this->eventHandler_->preRead($handler_ctx, 'lobDataById', array());
 
-    if ($input instanceof TBinaryProtocolAccelerated) {
+    if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServiceFast_lobDataById_args');
-    } else if ($input instanceof TCompactProtocolAccelerated) {
+    } else if ($input instanceof \TCompactProtocolAccelerated) {
       $args = thrift_protocol_read_compact_struct($input, 'MyServiceFast_lobDataById_args');
     } else {
       $args = new MyServiceFast_lobDataById_args();
@@ -1058,9 +1058,9 @@ abstract class MyServiceFastAsyncProcessorBase extends ThriftAsyncProcessor {
       $this->eventHandler_->preExec($handler_ctx, 'lobDataById', $args);
       await $this->handler->lobDataById($args->id, $args->data);
     } catch (Exception $ex) {
-      $reply_type = TMessageType::EXCEPTION;
+      $reply_type = \TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'lobDataById', $ex);
-      $result = new TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
     return;
   }
@@ -1071,15 +1071,15 @@ class MyServiceFastAsyncProcessor extends MyServiceFastAsyncProcessorBase {
 
 abstract class MyServiceFastSyncProcessorBase extends ThriftSyncProcessor {
   abstract const type TThriftIf as MyServiceFastIf;
-  protected function process_ping(int $seqid, TProtocol $input, TProtocol $output): void {
+  protected function process_ping(int $seqid, \TProtocol $input, \TProtocol $output): void {
     $handler_ctx = $this->eventHandler_->getHandlerContext('ping');
-    $reply_type = TMessageType::REPLY;
+    $reply_type = \TMessageType::REPLY;
 
     $this->eventHandler_->preRead($handler_ctx, 'ping', array());
 
-    if ($input instanceof TBinaryProtocolAccelerated) {
+    if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServiceFast_ping_args');
-    } else if ($input instanceof TCompactProtocolAccelerated) {
+    } else if ($input instanceof \TCompactProtocolAccelerated) {
       $args = thrift_protocol_read_compact_struct($input, 'MyServiceFast_ping_args');
     } else {
       $args = new MyServiceFast_ping_args();
@@ -1093,16 +1093,16 @@ abstract class MyServiceFastSyncProcessorBase extends ThriftSyncProcessor {
       $this->handler->ping();
       $this->eventHandler_->postExec($handler_ctx, 'ping', $result);
     } catch (Exception $ex) {
-      $reply_type = TMessageType::EXCEPTION;
+      $reply_type = \TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'ping', $ex);
-      $result = new TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
     $this->eventHandler_->preWrite($handler_ctx, 'ping', $result);
-    if ($output instanceof TBinaryProtocolAccelerated)
+    if ($output instanceof \TBinaryProtocolAccelerated)
     {
       thrift_protocol_write_binary($output, 'ping', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
-    else if ($output instanceof TCompactProtocolAccelerated)
+    else if ($output instanceof \TCompactProtocolAccelerated)
     {
       thrift_protocol_write_compact($output, 'ping', $reply_type, $result, $seqid);
     }
@@ -1115,15 +1115,15 @@ abstract class MyServiceFastSyncProcessorBase extends ThriftSyncProcessor {
     }
     $this->eventHandler_->postWrite($handler_ctx, 'ping', $result);
   }
-  protected function process_getRandomData(int $seqid, TProtocol $input, TProtocol $output): void {
+  protected function process_getRandomData(int $seqid, \TProtocol $input, \TProtocol $output): void {
     $handler_ctx = $this->eventHandler_->getHandlerContext('getRandomData');
-    $reply_type = TMessageType::REPLY;
+    $reply_type = \TMessageType::REPLY;
 
     $this->eventHandler_->preRead($handler_ctx, 'getRandomData', array());
 
-    if ($input instanceof TBinaryProtocolAccelerated) {
+    if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServiceFast_getRandomData_args');
-    } else if ($input instanceof TCompactProtocolAccelerated) {
+    } else if ($input instanceof \TCompactProtocolAccelerated) {
       $args = thrift_protocol_read_compact_struct($input, 'MyServiceFast_getRandomData_args');
     } else {
       $args = new MyServiceFast_getRandomData_args();
@@ -1137,16 +1137,16 @@ abstract class MyServiceFastSyncProcessorBase extends ThriftSyncProcessor {
       $result->success = $this->handler->getRandomData();
       $this->eventHandler_->postExec($handler_ctx, 'getRandomData', $result);
     } catch (Exception $ex) {
-      $reply_type = TMessageType::EXCEPTION;
+      $reply_type = \TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'getRandomData', $ex);
-      $result = new TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
     $this->eventHandler_->preWrite($handler_ctx, 'getRandomData', $result);
-    if ($output instanceof TBinaryProtocolAccelerated)
+    if ($output instanceof \TBinaryProtocolAccelerated)
     {
       thrift_protocol_write_binary($output, 'getRandomData', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
-    else if ($output instanceof TCompactProtocolAccelerated)
+    else if ($output instanceof \TCompactProtocolAccelerated)
     {
       thrift_protocol_write_compact($output, 'getRandomData', $reply_type, $result, $seqid);
     }
@@ -1159,15 +1159,15 @@ abstract class MyServiceFastSyncProcessorBase extends ThriftSyncProcessor {
     }
     $this->eventHandler_->postWrite($handler_ctx, 'getRandomData', $result);
   }
-  protected function process_hasDataById(int $seqid, TProtocol $input, TProtocol $output): void {
+  protected function process_hasDataById(int $seqid, \TProtocol $input, \TProtocol $output): void {
     $handler_ctx = $this->eventHandler_->getHandlerContext('hasDataById');
-    $reply_type = TMessageType::REPLY;
+    $reply_type = \TMessageType::REPLY;
 
     $this->eventHandler_->preRead($handler_ctx, 'hasDataById', array());
 
-    if ($input instanceof TBinaryProtocolAccelerated) {
+    if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServiceFast_hasDataById_args');
-    } else if ($input instanceof TCompactProtocolAccelerated) {
+    } else if ($input instanceof \TCompactProtocolAccelerated) {
       $args = thrift_protocol_read_compact_struct($input, 'MyServiceFast_hasDataById_args');
     } else {
       $args = new MyServiceFast_hasDataById_args();
@@ -1181,16 +1181,16 @@ abstract class MyServiceFastSyncProcessorBase extends ThriftSyncProcessor {
       $result->success = $this->handler->hasDataById($args->id);
       $this->eventHandler_->postExec($handler_ctx, 'hasDataById', $result);
     } catch (Exception $ex) {
-      $reply_type = TMessageType::EXCEPTION;
+      $reply_type = \TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'hasDataById', $ex);
-      $result = new TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
     $this->eventHandler_->preWrite($handler_ctx, 'hasDataById', $result);
-    if ($output instanceof TBinaryProtocolAccelerated)
+    if ($output instanceof \TBinaryProtocolAccelerated)
     {
       thrift_protocol_write_binary($output, 'hasDataById', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
-    else if ($output instanceof TCompactProtocolAccelerated)
+    else if ($output instanceof \TCompactProtocolAccelerated)
     {
       thrift_protocol_write_compact($output, 'hasDataById', $reply_type, $result, $seqid);
     }
@@ -1203,15 +1203,15 @@ abstract class MyServiceFastSyncProcessorBase extends ThriftSyncProcessor {
     }
     $this->eventHandler_->postWrite($handler_ctx, 'hasDataById', $result);
   }
-  protected function process_getDataById(int $seqid, TProtocol $input, TProtocol $output): void {
+  protected function process_getDataById(int $seqid, \TProtocol $input, \TProtocol $output): void {
     $handler_ctx = $this->eventHandler_->getHandlerContext('getDataById');
-    $reply_type = TMessageType::REPLY;
+    $reply_type = \TMessageType::REPLY;
 
     $this->eventHandler_->preRead($handler_ctx, 'getDataById', array());
 
-    if ($input instanceof TBinaryProtocolAccelerated) {
+    if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServiceFast_getDataById_args');
-    } else if ($input instanceof TCompactProtocolAccelerated) {
+    } else if ($input instanceof \TCompactProtocolAccelerated) {
       $args = thrift_protocol_read_compact_struct($input, 'MyServiceFast_getDataById_args');
     } else {
       $args = new MyServiceFast_getDataById_args();
@@ -1225,16 +1225,16 @@ abstract class MyServiceFastSyncProcessorBase extends ThriftSyncProcessor {
       $result->success = $this->handler->getDataById($args->id);
       $this->eventHandler_->postExec($handler_ctx, 'getDataById', $result);
     } catch (Exception $ex) {
-      $reply_type = TMessageType::EXCEPTION;
+      $reply_type = \TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'getDataById', $ex);
-      $result = new TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
     $this->eventHandler_->preWrite($handler_ctx, 'getDataById', $result);
-    if ($output instanceof TBinaryProtocolAccelerated)
+    if ($output instanceof \TBinaryProtocolAccelerated)
     {
       thrift_protocol_write_binary($output, 'getDataById', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
-    else if ($output instanceof TCompactProtocolAccelerated)
+    else if ($output instanceof \TCompactProtocolAccelerated)
     {
       thrift_protocol_write_compact($output, 'getDataById', $reply_type, $result, $seqid);
     }
@@ -1247,15 +1247,15 @@ abstract class MyServiceFastSyncProcessorBase extends ThriftSyncProcessor {
     }
     $this->eventHandler_->postWrite($handler_ctx, 'getDataById', $result);
   }
-  protected function process_putDataById(int $seqid, TProtocol $input, TProtocol $output): void {
+  protected function process_putDataById(int $seqid, \TProtocol $input, \TProtocol $output): void {
     $handler_ctx = $this->eventHandler_->getHandlerContext('putDataById');
-    $reply_type = TMessageType::REPLY;
+    $reply_type = \TMessageType::REPLY;
 
     $this->eventHandler_->preRead($handler_ctx, 'putDataById', array());
 
-    if ($input instanceof TBinaryProtocolAccelerated) {
+    if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServiceFast_putDataById_args');
-    } else if ($input instanceof TCompactProtocolAccelerated) {
+    } else if ($input instanceof \TCompactProtocolAccelerated) {
       $args = thrift_protocol_read_compact_struct($input, 'MyServiceFast_putDataById_args');
     } else {
       $args = new MyServiceFast_putDataById_args();
@@ -1269,16 +1269,16 @@ abstract class MyServiceFastSyncProcessorBase extends ThriftSyncProcessor {
       $this->handler->putDataById($args->id, $args->data);
       $this->eventHandler_->postExec($handler_ctx, 'putDataById', $result);
     } catch (Exception $ex) {
-      $reply_type = TMessageType::EXCEPTION;
+      $reply_type = \TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'putDataById', $ex);
-      $result = new TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
     $this->eventHandler_->preWrite($handler_ctx, 'putDataById', $result);
-    if ($output instanceof TBinaryProtocolAccelerated)
+    if ($output instanceof \TBinaryProtocolAccelerated)
     {
       thrift_protocol_write_binary($output, 'putDataById', $reply_type, $result, $seqid, $output->isStrictWrite());
     }
-    else if ($output instanceof TCompactProtocolAccelerated)
+    else if ($output instanceof \TCompactProtocolAccelerated)
     {
       thrift_protocol_write_compact($output, 'putDataById', $reply_type, $result, $seqid);
     }
@@ -1291,15 +1291,15 @@ abstract class MyServiceFastSyncProcessorBase extends ThriftSyncProcessor {
     }
     $this->eventHandler_->postWrite($handler_ctx, 'putDataById', $result);
   }
-  protected function process_lobDataById(int $seqid, TProtocol $input, TProtocol $output): void {
+  protected function process_lobDataById(int $seqid, \TProtocol $input, \TProtocol $output): void {
     $handler_ctx = $this->eventHandler_->getHandlerContext('lobDataById');
-    $reply_type = TMessageType::REPLY;
+    $reply_type = \TMessageType::REPLY;
 
     $this->eventHandler_->preRead($handler_ctx, 'lobDataById', array());
 
-    if ($input instanceof TBinaryProtocolAccelerated) {
+    if ($input instanceof \TBinaryProtocolAccelerated) {
       $args = thrift_protocol_read_binary_struct($input, 'MyServiceFast_lobDataById_args');
-    } else if ($input instanceof TCompactProtocolAccelerated) {
+    } else if ($input instanceof \TCompactProtocolAccelerated) {
       $args = thrift_protocol_read_compact_struct($input, 'MyServiceFast_lobDataById_args');
     } else {
       $args = new MyServiceFast_lobDataById_args();
@@ -1311,9 +1311,9 @@ abstract class MyServiceFastSyncProcessorBase extends ThriftSyncProcessor {
       $this->eventHandler_->preExec($handler_ctx, 'lobDataById', $args);
       $this->handler->lobDataById($args->id, $args->data);
     } catch (Exception $ex) {
-      $reply_type = TMessageType::EXCEPTION;
+      $reply_type = \TMessageType::EXCEPTION;
       $this->eventHandler_->handlerError($handler_ctx, 'lobDataById', $ex);
-      $result = new TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
     }
     return;
   }
@@ -1326,7 +1326,7 @@ class MyServiceFastProcessor extends MyServiceFastSyncProcessor {}
 
 // HELPER FUNCTIONS AND STRUCTURES
 
-class MyServiceFast_ping_args implements IThriftStruct, IThriftShapishStruct {
+class MyServiceFast_ping_args implements \IThriftStruct, \IThriftShapishStruct {
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1359,7 +1359,7 @@ class MyServiceFast_ping_args implements IThriftStruct, IThriftShapishStruct {
     return shape(
     );
   }
-  public function read(TProtocol $input): int {
+  public function read(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -1368,7 +1368,7 @@ class MyServiceFast_ping_args implements IThriftStruct, IThriftShapishStruct {
     while (true)
     {
       $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
+      if ($ftype == \TType::STOP) {
         break;
       }
       if (!$fid && $fname !== null) {
@@ -1389,7 +1389,7 @@ class MyServiceFast_ping_args implements IThriftStruct, IThriftShapishStruct {
     return $xfer;
   }
 
-  public function write(TProtocol $output): int {
+  public function write(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyServiceFast_ping_args');
     $xfer += $output->writeFieldStop();
@@ -1399,7 +1399,7 @@ class MyServiceFast_ping_args implements IThriftStruct, IThriftShapishStruct {
 
 }
 
-class MyServiceFast_ping_result implements IThriftStruct, IThriftShapishStruct {
+class MyServiceFast_ping_result implements \IThriftStruct, \IThriftShapishStruct {
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1413,7 +1413,7 @@ class MyServiceFast_ping_result implements IThriftStruct, IThriftShapishStruct {
     return 'MyServiceFast_ping_result';
   }
 
-  public function read(TProtocol $input): int {
+  public function read(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -1422,7 +1422,7 @@ class MyServiceFast_ping_result implements IThriftStruct, IThriftShapishStruct {
     while (true)
     {
       $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
+      if ($ftype == \TType::STOP) {
         break;
       }
       if (!$fid && $fname !== null) {
@@ -1443,7 +1443,7 @@ class MyServiceFast_ping_result implements IThriftStruct, IThriftShapishStruct {
     return $xfer;
   }
 
-  public function write(TProtocol $output): int {
+  public function write(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyServiceFast_ping_result');
     $xfer += $output->writeFieldStop();
@@ -1453,7 +1453,7 @@ class MyServiceFast_ping_result implements IThriftStruct, IThriftShapishStruct {
 
 }
 
-class MyServiceFast_getRandomData_args implements IThriftStruct, IThriftShapishStruct {
+class MyServiceFast_getRandomData_args implements \IThriftStruct, \IThriftShapishStruct {
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1486,7 +1486,7 @@ class MyServiceFast_getRandomData_args implements IThriftStruct, IThriftShapishS
     return shape(
     );
   }
-  public function read(TProtocol $input): int {
+  public function read(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -1495,7 +1495,7 @@ class MyServiceFast_getRandomData_args implements IThriftStruct, IThriftShapishS
     while (true)
     {
       $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
+      if ($ftype == \TType::STOP) {
         break;
       }
       if (!$fid && $fname !== null) {
@@ -1516,7 +1516,7 @@ class MyServiceFast_getRandomData_args implements IThriftStruct, IThriftShapishS
     return $xfer;
   }
 
-  public function write(TProtocol $output): int {
+  public function write(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyServiceFast_getRandomData_args');
     $xfer += $output->writeFieldStop();
@@ -1526,11 +1526,11 @@ class MyServiceFast_getRandomData_args implements IThriftStruct, IThriftShapishS
 
 }
 
-class MyServiceFast_getRandomData_result implements IThriftStruct, IThriftShapishStruct {
+class MyServiceFast_getRandomData_result implements \IThriftStruct, \IThriftShapishStruct {
   public static array $_TSPEC = array(
     0 => array(
       'var' => 'success',
-      'type' => TType::STRING,
+      'type' => \TType::STRING,
       ),
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1546,7 +1546,7 @@ class MyServiceFast_getRandomData_result implements IThriftStruct, IThriftShapis
     return 'MyServiceFast_getRandomData_result';
   }
 
-  public function read(TProtocol $input): int {
+  public function read(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -1555,7 +1555,7 @@ class MyServiceFast_getRandomData_result implements IThriftStruct, IThriftShapis
     while (true)
     {
       $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
+      if ($ftype == \TType::STOP) {
         break;
       }
       if (!$fid && $fname !== null) {
@@ -1567,7 +1567,7 @@ class MyServiceFast_getRandomData_result implements IThriftStruct, IThriftShapis
       switch ($fid)
       {
         case 0:
-          if ($ftype == TType::STRING) {
+          if ($ftype == \TType::STRING) {
             $xfer += $input->readString($this->success);
           } else {
             $xfer += $input->skip($ftype);
@@ -1583,12 +1583,12 @@ class MyServiceFast_getRandomData_result implements IThriftStruct, IThriftShapis
     return $xfer;
   }
 
-  public function write(TProtocol $output): int {
+  public function write(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyServiceFast_getRandomData_result');
     if ($this->success !== null) {
       $_val0 = $this->success;
-      $xfer += $output->writeFieldBegin('success', TType::STRING, 0);
+      $xfer += $output->writeFieldBegin('success', \TType::STRING, 0);
       $xfer += $output->writeString($_val0);
       $xfer += $output->writeFieldEnd();
     }
@@ -1599,11 +1599,11 @@ class MyServiceFast_getRandomData_result implements IThriftStruct, IThriftShapis
 
 }
 
-class MyServiceFast_hasDataById_args implements IThriftStruct, IThriftShapishStruct {
+class MyServiceFast_hasDataById_args implements \IThriftStruct, \IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'id',
-      'type' => TType::I64,
+      'type' => \TType::I64,
       ),
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1653,7 +1653,7 @@ class MyServiceFast_hasDataById_args implements IThriftStruct, IThriftShapishStr
       'id' => $this->id,
     );
   }
-  public function read(TProtocol $input): int {
+  public function read(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -1662,7 +1662,7 @@ class MyServiceFast_hasDataById_args implements IThriftStruct, IThriftShapishStr
     while (true)
     {
       $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
+      if ($ftype == \TType::STOP) {
         break;
       }
       if (!$fid && $fname !== null) {
@@ -1674,7 +1674,7 @@ class MyServiceFast_hasDataById_args implements IThriftStruct, IThriftShapishStr
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::I64) {
+          if ($ftype == \TType::I64) {
             $xfer += $input->readI64($this->id);
           } else {
             $xfer += $input->skip($ftype);
@@ -1690,12 +1690,12 @@ class MyServiceFast_hasDataById_args implements IThriftStruct, IThriftShapishStr
     return $xfer;
   }
 
-  public function write(TProtocol $output): int {
+  public function write(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyServiceFast_hasDataById_args');
     if ($this->id !== null) {
       $_val0 = $this->id;
-      $xfer += $output->writeFieldBegin('id', TType::I64, 1);
+      $xfer += $output->writeFieldBegin('id', \TType::I64, 1);
       $xfer += $output->writeI64($_val0);
       $xfer += $output->writeFieldEnd();
     }
@@ -1706,11 +1706,11 @@ class MyServiceFast_hasDataById_args implements IThriftStruct, IThriftShapishStr
 
 }
 
-class MyServiceFast_hasDataById_result implements IThriftStruct, IThriftShapishStruct {
+class MyServiceFast_hasDataById_result implements \IThriftStruct, \IThriftShapishStruct {
   public static array $_TSPEC = array(
     0 => array(
       'var' => 'success',
-      'type' => TType::BOOL,
+      'type' => \TType::BOOL,
       ),
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1726,7 +1726,7 @@ class MyServiceFast_hasDataById_result implements IThriftStruct, IThriftShapishS
     return 'MyServiceFast_hasDataById_result';
   }
 
-  public function read(TProtocol $input): int {
+  public function read(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -1735,7 +1735,7 @@ class MyServiceFast_hasDataById_result implements IThriftStruct, IThriftShapishS
     while (true)
     {
       $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
+      if ($ftype == \TType::STOP) {
         break;
       }
       if (!$fid && $fname !== null) {
@@ -1747,7 +1747,7 @@ class MyServiceFast_hasDataById_result implements IThriftStruct, IThriftShapishS
       switch ($fid)
       {
         case 0:
-          if ($ftype == TType::BOOL) {
+          if ($ftype == \TType::BOOL) {
             $xfer += $input->readBool($this->success);
           } else {
             $xfer += $input->skip($ftype);
@@ -1763,12 +1763,12 @@ class MyServiceFast_hasDataById_result implements IThriftStruct, IThriftShapishS
     return $xfer;
   }
 
-  public function write(TProtocol $output): int {
+  public function write(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyServiceFast_hasDataById_result');
     if ($this->success !== null) {
       $_val0 = $this->success;
-      $xfer += $output->writeFieldBegin('success', TType::BOOL, 0);
+      $xfer += $output->writeFieldBegin('success', \TType::BOOL, 0);
       $xfer += $output->writeBool($_val0);
       $xfer += $output->writeFieldEnd();
     }
@@ -1779,11 +1779,11 @@ class MyServiceFast_hasDataById_result implements IThriftStruct, IThriftShapishS
 
 }
 
-class MyServiceFast_getDataById_args implements IThriftStruct, IThriftShapishStruct {
+class MyServiceFast_getDataById_args implements \IThriftStruct, \IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'id',
-      'type' => TType::I64,
+      'type' => \TType::I64,
       ),
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1833,7 +1833,7 @@ class MyServiceFast_getDataById_args implements IThriftStruct, IThriftShapishStr
       'id' => $this->id,
     );
   }
-  public function read(TProtocol $input): int {
+  public function read(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -1842,7 +1842,7 @@ class MyServiceFast_getDataById_args implements IThriftStruct, IThriftShapishStr
     while (true)
     {
       $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
+      if ($ftype == \TType::STOP) {
         break;
       }
       if (!$fid && $fname !== null) {
@@ -1854,7 +1854,7 @@ class MyServiceFast_getDataById_args implements IThriftStruct, IThriftShapishStr
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::I64) {
+          if ($ftype == \TType::I64) {
             $xfer += $input->readI64($this->id);
           } else {
             $xfer += $input->skip($ftype);
@@ -1870,12 +1870,12 @@ class MyServiceFast_getDataById_args implements IThriftStruct, IThriftShapishStr
     return $xfer;
   }
 
-  public function write(TProtocol $output): int {
+  public function write(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyServiceFast_getDataById_args');
     if ($this->id !== null) {
       $_val0 = $this->id;
-      $xfer += $output->writeFieldBegin('id', TType::I64, 1);
+      $xfer += $output->writeFieldBegin('id', \TType::I64, 1);
       $xfer += $output->writeI64($_val0);
       $xfer += $output->writeFieldEnd();
     }
@@ -1886,11 +1886,11 @@ class MyServiceFast_getDataById_args implements IThriftStruct, IThriftShapishStr
 
 }
 
-class MyServiceFast_getDataById_result implements IThriftStruct, IThriftShapishStruct {
+class MyServiceFast_getDataById_result implements \IThriftStruct, \IThriftShapishStruct {
   public static array $_TSPEC = array(
     0 => array(
       'var' => 'success',
-      'type' => TType::STRING,
+      'type' => \TType::STRING,
       ),
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1906,7 +1906,7 @@ class MyServiceFast_getDataById_result implements IThriftStruct, IThriftShapishS
     return 'MyServiceFast_getDataById_result';
   }
 
-  public function read(TProtocol $input): int {
+  public function read(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -1915,7 +1915,7 @@ class MyServiceFast_getDataById_result implements IThriftStruct, IThriftShapishS
     while (true)
     {
       $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
+      if ($ftype == \TType::STOP) {
         break;
       }
       if (!$fid && $fname !== null) {
@@ -1927,7 +1927,7 @@ class MyServiceFast_getDataById_result implements IThriftStruct, IThriftShapishS
       switch ($fid)
       {
         case 0:
-          if ($ftype == TType::STRING) {
+          if ($ftype == \TType::STRING) {
             $xfer += $input->readString($this->success);
           } else {
             $xfer += $input->skip($ftype);
@@ -1943,12 +1943,12 @@ class MyServiceFast_getDataById_result implements IThriftStruct, IThriftShapishS
     return $xfer;
   }
 
-  public function write(TProtocol $output): int {
+  public function write(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyServiceFast_getDataById_result');
     if ($this->success !== null) {
       $_val0 = $this->success;
-      $xfer += $output->writeFieldBegin('success', TType::STRING, 0);
+      $xfer += $output->writeFieldBegin('success', \TType::STRING, 0);
       $xfer += $output->writeString($_val0);
       $xfer += $output->writeFieldEnd();
     }
@@ -1959,15 +1959,15 @@ class MyServiceFast_getDataById_result implements IThriftStruct, IThriftShapishS
 
 }
 
-class MyServiceFast_putDataById_args implements IThriftStruct, IThriftShapishStruct {
+class MyServiceFast_putDataById_args implements \IThriftStruct, \IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'id',
-      'type' => TType::I64,
+      'type' => \TType::I64,
       ),
     2 => array(
       'var' => 'data',
-      'type' => TType::STRING,
+      'type' => \TType::STRING,
       ),
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -2034,7 +2034,7 @@ class MyServiceFast_putDataById_args implements IThriftStruct, IThriftShapishStr
       'data' => $this->data,
     );
   }
-  public function read(TProtocol $input): int {
+  public function read(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -2043,7 +2043,7 @@ class MyServiceFast_putDataById_args implements IThriftStruct, IThriftShapishStr
     while (true)
     {
       $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
+      if ($ftype == \TType::STOP) {
         break;
       }
       if (!$fid && $fname !== null) {
@@ -2055,14 +2055,14 @@ class MyServiceFast_putDataById_args implements IThriftStruct, IThriftShapishStr
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::I64) {
+          if ($ftype == \TType::I64) {
             $xfer += $input->readI64($this->id);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 2:
-          if ($ftype == TType::STRING) {
+          if ($ftype == \TType::STRING) {
             $xfer += $input->readString($this->data);
           } else {
             $xfer += $input->skip($ftype);
@@ -2078,18 +2078,18 @@ class MyServiceFast_putDataById_args implements IThriftStruct, IThriftShapishStr
     return $xfer;
   }
 
-  public function write(TProtocol $output): int {
+  public function write(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyServiceFast_putDataById_args');
     if ($this->id !== null) {
       $_val0 = $this->id;
-      $xfer += $output->writeFieldBegin('id', TType::I64, 1);
+      $xfer += $output->writeFieldBegin('id', \TType::I64, 1);
       $xfer += $output->writeI64($_val0);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->data !== null) {
       $_val1 = $this->data;
-      $xfer += $output->writeFieldBegin('data', TType::STRING, 2);
+      $xfer += $output->writeFieldBegin('data', \TType::STRING, 2);
       $xfer += $output->writeString($_val1);
       $xfer += $output->writeFieldEnd();
     }
@@ -2100,7 +2100,7 @@ class MyServiceFast_putDataById_args implements IThriftStruct, IThriftShapishStr
 
 }
 
-class MyServiceFast_putDataById_result implements IThriftStruct, IThriftShapishStruct {
+class MyServiceFast_putDataById_result implements \IThriftStruct, \IThriftShapishStruct {
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -2114,7 +2114,7 @@ class MyServiceFast_putDataById_result implements IThriftStruct, IThriftShapishS
     return 'MyServiceFast_putDataById_result';
   }
 
-  public function read(TProtocol $input): int {
+  public function read(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -2123,7 +2123,7 @@ class MyServiceFast_putDataById_result implements IThriftStruct, IThriftShapishS
     while (true)
     {
       $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
+      if ($ftype == \TType::STOP) {
         break;
       }
       if (!$fid && $fname !== null) {
@@ -2144,7 +2144,7 @@ class MyServiceFast_putDataById_result implements IThriftStruct, IThriftShapishS
     return $xfer;
   }
 
-  public function write(TProtocol $output): int {
+  public function write(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyServiceFast_putDataById_result');
     $xfer += $output->writeFieldStop();
@@ -2154,15 +2154,15 @@ class MyServiceFast_putDataById_result implements IThriftStruct, IThriftShapishS
 
 }
 
-class MyServiceFast_lobDataById_args implements IThriftStruct, IThriftShapishStruct {
+class MyServiceFast_lobDataById_args implements \IThriftStruct, \IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'id',
-      'type' => TType::I64,
+      'type' => \TType::I64,
       ),
     2 => array(
       'var' => 'data',
-      'type' => TType::STRING,
+      'type' => \TType::STRING,
       ),
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -2229,7 +2229,7 @@ class MyServiceFast_lobDataById_args implements IThriftStruct, IThriftShapishStr
       'data' => $this->data,
     );
   }
-  public function read(TProtocol $input): int {
+  public function read(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -2238,7 +2238,7 @@ class MyServiceFast_lobDataById_args implements IThriftStruct, IThriftShapishStr
     while (true)
     {
       $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
+      if ($ftype == \TType::STOP) {
         break;
       }
       if (!$fid && $fname !== null) {
@@ -2250,14 +2250,14 @@ class MyServiceFast_lobDataById_args implements IThriftStruct, IThriftShapishStr
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::I64) {
+          if ($ftype == \TType::I64) {
             $xfer += $input->readI64($this->id);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 2:
-          if ($ftype == TType::STRING) {
+          if ($ftype == \TType::STRING) {
             $xfer += $input->readString($this->data);
           } else {
             $xfer += $input->skip($ftype);
@@ -2273,18 +2273,18 @@ class MyServiceFast_lobDataById_args implements IThriftStruct, IThriftShapishStr
     return $xfer;
   }
 
-  public function write(TProtocol $output): int {
+  public function write(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyServiceFast_lobDataById_args');
     if ($this->id !== null) {
       $_val0 = $this->id;
-      $xfer += $output->writeFieldBegin('id', TType::I64, 1);
+      $xfer += $output->writeFieldBegin('id', \TType::I64, 1);
       $xfer += $output->writeI64($_val0);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->data !== null) {
       $_val1 = $this->data;
-      $xfer += $output->writeFieldBegin('data', TType::STRING, 2);
+      $xfer += $output->writeFieldBegin('data', \TType::STRING, 2);
       $xfer += $output->writeString($_val1);
       $xfer += $output->writeFieldEnd();
     }

@@ -1,4 +1,5 @@
 namespace java.swift test.fixtures.shapes
+namespace hack test.fixtures
 
 enum Enum {
   ENUM = 1;

@@ -12,15 +12,15 @@ enum MyEnum: int {
 }
 type MyEnumType = MyEnum;
 
-class MyStruct implements IThriftStruct, IThriftShapishStruct {
+class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'MyIntField',
-      'type' => TType::I64,
+      'type' => \TType::I64,
       ),
     2 => array(
       'var' => 'MyStringField',
-      'type' => TType::STRING,
+      'type' => \TType::STRING,
       ),
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -87,7 +87,7 @@ class MyStruct implements IThriftStruct, IThriftShapishStruct {
       'MyStringField' => $this->MyStringField,
     );
   }
-  public function read(TProtocol $input): int {
+  public function read(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -96,7 +96,7 @@ class MyStruct implements IThriftStruct, IThriftShapishStruct {
     while (true)
     {
       $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
+      if ($ftype == \TType::STOP) {
         break;
       }
       if (!$fid && $fname !== null) {
@@ -108,14 +108,14 @@ class MyStruct implements IThriftStruct, IThriftShapishStruct {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::I64) {
+          if ($ftype == \TType::I64) {
             $xfer += $input->readI64($this->MyIntField);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 2:
-          if ($ftype == TType::STRING) {
+          if ($ftype == \TType::STRING) {
             $xfer += $input->readString($this->MyStringField);
           } else {
             $xfer += $input->skip($ftype);
@@ -131,18 +131,18 @@ class MyStruct implements IThriftStruct, IThriftShapishStruct {
     return $xfer;
   }
 
-  public function write(TProtocol $output): int {
+  public function write(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyStruct');
     if ($this->MyIntField !== null) {
       $_val0 = $this->MyIntField;
-      $xfer += $output->writeFieldBegin('MyIntField', TType::I64, 1);
+      $xfer += $output->writeFieldBegin('MyIntField', \TType::I64, 1);
       $xfer += $output->writeI64($_val0);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->MyStringField !== null) {
       $_val1 = $this->MyStringField;
-      $xfer += $output->writeFieldBegin('MyStringField', TType::STRING, 2);
+      $xfer += $output->writeFieldBegin('MyStringField', \TType::STRING, 2);
       $xfer += $output->writeString($_val1);
       $xfer += $output->writeFieldEnd();
     }

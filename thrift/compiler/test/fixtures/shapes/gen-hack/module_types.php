@@ -6,16 +6,18 @@
  *  @generated
  */
 
-enum Enum: int {
+namespace test\fixtures;
+
+enum \test\fixtures\Enum: int {
   ENUM = 1;
 }
-type EnumType = Enum;
+type \test\fixtures\EnumType = \test\fixtures\Enum;
 
-class A implements IThriftStruct, IThriftShapishStruct {
+class A implements \IThriftStruct, \IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'a',
-      'type' => TType::STRING,
+      'type' => \TType::STRING,
       ),
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -65,7 +67,7 @@ class A implements IThriftStruct, IThriftShapishStruct {
       'a' => $this->a,
     );
   }
-  public function read(TProtocol $input): int {
+  public function read(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -74,7 +76,7 @@ class A implements IThriftStruct, IThriftShapishStruct {
     while (true)
     {
       $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
+      if ($ftype == \TType::STOP) {
         break;
       }
       if (!$fid && $fname !== null) {
@@ -86,7 +88,7 @@ class A implements IThriftStruct, IThriftShapishStruct {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::STRING) {
+          if ($ftype == \TType::STRING) {
             $xfer += $input->readString($this->a);
           } else {
             $xfer += $input->skip($ftype);
@@ -102,12 +104,12 @@ class A implements IThriftStruct, IThriftShapishStruct {
     return $xfer;
   }
 
-  public function write(TProtocol $output): int {
+  public function write(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('A');
     if ($this->a !== null) {
       $_val0 = $this->a;
-      $xfer += $output->writeFieldBegin('a', TType::STRING, 1);
+      $xfer += $output->writeFieldBegin('a', \TType::STRING, 1);
       $xfer += $output->writeString($_val0);
       $xfer += $output->writeFieldEnd();
     }
@@ -118,80 +120,80 @@ class A implements IThriftStruct, IThriftShapishStruct {
 
 }
 
-class B implements IThriftStruct, IThriftShapishStruct {
+class B implements \IThriftStruct, \IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'just_an_A',
-      'type' => TType::STRUCT,
-      'class' => 'A',
+      'type' => \TType::STRUCT,
+      'class' => '\test\fixtures\A',
       ),
     2 => array(
       'var' => 'set_of_i32',
-      'type' => TType::SET,
-      'etype' => TType::I32,
+      'type' => \TType::SET,
+      'etype' => \TType::I32,
       'elem' => array(
-        'type' => TType::I32,
+        'type' => \TType::I32,
         ),
         'format' => 'collection',
       ),
     3 => array(
       'var' => 'list_of_i32',
-      'type' => TType::LST,
-      'etype' => TType::I32,
+      'type' => \TType::LST,
+      'etype' => \TType::I32,
       'elem' => array(
-        'type' => TType::I32,
+        'type' => \TType::I32,
         ),
         'format' => 'collection',
       ),
     4 => array(
       'var' => 'list_of_string',
-      'type' => TType::LST,
-      'etype' => TType::STRING,
+      'type' => \TType::LST,
+      'etype' => \TType::STRING,
       'elem' => array(
-        'type' => TType::STRING,
+        'type' => \TType::STRING,
         ),
         'format' => 'collection',
       ),
     5 => array(
       'var' => 'map_of_string_to_i32',
-      'type' => TType::MAP,
-      'ktype' => TType::STRING,
-      'vtype' => TType::I32,
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::I32,
       'key' => array(
-        'type' => TType::STRING,
+        'type' => \TType::STRING,
       ),
       'val' => array(
-        'type' => TType::I32,
+        'type' => \TType::I32,
         ),
         'format' => 'collection',
       ),
     6 => array(
       'var' => 'map_of_string_to_A',
-      'type' => TType::MAP,
-      'ktype' => TType::STRING,
-      'vtype' => TType::STRUCT,
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::STRUCT,
       'key' => array(
-        'type' => TType::STRING,
+        'type' => \TType::STRING,
       ),
       'val' => array(
-        'type' => TType::STRUCT,
-        'class' => 'A',
+        'type' => \TType::STRUCT,
+        'class' => '\test\fixtures\A',
         ),
         'format' => 'collection',
       ),
     7 => array(
       'var' => 'map_of_string_to_list_of_i32',
-      'type' => TType::MAP,
-      'ktype' => TType::STRING,
-      'vtype' => TType::LST,
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::LST,
       'key' => array(
-        'type' => TType::STRING,
+        'type' => \TType::STRING,
       ),
       'val' => array(
-        'type' => TType::LST,
-        'etype' => TType::I32,
+        'type' => \TType::LST,
+        'etype' => \TType::I32,
         'elem' => array(
-          'type' => TType::I32,
+          'type' => \TType::I32,
           ),
           'format' => 'collection',
         ),
@@ -199,18 +201,18 @@ class B implements IThriftStruct, IThriftShapishStruct {
       ),
     8 => array(
       'var' => 'map_of_string_to_list_of_A',
-      'type' => TType::MAP,
-      'ktype' => TType::STRING,
-      'vtype' => TType::LST,
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::LST,
       'key' => array(
-        'type' => TType::STRING,
+        'type' => \TType::STRING,
       ),
       'val' => array(
-        'type' => TType::LST,
-        'etype' => TType::STRUCT,
+        'type' => \TType::LST,
+        'etype' => \TType::STRUCT,
         'elem' => array(
-          'type' => TType::STRUCT,
-          'class' => 'A',
+          'type' => \TType::STRUCT,
+          'class' => '\test\fixtures\A',
           ),
           'format' => 'collection',
         ),
@@ -218,17 +220,17 @@ class B implements IThriftStruct, IThriftShapishStruct {
       ),
     9 => array(
       'var' => 'map_of_string_to_set_of_i32',
-      'type' => TType::MAP,
-      'ktype' => TType::STRING,
-      'vtype' => TType::SET,
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::SET,
       'key' => array(
-        'type' => TType::STRING,
+        'type' => \TType::STRING,
       ),
       'val' => array(
-        'type' => TType::SET,
-        'etype' => TType::I32,
+        'type' => \TType::SET,
+        'etype' => \TType::I32,
         'elem' => array(
-          'type' => TType::I32,
+          'type' => \TType::I32,
           ),
           'format' => 'collection',
         ),
@@ -236,21 +238,21 @@ class B implements IThriftStruct, IThriftShapishStruct {
       ),
     10 => array(
       'var' => 'map_of_string_to_map_of_string_to_i32',
-      'type' => TType::MAP,
-      'ktype' => TType::STRING,
-      'vtype' => TType::MAP,
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::MAP,
       'key' => array(
-        'type' => TType::STRING,
+        'type' => \TType::STRING,
       ),
       'val' => array(
-        'type' => TType::MAP,
-        'ktype' => TType::STRING,
-        'vtype' => TType::I32,
+        'type' => \TType::MAP,
+        'ktype' => \TType::STRING,
+        'vtype' => \TType::I32,
         'key' => array(
-          'type' => TType::STRING,
+          'type' => \TType::STRING,
         ),
         'val' => array(
-          'type' => TType::I32,
+          'type' => \TType::I32,
           ),
           'format' => 'collection',
         ),
@@ -258,22 +260,22 @@ class B implements IThriftStruct, IThriftShapishStruct {
       ),
     11 => array(
       'var' => 'map_of_string_to_map_of_string_to_A',
-      'type' => TType::MAP,
-      'ktype' => TType::STRING,
-      'vtype' => TType::MAP,
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::MAP,
       'key' => array(
-        'type' => TType::STRING,
+        'type' => \TType::STRING,
       ),
       'val' => array(
-        'type' => TType::MAP,
-        'ktype' => TType::STRING,
-        'vtype' => TType::STRUCT,
+        'type' => \TType::MAP,
+        'ktype' => \TType::STRING,
+        'vtype' => \TType::STRUCT,
         'key' => array(
-          'type' => TType::STRING,
+          'type' => \TType::STRING,
         ),
         'val' => array(
-          'type' => TType::STRUCT,
-          'class' => 'A',
+          'type' => \TType::STRUCT,
+          'class' => '\test\fixtures\A',
           ),
           'format' => 'collection',
         ),
@@ -281,13 +283,13 @@ class B implements IThriftStruct, IThriftShapishStruct {
       ),
     12 => array(
       'var' => 'list_of_set_of_i32',
-      'type' => TType::LST,
-      'etype' => TType::SET,
+      'type' => \TType::LST,
+      'etype' => \TType::SET,
       'elem' => array(
-        'type' => TType::SET,
-        'etype' => TType::I32,
+        'type' => \TType::SET,
+        'etype' => \TType::I32,
         'elem' => array(
-          'type' => TType::I32,
+          'type' => \TType::I32,
           ),
           'format' => 'collection',
         ),
@@ -295,21 +297,21 @@ class B implements IThriftStruct, IThriftShapishStruct {
       ),
     13 => array(
       'var' => 'list_of_map_of_string_to_list_of_A',
-      'type' => TType::LST,
-      'etype' => TType::MAP,
+      'type' => \TType::LST,
+      'etype' => \TType::MAP,
       'elem' => array(
-        'type' => TType::MAP,
-        'ktype' => TType::STRING,
-        'vtype' => TType::LST,
+        'type' => \TType::MAP,
+        'ktype' => \TType::STRING,
+        'vtype' => \TType::LST,
         'key' => array(
-          'type' => TType::STRING,
+          'type' => \TType::STRING,
         ),
         'val' => array(
-          'type' => TType::LST,
-          'etype' => TType::STRUCT,
+          'type' => \TType::LST,
+          'etype' => \TType::STRUCT,
           'elem' => array(
-            'type' => TType::STRUCT,
-            'class' => 'A',
+            'type' => \TType::STRUCT,
+            'class' => '\test\fixtures\A',
             ),
             'format' => 'collection',
           ),
@@ -319,18 +321,18 @@ class B implements IThriftStruct, IThriftShapishStruct {
       ),
     14 => array(
       'var' => 'list_of_map_of_string_to_A',
-      'type' => TType::LST,
-      'etype' => TType::MAP,
+      'type' => \TType::LST,
+      'etype' => \TType::MAP,
       'elem' => array(
-        'type' => TType::MAP,
-        'ktype' => TType::STRING,
-        'vtype' => TType::STRUCT,
+        'type' => \TType::MAP,
+        'ktype' => \TType::STRING,
+        'vtype' => \TType::STRUCT,
         'key' => array(
-          'type' => TType::STRING,
+          'type' => \TType::STRING,
         ),
         'val' => array(
-          'type' => TType::STRUCT,
-          'class' => 'A',
+          'type' => \TType::STRUCT,
+          'class' => '\test\fixtures\A',
           ),
           'format' => 'collection',
         ),
@@ -338,105 +340,105 @@ class B implements IThriftStruct, IThriftShapishStruct {
       ),
     15 => array(
       'var' => 'list_of_self',
-      'type' => TType::LST,
-      'etype' => TType::STRUCT,
+      'type' => \TType::LST,
+      'etype' => \TType::STRUCT,
       'elem' => array(
-        'type' => TType::STRUCT,
-        'class' => 'B',
+        'type' => \TType::STRUCT,
+        'class' => '\test\fixtures\B',
         ),
         'format' => 'collection',
       ),
     16 => array(
       'var' => 'map_of_string_to_self',
-      'type' => TType::MAP,
-      'ktype' => TType::STRING,
-      'vtype' => TType::STRUCT,
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::STRUCT,
       'key' => array(
-        'type' => TType::STRING,
+        'type' => \TType::STRING,
       ),
       'val' => array(
-        'type' => TType::STRUCT,
-        'class' => 'B',
+        'type' => \TType::STRUCT,
+        'class' => '\test\fixtures\B',
         ),
         'format' => 'collection',
       ),
     17 => array(
       'var' => 'just_an_enum',
-      'type' => TType::I32,
-      'enum' => 'Enum',
+      'type' => \TType::I32,
+      'enum' => '\test\fixtures\Enum',
       ),
     51 => array(
       'var' => 'optional_just_an_A',
-      'type' => TType::STRUCT,
-      'class' => 'A',
+      'type' => \TType::STRUCT,
+      'class' => '\test\fixtures\A',
       ),
     52 => array(
       'var' => 'optional_set_of_i32',
-      'type' => TType::SET,
-      'etype' => TType::I32,
+      'type' => \TType::SET,
+      'etype' => \TType::I32,
       'elem' => array(
-        'type' => TType::I32,
+        'type' => \TType::I32,
         ),
         'format' => 'collection',
       ),
     53 => array(
       'var' => 'optional_list_of_i32',
-      'type' => TType::LST,
-      'etype' => TType::I32,
+      'type' => \TType::LST,
+      'etype' => \TType::I32,
       'elem' => array(
-        'type' => TType::I32,
+        'type' => \TType::I32,
         ),
         'format' => 'collection',
       ),
     54 => array(
       'var' => 'optional_list_of_string',
-      'type' => TType::LST,
-      'etype' => TType::STRING,
+      'type' => \TType::LST,
+      'etype' => \TType::STRING,
       'elem' => array(
-        'type' => TType::STRING,
+        'type' => \TType::STRING,
         ),
         'format' => 'collection',
       ),
     55 => array(
       'var' => 'optional_map_of_string_to_i32',
-      'type' => TType::MAP,
-      'ktype' => TType::STRING,
-      'vtype' => TType::I32,
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::I32,
       'key' => array(
-        'type' => TType::STRING,
+        'type' => \TType::STRING,
       ),
       'val' => array(
-        'type' => TType::I32,
+        'type' => \TType::I32,
         ),
         'format' => 'collection',
       ),
     56 => array(
       'var' => 'optional_map_of_string_to_A',
-      'type' => TType::MAP,
-      'ktype' => TType::STRING,
-      'vtype' => TType::STRUCT,
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::STRUCT,
       'key' => array(
-        'type' => TType::STRING,
+        'type' => \TType::STRING,
       ),
       'val' => array(
-        'type' => TType::STRUCT,
-        'class' => 'A',
+        'type' => \TType::STRUCT,
+        'class' => '\test\fixtures\A',
         ),
         'format' => 'collection',
       ),
     57 => array(
       'var' => 'optional_map_of_string_to_list_of_i32',
-      'type' => TType::MAP,
-      'ktype' => TType::STRING,
-      'vtype' => TType::LST,
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::LST,
       'key' => array(
-        'type' => TType::STRING,
+        'type' => \TType::STRING,
       ),
       'val' => array(
-        'type' => TType::LST,
-        'etype' => TType::I32,
+        'type' => \TType::LST,
+        'etype' => \TType::I32,
         'elem' => array(
-          'type' => TType::I32,
+          'type' => \TType::I32,
           ),
           'format' => 'collection',
         ),
@@ -444,18 +446,18 @@ class B implements IThriftStruct, IThriftShapishStruct {
       ),
     58 => array(
       'var' => 'optional_map_of_string_to_list_of_A',
-      'type' => TType::MAP,
-      'ktype' => TType::STRING,
-      'vtype' => TType::LST,
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::LST,
       'key' => array(
-        'type' => TType::STRING,
+        'type' => \TType::STRING,
       ),
       'val' => array(
-        'type' => TType::LST,
-        'etype' => TType::STRUCT,
+        'type' => \TType::LST,
+        'etype' => \TType::STRUCT,
         'elem' => array(
-          'type' => TType::STRUCT,
-          'class' => 'A',
+          'type' => \TType::STRUCT,
+          'class' => '\test\fixtures\A',
           ),
           'format' => 'collection',
         ),
@@ -463,17 +465,17 @@ class B implements IThriftStruct, IThriftShapishStruct {
       ),
     59 => array(
       'var' => 'optional_map_of_string_to_set_of_i32',
-      'type' => TType::MAP,
-      'ktype' => TType::STRING,
-      'vtype' => TType::SET,
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::SET,
       'key' => array(
-        'type' => TType::STRING,
+        'type' => \TType::STRING,
       ),
       'val' => array(
-        'type' => TType::SET,
-        'etype' => TType::I32,
+        'type' => \TType::SET,
+        'etype' => \TType::I32,
         'elem' => array(
-          'type' => TType::I32,
+          'type' => \TType::I32,
           ),
           'format' => 'collection',
         ),
@@ -481,8 +483,8 @@ class B implements IThriftStruct, IThriftShapishStruct {
       ),
     60 => array(
       'var' => 'optional_enum',
-      'type' => TType::I32,
-      'enum' => 'Enum',
+      'type' => \TType::I32,
+      'enum' => '\test\fixtures\Enum',
       ),
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -515,64 +517,64 @@ class B implements IThriftStruct, IThriftShapishStruct {
     'optional_enum' => 60,
   };
   const type TShape = shape(
-    'just_an_A' => ?A::TShape,
+    'just_an_A' => ?\test\fixtures\A::\TShape,
     'set_of_i32' => array<int, bool>,
     'list_of_i32' => array<int>,
     'list_of_string' => array<string>,
     'map_of_string_to_i32' => array<string, int>,
-    'map_of_string_to_A' => array<string, A::TShape>,
+    'map_of_string_to_A' => array<string, \test\fixtures\A::\TShape>,
     'map_of_string_to_list_of_i32' => array<string, array<int>>,
-    'map_of_string_to_list_of_A' => array<string, array<A::TShape>>,
+    'map_of_string_to_list_of_A' => array<string, array<\test\fixtures\A::\TShape>>,
     'map_of_string_to_set_of_i32' => array<string, array<int, bool>>,
     'map_of_string_to_map_of_string_to_i32' => array<string, array<string, int>>,
-    'map_of_string_to_map_of_string_to_A' => array<string, array<string, A::TShape>>,
+    'map_of_string_to_map_of_string_to_A' => array<string, array<string, \test\fixtures\A::\TShape>>,
     'list_of_set_of_i32' => array<array<int, bool>>,
-    'list_of_map_of_string_to_list_of_A' => array<array<string, array<A::TShape>>>,
-    'list_of_map_of_string_to_A' => array<array<string, A::TShape>>,
-    'list_of_self' => array<B::TShape>,
-    'map_of_string_to_self' => array<string, B::TShape>,
-    'just_an_enum' => ?Enum,
-    'optional_just_an_A' => ?A::TShape,
+    'list_of_map_of_string_to_list_of_A' => array<array<string, array<\test\fixtures\A::\TShape>>>,
+    'list_of_map_of_string_to_A' => array<array<string, \test\fixtures\A::\TShape>>,
+    'list_of_self' => array<\test\fixtures\B::\TShape>,
+    'map_of_string_to_self' => array<string, \test\fixtures\B::\TShape>,
+    'just_an_enum' => ?\test\fixtures\Enum,
+    'optional_just_an_A' => ?\test\fixtures\A::\TShape,
     'optional_set_of_i32' => ?array<int, bool>,
     'optional_list_of_i32' => ?array<int>,
     'optional_list_of_string' => ?array<string>,
     'optional_map_of_string_to_i32' => ?array<string, int>,
-    'optional_map_of_string_to_A' => ?array<string, A::TShape>,
+    'optional_map_of_string_to_A' => ?array<string, \test\fixtures\A::\TShape>,
     'optional_map_of_string_to_list_of_i32' => ?array<string, array<int>>,
-    'optional_map_of_string_to_list_of_A' => ?array<string, array<A::TShape>>,
+    'optional_map_of_string_to_list_of_A' => ?array<string, array<\test\fixtures\A::\TShape>>,
     'optional_map_of_string_to_set_of_i32' => ?array<string, array<int, bool>>,
-    'optional_enum' => ?Enum,
+    'optional_enum' => ?\test\fixtures\Enum,
   );
   const int STRUCTURAL_ID = 8418159757686116954;
-  public ?A $just_an_A;
+  public ?\test\fixtures\A $just_an_A;
   public Set<int> $set_of_i32;
   public Vector<int> $list_of_i32;
   public Vector<string> $list_of_string;
   public Map<string, int> $map_of_string_to_i32;
-  public Map<string, A> $map_of_string_to_A;
+  public Map<string, \test\fixtures\A> $map_of_string_to_A;
   public Map<string, Vector<int>> $map_of_string_to_list_of_i32;
-  public Map<string, Vector<A>> $map_of_string_to_list_of_A;
+  public Map<string, Vector<\test\fixtures\A>> $map_of_string_to_list_of_A;
   public Map<string, Set<int>> $map_of_string_to_set_of_i32;
   public Map<string, Map<string, int>> $map_of_string_to_map_of_string_to_i32;
-  public Map<string, Map<string, A>> $map_of_string_to_map_of_string_to_A;
+  public Map<string, Map<string, \test\fixtures\A>> $map_of_string_to_map_of_string_to_A;
   public Vector<Set<int>> $list_of_set_of_i32;
-  public Vector<Map<string, Vector<A>>> $list_of_map_of_string_to_list_of_A;
-  public Vector<Map<string, A>> $list_of_map_of_string_to_A;
-  public Vector<B> $list_of_self;
-  public Map<string, B> $map_of_string_to_self;
-  public ?Enum $just_an_enum;
-  public ?A $optional_just_an_A;
+  public Vector<Map<string, Vector<\test\fixtures\A>>> $list_of_map_of_string_to_list_of_A;
+  public Vector<Map<string, \test\fixtures\A>> $list_of_map_of_string_to_A;
+  public Vector<\test\fixtures\B> $list_of_self;
+  public Map<string, \test\fixtures\B> $map_of_string_to_self;
+  public ?\test\fixtures\Enum $just_an_enum;
+  public ?\test\fixtures\A $optional_just_an_A;
   public ?Set<int> $optional_set_of_i32;
   public ?Vector<int> $optional_list_of_i32;
   public ?Vector<string> $optional_list_of_string;
   public ?Map<string, int> $optional_map_of_string_to_i32;
-  public ?Map<string, A> $optional_map_of_string_to_A;
+  public ?Map<string, \test\fixtures\A> $optional_map_of_string_to_A;
   public ?Map<string, Vector<int>> $optional_map_of_string_to_list_of_i32;
-  public ?Map<string, Vector<A>> $optional_map_of_string_to_list_of_A;
+  public ?Map<string, Vector<\test\fixtures\A>> $optional_map_of_string_to_list_of_A;
   public ?Map<string, Set<int>> $optional_map_of_string_to_set_of_i32;
-  public ?Enum $optional_enum;
+  public ?\test\fixtures\Enum $optional_enum;
 
-  public function __construct(?A $just_an_A = null, ?Set<int> $set_of_i32 = null, ?Vector<int> $list_of_i32 = null, ?Vector<string> $list_of_string = null, ?Map<string, int> $map_of_string_to_i32 = null, ?Map<string, A> $map_of_string_to_A = null, ?Map<string, Vector<int>> $map_of_string_to_list_of_i32 = null, ?Map<string, Vector<A>> $map_of_string_to_list_of_A = null, ?Map<string, Set<int>> $map_of_string_to_set_of_i32 = null, ?Map<string, Map<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?Map<string, Map<string, A>> $map_of_string_to_map_of_string_to_A = null, ?Vector<Set<int>> $list_of_set_of_i32 = null, ?Vector<Map<string, Vector<A>>> $list_of_map_of_string_to_list_of_A = null, ?Vector<Map<string, A>> $list_of_map_of_string_to_A = null, ?Vector<B> $list_of_self = null, ?Map<string, B> $map_of_string_to_self = null, ?Enum $just_an_enum = null, ?A $optional_just_an_A = null, ?Set<int> $optional_set_of_i32 = null, ?Vector<int> $optional_list_of_i32 = null, ?Vector<string> $optional_list_of_string = null, ?Map<string, int> $optional_map_of_string_to_i32 = null, ?Map<string, A> $optional_map_of_string_to_A = null, ?Map<string, Vector<int>> $optional_map_of_string_to_list_of_i32 = null, ?Map<string, Vector<A>> $optional_map_of_string_to_list_of_A = null, ?Map<string, Set<int>> $optional_map_of_string_to_set_of_i32 = null, ?Enum $optional_enum = null  ) {
+  public function __construct(?\test\fixtures\A $just_an_A = null, ?Set<int> $set_of_i32 = null, ?Vector<int> $list_of_i32 = null, ?Vector<string> $list_of_string = null, ?Map<string, int> $map_of_string_to_i32 = null, ?Map<string, \test\fixtures\A> $map_of_string_to_A = null, ?Map<string, Vector<int>> $map_of_string_to_list_of_i32 = null, ?Map<string, Vector<\test\fixtures\A>> $map_of_string_to_list_of_A = null, ?Map<string, Set<int>> $map_of_string_to_set_of_i32 = null, ?Map<string, Map<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?Map<string, Map<string, \test\fixtures\A>> $map_of_string_to_map_of_string_to_A = null, ?Vector<Set<int>> $list_of_set_of_i32 = null, ?Vector<Map<string, Vector<\test\fixtures\A>>> $list_of_map_of_string_to_list_of_A = null, ?Vector<Map<string, \test\fixtures\A>> $list_of_map_of_string_to_A = null, ?Vector<\test\fixtures\B> $list_of_self = null, ?Map<string, \test\fixtures\B> $map_of_string_to_self = null, ?\test\fixtures\Enum $just_an_enum = null, ?\test\fixtures\A $optional_just_an_A = null, ?Set<int> $optional_set_of_i32 = null, ?Vector<int> $optional_list_of_i32 = null, ?Vector<string> $optional_list_of_string = null, ?Map<string, int> $optional_map_of_string_to_i32 = null, ?Map<string, \test\fixtures\A> $optional_map_of_string_to_A = null, ?Map<string, Vector<int>> $optional_map_of_string_to_list_of_i32 = null, ?Map<string, Vector<\test\fixtures\A>> $optional_map_of_string_to_list_of_A = null, ?Map<string, Set<int>> $optional_map_of_string_to_set_of_i32 = null, ?\test\fixtures\Enum $optional_enum = null  ) {
     $this->just_an_A = $just_an_A;
     if ($set_of_i32 === null) {
       $this->set_of_i32 = Set {};
@@ -675,7 +677,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
       $shape_data['just_an_A'] = null;
     }
     if (!is_null($shape_data['just_an_A'])) {
-      $shape_data['just_an_A'] = A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $shape_data['just_an_A']);
+      $shape_data['just_an_A'] = \test\fixtures\A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $shape_data['just_an_A']);
       if (is_null($shape_data['just_an_A'])) {
         return null;
       }
@@ -757,7 +759,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
       if (!is_string($key9)) {
         return null;
       }
-      $value10 = A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value10);
+      $value10 = \test\fixtures\A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value10);
       if (is_null($value10)) {
         return null;
       }
@@ -809,7 +811,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
         if (!is_int($key17)) {
           return null;
         }
-        $value18 = A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value18);
+        $value18 = \test\fixtures\A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value18);
         if (is_null($value18)) {
           return null;
         }
@@ -889,7 +891,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
         if (!is_string($key30)) {
           return null;
         }
-        $value31 = A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value31);
+        $value31 = \test\fixtures\A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value31);
         if (is_null($value31)) {
           return null;
         }
@@ -949,7 +951,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
           if (!is_int($key41)) {
             return null;
           }
-          $value42 = A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value42);
+          $value42 = \test\fixtures\A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value42);
           if (is_null($value42)) {
             return null;
           }
@@ -980,7 +982,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
         if (!is_string($key45)) {
           return null;
         }
-        $value46 = A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value46);
+        $value46 = \test\fixtures\A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value46);
         if (is_null($value46)) {
           return null;
         }
@@ -1001,7 +1003,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
       if (!is_int($key47)) {
         return null;
       }
-      $value48 = B::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value48);
+      $value48 = \test\fixtures\B::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value48);
       if (is_null($value48)) {
         return null;
       }
@@ -1019,7 +1021,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
       if (!is_string($key49)) {
         return null;
       }
-      $value50 = B::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value50);
+      $value50 = \test\fixtures\B::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value50);
       if (is_null($value50)) {
         return null;
       }
@@ -1038,7 +1040,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
       $shape_data['optional_just_an_A'] = null;
     }
     if (!is_null($shape_data['optional_just_an_A'])) {
-      $shape_data['optional_just_an_A'] = A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $shape_data['optional_just_an_A']);
+      $shape_data['optional_just_an_A'] = \test\fixtures\A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $shape_data['optional_just_an_A']);
       if (is_null($shape_data['optional_just_an_A'])) {
         return null;
       }
@@ -1129,7 +1131,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
         if (!is_string($key60)) {
           return null;
         }
-        $value61 = A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value61);
+        $value61 = \test\fixtures\A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value61);
         if (is_null($value61)) {
           return null;
         }
@@ -1185,7 +1187,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
           if (!is_int($key68)) {
             return null;
           }
-          $value69 = A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value69);
+          $value69 = \test\fixtures\A::__jsonArrayToShape(/* HH_IGNORE_ERROR[4110] */ $value69);
           if (is_null($value69)) {
             return null;
           }
@@ -1236,20 +1238,20 @@ class B implements IThriftStruct, IThriftShapishStruct {
 
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
-    $me->just_an_A = $shape['just_an_A'] === null ? null : A::__fromShape(nullthrows($shape['just_an_A']));
+    $me->just_an_A = $shape['just_an_A'] === null ? null : \test\fixtures\A::__fromShape(nullthrows($shape['just_an_A']));
     $me->set_of_i32 = new Set(array_keys($shape['set_of_i32']));
     $me->list_of_i32 = (new Vector($shape['list_of_i32']));
     $me->list_of_string = (new Vector($shape['list_of_string']));
     $me->map_of_string_to_i32 = (new Map($shape['map_of_string_to_i32']));
     $me->map_of_string_to_A = (new Map($shape['map_of_string_to_A']))->map(
-      $val75 ==> A::__fromShape($val75),
+      $val75 ==> \test\fixtures\A::__fromShape($val75),
     );
     $me->map_of_string_to_list_of_i32 = (new Map($shape['map_of_string_to_list_of_i32']))->map(
       $val76 ==> (new Vector($val76)),
     );
     $me->map_of_string_to_list_of_A = (new Map($shape['map_of_string_to_list_of_A']))->map(
       $val77 ==> (new Vector($val77))->map(
-        $val78 ==> A::__fromShape($val78),
+        $val78 ==> \test\fixtures\A::__fromShape($val78),
       ),
     );
     $me->map_of_string_to_set_of_i32 = (new Map($shape['map_of_string_to_set_of_i32']))->map(
@@ -1260,7 +1262,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
     );
     $me->map_of_string_to_map_of_string_to_A = (new Map($shape['map_of_string_to_map_of_string_to_A']))->map(
       $val81 ==> (new Map($val81))->map(
-        $val82 ==> A::__fromShape($val82),
+        $val82 ==> \test\fixtures\A::__fromShape($val82),
       ),
     );
     $me->list_of_set_of_i32 = (new Vector($shape['list_of_set_of_i32']))->map(
@@ -1269,23 +1271,23 @@ class B implements IThriftStruct, IThriftShapishStruct {
     $me->list_of_map_of_string_to_list_of_A = (new Vector($shape['list_of_map_of_string_to_list_of_A']))->map(
       $val84 ==> (new Map($val84))->map(
         $val85 ==> (new Vector($val85))->map(
-          $val86 ==> A::__fromShape($val86),
+          $val86 ==> \test\fixtures\A::__fromShape($val86),
         ),
       ),
     );
     $me->list_of_map_of_string_to_A = (new Vector($shape['list_of_map_of_string_to_A']))->map(
       $val87 ==> (new Map($val87))->map(
-        $val88 ==> A::__fromShape($val88),
+        $val88 ==> \test\fixtures\A::__fromShape($val88),
       ),
     );
     $me->list_of_self = (new Vector($shape['list_of_self']))->map(
-      $val89 ==> B::__fromShape($val89),
+      $val89 ==> \test\fixtures\B::__fromShape($val89),
     );
     $me->map_of_string_to_self = (new Map($shape['map_of_string_to_self']))->map(
-      $val90 ==> B::__fromShape($val90),
+      $val90 ==> \test\fixtures\B::__fromShape($val90),
     );
     $me->just_an_enum = $shape['just_an_enum'];
-    $me->optional_just_an_A = $shape['optional_just_an_A'] === null ? null : A::__fromShape(nullthrows($shape['optional_just_an_A']));
+    $me->optional_just_an_A = $shape['optional_just_an_A'] === null ? null : \test\fixtures\A::__fromShape(nullthrows($shape['optional_just_an_A']));
     $me->optional_set_of_i32 = $shape['optional_set_of_i32'] === null ? null : new Set(array_keys(nullthrows($shape['optional_set_of_i32'])));
     $me->optional_list_of_i32 = $shape['optional_list_of_i32'] === null ? null : 
       (new Vector($shape['optional_list_of_i32']));
@@ -1295,7 +1297,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
       (new Map($shape['optional_map_of_string_to_i32']));
     $me->optional_map_of_string_to_A = $shape['optional_map_of_string_to_A'] === null ? null : 
       (new Map($shape['optional_map_of_string_to_A']))->map(
-        $val91 ==> A::__fromShape($val91),
+        $val91 ==> \test\fixtures\A::__fromShape($val91),
       );
     $me->optional_map_of_string_to_list_of_i32 = $shape['optional_map_of_string_to_list_of_i32'] === null ? null : 
       (new Map($shape['optional_map_of_string_to_list_of_i32']))->map(
@@ -1304,7 +1306,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
     $me->optional_map_of_string_to_list_of_A = $shape['optional_map_of_string_to_list_of_A'] === null ? null : 
       (new Map($shape['optional_map_of_string_to_list_of_A']))->map(
         $val93 ==> (new Vector($val93))->map(
-          $val94 ==> A::__fromShape($val94),
+          $val94 ==> \test\fixtures\A::__fromShape($val94),
         ),
       );
     $me->optional_map_of_string_to_set_of_i32 = $shape['optional_map_of_string_to_set_of_i32'] === null ? null : 
@@ -1388,7 +1390,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
       'optional_enum' => $this->optional_enum,
     );
   }
-  public function read(TProtocol $input): int {
+  public function read(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -1397,7 +1399,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
     while (true)
     {
       $xfer += $input->readFieldBegin($fname, $ftype, $fid);
-      if ($ftype == TType::STOP) {
+      if ($ftype == \TType::STOP) {
         break;
       }
       if (!$fid && $fname !== null) {
@@ -1409,15 +1411,15 @@ class B implements IThriftStruct, IThriftShapishStruct {
       switch ($fid)
       {
         case 1:
-          if ($ftype == TType::STRUCT) {
-            $this->just_an_A = new A();
+          if ($ftype == \TType::STRUCT) {
+            $this->just_an_A = new \test\fixtures\A();
             $xfer += $this->just_an_A->read($input);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 2:
-          if ($ftype == TType::SET) {
+          if ($ftype == \TType::SET) {
             $_size1 = 0;
             $_etype4 = 0;
             $_val0 = Set{};
@@ -1440,7 +1442,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
           }
           break;
         case 3:
-          if ($ftype == TType::LST) {
+          if ($ftype == \TType::LST) {
             $_size8 = 0;
             $_val7 = Vector {};
             $_etype11 = 0;
@@ -1463,7 +1465,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
           }
           break;
         case 4:
-          if ($ftype == TType::LST) {
+          if ($ftype == \TType::LST) {
             $_size15 = 0;
             $_val14 = Vector {};
             $_etype18 = 0;
@@ -1486,7 +1488,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
           }
           break;
         case 5:
-          if ($ftype == TType::MAP) {
+          if ($ftype == \TType::MAP) {
             $_size22 = 0;
             $_val21 = Map {};
             $_ktype23 = 0;
@@ -1512,7 +1514,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
           }
           break;
         case 6:
-          if ($ftype == TType::MAP) {
+          if ($ftype == \TType::MAP) {
             $_size30 = 0;
             $_val29 = Map {};
             $_ktype31 = 0;
@@ -1525,7 +1527,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
               }
               $key35 = null;
               $xfer += $input->readString($key35);
-              $val36 = new A();
+              $val36 = new \test\fixtures\A();
               $xfer += $val36->read($input);
               if ($key35 !== null && $val36 !== null) {
                 $_val29[$key35] = $val36;
@@ -1538,7 +1540,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
           }
           break;
         case 7:
-          if ($ftype == TType::MAP) {
+          if ($ftype == \TType::MAP) {
             $_size38 = 0;
             $_val37 = Map {};
             $_ktype39 = 0;
@@ -1579,7 +1581,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
           }
           break;
         case 8:
-          if ($ftype == TType::MAP) {
+          if ($ftype == \TType::MAP) {
             $_size53 = 0;
             $_val52 = Map {};
             $_ktype54 = 0;
@@ -1601,7 +1603,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
                 if ($_size61 === null && !$input->readListHasNext()) {
                   break;
                 }
-                $elem66 = new A();
+                $elem66 = new \test\fixtures\A();
                 $xfer += $elem66->read($input);
                 if ($elem66 !== null) {
                   $_val60 []= $elem66;
@@ -1620,7 +1622,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
           }
           break;
         case 9:
-          if ($ftype == TType::MAP) {
+          if ($ftype == \TType::MAP) {
             $_size68 = 0;
             $_val67 = Map {};
             $_ktype69 = 0;
@@ -1661,7 +1663,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
           }
           break;
         case 10:
-          if ($ftype == TType::MAP) {
+          if ($ftype == \TType::MAP) {
             $_size83 = 0;
             $_val82 = Map {};
             $_ktype84 = 0;
@@ -1705,7 +1707,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
           }
           break;
         case 11:
-          if ($ftype == TType::MAP) {
+          if ($ftype == \TType::MAP) {
             $_size99 = 0;
             $_val98 = Map {};
             $_ktype100 = 0;
@@ -1730,7 +1732,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
                 }
                 $key112 = null;
                 $xfer += $input->readString($key112);
-                $val113 = new A();
+                $val113 = new \test\fixtures\A();
                 $xfer += $val113->read($input);
                 if ($key112 !== null && $val113 !== null) {
                   $_val106[$key112] = $val113;
@@ -1749,7 +1751,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
           }
           break;
         case 12:
-          if ($ftype == TType::LST) {
+          if ($ftype == \TType::LST) {
             $_size115 = 0;
             $_val114 = Vector {};
             $_etype118 = 0;
@@ -1787,7 +1789,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
           }
           break;
         case 13:
-          if ($ftype == TType::LST) {
+          if ($ftype == \TType::LST) {
             $_size129 = 0;
             $_val128 = Vector {};
             $_etype132 = 0;
@@ -1818,7 +1820,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
                   if ($_size144 === null && !$input->readListHasNext()) {
                     break;
                   }
-                  $elem149 = new A();
+                  $elem149 = new \test\fixtures\A();
                   $xfer += $elem149->read($input);
                   if ($elem149 !== null) {
                     $_val143 []= $elem149;
@@ -1843,7 +1845,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
           }
           break;
         case 14:
-          if ($ftype == TType::LST) {
+          if ($ftype == \TType::LST) {
             $_size151 = 0;
             $_val150 = Vector {};
             $_etype154 = 0;
@@ -1865,7 +1867,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
                 }
                 $key163 = null;
                 $xfer += $input->readString($key163);
-                $val164 = new A();
+                $val164 = new \test\fixtures\A();
                 $xfer += $val164->read($input);
                 if ($key163 !== null && $val164 !== null) {
                   $_val157[$key163] = $val164;
@@ -1884,7 +1886,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
           }
           break;
         case 15:
-          if ($ftype == TType::LST) {
+          if ($ftype == \TType::LST) {
             $_size166 = 0;
             $_val165 = Vector {};
             $_etype169 = 0;
@@ -1894,7 +1896,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
               if ($_size166 === null && !$input->readListHasNext()) {
                 break;
               }
-              $elem171 = new B();
+              $elem171 = new \test\fixtures\B();
               $xfer += $elem171->read($input);
               if ($elem171 !== null) {
                 $_val165 []= $elem171;
@@ -1907,7 +1909,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
           }
           break;
         case 16:
-          if ($ftype == TType::MAP) {
+          if ($ftype == \TType::MAP) {
             $_size173 = 0;
             $_val172 = Map {};
             $_ktype174 = 0;
@@ -1920,7 +1922,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
               }
               $key178 = null;
               $xfer += $input->readString($key178);
-              $val179 = new B();
+              $val179 = new \test\fixtures\B();
               $xfer += $val179->read($input);
               if ($key178 !== null && $val179 !== null) {
                 $_val172[$key178] = $val179;
@@ -1933,25 +1935,25 @@ class B implements IThriftStruct, IThriftShapishStruct {
           }
           break;
         case 17:
-          if ($ftype == TType::I32) {
+          if ($ftype == \TType::I32) {
             $_val180 = null;
             $xfer += $input->readI32($_val180);
-            $this->just_an_enum = Enum::coerce($_val180);
+            $this->just_an_enum = \test\fixtures\Enum::coerce($_val180);
 
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 51:
-          if ($ftype == TType::STRUCT) {
-            $this->optional_just_an_A = new A();
+          if ($ftype == \TType::STRUCT) {
+            $this->optional_just_an_A = new \test\fixtures\A();
             $xfer += $this->optional_just_an_A->read($input);
           } else {
             $xfer += $input->skip($ftype);
           }
           break;
         case 52:
-          if ($ftype == TType::SET) {
+          if ($ftype == \TType::SET) {
             $_size182 = 0;
             $_etype185 = 0;
             $_val181 = Set{};
@@ -1974,7 +1976,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
           }
           break;
         case 53:
-          if ($ftype == TType::LST) {
+          if ($ftype == \TType::LST) {
             $_size189 = 0;
             $_val188 = Vector {};
             $_etype192 = 0;
@@ -1997,7 +1999,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
           }
           break;
         case 54:
-          if ($ftype == TType::LST) {
+          if ($ftype == \TType::LST) {
             $_size196 = 0;
             $_val195 = Vector {};
             $_etype199 = 0;
@@ -2020,7 +2022,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
           }
           break;
         case 55:
-          if ($ftype == TType::MAP) {
+          if ($ftype == \TType::MAP) {
             $_size203 = 0;
             $_val202 = Map {};
             $_ktype204 = 0;
@@ -2046,7 +2048,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
           }
           break;
         case 56:
-          if ($ftype == TType::MAP) {
+          if ($ftype == \TType::MAP) {
             $_size211 = 0;
             $_val210 = Map {};
             $_ktype212 = 0;
@@ -2059,7 +2061,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
               }
               $key216 = null;
               $xfer += $input->readString($key216);
-              $val217 = new A();
+              $val217 = new \test\fixtures\A();
               $xfer += $val217->read($input);
               if ($key216 !== null && $val217 !== null) {
                 $_val210[$key216] = $val217;
@@ -2072,7 +2074,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
           }
           break;
         case 57:
-          if ($ftype == TType::MAP) {
+          if ($ftype == \TType::MAP) {
             $_size219 = 0;
             $_val218 = Map {};
             $_ktype220 = 0;
@@ -2113,7 +2115,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
           }
           break;
         case 58:
-          if ($ftype == TType::MAP) {
+          if ($ftype == \TType::MAP) {
             $_size234 = 0;
             $_val233 = Map {};
             $_ktype235 = 0;
@@ -2135,7 +2137,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
                 if ($_size242 === null && !$input->readListHasNext()) {
                   break;
                 }
-                $elem247 = new A();
+                $elem247 = new \test\fixtures\A();
                 $xfer += $elem247->read($input);
                 if ($elem247 !== null) {
                   $_val241 []= $elem247;
@@ -2154,7 +2156,7 @@ class B implements IThriftStruct, IThriftShapishStruct {
           }
           break;
         case 59:
-          if ($ftype == TType::MAP) {
+          if ($ftype == \TType::MAP) {
             $_size249 = 0;
             $_val248 = Map {};
             $_ktype250 = 0;
@@ -2195,10 +2197,10 @@ class B implements IThriftStruct, IThriftShapishStruct {
           }
           break;
         case 60:
-          if ($ftype == TType::I32) {
+          if ($ftype == \TType::I32) {
             $_val263 = null;
             $xfer += $input->readI32($_val263);
-            $this->optional_enum = Enum::coerce($_val263);
+            $this->optional_enum = \test\fixtures\Enum::coerce($_val263);
 
           } else {
             $xfer += $input->skip($ftype);
@@ -2214,25 +2216,25 @@ class B implements IThriftStruct, IThriftShapishStruct {
     return $xfer;
   }
 
-  public function write(TProtocol $output): int {
+  public function write(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('B');
     if ($this->just_an_A !== null) {
       $_val0 = $this->just_an_A;
-      if (!($_val0 instanceof A)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      if (!($_val0 instanceof \test\fixtures\A)) {
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('just_an_A', TType::STRUCT, 1);
+      $xfer += $output->writeFieldBegin('just_an_A', \TType::STRUCT, 1);
       $xfer += $_val0->write($output);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->set_of_i32 !== null) {
       $_val1 = $this->set_of_i32;
       if (!($_val1 instanceof Set)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('set_of_i32', TType::SET, 2);
-      $output->writeSetBegin(TType::I32, count($_val1));
+      $xfer += $output->writeFieldBegin('set_of_i32', \TType::SET, 2);
+      $output->writeSetBegin(\TType::I32, count($_val1));
       if ($_val1 !== null)
       {
         foreach ($_val1 as $iter2)
@@ -2245,11 +2247,11 @@ class B implements IThriftStruct, IThriftShapishStruct {
     }
     if ($this->list_of_i32 !== null) {
       $_val3 = $this->list_of_i32;
-      if (!($_val3 instanceof Indexish) && !(($_val3 instanceof Iterator || $_val3 instanceof IteratorAggregate) && $_val3 instanceof Countable)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      if (!($_val3 instanceof \Indexish) && !(($_val3 instanceof \Iterator || $_val3 instanceof \IteratorAggregate) && $_val3 instanceof \Countable)) {
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('list_of_i32', TType::LST, 3);
-      $output->writeListBegin(TType::I32, count($_val3));
+      $xfer += $output->writeFieldBegin('list_of_i32', \TType::LST, 3);
+      $output->writeListBegin(\TType::I32, count($_val3));
       if ($_val3 !== null)
       {
         foreach ($_val3 as $iter4)
@@ -2262,11 +2264,11 @@ class B implements IThriftStruct, IThriftShapishStruct {
     }
     if ($this->list_of_string !== null) {
       $_val5 = $this->list_of_string;
-      if (!($_val5 instanceof Indexish) && !(($_val5 instanceof Iterator || $_val5 instanceof IteratorAggregate) && $_val5 instanceof Countable)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      if (!($_val5 instanceof \Indexish) && !(($_val5 instanceof \Iterator || $_val5 instanceof \IteratorAggregate) && $_val5 instanceof \Countable)) {
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('list_of_string', TType::LST, 4);
-      $output->writeListBegin(TType::STRING, count($_val5));
+      $xfer += $output->writeFieldBegin('list_of_string', \TType::LST, 4);
+      $output->writeListBegin(\TType::STRING, count($_val5));
       if ($_val5 !== null)
       {
         foreach ($_val5 as $iter6)
@@ -2279,11 +2281,11 @@ class B implements IThriftStruct, IThriftShapishStruct {
     }
     if ($this->map_of_string_to_i32 !== null) {
       $_val7 = $this->map_of_string_to_i32;
-      if (!($_val7 instanceof Indexish) && !(($_val7 instanceof Iterator || $_val7 instanceof IteratorAggregate) && $_val7 instanceof Countable)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      if (!($_val7 instanceof \Indexish) && !(($_val7 instanceof \Iterator || $_val7 instanceof \IteratorAggregate) && $_val7 instanceof \Countable)) {
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('map_of_string_to_i32', TType::MAP, 5);
-      $output->writeMapBegin(TType::STRING, TType::I32, count($_val7));
+      $xfer += $output->writeFieldBegin('map_of_string_to_i32', \TType::MAP, 5);
+      $output->writeMapBegin(\TType::STRING, \TType::I32, count($_val7));
       if ($_val7 !== null)
       {
         foreach ($_val7 as $kiter8 => $viter9)
@@ -2297,11 +2299,11 @@ class B implements IThriftStruct, IThriftShapishStruct {
     }
     if ($this->map_of_string_to_A !== null) {
       $_val10 = $this->map_of_string_to_A;
-      if (!($_val10 instanceof Indexish) && !(($_val10 instanceof Iterator || $_val10 instanceof IteratorAggregate) && $_val10 instanceof Countable)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      if (!($_val10 instanceof \Indexish) && !(($_val10 instanceof \Iterator || $_val10 instanceof \IteratorAggregate) && $_val10 instanceof \Countable)) {
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('map_of_string_to_A', TType::MAP, 6);
-      $output->writeMapBegin(TType::STRING, TType::STRUCT, count($_val10));
+      $xfer += $output->writeFieldBegin('map_of_string_to_A', \TType::MAP, 6);
+      $output->writeMapBegin(\TType::STRING, \TType::STRUCT, count($_val10));
       if ($_val10 !== null)
       {
         foreach ($_val10 as $kiter11 => $viter12)
@@ -2315,17 +2317,17 @@ class B implements IThriftStruct, IThriftShapishStruct {
     }
     if ($this->map_of_string_to_list_of_i32 !== null) {
       $_val13 = $this->map_of_string_to_list_of_i32;
-      if (!($_val13 instanceof Indexish) && !(($_val13 instanceof Iterator || $_val13 instanceof IteratorAggregate) && $_val13 instanceof Countable)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      if (!($_val13 instanceof \Indexish) && !(($_val13 instanceof \Iterator || $_val13 instanceof \IteratorAggregate) && $_val13 instanceof \Countable)) {
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('map_of_string_to_list_of_i32', TType::MAP, 7);
-      $output->writeMapBegin(TType::STRING, TType::LST, count($_val13));
+      $xfer += $output->writeFieldBegin('map_of_string_to_list_of_i32', \TType::MAP, 7);
+      $output->writeMapBegin(\TType::STRING, \TType::LST, count($_val13));
       if ($_val13 !== null)
       {
         foreach ($_val13 as $kiter14 => $viter15)
         {
           $xfer += $output->writeString($kiter14);
-          $output->writeListBegin(TType::I32, count($viter15));
+          $output->writeListBegin(\TType::I32, count($viter15));
           if ($viter15 !== null)
           {
             foreach ($viter15 as $iter16)
@@ -2341,17 +2343,17 @@ class B implements IThriftStruct, IThriftShapishStruct {
     }
     if ($this->map_of_string_to_list_of_A !== null) {
       $_val17 = $this->map_of_string_to_list_of_A;
-      if (!($_val17 instanceof Indexish) && !(($_val17 instanceof Iterator || $_val17 instanceof IteratorAggregate) && $_val17 instanceof Countable)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      if (!($_val17 instanceof \Indexish) && !(($_val17 instanceof \Iterator || $_val17 instanceof \IteratorAggregate) && $_val17 instanceof \Countable)) {
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('map_of_string_to_list_of_A', TType::MAP, 8);
-      $output->writeMapBegin(TType::STRING, TType::LST, count($_val17));
+      $xfer += $output->writeFieldBegin('map_of_string_to_list_of_A', \TType::MAP, 8);
+      $output->writeMapBegin(\TType::STRING, \TType::LST, count($_val17));
       if ($_val17 !== null)
       {
         foreach ($_val17 as $kiter18 => $viter19)
         {
           $xfer += $output->writeString($kiter18);
-          $output->writeListBegin(TType::STRUCT, count($viter19));
+          $output->writeListBegin(\TType::STRUCT, count($viter19));
           if ($viter19 !== null)
           {
             foreach ($viter19 as $iter20)
@@ -2367,17 +2369,17 @@ class B implements IThriftStruct, IThriftShapishStruct {
     }
     if ($this->map_of_string_to_set_of_i32 !== null) {
       $_val21 = $this->map_of_string_to_set_of_i32;
-      if (!($_val21 instanceof Indexish) && !(($_val21 instanceof Iterator || $_val21 instanceof IteratorAggregate) && $_val21 instanceof Countable)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      if (!($_val21 instanceof \Indexish) && !(($_val21 instanceof \Iterator || $_val21 instanceof \IteratorAggregate) && $_val21 instanceof \Countable)) {
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('map_of_string_to_set_of_i32', TType::MAP, 9);
-      $output->writeMapBegin(TType::STRING, TType::SET, count($_val21));
+      $xfer += $output->writeFieldBegin('map_of_string_to_set_of_i32', \TType::MAP, 9);
+      $output->writeMapBegin(\TType::STRING, \TType::SET, count($_val21));
       if ($_val21 !== null)
       {
         foreach ($_val21 as $kiter22 => $viter23)
         {
           $xfer += $output->writeString($kiter22);
-          $output->writeSetBegin(TType::I32, count($viter23));
+          $output->writeSetBegin(\TType::I32, count($viter23));
           if ($viter23 !== null)
           {
             foreach ($viter23 as $iter24)
@@ -2393,17 +2395,17 @@ class B implements IThriftStruct, IThriftShapishStruct {
     }
     if ($this->map_of_string_to_map_of_string_to_i32 !== null) {
       $_val25 = $this->map_of_string_to_map_of_string_to_i32;
-      if (!($_val25 instanceof Indexish) && !(($_val25 instanceof Iterator || $_val25 instanceof IteratorAggregate) && $_val25 instanceof Countable)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      if (!($_val25 instanceof \Indexish) && !(($_val25 instanceof \Iterator || $_val25 instanceof \IteratorAggregate) && $_val25 instanceof \Countable)) {
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('map_of_string_to_map_of_string_to_i32', TType::MAP, 10);
-      $output->writeMapBegin(TType::STRING, TType::MAP, count($_val25));
+      $xfer += $output->writeFieldBegin('map_of_string_to_map_of_string_to_i32', \TType::MAP, 10);
+      $output->writeMapBegin(\TType::STRING, \TType::MAP, count($_val25));
       if ($_val25 !== null)
       {
         foreach ($_val25 as $kiter26 => $viter27)
         {
           $xfer += $output->writeString($kiter26);
-          $output->writeMapBegin(TType::STRING, TType::I32, count($viter27));
+          $output->writeMapBegin(\TType::STRING, \TType::I32, count($viter27));
           if ($viter27 !== null)
           {
             foreach ($viter27 as $kiter28 => $viter29)
@@ -2420,17 +2422,17 @@ class B implements IThriftStruct, IThriftShapishStruct {
     }
     if ($this->map_of_string_to_map_of_string_to_A !== null) {
       $_val30 = $this->map_of_string_to_map_of_string_to_A;
-      if (!($_val30 instanceof Indexish) && !(($_val30 instanceof Iterator || $_val30 instanceof IteratorAggregate) && $_val30 instanceof Countable)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      if (!($_val30 instanceof \Indexish) && !(($_val30 instanceof \Iterator || $_val30 instanceof \IteratorAggregate) && $_val30 instanceof \Countable)) {
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('map_of_string_to_map_of_string_to_A', TType::MAP, 11);
-      $output->writeMapBegin(TType::STRING, TType::MAP, count($_val30));
+      $xfer += $output->writeFieldBegin('map_of_string_to_map_of_string_to_A', \TType::MAP, 11);
+      $output->writeMapBegin(\TType::STRING, \TType::MAP, count($_val30));
       if ($_val30 !== null)
       {
         foreach ($_val30 as $kiter31 => $viter32)
         {
           $xfer += $output->writeString($kiter31);
-          $output->writeMapBegin(TType::STRING, TType::STRUCT, count($viter32));
+          $output->writeMapBegin(\TType::STRING, \TType::STRUCT, count($viter32));
           if ($viter32 !== null)
           {
             foreach ($viter32 as $kiter33 => $viter34)
@@ -2447,16 +2449,16 @@ class B implements IThriftStruct, IThriftShapishStruct {
     }
     if ($this->list_of_set_of_i32 !== null) {
       $_val35 = $this->list_of_set_of_i32;
-      if (!($_val35 instanceof Indexish) && !(($_val35 instanceof Iterator || $_val35 instanceof IteratorAggregate) && $_val35 instanceof Countable)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      if (!($_val35 instanceof \Indexish) && !(($_val35 instanceof \Iterator || $_val35 instanceof \IteratorAggregate) && $_val35 instanceof \Countable)) {
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('list_of_set_of_i32', TType::LST, 12);
-      $output->writeListBegin(TType::SET, count($_val35));
+      $xfer += $output->writeFieldBegin('list_of_set_of_i32', \TType::LST, 12);
+      $output->writeListBegin(\TType::SET, count($_val35));
       if ($_val35 !== null)
       {
         foreach ($_val35 as $iter36)
         {
-          $output->writeSetBegin(TType::I32, count($iter36));
+          $output->writeSetBegin(\TType::I32, count($iter36));
           if ($iter36 !== null)
           {
             foreach ($iter36 as $iter37)
@@ -2472,22 +2474,22 @@ class B implements IThriftStruct, IThriftShapishStruct {
     }
     if ($this->list_of_map_of_string_to_list_of_A !== null) {
       $_val38 = $this->list_of_map_of_string_to_list_of_A;
-      if (!($_val38 instanceof Indexish) && !(($_val38 instanceof Iterator || $_val38 instanceof IteratorAggregate) && $_val38 instanceof Countable)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      if (!($_val38 instanceof \Indexish) && !(($_val38 instanceof \Iterator || $_val38 instanceof \IteratorAggregate) && $_val38 instanceof \Countable)) {
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('list_of_map_of_string_to_list_of_A', TType::LST, 13);
-      $output->writeListBegin(TType::MAP, count($_val38));
+      $xfer += $output->writeFieldBegin('list_of_map_of_string_to_list_of_A', \TType::LST, 13);
+      $output->writeListBegin(\TType::MAP, count($_val38));
       if ($_val38 !== null)
       {
         foreach ($_val38 as $iter39)
         {
-          $output->writeMapBegin(TType::STRING, TType::LST, count($iter39));
+          $output->writeMapBegin(\TType::STRING, \TType::LST, count($iter39));
           if ($iter39 !== null)
           {
             foreach ($iter39 as $kiter40 => $viter41)
             {
               $xfer += $output->writeString($kiter40);
-              $output->writeListBegin(TType::STRUCT, count($viter41));
+              $output->writeListBegin(\TType::STRUCT, count($viter41));
               if ($viter41 !== null)
               {
                 foreach ($viter41 as $iter42)
@@ -2506,16 +2508,16 @@ class B implements IThriftStruct, IThriftShapishStruct {
     }
     if ($this->list_of_map_of_string_to_A !== null) {
       $_val43 = $this->list_of_map_of_string_to_A;
-      if (!($_val43 instanceof Indexish) && !(($_val43 instanceof Iterator || $_val43 instanceof IteratorAggregate) && $_val43 instanceof Countable)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      if (!($_val43 instanceof \Indexish) && !(($_val43 instanceof \Iterator || $_val43 instanceof \IteratorAggregate) && $_val43 instanceof \Countable)) {
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('list_of_map_of_string_to_A', TType::LST, 14);
-      $output->writeListBegin(TType::MAP, count($_val43));
+      $xfer += $output->writeFieldBegin('list_of_map_of_string_to_A', \TType::LST, 14);
+      $output->writeListBegin(\TType::MAP, count($_val43));
       if ($_val43 !== null)
       {
         foreach ($_val43 as $iter44)
         {
-          $output->writeMapBegin(TType::STRING, TType::STRUCT, count($iter44));
+          $output->writeMapBegin(\TType::STRING, \TType::STRUCT, count($iter44));
           if ($iter44 !== null)
           {
             foreach ($iter44 as $kiter45 => $viter46)
@@ -2532,11 +2534,11 @@ class B implements IThriftStruct, IThriftShapishStruct {
     }
     if ($this->list_of_self !== null) {
       $_val47 = $this->list_of_self;
-      if (!($_val47 instanceof Indexish) && !(($_val47 instanceof Iterator || $_val47 instanceof IteratorAggregate) && $_val47 instanceof Countable)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      if (!($_val47 instanceof \Indexish) && !(($_val47 instanceof \Iterator || $_val47 instanceof \IteratorAggregate) && $_val47 instanceof \Countable)) {
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('list_of_self', TType::LST, 15);
-      $output->writeListBegin(TType::STRUCT, count($_val47));
+      $xfer += $output->writeFieldBegin('list_of_self', \TType::LST, 15);
+      $output->writeListBegin(\TType::STRUCT, count($_val47));
       if ($_val47 !== null)
       {
         foreach ($_val47 as $iter48)
@@ -2549,11 +2551,11 @@ class B implements IThriftStruct, IThriftShapishStruct {
     }
     if ($this->map_of_string_to_self !== null) {
       $_val49 = $this->map_of_string_to_self;
-      if (!($_val49 instanceof Indexish) && !(($_val49 instanceof Iterator || $_val49 instanceof IteratorAggregate) && $_val49 instanceof Countable)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      if (!($_val49 instanceof \Indexish) && !(($_val49 instanceof \Iterator || $_val49 instanceof \IteratorAggregate) && $_val49 instanceof \Countable)) {
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('map_of_string_to_self', TType::MAP, 16);
-      $output->writeMapBegin(TType::STRING, TType::STRUCT, count($_val49));
+      $xfer += $output->writeFieldBegin('map_of_string_to_self', \TType::MAP, 16);
+      $output->writeMapBegin(\TType::STRING, \TType::STRUCT, count($_val49));
       if ($_val49 !== null)
       {
         foreach ($_val49 as $kiter50 => $viter51)
@@ -2566,27 +2568,27 @@ class B implements IThriftStruct, IThriftShapishStruct {
       $xfer += $output->writeFieldEnd();
     }
     if ($this->just_an_enum !== null) {
-      $_val52 = Enum::assert($this->just_an_enum);
-      $xfer += $output->writeFieldBegin('just_an_enum', TType::I32, 17);
+      $_val52 = \test\fixtures\Enum::assert($this->just_an_enum);
+      $xfer += $output->writeFieldBegin('just_an_enum', \TType::I32, 17);
       $xfer += $output->writeI32($_val52);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->optional_just_an_A !== null) {
       $_val53 = $this->optional_just_an_A;
-      if (!($_val53 instanceof A)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      if (!($_val53 instanceof \test\fixtures\A)) {
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('optional_just_an_A', TType::STRUCT, 51);
+      $xfer += $output->writeFieldBegin('optional_just_an_A', \TType::STRUCT, 51);
       $xfer += $_val53->write($output);
       $xfer += $output->writeFieldEnd();
     }
     if ($this->optional_set_of_i32 !== null) {
       $_val54 = $this->optional_set_of_i32;
       if (!($_val54 instanceof Set)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('optional_set_of_i32', TType::SET, 52);
-      $output->writeSetBegin(TType::I32, count($_val54));
+      $xfer += $output->writeFieldBegin('optional_set_of_i32', \TType::SET, 52);
+      $output->writeSetBegin(\TType::I32, count($_val54));
       if ($_val54 !== null)
       {
         foreach ($_val54 as $iter55)
@@ -2599,11 +2601,11 @@ class B implements IThriftStruct, IThriftShapishStruct {
     }
     if ($this->optional_list_of_i32 !== null) {
       $_val56 = $this->optional_list_of_i32;
-      if (!($_val56 instanceof Indexish) && !(($_val56 instanceof Iterator || $_val56 instanceof IteratorAggregate) && $_val56 instanceof Countable)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      if (!($_val56 instanceof \Indexish) && !(($_val56 instanceof \Iterator || $_val56 instanceof \IteratorAggregate) && $_val56 instanceof \Countable)) {
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('optional_list_of_i32', TType::LST, 53);
-      $output->writeListBegin(TType::I32, count($_val56));
+      $xfer += $output->writeFieldBegin('optional_list_of_i32', \TType::LST, 53);
+      $output->writeListBegin(\TType::I32, count($_val56));
       if ($_val56 !== null)
       {
         foreach ($_val56 as $iter57)
@@ -2616,11 +2618,11 @@ class B implements IThriftStruct, IThriftShapishStruct {
     }
     if ($this->optional_list_of_string !== null) {
       $_val58 = $this->optional_list_of_string;
-      if (!($_val58 instanceof Indexish) && !(($_val58 instanceof Iterator || $_val58 instanceof IteratorAggregate) && $_val58 instanceof Countable)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      if (!($_val58 instanceof \Indexish) && !(($_val58 instanceof \Iterator || $_val58 instanceof \IteratorAggregate) && $_val58 instanceof \Countable)) {
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('optional_list_of_string', TType::LST, 54);
-      $output->writeListBegin(TType::STRING, count($_val58));
+      $xfer += $output->writeFieldBegin('optional_list_of_string', \TType::LST, 54);
+      $output->writeListBegin(\TType::STRING, count($_val58));
       if ($_val58 !== null)
       {
         foreach ($_val58 as $iter59)
@@ -2633,11 +2635,11 @@ class B implements IThriftStruct, IThriftShapishStruct {
     }
     if ($this->optional_map_of_string_to_i32 !== null) {
       $_val60 = $this->optional_map_of_string_to_i32;
-      if (!($_val60 instanceof Indexish) && !(($_val60 instanceof Iterator || $_val60 instanceof IteratorAggregate) && $_val60 instanceof Countable)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      if (!($_val60 instanceof \Indexish) && !(($_val60 instanceof \Iterator || $_val60 instanceof \IteratorAggregate) && $_val60 instanceof \Countable)) {
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('optional_map_of_string_to_i32', TType::MAP, 55);
-      $output->writeMapBegin(TType::STRING, TType::I32, count($_val60));
+      $xfer += $output->writeFieldBegin('optional_map_of_string_to_i32', \TType::MAP, 55);
+      $output->writeMapBegin(\TType::STRING, \TType::I32, count($_val60));
       if ($_val60 !== null)
       {
         foreach ($_val60 as $kiter61 => $viter62)
@@ -2651,11 +2653,11 @@ class B implements IThriftStruct, IThriftShapishStruct {
     }
     if ($this->optional_map_of_string_to_A !== null) {
       $_val63 = $this->optional_map_of_string_to_A;
-      if (!($_val63 instanceof Indexish) && !(($_val63 instanceof Iterator || $_val63 instanceof IteratorAggregate) && $_val63 instanceof Countable)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      if (!($_val63 instanceof \Indexish) && !(($_val63 instanceof \Iterator || $_val63 instanceof \IteratorAggregate) && $_val63 instanceof \Countable)) {
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('optional_map_of_string_to_A', TType::MAP, 56);
-      $output->writeMapBegin(TType::STRING, TType::STRUCT, count($_val63));
+      $xfer += $output->writeFieldBegin('optional_map_of_string_to_A', \TType::MAP, 56);
+      $output->writeMapBegin(\TType::STRING, \TType::STRUCT, count($_val63));
       if ($_val63 !== null)
       {
         foreach ($_val63 as $kiter64 => $viter65)
@@ -2669,17 +2671,17 @@ class B implements IThriftStruct, IThriftShapishStruct {
     }
     if ($this->optional_map_of_string_to_list_of_i32 !== null) {
       $_val66 = $this->optional_map_of_string_to_list_of_i32;
-      if (!($_val66 instanceof Indexish) && !(($_val66 instanceof Iterator || $_val66 instanceof IteratorAggregate) && $_val66 instanceof Countable)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      if (!($_val66 instanceof \Indexish) && !(($_val66 instanceof \Iterator || $_val66 instanceof \IteratorAggregate) && $_val66 instanceof \Countable)) {
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('optional_map_of_string_to_list_of_i32', TType::MAP, 57);
-      $output->writeMapBegin(TType::STRING, TType::LST, count($_val66));
+      $xfer += $output->writeFieldBegin('optional_map_of_string_to_list_of_i32', \TType::MAP, 57);
+      $output->writeMapBegin(\TType::STRING, \TType::LST, count($_val66));
       if ($_val66 !== null)
       {
         foreach ($_val66 as $kiter67 => $viter68)
         {
           $xfer += $output->writeString($kiter67);
-          $output->writeListBegin(TType::I32, count($viter68));
+          $output->writeListBegin(\TType::I32, count($viter68));
           if ($viter68 !== null)
           {
             foreach ($viter68 as $iter69)
@@ -2695,17 +2697,17 @@ class B implements IThriftStruct, IThriftShapishStruct {
     }
     if ($this->optional_map_of_string_to_list_of_A !== null) {
       $_val70 = $this->optional_map_of_string_to_list_of_A;
-      if (!($_val70 instanceof Indexish) && !(($_val70 instanceof Iterator || $_val70 instanceof IteratorAggregate) && $_val70 instanceof Countable)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      if (!($_val70 instanceof \Indexish) && !(($_val70 instanceof \Iterator || $_val70 instanceof \IteratorAggregate) && $_val70 instanceof \Countable)) {
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('optional_map_of_string_to_list_of_A', TType::MAP, 58);
-      $output->writeMapBegin(TType::STRING, TType::LST, count($_val70));
+      $xfer += $output->writeFieldBegin('optional_map_of_string_to_list_of_A', \TType::MAP, 58);
+      $output->writeMapBegin(\TType::STRING, \TType::LST, count($_val70));
       if ($_val70 !== null)
       {
         foreach ($_val70 as $kiter71 => $viter72)
         {
           $xfer += $output->writeString($kiter71);
-          $output->writeListBegin(TType::STRUCT, count($viter72));
+          $output->writeListBegin(\TType::STRUCT, count($viter72));
           if ($viter72 !== null)
           {
             foreach ($viter72 as $iter73)
@@ -2721,17 +2723,17 @@ class B implements IThriftStruct, IThriftShapishStruct {
     }
     if ($this->optional_map_of_string_to_set_of_i32 !== null) {
       $_val74 = $this->optional_map_of_string_to_set_of_i32;
-      if (!($_val74 instanceof Indexish) && !(($_val74 instanceof Iterator || $_val74 instanceof IteratorAggregate) && $_val74 instanceof Countable)) {
-        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      if (!($_val74 instanceof \Indexish) && !(($_val74 instanceof \Iterator || $_val74 instanceof \IteratorAggregate) && $_val74 instanceof \Countable)) {
+        throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('optional_map_of_string_to_set_of_i32', TType::MAP, 59);
-      $output->writeMapBegin(TType::STRING, TType::SET, count($_val74));
+      $xfer += $output->writeFieldBegin('optional_map_of_string_to_set_of_i32', \TType::MAP, 59);
+      $output->writeMapBegin(\TType::STRING, \TType::SET, count($_val74));
       if ($_val74 !== null)
       {
         foreach ($_val74 as $kiter75 => $viter76)
         {
           $xfer += $output->writeString($kiter75);
-          $output->writeSetBegin(TType::I32, count($viter76));
+          $output->writeSetBegin(\TType::I32, count($viter76));
           if ($viter76 !== null)
           {
             foreach ($viter76 as $iter77)
@@ -2746,8 +2748,8 @@ class B implements IThriftStruct, IThriftShapishStruct {
       $xfer += $output->writeFieldEnd();
     }
     if ($this->optional_enum !== null) {
-      $_val78 = Enum::assert($this->optional_enum);
-      $xfer += $output->writeFieldBegin('optional_enum', TType::I32, 60);
+      $_val78 = \test\fixtures\Enum::assert($this->optional_enum);
+      $xfer += $output->writeFieldBegin('optional_enum', \TType::I32, 60);
       $xfer += $output->writeI32($_val78);
       $xfer += $output->writeFieldEnd();
     }
