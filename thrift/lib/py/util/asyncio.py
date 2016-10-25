@@ -1,5 +1,4 @@
-# @lint-avoid-pyflakes2
-# @lint-avoid-python-3-compatibility-imports
+#!/usr/bin/env python3
 
 import asyncio
 
@@ -7,28 +6,67 @@ from thrift.server.TAsyncioServer import ThriftClientProtocolFactory
 from thrift.util.Decorators import protocol_manager
 
 
-@asyncio.coroutine
+class async_protocol_manager:
+    def __init__(self, coro):
+        """
+        Given a coro from create_connection create a context manager
+        around the protocol returned
+        """
+        self.coro = coro
+
+    def __await__(self):
+        async def as_protocol_manager():
+            _, protocol = await self.coro
+            return protocol_manager(protocol)
+
+        return as_protocol_manager().__await__()
+
+    __iter__ = __await__
+
+    async def __aenter__(self):
+        _, self.protocol = await self.coro
+        return self.protocol.client
+
+    async def __aexit__(self, exc_type, exc, tb):
+        self.protocol.close()
+
+
 def create_client(
-    client_klass,
-    *,
-    host=None,
-    port=None,
-    loop=None,
-    timeouts=None,
-    client_type=None
+        client_klass,
+        *,
+        host=None,
+        port=None,
+        loop=None,
+        timeouts=None,
+        client_type=None
 ):
     """
-    create a asyncio thrift client and return a context manager for it
-    This is a coroutine
+    create an asyncio thrift client and return an async context
+    manager that can be used as follows:
+
+    async with create_client(smc2_client, port=1421) as smc:
+        await smc.getStatus()
+
+    This can be used in the old way:
+
+    with (await create_client(smc2_client, port=1421)) as smc:
+        await smc.getStatus()
+
+    or even the old deprecated way:
+
+    with (yield from create_client(smc2_client, port=1421) as smc:
+        yield from smc.getStatus()
+
     :param client_klass: thrift Client class
     :param host: hostname/ip, None = loopback
     :param port: port number
     :param loop: asyncio event loop
-    :returns: a Context manager which provides the thrift client
+    :returns: an Async Context Manager
     """
     if not loop:
         loop = asyncio.get_event_loop()
-    transport, protocol = yield from loop.create_connection(
+
+    coro = loop.create_connection(
         ThriftClientProtocolFactory(
             client_klass,
             loop=loop,
@@ -38,7 +76,7 @@ def create_client(
         host=host,
         port=port,
     )
-    return protocol_manager(protocol)
+    return async_protocol_manager(coro)
 
 
 def call_as_future(f, loop, *args, **kwargs):

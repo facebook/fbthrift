@@ -11,6 +11,11 @@ from thrift.util.Decorators import protocol_manager
 
 
 @asyncio.coroutine
+def async_protocol_manager(coro):
+    _, protocol = yield From(coro)
+    raise Return(protocol_manager(protocol))
+
+
 def create_client(client_klass,
                   host=None,
                   port=None,
@@ -28,19 +33,17 @@ def create_client(client_klass,
     """
     if not loop:
         loop = asyncio.get_event_loop()
-    transport, protocol = yield From(
-        loop.create_connection(
-            ThriftClientProtocolFactory(
-                client_klass,
-                loop=loop,
-                timeouts=timeouts,
-                client_type=client_type,
-            ),
-            host=host,
-            port=port,
-        )
+    coro = loop.create_connection(
+        ThriftClientProtocolFactory(
+            client_klass,
+            loop=loop,
+            timeouts=timeouts,
+            client_type=client_type,
+        ),
+        host=host,
+        port=port,
     )
-    raise Return(protocol_manager(protocol))
+    return async_protocol_manager(coro)
 
 
 def call_as_future(callable, loop, *args, **kwargs):
