@@ -60,12 +60,6 @@
     __VA_ARGS__                                                              \
   };
 
-#define FROZEN_TYPE_EXTERN(TYPE)                \
-  extern template struct Layout<TYPE, void>;
-
-#define FROZEN_TYPE_INSTANTIATE(TYPE)           \
-  template struct Layout<TYPE, void>;
-
 #define FROZEN_CTOR_FIELD(NAME, ID) , NAME##Field(ID, #NAME)
 #define FROZEN_CTOR_FIELD_OPT(NAME, ID) , NAME##Field(ID, #NAME)
 #define FROZEN_CTOR_FIELD_REQ FROZEN_CTOR_FIELD

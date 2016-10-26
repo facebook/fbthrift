@@ -2764,8 +2764,6 @@ void t_cpp_generator::generate_frozen2_struct_definition(t_struct* tstruct) {
         f_types_layouts_, "\n    FROZEN_LOAD_FIELD({name}, {id})", field);
   }
   f_types_layouts_ << "));" << endl;
-  f_types_layouts_ << folly::format("FROZEN_TYPE_EXTERN({});", structName);
-  f_types_layouts_ << endl;
 
   // Implementation
   for (auto step :
@@ -2783,8 +2781,6 @@ void t_cpp_generator::generate_frozen2_struct_definition(t_struct* tstruct) {
     }
     f_types_layouts_impl_ << ")\n";
   }
-  f_types_layouts_impl_ <<
-      folly::format("FROZEN_TYPE_INSTANTIATE({});", structName);
   f_types_layouts_impl_ << endl;
 }
 

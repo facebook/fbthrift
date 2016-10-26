@@ -4064,7 +4064,6 @@ class CppGenerator(t_generator.Generator):
             load=visitFields(
                 '\n  FROZEN_LOAD_INLINE({fields})',
                 '\n    FROZEN_LOAD_FIELD({name}, {id})')))
-        s('FROZEN_TYPE_EXTERN({});'.format(type_name))
 
         for (typeFmt, fieldFmt) in [
                 ('FROZEN_CTOR', 'FROZEN_CTOR_FIELD{_opt}({name}, {id})'),
@@ -4077,7 +4076,6 @@ class CppGenerator(t_generator.Generator):
             s.impl(visitFields(typeFmt + '({type},{fields})',
                                '\n  ' + fieldFmt))
 
-        s.impl('FROZEN_TYPE_INSTANTIATE({});'.format(type_name))
 
     def _generate_hash_equal_to(self, obj):
         # Don't generate these declarations if in compatibility mode since
