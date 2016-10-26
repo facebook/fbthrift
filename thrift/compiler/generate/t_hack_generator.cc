@@ -3063,7 +3063,7 @@ string t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool sha
       return (nullable ? "?" : "") + hack_name(ttype);
     }
   } else if (ttype->is_struct() || ttype->is_xception()) {
-    return (nullable ? "?" : "") + hack_name(ttype) + (shape ? "::\\TShape" : "");
+    return (nullable ? "?" : "") + hack_name(ttype) + (shape ? "::TShape" : "");
   } else if (ttype->is_list()) {
     string prefix = shape ? "array" : "Vector";
     return prefix + "<" + type_to_typehint(((t_list*)ttype)->get_elem_type(), false, shape)  + ">";
