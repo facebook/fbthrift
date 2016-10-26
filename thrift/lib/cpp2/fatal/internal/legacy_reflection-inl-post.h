@@ -163,6 +163,22 @@ struct impl<T, type_class::string> {
   static void go(schema_t&) {}
 };
 
+template <typename...>
+struct list_of_seq_to_array_of_data;
+template <typename... Entries>
+struct list_of_seq_to_array_of_data<fatal::list<Entries...>> {
+  static constexpr const char* data[sizeof...(Entries)] =
+      {fatal::as_array<Entries>::data...};
+  static constexpr uint16_t size[sizeof...(Entries)] =
+      {fatal::size<Entries>::value...};
+};
+template <typename... Entries>
+constexpr const char* list_of_seq_to_array_of_data<fatal::list<Entries...>>
+    ::data[sizeof...(Entries)];
+template <typename... Entries>
+constexpr uint16_t list_of_seq_to_array_of_data<fatal::list<Entries...>>
+    ::size[sizeof...(Entries)];
+
 template <typename T>
 struct impl<T, type_class::enumeration> {
   using meta = reflect_enum<T>;
@@ -177,11 +193,12 @@ struct impl<T, type_class::enumeration> {
   static void go(schema_t& schema) {
     registering_datatype(
         schema, to_c_array<rname>::range(), rid(), [&](datatype_t& dt) {
-      using names = typename meta::traits::array::names;
+      // unfortunately, meta::traits::array::names is not constexpr
+      using names = list_of_seq_to_array_of_data<typename meta::traits::names>;
       using values = typename meta::traits::array::values;
       dt.__isset.enumValues = true;
       for (size_t i = 0; i < values::size::value; ++i) {
-        dt.enumValues[names::data[i]] = int(values::data[i]);
+        dt.enumValues[{names::data[i], names::size[i]}] = int(values::data[i]);
       }
     });
   }
