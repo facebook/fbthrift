@@ -50,15 +50,15 @@ folly::Future<{{#function:returnType}}{{> CppFieldType}}{{/function:returnType}}
 }} {{service:name}}Wrapper::future_{{function:name}}({{#function:args}}
   {{#field:type}}{{> CppFieldType}}{{/field:type}} {{field:name}}{{^last?}},{{/last?}}{{#last?}}
 {{/last?}}{{/function:args}}) {
-  auto promise = std::make_shared<{{!
-  }}{{#function:returnType}}folly::Promise<{{>CppFieldType}}>{{/function:returnType}}>();
+  {{#function:returnType}}folly::Promise<{{>CppFieldType}}>{{/function:returnType}} promise;
+  auto future = promise.getFuture();
   call_cy_{{service:name}}_{{function:name}}(
     this->if_object,
-    promise{{#function:args}},
+    std::move(promise){{#function:args}},
     {{#field:type}}{{> CppPassField}}{{/field:type}}{{/function:args}}
 
   );
-  return promise->getFuture();
+  return future;
 }
 
 {{/service:functions}}

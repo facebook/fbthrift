@@ -25,16 +25,24 @@ promise can have it's value set after the handler coroutine has finished
 executing.
 
 }}
+
+cdef extern from "<utility>" namespace "std":
+{{#program:returnTypes}}
+    cdef cFollyPromise[{{>CythonFieldType}}] move(cFollyPromise[{{>CythonFieldType}}])
+{{/program:returnTypes}}
+{{^program:returnTypes}}
+    pass
+{{/program:returnTypes}}
 {{#program:returnTypes}}
 
 cdef class Promise_{{type:name}}:
-    cdef shared_ptr[cFollyPromise[{{>CythonFieldType}}]] cPromise
+    cdef cFollyPromise[{{>CythonFieldType}}] cPromise
 
     @staticmethod
-    cdef create(shared_ptr[cFollyPromise[{{>CythonFieldType}}]] cPromise):
+    cdef create(cFollyPromise[{{>CythonFieldType}}] cPromise):
         inst = <Promise_{{type:name}}>{{!
         }}Promise_{{type:name}}.__new__({{!
         }}Promise_{{type:name}})
-        inst.cPromise = cPromise
+        inst.cPromise = move(cPromise)
         return inst
 {{/program:returnTypes}}

@@ -51,83 +51,93 @@ from module_types cimport (
 from module_services_wrapper cimport cSimpleServiceInterface
 
 
+cdef extern from "<utility>" namespace "std":
+    cdef cFollyPromise[int32_t] move(cFollyPromise[int32_t])
+    cdef cFollyPromise[cFollyUnit] move(cFollyPromise[cFollyUnit])
+    cdef cFollyPromise[unique_ptr[string]] move(cFollyPromise[unique_ptr[string]])
+    cdef cFollyPromise[cbool] move(cFollyPromise[cbool])
+    cdef cFollyPromise[int8_t] move(cFollyPromise[int8_t])
+    cdef cFollyPromise[int16_t] move(cFollyPromise[int16_t])
+    cdef cFollyPromise[int64_t] move(cFollyPromise[int64_t])
+    cdef cFollyPromise[double] move(cFollyPromise[double])
+
 cdef class Promise_i32:
-    cdef shared_ptr[cFollyPromise[int32_t]] cPromise
+    cdef cFollyPromise[int32_t] cPromise
 
     @staticmethod
-    cdef create(shared_ptr[cFollyPromise[int32_t]] cPromise):
+    cdef create(cFollyPromise[int32_t] cPromise):
         inst = <Promise_i32>Promise_i32.__new__(Promise_i32)
-        inst.cPromise = cPromise
+        inst.cPromise = move(cPromise)
         return inst
 
 cdef class Promise_void:
-    cdef shared_ptr[cFollyPromise[cFollyUnit]] cPromise
+    cdef cFollyPromise[cFollyUnit] cPromise
 
     @staticmethod
-    cdef create(shared_ptr[cFollyPromise[cFollyUnit]] cPromise):
+    cdef create(cFollyPromise[cFollyUnit] cPromise):
         inst = <Promise_void>Promise_void.__new__(Promise_void)
-        inst.cPromise = cPromise
+        inst.cPromise = move(cPromise)
         return inst
 
 cdef class Promise_string:
-    cdef shared_ptr[cFollyPromise[unique_ptr[string]]] cPromise
+    cdef cFollyPromise[unique_ptr[string]] cPromise
 
     @staticmethod
-    cdef create(shared_ptr[cFollyPromise[unique_ptr[string]]] cPromise):
+    cdef create(cFollyPromise[unique_ptr[string]] cPromise):
         inst = <Promise_string>Promise_string.__new__(Promise_string)
-        inst.cPromise = cPromise
+        inst.cPromise = move(cPromise)
         return inst
 
 cdef class Promise_bool:
-    cdef shared_ptr[cFollyPromise[cbool]] cPromise
+    cdef cFollyPromise[cbool] cPromise
 
     @staticmethod
-    cdef create(shared_ptr[cFollyPromise[cbool]] cPromise):
+    cdef create(cFollyPromise[cbool] cPromise):
         inst = <Promise_bool>Promise_bool.__new__(Promise_bool)
-        inst.cPromise = cPromise
+        inst.cPromise = move(cPromise)
         return inst
 
 cdef class Promise_byte:
-    cdef shared_ptr[cFollyPromise[int8_t]] cPromise
+    cdef cFollyPromise[int8_t] cPromise
 
     @staticmethod
-    cdef create(shared_ptr[cFollyPromise[int8_t]] cPromise):
+    cdef create(cFollyPromise[int8_t] cPromise):
         inst = <Promise_byte>Promise_byte.__new__(Promise_byte)
-        inst.cPromise = cPromise
+        inst.cPromise = move(cPromise)
         return inst
 
 cdef class Promise_i16:
-    cdef shared_ptr[cFollyPromise[int16_t]] cPromise
+    cdef cFollyPromise[int16_t] cPromise
 
     @staticmethod
-    cdef create(shared_ptr[cFollyPromise[int16_t]] cPromise):
+    cdef create(cFollyPromise[int16_t] cPromise):
         inst = <Promise_i16>Promise_i16.__new__(Promise_i16)
-        inst.cPromise = cPromise
+        inst.cPromise = move(cPromise)
         return inst
 
 cdef class Promise_i64:
-    cdef shared_ptr[cFollyPromise[int64_t]] cPromise
+    cdef cFollyPromise[int64_t] cPromise
 
     @staticmethod
-    cdef create(shared_ptr[cFollyPromise[int64_t]] cPromise):
+    cdef create(cFollyPromise[int64_t] cPromise):
         inst = <Promise_i64>Promise_i64.__new__(Promise_i64)
-        inst.cPromise = cPromise
+        inst.cPromise = move(cPromise)
         return inst
 
 cdef class Promise_double:
-    cdef shared_ptr[cFollyPromise[double]] cPromise
+    cdef cFollyPromise[double] cPromise
 
     @staticmethod
-    cdef create(shared_ptr[cFollyPromise[double]] cPromise):
+    cdef create(cFollyPromise[double] cPromise):
         inst = <Promise_double>Promise_double.__new__(Promise_double)
-        inst.cPromise = cPromise
+        inst.cPromise = move(cPromise)
         return inst
 
 cdef public void call_cy_SimpleService_get_five(
     object self,
-    shared_ptr[cFollyPromise[int32_t]] cPromise
+    cFollyPromise[int32_t] cPromise
 ) with gil:
-    promise = Promise_i32.create(cPromise)
+    promise = Promise_i32.create(move(cPromise))
 
     asyncio.run_coroutine_threadsafe(
         SimpleService_get_five_coro(
@@ -146,18 +156,18 @@ async def SimpleService_get_five_coro(
             "Unexpected error in service handler get_five:",
             file=sys.stderr)
         traceback.print_exc()
-        deref(promise.cPromise).setException(cTApplicationException(
+        promise.cPromise.setException(cTApplicationException(
             repr(ex).encode('UTF-8')
         ))
     else:
-        deref(promise.cPromise).setValue(<int32_t> result)
+        promise.cPromise.setValue(<int32_t> result)
 
 cdef public void call_cy_SimpleService_add_five(
     object self,
-    shared_ptr[cFollyPromise[int32_t]] cPromise,
+    cFollyPromise[int32_t] cPromise,
     int32_t num
 ) with gil:
-    promise = Promise_i32.create(cPromise)
+    promise = Promise_i32.create(move(cPromise))
     arg_num = num
 
     asyncio.run_coroutine_threadsafe(
@@ -180,17 +190,17 @@ async def SimpleService_add_five_coro(
             "Unexpected error in service handler add_five:",
             file=sys.stderr)
         traceback.print_exc()
-        deref(promise.cPromise).setException(cTApplicationException(
+        promise.cPromise.setException(cTApplicationException(
             repr(ex).encode('UTF-8')
         ))
     else:
-        deref(promise.cPromise).setValue(<int32_t> result)
+        promise.cPromise.setValue(<int32_t> result)
 
 cdef public void call_cy_SimpleService_do_nothing(
     object self,
-    shared_ptr[cFollyPromise[cFollyUnit]] cPromise
+    cFollyPromise[cFollyUnit] cPromise
 ) with gil:
-    promise = Promise_void.create(cPromise)
+    promise = Promise_void.create(move(cPromise))
 
     asyncio.run_coroutine_threadsafe(
         SimpleService_do_nothing_coro(
@@ -209,19 +219,19 @@ async def SimpleService_do_nothing_coro(
             "Unexpected error in service handler do_nothing:",
             file=sys.stderr)
         traceback.print_exc()
-        deref(promise.cPromise).setException(cTApplicationException(
+        promise.cPromise.setException(cTApplicationException(
             repr(ex).encode('UTF-8')
         ))
     else:
-        deref(promise.cPromise).setValue(c_unit)
+        promise.cPromise.setValue(c_unit)
 
 cdef public void call_cy_SimpleService_concat(
     object self,
-    shared_ptr[cFollyPromise[unique_ptr[string]]] cPromise,
+    cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] first,
     unique_ptr[string] second
 ) with gil:
-    promise = Promise_string.create(cPromise)
+    promise = Promise_string.create(move(cPromise))
     arg_first = (deref(first.get())).decode()
     arg_second = (deref(second.get())).decode()
 
@@ -248,18 +258,18 @@ async def SimpleService_concat_coro(
             "Unexpected error in service handler concat:",
             file=sys.stderr)
         traceback.print_exc()
-        deref(promise.cPromise).setException(cTApplicationException(
+        promise.cPromise.setException(cTApplicationException(
             repr(ex).encode('UTF-8')
         ))
     else:
-        deref(promise.cPromise).setValue(make_unique[string](<string> result.encode('UTF-8')))
+        promise.cPromise.setValue(make_unique[string](<string> result.encode('UTF-8')))
 
 cdef public void call_cy_SimpleService_get_value(
     object self,
-    shared_ptr[cFollyPromise[int32_t]] cPromise,
+    cFollyPromise[int32_t] cPromise,
     unique_ptr[cSimpleStruct] simple_struct
 ) with gil:
-    promise = Promise_i32.create(cPromise)
+    promise = Promise_i32.create(move(cPromise))
     arg_simple_struct = SimpleStruct.create(move(simple_struct))
 
     asyncio.run_coroutine_threadsafe(
@@ -282,18 +292,18 @@ async def SimpleService_get_value_coro(
             "Unexpected error in service handler get_value:",
             file=sys.stderr)
         traceback.print_exc()
-        deref(promise.cPromise).setException(cTApplicationException(
+        promise.cPromise.setException(cTApplicationException(
             repr(ex).encode('UTF-8')
         ))
     else:
-        deref(promise.cPromise).setValue(<int32_t> result)
+        promise.cPromise.setValue(<int32_t> result)
 
 cdef public void call_cy_SimpleService_negate(
     object self,
-    shared_ptr[cFollyPromise[cbool]] cPromise,
+    cFollyPromise[cbool] cPromise,
     cbool input
 ) with gil:
-    promise = Promise_bool.create(cPromise)
+    promise = Promise_bool.create(move(cPromise))
     arg_input = input
 
     asyncio.run_coroutine_threadsafe(
@@ -316,18 +326,18 @@ async def SimpleService_negate_coro(
             "Unexpected error in service handler negate:",
             file=sys.stderr)
         traceback.print_exc()
-        deref(promise.cPromise).setException(cTApplicationException(
+        promise.cPromise.setException(cTApplicationException(
             repr(ex).encode('UTF-8')
         ))
     else:
-        deref(promise.cPromise).setValue(<cbool> result)
+        promise.cPromise.setValue(<cbool> result)
 
 cdef public void call_cy_SimpleService_tiny(
     object self,
-    shared_ptr[cFollyPromise[int8_t]] cPromise,
+    cFollyPromise[int8_t] cPromise,
     int8_t input
 ) with gil:
-    promise = Promise_byte.create(cPromise)
+    promise = Promise_byte.create(move(cPromise))
     arg_input = input
 
     asyncio.run_coroutine_threadsafe(
@@ -350,18 +360,18 @@ async def SimpleService_tiny_coro(
             "Unexpected error in service handler tiny:",
             file=sys.stderr)
         traceback.print_exc()
-        deref(promise.cPromise).setException(cTApplicationException(
+        promise.cPromise.setException(cTApplicationException(
             repr(ex).encode('UTF-8')
         ))
     else:
-        deref(promise.cPromise).setValue(<int8_t> result)
+        promise.cPromise.setValue(<int8_t> result)
 
 cdef public void call_cy_SimpleService_small(
     object self,
-    shared_ptr[cFollyPromise[int16_t]] cPromise,
+    cFollyPromise[int16_t] cPromise,
     int16_t input
 ) with gil:
-    promise = Promise_i16.create(cPromise)
+    promise = Promise_i16.create(move(cPromise))
     arg_input = input
 
     asyncio.run_coroutine_threadsafe(
@@ -384,18 +394,18 @@ async def SimpleService_small_coro(
             "Unexpected error in service handler small:",
             file=sys.stderr)
         traceback.print_exc()
-        deref(promise.cPromise).setException(cTApplicationException(
+        promise.cPromise.setException(cTApplicationException(
             repr(ex).encode('UTF-8')
         ))
     else:
-        deref(promise.cPromise).setValue(<int16_t> result)
+        promise.cPromise.setValue(<int16_t> result)
 
 cdef public void call_cy_SimpleService_big(
     object self,
-    shared_ptr[cFollyPromise[int64_t]] cPromise,
+    cFollyPromise[int64_t] cPromise,
     int64_t input
 ) with gil:
-    promise = Promise_i64.create(cPromise)
+    promise = Promise_i64.create(move(cPromise))
     arg_input = input
 
     asyncio.run_coroutine_threadsafe(
@@ -418,18 +428,18 @@ async def SimpleService_big_coro(
             "Unexpected error in service handler big:",
             file=sys.stderr)
         traceback.print_exc()
-        deref(promise.cPromise).setException(cTApplicationException(
+        promise.cPromise.setException(cTApplicationException(
             repr(ex).encode('UTF-8')
         ))
     else:
-        deref(promise.cPromise).setValue(<int64_t> result)
+        promise.cPromise.setValue(<int64_t> result)
 
 cdef public void call_cy_SimpleService_two(
     object self,
-    shared_ptr[cFollyPromise[double]] cPromise,
+    cFollyPromise[double] cPromise,
     double input
 ) with gil:
-    promise = Promise_double.create(cPromise)
+    promise = Promise_double.create(move(cPromise))
     arg_input = input
 
     asyncio.run_coroutine_threadsafe(
@@ -452,17 +462,17 @@ async def SimpleService_two_coro(
             "Unexpected error in service handler two:",
             file=sys.stderr)
         traceback.print_exc()
-        deref(promise.cPromise).setException(cTApplicationException(
+        promise.cPromise.setException(cTApplicationException(
             repr(ex).encode('UTF-8')
         ))
     else:
-        deref(promise.cPromise).setValue(<double> result)
+        promise.cPromise.setValue(<double> result)
 
 cdef public void call_cy_SimpleService_expected_exception(
     object self,
-    shared_ptr[cFollyPromise[cFollyUnit]] cPromise
+    cFollyPromise[cFollyUnit] cPromise
 ) with gil:
-    promise = Promise_void.create(cPromise)
+    promise = Promise_void.create(move(cPromise))
 
     asyncio.run_coroutine_threadsafe(
         SimpleService_expected_exception_coro(
@@ -477,23 +487,23 @@ async def SimpleService_expected_exception_coro(
     try:
       result = await self.expected_exception()
     except SimpleException as ex:
-        deref(promise.cPromise).setException(deref((<SimpleException> ex).c_SimpleException.get()))
+        promise.cPromise.setException(deref((<SimpleException> ex).c_SimpleException.get()))
     except Exception as ex:
         print(
             "Unexpected error in service handler expected_exception:",
             file=sys.stderr)
         traceback.print_exc()
-        deref(promise.cPromise).setException(cTApplicationException(
+        promise.cPromise.setException(cTApplicationException(
             repr(ex).encode('UTF-8')
         ))
     else:
-        deref(promise.cPromise).setValue(c_unit)
+        promise.cPromise.setValue(c_unit)
 
 cdef public void call_cy_SimpleService_unexpected_exception(
     object self,
-    shared_ptr[cFollyPromise[int32_t]] cPromise
+    cFollyPromise[int32_t] cPromise
 ) with gil:
-    promise = Promise_i32.create(cPromise)
+    promise = Promise_i32.create(move(cPromise))
 
     asyncio.run_coroutine_threadsafe(
         SimpleService_unexpected_exception_coro(
@@ -512,18 +522,18 @@ async def SimpleService_unexpected_exception_coro(
             "Unexpected error in service handler unexpected_exception:",
             file=sys.stderr)
         traceback.print_exc()
-        deref(promise.cPromise).setException(cTApplicationException(
+        promise.cPromise.setException(cTApplicationException(
             repr(ex).encode('UTF-8')
         ))
     else:
-        deref(promise.cPromise).setValue(<int32_t> result)
+        promise.cPromise.setValue(<int32_t> result)
 
 cdef public void call_cy_SimpleService_sum_i16_list(
     object self,
-    shared_ptr[cFollyPromise[int32_t]] cPromise,
+    cFollyPromise[int32_t] cPromise,
     unique_ptr[vector[int16_t]] numbers
 ) with gil:
-    promise = Promise_i32.create(cPromise)
+    promise = Promise_i32.create(move(cPromise))
     arg_numbers = List__i16.create(move(numbers))
 
     asyncio.run_coroutine_threadsafe(
@@ -546,18 +556,18 @@ async def SimpleService_sum_i16_list_coro(
             "Unexpected error in service handler sum_i16_list:",
             file=sys.stderr)
         traceback.print_exc()
-        deref(promise.cPromise).setException(cTApplicationException(
+        promise.cPromise.setException(cTApplicationException(
             repr(ex).encode('UTF-8')
         ))
     else:
-        deref(promise.cPromise).setValue(<int32_t> result)
+        promise.cPromise.setValue(<int32_t> result)
 
 cdef public void call_cy_SimpleService_sum_i32_list(
     object self,
-    shared_ptr[cFollyPromise[int32_t]] cPromise,
+    cFollyPromise[int32_t] cPromise,
     unique_ptr[vector[int32_t]] numbers
 ) with gil:
-    promise = Promise_i32.create(cPromise)
+    promise = Promise_i32.create(move(cPromise))
     arg_numbers = List__i32.create(move(numbers))
 
     asyncio.run_coroutine_threadsafe(
@@ -580,18 +590,18 @@ async def SimpleService_sum_i32_list_coro(
             "Unexpected error in service handler sum_i32_list:",
             file=sys.stderr)
         traceback.print_exc()
-        deref(promise.cPromise).setException(cTApplicationException(
+        promise.cPromise.setException(cTApplicationException(
             repr(ex).encode('UTF-8')
         ))
     else:
-        deref(promise.cPromise).setValue(<int32_t> result)
+        promise.cPromise.setValue(<int32_t> result)
 
 cdef public void call_cy_SimpleService_sum_i64_list(
     object self,
-    shared_ptr[cFollyPromise[int32_t]] cPromise,
+    cFollyPromise[int32_t] cPromise,
     unique_ptr[vector[int64_t]] numbers
 ) with gil:
-    promise = Promise_i32.create(cPromise)
+    promise = Promise_i32.create(move(cPromise))
     arg_numbers = List__i64.create(move(numbers))
 
     asyncio.run_coroutine_threadsafe(
@@ -614,18 +624,18 @@ async def SimpleService_sum_i64_list_coro(
             "Unexpected error in service handler sum_i64_list:",
             file=sys.stderr)
         traceback.print_exc()
-        deref(promise.cPromise).setException(cTApplicationException(
+        promise.cPromise.setException(cTApplicationException(
             repr(ex).encode('UTF-8')
         ))
     else:
-        deref(promise.cPromise).setValue(<int32_t> result)
+        promise.cPromise.setValue(<int32_t> result)
 
 cdef public void call_cy_SimpleService_concat_many(
     object self,
-    shared_ptr[cFollyPromise[unique_ptr[string]]] cPromise,
+    cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[vector[string]] words
 ) with gil:
-    promise = Promise_string.create(cPromise)
+    promise = Promise_string.create(move(cPromise))
     arg_words = List__string.create(move(words))
 
     asyncio.run_coroutine_threadsafe(
@@ -648,18 +658,18 @@ async def SimpleService_concat_many_coro(
             "Unexpected error in service handler concat_many:",
             file=sys.stderr)
         traceback.print_exc()
-        deref(promise.cPromise).setException(cTApplicationException(
+        promise.cPromise.setException(cTApplicationException(
             repr(ex).encode('UTF-8')
         ))
     else:
-        deref(promise.cPromise).setValue(make_unique[string](<string> result.encode('UTF-8')))
+        promise.cPromise.setValue(make_unique[string](<string> result.encode('UTF-8')))
 
 cdef public void call_cy_SimpleService_count_structs(
     object self,
-    shared_ptr[cFollyPromise[int32_t]] cPromise,
+    cFollyPromise[int32_t] cPromise,
     unique_ptr[vector[cSimpleStruct]] items
 ) with gil:
-    promise = Promise_i32.create(cPromise)
+    promise = Promise_i32.create(move(cPromise))
     arg_items = List__SimpleStruct.create(move(items))
 
     asyncio.run_coroutine_threadsafe(
@@ -682,18 +692,18 @@ async def SimpleService_count_structs_coro(
             "Unexpected error in service handler count_structs:",
             file=sys.stderr)
         traceback.print_exc()
-        deref(promise.cPromise).setException(cTApplicationException(
+        promise.cPromise.setException(cTApplicationException(
             repr(ex).encode('UTF-8')
         ))
     else:
-        deref(promise.cPromise).setValue(<int32_t> result)
+        promise.cPromise.setValue(<int32_t> result)
 
 cdef public void call_cy_SimpleService_sum_set(
     object self,
-    shared_ptr[cFollyPromise[int32_t]] cPromise,
+    cFollyPromise[int32_t] cPromise,
     unique_ptr[cset[int32_t]] numbers
 ) with gil:
-    promise = Promise_i32.create(cPromise)
+    promise = Promise_i32.create(move(cPromise))
     arg_numbers = Set__i32.create(move(numbers))
 
     asyncio.run_coroutine_threadsafe(
@@ -716,19 +726,19 @@ async def SimpleService_sum_set_coro(
             "Unexpected error in service handler sum_set:",
             file=sys.stderr)
         traceback.print_exc()
-        deref(promise.cPromise).setException(cTApplicationException(
+        promise.cPromise.setException(cTApplicationException(
             repr(ex).encode('UTF-8')
         ))
     else:
-        deref(promise.cPromise).setValue(<int32_t> result)
+        promise.cPromise.setValue(<int32_t> result)
 
 cdef public void call_cy_SimpleService_contains_word(
     object self,
-    shared_ptr[cFollyPromise[cbool]] cPromise,
+    cFollyPromise[cbool] cPromise,
     unique_ptr[cset[string]] words,
     unique_ptr[string] word
 ) with gil:
-    promise = Promise_bool.create(cPromise)
+    promise = Promise_bool.create(move(cPromise))
     arg_words = Set__string.create(move(words))
     arg_word = (deref(word.get())).decode()
 
@@ -755,19 +765,19 @@ async def SimpleService_contains_word_coro(
             "Unexpected error in service handler contains_word:",
             file=sys.stderr)
         traceback.print_exc()
-        deref(promise.cPromise).setException(cTApplicationException(
+        promise.cPromise.setException(cTApplicationException(
             repr(ex).encode('UTF-8')
         ))
     else:
-        deref(promise.cPromise).setValue(<cbool> result)
+        promise.cPromise.setValue(<cbool> result)
 
 cdef public void call_cy_SimpleService_get_map_value(
     object self,
-    shared_ptr[cFollyPromise[unique_ptr[string]]] cPromise,
+    cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[cmap[string,string]] words,
     unique_ptr[string] key
 ) with gil:
-    promise = Promise_string.create(cPromise)
+    promise = Promise_string.create(move(cPromise))
     arg_words = Map__string_string.create(move(words))
     arg_key = (deref(key.get())).decode()
 
@@ -794,18 +804,18 @@ async def SimpleService_get_map_value_coro(
             "Unexpected error in service handler get_map_value:",
             file=sys.stderr)
         traceback.print_exc()
-        deref(promise.cPromise).setException(cTApplicationException(
+        promise.cPromise.setException(cTApplicationException(
             repr(ex).encode('UTF-8')
         ))
     else:
-        deref(promise.cPromise).setValue(make_unique[string](<string> result.encode('UTF-8')))
+        promise.cPromise.setValue(make_unique[string](<string> result.encode('UTF-8')))
 
 cdef public void call_cy_SimpleService_map_length(
     object self,
-    shared_ptr[cFollyPromise[int16_t]] cPromise,
+    cFollyPromise[int16_t] cPromise,
     unique_ptr[cmap[string,cSimpleStruct]] items
 ) with gil:
-    promise = Promise_i16.create(cPromise)
+    promise = Promise_i16.create(move(cPromise))
     arg_items = Map__string_SimpleStruct.create(move(items))
 
     asyncio.run_coroutine_threadsafe(
@@ -828,18 +838,18 @@ async def SimpleService_map_length_coro(
             "Unexpected error in service handler map_length:",
             file=sys.stderr)
         traceback.print_exc()
-        deref(promise.cPromise).setException(cTApplicationException(
+        promise.cPromise.setException(cTApplicationException(
             repr(ex).encode('UTF-8')
         ))
     else:
-        deref(promise.cPromise).setValue(<int16_t> result)
+        promise.cPromise.setValue(<int16_t> result)
 
 cdef public void call_cy_SimpleService_sum_map_values(
     object self,
-    shared_ptr[cFollyPromise[int16_t]] cPromise,
+    cFollyPromise[int16_t] cPromise,
     unique_ptr[cmap[string,int16_t]] items
 ) with gil:
-    promise = Promise_i16.create(cPromise)
+    promise = Promise_i16.create(move(cPromise))
     arg_items = Map__string_i16.create(move(items))
 
     asyncio.run_coroutine_threadsafe(
@@ -862,18 +872,18 @@ async def SimpleService_sum_map_values_coro(
             "Unexpected error in service handler sum_map_values:",
             file=sys.stderr)
         traceback.print_exc()
-        deref(promise.cPromise).setException(cTApplicationException(
+        promise.cPromise.setException(cTApplicationException(
             repr(ex).encode('UTF-8')
         ))
     else:
-        deref(promise.cPromise).setValue(<int16_t> result)
+        promise.cPromise.setValue(<int16_t> result)
 
 cdef public void call_cy_SimpleService_complex_sum_i32(
     object self,
-    shared_ptr[cFollyPromise[int32_t]] cPromise,
+    cFollyPromise[int32_t] cPromise,
     unique_ptr[cComplexStruct] counter
 ) with gil:
-    promise = Promise_i32.create(cPromise)
+    promise = Promise_i32.create(move(cPromise))
     arg_counter = ComplexStruct.create(move(counter))
 
     asyncio.run_coroutine_threadsafe(
@@ -896,18 +906,18 @@ async def SimpleService_complex_sum_i32_coro(
             "Unexpected error in service handler complex_sum_i32:",
             file=sys.stderr)
         traceback.print_exc()
-        deref(promise.cPromise).setException(cTApplicationException(
+        promise.cPromise.setException(cTApplicationException(
             repr(ex).encode('UTF-8')
         ))
     else:
-        deref(promise.cPromise).setValue(<int32_t> result)
+        promise.cPromise.setValue(<int32_t> result)
 
 cdef public void call_cy_SimpleService_repeat_name(
     object self,
-    shared_ptr[cFollyPromise[unique_ptr[string]]] cPromise,
+    cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[cComplexStruct] counter
 ) with gil:
-    promise = Promise_string.create(cPromise)
+    promise = Promise_string.create(move(cPromise))
     arg_counter = ComplexStruct.create(move(counter))
 
     asyncio.run_coroutine_threadsafe(
@@ -930,11 +940,11 @@ async def SimpleService_repeat_name_coro(
             "Unexpected error in service handler repeat_name:",
             file=sys.stderr)
         traceback.print_exc()
-        deref(promise.cPromise).setException(cTApplicationException(
+        promise.cPromise.setException(cTApplicationException(
             repr(ex).encode('UTF-8')
         ))
     else:
-        deref(promise.cPromise).setValue(make_unique[string](<string> result.encode('UTF-8')))
+        promise.cPromise.setValue(make_unique[string](<string> result.encode('UTF-8')))
 
 
 cdef class SimpleServiceInterface(ServiceInterface):

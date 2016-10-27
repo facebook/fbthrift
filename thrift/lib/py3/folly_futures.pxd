@@ -4,7 +4,7 @@ cdef extern from "folly/futures/Promise.h" namespace "folly":
     void setException[E](E& value)
 
 cdef extern from "folly/Unit.h" namespace "folly":
-  struct cFollyUnit "folly::Unit":
-    pass
+   struct cFollyUnit "folly::Unit":
+     pass
 
-  cFollyUnit c_unit "folly::unit"
+   cFollyUnit c_unit "folly::unit"

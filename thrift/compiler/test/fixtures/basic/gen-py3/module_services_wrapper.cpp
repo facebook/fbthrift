@@ -22,73 +22,79 @@ MyServiceWrapper::~MyServiceWrapper() {
 }
 
 folly::Future<folly::Unit> MyServiceWrapper::future_ping() {
-  auto promise = std::make_shared<folly::Promise<folly::Unit>>();
+  folly::Promise<folly::Unit> promise;
+  auto future = promise.getFuture();
   call_cy_MyService_ping(
     this->if_object,
-    promise
+    std::move(promise)
   );
-  return promise->getFuture();
+  return future;
 }
 
 folly::Future<std::unique_ptr<std::string>> MyServiceWrapper::future_getRandomData() {
-  auto promise = std::make_shared<folly::Promise<std::unique_ptr<std::string>>>();
+  folly::Promise<std::unique_ptr<std::string>> promise;
+  auto future = promise.getFuture();
   call_cy_MyService_getRandomData(
     this->if_object,
-    promise
+    std::move(promise)
   );
-  return promise->getFuture();
+  return future;
 }
 
 folly::Future<bool> MyServiceWrapper::future_hasDataById(
   int64_t id
 ) {
-  auto promise = std::make_shared<folly::Promise<bool>>();
+  folly::Promise<bool> promise;
+  auto future = promise.getFuture();
   call_cy_MyService_hasDataById(
     this->if_object,
-    promise,
+    std::move(promise),
     id
   );
-  return promise->getFuture();
+  return future;
 }
 
 folly::Future<std::unique_ptr<std::string>> MyServiceWrapper::future_getDataById(
   int64_t id
 ) {
-  auto promise = std::make_shared<folly::Promise<std::unique_ptr<std::string>>>();
+  folly::Promise<std::unique_ptr<std::string>> promise;
+  auto future = promise.getFuture();
   call_cy_MyService_getDataById(
     this->if_object,
-    promise,
+    std::move(promise),
     id
   );
-  return promise->getFuture();
+  return future;
 }
 
 folly::Future<folly::Unit> MyServiceWrapper::future_putDataById(
   int64_t id,
   std::unique_ptr<std::string> data
 ) {
-  auto promise = std::make_shared<folly::Promise<folly::Unit>>();
+  folly::Promise<folly::Unit> promise;
+  auto future = promise.getFuture();
   call_cy_MyService_putDataById(
     this->if_object,
-    promise,
+    std::move(promise),
     id,
     std::move(data)
   );
-  return promise->getFuture();
+  return future;
 }
 
 folly::Future<folly::Unit> MyServiceWrapper::future_lobDataById(
   int64_t id,
   std::unique_ptr<std::string> data
 ) {
-  auto promise = std::make_shared<folly::Promise<folly::Unit>>();
+  folly::Promise<folly::Unit> promise;
+  auto future = promise.getFuture();
   call_cy_MyService_lobDataById(
     this->if_object,
-    promise,
+    std::move(promise),
     id,
     std::move(data)
   );
-  return promise->getFuture();
+  return future;
 }
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceInterface(PyObject *if_object) {
@@ -107,73 +113,79 @@ MyServiceFastWrapper::~MyServiceFastWrapper() {
 }
 
 folly::Future<folly::Unit> MyServiceFastWrapper::future_ping() {
-  auto promise = std::make_shared<folly::Promise<folly::Unit>>();
+  folly::Promise<folly::Unit> promise;
+  auto future = promise.getFuture();
   call_cy_MyServiceFast_ping(
     this->if_object,
-    promise
+    std::move(promise)
   );
-  return promise->getFuture();
+  return future;
 }
 
 folly::Future<std::unique_ptr<std::string>> MyServiceFastWrapper::future_getRandomData() {
-  auto promise = std::make_shared<folly::Promise<std::unique_ptr<std::string>>>();
+  folly::Promise<std::unique_ptr<std::string>> promise;
+  auto future = promise.getFuture();
   call_cy_MyServiceFast_getRandomData(
     this->if_object,
-    promise
+    std::move(promise)
   );
-  return promise->getFuture();
+  return future;
 }
 
 folly::Future<bool> MyServiceFastWrapper::future_hasDataById(
   int64_t id
 ) {
-  auto promise = std::make_shared<folly::Promise<bool>>();
+  folly::Promise<bool> promise;
+  auto future = promise.getFuture();
   call_cy_MyServiceFast_hasDataById(
     this->if_object,
-    promise,
+    std::move(promise),
     id
   );
-  return promise->getFuture();
+  return future;
 }
 
 folly::Future<std::unique_ptr<std::string>> MyServiceFastWrapper::future_getDataById(
   int64_t id
 ) {
-  auto promise = std::make_shared<folly::Promise<std::unique_ptr<std::string>>>();
+  folly::Promise<std::unique_ptr<std::string>> promise;
+  auto future = promise.getFuture();
   call_cy_MyServiceFast_getDataById(
     this->if_object,
-    promise,
+    std::move(promise),
     id
   );
-  return promise->getFuture();
+  return future;
 }
 
 folly::Future<folly::Unit> MyServiceFastWrapper::future_putDataById(
   int64_t id,
   std::unique_ptr<std::string> data
 ) {
-  auto promise = std::make_shared<folly::Promise<folly::Unit>>();
+  folly::Promise<folly::Unit> promise;
+  auto future = promise.getFuture();
   call_cy_MyServiceFast_putDataById(
     this->if_object,
-    promise,
+    std::move(promise),
     id,
     std::move(data)
   );
-  return promise->getFuture();
+  return future;
 }
 
 folly::Future<folly::Unit> MyServiceFastWrapper::future_lobDataById(
   int64_t id,
   std::unique_ptr<std::string> data
 ) {
-  auto promise = std::make_shared<folly::Promise<folly::Unit>>();
+  folly::Promise<folly::Unit> promise;
+  auto future = promise.getFuture();
   call_cy_MyServiceFast_lobDataById(
     this->if_object,
-    promise,
+    std::move(promise),
     id,
     std::move(data)
   );
-  return promise->getFuture();
+  return future;
 }
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceFastInterface(PyObject *if_object) {
@@ -207,21 +219,23 @@ MyServicePrioParentWrapper::~MyServicePrioParentWrapper() {
 }
 
 folly::Future<folly::Unit> MyServicePrioParentWrapper::future_ping() {
-  auto promise = std::make_shared<folly::Promise<folly::Unit>>();
+  folly::Promise<folly::Unit> promise;
+  auto future = promise.getFuture();
   call_cy_MyServicePrioParent_ping(
     this->if_object,
-    promise
+    std::move(promise)
   );
-  return promise->getFuture();
+  return future;
 }
 
 folly::Future<folly::Unit> MyServicePrioParentWrapper::future_pong() {
-  auto promise = std::make_shared<folly::Promise<folly::Unit>>();
+  folly::Promise<folly::Unit> promise;
+  auto future = promise.getFuture();
   call_cy_MyServicePrioParent_pong(
     this->if_object,
-    promise
+    std::move(promise)
   );
-  return promise->getFuture();
+  return future;
 }
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServicePrioParentInterface(PyObject *if_object) {
@@ -240,12 +254,13 @@ MyServicePrioChildWrapper::~MyServicePrioChildWrapper() {
 }
 
 folly::Future<folly::Unit> MyServicePrioChildWrapper::future_pang() {
-  auto promise = std::make_shared<folly::Promise<folly::Unit>>();
+  folly::Promise<folly::Unit> promise;
+  auto future = promise.getFuture();
   call_cy_MyServicePrioChild_pang(
     this->if_object,
-    promise
+    std::move(promise)
   );
-  return promise->getFuture();
+  return future;
 }
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServicePrioChildInterface(PyObject *if_object) {
