@@ -43,12 +43,12 @@ cdef class SimpleException(TException):
 cdef class SimpleStruct:
     def __init__(
         self,
-         is_on,
-         tiny_int,
+        pbool is_on,
+        int tiny_int,
         int small_int,
         int nice_sized_int,
         int big_int,
-         real
+        float real
     ):
         self.c_SimpleStruct = make_shared[cSimpleStruct]()
         deref(self.c_SimpleStruct).is_on = is_on
