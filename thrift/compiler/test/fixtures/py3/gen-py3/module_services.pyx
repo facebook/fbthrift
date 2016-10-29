@@ -60,6 +60,10 @@ cdef extern from "<utility>" namespace "std":
     cdef cFollyPromise[int16_t] move(cFollyPromise[int16_t])
     cdef cFollyPromise[int64_t] move(cFollyPromise[int64_t])
     cdef cFollyPromise[double] move(cFollyPromise[double])
+    cdef cFollyPromise[unique_ptr[cSimpleStruct]] move(cFollyPromise[unique_ptr[cSimpleStruct]])
+    cdef cFollyPromise[unique_ptr[vector[int32_t]]] move(cFollyPromise[unique_ptr[vector[int32_t]]])
+    cdef cFollyPromise[unique_ptr[cset[string]]] move(cFollyPromise[unique_ptr[cset[string]]])
+    cdef cFollyPromise[unique_ptr[cmap[string,int16_t]]] move(cFollyPromise[unique_ptr[cmap[string,int16_t]]])
 
 cdef class Promise_i32:
     cdef cFollyPromise[int32_t] cPromise
@@ -130,6 +134,42 @@ cdef class Promise_double:
     @staticmethod
     cdef create(cFollyPromise[double] cPromise):
         inst = <Promise_double>Promise_double.__new__(Promise_double)
+        inst.cPromise = move(cPromise)
+        return inst
+
+cdef class Promise_SimpleStruct:
+    cdef cFollyPromise[unique_ptr[cSimpleStruct]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[cSimpleStruct]] cPromise):
+        inst = <Promise_SimpleStruct>Promise_SimpleStruct.__new__(Promise_SimpleStruct)
+        inst.cPromise = move(cPromise)
+        return inst
+
+cdef class Promise_List__i32:
+    cdef cFollyPromise[unique_ptr[vector[int32_t]]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[vector[int32_t]]] cPromise):
+        inst = <Promise_List__i32>Promise_List__i32.__new__(Promise_List__i32)
+        inst.cPromise = move(cPromise)
+        return inst
+
+cdef class Promise_Set__string:
+    cdef cFollyPromise[unique_ptr[cset[string]]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[cset[string]]] cPromise):
+        inst = <Promise_Set__string>Promise_Set__string.__new__(Promise_Set__string)
+        inst.cPromise = move(cPromise)
+        return inst
+
+cdef class Promise_Map__string_i16:
+    cdef cFollyPromise[unique_ptr[cmap[string,int16_t]]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[cmap[string,int16_t]]] cPromise):
+        inst = <Promise_Map__string_i16>Promise_Map__string_i16.__new__(Promise_Map__string_i16)
         inst.cPromise = move(cPromise)
         return inst
 
@@ -262,7 +302,7 @@ async def SimpleService_concat_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[string](<string> result.encode('UTF-8')))
+        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
 cdef public void call_cy_SimpleService_get_value(
     object self,
@@ -662,7 +702,7 @@ async def SimpleService_concat_many_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[string](<string> result.encode('UTF-8')))
+        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
 cdef public void call_cy_SimpleService_count_structs(
     object self,
@@ -808,7 +848,7 @@ async def SimpleService_get_map_value_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[string](<string> result.encode('UTF-8')))
+        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
 cdef public void call_cy_SimpleService_map_length(
     object self,
@@ -944,7 +984,138 @@ async def SimpleService_repeat_name_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[string](<string> result.encode('UTF-8')))
+        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
+
+cdef public void call_cy_SimpleService_get_struct(
+    object self,
+    cFollyPromise[unique_ptr[cSimpleStruct]] cPromise
+) with gil:
+    promise = Promise_SimpleStruct.create(move(cPromise))
+
+    asyncio.run_coroutine_threadsafe(
+        SimpleService_get_struct_coro(
+            self,
+            promise),
+        loop=self.loop)
+
+async def SimpleService_get_struct_coro(
+    object self,
+    Promise_SimpleStruct promise
+):
+    try:
+      result = await self.get_struct()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler get_struct:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[cSimpleStruct](deref((<SimpleStruct?> result).c_SimpleStruct)))
+
+cdef public void call_cy_SimpleService_fib(
+    object self,
+    cFollyPromise[unique_ptr[vector[int32_t]]] cPromise,
+    int16_t n
+) with gil:
+    promise = Promise_List__i32.create(move(cPromise))
+    arg_n = n
+
+    asyncio.run_coroutine_threadsafe(
+        SimpleService_fib_coro(
+            self,
+            promise,
+            arg_n),
+        loop=self.loop)
+
+async def SimpleService_fib_coro(
+    object self,
+    Promise_List__i32 promise,
+    n
+):
+    try:
+      result = await self.fib(
+          n)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler fib:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[vector[int32_t]](deref((<List__i32?> result)._vector)))
+
+cdef public void call_cy_SimpleService_unique_words(
+    object self,
+    cFollyPromise[unique_ptr[cset[string]]] cPromise,
+    unique_ptr[vector[string]] words
+) with gil:
+    promise = Promise_Set__string.create(move(cPromise))
+    arg_words = List__string.create(move(words))
+
+    asyncio.run_coroutine_threadsafe(
+        SimpleService_unique_words_coro(
+            self,
+            promise,
+            arg_words),
+        loop=self.loop)
+
+async def SimpleService_unique_words_coro(
+    object self,
+    Promise_Set__string promise,
+    words
+):
+    try:
+      result = await self.unique_words(
+          words)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler unique_words:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[cset[string]](deref((<Set__string?> result)._set)))
+
+cdef public void call_cy_SimpleService_words_count(
+    object self,
+    cFollyPromise[unique_ptr[cmap[string,int16_t]]] cPromise,
+    unique_ptr[vector[string]] words
+) with gil:
+    promise = Promise_Map__string_i16.create(move(cPromise))
+    arg_words = List__string.create(move(words))
+
+    asyncio.run_coroutine_threadsafe(
+        SimpleService_words_count_coro(
+            self,
+            promise,
+            arg_words),
+        loop=self.loop)
+
+async def SimpleService_words_count_coro(
+    object self,
+    Promise_Map__string_i16 promise,
+    words
+):
+    try:
+      result = await self.words_count(
+          words)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler words_count:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[cmap[string,int16_t]](deref((<Map__string_i16?> result)._map)))
 
 
 cdef class SimpleServiceInterface(ServiceInterface):
@@ -1095,5 +1266,28 @@ cdef class SimpleServiceInterface(ServiceInterface):
             self,
             counter):
         raise NotImplementedError("async def repeat_name is not implemented")
+
+
+    async def get_struct(
+            self):
+        raise NotImplementedError("async def get_struct is not implemented")
+
+
+    async def fib(
+            self,
+            n):
+        raise NotImplementedError("async def fib is not implemented")
+
+
+    async def unique_words(
+            self,
+            words):
+        raise NotImplementedError("async def unique_words is not implemented")
+
+
+    async def words_count(
+            self,
+            words):
+        raise NotImplementedError("async def words_count is not implemented")
 
 

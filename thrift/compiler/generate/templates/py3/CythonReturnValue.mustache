@@ -26,5 +26,12 @@ to the client.
 }}{{#type:i32?}}<int32_t> result{{/type:i32?}}{{!
 }}{{#type:i64?}}<int64_t> result{{/type:i64?}}{{!
 }}{{#type:double?}}<double> result{{/type:double?}}{{!
-}}{{#type:string?}}make_unique[string](<string> result.encode('UTF-8')){{/type:string?}}{{!
+}}{{#type:string?}}make_unique[string](<string?> result.encode('UTF-8')){{/type:string?}}{{!
+}}{{#type:struct}}make_unique[c{{struct:name}}](deref((<{{struct:name}}?> result).c_{{struct:name}})){{/type:struct}}{{!
+}}{{#type:list?}}make_unique[vector[{{#type:listElemType}}{{>ContainerCythonFieldType}}{{/type:listElemType}}]]({{!
+  }}deref((<{{type:flat_name}}?> result)._vector)){{/type:list?}}{{!
+}}{{#type:set?}}make_unique[cset[{{#type:setElemType}}{{>ContainerCythonFieldType}}{{/type:setElemType}}]]({{!
+  }}deref((<{{type:flat_name}}?> result)._set)){{/type:set?}}{{!
+}}{{#type:map?}}make_unique[cmap[{{> CythonMapKeyValue}}]]({{!
+  }}deref((<{{type:flat_name}}?> result)._map)){{/type:map?}}{{!
 }}{{#type:void?}}c_unit{{/type:void?}}

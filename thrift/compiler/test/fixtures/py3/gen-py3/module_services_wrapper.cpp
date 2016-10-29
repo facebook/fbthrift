@@ -328,6 +328,55 @@ folly::Future<std::unique_ptr<std::string>> SimpleServiceWrapper::future_repeat_
   return future;
 }
 
+folly::Future<std::unique_ptr<py3::simple::SimpleStruct>> SimpleServiceWrapper::future_get_struct() {
+  folly::Promise<std::unique_ptr<py3::simple::SimpleStruct>> promise;
+  auto future = promise.getFuture();
+  call_cy_SimpleService_get_struct(
+    this->if_object,
+    std::move(promise)
+  );
+  return future;
+}
+
+folly::Future<std::unique_ptr<std::vector<int32_t>>> SimpleServiceWrapper::future_fib(
+  int16_t n
+) {
+  folly::Promise<std::unique_ptr<std::vector<int32_t>>> promise;
+  auto future = promise.getFuture();
+  call_cy_SimpleService_fib(
+    this->if_object,
+    std::move(promise),
+    n
+  );
+  return future;
+}
+
+folly::Future<std::unique_ptr<std::set<std::string>>> SimpleServiceWrapper::future_unique_words(
+  std::unique_ptr<std::vector<std::string>> words
+) {
+  folly::Promise<std::unique_ptr<std::set<std::string>>> promise;
+  auto future = promise.getFuture();
+  call_cy_SimpleService_unique_words(
+    this->if_object,
+    std::move(promise),
+    std::move(words)
+  );
+  return future;
+}
+
+folly::Future<std::unique_ptr<std::map<std::string,int16_t>>> SimpleServiceWrapper::future_words_count(
+  std::unique_ptr<std::vector<std::string>> words
+) {
+  folly::Promise<std::unique_ptr<std::map<std::string,int16_t>>> promise;
+  auto future = promise.getFuture();
+  call_cy_SimpleService_words_count(
+    this->if_object,
+    std::move(promise),
+    std::move(words)
+  );
+  return future;
+}
+
 std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object) {
   return std::make_shared<SimpleServiceWrapper>(if_object);
 }

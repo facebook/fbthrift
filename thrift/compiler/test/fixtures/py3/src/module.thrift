@@ -45,4 +45,8 @@ service SimpleService {
   i16 sum_map_values(1: map<string,i16> items)
   i32 complex_sum_i32(1: ComplexStruct counter)
   string repeat_name(1: ComplexStruct counter)
+  SimpleStruct get_struct()
+  list<i32> fib(1: i16 n)
+  set<string> unique_words(1: list<string> words)
+  map<string,i16> words_count(1: list<string> words)
 }

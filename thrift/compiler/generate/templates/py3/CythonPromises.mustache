@@ -35,14 +35,14 @@ cdef extern from "<utility>" namespace "std":
 {{/program:returnTypes}}
 {{#program:returnTypes}}
 
-cdef class Promise_{{type:name}}:
+cdef class Promise_{{type:flat_name}}:
     cdef cFollyPromise[{{>CythonFieldType}}] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[{{>CythonFieldType}}] cPromise):
-        inst = <Promise_{{type:name}}>{{!
-        }}Promise_{{type:name}}.__new__({{!
-        }}Promise_{{type:name}})
+        inst = <Promise_{{type:flat_name}}>{{!
+        }}Promise_{{type:flat_name}}.__new__({{!
+        }}Promise_{{type:flat_name}})
         inst.cPromise = move(cPromise)
         return inst
 {{/program:returnTypes}}

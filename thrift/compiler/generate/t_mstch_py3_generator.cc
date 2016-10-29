@@ -111,9 +111,10 @@ mstch::array t_mstch_py3_generator::get_return_types(
   for (const auto service : program.get_services()) {
     for (const auto function : service->get_functions()) {
       const auto returntype = function->get_returntype();
-      if (!visited_names.count(returntype->get_name())) {
+      string flat_name = this->flatten_type_name(*returntype);
+      if (!visited_names.count(flat_name)) {
         distinct_return_types.push_back(this->dump(*returntype));
-        visited_names.insert(returntype->get_name());
+        visited_names.insert(flat_name);
       }
     }
   }

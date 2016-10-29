@@ -127,7 +127,7 @@ async def MyService_getRandomData_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[string](<string> result.encode('UTF-8')))
+        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
 cdef public void call_cy_MyService_hasDataById(
     object self,
@@ -195,7 +195,7 @@ async def MyService_getDataById_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[string](<string> result.encode('UTF-8')))
+        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
 cdef public void call_cy_MyService_putDataById(
     object self,
@@ -331,7 +331,7 @@ async def MyServiceFast_getRandomData_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[string](<string> result.encode('UTF-8')))
+        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
 cdef public void call_cy_MyServiceFast_hasDataById(
     object self,
@@ -399,7 +399,7 @@ async def MyServiceFast_getDataById_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[string](<string> result.encode('UTF-8')))
+        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
 cdef public void call_cy_MyServiceFast_putDataById(
     object self,

@@ -86,6 +86,16 @@ class SimpleServiceWrapper : public SimpleServiceSvIf {
       folly::Future<std::unique_ptr<std::string>> future_repeat_name(
         std::unique_ptr<py3::simple::ComplexStruct> counter
       );
+      folly::Future<std::unique_ptr<py3::simple::SimpleStruct>> future_get_struct();
+      folly::Future<std::unique_ptr<std::vector<int32_t>>> future_fib(
+        int16_t n
+      );
+      folly::Future<std::unique_ptr<std::set<std::string>>> future_unique_words(
+        std::unique_ptr<std::vector<std::string>> words
+      );
+      folly::Future<std::unique_ptr<std::map<std::string,int16_t>>> future_words_count(
+        std::unique_ptr<std::vector<std::string>> words
+      );
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object);
