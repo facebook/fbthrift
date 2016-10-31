@@ -12,9 +12,4 @@ namespace cpp2 {
 
 struct service_constants {};
 
-class __attribute__((__deprecated__("serviceConstants suffers from the 'static initialization order fiasco' (https://isocpp.org/wiki/faq/ctors#static-init-order) and may CRASH you program. Instead, use service_constants::CONSTANT_NAME()"))) serviceConstants {
- public:
-  serviceConstants() {}
-};
-
 } // cpp2

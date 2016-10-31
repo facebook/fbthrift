@@ -12,9 +12,4 @@ namespace cpp2 {
 
 struct includes_constants {};
 
-class __attribute__((__deprecated__("includesConstants suffers from the 'static initialization order fiasco' (https://isocpp.org/wiki/faq/ctors#static-init-order) and may CRASH you program. Instead, use includes_constants::CONSTANT_NAME()"))) includesConstants {
- public:
-  includesConstants() {}
-};
-
 } // cpp2

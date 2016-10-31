@@ -4343,27 +4343,6 @@ class CppGenerator(t_generator.Generator):
                         ))
                         b('return instance;')
 
-        # DEPRECATED
-        s = sns.cls('class __attribute__((__deprecated__("{1}"))) {0}Constants'
-            .format(name, ("{0}Constants suffers from the 'static "
-                + "initialization order fiasco' (https://isocpp.org/wiki/faq/"
-                + "ctors#static-init-order) and may CRASH you program. Instead,"
-                + " use {0}_constants::CONSTANT_NAME()").format(name))).scope
-        with s:
-            s.label('public:')
-            # Default constructor
-            init_dict = OrderedDict()
-            for c in constants:
-                value = self._render_const_value(c.type, c.value)
-                if value:
-                    init_dict[c.name] = value
-            s.defn('{name}()', name=name + 'Constants', init_dict=init_dict,
-                   in_header=True).scope.empty()
-            # Define the fields that hold the constants
-            for c in constants:
-                s()
-                s('{0} {1};'.format(self._type_name(c.type), c.name))
-
         sns.release()  # namespace
 
         sg.release()   # global scope
