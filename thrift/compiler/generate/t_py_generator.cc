@@ -2077,6 +2077,11 @@ void t_py_generator::generate_service_interface(t_service* tservice,
     "class " << iface_prefix << "Iface" << extends_if << ":" << endl;
   indent_up();
   generate_python_docstring(f_service_, tservice);
+  if (!tservice->annotations_.empty()) {
+    f_service_ << indent() << "annotations = {";
+    generate_py_string_dict(f_service_, tservice->annotations_);
+    f_service_ << "}" << endl << endl;
+  }
   vector<t_function*> functions = tservice->get_functions();
   if (functions.empty()) {
     f_service_ <<
