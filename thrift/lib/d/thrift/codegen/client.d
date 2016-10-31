@@ -142,7 +142,10 @@ template TClient(Interface, InputProtocol = TProtocol, OutputProtocol = void) if
       };
     }
 
-    foreach (methodName; __traits(derivedMembers, Interface)) {
+    immutable selfMembers = __traits(derivedMembers, Interface);
+    immutable selfMembersA = [selfMembers];
+
+    foreach (methodName; __traits(allMembers, Interface)) {
       static if (isSomeFunction!(mixin("Interface." ~ methodName))) {
         bool methodMetaFound;
         TMethodMeta methodMeta;
@@ -156,6 +159,7 @@ template TClient(Interface, InputProtocol = TProtocol, OutputProtocol = void) if
 
         // Generate the code for sending.
         string[] paramList;
+        string[] argList;
         string paramAssignCode;
         foreach (i, _; ParameterTypeTuple!(mixin("Interface." ~ methodName))) {
           // Use the param name specified in the meta information if any -
@@ -166,6 +170,7 @@ template TClient(Interface, InputProtocol = TProtocol, OutputProtocol = void) if
           } else {
             paramName = "param" ~ to!string(i + 1);
           }
+          argList ~= paramName;
 
           immutable storage = ParameterStorageClassTuple!(
             mixin("Interface." ~ methodName))[i];
@@ -177,72 +182,87 @@ template TClient(Interface, InputProtocol = TProtocol, OutputProtocol = void) if
         code ~= "ReturnType!(Interface." ~ methodName ~ ") " ~ methodName ~
           "(" ~ joiner(paramList, ", ").text ~ ") {\n";
 
-        code ~= "immutable methodName = `" ~ methodName ~ "`;\n";
+        // DMD @@BUG@@: Must implement members from the entire hierarchy.
+        // Directly implement members from the direct interface. Expected.
+        // However, also give proxy implementations to members from the ancestor
+        // interfaces. Otherwise, we may get `interface function '...' is not
+        // implemented` errors.
 
-        immutable paramStructType =
-          "TPargsStruct!(Interface, `" ~ methodName ~ "`)";
-        code ~= paramStructType ~ " args = " ~ paramStructType ~ "();\n";
-        code ~= paramAssignCode;
-        code ~= "oprot_.writeMessageBegin(TMessage(`" ~ methodName ~
-          "`, TMessageType.CALL, ++seqid_));\n";
-        code ~= "args.write(oprot_);\n";
-        code ~= "oprot_.writeMessageEnd();\n";
-        code ~= "oprot_.transport.flush();\n";
+        static if (!selfMembersA.canFind(methodName)) {
 
-        // If this is not a oneway method, generate the recieving code.
-        if (!methodMetaFound || methodMeta.type != TMethodType.ONEWAY) {
-          code ~= "TPresultStruct!(Interface, `" ~ methodName ~ "`) result;\n";
+          string args = joiner(argList, ", ").text;
+          code ~= "return super." ~ methodName ~ "(" ~ args ~ ");";
 
-          if (!is(ReturnType!(mixin("Interface." ~ methodName)) == void)) {
-            code ~= "ReturnType!(Interface." ~ methodName ~ ") _return;\n";
-            code ~= "result.success = &_return;\n";
-          }
+        } else {
 
-          // TODO: The C++ implementation checks for matching method name here,
-          // should we do as well?
-          code ~= q{
-            auto msg = iprot_.readMessageBegin();
-            scope (exit) {
-              iprot_.readMessageEnd();
-              iprot_.transport.readEnd();
+          code ~= "immutable methodName = `" ~ methodName ~ "`;\n";
+
+          immutable paramStructType =
+            "TPargsStruct!(Interface, `" ~ methodName ~ "`)";
+          code ~= paramStructType ~ " args = " ~ paramStructType ~ "();\n";
+          code ~= paramAssignCode;
+          code ~= "oprot_.writeMessageBegin(TMessage(`" ~ methodName ~
+            "`, TMessageType.CALL, ++seqid_));\n";
+          code ~= "args.write(oprot_);\n";
+          code ~= "oprot_.writeMessageEnd();\n";
+          code ~= "oprot_.transport.flush();\n";
+
+          // If this is not a oneway method, generate the recieving code.
+          if (!methodMetaFound || methodMeta.type != TMethodType.ONEWAY) {
+            code ~= "TPresultStruct!(Interface, `" ~ methodName ~ "`) result;\n";
+
+            if (!is(ReturnType!(mixin("Interface." ~ methodName)) == void)) {
+              code ~= "ReturnType!(Interface." ~ methodName ~ ") _return;\n";
+              code ~= "result.success = &_return;\n";
             }
 
-            if (msg.type == TMessageType.EXCEPTION) {
-              auto x = new TApplicationException(null);
-              x.read(iprot_);
-              iprot_.transport.readEnd();
-              throw x;
-            }
-            if (msg.type != TMessageType.REPLY) {
-              skip(iprot_, TType.STRUCT);
-              iprot_.transport.readEnd();
-            }
-            if (msg.seqid != seqid_) {
-              throw new TApplicationException(
-                methodName ~ " failed: Out of sequence response.",
-                TApplicationException.Type.BAD_SEQUENCE_ID
-              );
-            }
-            result.read(iprot_);
-          };
-
-          if (methodMetaFound) {
-            foreach (e; methodMeta.exceptions) {
-              code ~= "if (result.isSet!`" ~ e.name ~ "`) throw result." ~
-                e.name ~ ";\n";
-            }
-          }
-
-          if (!is(ReturnType!(mixin("Interface." ~ methodName)) == void)) {
+            // TODO: The C++ implementation checks for matching method name here,
+            // should we do as well?
             code ~= q{
-              if (result.isSet!`success`) return _return;
-              throw new TApplicationException(
-                methodName ~ " failed: Unknown result.",
-                TApplicationException.Type.MISSING_RESULT
-              );
+              auto msg = iprot_.readMessageBegin();
+              scope (exit) {
+                iprot_.readMessageEnd();
+                iprot_.transport.readEnd();
+              }
+
+              if (msg.type == TMessageType.EXCEPTION) {
+                auto x = new TApplicationException(null);
+                x.read(iprot_);
+                iprot_.transport.readEnd();
+                throw x;
+              }
+              if (msg.type != TMessageType.REPLY) {
+                skip(iprot_, TType.STRUCT);
+                iprot_.transport.readEnd();
+              }
+              if (msg.seqid != seqid_) {
+                throw new TApplicationException(
+                  methodName ~ " failed: Out of sequence response.",
+                  TApplicationException.Type.BAD_SEQUENCE_ID
+                );
+              }
+              result.read(iprot_);
             };
+
+            if (methodMetaFound) {
+              foreach (e; methodMeta.exceptions) {
+                code ~= "if (result.isSet!`" ~ e.name ~ "`) throw result." ~
+                  e.name ~ ";\n";
+              }
+            }
+
+            if (!is(ReturnType!(mixin("Interface." ~ methodName)) == void)) {
+              code ~= q{
+                if (result.isSet!`success`) return _return;
+                throw new TApplicationException(
+                  methodName ~ " failed: Unknown result.",
+                  TApplicationException.Type.MISSING_RESULT
+                );
+              };
+            }
           }
         }
+
         code ~= "}\n";
       }
     }
