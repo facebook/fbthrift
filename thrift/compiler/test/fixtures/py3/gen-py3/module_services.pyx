@@ -1038,6 +1038,7 @@ async def SimpleService_fib_coro(
     try:
       result = await self.fib(
           n)
+      result = List__i32(result)
     except Exception as ex:
         print(
             "Unexpected error in service handler fib:",
@@ -1072,6 +1073,7 @@ async def SimpleService_unique_words_coro(
     try:
       result = await self.unique_words(
           words)
+      result = Set__string(result)
     except Exception as ex:
         print(
             "Unexpected error in service handler unique_words:",
@@ -1106,6 +1108,7 @@ async def SimpleService_words_count_coro(
     try:
       result = await self.words_count(
           words)
+      result = Map__string_i16(result)
     except Exception as ex:
         print(
             "Unexpected error in service handler words_count:",
