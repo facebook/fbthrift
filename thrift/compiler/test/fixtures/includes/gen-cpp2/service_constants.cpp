@@ -6,6 +6,8 @@
  */
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/service_constants.h"
 
+#include <folly/Indestructible.h>
+
 namespace cpp2 {
 
 } // cpp2

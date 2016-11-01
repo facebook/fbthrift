@@ -6,6 +6,8 @@
  */
 #include "thrift/compiler/test/fixtures/constants/gen-cpp2/module_constants.h"
 
+#include <folly/Indestructible.h>
+
 namespace cpp2 {
 
 constexpr int32_t const module_constants::myInt_;
@@ -13,12 +15,12 @@ constexpr int32_t const module_constants::myInt_;
 constexpr char const * const module_constants::name_;
 
 std::vector<std::map<std::string, int32_t>> const& module_constants::states() {
-  static std::vector<std::map<std::string, int32_t>> const instance(std::initializer_list<std::map<std::string, int32_t>>{std::initializer_list<std::pair<const std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("San Diego"), 3211000},
+  static folly::Indestructible<std::vector<std::map<std::string, int32_t>>> const instance(std::initializer_list<std::map<std::string, int32_t>>{std::initializer_list<std::pair<const std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("San Diego"), 3211000},
   {apache::thrift::StringTraits< std::string>::fromStringLiteral("Sacramento"), 479600},
   {apache::thrift::StringTraits< std::string>::fromStringLiteral("SF"), 837400}},
   std::initializer_list<std::pair<const std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("New York"), 8406000},
   {apache::thrift::StringTraits< std::string>::fromStringLiteral("Albany"), 98400}}});
-  return instance;
+  return *instance;
 }
 
 constexpr double const module_constants::x_;
@@ -28,20 +30,20 @@ constexpr double const module_constants::y_;
 constexpr double const module_constants::z_;
 
  ::cpp2::Internship const& module_constants::instagram() {
-  static  ::cpp2::Internship const instance( ::cpp2::Internship(::apache::thrift::detail::wrap_argument<1>(12), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer")), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::Company::INSTAGRAM)));
-  return instance;
+  static folly::Indestructible< ::cpp2::Internship> const instance( ::cpp2::Internship(::apache::thrift::detail::wrap_argument<1>(12), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer")), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::Company::INSTAGRAM)));
+  return *instance;
 }
 
 std::vector< ::cpp2::Range> const& module_constants::kRanges() {
-  static std::vector< ::cpp2::Range> const instance(std::initializer_list< ::cpp2::Range>{ ::cpp2::Range(::apache::thrift::detail::wrap_argument<1>(1), ::apache::thrift::detail::wrap_argument<2>(2)),
+  static folly::Indestructible<std::vector< ::cpp2::Range>> const instance(std::initializer_list< ::cpp2::Range>{ ::cpp2::Range(::apache::thrift::detail::wrap_argument<1>(1), ::apache::thrift::detail::wrap_argument<2>(2)),
    ::cpp2::Range(::apache::thrift::detail::wrap_argument<1>(5), ::apache::thrift::detail::wrap_argument<2>(6))});
-  return instance;
+  return *instance;
 }
 
 std::vector< ::cpp2::Internship> const& module_constants::internList() {
-  static std::vector< ::cpp2::Internship> const instance(std::initializer_list< ::cpp2::Internship>{ ::cpp2::Internship(::apache::thrift::detail::wrap_argument<1>(12), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer")), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::Company::INSTAGRAM)),
+  static folly::Indestructible<std::vector< ::cpp2::Internship>> const instance(std::initializer_list< ::cpp2::Internship>{ ::cpp2::Internship(::apache::thrift::detail::wrap_argument<1>(12), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer")), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::Company::INSTAGRAM)),
    ::cpp2::Internship(::apache::thrift::detail::wrap_argument<1>(10), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Sales Intern")), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::Company::FACEBOOK))});
-  return instance;
+  return *instance;
 }
 
 constexpr char const * const module_constants::apostrophe_;
@@ -55,15 +57,15 @@ constexpr char const * const module_constants::backslash_;
 constexpr char const * const module_constants::escaped_a_;
 
 std::map<std::string, int32_t> const& module_constants::char2ascii() {
-  static std::map<std::string, int32_t> const instance(std::initializer_list<std::pair<const std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("'"), 39},
+  static folly::Indestructible<std::map<std::string, int32_t>> const instance(std::initializer_list<std::pair<const std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("'"), 39},
   {apache::thrift::StringTraits< std::string>::fromStringLiteral("\""), 34},
   {apache::thrift::StringTraits< std::string>::fromStringLiteral("\\"), 92},
   {apache::thrift::StringTraits< std::string>::fromStringLiteral("\x61"), 97}});
-  return instance;
+  return *instance;
 }
 
 std::vector<std::string> const& module_constants::escaped_strings() {
-  static std::vector<std::string> const instance(std::initializer_list<std::string>{apache::thrift::StringTraits< std::string>::fromStringLiteral("\x61"),
+  static folly::Indestructible<std::vector<std::string>> const instance(std::initializer_list<std::string>{apache::thrift::StringTraits< std::string>::fromStringLiteral("\x61"),
   apache::thrift::StringTraits< std::string>::fromStringLiteral("\xab"),
   apache::thrift::StringTraits< std::string>::fromStringLiteral("\x6a"),
   apache::thrift::StringTraits< std::string>::fromStringLiteral("\xa6"),
@@ -79,7 +81,7 @@ std::vector<std::string> const& module_constants::escaped_strings() {
   apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\xabyyy"),
   apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\x6ayyy"),
   apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\xa6yyy")});
-  return instance;
+  return *instance;
 }
 
 constexpr bool const module_constants::false_c_;
@@ -99,43 +101,43 @@ constexpr double const module_constants::zero_dot_zero_;
 constexpr char const * const module_constants::empty_string_;
 
 std::vector<int32_t> const& module_constants::empty_int_list() {
-  static std::vector<int32_t> const instance;
-  return instance;
+  static folly::Indestructible<std::vector<int32_t>> const instance;
+  return *instance;
 }
 
 std::vector<std::string> const& module_constants::empty_string_list() {
-  static std::vector<std::string> const instance;
-  return instance;
+  static folly::Indestructible<std::vector<std::string>> const instance;
+  return *instance;
 }
 
 std::set<int32_t> const& module_constants::empty_int_set() {
-  static std::set<int32_t> const instance;
-  return instance;
+  static folly::Indestructible<std::set<int32_t>> const instance;
+  return *instance;
 }
 
 std::set<std::string> const& module_constants::empty_string_set() {
-  static std::set<std::string> const instance;
-  return instance;
+  static folly::Indestructible<std::set<std::string>> const instance;
+  return *instance;
 }
 
 std::map<int32_t, int32_t> const& module_constants::empty_int_int_map() {
-  static std::map<int32_t, int32_t> const instance;
-  return instance;
+  static folly::Indestructible<std::map<int32_t, int32_t>> const instance;
+  return *instance;
 }
 
 std::map<int32_t, std::string> const& module_constants::empty_int_string_map() {
-  static std::map<int32_t, std::string> const instance;
-  return instance;
+  static folly::Indestructible<std::map<int32_t, std::string>> const instance;
+  return *instance;
 }
 
 std::map<std::string, int32_t> const& module_constants::empty_string_int_map() {
-  static std::map<std::string, int32_t> const instance;
-  return instance;
+  static folly::Indestructible<std::map<std::string, int32_t>> const instance;
+  return *instance;
 }
 
 std::map<std::string, std::string> const& module_constants::empty_string_string_map() {
-  static std::map<std::string, std::string> const instance;
-  return instance;
+  static folly::Indestructible<std::map<std::string, std::string>> const instance;
+  return *instance;
 }
 
 } // cpp2

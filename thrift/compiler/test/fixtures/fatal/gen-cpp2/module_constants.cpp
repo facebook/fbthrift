@@ -6,6 +6,8 @@
  */
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_constants.h"
 
+#include <folly/Indestructible.h>
+
 namespace test_cpp2 { namespace cpp_reflection {
 
 constexpr int32_t const module_constants::constant1_;

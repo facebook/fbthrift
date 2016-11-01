@@ -4290,6 +4290,8 @@ class CppGenerator(t_generator.Generator):
             sg('#include "{0}_constants.h"'
                 .format(self._with_compatibility_include_prefix(self._program,
                                                                 name)))
+        print >>context.impl, '#include <folly/Indestructible.h>\n'
+
         # Open namespace
         sns = sg.namespace(self._get_namespace()).scope
 
@@ -4343,11 +4345,11 @@ class CppGenerator(t_generator.Generator):
                     if inlined:
                         b('return {0}_;'.format(c.name))
                     else:
-                        b('static {0} const instance{1};'.format(
-                            self._type_name(c.type),
-                            '({0})'.format(value) if value is not None else ''
-                        ))
-                        b('return instance;')
+                        instance_args = (
+                            '({0})'.format(value) if value is not None else '')
+                        b('static folly::Indestructible<{0}> const instance{1};'
+                                .format(self._type_name(c.type), instance_args))
+                        b('return *instance;')
                 out('\n')
 
         sns.release()  # namespace
