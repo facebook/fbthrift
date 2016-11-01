@@ -49,4 +49,8 @@ if self.__{{field:name}} is None:
     item = make_shared[c{{#type:struct}}{{struct:name}}{{/type:struct}}](deref(self.c_{{struct:name}}).{{field:name}})
     self.__{{field:name}} = {{#type:struct}}{{struct:name}}{{/type:struct}}.create(item)
 return self.__{{field:name}}
-{{/type:struct?}}
+{{/type:struct?}}{{!
+}}{{#type:enum}}
+cdef int value = <int> deref(self.c_{{struct:name}}).{{field:name}}
+return {{enum:name}}(value)
+{{/type:enum}}

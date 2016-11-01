@@ -17,6 +17,14 @@ from thrift.lib.py3.thrift_server cimport cTException, TException
 
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
+    cdef cppclass cMyEnum "cpp2::MyEnum":
+        bint operator==(cMyEnum&)
+    cMyEnum MyEnum__MyValue1 "cpp2::MyEnum::MyValue1"
+    cMyEnum MyEnum__MyValue2 "cpp2::MyEnum::MyValue2"
+
+cdef cMyEnum MyEnum_to_cpp(value)
+
+cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
     cdef cppclass cMyStruct "cpp2::MyStruct":
         cMyStruct() except +
         int64_t MyIntField

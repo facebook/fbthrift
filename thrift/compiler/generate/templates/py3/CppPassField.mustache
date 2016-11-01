@@ -32,4 +32,5 @@ need to be moved to the called function.
 }}{{#type:struct?}}std::move({{field:name}}){{/type:struct?}}{{!
 }}{{#type:list?}}std::move({{field:name}}){{/type:list?}}{{!
 }}{{#type:set?}}std::move({{field:name}}){{/type:set?}}{{!
-}}{{#type:map?}}std::move({{field:name}}){{/type:map?}}
+}}{{#type:map?}}std::move({{field:name}}){{/type:map?}}{{!
+}}{{#type:enum?}}{{field:name}}{{/type:enum?}}

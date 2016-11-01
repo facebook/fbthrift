@@ -34,4 +34,5 @@ to the client.
   }}deref((<{{type:flat_name}}?> result)._set)){{/type:set?}}{{!
 }}{{#type:map?}}make_unique[cmap[{{> CythonMapKeyValue}}]]({{!
   }}deref((<{{type:flat_name}}?> result)._map)){{/type:map?}}{{!
-}}{{#type:void?}}c_unit{{/type:void?}}
+}}{{#type:void?}}c_unit{{/type:void?}}{{!
+}}{{#type:enum}}{{enum:name}}_to_cpp(result){{/type:enum}}

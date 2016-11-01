@@ -14,10 +14,16 @@ from cython.operator cimport dereference as deref
 from thrift.lib.py3.thrift_server cimport TException
 
 from collections.abc import Sequence, Set, Mapping
+from enum import Enum
+
 
 from module_types cimport (
     cEmpty
 )
+
+
+
+
 
 cdef class Empty:
     def __init__(
@@ -31,6 +37,7 @@ cdef class Empty:
         inst = <Empty>Empty.__new__(Empty)
         inst.c_Empty = c_Empty
         return inst
+
 
 
 

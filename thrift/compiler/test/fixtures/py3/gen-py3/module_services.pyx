@@ -36,6 +36,18 @@ from module_types cimport (
     cComplexStruct
 )
 from module_types cimport (
+    cAnEnum,
+    AnEnum_to_cpp,
+    AnEnum__ONE,
+    AnEnum__TWO,
+    AnEnum__THREE,
+    AnEnum__FOUR
+
+)
+from module_types import (
+    AnEnum
+)
+from module_types cimport (
     List__i16,
     List__i32,
     List__i64,
@@ -64,6 +76,7 @@ cdef extern from "<utility>" namespace "std":
     cdef cFollyPromise[unique_ptr[vector[int32_t]]] move(cFollyPromise[unique_ptr[vector[int32_t]]])
     cdef cFollyPromise[unique_ptr[cset[string]]] move(cFollyPromise[unique_ptr[cset[string]]])
     cdef cFollyPromise[unique_ptr[cmap[string,int16_t]]] move(cFollyPromise[unique_ptr[cmap[string,int16_t]]])
+    cdef cFollyPromise[cAnEnum] move(cFollyPromise[cAnEnum])
 
 cdef class Promise_i32:
     cdef cFollyPromise[int32_t] cPromise
@@ -170,6 +183,15 @@ cdef class Promise_Map__string_i16:
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[cmap[string,int16_t]]] cPromise):
         inst = <Promise_Map__string_i16>Promise_Map__string_i16.__new__(Promise_Map__string_i16)
+        inst.cPromise = move(cPromise)
+        return inst
+
+cdef class Promise_AnEnum:
+    cdef cFollyPromise[cAnEnum] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[cAnEnum] cPromise):
+        inst = <Promise_AnEnum>Promise_AnEnum.__new__(Promise_AnEnum)
         inst.cPromise = move(cPromise)
         return inst
 
@@ -1120,6 +1142,40 @@ async def SimpleService_words_count_coro(
     else:
         promise.cPromise.setValue(make_unique[cmap[string,int16_t]](deref((<Map__string_i16?> result)._map)))
 
+cdef public void call_cy_SimpleService_set_enum(
+    object self,
+    cFollyPromise[cAnEnum] cPromise,
+    cAnEnum in_enum
+) with gil:
+    promise = Promise_AnEnum.create(move(cPromise))
+    arg_in_enum = AnEnum(<int> in_enum)
+
+    asyncio.run_coroutine_threadsafe(
+        SimpleService_set_enum_coro(
+            self,
+            promise,
+            arg_in_enum),
+        loop=self.loop)
+
+async def SimpleService_set_enum_coro(
+    object self,
+    Promise_AnEnum promise,
+    in_enum
+):
+    try:
+      result = await self.set_enum(
+          in_enum)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler set_enum:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(AnEnum_to_cpp(result))
+
 
 cdef class SimpleServiceInterface(ServiceInterface):
     def __cinit__(self):
@@ -1292,5 +1348,11 @@ cdef class SimpleServiceInterface(ServiceInterface):
             self,
             words):
         raise NotImplementedError("async def words_count is not implemented")
+
+
+    async def set_enum(
+            self,
+            in_enum):
+        raise NotImplementedError("async def set_enum is not implemented")
 
 

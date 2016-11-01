@@ -31,6 +31,16 @@ from module_types cimport (
     MyStruct,
     cMyStruct
 )
+from module_types cimport (
+    cMyEnum,
+    MyEnum_to_cpp,
+    MyEnum__MyValue1,
+    MyEnum__MyValue2
+
+)
+from module_types import (
+    MyEnum
+)
 
 from module_services_wrapper cimport cMyServiceInterface
 from module_services_wrapper cimport cMyServiceFastInterface

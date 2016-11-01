@@ -96,6 +96,9 @@ class SimpleServiceWrapper : public SimpleServiceSvIf {
       folly::Future<std::unique_ptr<std::map<std::string,int16_t>>> future_words_count(
         std::unique_ptr<std::vector<std::string>> words
       );
+      folly::Future<py3::simple::AnEnum> future_set_enum(
+        py3::simple::AnEnum in_enum
+      );
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object);

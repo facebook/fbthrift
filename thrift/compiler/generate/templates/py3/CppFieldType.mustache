@@ -31,6 +31,9 @@ to define the types that go in those containers.
 }}{{#type:struct}}std::unique_ptr<{{!
   }}{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}{{!
   }}>{{/type:struct}}{{!
+}}{{#type:enum}}{{!
+  }}{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{enum:name}}{{!
+  }}{{/type:enum}}{{!
 }}{{#type:listElemType}}{{!
   }}std::unique_ptr<std::vector<{{>ContainerCppFieldType}}>>{{!
   }}{{/type:listElemType}}{{!

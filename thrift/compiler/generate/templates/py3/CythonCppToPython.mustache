@@ -29,6 +29,8 @@ to be converted from unicode to binary representation.
 }}{{#type:double?}}{{field:name}}{{/type:double?}}{{!
 }}{{#type:string?}}(deref({{field:name}}.get())).decode(){{/type:string?}}{{!
 }}{{#type:struct}}{{type:name}}.create(move({{field:name}})){{/type:struct}}{{!
+}}{{#type:enum}}{{/type:enum}}{{!
 }}{{#type:list?}}{{type:flat_name}}.create(move({{field:name}})){{/type:list?}}{{!
 }}{{#type:set?}}{{type:flat_name}}.create(move({{field:name}})){{/type:set?}}{{!
-}}{{#type:map?}}{{type:flat_name}}.create(move({{field:name}})){{/type:map?}}
+}}{{#type:map?}}{{type:flat_name}}.create(move({{field:name}})){{/type:map?}}{{!
+}}{{#type:enum}}{{enum:name}}(<int> {{field:name}}){{/type:enum}}

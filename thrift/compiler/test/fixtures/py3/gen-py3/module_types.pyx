@@ -14,12 +14,39 @@ from cython.operator cimport dereference as deref
 from thrift.lib.py3.thrift_server cimport TException
 
 from collections.abc import Sequence, Set, Mapping
+from enum import Enum
+
 
 from module_types cimport (
     cSimpleException,
     cSimpleStruct,
     cComplexStruct
 )
+from module_types cimport (
+    cAnEnum,
+    AnEnum__ONE,
+    AnEnum__TWO,
+    AnEnum__THREE,
+    AnEnum__FOUR
+)
+
+
+class AnEnum(Enum):
+    ONE = <int> (AnEnum__ONE)
+    TWO = <int> (AnEnum__TWO)
+    THREE = <int> (AnEnum__THREE)
+    FOUR = <int> (AnEnum__FOUR)
+
+cdef cAnEnum AnEnum_to_cpp(value):
+    if value == AnEnum.ONE:
+        return AnEnum__ONE
+    elif value == AnEnum.TWO:
+        return AnEnum__TWO
+    elif value == AnEnum.THREE:
+        return AnEnum__THREE
+    elif value == AnEnum.FOUR:
+        return AnEnum__FOUR
+
 
 cdef class SimpleException(TException):
     def __init__(
@@ -95,7 +122,8 @@ cdef class ComplexStruct:
         SimpleStruct structOne,
         SimpleStruct structTwo,
         int an_integer,
-        str name
+        str name,
+        object an_enum
     ):
         self.c_ComplexStruct = make_shared[cComplexStruct]()
         deref(self.c_ComplexStruct).structOne = deref(structOne.c_SimpleStruct)
@@ -103,6 +131,7 @@ cdef class ComplexStruct:
         deref(self.c_ComplexStruct).an_integer = an_integer
         if name is not None:
             deref(self.c_ComplexStruct).name = name.encode('UTF-8')
+        
         
     @staticmethod
     cdef create(shared_ptr[cComplexStruct] c_ComplexStruct):
@@ -135,6 +164,13 @@ cdef class ComplexStruct:
     @property
     def name(self):
         return self.c_ComplexStruct.get().name.decode()
+
+    @property
+    def an_enum(self):
+        cdef int value = <int> deref(self.c_ComplexStruct).an_enum
+        return AnEnum(value)
+        
+
 
 
 

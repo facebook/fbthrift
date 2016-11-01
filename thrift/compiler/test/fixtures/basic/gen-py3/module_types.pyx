@@ -14,10 +14,29 @@ from cython.operator cimport dereference as deref
 from thrift.lib.py3.thrift_server cimport TException
 
 from collections.abc import Sequence, Set, Mapping
+from enum import Enum
+
 
 from module_types cimport (
     cMyStruct
 )
+from module_types cimport (
+    cMyEnum,
+    MyEnum__MyValue1,
+    MyEnum__MyValue2
+)
+
+
+class MyEnum(Enum):
+    MyValue1 = <int> (MyEnum__MyValue1)
+    MyValue2 = <int> (MyEnum__MyValue2)
+
+cdef cMyEnum MyEnum_to_cpp(value):
+    if value == MyEnum.MyValue1:
+        return MyEnum__MyValue1
+    elif value == MyEnum.MyValue2:
+        return MyEnum__MyValue2
+
 
 cdef class MyStruct:
     def __init__(
@@ -43,6 +62,7 @@ cdef class MyStruct:
     @property
     def MyStringField(self):
         return self.c_MyStruct.get().MyStringField.decode()
+
 
 
 

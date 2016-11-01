@@ -17,6 +17,16 @@ from thrift.lib.py3.thrift_server cimport cTException, TException
 
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
+    cdef cppclass cAnEnum "py3::simple::AnEnum":
+        bint operator==(cAnEnum&)
+    cAnEnum AnEnum__ONE "py3::simple::AnEnum::ONE"
+    cAnEnum AnEnum__TWO "py3::simple::AnEnum::TWO"
+    cAnEnum AnEnum__THREE "py3::simple::AnEnum::THREE"
+    cAnEnum AnEnum__FOUR "py3::simple::AnEnum::FOUR"
+
+cdef cAnEnum AnEnum_to_cpp(value)
+
+cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
     cdef cppclass cSimpleException "py3::simple::SimpleException"(cTException):
         cSimpleException() except +
         int16_t err_code
@@ -36,6 +46,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
         cSimpleStruct structTwo
         int32_t an_integer
         string name
+        cAnEnum an_enum
 
 
 cdef extern from "<utility>" namespace "std" nogil:

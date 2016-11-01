@@ -52,6 +52,18 @@ import traceback
     {{struct:name}},
     c{{struct:name}}{{^last?}},{{/last?}}{{#last?}}
 ){{/last?}}{{/program:structs}}
+{{#program:enums}}
+{{#first?}}from {{program:name}}_types cimport ({{/first?}}
+    c{{enum:name}},
+    {{enum:name}}_to_cpp,
+    {{#enum:values}}
+    {{enum:name}}__{{enumValue:name}}{{^last?}},{{/last?}}
+{{/enum:values}}{{^last?}},{{/last?}}{{#last?}}
+){{/last?}}{{/program:enums}}
+{{#program:enums}}
+{{#first?}}from {{program:name}}_types import ({{/first?}}
+    {{enum:name}}{{^last?}},{{/last?}}{{#last?}}
+){{/last?}}{{/program:enums}}
 {{#program:containerTypes}}
 {{#first?}}from {{program:name}}_types cimport (
     {{/first?}}

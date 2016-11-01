@@ -1,5 +1,12 @@
 namespace cpp2 py3.simple
 
+enum AnEnum {
+  ONE = 1,
+  TWO = 2,
+  THREE = 3,
+  FOUR = 4
+}
+
 exception SimpleException {
   1: i16 err_code
 }
@@ -18,6 +25,7 @@ struct ComplexStruct {
   2: SimpleStruct structTwo
   3: i32 an_integer
   4: string name
+  5: AnEnum an_enum
 }
 
 service SimpleService {
@@ -49,4 +57,5 @@ service SimpleService {
   list<i32> fib(1: i16 n)
   set<string> unique_words(1: list<string> words)
   map<string,i16> words_count(1: list<string> words)
+  AnEnum set_enum(1: AnEnum in_enum)
 }

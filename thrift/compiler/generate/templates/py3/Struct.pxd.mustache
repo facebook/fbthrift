@@ -35,6 +35,22 @@ from libcpp.map cimport map as cmap, pair as cpair
 from thrift.lib.py3.thrift_server cimport cTException, TException
 
 
+{{#program:enums}}
+{{#first?}}
+cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
+}} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":
+{{/first?}}
+    cdef cppclass c{{enum:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{enum:name}}":
+        bint operator==(c{{enum:name}}&)
+    {{#enum:values}}
+    c{{enum:name}} {{enum:name}}__{{enumValue:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{enum:name}}::{{enumValue:name}}"
+    {{/enum:values}}
+{{/program:enums}}
+
+{{#program:enums}}
+cdef c{{enum:name}} {{enum:name}}_to_cpp(value)
+{{/program:enums}}
+
 {{#program:structs}}
 {{#first?}}
 cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!

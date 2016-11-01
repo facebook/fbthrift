@@ -34,4 +34,5 @@ return types in Cython code.
 }}{{#type:map?}}unique_ptr[cmap[{{!
   }}{{#type:keyType}}{{> ContainerCythonFieldType}}{{/type:keyType}},{{!
   }}{{#type:valueType}}{{>ContainerCythonFieldType}}{{/type:valueType}}]]{{/type:map?}}{{!
-}}{{#type:void?}}cFollyUnit{{/type:void?}}
+}}{{#type:void?}}cFollyUnit{{/type:void?}}{{!
+}}{{#type:enum}}c{{enum:name}}{{/type:enum}}

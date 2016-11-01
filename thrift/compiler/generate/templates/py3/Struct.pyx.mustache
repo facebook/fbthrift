@@ -43,11 +43,34 @@ from cython.operator cimport dereference as deref
 from thrift.lib.py3.thrift_server cimport TException
 
 from collections.abc import Sequence, Set, Mapping
+from enum import Enum
+
 
 {{#program:structs}}
 {{#first?}}from {{program:name}}_types cimport ({{/first?}}
     c{{struct:name}}{{^last?}},{{/last?}}{{#last?}}
 ){{/last?}}{{/program:structs}}
+{{#program:enums}}
+{{#first?}}from {{program:name}}_types cimport ({{/first?}}
+    c{{enum:name}},
+    {{#enum:values}}
+    {{enum:name}}__{{enumValue:name}}{{^last?}},{{/last?}}
+{{/enum:values}}{{^last?}},{{/last?}}{{#last?}}){{/last?}}{{/program:enums}}
+
+
+{{#program:enums}}
+class {{enum:name}}(Enum):
+    {{#enum:values}}
+    {{enumValue:name}} = <int> ({{enum:name}}__{{enumValue:name}})
+    {{/enum:values}}
+
+cdef c{{enum:name}} {{enum:name}}_to_cpp(value):
+    {{#enum:values}}
+    {{^first?}}el{{/first?}}if value == {{enum:name}}.{{enumValue:name}}:
+        return {{enum:name}}__{{enumValue:name}}
+    {{/enum:values}}
+{{/program:enums}}
+
 
 {{#program:structs}}
 cdef class {{struct:name}}{{#struct:exception?}}(TException){{/struct:exception?}}:
@@ -82,6 +105,7 @@ cdef class {{struct:name}}{{#struct:exception?}}(TException){{/struct:exception?
     {{/struct:fields}}
 
 {{/program:structs}}
+
 
 {{#program:containerTypes}}
 cdef class {{type:flat_name}}:
