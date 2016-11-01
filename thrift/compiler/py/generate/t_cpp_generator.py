@@ -4305,6 +4305,7 @@ class CppGenerator(t_generator.Generator):
         # DECLARATION
         s = sns.cls('struct {0}_constants'.format(name)).scope
         with s:
+            out('\n')
             # Default constructor
             for c in constants:
                 inlined = c.type.is_base_type or c.type.is_enum
@@ -4324,14 +4325,19 @@ class CppGenerator(t_generator.Generator):
                             '"' if c.type.is_string else '',
                             value if value is not None else "{}"
                         ), name=c.name, in_header=True)
-                    sns.impl('constexpr {0} const {1}_constants::{2}_;'
+                    sns.impl('constexpr {0} const {1}_constants::{2}_;\n\n'
                       .format('char const *' if c.type.is_string else
                         self._type_name(c.type), name, c.name))
 
-                b = s.defn('static {0}{1} {2}{{name}}()'.format(
-                    'constexpr ' if inlined else '', 'char const *' if
-                    c.type.is_string else self._type_name(c.type), '' if
-                    inlined else 'const& '), name=c.name, in_header=True).scope
+                b = s.defn(
+                    '{0}{1} {2}{{name}}()'.format(
+                        'constexpr ' if inlined else '',
+                        'char const *' if c.type.is_string
+                        else self._type_name(c.type),
+                        '' if inlined else 'const& '),
+                    name=c.name,
+                    in_header=inlined,
+                    modifiers='static').scope
                 with b:
 
                     if inlined:
@@ -4342,6 +4348,7 @@ class CppGenerator(t_generator.Generator):
                             '({0})'.format(value) if value is not None else ''
                         ))
                         b('return instance;')
+                out('\n')
 
         sns.release()  # namespace
 

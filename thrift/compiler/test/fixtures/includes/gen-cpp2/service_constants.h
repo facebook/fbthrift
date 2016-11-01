@@ -10,6 +10,8 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 namespace cpp2 {
 
-struct service_constants {};
+struct service_constants {
+
+};
 
 } // cpp2

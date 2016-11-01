@@ -11,11 +11,13 @@
 namespace cpp2 {
 
 struct module_constants {
+
   static constexpr int32_t const myInt_ = 1337;
 
   static constexpr int32_t myInt() {
     return myInt_;
   }
+
   // consider using folly::StringPiece instead of std::string whenever possible
   // to referencing this statically allocated string constant, in order to
   // prevent unnecessary allocations
@@ -26,14 +28,7 @@ struct module_constants {
     return name_;
   }
 
-  static std::vector<std::map<std::string, int32_t>> const& states() {
-    static std::vector<std::map<std::string, int32_t>> const instance(std::initializer_list<std::map<std::string, int32_t>>{std::initializer_list<std::pair<const std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("San Diego"), 3211000},
-    {apache::thrift::StringTraits< std::string>::fromStringLiteral("Sacramento"), 479600},
-    {apache::thrift::StringTraits< std::string>::fromStringLiteral("SF"), 837400}},
-    std::initializer_list<std::pair<const std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("New York"), 8406000},
-    {apache::thrift::StringTraits< std::string>::fromStringLiteral("Albany"), 98400}}});
-    return instance;
-  }
+  static std::vector<std::map<std::string, int32_t>> const& states();
 
   static constexpr double const x_ = 1.0;
 
@@ -53,22 +48,12 @@ struct module_constants {
     return z_;
   }
 
-  static  ::cpp2::Internship const& instagram() {
-    static  ::cpp2::Internship const instance( ::cpp2::Internship(::apache::thrift::detail::wrap_argument<1>(12), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer")), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::Company::INSTAGRAM)));
-    return instance;
-  }
+  static  ::cpp2::Internship const& instagram();
 
-  static std::vector< ::cpp2::Range> const& kRanges() {
-    static std::vector< ::cpp2::Range> const instance(std::initializer_list< ::cpp2::Range>{ ::cpp2::Range(::apache::thrift::detail::wrap_argument<1>(1), ::apache::thrift::detail::wrap_argument<2>(2)),
-     ::cpp2::Range(::apache::thrift::detail::wrap_argument<1>(5), ::apache::thrift::detail::wrap_argument<2>(6))});
-    return instance;
-  }
+  static std::vector< ::cpp2::Range> const& kRanges();
 
-  static std::vector< ::cpp2::Internship> const& internList() {
-    static std::vector< ::cpp2::Internship> const instance(std::initializer_list< ::cpp2::Internship>{ ::cpp2::Internship(::apache::thrift::detail::wrap_argument<1>(12), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Software Engineer")), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::Company::INSTAGRAM)),
-     ::cpp2::Internship(::apache::thrift::detail::wrap_argument<1>(10), ::apache::thrift::detail::wrap_argument<2>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Sales Intern")), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::Company::FACEBOOK))});
-    return instance;
-  }
+  static std::vector< ::cpp2::Internship> const& internList();
+
   // consider using folly::StringPiece instead of std::string whenever possible
   // to referencing this statically allocated string constant, in order to
   // prevent unnecessary allocations
@@ -78,6 +63,7 @@ struct module_constants {
   static constexpr char const * apostrophe() {
     return apostrophe_;
   }
+
   // consider using folly::StringPiece instead of std::string whenever possible
   // to referencing this statically allocated string constant, in order to
   // prevent unnecessary allocations
@@ -87,6 +73,7 @@ struct module_constants {
   static constexpr char const * tripleApostrophe() {
     return tripleApostrophe_;
   }
+
   // consider using folly::StringPiece instead of std::string whenever possible
   // to referencing this statically allocated string constant, in order to
   // prevent unnecessary allocations
@@ -96,6 +83,7 @@ struct module_constants {
   static constexpr char const * quotationMark() {
     return quotationMark_;
   }
+
   // consider using folly::StringPiece instead of std::string whenever possible
   // to referencing this statically allocated string constant, in order to
   // prevent unnecessary allocations
@@ -105,6 +93,7 @@ struct module_constants {
   static constexpr char const * backslash() {
     return backslash_;
   }
+
   // consider using folly::StringPiece instead of std::string whenever possible
   // to referencing this statically allocated string constant, in order to
   // prevent unnecessary allocations
@@ -115,33 +104,9 @@ struct module_constants {
     return escaped_a_;
   }
 
-  static std::map<std::string, int32_t> const& char2ascii() {
-    static std::map<std::string, int32_t> const instance(std::initializer_list<std::pair<const std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("'"), 39},
-    {apache::thrift::StringTraits< std::string>::fromStringLiteral("\""), 34},
-    {apache::thrift::StringTraits< std::string>::fromStringLiteral("\\"), 92},
-    {apache::thrift::StringTraits< std::string>::fromStringLiteral("\x61"), 97}});
-    return instance;
-  }
+  static std::map<std::string, int32_t> const& char2ascii();
 
-  static std::vector<std::string> const& escaped_strings() {
-    static std::vector<std::string> const instance(std::initializer_list<std::string>{apache::thrift::StringTraits< std::string>::fromStringLiteral("\x61"),
-    apache::thrift::StringTraits< std::string>::fromStringLiteral("\xab"),
-    apache::thrift::StringTraits< std::string>::fromStringLiteral("\x6a"),
-    apache::thrift::StringTraits< std::string>::fromStringLiteral("\xa6"),
-    apache::thrift::StringTraits< std::string>::fromStringLiteral("\x61yyy"),
-    apache::thrift::StringTraits< std::string>::fromStringLiteral("\xabyyy"),
-    apache::thrift::StringTraits< std::string>::fromStringLiteral("\x6ayyy"),
-    apache::thrift::StringTraits< std::string>::fromStringLiteral("\xa6yyy"),
-    apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\x61"),
-    apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\xab"),
-    apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\x6a"),
-    apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\xa6"),
-    apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\x61yyy"),
-    apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\xabyyy"),
-    apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\x6ayyy"),
-    apache::thrift::StringTraits< std::string>::fromStringLiteral("zzz\xa6yyy")});
-    return instance;
-  }
+  static std::vector<std::string> const& escaped_strings();
 
   static constexpr bool const false_c_ = false;
 
@@ -184,6 +149,7 @@ struct module_constants {
   static constexpr double zero_dot_zero() {
     return zero_dot_zero_;
   }
+
   // consider using folly::StringPiece instead of std::string whenever possible
   // to referencing this statically allocated string constant, in order to
   // prevent unnecessary allocations
@@ -194,45 +160,22 @@ struct module_constants {
     return empty_string_;
   }
 
-  static std::vector<int32_t> const& empty_int_list() {
-    static std::vector<int32_t> const instance;
-    return instance;
-  }
+  static std::vector<int32_t> const& empty_int_list();
 
-  static std::vector<std::string> const& empty_string_list() {
-    static std::vector<std::string> const instance;
-    return instance;
-  }
+  static std::vector<std::string> const& empty_string_list();
 
-  static std::set<int32_t> const& empty_int_set() {
-    static std::set<int32_t> const instance;
-    return instance;
-  }
+  static std::set<int32_t> const& empty_int_set();
 
-  static std::set<std::string> const& empty_string_set() {
-    static std::set<std::string> const instance;
-    return instance;
-  }
+  static std::set<std::string> const& empty_string_set();
 
-  static std::map<int32_t, int32_t> const& empty_int_int_map() {
-    static std::map<int32_t, int32_t> const instance;
-    return instance;
-  }
+  static std::map<int32_t, int32_t> const& empty_int_int_map();
 
-  static std::map<int32_t, std::string> const& empty_int_string_map() {
-    static std::map<int32_t, std::string> const instance;
-    return instance;
-  }
+  static std::map<int32_t, std::string> const& empty_int_string_map();
 
-  static std::map<std::string, int32_t> const& empty_string_int_map() {
-    static std::map<std::string, int32_t> const instance;
-    return instance;
-  }
+  static std::map<std::string, int32_t> const& empty_string_int_map();
 
-  static std::map<std::string, std::string> const& empty_string_string_map() {
-    static std::map<std::string, std::string> const instance;
-    return instance;
-  }
+  static std::map<std::string, std::string> const& empty_string_string_map();
+
 };
 
 } // cpp2
