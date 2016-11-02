@@ -795,17 +795,17 @@ TEST(fatal_struct, set_methods) {
   // but trust me, it shoudln't
   // req_field::unmark_set(a);
 
-  EXPECT_EQ(false, opt_field::is_set(a));
+  EXPECT_FALSE(bool(opt_field::is_set(a)));
   opt_field::mark_set(a);
-  EXPECT_EQ(true, opt_field::is_set(a));
+  EXPECT_TRUE(bool(opt_field::is_set(a)));
   opt_field::unmark_set(a);
-  EXPECT_EQ(false, opt_field::is_set(a));
+  EXPECT_FALSE(bool(opt_field::is_set(a)));
 
-  EXPECT_EQ(false, def_field::is_set(a));
+  EXPECT_FALSE(bool(def_field::is_set(a)));
   def_field::mark_set(a);
-  EXPECT_EQ(true, def_field::is_set(a));
+  EXPECT_TRUE(bool(def_field::is_set(a)));
   def_field::unmark_set(a);
-  EXPECT_EQ(false, def_field::is_set(a));
+  EXPECT_FALSE(bool(def_field::is_set(a)));
 
   EXPECT_EQ(true, ref_field::is_set(a));
   ref_field::mark_set(a);
