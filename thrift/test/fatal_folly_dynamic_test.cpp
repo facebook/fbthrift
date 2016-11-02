@@ -22,6 +22,7 @@
 #include <thrift/test/gen-cpp2/global_fatal_types.h>
 #include <thrift/test/gen-cpp2/reflection_fatal_types.h>
 
+#include <folly/String.h>
 #include <folly/json.h>
 
 #include <glog/logging.h>
@@ -270,7 +271,7 @@ template <
   typename Enum1,
   typename Enum2
 >
-std::pair<Struct3, char const *> test_data_1() {
+std::pair<Struct3, std::string> test_data_1() {
   StructA a1;
   a1.__isset.a = true;
   a1.a = 99;
@@ -374,57 +375,57 @@ std::pair<Struct3, char const *> test_data_1() {
   pod.__isset.fieldR = true;
   pod.fieldR = {};
 
-  auto const json = "{\
-    \"fieldA\": 141,\
-    \"fieldB\": \"this is a test\",\
-    \"fieldC\": \"field0\",\
-    \"fieldD\": \"field1_2\",\
-    \"fieldE\": {\
-        \"ud\": 5.6\
-    },\
-    \"fieldF\": {\
-        \"us_2\": \"this is a variant\"\
-    },\
-    \"fieldG\": {\
-        \"field0\": 98,\
-        \"field1\": \"hello, world\",\
-        \"field2\": \"field2\",\
-        \"field3\": \"field0_2\",\
-        \"field4\": {\
-            \"ui\": 19937\
-        },\
-        \"field5\": {\
-            \"ue_2\": \"field1\"\
-        }\
-    },\
-    \"fieldH\": {},\
-    \"fieldI\": [3, 5, 7, 9],\
-    \"fieldJ\": [\"a\", \"b\", \"c\", \"d\"],\
-    \"fieldK\": [],\
-    \"fieldL\": [\
-      { \"a\": 99, \"b\": \"abc\" },\
-      { \"a\": 1001, \"b\": \"foo\" },\
-      { \"a\": 654, \"b\": \"bar\" },\
-      { \"a\": 9791, \"b\": \"baz\" },\
-      { \"a\": 111, \"b\": \"gaz\" }\
-    ],\
-    \"fieldM\": [2, 4, 6, 8],\
-    \"fieldN\": [\"w\", \"x\", \"y\", \"z\"],\
-    \"fieldO\": [],\
-    \"fieldP\": [\
-      { \"c\": 1.23, \"d\": true },\
-      { \"c\": 9.8, \"d\": false },\
-      { \"c\": 10.01, \"d\": true },\
-      { \"c\": 159.73, \"d\": false },\
-      { \"c\": 468.02, \"d\": true }\
-    ],\
-    \"fieldQ\": {\
-      \"a1\": { \"a\": 99, \"b\": \"abc\" },\
-      \"a2\": { \"a\": 1001, \"b\": \"foo\" },\
-      \"a3\": { \"a\": 654, \"b\": \"bar\" }\
-    },\
-    \"fieldR\": {}\
-  }";
+  auto const json = folly::stripLeftMargin(R"({
+    "fieldA": 141,
+    "fieldB": "this is a test",
+    "fieldC": "field0",
+    "fieldD": "field1_2",
+    "fieldE": {
+        "ud": 5.6
+    },
+    "fieldF": {
+        "us_2": "this is a variant"
+    },
+    "fieldG": {
+        "field0": 98,
+        "field1": "hello, world",
+        "field2": "field2",
+        "field3": "field0_2",
+        "field4": {
+            "ui": 19937
+        },
+        "field5": {
+            "ue_2": "field1"
+        }
+    },
+    "fieldH": {},
+    "fieldI": [3, 5, 7, 9],
+    "fieldJ": ["a", "b", "c", "d"],
+    "fieldK": [],
+    "fieldL": [
+      { "a": 99, "b": "abc" },
+      { "a": 1001, "b": "foo" },
+      { "a": 654, "b": "bar" },
+      { "a": 9791, "b": "baz" },
+      { "a": 111, "b": "gaz" }
+    ],
+    "fieldM": [2, 4, 6, 8],
+    "fieldN": ["w", "x", "y", "z"],
+    "fieldO": [],
+    "fieldP": [
+      { "c": 1.23, "d": true },
+      { "c": 9.8, "d": false },
+      { "c": 10.01, "d": true },
+      { "c": 159.73, "d": false },
+      { "c": 468.02, "d": true }
+    ],
+    "fieldQ": {
+      "a1": { "a": 99, "b": "abc" },
+      "a2": { "a": 1001, "b": "foo" },
+      "a3": { "a": 654, "b": "bar" }
+    },
+    "fieldR": {}
+  })");
 
   return std::make_pair(pod, json);
 }
@@ -454,9 +455,9 @@ TEST(fatal_folly_dynamic, booleans) {
   expected.c = 1.3;
   expected.d = true;
 
-  EXPECT_EQ(expected, decode("{ \"c\": 1.3, \"d\": 1}"));
-  EXPECT_EQ(expected, decode("{ \"c\": 1.3, \"d\": 100}"));
-  EXPECT_EQ(expected, decode("{ \"c\": 1.3, \"d\": true}"));
+  EXPECT_EQ(expected, decode(R"({ "c": 1.3, "d": 1})"));
+  EXPECT_EQ(expected, decode(R"({ "c": 1.3, "d": 100})"));
+  EXPECT_EQ(expected, decode(R"({ "c": 1.3, "d": true})"));
 }
 
 TEST(fatal_folly_dynamic, to_from_dynamic_compat) {
