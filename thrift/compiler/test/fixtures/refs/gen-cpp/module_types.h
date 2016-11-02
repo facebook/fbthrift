@@ -20,7 +20,7 @@ class Schema;
 
 enum TypedEnum : short {
   VAL1 = 0,
-  VAL2 = 1
+  VAL2 = 1,
 };
 
 extern const std::map<short, const char*> _TypedEnum_VALUES_TO_NAMES;

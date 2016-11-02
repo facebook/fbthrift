@@ -22,7 +22,7 @@ enum City {
   NYC = 0,
   MPK = 1,
   SEA = 2,
-  LON = 3
+  LON = 3,
 };
 
 extern const std::map<int, const char*> _City_VALUES_TO_NAMES;
@@ -48,7 +48,7 @@ enum Company {
   FACEBOOK = 0,
   WHATSAPP = 1,
   OCULUS = 2,
-  INSTAGRAM = 3
+  INSTAGRAM = 3,
 };
 
 extern const std::map<int, const char*> _Company_VALUES_TO_NAMES;

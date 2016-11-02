@@ -16,13 +16,13 @@ namespace test_cpp1 { namespace cpp_reflection {
 const int _kenum1Values[] = {
   field0,
   field1,
-  field2
+  field2,
 };
 
 const char* const _kenum1Names[] = {
   "field0",
   "field1",
-  "field2"
+  "field2",
 };
 
 const std::map<int, const char*> _enum1_VALUES_TO_NAMES(apache::thrift::TEnumIterator<int>(3, _kenum1Values, _kenum1Names), apache::thrift::TEnumIterator<int>(-1, NULL, NULL));
@@ -46,13 +46,13 @@ namespace test_cpp1 { namespace cpp_reflection {
 const int _kenum2Values[] = {
   field0_2,
   field1_2,
-  field2_2
+  field2_2,
 };
 
 const char* const _kenum2Names[] = {
   "field0_2",
   "field1_2",
-  "field2_2"
+  "field2_2",
 };
 
 const std::map<int, const char*> _enum2_VALUES_TO_NAMES(apache::thrift::TEnumIterator<int>(3, _kenum2Values, _kenum2Names), apache::thrift::TEnumIterator<int>(-1, NULL, NULL));
@@ -76,13 +76,13 @@ namespace test_cpp1 { namespace cpp_reflection {
 const int _kenum3Values[] = {
   field0_3,
   field1_3,
-  field2_3
+  field2_3,
 };
 
 const char* const _kenum3Names[] = {
   "field0_3",
   "field1_3",
-  "field2_3"
+  "field2_3",
 };
 
 const std::map<int, const char*> _enum3_VALUES_TO_NAMES(apache::thrift::TEnumIterator<int>(3, _kenum3Values, _kenum3Names), apache::thrift::TEnumIterator<int>(-1, NULL, NULL));
@@ -129,7 +129,7 @@ const int _kenum_with_special_namesValues[] = {
   annotation,
   annotations,
   member,
-  members
+  members,
 };
 
 const char* const _kenum_with_special_namesNames[] = {
@@ -158,7 +158,7 @@ const char* const _kenum_with_special_namesNames[] = {
   "annotation",
   "annotations",
   "member",
-  "members"
+  "members",
 };
 
 const std::map<int, const char*> _enum_with_special_names_VALUES_TO_NAMES(apache::thrift::TEnumIterator<int>(26, _kenum_with_special_namesValues, _kenum_with_special_namesNames), apache::thrift::TEnumIterator<int>(-1, NULL, NULL));

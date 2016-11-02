@@ -20,7 +20,7 @@ class Schema;
 
 enum MyEnum {
   MyValue1 = 0,
-  MyValue2 = 1
+  MyValue2 = 1,
 };
 
 extern const std::map<int, const char*> _MyEnum_VALUES_TO_NAMES;

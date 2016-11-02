@@ -13,12 +13,12 @@
 
 const int _kMyEnumValues[] = {
   MyValue1,
-  MyValue2
+  MyValue2,
 };
 
 const char* const _kMyEnumNames[] = {
   "MyValue1",
-  "MyValue2"
+  "MyValue2",
 };
 
 const std::map<int, const char*> _MyEnum_VALUES_TO_NAMES(apache::thrift::TEnumIterator<int>(2, _kMyEnumValues, _kMyEnumNames), apache::thrift::TEnumIterator<int>(-1, NULL, NULL));

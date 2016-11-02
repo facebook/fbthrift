@@ -17,14 +17,14 @@ const int _kCityValues[] = {
   NYC,
   MPK,
   SEA,
-  LON
+  LON,
 };
 
 const char* const _kCityNames[] = {
   "NYC",
   "MPK",
   "SEA",
-  "LON"
+  "LON",
 };
 
 const std::map<int, const char*> _City_VALUES_TO_NAMES(apache::thrift::TEnumIterator<int>(4, _kCityValues, _kCityNames), apache::thrift::TEnumIterator<int>(-1, NULL, NULL));
@@ -49,14 +49,14 @@ const int _kCompanyValues[] = {
   FACEBOOK,
   WHATSAPP,
   OCULUS,
-  INSTAGRAM
+  INSTAGRAM,
 };
 
 const char* const _kCompanyNames[] = {
   "FACEBOOK",
   "WHATSAPP",
   "OCULUS",
-  "INSTAGRAM"
+  "INSTAGRAM",
 };
 
 const std::map<int, const char*> _Company_VALUES_TO_NAMES(apache::thrift::TEnumIterator<int>(4, _kCompanyValues, _kCompanyNames), apache::thrift::TEnumIterator<int>(-1, NULL, NULL));

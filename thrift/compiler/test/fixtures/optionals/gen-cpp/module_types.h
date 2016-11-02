@@ -21,7 +21,7 @@ class Schema;
 enum Animal {
   DOG = 1,
   CAT = 2,
-  TARANTULA = 3
+  TARANTULA = 3,
 };
 
 extern const std::map<int, const char*> _Animal_VALUES_TO_NAMES;

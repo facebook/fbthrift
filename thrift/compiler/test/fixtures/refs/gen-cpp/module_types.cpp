@@ -15,12 +15,12 @@
 
 const short _kTypedEnumValues[] = {
   VAL1,
-  VAL2
+  VAL2,
 };
 
 const char* const _kTypedEnumNames[] = {
   "VAL1",
-  "VAL2"
+  "VAL2",
 };
 
 const std::map<short, const char*> _TypedEnum_VALUES_TO_NAMES(apache::thrift::TEnumIterator<short>(2, _kTypedEnumValues, _kTypedEnumNames), apache::thrift::TEnumIterator<short>(-1, NULL, NULL));

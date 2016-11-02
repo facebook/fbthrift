@@ -16,13 +16,13 @@
 const int _kAnimalValues[] = {
   DOG,
   CAT,
-  TARANTULA
+  TARANTULA,
 };
 
 const char* const _kAnimalNames[] = {
   "DOG",
   "CAT",
-  "TARANTULA"
+  "TARANTULA",
 };
 
 const std::map<int, const char*> _Animal_VALUES_TO_NAMES(apache::thrift::TEnumIterator<int>(3, _kAnimalValues, _kAnimalNames), apache::thrift::TEnumIterator<int>(-1, NULL, NULL));

@@ -33,7 +33,7 @@ namespace test_cpp1 { namespace cpp_reflection {
 enum enum1 {
   field0 = 0,
   field1 = 1,
-  field2 = 2
+  field2 = 2,
 };
 
 extern const std::map<int, const char*> _enum1_VALUES_TO_NAMES;
@@ -58,7 +58,7 @@ namespace test_cpp1 { namespace cpp_reflection {
 enum enum2 {
   field0_2 = 0,
   field1_2 = 1,
-  field2_2 = 2
+  field2_2 = 2,
 };
 
 extern const std::map<int, const char*> _enum2_VALUES_TO_NAMES;
@@ -83,7 +83,7 @@ namespace test_cpp1 { namespace cpp_reflection {
 enum enum3 {
   field0_3 = 0,
   field1_3 = 1,
-  field2_3 = 2
+  field2_3 = 2,
 };
 
 extern const std::map<int, const char*> _enum3_VALUES_TO_NAMES;
@@ -131,7 +131,7 @@ enum enum_with_special_names {
   annotation = 22,
   annotations = 23,
   member = 24,
-  members = 25
+  members = 25,
 };
 
 extern const std::map<int, const char*> _enum_with_special_names_VALUES_TO_NAMES;

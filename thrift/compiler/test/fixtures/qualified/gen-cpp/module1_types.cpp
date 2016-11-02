@@ -16,13 +16,13 @@ namespace MODULE1 {
 const int _kEnumValues[] = {
   ONE,
   TWO,
-  THREE
+  THREE,
 };
 
 const char* const _kEnumNames[] = {
   "ONE",
   "TWO",
-  "THREE"
+  "THREE",
 };
 
 const std::map<int, const char*> _Enum_VALUES_TO_NAMES(apache::thrift::TEnumIterator<int>(3, _kEnumValues, _kEnumNames), apache::thrift::TEnumIterator<int>(-1, NULL, NULL));

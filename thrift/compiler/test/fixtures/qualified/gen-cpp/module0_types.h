@@ -21,7 +21,7 @@ namespace MODULE0 {
 enum Enum {
   ONE = 1,
   TWO = 2,
-  THREE = 3
+  THREE = 3,
 };
 
 extern const std::map<int, const char*> _Enum_VALUES_TO_NAMES;

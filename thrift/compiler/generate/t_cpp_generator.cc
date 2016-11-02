@@ -847,13 +847,7 @@ void t_cpp_generator::generate_enum_constant_list(std::ofstream& f,
   indent_up();
 
   vector<t_enum_value*>::const_iterator c_iter;
-  bool first = true;
   for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
-    if (first) {
-      first = false;
-    } else {
-      f << "," << endl;
-    }
     f << indent();
     if (quote_names) {
       f << "\"";
@@ -868,10 +862,11 @@ void t_cpp_generator::generate_enum_constant_list(std::ofstream& f,
     if (include_values) {
       f << " = " << (*c_iter)->get_value();
     }
+    f << "," << endl;
   }
 
   indent_down();
-  f << endl << "};" << endl << endl;
+  f << indent() << "};" << endl;
 }
 
 /**
@@ -902,6 +897,7 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
 
   f_types_ << indent() << "enum" << enum_suffix << name << explicit_type;
   generate_enum_constant_list(f_types_, constants, false, true);
+  f_types_ << endl;
 
   std::string minName;
   std::string maxName;
@@ -930,11 +926,15 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
     indent() << "const " << value_type << " _k" << name << "Values[] =";
   generate_enum_constant_list(
       f_types_impl_, constants, false, false, typed_prefix);
+  f_types_impl_ <<
+    endl;
 
   f_types_impl_ <<
     indent() << "const char* const _k" << name << "Names[] =";
   generate_enum_constant_list(
       f_types_impl_, constants, true, false, typed_prefix);
+  f_types_impl_ <<
+    endl;
 
   auto valuesToNames = folly::to<string>("_", name, "_VALUES_TO_NAMES");
   auto namesToValues = folly::to<string>("_", name, "_NAMES_TO_VALUES");
