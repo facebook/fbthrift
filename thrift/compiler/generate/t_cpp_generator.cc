@@ -346,7 +346,7 @@ class t_cpp_generator : public t_oop_generator {
                                    bool include_values,
                                    const char* typed_name = nullptr);
 
-bool is_reference(const t_field* f) const {
+  bool is_reference(const t_field* f) const {
     return !cpp_ref_type(f, "").empty();
   }
 
