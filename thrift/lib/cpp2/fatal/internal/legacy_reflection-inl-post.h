@@ -177,12 +177,14 @@ struct impl<T, type_class::enumeration> {
   static void go(schema_t& schema) {
     registering_datatype(
         schema, to_c_array<rname>::range(), rid(), [&](datatype_t& dt) {
-      using names = typename meta::traits::array::names;
-      using values = typename meta::traits::array::values;
       dt.__isset.enumValues = true;
-      for (size_t i = 0; i < values::size::value; ++i) {
-        dt.enumValues[names::data[i].template to<std::string>()] =
-            int(values::data[i]);
+      for (auto e : TEnumTraits<T>::enumerators()) {
+        auto name = e.second;
+        auto p = name.find(':');
+        if (p != folly::StringPiece::npos) {
+          name.advance(p + 2);
+        }
+        dt.enumValues[name.str()] = int(e.first);
       }
     });
   }
