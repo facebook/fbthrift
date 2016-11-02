@@ -169,7 +169,7 @@ class UnEnumStruct : public apache::thrift::TStructType<UnEnumStruct> {
 
   static const uint64_t _reflection_id = 18314195816413397484U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
-  UnEnumStruct() : city((City)-1) {
+  UnEnumStruct() : city(City(-1)) {
   }
   template <
     typename T__ThriftWrappedArgument__Ctor,

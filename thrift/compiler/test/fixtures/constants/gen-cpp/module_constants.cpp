@@ -31,7 +31,7 @@ Internship const &module_constants::instagram() {
   static Internship const instance = Internship(
     ::apache::thrift::detail::wrap_argument<1>(12),
     ::apache::thrift::detail::wrap_argument<2>("Software Engineer"),
-    ::apache::thrift::detail::wrap_argument<3>((Company)3));
+    ::apache::thrift::detail::wrap_argument<3>(Company::INSTAGRAM));
   return instance;
 }
 std::vector<Range>  const &module_constants::kRanges() {
@@ -51,7 +51,7 @@ std::vector<Internship>  const &module_constants::internList() {
     Internship(
       ::apache::thrift::detail::wrap_argument<1>(10),
       ::apache::thrift::detail::wrap_argument<2>("Sales Intern"),
-      ::apache::thrift::detail::wrap_argument<3>((Company)0)),
+      ::apache::thrift::detail::wrap_argument<3>(Company::FACEBOOK)),
   };
   return instance;
 }

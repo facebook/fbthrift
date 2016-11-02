@@ -16,8 +16,8 @@ Struct const &module1_constants::c1() {
 }
 std::vector<Enum>  const &module1_constants::e1s() {
   static std::vector<Enum>  const instance = std::vector<Enum> {
-    (Enum)1,
-    (Enum)3,
+    Enum::ONE,
+    Enum::THREE,
   };
   return instance;
 }

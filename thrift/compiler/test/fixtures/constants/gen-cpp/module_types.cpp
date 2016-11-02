@@ -278,7 +278,7 @@ uint32_t UnEnumStruct::read(apache::thrift::protocol::TProtocol* iprot) {
 }
 
 void UnEnumStruct::__clear() {
-  city = (City)-1;
+  city = City(-1);
   __isset.__clear();
 }
 uint32_t UnEnumStruct::write(apache::thrift::protocol::TProtocol* oprot) const {

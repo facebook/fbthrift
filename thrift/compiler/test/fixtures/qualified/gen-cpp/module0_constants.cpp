@@ -16,8 +16,8 @@ Struct const &module0_constants::c0() {
 }
 std::vector<Enum>  const &module0_constants::e0s() {
   static std::vector<Enum>  const instance = std::vector<Enum> {
-    (Enum)1,
-    (Enum)3,
+    Enum::ONE,
+    Enum::THREE,
   };
   return instance;
 }

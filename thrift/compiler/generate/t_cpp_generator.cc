@@ -1308,19 +1308,13 @@ void t_cpp_generator::print_const_value(
       throw "compiler error: no const of base type " + t_base_type::t_base_name(tbase);
     }
   } else if (type->is_enum()) {
-    if (gen_enum_strict_) {
-      // Search the enum definitions for the label with the given value
-      const t_enum_value* val =
-        static_cast<t_enum*>(type)->find_value(value->get_integer());
-      if (val == nullptr) {
-        std::ostringstream except;
-        except << "Unrecognized value " << value->get_integer()  <<
-                  " for enum \"" << type_name(type) << "\"";
-        throw except.str();
-      }
-      out << type_name(type) << "::" << val->get_name();
+    // Search the enum definitions for the label with the given value
+    const t_enum_value* val =
+      static_cast<t_enum*>(type)->find_value(value->get_integer());
+    if (val == nullptr) {
+      out << type_name(type) << "(" << value->get_integer() << ")";
     } else {
-      out << "(" << type_name(type) << ")" << value->get_integer();
+      out << type_name(type) << "::" << val->get_name();
     }
   } else if (type->is_struct() || type->is_xception()) { // also unions
     auto& fieldValues = value->get_map();

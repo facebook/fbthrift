@@ -18,7 +18,7 @@ struct module_constants {
   // prevent unnecessary allocations
   static constexpr char const *const constant2_ = "hello";
   static constexpr char const* constant2() { return constant2_; }
-  static constexpr enum1 const constant3_ = (enum1)0;
+  static constexpr enum1 const constant3_ = enum1::field0;
   static constexpr enum1 constant3() { return constant3_; }
   static constexpr int32_t const constant_with_special_name_ = 42;
   static constexpr int32_t constant_with_special_name() { return constant_with_special_name_; }
