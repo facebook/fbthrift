@@ -29,8 +29,8 @@ enum class City {
   LON = 3
 };
 
-extern const std::map<City, const char*> _City_VALUES_TO_NAMES;
-extern const std::map<const char*, City, apache::thrift::ltstr> _City_NAMES_TO_VALUES;
+extern const typename apache::thrift::detail::TEnumMapFactory<City, City>::ValuesToNamesMapType _City_VALUES_TO_NAMES;
+extern const typename apache::thrift::detail::TEnumMapFactory<City, City>::NamesToValuesMapType _City_NAMES_TO_VALUES;
 
 } // cpp2
 namespace std {
@@ -41,6 +41,7 @@ template<> struct equal_to<typename  ::cpp2::City> : public apache::thrift::deta
 } // std
 namespace apache { namespace thrift {
 
+template <> folly::Range<const std::pair< ::cpp2::City, folly::StringPiece>*> TEnumTraitsBase< ::cpp2::City>::enumerators();
 template <> const char* TEnumTraitsBase< ::cpp2::City>::findName( ::cpp2::City value);
 template <> bool TEnumTraitsBase< ::cpp2::City>::findValue(const char* name,  ::cpp2::City* outValue);
 
@@ -62,8 +63,8 @@ enum class Company {
   INSTAGRAM = 3
 };
 
-extern const std::map<Company, const char*> _Company_VALUES_TO_NAMES;
-extern const std::map<const char*, Company, apache::thrift::ltstr> _Company_NAMES_TO_VALUES;
+extern const typename apache::thrift::detail::TEnumMapFactory<Company, Company>::ValuesToNamesMapType _Company_VALUES_TO_NAMES;
+extern const typename apache::thrift::detail::TEnumMapFactory<Company, Company>::NamesToValuesMapType _Company_NAMES_TO_VALUES;
 
 } // cpp2
 namespace std {
@@ -74,6 +75,7 @@ template<> struct equal_to<typename  ::cpp2::Company> : public apache::thrift::d
 } // std
 namespace apache { namespace thrift {
 
+template <> folly::Range<const std::pair< ::cpp2::Company, folly::StringPiece>*> TEnumTraitsBase< ::cpp2::Company>::enumerators();
 template <> const char* TEnumTraitsBase< ::cpp2::Company>::findName( ::cpp2::Company value);
 template <> bool TEnumTraitsBase< ::cpp2::Company>::findValue(const char* name,  ::cpp2::Company* outValue);
 

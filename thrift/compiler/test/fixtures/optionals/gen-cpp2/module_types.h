@@ -29,8 +29,8 @@ enum class Animal {
   TARANTULA = 3
 };
 
-extern const std::map<Animal, const char*> _Animal_VALUES_TO_NAMES;
-extern const std::map<const char*, Animal, apache::thrift::ltstr> _Animal_NAMES_TO_VALUES;
+extern const typename apache::thrift::detail::TEnumMapFactory<Animal, Animal>::ValuesToNamesMapType _Animal_VALUES_TO_NAMES;
+extern const typename apache::thrift::detail::TEnumMapFactory<Animal, Animal>::NamesToValuesMapType _Animal_NAMES_TO_VALUES;
 
 } // cpp2
 namespace std {
@@ -41,6 +41,7 @@ template<> struct equal_to<typename  ::cpp2::Animal> : public apache::thrift::de
 } // std
 namespace apache { namespace thrift {
 
+template <> folly::Range<const std::pair< ::cpp2::Animal, folly::StringPiece>*> TEnumTraitsBase< ::cpp2::Animal>::enumerators();
 template <> const char* TEnumTraitsBase< ::cpp2::Animal>::findName( ::cpp2::Animal value);
 template <> bool TEnumTraitsBase< ::cpp2::Animal>::findValue(const char* name,  ::cpp2::Animal* outValue);
 

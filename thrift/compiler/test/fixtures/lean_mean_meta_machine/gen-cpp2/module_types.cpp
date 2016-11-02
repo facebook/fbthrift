@@ -14,26 +14,23 @@
 #include "thrift/compiler/test/fixtures/lean_mean_meta_machine/gen-cpp2/module_fatal.h"
 namespace test_cpp2 { namespace cpp_reflection {
 
-enum1 _kenum1Values[] = {
-  enum1::field0,
-  enum1::field1,
-  enum1::field2
-};
-
-const char* _kenum1Names[] = {
-  "field0",
-  "field1",
-  "field2"
-};
-
-const std::map<enum1, const char*> _enum1_VALUES_TO_NAMES(apache::thrift::TEnumIterator<enum1>(3, _kenum1Values, _kenum1Names), apache::thrift::TEnumIterator<enum1>(-1, nullptr, nullptr));
-const std::map<const char*, enum1, apache::thrift::ltstr> _enum1_NAMES_TO_VALUES(apache::thrift::TEnumInverseIterator<enum1>(3, _kenum1Values, _kenum1Names), apache::thrift::TEnumInverseIterator<enum1>(-1, nullptr, nullptr));
+const typename apache::thrift::detail::TEnumMapFactory<enum1, enum1>::ValuesToNamesMapType _enum1_VALUES_TO_NAMES = apache::thrift::detail::TEnumMapFactory<enum1, enum1>::makeValuesToNamesMap();
+const typename apache::thrift::detail::TEnumMapFactory<enum1, enum1>::NamesToValuesMapType _enum1_NAMES_TO_VALUES = apache::thrift::detail::TEnumMapFactory<enum1, enum1>::makeNamesToValuesMap();
 
 }} // test_cpp2::cpp_reflection
 namespace std {
 
 } // std
 namespace apache { namespace thrift {
+
+template <> folly::Range<const std::pair< ::test_cpp2::cpp_reflection::enum1, folly::StringPiece>*> TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum1>::enumerators() {
+  static constexpr const std::pair< ::test_cpp2::cpp_reflection::enum1, folly::StringPiece> storage[3] = {
+    { ::test_cpp2::cpp_reflection::enum1::field0, "field0"},
+    { ::test_cpp2::cpp_reflection::enum1::field1, "field1"},
+    { ::test_cpp2::cpp_reflection::enum1::field2, "field2"},
+  };
+  return folly::range(storage);
+}
 
 template <> const char* TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum1>::findName( ::test_cpp2::cpp_reflection::enum1 value) {
   return findName( ::test_cpp2::cpp_reflection::_enum1_VALUES_TO_NAMES, value);
@@ -46,26 +43,23 @@ template <> bool TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum1>::findValue
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
-enum2 _kenum2Values[] = {
-  enum2::field0_2,
-  enum2::field1_2,
-  enum2::field2_2
-};
-
-const char* _kenum2Names[] = {
-  "field0_2",
-  "field1_2",
-  "field2_2"
-};
-
-const std::map<enum2, const char*> _enum2_VALUES_TO_NAMES(apache::thrift::TEnumIterator<enum2>(3, _kenum2Values, _kenum2Names), apache::thrift::TEnumIterator<enum2>(-1, nullptr, nullptr));
-const std::map<const char*, enum2, apache::thrift::ltstr> _enum2_NAMES_TO_VALUES(apache::thrift::TEnumInverseIterator<enum2>(3, _kenum2Values, _kenum2Names), apache::thrift::TEnumInverseIterator<enum2>(-1, nullptr, nullptr));
+const typename apache::thrift::detail::TEnumMapFactory<enum2, enum2>::ValuesToNamesMapType _enum2_VALUES_TO_NAMES = apache::thrift::detail::TEnumMapFactory<enum2, enum2>::makeValuesToNamesMap();
+const typename apache::thrift::detail::TEnumMapFactory<enum2, enum2>::NamesToValuesMapType _enum2_NAMES_TO_VALUES = apache::thrift::detail::TEnumMapFactory<enum2, enum2>::makeNamesToValuesMap();
 
 }} // test_cpp2::cpp_reflection
 namespace std {
 
 } // std
 namespace apache { namespace thrift {
+
+template <> folly::Range<const std::pair< ::test_cpp2::cpp_reflection::enum2, folly::StringPiece>*> TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum2>::enumerators() {
+  static constexpr const std::pair< ::test_cpp2::cpp_reflection::enum2, folly::StringPiece> storage[3] = {
+    { ::test_cpp2::cpp_reflection::enum2::field0_2, "field0_2"},
+    { ::test_cpp2::cpp_reflection::enum2::field1_2, "field1_2"},
+    { ::test_cpp2::cpp_reflection::enum2::field2_2, "field2_2"},
+  };
+  return folly::range(storage);
+}
 
 template <> const char* TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum2>::findName( ::test_cpp2::cpp_reflection::enum2 value) {
   return findName( ::test_cpp2::cpp_reflection::_enum2_VALUES_TO_NAMES, value);
@@ -78,26 +72,23 @@ template <> bool TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum2>::findValue
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
-enum3 _kenum3Values[] = {
-  enum3::field0_3,
-  enum3::field1_3,
-  enum3::field2_3
-};
-
-const char* _kenum3Names[] = {
-  "field0_3",
-  "field1_3",
-  "field2_3"
-};
-
-const std::map<enum3, const char*> _enum3_VALUES_TO_NAMES(apache::thrift::TEnumIterator<enum3>(3, _kenum3Values, _kenum3Names), apache::thrift::TEnumIterator<enum3>(-1, nullptr, nullptr));
-const std::map<const char*, enum3, apache::thrift::ltstr> _enum3_NAMES_TO_VALUES(apache::thrift::TEnumInverseIterator<enum3>(3, _kenum3Values, _kenum3Names), apache::thrift::TEnumInverseIterator<enum3>(-1, nullptr, nullptr));
+const typename apache::thrift::detail::TEnumMapFactory<enum3, enum3>::ValuesToNamesMapType _enum3_VALUES_TO_NAMES = apache::thrift::detail::TEnumMapFactory<enum3, enum3>::makeValuesToNamesMap();
+const typename apache::thrift::detail::TEnumMapFactory<enum3, enum3>::NamesToValuesMapType _enum3_NAMES_TO_VALUES = apache::thrift::detail::TEnumMapFactory<enum3, enum3>::makeNamesToValuesMap();
 
 }} // test_cpp2::cpp_reflection
 namespace std {
 
 } // std
 namespace apache { namespace thrift {
+
+template <> folly::Range<const std::pair< ::test_cpp2::cpp_reflection::enum3, folly::StringPiece>*> TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum3>::enumerators() {
+  static constexpr const std::pair< ::test_cpp2::cpp_reflection::enum3, folly::StringPiece> storage[3] = {
+    { ::test_cpp2::cpp_reflection::enum3::field0_3, "field0_3"},
+    { ::test_cpp2::cpp_reflection::enum3::field1_3, "field1_3"},
+    { ::test_cpp2::cpp_reflection::enum3::field2_3, "field2_3"},
+  };
+  return folly::range(storage);
+}
 
 template <> const char* TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum3>::findName( ::test_cpp2::cpp_reflection::enum3 value) {
   return findName( ::test_cpp2::cpp_reflection::_enum3_VALUES_TO_NAMES, value);
@@ -110,72 +101,46 @@ template <> bool TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum3>::findValue
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
-enum_with_special_names _kenum_with_special_namesValues[] = {
-  enum_with_special_names::get,
-  enum_with_special_names::getter,
-  enum_with_special_names::lists,
-  enum_with_special_names::maps,
-  enum_with_special_names::name,
-  enum_with_special_names::name_to_value,
-  enum_with_special_names::names,
-  enum_with_special_names::prefix_tree,
-  enum_with_special_names::sets,
-  enum_with_special_names::setter,
-  enum_with_special_names::str,
-  enum_with_special_names::strings,
-  enum_with_special_names::type,
-  enum_with_special_names::value,
-  enum_with_special_names::value_to_name,
-  enum_with_special_names::values,
-  enum_with_special_names::id,
-  enum_with_special_names::ids,
-  enum_with_special_names::descriptor,
-  enum_with_special_names::descriptors,
-  enum_with_special_names::key,
-  enum_with_special_names::keys,
-  enum_with_special_names::annotation,
-  enum_with_special_names::annotations,
-  enum_with_special_names::member,
-  enum_with_special_names::members
-};
-
-const char* _kenum_with_special_namesNames[] = {
-  "get",
-  "getter",
-  "lists",
-  "maps",
-  "name",
-  "name_to_value",
-  "names",
-  "prefix_tree",
-  "sets",
-  "setter",
-  "str",
-  "strings",
-  "type",
-  "value",
-  "value_to_name",
-  "values",
-  "id",
-  "ids",
-  "descriptor",
-  "descriptors",
-  "key",
-  "keys",
-  "annotation",
-  "annotations",
-  "member",
-  "members"
-};
-
-const std::map<enum_with_special_names, const char*> _enum_with_special_names_VALUES_TO_NAMES(apache::thrift::TEnumIterator<enum_with_special_names>(26, _kenum_with_special_namesValues, _kenum_with_special_namesNames), apache::thrift::TEnumIterator<enum_with_special_names>(-1, nullptr, nullptr));
-const std::map<const char*, enum_with_special_names, apache::thrift::ltstr> _enum_with_special_names_NAMES_TO_VALUES(apache::thrift::TEnumInverseIterator<enum_with_special_names>(26, _kenum_with_special_namesValues, _kenum_with_special_namesNames), apache::thrift::TEnumInverseIterator<enum_with_special_names>(-1, nullptr, nullptr));
+const typename apache::thrift::detail::TEnumMapFactory<enum_with_special_names, enum_with_special_names>::ValuesToNamesMapType _enum_with_special_names_VALUES_TO_NAMES = apache::thrift::detail::TEnumMapFactory<enum_with_special_names, enum_with_special_names>::makeValuesToNamesMap();
+const typename apache::thrift::detail::TEnumMapFactory<enum_with_special_names, enum_with_special_names>::NamesToValuesMapType _enum_with_special_names_NAMES_TO_VALUES = apache::thrift::detail::TEnumMapFactory<enum_with_special_names, enum_with_special_names>::makeNamesToValuesMap();
 
 }} // test_cpp2::cpp_reflection
 namespace std {
 
 } // std
 namespace apache { namespace thrift {
+
+template <> folly::Range<const std::pair< ::test_cpp2::cpp_reflection::enum_with_special_names, folly::StringPiece>*> TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum_with_special_names>::enumerators() {
+  static constexpr const std::pair< ::test_cpp2::cpp_reflection::enum_with_special_names, folly::StringPiece> storage[26] = {
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::get, "get"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::getter, "getter"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::lists, "lists"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::maps, "maps"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::name, "name"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::name_to_value, "name_to_value"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::names, "names"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::prefix_tree, "prefix_tree"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::sets, "sets"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::setter, "setter"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::str, "str"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::strings, "strings"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::type, "type"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::value, "value"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::value_to_name, "value_to_name"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::values, "values"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::id, "id"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::ids, "ids"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::descriptor, "descriptor"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::descriptors, "descriptors"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::key, "key"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::keys, "keys"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::annotation, "annotation"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::annotations, "annotations"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::member, "member"},
+    { ::test_cpp2::cpp_reflection::enum_with_special_names::members, "members"},
+  };
+  return folly::range(storage);
+}
 
 template <> const char* TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum_with_special_names>::findName( ::test_cpp2::cpp_reflection::enum_with_special_names value) {
   return findName( ::test_cpp2::cpp_reflection::_enum_with_special_names_VALUES_TO_NAMES, value);

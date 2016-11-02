@@ -340,12 +340,6 @@ class t_cpp_generator : public t_oop_generator {
                                  string& predicate);
   std::string render_string(std::string value);
 
-  void generate_enum_constant_list(std::ofstream& f,
-                                   const std::vector<t_enum_value*>& constants,
-                                   bool quote_names,
-                                   bool include_values,
-                                   const char* typed_name = nullptr);
-
   bool is_reference(const t_field* f) const {
     return !cpp_ref_type(f, "").empty();
   }
@@ -838,37 +832,6 @@ void t_cpp_generator::generate_hash_and_equal_to(ofstream& out,
   }
 }
 
-void t_cpp_generator::generate_enum_constant_list(std::ofstream& f,
-                                                  const vector<t_enum_value*>& constants,
-                                                  bool quote_names,
-                                                  bool include_values,
-                                                  const char* typed_name) {
-  f << " {" << endl;
-  indent_up();
-
-  vector<t_enum_value*>::const_iterator c_iter;
-  for (c_iter = constants.begin(); c_iter != constants.end(); ++c_iter) {
-    f << indent();
-    if (quote_names) {
-      f << "\"";
-    }
-    if (typed_name) {
-      f << typed_name << "::";
-    }
-    f << (*c_iter)->get_name();
-    if (quote_names) {
-      f << "\"";
-    }
-    if (include_values) {
-      f << " = " << (*c_iter)->get_value();
-    }
-    f << "," << endl;
-  }
-
-  indent_down();
-  f << indent() << "};" << endl;
-}
-
 /**
  * Generates code for an enumerated type. In C++, this is essentially the same
  * as the thrift definition itself, using the enum keyword in C++.
@@ -891,13 +854,20 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
   }
 
   auto typed_prefix = gen_enum_strict_ ? tenum->get_name().c_str() : nullptr;
-  auto enum_suffix  = gen_enum_strict_ ? " class "                 : " ";
+  auto enum_keyword = gen_enum_strict_ ? "enum class " : "enum ";
   auto name = tenum->get_name();
   auto fullname = folly::to<string>(ns_prefix_, name);
 
-  f_types_ << indent() << "enum" << enum_suffix << name << explicit_type;
-  generate_enum_constant_list(f_types_, constants, false, true);
-  f_types_ << endl;
+  f_types_
+    << indent() << enum_keyword << name << explicit_type << " {" << endl;
+  indent_up();
+  for (const auto c : constants) {
+    f_types_
+      << indent() << c->get_name() << " = " << c->get_value() << "," << endl;
+  }
+  indent_down();
+  f_types_
+    << indent() << "};" << endl << endl;
 
   std::string minName;
   std::string maxName;
@@ -919,32 +889,19 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
     }
   }
 
-  /**
-     Generate a character array of enum names for debugging purposes.
-  */
-  f_types_impl_ <<
-    indent() << "const " << value_type << " _k" << name << "Values[] =";
-  generate_enum_constant_list(
-      f_types_impl_, constants, false, false, typed_prefix);
-  f_types_impl_ <<
-    endl;
-
-  f_types_impl_ <<
-    indent() << "const char* const _k" << name << "Names[] =";
-  generate_enum_constant_list(
-      f_types_impl_, constants, true, false, typed_prefix);
-  f_types_impl_ <<
-    endl;
+  const auto map_factory = folly::sformat(
+        "apache::thrift::detail::TEnumMapFactory<{}, {}>", name, value_type);
 
   auto valuesToNames = folly::to<string>("_", name, "_VALUES_TO_NAMES");
   auto namesToValues = folly::to<string>("_", name, "_NAMES_TO_VALUES");
   f_types_ <<
-    indent() << "extern const std::map<" << value_type <<", const char*> " <<
+    indent() <<
+    "extern const typename " << map_factory << "::ValuesToNamesMapType " <<
     valuesToNames << ";" << endl << endl;
-
   f_types_ <<
-    indent() << "extern const std::map<const char*, " << value_type <<
-    ", apache::thrift::ltstr> " << namesToValues << ";" << endl << endl;
+    indent() <<
+    "extern const typename " << map_factory << "::NamesToValuesMapType " <<
+    namesToValues << ";" << endl << endl;
 
   if (!minName.empty()) {
     f_types_ <<
@@ -966,38 +923,69 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
   }
 
   f_types_impl_ <<
-    indent() << "const std::map<" << value_type << ", const char*> " <<
-    valuesToNames << "(apache::thrift::TEnumIterator<" <<
-    value_type << ">(" << constants.size() <<
-    ", _k" << name << "Values" <<
-    ", _k" << name << "Names), " <<
-    "apache::thrift::TEnumIterator<" << value_type <<
-    ">(-1, NULL, NULL));" << endl << endl;
+    indent() << "const typename " << map_factory << "::ValuesToNamesMapType " <<
+    valuesToNames << " = " << map_factory << "::makeValuesToNamesMap();" <<
+    endl << endl;
 
   f_types_impl_ <<
-    indent() << "const std::map<const char*, " << value_type <<
-    ", apache::thrift::ltstr> " << namesToValues <<
-    "(apache::thrift::TEnumInverseIterator<" << value_type <<
-    ">(" << constants.size() << ", _k" << name << "Values" <<
-    ", _k" << name << "Names), " <<
-    "apache::thrift::TEnumInverseIterator<" << value_type <<
-    ">(-1, NULL, NULL));" << endl << endl;
+    indent() << "const typename " << map_factory << "::NamesToValuesMapType " <<
+    namesToValues << " = " << map_factory << "::makeNamesToValuesMap();" <<
+    endl << endl;
 
+  // TEnumTraitsBase<T> class member specializations
   f_types_impl_ <<
     ns_close_ << endl <<
-    "namespace apache { namespace thrift {" << endl <<
+    "namespace apache { namespace thrift {" << endl;
+  // TEnumTraitsBase<T>::enumerators()
+  const auto pair_type_name =
+    folly::sformat("std::pair<{}, folly::StringPiece>", fullname);
+  f_types_impl_ <<
+    "template<>" << endl <<
+    "folly::Range<const " << pair_type_name << "*> " <<
+    "TEnumTraitsBase<" << fullname << ">::enumerators() {" << endl;
+  indent_up();
+  if (constants.size() > 0) {
+    f_types_impl_ <<
+      indent() << "static constexpr const " << pair_type_name << " " <<
+      "storage[" << constants.size() << "] = {" << endl;
+    indent_up();
+    for (const auto c : constants) {
+      const auto expanded_name = typed_prefix
+        ? folly::sformat("{}::{}", typed_prefix, c->get_name())
+        : c->get_name();
+      f_types_impl_ <<
+        indent() << "{" << fullname << "::" << c->get_name() << ", " <<
+        "\"" << expanded_name << "\"}," << endl;
+    }
+    indent_down();
+    f_types_impl_ <<
+      indent() << "};" << endl;
+    f_types_impl_ <<
+      indent() << "return folly::range(storage);" << endl;
+  } else {
+    f_types_impl_ <<
+      indent() << "return {};" << endl;
+  }
+  indent_down();
+  f_types_impl_ <<
+    "}" << endl << endl;
+  // TEnumTraitsBase<T>::findName()
+  f_types_impl_ <<
     "template<>" << endl <<
     "const char* TEnumTraitsBase<" << fullname <<
       ">::findName(" << fullname << " value) {" << endl <<
     indent() << "return findName(" << ns_prefix_ <<
       valuesToNames << ", value);" << endl <<
-    "}" << endl << endl <<
+    "}" << endl << endl;
+  // TEnumTraitsBase<T>::findValue()
+  f_types_impl_ <<
     "template<>" << endl <<
     "bool TEnumTraitsBase<" << fullname <<
       ">::findValue(const char* name, " << fullname << "* out) {" << endl <<
     indent() << "return findValue(" <<
       ns_prefix_ << namesToValues << ", name, out);" << endl <<
-    "}" << endl <<
+    "}" << endl;
+  f_types_impl_ <<
     "}} // apache::thrift" << endl << endl <<
     ns_open_ << endl;
 

@@ -23,9 +23,9 @@ enum TypedEnum : short {
   VAL2 = 1,
 };
 
-extern const std::map<short, const char*> _TypedEnum_VALUES_TO_NAMES;
+extern const typename apache::thrift::detail::TEnumMapFactory<TypedEnum, short>::ValuesToNamesMapType _TypedEnum_VALUES_TO_NAMES;
 
-extern const std::map<const char*, short, apache::thrift::ltstr> _TypedEnum_NAMES_TO_VALUES;
+extern const typename apache::thrift::detail::TEnumMapFactory<TypedEnum, short>::NamesToValuesMapType _TypedEnum_NAMES_TO_VALUES;
 
 
 namespace apache { namespace thrift {

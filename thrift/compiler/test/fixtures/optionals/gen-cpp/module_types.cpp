@@ -13,24 +13,22 @@
 
 
 
-const int _kAnimalValues[] = {
-  DOG,
-  CAT,
-  TARANTULA,
-};
+const typename apache::thrift::detail::TEnumMapFactory<Animal, int>::ValuesToNamesMapType _Animal_VALUES_TO_NAMES = apache::thrift::detail::TEnumMapFactory<Animal, int>::makeValuesToNamesMap();
 
-const char* const _kAnimalNames[] = {
-  "DOG",
-  "CAT",
-  "TARANTULA",
-};
-
-const std::map<int, const char*> _Animal_VALUES_TO_NAMES(apache::thrift::TEnumIterator<int>(3, _kAnimalValues, _kAnimalNames), apache::thrift::TEnumIterator<int>(-1, NULL, NULL));
-
-const std::map<const char*, int, apache::thrift::ltstr> _Animal_NAMES_TO_VALUES(apache::thrift::TEnumInverseIterator<int>(3, _kAnimalValues, _kAnimalNames), apache::thrift::TEnumInverseIterator<int>(-1, NULL, NULL));
+const typename apache::thrift::detail::TEnumMapFactory<Animal, int>::NamesToValuesMapType _Animal_NAMES_TO_VALUES = apache::thrift::detail::TEnumMapFactory<Animal, int>::makeNamesToValuesMap();
 
 
 namespace apache { namespace thrift {
+template<>
+folly::Range<const std::pair< ::Animal, folly::StringPiece>*> TEnumTraitsBase< ::Animal>::enumerators() {
+  static constexpr const std::pair< ::Animal, folly::StringPiece> storage[3] = {
+    { ::Animal::DOG, "DOG"},
+    { ::Animal::CAT, "CAT"},
+    { ::Animal::TARANTULA, "TARANTULA"},
+  };
+  return folly::range(storage);
+}
+
 template<>
 const char* TEnumTraitsBase< ::Animal>::findName( ::Animal value) {
 return findName( ::_Animal_VALUES_TO_NAMES, value);

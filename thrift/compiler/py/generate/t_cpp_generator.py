@@ -478,24 +478,20 @@ class CppGenerator(t_generator.Generator):
         with primitive:
             out(self._generate_enum_constant_list(tenum.name, constants,
                     quote_names=False, include_values=True))
-        # Generate a character array of enum values for debugging purposes.
-        with s.impl('{0} _k{0}Values[] ='.format(tenum.name)):
-            out(self._generate_enum_constant_list(tenum.name, constants,
-                    quote_names=False, include_values=False))
-        with s.impl('const char* _k{0}Names[] ='.format(tenum.name)):
-            out(self._generate_enum_constant_list(tenum.name, constants,
-                    quote_names=True, include_values=False))
-        s.extern('const std::map<{0}, const char*> _{0}_VALUES_TO_NAMES'.format(
-            tenum.name), value=('(apache::thrift::TEnumIterator<{0}>({1}, '
-                '_k{0}Values, _k{0}Names), apache::thrift::TEnumIterator<{0}>('
-                '-1, nullptr, nullptr));\n').format(tenum.name, len(constants)))
-        s.extern('const std::map<const char*, {0}, apache::thrift::ltstr> '
-                '_{0}_NAMES_TO_VALUES'.format(tenum.name),
-                 value=('(apache::thrift::TEnumInverseIterator<{0}>({1}, '
-                        '_k{0}Values, _k{0}Names), '
-                        'apache::thrift::TEnumInverseIterator<{0}>'
-                        '(-1, nullptr, nullptr));\n').format(
-                                tenum.name, len(constants)))
+        map_factory = "apache::thrift::detail::TEnumMapFactory<{0}, {0}>"\
+            .format(tenum.name)
+        s.extern(
+            'const typename {0}::ValuesToNamesMapType _{1}_VALUES_TO_NAMES'
+            .format(map_factory, tenum.name),
+            value=(
+                ' = {0}::makeValuesToNamesMap();'
+                .format(map_factory)))
+        s.extern(
+            'const typename {0}::NamesToValuesMapType _{1}_NAMES_TO_VALUES'
+            .format(map_factory, tenum.name),
+            value=(
+                ' = {0}::makeNamesToValuesMap();'
+                .format(map_factory)))
         s()
         s.impl('\n')
 
@@ -515,17 +511,41 @@ class CppGenerator(t_generator.Generator):
         self._generate_hash_equal_to(tenum)
 
         with self._types_global.namespace('apache.thrift').scope:
-
+            # TEnumTraitsBase<T> class member specializations
+            # TEnumTraitsBase<T>::enumerators()
+            pairTypeName = "std::pair<{fullName}, folly::StringPiece>"\
+                .format(**locals())
+            with out().defn(
+                    'template <> folly::Range<const {pairTypeName}*> '
+                    'TEnumTraitsBase<{fullName}>::{{name}}()'
+                    .format(**locals()),
+                    name='enumerators'):
+                if constants:
+                    out(
+                        'static constexpr const {pairTypeName} '
+                        'storage[{size}] = {{'
+                        .format(size=len(constants), **locals()))
+                    for c in constants:
+                        out(
+                            '  {{{fullName}::{name}, "{name}"}},'
+                            .format(name=c.name, **locals()))
+                    out('};')
+                    out('return folly::range(storage);')
+                else:
+                    out('return {};')
+            # TEnumTraitsBase<T>::findName()
             with out().defn('template <> const char* TEnumTraitsBase<{fullName}>::'
                         'findName({fullName} value)'.format(**locals()),
                         name='findName'):
                 out('return findName({ns}_{tenum.name}_VALUES_TO_NAMES, '
                     'value);'.format(**locals()))
+            # TEnumTraitsBase<T>::findValue()
             with out().defn('template <> bool TEnumTraitsBase<{fullName}>::'
                         'findValue(const char* name, {fullName}* outValue)'.
                         format(**locals()), name='findName'):
                 out('return findValue({ns}_{tenum.name}_NAMES_TO_VALUES, '
                     'name, outValue);'.format(**locals()))
+            # TEnumTraits<T> class member specializations
             if minName is not None and maxName is not None:
                 with out().defn('template <> constexpr {fullName} '
                             'TEnumTraits<{fullName}>::min()'

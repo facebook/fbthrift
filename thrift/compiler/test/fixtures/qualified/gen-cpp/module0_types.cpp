@@ -13,24 +13,22 @@
 
 namespace MODULE0 {
 
-const int _kEnumValues[] = {
-  ONE,
-  TWO,
-  THREE,
-};
+const typename apache::thrift::detail::TEnumMapFactory<Enum, int>::ValuesToNamesMapType _Enum_VALUES_TO_NAMES = apache::thrift::detail::TEnumMapFactory<Enum, int>::makeValuesToNamesMap();
 
-const char* const _kEnumNames[] = {
-  "ONE",
-  "TWO",
-  "THREE",
-};
-
-const std::map<int, const char*> _Enum_VALUES_TO_NAMES(apache::thrift::TEnumIterator<int>(3, _kEnumValues, _kEnumNames), apache::thrift::TEnumIterator<int>(-1, NULL, NULL));
-
-const std::map<const char*, int, apache::thrift::ltstr> _Enum_NAMES_TO_VALUES(apache::thrift::TEnumInverseIterator<int>(3, _kEnumValues, _kEnumNames), apache::thrift::TEnumInverseIterator<int>(-1, NULL, NULL));
+const typename apache::thrift::detail::TEnumMapFactory<Enum, int>::NamesToValuesMapType _Enum_NAMES_TO_VALUES = apache::thrift::detail::TEnumMapFactory<Enum, int>::makeNamesToValuesMap();
 
 } // namespace
 namespace apache { namespace thrift {
+template<>
+folly::Range<const std::pair< ::MODULE0::Enum, folly::StringPiece>*> TEnumTraitsBase< ::MODULE0::Enum>::enumerators() {
+  static constexpr const std::pair< ::MODULE0::Enum, folly::StringPiece> storage[3] = {
+    { ::MODULE0::Enum::ONE, "ONE"},
+    { ::MODULE0::Enum::TWO, "TWO"},
+    { ::MODULE0::Enum::THREE, "THREE"},
+  };
+  return folly::range(storage);
+}
+
 template<>
 const char* TEnumTraitsBase< ::MODULE0::Enum>::findName( ::MODULE0::Enum value) {
 return findName( ::MODULE0::_Enum_VALUES_TO_NAMES, value);

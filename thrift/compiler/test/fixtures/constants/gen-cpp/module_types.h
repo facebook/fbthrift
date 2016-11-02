@@ -25,9 +25,9 @@ enum City {
   LON = 3,
 };
 
-extern const std::map<int, const char*> _City_VALUES_TO_NAMES;
+extern const typename apache::thrift::detail::TEnumMapFactory<City, int>::ValuesToNamesMapType _City_VALUES_TO_NAMES;
 
-extern const std::map<const char*, int, apache::thrift::ltstr> _City_NAMES_TO_VALUES;
+extern const typename apache::thrift::detail::TEnumMapFactory<City, int>::NamesToValuesMapType _City_NAMES_TO_VALUES;
 
 
 namespace apache { namespace thrift {
@@ -51,9 +51,9 @@ enum Company {
   INSTAGRAM = 3,
 };
 
-extern const std::map<int, const char*> _Company_VALUES_TO_NAMES;
+extern const typename apache::thrift::detail::TEnumMapFactory<Company, int>::ValuesToNamesMapType _Company_VALUES_TO_NAMES;
 
-extern const std::map<const char*, int, apache::thrift::ltstr> _Company_NAMES_TO_VALUES;
+extern const typename apache::thrift::detail::TEnumMapFactory<Company, int>::NamesToValuesMapType _Company_NAMES_TO_VALUES;
 
 
 namespace apache { namespace thrift {

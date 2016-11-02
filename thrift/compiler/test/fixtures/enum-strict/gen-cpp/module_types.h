@@ -23,9 +23,9 @@ enum class MyEnum {
   kMyBar = 2,
 };
 
-extern const std::map<MyEnum, const char*> _MyEnum_VALUES_TO_NAMES;
+extern const typename apache::thrift::detail::TEnumMapFactory<MyEnum, MyEnum>::ValuesToNamesMapType _MyEnum_VALUES_TO_NAMES;
 
-extern const std::map<const char*, MyEnum, apache::thrift::ltstr> _MyEnum_NAMES_TO_VALUES;
+extern const typename apache::thrift::detail::TEnumMapFactory<MyEnum, MyEnum>::NamesToValuesMapType _MyEnum_NAMES_TO_VALUES;
 
 
 namespace apache { namespace thrift {

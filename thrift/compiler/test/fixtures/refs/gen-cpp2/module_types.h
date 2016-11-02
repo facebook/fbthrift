@@ -31,8 +31,8 @@ enum class TypedEnum : short {
   VAL2 = 1
 };
 
-extern const std::map<TypedEnum, const char*> _TypedEnum_VALUES_TO_NAMES;
-extern const std::map<const char*, TypedEnum, apache::thrift::ltstr> _TypedEnum_NAMES_TO_VALUES;
+extern const typename apache::thrift::detail::TEnumMapFactory<TypedEnum, TypedEnum>::ValuesToNamesMapType _TypedEnum_VALUES_TO_NAMES;
+extern const typename apache::thrift::detail::TEnumMapFactory<TypedEnum, TypedEnum>::NamesToValuesMapType _TypedEnum_NAMES_TO_VALUES;
 
 } // cpp2
 namespace std {
@@ -43,6 +43,7 @@ template<> struct equal_to<typename  ::cpp2::TypedEnum> : public apache::thrift:
 } // std
 namespace apache { namespace thrift {
 
+template <> folly::Range<const std::pair< ::cpp2::TypedEnum, folly::StringPiece>*> TEnumTraitsBase< ::cpp2::TypedEnum>::enumerators();
 template <> const char* TEnumTraitsBase< ::cpp2::TypedEnum>::findName( ::cpp2::TypedEnum value);
 template <> bool TEnumTraitsBase< ::cpp2::TypedEnum>::findValue(const char* name,  ::cpp2::TypedEnum* outValue);
 

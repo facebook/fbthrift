@@ -13,26 +13,23 @@
 
 namespace cpp2 {
 
-Animal _kAnimalValues[] = {
-  Animal::DOG,
-  Animal::CAT,
-  Animal::TARANTULA
-};
-
-const char* _kAnimalNames[] = {
-  "DOG",
-  "CAT",
-  "TARANTULA"
-};
-
-const std::map<Animal, const char*> _Animal_VALUES_TO_NAMES(apache::thrift::TEnumIterator<Animal>(3, _kAnimalValues, _kAnimalNames), apache::thrift::TEnumIterator<Animal>(-1, nullptr, nullptr));
-const std::map<const char*, Animal, apache::thrift::ltstr> _Animal_NAMES_TO_VALUES(apache::thrift::TEnumInverseIterator<Animal>(3, _kAnimalValues, _kAnimalNames), apache::thrift::TEnumInverseIterator<Animal>(-1, nullptr, nullptr));
+const typename apache::thrift::detail::TEnumMapFactory<Animal, Animal>::ValuesToNamesMapType _Animal_VALUES_TO_NAMES = apache::thrift::detail::TEnumMapFactory<Animal, Animal>::makeValuesToNamesMap();
+const typename apache::thrift::detail::TEnumMapFactory<Animal, Animal>::NamesToValuesMapType _Animal_NAMES_TO_VALUES = apache::thrift::detail::TEnumMapFactory<Animal, Animal>::makeNamesToValuesMap();
 
 } // cpp2
 namespace std {
 
 } // std
 namespace apache { namespace thrift {
+
+template <> folly::Range<const std::pair< ::cpp2::Animal, folly::StringPiece>*> TEnumTraitsBase< ::cpp2::Animal>::enumerators() {
+  static constexpr const std::pair< ::cpp2::Animal, folly::StringPiece> storage[3] = {
+    { ::cpp2::Animal::DOG, "DOG"},
+    { ::cpp2::Animal::CAT, "CAT"},
+    { ::cpp2::Animal::TARANTULA, "TARANTULA"},
+  };
+  return folly::range(storage);
+}
 
 template <> const char* TEnumTraitsBase< ::cpp2::Animal>::findName( ::cpp2::Animal value) {
   return findName( ::cpp2::_Animal_VALUES_TO_NAMES, value);

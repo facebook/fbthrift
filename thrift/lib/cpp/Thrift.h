@@ -19,6 +19,7 @@
 
 #include <thrift/lib/cpp/thrift_config.h>
 #include <folly/portability/Sockets.h>
+#include <folly/Range.h>
 
 #ifdef THRIFT_PLATFORM_CONFIG
 # include THRIFT_PLATFORM_CONFIG
@@ -78,6 +79,8 @@ struct TStructType {
  */
 template<typename T>
 struct TEnumTraitsBase {
+  static folly::Range<const std::pair<T, folly::StringPiece>*> enumerators();
+
   /**
    * Finds the name of a given enum value, returning it or nullptr on failure.
    * Specialized implementations will be emitted as part of enum codegen.
@@ -151,63 +154,32 @@ struct TEnumTraits : public TEnumTraitsBase<T> {
   static constexpr T max();
 };
 
-template <typename T>
-class TEnumIterator : public std::map<T, char*>::iterator {
- public:
-  TEnumIterator(int n,
-                const T* enums,
-                const char* const* names) :
-      ii_(0), n_(n), enums_(enums), names_(names) {
-  }
+namespace detail {
 
-  int operator ++() {
-    return ++ii_;
-  }
+template <typename EnumTypeT, typename ValueTypeT>
+struct TEnumMapFactory {
+  using EnumType = EnumTypeT;
+  using ValueType = ValueTypeT;
+  using ValuesToNamesMapType = std::map<ValueType, const char*>;
+  using NamesToValuesMapType = std::map<const char*, ValueType, ltstr>;
 
-  bool operator !=(const TEnumIterator<T>& end) const {
-    assert(end.n_ == -1);
-    return (ii_ != n_);
+  static ValuesToNamesMapType makeValuesToNamesMap() {
+    ValuesToNamesMapType _return;
+    for (auto kvp : TEnumTraits<EnumType>::enumerators()) {
+      _return.emplace(ValueType(kvp.first), kvp.second.data());
+    }
+    return _return;
   }
-
-  std::pair<T, const char*> operator*() const {
-    return std::make_pair(enums_[ii_], names_[ii_]);
+  static NamesToValuesMapType makeNamesToValuesMap() {
+    NamesToValuesMapType _return;
+    for (auto kvp : TEnumTraits<EnumType>::enumerators()) {
+      _return.emplace(kvp.second.data(), ValueType(kvp.first));
+    }
+    return _return;
   }
-
- private:
-  int ii_;
-  const int n_;
-  const T* enums_;
-  const char* const* names_;
 };
 
-template <typename T>
-class TEnumInverseIterator : public std::map<T, char*>::iterator {
- public:
-  TEnumInverseIterator(int n,
-                       const T* enums,
-                       const char* const* names) :
-      ii_(0), n_(n), enums_(enums), names_(names) {
-  }
-
-  int operator ++() {
-    return ++ii_;
-  }
-
-  bool operator !=(const TEnumInverseIterator<T>& end) const {
-    assert(end.n_ == -1);
-    return (ii_ != n_);
-  }
-
-  std::pair<const char*, T> operator*() const {
-    return std::make_pair(names_[ii_], enums_[ii_]);
-  }
-
- private:
-  int ii_;
-  const int n_;
-  const T* enums_;
-  const char* const* names_;
-};
+}
 
 class TOutput {
  public:

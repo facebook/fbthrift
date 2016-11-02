@@ -11,22 +11,21 @@
 
 
 
-const int _kMyEnumValues[] = {
-  MyValue1,
-  MyValue2,
-};
+const typename apache::thrift::detail::TEnumMapFactory<MyEnum, int>::ValuesToNamesMapType _MyEnum_VALUES_TO_NAMES = apache::thrift::detail::TEnumMapFactory<MyEnum, int>::makeValuesToNamesMap();
 
-const char* const _kMyEnumNames[] = {
-  "MyValue1",
-  "MyValue2",
-};
-
-const std::map<int, const char*> _MyEnum_VALUES_TO_NAMES(apache::thrift::TEnumIterator<int>(2, _kMyEnumValues, _kMyEnumNames), apache::thrift::TEnumIterator<int>(-1, NULL, NULL));
-
-const std::map<const char*, int, apache::thrift::ltstr> _MyEnum_NAMES_TO_VALUES(apache::thrift::TEnumInverseIterator<int>(2, _kMyEnumValues, _kMyEnumNames), apache::thrift::TEnumInverseIterator<int>(-1, NULL, NULL));
+const typename apache::thrift::detail::TEnumMapFactory<MyEnum, int>::NamesToValuesMapType _MyEnum_NAMES_TO_VALUES = apache::thrift::detail::TEnumMapFactory<MyEnum, int>::makeNamesToValuesMap();
 
 
 namespace apache { namespace thrift {
+template<>
+folly::Range<const std::pair< ::MyEnum, folly::StringPiece>*> TEnumTraitsBase< ::MyEnum>::enumerators() {
+  static constexpr const std::pair< ::MyEnum, folly::StringPiece> storage[2] = {
+    { ::MyEnum::MyValue1, "MyValue1"},
+    { ::MyEnum::MyValue2, "MyValue2"},
+  };
+  return folly::range(storage);
+}
+
 template<>
 const char* TEnumTraitsBase< ::MyEnum>::findName( ::MyEnum value) {
 return findName( ::_MyEnum_VALUES_TO_NAMES, value);

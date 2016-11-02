@@ -39,8 +39,8 @@ enum class enum1 {
   field2 = 2
 };
 
-extern const std::map<enum1, const char*> _enum1_VALUES_TO_NAMES;
-extern const std::map<const char*, enum1, apache::thrift::ltstr> _enum1_NAMES_TO_VALUES;
+extern const typename apache::thrift::detail::TEnumMapFactory<enum1, enum1>::ValuesToNamesMapType _enum1_VALUES_TO_NAMES;
+extern const typename apache::thrift::detail::TEnumMapFactory<enum1, enum1>::NamesToValuesMapType _enum1_NAMES_TO_VALUES;
 
 }} // test_cpp2::cpp_reflection
 namespace std {
@@ -51,6 +51,7 @@ template<> struct equal_to<typename  ::test_cpp2::cpp_reflection::enum1> : publi
 } // std
 namespace apache { namespace thrift {
 
+template <> folly::Range<const std::pair< ::test_cpp2::cpp_reflection::enum1, folly::StringPiece>*> TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum1>::enumerators();
 template <> const char* TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum1>::findName( ::test_cpp2::cpp_reflection::enum1 value);
 template <> bool TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum1>::findValue(const char* name,  ::test_cpp2::cpp_reflection::enum1* outValue);
 
@@ -71,8 +72,8 @@ enum class enum2 {
   field2_2 = 2
 };
 
-extern const std::map<enum2, const char*> _enum2_VALUES_TO_NAMES;
-extern const std::map<const char*, enum2, apache::thrift::ltstr> _enum2_NAMES_TO_VALUES;
+extern const typename apache::thrift::detail::TEnumMapFactory<enum2, enum2>::ValuesToNamesMapType _enum2_VALUES_TO_NAMES;
+extern const typename apache::thrift::detail::TEnumMapFactory<enum2, enum2>::NamesToValuesMapType _enum2_NAMES_TO_VALUES;
 
 }} // test_cpp2::cpp_reflection
 namespace std {
@@ -83,6 +84,7 @@ template<> struct equal_to<typename  ::test_cpp2::cpp_reflection::enum2> : publi
 } // std
 namespace apache { namespace thrift {
 
+template <> folly::Range<const std::pair< ::test_cpp2::cpp_reflection::enum2, folly::StringPiece>*> TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum2>::enumerators();
 template <> const char* TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum2>::findName( ::test_cpp2::cpp_reflection::enum2 value);
 template <> bool TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum2>::findValue(const char* name,  ::test_cpp2::cpp_reflection::enum2* outValue);
 
@@ -103,8 +105,8 @@ enum class enum3 {
   field2_3 = 2
 };
 
-extern const std::map<enum3, const char*> _enum3_VALUES_TO_NAMES;
-extern const std::map<const char*, enum3, apache::thrift::ltstr> _enum3_NAMES_TO_VALUES;
+extern const typename apache::thrift::detail::TEnumMapFactory<enum3, enum3>::ValuesToNamesMapType _enum3_VALUES_TO_NAMES;
+extern const typename apache::thrift::detail::TEnumMapFactory<enum3, enum3>::NamesToValuesMapType _enum3_NAMES_TO_VALUES;
 
 }} // test_cpp2::cpp_reflection
 namespace std {
@@ -115,6 +117,7 @@ template<> struct equal_to<typename  ::test_cpp2::cpp_reflection::enum3> : publi
 } // std
 namespace apache { namespace thrift {
 
+template <> folly::Range<const std::pair< ::test_cpp2::cpp_reflection::enum3, folly::StringPiece>*> TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum3>::enumerators();
 template <> const char* TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum3>::findName( ::test_cpp2::cpp_reflection::enum3 value);
 template <> bool TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum3>::findValue(const char* name,  ::test_cpp2::cpp_reflection::enum3* outValue);
 
@@ -158,8 +161,8 @@ enum class enum_with_special_names {
   members = 25
 };
 
-extern const std::map<enum_with_special_names, const char*> _enum_with_special_names_VALUES_TO_NAMES;
-extern const std::map<const char*, enum_with_special_names, apache::thrift::ltstr> _enum_with_special_names_NAMES_TO_VALUES;
+extern const typename apache::thrift::detail::TEnumMapFactory<enum_with_special_names, enum_with_special_names>::ValuesToNamesMapType _enum_with_special_names_VALUES_TO_NAMES;
+extern const typename apache::thrift::detail::TEnumMapFactory<enum_with_special_names, enum_with_special_names>::NamesToValuesMapType _enum_with_special_names_NAMES_TO_VALUES;
 
 }} // test_cpp2::cpp_reflection
 namespace std {
@@ -170,6 +173,7 @@ template<> struct equal_to<typename  ::test_cpp2::cpp_reflection::enum_with_spec
 } // std
 namespace apache { namespace thrift {
 
+template <> folly::Range<const std::pair< ::test_cpp2::cpp_reflection::enum_with_special_names, folly::StringPiece>*> TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum_with_special_names>::enumerators();
 template <> const char* TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum_with_special_names>::findName( ::test_cpp2::cpp_reflection::enum_with_special_names value);
 template <> bool TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum_with_special_names>::findValue(const char* name,  ::test_cpp2::cpp_reflection::enum_with_special_names* outValue);
 

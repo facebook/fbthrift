@@ -13,26 +13,23 @@
 
 
 
-const int _kCityValues[] = {
-  NYC,
-  MPK,
-  SEA,
-  LON,
-};
+const typename apache::thrift::detail::TEnumMapFactory<City, int>::ValuesToNamesMapType _City_VALUES_TO_NAMES = apache::thrift::detail::TEnumMapFactory<City, int>::makeValuesToNamesMap();
 
-const char* const _kCityNames[] = {
-  "NYC",
-  "MPK",
-  "SEA",
-  "LON",
-};
-
-const std::map<int, const char*> _City_VALUES_TO_NAMES(apache::thrift::TEnumIterator<int>(4, _kCityValues, _kCityNames), apache::thrift::TEnumIterator<int>(-1, NULL, NULL));
-
-const std::map<const char*, int, apache::thrift::ltstr> _City_NAMES_TO_VALUES(apache::thrift::TEnumInverseIterator<int>(4, _kCityValues, _kCityNames), apache::thrift::TEnumInverseIterator<int>(-1, NULL, NULL));
+const typename apache::thrift::detail::TEnumMapFactory<City, int>::NamesToValuesMapType _City_NAMES_TO_VALUES = apache::thrift::detail::TEnumMapFactory<City, int>::makeNamesToValuesMap();
 
 
 namespace apache { namespace thrift {
+template<>
+folly::Range<const std::pair< ::City, folly::StringPiece>*> TEnumTraitsBase< ::City>::enumerators() {
+  static constexpr const std::pair< ::City, folly::StringPiece> storage[4] = {
+    { ::City::NYC, "NYC"},
+    { ::City::MPK, "MPK"},
+    { ::City::SEA, "SEA"},
+    { ::City::LON, "LON"},
+  };
+  return folly::range(storage);
+}
+
 template<>
 const char* TEnumTraitsBase< ::City>::findName( ::City value) {
 return findName( ::_City_VALUES_TO_NAMES, value);
@@ -45,26 +42,23 @@ return findValue( ::_City_NAMES_TO_VALUES, name, out);
 }} // apache::thrift
 
 
-const int _kCompanyValues[] = {
-  FACEBOOK,
-  WHATSAPP,
-  OCULUS,
-  INSTAGRAM,
-};
+const typename apache::thrift::detail::TEnumMapFactory<Company, int>::ValuesToNamesMapType _Company_VALUES_TO_NAMES = apache::thrift::detail::TEnumMapFactory<Company, int>::makeValuesToNamesMap();
 
-const char* const _kCompanyNames[] = {
-  "FACEBOOK",
-  "WHATSAPP",
-  "OCULUS",
-  "INSTAGRAM",
-};
-
-const std::map<int, const char*> _Company_VALUES_TO_NAMES(apache::thrift::TEnumIterator<int>(4, _kCompanyValues, _kCompanyNames), apache::thrift::TEnumIterator<int>(-1, NULL, NULL));
-
-const std::map<const char*, int, apache::thrift::ltstr> _Company_NAMES_TO_VALUES(apache::thrift::TEnumInverseIterator<int>(4, _kCompanyValues, _kCompanyNames), apache::thrift::TEnumInverseIterator<int>(-1, NULL, NULL));
+const typename apache::thrift::detail::TEnumMapFactory<Company, int>::NamesToValuesMapType _Company_NAMES_TO_VALUES = apache::thrift::detail::TEnumMapFactory<Company, int>::makeNamesToValuesMap();
 
 
 namespace apache { namespace thrift {
+template<>
+folly::Range<const std::pair< ::Company, folly::StringPiece>*> TEnumTraitsBase< ::Company>::enumerators() {
+  static constexpr const std::pair< ::Company, folly::StringPiece> storage[4] = {
+    { ::Company::FACEBOOK, "FACEBOOK"},
+    { ::Company::WHATSAPP, "WHATSAPP"},
+    { ::Company::OCULUS, "OCULUS"},
+    { ::Company::INSTAGRAM, "INSTAGRAM"},
+  };
+  return folly::range(storage);
+}
+
 template<>
 const char* TEnumTraitsBase< ::Company>::findName( ::Company value) {
 return findName( ::_Company_VALUES_TO_NAMES, value);
