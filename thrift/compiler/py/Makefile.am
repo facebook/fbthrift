@@ -47,7 +47,7 @@ all-local: frontend.la
 install-exec-am:
 	test -z "$(PY_INSTALL_HOME)" || mkdir -p $(PY_INSTALL_HOME)/lib/python
 	test -z "$(PY_CUSTOM_SITE_PKGS)" || mkdir -p $(PY_CUSTOM_SITE_PKGS)
-	$(PY_RUN_ENV) $(PYTHON) setup.py install $(PY_INSTALL_ARGS)
+	$(PY_RUN_ENV) $(PYTHON) setup.py install --root=$(DESTDIR) $(PY_INSTALL_ARGS)
 
 clean-local:
 	rm -f frontend.so
