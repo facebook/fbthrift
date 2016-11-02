@@ -34,3 +34,4 @@ const std::string kInjectedFailureErrorCode{"14"};
 const std::string kServerQueueTimeoutErrorCode{"15"};
 const std::string kProxyResponseSizeThrottledExceptionErrorCode{"16"};
 const std::string kResponseTooBigErrorCode{"17"};
+const std::string kProxyAclCheckExceptionErrorCode{"18"};
