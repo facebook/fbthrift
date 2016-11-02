@@ -26,6 +26,7 @@ class MockTAsyncTransport: public apache::thrift::async::TAsyncTransport {
  public:
   using ReadCallback = apache::thrift::async::TAsyncTransport::ReadCallback;
   using WriteCallback = apache::thrift::async::TAsyncTransport::WriteCallback;
+  using UniquePtr = std::unique_ptr<MockTAsyncTransport, Destructor>;
 
   MOCK_METHOD1(setReadCB, void(AsyncTransportWrapper::ReadCallback*));
   MOCK_CONST_METHOD0(getReadCallback, ReadCallback*());
