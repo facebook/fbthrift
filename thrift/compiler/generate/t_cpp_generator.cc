@@ -949,7 +949,7 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
   if (!minName.empty()) {
     f_types_ <<
       ns_close_ << endl <<
-      "namespace apache { namespace thrift { " << endl <<
+      "namespace apache { namespace thrift {" << endl <<
       "template<>" << endl <<
       "struct TEnumTraits<" << fullname <<
       "> : public TEnumTraitsBase<" << fullname << ">" << endl <<
@@ -991,14 +991,14 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
       ">::findName(" << fullname << " value) {" << endl <<
     indent() << "return findName(" << ns_prefix_ <<
       valuesToNames << ", value);" << endl <<
-    "} " << endl << endl <<
+    "}" << endl << endl <<
     "template<>" << endl <<
     "bool TEnumTraitsBase<" << fullname <<
       ">::findValue(const char* name, " << fullname << "* out) {" << endl <<
     indent() << "return findValue(" <<
       ns_prefix_ << namesToValues << ", name, out);" << endl <<
-    "} " << endl <<
-    "}} // apache::thrift " << endl << endl <<
+    "}" << endl <<
+    "}} // apache::thrift" << endl << endl <<
     ns_open_ << endl;
 
   generate_hash_and_equal_to(f_types_, tenum, tenum->get_name());

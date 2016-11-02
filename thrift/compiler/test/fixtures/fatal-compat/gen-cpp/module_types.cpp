@@ -34,13 +34,13 @@ namespace apache { namespace thrift {
 template<>
 const char* TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum1>::findName( ::test_cpp1::cpp_reflection::enum1 value) {
 return findName( ::test_cpp1::cpp_reflection::_enum1_VALUES_TO_NAMES, value);
-} 
+}
 
 template<>
 bool TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum1>::findValue(const char* name,  ::test_cpp1::cpp_reflection::enum1* out) {
 return findValue( ::test_cpp1::cpp_reflection::_enum1_NAMES_TO_VALUES, name, out);
-} 
-}} // apache::thrift 
+}
+}} // apache::thrift
 
 namespace test_cpp1 { namespace cpp_reflection {
 const int _kenum2Values[] = {
@@ -64,13 +64,13 @@ namespace apache { namespace thrift {
 template<>
 const char* TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum2>::findName( ::test_cpp1::cpp_reflection::enum2 value) {
 return findName( ::test_cpp1::cpp_reflection::_enum2_VALUES_TO_NAMES, value);
-} 
+}
 
 template<>
 bool TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum2>::findValue(const char* name,  ::test_cpp1::cpp_reflection::enum2* out) {
 return findValue( ::test_cpp1::cpp_reflection::_enum2_NAMES_TO_VALUES, name, out);
-} 
-}} // apache::thrift 
+}
+}} // apache::thrift
 
 namespace test_cpp1 { namespace cpp_reflection {
 const int _kenum3Values[] = {
@@ -94,13 +94,13 @@ namespace apache { namespace thrift {
 template<>
 const char* TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum3>::findName( ::test_cpp1::cpp_reflection::enum3 value) {
 return findName( ::test_cpp1::cpp_reflection::_enum3_VALUES_TO_NAMES, value);
-} 
+}
 
 template<>
 bool TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum3>::findValue(const char* name,  ::test_cpp1::cpp_reflection::enum3* out) {
 return findValue( ::test_cpp1::cpp_reflection::_enum3_NAMES_TO_VALUES, name, out);
-} 
-}} // apache::thrift 
+}
+}} // apache::thrift
 
 namespace test_cpp1 { namespace cpp_reflection {
 const int _kenum_with_special_namesValues[] = {
@@ -170,13 +170,13 @@ namespace apache { namespace thrift {
 template<>
 const char* TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum_with_special_names>::findName( ::test_cpp1::cpp_reflection::enum_with_special_names value) {
 return findName( ::test_cpp1::cpp_reflection::_enum_with_special_names_VALUES_TO_NAMES, value);
-} 
+}
 
 template<>
 bool TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum_with_special_names>::findValue(const char* name,  ::test_cpp1::cpp_reflection::enum_with_special_names* out) {
 return findValue( ::test_cpp1::cpp_reflection::_enum_with_special_names_NAMES_TO_VALUES, name, out);
-} 
-}} // apache::thrift 
+}
+}} // apache::thrift
 
 namespace test_cpp1 { namespace cpp_reflection {
   void union1::readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts)

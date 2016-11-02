@@ -30,7 +30,7 @@ extern const std::map<int, const char*> _City_VALUES_TO_NAMES;
 extern const std::map<const char*, int, apache::thrift::ltstr> _City_NAMES_TO_VALUES;
 
 
-namespace apache { namespace thrift { 
+namespace apache { namespace thrift {
 template<>
 struct TEnumTraits< ::City> : public TEnumTraitsBase< ::City>
 {
@@ -56,7 +56,7 @@ extern const std::map<int, const char*> _Company_VALUES_TO_NAMES;
 extern const std::map<const char*, int, apache::thrift::ltstr> _Company_NAMES_TO_VALUES;
 
 
-namespace apache { namespace thrift { 
+namespace apache { namespace thrift {
 template<>
 struct TEnumTraits< ::Company> : public TEnumTraitsBase< ::Company>
 {

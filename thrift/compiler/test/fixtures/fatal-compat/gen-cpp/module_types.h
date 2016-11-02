@@ -41,7 +41,7 @@ extern const std::map<int, const char*> _enum1_VALUES_TO_NAMES;
 extern const std::map<const char*, int, apache::thrift::ltstr> _enum1_NAMES_TO_VALUES;
 
 }} // namespace
-namespace apache { namespace thrift { 
+namespace apache { namespace thrift {
 template<>
 struct TEnumTraits< ::test_cpp1::cpp_reflection::enum1> : public TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum1>
 {
@@ -66,7 +66,7 @@ extern const std::map<int, const char*> _enum2_VALUES_TO_NAMES;
 extern const std::map<const char*, int, apache::thrift::ltstr> _enum2_NAMES_TO_VALUES;
 
 }} // namespace
-namespace apache { namespace thrift { 
+namespace apache { namespace thrift {
 template<>
 struct TEnumTraits< ::test_cpp1::cpp_reflection::enum2> : public TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum2>
 {
@@ -91,7 +91,7 @@ extern const std::map<int, const char*> _enum3_VALUES_TO_NAMES;
 extern const std::map<const char*, int, apache::thrift::ltstr> _enum3_NAMES_TO_VALUES;
 
 }} // namespace
-namespace apache { namespace thrift { 
+namespace apache { namespace thrift {
 template<>
 struct TEnumTraits< ::test_cpp1::cpp_reflection::enum3> : public TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum3>
 {
@@ -139,7 +139,7 @@ extern const std::map<int, const char*> _enum_with_special_names_VALUES_TO_NAMES
 extern const std::map<const char*, int, apache::thrift::ltstr> _enum_with_special_names_NAMES_TO_VALUES;
 
 }} // namespace
-namespace apache { namespace thrift { 
+namespace apache { namespace thrift {
 template<>
 struct TEnumTraits< ::test_cpp1::cpp_reflection::enum_with_special_names> : public TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum_with_special_names>
 {

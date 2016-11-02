@@ -32,13 +32,13 @@ namespace apache { namespace thrift {
 template<>
 const char* TEnumTraitsBase< ::TypedEnum>::findName( ::TypedEnum value) {
 return findName( ::_TypedEnum_VALUES_TO_NAMES, value);
-} 
+}
 
 template<>
 bool TEnumTraitsBase< ::TypedEnum>::findValue(const char* name,  ::TypedEnum* out) {
 return findValue( ::_TypedEnum_NAMES_TO_VALUES, name, out);
-} 
-}} // apache::thrift 
+}
+}} // apache::thrift
 
 
 uint32_t MyUnion::read(apache::thrift::protocol::TProtocol* iprot) {

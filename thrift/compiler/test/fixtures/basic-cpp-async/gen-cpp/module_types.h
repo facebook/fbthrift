@@ -28,7 +28,7 @@ extern const std::map<int, const char*> _MyEnum_VALUES_TO_NAMES;
 extern const std::map<const char*, int, apache::thrift::ltstr> _MyEnum_NAMES_TO_VALUES;
 
 
-namespace apache { namespace thrift { 
+namespace apache { namespace thrift {
 template<>
 struct TEnumTraits< ::MyEnum> : public TEnumTraitsBase< ::MyEnum>
 {

@@ -36,13 +36,13 @@ namespace apache { namespace thrift {
 template<>
 const char* TEnumTraitsBase< ::City>::findName( ::City value) {
 return findName( ::_City_VALUES_TO_NAMES, value);
-} 
+}
 
 template<>
 bool TEnumTraitsBase< ::City>::findValue(const char* name,  ::City* out) {
 return findValue( ::_City_NAMES_TO_VALUES, name, out);
-} 
-}} // apache::thrift 
+}
+}} // apache::thrift
 
 
 const int _kCompanyValues[] = {
@@ -68,13 +68,13 @@ namespace apache { namespace thrift {
 template<>
 const char* TEnumTraitsBase< ::Company>::findName( ::Company value) {
 return findName( ::_Company_VALUES_TO_NAMES, value);
-} 
+}
 
 template<>
 bool TEnumTraitsBase< ::Company>::findValue(const char* name,  ::Company* out) {
 return findValue( ::_Company_NAMES_TO_VALUES, name, out);
-} 
-}} // apache::thrift 
+}
+}} // apache::thrift
 
 
 const uint64_t Internship::_reflection_id;

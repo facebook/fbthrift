@@ -34,13 +34,13 @@ namespace apache { namespace thrift {
 template<>
 const char* TEnumTraitsBase< ::Animal>::findName( ::Animal value) {
 return findName( ::_Animal_VALUES_TO_NAMES, value);
-} 
+}
 
 template<>
 bool TEnumTraitsBase< ::Animal>::findValue(const char* name,  ::Animal* out) {
 return findValue( ::_Animal_NAMES_TO_VALUES, name, out);
-} 
-}} // apache::thrift 
+}
+}} // apache::thrift
 
 
 const uint64_t Color::_reflection_id;

@@ -30,13 +30,13 @@ namespace apache { namespace thrift {
 template<>
 const char* TEnumTraitsBase< ::MyEnum>::findName( ::MyEnum value) {
 return findName( ::_MyEnum_VALUES_TO_NAMES, value);
-} 
+}
 
 template<>
 bool TEnumTraitsBase< ::MyEnum>::findValue(const char* name,  ::MyEnum* out) {
 return findValue( ::_MyEnum_NAMES_TO_VALUES, name, out);
-} 
-}} // apache::thrift 
+}
+}} // apache::thrift
 
 
 const uint64_t MyStruct::_reflection_id;
