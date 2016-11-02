@@ -41,4 +41,3 @@ cdef class MyStruct:
     cdef create(shared_ptr[cMyStruct] c_MyStruct)
 
 
-

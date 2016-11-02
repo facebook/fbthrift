@@ -33,4 +33,3 @@ cdef class Empty:
     cdef create(shared_ptr[cEmpty] c_Empty)
 
 
-

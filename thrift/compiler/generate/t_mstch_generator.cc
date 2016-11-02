@@ -25,6 +25,20 @@
 
 #include <mstch/mstch.hpp>
 
+namespace {
+
+bool is_last_char(const string& data, char c) {
+  return !data.empty() && data.back() == c;
+}
+
+void chomp_last_char(string* data, char c) {
+  if (is_last_char(*data, c)) {
+    data->pop_back();
+  }
+}
+
+} // namespace
+
 t_mstch_generator::t_mstch_generator(
     t_program* program,
     boost::filesystem::path template_prefix,
@@ -376,6 +390,9 @@ void t_mstch_generator::gen_template_map(
       std::ifstream ifs{itr->path().string()};
       auto tpl = std::string{std::istreambuf_iterator<char>(ifs),
                              std::istreambuf_iterator<char>()};
+      // Remove a single '\n' or '\r\n' or '\r' at end, if present.
+      chomp_last_char(&tpl, '\n');
+      chomp_last_char(&tpl, '\r');
       if (convert_delimiter_) {
         tpl = "{{=<% %>=}}\n" + tpl;
       }
@@ -403,6 +420,10 @@ void t_mstch_generator::write_output(
   boost::filesystem::create_directories(abs_path.parent_path());
   std::ofstream ofs{abs_path.string()};
   ofs << data;
+  if (!is_last_char(data, '\n')) {
+    // Terminate with newline.
+    ofs << '\n';
+  }
   this->record_genfile(abs_path.string());
 }
 

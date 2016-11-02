@@ -91,6 +91,12 @@ with the mstch inclusion syntax. If you have an existing template file named
 are permitted to recursively include themselves, however care must be taken to
 make sure that this terminates.
 
+Note that the final newline, if present in a partial template file, is stripped
+and not copied to the output. This allows template files to be properly
+terminated with newlines without forcing a newline in the generated code. If a
+template wants to emit an explicit newline at the end, simply add a blank line
+or a commented line `{{! terminate with newline }}`.
+
 ### Context types
 
 mstch is an untyped system, and tags may have different behavior determined by

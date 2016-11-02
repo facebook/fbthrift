@@ -34,3 +34,4 @@ to be converted from unicode to binary representation.
 }}{{#type:set?}}{{type:flat_name}}.create(move({{field:name}})){{/type:set?}}{{!
 }}{{#type:map?}}{{type:flat_name}}.create(move({{field:name}})){{/type:map?}}{{!
 }}{{#type:enum}}{{enum:name}}(<int> {{field:name}}){{/type:enum}}
+{{! terminate with newline }}
