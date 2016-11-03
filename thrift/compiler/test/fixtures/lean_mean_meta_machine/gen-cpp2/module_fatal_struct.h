@@ -2438,23 +2438,14 @@ class struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations {
     };
 
     class struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3 {
-      struct struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3__unique_annotations_keys {
-        using cpp2_ref = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::cpp2_ref;
-      };
+      struct struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3__unique_annotations_keys {};
 
-      struct struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3__unique_annotations_values {
-        using cpp2_ref = ::fatal::sequence<char, 't', 'r', 'u', 'e'>;
-      };
+      struct struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3__unique_annotations_values {};
 
       public:
       using keys = struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3__unique_annotations_keys;
       using values = struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3__unique_annotations_values;
       using map = ::fatal::list<
-        ::apache::thrift::annotation<
-          keys::cpp2_ref,
-          values::cpp2_ref,
-          ::std::true_type
-        >
       >;
     };
     public:

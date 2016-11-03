@@ -221,9 +221,7 @@ TEST(flatten_getters, annotated_terminals_only) {
   >();
 
   EXPECT_SAME<
-    fatal::list<
-      flat_getter<fatal::list<>, s4::field3>
-    >,
+    fatal::list<>,
     flatten_getters<struct4, annotated_terminals_only_filter>
   >();
 

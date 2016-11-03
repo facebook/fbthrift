@@ -187,7 +187,6 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using n3 = ::fatal::sequence<char, 'n', '3'>;
   using ud_2 = ::fatal::sequence<char, 'u', 'd', '_', '2'>;
   using ud_3 = ::fatal::sequence<char, 'u', 'd', '_', '3'>;
-  using cpp2_ref = ::fatal::sequence<char, 'c', 'p', 'p', '2', '.', 'r', 'e', 'f'>;
 };
 
 } // thrift_fatal_impl_detail

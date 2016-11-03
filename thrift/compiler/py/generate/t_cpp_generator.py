@@ -4634,44 +4634,55 @@ class CppGenerator(t_generator.Generator):
     def _render_fatal_annotations(self, annotations, class_name, scope):
         clsnmkeys = '{0}__unique_annotations_keys'.format(class_name)
         clsnmvalues = '{0}__unique_annotations_values'.format(class_name)
+        annotation_keys = []
+        black_list = [
+            'cpp.methods',
+            'cpp.ref',
+            'cpp.template',
+            'cpp.type',
+            'cpp2.methods',
+            'cpp2.ref',
+            'cpp2.template',
+            'cpp2.type',
+        ]
+        if annotations is not None:
+            for i in sorted(annotations.keys()):
+                if i not in black_list:
+                    annotation_keys.append(i)
         with scope.cls('class {0}'.format(class_name)).scope as aclass:
             with scope.cls('struct {0}'.format(clsnmkeys)).scope as akeys:
-                if annotations is not None:
-                    for idx, i in enumerate(annotations.keys()):
-                        full_id = self._set_fatal_string(i)
-                        short_id = self._get_fatal_string_short_id(i)
-                        akeys('using {0} = {1};'.format(short_id, full_id))
+                for idx, i in enumerate(annotation_keys):
+                    full_id = self._set_fatal_string(i)
+                    short_id = self._get_fatal_string_short_id(i)
+                    akeys('using {0} = {1};'.format(short_id, full_id))
             with scope.cls('struct {0}'.format(clsnmvalues)).scope as avalues:
-                if annotations is not None:
-                    for idx, i in enumerate(annotations.keys()):
-                        avalues('using {0} = {1};'.format(
-                            self._get_fatal_string_short_id(i),
-                            self._render_fatal_string(annotations[i])))
+                for idx, i in enumerate(annotation_keys):
+                    avalues('using {0} = {1};'.format(
+                        self._get_fatal_string_short_id(i),
+                        self._render_fatal_string(annotations[i])))
             aclass()
             aclass('public:')
             aclass('using keys = {0};'.format(clsnmkeys))
             aclass('using values = {0};'.format(clsnmvalues))
             aclass('using map = ::fatal::list<')
-            if annotations is not None:
-                import json
-                for idx, i in enumerate(sorted(annotations.keys())):
-                    structured = None
-                    try:
-                        structured = json.loads(annotations[i])
-                    except ValueError:
-                        pass
+            import json
+            for idx, i in enumerate(annotation_keys):
+                structured = None
+                try:
+                    structured = json.loads(annotations[i])
+                except ValueError:
+                    pass
 
-                    identifier = self._get_fatal_string_short_id(i)
-                    aclass('  ::apache::thrift::annotation<')
-                    aclass('    keys::{0},'.format(identifier))
-                    aclass('    values::{0}{1}'
-                           .format(identifier,
-                                   '' if structured is None else ','))
-                    if structured is not None:
-                        self._render_fatal_structured_annotation(
-                            structured, aclass, '    ', False)
-                    aclass('  >{0}'
-                           .format(',' if idx + 1 < len(annotations) else ''))
+                identifier = self._get_fatal_string_short_id(i)
+                aclass('  ::apache::thrift::annotation<')
+                aclass('    keys::{0},'.format(identifier))
+                aclass('    values::{0}{1}'
+                       .format(identifier, '' if structured is None else ','))
+                if structured is not None:
+                    self._render_fatal_structured_annotation(
+                        structured, aclass, '    ', False)
+                aclass('  >{0}'
+                       .format(',' if idx + 1 < len(annotation_keys) else ''))
             aclass('>;')
         return class_name
 
