@@ -2659,7 +2659,7 @@ void t_py_generator::generate_service_fuzzer(t_service* /*tservice*/) {
     "\n"
     "thrift.util.fuzzer.fuzz_service(" <<
     rename_reserved_keywords(service_name_) <<
-    ", ttypes, constants)";
+    ", ttypes, constants)\n";
   f_fuzzer.close();
   chmod(f_fuzzer_name.c_str(),
         S_IRUSR
