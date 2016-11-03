@@ -89,4 +89,12 @@ TEST(THeaderTest, transform) {
     THeader::getStringTransform(THeader::TRANSFORMS::ZLIB_TRANSFORM), "zlib");
 }
 
+TEST(THeaderTest, eraseReadHeader) {
+  THeader header;
+  header.setReadHeaders({{"foo", "v"}, {"bar", "v"}, {"moo", "v"}});
+  EXPECT_EQ(3, header.getHeaders().size());
+  header.eraseReadHeader("bar");
+  EXPECT_EQ(2, header.getHeaders().size());
+}
+
 }}}

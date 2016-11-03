@@ -190,6 +190,7 @@ class THeader {
 
   // these work with read headers
   void setReadHeaders(StringToStringMap&&);
+  void eraseReadHeader(const std::string& key);
   const StringToStringMap& getHeaders() const { return readHeaders_; }
 
   StringToStringMap releaseHeaders() {

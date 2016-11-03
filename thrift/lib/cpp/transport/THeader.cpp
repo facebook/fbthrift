@@ -860,6 +860,10 @@ void THeader::setReadHeaders(THeader::StringToStringMap&& headers) {
   readHeaders_ = std::move(headers);
 }
 
+void THeader::eraseReadHeader(const std::string& key) {
+  readHeaders_.erase(key);
+}
+
 static size_t getInfoHeaderSize(const THeader::StringToStringMap &headers) {
   if (headers.empty()) {
     return 0;
