@@ -27,7 +27,15 @@ except:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'City', 'Company', 'Internship', 'UnEnumStruct', 'Range']
+__all__ = ['UTF8STRINGS', 'EmptyEnum', 'City', 'Company', 'Internship', 'UnEnumStruct', 'Range']
+
+class EmptyEnum:
+
+  _VALUES_TO_NAMES = {
+  }
+
+  _NAMES_TO_VALUES = {
+  }
 
 class City:
   NYC = 0

@@ -36,6 +36,9 @@ from module_types cimport (
     cRange
 )
 from module_types cimport (
+    cEmptyEnum,
+    EmptyEnum_to_cpp,
+,
     cCity,
     City_to_cpp,
     City__NYC,
@@ -52,6 +55,7 @@ from module_types cimport (
 
 )
 from module_types import (
+    EmptyEnum,
     City,
     Company
 )

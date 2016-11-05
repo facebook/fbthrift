@@ -22,6 +22,27 @@ class Internship;
 class UnEnumStruct;
 class Range;
 
+enum class EmptyEnum {};
+
+extern const typename apache::thrift::detail::TEnumMapFactory<EmptyEnum, EmptyEnum>::ValuesToNamesMapType _EmptyEnum_VALUES_TO_NAMES;
+extern const typename apache::thrift::detail::TEnumMapFactory<EmptyEnum, EmptyEnum>::NamesToValuesMapType _EmptyEnum_NAMES_TO_VALUES;
+
+} // cpp2
+namespace std {
+
+template<> struct hash<typename  ::cpp2::EmptyEnum> : public apache::thrift::detail::enum_hash<typename  ::cpp2::EmptyEnum> {};
+template<> struct equal_to<typename  ::cpp2::EmptyEnum> : public apache::thrift::detail::enum_equal_to<typename  ::cpp2::EmptyEnum> {};
+
+} // std
+namespace apache { namespace thrift {
+
+template <> folly::Range<const std::pair< ::cpp2::EmptyEnum, folly::StringPiece>*> TEnumTraitsBase< ::cpp2::EmptyEnum>::enumerators();
+template <> const char* TEnumTraitsBase< ::cpp2::EmptyEnum>::findName( ::cpp2::EmptyEnum value);
+template <> bool TEnumTraitsBase< ::cpp2::EmptyEnum>::findValue(const char* name,  ::cpp2::EmptyEnum* outValue);
+
+}} // apache::thrift
+namespace cpp2 {
+
 enum class City {
   NYC = 0,
   MPK = 1,

@@ -13,6 +13,29 @@
 
 
 
+const typename apache::thrift::detail::TEnumMapFactory<EmptyEnum, int>::ValuesToNamesMapType _EmptyEnum_VALUES_TO_NAMES = apache::thrift::detail::TEnumMapFactory<EmptyEnum, int>::makeValuesToNamesMap();
+
+const typename apache::thrift::detail::TEnumMapFactory<EmptyEnum, int>::NamesToValuesMapType _EmptyEnum_NAMES_TO_VALUES = apache::thrift::detail::TEnumMapFactory<EmptyEnum, int>::makeNamesToValuesMap();
+
+
+namespace apache { namespace thrift {
+template<>
+folly::Range<const std::pair< ::EmptyEnum, folly::StringPiece>*> TEnumTraitsBase< ::EmptyEnum>::enumerators() {
+  return {};
+}
+
+template<>
+const char* TEnumTraitsBase< ::EmptyEnum>::findName( ::EmptyEnum value) {
+return findName( ::_EmptyEnum_VALUES_TO_NAMES, value);
+}
+
+template<>
+bool TEnumTraitsBase< ::EmptyEnum>::findValue(const char* name,  ::EmptyEnum* out) {
+return findValue( ::_EmptyEnum_NAMES_TO_VALUES, name, out);
+}
+}} // apache::thrift
+
+
 const typename apache::thrift::detail::TEnumMapFactory<City, int>::ValuesToNamesMapType _City_VALUES_TO_NAMES = apache::thrift::detail::TEnumMapFactory<City, int>::makeValuesToNamesMap();
 
 const typename apache::thrift::detail::TEnumMapFactory<City, int>::NamesToValuesMapType _City_NAMES_TO_VALUES = apache::thrift::detail::TEnumMapFactory<City, int>::makeNamesToValuesMap();

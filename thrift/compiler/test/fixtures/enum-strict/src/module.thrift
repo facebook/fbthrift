@@ -1,3 +1,5 @@
+enum EmptyEnum {}
+
 enum MyEnum {
   kMyFoo = 1,
   kMyBar = 2,

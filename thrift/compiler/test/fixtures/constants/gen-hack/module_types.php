@@ -6,6 +6,10 @@
  *  @generated
  */
 
+enum EmptyEnum: int {
+}
+type EmptyEnumType = EmptyEnum;
+
 enum City: int {
   NYC = 0;
   MPK = 1;

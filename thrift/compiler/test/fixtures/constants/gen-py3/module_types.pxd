@@ -17,6 +17,8 @@ from thrift.lib.py3.thrift_server cimport cTException, TException
 
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
+    cdef cppclass cEmptyEnum "cpp2::EmptyEnum":
+        bint operator==(cEmptyEnum&)
     cdef cppclass cCity "cpp2::City":
         bint operator==(cCity&)
     cCity City__NYC "cpp2::City::NYC"
@@ -30,6 +32,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
     cCompany Company__OCULUS "cpp2::Company::OCULUS"
     cCompany Company__INSTAGRAM "cpp2::Company::INSTAGRAM"
 
+cdef cEmptyEnum EmptyEnum_to_cpp(value)
 cdef cCity City_to_cpp(value)
 cdef cCompany Company_to_cpp(value)
 
@@ -72,6 +75,5 @@ cdef class Range:
 
     @staticmethod
     cdef create(shared_ptr[cRange] c_Range)
-
 
 

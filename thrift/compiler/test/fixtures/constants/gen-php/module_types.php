@@ -8,6 +8,15 @@
 require_once $GLOBALS['THRIFT_ROOT'].'/Thrift.php';
 
 
+final class EmptyEnum {
+  static public $__names = array(
+  );
+  static public $__values = array(
+  );
+}
+
+$GLOBALS['E_EmptyEnum'] = EmptyEnum::$__values;
+
 final class City {
   const NYC = 0;
   const MPK = 1;

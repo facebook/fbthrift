@@ -23,6 +23,8 @@ from module_types cimport (
     cRange
 )
 from module_types cimport (
+    cEmptyEnum,
+,
     cCity,
     City__NYC,
     City__MPK,
@@ -37,6 +39,9 @@ from module_types cimport (
 )
 
 
+class EmptyEnum(Enum):
+
+cdef cEmptyEnum EmptyEnum_to_cpp(value):
 class City(Enum):
     NYC = <int> (City__NYC)
     MPK = <int> (City__MPK)

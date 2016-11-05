@@ -10,6 +10,8 @@ const double x = 1.0;
 const double y = 1000000;
 const double z = 1000000000.0;
 
+enum EmptyEnum {}
+
 enum City { NYC, MPK, SEA, LON }
 enum Company { FACEBOOK, WHATSAPP, OCULUS, INSTAGRAM }
 

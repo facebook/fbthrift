@@ -18,6 +18,13 @@ class Schema;
 
 
 
+enum EmptyEnum {
+};
+
+extern const typename apache::thrift::detail::TEnumMapFactory<EmptyEnum, int>::ValuesToNamesMapType _EmptyEnum_VALUES_TO_NAMES;
+
+extern const typename apache::thrift::detail::TEnumMapFactory<EmptyEnum, int>::NamesToValuesMapType _EmptyEnum_NAMES_TO_VALUES;
+
 enum City {
   NYC = 0,
   MPK = 1,
