@@ -22,15 +22,6 @@ std::vector<Enum>  const &module1_constants::e1s() {
   return instance;
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-
-module1Constants::module1Constants() {
-  c1 = module1_constants::c1();
-  e1s = module1_constants::e1s();
-}
-
-#pragma GCC diagnostic pop
 
 } // namespace
 

@@ -15,13 +15,6 @@ struct module1_constants {
   static std::vector<Enum>  const& e1s();
 };
 
-class __attribute__((__deprecated__("module1Constants suffers from the 'static initialization order fiasco' (https://isocpp.org/wiki/faq/ctors#static-init-order) and may CRASH your program. Instead, use module1_constants::CONSTANT_NAME()"))) module1Constants {
-public:
-  module1Constants();
-
-  Struct c1;
-  std::vector<Enum>  e1s;
-};
 
 } // namespace
 

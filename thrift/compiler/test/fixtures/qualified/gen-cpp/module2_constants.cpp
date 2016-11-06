@@ -15,14 +15,6 @@ Struct const &module2_constants::c2() {
   return instance;
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-
-module2Constants::module2Constants() {
-  c2 = module2_constants::c2();
-}
-
-#pragma GCC diagnostic pop
 
 } // namespace
 

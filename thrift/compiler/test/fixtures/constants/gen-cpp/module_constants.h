@@ -84,43 +84,6 @@ struct module_constants {
   static std::map<std::string, std::string>  const& empty_string_string_map();
 };
 
-class __attribute__((__deprecated__("moduleConstants suffers from the 'static initialization order fiasco' (https://isocpp.org/wiki/faq/ctors#static-init-order) and may CRASH your program. Instead, use module_constants::CONSTANT_NAME()"))) moduleConstants {
-public:
-  moduleConstants();
-
-  int32_t myInt;
-  std::string name;
-  std::vector<std::map<std::string, int32_t> >  states;
-  double x;
-  double y;
-  double z;
-  Internship instagram;
-  std::vector<Range>  kRanges;
-  std::vector<Internship>  internList;
-  std::string apostrophe;
-  std::string tripleApostrophe;
-  std::string quotationMark;
-  std::string backslash;
-  std::string escaped_a;
-  std::map<std::string, int32_t>  char2ascii;
-  std::vector<std::string>  escaped_strings;
-  bool false_c;
-  bool true_c;
-  int8_t zero_byte;
-  int16_t zero16;
-  int32_t zero32;
-  int64_t zero64;
-  double zero_dot_zero;
-  std::string empty_string;
-  std::vector<int32_t>  empty_int_list;
-  std::vector<std::string>  empty_string_list;
-  std::set<int32_t>  empty_int_set;
-  std::set<std::string>  empty_string_set;
-  std::map<int32_t, int32_t>  empty_int_int_map;
-  std::map<int32_t, std::string>  empty_int_string_map;
-  std::map<std::string, int32_t>  empty_string_int_map;
-  std::map<std::string, std::string>  empty_string_string_map;
-};
 
 
 

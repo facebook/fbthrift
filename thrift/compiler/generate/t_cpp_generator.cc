@@ -1128,45 +1128,6 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
   }
   f_consts_impl << endl;
 
-  // DEPRECATED VERSION
-  f_consts <<
-    "class __attribute__((__deprecated__(\""
-      << program_name_ << "Constants suffers from the 'static initialization "
-      "order fiasco' (https://isocpp.org/wiki/faq/ctors#static-init-order) and "
-      "may CRASH your program. Instead, use " << program_name_ <<
-      "_constants::CONSTANT_NAME()\"))) " <<
-      program_name_ << "Constants {" << endl <<
-    "public:" << endl <<
-    "  " << program_name_ << "Constants();" << endl <<
-    endl;
-  indent_up();
-  for (auto& c : consts) {
-    string name = c->get_name();
-    t_type* type = c->get_type();
-    f_consts <<
-      indent() << type_name(type) << " " << name << ";" << endl;
-  }
-  indent_down();
-  f_consts <<
-    "};" << endl;
-
-  f_consts_impl << "#pragma GCC diagnostic push" << endl;
-  f_consts_impl << "#pragma GCC diagnostic ignored "
-    "\"-Wdeprecated-declarations\"" << endl << endl;
-
-  f_consts_impl <<
-    program_name_ << "Constants::" << program_name_ << "Constants() {" << endl;
-  indent_up();
-  for (auto& c : consts) {
-    string name = c->get_name();
-    f_consts_impl << indent() << name << " = "
-                  << consts_struct << "::" << name << "();" << endl;
-  }
-  indent_down();
-  indent(f_consts_impl) <<
-    "}" << endl << endl;
-  f_consts_impl << "#pragma GCC diagnostic pop" << endl;
-
   f_consts << endl <<
     ns_close_ << endl <<
     endl;

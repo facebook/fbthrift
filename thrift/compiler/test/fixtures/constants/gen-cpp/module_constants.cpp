@@ -131,45 +131,6 @@ std::map<std::string, std::string>  const &module_constants::empty_string_string
   return instance;
 }
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-
-moduleConstants::moduleConstants() {
-  myInt = module_constants::myInt();
-  name = module_constants::name();
-  states = module_constants::states();
-  x = module_constants::x();
-  y = module_constants::y();
-  z = module_constants::z();
-  instagram = module_constants::instagram();
-  kRanges = module_constants::kRanges();
-  internList = module_constants::internList();
-  apostrophe = module_constants::apostrophe();
-  tripleApostrophe = module_constants::tripleApostrophe();
-  quotationMark = module_constants::quotationMark();
-  backslash = module_constants::backslash();
-  escaped_a = module_constants::escaped_a();
-  char2ascii = module_constants::char2ascii();
-  escaped_strings = module_constants::escaped_strings();
-  false_c = module_constants::false_c();
-  true_c = module_constants::true_c();
-  zero_byte = module_constants::zero_byte();
-  zero16 = module_constants::zero16();
-  zero32 = module_constants::zero32();
-  zero64 = module_constants::zero64();
-  zero_dot_zero = module_constants::zero_dot_zero();
-  empty_string = module_constants::empty_string();
-  empty_int_list = module_constants::empty_int_list();
-  empty_string_list = module_constants::empty_string_list();
-  empty_int_set = module_constants::empty_int_set();
-  empty_string_set = module_constants::empty_string_set();
-  empty_int_int_map = module_constants::empty_int_int_map();
-  empty_int_string_map = module_constants::empty_int_string_map();
-  empty_string_int_map = module_constants::empty_string_int_map();
-  empty_string_string_map = module_constants::empty_string_string_map();
-}
-
-#pragma GCC diagnostic pop
 
 
 

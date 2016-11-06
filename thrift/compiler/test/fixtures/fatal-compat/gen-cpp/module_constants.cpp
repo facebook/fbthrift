@@ -13,17 +13,6 @@ constexpr char const *const module_constants::constant2_;
 constexpr enum1 const module_constants::constant3_;
 constexpr int32_t const module_constants::constant_with_special_name_;
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-
-moduleConstants::moduleConstants() {
-  constant1 = module_constants::constant1();
-  constant2 = module_constants::constant2();
-  constant3 = module_constants::constant3();
-  constant_with_special_name = module_constants::constant_with_special_name();
-}
-
-#pragma GCC diagnostic pop
 
 }} // namespace
 

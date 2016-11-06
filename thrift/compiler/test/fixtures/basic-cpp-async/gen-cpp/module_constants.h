@@ -13,11 +13,6 @@
 struct module_constants {
 };
 
-class __attribute__((__deprecated__("moduleConstants suffers from the 'static initialization order fiasco' (https://isocpp.org/wiki/faq/ctors#static-init-order) and may CRASH your program. Instead, use module_constants::CONSTANT_NAME()"))) moduleConstants {
-public:
-  moduleConstants();
-
-};
 
 
 

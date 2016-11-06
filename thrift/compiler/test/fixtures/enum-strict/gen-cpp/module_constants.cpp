@@ -11,15 +11,6 @@
 constexpr MyEnum const module_constants::kFoo_;
 constexpr MyEnum const module_constants::kBaz_;
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-
-moduleConstants::moduleConstants() {
-  kFoo = module_constants::kFoo();
-  kBaz = module_constants::kBaz();
-}
-
-#pragma GCC diagnostic pop
 
 
 

@@ -17,13 +17,6 @@ struct module_constants {
   static constexpr MyEnum kBaz() { return kBaz_; }
 };
 
-class __attribute__((__deprecated__("moduleConstants suffers from the 'static initialization order fiasco' (https://isocpp.org/wiki/faq/ctors#static-init-order) and may CRASH your program. Instead, use module_constants::CONSTANT_NAME()"))) moduleConstants {
-public:
-  moduleConstants();
-
-  MyEnum kFoo;
-  MyEnum kBaz;
-};
 
 
 

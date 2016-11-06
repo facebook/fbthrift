@@ -9,13 +9,6 @@
 
 
 
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
-
-module2Constants::module2Constants() {
-}
-
-#pragma GCC diagnostic pop
 
 
 
