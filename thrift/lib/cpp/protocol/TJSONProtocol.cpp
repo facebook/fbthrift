@@ -832,7 +832,7 @@ uint32_t TJSONProtocol::readJSONString(std::string &str, bool skipContext) {
   if (allowDecodeUTF8_) {
     json += "\"";
     folly::dynamic parsed = folly::parseJson(json);
-    str += parsed.c_str();
+    str += parsed.getString();
   }
 
   return result;

@@ -851,7 +851,7 @@ uint32_t JSONProtocolReaderCommon::readJSONString(StrType& val) {
     json += "\"";
     try {
       folly::dynamic parsed = folly::parseJson(json);
-      val += parsed.c_str();
+      val += parsed.getString();
     } catch (const std::exception& e) {
       throw TProtocolException(
         TProtocolException::INVALID_DATA,

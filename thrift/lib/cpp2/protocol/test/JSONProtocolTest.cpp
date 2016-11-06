@@ -458,8 +458,15 @@ TEST_F(JSONProtocolTest, readString_raw) {
   EXPECT_EQ(expected, reading_cpp1<string>(input, [](P1& p) {
         return returning([&](string& _) { p.readString(_); });
   }));
+  EXPECT_EQ(expected, reading_cpp1<string>(input, [](P1& p) {
+        p.allowDecodeUTF8(true);
+        return returning([&](string& _) { p.readString(_); });
+  }));
   EXPECT_EQ(expected, reading_cpp2<string>(input, [](R2& p) {
         p.setAllowDecodeUTF8(false);
+        return returning([&](string& _) { p.readString(_); });
+  }));
+  EXPECT_EQ(expected, reading_cpp2<string>(input, [](R2& p) {
         return returning([&](string& _) { p.readString(_); });
   }));
 }
