@@ -42,6 +42,7 @@ bool tryParseEnum(const char* name, EnumType* out) {
 
 /**
  * Returns the human-readable name for an Enum type.
+ * WARNING! By default it returns nullptr if the value is not in enum.
  */
 template<typename EnumType>
 const char* enumName(EnumType value,
@@ -52,19 +53,13 @@ const char* enumName(EnumType value,
 }
 
 /**
- * Returns the human-readable name for an Enum type in short form.
- * (That is, always returns VALUE instead of Foo::VALUE, even for
- * "strict" enums)
+ * Returns the human-readable name for an Enum type.
  * WARNING! By default it returns nullptr if the value is not in enum.
  */
 template <typename EnumType>
 const char* shortEnumName(EnumType value,
                           const char* defaultName = nullptr) {
-  const char* name = TEnumTraits<EnumType>::findName(value);
-  if (!name) return defaultName;
-  const char* p = strrchr(name, ':');
-  if (p) name = p + 1;
-  return name;
+  return enumName(value, defaultName);
 }
 
 /**

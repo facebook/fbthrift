@@ -77,10 +77,10 @@ TEST(EnumTestStrict, test_enum_strict_constant) {
   EXPECT_EQ(0,
     strcmp(
       _MyEnum2_VALUES_TO_NAMES.find(MyEnum2::ME2_2)->second,
-      "MyEnum2::ME2_2"));
+      "ME2_2"));
 
   EXPECT_EQ(
-    (int)_MyEnum3_NAMES_TO_VALUES.find("MyEnum3::ME3_10")->second,
+    (int)_MyEnum3_NAMES_TO_VALUES.find("ME3_10")->second,
     (int)MyEnum3::ME3_10);
 
   ms2.me2_2 = MyEnum2::ME2_1;
@@ -91,16 +91,16 @@ TEST(EnumTestStrict, test_enum_strict_constant) {
 }
 
 TEST(EnumTestStrict, test_enum_names) {
-  EXPECT_EQ(enumName(MyEnum3::ME3_1), std::string{"MyEnum3::ME3_1"});
-  EXPECT_EQ(enumName(MyEnum2::ME2_2), std::string{"MyEnum2::ME2_2"});
+  EXPECT_EQ(enumName(MyEnum3::ME3_1), std::string{"ME3_1"});
+  EXPECT_EQ(enumName(MyEnum2::ME2_2), std::string{"ME2_2"});
 }
 
 TEST(EnumTestStrict, test_enum_parse) {
   MyEnum2 e2;
   MyEnum3 e3;
 
-  EXPECT_TRUE(tryParseEnum("MyEnum2::ME2_2", &e2));
-  EXPECT_TRUE(tryParseEnum("MyEnum3::ME3_N2", &e3));
+  EXPECT_TRUE(tryParseEnum("ME2_2", &e2));
+  EXPECT_TRUE(tryParseEnum("ME3_N2", &e3));
   EXPECT_EQ((int)MyEnum2::ME2_2, (int)e2);
   EXPECT_EQ((int)MyEnum3::ME3_N2, (int)e3);
 

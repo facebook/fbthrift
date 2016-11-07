@@ -45,8 +45,8 @@ namespace apache { namespace thrift {
 template<>
 folly::Range<const std::pair< ::MyEnum, folly::StringPiece>*> TEnumTraitsBase< ::MyEnum>::enumerators() {
   static constexpr const std::pair< ::MyEnum, folly::StringPiece> storage[2] = {
-    { ::MyEnum::kMyFoo, "MyEnum::kMyFoo"},
-    { ::MyEnum::kMyBar, "MyEnum::kMyBar"},
+    { ::MyEnum::kMyFoo, "kMyFoo"},
+    { ::MyEnum::kMyBar, "kMyBar"},
   };
   return folly::range(storage);
 }

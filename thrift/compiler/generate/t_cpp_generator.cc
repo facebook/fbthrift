@@ -853,7 +853,6 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
     value_type = tenum->get_name().c_str();
   }
 
-  auto typed_prefix = gen_enum_strict_ ? tenum->get_name().c_str() : nullptr;
   auto enum_keyword = gen_enum_strict_ ? "enum class " : "enum ";
   auto name = tenum->get_name();
   auto fullname = folly::to<string>(ns_prefix_, name);
@@ -950,12 +949,9 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
       "storage[" << constants.size() << "] = {" << endl;
     indent_up();
     for (const auto c : constants) {
-      const auto expanded_name = typed_prefix
-        ? folly::sformat("{}::{}", typed_prefix, c->get_name())
-        : c->get_name();
       f_types_impl_ <<
         indent() << "{" << fullname << "::" << c->get_name() << ", " <<
-        "\"" << expanded_name << "\"}," << endl;
+        "\"" << c->get_name() << "\"}," << endl;
     }
     indent_down();
     f_types_impl_ <<

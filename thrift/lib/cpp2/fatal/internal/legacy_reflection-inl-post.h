@@ -179,12 +179,7 @@ struct impl<T, type_class::enumeration> {
         schema, to_c_array<rname>::range(), rid(), [&](datatype_t& dt) {
       dt.__isset.enumValues = true;
       for (auto e : TEnumTraits<T>::enumerators()) {
-        auto name = e.second;
-        auto p = name.find(':');
-        if (p != folly::StringPiece::npos) {
-          name.advance(p + 2);
-        }
-        dt.enumValues[name.str()] = int(e.first);
+        dt.enumValues[e.second.str()] = int(e.first);
       }
     });
   }
