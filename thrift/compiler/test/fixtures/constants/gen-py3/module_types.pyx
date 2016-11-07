@@ -156,3 +156,15 @@ cdef class Range:
 
 
 
+
+myInt = 1337
+x = 1.000000
+y = 1000000.0
+z = 1000000000.000000
+false_c = Fale
+true_c = True
+zero_byte = 0
+zero16 = 0
+zero32 = 0
+zero64 = 0
+zero_dot_zero = 0.000000

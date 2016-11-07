@@ -189,3 +189,7 @@ Mapping.register({{type:flat_name}})
 {{/type:map?}}
 
 {{/program:containerTypes}}
+
+{{#program:constants}}
+{{#constant:value}}{{> ConstantValue}}{{/constant:value}}
+{{/program:constants}}

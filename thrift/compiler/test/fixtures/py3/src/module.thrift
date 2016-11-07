@@ -28,6 +28,15 @@ struct ComplexStruct {
   5: AnEnum an_enum
 }
 
+const bool A_BOOL = true
+const byte A_BYTE = 8
+const i16 THE_ANSWER = 42
+const i32 A_NUMBER = 84
+const i64 A_BIG_NUMBER = 102
+const double A_REAL_NUMBER = 3.14
+const double A_FAKE_NUMBER = 3
+const string A_WORD = "Good word"
+
 service SimpleService {
   i32 get_five()
   i32 add_five(1: i32 num)

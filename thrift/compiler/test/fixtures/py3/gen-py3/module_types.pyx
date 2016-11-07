@@ -424,3 +424,11 @@ cdef class Map__string_i16:
 
 Mapping.register(Map__string_i16)
 
+
+A_BOOL = True
+A_BYTE = 8
+THE_ANSWER = 42
+A_NUMBER = 84
+A_BIG_NUMBER = 102
+A_REAL_NUMBER = 3.140000
+A_FAKE_NUMBER = 3.0
