@@ -17,27 +17,43 @@ namespace test_cpp1 { namespace cpp_reflection {
 
 namespace thrift_fatal_impl_detail {
 
-class enum1_enum_traits {
+struct enum1_enum_traits {
+  using type = ::test_cpp1::cpp_reflection::enum1;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum1;
+
   struct enum1__struct_unique_strings_list {
     using field0 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field0;
     using field1 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field1;
     using field2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field2;
   };
 
-  public:
-  using type = ::test_cpp1::cpp_reflection::enum1;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum1;
-  using str = enum1__struct_unique_strings_list;
-  using names = ::fatal::list<
-      str::field0,
-      str::field1,
-      str::field2
-  >;
-  using values = ::fatal::sequence<
-    type,
-    type::field0,
-    type::field1,
-    type::field2
+  struct enum1__struct_enum_members_field0 {
+    using name = enum1__struct_unique_strings_list::field0;
+    using value = std::integral_constant<type, type::field0>;
+  };
+
+  struct enum1__struct_enum_members_field1 {
+    using name = enum1__struct_unique_strings_list::field1;
+    using value = std::integral_constant<type, type::field1>;
+  };
+
+  struct enum1__struct_enum_members_field2 {
+    using name = enum1__struct_unique_strings_list::field2;
+    using value = std::integral_constant<type, type::field2>;
+  };
+
+  struct enum1__struct_enum_members {
+    using field0 = enum1__struct_enum_members_field0;
+    using field1 = enum1__struct_enum_members_field1;
+    using field2 = enum1__struct_enum_members_field2;
+  };
+
+  using member = enum1__struct_enum_members;
+
+  using fields = ::fatal::list<
+      member::field0,
+      member::field1,
+      member::field2
   >;
 
   class annotations {
@@ -74,27 +90,43 @@ FATAL_REGISTER_ENUM_TRAITS(
 );
 namespace thrift_fatal_impl_detail {
 
-class enum2_enum_traits {
+struct enum2_enum_traits {
+  using type = ::test_cpp1::cpp_reflection::enum2;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum2;
+
   struct enum2__struct_unique_strings_list {
     using field0_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field0_2;
     using field1_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field1_2;
     using field2_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field2_2;
   };
 
-  public:
-  using type = ::test_cpp1::cpp_reflection::enum2;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum2;
-  using str = enum2__struct_unique_strings_list;
-  using names = ::fatal::list<
-      str::field0_2,
-      str::field1_2,
-      str::field2_2
-  >;
-  using values = ::fatal::sequence<
-    type,
-    type::field0_2,
-    type::field1_2,
-    type::field2_2
+  struct enum2__struct_enum_members_field0_2 {
+    using name = enum2__struct_unique_strings_list::field0_2;
+    using value = std::integral_constant<type, type::field0_2>;
+  };
+
+  struct enum2__struct_enum_members_field1_2 {
+    using name = enum2__struct_unique_strings_list::field1_2;
+    using value = std::integral_constant<type, type::field1_2>;
+  };
+
+  struct enum2__struct_enum_members_field2_2 {
+    using name = enum2__struct_unique_strings_list::field2_2;
+    using value = std::integral_constant<type, type::field2_2>;
+  };
+
+  struct enum2__struct_enum_members {
+    using field0_2 = enum2__struct_enum_members_field0_2;
+    using field1_2 = enum2__struct_enum_members_field1_2;
+    using field2_2 = enum2__struct_enum_members_field2_2;
+  };
+
+  using member = enum2__struct_enum_members;
+
+  using fields = ::fatal::list<
+      member::field0_2,
+      member::field1_2,
+      member::field2_2
   >;
 
   class annotations {
@@ -131,27 +163,43 @@ FATAL_REGISTER_ENUM_TRAITS(
 );
 namespace thrift_fatal_impl_detail {
 
-class enum3_enum_traits {
+struct enum3_enum_traits {
+  using type = ::test_cpp1::cpp_reflection::enum3;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum3;
+
   struct enum3__struct_unique_strings_list {
     using field0_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field0_3;
     using field1_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field1_3;
     using field2_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field2_3;
   };
 
-  public:
-  using type = ::test_cpp1::cpp_reflection::enum3;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum3;
-  using str = enum3__struct_unique_strings_list;
-  using names = ::fatal::list<
-      str::field0_3,
-      str::field1_3,
-      str::field2_3
-  >;
-  using values = ::fatal::sequence<
-    type,
-    type::field0_3,
-    type::field1_3,
-    type::field2_3
+  struct enum3__struct_enum_members_field0_3 {
+    using name = enum3__struct_unique_strings_list::field0_3;
+    using value = std::integral_constant<type, type::field0_3>;
+  };
+
+  struct enum3__struct_enum_members_field1_3 {
+    using name = enum3__struct_unique_strings_list::field1_3;
+    using value = std::integral_constant<type, type::field1_3>;
+  };
+
+  struct enum3__struct_enum_members_field2_3 {
+    using name = enum3__struct_unique_strings_list::field2_3;
+    using value = std::integral_constant<type, type::field2_3>;
+  };
+
+  struct enum3__struct_enum_members {
+    using field0_3 = enum3__struct_enum_members_field0_3;
+    using field1_3 = enum3__struct_enum_members_field1_3;
+    using field2_3 = enum3__struct_enum_members_field2_3;
+  };
+
+  using member = enum3__struct_enum_members;
+
+  using fields = ::fatal::list<
+      member::field0_3,
+      member::field1_3,
+      member::field2_3
   >;
 
   class annotations {
@@ -226,7 +274,10 @@ FATAL_REGISTER_ENUM_TRAITS(
 );
 namespace thrift_fatal_impl_detail {
 
-class enum_with_special_names_enum_traits {
+struct enum_with_special_names_enum_traits {
+  using type = ::test_cpp1::cpp_reflection::enum_with_special_names;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum_with_special_names;
+
   struct enum_with_special_names__struct_unique_strings_list {
     using get = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::get;
     using getter = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::getter;
@@ -256,66 +307,194 @@ class enum_with_special_names_enum_traits {
     using members = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::members;
   };
 
-  public:
-  using type = ::test_cpp1::cpp_reflection::enum_with_special_names;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum_with_special_names;
-  using str = enum_with_special_names__struct_unique_strings_list;
-  using names = ::fatal::list<
-      str::get,
-      str::getter,
-      str::lists,
-      str::maps,
-      str::name,
-      str::name_to_value,
-      str::names,
-      str::prefix_tree,
-      str::sets,
-      str::setter,
-      str::str,
-      str::strings,
-      str::type,
-      str::value,
-      str::value_to_name,
-      str::values,
-      str::id,
-      str::ids,
-      str::descriptor,
-      str::descriptors,
-      str::key,
-      str::keys,
-      str::annotation,
-      str::annotations,
-      str::member,
-      str::members
-  >;
-  using values = ::fatal::sequence<
-    type,
-    type::get,
-    type::getter,
-    type::lists,
-    type::maps,
-    type::name,
-    type::name_to_value,
-    type::names,
-    type::prefix_tree,
-    type::sets,
-    type::setter,
-    type::str,
-    type::strings,
-    type::type,
-    type::value,
-    type::value_to_name,
-    type::values,
-    type::id,
-    type::ids,
-    type::descriptor,
-    type::descriptors,
-    type::key,
-    type::keys,
-    type::annotation,
-    type::annotations,
-    type::member,
-    type::members
+  struct enum_with_special_names__struct_enum_members_get {
+    using name = enum_with_special_names__struct_unique_strings_list::get;
+    using value = std::integral_constant<type, type::get>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_getter {
+    using name = enum_with_special_names__struct_unique_strings_list::getter;
+    using value = std::integral_constant<type, type::getter>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_lists {
+    using name = enum_with_special_names__struct_unique_strings_list::lists;
+    using value = std::integral_constant<type, type::lists>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_maps {
+    using name = enum_with_special_names__struct_unique_strings_list::maps;
+    using value = std::integral_constant<type, type::maps>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_name {
+    using name = enum_with_special_names__struct_unique_strings_list::name;
+    using value = std::integral_constant<type, type::name>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_name_to_value {
+    using name = enum_with_special_names__struct_unique_strings_list::name_to_value;
+    using value = std::integral_constant<type, type::name_to_value>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_names {
+    using name = enum_with_special_names__struct_unique_strings_list::names;
+    using value = std::integral_constant<type, type::names>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_prefix_tree {
+    using name = enum_with_special_names__struct_unique_strings_list::prefix_tree;
+    using value = std::integral_constant<type, type::prefix_tree>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_sets {
+    using name = enum_with_special_names__struct_unique_strings_list::sets;
+    using value = std::integral_constant<type, type::sets>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_setter {
+    using name = enum_with_special_names__struct_unique_strings_list::setter;
+    using value = std::integral_constant<type, type::setter>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_str {
+    using name = enum_with_special_names__struct_unique_strings_list::str;
+    using value = std::integral_constant<type, type::str>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_strings {
+    using name = enum_with_special_names__struct_unique_strings_list::strings;
+    using value = std::integral_constant<type, type::strings>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_type {
+    using name = enum_with_special_names__struct_unique_strings_list::type;
+    using value = std::integral_constant<type, type::type>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_value {
+    using name = enum_with_special_names__struct_unique_strings_list::value;
+    using value = std::integral_constant<type, type::value>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_value_to_name {
+    using name = enum_with_special_names__struct_unique_strings_list::value_to_name;
+    using value = std::integral_constant<type, type::value_to_name>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_values {
+    using name = enum_with_special_names__struct_unique_strings_list::values;
+    using value = std::integral_constant<type, type::values>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_id {
+    using name = enum_with_special_names__struct_unique_strings_list::id;
+    using value = std::integral_constant<type, type::id>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_ids {
+    using name = enum_with_special_names__struct_unique_strings_list::ids;
+    using value = std::integral_constant<type, type::ids>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_descriptor {
+    using name = enum_with_special_names__struct_unique_strings_list::descriptor;
+    using value = std::integral_constant<type, type::descriptor>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_descriptors {
+    using name = enum_with_special_names__struct_unique_strings_list::descriptors;
+    using value = std::integral_constant<type, type::descriptors>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_key {
+    using name = enum_with_special_names__struct_unique_strings_list::key;
+    using value = std::integral_constant<type, type::key>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_keys {
+    using name = enum_with_special_names__struct_unique_strings_list::keys;
+    using value = std::integral_constant<type, type::keys>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_annotation {
+    using name = enum_with_special_names__struct_unique_strings_list::annotation;
+    using value = std::integral_constant<type, type::annotation>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_annotations {
+    using name = enum_with_special_names__struct_unique_strings_list::annotations;
+    using value = std::integral_constant<type, type::annotations>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_member {
+    using name = enum_with_special_names__struct_unique_strings_list::member;
+    using value = std::integral_constant<type, type::member>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_members {
+    using name = enum_with_special_names__struct_unique_strings_list::members;
+    using value = std::integral_constant<type, type::members>;
+  };
+
+  struct enum_with_special_names__struct_enum_members {
+    using get = enum_with_special_names__struct_enum_members_get;
+    using getter = enum_with_special_names__struct_enum_members_getter;
+    using lists = enum_with_special_names__struct_enum_members_lists;
+    using maps = enum_with_special_names__struct_enum_members_maps;
+    using name = enum_with_special_names__struct_enum_members_name;
+    using name_to_value = enum_with_special_names__struct_enum_members_name_to_value;
+    using names = enum_with_special_names__struct_enum_members_names;
+    using prefix_tree = enum_with_special_names__struct_enum_members_prefix_tree;
+    using sets = enum_with_special_names__struct_enum_members_sets;
+    using setter = enum_with_special_names__struct_enum_members_setter;
+    using str = enum_with_special_names__struct_enum_members_str;
+    using strings = enum_with_special_names__struct_enum_members_strings;
+    using type = enum_with_special_names__struct_enum_members_type;
+    using value = enum_with_special_names__struct_enum_members_value;
+    using value_to_name = enum_with_special_names__struct_enum_members_value_to_name;
+    using values = enum_with_special_names__struct_enum_members_values;
+    using id = enum_with_special_names__struct_enum_members_id;
+    using ids = enum_with_special_names__struct_enum_members_ids;
+    using descriptor = enum_with_special_names__struct_enum_members_descriptor;
+    using descriptors = enum_with_special_names__struct_enum_members_descriptors;
+    using key = enum_with_special_names__struct_enum_members_key;
+    using keys = enum_with_special_names__struct_enum_members_keys;
+    using annotation = enum_with_special_names__struct_enum_members_annotation;
+    using annotations = enum_with_special_names__struct_enum_members_annotations;
+    using member = enum_with_special_names__struct_enum_members_member;
+    using members = enum_with_special_names__struct_enum_members_members;
+  };
+
+  using member = enum_with_special_names__struct_enum_members;
+
+  using fields = ::fatal::list<
+      member::get,
+      member::getter,
+      member::lists,
+      member::maps,
+      member::name,
+      member::name_to_value,
+      member::names,
+      member::prefix_tree,
+      member::sets,
+      member::setter,
+      member::str,
+      member::strings,
+      member::type,
+      member::value,
+      member::value_to_name,
+      member::values,
+      member::id,
+      member::ids,
+      member::descriptor,
+      member::descriptors,
+      member::key,
+      member::keys,
+      member::annotation,
+      member::annotations,
+      member::member,
+      member::members
   >;
 
   class annotations {

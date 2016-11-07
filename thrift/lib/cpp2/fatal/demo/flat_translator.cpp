@@ -50,11 +50,7 @@ struct legacy_to_flat_translator {
 
 void translate(legacy_config const &from, flat_config &to) {
   for (auto const &i: from) {
-    fatal::trie_find<
-      reflect_struct<flat_config>::members,
-      fatal::less,
-      get_property
-    >(
+    fatal::trie_find<reflect_struct<flat_config>::members, get_property>(
       i.first.begin(),
       i.first.end(),
       legacy_to_flat_translator(),

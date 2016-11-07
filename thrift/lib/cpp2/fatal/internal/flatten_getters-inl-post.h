@@ -67,10 +67,7 @@ struct c {
 template <typename Path, typename TerminalFilter, typename Info>
 struct s {
   using type = fatal::apply_to<
-    fatal::transform<
-      typename Info::members,
-      c<Path, TerminalFilter>::template apply
-    >,
+    fatal::transform<typename Info::members, c<Path, TerminalFilter>>,
     fatal::cat
   >;
 };

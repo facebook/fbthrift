@@ -18,7 +18,10 @@ namespace test_cpp1 { namespace cpp_reflection {
 
 namespace thrift_fatal_impl_detail {
 
-class union1_Type_enum_traits {
+struct union1_Type_enum_traits {
+  using type = ::test_cpp1::cpp_reflection::union1::Type;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
+
   struct Type__struct_unique_strings_list {
     using ui = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui;
     using ud = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud;
@@ -26,22 +29,40 @@ class union1_Type_enum_traits {
     using ue = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue;
   };
 
-  public:
-  using type = ::test_cpp1::cpp_reflection::union1::Type;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
-  using str = Type__struct_unique_strings_list;
-  using names = ::fatal::list<
-      str::ui,
-      str::ud,
-      str::us,
-      str::ue
-  >;
-  using values = ::fatal::sequence<
-    type,
-    type::ui,
-    type::ud,
-    type::us,
-    type::ue
+  struct Type__struct_enum_members_ui {
+    using name = Type__struct_unique_strings_list::ui;
+    using value = std::integral_constant<type, type::ui>;
+  };
+
+  struct Type__struct_enum_members_ud {
+    using name = Type__struct_unique_strings_list::ud;
+    using value = std::integral_constant<type, type::ud>;
+  };
+
+  struct Type__struct_enum_members_us {
+    using name = Type__struct_unique_strings_list::us;
+    using value = std::integral_constant<type, type::us>;
+  };
+
+  struct Type__struct_enum_members_ue {
+    using name = Type__struct_unique_strings_list::ue;
+    using value = std::integral_constant<type, type::ue>;
+  };
+
+  struct Type__struct_enum_members {
+    using ui = Type__struct_enum_members_ui;
+    using ud = Type__struct_enum_members_ud;
+    using us = Type__struct_enum_members_us;
+    using ue = Type__struct_enum_members_ue;
+  };
+
+  using member = Type__struct_enum_members;
+
+  using fields = ::fatal::list<
+      member::ui,
+      member::ud,
+      member::us,
+      member::ue
   >;
 
   class annotations {
@@ -296,7 +317,10 @@ class union1_variant_traits {
 } // thrift_fatal_impl_detail
 namespace thrift_fatal_impl_detail {
 
-class union2_Type_enum_traits {
+struct union2_Type_enum_traits {
+  using type = ::test_cpp1::cpp_reflection::union2::Type;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
+
   struct Type__struct_unique_strings_list {
     using ui_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui_2;
     using ud_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud_2;
@@ -304,22 +328,40 @@ class union2_Type_enum_traits {
     using ue_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue_2;
   };
 
-  public:
-  using type = ::test_cpp1::cpp_reflection::union2::Type;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
-  using str = Type__struct_unique_strings_list;
-  using names = ::fatal::list<
-      str::ui_2,
-      str::ud_2,
-      str::us_2,
-      str::ue_2
-  >;
-  using values = ::fatal::sequence<
-    type,
-    type::ui_2,
-    type::ud_2,
-    type::us_2,
-    type::ue_2
+  struct Type__struct_enum_members_ui_2 {
+    using name = Type__struct_unique_strings_list::ui_2;
+    using value = std::integral_constant<type, type::ui_2>;
+  };
+
+  struct Type__struct_enum_members_ud_2 {
+    using name = Type__struct_unique_strings_list::ud_2;
+    using value = std::integral_constant<type, type::ud_2>;
+  };
+
+  struct Type__struct_enum_members_us_2 {
+    using name = Type__struct_unique_strings_list::us_2;
+    using value = std::integral_constant<type, type::us_2>;
+  };
+
+  struct Type__struct_enum_members_ue_2 {
+    using name = Type__struct_unique_strings_list::ue_2;
+    using value = std::integral_constant<type, type::ue_2>;
+  };
+
+  struct Type__struct_enum_members {
+    using ui_2 = Type__struct_enum_members_ui_2;
+    using ud_2 = Type__struct_enum_members_ud_2;
+    using us_2 = Type__struct_enum_members_us_2;
+    using ue_2 = Type__struct_enum_members_ue_2;
+  };
+
+  using member = Type__struct_enum_members;
+
+  using fields = ::fatal::list<
+      member::ui_2,
+      member::ud_2,
+      member::us_2,
+      member::ue_2
   >;
 
   class annotations {
@@ -574,7 +616,10 @@ class union2_variant_traits {
 } // thrift_fatal_impl_detail
 namespace thrift_fatal_impl_detail {
 
-class union3_Type_enum_traits {
+struct union3_Type_enum_traits {
+  using type = ::test_cpp1::cpp_reflection::union3::Type;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
+
   struct Type__struct_unique_strings_list {
     using ui_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui_3;
     using ud_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud_3;
@@ -582,22 +627,40 @@ class union3_Type_enum_traits {
     using ue_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue_3;
   };
 
-  public:
-  using type = ::test_cpp1::cpp_reflection::union3::Type;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
-  using str = Type__struct_unique_strings_list;
-  using names = ::fatal::list<
-      str::ui_3,
-      str::ud_3,
-      str::us_3,
-      str::ue_3
-  >;
-  using values = ::fatal::sequence<
-    type,
-    type::ui_3,
-    type::ud_3,
-    type::us_3,
-    type::ue_3
+  struct Type__struct_enum_members_ui_3 {
+    using name = Type__struct_unique_strings_list::ui_3;
+    using value = std::integral_constant<type, type::ui_3>;
+  };
+
+  struct Type__struct_enum_members_ud_3 {
+    using name = Type__struct_unique_strings_list::ud_3;
+    using value = std::integral_constant<type, type::ud_3>;
+  };
+
+  struct Type__struct_enum_members_us_3 {
+    using name = Type__struct_unique_strings_list::us_3;
+    using value = std::integral_constant<type, type::us_3>;
+  };
+
+  struct Type__struct_enum_members_ue_3 {
+    using name = Type__struct_unique_strings_list::ue_3;
+    using value = std::integral_constant<type, type::ue_3>;
+  };
+
+  struct Type__struct_enum_members {
+    using ui_3 = Type__struct_enum_members_ui_3;
+    using ud_3 = Type__struct_enum_members_ud_3;
+    using us_3 = Type__struct_enum_members_us_3;
+    using ue_3 = Type__struct_enum_members_ue_3;
+  };
+
+  using member = Type__struct_enum_members;
+
+  using fields = ::fatal::list<
+      member::ui_3,
+      member::ud_3,
+      member::us_3,
+      member::ue_3
   >;
 
   class annotations {
@@ -852,7 +915,10 @@ class union3_variant_traits {
 } // thrift_fatal_impl_detail
 namespace thrift_fatal_impl_detail {
 
-class unionA_Type_enum_traits {
+struct unionA_Type_enum_traits {
+  using type = ::test_cpp1::cpp_reflection::unionA::Type;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
+
   struct Type__struct_unique_strings_list {
     using i = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::i;
     using d = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::d;
@@ -861,24 +927,47 @@ class unionA_Type_enum_traits {
     using a = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::a;
   };
 
-  public:
-  using type = ::test_cpp1::cpp_reflection::unionA::Type;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
-  using str = Type__struct_unique_strings_list;
-  using names = ::fatal::list<
-      str::i,
-      str::d,
-      str::s,
-      str::e,
-      str::a
-  >;
-  using values = ::fatal::sequence<
-    type,
-    type::i,
-    type::d,
-    type::s,
-    type::e,
-    type::a
+  struct Type__struct_enum_members_i {
+    using name = Type__struct_unique_strings_list::i;
+    using value = std::integral_constant<type, type::i>;
+  };
+
+  struct Type__struct_enum_members_d {
+    using name = Type__struct_unique_strings_list::d;
+    using value = std::integral_constant<type, type::d>;
+  };
+
+  struct Type__struct_enum_members_s {
+    using name = Type__struct_unique_strings_list::s;
+    using value = std::integral_constant<type, type::s>;
+  };
+
+  struct Type__struct_enum_members_e {
+    using name = Type__struct_unique_strings_list::e;
+    using value = std::integral_constant<type, type::e>;
+  };
+
+  struct Type__struct_enum_members_a {
+    using name = Type__struct_unique_strings_list::a;
+    using value = std::integral_constant<type, type::a>;
+  };
+
+  struct Type__struct_enum_members {
+    using i = Type__struct_enum_members_i;
+    using d = Type__struct_enum_members_d;
+    using s = Type__struct_enum_members_s;
+    using e = Type__struct_enum_members_e;
+    using a = Type__struct_enum_members_a;
+  };
+
+  using member = Type__struct_enum_members;
+
+  using fields = ::fatal::list<
+      member::i,
+      member::d,
+      member::s,
+      member::e,
+      member::a
   >;
 
   class annotations {
@@ -1191,7 +1280,10 @@ class unionA_variant_traits {
 } // thrift_fatal_impl_detail
 namespace thrift_fatal_impl_detail {
 
-class union_with_special_names_Type_enum_traits {
+struct union_with_special_names_Type_enum_traits {
+  using type = ::test_cpp1::cpp_reflection::union_with_special_names::Type;
+  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
+
   struct Type__struct_unique_strings_list {
     using get = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::get;
     using getter = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::getter;
@@ -1221,66 +1313,194 @@ class union_with_special_names_Type_enum_traits {
     using members = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::members;
   };
 
-  public:
-  using type = ::test_cpp1::cpp_reflection::union_with_special_names::Type;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
-  using str = Type__struct_unique_strings_list;
-  using names = ::fatal::list<
-      str::get,
-      str::getter,
-      str::lists,
-      str::maps,
-      str::name,
-      str::name_to_value,
-      str::names,
-      str::prefix_tree,
-      str::sets,
-      str::setter,
-      str::str,
-      str::strings,
-      str::type,
-      str::value,
-      str::value_to_name,
-      str::values,
-      str::id,
-      str::ids,
-      str::descriptor,
-      str::descriptors,
-      str::key,
-      str::keys,
-      str::annotation,
-      str::annotations,
-      str::member,
-      str::members
-  >;
-  using values = ::fatal::sequence<
-    type,
-    type::get,
-    type::getter,
-    type::lists,
-    type::maps,
-    type::name,
-    type::name_to_value,
-    type::names,
-    type::prefix_tree,
-    type::sets,
-    type::setter,
-    type::str,
-    type::strings,
-    type::type,
-    type::value,
-    type::value_to_name,
-    type::values,
-    type::id,
-    type::ids,
-    type::descriptor,
-    type::descriptors,
-    type::key,
-    type::keys,
-    type::annotation,
-    type::annotations,
-    type::member,
-    type::members
+  struct Type__struct_enum_members_get {
+    using name = Type__struct_unique_strings_list::get;
+    using value = std::integral_constant<type, type::get>;
+  };
+
+  struct Type__struct_enum_members_getter {
+    using name = Type__struct_unique_strings_list::getter;
+    using value = std::integral_constant<type, type::getter>;
+  };
+
+  struct Type__struct_enum_members_lists {
+    using name = Type__struct_unique_strings_list::lists;
+    using value = std::integral_constant<type, type::lists>;
+  };
+
+  struct Type__struct_enum_members_maps {
+    using name = Type__struct_unique_strings_list::maps;
+    using value = std::integral_constant<type, type::maps>;
+  };
+
+  struct Type__struct_enum_members_name {
+    using name = Type__struct_unique_strings_list::name;
+    using value = std::integral_constant<type, type::name>;
+  };
+
+  struct Type__struct_enum_members_name_to_value {
+    using name = Type__struct_unique_strings_list::name_to_value;
+    using value = std::integral_constant<type, type::name_to_value>;
+  };
+
+  struct Type__struct_enum_members_names {
+    using name = Type__struct_unique_strings_list::names;
+    using value = std::integral_constant<type, type::names>;
+  };
+
+  struct Type__struct_enum_members_prefix_tree {
+    using name = Type__struct_unique_strings_list::prefix_tree;
+    using value = std::integral_constant<type, type::prefix_tree>;
+  };
+
+  struct Type__struct_enum_members_sets {
+    using name = Type__struct_unique_strings_list::sets;
+    using value = std::integral_constant<type, type::sets>;
+  };
+
+  struct Type__struct_enum_members_setter {
+    using name = Type__struct_unique_strings_list::setter;
+    using value = std::integral_constant<type, type::setter>;
+  };
+
+  struct Type__struct_enum_members_str {
+    using name = Type__struct_unique_strings_list::str;
+    using value = std::integral_constant<type, type::str>;
+  };
+
+  struct Type__struct_enum_members_strings {
+    using name = Type__struct_unique_strings_list::strings;
+    using value = std::integral_constant<type, type::strings>;
+  };
+
+  struct Type__struct_enum_members_type {
+    using name = Type__struct_unique_strings_list::type;
+    using value = std::integral_constant<type, type::type>;
+  };
+
+  struct Type__struct_enum_members_value {
+    using name = Type__struct_unique_strings_list::value;
+    using value = std::integral_constant<type, type::value>;
+  };
+
+  struct Type__struct_enum_members_value_to_name {
+    using name = Type__struct_unique_strings_list::value_to_name;
+    using value = std::integral_constant<type, type::value_to_name>;
+  };
+
+  struct Type__struct_enum_members_values {
+    using name = Type__struct_unique_strings_list::values;
+    using value = std::integral_constant<type, type::values>;
+  };
+
+  struct Type__struct_enum_members_id {
+    using name = Type__struct_unique_strings_list::id;
+    using value = std::integral_constant<type, type::id>;
+  };
+
+  struct Type__struct_enum_members_ids {
+    using name = Type__struct_unique_strings_list::ids;
+    using value = std::integral_constant<type, type::ids>;
+  };
+
+  struct Type__struct_enum_members_descriptor {
+    using name = Type__struct_unique_strings_list::descriptor;
+    using value = std::integral_constant<type, type::descriptor>;
+  };
+
+  struct Type__struct_enum_members_descriptors {
+    using name = Type__struct_unique_strings_list::descriptors;
+    using value = std::integral_constant<type, type::descriptors>;
+  };
+
+  struct Type__struct_enum_members_key {
+    using name = Type__struct_unique_strings_list::key;
+    using value = std::integral_constant<type, type::key>;
+  };
+
+  struct Type__struct_enum_members_keys {
+    using name = Type__struct_unique_strings_list::keys;
+    using value = std::integral_constant<type, type::keys>;
+  };
+
+  struct Type__struct_enum_members_annotation {
+    using name = Type__struct_unique_strings_list::annotation;
+    using value = std::integral_constant<type, type::annotation>;
+  };
+
+  struct Type__struct_enum_members_annotations {
+    using name = Type__struct_unique_strings_list::annotations;
+    using value = std::integral_constant<type, type::annotations>;
+  };
+
+  struct Type__struct_enum_members_member {
+    using name = Type__struct_unique_strings_list::member;
+    using value = std::integral_constant<type, type::member>;
+  };
+
+  struct Type__struct_enum_members_members {
+    using name = Type__struct_unique_strings_list::members;
+    using value = std::integral_constant<type, type::members>;
+  };
+
+  struct Type__struct_enum_members {
+    using get = Type__struct_enum_members_get;
+    using getter = Type__struct_enum_members_getter;
+    using lists = Type__struct_enum_members_lists;
+    using maps = Type__struct_enum_members_maps;
+    using name = Type__struct_enum_members_name;
+    using name_to_value = Type__struct_enum_members_name_to_value;
+    using names = Type__struct_enum_members_names;
+    using prefix_tree = Type__struct_enum_members_prefix_tree;
+    using sets = Type__struct_enum_members_sets;
+    using setter = Type__struct_enum_members_setter;
+    using str = Type__struct_enum_members_str;
+    using strings = Type__struct_enum_members_strings;
+    using type = Type__struct_enum_members_type;
+    using value = Type__struct_enum_members_value;
+    using value_to_name = Type__struct_enum_members_value_to_name;
+    using values = Type__struct_enum_members_values;
+    using id = Type__struct_enum_members_id;
+    using ids = Type__struct_enum_members_ids;
+    using descriptor = Type__struct_enum_members_descriptor;
+    using descriptors = Type__struct_enum_members_descriptors;
+    using key = Type__struct_enum_members_key;
+    using keys = Type__struct_enum_members_keys;
+    using annotation = Type__struct_enum_members_annotation;
+    using annotations = Type__struct_enum_members_annotations;
+    using member = Type__struct_enum_members_member;
+    using members = Type__struct_enum_members_members;
+  };
+
+  using member = Type__struct_enum_members;
+
+  using fields = ::fatal::list<
+      member::get,
+      member::getter,
+      member::lists,
+      member::maps,
+      member::name,
+      member::name_to_value,
+      member::names,
+      member::prefix_tree,
+      member::sets,
+      member::setter,
+      member::str,
+      member::strings,
+      member::type,
+      member::value,
+      member::value_to_name,
+      member::values,
+      member::id,
+      member::ids,
+      member::descriptor,
+      member::descriptors,
+      member::key,
+      member::keys,
+      member::annotation,
+      member::annotations,
+      member::member,
+      member::members
   >;
 
   class annotations {

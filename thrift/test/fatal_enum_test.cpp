@@ -36,14 +36,30 @@ TEST(fatal_enum, sanity_check) {
   EXPECT_SAME<enum1s, traits::name>();
   EXPECT_SAME<std::underlying_type<enum1>::type, traits::int_type>();
 
-  EXPECT_SAME<field0s, traits::str::field0>();
-  EXPECT_SAME<field1s, traits::str::field1>();
-  EXPECT_SAME<field2s, traits::str::field2>();
+  EXPECT_SAME<field0s, traits::member::field0::name>();
+  EXPECT_SAME<field1s, traits::member::field1::name>();
+  EXPECT_SAME<field2s, traits::member::field2::name>();
 
-  EXPECT_SAME<fatal::list<field0s, field1s, field2s>, traits::names>();
   EXPECT_SAME<
-    fatal::sequence<enum1, enum1::field0, enum1::field1, enum1::field2>,
-    traits::values
+    std::integral_constant<enum1, enum1::field0>,
+    traits::member::field0::value
+  >();
+  EXPECT_SAME<
+    std::integral_constant<enum1, enum1::field1>,
+    traits::member::field1::value
+  >();
+  EXPECT_SAME<
+    std::integral_constant<enum1, enum1::field2>,
+    traits::member::field2::value
+  >();
+
+  EXPECT_SAME<
+    fatal::list<field0s, field1s, field2s>,
+    fatal::transform<traits::fields, fatal::get_type::name>
+  >();
+  EXPECT_SAME<
+    fatal::value_list<enum1, enum1::field0, enum1::field1, enum1::field2>,
+    fatal::transform<traits::fields, fatal::get_type::value>
   >();
 
   EXPECT_SAME<field0s, traits::name_of<enum1::field0>>();

@@ -80,7 +80,7 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using test_d_cpp_reflection = ::fatal::sequence<char, 't', 'e', 's', 't', '_', 'd', '.', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
   using test_java_cpp_reflection = ::fatal::sequence<char, 't', 'e', 's', 't', '_', 'j', 'a', 'v', 'a', '.', 'c', 'p', 'p', '_', 'r', 'e', 'f', 'l', 'e', 'c', 't', 'i', 'o', 'n'>;
   using methodF = ::fatal::sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'F'>;
-  using another_annotation = ::fatal::sequence<char, 'a', 'n', 'o', 't', 'h', 'e', 'r', '.', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
+  using keys = ::fatal::sequence<char, 'k', 'e', 'y', 's'>;
   using methodD = ::fatal::sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'D'>;
   using methodE = ::fatal::sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'E'>;
   using methodB = ::fatal::sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'B'>;
@@ -166,7 +166,7 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using k1 = ::fatal::sequence<char, 'k', '1'>;
   using field1_3 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '1', '_', '3'>;
   using constant3 = ::fatal::sequence<char, 'c', 'o', 'n', 's', 't', 'a', 'n', 't', '3'>;
-  using keys = ::fatal::sequence<char, 'k', 'e', 'y', 's'>;
+  using another_annotation = ::fatal::sequence<char, 'a', 'n', 'o', 't', 'h', 'e', 'r', '.', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
   using sample_annotation = ::fatal::sequence<char, 's', 'a', 'm', 'p', 'l', 'e', '.', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
   using y = ::fatal::sequence<char, 'y'>;
   using php = ::fatal::sequence<char, 'p', 'h', 'p'>;

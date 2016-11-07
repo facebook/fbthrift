@@ -4749,26 +4749,33 @@ class CppGenerator(t_generator.Generator):
         scoped_ns = self._get_scoped_original_namespace()
         traits_name = '{0}_enum_traits'.format(scoped_name.replace('::', '_'))
         with scope.namespace(self.fatal_detail_ns).scope as detail:
-            with detail.cls('class {0}'.format(traits_name)).scope as t:
+            with detail.cls('struct {0}'.format(traits_name)).scope as t:
+                t('using type = {0}::{1};'.format(scoped_ns, scoped_name))
+                t('using name = {0};'.format(self._set_fatal_string(name)))
+                t()
                 strcls = '{0}__struct_unique_strings_list'.format(name)
                 with t.cls('struct {0}'.format(strcls)):
                     for i in members:
                         cseq = self._set_fatal_string(i.name)
                         t('using {0} = {1};'.format(i.name, cseq))
                 t()
-                t('public:')
-                t('using type = {0}::{1};'.format(scoped_ns, scoped_name))
-                t('using name = {0};'.format(self._set_fatal_string(name)))
-                t('using str = {0};'.format(strcls))
-                t('using names = ::fatal::list<')
+                mbmclsprefix = '{0}__struct_enum_members_'.format(name)
+                for i in members:
+                    with t.cls('struct {0}{1}'.format(mbmclsprefix, i.name)):
+                        t('using name = {0}::{1};'.format(strcls, i.name))
+                        t(('using value = std::integral_constant<type'
+                            ', type::{0}>;').format(i.name))
+                t()
+                mbmcls = '{0}__struct_enum_members'.format(name)
+                with t.cls('struct {0}'.format(mbmcls)):
+                    for i in members:
+                        t('using {0} = {1}{0};'.format(i.name, mbmclsprefix))
+                t()
+                t('using member = {0};'.format(mbmcls))
+                t()
+                t('using fields = ::fatal::list<')
                 for idx, i in enumerate(members):
-                    t('    str::{0}{1}'
-                        .format(i.name, ',' if idx + 1 < len(members) else ''))
-                t('>;')
-                t('using values = ::fatal::sequence<')
-                t('  type{0}'.format(',' if len(members) > 0 else ''))
-                for idx, i in enumerate(members):
-                    t('  type::{0}{1}'
+                    t('    member::{0}{1}'
                         .format(i.name, ',' if idx + 1 < len(members) else ''))
                 t('>;')
                 t()

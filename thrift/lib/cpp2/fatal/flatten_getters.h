@@ -34,7 +34,7 @@ struct flat_getter {
   using full_path = fatal::push_back<Path, Member>;
 
   using getter = fatal::apply_to<
-    fatal::transform<full_path, fatal::get_type::getter::apply>,
+    fatal::transform<full_path, fatal::get_type::getter>,
     fatal::chained_data_member_getter
   >;
 };

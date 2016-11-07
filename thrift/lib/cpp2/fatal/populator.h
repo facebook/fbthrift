@@ -375,7 +375,7 @@ public:
       fatal::as_sequence<
         fatal::transform<
           typename traits::descriptors,
-          detail::extract_descriptor_fid::apply
+          detail::extract_descriptor_fid
         >,
         fatal::sequence,
         field_id_t

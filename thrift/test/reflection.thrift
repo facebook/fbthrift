@@ -263,6 +263,8 @@ enum enum_with_special_names {
   annotations,
   member,
   members,
+  field,
+  fields,
 }
 
 union union_with_special_names {
@@ -292,6 +294,8 @@ union union_with_special_names {
   24: i32 annotations
   25: i32 member
   26: i32 members
+  27: i32 field
+  28: i32 fields
 }
 
 struct struct_with_special_names {
@@ -321,6 +325,8 @@ struct struct_with_special_names {
   24: i32 annotations
   25: i32 member
   26: i32 members
+  27: i32 field
+  28: i32 fields
 }
 
 service service_with_special_names {
@@ -350,6 +356,8 @@ service service_with_special_names {
   i32 annotations()
   i32 member()
   i32 members()
+  i32 field()
+  i32 fields()
 }
 
 const i32 constant_with_special_name = 42;

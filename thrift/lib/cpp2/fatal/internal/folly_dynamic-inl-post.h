@@ -227,16 +227,15 @@ struct to_dynamic_variant_visitor {
 
 template <typename VariantTraits>
 struct from_dynamic_variant_visitor {
-  template <typename T, typename IdName>
+  template <typename T, typename Field>
   void operator ()(
-    fatal::tag<IdName>,
+    fatal::tag<Field>,
     T &out,
     folly::dynamic const &input,
     dynamic_format format,
     format_adherence adherence
   ) const {
-    using id = typename fatal::enum_traits<typename VariantTraits::id>
-      ::template value_of<IdName>;
+    using id = typename Field::value;
     using descriptor = typename VariantTraits::by_id::template descriptor<id>;
 
     VariantTraits::by_id::template set<id>(out);
@@ -286,7 +285,9 @@ struct dynamic_converter_impl<type_class::variant> {
       variant_traits::clear(out);
     } else {
       auto const type = i->first.stringPiece();
-      bool const found = fatal::trie_find<typename id_traits::names>(
+      bool const found = fatal::trie_find<
+        typename id_traits::fields, fatal::get_type::name
+      >(
         type.begin(), type.end(),
         from_dynamic_variant_visitor<variant_traits>(),
         out, i->second,
@@ -350,14 +351,9 @@ struct from_dynamic_struct_visitor {
     dynamic_format format,
     format_adherence adherence
   ) const {
-    using rmember = fatal::get<
-      typename reflect_struct<T>::members,
-      Member,
-      fatal::get_type::name
-    >;
-    using rgetter = typename rmember::getter;
-    assign_is_set<T, rgetter, typename rmember::optional>(out, true);
-    dynamic_converter_impl<typename rmember::type_class>::from(
+    using rgetter = typename Member::getter;
+    assign_is_set<T, rgetter, typename Member::optional>(out, true);
+    dynamic_converter_impl<typename Member::type_class>::from(
       rgetter::ref(out), input, format, adherence
     );
   }
@@ -384,9 +380,7 @@ struct dynamic_converter_impl<type_class::structure> {
     for (auto const &i: input.items()) {
       using namespace fatal;
       auto const member = i.first.stringPiece();
-      trie_find<
-        transform<typename reflect_struct<T>::members, get_type::name::apply>
-      >(
+      trie_find<typename reflect_struct<T>::members, get_type::name>(
         member.begin(), member.end(),
         from_dynamic_struct_visitor(),
         out, i.second,

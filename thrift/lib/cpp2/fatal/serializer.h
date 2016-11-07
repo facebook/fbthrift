@@ -685,22 +685,22 @@ struct protocol_methods <
 
   // Union.Type id -> descriptor
   using sorted_ids = fatal::sort<
-    fatal::transform<typename traits::descriptors, fatal::get_type::id::apply>
+    fatal::transform<typename traits::descriptors, fatal::get_type::id>
   >;
 
   private:
     // Visitor for a trie of union field names,
     // for mapping member field `fname` to  field `fid` and `ftype`
   struct member_fname_to_fid {
-    template <typename TString>
+    template <typename Field>
     void operator ()(
-      fatal::tag<TString>,
+      fatal::tag<Field>,
       field_id_t& fid,
       protocol::TType& ftype)
     {
       using descriptor = fatal::get<
         typename traits::descriptors,
-        typename enum_traits::template value_of<TString>,
+        typename Field::value,
         fatal::get_type::id
       >;
 
@@ -710,10 +710,14 @@ struct protocol_methods <
       static_assert(!std::is_same<field_tclass, type_class::unknown>(),
         "Instantiation failure, unknown field type");
       static_assert(
-        std::is_same<typename descriptor::metadata::name, TString>(),
+        std::is_same<
+          typename descriptor::metadata::name,
+          typename Field::name
+        >::value,
         "Instantiation failure, descriptor name mismatch");
 
-      DVLOG(3) << "(union) matched string: " << fatal::z_data<TString>()
+      DVLOG(3) << "(union) matched string: "
+        << fatal::z_data<typename Field::name>()
         << ", fid: " << fid
         << ", ftype: " << ftype;
 
@@ -772,8 +776,9 @@ public:
       if(fid == std::numeric_limits<int16_t>::min()) {
         // if so, look up fid via fname
         assert(fname != "");
-        using id_name_strs = typename enum_traits::names;
-        auto const found = fatal::trie_find<id_name_strs>(
+        bool const found = fatal::trie_find<
+          typename enum_traits::fields, fatal::get_type::name
+        >(
           fname.begin(), fname.end(), member_fname_to_fid(), fid, ftype
         );
         assert(found);
@@ -782,7 +787,7 @@ public:
       using sorted_fids = fatal::sort<
         fatal::transform<
           typename traits::descriptors,
-          detail::extract_descriptor_fid::apply
+          detail::extract_descriptor_fid
         >
       >;
       if(!fatal::sorted_search<sorted_fids>(
@@ -949,20 +954,18 @@ private:
 
   // mapping member fname -> fid
   struct member_fname_to_fid {
-    template <typename TString>
+    template <typename Member>
     void operator ()(
-      fatal::tag<TString>,
+      fatal::tag<Member>,
       field_id_t& fid,
       protocol::TType& ftype) {
-      using member = fatal::get<
-        typename traits::members, TString, fatal::get_type::name>;
-      fid = member::id::value;
+      fid = Member::id::value;
       ftype = protocol_methods<
-        typename member::type_class,
-        typename member::type
+        typename Member::type_class,
+        typename Member::type
       >::ttype_value;
 
-      DVLOG(3) << "matched string: " << fatal::z_data<TString>()
+      DVLOG(3) << "matched string: " << fatal::z_data<typename Member::name>()
         << ", fid: " << fid
         << ", ftype: " << ftype;
     }
@@ -1042,8 +1045,8 @@ public:
       if(fid == std::numeric_limits<int16_t>::min()) {
         // if so, look up fid via fname
         assert(fname != "");
-        auto found_ = trie_find<
-          transform<typename traits::members, get_type::name::apply>
+        bool const found_ = trie_find<
+          typename traits::members, fatal::get_type::name
         >(fname.begin(), fname.end(), member_fname_to_fid(), fid, ftype);
         if (!found_) {
           xfer += protocol.skip(ftype);
@@ -1053,7 +1056,7 @@ public:
       }
 
       using sorted_fids  = sort<
-        transform<typename traits::members, get_type::id::apply>
+        transform<typename traits::members, get_type::id>
       >;
       if(!sorted_search<sorted_fids>(
           fid,

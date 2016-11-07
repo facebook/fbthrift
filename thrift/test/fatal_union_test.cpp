@@ -51,12 +51,12 @@ TEST(fatal_union, variants) {
 
   EXPECT_SAME<
     fatal::list<uii, udi, usi, uei>,
-    fatal::transform<traits::descriptors, fatal::get_type::id::apply>
+    fatal::transform<traits::descriptors, fatal::get_type::id>
   >();
 
   EXPECT_SAME<
     fatal::list<std::int32_t, double, std::string, enum1>,
-    fatal::transform<traits::descriptors, fatal::get_type::type::apply>
+    fatal::transform<traits::descriptors, fatal::get_type::type>
   >();
 }
 
@@ -274,7 +274,7 @@ TEST(fatal_union, annotations) {
 TEST(fatal_union, by_name) {
   using id_traits = fatal::enum_traits<union1::Type>;
   using info = apache::thrift::reflect_variant<union1>;
-  using member_info = info::by_name<id_traits::str::ui>;
+  using member_info = info::by_name<id_traits::member::ui::name>;
 
   union1 u;
   u.set_ui(10);

@@ -337,7 +337,6 @@ struct serializer<type_class::variant> {
 
     bool found = fatal::trie_find<
       typename fatal::variant_traits<T>::descriptors,
-      fatal::less,
       get_variant_member_name
     >(
       which.begin(), which.end(),
