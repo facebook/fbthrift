@@ -31,5 +31,5 @@ key, include the parallel CythonPythonToCppKey file instead.
 }}{{#type:i32?}}item{{/type:i32?}}{{!
 }}{{#type:i64?}}item{{/type:i64?}}{{!
 }}{{#type:double?}}item{{/type:double?}}{{!
-}}{{#type:string?}}item.encode(){{/type:string?}}{{!
+}}{{#type:string?}}item.encode('UTF-8'){{/type:string?}}{{!
 }}{{#type:struct}}deref((<{{struct:name}}> item).c_{{struct:name}}){{/type:struct}}

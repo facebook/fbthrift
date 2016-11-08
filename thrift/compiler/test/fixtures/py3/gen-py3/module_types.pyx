@@ -245,7 +245,7 @@ cdef class List__string:
         self._vector = make_shared[vector[string]]()
         if items:
             for item in items:
-                deref(self._vector).push_back(item.encode())
+                deref(self._vector).push_back(item.encode('UTF-8'))
 
     @staticmethod
     cdef create(shared_ptr[vector[string]] c_items):
@@ -314,7 +314,7 @@ cdef class Set__string:
         self._set = make_shared[cset[string]]()
         if items:
             for item in items:
-                deref(self._set).insert(item.encode())
+                deref(self._set).insert(item.encode('UTF-8'))
 
     @staticmethod
     cdef create(shared_ptr[cset[string]] c_items):
@@ -323,7 +323,7 @@ cdef class Set__string:
         return inst
 
     def __contains__(self, str item):
-        return pbool(deref(self._set).count(item.encode()))
+        return pbool(deref(self._set).count(item.encode('UTF-8')))
 
     def __len__(self):
         return deref(self._set).size()
@@ -340,7 +340,7 @@ cdef class Map__string_string:
         self._map = make_shared[cmap[string,string]]()
         if items:
             for key, item in items.items():
-                deref(self._map).insert(cpair[string,string](key.encode(), item.encode()))
+                deref(self._map).insert(cpair[string,string](key.encode('UTF-8'), item.encode('UTF-8')))
 
     @staticmethod
     cdef create(shared_ptr[cmap[string,string]] c_items):
@@ -349,7 +349,7 @@ cdef class Map__string_string:
         return inst
 
     def __getitem__(self, str key):
-        cdef string ckey = key.encode()
+        cdef string ckey = key.encode('UTF-8')
         cdef string citem = deref(self._map)[ckey]
         return citem.decode()
 
@@ -370,7 +370,7 @@ cdef class Map__string_SimpleStruct:
         self._map = make_shared[cmap[string,cSimpleStruct]]()
         if items:
             for key, item in items.items():
-                deref(self._map).insert(cpair[string,cSimpleStruct](key.encode(), deref((<SimpleStruct> item).c_SimpleStruct)))
+                deref(self._map).insert(cpair[string,cSimpleStruct](key.encode('UTF-8'), deref((<SimpleStruct> item).c_SimpleStruct)))
 
     @staticmethod
     cdef create(shared_ptr[cmap[string,cSimpleStruct]] c_items):
@@ -379,7 +379,7 @@ cdef class Map__string_SimpleStruct:
         return inst
 
     def __getitem__(self, str key):
-        cdef string ckey = key.encode()
+        cdef string ckey = key.encode('UTF-8')
         cdef cSimpleStruct citem = deref(self._map)[ckey]
         return SimpleStruct.create(make_shared[cSimpleStruct](citem))
 
@@ -400,7 +400,7 @@ cdef class Map__string_i16:
         self._map = make_shared[cmap[string,int16_t]]()
         if items:
             for key, item in items.items():
-                deref(self._map).insert(cpair[string,int16_t](key.encode(), item))
+                deref(self._map).insert(cpair[string,int16_t](key.encode('UTF-8'), item))
 
     @staticmethod
     cdef create(shared_ptr[cmap[string,int16_t]] c_items):
@@ -409,7 +409,7 @@ cdef class Map__string_i16:
         return inst
 
     def __getitem__(self, str key):
-        cdef string ckey = key.encode()
+        cdef string ckey = key.encode('UTF-8')
         cdef int16_t citem = deref(self._map)[ckey]
         return citem
 
