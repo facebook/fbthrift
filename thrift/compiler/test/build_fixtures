@@ -56,13 +56,19 @@ templatesRel = os.path.join(buildDir, 'thrift/compiler/generate/templates')
 templates = ascend_find_dir(exe, templatesRel)
 thrift = ascend_find_exe(exe, thriftRel)
 fixtureDir = ascend_find_dir(exe, 'thrift/compiler/test/fixtures')
-fixtureNames = [
+fixtureNames = sorted([
     f
     for f in os.listdir(fixtureDir)
     if os.path.isfile(os.path.join(fixtureDir, f, 'cmd'))
-]
+])
 
-for name in fixtureNames:
+hasErrors = False
+
+msgFormat = "Building fixture {{0:>{w}}}/{{1}}: {{2}}".format(
+    w=len(str(len(fixtureNames))))
+for name, index in zip(fixtureNames, range(len(fixtureNames))):
+    msg = msgFormat.format(index + 1, len(fixtureNames), name)
+    print(msg, file=sys.stderr)
     cwd = os.path.join(fixtureDir, name)
     for fn in set(os.listdir(cwd)) - set(['cmd', 'src']):
         if fn.startswith('.'):
@@ -86,8 +92,16 @@ for name in fixtureNames:
             # workaround. In future, we will use mstch, and the mstch
             # generator does not have this issue.
             base_args.remove('-r')
-        subprocess.check_call(
+        p = subprocess.Popen(
             base_args + args,
             cwd=cwd,
             close_fds=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
         )
+        out, err = p.communicate()
+        if p.returncode != 0:
+            hasErrors = True
+            sys.stderr.write(err)
+
+sys.exit(int(hasErrors))
