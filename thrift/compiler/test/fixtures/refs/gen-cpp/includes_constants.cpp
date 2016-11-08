@@ -6,6 +6,9 @@
  */
 #include "thrift/compiler/test/fixtures/refs/gen-cpp/includes_constants.h"
 
+#include <folly/Indestructible.h>
+
+
 namespace cpp1 {
 
 

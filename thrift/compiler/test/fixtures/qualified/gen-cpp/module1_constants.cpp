@@ -6,20 +6,27 @@
  */
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp/module1_constants.h"
 
+#include <folly/Indestructible.h>
+
+
 namespace MODULE1 {
 
 Struct const &module1_constants::c1() {
-  static Struct const instance = Struct(
-    ::apache::thrift::detail::wrap_argument<1>(201),
-    ::apache::thrift::detail::wrap_argument<2>("module1_str"));
-  return instance;
+  static folly::Indestructible<Struct> const instance{
+    Struct(
+      ::apache::thrift::detail::wrap_argument<1>(201),
+      ::apache::thrift::detail::wrap_argument<2>("module1_str"))
+  };
+  return *instance;
 }
 std::vector<Enum>  const &module1_constants::e1s() {
-  static std::vector<Enum>  const instance = std::vector<Enum> {
-    Enum::ONE,
-    Enum::THREE,
+  static folly::Indestructible<std::vector<Enum> > const instance{
+    std::vector<Enum> {
+      Enum::ONE,
+      Enum::THREE,
+    }
   };
-  return instance;
+  return *instance;
 }
 
 

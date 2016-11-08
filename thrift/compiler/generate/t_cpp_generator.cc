@@ -1021,7 +1021,9 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
            << "_types.h\"" << endl;
 
   f_consts_impl << "#include \"" << get_include_prefix(*get_program())
-                << program_name_ << "_constants.h\"" << endl;
+                << program_name_ << "_constants.h\"" << endl << endl;
+
+  f_consts_impl << "#include <folly/Indestructible.h>" << endl << endl;
 
   // Include other Thrift includes' constants
   for (auto* include : program_->get_includes()) {
@@ -1113,11 +1115,16 @@ void t_cpp_generator::generate_consts(std::vector<t_const*> consts) {
       f_consts_impl << indent() << type_name(type) << " const &"
         << program_name_ << "_constants::" << name << "() {" << endl;
       indent_up();
-      f_consts_impl << indent() << "static " << type_name(type)
-                    << " const instance = ";
+      f_consts_impl << indent() <<
+          "static folly::Indestructible<" << type_name(type) << "> " <<
+          "const instance{" << endl;
+      indent_up();
+      f_consts_impl << indent();
       print_const_value(f_consts_impl, type, value, false, c);
-      f_consts_impl << ";" << endl;
-      f_consts_impl << indent() << "return instance;" << endl;
+      f_consts_impl << endl;
+      indent_down();
+      f_consts_impl << indent() << "};" << endl;
+      f_consts_impl << indent() << "return *instance;" << endl;
       indent_down();
       f_consts_impl << indent() << '}' << endl;
     }

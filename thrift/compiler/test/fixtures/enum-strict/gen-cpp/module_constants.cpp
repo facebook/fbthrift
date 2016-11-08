@@ -6,6 +6,9 @@
  */
 #include "thrift/compiler/test/fixtures/enum-strict/gen-cpp/module_constants.h"
 
+#include <folly/Indestructible.h>
+
+
 
 
 constexpr MyEnum const module_constants::kFoo_;

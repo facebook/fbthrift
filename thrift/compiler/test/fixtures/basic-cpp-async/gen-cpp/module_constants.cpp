@@ -6,6 +6,9 @@
  */
 #include "thrift/compiler/test/fixtures/basic-cpp-async/gen-cpp/module_constants.h"
 
+#include <folly/Indestructible.h>
+
+
 
 
 

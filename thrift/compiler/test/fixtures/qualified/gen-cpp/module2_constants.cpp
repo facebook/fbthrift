@@ -6,13 +6,18 @@
  */
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp/module2_constants.h"
 
+#include <folly/Indestructible.h>
+
+
 namespace MODULE2 {
 
 Struct const &module2_constants::c2() {
-  static Struct const instance = Struct(
-    ::apache::thrift::detail::wrap_argument<1>( ::MODULE0::Struct( ::MODULE0::module0_constants::c0())),
-    ::apache::thrift::detail::wrap_argument<2>( ::MODULE1::Struct( ::MODULE1::module1_constants::c1())));
-  return instance;
+  static folly::Indestructible<Struct> const instance{
+    Struct(
+      ::apache::thrift::detail::wrap_argument<1>( ::MODULE0::Struct( ::MODULE0::module0_constants::c0())),
+      ::apache::thrift::detail::wrap_argument<2>( ::MODULE1::Struct( ::MODULE1::module1_constants::c1())))
+  };
+  return *instance;
 }
 
 
