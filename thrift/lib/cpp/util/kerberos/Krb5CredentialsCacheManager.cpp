@@ -26,6 +26,7 @@
 #include <folly/Memory.h>
 #include <folly/ScopeGuard.h>
 #include <folly/String.h>
+#include <folly/ThreadName.h>
 #include <folly/portability/GFlags.h>
 
 // DO NOT modify this flag from your application
@@ -43,6 +44,8 @@ static const time_t kCcManagerKillSwitchExpired = 86400;
 
 // Don't log more than once about cc manager kill switch in this time (seconds)
 static const time_t kCcManagerKillSwitchLoggingTimeout = 300;
+
+static const std::string kCcThreadName = "Krb5CcManager";
 
 namespace apache { namespace thrift { namespace krb5 {
 using namespace std;
@@ -76,6 +79,7 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
   // is chosen, we keep using that one and it never changes.
 
   manageThread_ = std::thread([=] {
+    folly::setThreadName(kCcThreadName);
     logger->log("manager_started");
     logger->log("max_cache_size", folly::to<string>(maxCacheSize));
 
