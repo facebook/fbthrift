@@ -479,6 +479,8 @@ class t_cpp_generator : public t_oop_generator {
   std::ofstream f_types_;
   std::ofstream f_types_impl_;
   std::ofstream f_types_tcc_;
+  std::ofstream f_data_;
+  std::ofstream f_data_impl_;
   std::ofstream f_types_layouts_;
   std::ofstream f_types_layouts_impl_;
   std::ofstream f_header_;
@@ -521,6 +523,14 @@ void t_cpp_generator::init_generator() {
   f_types_impl_.open(f_types_impl_name.c_str());
   record_genfile(f_types_impl_name);
 
+  string f_data_name = get_out_dir() + program_name_ + "_data.h";
+  f_data_.open(f_data_name.c_str());
+  record_genfile(f_data_name);
+
+  string f_data_impl_name = get_out_dir() + program_name_ + "_data.cpp";
+  f_data_impl_.open(f_data_impl_name.c_str());
+  record_genfile(f_data_impl_name);
+
   if (frozen2_) {
     string f_types_layouts_name = get_out_dir() + program_name_ + "_layouts.h";
     f_types_layouts_.open(f_types_layouts_name.c_str());
@@ -560,6 +570,10 @@ void t_cpp_generator::init_generator() {
     autogen_comment();
   f_types_tcc_ <<
     autogen_comment();
+  f_data_ <<
+    autogen_comment();
+  f_data_impl_ <<
+    autogen_comment();
 
   f_reflection_ <<
     autogen_comment();
@@ -580,6 +594,19 @@ void t_cpp_generator::init_generator() {
     "#include <thrift/lib/cpp/protocol/TProtocol.h>" << endl <<
     "#include <thrift/lib/cpp/transport/TTransport.h>" << endl <<
     endl;
+
+  f_data_ <<
+    "#pragma once" << endl <<
+    endl <<
+    "#include \"" <<
+    get_include_prefix(*get_program()) << program_name_ << "_types.h" <<
+    "\"" << endl <<
+    endl;
+  f_data_impl_ <<
+    "#include \"" <<
+    get_include_prefix(*get_program()) << program_name_ << "_data.h" <<
+    "\"" << endl
+    << endl;
 
   if (frozen_) {
     f_types_ <<

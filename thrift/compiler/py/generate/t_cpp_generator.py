@@ -38,7 +38,10 @@ from thrift_compiler.frontend import e_const_value_type as e_cv_type
 
 from thrift_compiler.generate import t_generator
 
-from thrift_compiler.generate.t_cpp_context import *
+from thrift_compiler.generate.t_cpp_context import (
+    CppOutputContext,
+    CppPrimitiveFactory,
+)
 from thrift_compiler.generate.t_output_aggregator import get_global_scope
 from thrift_compiler.generate.t_output_aggregator import out
 from thrift_compiler.generate.t_output import IndentedOutput
@@ -620,6 +623,19 @@ class CppGenerator(t_generator.Generator):
         if suffix is None:
             raise TypeError('INVALID TYPE IN type_to_enum: ' + t.name)
         return 'apache::thrift::protocol::' + suffix
+
+    def _generate_data(self):
+        context = self._make_context(self._program.name + '_data')
+        sg = get_global_scope(CppPrimitiveFactory, context)
+        if self.flag_compatibility:
+            # Delegate to cpp1 data
+            sg('#include "{0}"'.format(self._with_compatibility_include_prefix(
+                self._program, self._program.name + '_data.h')))
+            sg()
+            return
+        sg('#include "{0}_types.h"'.format(
+            self._with_include_prefix(self._program, self._program.name)))
+        sg()
 
     # =====================================================================
     # SERVICE INTERFACE

@@ -89,6 +89,7 @@ class Generator(object):
         for item in chain(program.enums, program.typedefs, \
                 program.objects, program.services):
             self._generate(item)
+        self._generate_data()
         self._generate_consts(program.consts)
         if self._flag('frozen2'):
             self._generate_layouts(program.objects)
@@ -105,6 +106,9 @@ class Generator(object):
     @property
     def program(self):
         return self._program
+
+    def _generate_data(self):
+        raise NotImplementedError
 
     def _generate_consts(self, constants):
         raise NotImplementedError

@@ -163,6 +163,9 @@ class SchemaGenerator(t_generator.Generator):
 
         print(serialized, file=self._schema_out)
 
+    def _generate_data(self):
+        pass
+
     def _generate_consts(self, constants):
         pass
 
