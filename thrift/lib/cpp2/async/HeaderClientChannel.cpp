@@ -70,16 +70,15 @@ void HeaderClientChannel::setSaslTimeout(uint32_t ms) {
 }
 
 void HeaderClientChannel::closeNow() {
-  saslClientCallback_.cancelTimeout();
-  if (saslClient_) {
-    saslClient_->detachEventBase();
-  }
-
   cpp2Channel_->closeNow();
 }
 
 void HeaderClientChannel::destroy() {
   closeNow();
+  saslClientCallback_.cancelTimeout();
+  if (saslClient_) {
+    saslClient_->detachEventBase();
+  }
   folly::DelayedDestruction::destroy();
 }
 
