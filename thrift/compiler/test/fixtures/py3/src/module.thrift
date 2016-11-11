@@ -36,6 +36,14 @@ const i64 A_BIG_NUMBER = 102
 const double A_REAL_NUMBER = 3.14
 const double A_FAKE_NUMBER = 3
 const string A_WORD = "Good word"
+const SimpleStruct A_STRUCT = {
+  "is_on": true,
+  "tiny_int": 5,
+  "small_int": 6,
+  "nice_sized_int": 7,
+  "big_int": 8,
+  "real": 9.9
+}
 
 service SimpleService {
   i32 get_five()

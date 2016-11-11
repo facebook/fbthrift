@@ -45,6 +45,10 @@ from thrift.lib.py3.thrift_server cimport TException
 from collections.abc import Sequence, Set, Mapping
 from enum import Enum
 
+{{#program:constants}}
+{{#first?}}from {{program:name}}_types cimport ({{/first}}
+  c{{constant:name}}{{^last?}},{{/last?}}{{#last}}
+){{/last}}{{/program:constants}}
 
 {{#program:structs}}
 {{#first?}}from {{program:name}}_types cimport ({{/first?}}
@@ -191,5 +195,4 @@ Mapping.register({{type:flat_name}})
 {{/program:containerTypes}}
 
 {{#program:constants}}
-{{#constant:value}}{{> ConstantValue}}{{/constant:value}}
-{{/program:constants}}
+{{#constant:value}}{{> ConstantValue}}{{/constant:value}}{{/program:constants}}

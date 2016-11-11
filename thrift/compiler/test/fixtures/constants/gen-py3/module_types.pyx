@@ -17,6 +17,7 @@ from collections.abc import Sequence, Set, Mapping
 from enum import Enum
 
 
+
 from module_types cimport (
     cInternship,
     cUnEnumStruct,
@@ -158,9 +159,16 @@ cdef class Range:
 
 
 myInt = 1337
+name = cname().decode('UTF-8')
 x = 1.000000
 y = 1000000.0
 z = 1000000000.000000
+instagram = Internship.create(make_shared[cInternship](cinstagram()))
+apostrophe = capostrophe().decode('UTF-8')
+tripleApostrophe = ctripleApostrophe().decode('UTF-8')
+quotationMark = cquotationMark().decode('UTF-8')
+backslash = cbackslash().decode('UTF-8')
+escaped_a = cescaped_a().decode('UTF-8')
 false_c = Fale
 true_c = True
 zero_byte = 0
@@ -168,3 +176,4 @@ zero16 = 0
 zero32 = 0
 zero64 = 0
 zero_dot_zero = 0.000000
+empty_string = cempty_string().decode('UTF-8')

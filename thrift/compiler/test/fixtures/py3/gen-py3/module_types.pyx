@@ -17,6 +17,7 @@ from collections.abc import Sequence, Set, Mapping
 from enum import Enum
 
 
+
 from module_types cimport (
     cSimpleException,
     cSimpleStruct,
@@ -432,3 +433,5 @@ A_NUMBER = 84
 A_BIG_NUMBER = 102
 A_REAL_NUMBER = 3.140000
 A_FAKE_NUMBER = 3.0
+A_WORD = cA_WORD().decode('UTF-8')
+A_STRUCT = SimpleStruct.create(make_shared[cSimpleStruct](cA_STRUCT()))

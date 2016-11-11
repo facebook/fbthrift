@@ -136,3 +136,14 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cmap[string,string]] move(unique_ptr[cmap[string,string]])
     cdef shared_ptr[cmap[string,cSimpleStruct]] move(unique_ptr[cmap[string,cSimpleStruct]])
     cdef shared_ptr[cmap[string,int16_t]] move(unique_ptr[cmap[string,int16_t]])
+
+cdef extern from "src/gen-cpp2/module_constants.h" namespace "py3::simple":
+    cdef cbool cA_BOOL "py3::simple::module_constants::A_BOOL"
+    cdef int8_t cA_BYTE "py3::simple::module_constants::A_BYTE"
+    cdef int16_t cTHE_ANSWER "py3::simple::module_constants::THE_ANSWER"
+    cdef int32_t cA_NUMBER "py3::simple::module_constants::A_NUMBER"
+    cdef int64_t cA_BIG_NUMBER "py3::simple::module_constants::A_BIG_NUMBER"
+    cdef double cA_REAL_NUMBER "py3::simple::module_constants::A_REAL_NUMBER"
+    cdef double cA_FAKE_NUMBER "py3::simple::module_constants::A_FAKE_NUMBER"
+    cdef const char* cA_WORD "py3::simple::module_constants::A_WORD"()
+    cdef cSimpleStruct cA_STRUCT "py3::simple::module_constants::A_STRUCT"()

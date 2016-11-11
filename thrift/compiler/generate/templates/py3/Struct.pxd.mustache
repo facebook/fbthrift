@@ -109,3 +109,11 @@ cdef class {{type:flat_name}}:
 }}move(unique_ptr[cset[{{> ContainerCythonFieldType}}]]){{/type:setElemType}}{{!
 }}{{#type:map?}}    cdef shared_ptr[cmap[{{> CythonMapKeyValue}}]] {{!
 }}move(unique_ptr[cmap[{{> CythonMapKeyValue}}]]){{/type:map?}}{{/program:containerTypes}}
+
+{{#program:constants}}
+{{#first?}}cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_constants.h"{{!
+}} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":{{/first?}}
+    {{#constant:type}}
+    cdef {{^type:string?}}{{> ConstantCythonFieldType}}{{/type:string?}}{{#type:string?}}const char*{{/type:string?}} {{!
+    }}c{{constant:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{program:name}}_constants::{{constant:name}}"{{!
+    }}{{#type:struct?}}(){{/type:struct?}}{{#type:string?}}(){{/type:string?}}{{/constant:type}}{{/program:constants}}

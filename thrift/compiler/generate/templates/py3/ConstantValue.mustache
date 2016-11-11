@@ -47,9 +47,11 @@ file.
 }}{{/constant:value}}
 {{/type:double?}}
 {{#type:string?}}
+{{constant:name}} = c{{constant:name}}().decode('UTF-8')
 {{/type:string?}}
-{{#type:struct}}{{/type:struct}}
-{{#type:enum}}{{/type:enum}}
+{{#type:struct}}
+{{constant:name}} = {{type:name}}.create(make_shared[c{{type:name}}](c{{constant:name}}()))
+{{/type:struct}}
 {{#type:listElemType}}{{/type:listElemType}}
 {{#type:setElemType}}{{/type:setElemType}}
 {{#type:map?}}{{/type:map?}}

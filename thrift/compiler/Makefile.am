@@ -123,6 +123,7 @@ py3__DATA = \
                     generate/templates/py3/ConstantValue.mustache \
                     generate/templates/py3/ContainerCppFieldType.mustache \
                     generate/templates/py3/ContainerCythonCppToPythonItem.mustache \
+                    generate/templates/py3/ConstantCythonFieldType.mustache \
                     generate/templates/py3/ContainerCythonFieldType.mustache \
                     generate/templates/py3/CppFieldType.mustache \
                     generate/templates/py3/CppMapKeyValue.mustache \
