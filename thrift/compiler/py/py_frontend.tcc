@@ -307,9 +307,10 @@ BOOST_PYTHON_MODULE(frontend) {
               (&t_program::get_namespace), policy_ccr()),
           static_cast<void (t_program::*)(string)>
               (&t_program::set_namespace))
-      .def("get_namespace",
-           static_cast<string (t_program::*)(const string&) const>
-           (&t_program::get_namespace))
+      .def("get_namespace", make_function(
+          static_cast<const string& (t_program::*)(const string&) const>(
+            &t_program::get_namespace),
+          policy_ccr()))
       .add_property("namespaces",
           make_function(&t_program::get_namespaces, policy_rir()))
       .add_property("include_prefix",

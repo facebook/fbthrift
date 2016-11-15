@@ -24,6 +24,8 @@
 #include <string>
 #include <vector>
 
+#include <folly/MapUtil.h>
+
 // For program_name()
 #include <thrift/compiler/main.h>
 
@@ -169,13 +171,9 @@ class t_program : public t_doc {
     namespaces_[language] = name_space;
   }
 
-  std::string get_namespace(const std::string& language) const {
-    std::map<std::string, std::string>::const_iterator iter =
-      namespaces_.find(language);
-    if (iter == namespaces_.end()) {
-      return std::string();
-    }
-    return iter->second;
+  const std::string& get_namespace(const std::string& language) const {
+    static const auto& kEmpty = *new std::string();
+    return folly::get_ref_default(namespaces_, language, kEmpty);
   }
 
   const std::map<std::string, std::string>& get_namespaces() const {

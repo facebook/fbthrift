@@ -49,8 +49,8 @@ struct indexMap {
   typedef map<T, U> Map;
 
   struct iteration_helper {
-    static list keys(Map const& self) {
-      list t;
+    static boost::python::list keys(Map const& self) {
+      boost::python::list t;
       for (const auto& v : self)
         t.append(v.first);
       return t;
@@ -75,8 +75,8 @@ template<class Key, class Val>
 struct map_item {
   typedef std::vector<std::pair<Key,Val>> Map;
 
-  static list items(Map const& self) {
-    list t;
+  static boost::python::list items(Map const& self) {
+    boost::python::list t;
     for (const auto& v : self)
       t.append( boost::python::make_tuple(boost::ref(v.first),
                                           boost::ref(v.second)));

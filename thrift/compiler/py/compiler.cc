@@ -67,10 +67,10 @@ void process(const dict& params, const object& generate_callback) {
   g_allow_neg_enum_vals = extract<bool> (opts.attr("allow_neg_enum_vals"));
   g_allow_64bit_consts = extract<bool> (opts.attr("allow_64bit_consts"));
 
-  auto e = extract<list> (opts.attr("includeDirs"));
+  auto e = extract<boost::python::list> (opts.attr("includeDirs"));
   if (e.check()) {
     // if it's set, push the include dirs into the global search path
-    list includes = e;
+    boost::python::list includes = e;
     for (it = stl_input_iterator<object> (includes); it != end; ++it) {
       g_incl_searchpath.push_back(extract<string> (*it));
     }
