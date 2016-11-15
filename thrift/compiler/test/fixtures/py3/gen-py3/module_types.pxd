@@ -147,3 +147,6 @@ cdef extern from "src/gen-cpp2/module_constants.h" namespace "py3::simple":
     cdef double cA_FAKE_NUMBER "py3::simple::module_constants::A_FAKE_NUMBER"
     cdef const char* cA_WORD "py3::simple::module_constants::A_WORD"()
     cdef cSimpleStruct cA_STRUCT "py3::simple::module_constants::A_STRUCT"()
+    cdef vector[string] cWORD_LIST "py3::simple::module_constants::WORD_LIST"()
+    cdef cset[int32_t] cDIGITS "py3::simple::module_constants::DIGITS"()
+    cdef cmap[string,cSimpleStruct] cA_CONST_MAP "py3::simple::module_constants::A_CONST_MAP"()

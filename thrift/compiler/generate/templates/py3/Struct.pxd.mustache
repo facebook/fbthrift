@@ -116,4 +116,4 @@ cdef class {{type:flat_name}}:
     {{#constant:type}}
     cdef {{^type:string?}}{{> ConstantCythonFieldType}}{{/type:string?}}{{#type:string?}}const char*{{/type:string?}} {{!
     }}c{{constant:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{program:name}}_constants::{{constant:name}}"{{!
-    }}{{#type:struct?}}(){{/type:struct?}}{{#type:string?}}(){{/type:string?}}{{/constant:type}}{{/program:constants}}
+    }}{{#type:struct?}}(){{/type:struct?}}{{#type:string?}}(){{/type:string?}}{{#type:container?}}(){{/type:container?}}{{/constant:type}}{{/program:constants}}

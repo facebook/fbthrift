@@ -420,3 +420,6 @@ A_REAL_NUMBER = 3.140000
 A_FAKE_NUMBER = 3.0
 A_WORD = cA_WORD().decode('UTF-8')
 A_STRUCT = SimpleStruct.create(make_shared[cSimpleStruct](cA_STRUCT()))
+WORD_LIST = List__string.create(make_shared[vector[string]](cWORD_LIST()))
+DIGITS = Set__i32.create(make_shared[cset[int32_t]](cDIGITS()))
+A_CONST_MAP = Map__string_SimpleStruct.create(make_shared[cmap[string,module_types.cSimpleStruct]](cA_CONST_MAP()))

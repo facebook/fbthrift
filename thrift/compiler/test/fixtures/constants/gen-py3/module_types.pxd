@@ -82,20 +82,20 @@ cdef class Range:
 cdef extern from "src/gen-cpp2/module_constants.h" namespace "cpp2":
     cdef int32_t cmyInt "cpp2::module_constants::myInt"
     cdef const char* cname "cpp2::module_constants::name"()
-    cdef vector[] cstates "cpp2::module_constants::states"
+    cdef vector[cmap[string,int32_t]] cstates "cpp2::module_constants::states"()
     cdef double cx "cpp2::module_constants::x"
     cdef double cy "cpp2::module_constants::y"
     cdef double cz "cpp2::module_constants::z"
     cdef cInternship cinstagram "cpp2::module_constants::instagram"()
-    cdef vector[module_types.cRange] ckRanges "cpp2::module_constants::kRanges"
-    cdef vector[module_types.cInternship] cinternList "cpp2::module_constants::internList"
+    cdef vector[cRange] ckRanges "cpp2::module_constants::kRanges"()
+    cdef vector[cInternship] cinternList "cpp2::module_constants::internList"()
     cdef const char* capostrophe "cpp2::module_constants::apostrophe"()
     cdef const char* ctripleApostrophe "cpp2::module_constants::tripleApostrophe"()
     cdef const char* cquotationMark "cpp2::module_constants::quotationMark"()
     cdef const char* cbackslash "cpp2::module_constants::backslash"()
     cdef const char* cescaped_a "cpp2::module_constants::escaped_a"()
-    cdef cmap[string,int32_t] cchar2ascii "cpp2::module_constants::char2ascii"
-    cdef vector[string] cescaped_strings "cpp2::module_constants::escaped_strings"
+    cdef cmap[string,int32_t] cchar2ascii "cpp2::module_constants::char2ascii"()
+    cdef vector[string] cescaped_strings "cpp2::module_constants::escaped_strings"()
     cdef cbool cfalse_c "cpp2::module_constants::false_c"
     cdef cbool ctrue_c "cpp2::module_constants::true_c"
     cdef int8_t czero_byte "cpp2::module_constants::zero_byte"
@@ -104,11 +104,11 @@ cdef extern from "src/gen-cpp2/module_constants.h" namespace "cpp2":
     cdef int64_t czero64 "cpp2::module_constants::zero64"
     cdef double czero_dot_zero "cpp2::module_constants::zero_dot_zero"
     cdef const char* cempty_string "cpp2::module_constants::empty_string"()
-    cdef vector[int32_t] cempty_int_list "cpp2::module_constants::empty_int_list"
-    cdef vector[string] cempty_string_list "cpp2::module_constants::empty_string_list"
-    cdef cset[int32_t] cempty_int_set "cpp2::module_constants::empty_int_set"
-    cdef cset[string] cempty_string_set "cpp2::module_constants::empty_string_set"
-    cdef cmap[int32_t,int32_t] cempty_int_int_map "cpp2::module_constants::empty_int_int_map"
-    cdef cmap[int32_t,string] cempty_int_string_map "cpp2::module_constants::empty_int_string_map"
-    cdef cmap[string,int32_t] cempty_string_int_map "cpp2::module_constants::empty_string_int_map"
-    cdef cmap[string,string] cempty_string_string_map "cpp2::module_constants::empty_string_string_map"
+    cdef vector[int32_t] cempty_int_list "cpp2::module_constants::empty_int_list"()
+    cdef vector[string] cempty_string_list "cpp2::module_constants::empty_string_list"()
+    cdef cset[int32_t] cempty_int_set "cpp2::module_constants::empty_int_set"()
+    cdef cset[string] cempty_string_set "cpp2::module_constants::empty_string_set"()
+    cdef cmap[int32_t,int32_t] cempty_int_int_map "cpp2::module_constants::empty_int_int_map"()
+    cdef cmap[int32_t,string] cempty_int_string_map "cpp2::module_constants::empty_int_string_map"()
+    cdef cmap[string,int32_t] cempty_string_int_map "cpp2::module_constants::empty_string_int_map"()
+    cdef cmap[string,string] cempty_string_string_map "cpp2::module_constants::empty_string_string_map"()

@@ -44,6 +44,20 @@ const SimpleStruct A_STRUCT = {
   "big_int": 8,
   "real": 9.9
 }
+const list<string> WORD_LIST = [
+  "the", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog"
+]
+const set<i32> DIGITS = [1, 2, 3, 4, 5]
+const map<string,SimpleStruct> A_CONST_MAP = {
+  "simple": {
+    "is_on": false,
+    "tiny_int": 50,
+    "small_int": 61,
+    "nice_sized_int": 72,
+    "big_int": 83,
+    "real": 99.9
+  }
+}
 
 service SimpleService {
   i32 get_five()

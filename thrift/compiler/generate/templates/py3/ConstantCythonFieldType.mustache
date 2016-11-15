@@ -29,9 +29,9 @@ return types in Cython code.
 }}{{#type:double?}}double{{/type:double?}}{{!
 }}{{#type:string?}}string{{/type:string?}}{{!
 }}{{#type:struct}}c{{struct:name}}{{/type:struct}}{{!
-}}{{#type:listElemType}}vector[{{> ContainerCythonFieldType}}]{{/type:listElemType}}{{!
-}}{{#type:setElemType}}cset[{{> ContainerCythonFieldType}}]{{/type:setElemType}}{{!
+}}{{#type:list?}}{{#type:listElemType}}vector[{{> ConstantCythonFieldType}}]{{/type:listElemType}}{{/type:list?}}{{!
+}}{{#type:set?}}{{#type:setElemType}}cset[{{> ConstantCythonFieldType}}]{{/type:setElemType}}{{/type:set?}}{{!
 }}{{#type:map?}}cmap[{{!
-  }}{{#type:keyType}}{{> ContainerCythonFieldType}}{{/type:keyType}},{{!
-  }}{{#type:valueType}}{{>ContainerCythonFieldType}}{{/type:valueType}}]{{/type:map?}}{{!
+  }}{{#type:keyType}}{{> ConstantCythonFieldType}}{{/type:keyType}},{{!
+  }}{{#type:valueType}}{{> ConstantCythonFieldType}}{{/type:valueType}}]{{/type:map?}}{{!
 }}{{#type:enum}}c{{enum:name}}{{/type:enum}}

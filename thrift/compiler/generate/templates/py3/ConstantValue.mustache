@@ -52,8 +52,17 @@ file.
 {{#type:struct}}
 {{constant:name}} = {{type:name}}.create(make_shared[c{{type:name}}](c{{constant:name}}()))
 {{/type:struct}}
-{{#type:listElemType}}{{/type:listElemType}}
-{{#type:setElemType}}{{/type:setElemType}}
-{{#type:map?}}{{/type:map?}}
+{{#type:list?}}
+{{constant:name}} = {{type:flat_name}}.create(make_shared[vector[{{!
+  }}{{#type:listElemType}}{{> ContainerCythonFieldType}}{{/type:listElemType}}]](c{{constant:name}}()))
+{{/type:list?}}
+{{#type:set?}}
+{{constant:name}} = {{type:flat_name}}.create(make_shared[cset[{{!
+    }}{{#type:setElemType}}{{> ContainerCythonFieldType}}{{/type:setElemType}}]](c{{constant:name}}()))
+{{/type:set?}}
+{{#type:map?}}
+{{constant:name}} = {{type:flat_name}}.create({{!
+}}make_shared[cmap[{{> CythonMapKeyValue}}]](c{{constant:name}}()))
+{{/type:map?}}
 {{!
 }}{{/constant:type}}
