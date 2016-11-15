@@ -17,11 +17,12 @@
 }}{{!
 
 This is used to declare a cython type that is referring to or wrapping a
-c++ object. Most of the values are direct references to variables imported
+c++ object from inside a pxd that defines the structs it is referencing.
+Most of the values are direct references to variables imported
 from libcpp and friends. Structs are the special case, as they refer to the
-struct by name as defined in the pxd file, with a 'c' prefix.
+struct by name as defined in the same pxd file, with a 'c' prefix.
 
-This file is included from pyx.
+This file is included from Struct.pxd to define the move functions.
 
 }}{{#type:bool?}}bool{{/type:bool?}}{{!
 }}{{#type:byte?}}int8_t{{/type:byte?}}{{!
@@ -30,4 +31,4 @@ This file is included from pyx.
 }}{{#type:i64?}}int64_t{{/type:i64?}}{{!
 }}{{#type:double?}}double{{/type:double?}}{{!
 }}{{#type:string?}}string{{/type:string?}}{{!
-}}{{#type:struct}}{{program:name}}_types.c{{struct:name}}{{/type:struct}}
+}}{{#type:struct}}c{{struct:name}}{{/type:struct}}

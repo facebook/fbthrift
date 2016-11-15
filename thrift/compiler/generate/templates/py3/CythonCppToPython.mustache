@@ -28,10 +28,9 @@ to be converted from unicode to binary representation.
 }}{{#type:i64?}}{{field:name}}{{/type:i64?}}{{!
 }}{{#type:double?}}{{field:name}}{{/type:double?}}{{!
 }}{{#type:string?}}(deref({{field:name}}.get())).decode(){{/type:string?}}{{!
-}}{{#type:struct}}{{type:name}}.create(move({{field:name}})){{/type:struct}}{{!
+}}{{#type:struct}}{{program:name}}_types.{{type:name}}.create({{program:name}}_types.move({{field:name}})){{/type:struct}}{{!
 }}{{#type:enum}}{{/type:enum}}{{!
-}}{{#type:list?}}{{type:flat_name}}.create(move({{field:name}})){{/type:list?}}{{!
-}}{{#type:set?}}{{type:flat_name}}.create(move({{field:name}})){{/type:set?}}{{!
-}}{{#type:map?}}{{type:flat_name}}.create(move({{field:name}})){{/type:map?}}{{!
-}}{{#type:enum}}{{enum:name}}(<int> {{field:name}}){{/type:enum}}
-{{! terminate with newline }}
+}}{{#type:list?}}{{program:name}}_types.{{type:flat_name}}.create({{program:name}}_types.move({{field:name}})){{/type:list?}}{{!
+}}{{#type:set?}}{{program:name}}_types.{{type:flat_name}}.create({{program:name}}_types.move({{field:name}})){{/type:set?}}{{!
+}}{{#type:map?}}{{program:name}}_types.{{type:flat_name}}.create({{program:name}}_types.move({{field:name}})){{/type:map?}}{{!
+}}{{#type:enum}}{{program:name}}_types.{{enum:name}}(<int> {{field:name}}){{/type:enum}}

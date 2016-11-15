@@ -86,29 +86,29 @@ cdef class {{struct:name}}{{#struct:exception?}}(TException){{/struct:exception?
 {{#program:containerTypes}}
 cdef class {{type:flat_name}}:
 {{#type:listElemType}}
-    cdef shared_ptr[vector[{{> ContainerCythonFieldType}}]] _vector
+    cdef shared_ptr[vector[{{> CythonCppWrapperFieldType}}]] _vector
     @staticmethod
-    cdef create(shared_ptr[vector[{{> ContainerCythonFieldType}}]])
+    cdef create(shared_ptr[vector[{{> CythonCppWrapperFieldType}}]])
 {{/type:listElemType}}
 {{#type:setElemType}}
-    cdef shared_ptr[cset[{{> ContainerCythonFieldType}}]] _set
+    cdef shared_ptr[cset[{{> CythonCppWrapperFieldType}}]] _set
     @staticmethod
-    cdef create(shared_ptr[cset[{{> ContainerCythonFieldType}}]])
+    cdef create(shared_ptr[cset[{{> CythonCppWrapperFieldType}}]])
 {{/type:setElemType}}
 {{#type:map?}}
-    cdef shared_ptr[cmap[{{> CythonMapKeyValue}}]] _map
+    cdef shared_ptr[cmap[{{> CythonCppWrapperMapKeyValue}}]] _map
     @staticmethod
-    cdef create(shared_ptr[cmap[{{> CythonMapKeyValue}}]])
+    cdef create(shared_ptr[cmap[{{> CythonCppWrapperMapKeyValue}}]])
 {{/type:map?}}
 
 {{/program:containerTypes}}{{#program:containerTypes}}
 {{#first?}}cdef extern from "<utility>" namespace "std" nogil:{{/first?}}
-{{#type:listElemType}}    cdef shared_ptr[vector[{{> ContainerCythonFieldType}}]] {{!
-}}move(unique_ptr[vector[{{> ContainerCythonFieldType}}]]){{/type:listElemType}}{{!
-}}{{#type:setElemType}}    cdef shared_ptr[cset[{{> ContainerCythonFieldType}}]] {{!
-}}move(unique_ptr[cset[{{> ContainerCythonFieldType}}]]){{/type:setElemType}}{{!
-}}{{#type:map?}}    cdef shared_ptr[cmap[{{> CythonMapKeyValue}}]] {{!
-}}move(unique_ptr[cmap[{{> CythonMapKeyValue}}]]){{/type:map?}}{{/program:containerTypes}}
+{{#type:listElemType}}    cdef shared_ptr[vector[{{> CythonCppWrapperFieldType}}]] {{!
+}}move(unique_ptr[vector[{{> CythonCppWrapperFieldType}}]]){{/type:listElemType}}{{!
+}}{{#type:setElemType}}    cdef shared_ptr[cset[{{> CythonCppWrapperFieldType}}]] {{!
+}}move(unique_ptr[cset[{{> CythonCppWrapperFieldType}}]]){{/type:setElemType}}{{!
+}}{{#type:map?}}    cdef shared_ptr[cmap[{{> CythonCppWrapperMapKeyValue}}]] {{!
+}}move(unique_ptr[cmap[{{> CythonCppWrapperMapKeyValue}}]]){{/type:map?}}{{/program:containerTypes}}
 
 {{#program:constants}}
 {{#first?}}cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_constants.h"{{!

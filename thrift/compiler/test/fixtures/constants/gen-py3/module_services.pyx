@@ -20,45 +20,13 @@ from thrift.lib.py3.thrift_server cimport (
   cTApplicationException
 )
 from folly_futures cimport cFollyPromise, cFollyUnit, c_unit
+cimport module_types
+import module_types
 
 import asyncio
 import functools
 import sys
 import traceback
-
-from module_types cimport (
-    move,
-    Internship,
-    cInternship,
-    UnEnumStruct,
-    cUnEnumStruct,
-    Range,
-    cRange
-)
-from module_types cimport (
-    cEmptyEnum,
-    EmptyEnum_to_cpp,
-,
-    cCity,
-    City_to_cpp,
-    City__NYC,
-    City__MPK,
-    City__SEA,
-    City__LON
-,
-    cCompany,
-    Company_to_cpp,
-    Company__FACEBOOK,
-    Company__WHATSAPP,
-    Company__OCULUS,
-    Company__INSTAGRAM
-
-)
-from module_types import (
-    EmptyEnum,
-    City,
-    Company
-)
 
 
 

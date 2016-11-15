@@ -40,36 +40,13 @@ from thrift.lib.py3.thrift_server cimport (
   cTApplicationException
 )
 from folly_futures cimport cFollyPromise, cFollyUnit, c_unit
+cimport {{program:name}}_types
+import {{program:name}}_types
 
 import asyncio
 import functools
 import sys
 import traceback
-
-{{#program:structs}}
-{{#first?}}from {{program:name}}_types cimport (
-    move,{{/first?}}
-    {{struct:name}},
-    c{{struct:name}}{{^last?}},{{/last?}}{{#last?}}
-){{/last?}}{{/program:structs}}
-{{#program:enums}}
-{{#first?}}from {{program:name}}_types cimport ({{/first?}}
-    c{{enum:name}},
-    {{enum:name}}_to_cpp,
-    {{#enum:values}}
-    {{enum:name}}__{{enumValue:name}}{{^last?}},{{/last?}}
-{{/enum:values}}{{^last?}},{{/last?}}{{#last?}}
-){{/last?}}{{/program:enums}}
-{{#program:enums}}
-{{#first?}}from {{program:name}}_types import ({{/first?}}
-    {{enum:name}}{{^last?}},{{/last?}}{{#last?}}
-){{/last?}}{{/program:enums}}
-{{#program:containerTypes}}
-{{#first?}}from {{program:name}}_types cimport (
-    {{/first?}}
-    {{type:flat_name}}{{^last?}},{{/last?}}{{#last?}}
-){{/last?}}
-{{/program:containerTypes}}
 
 {{#program:services}}
 from {{program:name}}_services_wrapper cimport c{{service:name}}Interface

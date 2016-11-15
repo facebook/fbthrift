@@ -15,30 +15,7 @@ from thrift.lib.py3.thrift_server cimport TException
 
 from collections.abc import Sequence, Set, Mapping
 from enum import Enum
-
-
-
-from module_types cimport (
-    cInternship,
-    cUnEnumStruct,
-    cRange
-)
-from module_types cimport (
-    cEmptyEnum,
-,
-    cCity,
-    City__NYC,
-    City__MPK,
-    City__SEA,
-    City__LON
-,
-    cCompany,
-    Company__FACEBOOK,
-    Company__WHATSAPP,
-    Company__OCULUS,
-    Company__INSTAGRAM
-)
-
+cimport module_types
 
 class EmptyEnum(Enum):
 

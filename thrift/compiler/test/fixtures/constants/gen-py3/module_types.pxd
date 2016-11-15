@@ -87,8 +87,8 @@ cdef extern from "src/gen-cpp2/module_constants.h" namespace "cpp2":
     cdef double cy "cpp2::module_constants::y"
     cdef double cz "cpp2::module_constants::z"
     cdef cInternship cinstagram "cpp2::module_constants::instagram"()
-    cdef vector[cRange] ckRanges "cpp2::module_constants::kRanges"
-    cdef vector[cInternship] cinternList "cpp2::module_constants::internList"
+    cdef vector[module_types.cRange] ckRanges "cpp2::module_constants::kRanges"
+    cdef vector[module_types.cInternship] cinternList "cpp2::module_constants::internList"
     cdef const char* capostrophe "cpp2::module_constants::apostrophe"()
     cdef const char* ctripleApostrophe "cpp2::module_constants::tripleApostrophe"()
     cdef const char* cquotationMark "cpp2::module_constants::quotationMark"()

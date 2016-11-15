@@ -130,6 +130,8 @@ py3__DATA = \
                     generate/templates/py3/CppPassField.mustache \
                     generate/templates/py3/CythonAssignField.mustache \
                     generate/templates/py3/CythonCppToPython.mustache \
+                    generate/templates/py3/CythonCppWrapperFieldType.mustache \
+                    generate/templates/py3/CythonCppWrapperMapKeyValue.mustache \
                     generate/templates/py3/CythonFieldType.mustache \
                     generate/templates/py3/CythonMapKeyValue.mustache \
                     generate/templates/py3/CythonPromises.mustache \

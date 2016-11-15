@@ -15,14 +15,7 @@ from thrift.lib.py3.thrift_server cimport TException
 
 from collections.abc import Sequence, Set, Mapping
 from enum import Enum
-
-
-
-from module_types cimport (
-    cEmpty
-)
-
-
+cimport module_types
 
 
 

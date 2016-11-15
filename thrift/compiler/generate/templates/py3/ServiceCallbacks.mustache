@@ -40,7 +40,8 @@ cdef public void call_cy_{{service:name}}_{{function:name}}(
 ) with gil:
     promise = Promise_{{#function:returnType}}{{type:flat_name}}{{/function:returnType}}.create(move(cPromise))
     {{#function:args}}
-    arg_{{field:name}} = {{#field:type}}{{>CythonCppToPython}}{{/field:type}}{{/function:args}}
+    arg_{{field:name}} = {{#field:type}}{{>CythonCppToPython}}{{/field:type}}
+    {{/function:args}}
     asyncio.run_coroutine_threadsafe(
         {{service:name}}_{{function:name}}_coro(
             self,
@@ -59,13 +60,13 @@ async def {{service:name}}_{{function:name}}_coro(
           {{field:name}}{{^last?}},{{/last?}}{{/function:args}})
       {{#function:returnType}}
       {{#type:container?}}
-      result = {{type:flat_name}}(result)
+      result = {{program:name}}_types.{{type:flat_name}}(result)
       {{/type:container?}}
       {{/function:returnType}}
     {{#function:exceptions}}
     {{#field:type}}
-    except {{type:name}} as ex:
-        promise.cPromise.setException(deref((<{{type:name}}> ex).c_{{type:name}}.get()))
+    except {{program:name}}_types.{{type:name}} as ex:
+        promise.cPromise.setException(deref((<{{program:name}}_types.{{type:name}}> ex).c_{{type:name}}.get()))
     {{/field:type}}
     {{/function:exceptions}}
     except Exception as ex:

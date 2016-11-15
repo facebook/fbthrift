@@ -20,27 +20,13 @@ from thrift.lib.py3.thrift_server cimport (
   cTApplicationException
 )
 from folly_futures cimport cFollyPromise, cFollyUnit, c_unit
+cimport module_types
+import module_types
 
 import asyncio
 import functools
 import sys
 import traceback
-
-from module_types cimport (
-    move,
-    MyStruct,
-    cMyStruct
-)
-from module_types cimport (
-    cMyEnum,
-    MyEnum_to_cpp,
-    MyEnum__MyValue1,
-    MyEnum__MyValue2
-
-)
-from module_types import (
-    MyEnum
-)
 
 from module_services_wrapper cimport cMyServiceInterface
 from module_services_wrapper cimport cMyServiceFastInterface
@@ -86,7 +72,6 @@ cdef public void call_cy_MyService_ping(
     cFollyPromise[cFollyUnit] cPromise
 ) with gil:
     promise = Promise_void.create(move(cPromise))
-
     asyncio.run_coroutine_threadsafe(
         MyService_ping_coro(
             self,
@@ -115,7 +100,6 @@ cdef public void call_cy_MyService_getRandomData(
     cFollyPromise[unique_ptr[string]] cPromise
 ) with gil:
     promise = Promise_string.create(move(cPromise))
-
     asyncio.run_coroutine_threadsafe(
         MyService_getRandomData_coro(
             self,
@@ -146,7 +130,6 @@ cdef public void call_cy_MyService_hasDataById(
 ) with gil:
     promise = Promise_bool.create(move(cPromise))
     arg_id = id
-
     asyncio.run_coroutine_threadsafe(
         MyService_hasDataById_coro(
             self,
@@ -180,7 +163,6 @@ cdef public void call_cy_MyService_getDataById(
 ) with gil:
     promise = Promise_string.create(move(cPromise))
     arg_id = id
-
     asyncio.run_coroutine_threadsafe(
         MyService_getDataById_coro(
             self,
@@ -216,7 +198,6 @@ cdef public void call_cy_MyService_putDataById(
     promise = Promise_void.create(move(cPromise))
     arg_id = id
     arg_data = (deref(data.get())).decode()
-
     asyncio.run_coroutine_threadsafe(
         MyService_putDataById_coro(
             self,
@@ -255,7 +236,6 @@ cdef public void call_cy_MyService_lobDataById(
     promise = Promise_void.create(move(cPromise))
     arg_id = id
     arg_data = (deref(data.get())).decode()
-
     asyncio.run_coroutine_threadsafe(
         MyService_lobDataById_coro(
             self,
@@ -290,7 +270,6 @@ cdef public void call_cy_MyServiceFast_ping(
     cFollyPromise[cFollyUnit] cPromise
 ) with gil:
     promise = Promise_void.create(move(cPromise))
-
     asyncio.run_coroutine_threadsafe(
         MyServiceFast_ping_coro(
             self,
@@ -319,7 +298,6 @@ cdef public void call_cy_MyServiceFast_getRandomData(
     cFollyPromise[unique_ptr[string]] cPromise
 ) with gil:
     promise = Promise_string.create(move(cPromise))
-
     asyncio.run_coroutine_threadsafe(
         MyServiceFast_getRandomData_coro(
             self,
@@ -350,7 +328,6 @@ cdef public void call_cy_MyServiceFast_hasDataById(
 ) with gil:
     promise = Promise_bool.create(move(cPromise))
     arg_id = id
-
     asyncio.run_coroutine_threadsafe(
         MyServiceFast_hasDataById_coro(
             self,
@@ -384,7 +361,6 @@ cdef public void call_cy_MyServiceFast_getDataById(
 ) with gil:
     promise = Promise_string.create(move(cPromise))
     arg_id = id
-
     asyncio.run_coroutine_threadsafe(
         MyServiceFast_getDataById_coro(
             self,
@@ -420,7 +396,6 @@ cdef public void call_cy_MyServiceFast_putDataById(
     promise = Promise_void.create(move(cPromise))
     arg_id = id
     arg_data = (deref(data.get())).decode()
-
     asyncio.run_coroutine_threadsafe(
         MyServiceFast_putDataById_coro(
             self,
@@ -459,7 +434,6 @@ cdef public void call_cy_MyServiceFast_lobDataById(
     promise = Promise_void.create(move(cPromise))
     arg_id = id
     arg_data = (deref(data.get())).decode()
-
     asyncio.run_coroutine_threadsafe(
         MyServiceFast_lobDataById_coro(
             self,
@@ -494,7 +468,6 @@ cdef public void call_cy_MyServicePrioParent_ping(
     cFollyPromise[cFollyUnit] cPromise
 ) with gil:
     promise = Promise_void.create(move(cPromise))
-
     asyncio.run_coroutine_threadsafe(
         MyServicePrioParent_ping_coro(
             self,
@@ -523,7 +496,6 @@ cdef public void call_cy_MyServicePrioParent_pong(
     cFollyPromise[cFollyUnit] cPromise
 ) with gil:
     promise = Promise_void.create(move(cPromise))
-
     asyncio.run_coroutine_threadsafe(
         MyServicePrioParent_pong_coro(
             self,
@@ -552,7 +524,6 @@ cdef public void call_cy_MyServicePrioChild_pang(
     cFollyPromise[cFollyUnit] cPromise
 ) with gil:
     promise = Promise_void.create(move(cPromise))
-
     asyncio.run_coroutine_threadsafe(
         MyServicePrioChild_pang_coro(
             self,

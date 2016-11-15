@@ -15,18 +15,7 @@ from thrift.lib.py3.thrift_server cimport TException
 
 from collections.abc import Sequence, Set, Mapping
 from enum import Enum
-
-
-
-from module_types cimport (
-    cMyStruct
-)
-from module_types cimport (
-    cMyEnum,
-    MyEnum__MyValue1,
-    MyEnum__MyValue2
-)
-
+cimport module_types
 
 class MyEnum(Enum):
     MyValue1 = <int> (MyEnum__MyValue1)

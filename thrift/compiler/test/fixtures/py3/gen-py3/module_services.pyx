@@ -20,45 +20,13 @@ from thrift.lib.py3.thrift_server cimport (
   cTApplicationException
 )
 from folly_futures cimport cFollyPromise, cFollyUnit, c_unit
+cimport module_types
+import module_types
 
 import asyncio
 import functools
 import sys
 import traceback
-
-from module_types cimport (
-    move,
-    SimpleException,
-    cSimpleException,
-    SimpleStruct,
-    cSimpleStruct,
-    ComplexStruct,
-    cComplexStruct
-)
-from module_types cimport (
-    cAnEnum,
-    AnEnum_to_cpp,
-    AnEnum__ONE,
-    AnEnum__TWO,
-    AnEnum__THREE,
-    AnEnum__FOUR
-
-)
-from module_types import (
-    AnEnum
-)
-from module_types cimport (
-    List__i16,
-    List__i32,
-    List__i64,
-    List__string,
-    List__SimpleStruct,
-    Set__i32,
-    Set__string,
-    Map__string_string,
-    Map__string_SimpleStruct,
-    Map__string_i16
-)
 
 from module_services_wrapper cimport cSimpleServiceInterface
 
@@ -72,11 +40,11 @@ cdef extern from "<utility>" namespace "std":
     cdef cFollyPromise[int16_t] move(cFollyPromise[int16_t])
     cdef cFollyPromise[int64_t] move(cFollyPromise[int64_t])
     cdef cFollyPromise[double] move(cFollyPromise[double])
-    cdef cFollyPromise[unique_ptr[cSimpleStruct]] move(cFollyPromise[unique_ptr[cSimpleStruct]])
+    cdef cFollyPromise[unique_ptr[module_types.cSimpleStruct]] move(cFollyPromise[unique_ptr[module_types.cSimpleStruct]])
     cdef cFollyPromise[unique_ptr[vector[int32_t]]] move(cFollyPromise[unique_ptr[vector[int32_t]]])
     cdef cFollyPromise[unique_ptr[cset[string]]] move(cFollyPromise[unique_ptr[cset[string]]])
     cdef cFollyPromise[unique_ptr[cmap[string,int16_t]]] move(cFollyPromise[unique_ptr[cmap[string,int16_t]]])
-    cdef cFollyPromise[cAnEnum] move(cFollyPromise[cAnEnum])
+    cdef cFollyPromise[module_types.cAnEnum] move(cFollyPromise[module_types.cAnEnum])
 
 cdef class Promise_i32:
     cdef cFollyPromise[int32_t] cPromise
@@ -151,10 +119,10 @@ cdef class Promise_double:
         return inst
 
 cdef class Promise_SimpleStruct:
-    cdef cFollyPromise[unique_ptr[cSimpleStruct]] cPromise
+    cdef cFollyPromise[unique_ptr[module_types.cSimpleStruct]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[cSimpleStruct]] cPromise):
+    cdef create(cFollyPromise[unique_ptr[module_types.cSimpleStruct]] cPromise):
         inst = <Promise_SimpleStruct>Promise_SimpleStruct.__new__(Promise_SimpleStruct)
         inst.cPromise = move(cPromise)
         return inst
@@ -187,10 +155,10 @@ cdef class Promise_Map__string_i16:
         return inst
 
 cdef class Promise_AnEnum:
-    cdef cFollyPromise[cAnEnum] cPromise
+    cdef cFollyPromise[module_types.cAnEnum] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[cAnEnum] cPromise):
+    cdef create(cFollyPromise[module_types.cAnEnum] cPromise):
         inst = <Promise_AnEnum>Promise_AnEnum.__new__(Promise_AnEnum)
         inst.cPromise = move(cPromise)
         return inst
@@ -200,7 +168,6 @@ cdef public void call_cy_SimpleService_get_five(
     cFollyPromise[int32_t] cPromise
 ) with gil:
     promise = Promise_i32.create(move(cPromise))
-
     asyncio.run_coroutine_threadsafe(
         SimpleService_get_five_coro(
             self,
@@ -231,7 +198,6 @@ cdef public void call_cy_SimpleService_add_five(
 ) with gil:
     promise = Promise_i32.create(move(cPromise))
     arg_num = num
-
     asyncio.run_coroutine_threadsafe(
         SimpleService_add_five_coro(
             self,
@@ -263,7 +229,6 @@ cdef public void call_cy_SimpleService_do_nothing(
     cFollyPromise[cFollyUnit] cPromise
 ) with gil:
     promise = Promise_void.create(move(cPromise))
-
     asyncio.run_coroutine_threadsafe(
         SimpleService_do_nothing_coro(
             self,
@@ -296,7 +261,6 @@ cdef public void call_cy_SimpleService_concat(
     promise = Promise_string.create(move(cPromise))
     arg_first = (deref(first.get())).decode()
     arg_second = (deref(second.get())).decode()
-
     asyncio.run_coroutine_threadsafe(
         SimpleService_concat_coro(
             self,
@@ -329,11 +293,10 @@ async def SimpleService_concat_coro(
 cdef public void call_cy_SimpleService_get_value(
     object self,
     cFollyPromise[int32_t] cPromise,
-    unique_ptr[cSimpleStruct] simple_struct
+    unique_ptr[module_types.cSimpleStruct] simple_struct
 ) with gil:
     promise = Promise_i32.create(move(cPromise))
-    arg_simple_struct = SimpleStruct.create(move(simple_struct))
-
+    arg_simple_struct = module_types.SimpleStruct.create(module_types.move(simple_struct))
     asyncio.run_coroutine_threadsafe(
         SimpleService_get_value_coro(
             self,
@@ -367,7 +330,6 @@ cdef public void call_cy_SimpleService_negate(
 ) with gil:
     promise = Promise_bool.create(move(cPromise))
     arg_input = input
-
     asyncio.run_coroutine_threadsafe(
         SimpleService_negate_coro(
             self,
@@ -401,7 +363,6 @@ cdef public void call_cy_SimpleService_tiny(
 ) with gil:
     promise = Promise_byte.create(move(cPromise))
     arg_input = input
-
     asyncio.run_coroutine_threadsafe(
         SimpleService_tiny_coro(
             self,
@@ -435,7 +396,6 @@ cdef public void call_cy_SimpleService_small(
 ) with gil:
     promise = Promise_i16.create(move(cPromise))
     arg_input = input
-
     asyncio.run_coroutine_threadsafe(
         SimpleService_small_coro(
             self,
@@ -469,7 +429,6 @@ cdef public void call_cy_SimpleService_big(
 ) with gil:
     promise = Promise_i64.create(move(cPromise))
     arg_input = input
-
     asyncio.run_coroutine_threadsafe(
         SimpleService_big_coro(
             self,
@@ -503,7 +462,6 @@ cdef public void call_cy_SimpleService_two(
 ) with gil:
     promise = Promise_double.create(move(cPromise))
     arg_input = input
-
     asyncio.run_coroutine_threadsafe(
         SimpleService_two_coro(
             self,
@@ -535,7 +493,6 @@ cdef public void call_cy_SimpleService_expected_exception(
     cFollyPromise[cFollyUnit] cPromise
 ) with gil:
     promise = Promise_void.create(move(cPromise))
-
     asyncio.run_coroutine_threadsafe(
         SimpleService_expected_exception_coro(
             self,
@@ -548,8 +505,8 @@ async def SimpleService_expected_exception_coro(
 ):
     try:
       result = await self.expected_exception()
-    except SimpleException as ex:
-        promise.cPromise.setException(deref((<SimpleException> ex).c_SimpleException.get()))
+    except module_types.SimpleException as ex:
+        promise.cPromise.setException(deref((<module_types.SimpleException> ex).c_SimpleException.get()))
     except Exception as ex:
         print(
             "Unexpected error in service handler expected_exception:",
@@ -566,7 +523,6 @@ cdef public void call_cy_SimpleService_unexpected_exception(
     cFollyPromise[int32_t] cPromise
 ) with gil:
     promise = Promise_i32.create(move(cPromise))
-
     asyncio.run_coroutine_threadsafe(
         SimpleService_unexpected_exception_coro(
             self,
@@ -596,8 +552,7 @@ cdef public void call_cy_SimpleService_sum_i16_list(
     unique_ptr[vector[int16_t]] numbers
 ) with gil:
     promise = Promise_i32.create(move(cPromise))
-    arg_numbers = List__i16.create(move(numbers))
-
+    arg_numbers = module_types.List__i16.create(module_types.move(numbers))
     asyncio.run_coroutine_threadsafe(
         SimpleService_sum_i16_list_coro(
             self,
@@ -630,8 +585,7 @@ cdef public void call_cy_SimpleService_sum_i32_list(
     unique_ptr[vector[int32_t]] numbers
 ) with gil:
     promise = Promise_i32.create(move(cPromise))
-    arg_numbers = List__i32.create(move(numbers))
-
+    arg_numbers = module_types.List__i32.create(module_types.move(numbers))
     asyncio.run_coroutine_threadsafe(
         SimpleService_sum_i32_list_coro(
             self,
@@ -664,8 +618,7 @@ cdef public void call_cy_SimpleService_sum_i64_list(
     unique_ptr[vector[int64_t]] numbers
 ) with gil:
     promise = Promise_i32.create(move(cPromise))
-    arg_numbers = List__i64.create(move(numbers))
-
+    arg_numbers = module_types.List__i64.create(module_types.move(numbers))
     asyncio.run_coroutine_threadsafe(
         SimpleService_sum_i64_list_coro(
             self,
@@ -698,8 +651,7 @@ cdef public void call_cy_SimpleService_concat_many(
     unique_ptr[vector[string]] words
 ) with gil:
     promise = Promise_string.create(move(cPromise))
-    arg_words = List__string.create(move(words))
-
+    arg_words = module_types.List__string.create(module_types.move(words))
     asyncio.run_coroutine_threadsafe(
         SimpleService_concat_many_coro(
             self,
@@ -729,11 +681,10 @@ async def SimpleService_concat_many_coro(
 cdef public void call_cy_SimpleService_count_structs(
     object self,
     cFollyPromise[int32_t] cPromise,
-    unique_ptr[vector[cSimpleStruct]] items
+    unique_ptr[vector[module_types.cSimpleStruct]] items
 ) with gil:
     promise = Promise_i32.create(move(cPromise))
-    arg_items = List__SimpleStruct.create(move(items))
-
+    arg_items = module_types.List__SimpleStruct.create(module_types.move(items))
     asyncio.run_coroutine_threadsafe(
         SimpleService_count_structs_coro(
             self,
@@ -766,8 +717,7 @@ cdef public void call_cy_SimpleService_sum_set(
     unique_ptr[cset[int32_t]] numbers
 ) with gil:
     promise = Promise_i32.create(move(cPromise))
-    arg_numbers = Set__i32.create(move(numbers))
-
+    arg_numbers = module_types.Set__i32.create(module_types.move(numbers))
     asyncio.run_coroutine_threadsafe(
         SimpleService_sum_set_coro(
             self,
@@ -801,9 +751,8 @@ cdef public void call_cy_SimpleService_contains_word(
     unique_ptr[string] word
 ) with gil:
     promise = Promise_bool.create(move(cPromise))
-    arg_words = Set__string.create(move(words))
+    arg_words = module_types.Set__string.create(module_types.move(words))
     arg_word = (deref(word.get())).decode()
-
     asyncio.run_coroutine_threadsafe(
         SimpleService_contains_word_coro(
             self,
@@ -840,9 +789,8 @@ cdef public void call_cy_SimpleService_get_map_value(
     unique_ptr[string] key
 ) with gil:
     promise = Promise_string.create(move(cPromise))
-    arg_words = Map__string_string.create(move(words))
+    arg_words = module_types.Map__string_string.create(module_types.move(words))
     arg_key = (deref(key.get())).decode()
-
     asyncio.run_coroutine_threadsafe(
         SimpleService_get_map_value_coro(
             self,
@@ -875,11 +823,10 @@ async def SimpleService_get_map_value_coro(
 cdef public void call_cy_SimpleService_map_length(
     object self,
     cFollyPromise[int16_t] cPromise,
-    unique_ptr[cmap[string,cSimpleStruct]] items
+    unique_ptr[cmap[string,module_types.cSimpleStruct]] items
 ) with gil:
     promise = Promise_i16.create(move(cPromise))
-    arg_items = Map__string_SimpleStruct.create(move(items))
-
+    arg_items = module_types.Map__string_SimpleStruct.create(module_types.move(items))
     asyncio.run_coroutine_threadsafe(
         SimpleService_map_length_coro(
             self,
@@ -912,8 +859,7 @@ cdef public void call_cy_SimpleService_sum_map_values(
     unique_ptr[cmap[string,int16_t]] items
 ) with gil:
     promise = Promise_i16.create(move(cPromise))
-    arg_items = Map__string_i16.create(move(items))
-
+    arg_items = module_types.Map__string_i16.create(module_types.move(items))
     asyncio.run_coroutine_threadsafe(
         SimpleService_sum_map_values_coro(
             self,
@@ -943,11 +889,10 @@ async def SimpleService_sum_map_values_coro(
 cdef public void call_cy_SimpleService_complex_sum_i32(
     object self,
     cFollyPromise[int32_t] cPromise,
-    unique_ptr[cComplexStruct] counter
+    unique_ptr[module_types.cComplexStruct] counter
 ) with gil:
     promise = Promise_i32.create(move(cPromise))
-    arg_counter = ComplexStruct.create(move(counter))
-
+    arg_counter = module_types.ComplexStruct.create(module_types.move(counter))
     asyncio.run_coroutine_threadsafe(
         SimpleService_complex_sum_i32_coro(
             self,
@@ -977,11 +922,10 @@ async def SimpleService_complex_sum_i32_coro(
 cdef public void call_cy_SimpleService_repeat_name(
     object self,
     cFollyPromise[unique_ptr[string]] cPromise,
-    unique_ptr[cComplexStruct] counter
+    unique_ptr[module_types.cComplexStruct] counter
 ) with gil:
     promise = Promise_string.create(move(cPromise))
-    arg_counter = ComplexStruct.create(move(counter))
-
+    arg_counter = module_types.ComplexStruct.create(module_types.move(counter))
     asyncio.run_coroutine_threadsafe(
         SimpleService_repeat_name_coro(
             self,
@@ -1010,10 +954,9 @@ async def SimpleService_repeat_name_coro(
 
 cdef public void call_cy_SimpleService_get_struct(
     object self,
-    cFollyPromise[unique_ptr[cSimpleStruct]] cPromise
+    cFollyPromise[unique_ptr[module_types.cSimpleStruct]] cPromise
 ) with gil:
     promise = Promise_SimpleStruct.create(move(cPromise))
-
     asyncio.run_coroutine_threadsafe(
         SimpleService_get_struct_coro(
             self,
@@ -1035,7 +978,7 @@ async def SimpleService_get_struct_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cSimpleStruct](deref((<SimpleStruct?> result).c_SimpleStruct)))
+        promise.cPromise.setValue(make_unique[module_types.cSimpleStruct](deref((<module_types.SimpleStruct?> result).c_SimpleStruct)))
 
 cdef public void call_cy_SimpleService_fib(
     object self,
@@ -1044,7 +987,6 @@ cdef public void call_cy_SimpleService_fib(
 ) with gil:
     promise = Promise_List__i32.create(move(cPromise))
     arg_n = n
-
     asyncio.run_coroutine_threadsafe(
         SimpleService_fib_coro(
             self,
@@ -1060,7 +1002,7 @@ async def SimpleService_fib_coro(
     try:
       result = await self.fib(
           n)
-      result = List__i32(result)
+      result = module_types.List__i32(result)
     except Exception as ex:
         print(
             "Unexpected error in service handler fib:",
@@ -1070,7 +1012,7 @@ async def SimpleService_fib_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[vector[int32_t]](deref((<List__i32?> result)._vector)))
+        promise.cPromise.setValue(make_unique[vector[int32_t]](deref((<module_types.List__i32?> result)._vector)))
 
 cdef public void call_cy_SimpleService_unique_words(
     object self,
@@ -1078,8 +1020,7 @@ cdef public void call_cy_SimpleService_unique_words(
     unique_ptr[vector[string]] words
 ) with gil:
     promise = Promise_Set__string.create(move(cPromise))
-    arg_words = List__string.create(move(words))
-
+    arg_words = module_types.List__string.create(module_types.move(words))
     asyncio.run_coroutine_threadsafe(
         SimpleService_unique_words_coro(
             self,
@@ -1095,7 +1036,7 @@ async def SimpleService_unique_words_coro(
     try:
       result = await self.unique_words(
           words)
-      result = Set__string(result)
+      result = module_types.Set__string(result)
     except Exception as ex:
         print(
             "Unexpected error in service handler unique_words:",
@@ -1105,7 +1046,7 @@ async def SimpleService_unique_words_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cset[string]](deref((<Set__string?> result)._set)))
+        promise.cPromise.setValue(make_unique[cset[string]](deref((<module_types.Set__string?> result)._set)))
 
 cdef public void call_cy_SimpleService_words_count(
     object self,
@@ -1113,8 +1054,7 @@ cdef public void call_cy_SimpleService_words_count(
     unique_ptr[vector[string]] words
 ) with gil:
     promise = Promise_Map__string_i16.create(move(cPromise))
-    arg_words = List__string.create(move(words))
-
+    arg_words = module_types.List__string.create(module_types.move(words))
     asyncio.run_coroutine_threadsafe(
         SimpleService_words_count_coro(
             self,
@@ -1130,7 +1070,7 @@ async def SimpleService_words_count_coro(
     try:
       result = await self.words_count(
           words)
-      result = Map__string_i16(result)
+      result = module_types.Map__string_i16(result)
     except Exception as ex:
         print(
             "Unexpected error in service handler words_count:",
@@ -1140,16 +1080,15 @@ async def SimpleService_words_count_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cmap[string,int16_t]](deref((<Map__string_i16?> result)._map)))
+        promise.cPromise.setValue(make_unique[cmap[string,int16_t]](deref((<module_types.Map__string_i16?> result)._map)))
 
 cdef public void call_cy_SimpleService_set_enum(
     object self,
-    cFollyPromise[cAnEnum] cPromise,
-    cAnEnum in_enum
+    cFollyPromise[module_types.cAnEnum] cPromise,
+    module_types.cAnEnum in_enum
 ) with gil:
     promise = Promise_AnEnum.create(move(cPromise))
-    arg_in_enum = AnEnum(<int> in_enum)
-
+    arg_in_enum = module_types.AnEnum(<int> in_enum)
     asyncio.run_coroutine_threadsafe(
         SimpleService_set_enum_coro(
             self,
@@ -1174,7 +1113,7 @@ async def SimpleService_set_enum_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(AnEnum_to_cpp(result))
+        promise.cPromise.setValue(module_types.AnEnum_to_cpp(result))
 
 
 cdef class SimpleServiceInterface(ServiceInterface):

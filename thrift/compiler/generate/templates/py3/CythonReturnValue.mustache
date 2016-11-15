@@ -27,12 +27,12 @@ to the client.
 }}{{#type:i64?}}<int64_t> result{{/type:i64?}}{{!
 }}{{#type:double?}}<double> result{{/type:double?}}{{!
 }}{{#type:string?}}make_unique[string](<string?> result.encode('UTF-8')){{/type:string?}}{{!
-}}{{#type:struct}}make_unique[c{{struct:name}}](deref((<{{struct:name}}?> result).c_{{struct:name}})){{/type:struct}}{{!
+}}{{#type:struct}}make_unique[{{program:name}}_types.c{{struct:name}}](deref((<{{program:name}}_types.{{struct:name}}?> result).c_{{struct:name}})){{/type:struct}}{{!
 }}{{#type:list?}}make_unique[vector[{{#type:listElemType}}{{>ContainerCythonFieldType}}{{/type:listElemType}}]]({{!
-  }}deref((<{{type:flat_name}}?> result)._vector)){{/type:list?}}{{!
+  }}deref((<{{program:name}}_types.{{type:flat_name}}?> result)._vector)){{/type:list?}}{{!
 }}{{#type:set?}}make_unique[cset[{{#type:setElemType}}{{>ContainerCythonFieldType}}{{/type:setElemType}}]]({{!
-  }}deref((<{{type:flat_name}}?> result)._set)){{/type:set?}}{{!
+  }}deref((<{{program:name}}_types.{{type:flat_name}}?> result)._set)){{/type:set?}}{{!
 }}{{#type:map?}}make_unique[cmap[{{> CythonMapKeyValue}}]]({{!
-  }}deref((<{{type:flat_name}}?> result)._map)){{/type:map?}}{{!
+  }}deref((<{{program:name}}_types.{{type:flat_name}}?> result)._map)){{/type:map?}}{{!
 }}{{#type:void?}}c_unit{{/type:void?}}{{!
-}}{{#type:enum}}{{enum:name}}_to_cpp(result){{/type:enum}}
+}}{{#type:enum}}{{program:name}}_types.{{enum:name}}_to_cpp(result){{/type:enum}}
