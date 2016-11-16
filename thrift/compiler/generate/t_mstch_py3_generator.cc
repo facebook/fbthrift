@@ -42,8 +42,10 @@ class t_mstch_py3_generator : public t_mstch_generator {
     mstch::map extend_type(const t_type&) const override;
 
   protected:
+    void generate_init_files(const t_program&);
     void generate_structs(const t_program&);
     void generate_services(const t_program&);
+    boost::filesystem::path package_to_path(std::string package);
     mstch::array get_return_types(const t_program&) const;
     mstch::array get_container_types(const t_program&) const;
     string flatten_type_name(const t_type&) const;
@@ -56,7 +58,9 @@ class t_mstch_py3_generator : public t_mstch_generator {
     ) const;
 };
 
-mstch::map t_mstch_py3_generator::extend_program(const t_program& program) const {
+mstch::map t_mstch_py3_generator::extend_program(
+  const t_program& program
+) const {
   auto cpp_namespace = program.get_namespace("cpp2");
   if (cpp_namespace == "") {
     cpp_namespace = program.get_namespace("cpp");
@@ -67,13 +71,22 @@ mstch::map t_mstch_py3_generator::extend_program(const t_program& program) const
       cpp_namespace = cpp_namespace + "cpp2";
     }
   }
+  auto py3_namespace = program.get_namespace("py3");
+  if (py3_namespace == "") {
+    py3_namespace = "py3";
+  }
+
   vector<string> ns;
   boost::algorithm::split(ns, cpp_namespace, boost::algorithm::is_any_of("."));
+  auto cppNamespaces = this->dump_elems(ns);
+  boost::algorithm::split(ns, py3_namespace, boost::algorithm::is_any_of("."));
+  auto py3Namespaces = this->dump_elems(ns);
 
   mstch::map result {
     {"returnTypes", this->get_return_types(program)},
     {"containerTypes", this->get_container_types(program)},
-    {"cppNamespaces", this->dump_elems(ns)},
+    {"cppNamespaces", cppNamespaces},
+    {"py3Namespaces", py3Namespaces},
   };
   return result;
 }
@@ -85,21 +98,46 @@ mstch::map  t_mstch_py3_generator::extend_type(const t_type& type) const {
   return result;
 }
 
+void t_mstch_py3_generator::generate_init_files(const t_program& program) {
+  auto path = this->package_to_path(program.get_namespace("py3"));
+  auto directory = boost::filesystem::path{};
+  for (auto path_part : path) {
+    directory /= path_part;
+    this->write_output(directory / "__init__.py", "");
+  }
+}
+
 void t_mstch_py3_generator::generate_structs(const t_program& program) {
+  auto path = this->package_to_path(program.get_namespace("py3"));
+
   auto basename = program.get_name() + "_types";
-  this->render_to_file(program, "Struct.pxd", basename + ".pxd");
-  this->render_to_file(program, "Struct.pyx", basename + ".pyx");
+  this->render_to_file(program, "Struct.pxd", path / (basename + ".pxd"));
+  this->render_to_file(program, "Struct.pyx", path / (basename + ".pyx"));
 }
 
 void t_mstch_py3_generator::generate_services(const t_program& program) {
-  auto name = this->get_program()->get_name();
-  this->render_to_file(program, "Services.pxd", name + "_services.pxd");
-  auto basename = name + "_services_wrapper";
-  this->render_to_file(program, "ServicesWrapper.h", basename + ".h");
-  this->render_to_file(program, "ServicesWrapper.cpp", basename + ".cpp");
-  this->render_to_file(program, "ServicesWrapper.pxd", basename + ".pxd");
-  this->render_to_file(program, "CythonServices.pyx", name + "_services.pyx");
+  auto path = this->package_to_path(program.get_namespace("py3"));
 
+  auto name = this->get_program()->get_name();
+  this->render_to_file(
+    program, "Services.pxd", path / (name + "_services.pxd"));
+  this->render_to_file(
+    program, "CythonServices.pyx", path / (name + "_services.pyx"));
+
+  auto basename = name + "_services_wrapper";
+  this->render_to_file(
+    program, "ServicesWrapper.h", path / (basename + ".h"));
+  this->render_to_file(
+    program, "ServicesWrapper.cpp", path / (basename + ".cpp"));
+  this->render_to_file(
+    program, "ServicesWrapper.pxd", path / (basename + ".pxd"));
+}
+
+boost::filesystem::path t_mstch_py3_generator::package_to_path(
+  std::string package
+) {
+  boost::algorithm::replace_all(package, ".", "/");
+  return boost::filesystem::path{package};
 }
 
 mstch::array t_mstch_py3_generator::get_return_types(
@@ -188,6 +226,7 @@ string t_mstch_py3_generator::flatten_type_name(const t_type& type) const {
 
 void t_mstch_py3_generator::generate_program() {
   mstch::config::escape = [](const std::string& s) { return s; };
+  this->generate_init_files(*this->get_program());
   this->generate_structs(*this->get_program());
   this->generate_services(*this->get_program());
 }

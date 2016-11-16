@@ -40,8 +40,8 @@ from thrift.lib.py3.thrift_server cimport (
   cTApplicationException
 )
 from folly_futures cimport cFollyPromise, cFollyUnit, c_unit
-cimport {{program:name}}_types
-import {{program:name}}_types
+from {{#program:py3Namespaces}}{{value}}{{^last?}}.{{/last?}}{{/program:py3Namespaces}} cimport {{program:name}}_types
+from {{#program:py3Namespaces}}{{value}}{{^last?}}.{{/last?}}{{/program:py3Namespaces}} import {{program:name}}_types
 
 import asyncio
 import functools
@@ -49,7 +49,7 @@ import sys
 import traceback
 
 {{#program:services}}
-from {{program:name}}_services_wrapper cimport c{{service:name}}Interface
+from {{#program:py3Namespaces}}{{value}}{{^last?}}.{{/last?}}{{/program:py3Namespaces}}.{{program:name}}_services_wrapper cimport c{{service:name}}Interface
 {{/program:services}}
 
 {{> CythonPromises}}

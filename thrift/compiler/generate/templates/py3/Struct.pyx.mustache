@@ -44,7 +44,7 @@ from thrift.lib.py3.thrift_server cimport TException
 
 from collections.abc import Sequence, Set, Mapping
 from enum import Enum
-cimport {{program:name}}_types
+from {{#program:py3Namespaces}}{{value}}{{^last?}}.{{/last?}}{{/program:py3Namespaces}} cimport {{program:name}}_types
 
 {{#program:enums}}
 class {{enum:name}}(Enum):

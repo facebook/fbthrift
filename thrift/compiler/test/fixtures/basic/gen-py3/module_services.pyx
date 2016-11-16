@@ -20,19 +20,19 @@ from thrift.lib.py3.thrift_server cimport (
   cTApplicationException
 )
 from folly_futures cimport cFollyPromise, cFollyUnit, c_unit
-cimport module_types
-import module_types
+from py3 cimport module_types
+from py3 import module_types
 
 import asyncio
 import functools
 import sys
 import traceback
 
-from module_services_wrapper cimport cMyServiceInterface
-from module_services_wrapper cimport cMyServiceFastInterface
-from module_services_wrapper cimport cMyServiceEmptyInterface
-from module_services_wrapper cimport cMyServicePrioParentInterface
-from module_services_wrapper cimport cMyServicePrioChildInterface
+from py3.module_services_wrapper cimport cMyServiceInterface
+from py3.module_services_wrapper cimport cMyServiceFastInterface
+from py3.module_services_wrapper cimport cMyServiceEmptyInterface
+from py3.module_services_wrapper cimport cMyServicePrioParentInterface
+from py3.module_services_wrapper cimport cMyServicePrioChildInterface
 
 
 cdef extern from "<utility>" namespace "std":

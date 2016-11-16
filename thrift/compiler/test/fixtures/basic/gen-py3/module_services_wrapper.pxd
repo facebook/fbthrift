@@ -9,13 +9,13 @@ from cpython.ref cimport PyObject
 from libcpp.memory cimport shared_ptr
 from thrift.lib.py3.thrift_server cimport cServerInterface
 
-from module_services cimport cMyServiceSvIf
-from module_services cimport cMyServiceFastSvIf
-from module_services cimport cMyServiceEmptySvIf
-from module_services cimport cMyServicePrioParentSvIf
-from module_services cimport cMyServicePrioChildSvIf
+from py3.module_services cimport cMyServiceSvIf
+from py3.module_services cimport cMyServiceFastSvIf
+from py3.module_services cimport cMyServiceEmptySvIf
+from py3.module_services cimport cMyServicePrioParentSvIf
+from py3.module_services cimport cMyServicePrioChildSvIf
 
-cdef extern from "src/gen-py3/module_services_wrapper.h" namespace "cpp2":
+cdef extern from "src/gen-py3/py3/module_services_wrapper.h" namespace "cpp2":
     cdef cppclass cMyServiceWrapper "cpp2::MyService"(cMyServiceSvIf):
         pass
 

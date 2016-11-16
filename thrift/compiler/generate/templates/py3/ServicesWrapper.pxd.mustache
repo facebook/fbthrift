@@ -26,10 +26,10 @@ from libcpp.memory cimport shared_ptr
 from thrift.lib.py3.thrift_server cimport cServerInterface
 
 {{#program:services}}
-from {{program:name}}_services cimport c{{service:name}}SvIf
+from {{#program:py3Namespaces}}{{value}}{{^last?}}.{{/last?}}{{/program:py3Namespaces}}.{{program:name}}_services cimport c{{service:name}}SvIf
 {{/program:services}}
 
-cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}_services_wrapper.h"{{!
+cdef extern from "{{program:includePrefix}}gen-py3/{{#program:py3Namespaces}}{{value}}/{{/program:py3Namespaces}}{{program:name}}_services_wrapper.h"{{!
 }} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":
 {{#program:services}}
     cdef cppclass c{{service:name}}Wrapper "{{!
