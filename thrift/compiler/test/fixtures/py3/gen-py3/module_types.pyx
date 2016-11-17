@@ -69,7 +69,7 @@ cdef class SimpleStruct:
         deref(self.c_SimpleStruct).small_int = small_int
         deref(self.c_SimpleStruct).nice_sized_int = nice_sized_int
         deref(self.c_SimpleStruct).big_int = big_int
-        
+        deref(self.c_SimpleStruct).real = real
         
     @staticmethod
     cdef create(shared_ptr[cSimpleStruct] c_SimpleStruct):
