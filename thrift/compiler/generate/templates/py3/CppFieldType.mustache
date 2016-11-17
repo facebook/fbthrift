@@ -29,10 +29,10 @@ to define the types that go in those containers.
 }}{{#type:double?}}double{{/type:double?}}{{!
 }}{{#type:string?}}std::unique_ptr<std::string>{{/type:string?}}{{!
 }}{{#type:struct}}std::unique_ptr<{{!
-  }}{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}{{!
+  }}{{#type:cppNamespaces}}{{value}}::{{/type:cppNamespaces}}{{struct:name}}{{!
   }}>{{/type:struct}}{{!
 }}{{#type:enum}}{{!
-  }}{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{enum:name}}{{!
+  }}{{#type:cppNamespaces}}{{value}}::{{/type:cppNamespaces}}{{enum:name}}{{!
   }}{{/type:enum}}{{!
 }}{{#type:listElemType}}{{!
   }}std::unique_ptr<std::vector<{{>ContainerCppFieldType}}>>{{!

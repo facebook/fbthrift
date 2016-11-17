@@ -15,7 +15,7 @@ from thrift.lib.py3.thrift_server cimport TException
 
 from collections.abc import Sequence, Set, Mapping
 from enum import Enum
-from py3 cimport module_types
+cimport py3.module_types
 
 class AnEnum(Enum):
     ONE = <int> (AnEnum__ONE)
@@ -250,19 +250,19 @@ Sequence.register(List__string)
 
 cdef class List__SimpleStruct:
     def __init__(self, items=None):
-        self._vector = make_shared[vector[module_types.cSimpleStruct]]()
+        self._vector = make_shared[vector[.module_types.cSimpleStruct]]()
         if items:
             for item in items:
                 deref(self._vector).push_back(deref((<SimpleStruct> item).c_SimpleStruct))
 
     @staticmethod
-    cdef create(shared_ptr[vector[module_types.cSimpleStruct]] c_items):
+    cdef create(shared_ptr[vector[.module_types.cSimpleStruct]] c_items):
         inst = <List__SimpleStruct>List__SimpleStruct.__new__(List__SimpleStruct)
         inst._vector = c_items
         return inst
 
     def __getitem__(self, int index):
-        cdef module_types.cSimpleStruct citem = deref(self._vector).at(index)
+        cdef .module_types.cSimpleStruct citem = deref(self._vector).at(index)
         return SimpleStruct.create(make_shared[cSimpleStruct](citem))
 
     def __len__(self):
@@ -353,20 +353,20 @@ Mapping.register(Map__string_string)
 cdef class Map__string_SimpleStruct:
     def __init__(self, items=None):
 
-        self._map = make_shared[cmap[string,module_types.cSimpleStruct]]()
+        self._map = make_shared[cmap[string,.module_types.cSimpleStruct]]()
         if items:
             for key, item in items.items():
-                deref(self._map).insert(cpair[string,module_types.cSimpleStruct](key.encode('UTF-8'), deref((<SimpleStruct> item).c_SimpleStruct)))
+                deref(self._map).insert(cpair[string,.module_types.cSimpleStruct](key.encode('UTF-8'), deref((<SimpleStruct> item).c_SimpleStruct)))
 
     @staticmethod
-    cdef create(shared_ptr[cmap[string,module_types.cSimpleStruct]] c_items):
+    cdef create(shared_ptr[cmap[string,.module_types.cSimpleStruct]] c_items):
         inst = <Map__string_SimpleStruct>Map__string_SimpleStruct.__new__(Map__string_SimpleStruct)
         inst._map = c_items
         return inst
 
     def __getitem__(self, str key):
         cdef string ckey = key.encode('UTF-8')
-        cdef module_types.cSimpleStruct citem = deref(self._map)[ckey]
+        cdef .module_types.cSimpleStruct citem = deref(self._map)[ckey]
         return SimpleStruct.create(make_shared[cSimpleStruct](citem))
 
     def __len__(self):
@@ -422,4 +422,4 @@ A_WORD = cA_WORD().decode('UTF-8')
 A_STRUCT = SimpleStruct.create(make_shared[cSimpleStruct](cA_STRUCT()))
 WORD_LIST = List__string.create(make_shared[vector[string]](cWORD_LIST()))
 DIGITS = Set__i32.create(make_shared[cset[int32_t]](cDIGITS()))
-A_CONST_MAP = Map__string_SimpleStruct.create(make_shared[cmap[string,module_types.cSimpleStruct]](cA_CONST_MAP()))
+A_CONST_MAP = Map__string_SimpleStruct.create(make_shared[cmap[string,.module_types.cSimpleStruct]](cA_CONST_MAP()))

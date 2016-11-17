@@ -20,8 +20,16 @@ from thrift.lib.py3.thrift_server cimport (
   cTApplicationException
 )
 from folly_futures cimport cFollyPromise, cFollyUnit, c_unit
-from py3 cimport service_types
-from py3 import service_types
+cimport py3.service_types
+import py3.service_types
+cimport .module_types
+cimport .module_services
+import .module_types
+import .module_services
+cimport .includes_types
+cimport .includes_services
+import .includes_types
+import .includes_services
 
 import asyncio
 import functools
@@ -46,12 +54,12 @@ cdef class Promise_void:
 cdef public void call_cy_MyService_query(
     object self,
     cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[service_types.cMyStruct] s,
-    unique_ptr[service_types.cIncluded] i
+    unique_ptr[.module_types.cMyStruct] s,
+    unique_ptr[.includes_types.cIncluded] i
 ) with gil:
     promise = Promise_void.create(move(cPromise))
-    arg_s = service_types.MyStruct.create(service_types.move(s))
-    arg_i = service_types.Included.create(service_types.move(i))
+    arg_s = .module_types.MyStruct.create(.module_types.move(s))
+    arg_i = .includes_types.Included.create(.includes_types.move(i))
     asyncio.run_coroutine_threadsafe(
         MyService_query_coro(
             self,

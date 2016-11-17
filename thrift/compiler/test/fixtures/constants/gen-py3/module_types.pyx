@@ -15,7 +15,7 @@ from thrift.lib.py3.thrift_server cimport TException
 
 from collections.abc import Sequence, Set, Mapping
 from enum import Enum
-from py3 cimport module_types
+cimport py3.module_types
 
 class EmptyEnum(Enum):
 
@@ -142,8 +142,8 @@ x = 1.000000
 y = 1000000.0
 z = 1000000000.000000
 instagram = Internship.create(make_shared[cInternship](cinstagram()))
-kRanges = List__Range.create(make_shared[vector[module_types.cRange]](ckRanges()))
-internList = List__Internship.create(make_shared[vector[module_types.cInternship]](cinternList()))
+kRanges = List__Range.create(make_shared[vector[.module_types.cRange]](ckRanges()))
+internList = List__Internship.create(make_shared[vector[.module_types.cInternship]](cinternList()))
 apostrophe = capostrophe().decode('UTF-8')
 tripleApostrophe = ctripleApostrophe().decode('UTF-8')
 quotationMark = cquotationMark().decode('UTF-8')

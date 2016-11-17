@@ -20,8 +20,8 @@ from thrift.lib.py3.thrift_server cimport (
   cTApplicationException
 )
 from folly_futures cimport cFollyPromise, cFollyUnit, c_unit
-from py3 cimport includes_types
-from py3 import includes_types
+cimport py3.includes_types
+import py3.includes_types
 
 import asyncio
 import functools
