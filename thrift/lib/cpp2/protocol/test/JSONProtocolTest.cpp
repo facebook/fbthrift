@@ -33,6 +33,10 @@ namespace {
 
 class JSONProtocolTest : public testing::Test {};
 
+using P1 = TJSONProtocol;
+using W2 = JSONProtocolWriter;
+using R2 = JSONProtocolReader;
+
 template <typename T>
 struct action_traits_impl;
 template <typename C, typename A>
@@ -44,16 +48,16 @@ using action_traits = action_traits_impl<decltype(&F::operator())>;
 template <typename F>
 using arg = typename action_traits<F>::arg_type;
 
-string writing_cpp1(function<void(TJSONProtocol&)> f) {
+string writing_cpp1(function<void(P1&)> f) {
   auto buffer = make_shared<TMemoryBuffer>();
-  TJSONProtocol proto(buffer);
+  P1 proto(buffer);
   f(proto);
   return buffer->getBufferAsString();
 }
 
-string writing_cpp2(function<void(JSONProtocolWriter&)> f) {
+string writing_cpp2(function<void(W2&)> f) {
   IOBufQueue queue;
-  JSONProtocolWriter writer;
+  W2 writer;
   writer.setOutput(&queue);
   f(writer);
   string _return;
@@ -69,36 +73,32 @@ arg<F> returning(F&& f) {
 }
 
 template <typename T>
-T reading_cpp1(ByteRange input, function<T(TJSONProtocol&)> f) {
+T reading_cpp1(ByteRange input, function<T(P1&)> f) {
   auto buffer = make_shared<TMemoryBuffer>(
       const_cast<uint8_t*>(input.data()), input.size());
-  TJSONProtocol proto(buffer);
+  P1 proto(buffer);
   return f(proto);
 }
 
 template <typename T>
-T reading_cpp1(StringPiece input, function<T(TJSONProtocol&)>&& f) {
+T reading_cpp1(StringPiece input, function<T(P1&)>&& f) {
   using F = typename std::remove_reference<decltype(f)>::type;
   return reading_cpp1(ByteRange(input), std::forward<F>(f));
 }
 
 template <typename T>
-T reading_cpp2(ByteRange input, function<T(JSONProtocolReader&)> f) {
+T reading_cpp2(ByteRange input, function<T(R2&)> f) {
   IOBuf buf(IOBuf::WRAP_BUFFER, input);
-  JSONProtocolReader reader;
+  R2 reader;
   reader.setInput(&buf);
   return f(reader);
 }
 
 template <typename T>
-T reading_cpp2(StringPiece input, function<T(JSONProtocolReader&)>&& f) {
+T reading_cpp2(StringPiece input, function<T(R2&)>&& f) {
   using F = typename std::remove_reference<decltype(f)>::type;
   return reading_cpp2(ByteRange(input), std::forward<F>(f));
 }
-
-using P1 = TJSONProtocol;
-using W2 = JSONProtocolWriter;
-using R2 = JSONProtocolReader;
 
 }
 
@@ -318,39 +318,39 @@ TEST_F(JSONProtocolTest, writeSet_string) {
 }
 
 TEST_F(JSONProtocolTest, serializedSizeBool_false) {
-  EXPECT_EQ(2, JSONProtocolWriter().serializedSizeBool(false));
+  EXPECT_EQ(2, W2().serializedSizeBool(false));
 }
 
 TEST_F(JSONProtocolTest, serializedSizeBool_true) {
-  EXPECT_EQ(2, JSONProtocolWriter().serializedSizeBool(true));
+  EXPECT_EQ(2, W2().serializedSizeBool(true));
 }
 
 TEST_F(JSONProtocolTest, serializedSizeByte) {
-  EXPECT_EQ(6, JSONProtocolWriter().serializedSizeByte(17));
+  EXPECT_EQ(6, W2().serializedSizeByte(17));
 }
 
 TEST_F(JSONProtocolTest, serializedSizeI16) {
-  EXPECT_EQ(8, JSONProtocolWriter().serializedSizeI16(1017));
+  EXPECT_EQ(8, W2().serializedSizeI16(1017));
 }
 
 TEST_F(JSONProtocolTest, serializedSizeI32) {
-  EXPECT_EQ(13, JSONProtocolWriter().serializedSizeI32(100017));
+  EXPECT_EQ(13, W2().serializedSizeI32(100017));
 }
 
 TEST_F(JSONProtocolTest, serializedSizeI64) {
-  EXPECT_EQ(25, JSONProtocolWriter().serializedSizeI64(5000000017));
+  EXPECT_EQ(25, W2().serializedSizeI64(5000000017));
 }
 
 TEST_F(JSONProtocolTest, serializedSizeDouble) {
-  EXPECT_EQ(25, JSONProtocolWriter().serializedSizeDouble(5.25));
+  EXPECT_EQ(25, W2().serializedSizeDouble(5.25));
 }
 
 TEST_F(JSONProtocolTest, serializedSizeFloat) {
-  EXPECT_EQ(25, JSONProtocolWriter().serializedSizeFloat(5.25f));
+  EXPECT_EQ(25, W2().serializedSizeFloat(5.25f));
 }
 
 TEST_F(JSONProtocolTest, serializedSizeStop) {
-  EXPECT_EQ(0, JSONProtocolWriter().serializedSizeStop());
+  EXPECT_EQ(0, W2().serializedSizeStop());
 }
 
 TEST_F(JSONProtocolTest, readBool_false) {
