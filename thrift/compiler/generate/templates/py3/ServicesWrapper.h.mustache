@@ -24,6 +24,11 @@ created by the thrift compiler for generated cpp2 code.
 #pragma once
 {{#program:services}}
 #include <{{program:includePrefix}}gen-cpp2/{{service:name}}.h>
+{{#service:externalProgram?}}
+{{#service:extends}}
+#include <{{program:includePrefix}}gen-py3/{{#service:py3Namespaces}}{{value}}/{{/service:py3Namespaces}}{{service:programName}}_services_wrapper.h>
+{{/service:extends}}
+{{/service:externalProgram?}}
 {{/program:services}}
 #include <Python.h>
 #include <memory.h>
@@ -32,7 +37,8 @@ created by the thrift compiler for generated cpp2 code.
 {{/program:cppNamespaces}}
 
 {{#program:services}}
-class {{service:name}}Wrapper : public {{service:name}}SvIf {
+class {{service:name}}Wrapper : public {{service:name}}SvIf{{!
+}}{{#service:extends}}, virtual public {{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}Wrapper{{/service:extends}} {
   private:
     PyObject *if_object;
   public:

@@ -17,8 +17,9 @@
 #include <thrift/compiler/generate/t_mstch_generator.h>
 
 #include <boost/algorithm/string/replace.hpp>
-#include <boost/algorithm/string/split.hpp>
 #include <boost/algorithm/string/classification.hpp>
+#include <folly/String.h>
+
 
 namespace {
 
@@ -40,6 +41,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
     void generate_program() override;
     mstch::map extend_program(const t_program&) const override;
     mstch::map extend_type(const t_type&) const override;
+    mstch::map extend_service(const t_service&) const override;
 
   protected:
     void generate_init_files(const t_program&);
@@ -48,7 +50,8 @@ class t_mstch_py3_generator : public t_mstch_generator {
     boost::filesystem::path package_to_path(std::string package);
     mstch::array get_return_types(const t_program&) const;
     mstch::array get_container_types(const t_program&) const;
-    std::string get_cpp2_namespace(const t_program&) const;
+    mstch::array get_cpp2_namespace(const t_program&) const;
+    mstch::array get_py3_namespace(const t_program&) const;
     std::string flatten_type_name(const t_type&) const;
 
   private:
@@ -62,18 +65,9 @@ class t_mstch_py3_generator : public t_mstch_generator {
 mstch::map t_mstch_py3_generator::extend_program(
   const t_program& program
 ) const {
-  auto cpp_namespace = this->get_cpp2_namespace(program);
-  auto py3_namespace = program.get_namespace("py3");
-  if (py3_namespace == "") {
-    py3_namespace = "py3";
-  }
-
+  auto cppNamespaces = this->get_cpp2_namespace(program);
+  auto py3Namespaces = this->get_py3_namespace(program);
   vector<string> ns;
-  boost::algorithm::split(ns, cpp_namespace, boost::algorithm::is_any_of("."));
-  auto cppNamespaces = this->dump_elems(ns);
-  boost::algorithm::split(ns, py3_namespace, boost::algorithm::is_any_of("."));
-  auto py3Namespaces = this->dump_elems(ns);
-  ns.clear();
   for (auto included_program : program.get_includes()) {
     ns.push_back(
       included_program->get_namespace("py3") +
@@ -102,15 +96,37 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) const {
     "." +
     program->get_name() +
     "_types";
-  auto cpp_namespace = this->get_cpp2_namespace(*program);
-  vector<string> ns;
-  boost::algorithm::split(ns, cpp_namespace, boost::algorithm::is_any_of("."));
-  auto cppNamespaces = this->dump_elems(ns);
+  auto cppNamespaces = this->get_cpp2_namespace(*program);
 
   mstch::map result {
     {"module_path", module_path},
     {"flat_name", this->flatten_type_name(type)},
     {"cppNamespaces", cppNamespaces},
+  };
+  return result;
+}
+
+mstch::map t_mstch_py3_generator::extend_service(
+  const t_service& service
+) const {
+  const auto program = service.get_program();
+  const auto& cppNamespaces = this->get_cpp2_namespace(*program);
+  const auto& py3Namespaces = this->get_py3_namespace(*program);
+  // Used to avoid circular import in ServicesWrapper.h.mustache
+  bool externalProgram = false;
+  if (service.get_extends()) {
+    const auto ext_program = service.get_extends()->get_program();
+    const auto& ext_path = ext_program->get_path();
+    const auto& prog_path = program->get_path();
+    if (ext_path != prog_path) {
+      externalProgram = true;
+    }
+  }
+  mstch::map result {
+    {"externalProgram?", externalProgram},
+    {"cppNamespaces", cppNamespaces},
+    {"py3Namespaces", py3Namespaces},
+    {"programName", program->get_name()}
   };
   return result;
 }
@@ -241,7 +257,7 @@ std::string t_mstch_py3_generator::flatten_type_name(const t_type& type) const {
   }
 }
 
-std::string t_mstch_py3_generator::get_cpp2_namespace(
+mstch::array t_mstch_py3_generator::get_cpp2_namespace(
   const t_program& program
 ) const {
   auto cpp_namespace = program.get_namespace("cpp2");
@@ -251,10 +267,22 @@ std::string t_mstch_py3_generator::get_cpp2_namespace(
       cpp_namespace = "cpp2";
     }
     else {
-      cpp_namespace = cpp_namespace + "cpp2";
+      cpp_namespace = cpp_namespace + ".cpp2";
     }
   }
-  return cpp_namespace;
+  vector<string> ns;
+  folly::split('.', cpp_namespace, ns);
+  return this->dump_elems(ns);
+}
+
+mstch::array t_mstch_py3_generator::get_py3_namespace(
+  const t_program& program
+) const {
+  const auto& py3_ns_raw = program.get_namespace("py3");
+  const auto& py3_namespace = py3_ns_raw.empty() ? "py3" : py3_ns_raw;
+  vector<string> ns;
+  folly::split('.', py3_namespace, ns);
+  return this->dump_elems(ns);
 }
 
 void t_mstch_py3_generator::generate_program() {

@@ -94,7 +94,7 @@ class MyServicePrioParentWrapper : public MyServicePrioParentSvIf {
 std::shared_ptr<apache::thrift::ServerInterface> MyServicePrioParentInterface(PyObject *if_object);
 
 
-class MyServicePrioChildWrapper : public MyServicePrioChildSvIf {
+class MyServicePrioChildWrapper : public MyServicePrioChildSvIf, virtual public cpp2::MyServicePrioParentWrapper {
   private:
     PyObject *if_object;
   public:
