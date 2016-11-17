@@ -548,7 +548,9 @@ async def MyServicePrioChild_pang_coro(
         promise.cPromise.setValue(c_unit)
 
 
-cdef class MyServiceInterface(ServiceInterface):
+cdef class MyServiceInterface(
+    ServiceInterface
+):
     def __cinit__(self):
         self.interface_wrapper = cMyServiceInterface(<PyObject *> self)
 
@@ -591,7 +593,9 @@ cdef class MyServiceInterface(ServiceInterface):
         raise NotImplementedError("async def lobDataById is not implemented")
 
 
-cdef class MyServiceFastInterface(ServiceInterface):
+cdef class MyServiceFastInterface(
+    ServiceInterface
+):
     def __cinit__(self):
         self.interface_wrapper = cMyServiceFastInterface(<PyObject *> self)
 
@@ -634,14 +638,18 @@ cdef class MyServiceFastInterface(ServiceInterface):
         raise NotImplementedError("async def lobDataById is not implemented")
 
 
-cdef class MyServiceEmptyInterface(ServiceInterface):
+cdef class MyServiceEmptyInterface(
+    ServiceInterface
+):
     def __cinit__(self):
         self.interface_wrapper = cMyServiceEmptyInterface(<PyObject *> self)
 
     def __init__(self, loop=None):
         self.loop = loop or asyncio.get_event_loop()
 
-cdef class MyServicePrioParentInterface(ServiceInterface):
+cdef class MyServicePrioParentInterface(
+    ServiceInterface
+):
     def __cinit__(self):
         self.interface_wrapper = cMyServicePrioParentInterface(<PyObject *> self)
 
@@ -658,7 +666,9 @@ cdef class MyServicePrioParentInterface(ServiceInterface):
         raise NotImplementedError("async def pong is not implemented")
 
 
-cdef class MyServicePrioChildInterface(ServiceInterface):
+cdef class MyServicePrioChildInterface(
+    py3.module_services.MyServicePrioParentInterface
+):
     def __cinit__(self):
         self.interface_wrapper = cMyServicePrioChildInterface(<PyObject *> self)
 

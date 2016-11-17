@@ -5,12 +5,21 @@
 #  @generated
 #
 
-from thrift.lib.py3.thrift_server cimport cServerInterface
+from thrift.lib.py3.thrift_server cimport cServerInterface, ServiceInterface
+
+cimport .module_services
+cimport .includes_services
 
 cdef extern from "src/gen-cpp2/MyService.h" namespace "cpp2":
     cdef cppclass cMyServiceSvAsyncIf "cpp2::MyServiceSvAsyncIf":
       pass
 
-    cdef cppclass cMyServiceSvIf "cpp2::MyServiceSvIf"(cMyServiceSvAsyncIf, cServerInterface):
-      pass
+    cdef cppclass cMyServiceSvIf "cpp2::MyServiceSvIf"(
+            cMyServiceSvAsyncIf,
+            cServerInterface):
+        pass
+
+
+cdef class MyServiceInterface(ServiceInterface):
+    pass
 

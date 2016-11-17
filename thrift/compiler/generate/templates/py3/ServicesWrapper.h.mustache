@@ -38,7 +38,7 @@ created by the thrift compiler for generated cpp2 code.
 
 {{#program:services}}
 class {{service:name}}Wrapper : {{!
-  }}{{#service:extends}}public {{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}Wrapper, {{/service:extends}}{{!
+  }}{{#service:extends}}virtual public {{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}Wrapper, {{/service:extends}}{{!
   }}virtual public {{service:name}}SvIf{{!
 }} {
 {{^service:extends?}}
@@ -47,12 +47,14 @@ class {{service:name}}Wrapper : {{!
 {{/service:extends?}}
   public:
     explicit {{service:name}}Wrapper(PyObject *if_object);
+{{^service:extends?}}
     virtual ~{{service:name}}Wrapper();
+{{/service:extends?}}
     {{#service:functions}}
     folly::Future<{{#function:returnType}}{{> CppFieldType}}{{/function:returnType}}>{{!
       }} future_{{function:name}}({{#function:args}}
         {{#field:type}}{{> CppFieldType}}{{/field:type}} {{field:name}}{{^last?}},{{/last?}}{{#last?}}
-      {{/last?}}{{/function:args}});
+    {{/last?}}{{/function:args}}) override;
 {{/service:functions}}};
 
 std::shared_ptr<apache::thrift::ServerInterface> {{service:name}}Interface(PyObject *if_object);

@@ -1116,7 +1116,9 @@ async def SimpleService_set_enum_coro(
         promise.cPromise.setValue(.module_types.AnEnum_to_cpp(result))
 
 
-cdef class SimpleServiceInterface(ServiceInterface):
+cdef class SimpleServiceInterface(
+    ServiceInterface
+):
     def __cinit__(self):
         self.interface_wrapper = cSimpleServiceInterface(<PyObject *> self)
 

@@ -26,15 +26,21 @@ from libcpp.memory cimport shared_ptr
 from thrift.lib.py3.thrift_server cimport cServerInterface
 
 {{#program:services}}
-from {{#program:py3Namespaces}}{{value}}{{^last?}}.{{/last?}}{{/program:py3Namespaces}}.{{program:name}}_services cimport c{{service:name}}SvIf
+cimport {{#program:py3Namespaces}}{{value}}{{^last?}}.{{/last?}}{{/program:py3Namespaces}}.{{program:name}}_services
 {{/program:services}}
+{{#program:includeNamespaces}}
+cimport {{value}}_services_wrapper
+{{/program:includeNamespaces}}
+
 
 cdef extern from "{{program:includePrefix}}gen-py3/{{#program:py3Namespaces}}{{value}}/{{/program:py3Namespaces}}{{program:name}}_services_wrapper.h"{{!
 }} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":
 {{#program:services}}
     cdef cppclass c{{service:name}}Wrapper "{{!
-    }}{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{service:name}}"{{!
-    }}(c{{service:name}}SvIf):
+    }}{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{service:name}}Wrapper"(
+        {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}_services.c{{service:name}}SvIf{{#service:extends}},
+        {{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{service:programName}}_services_wrapper.c{{service:name}}Wrapper{{/service:extends}}
+    ):
         pass
 
     shared_ptr[cServerInterface] c{{service:name}}Interface {{!

@@ -21,7 +21,7 @@ class MyServiceWrapper : virtual public MyServiceSvIf {
     folly::Future<folly::Unit> future_query(
         std::unique_ptr<cpp2::MyStruct> s,
         std::unique_ptr<cpp2::Included> i
-      );
+    ) override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceInterface(PyObject *if_object);

@@ -90,7 +90,9 @@ async def MyService_query_coro(
         promise.cPromise.setValue(c_unit)
 
 
-cdef class MyServiceInterface(ServiceInterface):
+cdef class MyServiceInterface(
+    ServiceInterface
+):
     def __cinit__(self):
         self.interface_wrapper = cMyServiceInterface(<PyObject *> self)
 

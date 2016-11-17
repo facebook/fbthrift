@@ -62,7 +62,15 @@ from {{#program:py3Namespaces}}{{value}}{{^last?}}.{{/last?}}{{/program:py3Names
 {{> ServiceCallbacks}}
 
 {{#program:services}}
-cdef class {{service:name}}Interface(ServiceInterface):
+cdef class {{service:name}}Interface(
+    {{#service:extends}}
+    {{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{!
+      }}{{service:programName}}_services.{{service:name}}Interface
+    {{/service:extends}}
+    {{^service:extends?}}
+    ServiceInterface
+    {{/service:extends?}}
+):
     def __cinit__(self):
         self.interface_wrapper = c{{service:name}}Interface(<PyObject *> self)
 

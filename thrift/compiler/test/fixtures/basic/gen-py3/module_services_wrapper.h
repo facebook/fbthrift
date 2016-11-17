@@ -22,22 +22,22 @@ class MyServiceWrapper : virtual public MyServiceSvIf {
   public:
     explicit MyServiceWrapper(PyObject *if_object);
     virtual ~MyServiceWrapper();
-    folly::Future<folly::Unit> future_ping();
-    folly::Future<std::unique_ptr<std::string>> future_getRandomData();
+    folly::Future<folly::Unit> future_ping() override;
+    folly::Future<std::unique_ptr<std::string>> future_getRandomData() override;
     folly::Future<bool> future_hasDataById(
         int64_t id
-      );
+    ) override;
     folly::Future<std::unique_ptr<std::string>> future_getDataById(
         int64_t id
-      );
+    ) override;
     folly::Future<folly::Unit> future_putDataById(
         int64_t id,
         std::unique_ptr<std::string> data
-      );
+    ) override;
     folly::Future<folly::Unit> future_lobDataById(
         int64_t id,
         std::unique_ptr<std::string> data
-      );
+    ) override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceInterface(PyObject *if_object);
@@ -49,22 +49,22 @@ class MyServiceFastWrapper : virtual public MyServiceFastSvIf {
   public:
     explicit MyServiceFastWrapper(PyObject *if_object);
     virtual ~MyServiceFastWrapper();
-    folly::Future<folly::Unit> future_ping();
-    folly::Future<std::unique_ptr<std::string>> future_getRandomData();
+    folly::Future<folly::Unit> future_ping() override;
+    folly::Future<std::unique_ptr<std::string>> future_getRandomData() override;
     folly::Future<bool> future_hasDataById(
         int64_t id
-      );
+    ) override;
     folly::Future<std::unique_ptr<std::string>> future_getDataById(
         int64_t id
-      );
+    ) override;
     folly::Future<folly::Unit> future_putDataById(
         int64_t id,
         std::unique_ptr<std::string> data
-      );
+    ) override;
     folly::Future<folly::Unit> future_lobDataById(
         int64_t id,
         std::unique_ptr<std::string> data
-      );
+    ) override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceFastInterface(PyObject *if_object);
@@ -87,18 +87,17 @@ class MyServicePrioParentWrapper : virtual public MyServicePrioParentSvIf {
   public:
     explicit MyServicePrioParentWrapper(PyObject *if_object);
     virtual ~MyServicePrioParentWrapper();
-    folly::Future<folly::Unit> future_ping();
-    folly::Future<folly::Unit> future_pong();
+    folly::Future<folly::Unit> future_ping() override;
+    folly::Future<folly::Unit> future_pong() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServicePrioParentInterface(PyObject *if_object);
 
 
-class MyServicePrioChildWrapper : public cpp2::MyServicePrioParentWrapper, virtual public MyServicePrioChildSvIf {
+class MyServicePrioChildWrapper : virtual public cpp2::MyServicePrioParentWrapper, virtual public MyServicePrioChildSvIf {
   public:
     explicit MyServicePrioChildWrapper(PyObject *if_object);
-    virtual ~MyServicePrioChildWrapper();
-    folly::Future<folly::Unit> future_pang();
+    folly::Future<folly::Unit> future_pang() override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServicePrioChildInterface(PyObject *if_object);
