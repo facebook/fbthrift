@@ -48,7 +48,7 @@ func NewTFramedTransportFactory(factory TTransportFactory) TTransportFactory {
 }
 
 func NewTFramedTransportFactoryMaxLength(factory TTransportFactory, maxLength uint32) TTransportFactory {
-        return &tFramedTransportFactory{factory: factory, maxLength: maxLength}
+	return &tFramedTransportFactory{factory: factory, maxLength: maxLength}
 }
 
 func (p *tFramedTransportFactory) GetTransport(base TTransport) TTransport {
@@ -164,4 +164,3 @@ func (p *TFramedTransport) readFrameHeader() (uint32, error) {
 func (p *TFramedTransport) RemainingBytes() (num_bytes uint64) {
 	return uint64(p.frameSize)
 }
-
