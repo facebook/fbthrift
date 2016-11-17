@@ -13,90 +13,90 @@
 namespace py3 {
 namespace simple {
 
-class SimpleServiceWrapper : public SimpleServiceSvIf {
-  private:
+class SimpleServiceWrapper : virtual public SimpleServiceSvIf {
+  protected:
     PyObject *if_object;
   public:
     explicit SimpleServiceWrapper(PyObject *if_object);
     virtual ~SimpleServiceWrapper();
-      folly::Future<int32_t> future_get_five();
-      folly::Future<int32_t> future_add_five(
+    folly::Future<int32_t> future_get_five();
+    folly::Future<int32_t> future_add_five(
         int32_t num
       );
-      folly::Future<folly::Unit> future_do_nothing();
-      folly::Future<std::unique_ptr<std::string>> future_concat(
+    folly::Future<folly::Unit> future_do_nothing();
+    folly::Future<std::unique_ptr<std::string>> future_concat(
         std::unique_ptr<std::string> first,
         std::unique_ptr<std::string> second
       );
-      folly::Future<int32_t> future_get_value(
+    folly::Future<int32_t> future_get_value(
         std::unique_ptr<py3::simple::SimpleStruct> simple_struct
       );
-      folly::Future<bool> future_negate(
+    folly::Future<bool> future_negate(
         bool input
       );
-      folly::Future<int8_t> future_tiny(
+    folly::Future<int8_t> future_tiny(
         int8_t input
       );
-      folly::Future<int16_t> future_small(
+    folly::Future<int16_t> future_small(
         int16_t input
       );
-      folly::Future<int64_t> future_big(
+    folly::Future<int64_t> future_big(
         int64_t input
       );
-      folly::Future<double> future_two(
+    folly::Future<double> future_two(
         double input
       );
-      folly::Future<folly::Unit> future_expected_exception();
-      folly::Future<int32_t> future_unexpected_exception();
-      folly::Future<int32_t> future_sum_i16_list(
+    folly::Future<folly::Unit> future_expected_exception();
+    folly::Future<int32_t> future_unexpected_exception();
+    folly::Future<int32_t> future_sum_i16_list(
         std::unique_ptr<std::vector<int16_t>> numbers
       );
-      folly::Future<int32_t> future_sum_i32_list(
+    folly::Future<int32_t> future_sum_i32_list(
         std::unique_ptr<std::vector<int32_t>> numbers
       );
-      folly::Future<int32_t> future_sum_i64_list(
+    folly::Future<int32_t> future_sum_i64_list(
         std::unique_ptr<std::vector<int64_t>> numbers
       );
-      folly::Future<std::unique_ptr<std::string>> future_concat_many(
+    folly::Future<std::unique_ptr<std::string>> future_concat_many(
         std::unique_ptr<std::vector<std::string>> words
       );
-      folly::Future<int32_t> future_count_structs(
+    folly::Future<int32_t> future_count_structs(
         std::unique_ptr<std::vector<py3::simple::SimpleStruct>> items
       );
-      folly::Future<int32_t> future_sum_set(
+    folly::Future<int32_t> future_sum_set(
         std::unique_ptr<std::set<int32_t>> numbers
       );
-      folly::Future<bool> future_contains_word(
+    folly::Future<bool> future_contains_word(
         std::unique_ptr<std::set<std::string>> words,
         std::unique_ptr<std::string> word
       );
-      folly::Future<std::unique_ptr<std::string>> future_get_map_value(
+    folly::Future<std::unique_ptr<std::string>> future_get_map_value(
         std::unique_ptr<std::map<std::string,std::string>> words,
         std::unique_ptr<std::string> key
       );
-      folly::Future<int16_t> future_map_length(
+    folly::Future<int16_t> future_map_length(
         std::unique_ptr<std::map<std::string,py3::simple::SimpleStruct>> items
       );
-      folly::Future<int16_t> future_sum_map_values(
+    folly::Future<int16_t> future_sum_map_values(
         std::unique_ptr<std::map<std::string,int16_t>> items
       );
-      folly::Future<int32_t> future_complex_sum_i32(
+    folly::Future<int32_t> future_complex_sum_i32(
         std::unique_ptr<py3::simple::ComplexStruct> counter
       );
-      folly::Future<std::unique_ptr<std::string>> future_repeat_name(
+    folly::Future<std::unique_ptr<std::string>> future_repeat_name(
         std::unique_ptr<py3::simple::ComplexStruct> counter
       );
-      folly::Future<std::unique_ptr<py3::simple::SimpleStruct>> future_get_struct();
-      folly::Future<std::unique_ptr<std::vector<int32_t>>> future_fib(
+    folly::Future<std::unique_ptr<py3::simple::SimpleStruct>> future_get_struct();
+    folly::Future<std::unique_ptr<std::vector<int32_t>>> future_fib(
         int16_t n
       );
-      folly::Future<std::unique_ptr<std::set<std::string>>> future_unique_words(
+    folly::Future<std::unique_ptr<std::set<std::string>>> future_unique_words(
         std::unique_ptr<std::vector<std::string>> words
       );
-      folly::Future<std::unique_ptr<std::map<std::string,int16_t>>> future_words_count(
+    folly::Future<std::unique_ptr<std::map<std::string,int16_t>>> future_words_count(
         std::unique_ptr<std::vector<std::string>> words
       );
-      folly::Future<py3::simple::AnEnum> future_set_enum(
+    folly::Future<py3::simple::AnEnum> future_set_enum(
         py3::simple::AnEnum in_enum
       );
 };

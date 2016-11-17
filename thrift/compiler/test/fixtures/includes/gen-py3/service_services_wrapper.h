@@ -12,13 +12,13 @@
 
 namespace cpp2 {
 
-class MyServiceWrapper : public MyServiceSvIf {
-  private:
+class MyServiceWrapper : virtual public MyServiceSvIf {
+  protected:
     PyObject *if_object;
   public:
     explicit MyServiceWrapper(PyObject *if_object);
     virtual ~MyServiceWrapper();
-      folly::Future<folly::Unit> future_query(
+    folly::Future<folly::Unit> future_query(
         std::unique_ptr<cpp2::MyStruct> s,
         std::unique_ptr<cpp2::Included> i
       );

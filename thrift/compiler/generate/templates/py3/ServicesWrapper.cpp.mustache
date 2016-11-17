@@ -35,6 +35,8 @@ defined in ServicesCallbacks, along with appropriate arguments.
 {{/program:cppNamespaces}}
 {{#program:services}}
 
+{{! Manage the PyObject if it's the base class }}
+{{^service:extends?}}
 {{service:name}}Wrapper::{{service:name}}Wrapper(PyObject *obj)
   : if_object(obj)
   {
@@ -44,6 +46,12 @@ defined in ServicesCallbacks, along with appropriate arguments.
 {{service:name}}Wrapper::~{{service:name}}Wrapper() {
     Py_XDECREF(this->if_object);
 }
+{{/service:extends?}}
+{{! Otherwise, proxy to the parent class to do the memory management}}
+{{#service:extends?}}
+{{service:name}}Wrapper::{{service:name}}Wrapper(PyObject *obj)
+  : {{#service:extends}}{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}Wrapper(obj){{/service:extends}} {}
+{{/service:extends?}}
 
 {{#service:functions}}
 folly::Future<{{#function:returnType}}{{> CppFieldType}}{{/function:returnType}}>{{!

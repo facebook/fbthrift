@@ -244,14 +244,7 @@ std::shared_ptr<apache::thrift::ServerInterface> MyServicePrioParentInterface(Py
 
 
 MyServicePrioChildWrapper::MyServicePrioChildWrapper(PyObject *obj)
-  : if_object(obj)
-  {
-    Py_XINCREF(this->if_object);
-  }
-
-MyServicePrioChildWrapper::~MyServicePrioChildWrapper() {
-    Py_XDECREF(this->if_object);
-}
+  : cpp2::MyServicePrioParentWrapper(obj) {}
 
 folly::Future<folly::Unit> MyServicePrioChildWrapper::future_pang() {
   folly::Promise<folly::Unit> promise;

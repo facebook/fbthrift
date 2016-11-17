@@ -16,25 +16,25 @@
 
 namespace cpp2 {
 
-class MyServiceWrapper : public MyServiceSvIf {
-  private:
+class MyServiceWrapper : virtual public MyServiceSvIf {
+  protected:
     PyObject *if_object;
   public:
     explicit MyServiceWrapper(PyObject *if_object);
     virtual ~MyServiceWrapper();
-      folly::Future<folly::Unit> future_ping();
-      folly::Future<std::unique_ptr<std::string>> future_getRandomData();
-      folly::Future<bool> future_hasDataById(
+    folly::Future<folly::Unit> future_ping();
+    folly::Future<std::unique_ptr<std::string>> future_getRandomData();
+    folly::Future<bool> future_hasDataById(
         int64_t id
       );
-      folly::Future<std::unique_ptr<std::string>> future_getDataById(
+    folly::Future<std::unique_ptr<std::string>> future_getDataById(
         int64_t id
       );
-      folly::Future<folly::Unit> future_putDataById(
+    folly::Future<folly::Unit> future_putDataById(
         int64_t id,
         std::unique_ptr<std::string> data
       );
-      folly::Future<folly::Unit> future_lobDataById(
+    folly::Future<folly::Unit> future_lobDataById(
         int64_t id,
         std::unique_ptr<std::string> data
       );
@@ -43,25 +43,25 @@ class MyServiceWrapper : public MyServiceSvIf {
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceInterface(PyObject *if_object);
 
 
-class MyServiceFastWrapper : public MyServiceFastSvIf {
-  private:
+class MyServiceFastWrapper : virtual public MyServiceFastSvIf {
+  protected:
     PyObject *if_object;
   public:
     explicit MyServiceFastWrapper(PyObject *if_object);
     virtual ~MyServiceFastWrapper();
-      folly::Future<folly::Unit> future_ping();
-      folly::Future<std::unique_ptr<std::string>> future_getRandomData();
-      folly::Future<bool> future_hasDataById(
+    folly::Future<folly::Unit> future_ping();
+    folly::Future<std::unique_ptr<std::string>> future_getRandomData();
+    folly::Future<bool> future_hasDataById(
         int64_t id
       );
-      folly::Future<std::unique_ptr<std::string>> future_getDataById(
+    folly::Future<std::unique_ptr<std::string>> future_getDataById(
         int64_t id
       );
-      folly::Future<folly::Unit> future_putDataById(
+    folly::Future<folly::Unit> future_putDataById(
         int64_t id,
         std::unique_ptr<std::string> data
       );
-      folly::Future<folly::Unit> future_lobDataById(
+    folly::Future<folly::Unit> future_lobDataById(
         int64_t id,
         std::unique_ptr<std::string> data
       );
@@ -70,8 +70,8 @@ class MyServiceFastWrapper : public MyServiceFastSvIf {
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceFastInterface(PyObject *if_object);
 
 
-class MyServiceEmptyWrapper : public MyServiceEmptySvIf {
-  private:
+class MyServiceEmptyWrapper : virtual public MyServiceEmptySvIf {
+  protected:
     PyObject *if_object;
   public:
     explicit MyServiceEmptyWrapper(PyObject *if_object);
@@ -81,26 +81,24 @@ class MyServiceEmptyWrapper : public MyServiceEmptySvIf {
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceEmptyInterface(PyObject *if_object);
 
 
-class MyServicePrioParentWrapper : public MyServicePrioParentSvIf {
-  private:
+class MyServicePrioParentWrapper : virtual public MyServicePrioParentSvIf {
+  protected:
     PyObject *if_object;
   public:
     explicit MyServicePrioParentWrapper(PyObject *if_object);
     virtual ~MyServicePrioParentWrapper();
-      folly::Future<folly::Unit> future_ping();
-      folly::Future<folly::Unit> future_pong();
+    folly::Future<folly::Unit> future_ping();
+    folly::Future<folly::Unit> future_pong();
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServicePrioParentInterface(PyObject *if_object);
 
 
-class MyServicePrioChildWrapper : public MyServicePrioChildSvIf, virtual public cpp2::MyServicePrioParentWrapper {
-  private:
-    PyObject *if_object;
+class MyServicePrioChildWrapper : public cpp2::MyServicePrioParentWrapper, virtual public MyServicePrioChildSvIf {
   public:
     explicit MyServicePrioChildWrapper(PyObject *if_object);
     virtual ~MyServicePrioChildWrapper();
-      folly::Future<folly::Unit> future_pang();
+    folly::Future<folly::Unit> future_pang();
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> MyServicePrioChildInterface(PyObject *if_object);
