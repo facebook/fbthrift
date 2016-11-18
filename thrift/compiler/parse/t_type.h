@@ -98,10 +98,6 @@ class t_type : public t_doc {
   virtual bool is_service()        const { return false; }
   virtual bool is_binary()         const { return false; }
 
-  t_program* get_program() {
-    return program_;
-  }
-
   const t_program* get_program() const {
     return program_;
   }

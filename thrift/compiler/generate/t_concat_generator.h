@@ -124,7 +124,7 @@ class t_concat_generator : public t_generator {
 
     // Qualify the name with the program name, if the type isn't from this
     // program.
-    t_program* program = ttype->get_program();
+    const t_program* program = ttype->get_program();
     if (program != nullptr && program != program_) {
       full_name = program->get_name() + "." + full_name;
     }

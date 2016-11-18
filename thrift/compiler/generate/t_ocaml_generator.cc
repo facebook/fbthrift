@@ -1558,7 +1558,7 @@ string t_ocaml_generator::argument_list(t_struct* tstruct) {
 
 string t_ocaml_generator::type_name(t_type* ttype) {
   string prefix = "";
-  t_program* program = ttype->get_program();
+  const t_program* program = ttype->get_program();
   if (program != nullptr && program != program_) {
     if (!ttype->is_service()) {
       prefix = capitalize(program->get_name()) + "_types.";

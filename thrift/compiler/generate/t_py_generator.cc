@@ -3693,7 +3693,7 @@ string t_py_generator::argument_list(t_struct* tstruct) {
 }
 
 string t_py_generator::type_name(t_type* ttype) {
-  t_program* program = ttype->get_program();
+  const t_program* program = ttype->get_program();
   if (ttype->is_service()) {
     return get_real_py_module(program) + "." +
       rename_reserved_keywords(ttype->get_name());

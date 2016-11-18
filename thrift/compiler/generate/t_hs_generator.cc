@@ -570,7 +570,7 @@ string t_hs_generator::render_const_value(t_type* type, t_const_value* value) {
     for (auto& c_iter : constants) {
       int val = c_iter->get_value();
       if (val == value->get_integer()) {
-        t_program* prog = type->get_program();
+        const t_program* prog = type->get_program();
         if (prog != nullptr)
           out << capitalize(prog->get_name()) << "_Types.";
         out << capitalize(c_iter->get_name());
@@ -2119,7 +2119,7 @@ string t_hs_generator::unqualified_type_name(t_type* ttype,
 }
 
 string t_hs_generator::type_name_qualifier(t_type* ttype) {
-  t_program* program = ttype->get_program();
+  const t_program* program = ttype->get_program();
 
   if (ttype->is_service()) {
     return capitalize(program->get_name()) + "_Iface.";

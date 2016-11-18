@@ -175,7 +175,7 @@ class t_js_generator : public t_oop_generator {
       "//\n";
   }
 
-  std::vector<std::string> js_namespace_pieces(t_program* p) {
+  std::vector<std::string> js_namespace_pieces(const t_program* p) {
       std::string ns = p->get_namespace("js");
 
       std::string::size_type   loc;
@@ -195,7 +195,7 @@ class t_js_generator : public t_oop_generator {
       return pieces;
   }
 
-  std::string js_type_namespace(t_program* p) {
+  std::string js_type_namespace(const t_program* p) {
     if (gen_node_) {
       if (p != nullptr && p != program_) {
         return p->get_name() + "_ttypes.";
@@ -205,14 +205,14 @@ class t_js_generator : public t_oop_generator {
     return js_namespace(p);
   }
 
-  std::string js_export_namespace(t_program* p) {
+  std::string js_export_namespace(const t_program* p) {
     if (gen_node_) {
       return "exports.";
     }
     return js_namespace(p);
   }
 
-  std::string js_namespace(t_program* p) {
+  std::string js_namespace(const t_program* p) {
       std::string ns = p->get_namespace("js");
       if (ns.size() > 0) {
           ns += ".";
@@ -222,7 +222,7 @@ class t_js_generator : public t_oop_generator {
       return ns;
   }
 
-  std::string js_node_module(t_program* p) {
+  std::string js_node_module(const t_program* p) {
       std::string node_module = p->get_namespace("node_module");
       if (node_module.size() == 0) {
           node_module = ".";

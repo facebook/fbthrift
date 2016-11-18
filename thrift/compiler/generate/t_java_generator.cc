@@ -3326,7 +3326,7 @@ string t_java_generator::type_name(t_type* ttype, bool in_container, bool in_ini
   }
 
   // Check for namespacing
-  t_program* program = ttype->get_program();
+  const t_program* program = ttype->get_program();
   if (program != nullptr && program != program_) {
     string package = program->get_namespace("java");
     if (!package.empty()) {
@@ -3684,7 +3684,7 @@ void t_java_generator::generate_isset_set(ofstream& out, t_field* field) {
 
 std::string t_java_generator::get_enum_class_name(t_type* type) {
   string package = "";
-  t_program* program = type->get_program();
+  const t_program* program = type->get_program();
   if (program != nullptr && program != program_) {
     package = program->get_namespace("java") + ".";
   }

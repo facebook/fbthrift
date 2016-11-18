@@ -3364,7 +3364,7 @@ string t_go_generator::argument_list(t_struct* tstruct) {
 }
 
 string t_go_generator::type_name(t_type* ttype) {
-  t_program* program = ttype->get_program();
+  const t_program* program = ttype->get_program();
 
   if (program != nullptr && program != program_) {
     string module(get_real_go_module(program));

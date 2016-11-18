@@ -163,7 +163,7 @@ class t_perl_generator : public t_oop_generator {
       "#\n";
   }
 
-  void perl_namespace_dirs(t_program* p, std::list<std::string>& dirs) {
+  void perl_namespace_dirs(const t_program* p, std::list<std::string>& dirs) {
     std::string ns = p->get_namespace("perl");
     std::string::size_type loc;
 
@@ -179,7 +179,7 @@ class t_perl_generator : public t_oop_generator {
     }
   }
 
-  std::string perl_namespace(t_program* p) {
+  std::string perl_namespace(const t_program* p) {
     std::string ns = p->get_namespace("perl");
     std::string result = "";
     std::string::size_type loc;

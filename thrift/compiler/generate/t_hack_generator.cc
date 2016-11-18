@@ -304,14 +304,14 @@ class t_hack_generator : public t_oop_generator {
     return tenum->annotations_.find("bitmask") != tenum->annotations_.end();
   }
 
-  std::string hack_namespace(t_program* p) {
+  std::string hack_namespace(const t_program* p) {
     std::string ns;
     ns = p->get_namespace("hack");
     std::replace(ns.begin(), ns.end(), '.', '\\');
     return ns;
   }
 
-  std::string php_namespace(t_program* p) {
+  std::string php_namespace(const t_program* p) {
     std::string ns;
     ns = hack_namespace(p);
     p->get_namespace("hack");
@@ -330,7 +330,7 @@ class t_hack_generator : public t_oop_generator {
     return php_namespace(s->get_program());
   }
 
-  string hack_name(string name, t_program* prog, bool decl = false) {
+  string hack_name(string name, const t_program* prog, bool decl = false) {
     string ns;
     ns = prog->get_namespace("hack");
     if (!ns.empty()) {
@@ -355,7 +355,7 @@ class t_hack_generator : public t_oop_generator {
     return hack_name(s->get_name(), s->get_program(), decl);
   }
 
-  std::string php_path(t_program* p) {
+  std::string php_path(const t_program* p) {
     std::string ns = p->get_namespace("php_path");
     if (ns.empty()) {
       return p->get_name();

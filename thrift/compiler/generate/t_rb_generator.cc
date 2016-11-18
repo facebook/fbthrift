@@ -164,7 +164,7 @@ class t_rb_generator : public t_oop_generator {
 
 
 
-  std::vector<std::string> ruby_modules(t_program* p) {
+  std::vector<std::string> ruby_modules(const t_program* p) {
     std::string ns = p->get_namespace("rb");
     std::vector<std::string> modules;
     if (ns.empty()) {

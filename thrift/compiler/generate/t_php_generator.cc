@@ -265,7 +265,7 @@ class t_php_generator : public t_oop_generator {
     return tenum->annotations_.find("bitmask") != tenum->annotations_.end();
   }
 
-  std::string php_namespace(t_program* p) {
+  std::string php_namespace(const t_program* p) {
     std::string ns = p->get_namespace("php");
     return ns.size() ? (ns + "_") : "";
   }
@@ -274,7 +274,7 @@ class t_php_generator : public t_oop_generator {
     return php_namespace(s->get_program());
   }
 
-  std::string php_path(t_program* p) {
+  std::string php_path(const t_program* p) {
     std::string ns = p->get_namespace("php_path");
     if (ns.empty()) {
       return p->get_name();
