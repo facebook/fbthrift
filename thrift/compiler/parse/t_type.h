@@ -63,7 +63,7 @@ struct t_types {
  */
 class t_type : public t_doc {
  public:
-  typedef t_types::TypeValue TypeValue;
+  using TypeValue = t_types::TypeValue;
 
   virtual ~t_type() {}
 

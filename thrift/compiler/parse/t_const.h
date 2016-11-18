@@ -68,4 +68,3 @@ class t_const : public t_doc {
 };
 
 #endif
-

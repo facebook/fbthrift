@@ -52,4 +52,3 @@ class t_list : public t_container {
 };
 
 #endif
-

@@ -67,7 +67,7 @@ class t_program : public t_doc {
     scope_ = new t_scope();
   }
 
-  t_program(std::string path) :
+  explicit t_program(std::string path) :
     path_(path),
     out_path_("./"),
     out_path_is_absolute_(false) {
