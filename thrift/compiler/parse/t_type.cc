@@ -11,11 +11,11 @@ uint64_t t_type::get_type_id() const {
     unsigned char buf[SHA_DIGEST_LENGTH];
   } u;
   std::string name = get_full_name();
-  SHA1(reinterpret_cast<const unsigned char*>(name.data()), name.size(),
-       u.buf);
-  uint64_t h = folly::Endian::little(u.val);
+  SHA1(reinterpret_cast<const unsigned char*>(name.data()), name.size(), u.buf);
+  uint64_t hash = folly::Endian::little(u.val);
+  TypeValue tv = get_type_value();
 
-  return makeTypeId(get_type_value(), h);
+  return (hash & ~t_types::kTypeMask) | tv;
 }
 
 std::string t_type::make_full_name(const char* prefix) const {

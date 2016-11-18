@@ -67,13 +67,9 @@ class t_type : public t_doc {
 
   virtual ~t_type() {}
 
-  virtual void set_name(const std::string& name) {
-    name_ = name;
-  }
-
-  virtual const std::string& get_name() const {
-    return name_;
-  }
+  virtual std::string get_full_name() const = 0;
+  virtual std::string get_impl_full_name() const = 0;
+  virtual TypeValue get_type_value() const = 0;
 
   virtual bool is_void()           const { return false; }
   virtual bool is_base_type()      const { return false; }
@@ -98,65 +94,34 @@ class t_type : public t_doc {
   virtual bool is_service()        const { return false; }
   virtual bool is_binary()         const { return false; }
 
-  const t_program* get_program() const {
-    return program_;
-  }
-
-  virtual std::string get_full_name() const = 0;
-  virtual std::string get_impl_full_name() const = 0;
-  virtual TypeValue get_type_value() const = 0;
-
   virtual uint64_t get_type_id() const;
 
-  // This function will break (maybe badly) unless 0 <= num <= 16.
-  static char nybble_to_xdigit(int num) {
-    if (num < 10) {
-      return '0' + num;
-    } else {
-      return 'A' + num - 10;
-    }
-  }
+  // Setters
+  virtual void set_name(const std::string& name) { name_ = name; }
 
-  static std::string byte_to_hex(uint8_t byte) {
-    std::string rv;
-    rv += nybble_to_xdigit(byte >> 4);
-    rv += nybble_to_xdigit(byte & 0x0f);
-    return rv;
-  }
+  // Getters
+  const t_program* get_program() const { return program_; }
+  const std::string& get_name() const { return name_; }
 
   std::map<std::string, std::string> annotations_;
 
-  static uint64_t makeTypeId(TypeValue tv, uint64_t hash) {
-    return (hash & ~t_types::kTypeMask) | tv;
-  }
-
  protected:
-  t_type() :
-    program_(nullptr)
-  {
-  }
+  t_type() : program_(nullptr) {}
 
-  explicit t_type(t_program* program) :
-    program_(program)
-  {
-  }
+  explicit t_type(t_program* program) : program_(program) {}
 
   t_type(t_program* program, std::string name) :
     program_(program),
-    name_(name)
-  {
-  }
+    name_(std::move(name)) {}
 
   explicit t_type(std::string name) :
     program_(nullptr),
-    name_(name)
-  {
-  }
+    name_(std::move(name)) {}
+
+  std::string make_full_name(const char* prefix) const;
 
   t_program* program_;
   std::string name_;
-
-  std::string make_full_name(const char* prefix) const;
 };
 
 
@@ -171,5 +136,4 @@ struct t_annotation {
 
 void override_annotations(std::map<std::string, std::string>& where,
                           const std::map<std::string, std::string>& from);
-
 #endif
