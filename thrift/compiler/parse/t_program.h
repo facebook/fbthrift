@@ -152,10 +152,6 @@ class t_program : public t_doc {
     includes_.push_back(program);
   }
 
-  std::vector<t_program*>& get_includes() {
-    return includes_;
-  }
-
   void set_include_prefix(std::string include_prefix) {
     include_prefix_ = include_prefix;
 
@@ -186,7 +182,7 @@ class t_program : public t_doc {
     cpp_includes_.push_back(path);
   }
 
-  const std::vector<std::string>& get_cpp_includes() {
+  const std::vector<std::string>& get_cpp_includes() const {
     return cpp_includes_;
   }
 

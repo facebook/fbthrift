@@ -650,8 +650,7 @@ void parse(t_program* program,
   fclose(yyin);
 
   // Recursively parse all the include programs
-  vector<t_program*>& includes = program->get_includes();
-  vector<t_program*>::iterator iter;
+  const auto& includes = program->get_includes();
   // Always enable g_allow_neg_field_keys when parsing included files.
   // This way if a thrift file has negative keys, --allow-neg-keys doesn't have
   // to be used by everyone that includes it.
@@ -659,8 +658,8 @@ void parse(t_program* program,
   bool main_allow_neg_enum_vals = g_allow_neg_enum_vals;
   g_allow_neg_enum_vals = true;
   g_allow_neg_field_keys = true;
-  for (iter = includes.begin(); iter != includes.end(); ++iter) {
-    parse(*iter, program, already_parsed_paths);
+  for (auto included_program : includes) {
+    parse(included_program, program, already_parsed_paths);
   }
   g_allow_neg_enum_vals = main_allow_neg_enum_vals;
   g_allow_neg_field_keys = main_allow_neg_keys;
