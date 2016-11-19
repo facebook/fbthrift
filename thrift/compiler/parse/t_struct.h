@@ -80,7 +80,10 @@ class t_struct : public t_type {
         members_in_id_order_.begin(),
         members_in_id_order_.end(),
         elem,
-        t_field::key_compare()
+        // Comparator to sort fields in ascending order by key.
+        [](const t_field* a, const t_field* b) {
+          return a->get_key() < b->get_key();
+        }
     );
     if (bounds.first != bounds.second) {
       return false;
