@@ -30,7 +30,7 @@ This file is included from pyx.
 }}{{#type:i64?}}int64_t{{/type:i64?}}{{!
 }}{{#type:double?}}double{{/type:double?}}{{!
 }}{{#type:string?}}string{{/type:string?}}{{!
-}}{{#type:struct}}{{type:module_path}}.c{{struct:name}}{{/type:struct}}{{!
+}}{{#type:struct}}{{> ModulePath}}.c{{struct:name}}{{/type:struct}}{{!
 }}{{#type:list?}}vector[{{#type:listElemType}}{{> ContainerCythonFieldType}}{{/type:listElemType}}]{{/type:list?}}{{!
 }}{{#type:set?}}cset[{{#type:setElemType}}{{> ContainerCythonFieldType}}{{/type:setElemType}}]{{/type:set?}}{{!
 }}{{#type:map?}}cmap[{{#type:keyType}}{{> ContainerCythonFieldType}}{{/type:keyType}},{{!

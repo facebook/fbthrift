@@ -22,14 +22,14 @@ from thrift.lib.py3.thrift_server cimport (
 from folly_futures cimport cFollyPromise, cFollyUnit, c_unit
 cimport py3.service_types
 import py3.service_types
-cimport .module_types
-cimport .module_services
-import .module_types
-import .module_services
-cimport .includes_types
-cimport .includes_services
-import .includes_types
-import .includes_services
+cimport py3.module_types
+cimport py3.module_services
+import py3.module_types
+import py3.module_services
+cimport py3.includes_types
+cimport py3.includes_services
+import py3.includes_types
+import py3.includes_services
 
 import asyncio
 import functools
@@ -54,12 +54,12 @@ cdef class Promise_void:
 cdef public void call_cy_MyService_query(
     object self,
     cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[.module_types.cMyStruct] s,
-    unique_ptr[.includes_types.cIncluded] i
+    unique_ptr[py3.module_types.cMyStruct] s,
+    unique_ptr[py3.includes_types.cIncluded] i
 ) with gil:
     promise = Promise_void.create(move(cPromise))
-    arg_s = .module_types.MyStruct.create(.module_types.move(s))
-    arg_i = .includes_types.Included.create(.includes_types.move(i))
+    arg_s = py3.module_types.MyStruct.create(py3.module_types.move(s))
+    arg_i = py3.includes_types.Included.create(py3.includes_types.move(i))
     asyncio.run_coroutine_threadsafe(
         MyService_query_coro(
             self,

@@ -29,7 +29,7 @@ from thrift.lib.py3.thrift_server cimport cServerInterface
 cimport {{#program:py3Namespaces}}{{value}}{{^last?}}.{{/last?}}{{/program:py3Namespaces}}.{{program:name}}_services
 {{/program:services}}
 {{#program:includeNamespaces}}
-cimport {{value}}_services_wrapper
+cimport {{#includeNamespace}}{{value}}{{^last?}}.{{/last?}}{{/includeNamespace}}_services_wrapper
 {{/program:includeNamespaces}}
 
 

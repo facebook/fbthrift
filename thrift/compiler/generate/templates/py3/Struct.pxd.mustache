@@ -34,7 +34,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from thrift.lib.py3.thrift_server cimport cTException, TException
 {{#program:includeNamespaces}}
-cimport {{value}}_types
+cimport {{#includeNamespace}}{{value}}{{^last?}}.{{/last?}}{{/includeNamespace}}_types
 {{/program:includeNamespaces}}
 
 

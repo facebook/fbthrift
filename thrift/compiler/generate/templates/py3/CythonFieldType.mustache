@@ -28,11 +28,11 @@ return types in Cython code.
 }}{{#type:i64?}}int64_t{{/type:i64?}}{{!
 }}{{#type:double?}}double{{/type:double?}}{{!
 }}{{#type:string?}}unique_ptr[string]{{/type:string?}}{{!
-}}{{#type:struct}}unique_ptr[{{type:module_path}}.c{{struct:name}}]{{/type:struct}}{{!
+}}{{#type:struct}}unique_ptr[{{> ModulePath}}.c{{struct:name}}]{{/type:struct}}{{!
 }}{{#type:listElemType}}unique_ptr[vector[{{> ContainerCythonFieldType}}]]{{/type:listElemType}}{{!
 }}{{#type:setElemType}}unique_ptr[cset[{{> ContainerCythonFieldType}}]]{{/type:setElemType}}{{!
 }}{{#type:map?}}unique_ptr[cmap[{{!
   }}{{#type:keyType}}{{> ContainerCythonFieldType}}{{/type:keyType}},{{!
   }}{{#type:valueType}}{{>ContainerCythonFieldType}}{{/type:valueType}}]]{{/type:map?}}{{!
 }}{{#type:void?}}cFollyUnit{{/type:void?}}{{!
-}}{{#type:enum}}{{type:module_path}}.c{{enum:name}}{{/type:enum}}
+}}{{#type:enum}}{{> ModulePath}}.c{{enum:name}}{{/type:enum}}

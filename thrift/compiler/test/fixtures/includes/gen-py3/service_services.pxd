@@ -7,8 +7,8 @@
 
 from thrift.lib.py3.thrift_server cimport cServerInterface, ServiceInterface
 
-cimport .module_services
-cimport .includes_services
+cimport py3.module_services
+cimport py3.includes_services
 
 cdef extern from "src/gen-cpp2/MyService.h" namespace "cpp2":
     cdef cppclass cMyServiceSvAsyncIf "cpp2::MyServiceSvAsyncIf":

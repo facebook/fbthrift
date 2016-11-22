@@ -16,8 +16,8 @@ from thrift.lib.py3.thrift_server cimport TException
 from collections.abc import Sequence, Set, Mapping
 from enum import Enum
 cimport py3.service_types
-cimport .module_types
-cimport .includes_types
+cimport py3.module_types
+cimport py3.includes_types
 
 
 

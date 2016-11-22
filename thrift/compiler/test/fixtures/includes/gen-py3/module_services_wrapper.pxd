@@ -9,7 +9,7 @@ from cpython.ref cimport PyObject
 from libcpp.memory cimport shared_ptr
 from thrift.lib.py3.thrift_server cimport cServerInterface
 
-cimport .includes_services_wrapper
+cimport py3.includes_services_wrapper
 
 
 cdef extern from "gen-py3/py3/module_services_wrapper.h" namespace "cpp2":

@@ -40,11 +40,11 @@ cdef extern from "<utility>" namespace "std":
     cdef cFollyPromise[int16_t] move(cFollyPromise[int16_t])
     cdef cFollyPromise[int64_t] move(cFollyPromise[int64_t])
     cdef cFollyPromise[double] move(cFollyPromise[double])
-    cdef cFollyPromise[unique_ptr[.module_types.cSimpleStruct]] move(cFollyPromise[unique_ptr[.module_types.cSimpleStruct]])
+    cdef cFollyPromise[unique_ptr[py3.module_types.cSimpleStruct]] move(cFollyPromise[unique_ptr[py3.module_types.cSimpleStruct]])
     cdef cFollyPromise[unique_ptr[vector[int32_t]]] move(cFollyPromise[unique_ptr[vector[int32_t]]])
     cdef cFollyPromise[unique_ptr[cset[string]]] move(cFollyPromise[unique_ptr[cset[string]]])
     cdef cFollyPromise[unique_ptr[cmap[string,int16_t]]] move(cFollyPromise[unique_ptr[cmap[string,int16_t]]])
-    cdef cFollyPromise[.module_types.cAnEnum] move(cFollyPromise[.module_types.cAnEnum])
+    cdef cFollyPromise[py3.module_types.cAnEnum] move(cFollyPromise[py3.module_types.cAnEnum])
     cdef cFollyPromise[unique_ptr[vector[vector[int32_t]]]] move(cFollyPromise[unique_ptr[vector[vector[int32_t]]]])
     cdef cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] move(cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]])
     cdef cFollyPromise[unique_ptr[vector[cset[string]]]] move(cFollyPromise[unique_ptr[vector[cset[string]]]])
@@ -123,10 +123,10 @@ cdef class Promise_double:
         return inst
 
 cdef class Promise_SimpleStruct:
-    cdef cFollyPromise[unique_ptr[.module_types.cSimpleStruct]] cPromise
+    cdef cFollyPromise[unique_ptr[py3.module_types.cSimpleStruct]] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[unique_ptr[.module_types.cSimpleStruct]] cPromise):
+    cdef create(cFollyPromise[unique_ptr[py3.module_types.cSimpleStruct]] cPromise):
         inst = <Promise_SimpleStruct>Promise_SimpleStruct.__new__(Promise_SimpleStruct)
         inst.cPromise = move(cPromise)
         return inst
@@ -159,10 +159,10 @@ cdef class Promise_Map__string_i16:
         return inst
 
 cdef class Promise_AnEnum:
-    cdef cFollyPromise[.module_types.cAnEnum] cPromise
+    cdef cFollyPromise[py3.module_types.cAnEnum] cPromise
 
     @staticmethod
-    cdef create(cFollyPromise[.module_types.cAnEnum] cPromise):
+    cdef create(cFollyPromise[py3.module_types.cAnEnum] cPromise):
         inst = <Promise_AnEnum>Promise_AnEnum.__new__(Promise_AnEnum)
         inst.cPromise = move(cPromise)
         return inst
@@ -333,10 +333,10 @@ async def SimpleService_concat_coro(
 cdef public void call_cy_SimpleService_get_value(
     object self,
     cFollyPromise[int32_t] cPromise,
-    unique_ptr[.module_types.cSimpleStruct] simple_struct
+    unique_ptr[py3.module_types.cSimpleStruct] simple_struct
 ) with gil:
     promise = Promise_i32.create(move(cPromise))
-    arg_simple_struct = .module_types.SimpleStruct.create(.module_types.move(simple_struct))
+    arg_simple_struct = py3.module_types.SimpleStruct.create(py3.module_types.move(simple_struct))
     asyncio.run_coroutine_threadsafe(
         SimpleService_get_value_coro(
             self,
@@ -545,8 +545,8 @@ async def SimpleService_expected_exception_coro(
 ):
     try:
       result = await self.expected_exception()
-    except .module_types.SimpleException as ex:
-        promise.cPromise.setException(deref((<.module_types.SimpleException> ex).c_SimpleException.get()))
+    except py3.module_types.SimpleException as ex:
+        promise.cPromise.setException(deref((<py3.module_types.SimpleException> ex).c_SimpleException.get()))
     except Exception as ex:
         print(
             "Unexpected error in service handler expected_exception:",
@@ -592,7 +592,7 @@ cdef public void call_cy_SimpleService_sum_i16_list(
     unique_ptr[vector[int16_t]] numbers
 ) with gil:
     promise = Promise_i32.create(move(cPromise))
-    arg_numbers = .module_types.List__i16.create(.module_types.move(numbers))
+    arg_numbers = py3.module_types.List__i16.create(py3.module_types.move(numbers))
     asyncio.run_coroutine_threadsafe(
         SimpleService_sum_i16_list_coro(
             self,
@@ -625,7 +625,7 @@ cdef public void call_cy_SimpleService_sum_i32_list(
     unique_ptr[vector[int32_t]] numbers
 ) with gil:
     promise = Promise_i32.create(move(cPromise))
-    arg_numbers = .module_types.List__i32.create(.module_types.move(numbers))
+    arg_numbers = py3.module_types.List__i32.create(py3.module_types.move(numbers))
     asyncio.run_coroutine_threadsafe(
         SimpleService_sum_i32_list_coro(
             self,
@@ -658,7 +658,7 @@ cdef public void call_cy_SimpleService_sum_i64_list(
     unique_ptr[vector[int64_t]] numbers
 ) with gil:
     promise = Promise_i32.create(move(cPromise))
-    arg_numbers = .module_types.List__i64.create(.module_types.move(numbers))
+    arg_numbers = py3.module_types.List__i64.create(py3.module_types.move(numbers))
     asyncio.run_coroutine_threadsafe(
         SimpleService_sum_i64_list_coro(
             self,
@@ -691,7 +691,7 @@ cdef public void call_cy_SimpleService_concat_many(
     unique_ptr[vector[string]] words
 ) with gil:
     promise = Promise_string.create(move(cPromise))
-    arg_words = .module_types.List__string.create(.module_types.move(words))
+    arg_words = py3.module_types.List__string.create(py3.module_types.move(words))
     asyncio.run_coroutine_threadsafe(
         SimpleService_concat_many_coro(
             self,
@@ -721,10 +721,10 @@ async def SimpleService_concat_many_coro(
 cdef public void call_cy_SimpleService_count_structs(
     object self,
     cFollyPromise[int32_t] cPromise,
-    unique_ptr[vector[.module_types.cSimpleStruct]] items
+    unique_ptr[vector[py3.module_types.cSimpleStruct]] items
 ) with gil:
     promise = Promise_i32.create(move(cPromise))
-    arg_items = .module_types.List__SimpleStruct.create(.module_types.move(items))
+    arg_items = py3.module_types.List__SimpleStruct.create(py3.module_types.move(items))
     asyncio.run_coroutine_threadsafe(
         SimpleService_count_structs_coro(
             self,
@@ -757,7 +757,7 @@ cdef public void call_cy_SimpleService_sum_set(
     unique_ptr[cset[int32_t]] numbers
 ) with gil:
     promise = Promise_i32.create(move(cPromise))
-    arg_numbers = .module_types.Set__i32.create(.module_types.move(numbers))
+    arg_numbers = py3.module_types.Set__i32.create(py3.module_types.move(numbers))
     asyncio.run_coroutine_threadsafe(
         SimpleService_sum_set_coro(
             self,
@@ -791,7 +791,7 @@ cdef public void call_cy_SimpleService_contains_word(
     unique_ptr[string] word
 ) with gil:
     promise = Promise_bool.create(move(cPromise))
-    arg_words = .module_types.Set__string.create(.module_types.move(words))
+    arg_words = py3.module_types.Set__string.create(py3.module_types.move(words))
     arg_word = (deref(word.get())).decode()
     asyncio.run_coroutine_threadsafe(
         SimpleService_contains_word_coro(
@@ -829,7 +829,7 @@ cdef public void call_cy_SimpleService_get_map_value(
     unique_ptr[string] key
 ) with gil:
     promise = Promise_string.create(move(cPromise))
-    arg_words = .module_types.Map__string_string.create(.module_types.move(words))
+    arg_words = py3.module_types.Map__string_string.create(py3.module_types.move(words))
     arg_key = (deref(key.get())).decode()
     asyncio.run_coroutine_threadsafe(
         SimpleService_get_map_value_coro(
@@ -863,10 +863,10 @@ async def SimpleService_get_map_value_coro(
 cdef public void call_cy_SimpleService_map_length(
     object self,
     cFollyPromise[int16_t] cPromise,
-    unique_ptr[cmap[string,.module_types.cSimpleStruct]] items
+    unique_ptr[cmap[string,py3.module_types.cSimpleStruct]] items
 ) with gil:
     promise = Promise_i16.create(move(cPromise))
-    arg_items = .module_types.Map__string_SimpleStruct.create(.module_types.move(items))
+    arg_items = py3.module_types.Map__string_SimpleStruct.create(py3.module_types.move(items))
     asyncio.run_coroutine_threadsafe(
         SimpleService_map_length_coro(
             self,
@@ -899,7 +899,7 @@ cdef public void call_cy_SimpleService_sum_map_values(
     unique_ptr[cmap[string,int16_t]] items
 ) with gil:
     promise = Promise_i16.create(move(cPromise))
-    arg_items = .module_types.Map__string_i16.create(.module_types.move(items))
+    arg_items = py3.module_types.Map__string_i16.create(py3.module_types.move(items))
     asyncio.run_coroutine_threadsafe(
         SimpleService_sum_map_values_coro(
             self,
@@ -929,10 +929,10 @@ async def SimpleService_sum_map_values_coro(
 cdef public void call_cy_SimpleService_complex_sum_i32(
     object self,
     cFollyPromise[int32_t] cPromise,
-    unique_ptr[.module_types.cComplexStruct] counter
+    unique_ptr[py3.module_types.cComplexStruct] counter
 ) with gil:
     promise = Promise_i32.create(move(cPromise))
-    arg_counter = .module_types.ComplexStruct.create(.module_types.move(counter))
+    arg_counter = py3.module_types.ComplexStruct.create(py3.module_types.move(counter))
     asyncio.run_coroutine_threadsafe(
         SimpleService_complex_sum_i32_coro(
             self,
@@ -962,10 +962,10 @@ async def SimpleService_complex_sum_i32_coro(
 cdef public void call_cy_SimpleService_repeat_name(
     object self,
     cFollyPromise[unique_ptr[string]] cPromise,
-    unique_ptr[.module_types.cComplexStruct] counter
+    unique_ptr[py3.module_types.cComplexStruct] counter
 ) with gil:
     promise = Promise_string.create(move(cPromise))
-    arg_counter = .module_types.ComplexStruct.create(.module_types.move(counter))
+    arg_counter = py3.module_types.ComplexStruct.create(py3.module_types.move(counter))
     asyncio.run_coroutine_threadsafe(
         SimpleService_repeat_name_coro(
             self,
@@ -994,7 +994,7 @@ async def SimpleService_repeat_name_coro(
 
 cdef public void call_cy_SimpleService_get_struct(
     object self,
-    cFollyPromise[unique_ptr[.module_types.cSimpleStruct]] cPromise
+    cFollyPromise[unique_ptr[py3.module_types.cSimpleStruct]] cPromise
 ) with gil:
     promise = Promise_SimpleStruct.create(move(cPromise))
     asyncio.run_coroutine_threadsafe(
@@ -1018,7 +1018,7 @@ async def SimpleService_get_struct_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[.module_types.cSimpleStruct](deref((<.module_types.SimpleStruct?> result).c_SimpleStruct)))
+        promise.cPromise.setValue(make_unique[py3.module_types.cSimpleStruct](deref((<py3.module_types.SimpleStruct?> result).c_SimpleStruct)))
 
 cdef public void call_cy_SimpleService_fib(
     object self,
@@ -1042,7 +1042,7 @@ async def SimpleService_fib_coro(
     try:
       result = await self.fib(
           n)
-      result = .module_types.List__i32(result)
+      result = py3.module_types.List__i32(result)
     except Exception as ex:
         print(
             "Unexpected error in service handler fib:",
@@ -1052,7 +1052,7 @@ async def SimpleService_fib_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[vector[int32_t]](deref((<.module_types.List__i32?> result)._vector)))
+        promise.cPromise.setValue(make_unique[vector[int32_t]](deref((<py3.module_types.List__i32?> result)._vector)))
 
 cdef public void call_cy_SimpleService_unique_words(
     object self,
@@ -1060,7 +1060,7 @@ cdef public void call_cy_SimpleService_unique_words(
     unique_ptr[vector[string]] words
 ) with gil:
     promise = Promise_Set__string.create(move(cPromise))
-    arg_words = .module_types.List__string.create(.module_types.move(words))
+    arg_words = py3.module_types.List__string.create(py3.module_types.move(words))
     asyncio.run_coroutine_threadsafe(
         SimpleService_unique_words_coro(
             self,
@@ -1076,7 +1076,7 @@ async def SimpleService_unique_words_coro(
     try:
       result = await self.unique_words(
           words)
-      result = .module_types.Set__string(result)
+      result = py3.module_types.Set__string(result)
     except Exception as ex:
         print(
             "Unexpected error in service handler unique_words:",
@@ -1086,7 +1086,7 @@ async def SimpleService_unique_words_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cset[string]](deref((<.module_types.Set__string?> result)._set)))
+        promise.cPromise.setValue(make_unique[cset[string]](deref((<py3.module_types.Set__string?> result)._set)))
 
 cdef public void call_cy_SimpleService_words_count(
     object self,
@@ -1094,7 +1094,7 @@ cdef public void call_cy_SimpleService_words_count(
     unique_ptr[vector[string]] words
 ) with gil:
     promise = Promise_Map__string_i16.create(move(cPromise))
-    arg_words = .module_types.List__string.create(.module_types.move(words))
+    arg_words = py3.module_types.List__string.create(py3.module_types.move(words))
     asyncio.run_coroutine_threadsafe(
         SimpleService_words_count_coro(
             self,
@@ -1110,7 +1110,7 @@ async def SimpleService_words_count_coro(
     try:
       result = await self.words_count(
           words)
-      result = .module_types.Map__string_i16(result)
+      result = py3.module_types.Map__string_i16(result)
     except Exception as ex:
         print(
             "Unexpected error in service handler words_count:",
@@ -1120,15 +1120,15 @@ async def SimpleService_words_count_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cmap[string,int16_t]](deref((<.module_types.Map__string_i16?> result)._map)))
+        promise.cPromise.setValue(make_unique[cmap[string,int16_t]](deref((<py3.module_types.Map__string_i16?> result)._map)))
 
 cdef public void call_cy_SimpleService_set_enum(
     object self,
-    cFollyPromise[.module_types.cAnEnum] cPromise,
-    .module_types.cAnEnum in_enum
+    cFollyPromise[py3.module_types.cAnEnum] cPromise,
+    py3.module_types.cAnEnum in_enum
 ) with gil:
     promise = Promise_AnEnum.create(move(cPromise))
-    arg_in_enum = .module_types.AnEnum(<int> in_enum)
+    arg_in_enum = py3.module_types.AnEnum(<int> in_enum)
     asyncio.run_coroutine_threadsafe(
         SimpleService_set_enum_coro(
             self,
@@ -1153,7 +1153,7 @@ async def SimpleService_set_enum_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(.module_types.AnEnum_to_cpp(result))
+        promise.cPromise.setValue(py3.module_types.AnEnum_to_cpp(result))
 
 cdef public void call_cy_SimpleService_list_of_lists(
     object self,
@@ -1182,7 +1182,7 @@ async def SimpleService_list_of_lists_coro(
       result = await self.list_of_lists(
           num_lists,
           num_items)
-      result = .module_types.List__List__i32(result)
+      result = py3.module_types.List__List__i32(result)
     except Exception as ex:
         print(
             "Unexpected error in service handler list_of_lists:",
@@ -1192,7 +1192,7 @@ async def SimpleService_list_of_lists_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[vector[vector[int32_t]]](deref((<.module_types.List__List__i32?> result)._vector)))
+        promise.cPromise.setValue(make_unique[vector[vector[int32_t]]](deref((<py3.module_types.List__List__i32?> result)._vector)))
 
 cdef public void call_cy_SimpleService_word_character_frequency(
     object self,
@@ -1216,7 +1216,7 @@ async def SimpleService_word_character_frequency_coro(
     try:
       result = await self.word_character_frequency(
           sentence)
-      result = .module_types.Map__string_Map__string_i32(result)
+      result = py3.module_types.Map__string_Map__string_i32(result)
     except Exception as ex:
         print(
             "Unexpected error in service handler word_character_frequency:",
@@ -1226,7 +1226,7 @@ async def SimpleService_word_character_frequency_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cmap[string,cmap[string,int32_t]]](deref((<.module_types.Map__string_Map__string_i32?> result)._map)))
+        promise.cPromise.setValue(make_unique[cmap[string,cmap[string,int32_t]]](deref((<py3.module_types.Map__string_Map__string_i32?> result)._map)))
 
 cdef public void call_cy_SimpleService_list_of_sets(
     object self,
@@ -1250,7 +1250,7 @@ async def SimpleService_list_of_sets_coro(
     try:
       result = await self.list_of_sets(
           some_words)
-      result = .module_types.List__Set__string(result)
+      result = py3.module_types.List__Set__string(result)
     except Exception as ex:
         print(
             "Unexpected error in service handler list_of_sets:",
@@ -1260,15 +1260,15 @@ async def SimpleService_list_of_sets_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[vector[cset[string]]](deref((<.module_types.List__Set__string?> result)._vector)))
+        promise.cPromise.setValue(make_unique[vector[cset[string]]](deref((<py3.module_types.List__Set__string?> result)._vector)))
 
 cdef public void call_cy_SimpleService_nested_map_argument(
     object self,
     cFollyPromise[int32_t] cPromise,
-    unique_ptr[cmap[string,vector[.module_types.cSimpleStruct]]] struct_map
+    unique_ptr[cmap[string,vector[py3.module_types.cSimpleStruct]]] struct_map
 ) with gil:
     promise = Promise_i32.create(move(cPromise))
-    arg_struct_map = .module_types.Map__string_List__SimpleStruct.create(.module_types.move(struct_map))
+    arg_struct_map = py3.module_types.Map__string_List__SimpleStruct.create(py3.module_types.move(struct_map))
     asyncio.run_coroutine_threadsafe(
         SimpleService_nested_map_argument_coro(
             self,
@@ -1301,7 +1301,7 @@ cdef public void call_cy_SimpleService_make_sentence(
     unique_ptr[vector[vector[string]]] word_chars
 ) with gil:
     promise = Promise_string.create(move(cPromise))
-    arg_word_chars = .module_types.List__List__string.create(.module_types.move(word_chars))
+    arg_word_chars = py3.module_types.List__List__string.create(py3.module_types.move(word_chars))
     asyncio.run_coroutine_threadsafe(
         SimpleService_make_sentence_coro(
             self,
@@ -1334,7 +1334,7 @@ cdef public void call_cy_SimpleService_get_union(
     unique_ptr[vector[cset[int32_t]]] sets
 ) with gil:
     promise = Promise_Set__i32.create(move(cPromise))
-    arg_sets = .module_types.List__Set__i32.create(.module_types.move(sets))
+    arg_sets = py3.module_types.List__Set__i32.create(py3.module_types.move(sets))
     asyncio.run_coroutine_threadsafe(
         SimpleService_get_union_coro(
             self,
@@ -1350,7 +1350,7 @@ async def SimpleService_get_union_coro(
     try:
       result = await self.get_union(
           sets)
-      result = .module_types.Set__i32(result)
+      result = py3.module_types.Set__i32(result)
     except Exception as ex:
         print(
             "Unexpected error in service handler get_union:",
@@ -1360,7 +1360,7 @@ async def SimpleService_get_union_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cset[int32_t]](deref((<.module_types.Set__i32?> result)._set)))
+        promise.cPromise.setValue(make_unique[cset[int32_t]](deref((<py3.module_types.Set__i32?> result)._set)))
 
 cdef public void call_cy_SimpleService_get_keys(
     object self,
@@ -1368,7 +1368,7 @@ cdef public void call_cy_SimpleService_get_keys(
     unique_ptr[vector[cmap[string,string]]] string_map
 ) with gil:
     promise = Promise_Set__string.create(move(cPromise))
-    arg_string_map = .module_types.List__Map__string_string.create(.module_types.move(string_map))
+    arg_string_map = py3.module_types.List__Map__string_string.create(py3.module_types.move(string_map))
     asyncio.run_coroutine_threadsafe(
         SimpleService_get_keys_coro(
             self,
@@ -1384,7 +1384,7 @@ async def SimpleService_get_keys_coro(
     try:
       result = await self.get_keys(
           string_map)
-      result = .module_types.Set__string(result)
+      result = py3.module_types.Set__string(result)
     except Exception as ex:
         print(
             "Unexpected error in service handler get_keys:",
@@ -1394,7 +1394,7 @@ async def SimpleService_get_keys_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cset[string]](deref((<.module_types.Set__string?> result)._set)))
+        promise.cPromise.setValue(make_unique[cset[string]](deref((<py3.module_types.Set__string?> result)._set)))
 
 
 cdef class SimpleServiceInterface(

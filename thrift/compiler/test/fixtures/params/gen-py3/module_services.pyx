@@ -49,7 +49,7 @@ cdef public void call_cy_NestedContainers_mapList(
     unique_ptr[cmap[int32_t,vector[int32_t]]] foo
 ) with gil:
     promise = Promise_void.create(move(cPromise))
-    arg_foo = .module_types.Map__i32_List__i32.create(.module_types.move(foo))
+    arg_foo = py3.module_types.Map__i32_List__i32.create(py3.module_types.move(foo))
     asyncio.run_coroutine_threadsafe(
         NestedContainers_mapList_coro(
             self,
@@ -82,7 +82,7 @@ cdef public void call_cy_NestedContainers_mapSet(
     unique_ptr[cmap[int32_t,cset[int32_t]]] foo
 ) with gil:
     promise = Promise_void.create(move(cPromise))
-    arg_foo = .module_types.Map__i32_Set__i32.create(.module_types.move(foo))
+    arg_foo = py3.module_types.Map__i32_Set__i32.create(py3.module_types.move(foo))
     asyncio.run_coroutine_threadsafe(
         NestedContainers_mapSet_coro(
             self,
@@ -115,7 +115,7 @@ cdef public void call_cy_NestedContainers_listMap(
     unique_ptr[vector[cmap[int32_t,int32_t]]] foo
 ) with gil:
     promise = Promise_void.create(move(cPromise))
-    arg_foo = .module_types.List__Map__i32_i32.create(.module_types.move(foo))
+    arg_foo = py3.module_types.List__Map__i32_i32.create(py3.module_types.move(foo))
     asyncio.run_coroutine_threadsafe(
         NestedContainers_listMap_coro(
             self,
@@ -148,7 +148,7 @@ cdef public void call_cy_NestedContainers_listSet(
     unique_ptr[vector[cset[int32_t]]] foo
 ) with gil:
     promise = Promise_void.create(move(cPromise))
-    arg_foo = .module_types.List__Set__i32.create(.module_types.move(foo))
+    arg_foo = py3.module_types.List__Set__i32.create(py3.module_types.move(foo))
     asyncio.run_coroutine_threadsafe(
         NestedContainers_listSet_coro(
             self,
@@ -181,7 +181,7 @@ cdef public void call_cy_NestedContainers_turtles(
     unique_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]] foo
 ) with gil:
     promise = Promise_void.create(move(cPromise))
-    arg_foo = .module_types.List__List__Map__i32_Map__i32_Set__i32.create(.module_types.move(foo))
+    arg_foo = py3.module_types.List__List__Map__i32_Map__i32_Set__i32.create(py3.module_types.move(foo))
     asyncio.run_coroutine_threadsafe(
         NestedContainers_turtles_coro(
             self,

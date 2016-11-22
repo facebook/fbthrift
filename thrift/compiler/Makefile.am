@@ -141,6 +141,7 @@ py3__DATA = \
                     generate/templates/py3/CythonServices.pyx.mustache \
                     generate/templates/py3/CythonStructGetter.mustache \
                     generate/templates/py3/CythonStructReferenceType.mustache \
+                    generate/templates/py3/ModulePath.mustache \
                     generate/templates/py3/PythonFieldType.mustache \
                     generate/templates/py3/ServiceCallbacks.mustache \
                     generate/templates/py3/Services.pxd.mustache \

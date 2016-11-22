@@ -51,7 +51,10 @@ class t_mstch_py3_generator : public t_mstch_generator {
     mstch::array get_return_types(const t_program&) const;
     mstch::array get_container_types(const t_program&) const;
     mstch::array get_cpp2_namespace(const t_program&) const;
-    mstch::array get_py3_namespace(const t_program&) const;
+    mstch::array get_py3_namespace(
+      const t_program&,
+      const string& tail = ""
+    ) const;
     std::string flatten_type_name(const t_type&) const;
 
   private:
@@ -65,16 +68,17 @@ class t_mstch_py3_generator : public t_mstch_generator {
 mstch::map t_mstch_py3_generator::extend_program(
   const t_program& program
 ) const {
-  auto cppNamespaces = this->get_cpp2_namespace(program);
-  auto py3Namespaces = this->get_py3_namespace(program);
-  vector<string> ns;
-  for (auto included_program : program.get_includes()) {
-    ns.push_back(
-      included_program->get_namespace("py3") +
-      "." +
-      included_program->get_name());
+  const auto& cppNamespaces = this->get_cpp2_namespace(program);
+  const auto& py3Namespaces = this->get_py3_namespace(program, "");
+  mstch::array includeNamespaces;
+  for (const auto included_program : program.get_includes()) {
+    const auto ns = this->get_py3_namespace(
+      *included_program,
+      included_program->get_name()
+    );
+    const mstch::map include_ns {{"includeNamespace", ns}};
+    includeNamespaces.push_back(include_ns);
   }
-  auto includeNamespaces = this->dump_elems(ns);
 
   mstch::map result {
     {"returnTypes", this->get_return_types(program)},
@@ -89,11 +93,10 @@ mstch::map t_mstch_py3_generator::extend_program(
 mstch::map t_mstch_py3_generator::extend_type(const t_type& type) const {
   const auto type_program = type.get_program();
   const auto program = type_program? type_program: this->get_program();
-  const auto& module_path =
-    program->get_namespace("py3") +
-    "." +
-    program->get_name() +
-    "_types";
+  const auto modulePath = this->get_py3_namespace(
+    *program,
+    program->get_name() + "_types"
+  );
   const auto& cppNamespaces = this->get_cpp2_namespace(*program);
 
   bool externalProgram = false;
@@ -103,7 +106,7 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) const {
   }
 
   mstch::map result {
-    {"module_path", module_path},
+    {"modulePath", modulePath},
     {"externalProgram?", externalProgram},
     {"flat_name", this->flatten_type_name(type)},
     {"cppNamespaces", cppNamespaces},
@@ -298,12 +301,16 @@ mstch::array t_mstch_py3_generator::get_cpp2_namespace(
 }
 
 mstch::array t_mstch_py3_generator::get_py3_namespace(
-  const t_program& program
+  const t_program& program,
+  const string& tail
 ) const {
   const auto& py3_ns_raw = program.get_namespace("py3");
   const auto& py3_namespace = py3_ns_raw.empty() ? "py3" : py3_ns_raw;
   vector<string> ns;
   folly::split('.', py3_namespace, ns);
+  if (tail != "") {
+    ns.push_back(tail);
+  }
   return this->dump_elems(ns);
 }
 

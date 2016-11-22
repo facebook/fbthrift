@@ -16,14 +16,14 @@ from thrift.lib.py3.thrift_server cimport TException
 from collections.abc import Sequence, Set, Mapping
 from enum import Enum
 cimport py3.module_types
-cimport .includes_types
+cimport py3.includes_types
 
 
 
 cdef class MyStruct:
     def __init__(
         self,
-        Included MyIncludedField
+        py3.includes_types.Included MyIncludedField
     ):
         self.c_MyStruct = make_shared[cMyStruct]()
         deref(self.c_MyStruct).MyIncludedField = deref(MyIncludedField.c_Included)

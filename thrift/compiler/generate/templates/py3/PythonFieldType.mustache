@@ -29,7 +29,7 @@ order to be aware that it even has that member.
 }}{{#type:i64?}}int{{/type:i64?}}{{!
 }}{{#type:double?}}float{{/type:double?}}{{!
 }}{{#type:string?}}str{{/type:string?}}{{!
-}}{{#type:struct}}{{struct:name}}{{/type:struct}}{{!
+}}{{#type:struct}}{{> ModulePath}}.{{struct:name}}{{/type:struct}}{{!
 }}{{#type:list?}}{{type:flat_name}}{{/type:list?}}{{!
 }}{{#type:set?}}{{type:flat_name}}{{/type:set?}}{{!
 }}{{#type:map?}}{{type:flat_name}}{{/type:map?}}{{!

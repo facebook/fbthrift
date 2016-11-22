@@ -77,8 +77,4 @@ to make the other files more readable. We should probably have more of these
  *  ContainerKeyOrItem.mustache
  *  CppMapKeyValue.mustache
  *  CythonMapKeyValue.mustache
-
-
-
-
-
+ *  ModulePath.mustache

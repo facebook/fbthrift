@@ -105,8 +105,8 @@ cdef class SimpleStruct:
 cdef class ComplexStruct:
     def __init__(
         self,
-        SimpleStruct structOne,
-        SimpleStruct structTwo,
+        py3.module_types.SimpleStruct structOne,
+        py3.module_types.SimpleStruct structTwo,
         int an_integer,
         str name,
         object an_enum
@@ -250,20 +250,20 @@ Sequence.register(List__string)
 
 cdef class List__SimpleStruct:
     def __init__(self, items=None):
-        self._vector = make_shared[vector[.module_types.cSimpleStruct]]()
+        self._vector = make_shared[vector[py3.module_types.cSimpleStruct]]()
         if items:
             for item in items:
-                deref(self._vector).push_back(deref((<.module_types.SimpleStruct> item).c_SimpleStruct))
+                deref(self._vector).push_back(deref((<py3.module_types.SimpleStruct> item).c_SimpleStruct))
 
     @staticmethod
-    cdef create(shared_ptr[vector[.module_types.cSimpleStruct]] c_items):
+    cdef create(shared_ptr[vector[py3.module_types.cSimpleStruct]] c_items):
         inst = <List__SimpleStruct>List__SimpleStruct.__new__(List__SimpleStruct)
         inst._vector = c_items
         return inst
 
     def __getitem__(self, int index):
-        cdef .module_types.cSimpleStruct citem = deref(self._vector).at(index)
-        return .module_types.SimpleStruct.create(make_shared[.module_types.cSimpleStruct](citem))
+        cdef py3.module_types.cSimpleStruct citem = deref(self._vector).at(index)
+        return py3.module_types.SimpleStruct.create(make_shared[py3.module_types.cSimpleStruct](citem))
 
     def __len__(self):
         return deref(self._vector).size()
@@ -353,21 +353,21 @@ Mapping.register(Map__string_string)
 cdef class Map__string_SimpleStruct:
     def __init__(self, items=None):
 
-        self._map = make_shared[cmap[string,.module_types.cSimpleStruct]]()
+        self._map = make_shared[cmap[string,py3.module_types.cSimpleStruct]]()
         if items:
             for key, item in items.items():
-                deref(self._map).insert(cpair[string,.module_types.cSimpleStruct](key.encode('UTF-8'), deref((<.module_types.SimpleStruct> item).c_SimpleStruct)))
+                deref(self._map).insert(cpair[string,py3.module_types.cSimpleStruct](key.encode('UTF-8'), deref((<py3.module_types.SimpleStruct> item).c_SimpleStruct)))
 
     @staticmethod
-    cdef create(shared_ptr[cmap[string,.module_types.cSimpleStruct]] c_items):
+    cdef create(shared_ptr[cmap[string,py3.module_types.cSimpleStruct]] c_items):
         inst = <Map__string_SimpleStruct>Map__string_SimpleStruct.__new__(Map__string_SimpleStruct)
         inst._map = c_items
         return inst
 
     def __getitem__(self, str key):
         cdef string ckey = key.encode('UTF-8')
-        cdef .module_types.cSimpleStruct citem = deref(self._map)[ckey]
-        return .module_types.SimpleStruct.create(make_shared[.module_types.cSimpleStruct](citem))
+        cdef py3.module_types.cSimpleStruct citem = deref(self._map)[ckey]
+        return py3.module_types.SimpleStruct.create(make_shared[py3.module_types.cSimpleStruct](citem))
 
     def __len__(self):
         return deref(self._map).size()
@@ -517,21 +517,21 @@ Sequence.register(List__Set__string)
 cdef class Map__string_List__SimpleStruct:
     def __init__(self, items=None):
 
-        self._map = make_shared[cmap[string,vector[.module_types.cSimpleStruct]]]()
+        self._map = make_shared[cmap[string,vector[py3.module_types.cSimpleStruct]]]()
         if items:
             for key, item in items.items():
-                deref(self._map).insert(cpair[string,vector[.module_types.cSimpleStruct]](key.encode('UTF-8'), vector[.module_types.cSimpleStruct](deref(List__SimpleStruct(item)._vector))))
+                deref(self._map).insert(cpair[string,vector[py3.module_types.cSimpleStruct]](key.encode('UTF-8'), vector[py3.module_types.cSimpleStruct](deref(List__SimpleStruct(item)._vector))))
 
     @staticmethod
-    cdef create(shared_ptr[cmap[string,vector[.module_types.cSimpleStruct]]] c_items):
+    cdef create(shared_ptr[cmap[string,vector[py3.module_types.cSimpleStruct]]] c_items):
         inst = <Map__string_List__SimpleStruct>Map__string_List__SimpleStruct.__new__(Map__string_List__SimpleStruct)
         inst._map = c_items
         return inst
 
     def __getitem__(self, str key):
         cdef string ckey = key.encode('UTF-8')
-        cdef vector[.module_types.cSimpleStruct] citem = deref(self._map)[ckey]
-        return List__SimpleStruct.create(make_shared[vector[.module_types.cSimpleStruct]](citem))
+        cdef vector[py3.module_types.cSimpleStruct] citem = deref(self._map)[ckey]
+        return List__SimpleStruct.create(make_shared[vector[py3.module_types.cSimpleStruct]](citem))
 
     def __len__(self):
         return deref(self._map).size()
@@ -622,4 +622,4 @@ A_WORD = cA_WORD().decode('UTF-8')
 A_STRUCT = SimpleStruct.create(make_shared[cSimpleStruct](cA_STRUCT()))
 WORD_LIST = List__string.create(make_shared[vector[string]](cWORD_LIST()))
 DIGITS = Set__i32.create(make_shared[cset[int32_t]](cDIGITS()))
-A_CONST_MAP = Map__string_SimpleStruct.create(make_shared[cmap[string,.module_types.cSimpleStruct]](cA_CONST_MAP()))
+A_CONST_MAP = Map__string_SimpleStruct.create(make_shared[cmap[string,py3.module_types.cSimpleStruct]](cA_CONST_MAP()))

@@ -28,13 +28,13 @@ to be converted from unicode to binary representation.
 }}{{#type:i64?}}{{field:name}}{{/type:i64?}}{{!
 }}{{#type:double?}}{{field:name}}{{/type:double?}}{{!
 }}{{#type:string?}}(deref({{field:name}}.get())).decode(){{/type:string?}}{{!
-}}{{#type:struct}}{{type:module_path}}.{{type:name}}.create({{!
-  }}{{type:module_path}}.move({{field:name}})){{/type:struct}}{{!
+}}{{#type:struct}}{{> ModulePath}}.{{type:name}}.create({{!
+  }}{{> ModulePath}}.move({{field:name}})){{/type:struct}}{{!
 }}{{#type:enum}}{{/type:enum}}{{!
-}}{{#type:list?}}{{type:module_path}}.{{type:flat_name}}.create({{!
-  }}{{type:module_path}}.move({{field:name}})){{/type:list?}}{{!
-}}{{#type:set?}}{{type:module_path}}.{{type:flat_name}}.create({{!
-  }}{{type:module_path}}.move({{field:name}})){{/type:set?}}{{!
-}}{{#type:map?}}{{type:module_path}}.{{type:flat_name}}.create({{!
-  }}{{type:module_path}}.move({{field:name}})){{/type:map?}}{{!
-}}{{#type:enum}}{{type:module_path}}.{{enum:name}}(<int> {{field:name}}){{/type:enum}}
+}}{{#type:list?}}{{> ModulePath}}.{{type:flat_name}}.create({{!
+  }}{{> ModulePath}}.move({{field:name}})){{/type:list?}}{{!
+}}{{#type:set?}}{{> ModulePath}}.{{type:flat_name}}.create({{!
+  }}{{> ModulePath}}.move({{field:name}})){{/type:set?}}{{!
+}}{{#type:map?}}{{> ModulePath}}.{{type:flat_name}}.create({{!
+  }}{{> ModulePath}}.move({{field:name}})){{/type:map?}}{{!
+}}{{#type:enum}}{{> ModulePath}}.{{enum:name}}(<int> {{field:name}}){{/type:enum}}

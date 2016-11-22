@@ -22,10 +22,10 @@ from thrift.lib.py3.thrift_server cimport (
 from folly_futures cimport cFollyPromise, cFollyUnit, c_unit
 cimport py3.module_types
 import py3.module_types
-cimport .includes_types
-cimport .includes_services
-import .includes_types
-import .includes_services
+cimport py3.includes_types
+cimport py3.includes_services
+import py3.includes_types
+import py3.includes_services
 
 import asyncio
 import functools

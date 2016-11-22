@@ -46,7 +46,7 @@ from collections.abc import Sequence, Set, Mapping
 from enum import Enum
 cimport {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}_types
 {{#program:includeNamespaces}}
-cimport {{value}}_types
+cimport {{#includeNamespace}}{{value}}{{^last?}}.{{/last?}}{{/includeNamespace}}_types
 {{/program:includeNamespaces}}
 
 {{#program:enums}}

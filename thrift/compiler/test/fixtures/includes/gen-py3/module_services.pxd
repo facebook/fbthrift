@@ -7,6 +7,6 @@
 
 from thrift.lib.py3.thrift_server cimport cServerInterface, ServiceInterface
 
-cimport .includes_services
+cimport py3.includes_services
 
 
