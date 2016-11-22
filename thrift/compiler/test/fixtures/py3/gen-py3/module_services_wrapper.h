@@ -109,6 +109,18 @@ class SimpleServiceWrapper : virtual public SimpleServiceSvIf {
     folly::Future<std::unique_ptr<std::vector<std::set<std::string>>>> future_list_of_sets(
         std::unique_ptr<std::string> some_words
     ) override;
+    folly::Future<int32_t> future_nested_map_argument(
+        std::unique_ptr<std::map<std::string,std::vector<py3::simple::SimpleStruct>>> struct_map
+    ) override;
+    folly::Future<std::unique_ptr<std::string>> future_make_sentence(
+        std::unique_ptr<std::vector<std::vector<std::string>>> word_chars
+    ) override;
+    folly::Future<std::unique_ptr<std::set<int32_t>>> future_get_union(
+        std::unique_ptr<std::vector<std::set<int32_t>>> sets
+    ) override;
+    folly::Future<std::unique_ptr<std::set<std::string>>> future_get_keys(
+        std::unique_ptr<std::vector<std::map<std::string,std::string>>> string_map
+    ) override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object);

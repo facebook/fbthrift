@@ -48,6 +48,7 @@ cdef extern from "<utility>" namespace "std":
     cdef cFollyPromise[unique_ptr[vector[vector[int32_t]]]] move(cFollyPromise[unique_ptr[vector[vector[int32_t]]]])
     cdef cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] move(cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]])
     cdef cFollyPromise[unique_ptr[vector[cset[string]]]] move(cFollyPromise[unique_ptr[vector[cset[string]]]])
+    cdef cFollyPromise[unique_ptr[cset[int32_t]]] move(cFollyPromise[unique_ptr[cset[int32_t]]])
 
 cdef class Promise_i32:
     cdef cFollyPromise[int32_t] cPromise
@@ -190,6 +191,15 @@ cdef class Promise_List__Set__string:
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[vector[cset[string]]]] cPromise):
         inst = <Promise_List__Set__string>Promise_List__Set__string.__new__(Promise_List__Set__string)
+        inst.cPromise = move(cPromise)
+        return inst
+
+cdef class Promise_Set__i32:
+    cdef cFollyPromise[unique_ptr[cset[int32_t]]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[cset[int32_t]]] cPromise):
+        inst = <Promise_Set__i32>Promise_Set__i32.__new__(Promise_Set__i32)
         inst.cPromise = move(cPromise)
         return inst
 
@@ -1252,6 +1262,140 @@ async def SimpleService_list_of_sets_coro(
     else:
         promise.cPromise.setValue(make_unique[vector[cset[string]]](deref((<.module_types.List__Set__string?> result)._vector)))
 
+cdef public void call_cy_SimpleService_nested_map_argument(
+    object self,
+    cFollyPromise[int32_t] cPromise,
+    unique_ptr[cmap[string,vector[.module_types.cSimpleStruct]]] struct_map
+) with gil:
+    promise = Promise_i32.create(move(cPromise))
+    arg_struct_map = .module_types.Map__string_List__SimpleStruct.create(.module_types.move(struct_map))
+    asyncio.run_coroutine_threadsafe(
+        SimpleService_nested_map_argument_coro(
+            self,
+            promise,
+            arg_struct_map),
+        loop=self.loop)
+
+async def SimpleService_nested_map_argument_coro(
+    object self,
+    Promise_i32 promise,
+    struct_map
+):
+    try:
+      result = await self.nested_map_argument(
+          struct_map)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler nested_map_argument:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<int32_t> result)
+
+cdef public void call_cy_SimpleService_make_sentence(
+    object self,
+    cFollyPromise[unique_ptr[string]] cPromise,
+    unique_ptr[vector[vector[string]]] word_chars
+) with gil:
+    promise = Promise_string.create(move(cPromise))
+    arg_word_chars = .module_types.List__List__string.create(.module_types.move(word_chars))
+    asyncio.run_coroutine_threadsafe(
+        SimpleService_make_sentence_coro(
+            self,
+            promise,
+            arg_word_chars),
+        loop=self.loop)
+
+async def SimpleService_make_sentence_coro(
+    object self,
+    Promise_string promise,
+    word_chars
+):
+    try:
+      result = await self.make_sentence(
+          word_chars)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler make_sentence:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
+
+cdef public void call_cy_SimpleService_get_union(
+    object self,
+    cFollyPromise[unique_ptr[cset[int32_t]]] cPromise,
+    unique_ptr[vector[cset[int32_t]]] sets
+) with gil:
+    promise = Promise_Set__i32.create(move(cPromise))
+    arg_sets = .module_types.List__Set__i32.create(.module_types.move(sets))
+    asyncio.run_coroutine_threadsafe(
+        SimpleService_get_union_coro(
+            self,
+            promise,
+            arg_sets),
+        loop=self.loop)
+
+async def SimpleService_get_union_coro(
+    object self,
+    Promise_Set__i32 promise,
+    sets
+):
+    try:
+      result = await self.get_union(
+          sets)
+      result = .module_types.Set__i32(result)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler get_union:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[cset[int32_t]](deref((<.module_types.Set__i32?> result)._set)))
+
+cdef public void call_cy_SimpleService_get_keys(
+    object self,
+    cFollyPromise[unique_ptr[cset[string]]] cPromise,
+    unique_ptr[vector[cmap[string,string]]] string_map
+) with gil:
+    promise = Promise_Set__string.create(move(cPromise))
+    arg_string_map = .module_types.List__Map__string_string.create(.module_types.move(string_map))
+    asyncio.run_coroutine_threadsafe(
+        SimpleService_get_keys_coro(
+            self,
+            promise,
+            arg_string_map),
+        loop=self.loop)
+
+async def SimpleService_get_keys_coro(
+    object self,
+    Promise_Set__string promise,
+    string_map
+):
+    try:
+      result = await self.get_keys(
+          string_map)
+      result = .module_types.Set__string(result)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler get_keys:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[cset[string]](deref((<.module_types.Set__string?> result)._set)))
+
 
 cdef class SimpleServiceInterface(
     ServiceInterface
@@ -1451,5 +1595,29 @@ cdef class SimpleServiceInterface(
             self,
             some_words):
         raise NotImplementedError("async def list_of_sets is not implemented")
+
+
+    async def nested_map_argument(
+            self,
+            struct_map):
+        raise NotImplementedError("async def nested_map_argument is not implemented")
+
+
+    async def make_sentence(
+            self,
+            word_chars):
+        raise NotImplementedError("async def make_sentence is not implemented")
+
+
+    async def get_union(
+            self,
+            sets):
+        raise NotImplementedError("async def get_union is not implemented")
+
+
+    async def get_keys(
+            self,
+            string_map):
+        raise NotImplementedError("async def get_keys is not implemented")
 
 

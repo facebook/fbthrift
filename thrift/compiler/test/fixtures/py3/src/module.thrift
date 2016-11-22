@@ -92,4 +92,8 @@ service SimpleService {
   list<list<i32>> list_of_lists(1: i16 num_lists, 2: i16 num_items)
   map<string, map<string, i32>> word_character_frequency(1: string sentence)
   list<set<string>> list_of_sets(1: string some_words)
+  i32 nested_map_argument(1: map<string, list<SimpleStruct>> struct_map)
+  string make_sentence(1: list<list<string>> word_chars)
+  set<i32> get_union(1: list<set<i32>> sets)
+  set<string> get_keys(1: list<map<string, string>> string_map)
 }

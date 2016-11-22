@@ -60,7 +60,7 @@ cdef class Map__i32_List__i32:
     def __getitem__(self, int key):
         cdef int32_t ckey = key
         cdef vector[int32_t] citem = deref(self._map)[ckey]
-        return 
+        return List__i32.create(make_shared[vector[int32_t]](citem))
 
     def __len__(self):
         return deref(self._map).size()
@@ -115,7 +115,7 @@ cdef class Map__i32_Set__i32:
     def __getitem__(self, int key):
         cdef int32_t ckey = key
         cdef cset[int32_t] citem = deref(self._map)[ckey]
-        return 
+        return Set__i32.create(make_shared[cset[int32_t]](citem))
 
     def __len__(self):
         return deref(self._map).size()
@@ -173,7 +173,7 @@ cdef class List__Map__i32_i32:
 
     def __getitem__(self, int index):
         cdef cmap[int32_t,int32_t] citem = deref(self._vector).at(index)
-        return 
+        return Map__i32_i32.create(make_shared[cmap[int32_t,int32_t]](citem))
 
     def __len__(self):
         return deref(self._vector).size()
@@ -195,7 +195,7 @@ cdef class List__Set__i32:
 
     def __getitem__(self, int index):
         cdef cset[int32_t] citem = deref(self._vector).at(index)
-        return 
+        return Set__i32.create(make_shared[cset[int32_t]](citem))
 
     def __len__(self):
         return deref(self._vector).size()
@@ -219,7 +219,7 @@ cdef class Map__i32_Map__i32_Set__i32:
     def __getitem__(self, int key):
         cdef int32_t ckey = key
         cdef cmap[int32_t,cset[int32_t]] citem = deref(self._map)[ckey]
-        return 
+        return Map__i32_Set__i32.create(make_shared[cmap[int32_t,cset[int32_t]]](citem))
 
     def __len__(self):
         return deref(self._map).size()
@@ -247,7 +247,7 @@ cdef class List__Map__i32_Map__i32_Set__i32:
 
     def __getitem__(self, int index):
         cdef cmap[int32_t,cmap[int32_t,cset[int32_t]]] citem = deref(self._vector).at(index)
-        return 
+        return Map__i32_Map__i32_Set__i32.create(make_shared[cmap[int32_t,cmap[int32_t,cset[int32_t]]]](citem))
 
     def __len__(self):
         return deref(self._vector).size()
@@ -269,7 +269,7 @@ cdef class List__List__Map__i32_Map__i32_Set__i32:
 
     def __getitem__(self, int index):
         cdef vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]] citem = deref(self._vector).at(index)
-        return 
+        return List__Map__i32_Map__i32_Set__i32.create(make_shared[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]](citem))
 
     def __len__(self):
         return deref(self._vector).size()

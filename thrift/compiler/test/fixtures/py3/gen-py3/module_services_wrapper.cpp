@@ -431,6 +431,58 @@ folly::Future<std::unique_ptr<std::vector<std::set<std::string>>>> SimpleService
   return future;
 }
 
+folly::Future<int32_t> SimpleServiceWrapper::future_nested_map_argument(
+  std::unique_ptr<std::map<std::string,std::vector<py3::simple::SimpleStruct>>> struct_map
+) {
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  call_cy_SimpleService_nested_map_argument(
+    this->if_object,
+    std::move(promise),
+    std::move(struct_map)
+  );
+  return future;
+}
+
+folly::Future<std::unique_ptr<std::string>> SimpleServiceWrapper::future_make_sentence(
+  std::unique_ptr<std::vector<std::vector<std::string>>> word_chars
+) {
+  folly::Promise<std::unique_ptr<std::string>> promise;
+  auto future = promise.getFuture();
+  call_cy_SimpleService_make_sentence(
+    this->if_object,
+    std::move(promise),
+    std::move(word_chars)
+  );
+  return future;
+}
+
+folly::Future<std::unique_ptr<std::set<int32_t>>> SimpleServiceWrapper::future_get_union(
+  std::unique_ptr<std::vector<std::set<int32_t>>> sets
+) {
+  folly::Promise<std::unique_ptr<std::set<int32_t>>> promise;
+  auto future = promise.getFuture();
+  call_cy_SimpleService_get_union(
+    this->if_object,
+    std::move(promise),
+    std::move(sets)
+  );
+  return future;
+}
+
+folly::Future<std::unique_ptr<std::set<std::string>>> SimpleServiceWrapper::future_get_keys(
+  std::unique_ptr<std::vector<std::map<std::string,std::string>>> string_map
+) {
+  folly::Promise<std::unique_ptr<std::set<std::string>>> promise;
+  auto future = promise.getFuture();
+  call_cy_SimpleService_get_keys(
+    this->if_object,
+    std::move(promise),
+    std::move(string_map)
+  );
+  return future;
+}
+
 std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object) {
   return std::make_shared<SimpleServiceWrapper>(if_object);
 }
