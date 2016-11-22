@@ -260,7 +260,7 @@ class SimpleWorkerFactory : public WorkerFactory {
   WorkerT* newWorker(int id,
                      const std::shared_ptr<ScoreBoard>& scoreboard,
                      IntervalTimer* itimer) override {
-    std::auto_ptr<WorkerT> worker(new WorkerT);
+    std::unique_ptr<WorkerT> worker(new WorkerT);
     worker->init(id, config_, scoreboard, itimer);
     return worker.release();
   }
