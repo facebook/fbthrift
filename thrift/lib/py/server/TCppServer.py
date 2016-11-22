@@ -102,13 +102,14 @@ class _ProcessorAdapter(object):
                                     client_type=client_type,
                                     callback=callback)
 
-            if self.observer and should_sample:
-                timestamps.processEnd = int(time.time() * 10**6)
+            if self.observer:
+                if should_sample:
+                    timestamps.processEnd = int(time.time() * 10**6)
 
-            # This only bumps counters if `processBegin != 0` and
-            # `processEnd != 0` and these will only be non-zero if
-            # we are sampling this request.
-            self.observer.callCompleted(timestamps)
+                # This only bumps counters if `processBegin != 0` and
+                # `processEnd != 0` and these will only be non-zero if
+                # we are sampling this request.
+                self.observer.callCompleted(timestamps)
 
             # This future is created by and returned from the processor's
             # ThreadPoolExecutor, which keeps a reference to it. So it is
