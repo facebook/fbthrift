@@ -89,4 +89,7 @@ service SimpleService {
   set<string> unique_words(1: list<string> words)
   map<string,i16> words_count(1: list<string> words)
   AnEnum set_enum(1: AnEnum in_enum)
+  list<list<i32>> list_of_lists(1: i16 num_lists, 2: i16 num_items)
+  map<string, map<string, i32>> word_character_frequency(1: string sentence)
+  list<set<string>> list_of_sets(1: string some_words)
 }

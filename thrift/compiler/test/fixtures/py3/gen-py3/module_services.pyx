@@ -45,6 +45,9 @@ cdef extern from "<utility>" namespace "std":
     cdef cFollyPromise[unique_ptr[cset[string]]] move(cFollyPromise[unique_ptr[cset[string]]])
     cdef cFollyPromise[unique_ptr[cmap[string,int16_t]]] move(cFollyPromise[unique_ptr[cmap[string,int16_t]]])
     cdef cFollyPromise[.module_types.cAnEnum] move(cFollyPromise[.module_types.cAnEnum])
+    cdef cFollyPromise[unique_ptr[vector[vector[int32_t]]]] move(cFollyPromise[unique_ptr[vector[vector[int32_t]]]])
+    cdef cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] move(cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]])
+    cdef cFollyPromise[unique_ptr[vector[cset[string]]]] move(cFollyPromise[unique_ptr[vector[cset[string]]]])
 
 cdef class Promise_i32:
     cdef cFollyPromise[int32_t] cPromise
@@ -160,6 +163,33 @@ cdef class Promise_AnEnum:
     @staticmethod
     cdef create(cFollyPromise[.module_types.cAnEnum] cPromise):
         inst = <Promise_AnEnum>Promise_AnEnum.__new__(Promise_AnEnum)
+        inst.cPromise = move(cPromise)
+        return inst
+
+cdef class Promise_List__List__i32:
+    cdef cFollyPromise[unique_ptr[vector[vector[int32_t]]]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[vector[vector[int32_t]]]] cPromise):
+        inst = <Promise_List__List__i32>Promise_List__List__i32.__new__(Promise_List__List__i32)
+        inst.cPromise = move(cPromise)
+        return inst
+
+cdef class Promise_Map__string_Map__string_i32:
+    cdef cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] cPromise):
+        inst = <Promise_Map__string_Map__string_i32>Promise_Map__string_Map__string_i32.__new__(Promise_Map__string_Map__string_i32)
+        inst.cPromise = move(cPromise)
+        return inst
+
+cdef class Promise_List__Set__string:
+    cdef cFollyPromise[unique_ptr[vector[cset[string]]]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[vector[cset[string]]]] cPromise):
+        inst = <Promise_List__Set__string>Promise_List__Set__string.__new__(Promise_List__Set__string)
         inst.cPromise = move(cPromise)
         return inst
 
@@ -1115,6 +1145,113 @@ async def SimpleService_set_enum_coro(
     else:
         promise.cPromise.setValue(.module_types.AnEnum_to_cpp(result))
 
+cdef public void call_cy_SimpleService_list_of_lists(
+    object self,
+    cFollyPromise[unique_ptr[vector[vector[int32_t]]]] cPromise,
+    int16_t num_lists,
+    int16_t num_items
+) with gil:
+    promise = Promise_List__List__i32.create(move(cPromise))
+    arg_num_lists = num_lists
+    arg_num_items = num_items
+    asyncio.run_coroutine_threadsafe(
+        SimpleService_list_of_lists_coro(
+            self,
+            promise,
+            arg_num_lists,
+            arg_num_items),
+        loop=self.loop)
+
+async def SimpleService_list_of_lists_coro(
+    object self,
+    Promise_List__List__i32 promise,
+    num_lists,
+    num_items
+):
+    try:
+      result = await self.list_of_lists(
+          num_lists,
+          num_items)
+      result = .module_types.List__List__i32(result)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler list_of_lists:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[vector[vector[int32_t]]](deref((<.module_types.List__List__i32?> result)._vector)))
+
+cdef public void call_cy_SimpleService_word_character_frequency(
+    object self,
+    cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] cPromise,
+    unique_ptr[string] sentence
+) with gil:
+    promise = Promise_Map__string_Map__string_i32.create(move(cPromise))
+    arg_sentence = (deref(sentence.get())).decode()
+    asyncio.run_coroutine_threadsafe(
+        SimpleService_word_character_frequency_coro(
+            self,
+            promise,
+            arg_sentence),
+        loop=self.loop)
+
+async def SimpleService_word_character_frequency_coro(
+    object self,
+    Promise_Map__string_Map__string_i32 promise,
+    sentence
+):
+    try:
+      result = await self.word_character_frequency(
+          sentence)
+      result = .module_types.Map__string_Map__string_i32(result)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler word_character_frequency:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[cmap[string,cmap[string,int32_t]]](deref((<.module_types.Map__string_Map__string_i32?> result)._map)))
+
+cdef public void call_cy_SimpleService_list_of_sets(
+    object self,
+    cFollyPromise[unique_ptr[vector[cset[string]]]] cPromise,
+    unique_ptr[string] some_words
+) with gil:
+    promise = Promise_List__Set__string.create(move(cPromise))
+    arg_some_words = (deref(some_words.get())).decode()
+    asyncio.run_coroutine_threadsafe(
+        SimpleService_list_of_sets_coro(
+            self,
+            promise,
+            arg_some_words),
+        loop=self.loop)
+
+async def SimpleService_list_of_sets_coro(
+    object self,
+    Promise_List__Set__string promise,
+    some_words
+):
+    try:
+      result = await self.list_of_sets(
+          some_words)
+      result = .module_types.List__Set__string(result)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler list_of_sets:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[vector[cset[string]]](deref((<.module_types.List__Set__string?> result)._vector)))
+
 
 cdef class SimpleServiceInterface(
     ServiceInterface
@@ -1295,5 +1432,24 @@ cdef class SimpleServiceInterface(
             self,
             in_enum):
         raise NotImplementedError("async def set_enum is not implemented")
+
+
+    async def list_of_lists(
+            self,
+            num_lists,
+            num_items):
+        raise NotImplementedError("async def list_of_lists is not implemented")
+
+
+    async def word_character_frequency(
+            self,
+            sentence):
+        raise NotImplementedError("async def word_character_frequency is not implemented")
+
+
+    async def list_of_sets(
+            self,
+            some_words):
+        raise NotImplementedError("async def list_of_sets is not implemented")
 
 

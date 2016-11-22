@@ -410,6 +410,110 @@ cdef class Map__string_i16:
 
 Mapping.register(Map__string_i16)
 
+cdef class List__List__i32:
+    def __init__(self, items=None):
+        self._vector = make_shared[vector[vector[int32_t]]]()
+        if items:
+            for item in items:
+                deref(self._vector).push_back(vector[int32_t](deref(List__i32(item)._vector)))
+
+    @staticmethod
+    cdef create(shared_ptr[vector[vector[int32_t]]] c_items):
+        inst = <List__List__i32>List__List__i32.__new__(List__List__i32)
+        inst._vector = c_items
+        return inst
+
+    def __getitem__(self, int index):
+        cdef vector[int32_t] citem = deref(self._vector).at(index)
+        return 
+
+    def __len__(self):
+        return deref(self._vector).size()
+
+Sequence.register(List__List__i32)
+
+cdef class Map__string_i32:
+    def __init__(self, items=None):
+
+        self._map = make_shared[cmap[string,int32_t]]()
+        if items:
+            for key, item in items.items():
+                deref(self._map).insert(cpair[string,int32_t](key.encode('UTF-8'), item))
+
+    @staticmethod
+    cdef create(shared_ptr[cmap[string,int32_t]] c_items):
+        inst = <Map__string_i32>Map__string_i32.__new__(Map__string_i32)
+        inst._map = c_items
+        return inst
+
+    def __getitem__(self, str key):
+        cdef string ckey = key.encode('UTF-8')
+        cdef int32_t citem = deref(self._map)[ckey]
+        return citem
+
+    def __len__(self):
+        return deref(self._map).size()
+
+    def __iter__(self):
+        cdef string citem
+        for pair in deref(self._map):
+            citem = pair.first
+            yield citem.decode()
+
+Mapping.register(Map__string_i32)
+
+cdef class Map__string_Map__string_i32:
+    def __init__(self, items=None):
+
+        self._map = make_shared[cmap[string,cmap[string,int32_t]]]()
+        if items:
+            for key, item in items.items():
+                deref(self._map).insert(cpair[string,cmap[string,int32_t]](key.encode('UTF-8'), cmap[string,int32_t](deref(Map__string_i32(item)._map))))
+
+    @staticmethod
+    cdef create(shared_ptr[cmap[string,cmap[string,int32_t]]] c_items):
+        inst = <Map__string_Map__string_i32>Map__string_Map__string_i32.__new__(Map__string_Map__string_i32)
+        inst._map = c_items
+        return inst
+
+    def __getitem__(self, str key):
+        cdef string ckey = key.encode('UTF-8')
+        cdef cmap[string,int32_t] citem = deref(self._map)[ckey]
+        return 
+
+    def __len__(self):
+        return deref(self._map).size()
+
+    def __iter__(self):
+        cdef string citem
+        for pair in deref(self._map):
+            citem = pair.first
+            yield citem.decode()
+
+Mapping.register(Map__string_Map__string_i32)
+
+cdef class List__Set__string:
+    def __init__(self, items=None):
+        self._vector = make_shared[vector[cset[string]]]()
+        if items:
+            for item in items:
+                deref(self._vector).push_back(cset[string](deref(Set__string(item)._set)))
+
+    @staticmethod
+    cdef create(shared_ptr[vector[cset[string]]] c_items):
+        inst = <List__Set__string>List__Set__string.__new__(List__Set__string)
+        inst._vector = c_items
+        return inst
+
+    def __getitem__(self, int index):
+        cdef cset[string] citem = deref(self._vector).at(index)
+        return 
+
+    def __len__(self):
+        return deref(self._vector).size()
+
+Sequence.register(List__Set__string)
+
 
 A_BOOL = True
 A_BYTE = 8

@@ -46,7 +46,7 @@ cdef class Promise_void:
 cdef public void call_cy_NestedContainers_mapList(
     object self,
     cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[cmap[int32_t,]] foo
+    unique_ptr[cmap[int32_t,vector[int32_t]]] foo
 ) with gil:
     promise = Promise_void.create(move(cPromise))
     arg_foo = .module_types.Map__i32_List__i32.create(.module_types.move(foo))
@@ -79,7 +79,7 @@ async def NestedContainers_mapList_coro(
 cdef public void call_cy_NestedContainers_mapSet(
     object self,
     cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[cmap[int32_t,]] foo
+    unique_ptr[cmap[int32_t,cset[int32_t]]] foo
 ) with gil:
     promise = Promise_void.create(move(cPromise))
     arg_foo = .module_types.Map__i32_Set__i32.create(.module_types.move(foo))
@@ -112,7 +112,7 @@ async def NestedContainers_mapSet_coro(
 cdef public void call_cy_NestedContainers_listMap(
     object self,
     cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[vector[]] foo
+    unique_ptr[vector[cmap[int32_t,int32_t]]] foo
 ) with gil:
     promise = Promise_void.create(move(cPromise))
     arg_foo = .module_types.List__Map__i32_i32.create(.module_types.move(foo))
@@ -145,7 +145,7 @@ async def NestedContainers_listMap_coro(
 cdef public void call_cy_NestedContainers_listSet(
     object self,
     cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[vector[]] foo
+    unique_ptr[vector[cset[int32_t]]] foo
 ) with gil:
     promise = Promise_void.create(move(cPromise))
     arg_foo = .module_types.List__Set__i32.create(.module_types.move(foo))
@@ -178,7 +178,7 @@ async def NestedContainers_listSet_coro(
 cdef public void call_cy_NestedContainers_turtles(
     object self,
     cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[vector[]] foo
+    unique_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]] foo
 ) with gil:
     promise = Promise_void.create(move(cPromise))
     arg_foo = .module_types.List__List__Map__i32_Map__i32_Set__i32.create(.module_types.move(foo))

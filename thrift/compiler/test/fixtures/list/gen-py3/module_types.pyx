@@ -22,4 +22,4 @@ cimport py3.module_types
 
 
 
-TEST_MAP = Map__i64_List__string.create(make_shared[cmap[int64_t,]](cTEST_MAP()))
+TEST_MAP = Map__i64_List__string.create(make_shared[cmap[int64_t,vector[string]]](cTEST_MAP()))

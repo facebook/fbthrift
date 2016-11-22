@@ -22,7 +22,7 @@ NestedContainersWrapper::~NestedContainersWrapper() {
 }
 
 folly::Future<folly::Unit> NestedContainersWrapper::future_mapList(
-  std::unique_ptr<std::map<int32_t,>> foo
+  std::unique_ptr<std::map<int32_t,std::vector<int32_t>>> foo
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
@@ -35,7 +35,7 @@ folly::Future<folly::Unit> NestedContainersWrapper::future_mapList(
 }
 
 folly::Future<folly::Unit> NestedContainersWrapper::future_mapSet(
-  std::unique_ptr<std::map<int32_t,>> foo
+  std::unique_ptr<std::map<int32_t,std::set<int32_t>>> foo
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
@@ -48,7 +48,7 @@ folly::Future<folly::Unit> NestedContainersWrapper::future_mapSet(
 }
 
 folly::Future<folly::Unit> NestedContainersWrapper::future_listMap(
-  std::unique_ptr<std::vector<>> foo
+  std::unique_ptr<std::vector<std::map<int32_t,int32_t>>> foo
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
@@ -61,7 +61,7 @@ folly::Future<folly::Unit> NestedContainersWrapper::future_listMap(
 }
 
 folly::Future<folly::Unit> NestedContainersWrapper::future_listSet(
-  std::unique_ptr<std::vector<>> foo
+  std::unique_ptr<std::vector<std::set<int32_t>>> foo
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
@@ -74,7 +74,7 @@ folly::Future<folly::Unit> NestedContainersWrapper::future_listSet(
 }
 
 folly::Future<folly::Unit> NestedContainersWrapper::future_turtles(
-  std::unique_ptr<std::vector<>> foo
+  std::unique_ptr<std::vector<std::vector<std::map<int32_t,std::map<int32_t,std::set<int32_t>>>>>> foo
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();

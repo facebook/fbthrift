@@ -99,6 +99,16 @@ class SimpleServiceWrapper : virtual public SimpleServiceSvIf {
     folly::Future<py3::simple::AnEnum> future_set_enum(
         py3::simple::AnEnum in_enum
     ) override;
+    folly::Future<std::unique_ptr<std::vector<std::vector<int32_t>>>> future_list_of_lists(
+        int16_t num_lists,
+        int16_t num_items
+    ) override;
+    folly::Future<std::unique_ptr<std::map<std::string,std::map<std::string,int32_t>>>> future_word_character_frequency(
+        std::unique_ptr<std::string> sentence
+    ) override;
+    folly::Future<std::unique_ptr<std::vector<std::set<std::string>>>> future_list_of_sets(
+        std::unique_ptr<std::string> some_words
+    ) override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object);

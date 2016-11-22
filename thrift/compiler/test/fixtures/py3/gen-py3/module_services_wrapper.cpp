@@ -390,6 +390,47 @@ folly::Future<py3::simple::AnEnum> SimpleServiceWrapper::future_set_enum(
   return future;
 }
 
+folly::Future<std::unique_ptr<std::vector<std::vector<int32_t>>>> SimpleServiceWrapper::future_list_of_lists(
+  int16_t num_lists,
+  int16_t num_items
+) {
+  folly::Promise<std::unique_ptr<std::vector<std::vector<int32_t>>>> promise;
+  auto future = promise.getFuture();
+  call_cy_SimpleService_list_of_lists(
+    this->if_object,
+    std::move(promise),
+    num_lists,
+    num_items
+  );
+  return future;
+}
+
+folly::Future<std::unique_ptr<std::map<std::string,std::map<std::string,int32_t>>>> SimpleServiceWrapper::future_word_character_frequency(
+  std::unique_ptr<std::string> sentence
+) {
+  folly::Promise<std::unique_ptr<std::map<std::string,std::map<std::string,int32_t>>>> promise;
+  auto future = promise.getFuture();
+  call_cy_SimpleService_word_character_frequency(
+    this->if_object,
+    std::move(promise),
+    std::move(sentence)
+  );
+  return future;
+}
+
+folly::Future<std::unique_ptr<std::vector<std::set<std::string>>>> SimpleServiceWrapper::future_list_of_sets(
+  std::unique_ptr<std::string> some_words
+) {
+  folly::Promise<std::unique_ptr<std::vector<std::set<std::string>>>> promise;
+  auto future = promise.getFuture();
+  call_cy_SimpleService_list_of_sets(
+    this->if_object,
+    std::move(promise),
+    std::move(some_words)
+  );
+  return future;
+}
+
 std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object) {
   return std::make_shared<SimpleServiceWrapper>(if_object);
 }

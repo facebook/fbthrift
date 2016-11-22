@@ -137,7 +137,7 @@ cdef class Range:
 
 myInt = 1337
 name = cname().decode('UTF-8')
-states = List__Map__string_i32.create(make_shared[vector[]](cstates()))
+states = List__Map__string_i32.create(make_shared[vector[cmap[string,int32_t]]](cstates()))
 x = 1.000000
 y = 1000000.0
 z = 1000000000.000000

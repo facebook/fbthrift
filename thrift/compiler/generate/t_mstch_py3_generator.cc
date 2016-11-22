@@ -227,8 +227,25 @@ void t_mstch_py3_generator::load_container_type(
   t_type* type
 ) const {
   if (!type->is_container()) return;
+
   string flat_name = this->flatten_type_name(*type);
   if (visited_names.count(flat_name)) return;
+
+  if (type->is_list()) {
+    const auto elem_type = dynamic_cast<const t_list*>(type)->get_elem_type();
+    this->load_container_type(container_types, visited_names, elem_type);
+  }
+  else if (type->is_set()) {
+    const auto elem_type = dynamic_cast<const t_set*>(type)->get_elem_type();
+    this->load_container_type(container_types, visited_names, elem_type);
+  }
+  else if (type->is_map()) {
+    const auto map_type = dynamic_cast<const t_map*>(type);
+    const auto key_type = map_type->get_key_type();
+    const auto value_type = map_type->get_val_type();
+    this->load_container_type(container_types, visited_names, key_type);
+    this->load_container_type(container_types, visited_names, value_type);
+  }
 
   visited_names.insert(flat_name);
   container_types.push_back(type);
