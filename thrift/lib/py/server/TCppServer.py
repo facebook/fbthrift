@@ -11,10 +11,17 @@ from thrift.transport.THeaderTransport import THeaderTransport
 from thrift.transport.TTransport import TMemoryBuffer
 
 from thrift.server.CppServerWrapper import CppServerWrapper, CppContextData, \
-        SSLPolicy, SSLVerifyPeerEnum, CallbackWrapper
+    SSLPolicy, SSLVerifyPeerEnum, CallbackWrapper, CallTimestamps
 
 from concurrent.futures import Future
 from functools import partial
+
+import time
+
+# Default sampling rate for expensive sampling operations, such as histogram
+# counters.
+kDefaultSampleRate = 32
+
 
 class TCppConnectionContext(TConnectionContext):
     def __init__(self, context_data):
@@ -44,6 +51,16 @@ class _ProcessorAdapter(object):
 
     def __init__(self, processor):
         self.processor = processor
+        self.observer = None
+        self.sampleRate = kDefaultSampleRate
+        self.sampleCount = 0
+
+    def setObserver(self, observer):
+        self.observer = observer
+
+    def _shouldSample(self):
+        self.sampleCount = (self.sampleCount + 1) % self.sampleRate
+        return self.sampleCount == 0
 
     # TODO mhorowitz: add read headers here, so they can be added to
     # the constructed header buffer.  Also add endpoint addrs to the
@@ -56,6 +73,14 @@ class _ProcessorAdapter(object):
             # order to reconstitute the message with headers, we use
             # the THeaderProtocol object to write into a memory
             # buffer, then pass that buffer to the python processor.
+
+            should_sample = self._shouldSample()
+
+            timestamps = CallTimestamps()
+            timestamps.processBegin = 0
+            timestamps.processEnd = 0
+            if self.observer and should_sample:
+                timestamps.processBegin = int(time.time() * 10**6)
 
             write_buf = TMemoryBuffer()
             trans = THeaderTransport(write_buf)
@@ -76,6 +101,15 @@ class _ProcessorAdapter(object):
                                     prot_buf=prot_buf,
                                     client_type=client_type,
                                     callback=callback)
+
+            if self.observer and should_sample:
+                timestamps.processEnd = int(time.time() * 10**6)
+
+            # This only bumps counters if `processBegin != 0` and
+            # `processEnd != 0` and these will only be non-zero if
+            # we are sampling this request.
+            self.observer.callCompleted(timestamps)
+
             # This future is created by and returned from the processor's
             # ThreadPoolExecutor, which keeps a reference to it. So it is
             # fine for this future to end its lifecycle here.
@@ -151,9 +185,14 @@ class TCppServer(CppServerWrapper, TServer):
     def __init__(self, processor):
         CppServerWrapper.__init__(self)
         self.processor = self._getProcessor(processor)
-        self.setAdapter(_ProcessorAdapter(self.processor))
+        self.processorAdapter = _ProcessorAdapter(self.processor)
+        self.setAdapter(self.processorAdapter)
         self._setup_done = False
         self.serverEventHandler = None
+
+    def setObserver(self, observer):
+        self.processorAdapter.setObserver(observer)
+        CppServerWrapper.setObserver(self, observer)
 
     def setServerEventHandler(self, handler):
         TServer.setServerEventHandler(self, handler)

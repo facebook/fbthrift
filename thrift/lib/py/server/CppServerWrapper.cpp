@@ -649,14 +649,14 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
     .def("expiredTaskCount", &ThreadManager::expiredTaskCount)
     ;
 
-  class_<TServerObserver::CallTimestamps>("CallTimestamps", no_init)
-    .def_readonly("readBegin", &TServerObserver::CallTimestamps::readBegin)
-    .def_readonly("readEnd", &TServerObserver::CallTimestamps::readEnd)
-    .def_readonly("processBegin", &TServerObserver::CallTimestamps::processBegin)
-    .def_readonly("processEnd", &TServerObserver::CallTimestamps::processEnd)
-    .def_readonly("writeBegin", &TServerObserver::CallTimestamps::writeBegin)
-    .def_readonly("writeEnd", &TServerObserver::CallTimestamps::writeEnd)
-    ;
+  class_<TServerObserver::CallTimestamps>("CallTimestamps")
+      .def_readwrite("readBegin", &TServerObserver::CallTimestamps::readBegin)
+      .def_readwrite("readEnd", &TServerObserver::CallTimestamps::readEnd)
+      .def_readwrite(
+          "processBegin", &TServerObserver::CallTimestamps::processBegin)
+      .def_readwrite("processEnd", &TServerObserver::CallTimestamps::processEnd)
+      .def_readwrite("writeBegin", &TServerObserver::CallTimestamps::writeBegin)
+      .def_readwrite("writeEnd", &TServerObserver::CallTimestamps::writeEnd);
 
   enum_<SSLPolicy>("SSLPolicy")
     .value("DISABLED", SSLPolicy::DISABLED)
