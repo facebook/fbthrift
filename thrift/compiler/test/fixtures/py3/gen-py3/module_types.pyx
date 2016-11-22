@@ -253,7 +253,7 @@ cdef class List__SimpleStruct:
         self._vector = make_shared[vector[.module_types.cSimpleStruct]]()
         if items:
             for item in items:
-                deref(self._vector).push_back(deref((<SimpleStruct> item).c_SimpleStruct))
+                deref(self._vector).push_back(deref((<.module_types.SimpleStruct> item).c_SimpleStruct))
 
     @staticmethod
     cdef create(shared_ptr[vector[.module_types.cSimpleStruct]] c_items):
@@ -263,7 +263,7 @@ cdef class List__SimpleStruct:
 
     def __getitem__(self, int index):
         cdef .module_types.cSimpleStruct citem = deref(self._vector).at(index)
-        return SimpleStruct.create(make_shared[cSimpleStruct](citem))
+        return .module_types.SimpleStruct.create(make_shared[.module_types.cSimpleStruct](citem))
 
     def __len__(self):
         return deref(self._vector).size()
@@ -356,7 +356,7 @@ cdef class Map__string_SimpleStruct:
         self._map = make_shared[cmap[string,.module_types.cSimpleStruct]]()
         if items:
             for key, item in items.items():
-                deref(self._map).insert(cpair[string,.module_types.cSimpleStruct](key.encode('UTF-8'), deref((<SimpleStruct> item).c_SimpleStruct)))
+                deref(self._map).insert(cpair[string,.module_types.cSimpleStruct](key.encode('UTF-8'), deref((<.module_types.SimpleStruct> item).c_SimpleStruct)))
 
     @staticmethod
     cdef create(shared_ptr[cmap[string,.module_types.cSimpleStruct]] c_items):
@@ -367,7 +367,7 @@ cdef class Map__string_SimpleStruct:
     def __getitem__(self, str key):
         cdef string ckey = key.encode('UTF-8')
         cdef .module_types.cSimpleStruct citem = deref(self._map)[ckey]
-        return SimpleStruct.create(make_shared[cSimpleStruct](citem))
+        return .module_types.SimpleStruct.create(make_shared[.module_types.cSimpleStruct](citem))
 
     def __len__(self):
         return deref(self._map).size()

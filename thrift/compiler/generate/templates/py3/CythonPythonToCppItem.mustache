@@ -32,7 +32,7 @@ key, include the parallel CythonPythonToCppKey file instead.
 }}{{#type:i64?}}item{{/type:i64?}}{{!
 }}{{#type:double?}}item{{/type:double?}}{{!
 }}{{#type:string?}}item.encode('UTF-8'){{/type:string?}}{{!
-}}{{#type:struct}}deref((<{{struct:name}}> item).c_{{struct:name}}){{/type:struct}}{{!
+}}{{#type:struct}}deref((<{{type:module_path}}.{{struct:name}}> item).c_{{struct:name}}){{/type:struct}}{{!
 }}{{#type:list?}}vector[{{#type:listElemType}}{{> ContainerCythonFieldType}}{{/type:listElemType}}{{!
   }}](deref({{type:flat_name}}(item)._vector)){{/type:list?}}{{!
 }}{{#type:set?}}cset[{{#type:setElemType}}{{> ContainerCythonFieldType}}{{/type:setElemType}}{{!

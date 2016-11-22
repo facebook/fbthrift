@@ -87,19 +87,24 @@ mstch::map t_mstch_py3_generator::extend_program(
 }
 
 mstch::map t_mstch_py3_generator::extend_type(const t_type& type) const {
-  auto program = type.get_program();
-  if (!program) {
-    program = this->get_program();
-  }
-  auto module_path =
+  const auto type_program = type.get_program();
+  const auto program = type_program? type_program: this->get_program();
+  const auto& module_path =
     program->get_namespace("py3") +
     "." +
     program->get_name() +
     "_types";
-  auto cppNamespaces = this->get_cpp2_namespace(*program);
+  const auto& cppNamespaces = this->get_cpp2_namespace(*program);
+
+  bool externalProgram = false;
+  const auto& prog_path = program->get_path();
+  if (prog_path != this->get_program()->get_path()) {
+    externalProgram = true;
+  }
 
   mstch::map result {
     {"module_path", module_path},
+    {"externalProgram?", externalProgram},
     {"flat_name", this->flatten_type_name(type)},
     {"cppNamespaces", cppNamespaces},
   };

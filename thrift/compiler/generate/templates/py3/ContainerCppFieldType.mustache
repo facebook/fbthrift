@@ -29,7 +29,7 @@ argumnts or return types tend to use unique_ptr.
 }}{{#type:double?}}double{{/type:double?}}{{!
 }}{{#type:string?}}std::string{{/type:string?}}{{!
 }}{{#type:struct}}{{!
-  }}{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}{{!
+  }}{{#type:cppNamespaces}}{{value}}::{{/type:cppNamespaces}}{{struct:name}}{{!
   }}{{/type:struct}}{{!
 }}{{#type:list?}}std::vector<{{#type:listElemType}}{{> ContainerCppFieldType}}{{/type:listElemType}}>{{/type:list?}}{{!
 }}{{#type:set?}}std::set<{{#type:setElemType}}{{> ContainerCppFieldType}}{{/type:setElemType}}>{{/type:set?}}{{!

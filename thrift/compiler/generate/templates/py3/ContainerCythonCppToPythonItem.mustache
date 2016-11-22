@@ -31,7 +31,7 @@ citem.
 }}{{#type:i64?}}citem{{/type:i64?}}{{!
 }}{{#type:double?}}citem{{/type:double?}}{{!
 }}{{#type:string?}}citem.decode(){{/type:string?}}{{!
-}}{{#type:struct}}{{type:name}}.create(make_shared[c{{struct:name}}](citem)){{/type:struct}}{{!
+}}{{#type:struct}}{{type:module_path}}.{{type:name}}.create(make_shared[{{type:module_path}}.c{{struct:name}}](citem)){{/type:struct}}{{!
 }}{{#type:list?}}{{type:flat_name}}.create(make_shared[{{> ContainerCythonFieldType}}](citem)){{/type:list?}}{{!
 }}{{#type:set?}}{{type:flat_name}}.create(make_shared[{{> ContainerCythonFieldType}}](citem)){{/type:set?}}{{!
 }}{{#type:map?}}{{type:flat_name}}.create(make_shared[{{> ContainerCythonFieldType}}](citem)){{/type:map?}}
