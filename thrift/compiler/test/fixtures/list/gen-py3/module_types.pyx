@@ -13,7 +13,7 @@ from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from cython.operator cimport dereference as deref
 from thrift.lib.py3.thrift_server cimport TException
 
-from collections.abc import Sequence, Set, Mapping
+from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
 cimport py3.module_types
 
@@ -40,6 +40,25 @@ cdef class List__string:
 
     def __len__(self):
         return deref(self._vector).size()
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
+            return cop != 2
+        if (len(self) != len(other)):
+            return cop != 2
+
+        for one, two in zip(self, other):
+            if one != two:
+                return cop != 2
+
+        return cop == 2
+
+    def __hash__(self):
+        return hash(tuple(self))
+
 
 Sequence.register(List__string)
 
@@ -74,6 +93,26 @@ cdef class Map__i64_List__string:
         for pair in deref(self._map):
             citem = pair.first
             yield citem
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+        if not (isinstance(self, Mapping) and isinstance(other, Mapping)):
+            return cop != 2
+        if (len(self) != len(other)):
+            return cop != 2
+
+        for key in self:
+            if key not in other:
+                return cop != 2
+            if other[key] != self[key]:
+                return cop != 2
+
+        return cop == 2
+
+    def __hash__(self):
+        return hash(tuple((tuple(self), tuple(self[k] for k in self))))
 
 Mapping.register(Map__i64_List__string)
 
