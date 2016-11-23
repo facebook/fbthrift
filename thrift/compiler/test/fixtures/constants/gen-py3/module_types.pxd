@@ -77,7 +77,73 @@ cdef class Range:
     cdef create(shared_ptr[cRange] c_Range)
 
 
+cdef class Map__string_i32:
+    cdef shared_ptr[cmap[string,int32_t]] _map
+    @staticmethod
+    cdef create(shared_ptr[cmap[string,int32_t]])
 
+cdef class List__Map__string_i32:
+    cdef shared_ptr[vector[cmap[string,int32_t]]] _vector
+    @staticmethod
+    cdef create(shared_ptr[vector[cmap[string,int32_t]]])
+
+cdef class List__Range:
+    cdef shared_ptr[vector[cRange]] _vector
+    @staticmethod
+    cdef create(shared_ptr[vector[cRange]])
+
+cdef class List__Internship:
+    cdef shared_ptr[vector[cInternship]] _vector
+    @staticmethod
+    cdef create(shared_ptr[vector[cInternship]])
+
+cdef class List__string:
+    cdef shared_ptr[vector[string]] _vector
+    @staticmethod
+    cdef create(shared_ptr[vector[string]])
+
+cdef class List__i32:
+    cdef shared_ptr[vector[int32_t]] _vector
+    @staticmethod
+    cdef create(shared_ptr[vector[int32_t]])
+
+cdef class Set__i32:
+    cdef shared_ptr[cset[int32_t]] _set
+    @staticmethod
+    cdef create(shared_ptr[cset[int32_t]])
+
+cdef class Set__string:
+    cdef shared_ptr[cset[string]] _set
+    @staticmethod
+    cdef create(shared_ptr[cset[string]])
+
+cdef class Map__i32_i32:
+    cdef shared_ptr[cmap[int32_t,int32_t]] _map
+    @staticmethod
+    cdef create(shared_ptr[cmap[int32_t,int32_t]])
+
+cdef class Map__i32_string:
+    cdef shared_ptr[cmap[int32_t,string]] _map
+    @staticmethod
+    cdef create(shared_ptr[cmap[int32_t,string]])
+
+cdef class Map__string_string:
+    cdef shared_ptr[cmap[string,string]] _map
+    @staticmethod
+    cdef create(shared_ptr[cmap[string,string]])
+
+cdef extern from "<utility>" namespace "std" nogil:
+    cdef shared_ptr[cmap[string,int32_t]] move(unique_ptr[cmap[string,int32_t]])
+    cdef shared_ptr[vector[cmap[string,int32_t]]] move(unique_ptr[vector[cmap[string,int32_t]]])
+    cdef shared_ptr[vector[cRange]] move(unique_ptr[vector[cRange]])
+    cdef shared_ptr[vector[cInternship]] move(unique_ptr[vector[cInternship]])
+    cdef shared_ptr[vector[string]] move(unique_ptr[vector[string]])
+    cdef shared_ptr[vector[int32_t]] move(unique_ptr[vector[int32_t]])
+    cdef shared_ptr[cset[int32_t]] move(unique_ptr[cset[int32_t]])
+    cdef shared_ptr[cset[string]] move(unique_ptr[cset[string]])
+    cdef shared_ptr[cmap[int32_t,int32_t]] move(unique_ptr[cmap[int32_t,int32_t]])
+    cdef shared_ptr[cmap[int32_t,string]] move(unique_ptr[cmap[int32_t,string]])
+    cdef shared_ptr[cmap[string,string]] move(unique_ptr[cmap[string,string]])
 
 cdef extern from "src/gen-cpp2/module_constants.h" namespace "cpp2":
     cdef int32_t cmyInt "cpp2::module_constants::myInt"

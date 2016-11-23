@@ -1396,6 +1396,39 @@ async def SimpleService_get_keys_coro(
     else:
         promise.cPromise.setValue(make_unique[cset[string]](deref((<py3.module_types.Set__string?> result)._set)))
 
+cdef public void call_cy_SimpleService_lookup_double(
+    object self,
+    cFollyPromise[double] cPromise,
+    int32_t key
+) with gil:
+    promise = Promise_double.create(move(cPromise))
+    arg_key = key
+    asyncio.run_coroutine_threadsafe(
+        SimpleService_lookup_double_coro(
+            self,
+            promise,
+            arg_key),
+        loop=self.loop)
+
+async def SimpleService_lookup_double_coro(
+    object self,
+    Promise_double promise,
+    key
+):
+    try:
+      result = await self.lookup_double(
+          key)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler lookup_double:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<double> result)
+
 
 cdef class SimpleServiceInterface(
     ServiceInterface
@@ -1619,5 +1652,11 @@ cdef class SimpleServiceInterface(
             self,
             string_map):
         raise NotImplementedError("async def get_keys is not implemented")
+
+
+    async def lookup_double(
+            self,
+            key):
+        raise NotImplementedError("async def lookup_double is not implemented")
 
 

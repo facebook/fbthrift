@@ -226,6 +226,11 @@ mstch::array t_mstch_py3_generator::get_container_types(
       this->load_container_type(container_types, visited_names, ref_type);
     }
   }
+  for (const auto constant: program.get_consts()) {
+    const auto const_type = constant->get_type();
+    this->load_container_type(container_types, visited_names, const_type);
+
+  }
   return this->dump_elems(container_types);
 }
 

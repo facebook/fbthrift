@@ -47,6 +47,10 @@ const SimpleStruct A_STRUCT = {
 const list<string> WORD_LIST = [
   "the", "quick", "brown", "fox", "jumps", "over", "the", "lazy", "dog"
 ]
+const list<map<i32, double>> SOME_MAP = [
+  {1: 1.1, 2: 2.2},
+  {3: 3.3}
+]
 const set<i32> DIGITS = [1, 2, 3, 4, 5]
 const map<string,SimpleStruct> A_CONST_MAP = {
   "simple": {
@@ -96,4 +100,5 @@ service SimpleService {
   string make_sentence(1: list<list<string>> word_chars)
   set<i32> get_union(1: list<set<i32>> sets)
   set<string> get_keys(1: list<map<string, string>> string_map)
+  double lookup_double(1: i32 key)
 }

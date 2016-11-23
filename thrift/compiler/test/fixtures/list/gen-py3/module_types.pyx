@@ -21,5 +21,57 @@ cimport py3.module_types
 
 
 
+cdef class List__string:
+    def __init__(self, items=None):
+        self._vector = make_shared[vector[string]]()
+        if items:
+            for item in items:
+                deref(self._vector).push_back(item.encode('UTF-8'))
+
+    @staticmethod
+    cdef create(shared_ptr[vector[string]] c_items):
+        inst = <List__string>List__string.__new__(List__string)
+        inst._vector = c_items
+        return inst
+
+    def __getitem__(self, int index):
+        cdef string citem = deref(self._vector).at(index)
+        return citem.decode()
+
+    def __len__(self):
+        return deref(self._vector).size()
+
+Sequence.register(List__string)
+
+cdef class Map__i64_List__string:
+    def __init__(self, items=None):
+
+        self._map = make_shared[cmap[int64_t,vector[string]]]()
+        if items:
+            for key, item in items.items():
+                deref(self._map).insert(cpair[int64_t,vector[string]](key, vector[string](deref(List__string(item)._vector))))
+
+    @staticmethod
+    cdef create(shared_ptr[cmap[int64_t,vector[string]]] c_items):
+        inst = <Map__i64_List__string>Map__i64_List__string.__new__(Map__i64_List__string)
+        inst._map = c_items
+        return inst
+
+    def __getitem__(self, int key):
+        cdef int64_t ckey = key
+        cdef vector[string] citem = deref(self._map)[ckey]
+        return List__string.create(make_shared[vector[string]](citem))
+
+    def __len__(self):
+        return deref(self._map).size()
+
+    def __iter__(self):
+        cdef int64_t citem
+        for pair in deref(self._map):
+            citem = pair.first
+            yield citem
+
+Mapping.register(Map__i64_List__string)
+
 
 TEST_MAP = Map__i64_List__string.create(make_shared[cmap[int64_t,vector[string]]](cTEST_MAP()))

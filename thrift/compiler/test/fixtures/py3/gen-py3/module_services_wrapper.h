@@ -121,6 +121,9 @@ class SimpleServiceWrapper : virtual public SimpleServiceSvIf {
     folly::Future<std::unique_ptr<std::set<std::string>>> future_get_keys(
         std::unique_ptr<std::vector<std::map<std::string,std::string>>> string_map
     ) override;
+    folly::Future<double> future_lookup_double(
+        int32_t key
+    ) override;
 };
 
 std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object);

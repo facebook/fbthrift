@@ -165,6 +165,16 @@ cdef class List__Map__string_string:
     @staticmethod
     cdef create(shared_ptr[vector[cmap[string,string]]])
 
+cdef class Map__i32_double:
+    cdef shared_ptr[cmap[int32_t,double]] _map
+    @staticmethod
+    cdef create(shared_ptr[cmap[int32_t,double]])
+
+cdef class List__Map__i32_double:
+    cdef shared_ptr[vector[cmap[int32_t,double]]] _vector
+    @staticmethod
+    cdef create(shared_ptr[vector[cmap[int32_t,double]]])
+
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[int16_t]] move(unique_ptr[vector[int16_t]])
     cdef shared_ptr[vector[int32_t]] move(unique_ptr[vector[int32_t]])
@@ -184,6 +194,8 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[vector[string]]] move(unique_ptr[vector[vector[string]]])
     cdef shared_ptr[vector[cset[int32_t]]] move(unique_ptr[vector[cset[int32_t]]])
     cdef shared_ptr[vector[cmap[string,string]]] move(unique_ptr[vector[cmap[string,string]]])
+    cdef shared_ptr[cmap[int32_t,double]] move(unique_ptr[cmap[int32_t,double]])
+    cdef shared_ptr[vector[cmap[int32_t,double]]] move(unique_ptr[vector[cmap[int32_t,double]]])
 
 cdef extern from "src/gen-cpp2/module_constants.h" namespace "py3::simple":
     cdef cbool cA_BOOL "py3::simple::module_constants::A_BOOL"
@@ -196,5 +208,6 @@ cdef extern from "src/gen-cpp2/module_constants.h" namespace "py3::simple":
     cdef const char* cA_WORD "py3::simple::module_constants::A_WORD"()
     cdef cSimpleStruct cA_STRUCT "py3::simple::module_constants::A_STRUCT"()
     cdef vector[string] cWORD_LIST "py3::simple::module_constants::WORD_LIST"()
+    cdef vector[cmap[int32_t,double]] cSOME_MAP "py3::simple::module_constants::SOME_MAP"()
     cdef cset[int32_t] cDIGITS "py3::simple::module_constants::DIGITS"()
     cdef cmap[string,cSimpleStruct] cA_CONST_MAP "py3::simple::module_constants::A_CONST_MAP"()

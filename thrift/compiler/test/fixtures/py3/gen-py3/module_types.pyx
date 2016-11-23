@@ -610,6 +610,58 @@ cdef class List__Map__string_string:
 
 Sequence.register(List__Map__string_string)
 
+cdef class Map__i32_double:
+    def __init__(self, items=None):
+
+        self._map = make_shared[cmap[int32_t,double]]()
+        if items:
+            for key, item in items.items():
+                deref(self._map).insert(cpair[int32_t,double](key, item))
+
+    @staticmethod
+    cdef create(shared_ptr[cmap[int32_t,double]] c_items):
+        inst = <Map__i32_double>Map__i32_double.__new__(Map__i32_double)
+        inst._map = c_items
+        return inst
+
+    def __getitem__(self, int key):
+        cdef int32_t ckey = key
+        cdef double citem = deref(self._map)[ckey]
+        return citem
+
+    def __len__(self):
+        return deref(self._map).size()
+
+    def __iter__(self):
+        cdef int32_t citem
+        for pair in deref(self._map):
+            citem = pair.first
+            yield citem
+
+Mapping.register(Map__i32_double)
+
+cdef class List__Map__i32_double:
+    def __init__(self, items=None):
+        self._vector = make_shared[vector[cmap[int32_t,double]]]()
+        if items:
+            for item in items:
+                deref(self._vector).push_back(cmap[int32_t,double](deref(Map__i32_double(item)._map)))
+
+    @staticmethod
+    cdef create(shared_ptr[vector[cmap[int32_t,double]]] c_items):
+        inst = <List__Map__i32_double>List__Map__i32_double.__new__(List__Map__i32_double)
+        inst._vector = c_items
+        return inst
+
+    def __getitem__(self, int index):
+        cdef cmap[int32_t,double] citem = deref(self._vector).at(index)
+        return Map__i32_double.create(make_shared[cmap[int32_t,double]](citem))
+
+    def __len__(self):
+        return deref(self._vector).size()
+
+Sequence.register(List__Map__i32_double)
+
 
 A_BOOL = True
 A_BYTE = 8
@@ -621,5 +673,6 @@ A_FAKE_NUMBER = 3.0
 A_WORD = cA_WORD().decode('UTF-8')
 A_STRUCT = SimpleStruct.create(make_shared[cSimpleStruct](cA_STRUCT()))
 WORD_LIST = List__string.create(make_shared[vector[string]](cWORD_LIST()))
+SOME_MAP = List__Map__i32_double.create(make_shared[vector[cmap[int32_t,double]]](cSOME_MAP()))
 DIGITS = Set__i32.create(make_shared[cset[int32_t]](cDIGITS()))
 A_CONST_MAP = Map__string_SimpleStruct.create(make_shared[cmap[string,py3.module_types.cSimpleStruct]](cA_CONST_MAP()))

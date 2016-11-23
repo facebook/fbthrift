@@ -483,6 +483,19 @@ folly::Future<std::unique_ptr<std::set<std::string>>> SimpleServiceWrapper::futu
   return future;
 }
 
+folly::Future<double> SimpleServiceWrapper::future_lookup_double(
+  int32_t key
+) {
+  folly::Promise<double> promise;
+  auto future = promise.getFuture();
+  call_cy_SimpleService_lookup_double(
+    this->if_object,
+    std::move(promise),
+    key
+  );
+  return future;
+}
+
 std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object) {
   return std::make_shared<SimpleServiceWrapper>(if_object);
 }

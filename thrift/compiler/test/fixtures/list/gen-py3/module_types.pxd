@@ -22,7 +22,19 @@ from thrift.lib.py3.thrift_server cimport cTException, TException
 
 
 
+cdef class List__string:
+    cdef shared_ptr[vector[string]] _vector
+    @staticmethod
+    cdef create(shared_ptr[vector[string]])
 
+cdef class Map__i64_List__string:
+    cdef shared_ptr[cmap[int64_t,vector[string]]] _map
+    @staticmethod
+    cdef create(shared_ptr[cmap[int64_t,vector[string]]])
+
+cdef extern from "<utility>" namespace "std" nogil:
+    cdef shared_ptr[vector[string]] move(unique_ptr[vector[string]])
+    cdef shared_ptr[cmap[int64_t,vector[string]]] move(unique_ptr[cmap[int64_t,vector[string]]])
 
 cdef extern from "src/gen-cpp2/module_constants.h" namespace "cpp2":
     cdef cmap[int64_t,vector[string]] cTEST_MAP "cpp2::module_constants::TEST_MAP"()
