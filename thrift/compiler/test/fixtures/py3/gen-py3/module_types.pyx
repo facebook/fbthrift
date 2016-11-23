@@ -336,7 +336,11 @@ cdef class Map__string_string:
 
     def __getitem__(self, str key):
         cdef string ckey = key.encode('UTF-8')
-        cdef string citem = deref(self._map)[ckey]
+
+        cdef cmap[string,string].iterator iter = deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            raise KeyError(str(key))
+        cdef string citem = deref(iter).second
         return citem.decode()
 
     def __len__(self):
@@ -366,7 +370,11 @@ cdef class Map__string_SimpleStruct:
 
     def __getitem__(self, str key):
         cdef string ckey = key.encode('UTF-8')
-        cdef py3.module_types.cSimpleStruct citem = deref(self._map)[ckey]
+
+        cdef cmap[string,py3.module_types.cSimpleStruct].iterator iter = deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            raise KeyError(str(key))
+        cdef py3.module_types.cSimpleStruct citem = deref(iter).second
         return py3.module_types.SimpleStruct.create(make_shared[py3.module_types.cSimpleStruct](citem))
 
     def __len__(self):
@@ -396,7 +404,11 @@ cdef class Map__string_i16:
 
     def __getitem__(self, str key):
         cdef string ckey = key.encode('UTF-8')
-        cdef int16_t citem = deref(self._map)[ckey]
+
+        cdef cmap[string,int16_t].iterator iter = deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            raise KeyError(str(key))
+        cdef int16_t citem = deref(iter).second
         return citem
 
     def __len__(self):
@@ -448,7 +460,11 @@ cdef class Map__string_i32:
 
     def __getitem__(self, str key):
         cdef string ckey = key.encode('UTF-8')
-        cdef int32_t citem = deref(self._map)[ckey]
+
+        cdef cmap[string,int32_t].iterator iter = deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            raise KeyError(str(key))
+        cdef int32_t citem = deref(iter).second
         return citem
 
     def __len__(self):
@@ -478,7 +494,11 @@ cdef class Map__string_Map__string_i32:
 
     def __getitem__(self, str key):
         cdef string ckey = key.encode('UTF-8')
-        cdef cmap[string,int32_t] citem = deref(self._map)[ckey]
+
+        cdef cmap[string,cmap[string,int32_t]].iterator iter = deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            raise KeyError(str(key))
+        cdef cmap[string,int32_t] citem = deref(iter).second
         return Map__string_i32.create(make_shared[cmap[string,int32_t]](citem))
 
     def __len__(self):
@@ -530,7 +550,11 @@ cdef class Map__string_List__SimpleStruct:
 
     def __getitem__(self, str key):
         cdef string ckey = key.encode('UTF-8')
-        cdef vector[py3.module_types.cSimpleStruct] citem = deref(self._map)[ckey]
+
+        cdef cmap[string,vector[py3.module_types.cSimpleStruct]].iterator iter = deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            raise KeyError(str(key))
+        cdef vector[py3.module_types.cSimpleStruct] citem = deref(iter).second
         return List__SimpleStruct.create(make_shared[vector[py3.module_types.cSimpleStruct]](citem))
 
     def __len__(self):
@@ -626,7 +650,11 @@ cdef class Map__i32_double:
 
     def __getitem__(self, int key):
         cdef int32_t ckey = key
-        cdef double citem = deref(self._map)[ckey]
+
+        cdef cmap[int32_t,double].iterator iter = deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            raise KeyError(str(key))
+        cdef double citem = deref(iter).second
         return citem
 
     def __len__(self):

@@ -59,7 +59,11 @@ cdef class Map__i32_List__i32:
 
     def __getitem__(self, int key):
         cdef int32_t ckey = key
-        cdef vector[int32_t] citem = deref(self._map)[ckey]
+
+        cdef cmap[int32_t,vector[int32_t]].iterator iter = deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            raise KeyError(str(key))
+        cdef vector[int32_t] citem = deref(iter).second
         return List__i32.create(make_shared[vector[int32_t]](citem))
 
     def __len__(self):
@@ -114,7 +118,11 @@ cdef class Map__i32_Set__i32:
 
     def __getitem__(self, int key):
         cdef int32_t ckey = key
-        cdef cset[int32_t] citem = deref(self._map)[ckey]
+
+        cdef cmap[int32_t,cset[int32_t]].iterator iter = deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            raise KeyError(str(key))
+        cdef cset[int32_t] citem = deref(iter).second
         return Set__i32.create(make_shared[cset[int32_t]](citem))
 
     def __len__(self):
@@ -144,7 +152,11 @@ cdef class Map__i32_i32:
 
     def __getitem__(self, int key):
         cdef int32_t ckey = key
-        cdef int32_t citem = deref(self._map)[ckey]
+
+        cdef cmap[int32_t,int32_t].iterator iter = deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            raise KeyError(str(key))
+        cdef int32_t citem = deref(iter).second
         return citem
 
     def __len__(self):
@@ -218,7 +230,11 @@ cdef class Map__i32_Map__i32_Set__i32:
 
     def __getitem__(self, int key):
         cdef int32_t ckey = key
-        cdef cmap[int32_t,cset[int32_t]] citem = deref(self._map)[ckey]
+
+        cdef cmap[int32_t,cmap[int32_t,cset[int32_t]]].iterator iter = deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            raise KeyError(str(key))
+        cdef cmap[int32_t,cset[int32_t]] citem = deref(iter).second
         return Map__i32_Set__i32.create(make_shared[cmap[int32_t,cset[int32_t]]](citem))
 
     def __len__(self):

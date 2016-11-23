@@ -165,7 +165,11 @@ Set.register({{type:flat_name}})
 
     def __getitem__(self, {{#type:keyType}}{{> PythonFieldType}}{{/type:keyType}} key):
         cdef {{#type:keyType}}{{> ContainerCythonFieldType}} ckey = {{> CythonPythonToCppKey}}{{/type:keyType}}
-        cdef {{#type:valueType}}{{> ContainerCythonFieldType}} citem = deref(self._map)[ckey]{{/type:valueType}}
+
+        cdef cmap[{{>CythonMapKeyValue}}].iterator iter = deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            raise KeyError(str(key))
+        cdef {{#type:valueType}}{{> ContainerCythonFieldType}} citem = deref(iter).second{{/type:valueType}}
         return {{#type:valueType}}{{> ContainerCythonCppToPythonItem}}{{/type:valueType}}
 
     def __len__(self):

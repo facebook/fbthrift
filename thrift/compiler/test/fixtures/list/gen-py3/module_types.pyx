@@ -59,7 +59,11 @@ cdef class Map__i64_List__string:
 
     def __getitem__(self, int key):
         cdef int64_t ckey = key
-        cdef vector[string] citem = deref(self._map)[ckey]
+
+        cdef cmap[int64_t,vector[string]].iterator iter = deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            raise KeyError(str(key))
+        cdef vector[string] citem = deref(iter).second
         return List__string.create(make_shared[vector[string]](citem))
 
     def __len__(self):

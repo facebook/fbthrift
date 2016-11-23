@@ -150,7 +150,11 @@ cdef class Map__string_i32:
 
     def __getitem__(self, str key):
         cdef string ckey = key.encode('UTF-8')
-        cdef int32_t citem = deref(self._map)[ckey]
+
+        cdef cmap[string,int32_t].iterator iter = deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            raise KeyError(str(key))
+        cdef int32_t citem = deref(iter).second
         return citem
 
     def __len__(self):
@@ -340,7 +344,11 @@ cdef class Map__i32_i32:
 
     def __getitem__(self, int key):
         cdef int32_t ckey = key
-        cdef int32_t citem = deref(self._map)[ckey]
+
+        cdef cmap[int32_t,int32_t].iterator iter = deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            raise KeyError(str(key))
+        cdef int32_t citem = deref(iter).second
         return citem
 
     def __len__(self):
@@ -370,7 +378,11 @@ cdef class Map__i32_string:
 
     def __getitem__(self, int key):
         cdef int32_t ckey = key
-        cdef string citem = deref(self._map)[ckey]
+
+        cdef cmap[int32_t,string].iterator iter = deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            raise KeyError(str(key))
+        cdef string citem = deref(iter).second
         return citem.decode()
 
     def __len__(self):
@@ -400,7 +412,11 @@ cdef class Map__string_string:
 
     def __getitem__(self, str key):
         cdef string ckey = key.encode('UTF-8')
-        cdef string citem = deref(self._map)[ckey]
+
+        cdef cmap[string,string].iterator iter = deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            raise KeyError(str(key))
+        cdef string citem = deref(iter).second
         return citem.decode()
 
     def __len__(self):
