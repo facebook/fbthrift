@@ -101,8 +101,16 @@ class t_cocoa_generator : public t_oop_generator {
   void generate_xception(t_struct* txception) override;
   void generate_service(t_service* tservice) override;
 
-  void print_const_value(std::ofstream& out, std::string name, t_type* type, t_const_value* value, bool defval=false, bool is_property=false);
-  std::string render_const_value(ofstream& out, t_type* type, t_const_value* value, bool containerize_it=false);
+  void print_const_value(
+      std::ofstream& out,
+      std::string name,
+      t_type* type,
+      const t_const_value* value,
+      bool defval=false,
+      bool is_property=false);
+  std::string render_const_value(ofstream& out, t_type* type,
+                                 const t_const_value* value,
+                                 bool containerize_it=false);
 
   void generate_cocoa_struct(t_struct* tstruct, bool is_exception);
   void generate_cocoa_struct_interface(std::ofstream& out, t_struct* tstruct, bool is_xception=false);
@@ -2583,7 +2591,13 @@ string t_cocoa_generator::base_type_name(t_base_type* type) {
  * is NOT performed in this function as it is always run beforehand using the
  * validate_types method in main.cc
  */
-void t_cocoa_generator::print_const_value(std::ofstream& out, std::string name, t_type* type, t_const_value* value, bool defval, bool is_property) {
+void t_cocoa_generator::print_const_value(
+    std::ofstream& out,
+    std::string name,
+    t_type* type,
+    const t_const_value* value,
+    bool defval,
+    bool is_property) {
   type = get_true_type(type);
 
   indent(out);
@@ -2674,7 +2688,11 @@ void t_cocoa_generator::print_const_value(std::ofstream& out, std::string name, 
   }
 }
 
-string t_cocoa_generator::render_const_value(ofstream& out, t_type* type, t_const_value* value, bool containerize_it) {
+string t_cocoa_generator::render_const_value(
+    ofstream& out,
+    t_type* type,
+    const t_const_value* value,
+    bool containerize_it) {
   type = get_true_type(type);
   std::ostringstream render;
 

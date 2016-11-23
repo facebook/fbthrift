@@ -53,10 +53,25 @@ class t_csharp_generator : public t_oop_generator
     void generate_xception (t_struct* txception);
     void generate_service (t_service* tservice);
     void generate_property(ofstream& out, t_field* tfield, bool isPublic);
-    bool print_const_value (std::ofstream& out, std::string name, t_type* type, t_const_value* value, bool in_static, bool defval=false, bool needtype=false);
-    std::string render_const_value(std::ofstream& out, std::string name, t_type* type, t_const_value* value);
+    bool print_const_value(
+        std::ofstream& out,
+        std::string name,
+        t_type* type,
+        const t_const_value* value,
+        bool in_static,
+        bool defval=false,
+        bool needtype=false);
+    std::string render_const_value(
+        std::ofstream& out,
+        std::string name,
+        t_type* type,
+        const t_const_value* value);
     void print_const_constructor(std::ofstream& out, std::vector<t_const*> consts);
-    void print_const_def_value(std::ofstream& out, std::string name, t_type* type, t_const_value* value);
+    void print_const_def_value(
+        std::ofstream& out,
+        std::string name,
+        t_type* type,
+        const t_const_value* value);
 
     void generate_csharp_struct(t_struct* tstruct, bool is_exception);
     void generate_csharp_struct_definition(std::ofstream& out, t_struct* tstruct, bool is_xception=false, bool in_class=false, bool is_result=false);
@@ -241,8 +256,11 @@ void t_csharp_generator::generate_consts(std::vector<t_const*> consts) {
   f_consts.close();
 }
 
-void t_csharp_generator::print_const_def_value(std::ofstream& out, string name, t_type* type, t_const_value* value)
-{
+void t_csharp_generator::print_const_def_value(
+    std::ofstream& out,
+    string name,
+    t_type* type,
+    const t_const_value* value) {
   if (type->is_struct() || type->is_xception()) {
     const vector<t_field*>& fields = ((t_struct*)type)->get_members();
     vector<t_field*>::const_iterator f_iter;
@@ -304,7 +322,14 @@ void t_csharp_generator::print_const_constructor(std::ofstream& out, std::vector
 
 
 //it seems like all that methods that call this are using in_static to be the opposite of what it would imply
-bool t_csharp_generator::print_const_value(std::ofstream& out, string name, t_type* type, t_const_value* value, bool in_static, bool defval, bool needtype) {
+bool t_csharp_generator::print_const_value(
+    std::ofstream& out,
+    string name,
+    t_type* type,
+    const t_const_value* value,
+    bool in_static,
+    bool defval,
+    bool needtype) {
   indent(out);
   bool need_static_construction = !in_static;
   if (!defval || needtype) {
@@ -334,7 +359,11 @@ bool t_csharp_generator::print_const_value(std::ofstream& out, string name, t_ty
   return need_static_construction;
 }
 
-std::string t_csharp_generator::render_const_value(ofstream& out, string name, t_type* type, t_const_value* value) {
+std::string t_csharp_generator::render_const_value(
+    ofstream& out,
+    string /* unused */,
+    t_type* type,
+    const t_const_value* value) {
   std::ostringstream render;
 
   if (type->is_base_type()) {

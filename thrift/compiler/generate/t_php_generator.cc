@@ -85,7 +85,7 @@ class t_php_generator : public t_oop_generator {
   void generate_xception(t_struct* txception) override;
   void generate_service(t_service* tservice) override;
 
-  std::string render_const_value(t_type* type, t_const_value* value);
+  std::string render_const_value(t_type* type, const t_const_value* value);
 
   /**
    * Structs!
@@ -879,7 +879,9 @@ string t_php_generator::render_string(string value) {
  * is NOT performed in this function as it is always run beforehand using the
  * validate_types method in main.cc
  */
-string t_php_generator::render_const_value(t_type* type, t_const_value* value) {
+string t_php_generator::render_const_value(
+    t_type* type,
+    const t_const_value* value) {
   std::ostringstream out;
   type = get_true_type(type);
   if (type->is_base_type()) {

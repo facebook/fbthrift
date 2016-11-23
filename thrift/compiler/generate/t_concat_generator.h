@@ -59,7 +59,7 @@ class t_concat_generator : public t_generator {
    */
   std::string escape_string(const std::string& in) const;
 
-  std::string get_escaped_string(t_const_value* constval) {
+  std::string get_escaped_string(const t_const_value* constval) {
     return escape_string(constval->get_string());
   }
 

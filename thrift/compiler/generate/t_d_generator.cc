@@ -323,7 +323,7 @@ class t_d_generator : public t_oop_generator {
 
         meta << "TParamMeta(`" << (*p_iter)->get_name() << "`, " << (*p_iter)->get_key();
 
-        t_const_value* cv = (*p_iter)->get_value();
+        const t_const_value* cv = (*p_iter)->get_value();
         if (cv != nullptr) {
           meta << ", q{" << render_const_value((*p_iter)->get_type(), cv) << "}";
         }
@@ -513,7 +513,7 @@ class t_d_generator : public t_oop_generator {
         indent(out) << "TFieldMeta(`" << get_name(*m_iter) << "`, " <<
           (*m_iter)->get_key();
 
-        t_const_value* cv = (*m_iter)->get_value();
+        const t_const_value* cv = (*m_iter)->get_value();
         t_field::e_req req = (*m_iter)->get_req();
         out << ", " << render_req(req);
         if (cv != nullptr) {
@@ -563,7 +563,7 @@ class t_d_generator : public t_oop_generator {
    * single expression; for complex types, immediately called delegate
    * literals are used to achieve this.
    */
-  string render_const_value(t_type* type, t_const_value* value) {
+  string render_const_value(t_type* type, const t_const_value* value) {
     // Resolve any typedefs.
     type = get_true_type(type);
 

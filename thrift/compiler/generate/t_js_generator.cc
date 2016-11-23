@@ -79,7 +79,7 @@ class t_js_generator : public t_oop_generator {
   std::string render_recv_throw(std::string var);
   std::string render_recv_return(std::string var);
 
-  std::string render_const_value(t_type* type, t_const_value* value);
+  std::string render_const_value(t_type* type, const t_const_value* value);
 
 
   /**
@@ -381,7 +381,9 @@ void t_js_generator::generate_const(t_const* tconst) {
  * is NOT performed in this function as it is always run beforehand using the
  * validate_types method in main.cc
  */
-string t_js_generator::render_const_value(t_type* type, t_const_value* value) {
+string t_js_generator::render_const_value(
+    t_type* type,
+    const t_const_value* value) {
   std::ostringstream out;
 
   type = get_true_type(type);

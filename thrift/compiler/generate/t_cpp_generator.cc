@@ -151,12 +151,12 @@ class t_cpp_generator : public t_oop_generator {
   void print_const_value(
       std::ostream& out,
       t_type* type,
-      t_const_value* value,
+      const t_const_value* value,
       bool allow_null_val = false,
       t_const* defining = nullptr);
   std::string render_const_value(
       t_type* type,
-      t_const_value* value,
+      const t_const_value* value,
       bool allow_null_val = false);
   string get_type_access_suffix(t_type* type);
 
@@ -1197,7 +1197,7 @@ string t_cpp_generator::render_string(string value) {
  */
 string t_cpp_generator::render_const_value(
     t_type* type,
-    t_const_value* value,
+    const t_const_value* value,
     bool allow_null_val) {
   ostringstream out;
   print_const_value(out, type, value, allow_null_val);
@@ -1212,7 +1212,7 @@ string t_cpp_generator::render_const_value(
 void t_cpp_generator::print_const_value(
     ostream& out,
     t_type* type,
-    t_const_value* value,
+    const t_const_value* value,
     bool allow_null_val,
     t_const* defining) {
   if (value && defining) {
@@ -2271,7 +2271,7 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
 
     for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
       t_type* t = get_true_type((*m_iter)->get_type());
-      t_const_value* cv = (*m_iter)->get_value();
+      const t_const_value* cv = (*m_iter)->get_value();
       if ((t->is_base_type() &&
            !(t->is_string() && (cv == nullptr || cv->get_string().empty()))) ||
           t->is_enum()) {
@@ -2301,7 +2301,7 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
         indent(out) << member->get_name() << ".reset(new typename decltype("
             << member->get_name() << ")::element_type());" << endl;
       } else if (!t->is_base_type() && !t->is_enum()) {
-        t_const_value* cv = member->get_value();
+        const t_const_value* cv = member->get_value();
         if (cv != nullptr && !cv->is_empty()) {
           indent(out) << member->get_name() << " = ";
           print_const_value(out, t, cv);
@@ -3184,7 +3184,7 @@ void t_cpp_generator::generate_struct_clear(ofstream& out,
       t_type* t = get_true_type(f_type);
       string name = (*m_iter)->get_name() + get_type_access_suffix(f_type);
       if (t->is_base_type() || t->is_enum()) {
-        t_const_value* cv = (*m_iter)->get_value();
+        const t_const_value* cv = (*m_iter)->get_value();
         indent(out) << name << " = ";
         print_const_value(out, t, cv, true);
         out << ";" << endl;
@@ -3425,7 +3425,7 @@ bool t_cpp_generator::try_terse_write_predicate(
     return false;
   }
   t_type* type = get_true_type(tfield->get_type());
-  t_const_value* tval = tfield->get_value();
+  const t_const_value* tval = tfield->get_value();
 
   // Terse write is unsafe to use without explicitly setting default value,
   // as in PHP / Python that would change result of deserialization (comparing

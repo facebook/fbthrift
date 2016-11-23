@@ -81,16 +81,18 @@ class t_java_generator : public t_oop_generator {
   void generate_default_toString(ofstream&, t_struct*);
   void generate_toString_prettyprint(std::ofstream&);
 
-  virtual void print_const_value(std::ostream& out,
-                                 std::string name,
-                                 t_type* type,
-                                 t_const_value* value,
-                                 bool in_static,
-                                 bool defval=false);
-  virtual std::string render_const_value(std::ostream& out,
-                                        std::string name,
-                                        t_type* type,
-                                        t_const_value* value);
+  virtual void print_const_value(
+      std::ostream& out,
+      std::string name,
+      t_type* type,
+      const t_const_value* value,
+      bool in_static,
+      bool defval=false);
+  virtual std::string render_const_value(
+      std::ostream& out,
+      std::string name,
+      t_type* type,
+      const t_const_value* value);
 
   /**
    * Service-level generation functions

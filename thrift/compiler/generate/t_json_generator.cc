@@ -61,7 +61,7 @@ class t_json_generator : public t_concat_generator {
   void generate_xception(t_struct* txception) override;
 
   void   print_type       (t_type* ttype);
-  void   print_const_value(t_const_value* tvalue);
+  void   print_const_value(const t_const_value* tvalue);
   void   print_const_key  (t_const_value* tvalue);
   string type_to_string   (t_type* type);
   string type_to_spec_args(t_type* ttype);
@@ -314,7 +314,7 @@ void t_json_generator::print_const_key(t_const_value* tvalue) {
 /**
  * Prints out a JSON representation of the provided constant value
  */
-void t_json_generator::print_const_value(t_const_value* tvalue) {
+void t_json_generator::print_const_value(const t_const_value* tvalue) {
   bool first = true;
   switch (tvalue->get_type()) {
   case t_const_value::CV_INTEGER:
@@ -460,7 +460,7 @@ void t_json_generator::generate_struct(t_struct* tstruct) {
     print_type((*mem_iter)->get_type());
     f_out_ << "," << endl << indent() <<  "\"required\" : "
       << ((*mem_iter)->get_req() != t_field::T_OPTIONAL ? "true" : "false");
-    t_const_value* default_val = (*mem_iter)->get_value();
+    const t_const_value* default_val = (*mem_iter)->get_value();
     if (default_val != nullptr) {
       f_out_ << "," << endl << indent() << "\"default_value\" : ";
       print_const_value(default_val);

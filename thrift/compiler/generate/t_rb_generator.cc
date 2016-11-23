@@ -66,7 +66,7 @@ class t_rb_generator : public t_oop_generator {
   void generate_xception(t_struct* txception) override;
   void generate_service(t_service* tservice) override;
 
-  std::string render_const_value(t_type* type, t_const_value* value);
+  std::string render_const_value(t_type* type, const t_const_value* value);
 
   /**
    * Struct generation code
@@ -80,7 +80,12 @@ class t_rb_generator : public t_oop_generator {
   void generate_field_constants (std::ofstream& out, t_struct* tstruct);
   void generate_accessors   (std::ofstream& out, t_struct* tstruct);
   void generate_field_defns (std::ofstream& out, t_struct* tstruct);
-  void generate_field_data  (std::ofstream& out, t_type* field_type, const std::string& field_name, t_const_value* field_value, bool optional);
+  void generate_field_data  (
+      std::ofstream& out,
+      t_type* field_type,
+      const std::string& field_name = "",
+      const t_const_value* field_value = nullptr,
+      bool optional = false);
 
   /**
    * Service-level generation functions
@@ -360,7 +365,9 @@ void t_rb_generator::generate_const(t_const* tconst) {
  * is NOT performed in this function as it is always run beforehand using the
  * validate_types method in main.cc
  */
-string t_rb_generator::render_const_value(t_type* type, t_const_value* value) {
+string t_rb_generator::render_const_value(
+    t_type* type,
+    const t_const_value* value) {
   type = get_true_type(type);
   std::ostringstream out;
   if (type->is_base_type()) {
@@ -584,8 +591,12 @@ void t_rb_generator::generate_field_defns(std::ofstream& out, t_struct* tstruct)
 
 }
 
-void t_rb_generator::generate_field_data(std::ofstream& out, t_type* field_type,
-    const std::string& field_name = "", t_const_value* field_value = nullptr, bool optional = false) {
+void t_rb_generator::generate_field_data(
+    std::ofstream& out,
+    t_type* field_type,
+    const std::string& field_name,
+    const t_const_value* field_value,
+    bool optional) {
   field_type = get_true_type(field_type);
 
   // Begin this field's defn

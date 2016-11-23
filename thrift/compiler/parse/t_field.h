@@ -1,138 +1,119 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2016 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
-#ifndef T_FIELD_H
-#define T_FIELD_H
+#pragma once
 
 #include <string>
 #include <sstream>
 
 #include <thrift/compiler/parse/t_doc.h>
 
-// Forward declarations
 class t_const_value;
 class t_struct;
 
 /**
+ * class t_field
+ *
  * Class to represent a field in a thrift structure. A field has a data type,
  * a symbolic name, and a numeric identifier.
  *
  */
 class t_field : public t_doc {
  public:
+
+  /**
+   * Constructor for t_field
+   *
+   * @param type - A field based on thrift types
+   * @param name - The symbolic name of the field
+   */
   t_field(t_type* type, std::string name) :
     type_(type),
-    name_(name),
-    key_(0),
-    value_(nullptr),
-    xsd_optional_(false),
-    xsd_nillable_(false),
-    xsd_attrs_(nullptr) {}
+    name_(name) {}
 
+  /**
+   * Constructor for t_field
+   *
+   * @param type - A field based on thrift types
+   * @param name - The symbolic name of the field
+   * @param key  - The numeric identifier of the field
+   */
   t_field(t_type* type, std::string name, int32_t key) :
     type_(type),
     name_(name),
-    key_(key),
-    value_(nullptr),
-    xsd_optional_(false),
-    xsd_nillable_(false),
-    xsd_attrs_(nullptr) {}
+    key_(key) {}
 
   t_field(const t_field&) = default;
 
   ~t_field() {}
 
-  t_type* get_type() const {
-    return type_;
-  }
-
-  const std::string& get_name() const {
-    return name_;
-  }
-
-  int32_t get_key() const {
-    return key_;
-  }
-
+  /**
+   * Determines if the field is required in the thrift object
+   */
   enum e_req {
     T_REQUIRED = 0,
     T_OPTIONAL = 1,
     T_OPT_IN_REQ_OUT = 2,
   };
 
-  void set_req(e_req req) {
-    req_ = req;
-  }
+  /**
+   * t_field setters
+   */
+  void set_value(t_const_value* value) { value_ = value; }
 
-  e_req get_req() const {
-    return req_;
-  }
+  void set_req(e_req req) { req_ = req; }
 
-  void set_value(t_const_value* value) {
-    value_ = value;
-  }
+  void set_xsd_optional(bool xsd_optional) { xsd_optional_ = xsd_optional; }
 
-  t_const_value* get_value() {
-    return value_;
-  }
+  void set_xsd_nillable(bool xsd_nillable) { xsd_nillable_ = xsd_nillable; }
 
-  const t_const_value* get_value() const {
-    return value_;
-  }
+  void set_xsd_attrs(t_struct* xsd_attrs) { xsd_attrs_ = xsd_attrs; }
 
-  void set_xsd_optional(bool xsd_optional) {
-    xsd_optional_ = xsd_optional;
-  }
+  /**
+   * t_field getters
+   */
+  t_type* get_type() const { return type_; }
 
-  bool get_xsd_optional() const {
-    return xsd_optional_;
-  }
+  const std::string& get_name() const { return name_; }
 
-  void set_xsd_nillable(bool xsd_nillable) {
-    xsd_nillable_ = xsd_nillable;
-  }
+  int32_t get_key() const { return key_; }
 
-  bool get_xsd_nillable() const {
-    return xsd_nillable_;
-  }
+  const t_const_value* get_value() const { return value_; }
 
-  void set_xsd_attrs(t_struct* xsd_attrs) {
-    xsd_attrs_ = xsd_attrs;
-  }
+  e_req get_req() const { return req_; }
 
-  t_struct* get_xsd_attrs() {
-    return xsd_attrs_;
-  }
+  bool get_xsd_optional() const { return xsd_optional_; }
+
+  bool get_xsd_nillable() const { return xsd_nillable_; }
+
+  t_struct* get_xsd_attrs() const { return xsd_attrs_; }
 
   std::map<std::string, std::string> annotations_;
 
  private:
   t_type* type_;
   std::string name_;
-  int32_t key_;
-  e_req req_ = T_OPT_IN_REQ_OUT;
-  t_const_value* value_;
+  int32_t key_{0};
+  t_const_value* value_{nullptr};
 
-  bool xsd_optional_;
-  bool xsd_nillable_;
-  t_struct* xsd_attrs_;
+  e_req req_{T_OPT_IN_REQ_OUT};
 
+  bool xsd_optional_{false};
+  bool xsd_nillable_{false};
+  t_struct* xsd_attrs_{nullptr};
 };
 
 /**
@@ -143,5 +124,3 @@ struct t_field_id {
   int64_t value;
   bool auto_assigned;
 };
-
-#endif

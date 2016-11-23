@@ -278,8 +278,13 @@ void t_java_generator::generate_consts(std::vector<t_const*> consts) {
  * is NOT performed in this function as it is always run beforehand using the
  * validate_types method in main.cc
  */
-void t_java_generator::print_const_value(std::ostream& out, string name,
-    t_type* type, t_const_value* value, bool in_static, bool defval) {
+void t_java_generator::print_const_value(
+    std::ostream& out,
+    string name,
+    t_type* type,
+    const t_const_value* value,
+    bool in_static,
+    bool defval) {
   type = get_true_type(type);
 
   indent(out);
@@ -371,8 +376,11 @@ void t_java_generator::print_const_value(std::ostream& out, string name,
   }
 }
 
-string t_java_generator::render_const_value(ostream& out, string /*name*/,
-    t_type* type, t_const_value* value) {
+string t_java_generator::render_const_value(
+    ostream& out,
+    string /* unused */,
+    t_type* type,
+    const t_const_value* value) {
   type = get_true_type(type);
   std::ostringstream render;
   if (type->is_base_type()) {

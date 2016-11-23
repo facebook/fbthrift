@@ -94,7 +94,7 @@ class t_hs_generator : public t_oop_generator {
   void generate_xception(t_struct* txception) override;
   void generate_service(t_service* tservice) override;
 
-  string render_const_value(t_type* type, t_const_value* value);
+  string render_const_value(t_type* type, const t_const_value* value);
 
   /**
    * Struct generation code
@@ -524,7 +524,9 @@ void t_hs_generator::generate_const(t_const* tconst) {
  * is NOT performed in this function as it is always run beforehand using the
  * validate_types method in main.cc
  */
-string t_hs_generator::render_const_value(t_type* type, t_const_value* value) {
+string t_hs_generator::render_const_value(
+    t_type* type,
+    const t_const_value* value) {
   if (value == nullptr)
     return type_to_default(type);
 
@@ -1188,7 +1190,7 @@ void t_hs_generator::generate_hs_default(ofstream& out,
     }
 
     t_type* type = get_true_type(f_iter->get_type());
-    t_const_value* value = f_iter->get_value();
+    const t_const_value* value = f_iter->get_value();
     indent(out) << field_name(name, mname) << " = ";
     if (f_iter->get_req() == t_field::T_OPTIONAL ||
         ((t_type*)f_iter->get_type())->is_xception()) {

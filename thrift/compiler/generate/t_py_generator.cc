@@ -113,7 +113,7 @@ class t_py_generator : public t_concat_generator {
   void generate_xception(t_struct* txception) override;
   void generate_service(t_service* tservice) override;
 
-  std::string render_const_value(t_type* type, t_const_value* value);
+  std::string render_const_value(t_type* type, const t_const_value* value);
 
   /**
    * Struct generation code
@@ -987,7 +987,9 @@ string t_py_generator::render_string(string value) {
  * is NOT performed in this function as it is always run beforehand using the
  * validate_types method in main.cc
  */
-string t_py_generator::render_const_value(t_type* type, t_const_value* value) {
+string t_py_generator::render_const_value(
+    t_type* type,
+    const t_const_value* value) {
   type = get_true_type(type);
   std::ostringstream out;
 

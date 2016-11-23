@@ -103,7 +103,10 @@ public:
   void generate_xception(t_struct* txception) override;
   void generate_service(t_service* tservice) override;
 
-  std::string render_const_value(t_type* type, t_const_value* value, const string& name);
+  std::string render_const_value(
+      t_type* type,
+      const t_const_value* value,
+      const string& name);
 
   /**
    * Struct generation code
@@ -136,9 +139,10 @@ public:
                                  bool is_result = false,
                                  bool uses_countsetfields = false);
   void generate_go_function_helpers(t_function* tfunction);
-  void get_publicized_name_and_def_value(t_field* tfield,
-                                         string* OUT_pub_name,
-                                         t_const_value** OUT_def_value) const;
+  void get_publicized_name_and_def_value(
+      t_field* tfield,
+      string* OUT_pub_name,
+      const t_const_value** OUT_def_value) const;
 
   /**
    * Service-level generation functions
@@ -297,7 +301,7 @@ private:
 // returns true if field initialization can be omitted since it has corresponding go type zero value
 // or default value is not set
 bool t_go_generator::omit_initialization(t_field* tfield) {
-  t_const_value* value = tfield->get_value();
+  const t_const_value* value = tfield->get_value();
   if (!value) {
     return true;
   }
@@ -928,7 +932,10 @@ void t_go_generator::generate_const(t_const* tconst) {
  * is NOT performed in this function as it is always run beforehand using the
  * validate_types method in main.cc
  */
-string t_go_generator::render_const_value(t_type* type, t_const_value* value, const string& name) {
+string t_go_generator::render_const_value(
+    t_type* type,
+    const t_const_value* value,
+    const string& name) {
   type = get_true_type(type);
   std::ostringstream out;
 
@@ -1079,9 +1086,10 @@ void t_go_generator::generate_go_struct(t_struct* tstruct, bool is_exception) {
   generate_go_struct_definition(f_types_, tstruct, is_exception);
 }
 
-void t_go_generator::get_publicized_name_and_def_value(t_field* tfield,
-                                                       string* OUT_pub_name,
-                                                       t_const_value** OUT_def_value) const {
+void t_go_generator::get_publicized_name_and_def_value(
+    t_field* tfield,
+    string* OUT_pub_name,
+    const t_const_value** OUT_def_value) const {
   const string base_field_name = tfield->get_name();
   const string escaped_field_name = escape_string(base_field_name);
   *OUT_pub_name = publicize(escaped_field_name);
@@ -1097,7 +1105,7 @@ void t_go_generator::generate_go_struct_initializer(ofstream& out,
        ++m_iter) {
     bool pointer_field = is_pointer_field(*m_iter);
     string publicized_name;
-    t_const_value* def_value;
+    const t_const_value* def_value;
     get_publicized_name_and_def_value(*m_iter, &publicized_name, &def_value);
     if (!pointer_field && def_value != nullptr &&
         !omit_initialization(*m_iter)) {
@@ -1214,7 +1222,7 @@ void t_go_generator::generate_go_struct_definition(ofstream& out,
   // Default values for optional fields
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     string publicized_name;
-    t_const_value* def_value;
+    const t_const_value* def_value;
     get_publicized_name_and_def_value(*m_iter, &publicized_name, &def_value);
     t_type* fieldType = (*m_iter)->get_type();
     string goType = type_to_go_type_with_opt(fieldType, false);

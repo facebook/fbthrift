@@ -77,16 +77,18 @@ class t_android_lite_generator : public t_java_generator {
                      bool in_init=false,
                      bool skip_generic=false) override;
 
-   void print_const_value(std::ostream& out,
-                                  std::string name,
-                                  t_type* type,
-                                  t_const_value* value,
-                                  bool in_static,
-                                  bool defval=false) override;
-    string render_const_value(ostream& out,
-                              string name,
-                              t_type* type,
-                              t_const_value* value) override;
+    virtual void print_const_value(
+        std::ostream& out,
+        std::string name,
+        t_type* type,
+        const t_const_value* value,
+        bool in_static,
+        bool defval=false) override;
+    string render_const_value(
+        ostream& out,
+        string name,
+        t_type* type,
+        const t_const_value* value) override;
 
     void output_case_statement(t_struct *tstruct);
     void output_property(t_field* tfield, const string parent_name);
@@ -775,8 +777,11 @@ void t_android_lite_generator::generate_consts(vector<t_const*> tconsts) {
   consts_stream.close();
 }
 
-string t_android_lite_generator::render_const_value(ostream& out, string name,
-    t_type *type, t_const_value* value) {
+string t_android_lite_generator::render_const_value(
+    ostream& out,
+    string name,
+    t_type *type,
+    const t_const_value* value) {
   // Everything can be handled by the call to super except enums
   if (!type->is_enum()) {
     return t_java_generator::render_const_value(out, name, type, value);
@@ -786,8 +791,13 @@ string t_android_lite_generator::render_const_value(ostream& out, string name,
   return full_enum_name(tenum, value->get_integer());
 }
 
-void t_android_lite_generator::print_const_value(ostream& out, string name,
-    t_type* type, t_const_value* value, bool in_static, bool defval) {
+void t_android_lite_generator::print_const_value(
+    ostream& out,
+    string name,
+    t_type* type,
+    const t_const_value* value,
+    bool in_static,
+    bool defval) {
   if (!type->is_struct() && !type->is_enum()) {
     t_java_generator::print_const_value(out, name, type, value, in_static,
         defval);
