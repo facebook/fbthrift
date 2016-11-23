@@ -53,6 +53,32 @@ cdef class SimpleException(TException):
         return self.c_SimpleException.get().err_code
 
 
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, SimpleException) and
+                isinstance(other, SimpleException)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cSimpleException cself = deref((<SimpleException>self).c_SimpleException)
+        cdef cSimpleException cother = deref((<SimpleException>other).c_SimpleException)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    def __hash__(SimpleException self):
+        return hash((
+          self.err_code,
+        ))
+
+
+
 cdef class SimpleStruct:
     def __init__(
         self,
@@ -100,6 +126,37 @@ cdef class SimpleStruct:
     @property
     def real(self):
         return self.c_SimpleStruct.get().real
+
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, SimpleStruct) and
+                isinstance(other, SimpleStruct)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cSimpleStruct cself = deref((<SimpleStruct>self).c_SimpleStruct)
+        cdef cSimpleStruct cother = deref((<SimpleStruct>other).c_SimpleStruct)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    def __hash__(SimpleStruct self):
+        return hash((
+          self.is_on,
+          self.tiny_int,
+          self.small_int,
+          self.nice_sized_int,
+          self.big_int,
+          self.real,
+        ))
+
 
 
 cdef class ComplexStruct:
@@ -156,6 +213,36 @@ cdef class ComplexStruct:
         cdef int value = <int> deref(self.c_ComplexStruct).an_enum
         return AnEnum(value)
         
+
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, ComplexStruct) and
+                isinstance(other, ComplexStruct)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cComplexStruct cself = deref((<ComplexStruct>self).c_ComplexStruct)
+        cdef cComplexStruct cother = deref((<ComplexStruct>other).c_ComplexStruct)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    def __hash__(ComplexStruct self):
+        return hash((
+          self.structOne,
+          self.structTwo,
+          self.an_integer,
+          self.name,
+          self.an_enum,
+        ))
+
 
 
 

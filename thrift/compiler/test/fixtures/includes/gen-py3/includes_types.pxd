@@ -21,6 +21,7 @@ from thrift.lib.py3.thrift_server cimport cTException, TException
 cdef extern from "gen-cpp2/includes_types.h" namespace "cpp2":
     cdef cppclass cIncluded "cpp2::Included":
         cIncluded() except +
+        bint operator==(cIncluded&)
         int64_t MyIntField
 
 

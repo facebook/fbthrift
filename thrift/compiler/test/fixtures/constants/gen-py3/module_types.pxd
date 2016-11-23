@@ -39,16 +39,19 @@ cdef cCompany Company_to_cpp(value)
 cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
     cdef cppclass cInternship "cpp2::Internship":
         cInternship() except +
+        bint operator==(cInternship&)
         int32_t weeks
         string title
         cCompany employer
 
     cdef cppclass cUnEnumStruct "cpp2::UnEnumStruct":
         cUnEnumStruct() except +
+        bint operator==(cUnEnumStruct&)
         cCity city
 
     cdef cppclass cRange "cpp2::Range":
         cRange() except +
+        bint operator==(cRange&)
         int32_t min
         int32_t max
 

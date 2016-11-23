@@ -86,6 +86,34 @@ cdef class Internship:
         
 
 
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, Internship) and
+                isinstance(other, Internship)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cInternship cself = deref((<Internship>self).c_Internship)
+        cdef cInternship cother = deref((<Internship>other).c_Internship)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    def __hash__(Internship self):
+        return hash((
+          self.weeks,
+          self.title,
+          self.employer,
+        ))
+
+
+
 cdef class UnEnumStruct:
     def __init__(
         self,
@@ -105,6 +133,32 @@ cdef class UnEnumStruct:
         cdef int value = <int> deref(self.c_UnEnumStruct).city
         return City(value)
         
+
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, UnEnumStruct) and
+                isinstance(other, UnEnumStruct)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cUnEnumStruct cself = deref((<UnEnumStruct>self).c_UnEnumStruct)
+        cdef cUnEnumStruct cother = deref((<UnEnumStruct>other).c_UnEnumStruct)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    def __hash__(UnEnumStruct self):
+        return hash((
+          self.city,
+        ))
+
 
 
 cdef class Range:
@@ -130,6 +184,33 @@ cdef class Range:
     @property
     def max(self):
         return self.c_Range.get().max
+
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, Range) and
+                isinstance(other, Range)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cRange cself = deref((<Range>self).c_Range)
+        cdef cRange cother = deref((<Range>other).c_Range)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    def __hash__(Range self):
+        return hash((
+          self.min,
+          self.max,
+        ))
+
 
 
 

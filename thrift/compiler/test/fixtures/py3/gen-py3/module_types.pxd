@@ -29,10 +29,12 @@ cdef cAnEnum AnEnum_to_cpp(value)
 cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
     cdef cppclass cSimpleException "py3::simple::SimpleException"(cTException):
         cSimpleException() except +
+        bint operator==(cSimpleException&)
         int16_t err_code
 
     cdef cppclass cSimpleStruct "py3::simple::SimpleStruct":
         cSimpleStruct() except +
+        bint operator==(cSimpleStruct&)
         cbool is_on
         int8_t tiny_int
         int16_t small_int
@@ -42,6 +44,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
 
     cdef cppclass cComplexStruct "py3::simple::ComplexStruct":
         cComplexStruct() except +
+        bint operator==(cComplexStruct&)
         cSimpleStruct structOne
         cSimpleStruct structTwo
         int32_t an_integer

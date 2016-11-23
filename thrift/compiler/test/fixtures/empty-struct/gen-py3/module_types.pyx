@@ -33,6 +33,31 @@ cdef class Empty:
         return inst
 
 
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, Empty) and
+                isinstance(other, Empty)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cEmpty cself = deref((<Empty>self).c_Empty)
+        cdef cEmpty cother = deref((<Empty>other).c_Empty)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    def __hash__(Empty self):
+        return hash((
+        ))
+
+
+
 
 
 

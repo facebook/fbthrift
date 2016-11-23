@@ -96,6 +96,34 @@ cdef class {{struct:name}}{{#struct:exception?}}(TException){{/struct:exception?
 
     {{/struct:fields}}
 
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, {{struct:name}}) and
+                isinstance(other, {{struct:name}})):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef c{{struct:name}} cself = deref((<{{struct:name}}>self).c_{{struct:name}})
+        cdef c{{struct:name}} cother = deref((<{{struct:name}}>other).c_{{struct:name}})
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    def __hash__({{struct:name}} self):
+        return hash((
+          {{#struct:fields}}
+          self.{{field:name}},
+          {{/struct:fields}}
+        ))
+
+
+
 {{/program:structs}}
 
 

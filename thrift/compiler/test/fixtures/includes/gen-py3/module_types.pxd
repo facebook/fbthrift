@@ -22,6 +22,7 @@ cimport py3.includes_types
 cdef extern from "gen-cpp2/module_types.h" namespace "cpp2":
     cdef cppclass cMyStruct "cpp2::MyStruct":
         cMyStruct() except +
+        bint operator==(cMyStruct&)
         cIncluded MyIncludedField
 
 

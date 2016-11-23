@@ -61,6 +61,7 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
 {{/first?}}
     cdef cppclass c{{struct:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}"{{#struct:exception?}}(cTException){{/struct:exception?}}:
         c{{struct:name}}() except +
+        bint operator==(c{{struct:name}}&)
     {{#struct:fields}}
         {{#field:type}}{{> CythonStructReferenceType}}{{/field:type}} {{field:name}}
     {{/struct:fields}}

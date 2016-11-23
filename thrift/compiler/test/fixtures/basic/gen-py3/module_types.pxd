@@ -27,6 +27,7 @@ cdef cMyEnum MyEnum_to_cpp(value)
 cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
     cdef cppclass cMyStruct "cpp2::MyStruct":
         cMyStruct() except +
+        bint operator==(cMyStruct&)
         int64_t MyIntField
         string MyStringField
 

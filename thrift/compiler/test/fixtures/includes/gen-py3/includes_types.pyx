@@ -38,6 +38,32 @@ cdef class Included:
         return self.c_Included.get().MyIntField
 
 
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, Included) and
+                isinstance(other, Included)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cIncluded cself = deref((<Included>self).c_Included)
+        cdef cIncluded cother = deref((<Included>other).c_Included)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    def __hash__(Included self):
+        return hash((
+          self.MyIntField,
+        ))
+
+
+
 
 
 

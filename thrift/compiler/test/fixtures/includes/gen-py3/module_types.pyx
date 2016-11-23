@@ -44,6 +44,32 @@ cdef class MyStruct:
         
 
 
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, MyStruct) and
+                isinstance(other, MyStruct)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cMyStruct cself = deref((<MyStruct>self).c_MyStruct)
+        cdef cMyStruct cother = deref((<MyStruct>other).c_MyStruct)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    def __hash__(MyStruct self):
+        return hash((
+          self.MyIncludedField,
+        ))
+
+
+
 
 
 
