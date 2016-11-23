@@ -213,18 +213,6 @@ void failure(const char* fmt, ...) {
   exit(1);
 }
 
-string program_name(string filename) {
-  string::size_type slash = filename.rfind("/");
-  if (slash != string::npos) {
-    filename = filename.substr(slash+1);
-  }
-  string::size_type dot = filename.rfind(".");
-  if (dot != string::npos) {
-    filename = filename.substr(0, dot);
-  }
-  return filename;
-}
-
 string directory_name(string filename) {
   string::size_type slash = filename.rfind("/");
   // No slash, just use the current directory

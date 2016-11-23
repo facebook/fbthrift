@@ -1,20 +1,17 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2016 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 #ifndef T_PROGRAM_H
@@ -22,11 +19,12 @@
 
 #include <map>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include <folly/MapUtil.h>
+#include <folly/String.h>
 
-// For program_name()
 #include <thrift/compiler/main.h>
 
 #include <thrift/compiler/parse/t_doc.h>
@@ -41,9 +39,10 @@
 #include <thrift/compiler/parse/t_map.h>
 #include <thrift/compiler/parse/t_set.h>
 #include <thrift/compiler/parse/t_stream.h>
-//#include <thrift/compiler/parse/t_doc.h>
 
 /**
+ * class t_program
+ *
  * Top level class representing an entire thrift program. A program consists
  * fundamentally of the following:
  *
@@ -55,54 +54,21 @@
  *   Services
  *
  * The program module also contains the definitions of the base types.
- *
  */
 class t_program : public t_doc {
  public:
-  t_program(std::string path, std::string name) :
-    path_(path),
-    name_(name),
-    out_path_("./"),
-    out_path_is_absolute_(false) {
-    scope_ = new t_scope();
-  }
 
+  /**
+   * Constructor for t_program
+   *
+   * @param path - A *.thrift file path.
+   */
   explicit t_program(std::string path) :
-    path_(path),
-    out_path_("./"),
-    out_path_is_absolute_(false) {
-    name_ = program_name(path);
-    scope_ = new t_scope();
-  }
+    path_(std::move(path)) {}
 
-  // Path accessor
-  const std::string& get_path() const { return path_; }
-
-  // Output path accessor
-  const std::string& get_out_path() const { return out_path_; }
-
-  // Create gen-* dir accessor
-  bool is_out_path_absolute() const { return out_path_is_absolute_; }
-
-  // Name accessor
-  const std::string& get_name() const { return name_; }
-
-  // Namespace
-  const std::string& get_namespace() const { return namespace_; }
-
-  // Include prefix accessor
-  const std::string& get_include_prefix() const { return include_prefix_; }
-
-  // Accessors for program elements
-  const std::vector<t_typedef*>& get_typedefs()  const { return typedefs_;  }
-  const std::vector<t_enum*>&    get_enums()     const { return enums_;     }
-  const std::vector<t_const*>&   get_consts()    const { return consts_;    }
-  const std::vector<t_struct*>&  get_structs()   const { return structs_;   }
-  const std::vector<t_struct*>&  get_xceptions() const { return xceptions_; }
-  const std::vector<t_struct*>&  get_objects()   const { return objects_;   }
-  const std::vector<t_service*>& get_services()  const { return services_;  }
-
-  // Program elements
+  /**
+   * Set program elements
+   */
   void add_typedef  (t_typedef* td) { typedefs_.push_back(td);  }
   void add_enum     (t_enum*    te) { enums_.push_back(te);     }
   void add_const    (t_const*   tc) { consts_.push_back(tc);    }
@@ -112,107 +78,109 @@ class t_program : public t_doc {
                                       xceptions_.push_back(tx); }
   void add_service  (t_service* ts) { services_.push_back(ts);  }
 
-  // Programs to include
+  /**
+   * Get program elements
+   */
+  const std::vector<t_typedef*>& get_typedefs()  const { return typedefs_;  }
+  const std::vector<t_enum*>&    get_enums()     const { return enums_;     }
+  const std::vector<t_const*>&   get_consts()    const { return consts_;    }
+  const std::vector<t_struct*>&  get_structs()   const { return structs_;   }
+  const std::vector<t_struct*>&  get_xceptions() const { return xceptions_; }
+  const std::vector<t_struct*>&  get_objects()   const { return objects_;   }
+  const std::vector<t_service*>& get_services()  const { return services_;  }
+
+  /**
+   * t_program setters
+   */
+  void add_cpp_include(std::string path) {
+    cpp_includes_.push_back(std::move(path));
+  }
+
+  // Only used in py_frontend.tcc
+  void set_namespace(std::string name) { namespace_ = std::move(name); }
+
+  /**
+   * Language neutral namespace/packaging
+   *
+   * @param language - The target language (i.e. py, cpp) to generate code
+   * @param name_space - //TODO add definition of name_space
+   */
+  void set_namespace(std::string language, std::string name_space) {
+    namespaces_.emplace(language, name_space);
+  }
+
+  /**
+   * t_program getters
+   */
+  bool is_out_path_absolute() const { return out_path_is_absolute_; }
+
+  const std::string& get_path() const { return path_; }
+
+  const std::string& get_out_path() const { return out_path_; }
+
+  const std::string& get_name() const { return name_; }
+
+  const std::string& get_namespace() const { return namespace_; }
+
+  const std::string& get_include_prefix() const { return include_prefix_; }
+
   const std::vector<t_program*>& get_includes() const { return includes_; }
 
-  void set_out_path(std::string out_path, bool out_path_is_absolute) {
-    out_path_ = out_path;
-    out_path_is_absolute_ = out_path_is_absolute;
-    // Ensure that it ends with a trailing '/' (or '\' for windows machines)
-    char c = out_path_.at(out_path_.size() - 1);
-    if (!(c == '/' || c == '\\')) {
-      out_path_.push_back('/');
-    }
+  // Only used in py_frontend.tcc
+  const std::map<std::string, std::string>& get_namespaces() const {
+    return namespaces_;
   }
 
-  // Scoping and namespacing
-  void set_namespace(std::string name) {
-    namespace_ = name;
+  // Only used in t_cpp_generator
+  const std::vector<std::string>& get_cpp_includes() const {
+    return cpp_includes_;
   }
 
-  // Scope accessor
-  t_scope* scope() const {
-    return scope_;
-  }
-
-  // Includes
-
-  void add_include(std::string path, std::string include_site) {
-    t_program* program = new t_program(path);
-
-    // include prefix for this program is the site at which it was included
-    // (minus the filename)
-    std::string include_prefix;
-    std::string::size_type last_slash = std::string::npos;
-    if ((last_slash = include_site.rfind("/")) != std::string::npos) {
-      include_prefix = include_site.substr(0, last_slash);
-    }
-
-    program->set_include_prefix(include_prefix);
-    includes_.push_back(program);
-  }
-
-  void set_include_prefix(std::string include_prefix) {
-    include_prefix_ = include_prefix;
-
-    // this is intended to be a directory; add a trailing slash if necessary
-    int len = include_prefix_.size();
-    if (len > 0 && include_prefix_[len - 1] != '/') {
-      include_prefix_ += '/';
-    }
-  }
-
-  // Language neutral namespace / packaging
-  void set_namespace(std::string language, std::string name_space) {
-    namespaces_[language] = name_space;
-  }
-
+  /**
+   * @param language - The target language (i.e. py, cpp) to generate code
+   */
   const std::string& get_namespace(const std::string& language) const {
     static const auto& kEmpty = *new std::string();
     return folly::get_ref_default(namespaces_, language, kEmpty);
   }
 
-  const std::map<std::string, std::string>& get_namespaces() const {
-    return namespaces_;
-  }
+  t_scope* scope() const { return scope_; }
 
-  // Language specific namespace / packaging
+  /**
+   * Correct and set any file path to the correct output path format
+   *
+   * @param out_path             - The output folder for the autogenerated code
+   * @param out_path_is_absolute - Determines if out_path is an absolute path
+   */
+  void set_out_path(std::string out_path, bool out_path_is_absolute);
 
-  void add_cpp_include(std::string path) {
-    cpp_includes_.push_back(path);
-  }
+  /**
+   * //TODO add short description
+   *
+   * @param path         - A *.thrift file path
+   * @param include_site - //TODO: Add description of include_site
+   */
+  void add_include(std::string path, std::string include_site);
 
-  const std::vector<std::string>& get_cpp_includes() const {
-    return cpp_includes_;
-  }
+  /**
+   * //TODO add short description
+   *
+   * @param include_prefix - //TODO: Add description of include_prefix
+   */
+  void set_include_prefix(std::string include_prefix);
 
  private:
 
-  // File path
-  std::string path_;
+  /**
+   *  Obtains the name of a thrift file from the full file path
+   *
+   * @param path - A *.thrift file path
+   */
+  std::string compute_name_from_file_path(std::string path);
 
-  // Name
-  std::string name_;
-
-  // Output directory
-  std::string out_path_;
-
-  // Output directory is absolute location for generated source (no gen-*)
-  bool out_path_is_absolute_;
-
-  // Namespace
-  std::string namespace_;
-
-  // Included programs
-  std::vector<t_program*> includes_;
-
-  // Include prefix for this program, if any
-  std::string include_prefix_;
-
-  // Identifier lookup scope
-  t_scope* scope_;
-
-  // Components to generate code for
+  /**
+   * Components to generate code for
+   */
   std::vector<t_typedef*> typedefs_;
   std::vector<t_enum*>    enums_;
   std::vector<t_const*>   consts_;
@@ -221,12 +189,16 @@ class t_program : public t_doc {
   std::vector<t_struct*>  xceptions_;
   std::vector<t_service*> services_;
 
-  // Dynamic namespaces
+  bool out_path_is_absolute_{false};
+  std::string path_; // initialized in ctor init-list
+  std::string name_{compute_name_from_file_path(path_)};
+  std::string out_path_{"./"};
+  std::string namespace_;
+  std::vector<t_program*> includes_;
+  std::string include_prefix_;
   std::map<std::string, std::string> namespaces_;
-
-  // C++ extra includes
   std::vector<std::string> cpp_includes_;
-
+  t_scope* scope_{new t_scope()};
 };
 
-#endif
+#endif // T_PROGRAM_H

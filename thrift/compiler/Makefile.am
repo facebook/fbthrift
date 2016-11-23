@@ -35,7 +35,8 @@ libthriftcompilerbase_la_SOURCES = \
         common.cc \
         parse/t_type.cc \
         parse/t_service.cc \
-        parse/t_typedef.cc
+        parse/t_typedef.cc \
+        parse/t_program.cc
 
 libthriftcompilerbase_la_LDFLAGS = -lcrypto
 

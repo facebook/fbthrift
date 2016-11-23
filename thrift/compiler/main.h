@@ -73,11 +73,6 @@ void validate_field_value(t_field* field, t_const_value* cv);
 bool validate_throws(t_struct* throws);
 
 /**
- * Converts a string filename into a thrift program name
- */
-std::string program_name(std::string filename);
-
-/**
  * Gets the directory path of a filename
  */
 std::string directory_name(std::string filename);

@@ -131,11 +131,6 @@ void pwarning(int level, const char* fmt, ...);
 void failure(const char* fmt, ...);
 
 /**
- * Converts a string filename into a thrift program name
- */
-string program_name(string filename);
-
-/**
  * Gets the directory path of a filename
  */
 string directory_name(string filename);
