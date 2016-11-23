@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2016 Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,26 @@
  * limitations under the License.
  */
 
-#ifndef T_TYPE_H
-#define T_TYPE_H
+#pragma once
 
-#include <string>
-#include <map>
 #include <cstring>
 #include <stdint.h>
+#include <map>
+#include <string>
 #include <sstream>
-#include <thrift/compiler/parse/t_doc.h>
 
 #include <folly/Bits.h>
 
+#include <thrift/compiler/parse/t_doc.h>
+
 class t_program;
 
+/*
+ * All the thrift supported types
+ *
+ * @kTypeBits - TODO: add description
+ * @kTypeMask - TODO: add description
+ */
 struct t_types {
   enum TypeValue {
     TYPE_VOID,
@@ -54,6 +60,8 @@ struct t_types {
 };
 
 /**
+ * class t_type
+ *
  * Generic representation of a thrift type. These objects are used by the
  * parser module to build up a tree of object that are all explicitly typed.
  * The generic t_type class exports a variety of useful methods that are
@@ -63,14 +71,24 @@ struct t_types {
  */
 class t_type : public t_doc {
  public:
+
+  /**
+   * Simplify access to thrift's TypeValues
+   */
   using TypeValue = t_types::TypeValue;
 
   virtual ~t_type() {}
 
+  /**
+   * t_type abstract methods
+   */
   virtual std::string get_full_name() const = 0;
   virtual std::string get_impl_full_name() const = 0;
   virtual TypeValue get_type_value() const = 0;
 
+  /**
+   * Default returns for every thrift type
+   */
   virtual bool is_void()           const { return false; }
   virtual bool is_base_type()      const { return false; }
   virtual bool is_string()         const { return false; }
@@ -94,46 +112,76 @@ class t_type : public t_doc {
   virtual bool is_service()        const { return false; }
   virtual bool is_binary()         const { return false; }
 
+  /**
+   * TODO: Add a description of the function
+   */
   virtual uint64_t get_type_id() const;
 
-  // Setters
+  /**
+   * t_type setters
+   */
   virtual void set_name(const std::string& name) { name_ = name; }
 
-  // Getters
+  /**
+   * t_type setters
+   */
   const t_program* get_program() const { return program_; }
   const std::string& get_name() const { return name_; }
 
   std::map<std::string, std::string> annotations_;
 
  protected:
-  t_type() : program_(nullptr) {}
 
+  /**
+   * Default constructor for t_type
+   *
+   * A t_type object can't be initialized by itself. The constructors
+   * are protected and only t_type's children can initialize it.
+   */
+  t_type() {}
+
+  /**
+   * Constructor for t_type
+   *
+   * @param program - An entire thrift program
+   */
   explicit t_type(t_program* program) : program_(program) {}
 
+  /**
+   * Constructor for t_type
+   *
+   * @param name - The symbolic name of the thrift type
+   */
+  explicit t_type(std::string name) : name_(std::move(name)) {}
+
+  /**
+   * Constructor for t_type
+   *
+   * @param program - An entire thrift program
+   * @param name    - The symbolic name of the thrift type
+   */
   t_type(t_program* program, std::string name) :
     program_(program),
     name_(std::move(name)) {}
 
-  explicit t_type(std::string name) :
-    program_(nullptr),
-    name_(std::move(name)) {}
-
+  /**
+   * Returns a string in the format "prefix program_name.type_name"
+   *
+   * @param prefix - A string to add before the program name / type name
+   */
   std::string make_full_name(const char* prefix) const;
 
-  t_program* program_;
+  t_program* program_{nullptr};
   std::string name_;
 };
 
 
-/**
- * Placeholder struct for returning the key and value of an annotation
- * during parsing.
- */
+// Placeholder struct to return key and value of an annotation during parsing.
 struct t_annotation {
   std::string key;
   std::string val;
 };
 
+// TODO: Add a description of the function
 void override_annotations(std::map<std::string, std::string>& where,
                           const std::map<std::string, std::string>& from);
-#endif
