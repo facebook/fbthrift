@@ -131,7 +131,8 @@ uint32_t TCompactProtocolT<Transport_>::writeFieldStop() {
  * stack so we can get the field id deltas correct.
  */
 template <class Transport_>
-uint32_t TCompactProtocolT<Transport_>::writeStructBegin(const char* name) {
+uint32_t TCompactProtocolT<Transport_>::writeStructBegin(
+    const char* /* name */) {
   lastField_.push(lastFieldId_);
   lastFieldId_ = 0;
   return 0;
@@ -311,7 +312,7 @@ uint32_t TCompactProtocolT<Transport_>::writeBinary(const String_& str) {
  */
 template <class Transport_>
 int32_t TCompactProtocolT<Transport_>::writeFieldBeginInternal(
-    const char* name,
+    const char* /* name */,
     const TType fieldType,
     const int16_t fieldId,
     int8_t typeOverride) {
@@ -462,9 +463,10 @@ uint32_t TCompactProtocolT<Transport_>::readStructEnd() {
  * Read a field header off the wire.
  */
 template <class Transport_>
-uint32_t TCompactProtocolT<Transport_>::readFieldBegin(std::string& name,
-                                                       TType& fieldType,
-                                                       int16_t& fieldId) {
+uint32_t TCompactProtocolT<Transport_>::readFieldBegin(
+    std::string& /* name */,
+    TType& fieldType,
+    int16_t& fieldId) {
   uint32_t rsize = 0;
   int8_t byte;
   int8_t type;
