@@ -109,19 +109,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::In
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Included>::write(Protocol* proto,  ::cpp2::Included const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Included>::write(Protocol* proto,  ::cpp2::Included const* obj) {
   return obj->write(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Included>::read(Protocol* proto,  ::cpp2::Included* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Included>::read(Protocol* proto,  ::cpp2::Included* obj) {
   return obj->read(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Included>::serializedSize(Protocol const* proto,  ::cpp2::Included const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Included>::serializedSize(Protocol const* proto,  ::cpp2::Included const* obj) {
   return obj->serializedSize(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Included>::serializedSizeZC(Protocol const* proto,  ::cpp2::Included const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Included>::serializedSizeZC(Protocol const* proto,  ::cpp2::Included const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

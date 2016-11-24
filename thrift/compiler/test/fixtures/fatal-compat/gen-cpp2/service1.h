@@ -438,19 +438,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method1_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method1_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method1_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method1_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method1_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method1_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method1_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method1_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method1_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method1_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method1_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method1_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method1_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method1_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method1_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method1_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method1_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method1_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method1_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method1_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -458,19 +458,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method1_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method1_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method1_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method1_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method1_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method1_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method1_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method1_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method1_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method1_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method1_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method1_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method1_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method1_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method1_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method1_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method1_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method1_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method1_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method1_presult_serializedSizeZC(proto, obj);
 }
 
@@ -478,19 +478,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method2_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method2_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method2_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method2_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method2_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method2_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method2_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method2_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method2_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method2_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method2_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method2_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method2_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method2_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method2_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method2_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method2_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method2_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method2_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method2_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -498,19 +498,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method2_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method2_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method2_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method2_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method2_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method2_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method2_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method2_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method2_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method2_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method2_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method2_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method2_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method2_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method2_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method2_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method2_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method2_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method2_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method2_presult_serializedSizeZC(proto, obj);
 }
 
@@ -518,19 +518,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method3_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method3_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method3_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method3_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method3_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method3_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method3_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method3_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method3_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method3_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method3_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method3_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method3_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method3_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method3_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method3_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method3_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method3_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method3_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method3_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -538,19 +538,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method3_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method3_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method3_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method3_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method3_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method3_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method3_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method3_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method3_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method3_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method3_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method3_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method3_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method3_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method3_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method3_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method3_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method3_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method3_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method3_presult_serializedSizeZC(proto, obj);
 }
 
@@ -558,19 +558,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method4_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method4_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method4_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method4_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method4_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method4_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method4_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method4_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method4_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method4_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method4_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method4_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method4_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method4_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method4_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method4_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method4_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method4_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method4_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method4_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -578,19 +578,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method4_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method4_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method4_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method4_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method4_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method4_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method4_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method4_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method4_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method4_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method4_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method4_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method4_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method4_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method4_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method4_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method4_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method4_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method4_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method4_presult_serializedSizeZC(proto, obj);
 }
 
@@ -598,19 +598,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method5_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method5_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method5_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method5_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method5_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method5_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method5_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method5_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method5_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method5_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method5_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method5_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method5_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method5_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method5_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method5_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method5_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method5_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method5_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method5_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -618,19 +618,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method5_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method5_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method5_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method5_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method5_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method5_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method5_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method5_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method5_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method5_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method5_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method5_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method5_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method5_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method5_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method5_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method5_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method5_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method5_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method5_presult_serializedSizeZC(proto, obj);
 }
 
@@ -638,19 +638,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method6_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method6_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method6_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method6_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method6_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method6_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method6_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method6_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method6_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method6_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method6_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method6_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method6_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method6_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method6_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method6_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method6_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method6_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method6_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method6_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -658,19 +658,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method6_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method6_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method6_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method6_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method6_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method6_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method6_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method6_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service1_method6_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method6_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method6_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method6_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method6_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method6_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method6_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method6_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method6_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service1_method6_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service1_method6_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service1_method6_presult_serializedSizeZC(proto, obj);
 }
 

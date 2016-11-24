@@ -4062,7 +4062,7 @@ class CppGenerator(t_generator.Generator):
             obj_const = ' const' if obj_is_const else ''
             prt_const = ' const' if prt_is_const else ''
             with scope.defn(
-                ('template <> template <class Protocol> inline '
+                ('template <> template <class Protocol> '
                  'uint32_t Cpp2Ops<{compat_full_name}>::{method}('
                  'Protocol{prt_const}* proto, {full_name}{obj_const}* obj)'.
                  format(**locals())), name=method, in_header=True):

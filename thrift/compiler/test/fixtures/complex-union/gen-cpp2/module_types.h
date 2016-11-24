@@ -480,19 +480,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::Co
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::ComplexUnion>::write(Protocol* proto,  ::cpp2::ComplexUnion const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::ComplexUnion>::write(Protocol* proto,  ::cpp2::ComplexUnion const* obj) {
   return obj->write(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::ComplexUnion>::read(Protocol* proto,  ::cpp2::ComplexUnion* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::ComplexUnion>::read(Protocol* proto,  ::cpp2::ComplexUnion* obj) {
   return obj->read(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::ComplexUnion>::serializedSize(Protocol const* proto,  ::cpp2::ComplexUnion const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::ComplexUnion>::serializedSize(Protocol const* proto,  ::cpp2::ComplexUnion const* obj) {
   return obj->serializedSize(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::ComplexUnion>::serializedSizeZC(Protocol const* proto,  ::cpp2::ComplexUnion const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::ComplexUnion>::serializedSizeZC(Protocol const* proto,  ::cpp2::ComplexUnion const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

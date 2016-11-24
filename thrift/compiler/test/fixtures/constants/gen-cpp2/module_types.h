@@ -244,19 +244,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::In
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Internship>::write(Protocol* proto,  ::cpp2::Internship const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Internship>::write(Protocol* proto,  ::cpp2::Internship const* obj) {
   return obj->write(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Internship>::read(Protocol* proto,  ::cpp2::Internship* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Internship>::read(Protocol* proto,  ::cpp2::Internship* obj) {
   return obj->read(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Internship>::serializedSize(Protocol const* proto,  ::cpp2::Internship const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Internship>::serializedSize(Protocol const* proto,  ::cpp2::Internship const* obj) {
   return obj->serializedSize(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Internship>::serializedSizeZC(Protocol const* proto,  ::cpp2::Internship const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Internship>::serializedSizeZC(Protocol const* proto,  ::cpp2::Internship const* obj) {
   return obj->serializedSizeZC(proto);
 }
 
@@ -352,19 +352,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::Un
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::UnEnumStruct>::write(Protocol* proto,  ::cpp2::UnEnumStruct const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::UnEnumStruct>::write(Protocol* proto,  ::cpp2::UnEnumStruct const* obj) {
   return obj->write(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::UnEnumStruct>::read(Protocol* proto,  ::cpp2::UnEnumStruct* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::UnEnumStruct>::read(Protocol* proto,  ::cpp2::UnEnumStruct* obj) {
   return obj->read(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::UnEnumStruct>::serializedSize(Protocol const* proto,  ::cpp2::UnEnumStruct const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::UnEnumStruct>::serializedSize(Protocol const* proto,  ::cpp2::UnEnumStruct const* obj) {
   return obj->serializedSize(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::UnEnumStruct>::serializedSizeZC(Protocol const* proto,  ::cpp2::UnEnumStruct const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::UnEnumStruct>::serializedSizeZC(Protocol const* proto,  ::cpp2::UnEnumStruct const* obj) {
   return obj->serializedSizeZC(proto);
 }
 
@@ -469,19 +469,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::Ra
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Range>::write(Protocol* proto,  ::cpp2::Range const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Range>::write(Protocol* proto,  ::cpp2::Range const* obj) {
   return obj->write(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Range>::read(Protocol* proto,  ::cpp2::Range* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Range>::read(Protocol* proto,  ::cpp2::Range* obj) {
   return obj->read(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Range>::serializedSize(Protocol const* proto,  ::cpp2::Range const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Range>::serializedSize(Protocol const* proto,  ::cpp2::Range const* obj) {
   return obj->serializedSize(proto);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::cpp2::Range>::serializedSizeZC(Protocol const* proto,  ::cpp2::Range const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Range>::serializedSizeZC(Protocol const* proto,  ::cpp2::Range const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

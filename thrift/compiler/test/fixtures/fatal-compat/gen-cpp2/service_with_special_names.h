@@ -1518,19 +1518,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_get_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_get_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_get_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_get_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_get_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_get_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_get_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_get_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_get_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_get_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_get_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_get_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_get_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_get_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_get_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_get_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_get_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_get_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_get_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_get_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -1538,19 +1538,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_get_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_get_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_get_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_get_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_get_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_get_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_get_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_get_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_get_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_get_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_get_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_get_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_get_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_get_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_get_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_get_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_get_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_get_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_get_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_get_presult_serializedSizeZC(proto, obj);
 }
 
@@ -1558,19 +1558,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_getter_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_getter_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_getter_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_getter_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_getter_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_getter_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_getter_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_getter_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_getter_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_getter_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_getter_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_getter_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_getter_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_getter_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_getter_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_getter_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_getter_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_getter_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_getter_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_getter_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -1578,19 +1578,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_getter_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_getter_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_getter_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_getter_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_getter_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_getter_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_getter_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_getter_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_getter_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_getter_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_getter_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_getter_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_getter_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_getter_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_getter_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_getter_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_getter_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_getter_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_getter_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_getter_presult_serializedSizeZC(proto, obj);
 }
 
@@ -1598,19 +1598,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_lists_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_lists_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_lists_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_lists_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_lists_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_lists_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_lists_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_lists_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_lists_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_lists_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_lists_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_lists_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_lists_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_lists_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_lists_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_lists_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_lists_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_lists_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_lists_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_lists_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -1618,19 +1618,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_lists_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_lists_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_lists_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_lists_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_lists_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_lists_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_lists_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_lists_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_lists_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_lists_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_lists_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_lists_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_lists_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_lists_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_lists_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_lists_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_lists_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_lists_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_lists_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_lists_presult_serializedSizeZC(proto, obj);
 }
 
@@ -1638,19 +1638,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_maps_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_maps_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_maps_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_maps_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_maps_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_maps_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_maps_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_maps_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_maps_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_maps_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_maps_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_maps_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_maps_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_maps_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_maps_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_maps_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_maps_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_maps_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_maps_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_maps_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -1658,19 +1658,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_maps_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_maps_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_maps_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_maps_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_maps_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_maps_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_maps_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_maps_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_maps_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_maps_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_maps_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_maps_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_maps_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_maps_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_maps_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_maps_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_maps_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_maps_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_maps_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_maps_presult_serializedSizeZC(proto, obj);
 }
 
@@ -1678,19 +1678,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_name_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_name_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_name_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_name_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -1698,19 +1698,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_name_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_name_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_name_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_name_presult_serializedSizeZC(proto, obj);
 }
 
@@ -1718,19 +1718,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_to_value_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_to_value_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_to_value_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_to_value_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_to_value_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_to_value_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_to_value_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_to_value_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -1738,19 +1738,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_to_value_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_to_value_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_to_value_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_to_value_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_to_value_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_to_value_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_to_value_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_name_to_value_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_name_to_value_presult_serializedSizeZC(proto, obj);
 }
 
@@ -1758,19 +1758,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_names_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_names_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_names_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_names_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_names_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_names_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_names_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_names_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_names_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_names_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_names_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_names_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_names_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_names_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_names_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_names_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_names_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_names_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_names_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_names_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -1778,19 +1778,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_names_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_names_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_names_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_names_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_names_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_names_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_names_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_names_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_names_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_names_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_names_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_names_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_names_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_names_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_names_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_names_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_names_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_names_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_names_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_names_presult_serializedSizeZC(proto, obj);
 }
 
@@ -1798,19 +1798,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_prefix_tree_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_prefix_tree_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_prefix_tree_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_prefix_tree_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_prefix_tree_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_prefix_tree_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_prefix_tree_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_prefix_tree_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -1818,19 +1818,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_prefix_tree_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_prefix_tree_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_prefix_tree_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_prefix_tree_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_prefix_tree_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_prefix_tree_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_prefix_tree_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_prefix_tree_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_prefix_tree_presult_serializedSizeZC(proto, obj);
 }
 
@@ -1838,19 +1838,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_sets_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_sets_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_sets_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_sets_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_sets_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_sets_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_sets_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_sets_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_sets_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_sets_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_sets_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_sets_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_sets_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_sets_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_sets_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_sets_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_sets_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_sets_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_sets_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_sets_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -1858,19 +1858,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_sets_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_sets_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_sets_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_sets_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_sets_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_sets_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_sets_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_sets_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_sets_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_sets_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_sets_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_sets_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_sets_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_sets_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_sets_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_sets_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_sets_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_sets_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_sets_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_sets_presult_serializedSizeZC(proto, obj);
 }
 
@@ -1878,19 +1878,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_setter_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_setter_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_setter_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_setter_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_setter_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_setter_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_setter_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_setter_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_setter_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_setter_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_setter_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_setter_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_setter_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_setter_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_setter_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_setter_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_setter_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_setter_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_setter_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_setter_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -1898,19 +1898,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_setter_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_setter_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_setter_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_setter_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_setter_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_setter_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_setter_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_setter_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_setter_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_setter_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_setter_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_setter_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_setter_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_setter_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_setter_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_setter_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_setter_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_setter_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_setter_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_setter_presult_serializedSizeZC(proto, obj);
 }
 
@@ -1918,19 +1918,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_str_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_str_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_str_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_str_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_str_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_str_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_str_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_str_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_str_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_str_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_str_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_str_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_str_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_str_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_str_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_str_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_str_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_str_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_str_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_str_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -1938,19 +1938,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_str_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_str_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_str_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_str_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_str_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_str_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_str_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_str_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_str_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_str_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_str_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_str_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_str_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_str_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_str_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_str_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_str_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_str_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_str_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_str_presult_serializedSizeZC(proto, obj);
 }
 
@@ -1958,19 +1958,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_strings_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_strings_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_strings_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_strings_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_strings_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_strings_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_strings_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_strings_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_strings_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_strings_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_strings_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_strings_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_strings_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_strings_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_strings_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_strings_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_strings_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_strings_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_strings_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_strings_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -1978,19 +1978,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_strings_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_strings_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_strings_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_strings_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_strings_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_strings_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_strings_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_strings_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_strings_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_strings_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_strings_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_strings_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_strings_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_strings_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_strings_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_strings_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_strings_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_strings_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_strings_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_strings_presult_serializedSizeZC(proto, obj);
 }
 
@@ -1998,19 +1998,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_type_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_type_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_type_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_type_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_type_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_type_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_type_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_type_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_type_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_type_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_type_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_type_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_type_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_type_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_type_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_type_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_type_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_type_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_type_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_type_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -2018,19 +2018,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_type_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_type_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_type_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_type_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_type_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_type_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_type_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_type_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_type_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_type_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_type_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_type_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_type_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_type_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_type_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_type_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_type_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_type_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_type_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_type_presult_serializedSizeZC(proto, obj);
 }
 
@@ -2038,19 +2038,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_value_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_value_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_value_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_value_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -2058,19 +2058,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_value_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_value_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_value_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_value_presult_serializedSizeZC(proto, obj);
 }
 
@@ -2078,19 +2078,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_to_name_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_to_name_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_to_name_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_to_name_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_to_name_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_to_name_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_to_name_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_to_name_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -2098,19 +2098,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_to_name_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_to_name_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_to_name_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_to_name_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_to_name_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_to_name_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_to_name_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_value_to_name_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_value_to_name_presult_serializedSizeZC(proto, obj);
 }
 
@@ -2118,19 +2118,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_values_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_values_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_values_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_values_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_values_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_values_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_values_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_values_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_values_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_values_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_values_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_values_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_values_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_values_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_values_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_values_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_values_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_values_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_values_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_values_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -2138,19 +2138,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_values_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_values_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_values_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_values_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_values_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_values_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_values_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_values_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_values_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_values_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_values_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_values_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_values_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_values_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_values_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_values_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_values_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_values_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_values_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_values_presult_serializedSizeZC(proto, obj);
 }
 
@@ -2158,19 +2158,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_id_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_id_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_id_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_id_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_id_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_id_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_id_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_id_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_id_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_id_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_id_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_id_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_id_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_id_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_id_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_id_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_id_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_id_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_id_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_id_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -2178,19 +2178,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_id_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_id_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_id_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_id_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_id_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_id_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_id_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_id_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_id_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_id_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_id_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_id_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_id_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_id_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_id_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_id_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_id_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_id_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_id_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_id_presult_serializedSizeZC(proto, obj);
 }
 
@@ -2198,19 +2198,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_ids_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_ids_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_ids_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_ids_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_ids_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_ids_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_ids_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_ids_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_ids_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_ids_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_ids_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_ids_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_ids_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_ids_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_ids_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_ids_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_ids_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_ids_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_ids_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_ids_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -2218,19 +2218,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_ids_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_ids_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_ids_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_ids_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_ids_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_ids_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_ids_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_ids_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_ids_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_ids_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_ids_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_ids_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_ids_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_ids_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_ids_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_ids_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_ids_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_ids_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_ids_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_ids_presult_serializedSizeZC(proto, obj);
 }
 
@@ -2238,19 +2238,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptor_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptor_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptor_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptor_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptor_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptor_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptor_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptor_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -2258,19 +2258,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptor_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptor_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptor_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptor_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptor_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptor_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptor_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptor_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_descriptor_presult_serializedSizeZC(proto, obj);
 }
 
@@ -2278,19 +2278,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptors_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptors_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptors_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptors_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptors_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptors_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptors_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptors_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -2298,19 +2298,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptors_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptors_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptors_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptors_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptors_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptors_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptors_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_descriptors_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_descriptors_presult_serializedSizeZC(proto, obj);
 }
 
@@ -2318,19 +2318,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_key_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_key_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_key_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_key_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_key_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_key_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_key_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_key_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_key_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_key_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_key_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_key_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_key_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_key_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_key_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_key_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_key_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_key_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_key_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_key_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -2338,19 +2338,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_key_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_key_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_key_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_key_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_key_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_key_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_key_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_key_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_key_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_key_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_key_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_key_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_key_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_key_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_key_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_key_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_key_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_key_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_key_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_key_presult_serializedSizeZC(proto, obj);
 }
 
@@ -2358,19 +2358,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_keys_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_keys_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_keys_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_keys_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_keys_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_keys_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_keys_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_keys_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_keys_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_keys_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_keys_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_keys_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_keys_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_keys_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_keys_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_keys_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_keys_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_keys_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_keys_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_keys_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -2378,19 +2378,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_keys_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_keys_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_keys_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_keys_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_keys_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_keys_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_keys_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_keys_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_keys_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_keys_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_keys_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_keys_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_keys_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_keys_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_keys_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_keys_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_keys_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_keys_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_keys_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_keys_presult_serializedSizeZC(proto, obj);
 }
 
@@ -2398,19 +2398,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotation_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotation_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotation_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotation_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotation_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotation_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotation_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotation_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -2418,19 +2418,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotation_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotation_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotation_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotation_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotation_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotation_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotation_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotation_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_annotation_presult_serializedSizeZC(proto, obj);
 }
 
@@ -2438,19 +2438,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotations_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotations_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotations_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotations_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotations_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotations_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotations_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotations_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -2458,19 +2458,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotations_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotations_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotations_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotations_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotations_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotations_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotations_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_annotations_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_annotations_presult_serializedSizeZC(proto, obj);
 }
 
@@ -2478,19 +2478,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_member_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_member_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_member_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_member_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_member_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_member_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_member_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_member_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_member_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_member_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_member_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_member_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_member_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_member_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_member_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_member_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_member_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_member_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_member_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_member_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -2498,19 +2498,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_member_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_member_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_member_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_member_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_member_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_member_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_member_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_member_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_member_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_member_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_member_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_member_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_member_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_member_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_member_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_member_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_member_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_member_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_member_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_member_presult_serializedSizeZC(proto, obj);
 }
 
@@ -2518,19 +2518,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_members_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_members_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_members_pargs>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_members_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_members_pargs_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_members_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_members_pargs* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_members_pargs>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_members_pargs* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_members_pargs_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_members_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_members_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_members_pargs>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_members_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_members_pargs_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_members_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_members_pargs const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_members_pargs>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_members_pargs const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_members_pargs_serializedSizeZC(proto, obj);
 }
 
@@ -2538,19 +2538,19 @@ template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_members_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_members_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_members_presult>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_members_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_members_presult_write(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_members_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_members_presult* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_members_presult>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_members_presult* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_members_presult_read(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_members_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_members_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_members_presult>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_members_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_members_presult_serializedSize(proto, obj);
 }
 
-template <> template <class Protocol> inline uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_members_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_members_presult const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp1::cpp_reflection::service_with_special_names_members_presult>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::service_with_special_names_members_presult const* obj) {
   return  ::test_cpp2::cpp_reflection::service_with_special_names_members_presult_serializedSizeZC(proto, obj);
 }
 
