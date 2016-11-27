@@ -18,6 +18,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 uint32_t service_with_special_names_get_pargs_read(Protocol_* iprot, service_with_special_names_get_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -50,6 +51,7 @@ uint32_t service_with_special_names_get_pargs_read(Protocol_* iprot, service_wit
 
 template <class Protocol_>
 uint32_t service_with_special_names_get_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_get_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_get_pargs");
   xfer += prot_->serializedSizeStop();
@@ -58,6 +60,7 @@ uint32_t service_with_special_names_get_pargs_serializedSize(Protocol_ const* pr
 
 template <class Protocol_>
 uint32_t service_with_special_names_get_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_get_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_get_pargs");
   xfer += prot_->serializedSizeStop();
@@ -66,6 +69,7 @@ uint32_t service_with_special_names_get_pargs_serializedSizeZC(Protocol_ const* 
 
 template <class Protocol_>
 uint32_t service_with_special_names_get_pargs_write(Protocol_* prot_, const service_with_special_names_get_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_get_pargs");
   xfer += prot_->writeFieldStop();
@@ -75,6 +79,7 @@ uint32_t service_with_special_names_get_pargs_write(Protocol_* prot_, const serv
 
 template <class Protocol_>
 uint32_t service_with_special_names_get_presult_read(Protocol_* iprot, service_with_special_names_get_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -122,6 +127,7 @@ uint32_t service_with_special_names_get_presult_read(Protocol_* iprot, service_w
 
 template <class Protocol_>
 uint32_t service_with_special_names_get_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_get_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_get_presult");
   if (obj->__isset.success) {
@@ -134,6 +140,7 @@ uint32_t service_with_special_names_get_presult_serializedSize(Protocol_ const* 
 
 template <class Protocol_>
 uint32_t service_with_special_names_get_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_get_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_get_presult");
   if (obj->__isset.success) {
@@ -146,6 +153,7 @@ uint32_t service_with_special_names_get_presult_serializedSizeZC(Protocol_ const
 
 template <class Protocol_>
 uint32_t service_with_special_names_get_presult_write(Protocol_* prot_, const service_with_special_names_get_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_get_presult");
   if (obj->__isset.success) {
@@ -160,6 +168,7 @@ uint32_t service_with_special_names_get_presult_write(Protocol_* prot_, const se
 
 template <class Protocol_>
 uint32_t service_with_special_names_getter_pargs_read(Protocol_* iprot, service_with_special_names_getter_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -192,6 +201,7 @@ uint32_t service_with_special_names_getter_pargs_read(Protocol_* iprot, service_
 
 template <class Protocol_>
 uint32_t service_with_special_names_getter_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_getter_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_getter_pargs");
   xfer += prot_->serializedSizeStop();
@@ -200,6 +210,7 @@ uint32_t service_with_special_names_getter_pargs_serializedSize(Protocol_ const*
 
 template <class Protocol_>
 uint32_t service_with_special_names_getter_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_getter_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_getter_pargs");
   xfer += prot_->serializedSizeStop();
@@ -208,6 +219,7 @@ uint32_t service_with_special_names_getter_pargs_serializedSizeZC(Protocol_ cons
 
 template <class Protocol_>
 uint32_t service_with_special_names_getter_pargs_write(Protocol_* prot_, const service_with_special_names_getter_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_getter_pargs");
   xfer += prot_->writeFieldStop();
@@ -217,6 +229,7 @@ uint32_t service_with_special_names_getter_pargs_write(Protocol_* prot_, const s
 
 template <class Protocol_>
 uint32_t service_with_special_names_getter_presult_read(Protocol_* iprot, service_with_special_names_getter_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -264,6 +277,7 @@ uint32_t service_with_special_names_getter_presult_read(Protocol_* iprot, servic
 
 template <class Protocol_>
 uint32_t service_with_special_names_getter_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_getter_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_getter_presult");
   if (obj->__isset.success) {
@@ -276,6 +290,7 @@ uint32_t service_with_special_names_getter_presult_serializedSize(Protocol_ cons
 
 template <class Protocol_>
 uint32_t service_with_special_names_getter_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_getter_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_getter_presult");
   if (obj->__isset.success) {
@@ -288,6 +303,7 @@ uint32_t service_with_special_names_getter_presult_serializedSizeZC(Protocol_ co
 
 template <class Protocol_>
 uint32_t service_with_special_names_getter_presult_write(Protocol_* prot_, const service_with_special_names_getter_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_getter_presult");
   if (obj->__isset.success) {
@@ -302,6 +318,7 @@ uint32_t service_with_special_names_getter_presult_write(Protocol_* prot_, const
 
 template <class Protocol_>
 uint32_t service_with_special_names_lists_pargs_read(Protocol_* iprot, service_with_special_names_lists_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -334,6 +351,7 @@ uint32_t service_with_special_names_lists_pargs_read(Protocol_* iprot, service_w
 
 template <class Protocol_>
 uint32_t service_with_special_names_lists_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_lists_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_lists_pargs");
   xfer += prot_->serializedSizeStop();
@@ -342,6 +360,7 @@ uint32_t service_with_special_names_lists_pargs_serializedSize(Protocol_ const* 
 
 template <class Protocol_>
 uint32_t service_with_special_names_lists_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_lists_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_lists_pargs");
   xfer += prot_->serializedSizeStop();
@@ -350,6 +369,7 @@ uint32_t service_with_special_names_lists_pargs_serializedSizeZC(Protocol_ const
 
 template <class Protocol_>
 uint32_t service_with_special_names_lists_pargs_write(Protocol_* prot_, const service_with_special_names_lists_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_lists_pargs");
   xfer += prot_->writeFieldStop();
@@ -359,6 +379,7 @@ uint32_t service_with_special_names_lists_pargs_write(Protocol_* prot_, const se
 
 template <class Protocol_>
 uint32_t service_with_special_names_lists_presult_read(Protocol_* iprot, service_with_special_names_lists_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -406,6 +427,7 @@ uint32_t service_with_special_names_lists_presult_read(Protocol_* iprot, service
 
 template <class Protocol_>
 uint32_t service_with_special_names_lists_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_lists_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_lists_presult");
   if (obj->__isset.success) {
@@ -418,6 +440,7 @@ uint32_t service_with_special_names_lists_presult_serializedSize(Protocol_ const
 
 template <class Protocol_>
 uint32_t service_with_special_names_lists_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_lists_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_lists_presult");
   if (obj->__isset.success) {
@@ -430,6 +453,7 @@ uint32_t service_with_special_names_lists_presult_serializedSizeZC(Protocol_ con
 
 template <class Protocol_>
 uint32_t service_with_special_names_lists_presult_write(Protocol_* prot_, const service_with_special_names_lists_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_lists_presult");
   if (obj->__isset.success) {
@@ -444,6 +468,7 @@ uint32_t service_with_special_names_lists_presult_write(Protocol_* prot_, const 
 
 template <class Protocol_>
 uint32_t service_with_special_names_maps_pargs_read(Protocol_* iprot, service_with_special_names_maps_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -476,6 +501,7 @@ uint32_t service_with_special_names_maps_pargs_read(Protocol_* iprot, service_wi
 
 template <class Protocol_>
 uint32_t service_with_special_names_maps_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_maps_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_maps_pargs");
   xfer += prot_->serializedSizeStop();
@@ -484,6 +510,7 @@ uint32_t service_with_special_names_maps_pargs_serializedSize(Protocol_ const* p
 
 template <class Protocol_>
 uint32_t service_with_special_names_maps_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_maps_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_maps_pargs");
   xfer += prot_->serializedSizeStop();
@@ -492,6 +519,7 @@ uint32_t service_with_special_names_maps_pargs_serializedSizeZC(Protocol_ const*
 
 template <class Protocol_>
 uint32_t service_with_special_names_maps_pargs_write(Protocol_* prot_, const service_with_special_names_maps_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_maps_pargs");
   xfer += prot_->writeFieldStop();
@@ -501,6 +529,7 @@ uint32_t service_with_special_names_maps_pargs_write(Protocol_* prot_, const ser
 
 template <class Protocol_>
 uint32_t service_with_special_names_maps_presult_read(Protocol_* iprot, service_with_special_names_maps_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -548,6 +577,7 @@ uint32_t service_with_special_names_maps_presult_read(Protocol_* iprot, service_
 
 template <class Protocol_>
 uint32_t service_with_special_names_maps_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_maps_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_maps_presult");
   if (obj->__isset.success) {
@@ -560,6 +590,7 @@ uint32_t service_with_special_names_maps_presult_serializedSize(Protocol_ const*
 
 template <class Protocol_>
 uint32_t service_with_special_names_maps_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_maps_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_maps_presult");
   if (obj->__isset.success) {
@@ -572,6 +603,7 @@ uint32_t service_with_special_names_maps_presult_serializedSizeZC(Protocol_ cons
 
 template <class Protocol_>
 uint32_t service_with_special_names_maps_presult_write(Protocol_* prot_, const service_with_special_names_maps_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_maps_presult");
   if (obj->__isset.success) {
@@ -586,6 +618,7 @@ uint32_t service_with_special_names_maps_presult_write(Protocol_* prot_, const s
 
 template <class Protocol_>
 uint32_t service_with_special_names_name_pargs_read(Protocol_* iprot, service_with_special_names_name_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -618,6 +651,7 @@ uint32_t service_with_special_names_name_pargs_read(Protocol_* iprot, service_wi
 
 template <class Protocol_>
 uint32_t service_with_special_names_name_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_name_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_name_pargs");
   xfer += prot_->serializedSizeStop();
@@ -626,6 +660,7 @@ uint32_t service_with_special_names_name_pargs_serializedSize(Protocol_ const* p
 
 template <class Protocol_>
 uint32_t service_with_special_names_name_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_name_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_name_pargs");
   xfer += prot_->serializedSizeStop();
@@ -634,6 +669,7 @@ uint32_t service_with_special_names_name_pargs_serializedSizeZC(Protocol_ const*
 
 template <class Protocol_>
 uint32_t service_with_special_names_name_pargs_write(Protocol_* prot_, const service_with_special_names_name_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_name_pargs");
   xfer += prot_->writeFieldStop();
@@ -643,6 +679,7 @@ uint32_t service_with_special_names_name_pargs_write(Protocol_* prot_, const ser
 
 template <class Protocol_>
 uint32_t service_with_special_names_name_presult_read(Protocol_* iprot, service_with_special_names_name_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -690,6 +727,7 @@ uint32_t service_with_special_names_name_presult_read(Protocol_* iprot, service_
 
 template <class Protocol_>
 uint32_t service_with_special_names_name_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_name_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_name_presult");
   if (obj->__isset.success) {
@@ -702,6 +740,7 @@ uint32_t service_with_special_names_name_presult_serializedSize(Protocol_ const*
 
 template <class Protocol_>
 uint32_t service_with_special_names_name_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_name_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_name_presult");
   if (obj->__isset.success) {
@@ -714,6 +753,7 @@ uint32_t service_with_special_names_name_presult_serializedSizeZC(Protocol_ cons
 
 template <class Protocol_>
 uint32_t service_with_special_names_name_presult_write(Protocol_* prot_, const service_with_special_names_name_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_name_presult");
   if (obj->__isset.success) {
@@ -728,6 +768,7 @@ uint32_t service_with_special_names_name_presult_write(Protocol_* prot_, const s
 
 template <class Protocol_>
 uint32_t service_with_special_names_name_to_value_pargs_read(Protocol_* iprot, service_with_special_names_name_to_value_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -760,6 +801,7 @@ uint32_t service_with_special_names_name_to_value_pargs_read(Protocol_* iprot, s
 
 template <class Protocol_>
 uint32_t service_with_special_names_name_to_value_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_name_to_value_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_name_to_value_pargs");
   xfer += prot_->serializedSizeStop();
@@ -768,6 +810,7 @@ uint32_t service_with_special_names_name_to_value_pargs_serializedSize(Protocol_
 
 template <class Protocol_>
 uint32_t service_with_special_names_name_to_value_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_name_to_value_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_name_to_value_pargs");
   xfer += prot_->serializedSizeStop();
@@ -776,6 +819,7 @@ uint32_t service_with_special_names_name_to_value_pargs_serializedSizeZC(Protoco
 
 template <class Protocol_>
 uint32_t service_with_special_names_name_to_value_pargs_write(Protocol_* prot_, const service_with_special_names_name_to_value_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_name_to_value_pargs");
   xfer += prot_->writeFieldStop();
@@ -785,6 +829,7 @@ uint32_t service_with_special_names_name_to_value_pargs_write(Protocol_* prot_, 
 
 template <class Protocol_>
 uint32_t service_with_special_names_name_to_value_presult_read(Protocol_* iprot, service_with_special_names_name_to_value_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -832,6 +877,7 @@ uint32_t service_with_special_names_name_to_value_presult_read(Protocol_* iprot,
 
 template <class Protocol_>
 uint32_t service_with_special_names_name_to_value_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_name_to_value_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_name_to_value_presult");
   if (obj->__isset.success) {
@@ -844,6 +890,7 @@ uint32_t service_with_special_names_name_to_value_presult_serializedSize(Protoco
 
 template <class Protocol_>
 uint32_t service_with_special_names_name_to_value_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_name_to_value_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_name_to_value_presult");
   if (obj->__isset.success) {
@@ -856,6 +903,7 @@ uint32_t service_with_special_names_name_to_value_presult_serializedSizeZC(Proto
 
 template <class Protocol_>
 uint32_t service_with_special_names_name_to_value_presult_write(Protocol_* prot_, const service_with_special_names_name_to_value_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_name_to_value_presult");
   if (obj->__isset.success) {
@@ -870,6 +918,7 @@ uint32_t service_with_special_names_name_to_value_presult_write(Protocol_* prot_
 
 template <class Protocol_>
 uint32_t service_with_special_names_names_pargs_read(Protocol_* iprot, service_with_special_names_names_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -902,6 +951,7 @@ uint32_t service_with_special_names_names_pargs_read(Protocol_* iprot, service_w
 
 template <class Protocol_>
 uint32_t service_with_special_names_names_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_names_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_names_pargs");
   xfer += prot_->serializedSizeStop();
@@ -910,6 +960,7 @@ uint32_t service_with_special_names_names_pargs_serializedSize(Protocol_ const* 
 
 template <class Protocol_>
 uint32_t service_with_special_names_names_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_names_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_names_pargs");
   xfer += prot_->serializedSizeStop();
@@ -918,6 +969,7 @@ uint32_t service_with_special_names_names_pargs_serializedSizeZC(Protocol_ const
 
 template <class Protocol_>
 uint32_t service_with_special_names_names_pargs_write(Protocol_* prot_, const service_with_special_names_names_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_names_pargs");
   xfer += prot_->writeFieldStop();
@@ -927,6 +979,7 @@ uint32_t service_with_special_names_names_pargs_write(Protocol_* prot_, const se
 
 template <class Protocol_>
 uint32_t service_with_special_names_names_presult_read(Protocol_* iprot, service_with_special_names_names_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -974,6 +1027,7 @@ uint32_t service_with_special_names_names_presult_read(Protocol_* iprot, service
 
 template <class Protocol_>
 uint32_t service_with_special_names_names_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_names_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_names_presult");
   if (obj->__isset.success) {
@@ -986,6 +1040,7 @@ uint32_t service_with_special_names_names_presult_serializedSize(Protocol_ const
 
 template <class Protocol_>
 uint32_t service_with_special_names_names_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_names_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_names_presult");
   if (obj->__isset.success) {
@@ -998,6 +1053,7 @@ uint32_t service_with_special_names_names_presult_serializedSizeZC(Protocol_ con
 
 template <class Protocol_>
 uint32_t service_with_special_names_names_presult_write(Protocol_* prot_, const service_with_special_names_names_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_names_presult");
   if (obj->__isset.success) {
@@ -1012,6 +1068,7 @@ uint32_t service_with_special_names_names_presult_write(Protocol_* prot_, const 
 
 template <class Protocol_>
 uint32_t service_with_special_names_prefix_tree_pargs_read(Protocol_* iprot, service_with_special_names_prefix_tree_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -1044,6 +1101,7 @@ uint32_t service_with_special_names_prefix_tree_pargs_read(Protocol_* iprot, ser
 
 template <class Protocol_>
 uint32_t service_with_special_names_prefix_tree_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_prefix_tree_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_prefix_tree_pargs");
   xfer += prot_->serializedSizeStop();
@@ -1052,6 +1110,7 @@ uint32_t service_with_special_names_prefix_tree_pargs_serializedSize(Protocol_ c
 
 template <class Protocol_>
 uint32_t service_with_special_names_prefix_tree_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_prefix_tree_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_prefix_tree_pargs");
   xfer += prot_->serializedSizeStop();
@@ -1060,6 +1119,7 @@ uint32_t service_with_special_names_prefix_tree_pargs_serializedSizeZC(Protocol_
 
 template <class Protocol_>
 uint32_t service_with_special_names_prefix_tree_pargs_write(Protocol_* prot_, const service_with_special_names_prefix_tree_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_prefix_tree_pargs");
   xfer += prot_->writeFieldStop();
@@ -1069,6 +1129,7 @@ uint32_t service_with_special_names_prefix_tree_pargs_write(Protocol_* prot_, co
 
 template <class Protocol_>
 uint32_t service_with_special_names_prefix_tree_presult_read(Protocol_* iprot, service_with_special_names_prefix_tree_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -1116,6 +1177,7 @@ uint32_t service_with_special_names_prefix_tree_presult_read(Protocol_* iprot, s
 
 template <class Protocol_>
 uint32_t service_with_special_names_prefix_tree_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_prefix_tree_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_prefix_tree_presult");
   if (obj->__isset.success) {
@@ -1128,6 +1190,7 @@ uint32_t service_with_special_names_prefix_tree_presult_serializedSize(Protocol_
 
 template <class Protocol_>
 uint32_t service_with_special_names_prefix_tree_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_prefix_tree_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_prefix_tree_presult");
   if (obj->__isset.success) {
@@ -1140,6 +1203,7 @@ uint32_t service_with_special_names_prefix_tree_presult_serializedSizeZC(Protoco
 
 template <class Protocol_>
 uint32_t service_with_special_names_prefix_tree_presult_write(Protocol_* prot_, const service_with_special_names_prefix_tree_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_prefix_tree_presult");
   if (obj->__isset.success) {
@@ -1154,6 +1218,7 @@ uint32_t service_with_special_names_prefix_tree_presult_write(Protocol_* prot_, 
 
 template <class Protocol_>
 uint32_t service_with_special_names_sets_pargs_read(Protocol_* iprot, service_with_special_names_sets_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -1186,6 +1251,7 @@ uint32_t service_with_special_names_sets_pargs_read(Protocol_* iprot, service_wi
 
 template <class Protocol_>
 uint32_t service_with_special_names_sets_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_sets_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_sets_pargs");
   xfer += prot_->serializedSizeStop();
@@ -1194,6 +1260,7 @@ uint32_t service_with_special_names_sets_pargs_serializedSize(Protocol_ const* p
 
 template <class Protocol_>
 uint32_t service_with_special_names_sets_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_sets_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_sets_pargs");
   xfer += prot_->serializedSizeStop();
@@ -1202,6 +1269,7 @@ uint32_t service_with_special_names_sets_pargs_serializedSizeZC(Protocol_ const*
 
 template <class Protocol_>
 uint32_t service_with_special_names_sets_pargs_write(Protocol_* prot_, const service_with_special_names_sets_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_sets_pargs");
   xfer += prot_->writeFieldStop();
@@ -1211,6 +1279,7 @@ uint32_t service_with_special_names_sets_pargs_write(Protocol_* prot_, const ser
 
 template <class Protocol_>
 uint32_t service_with_special_names_sets_presult_read(Protocol_* iprot, service_with_special_names_sets_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -1258,6 +1327,7 @@ uint32_t service_with_special_names_sets_presult_read(Protocol_* iprot, service_
 
 template <class Protocol_>
 uint32_t service_with_special_names_sets_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_sets_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_sets_presult");
   if (obj->__isset.success) {
@@ -1270,6 +1340,7 @@ uint32_t service_with_special_names_sets_presult_serializedSize(Protocol_ const*
 
 template <class Protocol_>
 uint32_t service_with_special_names_sets_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_sets_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_sets_presult");
   if (obj->__isset.success) {
@@ -1282,6 +1353,7 @@ uint32_t service_with_special_names_sets_presult_serializedSizeZC(Protocol_ cons
 
 template <class Protocol_>
 uint32_t service_with_special_names_sets_presult_write(Protocol_* prot_, const service_with_special_names_sets_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_sets_presult");
   if (obj->__isset.success) {
@@ -1296,6 +1368,7 @@ uint32_t service_with_special_names_sets_presult_write(Protocol_* prot_, const s
 
 template <class Protocol_>
 uint32_t service_with_special_names_setter_pargs_read(Protocol_* iprot, service_with_special_names_setter_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -1328,6 +1401,7 @@ uint32_t service_with_special_names_setter_pargs_read(Protocol_* iprot, service_
 
 template <class Protocol_>
 uint32_t service_with_special_names_setter_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_setter_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_setter_pargs");
   xfer += prot_->serializedSizeStop();
@@ -1336,6 +1410,7 @@ uint32_t service_with_special_names_setter_pargs_serializedSize(Protocol_ const*
 
 template <class Protocol_>
 uint32_t service_with_special_names_setter_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_setter_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_setter_pargs");
   xfer += prot_->serializedSizeStop();
@@ -1344,6 +1419,7 @@ uint32_t service_with_special_names_setter_pargs_serializedSizeZC(Protocol_ cons
 
 template <class Protocol_>
 uint32_t service_with_special_names_setter_pargs_write(Protocol_* prot_, const service_with_special_names_setter_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_setter_pargs");
   xfer += prot_->writeFieldStop();
@@ -1353,6 +1429,7 @@ uint32_t service_with_special_names_setter_pargs_write(Protocol_* prot_, const s
 
 template <class Protocol_>
 uint32_t service_with_special_names_setter_presult_read(Protocol_* iprot, service_with_special_names_setter_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -1400,6 +1477,7 @@ uint32_t service_with_special_names_setter_presult_read(Protocol_* iprot, servic
 
 template <class Protocol_>
 uint32_t service_with_special_names_setter_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_setter_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_setter_presult");
   if (obj->__isset.success) {
@@ -1412,6 +1490,7 @@ uint32_t service_with_special_names_setter_presult_serializedSize(Protocol_ cons
 
 template <class Protocol_>
 uint32_t service_with_special_names_setter_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_setter_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_setter_presult");
   if (obj->__isset.success) {
@@ -1424,6 +1503,7 @@ uint32_t service_with_special_names_setter_presult_serializedSizeZC(Protocol_ co
 
 template <class Protocol_>
 uint32_t service_with_special_names_setter_presult_write(Protocol_* prot_, const service_with_special_names_setter_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_setter_presult");
   if (obj->__isset.success) {
@@ -1438,6 +1518,7 @@ uint32_t service_with_special_names_setter_presult_write(Protocol_* prot_, const
 
 template <class Protocol_>
 uint32_t service_with_special_names_str_pargs_read(Protocol_* iprot, service_with_special_names_str_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -1470,6 +1551,7 @@ uint32_t service_with_special_names_str_pargs_read(Protocol_* iprot, service_wit
 
 template <class Protocol_>
 uint32_t service_with_special_names_str_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_str_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_str_pargs");
   xfer += prot_->serializedSizeStop();
@@ -1478,6 +1560,7 @@ uint32_t service_with_special_names_str_pargs_serializedSize(Protocol_ const* pr
 
 template <class Protocol_>
 uint32_t service_with_special_names_str_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_str_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_str_pargs");
   xfer += prot_->serializedSizeStop();
@@ -1486,6 +1569,7 @@ uint32_t service_with_special_names_str_pargs_serializedSizeZC(Protocol_ const* 
 
 template <class Protocol_>
 uint32_t service_with_special_names_str_pargs_write(Protocol_* prot_, const service_with_special_names_str_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_str_pargs");
   xfer += prot_->writeFieldStop();
@@ -1495,6 +1579,7 @@ uint32_t service_with_special_names_str_pargs_write(Protocol_* prot_, const serv
 
 template <class Protocol_>
 uint32_t service_with_special_names_str_presult_read(Protocol_* iprot, service_with_special_names_str_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -1542,6 +1627,7 @@ uint32_t service_with_special_names_str_presult_read(Protocol_* iprot, service_w
 
 template <class Protocol_>
 uint32_t service_with_special_names_str_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_str_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_str_presult");
   if (obj->__isset.success) {
@@ -1554,6 +1640,7 @@ uint32_t service_with_special_names_str_presult_serializedSize(Protocol_ const* 
 
 template <class Protocol_>
 uint32_t service_with_special_names_str_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_str_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_str_presult");
   if (obj->__isset.success) {
@@ -1566,6 +1653,7 @@ uint32_t service_with_special_names_str_presult_serializedSizeZC(Protocol_ const
 
 template <class Protocol_>
 uint32_t service_with_special_names_str_presult_write(Protocol_* prot_, const service_with_special_names_str_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_str_presult");
   if (obj->__isset.success) {
@@ -1580,6 +1668,7 @@ uint32_t service_with_special_names_str_presult_write(Protocol_* prot_, const se
 
 template <class Protocol_>
 uint32_t service_with_special_names_strings_pargs_read(Protocol_* iprot, service_with_special_names_strings_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -1612,6 +1701,7 @@ uint32_t service_with_special_names_strings_pargs_read(Protocol_* iprot, service
 
 template <class Protocol_>
 uint32_t service_with_special_names_strings_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_strings_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_strings_pargs");
   xfer += prot_->serializedSizeStop();
@@ -1620,6 +1710,7 @@ uint32_t service_with_special_names_strings_pargs_serializedSize(Protocol_ const
 
 template <class Protocol_>
 uint32_t service_with_special_names_strings_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_strings_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_strings_pargs");
   xfer += prot_->serializedSizeStop();
@@ -1628,6 +1719,7 @@ uint32_t service_with_special_names_strings_pargs_serializedSizeZC(Protocol_ con
 
 template <class Protocol_>
 uint32_t service_with_special_names_strings_pargs_write(Protocol_* prot_, const service_with_special_names_strings_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_strings_pargs");
   xfer += prot_->writeFieldStop();
@@ -1637,6 +1729,7 @@ uint32_t service_with_special_names_strings_pargs_write(Protocol_* prot_, const 
 
 template <class Protocol_>
 uint32_t service_with_special_names_strings_presult_read(Protocol_* iprot, service_with_special_names_strings_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -1684,6 +1777,7 @@ uint32_t service_with_special_names_strings_presult_read(Protocol_* iprot, servi
 
 template <class Protocol_>
 uint32_t service_with_special_names_strings_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_strings_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_strings_presult");
   if (obj->__isset.success) {
@@ -1696,6 +1790,7 @@ uint32_t service_with_special_names_strings_presult_serializedSize(Protocol_ con
 
 template <class Protocol_>
 uint32_t service_with_special_names_strings_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_strings_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_strings_presult");
   if (obj->__isset.success) {
@@ -1708,6 +1803,7 @@ uint32_t service_with_special_names_strings_presult_serializedSizeZC(Protocol_ c
 
 template <class Protocol_>
 uint32_t service_with_special_names_strings_presult_write(Protocol_* prot_, const service_with_special_names_strings_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_strings_presult");
   if (obj->__isset.success) {
@@ -1722,6 +1818,7 @@ uint32_t service_with_special_names_strings_presult_write(Protocol_* prot_, cons
 
 template <class Protocol_>
 uint32_t service_with_special_names_type_pargs_read(Protocol_* iprot, service_with_special_names_type_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -1754,6 +1851,7 @@ uint32_t service_with_special_names_type_pargs_read(Protocol_* iprot, service_wi
 
 template <class Protocol_>
 uint32_t service_with_special_names_type_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_type_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_type_pargs");
   xfer += prot_->serializedSizeStop();
@@ -1762,6 +1860,7 @@ uint32_t service_with_special_names_type_pargs_serializedSize(Protocol_ const* p
 
 template <class Protocol_>
 uint32_t service_with_special_names_type_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_type_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_type_pargs");
   xfer += prot_->serializedSizeStop();
@@ -1770,6 +1869,7 @@ uint32_t service_with_special_names_type_pargs_serializedSizeZC(Protocol_ const*
 
 template <class Protocol_>
 uint32_t service_with_special_names_type_pargs_write(Protocol_* prot_, const service_with_special_names_type_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_type_pargs");
   xfer += prot_->writeFieldStop();
@@ -1779,6 +1879,7 @@ uint32_t service_with_special_names_type_pargs_write(Protocol_* prot_, const ser
 
 template <class Protocol_>
 uint32_t service_with_special_names_type_presult_read(Protocol_* iprot, service_with_special_names_type_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -1826,6 +1927,7 @@ uint32_t service_with_special_names_type_presult_read(Protocol_* iprot, service_
 
 template <class Protocol_>
 uint32_t service_with_special_names_type_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_type_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_type_presult");
   if (obj->__isset.success) {
@@ -1838,6 +1940,7 @@ uint32_t service_with_special_names_type_presult_serializedSize(Protocol_ const*
 
 template <class Protocol_>
 uint32_t service_with_special_names_type_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_type_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_type_presult");
   if (obj->__isset.success) {
@@ -1850,6 +1953,7 @@ uint32_t service_with_special_names_type_presult_serializedSizeZC(Protocol_ cons
 
 template <class Protocol_>
 uint32_t service_with_special_names_type_presult_write(Protocol_* prot_, const service_with_special_names_type_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_type_presult");
   if (obj->__isset.success) {
@@ -1864,6 +1968,7 @@ uint32_t service_with_special_names_type_presult_write(Protocol_* prot_, const s
 
 template <class Protocol_>
 uint32_t service_with_special_names_value_pargs_read(Protocol_* iprot, service_with_special_names_value_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -1896,6 +2001,7 @@ uint32_t service_with_special_names_value_pargs_read(Protocol_* iprot, service_w
 
 template <class Protocol_>
 uint32_t service_with_special_names_value_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_value_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_value_pargs");
   xfer += prot_->serializedSizeStop();
@@ -1904,6 +2010,7 @@ uint32_t service_with_special_names_value_pargs_serializedSize(Protocol_ const* 
 
 template <class Protocol_>
 uint32_t service_with_special_names_value_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_value_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_value_pargs");
   xfer += prot_->serializedSizeStop();
@@ -1912,6 +2019,7 @@ uint32_t service_with_special_names_value_pargs_serializedSizeZC(Protocol_ const
 
 template <class Protocol_>
 uint32_t service_with_special_names_value_pargs_write(Protocol_* prot_, const service_with_special_names_value_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_value_pargs");
   xfer += prot_->writeFieldStop();
@@ -1921,6 +2029,7 @@ uint32_t service_with_special_names_value_pargs_write(Protocol_* prot_, const se
 
 template <class Protocol_>
 uint32_t service_with_special_names_value_presult_read(Protocol_* iprot, service_with_special_names_value_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -1968,6 +2077,7 @@ uint32_t service_with_special_names_value_presult_read(Protocol_* iprot, service
 
 template <class Protocol_>
 uint32_t service_with_special_names_value_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_value_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_value_presult");
   if (obj->__isset.success) {
@@ -1980,6 +2090,7 @@ uint32_t service_with_special_names_value_presult_serializedSize(Protocol_ const
 
 template <class Protocol_>
 uint32_t service_with_special_names_value_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_value_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_value_presult");
   if (obj->__isset.success) {
@@ -1992,6 +2103,7 @@ uint32_t service_with_special_names_value_presult_serializedSizeZC(Protocol_ con
 
 template <class Protocol_>
 uint32_t service_with_special_names_value_presult_write(Protocol_* prot_, const service_with_special_names_value_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_value_presult");
   if (obj->__isset.success) {
@@ -2006,6 +2118,7 @@ uint32_t service_with_special_names_value_presult_write(Protocol_* prot_, const 
 
 template <class Protocol_>
 uint32_t service_with_special_names_value_to_name_pargs_read(Protocol_* iprot, service_with_special_names_value_to_name_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -2038,6 +2151,7 @@ uint32_t service_with_special_names_value_to_name_pargs_read(Protocol_* iprot, s
 
 template <class Protocol_>
 uint32_t service_with_special_names_value_to_name_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_value_to_name_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_value_to_name_pargs");
   xfer += prot_->serializedSizeStop();
@@ -2046,6 +2160,7 @@ uint32_t service_with_special_names_value_to_name_pargs_serializedSize(Protocol_
 
 template <class Protocol_>
 uint32_t service_with_special_names_value_to_name_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_value_to_name_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_value_to_name_pargs");
   xfer += prot_->serializedSizeStop();
@@ -2054,6 +2169,7 @@ uint32_t service_with_special_names_value_to_name_pargs_serializedSizeZC(Protoco
 
 template <class Protocol_>
 uint32_t service_with_special_names_value_to_name_pargs_write(Protocol_* prot_, const service_with_special_names_value_to_name_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_value_to_name_pargs");
   xfer += prot_->writeFieldStop();
@@ -2063,6 +2179,7 @@ uint32_t service_with_special_names_value_to_name_pargs_write(Protocol_* prot_, 
 
 template <class Protocol_>
 uint32_t service_with_special_names_value_to_name_presult_read(Protocol_* iprot, service_with_special_names_value_to_name_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -2110,6 +2227,7 @@ uint32_t service_with_special_names_value_to_name_presult_read(Protocol_* iprot,
 
 template <class Protocol_>
 uint32_t service_with_special_names_value_to_name_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_value_to_name_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_value_to_name_presult");
   if (obj->__isset.success) {
@@ -2122,6 +2240,7 @@ uint32_t service_with_special_names_value_to_name_presult_serializedSize(Protoco
 
 template <class Protocol_>
 uint32_t service_with_special_names_value_to_name_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_value_to_name_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_value_to_name_presult");
   if (obj->__isset.success) {
@@ -2134,6 +2253,7 @@ uint32_t service_with_special_names_value_to_name_presult_serializedSizeZC(Proto
 
 template <class Protocol_>
 uint32_t service_with_special_names_value_to_name_presult_write(Protocol_* prot_, const service_with_special_names_value_to_name_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_value_to_name_presult");
   if (obj->__isset.success) {
@@ -2148,6 +2268,7 @@ uint32_t service_with_special_names_value_to_name_presult_write(Protocol_* prot_
 
 template <class Protocol_>
 uint32_t service_with_special_names_values_pargs_read(Protocol_* iprot, service_with_special_names_values_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -2180,6 +2301,7 @@ uint32_t service_with_special_names_values_pargs_read(Protocol_* iprot, service_
 
 template <class Protocol_>
 uint32_t service_with_special_names_values_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_values_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_values_pargs");
   xfer += prot_->serializedSizeStop();
@@ -2188,6 +2310,7 @@ uint32_t service_with_special_names_values_pargs_serializedSize(Protocol_ const*
 
 template <class Protocol_>
 uint32_t service_with_special_names_values_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_values_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_values_pargs");
   xfer += prot_->serializedSizeStop();
@@ -2196,6 +2319,7 @@ uint32_t service_with_special_names_values_pargs_serializedSizeZC(Protocol_ cons
 
 template <class Protocol_>
 uint32_t service_with_special_names_values_pargs_write(Protocol_* prot_, const service_with_special_names_values_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_values_pargs");
   xfer += prot_->writeFieldStop();
@@ -2205,6 +2329,7 @@ uint32_t service_with_special_names_values_pargs_write(Protocol_* prot_, const s
 
 template <class Protocol_>
 uint32_t service_with_special_names_values_presult_read(Protocol_* iprot, service_with_special_names_values_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -2252,6 +2377,7 @@ uint32_t service_with_special_names_values_presult_read(Protocol_* iprot, servic
 
 template <class Protocol_>
 uint32_t service_with_special_names_values_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_values_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_values_presult");
   if (obj->__isset.success) {
@@ -2264,6 +2390,7 @@ uint32_t service_with_special_names_values_presult_serializedSize(Protocol_ cons
 
 template <class Protocol_>
 uint32_t service_with_special_names_values_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_values_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_values_presult");
   if (obj->__isset.success) {
@@ -2276,6 +2403,7 @@ uint32_t service_with_special_names_values_presult_serializedSizeZC(Protocol_ co
 
 template <class Protocol_>
 uint32_t service_with_special_names_values_presult_write(Protocol_* prot_, const service_with_special_names_values_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_values_presult");
   if (obj->__isset.success) {
@@ -2290,6 +2418,7 @@ uint32_t service_with_special_names_values_presult_write(Protocol_* prot_, const
 
 template <class Protocol_>
 uint32_t service_with_special_names_id_pargs_read(Protocol_* iprot, service_with_special_names_id_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -2322,6 +2451,7 @@ uint32_t service_with_special_names_id_pargs_read(Protocol_* iprot, service_with
 
 template <class Protocol_>
 uint32_t service_with_special_names_id_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_id_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_id_pargs");
   xfer += prot_->serializedSizeStop();
@@ -2330,6 +2460,7 @@ uint32_t service_with_special_names_id_pargs_serializedSize(Protocol_ const* pro
 
 template <class Protocol_>
 uint32_t service_with_special_names_id_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_id_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_id_pargs");
   xfer += prot_->serializedSizeStop();
@@ -2338,6 +2469,7 @@ uint32_t service_with_special_names_id_pargs_serializedSizeZC(Protocol_ const* p
 
 template <class Protocol_>
 uint32_t service_with_special_names_id_pargs_write(Protocol_* prot_, const service_with_special_names_id_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_id_pargs");
   xfer += prot_->writeFieldStop();
@@ -2347,6 +2479,7 @@ uint32_t service_with_special_names_id_pargs_write(Protocol_* prot_, const servi
 
 template <class Protocol_>
 uint32_t service_with_special_names_id_presult_read(Protocol_* iprot, service_with_special_names_id_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -2394,6 +2527,7 @@ uint32_t service_with_special_names_id_presult_read(Protocol_* iprot, service_wi
 
 template <class Protocol_>
 uint32_t service_with_special_names_id_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_id_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_id_presult");
   if (obj->__isset.success) {
@@ -2406,6 +2540,7 @@ uint32_t service_with_special_names_id_presult_serializedSize(Protocol_ const* p
 
 template <class Protocol_>
 uint32_t service_with_special_names_id_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_id_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_id_presult");
   if (obj->__isset.success) {
@@ -2418,6 +2553,7 @@ uint32_t service_with_special_names_id_presult_serializedSizeZC(Protocol_ const*
 
 template <class Protocol_>
 uint32_t service_with_special_names_id_presult_write(Protocol_* prot_, const service_with_special_names_id_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_id_presult");
   if (obj->__isset.success) {
@@ -2432,6 +2568,7 @@ uint32_t service_with_special_names_id_presult_write(Protocol_* prot_, const ser
 
 template <class Protocol_>
 uint32_t service_with_special_names_ids_pargs_read(Protocol_* iprot, service_with_special_names_ids_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -2464,6 +2601,7 @@ uint32_t service_with_special_names_ids_pargs_read(Protocol_* iprot, service_wit
 
 template <class Protocol_>
 uint32_t service_with_special_names_ids_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_ids_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_ids_pargs");
   xfer += prot_->serializedSizeStop();
@@ -2472,6 +2610,7 @@ uint32_t service_with_special_names_ids_pargs_serializedSize(Protocol_ const* pr
 
 template <class Protocol_>
 uint32_t service_with_special_names_ids_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_ids_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_ids_pargs");
   xfer += prot_->serializedSizeStop();
@@ -2480,6 +2619,7 @@ uint32_t service_with_special_names_ids_pargs_serializedSizeZC(Protocol_ const* 
 
 template <class Protocol_>
 uint32_t service_with_special_names_ids_pargs_write(Protocol_* prot_, const service_with_special_names_ids_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_ids_pargs");
   xfer += prot_->writeFieldStop();
@@ -2489,6 +2629,7 @@ uint32_t service_with_special_names_ids_pargs_write(Protocol_* prot_, const serv
 
 template <class Protocol_>
 uint32_t service_with_special_names_ids_presult_read(Protocol_* iprot, service_with_special_names_ids_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -2536,6 +2677,7 @@ uint32_t service_with_special_names_ids_presult_read(Protocol_* iprot, service_w
 
 template <class Protocol_>
 uint32_t service_with_special_names_ids_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_ids_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_ids_presult");
   if (obj->__isset.success) {
@@ -2548,6 +2690,7 @@ uint32_t service_with_special_names_ids_presult_serializedSize(Protocol_ const* 
 
 template <class Protocol_>
 uint32_t service_with_special_names_ids_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_ids_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_ids_presult");
   if (obj->__isset.success) {
@@ -2560,6 +2703,7 @@ uint32_t service_with_special_names_ids_presult_serializedSizeZC(Protocol_ const
 
 template <class Protocol_>
 uint32_t service_with_special_names_ids_presult_write(Protocol_* prot_, const service_with_special_names_ids_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_ids_presult");
   if (obj->__isset.success) {
@@ -2574,6 +2718,7 @@ uint32_t service_with_special_names_ids_presult_write(Protocol_* prot_, const se
 
 template <class Protocol_>
 uint32_t service_with_special_names_descriptor_pargs_read(Protocol_* iprot, service_with_special_names_descriptor_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -2606,6 +2751,7 @@ uint32_t service_with_special_names_descriptor_pargs_read(Protocol_* iprot, serv
 
 template <class Protocol_>
 uint32_t service_with_special_names_descriptor_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_descriptor_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_descriptor_pargs");
   xfer += prot_->serializedSizeStop();
@@ -2614,6 +2760,7 @@ uint32_t service_with_special_names_descriptor_pargs_serializedSize(Protocol_ co
 
 template <class Protocol_>
 uint32_t service_with_special_names_descriptor_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_descriptor_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_descriptor_pargs");
   xfer += prot_->serializedSizeStop();
@@ -2622,6 +2769,7 @@ uint32_t service_with_special_names_descriptor_pargs_serializedSizeZC(Protocol_ 
 
 template <class Protocol_>
 uint32_t service_with_special_names_descriptor_pargs_write(Protocol_* prot_, const service_with_special_names_descriptor_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_descriptor_pargs");
   xfer += prot_->writeFieldStop();
@@ -2631,6 +2779,7 @@ uint32_t service_with_special_names_descriptor_pargs_write(Protocol_* prot_, con
 
 template <class Protocol_>
 uint32_t service_with_special_names_descriptor_presult_read(Protocol_* iprot, service_with_special_names_descriptor_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -2678,6 +2827,7 @@ uint32_t service_with_special_names_descriptor_presult_read(Protocol_* iprot, se
 
 template <class Protocol_>
 uint32_t service_with_special_names_descriptor_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_descriptor_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_descriptor_presult");
   if (obj->__isset.success) {
@@ -2690,6 +2840,7 @@ uint32_t service_with_special_names_descriptor_presult_serializedSize(Protocol_ 
 
 template <class Protocol_>
 uint32_t service_with_special_names_descriptor_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_descriptor_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_descriptor_presult");
   if (obj->__isset.success) {
@@ -2702,6 +2853,7 @@ uint32_t service_with_special_names_descriptor_presult_serializedSizeZC(Protocol
 
 template <class Protocol_>
 uint32_t service_with_special_names_descriptor_presult_write(Protocol_* prot_, const service_with_special_names_descriptor_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_descriptor_presult");
   if (obj->__isset.success) {
@@ -2716,6 +2868,7 @@ uint32_t service_with_special_names_descriptor_presult_write(Protocol_* prot_, c
 
 template <class Protocol_>
 uint32_t service_with_special_names_descriptors_pargs_read(Protocol_* iprot, service_with_special_names_descriptors_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -2748,6 +2901,7 @@ uint32_t service_with_special_names_descriptors_pargs_read(Protocol_* iprot, ser
 
 template <class Protocol_>
 uint32_t service_with_special_names_descriptors_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_descriptors_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_descriptors_pargs");
   xfer += prot_->serializedSizeStop();
@@ -2756,6 +2910,7 @@ uint32_t service_with_special_names_descriptors_pargs_serializedSize(Protocol_ c
 
 template <class Protocol_>
 uint32_t service_with_special_names_descriptors_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_descriptors_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_descriptors_pargs");
   xfer += prot_->serializedSizeStop();
@@ -2764,6 +2919,7 @@ uint32_t service_with_special_names_descriptors_pargs_serializedSizeZC(Protocol_
 
 template <class Protocol_>
 uint32_t service_with_special_names_descriptors_pargs_write(Protocol_* prot_, const service_with_special_names_descriptors_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_descriptors_pargs");
   xfer += prot_->writeFieldStop();
@@ -2773,6 +2929,7 @@ uint32_t service_with_special_names_descriptors_pargs_write(Protocol_* prot_, co
 
 template <class Protocol_>
 uint32_t service_with_special_names_descriptors_presult_read(Protocol_* iprot, service_with_special_names_descriptors_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -2820,6 +2977,7 @@ uint32_t service_with_special_names_descriptors_presult_read(Protocol_* iprot, s
 
 template <class Protocol_>
 uint32_t service_with_special_names_descriptors_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_descriptors_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_descriptors_presult");
   if (obj->__isset.success) {
@@ -2832,6 +2990,7 @@ uint32_t service_with_special_names_descriptors_presult_serializedSize(Protocol_
 
 template <class Protocol_>
 uint32_t service_with_special_names_descriptors_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_descriptors_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_descriptors_presult");
   if (obj->__isset.success) {
@@ -2844,6 +3003,7 @@ uint32_t service_with_special_names_descriptors_presult_serializedSizeZC(Protoco
 
 template <class Protocol_>
 uint32_t service_with_special_names_descriptors_presult_write(Protocol_* prot_, const service_with_special_names_descriptors_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_descriptors_presult");
   if (obj->__isset.success) {
@@ -2858,6 +3018,7 @@ uint32_t service_with_special_names_descriptors_presult_write(Protocol_* prot_, 
 
 template <class Protocol_>
 uint32_t service_with_special_names_key_pargs_read(Protocol_* iprot, service_with_special_names_key_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -2890,6 +3051,7 @@ uint32_t service_with_special_names_key_pargs_read(Protocol_* iprot, service_wit
 
 template <class Protocol_>
 uint32_t service_with_special_names_key_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_key_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_key_pargs");
   xfer += prot_->serializedSizeStop();
@@ -2898,6 +3060,7 @@ uint32_t service_with_special_names_key_pargs_serializedSize(Protocol_ const* pr
 
 template <class Protocol_>
 uint32_t service_with_special_names_key_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_key_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_key_pargs");
   xfer += prot_->serializedSizeStop();
@@ -2906,6 +3069,7 @@ uint32_t service_with_special_names_key_pargs_serializedSizeZC(Protocol_ const* 
 
 template <class Protocol_>
 uint32_t service_with_special_names_key_pargs_write(Protocol_* prot_, const service_with_special_names_key_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_key_pargs");
   xfer += prot_->writeFieldStop();
@@ -2915,6 +3079,7 @@ uint32_t service_with_special_names_key_pargs_write(Protocol_* prot_, const serv
 
 template <class Protocol_>
 uint32_t service_with_special_names_key_presult_read(Protocol_* iprot, service_with_special_names_key_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -2962,6 +3127,7 @@ uint32_t service_with_special_names_key_presult_read(Protocol_* iprot, service_w
 
 template <class Protocol_>
 uint32_t service_with_special_names_key_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_key_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_key_presult");
   if (obj->__isset.success) {
@@ -2974,6 +3140,7 @@ uint32_t service_with_special_names_key_presult_serializedSize(Protocol_ const* 
 
 template <class Protocol_>
 uint32_t service_with_special_names_key_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_key_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_key_presult");
   if (obj->__isset.success) {
@@ -2986,6 +3153,7 @@ uint32_t service_with_special_names_key_presult_serializedSizeZC(Protocol_ const
 
 template <class Protocol_>
 uint32_t service_with_special_names_key_presult_write(Protocol_* prot_, const service_with_special_names_key_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_key_presult");
   if (obj->__isset.success) {
@@ -3000,6 +3168,7 @@ uint32_t service_with_special_names_key_presult_write(Protocol_* prot_, const se
 
 template <class Protocol_>
 uint32_t service_with_special_names_keys_pargs_read(Protocol_* iprot, service_with_special_names_keys_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -3032,6 +3201,7 @@ uint32_t service_with_special_names_keys_pargs_read(Protocol_* iprot, service_wi
 
 template <class Protocol_>
 uint32_t service_with_special_names_keys_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_keys_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_keys_pargs");
   xfer += prot_->serializedSizeStop();
@@ -3040,6 +3210,7 @@ uint32_t service_with_special_names_keys_pargs_serializedSize(Protocol_ const* p
 
 template <class Protocol_>
 uint32_t service_with_special_names_keys_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_keys_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_keys_pargs");
   xfer += prot_->serializedSizeStop();
@@ -3048,6 +3219,7 @@ uint32_t service_with_special_names_keys_pargs_serializedSizeZC(Protocol_ const*
 
 template <class Protocol_>
 uint32_t service_with_special_names_keys_pargs_write(Protocol_* prot_, const service_with_special_names_keys_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_keys_pargs");
   xfer += prot_->writeFieldStop();
@@ -3057,6 +3229,7 @@ uint32_t service_with_special_names_keys_pargs_write(Protocol_* prot_, const ser
 
 template <class Protocol_>
 uint32_t service_with_special_names_keys_presult_read(Protocol_* iprot, service_with_special_names_keys_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -3104,6 +3277,7 @@ uint32_t service_with_special_names_keys_presult_read(Protocol_* iprot, service_
 
 template <class Protocol_>
 uint32_t service_with_special_names_keys_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_keys_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_keys_presult");
   if (obj->__isset.success) {
@@ -3116,6 +3290,7 @@ uint32_t service_with_special_names_keys_presult_serializedSize(Protocol_ const*
 
 template <class Protocol_>
 uint32_t service_with_special_names_keys_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_keys_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_keys_presult");
   if (obj->__isset.success) {
@@ -3128,6 +3303,7 @@ uint32_t service_with_special_names_keys_presult_serializedSizeZC(Protocol_ cons
 
 template <class Protocol_>
 uint32_t service_with_special_names_keys_presult_write(Protocol_* prot_, const service_with_special_names_keys_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_keys_presult");
   if (obj->__isset.success) {
@@ -3142,6 +3318,7 @@ uint32_t service_with_special_names_keys_presult_write(Protocol_* prot_, const s
 
 template <class Protocol_>
 uint32_t service_with_special_names_annotation_pargs_read(Protocol_* iprot, service_with_special_names_annotation_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -3174,6 +3351,7 @@ uint32_t service_with_special_names_annotation_pargs_read(Protocol_* iprot, serv
 
 template <class Protocol_>
 uint32_t service_with_special_names_annotation_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_annotation_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_annotation_pargs");
   xfer += prot_->serializedSizeStop();
@@ -3182,6 +3360,7 @@ uint32_t service_with_special_names_annotation_pargs_serializedSize(Protocol_ co
 
 template <class Protocol_>
 uint32_t service_with_special_names_annotation_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_annotation_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_annotation_pargs");
   xfer += prot_->serializedSizeStop();
@@ -3190,6 +3369,7 @@ uint32_t service_with_special_names_annotation_pargs_serializedSizeZC(Protocol_ 
 
 template <class Protocol_>
 uint32_t service_with_special_names_annotation_pargs_write(Protocol_* prot_, const service_with_special_names_annotation_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_annotation_pargs");
   xfer += prot_->writeFieldStop();
@@ -3199,6 +3379,7 @@ uint32_t service_with_special_names_annotation_pargs_write(Protocol_* prot_, con
 
 template <class Protocol_>
 uint32_t service_with_special_names_annotation_presult_read(Protocol_* iprot, service_with_special_names_annotation_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -3246,6 +3427,7 @@ uint32_t service_with_special_names_annotation_presult_read(Protocol_* iprot, se
 
 template <class Protocol_>
 uint32_t service_with_special_names_annotation_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_annotation_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_annotation_presult");
   if (obj->__isset.success) {
@@ -3258,6 +3440,7 @@ uint32_t service_with_special_names_annotation_presult_serializedSize(Protocol_ 
 
 template <class Protocol_>
 uint32_t service_with_special_names_annotation_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_annotation_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_annotation_presult");
   if (obj->__isset.success) {
@@ -3270,6 +3453,7 @@ uint32_t service_with_special_names_annotation_presult_serializedSizeZC(Protocol
 
 template <class Protocol_>
 uint32_t service_with_special_names_annotation_presult_write(Protocol_* prot_, const service_with_special_names_annotation_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_annotation_presult");
   if (obj->__isset.success) {
@@ -3284,6 +3468,7 @@ uint32_t service_with_special_names_annotation_presult_write(Protocol_* prot_, c
 
 template <class Protocol_>
 uint32_t service_with_special_names_annotations_pargs_read(Protocol_* iprot, service_with_special_names_annotations_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -3316,6 +3501,7 @@ uint32_t service_with_special_names_annotations_pargs_read(Protocol_* iprot, ser
 
 template <class Protocol_>
 uint32_t service_with_special_names_annotations_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_annotations_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_annotations_pargs");
   xfer += prot_->serializedSizeStop();
@@ -3324,6 +3510,7 @@ uint32_t service_with_special_names_annotations_pargs_serializedSize(Protocol_ c
 
 template <class Protocol_>
 uint32_t service_with_special_names_annotations_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_annotations_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_annotations_pargs");
   xfer += prot_->serializedSizeStop();
@@ -3332,6 +3519,7 @@ uint32_t service_with_special_names_annotations_pargs_serializedSizeZC(Protocol_
 
 template <class Protocol_>
 uint32_t service_with_special_names_annotations_pargs_write(Protocol_* prot_, const service_with_special_names_annotations_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_annotations_pargs");
   xfer += prot_->writeFieldStop();
@@ -3341,6 +3529,7 @@ uint32_t service_with_special_names_annotations_pargs_write(Protocol_* prot_, co
 
 template <class Protocol_>
 uint32_t service_with_special_names_annotations_presult_read(Protocol_* iprot, service_with_special_names_annotations_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -3388,6 +3577,7 @@ uint32_t service_with_special_names_annotations_presult_read(Protocol_* iprot, s
 
 template <class Protocol_>
 uint32_t service_with_special_names_annotations_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_annotations_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_annotations_presult");
   if (obj->__isset.success) {
@@ -3400,6 +3590,7 @@ uint32_t service_with_special_names_annotations_presult_serializedSize(Protocol_
 
 template <class Protocol_>
 uint32_t service_with_special_names_annotations_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_annotations_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_annotations_presult");
   if (obj->__isset.success) {
@@ -3412,6 +3603,7 @@ uint32_t service_with_special_names_annotations_presult_serializedSizeZC(Protoco
 
 template <class Protocol_>
 uint32_t service_with_special_names_annotations_presult_write(Protocol_* prot_, const service_with_special_names_annotations_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_annotations_presult");
   if (obj->__isset.success) {
@@ -3426,6 +3618,7 @@ uint32_t service_with_special_names_annotations_presult_write(Protocol_* prot_, 
 
 template <class Protocol_>
 uint32_t service_with_special_names_member_pargs_read(Protocol_* iprot, service_with_special_names_member_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -3458,6 +3651,7 @@ uint32_t service_with_special_names_member_pargs_read(Protocol_* iprot, service_
 
 template <class Protocol_>
 uint32_t service_with_special_names_member_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_member_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_member_pargs");
   xfer += prot_->serializedSizeStop();
@@ -3466,6 +3660,7 @@ uint32_t service_with_special_names_member_pargs_serializedSize(Protocol_ const*
 
 template <class Protocol_>
 uint32_t service_with_special_names_member_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_member_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_member_pargs");
   xfer += prot_->serializedSizeStop();
@@ -3474,6 +3669,7 @@ uint32_t service_with_special_names_member_pargs_serializedSizeZC(Protocol_ cons
 
 template <class Protocol_>
 uint32_t service_with_special_names_member_pargs_write(Protocol_* prot_, const service_with_special_names_member_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_member_pargs");
   xfer += prot_->writeFieldStop();
@@ -3483,6 +3679,7 @@ uint32_t service_with_special_names_member_pargs_write(Protocol_* prot_, const s
 
 template <class Protocol_>
 uint32_t service_with_special_names_member_presult_read(Protocol_* iprot, service_with_special_names_member_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -3530,6 +3727,7 @@ uint32_t service_with_special_names_member_presult_read(Protocol_* iprot, servic
 
 template <class Protocol_>
 uint32_t service_with_special_names_member_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_member_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_member_presult");
   if (obj->__isset.success) {
@@ -3542,6 +3740,7 @@ uint32_t service_with_special_names_member_presult_serializedSize(Protocol_ cons
 
 template <class Protocol_>
 uint32_t service_with_special_names_member_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_member_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_member_presult");
   if (obj->__isset.success) {
@@ -3554,6 +3753,7 @@ uint32_t service_with_special_names_member_presult_serializedSizeZC(Protocol_ co
 
 template <class Protocol_>
 uint32_t service_with_special_names_member_presult_write(Protocol_* prot_, const service_with_special_names_member_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_member_presult");
   if (obj->__isset.success) {
@@ -3568,6 +3768,7 @@ uint32_t service_with_special_names_member_presult_write(Protocol_* prot_, const
 
 template <class Protocol_>
 uint32_t service_with_special_names_members_pargs_read(Protocol_* iprot, service_with_special_names_members_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -3600,6 +3801,7 @@ uint32_t service_with_special_names_members_pargs_read(Protocol_* iprot, service
 
 template <class Protocol_>
 uint32_t service_with_special_names_members_pargs_serializedSize(Protocol_ const* prot_, const service_with_special_names_members_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_members_pargs");
   xfer += prot_->serializedSizeStop();
@@ -3608,6 +3810,7 @@ uint32_t service_with_special_names_members_pargs_serializedSize(Protocol_ const
 
 template <class Protocol_>
 uint32_t service_with_special_names_members_pargs_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_members_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_members_pargs");
   xfer += prot_->serializedSizeStop();
@@ -3616,6 +3819,7 @@ uint32_t service_with_special_names_members_pargs_serializedSizeZC(Protocol_ con
 
 template <class Protocol_>
 uint32_t service_with_special_names_members_pargs_write(Protocol_* prot_, const service_with_special_names_members_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_members_pargs");
   xfer += prot_->writeFieldStop();
@@ -3625,6 +3829,7 @@ uint32_t service_with_special_names_members_pargs_write(Protocol_* prot_, const 
 
 template <class Protocol_>
 uint32_t service_with_special_names_members_presult_read(Protocol_* iprot, service_with_special_names_members_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -3672,6 +3877,7 @@ uint32_t service_with_special_names_members_presult_read(Protocol_* iprot, servi
 
 template <class Protocol_>
 uint32_t service_with_special_names_members_presult_serializedSize(Protocol_ const* prot_, const service_with_special_names_members_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_members_presult");
   if (obj->__isset.success) {
@@ -3684,6 +3890,7 @@ uint32_t service_with_special_names_members_presult_serializedSize(Protocol_ con
 
 template <class Protocol_>
 uint32_t service_with_special_names_members_presult_serializedSizeZC(Protocol_ const* prot_, const service_with_special_names_members_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service_with_special_names_members_presult");
   if (obj->__isset.success) {
@@ -3696,6 +3903,7 @@ uint32_t service_with_special_names_members_presult_serializedSizeZC(Protocol_ c
 
 template <class Protocol_>
 uint32_t service_with_special_names_members_presult_write(Protocol_* prot_, const service_with_special_names_members_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service_with_special_names_members_presult");
   if (obj->__isset.success) {

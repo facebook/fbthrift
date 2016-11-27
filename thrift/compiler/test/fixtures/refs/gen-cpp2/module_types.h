@@ -910,6 +910,7 @@ class StructWithContainers : private apache::thrift::detail::st::ComparisonOpera
     if (!(set_custom_ref == rhs.set_custom_ref)) {
       return set_custom_ref < rhs.set_custom_ref;
     }
+    (void)rhs;
     return false;
   }
 

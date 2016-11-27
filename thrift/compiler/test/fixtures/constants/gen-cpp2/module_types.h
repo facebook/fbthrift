@@ -308,6 +308,7 @@ class UnEnumStruct : private apache::thrift::detail::st::ComparisonOperators<UnE
     if (!(city == rhs.city)) {
       return city < rhs.city;
     }
+    (void)rhs;
     return false;
   }
 
@@ -417,6 +418,7 @@ class Range : private apache::thrift::detail::st::ComparisonOperators<Range> {
     if (!(max == rhs.max)) {
       return max < rhs.max;
     }
+    (void)rhs;
     return false;
   }
 

@@ -2171,6 +2171,9 @@ void t_cpp_generator::generate_equal_operator(ofstream& out,
               << "operator == (const " << tstruct->get_name()
               << " & rhs) const {" << endl;
   indent_up();
+  if (tstruct->get_members().size() == 0) {
+    out << indent() << "(void)rhs;" << endl;
+  }
   for (auto* member : tstruct->get_members()) {
     // Most existing Thrift code does not use isset or optional/required,
     // so we treat "default" fields as required.
@@ -3707,6 +3710,10 @@ void t_cpp_generator::generate_struct_merge(ofstream& out, t_struct* tstruct) {
                 << endl;
     indent_up();
     indent(out) << "using apache::thrift::merge;" << endl;
+    if (tstruct->get_members().size() == 0) {
+      indent(out) << "(void)from;" << endl;
+      indent(out) << "(void)to;" << endl;
+    }
     for (auto field : tstruct->get_members()) {
       code_map["field_name"] = field->get_name();
 

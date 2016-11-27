@@ -128,6 +128,7 @@ class Color : private apache::thrift::detail::st::ComparisonOperators<Color> {
     if (!(alpha == rhs.alpha)) {
       return alpha < rhs.alpha;
     }
+    (void)rhs;
     return false;
   }
 

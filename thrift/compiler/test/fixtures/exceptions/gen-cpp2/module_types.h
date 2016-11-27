@@ -42,6 +42,7 @@ class Banal : private apache::thrift::detail::st::ComparisonOperators<Banal>, pu
   bool operator==(const Banal& /* rhs */) const;
 
   bool operator < (const Banal& rhs) const {
+    (void)rhs;
     return false;
   }
 
@@ -128,6 +129,7 @@ class Fiery : private apache::thrift::detail::st::ComparisonOperators<Fiery>, pu
     if (!(message == rhs.message)) {
       return message < rhs.message;
     }
+    (void)rhs;
     return false;
   }
 

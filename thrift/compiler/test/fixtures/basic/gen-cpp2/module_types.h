@@ -112,6 +112,7 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
     if (!(MyStringField == rhs.MyStringField)) {
       return MyStringField < rhs.MyStringField;
     }
+    (void)rhs;
     return false;
   }
 

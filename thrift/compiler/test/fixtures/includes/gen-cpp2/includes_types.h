@@ -65,6 +65,7 @@ class Included : private apache::thrift::detail::st::ComparisonOperators<Include
     if (!(MyIntField == rhs.MyIntField)) {
       return MyIntField < rhs.MyIntField;
     }
+    (void)rhs;
     return false;
   }
 

@@ -18,6 +18,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 uint32_t service1_method1_pargs_read(Protocol_* iprot, service1_method1_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -50,6 +51,7 @@ uint32_t service1_method1_pargs_read(Protocol_* iprot, service1_method1_pargs* o
 
 template <class Protocol_>
 uint32_t service1_method1_pargs_serializedSize(Protocol_ const* prot_, const service1_method1_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service1_method1_pargs");
   xfer += prot_->serializedSizeStop();
@@ -58,6 +60,7 @@ uint32_t service1_method1_pargs_serializedSize(Protocol_ const* prot_, const ser
 
 template <class Protocol_>
 uint32_t service1_method1_pargs_serializedSizeZC(Protocol_ const* prot_, const service1_method1_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service1_method1_pargs");
   xfer += prot_->serializedSizeStop();
@@ -66,6 +69,7 @@ uint32_t service1_method1_pargs_serializedSizeZC(Protocol_ const* prot_, const s
 
 template <class Protocol_>
 uint32_t service1_method1_pargs_write(Protocol_* prot_, const service1_method1_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service1_method1_pargs");
   xfer += prot_->writeFieldStop();
@@ -75,6 +79,7 @@ uint32_t service1_method1_pargs_write(Protocol_* prot_, const service1_method1_p
 
 template <class Protocol_>
 uint32_t service1_method1_presult_read(Protocol_* iprot, service1_method1_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -107,6 +112,7 @@ uint32_t service1_method1_presult_read(Protocol_* iprot, service1_method1_presul
 
 template <class Protocol_>
 uint32_t service1_method1_presult_serializedSize(Protocol_ const* prot_, const service1_method1_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service1_method1_presult");
   xfer += prot_->serializedSizeStop();
@@ -115,6 +121,7 @@ uint32_t service1_method1_presult_serializedSize(Protocol_ const* prot_, const s
 
 template <class Protocol_>
 uint32_t service1_method1_presult_serializedSizeZC(Protocol_ const* prot_, const service1_method1_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service1_method1_presult");
   xfer += prot_->serializedSizeStop();
@@ -123,6 +130,7 @@ uint32_t service1_method1_presult_serializedSizeZC(Protocol_ const* prot_, const
 
 template <class Protocol_>
 uint32_t service1_method1_presult_write(Protocol_* prot_, const service1_method1_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service1_method1_presult");
   xfer += prot_->writeFieldStop();
@@ -132,6 +140,7 @@ uint32_t service1_method1_presult_write(Protocol_* prot_, const service1_method1
 
 template <class Protocol_>
 uint32_t service1_method2_pargs_read(Protocol_* iprot, service1_method2_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -204,6 +213,7 @@ uint32_t service1_method2_pargs_read(Protocol_* iprot, service1_method2_pargs* o
 
 template <class Protocol_>
 uint32_t service1_method2_pargs_serializedSize(Protocol_ const* prot_, const service1_method2_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service1_method2_pargs");
   xfer += prot_->serializedFieldSize("x", apache::thrift::protocol::T_I32, 1);
@@ -218,6 +228,7 @@ uint32_t service1_method2_pargs_serializedSize(Protocol_ const* prot_, const ser
 
 template <class Protocol_>
 uint32_t service1_method2_pargs_serializedSizeZC(Protocol_ const* prot_, const service1_method2_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service1_method2_pargs");
   xfer += prot_->serializedFieldSize("x", apache::thrift::protocol::T_I32, 1);
@@ -232,6 +243,7 @@ uint32_t service1_method2_pargs_serializedSizeZC(Protocol_ const* prot_, const s
 
 template <class Protocol_>
 uint32_t service1_method2_pargs_write(Protocol_* prot_, const service1_method2_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service1_method2_pargs");
   xfer += prot_->writeFieldBegin("x", apache::thrift::protocol::T_I32, 1);
@@ -250,6 +262,7 @@ uint32_t service1_method2_pargs_write(Protocol_* prot_, const service1_method2_p
 
 template <class Protocol_>
 uint32_t service1_method2_presult_read(Protocol_* iprot, service1_method2_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -282,6 +295,7 @@ uint32_t service1_method2_presult_read(Protocol_* iprot, service1_method2_presul
 
 template <class Protocol_>
 uint32_t service1_method2_presult_serializedSize(Protocol_ const* prot_, const service1_method2_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service1_method2_presult");
   xfer += prot_->serializedSizeStop();
@@ -290,6 +304,7 @@ uint32_t service1_method2_presult_serializedSize(Protocol_ const* prot_, const s
 
 template <class Protocol_>
 uint32_t service1_method2_presult_serializedSizeZC(Protocol_ const* prot_, const service1_method2_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service1_method2_presult");
   xfer += prot_->serializedSizeStop();
@@ -298,6 +313,7 @@ uint32_t service1_method2_presult_serializedSizeZC(Protocol_ const* prot_, const
 
 template <class Protocol_>
 uint32_t service1_method2_presult_write(Protocol_* prot_, const service1_method2_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service1_method2_presult");
   xfer += prot_->writeFieldStop();
@@ -307,6 +323,7 @@ uint32_t service1_method2_presult_write(Protocol_* prot_, const service1_method2
 
 template <class Protocol_>
 uint32_t service1_method3_pargs_read(Protocol_* iprot, service1_method3_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -339,6 +356,7 @@ uint32_t service1_method3_pargs_read(Protocol_* iprot, service1_method3_pargs* o
 
 template <class Protocol_>
 uint32_t service1_method3_pargs_serializedSize(Protocol_ const* prot_, const service1_method3_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service1_method3_pargs");
   xfer += prot_->serializedSizeStop();
@@ -347,6 +365,7 @@ uint32_t service1_method3_pargs_serializedSize(Protocol_ const* prot_, const ser
 
 template <class Protocol_>
 uint32_t service1_method3_pargs_serializedSizeZC(Protocol_ const* prot_, const service1_method3_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service1_method3_pargs");
   xfer += prot_->serializedSizeStop();
@@ -355,6 +374,7 @@ uint32_t service1_method3_pargs_serializedSizeZC(Protocol_ const* prot_, const s
 
 template <class Protocol_>
 uint32_t service1_method3_pargs_write(Protocol_* prot_, const service1_method3_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service1_method3_pargs");
   xfer += prot_->writeFieldStop();
@@ -364,6 +384,7 @@ uint32_t service1_method3_pargs_write(Protocol_* prot_, const service1_method3_p
 
 template <class Protocol_>
 uint32_t service1_method3_presult_read(Protocol_* iprot, service1_method3_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -411,6 +432,7 @@ uint32_t service1_method3_presult_read(Protocol_* iprot, service1_method3_presul
 
 template <class Protocol_>
 uint32_t service1_method3_presult_serializedSize(Protocol_ const* prot_, const service1_method3_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service1_method3_presult");
   if (obj->__isset.success) {
@@ -423,6 +445,7 @@ uint32_t service1_method3_presult_serializedSize(Protocol_ const* prot_, const s
 
 template <class Protocol_>
 uint32_t service1_method3_presult_serializedSizeZC(Protocol_ const* prot_, const service1_method3_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service1_method3_presult");
   if (obj->__isset.success) {
@@ -435,6 +458,7 @@ uint32_t service1_method3_presult_serializedSizeZC(Protocol_ const* prot_, const
 
 template <class Protocol_>
 uint32_t service1_method3_presult_write(Protocol_* prot_, const service1_method3_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service1_method3_presult");
   if (obj->__isset.success) {
@@ -449,6 +473,7 @@ uint32_t service1_method3_presult_write(Protocol_* prot_, const service1_method3
 
 template <class Protocol_>
 uint32_t service1_method4_pargs_read(Protocol_* iprot, service1_method4_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -521,6 +546,7 @@ uint32_t service1_method4_pargs_read(Protocol_* iprot, service1_method4_pargs* o
 
 template <class Protocol_>
 uint32_t service1_method4_pargs_serializedSize(Protocol_ const* prot_, const service1_method4_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service1_method4_pargs");
   xfer += prot_->serializedFieldSize("i", apache::thrift::protocol::T_I32, 1);
@@ -535,6 +561,7 @@ uint32_t service1_method4_pargs_serializedSize(Protocol_ const* prot_, const ser
 
 template <class Protocol_>
 uint32_t service1_method4_pargs_serializedSizeZC(Protocol_ const* prot_, const service1_method4_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service1_method4_pargs");
   xfer += prot_->serializedFieldSize("i", apache::thrift::protocol::T_I32, 1);
@@ -549,6 +576,7 @@ uint32_t service1_method4_pargs_serializedSizeZC(Protocol_ const* prot_, const s
 
 template <class Protocol_>
 uint32_t service1_method4_pargs_write(Protocol_* prot_, const service1_method4_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service1_method4_pargs");
   xfer += prot_->writeFieldBegin("i", apache::thrift::protocol::T_I32, 1);
@@ -567,6 +595,7 @@ uint32_t service1_method4_pargs_write(Protocol_* prot_, const service1_method4_p
 
 template <class Protocol_>
 uint32_t service1_method4_presult_read(Protocol_* iprot, service1_method4_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -614,6 +643,7 @@ uint32_t service1_method4_presult_read(Protocol_* iprot, service1_method4_presul
 
 template <class Protocol_>
 uint32_t service1_method4_presult_serializedSize(Protocol_ const* prot_, const service1_method4_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service1_method4_presult");
   if (obj->__isset.success) {
@@ -626,6 +656,7 @@ uint32_t service1_method4_presult_serializedSize(Protocol_ const* prot_, const s
 
 template <class Protocol_>
 uint32_t service1_method4_presult_serializedSizeZC(Protocol_ const* prot_, const service1_method4_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service1_method4_presult");
   if (obj->__isset.success) {
@@ -638,6 +669,7 @@ uint32_t service1_method4_presult_serializedSizeZC(Protocol_ const* prot_, const
 
 template <class Protocol_>
 uint32_t service1_method4_presult_write(Protocol_* prot_, const service1_method4_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service1_method4_presult");
   if (obj->__isset.success) {
@@ -652,6 +684,7 @@ uint32_t service1_method4_presult_write(Protocol_* prot_, const service1_method4
 
 template <class Protocol_>
 uint32_t service1_method5_pargs_read(Protocol_* iprot, service1_method5_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -684,6 +717,7 @@ uint32_t service1_method5_pargs_read(Protocol_* iprot, service1_method5_pargs* o
 
 template <class Protocol_>
 uint32_t service1_method5_pargs_serializedSize(Protocol_ const* prot_, const service1_method5_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service1_method5_pargs");
   xfer += prot_->serializedSizeStop();
@@ -692,6 +726,7 @@ uint32_t service1_method5_pargs_serializedSize(Protocol_ const* prot_, const ser
 
 template <class Protocol_>
 uint32_t service1_method5_pargs_serializedSizeZC(Protocol_ const* prot_, const service1_method5_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service1_method5_pargs");
   xfer += prot_->serializedSizeStop();
@@ -700,6 +735,7 @@ uint32_t service1_method5_pargs_serializedSizeZC(Protocol_ const* prot_, const s
 
 template <class Protocol_>
 uint32_t service1_method5_pargs_write(Protocol_* prot_, const service1_method5_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service1_method5_pargs");
   xfer += prot_->writeFieldStop();
@@ -709,6 +745,7 @@ uint32_t service1_method5_pargs_write(Protocol_* prot_, const service1_method5_p
 
 template <class Protocol_>
 uint32_t service1_method5_presult_read(Protocol_* iprot, service1_method5_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -756,6 +793,7 @@ uint32_t service1_method5_presult_read(Protocol_* iprot, service1_method5_presul
 
 template <class Protocol_>
 uint32_t service1_method5_presult_serializedSize(Protocol_ const* prot_, const service1_method5_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service1_method5_presult");
   if (obj->__isset.success) {
@@ -768,6 +806,7 @@ uint32_t service1_method5_presult_serializedSize(Protocol_ const* prot_, const s
 
 template <class Protocol_>
 uint32_t service1_method5_presult_serializedSizeZC(Protocol_ const* prot_, const service1_method5_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service1_method5_presult");
   if (obj->__isset.success) {
@@ -780,6 +819,7 @@ uint32_t service1_method5_presult_serializedSizeZC(Protocol_ const* prot_, const
 
 template <class Protocol_>
 uint32_t service1_method5_presult_write(Protocol_* prot_, const service1_method5_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service1_method5_presult");
   if (obj->__isset.success) {
@@ -794,6 +834,7 @@ uint32_t service1_method5_presult_write(Protocol_* prot_, const service1_method5
 
 template <class Protocol_>
 uint32_t service1_method6_pargs_read(Protocol_* iprot, service1_method6_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -866,6 +907,7 @@ uint32_t service1_method6_pargs_read(Protocol_* iprot, service1_method6_pargs* o
 
 template <class Protocol_>
 uint32_t service1_method6_pargs_serializedSize(Protocol_ const* prot_, const service1_method6_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service1_method6_pargs");
   xfer += prot_->serializedFieldSize("l", apache::thrift::protocol::T_I32, 1);
@@ -880,6 +922,7 @@ uint32_t service1_method6_pargs_serializedSize(Protocol_ const* prot_, const ser
 
 template <class Protocol_>
 uint32_t service1_method6_pargs_serializedSizeZC(Protocol_ const* prot_, const service1_method6_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service1_method6_pargs");
   xfer += prot_->serializedFieldSize("l", apache::thrift::protocol::T_I32, 1);
@@ -894,6 +937,7 @@ uint32_t service1_method6_pargs_serializedSizeZC(Protocol_ const* prot_, const s
 
 template <class Protocol_>
 uint32_t service1_method6_pargs_write(Protocol_* prot_, const service1_method6_pargs* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service1_method6_pargs");
   xfer += prot_->writeFieldBegin("l", apache::thrift::protocol::T_I32, 1);
@@ -912,6 +956,7 @@ uint32_t service1_method6_pargs_write(Protocol_* prot_, const service1_method6_p
 
 template <class Protocol_>
 uint32_t service1_method6_presult_read(Protocol_* iprot, service1_method6_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -959,6 +1004,7 @@ uint32_t service1_method6_presult_read(Protocol_* iprot, service1_method6_presul
 
 template <class Protocol_>
 uint32_t service1_method6_presult_serializedSize(Protocol_ const* prot_, const service1_method6_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service1_method6_presult");
   if (obj->__isset.success) {
@@ -971,6 +1017,7 @@ uint32_t service1_method6_presult_serializedSize(Protocol_ const* prot_, const s
 
 template <class Protocol_>
 uint32_t service1_method6_presult_serializedSizeZC(Protocol_ const* prot_, const service1_method6_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("service1_method6_presult");
   if (obj->__isset.success) {
@@ -983,6 +1030,7 @@ uint32_t service1_method6_presult_serializedSizeZC(Protocol_ const* prot_, const
 
 template <class Protocol_>
 uint32_t service1_method6_presult_write(Protocol_* prot_, const service1_method6_presult* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("service1_method6_presult");
   if (obj->__isset.success) {

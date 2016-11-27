@@ -1399,6 +1399,7 @@ class structA : private apache::thrift::detail::st::ComparisonOperators<structA>
     if (!(b == rhs.b)) {
       return b < rhs.b;
     }
+    (void)rhs;
     return false;
   }
 
@@ -1989,6 +1990,7 @@ class structB : private apache::thrift::detail::st::ComparisonOperators<structB>
     if (!(d == rhs.d)) {
       return d < rhs.d;
     }
+    (void)rhs;
     return false;
   }
 
@@ -2546,6 +2548,7 @@ class structC : private apache::thrift::detail::st::ComparisonOperators<structC>
     if (!(o3 == rhs.o3)) {
       return o3 < rhs.o3;
     }
+    (void)rhs;
     return false;
   }
 
@@ -3959,6 +3962,7 @@ class struct_binary : private apache::thrift::detail::st::ComparisonOperators<st
     if (!(bi == rhs.bi)) {
       return bi < rhs.bi;
     }
+    (void)rhs;
     return false;
   }
 
@@ -4072,6 +4076,7 @@ class annotated : private apache::thrift::detail::st::ComparisonOperators<annota
     if (!(a == rhs.a)) {
       return a < rhs.a;
     }
+    (void)rhs;
     return false;
   }
 
@@ -6158,6 +6163,7 @@ class struct_with_special_names : private apache::thrift::detail::st::Comparison
     if (!(members == rhs.members)) {
       return members < rhs.members;
     }
+    (void)rhs;
     return false;
   }
 

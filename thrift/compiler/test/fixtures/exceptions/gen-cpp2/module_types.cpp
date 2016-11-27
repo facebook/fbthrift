@@ -19,6 +19,8 @@ bool Banal::operator==(const Banal& /* rhs */) const {
 
 void swap(Banal& a, Banal& b) {
   using ::std::swap;
+  (void)a;
+  (void)b;
 }
 
 template uint32_t Banal::read<>(apache::thrift::BinaryProtocolReader*);

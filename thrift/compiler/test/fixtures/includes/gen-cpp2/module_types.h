@@ -66,6 +66,7 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
     if (!(MyIncludedField == rhs.MyIncludedField)) {
       return MyIncludedField < rhs.MyIncludedField;
     }
+    (void)rhs;
     return false;
   }
   const  ::cpp2::Included& get_MyIncludedField() const&;

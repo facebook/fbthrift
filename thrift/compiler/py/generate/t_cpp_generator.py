@@ -1142,7 +1142,12 @@ class CppGenerator(t_generator.Generator):
             sig += 'std::unique_ptr<{0}> callback'.format(
                     self._get_handler_callback_class(function))
 
-        sig += self._argument_list(function.arglist, True, unique=True)
+        sig += self._argument_list(
+            function.arglist,
+            add_comma=True,
+            unique=True,
+            no_param_names=self._is_stream_type(function.returntype),
+        )
         sig += ')'
         return sig
 
@@ -2817,6 +2822,8 @@ class CppGenerator(t_generator.Generator):
                             with out('if (!({0} == rhs.{0}))'
                                     .format(m.name)):
                                 out('return {0} < rhs.{0};'.format(m.name))
+                        else:
+                            out('(void)rhs;')
                         out('return false;')
             else:
                 struct('bool operator < (const {0}& rhs) const;'
@@ -3110,6 +3117,11 @@ class CppGenerator(t_generator.Generator):
                                 self._serialized_fields_protocol_name))
                         out('swap(a.{0}, b.{0});'.format(
                                 self._serialized_fields_name))
+                    if not (
+                            members or should_generate_isset or
+                            struct_options.has_serialized_fields):
+                        out('(void)a;')
+                        out('(void)b;')
         write_extern_templates()
 
     # ======================================================================
@@ -3149,6 +3161,8 @@ class CppGenerator(t_generator.Generator):
         struct_options = self._get_serialized_fields_options(obj)
         # s = scope of the read() function
         s = d.scope
+        if self.flag_compatibility:
+            s('(void)obj;')
         # Declare stack tmp variables
         s('uint32_t xfer = 0;')
         s('std::string fname;')
@@ -3591,6 +3605,9 @@ class CppGenerator(t_generator.Generator):
                         this))
             return
 
+        if self.flag_compatibility:
+            s('(void)obj;')
+
         if struct_options.has_serialized_fields:
             with s('if ({0}->{1} && '
                     'prot_->protocolType() != {0}->{2})'.format(
@@ -3736,6 +3753,9 @@ class CppGenerator(t_generator.Generator):
                 s("return ::apache::thrift::serializer_write(*{}, *prot_);".
                     format(this))
             return
+
+        if self.flag_compatibility:
+            s('(void)obj;')
 
         name = obj.name
         fields = filter(self._should_generate_field, obj.members)

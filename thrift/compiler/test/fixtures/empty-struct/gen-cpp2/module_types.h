@@ -41,6 +41,7 @@ class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
   bool operator==(const Empty& /* rhs */) const;
 
   bool operator < (const Empty& rhs) const {
+    (void)rhs;
     return false;
   }
 

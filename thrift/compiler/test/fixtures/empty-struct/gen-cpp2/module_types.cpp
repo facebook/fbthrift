@@ -19,6 +19,8 @@ bool Empty::operator==(const Empty& /* rhs */) const {
 
 void swap(Empty& a, Empty& b) {
   using ::std::swap;
+  (void)a;
+  (void)b;
 }
 
 template uint32_t Empty::read<>(apache::thrift::BinaryProtocolReader*);

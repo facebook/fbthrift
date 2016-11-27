@@ -20,6 +20,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 uint32_t union1_read(Protocol_* iprot, union1* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -115,6 +116,7 @@ uint32_t union1_read(Protocol_* iprot, union1* obj) {
 
 template <class Protocol_>
 uint32_t union1_serializedSize(Protocol_ const* prot_, const union1* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("union1");
   switch(obj->getType()) {
@@ -150,6 +152,7 @@ uint32_t union1_serializedSize(Protocol_ const* prot_, const union1* obj) {
 
 template <class Protocol_>
 uint32_t union1_serializedSizeZC(Protocol_ const* prot_, const union1* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("union1");
   switch(obj->getType()) {
@@ -185,6 +188,7 @@ uint32_t union1_serializedSizeZC(Protocol_ const* prot_, const union1* obj) {
 
 template <class Protocol_>
 uint32_t union1_write(Protocol_* prot_, const union1* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("union1");
   switch(obj->getType()) {
@@ -231,6 +235,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 uint32_t union2_read(Protocol_* iprot, union2* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -326,6 +331,7 @@ uint32_t union2_read(Protocol_* iprot, union2* obj) {
 
 template <class Protocol_>
 uint32_t union2_serializedSize(Protocol_ const* prot_, const union2* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("union2");
   switch(obj->getType()) {
@@ -361,6 +367,7 @@ uint32_t union2_serializedSize(Protocol_ const* prot_, const union2* obj) {
 
 template <class Protocol_>
 uint32_t union2_serializedSizeZC(Protocol_ const* prot_, const union2* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("union2");
   switch(obj->getType()) {
@@ -396,6 +403,7 @@ uint32_t union2_serializedSizeZC(Protocol_ const* prot_, const union2* obj) {
 
 template <class Protocol_>
 uint32_t union2_write(Protocol_* prot_, const union2* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("union2");
   switch(obj->getType()) {
@@ -442,6 +450,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 uint32_t union3_read(Protocol_* iprot, union3* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -537,6 +546,7 @@ uint32_t union3_read(Protocol_* iprot, union3* obj) {
 
 template <class Protocol_>
 uint32_t union3_serializedSize(Protocol_ const* prot_, const union3* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("union3");
   switch(obj->getType()) {
@@ -572,6 +582,7 @@ uint32_t union3_serializedSize(Protocol_ const* prot_, const union3* obj) {
 
 template <class Protocol_>
 uint32_t union3_serializedSizeZC(Protocol_ const* prot_, const union3* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("union3");
   switch(obj->getType()) {
@@ -607,6 +618,7 @@ uint32_t union3_serializedSizeZC(Protocol_ const* prot_, const union3* obj) {
 
 template <class Protocol_>
 uint32_t union3_write(Protocol_* prot_, const union3* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("union3");
   switch(obj->getType()) {
@@ -653,6 +665,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 uint32_t structA_read(Protocol_* iprot, structA* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -714,6 +727,7 @@ uint32_t structA_read(Protocol_* iprot, structA* obj) {
 
 template <class Protocol_>
 uint32_t structA_serializedSize(Protocol_ const* prot_, const structA* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structA");
   xfer += prot_->serializedFieldSize("a", apache::thrift::protocol::T_I32, 1);
@@ -726,6 +740,7 @@ uint32_t structA_serializedSize(Protocol_ const* prot_, const structA* obj) {
 
 template <class Protocol_>
 uint32_t structA_serializedSizeZC(Protocol_ const* prot_, const structA* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structA");
   xfer += prot_->serializedFieldSize("a", apache::thrift::protocol::T_I32, 1);
@@ -738,6 +753,7 @@ uint32_t structA_serializedSizeZC(Protocol_ const* prot_, const structA* obj) {
 
 template <class Protocol_>
 uint32_t structA_write(Protocol_* prot_, const structA* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("structA");
   xfer += prot_->writeFieldBegin("a", apache::thrift::protocol::T_I32, 1);
@@ -759,6 +775,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 uint32_t unionA_read(Protocol_* iprot, unionA* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -868,6 +885,7 @@ uint32_t unionA_read(Protocol_* iprot, unionA* obj) {
 
 template <class Protocol_>
 uint32_t unionA_serializedSize(Protocol_ const* prot_, const unionA* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("unionA");
   switch(obj->getType()) {
@@ -909,6 +927,7 @@ uint32_t unionA_serializedSize(Protocol_ const* prot_, const unionA* obj) {
 
 template <class Protocol_>
 uint32_t unionA_serializedSizeZC(Protocol_ const* prot_, const unionA* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("unionA");
   switch(obj->getType()) {
@@ -950,6 +969,7 @@ uint32_t unionA_serializedSizeZC(Protocol_ const* prot_, const unionA* obj) {
 
 template <class Protocol_>
 uint32_t unionA_write(Protocol_* prot_, const unionA* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("unionA");
   switch(obj->getType()) {
@@ -1003,6 +1023,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 uint32_t structB_read(Protocol_* iprot, structB* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -1064,6 +1085,7 @@ uint32_t structB_read(Protocol_* iprot, structB* obj) {
 
 template <class Protocol_>
 uint32_t structB_serializedSize(Protocol_ const* prot_, const structB* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structB");
   xfer += prot_->serializedFieldSize("c", apache::thrift::protocol::T_DOUBLE, 1);
@@ -1076,6 +1098,7 @@ uint32_t structB_serializedSize(Protocol_ const* prot_, const structB* obj) {
 
 template <class Protocol_>
 uint32_t structB_serializedSizeZC(Protocol_ const* prot_, const structB* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structB");
   xfer += prot_->serializedFieldSize("c", apache::thrift::protocol::T_DOUBLE, 1);
@@ -1088,6 +1111,7 @@ uint32_t structB_serializedSizeZC(Protocol_ const* prot_, const structB* obj) {
 
 template <class Protocol_>
 uint32_t structB_write(Protocol_* prot_, const structB* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("structB");
   xfer += prot_->writeFieldBegin("c", apache::thrift::protocol::T_DOUBLE, 1);
@@ -1109,6 +1133,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 uint32_t structC_read(Protocol_* iprot, structC* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -2071,6 +2096,7 @@ uint32_t structC_read(Protocol_* iprot, structC* obj) {
 
 template <class Protocol_>
 uint32_t structC_serializedSize(Protocol_ const* prot_, const structC* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structC");
   xfer += prot_->serializedFieldSize("a", apache::thrift::protocol::T_I32, 1);
@@ -2236,6 +2262,7 @@ uint32_t structC_serializedSize(Protocol_ const* prot_, const structC* obj) {
 
 template <class Protocol_>
 uint32_t structC_serializedSizeZC(Protocol_ const* prot_, const structC* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structC");
   xfer += prot_->serializedFieldSize("a", apache::thrift::protocol::T_I32, 1);
@@ -2401,6 +2428,7 @@ uint32_t structC_serializedSizeZC(Protocol_ const* prot_, const structC* obj) {
 
 template <class Protocol_>
 uint32_t structC_write(Protocol_* prot_, const structC* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("structC");
   xfer += prot_->writeFieldBegin("a", apache::thrift::protocol::T_I32, 1);
@@ -2603,6 +2631,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 uint32_t struct1_read(Protocol_* iprot, struct1* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -2732,6 +2761,7 @@ uint32_t struct1_read(Protocol_* iprot, struct1* obj) {
 
 template <class Protocol_>
 uint32_t struct1_serializedSize(Protocol_ const* prot_, const struct1* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct1");
   xfer += prot_->serializedFieldSize("field0", apache::thrift::protocol::T_I32, 1);
@@ -2756,6 +2786,7 @@ uint32_t struct1_serializedSize(Protocol_ const* prot_, const struct1* obj) {
 
 template <class Protocol_>
 uint32_t struct1_serializedSizeZC(Protocol_ const* prot_, const struct1* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct1");
   xfer += prot_->serializedFieldSize("field0", apache::thrift::protocol::T_I32, 1);
@@ -2780,6 +2811,7 @@ uint32_t struct1_serializedSizeZC(Protocol_ const* prot_, const struct1* obj) {
 
 template <class Protocol_>
 uint32_t struct1_write(Protocol_* prot_, const struct1* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("struct1");
   xfer += prot_->writeFieldBegin("field0", apache::thrift::protocol::T_I32, 1);
@@ -2817,6 +2849,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 uint32_t struct2_read(Protocol_* iprot, struct2* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -2952,6 +2985,7 @@ uint32_t struct2_read(Protocol_* iprot, struct2* obj) {
 
 template <class Protocol_>
 uint32_t struct2_serializedSize(Protocol_ const* prot_, const struct2* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct2");
   xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_I32, 1);
@@ -2974,6 +3008,7 @@ uint32_t struct2_serializedSize(Protocol_ const* prot_, const struct2* obj) {
 
 template <class Protocol_>
 uint32_t struct2_serializedSizeZC(Protocol_ const* prot_, const struct2* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct2");
   xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_I32, 1);
@@ -2996,6 +3031,7 @@ uint32_t struct2_serializedSizeZC(Protocol_ const* prot_, const struct2* obj) {
 
 template <class Protocol_>
 uint32_t struct2_write(Protocol_* prot_, const struct2* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("struct2");
   xfer += prot_->writeFieldBegin("fieldA", apache::thrift::protocol::T_I32, 1);
@@ -3032,6 +3068,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 uint32_t struct3_read(Protocol_* iprot, struct3* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -3515,6 +3552,7 @@ uint32_t struct3_read(Protocol_* iprot, struct3* obj) {
 
 template <class Protocol_>
 uint32_t struct3_serializedSize(Protocol_ const* prot_, const struct3* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct3");
   xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_I32, 1);
@@ -3601,6 +3639,7 @@ uint32_t struct3_serializedSize(Protocol_ const* prot_, const struct3* obj) {
 
 template <class Protocol_>
 uint32_t struct3_serializedSizeZC(Protocol_ const* prot_, const struct3* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct3");
   xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_I32, 1);
@@ -3687,6 +3726,7 @@ uint32_t struct3_serializedSizeZC(Protocol_ const* prot_, const struct3* obj) {
 
 template <class Protocol_>
 uint32_t struct3_write(Protocol_* prot_, const struct3* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("struct3");
   xfer += prot_->writeFieldBegin("fieldA", apache::thrift::protocol::T_I32, 1);
@@ -3798,6 +3838,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 uint32_t struct4_read(Protocol_* iprot, struct4* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -3893,6 +3934,7 @@ uint32_t struct4_read(Protocol_* iprot, struct4* obj) {
 
 template <class Protocol_>
 uint32_t struct4_serializedSize(Protocol_ const* prot_, const struct4* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct4");
   xfer += prot_->serializedFieldSize("field0", apache::thrift::protocol::T_I32, 1);
@@ -3911,6 +3953,7 @@ uint32_t struct4_serializedSize(Protocol_ const* prot_, const struct4* obj) {
 
 template <class Protocol_>
 uint32_t struct4_serializedSizeZC(Protocol_ const* prot_, const struct4* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct4");
   xfer += prot_->serializedFieldSize("field0", apache::thrift::protocol::T_I32, 1);
@@ -3929,6 +3972,7 @@ uint32_t struct4_serializedSizeZC(Protocol_ const* prot_, const struct4* obj) {
 
 template <class Protocol_>
 uint32_t struct4_write(Protocol_* prot_, const struct4* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("struct4");
   xfer += prot_->writeFieldBegin("field0", apache::thrift::protocol::T_I32, 1);
@@ -3958,6 +4002,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 uint32_t struct5_read(Protocol_* iprot, struct5* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -4067,6 +4112,7 @@ uint32_t struct5_read(Protocol_* iprot, struct5* obj) {
 
 template <class Protocol_>
 uint32_t struct5_serializedSize(Protocol_ const* prot_, const struct5* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct5");
   xfer += prot_->serializedFieldSize("field0", apache::thrift::protocol::T_I32, 1);
@@ -4087,6 +4133,7 @@ uint32_t struct5_serializedSize(Protocol_ const* prot_, const struct5* obj) {
 
 template <class Protocol_>
 uint32_t struct5_serializedSizeZC(Protocol_ const* prot_, const struct5* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct5");
   xfer += prot_->serializedFieldSize("field0", apache::thrift::protocol::T_I32, 1);
@@ -4107,6 +4154,7 @@ uint32_t struct5_serializedSizeZC(Protocol_ const* prot_, const struct5* obj) {
 
 template <class Protocol_>
 uint32_t struct5_write(Protocol_* prot_, const struct5* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("struct5");
   xfer += prot_->writeFieldBegin("field0", apache::thrift::protocol::T_I32, 1);
@@ -4139,6 +4187,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 uint32_t struct_binary_read(Protocol_* iprot, struct_binary* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -4186,6 +4235,7 @@ uint32_t struct_binary_read(Protocol_* iprot, struct_binary* obj) {
 
 template <class Protocol_>
 uint32_t struct_binary_serializedSize(Protocol_ const* prot_, const struct_binary* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct_binary");
   xfer += prot_->serializedFieldSize("bi", apache::thrift::protocol::T_STRING, 1);
@@ -4196,6 +4246,7 @@ uint32_t struct_binary_serializedSize(Protocol_ const* prot_, const struct_binar
 
 template <class Protocol_>
 uint32_t struct_binary_serializedSizeZC(Protocol_ const* prot_, const struct_binary* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct_binary");
   xfer += prot_->serializedFieldSize("bi", apache::thrift::protocol::T_STRING, 1);
@@ -4206,6 +4257,7 @@ uint32_t struct_binary_serializedSizeZC(Protocol_ const* prot_, const struct_bin
 
 template <class Protocol_>
 uint32_t struct_binary_write(Protocol_* prot_, const struct_binary* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("struct_binary");
   xfer += prot_->writeFieldBegin("bi", apache::thrift::protocol::T_STRING, 1);
@@ -4224,6 +4276,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 uint32_t annotated_read(Protocol_* iprot, annotated* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -4271,6 +4324,7 @@ uint32_t annotated_read(Protocol_* iprot, annotated* obj) {
 
 template <class Protocol_>
 uint32_t annotated_serializedSize(Protocol_ const* prot_, const annotated* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("annotated");
   xfer += prot_->serializedFieldSize("a", apache::thrift::protocol::T_I32, 1);
@@ -4281,6 +4335,7 @@ uint32_t annotated_serializedSize(Protocol_ const* prot_, const annotated* obj) 
 
 template <class Protocol_>
 uint32_t annotated_serializedSizeZC(Protocol_ const* prot_, const annotated* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("annotated");
   xfer += prot_->serializedFieldSize("a", apache::thrift::protocol::T_I32, 1);
@@ -4291,6 +4346,7 @@ uint32_t annotated_serializedSizeZC(Protocol_ const* prot_, const annotated* obj
 
 template <class Protocol_>
 uint32_t annotated_write(Protocol_* prot_, const annotated* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("annotated");
   xfer += prot_->writeFieldBegin("a", apache::thrift::protocol::T_I32, 1);
@@ -4309,6 +4365,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 uint32_t union_with_special_names_read(Protocol_* iprot, union_with_special_names* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -4710,6 +4767,7 @@ uint32_t union_with_special_names_read(Protocol_* iprot, union_with_special_name
 
 template <class Protocol_>
 uint32_t union_with_special_names_serializedSize(Protocol_ const* prot_, const union_with_special_names* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("union_with_special_names");
   switch(obj->getType()) {
@@ -4877,6 +4935,7 @@ uint32_t union_with_special_names_serializedSize(Protocol_ const* prot_, const u
 
 template <class Protocol_>
 uint32_t union_with_special_names_serializedSizeZC(Protocol_ const* prot_, const union_with_special_names* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("union_with_special_names");
   switch(obj->getType()) {
@@ -5044,6 +5103,7 @@ uint32_t union_with_special_names_serializedSizeZC(Protocol_ const* prot_, const
 
 template <class Protocol_>
 uint32_t union_with_special_names_write(Protocol_* prot_, const union_with_special_names* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("union_with_special_names");
   switch(obj->getType()) {
@@ -5244,6 +5304,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 template <class Protocol_>
 uint32_t struct_with_special_names_read(Protocol_* iprot, struct_with_special_names* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -5641,6 +5702,7 @@ uint32_t struct_with_special_names_read(Protocol_* iprot, struct_with_special_na
 
 template <class Protocol_>
 uint32_t struct_with_special_names_serializedSize(Protocol_ const* prot_, const struct_with_special_names* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct_with_special_names");
   xfer += prot_->serializedFieldSize("get", apache::thrift::protocol::T_I32, 1);
@@ -5701,6 +5763,7 @@ uint32_t struct_with_special_names_serializedSize(Protocol_ const* prot_, const 
 
 template <class Protocol_>
 uint32_t struct_with_special_names_serializedSizeZC(Protocol_ const* prot_, const struct_with_special_names* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct_with_special_names");
   xfer += prot_->serializedFieldSize("get", apache::thrift::protocol::T_I32, 1);
@@ -5761,6 +5824,7 @@ uint32_t struct_with_special_names_serializedSizeZC(Protocol_ const* prot_, cons
 
 template <class Protocol_>
 uint32_t struct_with_special_names_write(Protocol_* prot_, const struct_with_special_names* obj) {
+  (void)obj;
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("struct_with_special_names");
   xfer += prot_->writeFieldBegin("get", apache::thrift::protocol::T_I32, 1);
