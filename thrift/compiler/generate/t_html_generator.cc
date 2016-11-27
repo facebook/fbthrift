@@ -41,8 +41,8 @@ class t_html_generator : public t_concat_generator {
  public:
   t_html_generator(
       t_program* program,
-      const std::map<std::string, std::string>& parsed_options,
-      const std::string& option_string)
+      const std::map<std::string, std::string>& /* parsed_options */,
+      const std::string& /* option_string */)
     : t_concat_generator(program)
   {
     out_dir_base_ = "gen-html";

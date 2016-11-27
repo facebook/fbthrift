@@ -3416,7 +3416,10 @@ void t_cpp_generator::generate_struct_reader(ofstream& out,
  * has changed from its initial value.
  */
 bool t_cpp_generator::try_terse_write_predicate(
-    ofstream& out, t_field* tfield, bool pointers, TerseWrites terse_writes,
+    ofstream& /* out */,
+    t_field* tfield,
+    bool pointers,
+    TerseWrites terse_writes,
     string& predicate) {
   if (terse_writes == TW_DISABLED) {
     return false;
@@ -7336,7 +7339,7 @@ string t_cpp_generator::base_type_name(t_base_type::t_base tbase) const {
 std::string t_cpp_generator::generate_reflection_initializer_name(t_type* type){
   char buf[21];
   int n = snprintf(buf, sizeof buf, "%" PRIu64, type->get_type_id());
-  assert(0 < n && n < sizeof buf);
+  assert(0 < n && n < int(sizeof buf));
   return std::string("reflectionInitializer_") + buf;
 }
 

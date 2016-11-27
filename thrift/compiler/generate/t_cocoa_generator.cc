@@ -340,11 +340,11 @@ string t_cocoa_generator::cocoa_thrift_imports() {
   };
 
   string result = "";
-  for (int i = 0; i < sizeof(systemImports) / sizeof(systemImports[0]); i++) {
+  for (const auto& systemImport : systemImports) {
     if (import_path_ == "") {
-      result += "#import \"" + systemImports[i] + ".h\"\n";
+      result += "#import \"" + systemImport + ".h\"\n";
     } else {
-      result += "#import <" + import_path_  + systemImports[i] + ".h>\n";
+      result += "#import <" + import_path_  + systemImport + ".h>\n";
     }
   }
 

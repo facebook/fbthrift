@@ -383,11 +383,12 @@ class t_php_generator : public t_oop_generator {
   bool mangled_services_;
 };
 
-void t_php_generator::generate_json_enum(std::ofstream& out,
-                                         t_name_generator& namer,
-                                         t_enum* /*tenum*/,
-                                         const string& prefix_thrift,
-                                         const string& prefix_json) {
+void t_php_generator::generate_json_enum(
+    std::ofstream& out,
+    t_name_generator& /* namer */,
+    t_enum* /* tenum */,
+    const string& prefix_thrift,
+    const string& prefix_json) {
   indent(out) << prefix_thrift << " = " << "(int)"
               << prefix_json << ";" << endl;
 }
@@ -3184,10 +3185,11 @@ void t_php_generator::generate_serialize_field(ofstream& out,
  * @param tstruct The struct to serialize
  * @param prefix  String prefix to attach to all fields
  */
-void t_php_generator::generate_serialize_struct(ofstream& out,
-                                                t_name_generator& namer,
-                                                t_struct* /*tstruct*/,
-                                                string prefix) {
+void t_php_generator::generate_serialize_struct(
+    ofstream& out,
+    t_name_generator& /* namer */,
+    t_struct* /* tstruct */,
+    string prefix) {
   indent(out) <<
     "$xfer += $" << prefix << "->write($output);" << endl;
 }

@@ -39,8 +39,8 @@ class t_ocaml_generator : public t_oop_generator {
  public:
   t_ocaml_generator(
       t_program* program,
-      const std::map<std::string, std::string>& parsed_options,
-      const std::string& option_string)
+      const std::map<std::string, std::string>& /* parsed_options */,
+      const std::string& /* option_string */)
     : t_oop_generator(program)
   {
     out_dir_base_ = "gen-ocaml";
@@ -1069,8 +1069,8 @@ void t_ocaml_generator::generate_service_server(t_service* tservice) {
  *
  * @param tfunction The function to write a dispatcher for
  */
-void t_ocaml_generator::generate_process_function(t_service* tservice,
-                                               t_function* tfunction) {
+void t_ocaml_generator::generate_process_function(
+    t_service* /* tservice */, t_function* tfunction) {
   // Open function
   indent(f_service_) <<
     "method private process_" << tfunction->get_name() <<
@@ -1409,9 +1409,8 @@ void t_ocaml_generator::generate_serialize_field(ofstream &out,
  * @param tstruct The struct to serialize
  * @param prefix  String prefix to attach to all fields
  */
-void t_ocaml_generator::generate_serialize_struct(ofstream &out,
-                                               t_struct* tstruct,
-                                               string prefix) {
+void t_ocaml_generator::generate_serialize_struct(
+    ofstream &out, t_struct* /* tstruct */, string prefix) {
   indent(out) << prefix << "#write(oprot)";
 }
 
