@@ -10,8 +10,9 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
-from cython.operator cimport dereference as deref
+from cython.operator cimport dereference as deref, preincrement as inc
 from thrift.lib.py3.thrift_server cimport TException
+from std_libcpp cimport find as cfind, distance as cdistance, count as ccount
 
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
@@ -285,6 +286,38 @@ cdef class List__i16:
     def __hash__(self):
         return hash(tuple(self))
 
+    def __contains__(self, int item):
+        cdef int16_t citem = item
+        cdef vector[int16_t] vec = deref(self._vector)
+        return cfind(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        cdef int16_t citem
+        for citem in deref(self._vector):
+            yield citem
+
+    def __reversed__(self):
+        cdef int16_t citem
+        cdef vector[int16_t] vec = deref(self._vector)
+        cdef vector[int16_t].reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield citem
+            inc(loc)
+
+    def index(self, item):
+        cdef int16_t citem = item
+        cdef vector[int16_t] vec = deref(self._vector)
+        cdef vector[int16_t].iterator loc = cfind(vec.begin(), vec.end(), citem)
+        if loc != vec.end():
+            return <int64_t> cdistance(vec.begin(), loc)
+        raise ValueError("{} is not in list".format(item))
+
+    def count(self, item):
+        cdef int16_t citem = item
+        cdef vector[int16_t] vec = deref(self._vector)
+        return <int64_t> ccount(vec.begin(), vec.end(), citem)
+
 
 Sequence.register(List__i16)
 
@@ -325,6 +358,38 @@ cdef class List__i32:
 
     def __hash__(self):
         return hash(tuple(self))
+
+    def __contains__(self, int item):
+        cdef int32_t citem = item
+        cdef vector[int32_t] vec = deref(self._vector)
+        return cfind(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        cdef int32_t citem
+        for citem in deref(self._vector):
+            yield citem
+
+    def __reversed__(self):
+        cdef int32_t citem
+        cdef vector[int32_t] vec = deref(self._vector)
+        cdef vector[int32_t].reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield citem
+            inc(loc)
+
+    def index(self, item):
+        cdef int32_t citem = item
+        cdef vector[int32_t] vec = deref(self._vector)
+        cdef vector[int32_t].iterator loc = cfind(vec.begin(), vec.end(), citem)
+        if loc != vec.end():
+            return <int64_t> cdistance(vec.begin(), loc)
+        raise ValueError("{} is not in list".format(item))
+
+    def count(self, item):
+        cdef int32_t citem = item
+        cdef vector[int32_t] vec = deref(self._vector)
+        return <int64_t> ccount(vec.begin(), vec.end(), citem)
 
 
 Sequence.register(List__i32)
@@ -367,6 +432,38 @@ cdef class List__i64:
     def __hash__(self):
         return hash(tuple(self))
 
+    def __contains__(self, int item):
+        cdef int64_t citem = item
+        cdef vector[int64_t] vec = deref(self._vector)
+        return cfind(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        cdef int64_t citem
+        for citem in deref(self._vector):
+            yield citem
+
+    def __reversed__(self):
+        cdef int64_t citem
+        cdef vector[int64_t] vec = deref(self._vector)
+        cdef vector[int64_t].reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield citem
+            inc(loc)
+
+    def index(self, item):
+        cdef int64_t citem = item
+        cdef vector[int64_t] vec = deref(self._vector)
+        cdef vector[int64_t].iterator loc = cfind(vec.begin(), vec.end(), citem)
+        if loc != vec.end():
+            return <int64_t> cdistance(vec.begin(), loc)
+        raise ValueError("{} is not in list".format(item))
+
+    def count(self, item):
+        cdef int64_t citem = item
+        cdef vector[int64_t] vec = deref(self._vector)
+        return <int64_t> ccount(vec.begin(), vec.end(), citem)
+
 
 Sequence.register(List__i64)
 
@@ -408,6 +505,38 @@ cdef class List__string:
     def __hash__(self):
         return hash(tuple(self))
 
+    def __contains__(self, str item):
+        cdef string citem = item.encode('UTF-8')
+        cdef vector[string] vec = deref(self._vector)
+        return cfind(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        cdef string citem
+        for citem in deref(self._vector):
+            yield citem.decode()
+
+    def __reversed__(self):
+        cdef string citem
+        cdef vector[string] vec = deref(self._vector)
+        cdef vector[string].reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield citem.decode()
+            inc(loc)
+
+    def index(self, item):
+        cdef string citem = item.encode('UTF-8')
+        cdef vector[string] vec = deref(self._vector)
+        cdef vector[string].iterator loc = cfind(vec.begin(), vec.end(), citem)
+        if loc != vec.end():
+            return <int64_t> cdistance(vec.begin(), loc)
+        raise ValueError("{} is not in list".format(item))
+
+    def count(self, item):
+        cdef string citem = item.encode('UTF-8')
+        cdef vector[string] vec = deref(self._vector)
+        return <int64_t> ccount(vec.begin(), vec.end(), citem)
+
 
 Sequence.register(List__string)
 
@@ -448,6 +577,38 @@ cdef class List__SimpleStruct:
 
     def __hash__(self):
         return hash(tuple(self))
+
+    def __contains__(self, py3.module_types.SimpleStruct item):
+        cdef py3.module_types.cSimpleStruct citem = deref((<py3.module_types.SimpleStruct> item).c_SimpleStruct)
+        cdef vector[py3.module_types.cSimpleStruct] vec = deref(self._vector)
+        return cfind(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        cdef py3.module_types.cSimpleStruct citem
+        for citem in deref(self._vector):
+            yield py3.module_types.SimpleStruct.create(make_shared[py3.module_types.cSimpleStruct](citem))
+
+    def __reversed__(self):
+        cdef py3.module_types.cSimpleStruct citem
+        cdef vector[py3.module_types.cSimpleStruct] vec = deref(self._vector)
+        cdef vector[py3.module_types.cSimpleStruct].reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield py3.module_types.SimpleStruct.create(make_shared[py3.module_types.cSimpleStruct](citem))
+            inc(loc)
+
+    def index(self, item):
+        cdef py3.module_types.cSimpleStruct citem = deref((<py3.module_types.SimpleStruct> item).c_SimpleStruct)
+        cdef vector[py3.module_types.cSimpleStruct] vec = deref(self._vector)
+        cdef vector[py3.module_types.cSimpleStruct].iterator loc = cfind(vec.begin(), vec.end(), citem)
+        if loc != vec.end():
+            return <int64_t> cdistance(vec.begin(), loc)
+        raise ValueError("{} is not in list".format(item))
+
+    def count(self, item):
+        cdef py3.module_types.cSimpleStruct citem = deref((<py3.module_types.SimpleStruct> item).c_SimpleStruct)
+        cdef vector[py3.module_types.cSimpleStruct] vec = deref(self._vector)
+        return <int64_t> ccount(vec.begin(), vec.end(), citem)
 
 
 Sequence.register(List__SimpleStruct)
@@ -738,6 +899,38 @@ cdef class List__List__i32:
     def __hash__(self):
         return hash(tuple(self))
 
+    def __contains__(self, List__i32 item):
+        cdef vector[int32_t] citem = vector[int32_t](deref(List__i32(item)._vector))
+        cdef vector[vector[int32_t]] vec = deref(self._vector)
+        return cfind(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        cdef vector[int32_t] citem
+        for citem in deref(self._vector):
+            yield List__i32.create(make_shared[vector[int32_t]](citem))
+
+    def __reversed__(self):
+        cdef vector[int32_t] citem
+        cdef vector[vector[int32_t]] vec = deref(self._vector)
+        cdef vector[vector[int32_t]].reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield List__i32.create(make_shared[vector[int32_t]](citem))
+            inc(loc)
+
+    def index(self, item):
+        cdef vector[int32_t] citem = vector[int32_t](deref(List__i32(item)._vector))
+        cdef vector[vector[int32_t]] vec = deref(self._vector)
+        cdef vector[vector[int32_t]].iterator loc = cfind(vec.begin(), vec.end(), citem)
+        if loc != vec.end():
+            return <int64_t> cdistance(vec.begin(), loc)
+        raise ValueError("{} is not in list".format(item))
+
+    def count(self, item):
+        cdef vector[int32_t] citem = vector[int32_t](deref(List__i32(item)._vector))
+        cdef vector[vector[int32_t]] vec = deref(self._vector)
+        return <int64_t> ccount(vec.begin(), vec.end(), citem)
+
 
 Sequence.register(List__List__i32)
 
@@ -887,6 +1080,38 @@ cdef class List__Set__string:
     def __hash__(self):
         return hash(tuple(self))
 
+    def __contains__(self, Set__string item):
+        cdef cset[string] citem = cset[string](deref(Set__string(item)._set))
+        cdef vector[cset[string]] vec = deref(self._vector)
+        return cfind(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        cdef cset[string] citem
+        for citem in deref(self._vector):
+            yield Set__string.create(make_shared[cset[string]](citem))
+
+    def __reversed__(self):
+        cdef cset[string] citem
+        cdef vector[cset[string]] vec = deref(self._vector)
+        cdef vector[cset[string]].reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield Set__string.create(make_shared[cset[string]](citem))
+            inc(loc)
+
+    def index(self, item):
+        cdef cset[string] citem = cset[string](deref(Set__string(item)._set))
+        cdef vector[cset[string]] vec = deref(self._vector)
+        cdef vector[cset[string]].iterator loc = cfind(vec.begin(), vec.end(), citem)
+        if loc != vec.end():
+            return <int64_t> cdistance(vec.begin(), loc)
+        raise ValueError("{} is not in list".format(item))
+
+    def count(self, item):
+        cdef cset[string] citem = cset[string](deref(Set__string(item)._set))
+        cdef vector[cset[string]] vec = deref(self._vector)
+        return <int64_t> ccount(vec.begin(), vec.end(), citem)
+
 
 Sequence.register(List__Set__string)
 
@@ -982,6 +1207,38 @@ cdef class List__List__string:
     def __hash__(self):
         return hash(tuple(self))
 
+    def __contains__(self, List__string item):
+        cdef vector[string] citem = vector[string](deref(List__string(item)._vector))
+        cdef vector[vector[string]] vec = deref(self._vector)
+        return cfind(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        cdef vector[string] citem
+        for citem in deref(self._vector):
+            yield List__string.create(make_shared[vector[string]](citem))
+
+    def __reversed__(self):
+        cdef vector[string] citem
+        cdef vector[vector[string]] vec = deref(self._vector)
+        cdef vector[vector[string]].reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield List__string.create(make_shared[vector[string]](citem))
+            inc(loc)
+
+    def index(self, item):
+        cdef vector[string] citem = vector[string](deref(List__string(item)._vector))
+        cdef vector[vector[string]] vec = deref(self._vector)
+        cdef vector[vector[string]].iterator loc = cfind(vec.begin(), vec.end(), citem)
+        if loc != vec.end():
+            return <int64_t> cdistance(vec.begin(), loc)
+        raise ValueError("{} is not in list".format(item))
+
+    def count(self, item):
+        cdef vector[string] citem = vector[string](deref(List__string(item)._vector))
+        cdef vector[vector[string]] vec = deref(self._vector)
+        return <int64_t> ccount(vec.begin(), vec.end(), citem)
+
 
 Sequence.register(List__List__string)
 
@@ -1023,6 +1280,38 @@ cdef class List__Set__i32:
     def __hash__(self):
         return hash(tuple(self))
 
+    def __contains__(self, Set__i32 item):
+        cdef cset[int32_t] citem = cset[int32_t](deref(Set__i32(item)._set))
+        cdef vector[cset[int32_t]] vec = deref(self._vector)
+        return cfind(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        cdef cset[int32_t] citem
+        for citem in deref(self._vector):
+            yield Set__i32.create(make_shared[cset[int32_t]](citem))
+
+    def __reversed__(self):
+        cdef cset[int32_t] citem
+        cdef vector[cset[int32_t]] vec = deref(self._vector)
+        cdef vector[cset[int32_t]].reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield Set__i32.create(make_shared[cset[int32_t]](citem))
+            inc(loc)
+
+    def index(self, item):
+        cdef cset[int32_t] citem = cset[int32_t](deref(Set__i32(item)._set))
+        cdef vector[cset[int32_t]] vec = deref(self._vector)
+        cdef vector[cset[int32_t]].iterator loc = cfind(vec.begin(), vec.end(), citem)
+        if loc != vec.end():
+            return <int64_t> cdistance(vec.begin(), loc)
+        raise ValueError("{} is not in list".format(item))
+
+    def count(self, item):
+        cdef cset[int32_t] citem = cset[int32_t](deref(Set__i32(item)._set))
+        cdef vector[cset[int32_t]] vec = deref(self._vector)
+        return <int64_t> ccount(vec.begin(), vec.end(), citem)
+
 
 Sequence.register(List__Set__i32)
 
@@ -1063,6 +1352,38 @@ cdef class List__Map__string_string:
 
     def __hash__(self):
         return hash(tuple(self))
+
+    def __contains__(self, Map__string_string item):
+        cdef cmap[string,string] citem = cmap[string,string](deref(Map__string_string(item)._map))
+        cdef vector[cmap[string,string]] vec = deref(self._vector)
+        return cfind(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        cdef cmap[string,string] citem
+        for citem in deref(self._vector):
+            yield Map__string_string.create(make_shared[cmap[string,string]](citem))
+
+    def __reversed__(self):
+        cdef cmap[string,string] citem
+        cdef vector[cmap[string,string]] vec = deref(self._vector)
+        cdef vector[cmap[string,string]].reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield Map__string_string.create(make_shared[cmap[string,string]](citem))
+            inc(loc)
+
+    def index(self, item):
+        cdef cmap[string,string] citem = cmap[string,string](deref(Map__string_string(item)._map))
+        cdef vector[cmap[string,string]] vec = deref(self._vector)
+        cdef vector[cmap[string,string]].iterator loc = cfind(vec.begin(), vec.end(), citem)
+        if loc != vec.end():
+            return <int64_t> cdistance(vec.begin(), loc)
+        raise ValueError("{} is not in list".format(item))
+
+    def count(self, item):
+        cdef cmap[string,string] citem = cmap[string,string](deref(Map__string_string(item)._map))
+        cdef vector[cmap[string,string]] vec = deref(self._vector)
+        return <int64_t> ccount(vec.begin(), vec.end(), citem)
 
 
 Sequence.register(List__Map__string_string)
@@ -1158,6 +1479,38 @@ cdef class List__Map__i32_double:
 
     def __hash__(self):
         return hash(tuple(self))
+
+    def __contains__(self, Map__i32_double item):
+        cdef cmap[int32_t,double] citem = cmap[int32_t,double](deref(Map__i32_double(item)._map))
+        cdef vector[cmap[int32_t,double]] vec = deref(self._vector)
+        return cfind(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        cdef cmap[int32_t,double] citem
+        for citem in deref(self._vector):
+            yield Map__i32_double.create(make_shared[cmap[int32_t,double]](citem))
+
+    def __reversed__(self):
+        cdef cmap[int32_t,double] citem
+        cdef vector[cmap[int32_t,double]] vec = deref(self._vector)
+        cdef vector[cmap[int32_t,double]].reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield Map__i32_double.create(make_shared[cmap[int32_t,double]](citem))
+            inc(loc)
+
+    def index(self, item):
+        cdef cmap[int32_t,double] citem = cmap[int32_t,double](deref(Map__i32_double(item)._map))
+        cdef vector[cmap[int32_t,double]] vec = deref(self._vector)
+        cdef vector[cmap[int32_t,double]].iterator loc = cfind(vec.begin(), vec.end(), citem)
+        if loc != vec.end():
+            return <int64_t> cdistance(vec.begin(), loc)
+        raise ValueError("{} is not in list".format(item))
+
+    def count(self, item):
+        cdef cmap[int32_t,double] citem = cmap[int32_t,double](deref(Map__i32_double(item)._map))
+        cdef vector[cmap[int32_t,double]] vec = deref(self._vector)
+        return <int64_t> ccount(vec.begin(), vec.end(), citem)
 
 
 Sequence.register(List__Map__i32_double)

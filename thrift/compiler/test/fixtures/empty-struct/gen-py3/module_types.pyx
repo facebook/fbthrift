@@ -10,8 +10,9 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
-from cython.operator cimport dereference as deref
+from cython.operator cimport dereference as deref, preincrement as inc
 from thrift.lib.py3.thrift_server cimport TException
+from std_libcpp cimport find as cfind, distance as cdistance, count as ccount
 
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
