@@ -83,19 +83,18 @@ void LoadHandler::throwImpl(int32_t code) {
   throw error;
 }
 
-void LoadHandler::send(const std::string& data) {
-}
+void LoadHandler::send(const std::string& /* data */) {}
 
-void LoadHandler::onewaySend(const std::string& data) {
-}
+void LoadHandler::onewaySend(const std::string& /* data */) {}
 
 void LoadHandler::recv(std::string& _return, const int64_t bytes) {
   _return.resize(bytes, 'a');
 }
 
-void LoadHandler::sendrecv(std::string& _return,
-                           const std::string& data,
-                           const int64_t recvBytes) {
+void LoadHandler::sendrecv(
+    std::string& _return,
+    const std::string& /* data */,
+    const int64_t recvBytes) {
   _return.resize(recvBytes, 'a');
 }
 

@@ -50,7 +50,7 @@ class AsyncLoadHandler2 : public LoadTestSvIf
     return facebook::fb303::cpp2::fb_status::ALIVE;
   }
 
-  explicit AsyncLoadHandler2(TEventServer* server = nullptr)
+  explicit AsyncLoadHandler2(TEventServer* = nullptr)
     : FacebookBase2("AsyncLoadHandler2") {}
 
   void async_eb_noop(std::unique_ptr<HandlerCallback<void>> callback) override;

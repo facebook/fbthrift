@@ -38,7 +38,7 @@ class AsyncLoadHandler::Burner {
 
   void run() {
     // Compute how long we should burn in this invocation of run()
-    uint64_t burnTime = handler_->getBurnIntervalUsec();
+    int64_t burnTime = handler_->getBurnIntervalUsec();
     if (timeLeft_ < burnTime) {
       burnTime = timeLeft_;
     }
@@ -117,14 +117,14 @@ void AsyncLoadHandler::badBurn(VoidCob cob, const int64_t microseconds) {
   cob();
 }
 
-void AsyncLoadHandler::throwError(VoidCob cob, ErrorCob exn_cob,
-                                  const int32_t code) {
+void AsyncLoadHandler::throwError(
+    VoidCob /* cob */, ErrorCob exn_cob, const int32_t code) {
   LoadError error;
   error.code = code;
   exn_cob(error);
 }
 
-void AsyncLoadHandler::throwUnexpected(VoidCob cob, const int32_t code) {
+void AsyncLoadHandler::throwUnexpected(VoidCob cob, const int32_t /* code */) {
   // FIXME: it isn't possible to implement this behavior with the async code
   //
   // Actually throwing an exception from the handler is bad, and EventBase
@@ -132,7 +132,7 @@ void AsyncLoadHandler::throwUnexpected(VoidCob cob, const int32_t code) {
   cob();
 }
 
-void AsyncLoadHandler::onewayThrow(VoidCob cob, const int32_t code) {
+void AsyncLoadHandler::onewayThrow(VoidCob cob, const int32_t /* code */) {
   // FIXME: it isn't possible to implement this behavior with the async code
   //
   // Actually throwing an exception from the handler is bad, and EventBase
@@ -140,11 +140,11 @@ void AsyncLoadHandler::onewayThrow(VoidCob cob, const int32_t code) {
   cob();
 }
 
-void AsyncLoadHandler::send(VoidCob cob, const std::string& data) {
+void AsyncLoadHandler::send(VoidCob cob, const std::string& /* data */) {
   cob();
 }
 
-void AsyncLoadHandler::onewaySend(VoidCob cob, const std::string& data) {
+void AsyncLoadHandler::onewaySend(VoidCob cob, const std::string& /* data */) {
   cob();
 }
 
@@ -153,9 +153,8 @@ void AsyncLoadHandler::recv(StringCob cob, const int64_t bytes) {
   cob(ret);
 }
 
-void AsyncLoadHandler::sendrecv(StringCob cob,
-                                const std::string& data,
-                                const int64_t recvBytes) {
+void AsyncLoadHandler::sendrecv(
+    StringCob cob, const std::string& /* data */, const int64_t recvBytes) {
   std::string ret(recvBytes, 'a');
   cob(ret);
 }

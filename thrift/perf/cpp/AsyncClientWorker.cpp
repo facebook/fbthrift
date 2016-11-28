@@ -76,8 +76,7 @@ public:
       worker_->createRunner(socket_);
       delete this;
     }
-    void connectError(
-        const transport::TTransportException& ex) noexcept override {
+    void connectError(const transport::TTransportException&) noexcept override {
       delete this;
     }
    private:

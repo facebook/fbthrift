@@ -136,9 +136,8 @@ void AsyncLoadHandler2::async_eb_throwError(
 }
 
 void AsyncLoadHandler2::async_eb_throwUnexpected(
-  std::unique_ptr<HandlerCallback<void>> callback,
-  int32_t code) {
-
+    std::unique_ptr<HandlerCallback<void>> callback,
+    int32_t /* code */) {
   // FIXME: it isn't possible to implement this behavior with the async code
   //
   // Actually throwing an exception from the handler is bad, and EventBase
@@ -157,14 +156,14 @@ void AsyncLoadHandler2::async_eb_onewayThrow(
 }
 
 void AsyncLoadHandler2::async_eb_send(
-  std::unique_ptr<HandlerCallback<void>> callback,
-  std::unique_ptr<std::string> data) {
+    std::unique_ptr<HandlerCallback<void>> callback,
+    std::unique_ptr<std::string> /* data */) {
   decltype(callback)::element_type::doneInThread(std::move(callback));
 }
 
 void AsyncLoadHandler2::async_eb_onewaySend(
-  std::unique_ptr<HandlerCallbackBase> callback,
-  std::unique_ptr<std::string> data) {
+    std::unique_ptr<HandlerCallbackBase> callback,
+    std::unique_ptr<std::string> /* data */) {
   callback.release()->deleteInThread();
 }
 
@@ -177,8 +176,9 @@ void AsyncLoadHandler2::async_eb_recv(
 }
 
 void AsyncLoadHandler2::async_eb_sendrecv(
-  std::unique_ptr<HandlerCallback<std::unique_ptr<std::string>>> callback,
-  std::unique_ptr<std::string> data, int64_t recvBytes) {
+    std::unique_ptr<HandlerCallback<std::unique_ptr<std::string>>> callback,
+    std::unique_ptr<std::string> /* data */,
+    int64_t recvBytes) {
   std::unique_ptr<std::string> ret(new std::string(recvBytes, 'a'));
   decltype(callback)::element_type::resultInThread(std::move(callback),
                                                    std::move(ret));

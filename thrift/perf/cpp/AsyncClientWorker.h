@@ -78,8 +78,9 @@ class AsyncClientWorker : public loadgen::Worker<
 
   // this is now a no-op, AsyncClientWorker::run works differently
   // from Worker::run
-  void performOperation(const std::shared_ptr<Client>& client,
-                        uint32_t opType) override{};
+  void performOperation(
+      const std::shared_ptr<Client>& /* client */,
+      uint32_t /* opType */) override{};
   void run() override;
 
  private:

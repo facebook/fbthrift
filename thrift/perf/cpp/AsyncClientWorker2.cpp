@@ -145,7 +145,7 @@ class LoadCallback : public RequestCallback {
     r_->genericCob(client_, std::move(rstate), &data_);
   }
 
-  void requestError(ClientReceiveState&& rstate) override {
+  void requestError(ClientReceiveState&&) override {
     r_->terminator_.decr();
     r_->scoreboard_->opFailed(data_.opType_);
   }
