@@ -11,6 +11,8 @@
 #include <thrift/lib/cpp/protocol/TProtocol.h>
 #include <thrift/lib/cpp/transport/TTransport.h>
 
+#include <thrift/lib/cpp/Frozen.h>
+
 namespace apache { namespace thrift { namespace reflection {
 class Schema;
 }}}
@@ -117,5 +119,26 @@ class MyStruct : public apache::thrift::TStructType<MyStruct> {
 class MyStruct;
 void merge(const MyStruct& from, MyStruct& to);
 void merge(MyStruct&& from, MyStruct& to);
+
+namespace apache { namespace thrift {
+
+template<>
+struct Frozen< ::MyStruct, void> {
+  typename Freezer<int64_t>::FrozenType MyIntField;
+  typename Freezer<std::string>::FrozenType MyStringField;
+
+  struct __isset {
+    __isset() { __clear(); } 
+    void __clear() {
+      MyIntField = false;
+      MyStringField = false;
+    }
+    bool MyIntField : 1;
+    bool MyStringField : 1;
+  } __isset;
+};
+}} // apache::thrift 
+
+
 
 

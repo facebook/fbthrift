@@ -40,6 +40,39 @@ return findValue( ::_MyEnum_NAMES_TO_VALUES, name, out);
 }} // apache::thrift
 
 
+
+namespace apache { namespace thrift {
+template<>
+size_t Freezer< ::MyStruct, void>::extraSizeImpl(
+    const Freezer< ::MyStruct, void>::ThawedType& src) {
+  return 0
+    + extraSize(src.MyIntField)
+    + extraSize(src.MyStringField);
+}
+
+template<>
+void Freezer< ::MyStruct, void>::freezeImpl(
+    const Freezer< ::MyStruct, void>::ThawedType& src,
+    Freezer< ::MyStruct, void>::FrozenType& dst,
+    byte*& buffer) {
+  freeze(src.MyIntField, dst.MyIntField, buffer);
+  dst.__isset.MyIntField = src.__isset.MyIntField;
+  freeze(src.MyStringField, dst.MyStringField, buffer);
+  dst.__isset.MyStringField = src.__isset.MyStringField;
+}
+
+template<>
+void Freezer< ::MyStruct, void>::thawImpl(
+    const Freezer< ::MyStruct, void>::FrozenType& src,
+    Freezer< ::MyStruct, void>::ThawedType& dst) {
+  thaw(src.MyIntField, dst.MyIntField);
+  dst.__isset.MyIntField = src.__isset.MyIntField;
+  thaw(src.MyStringField, dst.MyStringField);
+  dst.__isset.MyStringField = src.__isset.MyStringField;
+}
+}} // apache::thrift 
+
+
 const uint64_t MyStruct::_reflection_id;
 void MyStruct::_reflection_register(::apache::thrift::reflection::Schema& schema) {
    ::module_reflection_::reflectionInitializer_7958971832214294220(schema);
