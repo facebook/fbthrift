@@ -20,6 +20,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <sys/time.h>
+
+#include <folly/init/Init.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 
@@ -32,6 +34,8 @@ using namespace apache::thrift;
 using namespace apache::thrift::tutorial;
 
 int main(int argc, char** argv) {
+  folly::init(&argc, &argv, true);
+
   EventBase eb;
   auto client = folly::make_unique<CalculatorAsyncClient>(
       HeaderClientChannel::newChannel(

@@ -63,8 +63,8 @@ void HttpFetcher::writeSuccess() noexcept {
   socket_->setReadCallback(this);
 }
 
-void HttpFetcher::writeError(size_t bytesWritten,
-                             const TTransportException& ex) noexcept {
+void HttpFetcher::writeError(
+    size_t /* bytesWritten */, const TTransportException& ex) noexcept {
   fail(string("failed to write HTTP request: ") + ex.what());
 }
 

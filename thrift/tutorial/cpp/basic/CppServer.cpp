@@ -21,6 +21,8 @@
 #include <memory>
 #include <stdexcept>
 #include <sstream>
+
+#include <folly/init/Init.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 
 #include <thrift/tutorial/gen-cpp2/Calculator.h>
@@ -102,6 +104,7 @@ protected:
 };
 
 int main(int argc, char **argv) {
+  folly::init(&argc, &argv, true);
 
   auto handler = make_shared<CalculatorHandler>();
   auto server = make_shared<ThriftServer>();

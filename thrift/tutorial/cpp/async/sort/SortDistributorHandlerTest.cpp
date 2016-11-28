@@ -53,7 +53,7 @@ TEST_F(SortDistributorHandlerTest, example) {
   default_random_engine rng;
   uniform_int_distribution<int> dist(0, 1<<20);
   auto input = gen::range<size_t>(0, 1<<12)
-    | gen::map([&](size_t i) { return dist(rng); })
+    | gen::map([&](size_t) { return dist(rng); })
     | gen::as<vector>();
 
   auto expected = gen::from(input) | gen::order | gen::as<vector>();

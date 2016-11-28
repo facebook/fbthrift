@@ -18,6 +18,7 @@
  */
 #include <iostream>
 
+#include <folly/init/Init.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 
 #include <thrift/tutorial/cpp/stateful/ServiceAuthState.h>
@@ -29,6 +30,8 @@ using namespace apache::thrift;
 using namespace apache::thrift::tutorial::stateful;
 
 int main(int argc, char* argv[]) {
+  folly::init(&argc, &argv, true);
+
   uint16_t port = 12345;
 
   auto authState = make_shared<ServiceAuthState>();
