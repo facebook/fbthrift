@@ -31,6 +31,7 @@
 
 #include <thrift/compiler/platform.h>
 #include <thrift/compiler/generate/t_generator.h>
+#include <thrift/compiler/validator.h>
 
 /**
  * Flags to control code generation
@@ -522,6 +523,15 @@ int main(int argc, char** argv) {
   // Parse it!
   parse(program, nullptr);
 
+  // Validate it!
+  auto errors = apache::thrift::compiler::validator::validate(program);
+  if (!errors.empty()) {
+    for (const auto& error : errors) {
+      std::cerr << error << std::endl;
+    }
+    return 1;
+  }
+
   // The current path is not really relevant when we are doing generation.
   // Reset the variable to make warning messages clearer.
   g_curpath = "generation";
@@ -535,7 +545,7 @@ int main(int argc, char** argv) {
     success = generate(program, generator_strings, argv);
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
-    std::exit(1);
+    return 1;
   }
 
   // Clean up. Who am I kidding... this program probably orphans heap memory

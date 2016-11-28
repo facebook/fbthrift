@@ -120,8 +120,6 @@ class t_function : public t_doc {
   int get_lineno() const { return lineno_; }
 
  private:
-  friend class t_service;
-
   t_type* returntype_;
   std::string name_;
   t_struct* arglist_;

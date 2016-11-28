@@ -64,8 +64,6 @@ class t_service : public t_type {
     return make_full_name("service");
   }
 
-  void validate() const;
-
  private:
   std::vector<t_function*> functions_;
   t_service* extends_;

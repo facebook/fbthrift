@@ -34,9 +34,10 @@ noinst_LTLIBRARIES = libparse.la libthriftcompilerbase.la
 libthriftcompilerbase_la_SOURCES = \
         common.cc \
         parse/t_type.cc \
-        parse/t_service.cc \
         parse/t_typedef.cc \
-        parse/t_program.cc
+        parse/t_program.cc \
+        validator.cc \
+        visitor.cc
 
 libthriftcompilerbase_la_LDFLAGS = -lcrypto
 
@@ -69,6 +70,8 @@ thrift1_SOURCES = main.cc \
                  parse/t_scope.h \
                  parse/t_const.h \
                  parse/t_const_value.h \
+                 valiator.h \
+                 visitor.h \
                  generate/t_generator.h \
                  generate/t_oop_generator.h \
                  generate/t_concat_generator.h \
