@@ -26,6 +26,8 @@
 
 extern "C" {
 
+extern "C" {
+
 /**
  * Defined in the flex library
  */
