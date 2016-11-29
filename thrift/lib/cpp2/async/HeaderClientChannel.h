@@ -140,7 +140,7 @@ class HeaderClientChannel : public ClientChannel,
     return keepRegisteredForClose_;
   }
 
-  folly::EventBase* getEventBase() override {
+  folly::EventBase* getEventBase() const override {
       return cpp2Channel_->getEventBase();
   }
 

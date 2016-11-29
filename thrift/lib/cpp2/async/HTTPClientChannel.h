@@ -118,7 +118,7 @@ class HTTPClientChannel : public ClientChannel,
 
   bool getKeepRegisteredForClose() { return keepRegisteredForClose_; }
 
-  folly::EventBase* getEventBase() override { return evb_; }
+  folly::EventBase* getEventBase() const override { return evb_; }
 
   // event base methods
   void attachEventBase(folly::EventBase*) override;

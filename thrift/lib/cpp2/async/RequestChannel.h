@@ -368,7 +368,7 @@ class RequestChannel : virtual public folly::DelayedDestruction {
 
   virtual void setCloseCallback(CloseCallback*) = 0;
 
-  virtual folly::EventBase* getEventBase() = 0;
+  virtual folly::EventBase* getEventBase() const = 0;
 
   virtual uint16_t getProtocolId() = 0;
 };
