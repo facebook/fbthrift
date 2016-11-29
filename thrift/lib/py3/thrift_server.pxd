@@ -14,8 +14,8 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" namespace "apache::thri
     ThriftServer() nogil except +
     void setPort(uint16_t port) nogil
     void setInterface(shared_ptr[cServerInterface]) nogil
-    void serve() nogil
-    void stop() nogil
+    void serve() nogil except +
+    void stop() nogil except +
 
 cdef extern from * namespace "std":
   cdef cppclass cException "std:Exception":
