@@ -38,4 +38,5 @@ key, include the parallel CythonPythonToCppKey file instead.
 }}{{#type:set?}}cset[{{#type:setElemType}}{{> ContainerCythonFieldType}}{{/type:setElemType}}{{!
   }}](deref({{type:flat_name}}(item)._set)){{/type:set?}}{{!
 }}{{#type:map?}}cmap[{{#type:keyType}}{{> ContainerCythonFieldType}}{{/type:keyType}},{{#type:valueType}}{{> ContainerCythonFieldType}}{{/type:valueType}}{{!
-  }}](deref({{type:flat_name}}(item)._map)){{/type:map?}}
+  }}](deref({{type:flat_name}}(item)._map)){{/type:map?}}{{!
+}}{{#type:enum}}{{> ModulePath}}.{{enum:name}}_to_cpp(item){{/type:enum}}

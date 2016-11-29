@@ -19,6 +19,7 @@ from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
 cimport py3.module_types
 
+
 class EmptyEnum(Enum):
 
 cdef cEmptyEnum EmptyEnum_to_cpp(value):
@@ -56,15 +57,16 @@ cdef cCompany Company_to_cpp(value):
 
 cdef class Internship:
     def __init__(
-        self,
-        int weeks,
-        str title,
-        object employer
+        Internship self,
+        weeks,
+        title,
+        employer
     ):
         self.c_Internship = make_shared[cInternship]()
         deref(self.c_Internship).weeks = weeks
         if title is not None:
             deref(self.c_Internship).title = title.encode('UTF-8')
+        deref(self.c_Internship).employer = py3.module_types.Company_to_cpp(employer)
         
         
     @staticmethod
@@ -118,10 +120,11 @@ cdef class Internship:
 
 cdef class UnEnumStruct:
     def __init__(
-        self,
-        object city
+        UnEnumStruct self,
+        city
     ):
         self.c_UnEnumStruct = make_shared[cUnEnumStruct]()
+        deref(self.c_UnEnumStruct).city = py3.module_types.City_to_cpp(city)
         
         
     @staticmethod
@@ -165,9 +168,9 @@ cdef class UnEnumStruct:
 
 cdef class Range:
     def __init__(
-        self,
-        int min,
-        int max
+        Range self,
+        min,
+        max
     ):
         self.c_Range = make_shared[cRange]()
         deref(self.c_Range).min = min
@@ -229,7 +232,7 @@ cdef class Map__string_i32:
         inst._map = c_items
         return inst
 
-    def __getitem__(self, str key):
+    def __getitem__(self, key):
         cdef string ckey = key.encode('UTF-8')
 
         cdef cmap[string,int32_t].iterator iter = deref(self._map).find(ckey)
@@ -340,7 +343,7 @@ cdef class List__Map__string_i32:
     def __hash__(self):
         return hash(tuple(self))
 
-    def __contains__(self, Map__string_i32 item):
+    def __contains__(self, item):
         cdef cmap[string,int32_t] citem = cmap[string,int32_t](deref(Map__string_i32(item)._map))
         cdef vector[cmap[string,int32_t]] vec = deref(self._vector)
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -416,7 +419,7 @@ cdef class List__Range:
     def __hash__(self):
         return hash(tuple(self))
 
-    def __contains__(self, py3.module_types.Range item):
+    def __contains__(self, item):
         cdef py3.module_types.cRange citem = deref((<py3.module_types.Range> item).c_Range)
         cdef vector[py3.module_types.cRange] vec = deref(self._vector)
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -492,7 +495,7 @@ cdef class List__Internship:
     def __hash__(self):
         return hash(tuple(self))
 
-    def __contains__(self, py3.module_types.Internship item):
+    def __contains__(self, item):
         cdef py3.module_types.cInternship citem = deref((<py3.module_types.Internship> item).c_Internship)
         cdef vector[py3.module_types.cInternship] vec = deref(self._vector)
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -568,7 +571,7 @@ cdef class List__string:
     def __hash__(self):
         return hash(tuple(self))
 
-    def __contains__(self, str item):
+    def __contains__(self, item):
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(self._vector)
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -644,7 +647,7 @@ cdef class List__i32:
     def __hash__(self):
         return hash(tuple(self))
 
-    def __contains__(self, int item):
+    def __contains__(self, item):
         cdef int32_t citem = item
         cdef vector[int32_t] vec = deref(self._vector)
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -695,7 +698,7 @@ cdef class Set__i32:
         inst._set = c_items
         return inst
 
-    def __contains__(self, int item):
+    def __contains__(self, item):
         return pbool(deref(self._set).count(item))
 
     def __len__(self):
@@ -862,7 +865,7 @@ cdef class Set__string:
         inst._set = c_items
         return inst
 
-    def __contains__(self, str item):
+    def __contains__(self, item):
         return pbool(deref(self._set).count(item.encode('UTF-8')))
 
     def __len__(self):
@@ -1030,7 +1033,7 @@ cdef class Map__i32_i32:
         inst._map = c_items
         return inst
 
-    def __getitem__(self, int key):
+    def __getitem__(self, key):
         cdef int32_t ckey = key
 
         cdef cmap[int32_t,int32_t].iterator iter = deref(self._map).find(ckey)
@@ -1117,7 +1120,7 @@ cdef class Map__i32_string:
         inst._map = c_items
         return inst
 
-    def __getitem__(self, int key):
+    def __getitem__(self, key):
         cdef int32_t ckey = key
 
         cdef cmap[int32_t,string].iterator iter = deref(self._map).find(ckey)
@@ -1204,7 +1207,7 @@ cdef class Map__string_string:
         inst._map = c_items
         return inst
 
-    def __getitem__(self, str key):
+    def __getitem__(self, key):
         cdef string ckey = key.encode('UTF-8')
 
         cdef cmap[string,string].iterator iter = deref(self._map).find(ckey)
@@ -1284,7 +1287,7 @@ states = List__Map__string_i32.create(make_shared[vector[cmap[string,int32_t]]](
 x = 1.000000
 y = 1000000.0
 z = 1000000000.000000
-instagram = Internship.create(make_shared[cInternship](cinstagram()))
+instagram = py3.module_types.Internship.create(make_shared[py3.module_types.cInternship](cinstagram()))
 kRanges = List__Range.create(make_shared[vector[py3.module_types.cRange]](ckRanges()))
 internList = List__Internship.create(make_shared[vector[py3.module_types.cInternship]](cinternList()))
 apostrophe = capostrophe().decode('UTF-8')

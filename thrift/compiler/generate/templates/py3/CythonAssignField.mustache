@@ -43,5 +43,21 @@ on a struct from an existing struct passed in by the user.
 }}{{/type:string?}}{{!
 }}{{#type:struct?}}{{!
 }}deref(self.c_{{struct:name}}).{{field:name}} = {{!
-  }}deref({{field:name}}.c_{{#field:type}}{{type:name}}{{/field:type}}){{!
-}}{{/type:struct?}}
+}}deref((<{{#type:struct}}{{> ModulePath}}.{{struct:name}}{{/type:struct}}?> {{!
+}}{{field:name}}).c_{{#field:type}}{{type:name}}{{/field:type}}){{!
+}}{{/type:struct?}}{{!
+}}{{#type:list?}}{{!
+}}pylist = {{type:flat_name}}({{field:name}})
+deref(self.c_{{struct:name}}).{{field:name}} = deref(pylist._vector){{!
+}}{{/type:list?}}{{!
+}}{{#type:set?}}{{!
+}}pyset = {{type:flat_name}}({{field:name}})
+deref(self.c_{{struct:name}}).{{field:name}} = deref(pyset._set){{!
+}}{{/type:set?}}{{!
+}}{{#type:map?}}{{!
+}}pymap = {{type:flat_name}}({{field:name}})
+deref(self.c_{{struct:name}}).{{field:name}} = deref(pymap._map){{!
+}}{{/type:map?}}{{!
+}}{{#type:enum?}}{{!
+}}deref(self.c_{{struct:name}}).{{field:name}} = {{#type:enum}}{{> ModulePath}}.{{enum:name}}{{/type:enum}}_to_cpp({{field:name}})
+{{/type:enum?}}

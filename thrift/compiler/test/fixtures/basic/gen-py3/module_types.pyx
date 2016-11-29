@@ -19,6 +19,7 @@ from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
 cimport py3.module_types
 
+
 class MyEnum(Enum):
     MyValue1 = <int> (MyEnum__MyValue1)
     MyValue2 = <int> (MyEnum__MyValue2)
@@ -32,9 +33,9 @@ cdef cMyEnum MyEnum_to_cpp(value):
 
 cdef class MyStruct:
     def __init__(
-        self,
-        int MyIntField,
-        str MyStringField
+        MyStruct self,
+        MyIntField,
+        MyStringField
     ):
         self.c_MyStruct = make_shared[cMyStruct]()
         deref(self.c_MyStruct).MyIntField = MyIntField

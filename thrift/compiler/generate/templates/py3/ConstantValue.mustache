@@ -50,7 +50,7 @@ file.
 {{constant:name}} = c{{constant:name}}().decode('UTF-8')
 {{/type:string?}}
 {{#type:struct}}
-{{constant:name}} = {{type:name}}.create(make_shared[c{{type:name}}](c{{constant:name}}()))
+{{constant:name}} = {{> ModulePath}}.{{type:name}}.create(make_shared[{{> ModulePath}}.c{{type:name}}](c{{constant:name}}()))
 {{/type:struct}}
 {{#type:list?}}
 {{constant:name}} = {{type:flat_name}}.create(make_shared[vector[{{!
@@ -64,5 +64,7 @@ file.
 {{constant:name}} = {{type:flat_name}}.create({{!
 }}make_shared[cmap[{{> CythonMapKeyValue}}]](c{{constant:name}}()))
 {{/type:map?}}
-{{!
-}}{{/constant:type}}
+{{#type:enum}}
+{{constant:name}} = {{> ModulePath}}.{{enum:name}}(<int> (c{{constant:name}}()))
+{{/type:enum}}
+{{/constant:type}}

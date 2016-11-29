@@ -63,7 +63,7 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
         c{{struct:name}}() except +
         bint operator==(c{{struct:name}}&)
     {{#struct:fields}}
-        {{#field:type}}{{> CythonStructReferenceType}}{{/field:type}} {{field:name}}
+        {{#field:type}}{{> CythonCppWrapperFieldType}}{{/field:type}} {{field:name}}
     {{/struct:fields}}
 
 {{/program:structs}}
@@ -78,8 +78,10 @@ cdef class {{struct:name}}{{#struct:exception?}}(TException){{/struct:exception?
     {{!Memoized Python wrappers of struct fields, created lazily}}
     {{#struct:fields}}
     {{#field:type}}{{#type:struct}}
-    cdef {{struct:name}} __{{field:name}}
-    {{/type:struct}}{{/field:type}}
+    cdef {{> PythonWrapperFieldType}} __{{field:name}}
+    {{/type:struct}}{{#type:container?}}
+    cdef {{> PythonWrapperFieldType}} __{{field:name}}
+    {{/type:container?}}{{/field:type}}
     {{/struct:fields}}
 
     @staticmethod
@@ -120,4 +122,4 @@ cdef class {{type:flat_name}}:
     {{#constant:type}}
     cdef {{^type:string?}}{{> ConstantCythonFieldType}}{{/type:string?}}{{#type:string?}}const char*{{/type:string?}} {{!
     }}c{{constant:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{program:name}}_constants::{{constant:name}}"{{!
-    }}{{#type:struct?}}(){{/type:struct?}}{{#type:string?}}(){{/type:string?}}{{#type:container?}}(){{/type:container?}}{{/constant:type}}{{/program:constants}}
+    }}{{#type:struct?}}(){{/type:struct?}}{{#type:string?}}(){{/type:string?}}{{#type:container?}}(){{/type:container?}}{{#type:enum?}}(){{/type:enum?}}{{/constant:type}}{{/program:constants}}

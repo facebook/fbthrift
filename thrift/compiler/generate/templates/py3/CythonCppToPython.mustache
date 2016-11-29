@@ -30,7 +30,6 @@ to be converted from unicode to binary representation.
 }}{{#type:string?}}(deref({{field:name}}.get())).decode(){{/type:string?}}{{!
 }}{{#type:struct}}{{> ModulePath}}.{{type:name}}.create({{!
   }}{{> ModulePath}}.move({{field:name}})){{/type:struct}}{{!
-}}{{#type:enum}}{{/type:enum}}{{!
 }}{{#type:list?}}{{> ModulePath}}.{{type:flat_name}}.create({{!
   }}{{> ModulePath}}.move({{field:name}})){{/type:list?}}{{!
 }}{{#type:set?}}{{> ModulePath}}.{{type:flat_name}}.create({{!

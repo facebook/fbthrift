@@ -54,6 +54,7 @@ Type-specifiers
 The bulk of the partial files are used to implement type-specific behaviors
 in different contexts.
 
+ *  ConstantCythonFieldType.mustache
  *  ContainerCppFieldType.mustache
  *  ContainerCythonCppToPythonKey.mustache
  *  ContainerCythonCppToPythonItem.mustache
@@ -66,8 +67,7 @@ in different contexts.
  *  CythonPythonToCpp.mustache
  *  CythonReturnValue.mustache
  *  CythonStructGetter.mustache
- *  CythonStructReferenceType.mustache
- *  PythonFieldType.mustache
+ *  PythonWrapperFieldType.mustache
 
 
 Utilities

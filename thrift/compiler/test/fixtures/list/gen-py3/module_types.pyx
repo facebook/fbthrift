@@ -21,6 +21,7 @@ cimport py3.module_types
 
 
 
+
 cdef class List__string:
     def __init__(self, items=None):
         self._vector = make_shared[vector[string]]()
@@ -59,7 +60,7 @@ cdef class List__string:
     def __hash__(self):
         return hash(tuple(self))
 
-    def __contains__(self, str item):
+    def __contains__(self, item):
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(self._vector)
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -111,7 +112,7 @@ cdef class Map__i64_List__string:
         inst._map = c_items
         return inst
 
-    def __getitem__(self, int key):
+    def __getitem__(self, key):
         cdef int64_t ckey = key
 
         cdef cmap[int64_t,vector[string]].iterator iter = deref(self._map).find(ckey)

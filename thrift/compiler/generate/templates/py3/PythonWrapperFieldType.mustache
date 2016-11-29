@@ -17,7 +17,7 @@
 }}{{!
 
 Included in structs to specify a Python type. Typically this is used in
-a method declaration to indicate what kind of object Cython can accept.
+a .pxd file to declare types for its attached pyx, specificall Struct.pxd.
 It is also used in certain cast situations where we have received a PyObject
 and need to refer to a C member on that object. We have to cast the object in
 order to be aware that it even has that member.
@@ -29,7 +29,7 @@ order to be aware that it even has that member.
 }}{{#type:i64?}}int{{/type:i64?}}{{!
 }}{{#type:double?}}float{{/type:double?}}{{!
 }}{{#type:string?}}str{{/type:string?}}{{!
-}}{{#type:struct}}{{> ModulePath}}.{{struct:name}}{{/type:struct}}{{!
+}}{{#type:struct}}{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}{{struct:name}}{{/type:struct}}{{!
 }}{{#type:list?}}{{type:flat_name}}{{/type:list?}}{{!
 }}{{#type:set?}}{{type:flat_name}}{{/type:set?}}{{!
 }}{{#type:map?}}{{type:flat_name}}{{/type:map?}}{{!

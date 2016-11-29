@@ -50,6 +50,10 @@ cimport {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:
 {{#program:includeNamespaces}}
 cimport {{#includeNamespace}}{{value}}{{^last?}}.{{/last?}}{{/includeNamespace}}_types
 {{/program:includeNamespaces}}
+{{#program:includeNamespaces}}
+import {{#includeNamespace}}{{value}}{{^last?}}.{{/last?}}{{/includeNamespace}}_types
+{{/program:includeNamespaces}}
+
 
 {{#program:enums}}
 class {{enum:name}}(Enum):
@@ -68,9 +72,8 @@ cdef c{{enum:name}} {{enum:name}}_to_cpp(value):
 {{#program:structs}}
 cdef class {{struct:name}}{{#struct:exception?}}(TException){{/struct:exception?}}:
     def __init__(
-        self{{#struct:fields}},
-        {{#field:type}}{{> PythonFieldType}}{{/field:type}}{{!
-        }} {{field:name}}{{/struct:fields}}
+        {{struct:name}} self{{#struct:fields}},
+        {{field:name}}{{/struct:fields}}
     ):
         self.c_{{struct:name}} = make_shared[c{{struct:name}}]()
         {{#struct:fields}}
@@ -167,7 +170,7 @@ cdef class {{type:flat_name}}:
     def __hash__(self):
         return hash(tuple(self))
 
-    def __contains__(self, {{#type:listElemType}}{{> PythonFieldType}}{{/type:listElemType}} item):
+    def __contains__(self, item):
         cdef {{#type:listElemType}}{{> ContainerCythonFieldType}} citem = {{> CythonPythonToCppItem}}{{/type:listElemType}}
         cdef {{> ContainerCythonFieldType}} vec = deref(self._vector)
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -218,7 +221,7 @@ Sequence.register({{type:flat_name}})
         inst._set = c_items
         return inst
 
-    def __contains__(self, {{#type:setElemType}}{{> PythonFieldType}}{{/type:setElemType}} item):
+    def __contains__(self, item):
         return pbool(deref(self._set).count({{#type:setElemType}}{{>CythonPythonToCppItem}}{{/type:setElemType}}))
 
     def __len__(self):
@@ -399,7 +402,7 @@ Set.register({{type:flat_name}})
         inst._map = c_items
         return inst
 
-    def __getitem__(self, {{#type:keyType}}{{> PythonFieldType}}{{/type:keyType}} key):
+    def __getitem__(self, key):
         cdef {{#type:keyType}}{{> ContainerCythonFieldType}} ckey = {{> CythonPythonToCppKey}}{{/type:keyType}}
 
         cdef cmap[{{>CythonMapKeyValue}}].iterator iter = deref(self._map).find(ckey)

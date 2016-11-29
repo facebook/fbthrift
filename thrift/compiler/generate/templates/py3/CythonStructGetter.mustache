@@ -44,13 +44,20 @@ if they have been previously retrieved.
   }}return self.c_{{struct:name}}.get().{{field:name}}.decode(){{!
 }}{{/type:string?}}{{!
 }}{{#type:struct?}}{{!
-}}cdef shared_ptr[c{{#type:struct}}{{struct:name}}{{/type:struct}}] item
+}}cdef shared_ptr[{{> ContainerCythonFieldType}}] item
 if self.__{{field:name}} is None:
-    item = make_shared[c{{#type:struct}}{{struct:name}}{{/type:struct}}](deref(self.c_{{struct:name}}).{{field:name}})
-    self.__{{field:name}} = {{#type:struct}}{{struct:name}}{{/type:struct}}.create(item)
+    item = make_shared[{{> ContainerCythonFieldType}}](deref(self.c_{{struct:name}}).{{field:name}})
+    self.__{{field:name}} = {{#type:struct}}{{> ModulePath}}.{{struct:name}}{{/type:struct}}.create(item)
 return self.__{{field:name}}
 {{/type:struct?}}{{!
+}}{{#type:container?}}{{!
+}}cdef shared_ptr[{{> ContainerCythonFieldType}}] item
+if self.__{{field:name}} is None:
+    item = make_shared[{{> ContainerCythonFieldType}}](deref(self.c_{{struct:name}}).{{field:name}})
+    self.__{{field:name}} = {{> ModulePath}}.{{type:flat_name}}.create(item)
+return self.__{{field:name}}
+{{/type:container?}}{{!
 }}{{#type:enum}}
 cdef int value = <int> deref(self.c_{{struct:name}}).{{field:name}}
-return {{enum:name}}(value)
+return {{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}{{enum:name}}(value)
 {{/type:enum}}

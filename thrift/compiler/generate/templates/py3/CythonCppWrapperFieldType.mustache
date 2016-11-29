@@ -24,7 +24,7 @@ struct by name as defined in the same pxd file, with a 'c' prefix.
 
 This file is included from Struct.pxd to define the move functions.
 
-}}{{#type:bool?}}bool{{/type:bool?}}{{!
+}}{{#type:bool?}}cbool{{/type:bool?}}{{!
 }}{{#type:byte?}}int8_t{{/type:byte?}}{{!
 }}{{#type:i16?}}int16_t{{/type:i16?}}{{!
 }}{{#type:i32?}}int32_t{{/type:i32?}}{{!
@@ -35,4 +35,5 @@ This file is included from Struct.pxd to define the move functions.
 }}{{#type:list?}}vector[{{#type:listElemType}}{{> CythonCppWrapperFieldType}}{{/type:listElemType}}]{{/type:list?}}{{!
 }}{{#type:set?}}cset[{{#type:setElemType}}{{> CythonCppWrapperFieldType}}{{/type:setElemType}}]{{/type:set?}}{{!
 }}{{#type:map?}}cmap[{{#type:keyType}}{{> CythonCppWrapperFieldType}}{{/type:keyType}},{{!
-  }}{{#type:valueType}}{{> CythonCppWrapperFieldType}}{{/type:valueType}}]{{/type:map?}}
+  }}{{#type:valueType}}{{> CythonCppWrapperFieldType}}{{/type:valueType}}]{{/type:map?}}{{!
+}}{{#type:enum}}{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}c{{enum:name}}{{/type:enum}}

@@ -19,6 +19,7 @@ from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
 cimport py3.module_types
 
+
 class AnEnum(Enum):
     ONE = <int> (AnEnum__ONE)
     TWO = <int> (AnEnum__TWO)
@@ -38,8 +39,8 @@ cdef cAnEnum AnEnum_to_cpp(value):
 
 cdef class SimpleException(TException):
     def __init__(
-        self,
-        int err_code
+        SimpleException self,
+        err_code
     ):
         self.c_SimpleException = make_shared[cSimpleException]()
         deref(self.c_SimpleException).err_code = err_code
@@ -83,13 +84,13 @@ cdef class SimpleException(TException):
 
 cdef class SimpleStruct:
     def __init__(
-        self,
-        pbool is_on,
-        int tiny_int,
-        int small_int,
-        int nice_sized_int,
-        int big_int,
-        float real
+        SimpleStruct self,
+        is_on,
+        tiny_int,
+        small_int,
+        nice_sized_int,
+        big_int,
+        real
     ):
         self.c_SimpleStruct = make_shared[cSimpleStruct]()
         deref(self.c_SimpleStruct).is_on = is_on
@@ -163,19 +164,20 @@ cdef class SimpleStruct:
 
 cdef class ComplexStruct:
     def __init__(
-        self,
-        py3.module_types.SimpleStruct structOne,
-        py3.module_types.SimpleStruct structTwo,
-        int an_integer,
-        str name,
-        object an_enum
+        ComplexStruct self,
+        structOne,
+        structTwo,
+        an_integer,
+        name,
+        an_enum
     ):
         self.c_ComplexStruct = make_shared[cComplexStruct]()
-        deref(self.c_ComplexStruct).structOne = deref(structOne.c_SimpleStruct)
-        deref(self.c_ComplexStruct).structTwo = deref(structTwo.c_SimpleStruct)
+        deref(self.c_ComplexStruct).structOne = deref((<py3.module_types.SimpleStruct?> structOne).c_SimpleStruct)
+        deref(self.c_ComplexStruct).structTwo = deref((<py3.module_types.SimpleStruct?> structTwo).c_SimpleStruct)
         deref(self.c_ComplexStruct).an_integer = an_integer
         if name is not None:
             deref(self.c_ComplexStruct).name = name.encode('UTF-8')
+        deref(self.c_ComplexStruct).an_enum = py3.module_types.AnEnum_to_cpp(an_enum)
         
         
     @staticmethod
@@ -186,19 +188,19 @@ cdef class ComplexStruct:
 
     @property
     def structOne(self):
-        cdef shared_ptr[cSimpleStruct] item
+        cdef shared_ptr[py3.module_types.cSimpleStruct] item
         if self.__structOne is None:
-            item = make_shared[cSimpleStruct](deref(self.c_ComplexStruct).structOne)
-            self.__structOne = SimpleStruct.create(item)
+            item = make_shared[py3.module_types.cSimpleStruct](deref(self.c_ComplexStruct).structOne)
+            self.__structOne = py3.module_types.SimpleStruct.create(item)
         return self.__structOne
         
 
     @property
     def structTwo(self):
-        cdef shared_ptr[cSimpleStruct] item
+        cdef shared_ptr[py3.module_types.cSimpleStruct] item
         if self.__structTwo is None:
-            item = make_shared[cSimpleStruct](deref(self.c_ComplexStruct).structTwo)
-            self.__structTwo = SimpleStruct.create(item)
+            item = make_shared[py3.module_types.cSimpleStruct](deref(self.c_ComplexStruct).structTwo)
+            self.__structTwo = py3.module_types.SimpleStruct.create(item)
         return self.__structTwo
         
 
@@ -285,7 +287,7 @@ cdef class List__i16:
     def __hash__(self):
         return hash(tuple(self))
 
-    def __contains__(self, int item):
+    def __contains__(self, item):
         cdef int16_t citem = item
         cdef vector[int16_t] vec = deref(self._vector)
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -361,7 +363,7 @@ cdef class List__i32:
     def __hash__(self):
         return hash(tuple(self))
 
-    def __contains__(self, int item):
+    def __contains__(self, item):
         cdef int32_t citem = item
         cdef vector[int32_t] vec = deref(self._vector)
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -437,7 +439,7 @@ cdef class List__i64:
     def __hash__(self):
         return hash(tuple(self))
 
-    def __contains__(self, int item):
+    def __contains__(self, item):
         cdef int64_t citem = item
         cdef vector[int64_t] vec = deref(self._vector)
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -513,7 +515,7 @@ cdef class List__string:
     def __hash__(self):
         return hash(tuple(self))
 
-    def __contains__(self, str item):
+    def __contains__(self, item):
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(self._vector)
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -589,7 +591,7 @@ cdef class List__SimpleStruct:
     def __hash__(self):
         return hash(tuple(self))
 
-    def __contains__(self, py3.module_types.SimpleStruct item):
+    def __contains__(self, item):
         cdef py3.module_types.cSimpleStruct citem = deref((<py3.module_types.SimpleStruct> item).c_SimpleStruct)
         cdef vector[py3.module_types.cSimpleStruct] vec = deref(self._vector)
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -640,7 +642,7 @@ cdef class Set__i32:
         inst._set = c_items
         return inst
 
-    def __contains__(self, int item):
+    def __contains__(self, item):
         return pbool(deref(self._set).count(item))
 
     def __len__(self):
@@ -807,7 +809,7 @@ cdef class Set__string:
         inst._set = c_items
         return inst
 
-    def __contains__(self, str item):
+    def __contains__(self, item):
         return pbool(deref(self._set).count(item.encode('UTF-8')))
 
     def __len__(self):
@@ -975,7 +977,7 @@ cdef class Map__string_string:
         inst._map = c_items
         return inst
 
-    def __getitem__(self, str key):
+    def __getitem__(self, key):
         cdef string ckey = key.encode('UTF-8')
 
         cdef cmap[string,string].iterator iter = deref(self._map).find(ckey)
@@ -1062,7 +1064,7 @@ cdef class Map__string_SimpleStruct:
         inst._map = c_items
         return inst
 
-    def __getitem__(self, str key):
+    def __getitem__(self, key):
         cdef string ckey = key.encode('UTF-8')
 
         cdef cmap[string,py3.module_types.cSimpleStruct].iterator iter = deref(self._map).find(ckey)
@@ -1149,7 +1151,7 @@ cdef class Map__string_i16:
         inst._map = c_items
         return inst
 
-    def __getitem__(self, str key):
+    def __getitem__(self, key):
         cdef string ckey = key.encode('UTF-8')
 
         cdef cmap[string,int16_t].iterator iter = deref(self._map).find(ckey)
@@ -1260,7 +1262,7 @@ cdef class List__List__i32:
     def __hash__(self):
         return hash(tuple(self))
 
-    def __contains__(self, List__i32 item):
+    def __contains__(self, item):
         cdef vector[int32_t] citem = vector[int32_t](deref(List__i32(item)._vector))
         cdef vector[vector[int32_t]] vec = deref(self._vector)
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -1312,7 +1314,7 @@ cdef class Map__string_i32:
         inst._map = c_items
         return inst
 
-    def __getitem__(self, str key):
+    def __getitem__(self, key):
         cdef string ckey = key.encode('UTF-8')
 
         cdef cmap[string,int32_t].iterator iter = deref(self._map).find(ckey)
@@ -1399,7 +1401,7 @@ cdef class Map__string_Map__string_i32:
         inst._map = c_items
         return inst
 
-    def __getitem__(self, str key):
+    def __getitem__(self, key):
         cdef string ckey = key.encode('UTF-8')
 
         cdef cmap[string,cmap[string,int32_t]].iterator iter = deref(self._map).find(ckey)
@@ -1510,7 +1512,7 @@ cdef class List__Set__string:
     def __hash__(self):
         return hash(tuple(self))
 
-    def __contains__(self, Set__string item):
+    def __contains__(self, item):
         cdef cset[string] citem = cset[string](deref(Set__string(item)._set))
         cdef vector[cset[string]] vec = deref(self._vector)
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -1562,7 +1564,7 @@ cdef class Map__string_List__SimpleStruct:
         inst._map = c_items
         return inst
 
-    def __getitem__(self, str key):
+    def __getitem__(self, key):
         cdef string ckey = key.encode('UTF-8')
 
         cdef cmap[string,vector[py3.module_types.cSimpleStruct]].iterator iter = deref(self._map).find(ckey)
@@ -1673,7 +1675,7 @@ cdef class List__List__string:
     def __hash__(self):
         return hash(tuple(self))
 
-    def __contains__(self, List__string item):
+    def __contains__(self, item):
         cdef vector[string] citem = vector[string](deref(List__string(item)._vector))
         cdef vector[vector[string]] vec = deref(self._vector)
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -1749,7 +1751,7 @@ cdef class List__Set__i32:
     def __hash__(self):
         return hash(tuple(self))
 
-    def __contains__(self, Set__i32 item):
+    def __contains__(self, item):
         cdef cset[int32_t] citem = cset[int32_t](deref(Set__i32(item)._set))
         cdef vector[cset[int32_t]] vec = deref(self._vector)
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -1825,7 +1827,7 @@ cdef class List__Map__string_string:
     def __hash__(self):
         return hash(tuple(self))
 
-    def __contains__(self, Map__string_string item):
+    def __contains__(self, item):
         cdef cmap[string,string] citem = cmap[string,string](deref(Map__string_string(item)._map))
         cdef vector[cmap[string,string]] vec = deref(self._vector)
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -1877,7 +1879,7 @@ cdef class Map__i32_double:
         inst._map = c_items
         return inst
 
-    def __getitem__(self, int key):
+    def __getitem__(self, key):
         cdef int32_t ckey = key
 
         cdef cmap[int32_t,double].iterator iter = deref(self._map).find(ckey)
@@ -1988,7 +1990,7 @@ cdef class List__Map__i32_double:
     def __hash__(self):
         return hash(tuple(self))
 
-    def __contains__(self, Map__i32_double item):
+    def __contains__(self, item):
         cdef cmap[int32_t,double] citem = cmap[int32_t,double](deref(Map__i32_double(item)._map))
         cdef vector[cmap[int32_t,double]] vec = deref(self._vector)
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -2035,7 +2037,7 @@ A_BIG_NUMBER = 102
 A_REAL_NUMBER = 3.140000
 A_FAKE_NUMBER = 3.0
 A_WORD = cA_WORD().decode('UTF-8')
-A_STRUCT = SimpleStruct.create(make_shared[cSimpleStruct](cA_STRUCT()))
+A_STRUCT = py3.module_types.SimpleStruct.create(make_shared[py3.module_types.cSimpleStruct](cA_STRUCT()))
 WORD_LIST = List__string.create(make_shared[vector[string]](cWORD_LIST()))
 SOME_MAP = List__Map__i32_double.create(make_shared[vector[cmap[int32_t,double]]](cSOME_MAP()))
 DIGITS = Set__i32.create(make_shared[cset[int32_t]](cDIGITS()))

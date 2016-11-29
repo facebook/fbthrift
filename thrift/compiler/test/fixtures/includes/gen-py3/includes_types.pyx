@@ -21,10 +21,11 @@ cimport py3.includes_types
 
 
 
+
 cdef class Included:
     def __init__(
-        self,
-        int MyIntField
+        Included self,
+        MyIntField
     ):
         self.c_Included = make_shared[cIncluded]()
         deref(self.c_Included).MyIntField = MyIntField

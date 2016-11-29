@@ -21,9 +21,10 @@ cimport py3.module_types
 
 
 
+
 cdef class Empty:
     def __init__(
-        self
+        Empty self
     ):
         self.c_Empty = make_shared[cEmpty]()
         pass

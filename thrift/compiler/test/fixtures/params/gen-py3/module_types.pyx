@@ -21,6 +21,7 @@ cimport py3.module_types
 
 
 
+
 cdef class List__i32:
     def __init__(self, items=None):
         self._vector = make_shared[vector[int32_t]]()
@@ -59,7 +60,7 @@ cdef class List__i32:
     def __hash__(self):
         return hash(tuple(self))
 
-    def __contains__(self, int item):
+    def __contains__(self, item):
         cdef int32_t citem = item
         cdef vector[int32_t] vec = deref(self._vector)
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -111,7 +112,7 @@ cdef class Map__i32_List__i32:
         inst._map = c_items
         return inst
 
-    def __getitem__(self, int key):
+    def __getitem__(self, key):
         cdef int32_t ckey = key
 
         cdef cmap[int32_t,vector[int32_t]].iterator iter = deref(self._map).find(ckey)
@@ -197,7 +198,7 @@ cdef class Set__i32:
         inst._set = c_items
         return inst
 
-    def __contains__(self, int item):
+    def __contains__(self, item):
         return pbool(deref(self._set).count(item))
 
     def __len__(self):
@@ -365,7 +366,7 @@ cdef class Map__i32_Set__i32:
         inst._map = c_items
         return inst
 
-    def __getitem__(self, int key):
+    def __getitem__(self, key):
         cdef int32_t ckey = key
 
         cdef cmap[int32_t,cset[int32_t]].iterator iter = deref(self._map).find(ckey)
@@ -452,7 +453,7 @@ cdef class Map__i32_i32:
         inst._map = c_items
         return inst
 
-    def __getitem__(self, int key):
+    def __getitem__(self, key):
         cdef int32_t ckey = key
 
         cdef cmap[int32_t,int32_t].iterator iter = deref(self._map).find(ckey)
@@ -563,7 +564,7 @@ cdef class List__Map__i32_i32:
     def __hash__(self):
         return hash(tuple(self))
 
-    def __contains__(self, Map__i32_i32 item):
+    def __contains__(self, item):
         cdef cmap[int32_t,int32_t] citem = cmap[int32_t,int32_t](deref(Map__i32_i32(item)._map))
         cdef vector[cmap[int32_t,int32_t]] vec = deref(self._vector)
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -639,7 +640,7 @@ cdef class List__Set__i32:
     def __hash__(self):
         return hash(tuple(self))
 
-    def __contains__(self, Set__i32 item):
+    def __contains__(self, item):
         cdef cset[int32_t] citem = cset[int32_t](deref(Set__i32(item)._set))
         cdef vector[cset[int32_t]] vec = deref(self._vector)
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -691,7 +692,7 @@ cdef class Map__i32_Map__i32_Set__i32:
         inst._map = c_items
         return inst
 
-    def __getitem__(self, int key):
+    def __getitem__(self, key):
         cdef int32_t ckey = key
 
         cdef cmap[int32_t,cmap[int32_t,cset[int32_t]]].iterator iter = deref(self._map).find(ckey)
@@ -802,7 +803,7 @@ cdef class List__Map__i32_Map__i32_Set__i32:
     def __hash__(self):
         return hash(tuple(self))
 
-    def __contains__(self, Map__i32_Map__i32_Set__i32 item):
+    def __contains__(self, item):
         cdef cmap[int32_t,cmap[int32_t,cset[int32_t]]] citem = cmap[int32_t,cmap[int32_t,cset[int32_t]]](deref(Map__i32_Map__i32_Set__i32(item)._map))
         cdef vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]] vec = deref(self._vector)
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -878,7 +879,7 @@ cdef class List__List__Map__i32_Map__i32_Set__i32:
     def __hash__(self):
         return hash(tuple(self))
 
-    def __contains__(self, List__Map__i32_Map__i32_Set__i32 item):
+    def __contains__(self, item):
         cdef vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]] citem = vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]](deref(List__Map__i32_Map__i32_Set__i32(item)._vector))
         cdef vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]] vec = deref(self._vector)
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()

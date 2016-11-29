@@ -23,7 +23,7 @@ cdef extern from "gen-cpp2/module_types.h" namespace "cpp2":
     cdef cppclass cMyStruct "cpp2::MyStruct":
         cMyStruct() except +
         bint operator==(cMyStruct&)
-        cIncluded MyIncludedField
+        py3.includes_types.cIncluded MyIncludedField
 
 
 cdef extern from "<utility>" namespace "std" nogil:
@@ -31,7 +31,7 @@ cdef extern from "<utility>" namespace "std" nogil:
 
 cdef class MyStruct:
     cdef shared_ptr[cMyStruct] c_MyStruct
-    cdef Included __MyIncludedField
+    cdef py3.includes_types.Included __MyIncludedField
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] c_MyStruct)

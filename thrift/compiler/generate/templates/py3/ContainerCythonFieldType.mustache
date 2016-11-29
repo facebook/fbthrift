@@ -23,7 +23,7 @@ struct by name as defined in the pxd file, with a 'c' prefix.
 
 This file is included from pyx.
 
-}}{{#type:bool?}}bool{{/type:bool?}}{{!
+}}{{#type:bool?}}cbool{{/type:bool?}}{{!
 }}{{#type:byte?}}int8_t{{/type:byte?}}{{!
 }}{{#type:i16?}}int16_t{{/type:i16?}}{{!
 }}{{#type:i32?}}int32_t{{/type:i32?}}{{!
@@ -34,4 +34,5 @@ This file is included from pyx.
 }}{{#type:list?}}vector[{{#type:listElemType}}{{> ContainerCythonFieldType}}{{/type:listElemType}}]{{/type:list?}}{{!
 }}{{#type:set?}}cset[{{#type:setElemType}}{{> ContainerCythonFieldType}}{{/type:setElemType}}]{{/type:set?}}{{!
 }}{{#type:map?}}cmap[{{#type:keyType}}{{> ContainerCythonFieldType}}{{/type:keyType}},{{!
-  }}{{#type:valueType}}{{> ContainerCythonFieldType}}{{/type:valueType}}]{{/type:map?}}
+  }}{{#type:valueType}}{{> ContainerCythonFieldType}}{{/type:valueType}}]{{/type:map?}}{{!
+}}{{#type:enum}}{{> ModulePath}}.c{{enum:name}}{{/type:enum}}

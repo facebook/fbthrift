@@ -28,10 +28,10 @@ return types in Cython code.
 }}{{#type:i64?}}int64_t{{/type:i64?}}{{!
 }}{{#type:double?}}double{{/type:double?}}{{!
 }}{{#type:string?}}string{{/type:string?}}{{!
-}}{{#type:struct}}c{{struct:name}}{{/type:struct}}{{!
+}}{{#type:struct}}{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}c{{struct:name}}{{/type:struct}}{{!
 }}{{#type:list?}}{{#type:listElemType}}vector[{{> ConstantCythonFieldType}}]{{/type:listElemType}}{{/type:list?}}{{!
 }}{{#type:set?}}{{#type:setElemType}}cset[{{> ConstantCythonFieldType}}]{{/type:setElemType}}{{/type:set?}}{{!
 }}{{#type:map?}}cmap[{{!
   }}{{#type:keyType}}{{> ConstantCythonFieldType}}{{/type:keyType}},{{!
   }}{{#type:valueType}}{{> ConstantCythonFieldType}}{{/type:valueType}}]{{/type:map?}}{{!
-}}{{#type:enum}}c{{enum:name}}{{/type:enum}}
+}}{{#type:enum}}{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}c{{enum:name}}{{/type:enum}}
