@@ -8,11 +8,12 @@
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
+from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from cython.operator cimport dereference as deref, preincrement as inc
 from thrift.lib.py3.thrift_server cimport TException
-from std_libcpp cimport find as cfind, distance as cdistance, count as ccount
+cimport std_libcpp
 
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
@@ -311,7 +312,7 @@ cdef class List__Map__string_i32:
     def __contains__(self, Map__string_i32 item):
         cdef cmap[string,int32_t] citem = cmap[string,int32_t](deref(Map__string_i32(item)._map))
         cdef vector[cmap[string,int32_t]] vec = deref(self._vector)
-        return cfind(vec.begin(), vec.end(), citem) != vec.end()
+        return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
         cdef cmap[string,int32_t] citem
@@ -330,15 +331,18 @@ cdef class List__Map__string_i32:
     def index(self, item):
         cdef cmap[string,int32_t] citem = cmap[string,int32_t](deref(Map__string_i32(item)._map))
         cdef vector[cmap[string,int32_t]] vec = deref(self._vector)
-        cdef vector[cmap[string,int32_t]].iterator loc = cfind(vec.begin(), vec.end(), citem)
+        cdef vector[cmap[string,int32_t]].iterator loc = std_libcpp.find(
+          vec.begin(),
+          vec.end(),
+          citem)
         if loc != vec.end():
-            return <int64_t> cdistance(vec.begin(), loc)
+            return <int64_t> std_libcpp.distance(vec.begin(), loc)
         raise ValueError("{} is not in list".format(item))
 
     def count(self, item):
         cdef cmap[string,int32_t] citem = cmap[string,int32_t](deref(Map__string_i32(item)._map))
         cdef vector[cmap[string,int32_t]] vec = deref(self._vector)
-        return <int64_t> ccount(vec.begin(), vec.end(), citem)
+        return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
 Sequence.register(List__Map__string_i32)
@@ -384,7 +388,7 @@ cdef class List__Range:
     def __contains__(self, py3.module_types.Range item):
         cdef py3.module_types.cRange citem = deref((<py3.module_types.Range> item).c_Range)
         cdef vector[py3.module_types.cRange] vec = deref(self._vector)
-        return cfind(vec.begin(), vec.end(), citem) != vec.end()
+        return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
         cdef py3.module_types.cRange citem
@@ -403,15 +407,18 @@ cdef class List__Range:
     def index(self, item):
         cdef py3.module_types.cRange citem = deref((<py3.module_types.Range> item).c_Range)
         cdef vector[py3.module_types.cRange] vec = deref(self._vector)
-        cdef vector[py3.module_types.cRange].iterator loc = cfind(vec.begin(), vec.end(), citem)
+        cdef vector[py3.module_types.cRange].iterator loc = std_libcpp.find(
+          vec.begin(),
+          vec.end(),
+          citem)
         if loc != vec.end():
-            return <int64_t> cdistance(vec.begin(), loc)
+            return <int64_t> std_libcpp.distance(vec.begin(), loc)
         raise ValueError("{} is not in list".format(item))
 
     def count(self, item):
         cdef py3.module_types.cRange citem = deref((<py3.module_types.Range> item).c_Range)
         cdef vector[py3.module_types.cRange] vec = deref(self._vector)
-        return <int64_t> ccount(vec.begin(), vec.end(), citem)
+        return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
 Sequence.register(List__Range)
@@ -457,7 +464,7 @@ cdef class List__Internship:
     def __contains__(self, py3.module_types.Internship item):
         cdef py3.module_types.cInternship citem = deref((<py3.module_types.Internship> item).c_Internship)
         cdef vector[py3.module_types.cInternship] vec = deref(self._vector)
-        return cfind(vec.begin(), vec.end(), citem) != vec.end()
+        return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
         cdef py3.module_types.cInternship citem
@@ -476,15 +483,18 @@ cdef class List__Internship:
     def index(self, item):
         cdef py3.module_types.cInternship citem = deref((<py3.module_types.Internship> item).c_Internship)
         cdef vector[py3.module_types.cInternship] vec = deref(self._vector)
-        cdef vector[py3.module_types.cInternship].iterator loc = cfind(vec.begin(), vec.end(), citem)
+        cdef vector[py3.module_types.cInternship].iterator loc = std_libcpp.find(
+          vec.begin(),
+          vec.end(),
+          citem)
         if loc != vec.end():
-            return <int64_t> cdistance(vec.begin(), loc)
+            return <int64_t> std_libcpp.distance(vec.begin(), loc)
         raise ValueError("{} is not in list".format(item))
 
     def count(self, item):
         cdef py3.module_types.cInternship citem = deref((<py3.module_types.Internship> item).c_Internship)
         cdef vector[py3.module_types.cInternship] vec = deref(self._vector)
-        return <int64_t> ccount(vec.begin(), vec.end(), citem)
+        return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
 Sequence.register(List__Internship)
@@ -530,7 +540,7 @@ cdef class List__string:
     def __contains__(self, str item):
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(self._vector)
-        return cfind(vec.begin(), vec.end(), citem) != vec.end()
+        return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
         cdef string citem
@@ -549,15 +559,18 @@ cdef class List__string:
     def index(self, item):
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(self._vector)
-        cdef vector[string].iterator loc = cfind(vec.begin(), vec.end(), citem)
+        cdef vector[string].iterator loc = std_libcpp.find(
+          vec.begin(),
+          vec.end(),
+          citem)
         if loc != vec.end():
-            return <int64_t> cdistance(vec.begin(), loc)
+            return <int64_t> std_libcpp.distance(vec.begin(), loc)
         raise ValueError("{} is not in list".format(item))
 
     def count(self, item):
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(self._vector)
-        return <int64_t> ccount(vec.begin(), vec.end(), citem)
+        return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
 Sequence.register(List__string)
@@ -603,7 +616,7 @@ cdef class List__i32:
     def __contains__(self, int item):
         cdef int32_t citem = item
         cdef vector[int32_t] vec = deref(self._vector)
-        return cfind(vec.begin(), vec.end(), citem) != vec.end()
+        return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
         cdef int32_t citem
@@ -622,15 +635,18 @@ cdef class List__i32:
     def index(self, item):
         cdef int32_t citem = item
         cdef vector[int32_t] vec = deref(self._vector)
-        cdef vector[int32_t].iterator loc = cfind(vec.begin(), vec.end(), citem)
+        cdef vector[int32_t].iterator loc = std_libcpp.find(
+          vec.begin(),
+          vec.end(),
+          citem)
         if loc != vec.end():
-            return <int64_t> cdistance(vec.begin(), loc)
+            return <int64_t> std_libcpp.distance(vec.begin(), loc)
         raise ValueError("{} is not in list".format(item))
 
     def count(self, item):
         cdef int32_t citem = item
         cdef vector[int32_t] vec = deref(self._vector)
-        return <int64_t> ccount(vec.begin(), vec.end(), citem)
+        return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
 Sequence.register(List__i32)
@@ -660,21 +676,145 @@ cdef class Set__i32:
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Set) and isinstance(other, Set)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+        cdef cset[int32_t] cself, cother
+        cdef cbool retval
+        if (isinstance(self, Set__i32) and
+                isinstance(other, Set__i32)):
+            cself = deref((<Set__i32> self)._set)
+            cother = deref((<Set__i32> other)._set)
+            # C level comparisons
+            if cop == 0:    # Less Than (strict subset)
+                if not cself.size() < cother.size():
+                    return False
+                for item in cself:
+                    if not cother.count(item):
+                        return False
+                return True
+            elif cop == 1:  # Less Than or Equal To  (subset)
+                for item in cself:
+                    if not cother.count(item):
+                        return False
+                return True
+            elif cop == 2:  # Equivalent
+                if cself.size() != cother.size():
+                    return False
+                for item in cself:
+                    if not cother.count(item):
+                        return False
+                return True
+            elif cop == 3:  # Not Equivalent
+                for item in cself:
+                    if not cother.count(item):
+                        return True
+                return cself.size() != cother.size()
+            elif cop == 4:  # Greater Than (strict superset)
+                if not cself.size() > cother.size():
+                    return False
+                for item in cother:
+                    if not cself.count(item):
+                        return False
+                return True
+            elif cop == 5:  # Greater Than or Equal To (superset)
+                for item in cother:
+                    if not cself.count(item):
+                        return False
+                return True
 
-        for item in self:
-            if item not in other:
-                return cop != 2
-
-        return cop == 2
+        # Python level comparisons
+        if cop == 0:
+            return Set.__lt__(self, other)
+        elif cop == 1:
+            return Set.__le__(self, other)
+        elif cop == 2:
+            return Set.__eq__(self, other)
+        elif cop == 3:
+            return Set.__ne__(self, other)
+        elif cop == 4:
+            return Set.__gt__(self, other)
+        elif cop == 5:
+            return Set.__ge__(self, other)
 
     def __hash__(self):
         return hash(tuple(self))
+
+    def __and__(self, other):
+        if not isinstance(self, Set__i32):
+            self = Set__i32(self)
+        if not isinstance(other, Set__i32):
+            other = Set__i32(other)
+
+        cdef shared_ptr[cset[int32_t]] shretval = \
+            make_shared[cset[int32_t]]()
+        for citem in deref((<Set__i32> self)._set):
+            if deref((<Set__i32> other)._set).count(citem) > 0:
+                deref(shretval).insert(citem)
+        return Set__i32.create(shretval)
+
+    def __sub__(self, other):
+        if not isinstance(self, Set__i32):
+            self = Set__i32(self)
+        if not isinstance(other, Set__i32):
+            other = Set__i32(other)
+
+        cdef shared_ptr[cset[int32_t]] shretval = \
+            make_shared[cset[int32_t]]()
+        for citem in deref((<Set__i32> self)._set):
+            if deref((<Set__i32> other)._set).count(citem) != 0:
+                deref(shretval).insert(citem)
+        return Set__i32.create(shretval)
+
+    def __or__(self, other):
+        if not isinstance(self, Set__i32):
+            self = Set__i32(self)
+        if not isinstance(other, Set__i32):
+            other = Set__i32(other)
+
+        cdef shared_ptr[cset[int32_t]] shretval = \
+            make_shared[cset[int32_t]]()
+        for citem in deref((<Set__i32> self)._set):
+                deref(shretval).insert(citem)
+        for citem in deref((<Set__i32> other)._set):
+                deref(shretval).insert(citem)
+        return Set__i32.create(shretval)
+
+    def __xor__(self, other):
+        if not isinstance(self, Set__i32):
+            self = Set__i32(self)
+        if not isinstance(other, Set__i32):
+            other = Set__i32(other)
+
+        cdef shared_ptr[cset[int32_t]] shretval = \
+            make_shared[cset[int32_t]]()
+        for citem in deref((<Set__i32> self)._set):
+            if deref((<Set__i32> other)._set).count(citem) != 0:
+                deref(shretval).insert(citem)
+        for citem in deref((<Set__i32> other)._set):
+            if deref((<Set__i32> self)._set).count(citem) != 0:
+                deref(shretval).insert(citem)
+        return Set__i32.create(shretval)
+
+    def isdisjoint(self, other):
+        return len(self & other) == 0
+
+    def union(self, other):
+        return self | other
+
+    def intersection(self, other):
+        return self & other
+
+    def difference(self, other):
+        return self - other
+
+    def symmetric_difference(self, other):
+        return self ^ other
+
+    def issubset(self, other):
+        return self <= other
+
+    def issuperset(self, other):
+        return self >= other
+
+
 
 Set.register(Set__i32)
 
@@ -703,21 +843,145 @@ cdef class Set__string:
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Set) and isinstance(other, Set)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
+        cdef cset[string] cself, cother
+        cdef cbool retval
+        if (isinstance(self, Set__string) and
+                isinstance(other, Set__string)):
+            cself = deref((<Set__string> self)._set)
+            cother = deref((<Set__string> other)._set)
+            # C level comparisons
+            if cop == 0:    # Less Than (strict subset)
+                if not cself.size() < cother.size():
+                    return False
+                for item in cself:
+                    if not cother.count(item):
+                        return False
+                return True
+            elif cop == 1:  # Less Than or Equal To  (subset)
+                for item in cself:
+                    if not cother.count(item):
+                        return False
+                return True
+            elif cop == 2:  # Equivalent
+                if cself.size() != cother.size():
+                    return False
+                for item in cself:
+                    if not cother.count(item):
+                        return False
+                return True
+            elif cop == 3:  # Not Equivalent
+                for item in cself:
+                    if not cother.count(item):
+                        return True
+                return cself.size() != cother.size()
+            elif cop == 4:  # Greater Than (strict superset)
+                if not cself.size() > cother.size():
+                    return False
+                for item in cother:
+                    if not cself.count(item):
+                        return False
+                return True
+            elif cop == 5:  # Greater Than or Equal To (superset)
+                for item in cother:
+                    if not cself.count(item):
+                        return False
+                return True
 
-        for item in self:
-            if item not in other:
-                return cop != 2
-
-        return cop == 2
+        # Python level comparisons
+        if cop == 0:
+            return Set.__lt__(self, other)
+        elif cop == 1:
+            return Set.__le__(self, other)
+        elif cop == 2:
+            return Set.__eq__(self, other)
+        elif cop == 3:
+            return Set.__ne__(self, other)
+        elif cop == 4:
+            return Set.__gt__(self, other)
+        elif cop == 5:
+            return Set.__ge__(self, other)
 
     def __hash__(self):
         return hash(tuple(self))
+
+    def __and__(self, other):
+        if not isinstance(self, Set__string):
+            self = Set__string(self)
+        if not isinstance(other, Set__string):
+            other = Set__string(other)
+
+        cdef shared_ptr[cset[string]] shretval = \
+            make_shared[cset[string]]()
+        for citem in deref((<Set__string> self)._set):
+            if deref((<Set__string> other)._set).count(citem) > 0:
+                deref(shretval).insert(citem)
+        return Set__string.create(shretval)
+
+    def __sub__(self, other):
+        if not isinstance(self, Set__string):
+            self = Set__string(self)
+        if not isinstance(other, Set__string):
+            other = Set__string(other)
+
+        cdef shared_ptr[cset[string]] shretval = \
+            make_shared[cset[string]]()
+        for citem in deref((<Set__string> self)._set):
+            if deref((<Set__string> other)._set).count(citem) != 0:
+                deref(shretval).insert(citem)
+        return Set__string.create(shretval)
+
+    def __or__(self, other):
+        if not isinstance(self, Set__string):
+            self = Set__string(self)
+        if not isinstance(other, Set__string):
+            other = Set__string(other)
+
+        cdef shared_ptr[cset[string]] shretval = \
+            make_shared[cset[string]]()
+        for citem in deref((<Set__string> self)._set):
+                deref(shretval).insert(citem)
+        for citem in deref((<Set__string> other)._set):
+                deref(shretval).insert(citem)
+        return Set__string.create(shretval)
+
+    def __xor__(self, other):
+        if not isinstance(self, Set__string):
+            self = Set__string(self)
+        if not isinstance(other, Set__string):
+            other = Set__string(other)
+
+        cdef shared_ptr[cset[string]] shretval = \
+            make_shared[cset[string]]()
+        for citem in deref((<Set__string> self)._set):
+            if deref((<Set__string> other)._set).count(citem) != 0:
+                deref(shretval).insert(citem)
+        for citem in deref((<Set__string> other)._set):
+            if deref((<Set__string> self)._set).count(citem) != 0:
+                deref(shretval).insert(citem)
+        return Set__string.create(shretval)
+
+    def isdisjoint(self, other):
+        return len(self & other) == 0
+
+    def union(self, other):
+        return self | other
+
+    def intersection(self, other):
+        return self & other
+
+    def difference(self, other):
+        return self - other
+
+    def symmetric_difference(self, other):
+        return self ^ other
+
+    def issubset(self, other):
+        return self <= other
+
+    def issuperset(self, other):
+        return self >= other
+
+
 
 Set.register(Set__string)
 
