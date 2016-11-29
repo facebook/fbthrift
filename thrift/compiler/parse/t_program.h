@@ -25,8 +25,6 @@
 #include <folly/MapUtil.h>
 #include <folly/String.h>
 
-#include <thrift/compiler/main.h>
-
 #include <thrift/compiler/parse/t_doc.h>
 #include <thrift/compiler/parse/t_scope.h>
 #include <thrift/compiler/parse/t_base_type.h>

@@ -17,13 +17,15 @@
 #ifndef T_GENERATOR_H
 #define T_GENERATOR_H
 
-#include <thrift/compiler/globals.h>
-#include <thrift/compiler/parse/t_program.h>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
 #include <unordered_set>
+
+#include <thrift/compiler/common.h>
+#include <thrift/compiler/globals.h>
+#include <thrift/compiler/parse/t_program.h>
 
 // version.h
 #define THRIFT_VERSION "facebook"

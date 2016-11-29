@@ -184,6 +184,13 @@ void validate_const_type(t_const* c);
  */
 void validate_field_value(t_field* field, t_const_value* cv);
 
+const t_type* get_true_type(const t_type* type);
+
+/**
+ * Check members of a throws block
+ */
+bool validate_throws(t_struct* throws);
+
 /**
  * Parses a program. already_parsed_paths is deliberately passed by value
  * because it should be the set of files in the direct inclusion tree.

@@ -49,7 +49,6 @@ thrift1_SOURCES = main.cc \
                  generate/t_concat_generator.cc \
                  generate/t_mstch_generator.cc \
                  globals.h \
-                 main.h \
                  platform.h \
                  parse/t_doc.h \
                  parse/t_type.h \

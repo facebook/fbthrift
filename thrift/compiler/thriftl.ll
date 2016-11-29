@@ -28,7 +28,7 @@
 
 #include <errno.h>
 
-#include "thrift/compiler/main.h"
+#include "thrift/compiler/common.h"
 #include "thrift/compiler/globals.h"
 #include "thrift/compiler/parse/t_program.h"
 

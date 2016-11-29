@@ -682,3 +682,31 @@ void validate_const_type(t_const* c) {
 void validate_field_value(t_field* field, t_const_value* cv) {
   validate_const_rec(field->get_name(), field->get_type(), cv);
 }
+
+/**
+ * Get the true type behind a series of typedefs.
+ */
+const t_type* common_get_true_type(const t_type* type) {
+  while (type->is_typedef()) {
+    type = (static_cast<const t_typedef*>(type))->get_type();
+  }
+  return type;
+}
+t_type* common_get_true_type(t_type* type) {
+  return const_cast<t_type*>(
+      common_get_true_type(const_cast<const t_type*>(type)));
+}
+
+/**
+ * Check that all the elements of a throws block are actually exceptions.
+ */
+bool validate_throws(t_struct* throws) {
+  const vector<t_field*>& members = throws->get_members();
+  vector<t_field*>::const_iterator m_iter;
+  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+    if (!common_get_true_type((*m_iter)->get_type())->is_xception()) {
+      return false;
+    }
+  }
+  return true;
+}

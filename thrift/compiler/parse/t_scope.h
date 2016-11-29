@@ -23,6 +23,7 @@
 #include <map>
 #include <string>
 
+#include <thrift/compiler/parse/t_const.h>
 #include <thrift/compiler/parse/t_type.h>
 #include <thrift/compiler/parse/t_service.h>
 

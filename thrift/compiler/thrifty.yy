@@ -32,7 +32,7 @@
 #include <inttypes.h>
 #include <limits.h>
 #include "folly/String.h"
-#include "thrift/compiler/main.h"
+#include "thrift/compiler/common.h"
 #include "thrift/compiler/globals.h"
 #include "thrift/compiler/parse/t_program.h"
 #include "thrift/compiler/parse/t_scope.h"
