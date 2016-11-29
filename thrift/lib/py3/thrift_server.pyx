@@ -32,6 +32,6 @@ cdef class ThriftServer:
         self.server.get().serve()
     try:
         await self.loop.run_in_executor(None, _serve)
-    except asyncio.CancelledError:
-      self.server.get().stop()
-      raise
+    except Exception:
+        self.server.get().stop()
+        raise
