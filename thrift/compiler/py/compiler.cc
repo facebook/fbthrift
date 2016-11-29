@@ -31,14 +31,6 @@
 
 unique_ptr<t_base_type> g_type_void_sptr;
 
-// TODO reimplement validate_throws(t_struct*) in python?
-// we don't want to import t_generator here
-//
-// we have to write its signature though because it's used somewhere
-bool validate_throws(t_struct* /*throws*/) {
-  return true;
-}
-
 namespace thrift { namespace compiler { namespace py {
 
 /**
