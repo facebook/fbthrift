@@ -17,7 +17,7 @@ manipulate the immutable types.
 
 
 HACKING
-=======
+-------
 There are basically four types of files in this directory. See the documentation
 at the head of each file for more information. The actual driver that calls
 into these mustache files and generates the code lives in
@@ -55,7 +55,8 @@ The bulk of the partial files are used to implement type-specific behaviors
 in different contexts.
 
  *  ContainerCppFieldType.mustache
- *  ContainerCythonCppToPython.mustache
+ *  ContainerCythonCppToPythonKey.mustache
+ *  ContainerCythonCppToPythonItem.mustache
  *  ContainerCythonFieldType.mustache
  *  CppFieldType.mustache
  *  CppPassField.mustache
@@ -74,7 +75,6 @@ Utilities
 Finally, there are a few files that contain common code that was pulled out
 to make the other files more readable. We should probably have more of these
 
- *  ContainerKeyOrItem.mustache
  *  CppMapKeyValue.mustache
  *  CythonMapKeyValue.mustache
  *  ModulePath.mustache

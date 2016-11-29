@@ -21,8 +21,6 @@ cimport py3.module_types
 
 
 
-
-
 cdef class List__i32:
     def __init__(self, items=None):
         self._vector = make_shared[vector[int32_t]]()
@@ -150,6 +148,39 @@ cdef class Map__i32_List__i32:
 
     def __hash__(self):
         return hash(tuple((tuple(self), tuple(self[k] for k in self))))
+
+    def __contains__(self, key):
+        cdef int32_t ckey = key
+        return deref(self._map).count(ckey) > 0
+
+    def get(self, key, default=None):
+        cdef int32_t ckey = key
+        cdef cmap[int32_t,vector[int32_t]].iterator iter = \
+            deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            return default
+        cdef vector[int32_t] citem = deref(iter).second
+        return List__i32.create(make_shared[vector[int32_t]](citem))
+
+    def keys(self):
+        return self.__iter__()
+
+    def values(self):
+        cdef vector[int32_t] citem
+        for pair in deref(self._map):
+            citem = pair.second
+            yield List__i32.create(make_shared[vector[int32_t]](citem))
+
+    def items(self):
+        cdef int32_t ckey
+        cdef vector[int32_t] citem
+        for pair in deref(self._map):
+            ckey = pair.first
+            citem = pair.second
+
+            yield (ckey, List__i32.create(make_shared[vector[int32_t]](citem)))
+
+
 
 Mapping.register(Map__i32_List__i32)
 
@@ -372,6 +403,39 @@ cdef class Map__i32_Set__i32:
     def __hash__(self):
         return hash(tuple((tuple(self), tuple(self[k] for k in self))))
 
+    def __contains__(self, key):
+        cdef int32_t ckey = key
+        return deref(self._map).count(ckey) > 0
+
+    def get(self, key, default=None):
+        cdef int32_t ckey = key
+        cdef cmap[int32_t,cset[int32_t]].iterator iter = \
+            deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            return default
+        cdef cset[int32_t] citem = deref(iter).second
+        return Set__i32.create(make_shared[cset[int32_t]](citem))
+
+    def keys(self):
+        return self.__iter__()
+
+    def values(self):
+        cdef cset[int32_t] citem
+        for pair in deref(self._map):
+            citem = pair.second
+            yield Set__i32.create(make_shared[cset[int32_t]](citem))
+
+    def items(self):
+        cdef int32_t ckey
+        cdef cset[int32_t] citem
+        for pair in deref(self._map):
+            ckey = pair.first
+            citem = pair.second
+
+            yield (ckey, Set__i32.create(make_shared[cset[int32_t]](citem)))
+
+
+
 Mapping.register(Map__i32_Set__i32)
 
 cdef class Map__i32_i32:
@@ -425,6 +489,39 @@ cdef class Map__i32_i32:
 
     def __hash__(self):
         return hash(tuple((tuple(self), tuple(self[k] for k in self))))
+
+    def __contains__(self, key):
+        cdef int32_t ckey = key
+        return deref(self._map).count(ckey) > 0
+
+    def get(self, key, default=None):
+        cdef int32_t ckey = key
+        cdef cmap[int32_t,int32_t].iterator iter = \
+            deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            return default
+        cdef int32_t citem = deref(iter).second
+        return citem
+
+    def keys(self):
+        return self.__iter__()
+
+    def values(self):
+        cdef int32_t citem
+        for pair in deref(self._map):
+            citem = pair.second
+            yield citem
+
+    def items(self):
+        cdef int32_t ckey
+        cdef int32_t citem
+        for pair in deref(self._map):
+            ckey = pair.first
+            citem = pair.second
+
+            yield (ckey, citem)
+
+
 
 Mapping.register(Map__i32_i32)
 
@@ -631,6 +728,39 @@ cdef class Map__i32_Map__i32_Set__i32:
 
     def __hash__(self):
         return hash(tuple((tuple(self), tuple(self[k] for k in self))))
+
+    def __contains__(self, key):
+        cdef int32_t ckey = key
+        return deref(self._map).count(ckey) > 0
+
+    def get(self, key, default=None):
+        cdef int32_t ckey = key
+        cdef cmap[int32_t,cmap[int32_t,cset[int32_t]]].iterator iter = \
+            deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            return default
+        cdef cmap[int32_t,cset[int32_t]] citem = deref(iter).second
+        return Map__i32_Set__i32.create(make_shared[cmap[int32_t,cset[int32_t]]](citem))
+
+    def keys(self):
+        return self.__iter__()
+
+    def values(self):
+        cdef cmap[int32_t,cset[int32_t]] citem
+        for pair in deref(self._map):
+            citem = pair.second
+            yield Map__i32_Set__i32.create(make_shared[cmap[int32_t,cset[int32_t]]](citem))
+
+    def items(self):
+        cdef int32_t ckey
+        cdef cmap[int32_t,cset[int32_t]] citem
+        for pair in deref(self._map):
+            ckey = pair.first
+            citem = pair.second
+
+            yield (ckey, Map__i32_Set__i32.create(make_shared[cmap[int32_t,cset[int32_t]]](citem)))
+
+
 
 Mapping.register(Map__i32_Map__i32_Set__i32)
 

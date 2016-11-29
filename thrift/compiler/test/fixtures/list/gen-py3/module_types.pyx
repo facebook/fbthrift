@@ -21,8 +21,6 @@ cimport py3.module_types
 
 
 
-
-
 cdef class List__string:
     def __init__(self, items=None):
         self._vector = make_shared[vector[string]]()
@@ -150,6 +148,39 @@ cdef class Map__i64_List__string:
 
     def __hash__(self):
         return hash(tuple((tuple(self), tuple(self[k] for k in self))))
+
+    def __contains__(self, key):
+        cdef int64_t ckey = key
+        return deref(self._map).count(ckey) > 0
+
+    def get(self, key, default=None):
+        cdef int64_t ckey = key
+        cdef cmap[int64_t,vector[string]].iterator iter = \
+            deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            return default
+        cdef vector[string] citem = deref(iter).second
+        return List__string.create(make_shared[vector[string]](citem))
+
+    def keys(self):
+        return self.__iter__()
+
+    def values(self):
+        cdef vector[string] citem
+        for pair in deref(self._map):
+            citem = pair.second
+            yield List__string.create(make_shared[vector[string]](citem))
+
+    def items(self):
+        cdef int64_t ckey
+        cdef vector[string] citem
+        for pair in deref(self._map):
+            ckey = pair.first
+            citem = pair.second
+
+            yield (ckey, List__string.create(make_shared[vector[string]](citem)))
+
+
 
 Mapping.register(Map__i64_List__string)
 

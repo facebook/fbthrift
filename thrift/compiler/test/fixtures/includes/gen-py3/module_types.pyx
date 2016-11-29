@@ -73,5 +73,3 @@ cdef class MyStruct:
 
 
 
-
-

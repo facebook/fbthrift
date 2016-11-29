@@ -127,8 +127,6 @@ cdef class {{struct:name}}{{#struct:exception?}}(TException){{/struct:exception?
 
 
 {{/program:structs}}
-
-
 {{#program:containerTypes}}
 cdef class {{type:flat_name}}:
 {{#type:list?}}
@@ -438,6 +436,63 @@ Set.register({{type:flat_name}})
 
     def __hash__(self):
         return hash(tuple((tuple(self), tuple(self[k] for k in self))))
+
+    def __contains__(self, key):
+        cdef {{#type:keyType}}{{!
+          }}{{> ContainerCythonFieldType}} ckey = {{> CythonPythonToCppKey}}{{!
+          }}{{/type:keyType}}
+        return deref(self._map).count(ckey) > 0
+
+    def get(self, key, default=None):
+        cdef {{#type:keyType}}{{!
+          }}{{> ContainerCythonFieldType}} ckey = {{> CythonPythonToCppKey}}{{!
+          }}{{/type:keyType}}
+        cdef cmap[{{>CythonMapKeyValue}}].iterator iter = \
+            deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            return default
+        cdef {{#type:valueType}}{{!
+          }}{{> ContainerCythonFieldType}} citem = deref(iter).second{{!
+          }}{{/type:valueType}}
+        return {{#type:valueType}}{{!
+          }}{{> ContainerCythonCppToPythonItem}}{{!
+          }}{{/type:valueType}}
+
+    def keys(self):
+        return self.__iter__()
+
+    def values(self):
+        cdef {{#type:valueType}}{{!
+          }}{{> ContainerCythonFieldType}}{{!
+          }}{{/type:valueType}}{{!!
+          }} citem
+        for pair in deref(self._map):
+            citem = pair.second
+            yield {{#type:valueType}}{{!
+              }}{{> ContainerCythonCppToPythonItem}}{{!
+              }}{{/type:valueType}}
+
+    def items(self):
+        cdef {{#type:keyType}}{{!
+          }}{{> ContainerCythonFieldType}}{{!
+          }}{{/type:keyType}}{{!
+          }} ckey
+        cdef {{#type:valueType}}{{!
+          }}{{> ContainerCythonFieldType}}{{!
+          }}{{/type:valueType}} citem
+        for pair in deref(self._map):
+            ckey = pair.first
+            citem = pair.second
+
+            yield ({{!
+              }}{{#type:keyType}}{{!
+              }}{{> ContainerCythonCppToPythonKey}}{{!
+              }}{{/type:keyType}}, {{!
+              }}{{#type:valueType}}{{!
+              }}{{> ContainerCythonCppToPythonItem}}{{!
+              }}{{/type:valueType}})
+
+
 
 Mapping.register({{type:flat_name}})
 {{/type:map?}}

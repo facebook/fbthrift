@@ -215,8 +215,6 @@ cdef class Range:
 
 
 
-
-
 cdef class Map__string_i32:
     def __init__(self, items=None):
 
@@ -268,6 +266,39 @@ cdef class Map__string_i32:
 
     def __hash__(self):
         return hash(tuple((tuple(self), tuple(self[k] for k in self))))
+
+    def __contains__(self, key):
+        cdef string ckey = key.encode('UTF-8')
+        return deref(self._map).count(ckey) > 0
+
+    def get(self, key, default=None):
+        cdef string ckey = key.encode('UTF-8')
+        cdef cmap[string,int32_t].iterator iter = \
+            deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            return default
+        cdef int32_t citem = deref(iter).second
+        return citem
+
+    def keys(self):
+        return self.__iter__()
+
+    def values(self):
+        cdef int32_t citem
+        for pair in deref(self._map):
+            citem = pair.second
+            yield citem
+
+    def items(self):
+        cdef string ckey
+        cdef int32_t citem
+        for pair in deref(self._map):
+            ckey = pair.first
+            citem = pair.second
+
+            yield (ckey.decode(), citem)
+
+
 
 Mapping.register(Map__string_i32)
 
@@ -1037,6 +1068,39 @@ cdef class Map__i32_i32:
     def __hash__(self):
         return hash(tuple((tuple(self), tuple(self[k] for k in self))))
 
+    def __contains__(self, key):
+        cdef int32_t ckey = key
+        return deref(self._map).count(ckey) > 0
+
+    def get(self, key, default=None):
+        cdef int32_t ckey = key
+        cdef cmap[int32_t,int32_t].iterator iter = \
+            deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            return default
+        cdef int32_t citem = deref(iter).second
+        return citem
+
+    def keys(self):
+        return self.__iter__()
+
+    def values(self):
+        cdef int32_t citem
+        for pair in deref(self._map):
+            citem = pair.second
+            yield citem
+
+    def items(self):
+        cdef int32_t ckey
+        cdef int32_t citem
+        for pair in deref(self._map):
+            ckey = pair.first
+            citem = pair.second
+
+            yield (ckey, citem)
+
+
+
 Mapping.register(Map__i32_i32)
 
 cdef class Map__i32_string:
@@ -1091,6 +1155,39 @@ cdef class Map__i32_string:
     def __hash__(self):
         return hash(tuple((tuple(self), tuple(self[k] for k in self))))
 
+    def __contains__(self, key):
+        cdef int32_t ckey = key
+        return deref(self._map).count(ckey) > 0
+
+    def get(self, key, default=None):
+        cdef int32_t ckey = key
+        cdef cmap[int32_t,string].iterator iter = \
+            deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            return default
+        cdef string citem = deref(iter).second
+        return citem.decode()
+
+    def keys(self):
+        return self.__iter__()
+
+    def values(self):
+        cdef string citem
+        for pair in deref(self._map):
+            citem = pair.second
+            yield citem.decode()
+
+    def items(self):
+        cdef int32_t ckey
+        cdef string citem
+        for pair in deref(self._map):
+            ckey = pair.first
+            citem = pair.second
+
+            yield (ckey, citem.decode())
+
+
+
 Mapping.register(Map__i32_string)
 
 cdef class Map__string_string:
@@ -1144,6 +1241,39 @@ cdef class Map__string_string:
 
     def __hash__(self):
         return hash(tuple((tuple(self), tuple(self[k] for k in self))))
+
+    def __contains__(self, key):
+        cdef string ckey = key.encode('UTF-8')
+        return deref(self._map).count(ckey) > 0
+
+    def get(self, key, default=None):
+        cdef string ckey = key.encode('UTF-8')
+        cdef cmap[string,string].iterator iter = \
+            deref(self._map).find(ckey)
+        if iter == deref(self._map).end():
+            return default
+        cdef string citem = deref(iter).second
+        return citem.decode()
+
+    def keys(self):
+        return self.__iter__()
+
+    def values(self):
+        cdef string citem
+        for pair in deref(self._map):
+            citem = pair.second
+            yield citem.decode()
+
+    def items(self):
+        cdef string ckey
+        cdef string citem
+        for pair in deref(self._map):
+            ckey = pair.first
+            citem = pair.second
+
+            yield (ckey.decode(), citem.decode())
+
+
 
 Mapping.register(Map__string_string)
 
