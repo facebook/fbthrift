@@ -24,10 +24,13 @@ cimport py3.module_types
 
 cdef class List__i32:
     def __init__(self, items=None):
-        self._vector = make_shared[vector[int32_t]]()
-        if items:
-            for item in items:
-                deref(self._vector).push_back(item)
+        if isinstance(items, List__i32):
+            self._vector = (<List__i32> items)._vector
+        else:
+          self._vector = make_shared[vector[int32_t]]()
+          if items:
+              for item in items:
+                  deref(self._vector).push_back(item)
 
     @staticmethod
     cdef create(shared_ptr[vector[int32_t]] c_items):
@@ -100,11 +103,13 @@ Sequence.register(List__i32)
 
 cdef class Map__i32_List__i32:
     def __init__(self, items=None):
-
-        self._map = make_shared[cmap[int32_t,vector[int32_t]]]()
-        if items:
-            for key, item in items.items():
-                deref(self._map).insert(cpair[int32_t,vector[int32_t]](key, vector[int32_t](deref(List__i32(item)._vector))))
+        if isinstance(items, Map__i32_List__i32):
+            self._map = (<Map__i32_List__i32> items)._map
+        else:
+          self._map = make_shared[cmap[int32_t,vector[int32_t]]]()
+          if items:
+              for key, item in items.items():
+                  deref(self._map).insert(cpair[int32_t,vector[int32_t]](key, vector[int32_t](deref(List__i32(item)._vector))))
 
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,vector[int32_t]]] c_items):
@@ -187,10 +192,13 @@ Mapping.register(Map__i32_List__i32)
 
 cdef class Set__i32:
     def __init__(self, items=None):
-        self._set = make_shared[cset[int32_t]]()
-        if items:
-            for item in items:
-                deref(self._set).insert(item)
+        if isinstance(items, Set__i32):
+            self._set = (<Set__i32> items)._set
+        else:
+          self._set = make_shared[cset[int32_t]]()
+          if items:
+              for item in items:
+                  deref(self._set).insert(item)
 
     @staticmethod
     cdef create(shared_ptr[cset[int32_t]] c_items):
@@ -354,11 +362,13 @@ Set.register(Set__i32)
 
 cdef class Map__i32_Set__i32:
     def __init__(self, items=None):
-
-        self._map = make_shared[cmap[int32_t,cset[int32_t]]]()
-        if items:
-            for key, item in items.items():
-                deref(self._map).insert(cpair[int32_t,cset[int32_t]](key, cset[int32_t](deref(Set__i32(item)._set))))
+        if isinstance(items, Map__i32_Set__i32):
+            self._map = (<Map__i32_Set__i32> items)._map
+        else:
+          self._map = make_shared[cmap[int32_t,cset[int32_t]]]()
+          if items:
+              for key, item in items.items():
+                  deref(self._map).insert(cpair[int32_t,cset[int32_t]](key, cset[int32_t](deref(Set__i32(item)._set))))
 
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,cset[int32_t]]] c_items):
@@ -441,11 +451,13 @@ Mapping.register(Map__i32_Set__i32)
 
 cdef class Map__i32_i32:
     def __init__(self, items=None):
-
-        self._map = make_shared[cmap[int32_t,int32_t]]()
-        if items:
-            for key, item in items.items():
-                deref(self._map).insert(cpair[int32_t,int32_t](key, item))
+        if isinstance(items, Map__i32_i32):
+            self._map = (<Map__i32_i32> items)._map
+        else:
+          self._map = make_shared[cmap[int32_t,int32_t]]()
+          if items:
+              for key, item in items.items():
+                  deref(self._map).insert(cpair[int32_t,int32_t](key, item))
 
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,int32_t]] c_items):
@@ -528,10 +540,13 @@ Mapping.register(Map__i32_i32)
 
 cdef class List__Map__i32_i32:
     def __init__(self, items=None):
-        self._vector = make_shared[vector[cmap[int32_t,int32_t]]]()
-        if items:
-            for item in items:
-                deref(self._vector).push_back(cmap[int32_t,int32_t](deref(Map__i32_i32(item)._map)))
+        if isinstance(items, List__Map__i32_i32):
+            self._vector = (<List__Map__i32_i32> items)._vector
+        else:
+          self._vector = make_shared[vector[cmap[int32_t,int32_t]]]()
+          if items:
+              for item in items:
+                  deref(self._vector).push_back(cmap[int32_t,int32_t](deref(Map__i32_i32(item)._map)))
 
     @staticmethod
     cdef create(shared_ptr[vector[cmap[int32_t,int32_t]]] c_items):
@@ -604,10 +619,13 @@ Sequence.register(List__Map__i32_i32)
 
 cdef class List__Set__i32:
     def __init__(self, items=None):
-        self._vector = make_shared[vector[cset[int32_t]]]()
-        if items:
-            for item in items:
-                deref(self._vector).push_back(cset[int32_t](deref(Set__i32(item)._set)))
+        if isinstance(items, List__Set__i32):
+            self._vector = (<List__Set__i32> items)._vector
+        else:
+          self._vector = make_shared[vector[cset[int32_t]]]()
+          if items:
+              for item in items:
+                  deref(self._vector).push_back(cset[int32_t](deref(Set__i32(item)._set)))
 
     @staticmethod
     cdef create(shared_ptr[vector[cset[int32_t]]] c_items):
@@ -680,11 +698,13 @@ Sequence.register(List__Set__i32)
 
 cdef class Map__i32_Map__i32_Set__i32:
     def __init__(self, items=None):
-
-        self._map = make_shared[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]()
-        if items:
-            for key, item in items.items():
-                deref(self._map).insert(cpair[int32_t,cmap[int32_t,cset[int32_t]]](key, cmap[int32_t,cset[int32_t]](deref(Map__i32_Set__i32(item)._map))))
+        if isinstance(items, Map__i32_Map__i32_Set__i32):
+            self._map = (<Map__i32_Map__i32_Set__i32> items)._map
+        else:
+          self._map = make_shared[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]()
+          if items:
+              for key, item in items.items():
+                  deref(self._map).insert(cpair[int32_t,cmap[int32_t,cset[int32_t]]](key, cmap[int32_t,cset[int32_t]](deref(Map__i32_Set__i32(item)._map))))
 
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,cmap[int32_t,cset[int32_t]]]] c_items):
@@ -767,10 +787,13 @@ Mapping.register(Map__i32_Map__i32_Set__i32)
 
 cdef class List__Map__i32_Map__i32_Set__i32:
     def __init__(self, items=None):
-        self._vector = make_shared[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]()
-        if items:
-            for item in items:
-                deref(self._vector).push_back(cmap[int32_t,cmap[int32_t,cset[int32_t]]](deref(Map__i32_Map__i32_Set__i32(item)._map)))
+        if isinstance(items, List__Map__i32_Map__i32_Set__i32):
+            self._vector = (<List__Map__i32_Map__i32_Set__i32> items)._vector
+        else:
+          self._vector = make_shared[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]()
+          if items:
+              for item in items:
+                  deref(self._vector).push_back(cmap[int32_t,cmap[int32_t,cset[int32_t]]](deref(Map__i32_Map__i32_Set__i32(item)._map)))
 
     @staticmethod
     cdef create(shared_ptr[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]] c_items):
@@ -843,10 +866,13 @@ Sequence.register(List__Map__i32_Map__i32_Set__i32)
 
 cdef class List__List__Map__i32_Map__i32_Set__i32:
     def __init__(self, items=None):
-        self._vector = make_shared[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]]()
-        if items:
-            for item in items:
-                deref(self._vector).push_back(vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]](deref(List__Map__i32_Map__i32_Set__i32(item)._vector)))
+        if isinstance(items, List__List__Map__i32_Map__i32_Set__i32):
+            self._vector = (<List__List__Map__i32_Map__i32_Set__i32> items)._vector
+        else:
+          self._vector = make_shared[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]]()
+          if items:
+              for item in items:
+                  deref(self._vector).push_back(vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]](deref(List__Map__i32_Map__i32_Set__i32(item)._vector)))
 
     @staticmethod
     cdef create(shared_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]] c_items):

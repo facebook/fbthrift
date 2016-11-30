@@ -251,10 +251,13 @@ cdef class ComplexStruct:
 
 cdef class List__i16:
     def __init__(self, items=None):
-        self._vector = make_shared[vector[int16_t]]()
-        if items:
-            for item in items:
-                deref(self._vector).push_back(item)
+        if isinstance(items, List__i16):
+            self._vector = (<List__i16> items)._vector
+        else:
+          self._vector = make_shared[vector[int16_t]]()
+          if items:
+              for item in items:
+                  deref(self._vector).push_back(item)
 
     @staticmethod
     cdef create(shared_ptr[vector[int16_t]] c_items):
@@ -327,10 +330,13 @@ Sequence.register(List__i16)
 
 cdef class List__i32:
     def __init__(self, items=None):
-        self._vector = make_shared[vector[int32_t]]()
-        if items:
-            for item in items:
-                deref(self._vector).push_back(item)
+        if isinstance(items, List__i32):
+            self._vector = (<List__i32> items)._vector
+        else:
+          self._vector = make_shared[vector[int32_t]]()
+          if items:
+              for item in items:
+                  deref(self._vector).push_back(item)
 
     @staticmethod
     cdef create(shared_ptr[vector[int32_t]] c_items):
@@ -403,10 +409,13 @@ Sequence.register(List__i32)
 
 cdef class List__i64:
     def __init__(self, items=None):
-        self._vector = make_shared[vector[int64_t]]()
-        if items:
-            for item in items:
-                deref(self._vector).push_back(item)
+        if isinstance(items, List__i64):
+            self._vector = (<List__i64> items)._vector
+        else:
+          self._vector = make_shared[vector[int64_t]]()
+          if items:
+              for item in items:
+                  deref(self._vector).push_back(item)
 
     @staticmethod
     cdef create(shared_ptr[vector[int64_t]] c_items):
@@ -479,10 +488,13 @@ Sequence.register(List__i64)
 
 cdef class List__string:
     def __init__(self, items=None):
-        self._vector = make_shared[vector[string]]()
-        if items:
-            for item in items:
-                deref(self._vector).push_back(item.encode('UTF-8'))
+        if isinstance(items, List__string):
+            self._vector = (<List__string> items)._vector
+        else:
+          self._vector = make_shared[vector[string]]()
+          if items:
+              for item in items:
+                  deref(self._vector).push_back(item.encode('UTF-8'))
 
     @staticmethod
     cdef create(shared_ptr[vector[string]] c_items):
@@ -555,10 +567,13 @@ Sequence.register(List__string)
 
 cdef class List__SimpleStruct:
     def __init__(self, items=None):
-        self._vector = make_shared[vector[py3.module_types.cSimpleStruct]]()
-        if items:
-            for item in items:
-                deref(self._vector).push_back(deref((<py3.module_types.SimpleStruct> item).c_SimpleStruct))
+        if isinstance(items, List__SimpleStruct):
+            self._vector = (<List__SimpleStruct> items)._vector
+        else:
+          self._vector = make_shared[vector[py3.module_types.cSimpleStruct]]()
+          if items:
+              for item in items:
+                  deref(self._vector).push_back(deref((<py3.module_types.SimpleStruct> item).c_SimpleStruct))
 
     @staticmethod
     cdef create(shared_ptr[vector[py3.module_types.cSimpleStruct]] c_items):
@@ -631,10 +646,13 @@ Sequence.register(List__SimpleStruct)
 
 cdef class Set__i32:
     def __init__(self, items=None):
-        self._set = make_shared[cset[int32_t]]()
-        if items:
-            for item in items:
-                deref(self._set).insert(item)
+        if isinstance(items, Set__i32):
+            self._set = (<Set__i32> items)._set
+        else:
+          self._set = make_shared[cset[int32_t]]()
+          if items:
+              for item in items:
+                  deref(self._set).insert(item)
 
     @staticmethod
     cdef create(shared_ptr[cset[int32_t]] c_items):
@@ -798,10 +816,13 @@ Set.register(Set__i32)
 
 cdef class Set__string:
     def __init__(self, items=None):
-        self._set = make_shared[cset[string]]()
-        if items:
-            for item in items:
-                deref(self._set).insert(item.encode('UTF-8'))
+        if isinstance(items, Set__string):
+            self._set = (<Set__string> items)._set
+        else:
+          self._set = make_shared[cset[string]]()
+          if items:
+              for item in items:
+                  deref(self._set).insert(item.encode('UTF-8'))
 
     @staticmethod
     cdef create(shared_ptr[cset[string]] c_items):
@@ -965,11 +986,13 @@ Set.register(Set__string)
 
 cdef class Map__string_string:
     def __init__(self, items=None):
-
-        self._map = make_shared[cmap[string,string]]()
-        if items:
-            for key, item in items.items():
-                deref(self._map).insert(cpair[string,string](key.encode('UTF-8'), item.encode('UTF-8')))
+        if isinstance(items, Map__string_string):
+            self._map = (<Map__string_string> items)._map
+        else:
+          self._map = make_shared[cmap[string,string]]()
+          if items:
+              for key, item in items.items():
+                  deref(self._map).insert(cpair[string,string](key.encode('UTF-8'), item.encode('UTF-8')))
 
     @staticmethod
     cdef create(shared_ptr[cmap[string,string]] c_items):
@@ -1052,11 +1075,13 @@ Mapping.register(Map__string_string)
 
 cdef class Map__string_SimpleStruct:
     def __init__(self, items=None):
-
-        self._map = make_shared[cmap[string,py3.module_types.cSimpleStruct]]()
-        if items:
-            for key, item in items.items():
-                deref(self._map).insert(cpair[string,py3.module_types.cSimpleStruct](key.encode('UTF-8'), deref((<py3.module_types.SimpleStruct> item).c_SimpleStruct)))
+        if isinstance(items, Map__string_SimpleStruct):
+            self._map = (<Map__string_SimpleStruct> items)._map
+        else:
+          self._map = make_shared[cmap[string,py3.module_types.cSimpleStruct]]()
+          if items:
+              for key, item in items.items():
+                  deref(self._map).insert(cpair[string,py3.module_types.cSimpleStruct](key.encode('UTF-8'), deref((<py3.module_types.SimpleStruct> item).c_SimpleStruct)))
 
     @staticmethod
     cdef create(shared_ptr[cmap[string,py3.module_types.cSimpleStruct]] c_items):
@@ -1139,11 +1164,13 @@ Mapping.register(Map__string_SimpleStruct)
 
 cdef class Map__string_i16:
     def __init__(self, items=None):
-
-        self._map = make_shared[cmap[string,int16_t]]()
-        if items:
-            for key, item in items.items():
-                deref(self._map).insert(cpair[string,int16_t](key.encode('UTF-8'), item))
+        if isinstance(items, Map__string_i16):
+            self._map = (<Map__string_i16> items)._map
+        else:
+          self._map = make_shared[cmap[string,int16_t]]()
+          if items:
+              for key, item in items.items():
+                  deref(self._map).insert(cpair[string,int16_t](key.encode('UTF-8'), item))
 
     @staticmethod
     cdef create(shared_ptr[cmap[string,int16_t]] c_items):
@@ -1226,10 +1253,13 @@ Mapping.register(Map__string_i16)
 
 cdef class List__List__i32:
     def __init__(self, items=None):
-        self._vector = make_shared[vector[vector[int32_t]]]()
-        if items:
-            for item in items:
-                deref(self._vector).push_back(vector[int32_t](deref(List__i32(item)._vector)))
+        if isinstance(items, List__List__i32):
+            self._vector = (<List__List__i32> items)._vector
+        else:
+          self._vector = make_shared[vector[vector[int32_t]]]()
+          if items:
+              for item in items:
+                  deref(self._vector).push_back(vector[int32_t](deref(List__i32(item)._vector)))
 
     @staticmethod
     cdef create(shared_ptr[vector[vector[int32_t]]] c_items):
@@ -1302,11 +1332,13 @@ Sequence.register(List__List__i32)
 
 cdef class Map__string_i32:
     def __init__(self, items=None):
-
-        self._map = make_shared[cmap[string,int32_t]]()
-        if items:
-            for key, item in items.items():
-                deref(self._map).insert(cpair[string,int32_t](key.encode('UTF-8'), item))
+        if isinstance(items, Map__string_i32):
+            self._map = (<Map__string_i32> items)._map
+        else:
+          self._map = make_shared[cmap[string,int32_t]]()
+          if items:
+              for key, item in items.items():
+                  deref(self._map).insert(cpair[string,int32_t](key.encode('UTF-8'), item))
 
     @staticmethod
     cdef create(shared_ptr[cmap[string,int32_t]] c_items):
@@ -1389,11 +1421,13 @@ Mapping.register(Map__string_i32)
 
 cdef class Map__string_Map__string_i32:
     def __init__(self, items=None):
-
-        self._map = make_shared[cmap[string,cmap[string,int32_t]]]()
-        if items:
-            for key, item in items.items():
-                deref(self._map).insert(cpair[string,cmap[string,int32_t]](key.encode('UTF-8'), cmap[string,int32_t](deref(Map__string_i32(item)._map))))
+        if isinstance(items, Map__string_Map__string_i32):
+            self._map = (<Map__string_Map__string_i32> items)._map
+        else:
+          self._map = make_shared[cmap[string,cmap[string,int32_t]]]()
+          if items:
+              for key, item in items.items():
+                  deref(self._map).insert(cpair[string,cmap[string,int32_t]](key.encode('UTF-8'), cmap[string,int32_t](deref(Map__string_i32(item)._map))))
 
     @staticmethod
     cdef create(shared_ptr[cmap[string,cmap[string,int32_t]]] c_items):
@@ -1476,10 +1510,13 @@ Mapping.register(Map__string_Map__string_i32)
 
 cdef class List__Set__string:
     def __init__(self, items=None):
-        self._vector = make_shared[vector[cset[string]]]()
-        if items:
-            for item in items:
-                deref(self._vector).push_back(cset[string](deref(Set__string(item)._set)))
+        if isinstance(items, List__Set__string):
+            self._vector = (<List__Set__string> items)._vector
+        else:
+          self._vector = make_shared[vector[cset[string]]]()
+          if items:
+              for item in items:
+                  deref(self._vector).push_back(cset[string](deref(Set__string(item)._set)))
 
     @staticmethod
     cdef create(shared_ptr[vector[cset[string]]] c_items):
@@ -1552,11 +1589,13 @@ Sequence.register(List__Set__string)
 
 cdef class Map__string_List__SimpleStruct:
     def __init__(self, items=None):
-
-        self._map = make_shared[cmap[string,vector[py3.module_types.cSimpleStruct]]]()
-        if items:
-            for key, item in items.items():
-                deref(self._map).insert(cpair[string,vector[py3.module_types.cSimpleStruct]](key.encode('UTF-8'), vector[py3.module_types.cSimpleStruct](deref(List__SimpleStruct(item)._vector))))
+        if isinstance(items, Map__string_List__SimpleStruct):
+            self._map = (<Map__string_List__SimpleStruct> items)._map
+        else:
+          self._map = make_shared[cmap[string,vector[py3.module_types.cSimpleStruct]]]()
+          if items:
+              for key, item in items.items():
+                  deref(self._map).insert(cpair[string,vector[py3.module_types.cSimpleStruct]](key.encode('UTF-8'), vector[py3.module_types.cSimpleStruct](deref(List__SimpleStruct(item)._vector))))
 
     @staticmethod
     cdef create(shared_ptr[cmap[string,vector[py3.module_types.cSimpleStruct]]] c_items):
@@ -1639,10 +1678,13 @@ Mapping.register(Map__string_List__SimpleStruct)
 
 cdef class List__List__string:
     def __init__(self, items=None):
-        self._vector = make_shared[vector[vector[string]]]()
-        if items:
-            for item in items:
-                deref(self._vector).push_back(vector[string](deref(List__string(item)._vector)))
+        if isinstance(items, List__List__string):
+            self._vector = (<List__List__string> items)._vector
+        else:
+          self._vector = make_shared[vector[vector[string]]]()
+          if items:
+              for item in items:
+                  deref(self._vector).push_back(vector[string](deref(List__string(item)._vector)))
 
     @staticmethod
     cdef create(shared_ptr[vector[vector[string]]] c_items):
@@ -1715,10 +1757,13 @@ Sequence.register(List__List__string)
 
 cdef class List__Set__i32:
     def __init__(self, items=None):
-        self._vector = make_shared[vector[cset[int32_t]]]()
-        if items:
-            for item in items:
-                deref(self._vector).push_back(cset[int32_t](deref(Set__i32(item)._set)))
+        if isinstance(items, List__Set__i32):
+            self._vector = (<List__Set__i32> items)._vector
+        else:
+          self._vector = make_shared[vector[cset[int32_t]]]()
+          if items:
+              for item in items:
+                  deref(self._vector).push_back(cset[int32_t](deref(Set__i32(item)._set)))
 
     @staticmethod
     cdef create(shared_ptr[vector[cset[int32_t]]] c_items):
@@ -1791,10 +1836,13 @@ Sequence.register(List__Set__i32)
 
 cdef class List__Map__string_string:
     def __init__(self, items=None):
-        self._vector = make_shared[vector[cmap[string,string]]]()
-        if items:
-            for item in items:
-                deref(self._vector).push_back(cmap[string,string](deref(Map__string_string(item)._map)))
+        if isinstance(items, List__Map__string_string):
+            self._vector = (<List__Map__string_string> items)._vector
+        else:
+          self._vector = make_shared[vector[cmap[string,string]]]()
+          if items:
+              for item in items:
+                  deref(self._vector).push_back(cmap[string,string](deref(Map__string_string(item)._map)))
 
     @staticmethod
     cdef create(shared_ptr[vector[cmap[string,string]]] c_items):
@@ -1867,11 +1915,13 @@ Sequence.register(List__Map__string_string)
 
 cdef class Map__i32_double:
     def __init__(self, items=None):
-
-        self._map = make_shared[cmap[int32_t,double]]()
-        if items:
-            for key, item in items.items():
-                deref(self._map).insert(cpair[int32_t,double](key, item))
+        if isinstance(items, Map__i32_double):
+            self._map = (<Map__i32_double> items)._map
+        else:
+          self._map = make_shared[cmap[int32_t,double]]()
+          if items:
+              for key, item in items.items():
+                  deref(self._map).insert(cpair[int32_t,double](key, item))
 
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,double]] c_items):
@@ -1954,10 +2004,13 @@ Mapping.register(Map__i32_double)
 
 cdef class List__Map__i32_double:
     def __init__(self, items=None):
-        self._vector = make_shared[vector[cmap[int32_t,double]]]()
-        if items:
-            for item in items:
-                deref(self._vector).push_back(cmap[int32_t,double](deref(Map__i32_double(item)._map)))
+        if isinstance(items, List__Map__i32_double):
+            self._vector = (<List__Map__i32_double> items)._vector
+        else:
+          self._vector = make_shared[vector[cmap[int32_t,double]]]()
+          if items:
+              for item in items:
+                  deref(self._vector).push_back(cmap[int32_t,double](deref(Map__i32_double(item)._map)))
 
     @staticmethod
     cdef create(shared_ptr[vector[cmap[int32_t,double]]] c_items):

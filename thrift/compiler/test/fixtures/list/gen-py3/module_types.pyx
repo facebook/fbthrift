@@ -24,10 +24,13 @@ cimport py3.module_types
 
 cdef class List__string:
     def __init__(self, items=None):
-        self._vector = make_shared[vector[string]]()
-        if items:
-            for item in items:
-                deref(self._vector).push_back(item.encode('UTF-8'))
+        if isinstance(items, List__string):
+            self._vector = (<List__string> items)._vector
+        else:
+          self._vector = make_shared[vector[string]]()
+          if items:
+              for item in items:
+                  deref(self._vector).push_back(item.encode('UTF-8'))
 
     @staticmethod
     cdef create(shared_ptr[vector[string]] c_items):
@@ -100,11 +103,13 @@ Sequence.register(List__string)
 
 cdef class Map__i64_List__string:
     def __init__(self, items=None):
-
-        self._map = make_shared[cmap[int64_t,vector[string]]]()
-        if items:
-            for key, item in items.items():
-                deref(self._map).insert(cpair[int64_t,vector[string]](key, vector[string](deref(List__string(item)._vector))))
+        if isinstance(items, Map__i64_List__string):
+            self._map = (<Map__i64_List__string> items)._map
+        else:
+          self._map = make_shared[cmap[int64_t,vector[string]]]()
+          if items:
+              for key, item in items.items():
+                  deref(self._map).insert(cpair[int64_t,vector[string]](key, vector[string](deref(List__string(item)._vector))))
 
     @staticmethod
     cdef create(shared_ptr[cmap[int64_t,vector[string]]] c_items):
