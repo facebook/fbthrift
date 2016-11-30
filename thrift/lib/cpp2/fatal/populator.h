@@ -32,6 +32,7 @@
 
 #include <fatal/type/array.h>
 #include <fatal/type/convert.h>
+#include <fatal/type/type.h>
 
 namespace apache { namespace thrift { namespace populator {
 
@@ -514,41 +515,30 @@ private:
     }
   };
 
-  struct member_populator {
-    template <typename Member, std::size_t Index, typename Rng>
-    void operator()(
-      fatal::indexed<Member, Index>,
-      Rng& rng,
-      populator_opts const& opts,
-      Struct& out)
-    {
+public:
+  template <typename Rng>
+  static void populate(Rng& rng, populator_opts const& opts, Struct& out) {
+    fatal::foreach<typename traits::members>([&](auto indexed) {
+      using member = fatal::type_of<decltype(indexed)>;
       using methods = populator_methods<
-        typename Member::type_class,
-        typename Member::type
+        typename member::type_class,
+        typename member::type
       >;
 
-      auto& got = Member::getter::ref(out);
+      auto& got = member::getter::ref(out);
       using member_type = typename std::decay<decltype(got)>::type;
       member_type tmp;
 
       DVLOG(3) << "populating member: "
-        << fatal::z_data<typename Member::name>();
+        << fatal::z_data<typename member::name>();
 
       field_populator<
-        Member,
-        typename Member::type_class,
+        member,
+        typename member::type_class,
         member_type,
         methods,
-        Member::optional::value>::populate(rng, opts, got);
-    }
-  };
-
-public:
-  template <typename Rng>
-  static void populate(Rng& rng, populator_opts const& opts, Struct& out) {
-    fatal::foreach<typename traits::members>(
-      member_populator(), rng, opts, out
-    );
+        member::optional::value>::populate(rng, opts, got);
+    });
   }
 };
 

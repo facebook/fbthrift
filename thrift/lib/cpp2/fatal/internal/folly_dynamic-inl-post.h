@@ -20,6 +20,7 @@
 
 #include <fatal/type/enum.h>
 #include <fatal/type/search.h>
+#include <fatal/type/type.h>
 #include <fatal/type/variant_traits.h>
 
 #include <stdexcept>
@@ -301,37 +302,6 @@ struct dynamic_converter_impl<type_class::variant> {
   }
 };
 
-struct to_dynamic_struct_visitor {
-  template <typename MemberInfo, std::size_t Index, typename T>
-  void operator ()(
-    fatal::indexed<MemberInfo, Index>,
-    folly::dynamic &out,
-    T const &input,
-    dynamic_format format
-  ) const {
-    using impl = dynamic_converter_impl<typename MemberInfo::type_class>;
-
-    static_assert(
-      fatal::is_complete<impl>::value,
-      "to_dynamic: unsupported type"
-    );
-
-    if (MemberInfo::optional::value == optionality::optional &&
-        !MemberInfo::is_set(input)) {
-      return;
-    }
-
-    impl::to(
-      out[folly::StringPiece(
-        fatal::z_data<typename MemberInfo::name>(),
-        fatal::size<typename MemberInfo::name>::value
-      )],
-      MemberInfo::getter::ref(input),
-      format
-    );
-  }
-};
-
 struct from_dynamic_struct_visitor {
   using required = std::integral_constant<optionality, optionality::required>;
 
@@ -364,10 +334,29 @@ struct dynamic_converter_impl<type_class::structure> {
   template <typename T>
   static void to(folly::dynamic &out, T const &input, dynamic_format format) {
     out = folly::dynamic::object;
-    fatal::foreach<typename reflect_struct<T>::members>(
-      to_dynamic_struct_visitor(),
-      out, input, format
-    );
+    fatal::foreach<typename reflect_struct<T>::members>([&](auto indexed) {
+      using member = fatal::type_of<decltype(indexed)>;
+      using impl = dynamic_converter_impl<typename member::type_class>;
+
+      static_assert(
+        fatal::is_complete<impl>::value,
+        "to_dynamic: unsupported type"
+      );
+
+      if (member::optional::value == optionality::optional &&
+          !member::is_set(input)) {
+        return;
+      }
+
+      impl::to(
+        out[folly::StringPiece(
+          fatal::z_data<typename member::name>(),
+          fatal::size<typename member::name>::value
+        )],
+        member::getter::ref(input),
+        format
+      );
+    });
   }
 
   template <typename T>

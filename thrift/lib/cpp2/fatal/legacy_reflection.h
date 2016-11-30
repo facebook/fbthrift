@@ -17,6 +17,7 @@
 #pragma once
 
 #include <fatal/type/cat.h>
+#include <fatal/type/type.h>
 #include <thrift/lib/cpp2/fatal/reflection.h>
 #include <thrift/lib/cpp2/fatal/container_traits.h>
 #include <thrift/lib/thrift/gen-cpp2/reflection_types.h>

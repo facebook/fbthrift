@@ -23,6 +23,8 @@
 #include <thrift/lib/cpp2/fatal/demo/gen-cpp2/flat_config_fatal_all.h>
 #include <thrift/lib/cpp2/fatal/demo/gen-cpp2/legacy_config_constants.h>
 
+#include <fatal/type/type.h>
+
 #include <folly/Conv.h>
 
 #include <iostream>
@@ -60,28 +62,16 @@ void translate(legacy_config const &from, flat_config &to) {
   }
 }
 
-struct flat_to_legacy_translator {
-  template <typename Member, std::size_t Index>
-  void operator ()(
-    fatal::indexed<Member, Index>,
-    flat_config const &from,
-    legacy_config &to
-  ) {
-    using property = typename Member::annotations::values::property;
-    auto const key = fatal::z_data<property>();
-    auto const &value = Member::getter::ref(from);
-    to[key] = folly::to<std::string>(value);
-  }
-};
-
 void translate(flat_config const &from, legacy_config &to) {
   using members = reflect_struct<flat_config>::members;
 
-  fatal::foreach<members>(
-    flat_to_legacy_translator(),
-    from,
-    to
-  );
+  fatal::foreach<members>([&](auto indexed) {
+    using member = fatal::type_of<decltype(indexed)>;
+    using property = typename member::annotations::values::property;
+    auto const key = fatal::z_data<property>();
+    auto const &value = member::getter::ref(from);
+    to[key] = folly::to<std::string>(value);
+  });
 }
 
 template <typename To, typename From>

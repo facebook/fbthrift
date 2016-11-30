@@ -20,6 +20,7 @@
 #include <thrift/lib/cpp2/fatal/demo/gen-cpp2/data_fatal_all.h>
 
 #include <fatal/type/search.h>
+#include <fatal/type/type.h>
 
 #include <algorithm>
 #include <iostream>
@@ -243,44 +244,24 @@ struct serializer<type_class::map<KeyTypeClass, MappedTypeClass>> {
   }
 };
 
-struct struct_member_serializer {
-  template <typename Member, std::size_t Index, typename T>
-  void operator ()(
-    fatal::indexed<Member, Index>,
-    T const &what,
-    data_writer &writer
-  ) const {
-    auto const &value = Member::getter::ref(what);
-    serializer<typename Member::type_class>::serialize(value, writer);
-  }
-};
-
-struct struct_member_deserializer {
-  template <typename Member, std::size_t Index, typename T>
-  void operator ()(
-    fatal::indexed<Member, Index>,
-    T &out,
-    data_reader &reader
-  ) const {
-    auto &member_ref = Member::getter::ref(out);
-    serializer<typename Member::type_class>::deserialize(member_ref, reader);
-  }
-};
-
 template <>
 struct serializer<type_class::structure> {
   template <typename T>
   static void serialize(T const &what, data_writer &writer) {
-    fatal::foreach<typename reflect_struct<T>::members>(
-      struct_member_serializer(), what, writer
-    );
+    fatal::foreach<typename reflect_struct<T>::members>([&](auto indexed) {
+      using member = fatal::type_of<decltype(indexed)>;
+      auto const &value = member::getter::ref(what);
+      serializer<typename member::type_class>::serialize(value, writer);
+    });
   }
 
   template <typename T>
   static void deserialize(T &out, data_reader &reader) {
-    fatal::foreach<typename reflect_struct<T>::members>(
-      struct_member_deserializer(), out, reader
-    );
+    fatal::foreach<typename reflect_struct<T>::members>([&](auto indexed) {
+      using member = fatal::type_of<decltype(indexed)>;
+      auto &member_ref = member::getter::ref(out);
+      serializer<typename member::type_class>::deserialize(member_ref, reader);
+    });
   }
 };
 

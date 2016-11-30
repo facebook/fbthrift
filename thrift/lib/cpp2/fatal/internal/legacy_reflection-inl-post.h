@@ -189,23 +189,6 @@ template <typename T>
 struct impl<T, type_class::structure> {
   using meta = reflect_struct<T>;
   using module_meta = reflect_module<typename meta::module>;
-  struct visitor {
-    template <typename MemberInfo, size_t Index>
-    void operator()(
-        fatal::indexed<MemberInfo, Index>,
-        schema_t& schema,
-        datatype_t& dt) {
-      using type = typename MemberInfo::type;
-      using type_helper = helper<type>;
-      using member_name = typename MemberInfo::name;
-      type_helper::register_into(schema);
-      auto& f = dt.fields[MemberInfo::id::value];
-      f.isRequired = MemberInfo::optional::value != optionality::optional;
-      f.type = type_helper::id();
-      f.name = fatal::to_instance<std::string, member_name>();
-      f.order = Index;
-    }
-  };
   FATAL_S(rkind, "struct");
   using rname = get_type_full_name<rkind, module_meta, meta>;
   static id_t rid() {
@@ -217,7 +200,18 @@ struct impl<T, type_class::structure> {
     registering_datatype(
         schema, to_c_array<rname>::range(), rid(), [&](datatype_t& dt) {
       dt.__isset.fields = true;
-      fatal::foreach<typename meta::members>(visitor(), schema, dt);
+      fatal::foreach<typename meta::members>([&](auto indexed) {
+        using member = fatal::type_of<decltype(indexed)>;
+        using type = typename member::type;
+        using type_helper = helper<type>;
+        using member_name = typename member::name;
+        type_helper::register_into(schema);
+        auto& f = dt.fields[member::id::value];
+        f.isRequired = member::optional::value != optionality::optional;
+        f.type = type_helper::id();
+        f.name = fatal::to_instance<std::string, member_name>();
+        f.order = decltype(indexed)::value;
+      });
     });
   }
 };
@@ -226,23 +220,6 @@ template <typename T>
 struct impl<T, type_class::variant> {
   using meta = reflect_variant<T>;
   using module_meta = reflect_module<typename meta::module>;
-  struct visitor {
-    template <typename MemberInfo, size_t Index>
-    void operator()(
-        fatal::indexed<MemberInfo, Index>,
-        schema_t& schema,
-        datatype_t& dt) {
-      using type = typename MemberInfo::type;
-      using type_helper = helper<type>;
-      using member_name = typename MemberInfo::metadata::name;
-      type_helper::register_into(schema);
-      auto& f = dt.fields[MemberInfo::metadata::id::value];
-      f.isRequired = true;
-      f.type = type_helper::id();
-      f.name = fatal::to_instance<std::string, member_name>();
-      f.order = Index;
-    }
-  };
   FATAL_S(rkind, "struct");
   using rname = get_type_full_name<rkind, module_meta, typename meta::traits>;
   static id_t rid() {
@@ -254,7 +231,18 @@ struct impl<T, type_class::variant> {
     registering_datatype(
         schema, to_c_array<rname>::range(), rid(), [&](datatype_t& dt) {
       dt.__isset.fields = true;
-      fatal::foreach<typename meta::traits::descriptors>(visitor(), schema, dt);
+      fatal::foreach<typename meta::traits::descriptors>([&](auto indexed) {
+        using member = fatal::type_of<decltype(indexed)>;
+        using type = typename member::type;
+        using type_helper = helper<type>;
+        using member_name = typename member::metadata::name;
+        type_helper::register_into(schema);
+        auto& f = dt.fields[member::metadata::id::value];
+        f.isRequired = true;
+        f.type = type_helper::id();
+        f.name = fatal::to_instance<std::string, member_name>();
+        f.order = decltype(indexed)::value;
+      });
     });
   }
 };

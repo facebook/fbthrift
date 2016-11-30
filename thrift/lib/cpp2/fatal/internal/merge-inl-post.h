@@ -44,36 +44,30 @@ struct merge_impl {
 
 template <>
 struct merge_impl<type_class::structure> {
-  template <bool Move>
-  struct visitor {
-    template <typename T>
-    using Src = typename std::conditional<Move, T, const T>::type;
-    template <typename MemberInfo, std::size_t Index, typename T>
-    void operator()(
-        fatal::indexed<MemberInfo, Index>,
-        Src<T>& src,
-        T& dst) const {
-      using mgetter = typename MemberInfo::getter;
-      using merge_field = merge<typename MemberInfo::type>;
-      using mtype = typename MemberInfo::type;
-      using mref = typename std::conditional<Move, mtype&&, const mtype&>::type;
-      if (MemberInfo::optional::value == optionality::optional &&
-          !MemberInfo::is_set(src)) {
+  template <typename T>
+  static void impl(T&& src, remove_const_reference<T>& dst) {
+    using type = remove_const_reference<T>;
+    using members = typename reflect_struct<type>::members;
+    fatal::foreach<members>([&](auto indexed) {
+      using member = fatal::type_of<decltype(indexed)>;
+      using mtype = typename member::type;
+      using mgetter = typename member::getter;
+      using mref = fatal::add_cv_reference_from_t<mtype, T&&>;
+      if (member::optional::value == optionality::optional &&
+          member::is_set(src)) {
         return;
       }
-      MemberInfo::mark_set(dst);
-      merge_field::go(static_cast<mref>(mgetter::ref(src)), mgetter::ref(dst));
-    }
-  };
+      member::mark_set(dst);
+      merge<mtype>::go(static_cast<mref>(mgetter::ref(src)), mgetter::ref(dst));
+    });
+  }
   template <typename T>
   static void go(const T& src, T& dst) {
-    using members = typename reflect_struct<T>::members;
-    fatal::foreach<members>(visitor<false>(), src, dst);
+    impl(src, dst);
   }
   template <typename T>
   static void go(T&& src, T& dst) {
-    using members = typename reflect_struct<T>::members;
-    fatal::foreach<members>(visitor<true>(), src, dst);
+    impl(std::move(src), dst);
   }
 };
 
@@ -167,10 +161,8 @@ namespace apache { namespace thrift {
 
 template <typename T>
 void merge_into(T&& src, merge_into_detail::remove_const_reference<T>& dst) {
-  constexpr auto c = std::is_const<T>::value;
-  constexpr auto r = std::is_rvalue_reference<T&&>::value;
   using D = typename merge_into_detail::remove_const_reference<T>;
-  using W = typename std::conditional<!c && r, T&&, const D&>::type;
+  using W = fatal::add_cv_reference_from_t<D, T&&>;
   merge_into_detail::merge<D>::go(static_cast<W>(src), dst);
 }
 

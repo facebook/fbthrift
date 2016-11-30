@@ -20,6 +20,7 @@
 
 #include <fatal/type/enum.h>
 #include <fatal/type/search.h>
+#include <fatal/type/type.h>
 #include <fatal/type/variant_traits.h>
 
 namespace apache { namespace thrift { namespace detail {
@@ -169,34 +170,6 @@ struct pretty_print_impl<type_class::variant> {
   }
 };
 
-/**
- * Pretty print visitor for structure members.
- *
- * @author: Marcelo Juchem <marcelo@fb.com>
- */
-template <std::size_t Size>
-struct pretty_print_struct_visitor {
-  template <
-    typename MemberInfo, std::size_t Index,
-    typename OutputStream, typename T
-  >
-  void operator ()(
-    fatal::indexed<MemberInfo, Index>,
-    OutputStream &&out,
-    T const &what
-  ) const {
-    auto scope = out.start_scope();
-    scope << fatal::z_data<typename MemberInfo::name>() << ": ";
-    pretty_print_impl<typename MemberInfo::type_class>::print(
-      scope, MemberInfo::getter::ref(what)
-    );
-    if (Index + 1 < Size) {
-      scope << ',';
-    }
-    scope.newline();
-  }
-};
-
 /*
  * Pretty print specialization for structures.
  *
@@ -209,11 +182,20 @@ struct pretty_print_impl<type_class::structure> {
     out << "<struct>{";
     out.newline();
     using info = reflect_struct<T>;
-    fatal::foreach<typename info::members>(
-      pretty_print_struct_visitor<fatal::size<typename info::members>::value>(),
-      out,
-      what
-    );
+    constexpr auto size = fatal::size<typename info::members>::value;
+    fatal::foreach<typename info::members>([&](auto indexed) {
+      using member = fatal::type_of<decltype(indexed)>;
+      constexpr auto index = decltype(indexed)::value;
+      auto scope = out.start_scope();
+      scope << fatal::z_data<typename member::name>() << ": ";
+      pretty_print_impl<typename member::type_class>::print(
+        scope, member::getter::ref(what)
+      );
+      if (index + 1 < size) {
+        scope << ',';
+      }
+      scope.newline();
+    });
     out << '}';
   }
 };

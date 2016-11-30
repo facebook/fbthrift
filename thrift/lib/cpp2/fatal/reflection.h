@@ -1006,18 +1006,14 @@ struct reflected_struct {
    *
    * Example:
    *
-   *  struct visitor {
-   *    template <typename MemberInfo>
-   *    void operator ()(fatal::tag<MemberInfo>) {
-   *      using name = typename MemberInfo::name;
-   *      std::cout << "- member: " << fatal::z_data<name>() << '\n';
-   *    }
-   *  };
-   *
    *  using info = reflect_struct<MyStruct>;
    *
    *  // prints the names of all members of `MyStruct`
-   *  fatal::foreach<info::members>(visitor());
+   *  fatal::foreach<info::members>([&](auto indexed) {
+   *    using member = fatal::type_of<decltype(indexed)>;
+   *    using name = typename member::name;
+   *    std::cout << "-member: " << fatal::z_data<name>() << '\n';
+   *  });
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */

@@ -26,57 +26,43 @@
 
 #include <iostream>
 
+#include <fatal/type/type.h>
+
 using namespace apache::thrift;
 using namespace static_reflection::demo;
-
-struct flat_to_nested_translator {
-  template <typename Nested, std::size_t Index>
-  void operator ()(
-    fatal::indexed<Nested, Index>,
-    flat_config const &from,
-    nested_config &to
-  ) const {
-    using from_getter = fatal::get<
-      reflect_struct<flat_config>::members,
-      typename Nested::member::annotations::values::from_flat,
-      fatal::get_type::name
-    >;
-
-    auto &to_member = Nested::getter::ref(to);
-    auto const &from_member = from_getter::getter::ref(from);
-    to_member = from_member;
-  }
-};
 
 void translate(flat_config const &from, nested_config &to) {
   using nested_getters = flatten_getters<nested_config>;
 
-  fatal::foreach<nested_getters>(flat_to_nested_translator(), from, to);
-}
-
-struct nested_to_flat_translator {
-  template <typename Nested, std::size_t Index>
-  void operator ()(
-    fatal::indexed<Nested, Index>,
-    nested_config const &from,
-    flat_config &to
-  ) const {
-    using to_getter = fatal::get<
+  fatal::foreach<nested_getters>([&](auto indexed) {
+    using nested = fatal::type_of<decltype(indexed)>;
+    using from_getter = fatal::get<
       reflect_struct<flat_config>::members,
-      typename Nested::member::annotations::values::from_flat,
+      typename nested::member::annotations::values::from_flat,
       fatal::get_type::name
     >;
 
-    auto &to_member = to_getter::getter::ref(to);
-    auto const &from_member = Nested::getter::ref(from);
+    auto &to_member = nested::getter::ref(to);
+    auto const &from_member = from_getter::getter::ref(from);
     to_member = from_member;
-  }
-};
+  });
+}
 
 void translate(nested_config const &from, flat_config &to) {
   using nested_getters = flatten_getters<nested_config>;
 
-  fatal::foreach<nested_getters>(nested_to_flat_translator(), from, to);
+  fatal::foreach<nested_getters>([&](auto indexed) {
+    using nested = fatal::type_of<decltype(indexed)>;
+    using to_getter = fatal::get<
+      reflect_struct<flat_config>::members,
+      typename nested::member::annotations::values::from_flat,
+      fatal::get_type::name
+    >;
+
+    auto &to_member = to_getter::getter::ref(to);
+    auto const &from_member = nested::getter::ref(from);
+    to_member = from_member;
+  });
 }
 
 template <typename To, typename From>

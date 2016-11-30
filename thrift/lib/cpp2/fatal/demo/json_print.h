@@ -19,6 +19,7 @@
 #include <thrift/lib/cpp2/fatal/reflection.h>
 
 #include <fatal/type/search.h>
+#include <fatal/type/type.h>
 
 #include <iostream>
 #include <string>
@@ -109,30 +110,27 @@ struct printer<apache::thrift::type_class::map<KeyTypeClass, MappedTypeClass>> {
   }
 };
 
-struct struct_member_printer {
-  template <typename Member, std::size_t Index, typename T>
-  void operator ()(fatal::indexed<Member, Index>, T const &what) const {
-    if (Index) {
-      std::cout << ',';
-    }
-
-    auto const name = fatal::z_data<typename Member::name>();
-    std::cout << '"' <<  name << "\":";
-
-    auto const &value = Member::getter::ref(what);
-    printer<typename Member::type_class>::print(value);
-  }
-};
-
 template <>
 struct printer<apache::thrift::type_class::structure> {
   template <typename T>
   static void print(T const &what) {
+    using members = typename apache::thrift::reflect_struct<T>::members;
+
     std::cout << '{';
-    fatal::foreach<typename apache::thrift::reflect_struct<T>::members>(
-      struct_member_printer(),
-      what
-    );
+    fatal::foreach<members>([&](auto indexed) {
+      using member = fatal::type_of<decltype(indexed)>;
+      constexpr auto index = decltype(indexed)::value;
+
+      if (index) {
+        std::cout << ',';
+      }
+
+      auto const name = fatal::z_data<typename member::name>();
+      std::cout << '"' <<  name << "\":";
+
+      auto const &value = member::getter::ref(what);
+      printer<typename member::type_class>::print(value);
+    });
     std::cout << '}';
   }
 };
