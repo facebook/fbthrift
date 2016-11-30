@@ -58,7 +58,7 @@ class t_map : public t_container {
             val_type_->get_impl_full_name() + ">");
   }
 
-  TypeValue get_type_value() const override { return t_types::TYPE_MAP; }
+  TypeValue get_type_value() const override { return TypeValue::TYPE_MAP; }
 
  private:
   t_type* key_type_;

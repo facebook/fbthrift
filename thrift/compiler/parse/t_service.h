@@ -54,7 +54,7 @@ class t_service : public t_type {
     return extends_;
   }
 
-  TypeValue get_type_value() const override { return t_types::TYPE_SERVICE; }
+  TypeValue get_type_value() const override { return TypeValue::TYPE_SERVICE; }
 
   std::string get_full_name() const override {
     return make_full_name("service");

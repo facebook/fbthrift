@@ -43,7 +43,7 @@ class t_stream : public t_type {
     return "stream<" + elem_type_->get_impl_full_name() + ">";
   }
 
-  TypeValue get_type_value() const override { return t_types::TYPE_STREAM; }
+  TypeValue get_type_value() const override { return TypeValue::TYPE_STREAM; }
 
  private:
   t_type* elem_type_;

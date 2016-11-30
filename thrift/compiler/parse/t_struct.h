@@ -174,7 +174,7 @@ class t_struct : public t_type {
     return get_view_parent()->get_full_name();
   }
 
-  TypeValue get_type_value() const override { return t_types::TYPE_STRUCT; }
+  TypeValue get_type_value() const override { return TypeValue::TYPE_STRUCT; }
 
  private:
 

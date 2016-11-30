@@ -5,6 +5,9 @@
 #include <sstream>
 #include <openssl/sha.h>
 
+constexpr size_t t_types::kTypeBits;
+constexpr uint64_t t_types::kTypeMask;
+
 uint64_t t_type::get_type_id() const {
   union {
     uint64_t val;
@@ -15,7 +18,7 @@ uint64_t t_type::get_type_id() const {
   uint64_t hash = folly::Endian::little(u.val);
   TypeValue tv = get_type_value();
 
-  return (hash & ~t_types::kTypeMask) | tv;
+  return (hash & ~t_types::kTypeMask) | int(tv);
 }
 
 std::string t_type::make_full_name(const char* prefix) const {

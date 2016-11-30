@@ -59,7 +59,7 @@ class t_enum : public t_type {
     return make_full_name("enum");
   }
 
-  TypeValue get_type_value() const override { return t_types::TYPE_ENUM; }
+  TypeValue get_type_value() const override { return TypeValue::TYPE_ENUM; }
 
  private:
   std::vector<t_enum_value*> constants_;

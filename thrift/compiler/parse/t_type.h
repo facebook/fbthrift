@@ -35,7 +35,7 @@ class t_program;
  * @kTypeMask - TODO: add description
  */
 struct t_types {
-  enum TypeValue {
+  enum struct TypeValue {
     TYPE_VOID,
     TYPE_STRING,
     TYPE_BOOL,
@@ -55,8 +55,8 @@ struct t_types {
     TYPE_STREAM,
   };
 
-  static const size_t kTypeBits = 5;
-  static const uint64_t kTypeMask = (1ULL << kTypeBits) - 1;
+  static constexpr size_t kTypeBits = 5;
+  static constexpr uint64_t kTypeMask = (1ULL << kTypeBits) - 1;
 };
 
 /**
