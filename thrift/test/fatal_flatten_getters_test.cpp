@@ -247,11 +247,11 @@ TEST(flatten_getters, runtime) {
   x.field4.set_d(true);
 
   const auto& actual = x;
-  const auto expected =
-    std::make_tuple(10, "hello", enum1::field2, 56, "world", 7.2, true);
   fatal::foreach<flatten_getters<struct5>>([&](auto indexed) {
     using member = fatal::type_of<decltype(indexed)>;
     constexpr auto index = decltype(indexed)::value;
+    const auto expected =
+      std::make_tuple(10, "hello", enum1::field2, 56, "world", 7.2, true);
     EXPECT_EQ(std::get<index>(expected), member::getter::ref(actual));
   });
 }

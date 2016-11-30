@@ -182,9 +182,9 @@ struct pretty_print_impl<type_class::structure> {
     out << "<struct>{";
     out.newline();
     using info = reflect_struct<T>;
-    constexpr auto size = fatal::size<typename info::members>::value;
     fatal::foreach<typename info::members>([&](auto indexed) {
       using member = fatal::type_of<decltype(indexed)>;
+      constexpr auto size = fatal::size<typename info::members>::value;
       constexpr auto index = decltype(indexed)::value;
       auto scope = out.start_scope();
       scope << fatal::z_data<typename member::name>() << ": ";
