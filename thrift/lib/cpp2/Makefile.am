@@ -31,7 +31,8 @@ noinst_LIBRARIES = libsaslstubs.a
 endif
 
 gen-cpp2/Sasl_constants.cpp: gen-cpp2/Sasl_types.h
-gen-cpp2/Sasl_types.cpp: gen-cpp2/Sasl_types.h
+gen-cpp2/Sasl_data.cpp: gen-cpp2/Sasl_data.h gen-cpp2/Sasl_types.h
+gen-cpp2/Sasl_types.cpp: gen-cpp2/Sasl_types.h gen-cpp2/Sasl_data.h
 gen-cpp2/SaslAuthService.cpp: gen-cpp2/Sasl_types.h
 gen-cpp2/SaslAuthService_client.cpp: gen-cpp2/Sasl_types.h
 
@@ -258,20 +259,24 @@ libthriftcpp2_la_CPPFLAGS = $(AM_CPPFLAGS) $(LIBEVENT_CPPFLAGS) -I../cpp -I$(top
 THRIFT = $(top_builddir)/compiler/thrift1
 
 BUILT_SOURCES = gen-cpp2/Sasl_constants.cpp \
+		gen-cpp2/Sasl_data.cpp \
 		gen-cpp2/Sasl_types.cpp \
 		gen-cpp2/SaslAuthService.cpp \
 		gen-cpp2/SaslAuthService_client.cpp
 
-gen-cpp2/Sasl_types.h: Sasl.thrift
+gen-cpp2/Sasl_data.h gen-cpp2/Sasl_types.h: Sasl.thrift
 	PYTHONPATH=$(PY_LOCAL_PATH) $(PYTHON) -mthrift_compiler.main --gen cpp2 $<
 
 gen-cpp2/Sasl_constants.cpp: gen-cpp2/Sasl_types.h
 
-gen-cpp2/Sasl_types.cpp: gen-cpp2/Sasl_types.h
+gen-cpp2/Sasl_data.cpp: gen-cpp2/Sasl_data.h gen-cpp2/Sasl_types.h
+
+gen-cpp2/Sasl_types.cpp: gen-cpp2/Sasl_data.h gen-cpp2/Sasl_types.h
 
 gen-cpp2/SaslAuthService.cpp: gen-cpp2/Sasl_types.h
 
 libsaslstubs_a_SOURCES = gen-cpp2/Sasl_constants.cpp \
+			 gen-cpp2/Sasl_data.cpp \
 			 gen-cpp2/Sasl_types.cpp \
 			 gen-cpp2/SaslAuthService.cpp \
 		         gen-cpp2/SaslAuthService_client.cpp

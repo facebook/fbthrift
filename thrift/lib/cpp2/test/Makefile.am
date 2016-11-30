@@ -19,6 +19,7 @@ gen-cpp2/Service_types.cpp: gen-cpp2/Service_constants.cpp
 gen-cpp2/TestService.cpp: gen-cpp2/Service_constants.cpp
 
 libService_a_SOURCES = gen-cpp2/Service_constants.cpp \
+		       gen-cpp2/Service_data.cpp \
 		       gen-cpp2/Service_types.cpp \
 		       gen-cpp2/TestService.cpp \
 		       gen-cpp2/TestService_client.cpp \
