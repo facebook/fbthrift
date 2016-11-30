@@ -19,9 +19,13 @@
 
 #include <stdlib.h>
 #include <iostream>
-#include <thrift/test/gen-cpp/PhpSerializeTest_types.h>
-#include <boost/lexical_cast.hpp>
 #include <memory>
+
+#include <boost/lexical_cast.hpp>
+
+#include <folly/init/Init.h>
+
+#include <thrift/test/gen-cpp/PhpSerializeTest_types.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/lib/cpp/protocol/TPhpSerializeProtocol.h>
 
@@ -118,6 +122,8 @@ void createFirstLevel(FirstLevel* flData) {
 }
 
 int main(int argc, char** argv) {
+  folly::init(&argc, &argv);
+
   srand(time(nullptr));
   bool success = true;
   for (int i = 0; i < 10; i++) {

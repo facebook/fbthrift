@@ -16,14 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 #include <iostream>
+
+#include <folly/init/Init.h>
+
 #include <thrift/lib/cpp/test/gen-cpp/DebugProtocolTest_types.h>
-#include "common/base/Base.h"
 #include <thrift/lib/cpp/protocol/TDebugProtocol.h>
 
 using apache::thrift::ThriftDebugString;
 
 int main(int argc, char **argv) {
+  folly::init(&argc, &argv);
+
   Message m;
   const Message cm;
   MyException e;

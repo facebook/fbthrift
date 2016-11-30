@@ -20,10 +20,14 @@
 #include <iostream>
 #include <string>
 
+#include <folly/init/Init.h>
+
 #include <thrift/lib/cpp/test/gen-cpp/Paths_types.h>
 #include <thrift/lib/cpp/util/ThriftSerializer.h>
 
 int main(int argc, char **argv) {
+  folly::init(&argc, &argv);
+
   Path1 p1; // list of pairs, 5005 bytes
   Path2 p2; // pair of lists, 2009 bytes
 
