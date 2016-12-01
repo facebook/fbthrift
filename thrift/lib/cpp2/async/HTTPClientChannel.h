@@ -250,6 +250,16 @@ class HTTPClientChannel : public ClientChannel,
     }
 
     virtual void onEOM() noexcept override {
+      if (!body_) {
+        DCHECK(msg_);
+        requestError(
+            folly::make_exception_wrapper<transport::TTransportException>(
+                folly::format(
+                    "Empty HTTP response, status code = {}",
+                    msg_->getStatusCode())
+                    .str()));
+        return;
+      }
       auto header = folly::make_unique<transport::THeader>();
       header->setClientType(THRIFT_HTTP_CLIENT_TYPE);
       apache::thrift::transport::THeader::StringToStringMap readHeaders;
