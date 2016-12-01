@@ -24,7 +24,6 @@
 #include <fatal/type/search.h>
 #include <fatal/type/sort.h>
 #include <fatal/type/transform.h>
-#include <fatal/type/type.h>
 #include <fatal/type/variant_traits.h>
 
 #include <stdexcept>
@@ -318,6 +317,29 @@ struct debug_equals_impl<type_class::variant> {
   }
 };
 
+struct debug_equals_struct_visitor {
+  template <typename Member, std::size_t Index, typename T, typename Callback>
+  void operator ()(
+    fatal::indexed<Member, Index>,
+    std::string &path,
+    T const &lhs,
+    T const &rhs,
+    Callback &&callback,
+    bool &result
+  ) const {
+    if (!result) {
+      return;
+    }
+
+    scoped_path guard(path, fatal::z_data<typename Member::name>());
+
+    using getter = typename Member::getter;
+    result = debug_equals_impl<typename Member::type_class>::equals(
+      path, getter::ref(lhs), getter::ref(rhs), callback
+    );
+  }
+};
+
 template <>
 struct debug_equals_impl<type_class::structure> {
   template <typename T, typename Callback>
@@ -329,20 +351,10 @@ struct debug_equals_impl<type_class::structure> {
   ) {
     bool result = true;
 
-    fatal::foreach<typename reflect_struct<T>::members>([&](auto indexed) {
-      using member = fatal::type_of<decltype(indexed)>;
-      using getter = typename member::getter;
-
-      if (!result) {
-        return;
-      }
-
-      scoped_path guard(path, fatal::z_data<typename member::name>());
-
-      result = debug_equals_impl<typename member::type_class>::equals(
-        path, getter::ref(lhs), getter::ref(rhs), callback
-      );
-    });
+    fatal::foreach<typename reflect_struct<T>::members>(
+      debug_equals_struct_visitor(),
+      path, lhs, rhs, callback, result
+    );
 
     return result;
   }

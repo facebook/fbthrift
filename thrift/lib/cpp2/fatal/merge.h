@@ -20,9 +20,7 @@
 #include <utility>
 
 #include <fatal/type/call_traits.h>
-#include <fatal/type/qualifier.h>
 #include <fatal/type/transform.h>
-#include <fatal/type/type.h>
 
 #include <folly/Memory.h>
 #include <folly/Range.h>

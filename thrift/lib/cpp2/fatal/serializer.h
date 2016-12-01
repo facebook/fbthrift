@@ -21,7 +21,6 @@
 
 #include <fatal/type/call_traits.h>
 #include <fatal/type/trie.h>
-#include <fatal/type/type.h>
 
 #include <bitset>
 #include <iostream>
@@ -1224,6 +1223,45 @@ private:
     }
   };
 
+  struct member_writer {
+    template <typename Member, std::size_t Index, typename Protocol>
+    void operator()(
+      fatal::indexed<Member, Index>,
+      Protocol& protocol,
+      Struct const& in,
+      std::size_t& xfer)
+    {
+      using methods = protocol_methods<
+        typename Member::type_class,
+        typename Member::type
+      >;
+
+      if(
+        (Member::optional::value == optionality::required_of_writer)
+        || Member::is_set(in)
+      ) {
+        DVLOG(3) << "start field write: "
+          << fatal::z_data<typename Member::name>()
+          << " ttype:" << methods::ttype_value
+          << ", id:" << Member::id::value;
+
+        auto const& got = Member::getter::ref(in);
+        using member_type = typename std::decay<decltype(got)>::type;
+
+        xfer += field_writer<
+          Protocol,
+          Member::id::value,
+          typename Member::type_class,
+          member_type,
+          methods,
+          static_cast<std::underlying_type<optionality>::type>(
+            Member::optional::value
+          )
+        >::write(protocol, got);
+      }
+    }
+  };
+
   template <
     bool ZeroCopy,
     typename Protocol,
@@ -1357,43 +1395,46 @@ private:
     }
   };
 
+  template <bool ZeroCopy>
+  struct member_size {
+    template <typename Member, std::size_t Index, typename Protocol>
+    void inline operator()(
+      fatal::indexed<Member, Index>,
+      Protocol& protocol,
+      Struct const& in,
+      std::size_t& xfer)
+    {
+      using methods = protocol_methods<
+        typename Member::type_class,
+        typename Member::type
+      >;
+
+      auto const& got = Member::getter::ref(in);
+      using member_type = typename std::decay<decltype(got)>::type;
+
+      xfer += field_size<
+        ZeroCopy,
+        Protocol,
+        Member::id::value,
+        typename Member::type_class,
+        member_type,
+        methods,
+        static_cast<std::underlying_type<optionality>::type>(
+          Member::optional::value
+        )
+      >::size(protocol, got);
+    }
+  };
+
 public:
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, Struct const& in) {
     std::size_t xfer = 0;
 
     xfer += protocol.writeStructBegin(fatal::z_data<typename traits::name>());
-    fatal::foreach<typename traits::members>([&](auto indexed) {
-      using member = fatal::type_of<decltype(indexed)>;
-      using methods = protocol_methods<
-        typename member::type_class,
-        typename member::type
-      >;
-
-      if(
-        (member::optional::value == optionality::required_of_writer)
-        || member::is_set(in)
-      ) {
-        DVLOG(3) << "start field write: "
-          << fatal::z_data<typename member::name>()
-          << " ttype:" << methods::ttype_value
-          << ", id:" << member::id::value;
-
-        auto const& got = member::getter::ref(in);
-        using member_type = typename std::decay<decltype(got)>::type;
-
-        xfer += field_writer<
-          Protocol,
-          member::id::value,
-          typename member::type_class,
-          member_type,
-          methods,
-          static_cast<std::underlying_type<optionality>::type>(
-            member::optional::value
-          )
-        >::write(protocol, got);
-      }
-    });
+    fatal::foreach<typename traits::members>(
+      member_writer(), protocol, in, xfer
+    );
     xfer += protocol.writeFieldStop();
     xfer += protocol.writeStructEnd();
     return xfer;
@@ -1404,28 +1445,9 @@ public:
     std::size_t xfer = 0;
     xfer += protocol.serializedStructSize(
       fatal::z_data<typename traits::name>());
-    fatal::foreach<typename traits::members>([&](auto indexed) {
-      using member = fatal::type_of<decltype(indexed)>;
-      using methods = protocol_methods<
-        typename member::type_class,
-        typename member::type
-      >;
-
-      auto const& got = member::getter::ref(in);
-      using member_type = typename std::decay<decltype(got)>::type;
-
-      xfer += field_size<
-        ZeroCopy,
-        Protocol,
-        member::id::value,
-        typename member::type_class,
-        member_type,
-        methods,
-        static_cast<std::underlying_type<optionality>::type>(
-          member::optional::value
-        )
-      >::size(protocol, got);
-    });
+    fatal::foreach<typename traits::members>(
+      member_size<ZeroCopy>(), protocol, in, xfer
+    );
     xfer += protocol.serializedSizeStop();
     return xfer;
   }

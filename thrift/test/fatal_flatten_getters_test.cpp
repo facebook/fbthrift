@@ -20,8 +20,6 @@
 
 #include <thrift/lib/cpp2/fatal/internal/test_helpers.h>
 
-#include <fatal/type/type.h>
-
 #include <gtest/gtest.h>
 
 namespace test_cpp2 {
@@ -236,6 +234,17 @@ TEST(flatten_getters, annotated_terminals_only) {
   >();
 }
 
+struct runtime_checker {
+  template <typename Member, std::size_t Index, typename T, typename Expected>
+  void operator ()(
+    fatal::indexed<Member, Index>,
+    T const &actual,
+    Expected const &expected
+  ) const {
+    EXPECT_EQ(std::get<Index>(expected), Member::getter::ref(actual));
+  }
+};
+
 TEST(flatten_getters, runtime) {
   struct5 x;
   x.set_field0(10);
@@ -246,14 +255,10 @@ TEST(flatten_getters, runtime) {
   x.field4.set_c(7.2);
   x.field4.set_d(true);
 
-  const auto& actual = x;
-  fatal::foreach<flatten_getters<struct5>>([&](auto indexed) {
-    using member = fatal::type_of<decltype(indexed)>;
-    constexpr auto index = decltype(indexed)::value;
-    const auto expected =
-      std::make_tuple(10, "hello", enum1::field2, 56, "world", 7.2, true);
-    EXPECT_EQ(std::get<index>(expected), member::getter::ref(actual));
-  });
+  fatal::foreach<flatten_getters<struct5>>(
+    runtime_checker(), x,
+    std::make_tuple(10, "hello", enum1::field2, 56, "world", 7.2, true)
+  );
 }
 
 } // namespace cpp_reflection {
