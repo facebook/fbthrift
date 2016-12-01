@@ -10,7 +10,6 @@ from __future__ import print_function
 # @lint-avoid-python-3-compatibility-imports
 #from __future__ import unicode_literals
 
-# @lint-avoid-servicerouter-import-warning
 from ServiceRouter import ServiceOptions, ConnConfigs, ServiceRouter
 from libfb import decorators
 from test.reverse import ttypes as reverse
