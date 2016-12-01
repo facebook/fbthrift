@@ -270,10 +270,11 @@ def write_results_after_future(
             reply_type = TMessageType.REPLY
         except TException as e:
             for exc_name, exc_type in known_exceptions.items():
-                setattr(result, exc_name, e)
-                reply_type = TMessageType.REPLY
-                event_handler.handlerException(handler_ctx, fn_name, e)
-                break
+                if type(e) is exc_type:
+                    setattr(result, exc_name, e)
+                    reply_type = TMessageType.REPLY
+                    event_handler.handlerException(handler_ctx, fn_name, e)
+                    break
             else:
                 raise
     except Exception as e:
