@@ -710,3 +710,11 @@ bool validate_throws(t_struct* throws) {
   }
   return true;
 }
+
+// TODO: Add a description of the function
+void override_annotations(std::map<std::string, std::string>& where,
+                          const std::map<std::string, std::string>& from) {
+  for (const auto& kvp : from) {
+    where[kvp.first] = kvp.second;
+  }
+}

@@ -22,8 +22,6 @@
 #include <string>
 #include <sstream>
 
-#include <folly/Bits.h>
-
 #include <thrift/compiler/parse/t_doc.h>
 
 class t_program;
@@ -113,7 +111,7 @@ class t_type : public t_doc {
   virtual bool is_binary()         const { return false; }
 
   /**
-   * TODO: Add a description of the function
+   * Create a unique hash number based on t_type's properties.
    */
   virtual uint64_t get_type_id() const;
 
@@ -174,14 +172,3 @@ class t_type : public t_doc {
   t_program* program_{nullptr};
   std::string name_;
 };
-
-
-// Placeholder struct to return key and value of an annotation during parsing.
-struct t_annotation {
-  std::string key;
-  std::string val;
-};
-
-// TODO: Add a description of the function
-void override_annotations(std::map<std::string, std::string>& where,
-                          const std::map<std::string, std::string>& from);

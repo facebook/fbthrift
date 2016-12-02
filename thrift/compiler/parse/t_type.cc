@@ -1,9 +1,28 @@
+/*
+ * Copyright 2016 Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #include <thrift/compiler/parse/t_type.h>
-#include <thrift/compiler/parse/t_program.h>
 
 #include <string>
 #include <sstream>
+
 #include <openssl/sha.h>
+#include <folly/Bits.h>
+
+#include <thrift/compiler/parse/t_program.h>
 
 constexpr size_t t_types::kTypeBits;
 constexpr uint64_t t_types::kTypeMask;
@@ -29,12 +48,4 @@ std::string t_type::make_full_name(const char* prefix) const {
   }
   os << name_;
   return os.str();
-}
-
-void override_annotations(std::map<std::string, std::string>& where,
-                          const std::map<std::string, std::string>& from) {
-  for (std::map<std::string, std::string>::const_iterator it =
-       from.begin(); it != from.end(); ++it) {
-    where[it->first] = it->second;
-  }
 }

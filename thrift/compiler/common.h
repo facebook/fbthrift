@@ -86,6 +86,14 @@ extern int g_warn;
 extern int g_verbose;
 
 /**
+ * Placeholder struct to return key and value of an annotation during parsing.
+ */
+struct t_annotation {
+  std::string key;
+  std::string val;
+};
+
+/**
  * MinGW doesn't have realpath, so use fallback implementation in that case,
  * otherwise this just calls through to realpath
  */
@@ -198,5 +206,8 @@ bool validate_throws(t_struct* throws);
 void parse(t_program* program,
            t_program* parent_program,
            set<string> already_parsed_paths = set<string>());
+
+void override_annotations(std::map<std::string, std::string>& where,
+                          const std::map<std::string, std::string>& from);
 
 #endif

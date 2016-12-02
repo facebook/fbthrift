@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#ifndef T_PROGRAM_H
-#define T_PROGRAM_H
+#pragma once
 
 #include <map>
+#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
@@ -61,8 +61,7 @@ class t_program : public t_doc {
    *
    * @param path - A *.thrift file path.
    */
-  explicit t_program(std::string path) :
-    path_(std::move(path)) {}
+  explicit t_program(std::string path) : path_(std::move(path)) {}
 
   /**
    * Set program elements
@@ -142,7 +141,7 @@ class t_program : public t_doc {
     return folly::get_ref_default(namespaces_, language, kEmpty);
   }
 
-  t_scope* scope() const { return scope_; }
+  t_scope* scope() const { return scope_.get(); }
 
   /**
    * Correct and set any file path to the correct output path format
@@ -196,7 +195,5 @@ class t_program : public t_doc {
   std::string include_prefix_;
   std::map<std::string, std::string> namespaces_;
   std::vector<std::string> cpp_includes_;
-  t_scope* scope_{new t_scope()};
+  std::unique_ptr<t_scope> scope_{new t_scope{}};
 };
-
-#endif // T_PROGRAM_H
