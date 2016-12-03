@@ -132,6 +132,8 @@ if test "$with_cpp" = "yes";  then
   ])
 
   AX_BOOST_THREAD
+  AX_BOOST_FILESYSTEM
+  AX_BOOST_SYSTEM
 
   AX_LIB_EVENT([1.0])
   have_libevent=$success
@@ -372,7 +374,6 @@ AC_CHECK_FUNCS([strtol])
 AC_CHECK_FUNCS([sqrt])
 dnl The following functions are optional.
 AC_CHECK_FUNCS([alarm])
-AC_CHECK_FUNCS([clock_gettime])
 AC_CHECK_FUNCS([sched_get_priority_min])
 AC_CHECK_FUNCS([sched_get_priority_max])
 
