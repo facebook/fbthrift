@@ -559,7 +559,8 @@ void HeaderClientChannel::messageChannelEOF() {
   setProtectionState(ProtectionState::INVALID);
   messageReceiveErrorWrapped(folly::make_exception_wrapper<TTransportException>(
       TTransportException::TTransportExceptionType::END_OF_FILE,
-      "Channel got EOF"));
+      "Channel got EOF. Check for server hitting connection limit, "
+      "server connection idle timeout, and server crashes."));
   if (closeCallback_) {
     closeCallback_->channelClosed();
     closeCallback_ = nullptr;
