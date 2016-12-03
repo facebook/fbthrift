@@ -97,4 +97,20 @@ TEST(THeaderTest, eraseReadHeader) {
   EXPECT_EQ(2, header.getHeaders().size());
 }
 
+TEST(THeaderTest, removeHeaderNullptrQueue) {
+  THeader header;
+  size_t needed;
+  THeader::StringToStringMap persistentHeaders;
+  EXPECT_EQ(nullptr, header.removeHeader(nullptr, needed, persistentHeaders));
+  EXPECT_EQ(4, needed);
+}
+
+TEST(THeaderTest, removeHeaderEmptyQueue) {
+  THeader header;
+  size_t needed;
+  THeader::StringToStringMap persistentHeaders;
+  IOBufQueue queue(IOBufQueue::cacheChainLength());
+  EXPECT_EQ(nullptr, header.removeHeader(&queue, needed, persistentHeaders));
+  EXPECT_EQ(4, needed);
+}
 }}}

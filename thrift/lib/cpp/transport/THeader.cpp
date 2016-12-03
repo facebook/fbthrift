@@ -249,6 +249,10 @@ unique_ptr<IOBuf> THeader::removeHeader(
   IOBufQueue* queue,
   size_t& needed,
   StringToStringMap& persistentReadHeaders) {
+  if (!queue || queue->empty()) {
+    needed = 4;
+    return nullptr;
+  }
   Cursor c(queue->front());
   size_t remaining = queue->front()->computeChainDataLength();
   size_t frameSizeBytes = 4;
