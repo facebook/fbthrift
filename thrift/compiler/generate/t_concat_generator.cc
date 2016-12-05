@@ -15,7 +15,12 @@
  */
 
 #include <thrift/compiler/generate/t_concat_generator.h>
+
+#include <iterator>
+
+#include <folly/Bits.h>
 #include <openssl/sha.h>
+
 #include <thrift/compiler/generate/t_generator.h>
 
 using namespace std;

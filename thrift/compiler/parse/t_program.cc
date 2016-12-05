@@ -16,11 +16,23 @@
 
 #include <thrift/compiler/parse/t_program.h>
 
+#include <map>
+#include <memory>
+#include <utility>
+#include <string>
+#include <vector>
+
+#include <folly/MapUtil.h>
+
+const std::string& t_program::get_namespace(const std::string& language) const {
+  static const auto& kEmpty = *new std::string();
+  return folly::get_ref_default(namespaces_, language, kEmpty);
+}
+
 void t_program::set_out_path(std::string out_path, bool out_path_is_absolute) {
   out_path_ = std::move(out_path);
   out_path_is_absolute_ = out_path_is_absolute;
   if(!out_path_.empty()) {
-    // Ensure that it ends with a trailing '/' (or '\' for windows machines)
     if (!(out_path_.back() == '/' || out_path_.back() == '\\')) {
       out_path_.push_back('/');
     }
@@ -30,8 +42,6 @@ void t_program::set_out_path(std::string out_path, bool out_path_is_absolute) {
 void t_program::add_include(std::string path, std::string include_site) {
   t_program* program = new t_program(path);
 
-  // Include prefix for this program is the site at which it was included
-  // (minus the filename)
   std::string include_prefix;
   const auto last_slash = include_site.rfind("/");
   if (last_slash != std::string::npos) {
@@ -45,7 +55,6 @@ void t_program::add_include(std::string path, std::string include_site) {
 void t_program::set_include_prefix(std::string include_prefix) {
   include_prefix_ = std::move(include_prefix);
 
-  // This is intended to be a directory; add a trailing slash if necessary
   int len = include_prefix_.size();
   if (len > 0 && include_prefix_[len - 1] != '/') {
     include_prefix_ += '/';
