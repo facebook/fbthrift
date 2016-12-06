@@ -789,26 +789,24 @@ TEST(fatal_struct, set_methods) {
 
   struct4 a;
   EXPECT_EQ(true, req_field::is_set(a));
-  req_field::mark_set(a);
+  req_field::mark_set(a, true);
   EXPECT_EQ(true, req_field::is_set(a));
-  // can't test that req_field::unmark_set doesn't compile,
-  // but trust me, it shoudln't
-  // req_field::unmark_set(a);
+  req_field::mark_set(a, false);
 
   EXPECT_FALSE(bool(opt_field::is_set(a)));
-  opt_field::mark_set(a);
+  opt_field::mark_set(a, true);
   EXPECT_TRUE(bool(opt_field::is_set(a)));
-  opt_field::unmark_set(a);
+  opt_field::mark_set(a, false);
   EXPECT_FALSE(bool(opt_field::is_set(a)));
 
   EXPECT_FALSE(bool(def_field::is_set(a)));
-  def_field::mark_set(a);
+  def_field::mark_set(a, true);
   EXPECT_TRUE(bool(def_field::is_set(a)));
-  def_field::unmark_set(a);
+  def_field::mark_set(a, false);
   EXPECT_FALSE(bool(def_field::is_set(a)));
 
   EXPECT_EQ(true, ref_field::is_set(a));
-  ref_field::mark_set(a);
+  ref_field::mark_set(a, true);
   EXPECT_EQ(true, req_field::is_set(a));
 }
 

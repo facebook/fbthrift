@@ -26,39 +26,29 @@ namespace detail { namespace reflection_impl {
 template <typename Owner, typename Getter, bool HasIsSet>
 struct is_set {
   template <typename T>
-  constexpr static bool check(T const &owner) {
-    return Getter::ref(owner.__isset);
+  static constexpr bool check(T const &owner) {
+    return Getter::copy(owner.__isset);
   }
 };
 
 template <typename Owner, typename Getter>
 struct is_set<Owner, Getter, false> {
   template <typename T>
-  constexpr static bool check(T const &) { return true; }
+  static constexpr bool check(T const &) { return true; }
 };
 
 template <typename Owner, typename Getter, bool HasIsSet>
 struct mark_set {
   template <typename T>
-  static void mark(T& owner) {
-    Getter::ref(owner.__isset) = true;
+  static constexpr inline bool mark(T& owner, bool set) {
+    return Getter::set(owner.__isset, set), set;
   }
 };
 
 template <typename Owner, typename Getter>
 struct mark_set<Owner, Getter, false> {
   template <typename T>
-  static void mark(T&) {}
-};
-
-template <typename, typename, bool> struct unmark_set;
-
-template <typename Owner, typename Getter>
-struct unmark_set<Owner, Getter, true> {
-  template <typename T>
-  static void mark(T& owner) {
-    Getter::ref(owner.__isset) = false;
-  }
+  static constexpr inline bool mark(T&, bool set) { return set; }
 };
 
 } // reflection_impl

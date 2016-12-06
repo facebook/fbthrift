@@ -61,7 +61,7 @@ struct merge_impl<type_class::structure> {
           !MemberInfo::is_set(src)) {
         return;
       }
-      MemberInfo::mark_set(dst);
+      MemberInfo::mark_set(dst, true);
       merge_field::go(static_cast<mref>(mgetter::ref(src)), mgetter::ref(dst));
     }
   };

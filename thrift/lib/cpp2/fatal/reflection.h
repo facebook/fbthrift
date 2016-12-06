@@ -1389,14 +1389,14 @@ struct reflected_struct_data_member {
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
   template <typename T>
-  static bool is_set(T const &owner) {
+  static constexpr inline bool is_set(T const &owner) {
     return detail::reflection_impl::is_set<
         Owner, getter, HasIsSet
       >::check(owner);
   }
 
   /**
-   * Marks the member as being set on the parent object.
+   * Marks the member as being either set or not set on the parent object.
    *
    * Example:
    *
@@ -1416,45 +1416,17 @@ struct reflected_struct_data_member {
    * MyStruct pod;
    *
    * // mark `field` as being set
-   * member::mark_set(pod)
+   * member::mark_set(pod, true)
    *
    *
    * @author: Dylan Knutson <dymk@fb.com>
    */
   template <typename T>
-  static void mark_set(T& owner) {
-    detail::reflection_impl::mark_set<Owner, getter, HasIsSet>::mark(owner);
-  }
-
-  /**
-   * Marks the member as being not set on the parent object.
-   *
-   * Example:
-   *
-   *  // MyModule.thrift
-   *
-   *  namespace cpp2 My.Namespace
-   *
-   *  struct MyStruct {
-   *    1: optional i32 field
-   *  }
-   *
-   *  // MyModule.cpp
-   *
-   *  using info = reflect_struct<MyStruct>;
-   *  using member = info::types::members<info::member::field::name>;
-   *
-   * MyStruct pod;
-   *
-   * // mark `field` as being not set
-   * member::unmark_set(pod)
-   *
-   *
-   * @author: Dylan Knutson <dymk@fb.com>
-   */
-  template <typename T>
-  static void unmark_set(T& owner) {
-    detail::reflection_impl::unmark_set<Owner, getter, HasIsSet>::mark(owner);
+  static constexpr inline bool mark_set(T& owner, bool set) {
+    return detail::reflection_impl::mark_set<Owner, getter, HasIsSet>::mark(
+      owner,
+      set
+    );
   }
 };
 
@@ -2145,20 +2117,24 @@ struct thrift_string_traits_std {
   using iterator = typename type::iterator;
   using const_iterator = typename type::const_iterator;
 
-  static iterator begin(type &what) { return what.begin(); }
-  static iterator end(type &what) { return what.end(); }
+  static inline iterator begin(type &what) { return what.begin(); }
+  static inline iterator end(type &what) { return what.end(); }
 
-  static const_iterator cbegin(type const &what) { return what.cbegin(); }
-  static const_iterator begin(type const &what) { return what.begin(); }
-  static const_iterator cend(type const &what) { return what.cend(); }
-  static const_iterator end(type const &what) { return what.end(); }
+  static inline const_iterator cbegin(type const &what) {
+    return what.cbegin();
+  }
+  static inline const_iterator begin(type const &what) { return what.begin(); }
+  static inline const_iterator cend(type const &what) { return what.cend(); }
+  static inline const_iterator end(type const &what) { return what.end(); }
 
-  static void clear(type &what) { what.clear(); }
-  static bool empty(type const &what) { return what.empty(); }
-  static size_type size(type const &what) { return what.size(); }
+  static inline void clear(type &what) { what.clear(); }
+  static inline bool empty(type const &what) { return what.empty(); }
+  static inline size_type size(type const &what) { return what.size(); }
 
-  static value_type const *data(type const &what) { return what.data(); }
-  static value_type const *c_str(type const &what) { return what.c_str(); }
+  static inline value_type const *data(type const &what) { return what.data(); }
+  static inline value_type const *c_str(type const &what) {
+    return what.c_str();
+  }
 };
 
 /**
@@ -2217,24 +2193,26 @@ struct thrift_list_traits_std {
   using iterator = typename type::iterator;
   using const_iterator = typename type::const_iterator;
 
-  static iterator begin(type &what) { return what.begin(); }
-  static iterator end(type &what) { return what.end(); }
+  static inline iterator begin(type &what) { return what.begin(); }
+  static inline iterator end(type &what) { return what.end(); }
 
-  static const_iterator cbegin(type const &what) { return what.cbegin(); }
-  static const_iterator begin(type const &what) { return what.begin(); }
-  static const_iterator cend(type const &what) { return what.cend(); }
-  static const_iterator end(type const &what) { return what.end(); }
+  static inline const_iterator cbegin(type const &what) {
+    return what.cbegin();
+  }
+  static inline const_iterator begin(type const &what) { return what.begin(); }
+  static inline const_iterator cend(type const &what) { return what.cend(); }
+  static inline const_iterator end(type const &what) { return what.end(); }
 
-  static void clear(type &what) { what.clear(); }
-  static bool empty(type const &what) { return what.empty(); }
-  static void push_back(type &what, value_type const &val) {
+  static inline void clear(type &what) { what.clear(); }
+  static inline bool empty(type const &what) { return what.empty(); }
+  static inline void push_back(type &what, value_type const &val) {
     what.push_back(val);
   }
-  static void push_back(type &what, value_type &&val) {
+  static inline void push_back(type &what, value_type &&val) {
     what.push_back(std::move(val));
   }
-  static void reserve(type &what, size_type size) { what.reserve(size); }
-  static size_type size(type const &what) { return what.size(); }
+  static inline void reserve(type &what, size_type size) { what.reserve(size); }
+  static inline size_type size(type const &what) { return what.size(); }
 };
 
 /**
@@ -2303,31 +2281,33 @@ struct thrift_set_traits_std {
   using iterator = typename type::iterator;
   using const_iterator = typename type::const_iterator;
 
-  static iterator begin(type &what) { return what.begin(); }
-  static iterator end(type &what) { return what.end(); }
+  static inline iterator begin(type &what) { return what.begin(); }
+  static inline iterator end(type &what) { return what.end(); }
 
-  static const_iterator cbegin(type const &what) { return what.cbegin(); }
-  static const_iterator begin(type const &what) { return what.begin(); }
-  static const_iterator cend(type const &what) { return what.cend(); }
-  static const_iterator end(type const &what) { return what.end(); }
+  static inline const_iterator cbegin(type const &what) {
+    return what.cbegin();
+  }
+  static inline const_iterator begin(type const &what) { return what.begin(); }
+  static inline const_iterator cend(type const &what) { return what.cend(); }
+  static inline const_iterator end(type const &what) { return what.end(); }
 
-  static void clear(type &what) { what.clear(); }
-  static bool empty(type const &what) { return what.empty(); }
-  static iterator find(type &what, value_type const &val) {
+  static inline void clear(type &what) { what.clear(); }
+  static inline bool empty(type const &what) { return what.empty(); }
+  static inline iterator find(type &what, value_type const &val) {
     return what.find(val);
   }
-  static const_iterator find(type const &what, value_type const &val) {
+  static inline const_iterator find(type const &what, value_type const &val) {
     return what.find(val);
   }
-  static iterator insert(
+  static inline iterator insert(
       type &what, const_iterator position, value_type const &val) {
     return what.insert(position, val);
   }
-  static iterator insert(
+  static inline iterator insert(
       type &what, const_iterator position, value_type &&val) {
     return what.insert(position, std::move(val));
   }
-  static size_type size(type const &what) { return what.size(); }
+  static inline size_type size(type const &what) { return what.size(); }
 };
 
 /**
@@ -2407,32 +2387,38 @@ struct thrift_map_traits_std {
   using mapped_const_reference = mapped_type const &;
   using mapped_reference = mapped_type &;
 
-  static iterator begin(type &what) { return what.begin(); }
-  static iterator end(type &what) { return what.end(); }
+  static inline iterator begin(type &what) { return what.begin(); }
+  static inline iterator end(type &what) { return what.end(); }
 
-  static const_iterator cbegin(type const &what) { return what.cbegin(); }
-  static const_iterator begin(type const &what) { return what.begin(); }
-  static const_iterator cend(type const &what) { return what.cend(); }
-  static const_iterator end(type const &what) { return what.end(); }
+  static inline const_iterator cbegin(type const &what) {
+    return what.cbegin();
+  }
+  static inline const_iterator begin(type const &what) { return what.begin(); }
+  static inline const_iterator cend(type const &what) { return what.cend(); }
+  static inline const_iterator end(type const &what) { return what.end(); }
 
-  static key_const_reference key(const_iterator i) { return i->first; }
-  static key_const_reference key(iterator i) { return i->first; }
-  static mapped_const_reference mapped(const_iterator i) { return i->second; }
-  static mapped_reference mapped(iterator i) { return i->second; }
+  static inline key_const_reference key(const_iterator i) { return i->first; }
+  static inline key_const_reference key(iterator i) { return i->first; }
+  static inline mapped_const_reference mapped(const_iterator i) {
+    return i->second;
+  }
+  static inline mapped_reference mapped(iterator i) { return i->second; }
 
-  static void clear(type &what) { what.clear(); }
-  static bool empty(type const &what) { return what.empty(); }
-  static iterator find(type &what, key_type const &k) { return what.find(k); }
-  static const_iterator find(type const &what, key_type const &k) {
+  static inline void clear(type &what) { what.clear(); }
+  static inline bool empty(type const &what) { return what.empty(); }
+  static inline iterator find(type &what, key_type const &k) {
     return what.find(k);
   }
-  static mapped_type& get_or_create(type &what, key_type const &k) {
+  static inline const_iterator find(type const &what, key_type const &k) {
+    return what.find(k);
+  }
+  static inline mapped_type& get_or_create(type &what, key_type const &k) {
     return what[k];
   }
-  static mapped_type& get_or_create(type &what, key_type &&k) {
+  static inline mapped_type& get_or_create(type &what, key_type &&k) {
     return what[std::move(k)];
   }
-  static size_type size(type const &what) { return what.size(); }
+  static inline size_type size(type const &what) { return what.size(); }
 };
 
 }} // apache::thrift

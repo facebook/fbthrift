@@ -581,7 +581,7 @@ template <
 typename std::enable_if<
   static_cast<optionality>(Optional) != optionality::required
 >::type mark_isset(isset_array& /*isset*/, Struct& obj) {
-  MemberInfo::mark_set(obj);
+  MemberInfo::mark_set(obj, true);
 }
 
 template <
