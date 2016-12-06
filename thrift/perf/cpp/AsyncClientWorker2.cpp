@@ -197,7 +197,7 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
       configs["thrift_security"] = config->SASLPolicy();
     }
     if (config->useSSLTFO()) {
-      configs["tls_fastopen"] = "true";
+      configs["tls_tcp_fastopen"] = "true";
     }
     if (!config->SASLServiceTier().empty()) {
       configs["thrift_security_service_tier"] = config->SASLServiceTier();
