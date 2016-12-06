@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2016 Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -176,12 +176,31 @@ const T unaligned_ptr_cast(const void* ptr) {
   return static_cast<const T>(ptr);
 }
 
+namespace frzn_dtl {
+
+// frozen size of implementation //
+template <typename T>
+struct z {
+  static constexpr inline std::size_t size() { return sizeof(T); }
+  static constexpr inline std::size_t alignment() { return alignof(T); }
+};
+
+} // namespace frzn_dtl {
+
+template <typename T>
+using FrozenSizeOf = frzn_dtl::z<typename std::decay<T>::type>;
+
 /**
  * frozenSize - Total space needed to store a frozen representation of 'src'.
  */
 template<class T>
 size_t frozenSize(const T& src) {
-  return sizeof(typename Freezer<T>::FrozenType) + extraSize(src);
+  return FrozenSizeOf<typename Freezer<T>::FrozenType>::size() + extraSize(src);
+}
+
+template <typename T>
+const Frozen<T>& frozenView(const void* blob) {
+  return *reinterpret_cast<const Frozen<T>*>(blob);
 }
 
 /**
@@ -203,7 +222,7 @@ freeze(const T& src, byte*& buffer) {
   // NOTE(tjackson): This pointer will not necessarily be aligned with
   //                 alignof(FrozenType).
   FrozenType* frozen = unaligned_ptr_cast<FrozenType*>(buffer);
-  buffer += sizeof(FrozenType);
+  buffer += FrozenSizeOf<FrozenType>::size();
   Freezer<T>::freezeImpl(src, *frozen, buffer);
   return frozen;
 }
@@ -241,7 +260,7 @@ freeze(const T& src, Frozen1 = Frozen1::Marker) {
   FrozenType* frozen = unaligned_ptr_cast<FrozenType*>(memory);
   FrozenTypeUPtr<T, FrozenType> ret(frozen);
 
-  buffer += sizeof(FrozenType);
+  buffer += FrozenSizeOf<FrozenType>::size();
   // start populating the object graph, starting from 'src' with spare storage
   // allocated at 'buffer'.
   freeze(src, *frozen, buffer);
@@ -297,6 +316,19 @@ struct Freezer<std::pair<A, B>> {
   }
 };
 
+namespace frzn_dtl {
+
+// implementation of `FrozenIterator` //
+template <typename FrozenItem>
+struct t {
+  using type = const FrozenItem*;
+};
+
+} // namespace frzn_dtl {
+
+template <typename FrozenItem>
+using FrozenIterator = typename frzn_dtl::t<FrozenItem>::type;
+
 /**
  * FrozenRange<...> - Represents a range of contiguous, frozen values pointed to
  * by relative pointers. Assists in the freezing of vectors, sets, strings, and
@@ -309,8 +341,8 @@ template<class ThawedItem,
          class FrozenItem = typename Freezer<ThawedItem>::FrozenType>
 struct FrozenRange {
   typedef const FrozenItem value_type;
-  typedef const value_type* iterator;
-  typedef const value_type* const_iterator;
+  typedef FrozenIterator<FrozenItem> iterator;
+  typedef FrozenIterator<FrozenItem> const_iterator;
 
   FrozenRange()
     : begin_(nullptr), end_(nullptr) {}
@@ -318,8 +350,8 @@ struct FrozenRange {
   FrozenRange(const_iterator begin, const_iterator end)
     : begin_(begin), end_(end) {}
 
-  const_iterator begin() const { return begin_.get(); }
-  const_iterator end() const { return end_.get(); }
+  const_iterator begin() const { return const_iterator(begin_.get()); }
+  const_iterator end() const { return const_iterator(end_.get()); }
 
   const value_type& front() const {
     if (size() == 0) {
@@ -335,11 +367,13 @@ struct FrozenRange {
     return this->end()[-1];
   }
 
-  size_t size() const { return end_.get() - begin_.get(); }
+  size_t size() const {
+    return end() - begin();
+  }
   bool empty() const { return end_.get() == begin_.get(); }
 
   const value_type& operator[](int i) const {
-    return begin_.get()[i];
+    return *(begin() + i);
   }
 
   template <class T>
@@ -519,8 +553,8 @@ struct FrozenMap : FrozenRange<std::pair<const K, V>> {
   typedef typename Freezer<K>::FrozenType key_type;
   typedef typename Freezer<V>::FrozenType mapped_type;
   typedef std::pair<key_type, mapped_type> value_type;
-  typedef const value_type* iterator;
-  typedef const value_type* const_iterator;
+  typedef FrozenIterator<value_type> iterator;
+  typedef FrozenIterator<value_type> const_iterator;
 
   template<class Key>
   const mapped_type& at(const Key& key) const {
@@ -657,8 +691,8 @@ struct FrozenHashMap : public FrozenRange<std::pair<const K, V>> {
   typedef typename Freezer<K>::FrozenType key_type;
   typedef typename Freezer<V>::FrozenType mapped_type;
   typedef std::pair<key_type, mapped_type> value_type;
-  typedef const value_type* iterator;
-  typedef const value_type* const_iterator;
+  typedef FrozenIterator<value_type> iterator;
+  typedef FrozenIterator<value_type> const_iterator;
 
   template<class Key>
   const_iterator find(const Key& key) const {
