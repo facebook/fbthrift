@@ -23,3 +23,17 @@
  * Split a namespace string using '.' as a token
  */
 std::vector<std::string> split_namespace(const std::string& s);
+
+/**
+ * TODO: Only used by t_cpp_gen. Move function to a more appropriate
+ *       location or remove once it's not used.
+ *
+ * Backlashes all occurrances of double-quote
+ *    "  ->  \"
+ */
+void escape_quotes_cpp(std::string& s);
+
+/**
+ * Removes whitespace from the left and right side of a string
+ */
+void trim_whitespace(std::string& s);

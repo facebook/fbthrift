@@ -16,6 +16,9 @@
 
 #include <thrift/compiler/generate/common.h>
 
+#include <string>
+#include <vector>
+
 std::vector<std::string> split_namespace(const std::string& s) {
   std::string token = ".";
   std::size_t last_match = 0;
@@ -30,4 +33,22 @@ std::vector<std::string> split_namespace(const std::string& s) {
   output.push_back(s.substr(last_match));
 
   return output;
+}
+
+void escape_quotes_cpp(std::string& s) {
+  std::string token = "\"";
+  std::string::size_type last_match = 0;
+  std::string::size_type next_match = s.find(token);
+  while (next_match != std::string::npos) {
+    s.replace(next_match, token.length(), "\\\"");
+    last_match = next_match + 2;
+    next_match = s.find(token, last_match);
+  }
+}
+
+void trim_whitespace(std::string& s) {
+  std::string token = " ";
+  s.erase(0, s.find_first_not_of(token));
+  s.erase(s.find_last_not_of(token) + 1);
+  return;
 }

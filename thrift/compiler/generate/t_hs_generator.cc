@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-#include <cctype>
-#include <string>
-#include <fstream>
-#include <iostream>
-#include <vector>
-
 #include <stdlib.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <cctype>
+#include <fstream>
+#include <iostream>
 #include <sstream>
+#include <string>
+#include <vector>
 
-#include <folly/Format.h>
+
 #include <folly/gen/Base.h>
 #include <folly/gen/String.h>
 
@@ -1698,19 +1697,19 @@ void t_hs_generator::generate_service_fuzzer(t_service *tservice) {
        int argCount = fields.size();
        auto argList =
            gen::seq(1, argCount)
-           | gen::map([](int n) { return sformat("a{}", n); });
+           | gen::map([](int n) { return "a" + std::to_string(n); });
 
        auto spaceSeparatedArgList = argList | gen::unsplit<string>(" ");
        auto showArgList =
            argList
-           | gen::map([](const string& s) { return sformat("Show {}", s); })
+           | gen::map([](const string& s) { return "Show " + s; })
            | gen::unsplit<string>(", ");
        auto showElemList =
            argList
-           | gen::map([](const string& s) { return sformat("show {}", s); })
+           | gen::map([](const string& s) { return "show " + s; })
            | gen::unsplit<string>(" ++ ");
        auto paramString =
-           sformat("({})", argList | gen::unsplit<string>(", "));
+           "(" + (argList | gen::unsplit<string>(", ")) + ")";
 
 //       assert (1 <= argCount);
        if (argCount == 1) {
@@ -1731,7 +1730,7 @@ void t_hs_generator::generate_service_fuzzer(t_service *tservice) {
            << "where" << nl << indent()
            << funname << "_fuzzFunc ";
        f_service_fuzzer_ << spaceSeparatedArgList;
-       f_service_fuzzer_ << sformat(" = let param = {} in", paramString);
+       f_service_fuzzer_ << " = let param = " + paramString + " in";
        f_service_fuzzer_ << nl << indent() << indent()
            << "if opt_framed opts"
            << nl << indent() << indent()

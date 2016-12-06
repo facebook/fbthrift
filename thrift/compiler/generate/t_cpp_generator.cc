@@ -14,34 +14,28 @@
  * limitations under the License.
  */
 
-#include <cinttypes>
+#include <errno.h>
+#include <stdlib.h>
+#include <sys/stat.h>
 #include <cassert>
-
+#include <cinttypes>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
-#include <stdlib.h>
-#include <errno.h>
-#include <sys/stat.h>
+#include <folly/Conv.h>
+#include <folly/Hash.h>
 
 #include <thrift/compiler/platform.h>
+#include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
-
-#include <folly/Conv.h>
-#include <folly/Format.h>
-#include <folly/Hash.h>
 
 using namespace std;
 
 namespace {
-
-// shortcut
-std::string escape(folly::StringPiece sp) {
-  return folly::cEscape<std::string>(sp);
-}
 
 enum TerseWrites { TW_DISABLED = 0, TW_SAFE = 1, TW_ALL = 2 };
 
@@ -914,8 +908,8 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
     }
   }
 
-  const auto map_factory = folly::sformat(
-        "apache::thrift::detail::TEnumMapFactory<{}, {}>", name, value_type);
+  const auto map_factory = "apache::thrift::detail::TEnumMapFactory<" +
+    name + ", " + value_type + ">";
 
   auto valuesToNames = folly::to<string>("_", name, "_VALUES_TO_NAMES");
   auto namesToValues = folly::to<string>("_", name, "_NAMES_TO_VALUES");
@@ -962,8 +956,7 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
     ns_close_ << endl <<
     "namespace apache { namespace thrift {" << endl;
   // TEnumTraitsBase<T>::enumerators()
-  const auto pair_type_name =
-    folly::sformat("std::pair<{}, folly::StringPiece>", fullname);
+  const auto pair_type_name = "std::pair<" + fullname + ", folly::StringPiece>";
   f_types_impl_ <<
     "template<>" << endl <<
     "folly::Range<const " << pair_type_name << "*> " <<
@@ -1660,7 +1653,8 @@ void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
         tname = tname.substr(colonPos + 1);
       }
 
-      if (!folly::trimWhitespace(nspace).empty()) {
+      trim_whitespace(nspace);
+      if (!nspace.empty()) {
         ret = "using namespace " + nspace + "; ";
       }
 
@@ -2700,62 +2694,108 @@ void t_cpp_generator::generate_frozen2_struct_definition(t_struct* tstruct) {
               return a->get_key() < b->get_key();
             });
 
-  auto emitFieldFormat = [&](
-      ostream& os, const string& format, const t_field* f) {
-    os << folly::vformat(
-              format,
-              map<string, string>{
-                  {"name", f->get_name()},
-                  {"type", type_name(f->get_type(), ALWAYS_NAMESPACE)},
-                  {"id", folly::to<string>(f->get_key())},
-                  {"_opt", optSuffix(f->get_req())}});
+  // Formatters
+  auto fncName = [](const t_field* f) { return f->get_name(); };
+  auto fncId = [](const t_field* f) { return std::to_string(f->get_key()); };
+  auto fncOpt = [&](const t_field* f) { return optSuffix(f->get_req()); };
+  auto fncType = [&](const t_field* f) {
+    return type_name(f->get_type(), ALWAYS_NAMESPACE);
+  };
+
+  auto fncOptName = [&](ostream& os, const t_field* f) {
+    os << fncOpt(f) << "(" << fncName(f) << ")";
+  };
+  auto fncNameType = [&](ostream& os, const t_field* f, bool opt = false) {
+    if (opt) { os << fncOpt(f); }
+    os << "(" << fncName(f) << ", " << fncType(f) << ")";
+  };
+  auto fncNameId = [&](ostream& os, const t_field* f, bool opt = false) {
+    if (opt) { os << fncOpt(f); }
+    os << "(" << fncName(f) << ", " << fncId(f) << ")";
+  };
+  auto fncNameIdType = [&](ostream& os, const t_field* f, bool opt = false) {
+    if (opt) { os << fncOpt(f); }
+    os << "(" << fncName(f) << ", " << fncId(f) << ", " << fncType(f) << ")";
   };
 
   // Header
   f_types_layouts_ << endl;
-  f_types_layouts_ << folly::format("FROZEN_TYPE({},", structName);
+  f_types_layouts_ << "FROZEN_TYPE(" + structName + ",";
   for (const t_field* field : members) {
-    emitFieldFormat(f_types_layouts_,
-                    "\n  FROZEN_FIELD{_opt}({name}, {id}, {type})",
-                    field);
+    f_types_layouts_ << "\n  FROZEN_FIELD";
+    fncNameIdType(f_types_layouts_, field, true);
   }
   f_types_layouts_ << "\n  FROZEN_VIEW(";
   for (const t_field* field : members) {
-    emitFieldFormat(f_types_layouts_,
-                    "\n    FROZEN_VIEW_FIELD{_opt}({name}, {type})",
-                    field);
+    f_types_layouts_ << "\n    FROZEN_VIEW_FIELD";
+    fncNameType(f_types_layouts_, field, true);
   }
   f_types_layouts_ << ")";
 
   f_types_layouts_ << "\n  FROZEN_SAVE_INLINE(";
   for (const t_field* field : members) {
-    emitFieldFormat(f_types_layouts_, "\n    FROZEN_SAVE_FIELD({name})", field);
+    f_types_layouts_ << "\n    FROZEN_SAVE_FIELD";
+    f_types_layouts_ << "(" << fncName(field) << ")";
   }
   f_types_layouts_ << ")";
 
   f_types_layouts_ << "\n  FROZEN_LOAD_INLINE(";
   for (const t_field* field : members) {
-    emitFieldFormat(
-        f_types_layouts_, "\n    FROZEN_LOAD_FIELD({name}, {id})", field);
+    f_types_layouts_ << "\n    FROZEN_LOAD_FIELD";
+    fncNameId(f_types_layouts_, field);
   }
   f_types_layouts_ << "));" << endl;
 
   // Implementation
-  for (auto step :
-       {make_pair("FROZEN_CTOR", "FROZEN_CTOR_FIELD{_opt}({name}, {id})"),
-        make_pair("FROZEN_MAXIMIZE", "FROZEN_MAXIMIZE_FIELD({name})"),
-        make_pair("FROZEN_LAYOUT", "FROZEN_LAYOUT_FIELD{_opt}({name})"),
-        make_pair("FROZEN_FREEZE", "FROZEN_FREEZE_FIELD{_opt}({name})"),
-        make_pair("FROZEN_THAW", "FROZEN_THAW_FIELD{_opt}({name})"),
-        make_pair("FROZEN_DEBUG", "FROZEN_DEBUG_FIELD({name})"),
-        make_pair("FROZEN_CLEAR", "FROZEN_CLEAR_FIELD({name})")}) {
-    f_types_layouts_impl_ << folly::format("{}({},", step.first, structName);
-    for (const t_field* field : members) {
-      emitFieldFormat(
-          f_types_layouts_impl_, string("\n  ") + step.second, field);
-    }
-    f_types_layouts_impl_ << ")\n";
+  f_types_layouts_impl_ << "FROZEN_CTOR(" << structName << ",";
+  for (const t_field* field : members) {
+    f_types_layouts_impl_ << "\n  FROZEN_CTOR_FIELD";
+    fncNameId(f_types_layouts_impl_, field, true);
   }
+  f_types_layouts_impl_ << ")\n";
+
+  f_types_layouts_impl_ << "FROZEN_MAXIMIZE(" << structName << ",";
+  for (const t_field* field : members) {
+    f_types_layouts_impl_ << "\n  FROZEN_MAXIMIZE_FIELD";
+    f_types_layouts_impl_ << "(" << fncName(field) << ")";
+  }
+  f_types_layouts_impl_ << ")\n";
+
+  f_types_layouts_impl_ << "FROZEN_LAYOUT(" << structName << ",";
+  for (const t_field* field : members) {
+    f_types_layouts_impl_ << "\n  FROZEN_LAYOUT_FIELD";
+    fncOptName(f_types_layouts_impl_, field);
+  }
+  f_types_layouts_impl_ << ")\n";
+
+  f_types_layouts_impl_ << "FROZEN_FREEZE(" << structName << ",";
+  for (const t_field* field : members) {
+    f_types_layouts_impl_ << "\n  FROZEN_FREEZE_FIELD";
+    fncOptName(f_types_layouts_impl_, field);
+  }
+  f_types_layouts_impl_ << ")\n";
+
+  f_types_layouts_impl_ << "FROZEN_THAW(" << structName << ",";
+  for (const t_field* field : members) {
+    f_types_layouts_impl_ << "\n  FROZEN_THAW_FIELD";
+    fncOptName(f_types_layouts_impl_, field);
+  }
+  f_types_layouts_impl_ << ")\n";
+
+  f_types_layouts_impl_ << "FROZEN_DEBUG(" << structName << ",";
+  for (const t_field* field : members) {
+    f_types_layouts_impl_ << "\n  FROZEN_DEBUG_FIELD";
+    f_types_layouts_impl_ << "(" << fncName(field) << ")";
+  }
+  f_types_layouts_impl_ << ")\n";
+
+  f_types_layouts_impl_ << "FROZEN_CLEAR(" << structName << ",";
+  for (const t_field* field : members) {
+    f_types_layouts_impl_ << "\n  FROZEN_CLEAR_FIELD";
+    f_types_layouts_impl_ << "(" << fncName(field) << ")";
+  }
+  f_types_layouts_impl_ << ")\n";
+
   f_types_layouts_impl_ << endl;
 }
 
@@ -3688,28 +3728,30 @@ void t_cpp_generator::generate_struct_swap(ofstream& out, t_struct* tstruct) {
  * @param tstruct The struct
  */
 void t_cpp_generator::generate_struct_merge(ofstream& out, t_struct* tstruct) {
-  using folly::vformat;
   auto struct_name = tstruct->get_name();
 
   // Generate two overloads of the function, the differences are abstracted into
   // the maps.
   vector<unordered_map<string, string>> code_maps = {
     {  // void merge(const Struct& from, Struct& to);
-      {"from_arg", folly::format("const {}& from", struct_name).str()},
-      {"to_arg", folly::format("{}& to", struct_name).str()},
+      {"from_arg", "const " + struct_name + "& from"},
+      {"to_arg", struct_name + "& to"},
+      {"field_type", "reference"},
       {"from_field_format", "from.{field_name}"},
       {"to_field_format", "to.{field_name}"},
     },
     {  // void merge(Struct&& from, Struct& to);
-      {"from_arg", folly::format("{}&& from", struct_name).str()},
-      {"to_arg", folly::format("{}& to", struct_name).str()},
+      {"from_arg", struct_name + "&& from"},
+      {"to_arg", struct_name + "& to"},
+      {"field_type", "move"},
       {"from_field_format", "std::move(from.{field_name})"},
       {"to_field_format", "to.{field_name}"},
     },
   };
   for (auto& code_map : code_maps) {
-    indent(out) << vformat("void merge({from_arg}, {to_arg}) {{", code_map)
-                << endl;
+    indent(out) << "void merge(";
+    indent(out) << code_map["from_arg"] << ", ";
+    indent(out) << code_map["to_arg"] << ") {" << endl;
     indent_up();
     indent(out) << "using apache::thrift::merge;" << endl;
     if (tstruct->get_members().size() == 0) {
@@ -3720,27 +3762,31 @@ void t_cpp_generator::generate_struct_merge(ofstream& out, t_struct* tstruct) {
       code_map["field_name"] = field->get_name();
 
       if (is_optional(field) && has_isset(field)) {
-        indent(out) << vformat("if (from.__isset.{field_name}) {{", code_map)
-                    << endl;
+        indent(out) << "if (from.__isset." <<
+          code_map["field_name"] << ") {" << endl;
         indent_up();
       }
-      indent(out)
-        << folly::format("merge({}, {});",
-                         vformat(code_map["from_field_format"], code_map),
-                         vformat(code_map["to_field_format"], code_map))
-        << endl;
+      if (code_map["field_type"] == "reference") {
+        indent(out) << "merge("
+          << "from." << code_map["field_name"] << ", "
+          << "to." << code_map["field_name"] << ");"
+          << endl;
+      } else {
+        indent(out) << "merge("
+          << "std::move(from." << code_map["field_name"] << "), "
+          << "to." << code_map["field_name"] << ");"
+          << endl;
+      }
       if (has_isset(field)) {
         if (is_optional(field)) {
-          indent(out) << vformat("to.__isset.{field_name} = true;", code_map)
-                      << endl;
+          indent(out) << "to.__isset." << code_map["field_name"] << " = true;"
+            << endl;
           indent_down();
           indent(out) << "}" << endl;
         } else {
-          indent(out)
-            << vformat(
-                   "to.__isset.{field_name} = "
-                   "to.__isset.{field_name} || from.__isset.{field_name};",
-                   code_map)
+          indent(out) << "to.__isset." << code_map["field_name"]
+            << " = to.__isset." << code_map["field_name"]
+            << " || from.__isset." << code_map["field_name"] << ";"
             << endl;
         }
       }
@@ -7156,7 +7202,7 @@ string t_cpp_generator::cpp_ref_type(const t_field* field,
 
   // backward compatibility with 'ref' annotation
   if (annotations.count("cpp.ref") != 0) {
-    return folly::format("std::unique_ptr<{}>", name).str();
+    return "std::unique_ptr<" + name + ">";
   }
 
   auto it = annotations.find("cpp.ref_type");
@@ -7168,13 +7214,13 @@ string t_cpp_generator::cpp_ref_type(const t_field* field,
 
   // useful aliases
   if (reftype == "unique") {
-    return folly::format("std::unique_ptr<{}>", name).str();
+    return "std::unique_ptr<" + name + ">";
   } else if (reftype == "shared") {
-    return folly::format("std::shared_ptr<{}>", name).str();
+    return "std::shared_ptr<" + name + ">";
   } else if (reftype== "shared_const") {
-    return folly::format("std::shared_ptr<const {}>", name).str();
+    return "std::shared_ptr<const " + name + ">";
   } else {
-    return folly::format("{}<{}>", reftype, name).str();
+    return reftype + "<" + name + ">";
   }
 }
 
@@ -7470,7 +7516,7 @@ std::string t_cpp_generator::generate_reflection_datatype(t_type* ttype) {
         "    f.isRequired = " << (p.isRequired ? "true" : "false") << ";" <<
         endl <<
         "    f.type = " << p.type.id << "U;" << endl <<
-        "    f.name = \"" << escape(p.name) << "\";" << endl <<
+        "    f.name = \"" << p.name << "\";" << endl <<
         "    f.order = " << order << ";" << endl;
       ++order;
 
@@ -7478,9 +7524,10 @@ std::string t_cpp_generator::generate_reflection_datatype(t_type* ttype) {
         f_reflection_impl_ <<
           "    f.__isset.annotations = true;" << endl;
         for (auto& ann : p.annotations) {
+          escape_quotes_cpp(ann.second);
           f_reflection_impl_ <<
-            "    f.annotations[\"" << escape(ann.first) << "\"] = \"" <<
-            escape(ann.second) << "\";" << endl;
+            "    f.annotations[\"" << ann.first << "\"] = \"" <<
+            ann.second << "\";" << endl;
         }
       }
       f_reflection_impl_ <<
@@ -7505,7 +7552,7 @@ std::string t_cpp_generator::generate_reflection_datatype(t_type* ttype) {
                        << "enumValues[] = {" << endl;
     for (auto& p : enumValues) {
       f_reflection_impl_
-        << "    {\"" << escape(p.first) << "\", " << p.second << "}," << endl;
+        << "    {\"" << p.first << "\", " << p.second << "}," << endl;
     }
     f_reflection_impl_ << "  };" << endl;
 

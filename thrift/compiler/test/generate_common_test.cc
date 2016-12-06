@@ -43,3 +43,49 @@ TEST(GenerateCommon, SplitNamespace) {
 
   EXPECT_EQ(expected, splits);
 }
+
+TEST(GenerateCommon, EscapeQuotes) {
+  std::vector<std::string> quotedstrings{
+    R"(no quotes)",
+    R"("quotes")",
+    R"({"a": 1, "b": -2, "c": -3})",
+  };
+
+  const std::vector<std::string> expected{
+    R"(no quotes)",
+    R"(\"quotes\")",
+    R"({\"a\": 1, \"b\": -2, \"c\": -3})",
+  };
+
+  std::vector<std::string> escaped;
+  for (auto& s : quotedstrings) {
+    escape_quotes_cpp(s);
+    escaped.push_back(s);
+  }
+
+  EXPECT_EQ(expected, escaped);
+}
+
+TEST(GenerateCommon, TrimWhitespace) {
+  std::vector<std::string> whitespaces{
+    "    ",
+    "   left",
+    "right ",
+    "   both spaces ",
+  };
+
+  const std::vector<std::string> expected{
+    "",
+    "left",
+    "right",
+    "both spaces",
+  };
+
+  std::vector<std::string> trimmed;
+  for (auto& s : whitespaces) {
+    trim_whitespace(s);
+    trimmed.push_back(s);
+  }
+
+  EXPECT_EQ(expected, trimmed);
+}
