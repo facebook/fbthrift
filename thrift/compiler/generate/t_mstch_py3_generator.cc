@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
+#include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/classification.hpp>
-#include <folly/String.h>
-
 
 namespace {
 
@@ -300,8 +299,7 @@ mstch::array t_mstch_py3_generator::get_cpp2_namespace(
       cpp_namespace = cpp_namespace + ".cpp2";
     }
   }
-  vector<string> ns;
-  folly::split('.', cpp_namespace, ns);
+  vector<string> ns = split_namespace(cpp_namespace);
   return this->dump_elems(ns);
 }
 
@@ -311,8 +309,7 @@ mstch::array t_mstch_py3_generator::get_py3_namespace(
 ) const {
   const auto& py3_ns_raw = program.get_namespace("py3");
   const auto& py3_namespace = py3_ns_raw.empty() ? "py3" : py3_ns_raw;
-  vector<string> ns;
-  folly::split('.', py3_namespace, ns);
+  vector<string> ns = split_namespace(py3_namespace);
   if (tail != "") {
     ns.push_back(tail);
   }

@@ -45,6 +45,7 @@ libthriftcompilerbase_la_LDFLAGS = -lcrypto
 thrift1_OBJDIR = obj
 
 thrift1_SOURCES = main.cc \
+                 generate/common.cc \
                  generate/t_generator.cc \
                  generate/t_concat_generator.cc \
                  generate/t_mstch_generator.cc \
@@ -71,6 +72,7 @@ thrift1_SOURCES = main.cc \
                  parse/t_const_value.h \
                  valiator.h \
                  visitor.h \
+                 generate/common.h \
                  generate/t_generator.h \
                  generate/t_oop_generator.h \
                  generate/t_concat_generator.h \

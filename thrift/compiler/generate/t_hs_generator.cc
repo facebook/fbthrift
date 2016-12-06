@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2016 Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,8 +29,9 @@
 #include <folly/gen/Base.h>
 #include <folly/gen/String.h>
 
-#include <thrift/compiler/generate/t_oop_generator.h>
 #include <thrift/compiler/platform.h>
+#include <thrift/compiler/generate/common.h>
+#include <thrift/compiler/generate/t_oop_generator.h>
 
 using std::map;
 using std::ofstream;
@@ -256,8 +257,7 @@ void t_hs_generator::init_generator() {
 
   string hs_namespace = program_->get_namespace("hs");
   if (!hs_namespace.empty()) {
-    vector<string> components;
-    folly::split(".", hs_namespace, components, false /* ignoreEmpty */);
+    vector<string> components = split_namespace(hs_namespace);
     for (const auto& component : components) {
       if (component.empty() || !std::isupper(component[0])) {
         throw "compiler error: Invalid Haskell Module " + hs_namespace;

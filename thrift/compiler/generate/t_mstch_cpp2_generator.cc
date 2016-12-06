@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
+#include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
-
-#include <boost/algorithm/string.hpp>
 
 namespace {
 
@@ -184,11 +183,11 @@ mstch::array t_mstch_cpp2_generator::get_namespace(
 
   auto ns = program.get_namespace("cpp2");
   if (ns != "") {
-    boost::split(v, ns, boost::is_any_of("."));
+    v = split_namespace(ns);
   } else {
     ns = program.get_namespace("cpp");
     if (ns != "") {
-      boost::split(v, ns, boost::is_any_of("."));
+      v = split_namespace(ns);
     }
     v.push_back("cpp2");
   }
