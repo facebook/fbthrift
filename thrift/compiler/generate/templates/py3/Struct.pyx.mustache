@@ -330,7 +330,7 @@ Sequence.register({{type:flat_name}})
             make_shared[cset[{{> ContainerCythonFieldType}}]]()
         {{/type:setElemType}}
         for citem in deref((<{{type:flat_name}}> self)._set):
-            if deref((<{{type:flat_name}}> other)._set).count(citem) != 0:
+            if deref((<{{type:flat_name}}> other)._set).count(citem) == 0:
                 deref(shretval).insert(citem)
         return {{type:flat_name}}.create(shretval)
 
@@ -361,10 +361,10 @@ Sequence.register({{type:flat_name}})
             make_shared[cset[{{> ContainerCythonFieldType}}]]()
         {{/type:setElemType}}
         for citem in deref((<{{type:flat_name}}> self)._set):
-            if deref((<{{type:flat_name}}> other)._set).count(citem) != 0:
+            if deref((<{{type:flat_name}}> other)._set).count(citem) == 0:
                 deref(shretval).insert(citem)
         for citem in deref((<{{type:flat_name}}> other)._set):
-            if deref((<{{type:flat_name}}> self)._set).count(citem) != 0:
+            if deref((<{{type:flat_name}}> self)._set).count(citem) == 0:
                 deref(shretval).insert(citem)
         return {{type:flat_name}}.create(shretval)
 

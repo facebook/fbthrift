@@ -755,7 +755,7 @@ cdef class Set__i32:
         cdef shared_ptr[cset[int32_t]] shretval = \
             make_shared[cset[int32_t]]()
         for citem in deref((<Set__i32> self)._set):
-            if deref((<Set__i32> other)._set).count(citem) != 0:
+            if deref((<Set__i32> other)._set).count(citem) == 0:
                 deref(shretval).insert(citem)
         return Set__i32.create(shretval)
 
@@ -782,10 +782,10 @@ cdef class Set__i32:
         cdef shared_ptr[cset[int32_t]] shretval = \
             make_shared[cset[int32_t]]()
         for citem in deref((<Set__i32> self)._set):
-            if deref((<Set__i32> other)._set).count(citem) != 0:
+            if deref((<Set__i32> other)._set).count(citem) == 0:
                 deref(shretval).insert(citem)
         for citem in deref((<Set__i32> other)._set):
-            if deref((<Set__i32> self)._set).count(citem) != 0:
+            if deref((<Set__i32> self)._set).count(citem) == 0:
                 deref(shretval).insert(citem)
         return Set__i32.create(shretval)
 
@@ -925,7 +925,7 @@ cdef class Set__string:
         cdef shared_ptr[cset[string]] shretval = \
             make_shared[cset[string]]()
         for citem in deref((<Set__string> self)._set):
-            if deref((<Set__string> other)._set).count(citem) != 0:
+            if deref((<Set__string> other)._set).count(citem) == 0:
                 deref(shretval).insert(citem)
         return Set__string.create(shretval)
 
@@ -952,10 +952,10 @@ cdef class Set__string:
         cdef shared_ptr[cset[string]] shretval = \
             make_shared[cset[string]]()
         for citem in deref((<Set__string> self)._set):
-            if deref((<Set__string> other)._set).count(citem) != 0:
+            if deref((<Set__string> other)._set).count(citem) == 0:
                 deref(shretval).insert(citem)
         for citem in deref((<Set__string> other)._set):
-            if deref((<Set__string> self)._set).count(citem) != 0:
+            if deref((<Set__string> self)._set).count(citem) == 0:
                 deref(shretval).insert(citem)
         return Set__string.create(shretval)
 
