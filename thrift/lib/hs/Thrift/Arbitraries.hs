@@ -10,9 +10,6 @@ import Test.QuickCheck.Arbitrary
 #if __GLASGOW_HASKELL__ < 710
 import Control.Applicative ((<$>))
 #endif
-import Data.Map (Map)
-import qualified Data.Map as Map
-import qualified Data.Set as Set
 import qualified Data.Vector as Vector
 import qualified Data.Text as Text
 import qualified Data.Text.Lazy as LT
@@ -29,12 +26,6 @@ import qualified Data.ByteString.Lazy as BS
 
 instance Arbitrary ByteString where
   arbitrary = BS.pack . filter (/= 0) <$> arbitrary
-
-instance (Ord k, Arbitrary k, Arbitrary v) => Arbitrary (Map k v) where
-  arbitrary = Map.fromList <$> arbitrary
-
-instance (Ord k, Arbitrary k) => Arbitrary (Set.Set k) where
-  arbitrary = Set.fromList <$> arbitrary
 
 instance (Arbitrary k) => Arbitrary (Vector.Vector k) where
   arbitrary = Vector.fromList <$> arbitrary
