@@ -1,7 +1,7 @@
 cimport cython
 from libcpp.memory cimport unique_ptr, make_unique, shared_ptr
 
-from thrift_server cimport (
+from thrift.lib.py3.thrift_server cimport (
     cThriftServer,
     cServerInterface,
     ServiceInterface
