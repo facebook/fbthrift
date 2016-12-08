@@ -17,7 +17,6 @@ cimport std_libcpp
 
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
-cimport py3.module_types
 
 
 class MyEnum(Enum):

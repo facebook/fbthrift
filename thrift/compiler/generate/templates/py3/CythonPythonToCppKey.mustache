@@ -32,11 +32,14 @@ keys (conventionally used for sets, lists, and map values).
 }}{{#type:i64?}}key{{/type:i64?}}{{!
 }}{{#type:double?}}key{{/type:double?}}{{!
 }}{{#type:string?}}key.encode('UTF-8'){{/type:string?}}{{!
-}}{{#type:struct}}deref((<{{> ModulePath}}.{{struct:name}}> key).c_{{struct:name}}){{/type:struct}}{{!
-}}{{#type:list?}}vector[{{#type:listElemType}}{{> ContainerCythonFieldType}}{{/type:listElemType}}{{!
-  }}](deref({{type:flat_name}}(key)._vector)){{/type:list?}}{{!
-}}{{#type:set?}}cset[{{#type:setElemType}}{{> ContainerCythonFieldType}}{{/type:setElemType}}{{!
-  }}](deref({{type:flat_name}}(key)._set)){{/type:set?}}{{!
-}}{{#type:map?}}cmap[{{#type:keyType}}{{> ContainerCythonFieldType}}{{/type:keyType}},{{#type:valueType}}{{> ContainerCythonFieldType}}{{/type:valueType}}{{!
-  }}](deref({{type:flat_name}}(key)._map)){{/type:map?}}{{!
+}}{{#type:struct}}deref((<{{> ModulePath}}.{{struct:name}}> key{{!
+  }}).c_{{struct:name}}){{/type:struct}}{{!
+}}{{#type:list?}}deref({{type:flat_name}}(key)._vector.get()){{/type:list?}}{{!
+}}{{#type:set?}}cset[{{!
+  }}{{#type:setElemType}}{{> ContainerCythonFieldType}}{{/type:setElemType}}{{!
+  }}](deref({{type:flat_name}}(key)._set.get())){{/type:set?}}{{!
+}}{{#type:map?}}cmap[{{!
+  }}{{#type:keyType}}{{> ContainerCythonFieldType}}{{/type:keyType}},{{!
+  }}{{#type:valueType}}{{> ContainerCythonFieldType}}{{/type:valueType}}{{!
+  }}](deref({{type:flat_name}}(key)._map.get())){{/type:map?}}{{!
 }}{{#type:enum}}{{> ModulePath}}.{{enum:name}}_to_cpp(key){{/type:enum}}

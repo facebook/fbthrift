@@ -5,7 +5,6 @@
 #  @generated
 #
 
-from thrift.lib.py3.thrift_server cimport cServerInterface, ServiceInterface
-
+from thrift.lib.py3.thrift_server cimport ServiceInterface
 
 

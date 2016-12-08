@@ -44,17 +44,23 @@ if they have been previously retrieved.
   }}return self.c_{{struct:name}}.get().{{field:name}}.decode(){{!
 }}{{/type:string?}}{{!
 }}{{#type:struct?}}{{!
-}}cdef shared_ptr[{{> ContainerCythonFieldType}}] item
+}}cdef shared_ptr[{{> ContainerCythonFieldTypeConditionally}}] item
 if self.__{{field:name}} is None:
-    item = make_shared[{{> ContainerCythonFieldType}}](deref(self.c_{{struct:name}}).{{field:name}})
-    self.__{{field:name}} = {{#type:struct}}{{> ModulePath}}.{{struct:name}}{{/type:struct}}.create(item)
+    item = make_shared[{{> ContainerCythonFieldTypeConditionally}}](
+        deref(self.c_{{struct:name}}).{{field:name}})
+    self.__{{field:name}} = {{#type:struct}}{{!
+      }}{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}{{!
+      }}{{struct:name}}{{/type:struct}}.create(item)
 return self.__{{field:name}}
 {{/type:struct?}}{{!
 }}{{#type:container?}}{{!
-}}cdef shared_ptr[{{> ContainerCythonFieldType}}] item
+}}cdef shared_ptr[{{> ContainerCythonFieldTypeConditionally}}] item
 if self.__{{field:name}} is None:
-    item = make_shared[{{> ContainerCythonFieldType}}](deref(self.c_{{struct:name}}).{{field:name}})
-    self.__{{field:name}} = {{> ModulePath}}.{{type:flat_name}}.create(item)
+    item = make_shared[{{> ContainerCythonFieldTypeConditionally}}](
+        deref(self.c_{{struct:name}}).{{field:name}})
+    self.__{{field:name}} = {{!
+      }}{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}{{!
+      }}{{type:flat_name}}.create(item)
 return self.__{{field:name}}
 {{/type:container?}}{{!
 }}{{#type:enum}}

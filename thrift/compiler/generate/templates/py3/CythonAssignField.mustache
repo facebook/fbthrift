@@ -42,9 +42,14 @@ on a struct from an existing struct passed in by the user.
     deref(self.c_{{struct:name}}).{{field:name}} = {{field:name}}.encode('UTF-8'){{!
 }}{{/type:string?}}{{!
 }}{{#type:struct?}}{{!
-}}deref(self.c_{{struct:name}}).{{field:name}} = {{!
-}}deref((<{{#type:struct}}{{> ModulePath}}.{{struct:name}}{{/type:struct}}?> {{!
-}}{{field:name}}).c_{{#field:type}}{{type:name}}{{/field:type}}){{!
+  }}cdef shared_ptr[{{!
+  }}{{#type:struct}}{{!
+    }}{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}{{!
+    }}c{{struct:name}}{{/type:struct}}] __{{field:name}} = (
+    <{{#type:struct}}{{#type:externalProgram?}}{{> ModulePath}}.{{!
+        }}{{/type:externalProgram?}}{{struct:name}}{{/type:struct}}?> {{!
+    }}{{field:name}}).c_{{#field:type}}{{type:name}}{{/field:type}}
+deref(self.c_{{struct:name}}).{{field:name}} = deref(__{{field:name}}.get()){{!
 }}{{/type:struct?}}{{!
 }}{{#type:list?}}{{!
 }}pylist = {{type:flat_name}}({{field:name}})
@@ -59,5 +64,7 @@ deref(self.c_{{struct:name}}).{{field:name}} = deref(pyset._set){{!
 deref(self.c_{{struct:name}}).{{field:name}} = deref(pymap._map){{!
 }}{{/type:map?}}{{!
 }}{{#type:enum?}}{{!
-}}deref(self.c_{{struct:name}}).{{field:name}} = {{#type:enum}}{{> ModulePath}}.{{enum:name}}{{/type:enum}}_to_cpp({{field:name}})
+}}deref(self.c_{{struct:name}}).{{field:name}} = {{#type:enum}}{{!
+}}{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}{{!
+}}{{enum:name}}{{/type:enum}}_to_cpp({{field:name}})
 {{/type:enum?}}

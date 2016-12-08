@@ -17,7 +17,6 @@ cimport std_libcpp
 
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
-cimport py3.module_types
 
 
 class AnEnum(Enum):
@@ -172,12 +171,16 @@ cdef class ComplexStruct:
         an_enum
     ):
         self.c_ComplexStruct = make_shared[cComplexStruct]()
-        deref(self.c_ComplexStruct).structOne = deref((<py3.module_types.SimpleStruct?> structOne).c_SimpleStruct)
-        deref(self.c_ComplexStruct).structTwo = deref((<py3.module_types.SimpleStruct?> structTwo).c_SimpleStruct)
+        cdef shared_ptr[cSimpleStruct] __structOne = (
+            <SimpleStruct?> structOne).c_SimpleStruct
+        deref(self.c_ComplexStruct).structOne = deref(__structOne.get())
+        cdef shared_ptr[cSimpleStruct] __structTwo = (
+            <SimpleStruct?> structTwo).c_SimpleStruct
+        deref(self.c_ComplexStruct).structTwo = deref(__structTwo.get())
         deref(self.c_ComplexStruct).an_integer = an_integer
         if name is not None:
             deref(self.c_ComplexStruct).name = name.encode('UTF-8')
-        deref(self.c_ComplexStruct).an_enum = py3.module_types.AnEnum_to_cpp(an_enum)
+        deref(self.c_ComplexStruct).an_enum = AnEnum_to_cpp(an_enum)
         
         
     @staticmethod
@@ -188,19 +191,21 @@ cdef class ComplexStruct:
 
     @property
     def structOne(self):
-        cdef shared_ptr[py3.module_types.cSimpleStruct] item
+        cdef shared_ptr[cSimpleStruct] item
         if self.__structOne is None:
-            item = make_shared[py3.module_types.cSimpleStruct](deref(self.c_ComplexStruct).structOne)
-            self.__structOne = py3.module_types.SimpleStruct.create(item)
+            item = make_shared[cSimpleStruct](
+                deref(self.c_ComplexStruct).structOne)
+            self.__structOne = SimpleStruct.create(item)
         return self.__structOne
         
 
     @property
     def structTwo(self):
-        cdef shared_ptr[py3.module_types.cSimpleStruct] item
+        cdef shared_ptr[cSimpleStruct] item
         if self.__structTwo is None:
-            item = make_shared[py3.module_types.cSimpleStruct](deref(self.c_ComplexStruct).structTwo)
-            self.__structTwo = py3.module_types.SimpleStruct.create(item)
+            item = make_shared[cSimpleStruct](
+                deref(self.c_ComplexStruct).structTwo)
+            self.__structTwo = SimpleStruct.create(item)
         return self.__structTwo
         
 
@@ -260,13 +265,15 @@ cdef class List__i16:
                   deref(self._vector).push_back(item)
 
     @staticmethod
-    cdef create(shared_ptr[vector[int16_t]] c_items):
+    cdef create(
+            shared_ptr[vector[int16_t]] c_items):
         inst = <List__i16>List__i16.__new__(List__i16)
         inst._vector = c_items
         return inst
 
     def __getitem__(self, int index):
-        cdef int16_t citem = deref(self._vector).at(index)
+        cdef int16_t citem = (
+            deref(self._vector.get())[index])
         return citem
 
     def __len__(self):
@@ -292,7 +299,8 @@ cdef class List__i16:
 
     def __contains__(self, item):
         cdef int16_t citem = item
-        cdef vector[int16_t] vec = deref(self._vector)
+        cdef vector[int16_t] vec = deref(
+            self._vector.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
@@ -302,7 +310,8 @@ cdef class List__i16:
 
     def __reversed__(self):
         cdef int16_t citem
-        cdef vector[int16_t] vec = deref(self._vector)
+        cdef vector[int16_t] vec = deref(
+            self._vector.get())
         cdef vector[int16_t].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
@@ -311,18 +320,15 @@ cdef class List__i16:
 
     def index(self, item):
         cdef int16_t citem = item
-        cdef vector[int16_t] vec = deref(self._vector)
-        cdef vector[int16_t].iterator loc = std_libcpp.find(
-          vec.begin(),
-          vec.end(),
-          citem)
+        cdef vector[int16_t] vec = deref(self._vector.get())
+        cdef vector[int16_t].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
         raise ValueError("{} is not in list".format(item))
 
     def count(self, item):
         cdef int16_t citem = item
-        cdef vector[int16_t] vec = deref(self._vector)
+        cdef vector[int16_t] vec = deref(self._vector.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
@@ -339,13 +345,15 @@ cdef class List__i32:
                   deref(self._vector).push_back(item)
 
     @staticmethod
-    cdef create(shared_ptr[vector[int32_t]] c_items):
+    cdef create(
+            shared_ptr[vector[int32_t]] c_items):
         inst = <List__i32>List__i32.__new__(List__i32)
         inst._vector = c_items
         return inst
 
     def __getitem__(self, int index):
-        cdef int32_t citem = deref(self._vector).at(index)
+        cdef int32_t citem = (
+            deref(self._vector.get())[index])
         return citem
 
     def __len__(self):
@@ -371,7 +379,8 @@ cdef class List__i32:
 
     def __contains__(self, item):
         cdef int32_t citem = item
-        cdef vector[int32_t] vec = deref(self._vector)
+        cdef vector[int32_t] vec = deref(
+            self._vector.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
@@ -381,7 +390,8 @@ cdef class List__i32:
 
     def __reversed__(self):
         cdef int32_t citem
-        cdef vector[int32_t] vec = deref(self._vector)
+        cdef vector[int32_t] vec = deref(
+            self._vector.get())
         cdef vector[int32_t].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
@@ -390,18 +400,15 @@ cdef class List__i32:
 
     def index(self, item):
         cdef int32_t citem = item
-        cdef vector[int32_t] vec = deref(self._vector)
-        cdef vector[int32_t].iterator loc = std_libcpp.find(
-          vec.begin(),
-          vec.end(),
-          citem)
+        cdef vector[int32_t] vec = deref(self._vector.get())
+        cdef vector[int32_t].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
         raise ValueError("{} is not in list".format(item))
 
     def count(self, item):
         cdef int32_t citem = item
-        cdef vector[int32_t] vec = deref(self._vector)
+        cdef vector[int32_t] vec = deref(self._vector.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
@@ -418,13 +425,15 @@ cdef class List__i64:
                   deref(self._vector).push_back(item)
 
     @staticmethod
-    cdef create(shared_ptr[vector[int64_t]] c_items):
+    cdef create(
+            shared_ptr[vector[int64_t]] c_items):
         inst = <List__i64>List__i64.__new__(List__i64)
         inst._vector = c_items
         return inst
 
     def __getitem__(self, int index):
-        cdef int64_t citem = deref(self._vector).at(index)
+        cdef int64_t citem = (
+            deref(self._vector.get())[index])
         return citem
 
     def __len__(self):
@@ -450,7 +459,8 @@ cdef class List__i64:
 
     def __contains__(self, item):
         cdef int64_t citem = item
-        cdef vector[int64_t] vec = deref(self._vector)
+        cdef vector[int64_t] vec = deref(
+            self._vector.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
@@ -460,7 +470,8 @@ cdef class List__i64:
 
     def __reversed__(self):
         cdef int64_t citem
-        cdef vector[int64_t] vec = deref(self._vector)
+        cdef vector[int64_t] vec = deref(
+            self._vector.get())
         cdef vector[int64_t].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
@@ -469,18 +480,15 @@ cdef class List__i64:
 
     def index(self, item):
         cdef int64_t citem = item
-        cdef vector[int64_t] vec = deref(self._vector)
-        cdef vector[int64_t].iterator loc = std_libcpp.find(
-          vec.begin(),
-          vec.end(),
-          citem)
+        cdef vector[int64_t] vec = deref(self._vector.get())
+        cdef vector[int64_t].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
         raise ValueError("{} is not in list".format(item))
 
     def count(self, item):
         cdef int64_t citem = item
-        cdef vector[int64_t] vec = deref(self._vector)
+        cdef vector[int64_t] vec = deref(self._vector.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
@@ -497,14 +505,16 @@ cdef class List__string:
                   deref(self._vector).push_back(item.encode('UTF-8'))
 
     @staticmethod
-    cdef create(shared_ptr[vector[string]] c_items):
+    cdef create(
+            shared_ptr[vector[string]] c_items):
         inst = <List__string>List__string.__new__(List__string)
         inst._vector = c_items
         return inst
 
     def __getitem__(self, int index):
-        cdef string citem = deref(self._vector).at(index)
-        return citem.decode()
+        cdef string citem = (
+            deref(self._vector.get())[index])
+        return bytes(citem).decode()
 
     def __len__(self):
         return deref(self._vector).size()
@@ -529,37 +539,36 @@ cdef class List__string:
 
     def __contains__(self, item):
         cdef string citem = item.encode('UTF-8')
-        cdef vector[string] vec = deref(self._vector)
+        cdef vector[string] vec = deref(
+            self._vector.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
         cdef string citem
         for citem in deref(self._vector):
-            yield citem.decode()
+            yield bytes(citem).decode()
 
     def __reversed__(self):
         cdef string citem
-        cdef vector[string] vec = deref(self._vector)
+        cdef vector[string] vec = deref(
+            self._vector.get())
         cdef vector[string].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
-            yield citem.decode()
+            yield bytes(citem).decode()
             inc(loc)
 
     def index(self, item):
         cdef string citem = item.encode('UTF-8')
-        cdef vector[string] vec = deref(self._vector)
-        cdef vector[string].iterator loc = std_libcpp.find(
-          vec.begin(),
-          vec.end(),
-          citem)
+        cdef vector[string] vec = deref(self._vector.get())
+        cdef vector[string].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
         raise ValueError("{} is not in list".format(item))
 
     def count(self, item):
         cdef string citem = item.encode('UTF-8')
-        cdef vector[string] vec = deref(self._vector)
+        cdef vector[string] vec = deref(self._vector.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
@@ -570,20 +579,22 @@ cdef class List__SimpleStruct:
         if isinstance(items, List__SimpleStruct):
             self._vector = (<List__SimpleStruct> items)._vector
         else:
-          self._vector = make_shared[vector[py3.module_types.cSimpleStruct]]()
+          self._vector = make_shared[vector[cSimpleStruct]]()
           if items:
               for item in items:
-                  deref(self._vector).push_back(deref((<py3.module_types.SimpleStruct> item).c_SimpleStruct))
+                  deref(self._vector).push_back(deref((<SimpleStruct> item).c_SimpleStruct))
 
     @staticmethod
-    cdef create(shared_ptr[vector[py3.module_types.cSimpleStruct]] c_items):
+    cdef create(
+            shared_ptr[vector[cSimpleStruct]] c_items):
         inst = <List__SimpleStruct>List__SimpleStruct.__new__(List__SimpleStruct)
         inst._vector = c_items
         return inst
 
     def __getitem__(self, int index):
-        cdef py3.module_types.cSimpleStruct citem = deref(self._vector).at(index)
-        return py3.module_types.SimpleStruct.create(make_shared[py3.module_types.cSimpleStruct](citem))
+        cdef cSimpleStruct citem = (
+            deref(self._vector.get())[index])
+        return SimpleStruct.create(make_shared[cSimpleStruct](citem))
 
     def __len__(self):
         return deref(self._vector).size()
@@ -607,38 +618,37 @@ cdef class List__SimpleStruct:
         return hash(tuple(self))
 
     def __contains__(self, item):
-        cdef py3.module_types.cSimpleStruct citem = deref((<py3.module_types.SimpleStruct> item).c_SimpleStruct)
-        cdef vector[py3.module_types.cSimpleStruct] vec = deref(self._vector)
+        cdef cSimpleStruct citem = deref((<SimpleStruct> item).c_SimpleStruct)
+        cdef vector[cSimpleStruct] vec = deref(
+            self._vector.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
-        cdef py3.module_types.cSimpleStruct citem
+        cdef cSimpleStruct citem
         for citem in deref(self._vector):
-            yield py3.module_types.SimpleStruct.create(make_shared[py3.module_types.cSimpleStruct](citem))
+            yield SimpleStruct.create(make_shared[cSimpleStruct](citem))
 
     def __reversed__(self):
-        cdef py3.module_types.cSimpleStruct citem
-        cdef vector[py3.module_types.cSimpleStruct] vec = deref(self._vector)
-        cdef vector[py3.module_types.cSimpleStruct].reverse_iterator loc = vec.rbegin()
+        cdef cSimpleStruct citem
+        cdef vector[cSimpleStruct] vec = deref(
+            self._vector.get())
+        cdef vector[cSimpleStruct].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
-            yield py3.module_types.SimpleStruct.create(make_shared[py3.module_types.cSimpleStruct](citem))
+            yield SimpleStruct.create(make_shared[cSimpleStruct](citem))
             inc(loc)
 
     def index(self, item):
-        cdef py3.module_types.cSimpleStruct citem = deref((<py3.module_types.SimpleStruct> item).c_SimpleStruct)
-        cdef vector[py3.module_types.cSimpleStruct] vec = deref(self._vector)
-        cdef vector[py3.module_types.cSimpleStruct].iterator loc = std_libcpp.find(
-          vec.begin(),
-          vec.end(),
-          citem)
+        cdef cSimpleStruct citem = deref((<SimpleStruct> item).c_SimpleStruct)
+        cdef vector[cSimpleStruct] vec = deref(self._vector.get())
+        cdef vector[cSimpleStruct].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
         raise ValueError("{} is not in list".format(item))
 
     def count(self, item):
-        cdef py3.module_types.cSimpleStruct citem = deref((<py3.module_types.SimpleStruct> item).c_SimpleStruct)
-        cdef vector[py3.module_types.cSimpleStruct] vec = deref(self._vector)
+        cdef cSimpleStruct citem = deref((<SimpleStruct> item).c_SimpleStruct)
+        cdef vector[cSimpleStruct] vec = deref(self._vector.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
@@ -838,7 +848,7 @@ cdef class Set__string:
 
     def __iter__(self):
         for citem in deref(self._set):
-            yield citem.decode()
+            yield bytes(citem).decode()
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -992,7 +1002,10 @@ cdef class Map__string_string:
           self._map = make_shared[cmap[string,string]]()
           if items:
               for key, item in items.items():
-                  deref(self._map).insert(cpair[string,string](key.encode('UTF-8'), item.encode('UTF-8')))
+                  deref(self._map).insert(
+                      cpair[string,string](
+                          key.encode('UTF-8'),
+                          item.encode('UTF-8')))
 
     @staticmethod
     cdef create(shared_ptr[cmap[string,string]] c_items):
@@ -1002,12 +1015,12 @@ cdef class Map__string_string:
 
     def __getitem__(self, key):
         cdef string ckey = key.encode('UTF-8')
-
-        cdef cmap[string,string].iterator iter = deref(self._map).find(ckey)
+        cdef cmap[string,string].iterator iter = deref(
+            self._map).find(ckey)
         if iter == deref(self._map).end():
             raise KeyError(str(key))
         cdef string citem = deref(iter).second
-        return citem.decode()
+        return bytes(citem).decode()
 
     def __len__(self):
         return deref(self._map).size()
@@ -1016,7 +1029,7 @@ cdef class Map__string_string:
         cdef string citem
         for pair in deref(self._map):
             citem = pair.first
-            yield citem.decode()
+            yield bytes(citem).decode()
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1049,7 +1062,7 @@ cdef class Map__string_string:
         if iter == deref(self._map).end():
             return default
         cdef string citem = deref(iter).second
-        return citem.decode()
+        return bytes(citem).decode()
 
     def keys(self):
         return self.__iter__()
@@ -1058,7 +1071,7 @@ cdef class Map__string_string:
         cdef string citem
         for pair in deref(self._map):
             citem = pair.second
-            yield citem.decode()
+            yield bytes(citem).decode()
 
     def items(self):
         cdef string ckey
@@ -1067,7 +1080,7 @@ cdef class Map__string_string:
             ckey = pair.first
             citem = pair.second
 
-            yield (ckey.decode(), citem.decode())
+            yield (ckey.decode(), bytes(citem).decode())
 
 
 
@@ -1078,25 +1091,28 @@ cdef class Map__string_SimpleStruct:
         if isinstance(items, Map__string_SimpleStruct):
             self._map = (<Map__string_SimpleStruct> items)._map
         else:
-          self._map = make_shared[cmap[string,py3.module_types.cSimpleStruct]]()
+          self._map = make_shared[cmap[string,cSimpleStruct]]()
           if items:
               for key, item in items.items():
-                  deref(self._map).insert(cpair[string,py3.module_types.cSimpleStruct](key.encode('UTF-8'), deref((<py3.module_types.SimpleStruct> item).c_SimpleStruct)))
+                  deref(self._map).insert(
+                      cpair[string,cSimpleStruct](
+                          key.encode('UTF-8'),
+                          deref((<SimpleStruct> item).c_SimpleStruct)))
 
     @staticmethod
-    cdef create(shared_ptr[cmap[string,py3.module_types.cSimpleStruct]] c_items):
+    cdef create(shared_ptr[cmap[string,cSimpleStruct]] c_items):
         inst = <Map__string_SimpleStruct>Map__string_SimpleStruct.__new__(Map__string_SimpleStruct)
         inst._map = c_items
         return inst
 
     def __getitem__(self, key):
         cdef string ckey = key.encode('UTF-8')
-
-        cdef cmap[string,py3.module_types.cSimpleStruct].iterator iter = deref(self._map).find(ckey)
+        cdef cmap[string,cSimpleStruct].iterator iter = deref(
+            self._map).find(ckey)
         if iter == deref(self._map).end():
             raise KeyError(str(key))
-        cdef py3.module_types.cSimpleStruct citem = deref(iter).second
-        return py3.module_types.SimpleStruct.create(make_shared[py3.module_types.cSimpleStruct](citem))
+        cdef cSimpleStruct citem = deref(iter).second
+        return SimpleStruct.create(make_shared[cSimpleStruct](citem))
 
     def __len__(self):
         return deref(self._map).size()
@@ -1105,7 +1121,7 @@ cdef class Map__string_SimpleStruct:
         cdef string citem
         for pair in deref(self._map):
             citem = pair.first
-            yield citem.decode()
+            yield bytes(citem).decode()
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1133,30 +1149,30 @@ cdef class Map__string_SimpleStruct:
 
     def get(self, key, default=None):
         cdef string ckey = key.encode('UTF-8')
-        cdef cmap[string,py3.module_types.cSimpleStruct].iterator iter = \
+        cdef cmap[string,cSimpleStruct].iterator iter = \
             deref(self._map).find(ckey)
         if iter == deref(self._map).end():
             return default
-        cdef py3.module_types.cSimpleStruct citem = deref(iter).second
-        return py3.module_types.SimpleStruct.create(make_shared[py3.module_types.cSimpleStruct](citem))
+        cdef cSimpleStruct citem = deref(iter).second
+        return SimpleStruct.create(make_shared[cSimpleStruct](citem))
 
     def keys(self):
         return self.__iter__()
 
     def values(self):
-        cdef py3.module_types.cSimpleStruct citem
+        cdef cSimpleStruct citem
         for pair in deref(self._map):
             citem = pair.second
-            yield py3.module_types.SimpleStruct.create(make_shared[py3.module_types.cSimpleStruct](citem))
+            yield SimpleStruct.create(make_shared[cSimpleStruct](citem))
 
     def items(self):
         cdef string ckey
-        cdef py3.module_types.cSimpleStruct citem
+        cdef cSimpleStruct citem
         for pair in deref(self._map):
             ckey = pair.first
             citem = pair.second
 
-            yield (ckey.decode(), py3.module_types.SimpleStruct.create(make_shared[py3.module_types.cSimpleStruct](citem)))
+            yield (ckey.decode(), SimpleStruct.create(make_shared[cSimpleStruct](citem)))
 
 
 
@@ -1170,7 +1186,10 @@ cdef class Map__string_i16:
           self._map = make_shared[cmap[string,int16_t]]()
           if items:
               for key, item in items.items():
-                  deref(self._map).insert(cpair[string,int16_t](key.encode('UTF-8'), item))
+                  deref(self._map).insert(
+                      cpair[string,int16_t](
+                          key.encode('UTF-8'),
+                          item))
 
     @staticmethod
     cdef create(shared_ptr[cmap[string,int16_t]] c_items):
@@ -1180,8 +1199,8 @@ cdef class Map__string_i16:
 
     def __getitem__(self, key):
         cdef string ckey = key.encode('UTF-8')
-
-        cdef cmap[string,int16_t].iterator iter = deref(self._map).find(ckey)
+        cdef cmap[string,int16_t].iterator iter = deref(
+            self._map).find(ckey)
         if iter == deref(self._map).end():
             raise KeyError(str(key))
         cdef int16_t citem = deref(iter).second
@@ -1194,7 +1213,7 @@ cdef class Map__string_i16:
         cdef string citem
         for pair in deref(self._map):
             citem = pair.first
-            yield citem.decode()
+            yield bytes(citem).decode()
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1259,17 +1278,20 @@ cdef class List__List__i32:
           self._vector = make_shared[vector[vector[int32_t]]]()
           if items:
               for item in items:
-                  deref(self._vector).push_back(vector[int32_t](deref(List__i32(item)._vector)))
+                  deref(self._vector).push_back(deref(List__i32(item)._vector.get()))
 
     @staticmethod
-    cdef create(shared_ptr[vector[vector[int32_t]]] c_items):
+    cdef create(
+            shared_ptr[vector[vector[int32_t]]] c_items):
         inst = <List__List__i32>List__List__i32.__new__(List__List__i32)
         inst._vector = c_items
         return inst
 
     def __getitem__(self, int index):
-        cdef vector[int32_t] citem = deref(self._vector).at(index)
-        return List__i32.create(make_shared[vector[int32_t]](citem))
+        cdef vector[int32_t] citem = (
+            deref(self._vector.get())[index])
+        return List__i32.create(
+    make_shared[vector[int32_t]](citem))
 
     def __len__(self):
         return deref(self._vector).size()
@@ -1293,38 +1315,39 @@ cdef class List__List__i32:
         return hash(tuple(self))
 
     def __contains__(self, item):
-        cdef vector[int32_t] citem = vector[int32_t](deref(List__i32(item)._vector))
-        cdef vector[vector[int32_t]] vec = deref(self._vector)
+        cdef vector[int32_t] citem = deref(List__i32(item)._vector.get())
+        cdef vector[vector[int32_t]] vec = deref(
+            self._vector.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
         cdef vector[int32_t] citem
         for citem in deref(self._vector):
-            yield List__i32.create(make_shared[vector[int32_t]](citem))
+            yield List__i32.create(
+    make_shared[vector[int32_t]](citem))
 
     def __reversed__(self):
         cdef vector[int32_t] citem
-        cdef vector[vector[int32_t]] vec = deref(self._vector)
+        cdef vector[vector[int32_t]] vec = deref(
+            self._vector.get())
         cdef vector[vector[int32_t]].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
-            yield List__i32.create(make_shared[vector[int32_t]](citem))
+            yield List__i32.create(
+    make_shared[vector[int32_t]](citem))
             inc(loc)
 
     def index(self, item):
-        cdef vector[int32_t] citem = vector[int32_t](deref(List__i32(item)._vector))
-        cdef vector[vector[int32_t]] vec = deref(self._vector)
-        cdef vector[vector[int32_t]].iterator loc = std_libcpp.find(
-          vec.begin(),
-          vec.end(),
-          citem)
+        cdef vector[int32_t] citem = deref(List__i32(item)._vector.get())
+        cdef vector[vector[int32_t]] vec = deref(self._vector.get())
+        cdef vector[vector[int32_t]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
         raise ValueError("{} is not in list".format(item))
 
     def count(self, item):
-        cdef vector[int32_t] citem = vector[int32_t](deref(List__i32(item)._vector))
-        cdef vector[vector[int32_t]] vec = deref(self._vector)
+        cdef vector[int32_t] citem = deref(List__i32(item)._vector.get())
+        cdef vector[vector[int32_t]] vec = deref(self._vector.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
@@ -1338,7 +1361,10 @@ cdef class Map__string_i32:
           self._map = make_shared[cmap[string,int32_t]]()
           if items:
               for key, item in items.items():
-                  deref(self._map).insert(cpair[string,int32_t](key.encode('UTF-8'), item))
+                  deref(self._map).insert(
+                      cpair[string,int32_t](
+                          key.encode('UTF-8'),
+                          item))
 
     @staticmethod
     cdef create(shared_ptr[cmap[string,int32_t]] c_items):
@@ -1348,8 +1374,8 @@ cdef class Map__string_i32:
 
     def __getitem__(self, key):
         cdef string ckey = key.encode('UTF-8')
-
-        cdef cmap[string,int32_t].iterator iter = deref(self._map).find(ckey)
+        cdef cmap[string,int32_t].iterator iter = deref(
+            self._map).find(ckey)
         if iter == deref(self._map).end():
             raise KeyError(str(key))
         cdef int32_t citem = deref(iter).second
@@ -1362,7 +1388,7 @@ cdef class Map__string_i32:
         cdef string citem
         for pair in deref(self._map):
             citem = pair.first
-            yield citem.decode()
+            yield bytes(citem).decode()
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1427,7 +1453,10 @@ cdef class Map__string_Map__string_i32:
           self._map = make_shared[cmap[string,cmap[string,int32_t]]]()
           if items:
               for key, item in items.items():
-                  deref(self._map).insert(cpair[string,cmap[string,int32_t]](key.encode('UTF-8'), cmap[string,int32_t](deref(Map__string_i32(item)._map))))
+                  deref(self._map).insert(
+                      cpair[string,cmap[string,int32_t]](
+                          key.encode('UTF-8'),
+                          cmap[string,int32_t](deref(Map__string_i32(item)._map.get()))))
 
     @staticmethod
     cdef create(shared_ptr[cmap[string,cmap[string,int32_t]]] c_items):
@@ -1437,12 +1466,13 @@ cdef class Map__string_Map__string_i32:
 
     def __getitem__(self, key):
         cdef string ckey = key.encode('UTF-8')
-
-        cdef cmap[string,cmap[string,int32_t]].iterator iter = deref(self._map).find(ckey)
+        cdef cmap[string,cmap[string,int32_t]].iterator iter = deref(
+            self._map).find(ckey)
         if iter == deref(self._map).end():
             raise KeyError(str(key))
         cdef cmap[string,int32_t] citem = deref(iter).second
-        return Map__string_i32.create(make_shared[cmap[string,int32_t]](citem))
+        return Map__string_i32.create(
+    make_shared[cmap[string,int32_t]](citem))
 
     def __len__(self):
         return deref(self._map).size()
@@ -1451,7 +1481,7 @@ cdef class Map__string_Map__string_i32:
         cdef string citem
         for pair in deref(self._map):
             citem = pair.first
-            yield citem.decode()
+            yield bytes(citem).decode()
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1484,7 +1514,8 @@ cdef class Map__string_Map__string_i32:
         if iter == deref(self._map).end():
             return default
         cdef cmap[string,int32_t] citem = deref(iter).second
-        return Map__string_i32.create(make_shared[cmap[string,int32_t]](citem))
+        return Map__string_i32.create(
+    make_shared[cmap[string,int32_t]](citem))
 
     def keys(self):
         return self.__iter__()
@@ -1493,7 +1524,8 @@ cdef class Map__string_Map__string_i32:
         cdef cmap[string,int32_t] citem
         for pair in deref(self._map):
             citem = pair.second
-            yield Map__string_i32.create(make_shared[cmap[string,int32_t]](citem))
+            yield Map__string_i32.create(
+    make_shared[cmap[string,int32_t]](citem))
 
     def items(self):
         cdef string ckey
@@ -1502,7 +1534,8 @@ cdef class Map__string_Map__string_i32:
             ckey = pair.first
             citem = pair.second
 
-            yield (ckey.decode(), Map__string_i32.create(make_shared[cmap[string,int32_t]](citem)))
+            yield (ckey.decode(), Map__string_i32.create(
+    make_shared[cmap[string,int32_t]](citem)))
 
 
 
@@ -1516,17 +1549,20 @@ cdef class List__Set__string:
           self._vector = make_shared[vector[cset[string]]]()
           if items:
               for item in items:
-                  deref(self._vector).push_back(cset[string](deref(Set__string(item)._set)))
+                  deref(self._vector).push_back(cset[string](deref(Set__string(item)._set.get())))
 
     @staticmethod
-    cdef create(shared_ptr[vector[cset[string]]] c_items):
+    cdef create(
+            shared_ptr[vector[cset[string]]] c_items):
         inst = <List__Set__string>List__Set__string.__new__(List__Set__string)
         inst._vector = c_items
         return inst
 
     def __getitem__(self, int index):
-        cdef cset[string] citem = deref(self._vector).at(index)
-        return Set__string.create(make_shared[cset[string]](citem))
+        cdef cset[string] citem = (
+            deref(self._vector.get())[index])
+        return Set__string.create(
+    make_shared[cset[string]](citem))
 
     def __len__(self):
         return deref(self._vector).size()
@@ -1550,38 +1586,39 @@ cdef class List__Set__string:
         return hash(tuple(self))
 
     def __contains__(self, item):
-        cdef cset[string] citem = cset[string](deref(Set__string(item)._set))
-        cdef vector[cset[string]] vec = deref(self._vector)
+        cdef cset[string] citem = cset[string](deref(Set__string(item)._set.get()))
+        cdef vector[cset[string]] vec = deref(
+            self._vector.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
         cdef cset[string] citem
         for citem in deref(self._vector):
-            yield Set__string.create(make_shared[cset[string]](citem))
+            yield Set__string.create(
+    make_shared[cset[string]](citem))
 
     def __reversed__(self):
         cdef cset[string] citem
-        cdef vector[cset[string]] vec = deref(self._vector)
+        cdef vector[cset[string]] vec = deref(
+            self._vector.get())
         cdef vector[cset[string]].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
-            yield Set__string.create(make_shared[cset[string]](citem))
+            yield Set__string.create(
+    make_shared[cset[string]](citem))
             inc(loc)
 
     def index(self, item):
-        cdef cset[string] citem = cset[string](deref(Set__string(item)._set))
-        cdef vector[cset[string]] vec = deref(self._vector)
-        cdef vector[cset[string]].iterator loc = std_libcpp.find(
-          vec.begin(),
-          vec.end(),
-          citem)
+        cdef cset[string] citem = cset[string](deref(Set__string(item)._set.get()))
+        cdef vector[cset[string]] vec = deref(self._vector.get())
+        cdef vector[cset[string]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
         raise ValueError("{} is not in list".format(item))
 
     def count(self, item):
-        cdef cset[string] citem = cset[string](deref(Set__string(item)._set))
-        cdef vector[cset[string]] vec = deref(self._vector)
+        cdef cset[string] citem = cset[string](deref(Set__string(item)._set.get()))
+        cdef vector[cset[string]] vec = deref(self._vector.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
@@ -1592,25 +1629,29 @@ cdef class Map__string_List__SimpleStruct:
         if isinstance(items, Map__string_List__SimpleStruct):
             self._map = (<Map__string_List__SimpleStruct> items)._map
         else:
-          self._map = make_shared[cmap[string,vector[py3.module_types.cSimpleStruct]]]()
+          self._map = make_shared[cmap[string,vector[cSimpleStruct]]]()
           if items:
               for key, item in items.items():
-                  deref(self._map).insert(cpair[string,vector[py3.module_types.cSimpleStruct]](key.encode('UTF-8'), vector[py3.module_types.cSimpleStruct](deref(List__SimpleStruct(item)._vector))))
+                  deref(self._map).insert(
+                      cpair[string,vector[cSimpleStruct]](
+                          key.encode('UTF-8'),
+                          deref(List__SimpleStruct(item)._vector.get())))
 
     @staticmethod
-    cdef create(shared_ptr[cmap[string,vector[py3.module_types.cSimpleStruct]]] c_items):
+    cdef create(shared_ptr[cmap[string,vector[cSimpleStruct]]] c_items):
         inst = <Map__string_List__SimpleStruct>Map__string_List__SimpleStruct.__new__(Map__string_List__SimpleStruct)
         inst._map = c_items
         return inst
 
     def __getitem__(self, key):
         cdef string ckey = key.encode('UTF-8')
-
-        cdef cmap[string,vector[py3.module_types.cSimpleStruct]].iterator iter = deref(self._map).find(ckey)
+        cdef cmap[string,vector[cSimpleStruct]].iterator iter = deref(
+            self._map).find(ckey)
         if iter == deref(self._map).end():
             raise KeyError(str(key))
-        cdef vector[py3.module_types.cSimpleStruct] citem = deref(iter).second
-        return List__SimpleStruct.create(make_shared[vector[py3.module_types.cSimpleStruct]](citem))
+        cdef vector[cSimpleStruct] citem = deref(iter).second
+        return List__SimpleStruct.create(
+    make_shared[vector[cSimpleStruct]](citem))
 
     def __len__(self):
         return deref(self._map).size()
@@ -1619,7 +1660,7 @@ cdef class Map__string_List__SimpleStruct:
         cdef string citem
         for pair in deref(self._map):
             citem = pair.first
-            yield citem.decode()
+            yield bytes(citem).decode()
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1647,30 +1688,33 @@ cdef class Map__string_List__SimpleStruct:
 
     def get(self, key, default=None):
         cdef string ckey = key.encode('UTF-8')
-        cdef cmap[string,vector[py3.module_types.cSimpleStruct]].iterator iter = \
+        cdef cmap[string,vector[cSimpleStruct]].iterator iter = \
             deref(self._map).find(ckey)
         if iter == deref(self._map).end():
             return default
-        cdef vector[py3.module_types.cSimpleStruct] citem = deref(iter).second
-        return List__SimpleStruct.create(make_shared[vector[py3.module_types.cSimpleStruct]](citem))
+        cdef vector[cSimpleStruct] citem = deref(iter).second
+        return List__SimpleStruct.create(
+    make_shared[vector[cSimpleStruct]](citem))
 
     def keys(self):
         return self.__iter__()
 
     def values(self):
-        cdef vector[py3.module_types.cSimpleStruct] citem
+        cdef vector[cSimpleStruct] citem
         for pair in deref(self._map):
             citem = pair.second
-            yield List__SimpleStruct.create(make_shared[vector[py3.module_types.cSimpleStruct]](citem))
+            yield List__SimpleStruct.create(
+    make_shared[vector[cSimpleStruct]](citem))
 
     def items(self):
         cdef string ckey
-        cdef vector[py3.module_types.cSimpleStruct] citem
+        cdef vector[cSimpleStruct] citem
         for pair in deref(self._map):
             ckey = pair.first
             citem = pair.second
 
-            yield (ckey.decode(), List__SimpleStruct.create(make_shared[vector[py3.module_types.cSimpleStruct]](citem)))
+            yield (ckey.decode(), List__SimpleStruct.create(
+    make_shared[vector[cSimpleStruct]](citem)))
 
 
 
@@ -1684,17 +1728,20 @@ cdef class List__List__string:
           self._vector = make_shared[vector[vector[string]]]()
           if items:
               for item in items:
-                  deref(self._vector).push_back(vector[string](deref(List__string(item)._vector)))
+                  deref(self._vector).push_back(deref(List__string(item)._vector.get()))
 
     @staticmethod
-    cdef create(shared_ptr[vector[vector[string]]] c_items):
+    cdef create(
+            shared_ptr[vector[vector[string]]] c_items):
         inst = <List__List__string>List__List__string.__new__(List__List__string)
         inst._vector = c_items
         return inst
 
     def __getitem__(self, int index):
-        cdef vector[string] citem = deref(self._vector).at(index)
-        return List__string.create(make_shared[vector[string]](citem))
+        cdef vector[string] citem = (
+            deref(self._vector.get())[index])
+        return List__string.create(
+    make_shared[vector[string]](citem))
 
     def __len__(self):
         return deref(self._vector).size()
@@ -1718,38 +1765,39 @@ cdef class List__List__string:
         return hash(tuple(self))
 
     def __contains__(self, item):
-        cdef vector[string] citem = vector[string](deref(List__string(item)._vector))
-        cdef vector[vector[string]] vec = deref(self._vector)
+        cdef vector[string] citem = deref(List__string(item)._vector.get())
+        cdef vector[vector[string]] vec = deref(
+            self._vector.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
         cdef vector[string] citem
         for citem in deref(self._vector):
-            yield List__string.create(make_shared[vector[string]](citem))
+            yield List__string.create(
+    make_shared[vector[string]](citem))
 
     def __reversed__(self):
         cdef vector[string] citem
-        cdef vector[vector[string]] vec = deref(self._vector)
+        cdef vector[vector[string]] vec = deref(
+            self._vector.get())
         cdef vector[vector[string]].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
-            yield List__string.create(make_shared[vector[string]](citem))
+            yield List__string.create(
+    make_shared[vector[string]](citem))
             inc(loc)
 
     def index(self, item):
-        cdef vector[string] citem = vector[string](deref(List__string(item)._vector))
-        cdef vector[vector[string]] vec = deref(self._vector)
-        cdef vector[vector[string]].iterator loc = std_libcpp.find(
-          vec.begin(),
-          vec.end(),
-          citem)
+        cdef vector[string] citem = deref(List__string(item)._vector.get())
+        cdef vector[vector[string]] vec = deref(self._vector.get())
+        cdef vector[vector[string]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
         raise ValueError("{} is not in list".format(item))
 
     def count(self, item):
-        cdef vector[string] citem = vector[string](deref(List__string(item)._vector))
-        cdef vector[vector[string]] vec = deref(self._vector)
+        cdef vector[string] citem = deref(List__string(item)._vector.get())
+        cdef vector[vector[string]] vec = deref(self._vector.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
@@ -1763,17 +1811,20 @@ cdef class List__Set__i32:
           self._vector = make_shared[vector[cset[int32_t]]]()
           if items:
               for item in items:
-                  deref(self._vector).push_back(cset[int32_t](deref(Set__i32(item)._set)))
+                  deref(self._vector).push_back(cset[int32_t](deref(Set__i32(item)._set.get())))
 
     @staticmethod
-    cdef create(shared_ptr[vector[cset[int32_t]]] c_items):
+    cdef create(
+            shared_ptr[vector[cset[int32_t]]] c_items):
         inst = <List__Set__i32>List__Set__i32.__new__(List__Set__i32)
         inst._vector = c_items
         return inst
 
     def __getitem__(self, int index):
-        cdef cset[int32_t] citem = deref(self._vector).at(index)
-        return Set__i32.create(make_shared[cset[int32_t]](citem))
+        cdef cset[int32_t] citem = (
+            deref(self._vector.get())[index])
+        return Set__i32.create(
+    make_shared[cset[int32_t]](citem))
 
     def __len__(self):
         return deref(self._vector).size()
@@ -1797,38 +1848,39 @@ cdef class List__Set__i32:
         return hash(tuple(self))
 
     def __contains__(self, item):
-        cdef cset[int32_t] citem = cset[int32_t](deref(Set__i32(item)._set))
-        cdef vector[cset[int32_t]] vec = deref(self._vector)
+        cdef cset[int32_t] citem = cset[int32_t](deref(Set__i32(item)._set.get()))
+        cdef vector[cset[int32_t]] vec = deref(
+            self._vector.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
         cdef cset[int32_t] citem
         for citem in deref(self._vector):
-            yield Set__i32.create(make_shared[cset[int32_t]](citem))
+            yield Set__i32.create(
+    make_shared[cset[int32_t]](citem))
 
     def __reversed__(self):
         cdef cset[int32_t] citem
-        cdef vector[cset[int32_t]] vec = deref(self._vector)
+        cdef vector[cset[int32_t]] vec = deref(
+            self._vector.get())
         cdef vector[cset[int32_t]].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
-            yield Set__i32.create(make_shared[cset[int32_t]](citem))
+            yield Set__i32.create(
+    make_shared[cset[int32_t]](citem))
             inc(loc)
 
     def index(self, item):
-        cdef cset[int32_t] citem = cset[int32_t](deref(Set__i32(item)._set))
-        cdef vector[cset[int32_t]] vec = deref(self._vector)
-        cdef vector[cset[int32_t]].iterator loc = std_libcpp.find(
-          vec.begin(),
-          vec.end(),
-          citem)
+        cdef cset[int32_t] citem = cset[int32_t](deref(Set__i32(item)._set.get()))
+        cdef vector[cset[int32_t]] vec = deref(self._vector.get())
+        cdef vector[cset[int32_t]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
         raise ValueError("{} is not in list".format(item))
 
     def count(self, item):
-        cdef cset[int32_t] citem = cset[int32_t](deref(Set__i32(item)._set))
-        cdef vector[cset[int32_t]] vec = deref(self._vector)
+        cdef cset[int32_t] citem = cset[int32_t](deref(Set__i32(item)._set.get()))
+        cdef vector[cset[int32_t]] vec = deref(self._vector.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
@@ -1842,17 +1894,20 @@ cdef class List__Map__string_string:
           self._vector = make_shared[vector[cmap[string,string]]]()
           if items:
               for item in items:
-                  deref(self._vector).push_back(cmap[string,string](deref(Map__string_string(item)._map)))
+                  deref(self._vector).push_back(cmap[string,string](deref(Map__string_string(item)._map.get())))
 
     @staticmethod
-    cdef create(shared_ptr[vector[cmap[string,string]]] c_items):
+    cdef create(
+            shared_ptr[vector[cmap[string,string]]] c_items):
         inst = <List__Map__string_string>List__Map__string_string.__new__(List__Map__string_string)
         inst._vector = c_items
         return inst
 
     def __getitem__(self, int index):
-        cdef cmap[string,string] citem = deref(self._vector).at(index)
-        return Map__string_string.create(make_shared[cmap[string,string]](citem))
+        cdef cmap[string,string] citem = (
+            deref(self._vector.get())[index])
+        return Map__string_string.create(
+    make_shared[cmap[string,string]](citem))
 
     def __len__(self):
         return deref(self._vector).size()
@@ -1876,38 +1931,39 @@ cdef class List__Map__string_string:
         return hash(tuple(self))
 
     def __contains__(self, item):
-        cdef cmap[string,string] citem = cmap[string,string](deref(Map__string_string(item)._map))
-        cdef vector[cmap[string,string]] vec = deref(self._vector)
+        cdef cmap[string,string] citem = cmap[string,string](deref(Map__string_string(item)._map.get()))
+        cdef vector[cmap[string,string]] vec = deref(
+            self._vector.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
         cdef cmap[string,string] citem
         for citem in deref(self._vector):
-            yield Map__string_string.create(make_shared[cmap[string,string]](citem))
+            yield Map__string_string.create(
+    make_shared[cmap[string,string]](citem))
 
     def __reversed__(self):
         cdef cmap[string,string] citem
-        cdef vector[cmap[string,string]] vec = deref(self._vector)
+        cdef vector[cmap[string,string]] vec = deref(
+            self._vector.get())
         cdef vector[cmap[string,string]].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
-            yield Map__string_string.create(make_shared[cmap[string,string]](citem))
+            yield Map__string_string.create(
+    make_shared[cmap[string,string]](citem))
             inc(loc)
 
     def index(self, item):
-        cdef cmap[string,string] citem = cmap[string,string](deref(Map__string_string(item)._map))
-        cdef vector[cmap[string,string]] vec = deref(self._vector)
-        cdef vector[cmap[string,string]].iterator loc = std_libcpp.find(
-          vec.begin(),
-          vec.end(),
-          citem)
+        cdef cmap[string,string] citem = cmap[string,string](deref(Map__string_string(item)._map.get()))
+        cdef vector[cmap[string,string]] vec = deref(self._vector.get())
+        cdef vector[cmap[string,string]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
         raise ValueError("{} is not in list".format(item))
 
     def count(self, item):
-        cdef cmap[string,string] citem = cmap[string,string](deref(Map__string_string(item)._map))
-        cdef vector[cmap[string,string]] vec = deref(self._vector)
+        cdef cmap[string,string] citem = cmap[string,string](deref(Map__string_string(item)._map.get()))
+        cdef vector[cmap[string,string]] vec = deref(self._vector.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
@@ -1921,7 +1977,10 @@ cdef class Map__i32_double:
           self._map = make_shared[cmap[int32_t,double]]()
           if items:
               for key, item in items.items():
-                  deref(self._map).insert(cpair[int32_t,double](key, item))
+                  deref(self._map).insert(
+                      cpair[int32_t,double](
+                          key,
+                          item))
 
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,double]] c_items):
@@ -1931,8 +1990,8 @@ cdef class Map__i32_double:
 
     def __getitem__(self, key):
         cdef int32_t ckey = key
-
-        cdef cmap[int32_t,double].iterator iter = deref(self._map).find(ckey)
+        cdef cmap[int32_t,double].iterator iter = deref(
+            self._map).find(ckey)
         if iter == deref(self._map).end():
             raise KeyError(str(key))
         cdef double citem = deref(iter).second
@@ -2010,17 +2069,20 @@ cdef class List__Map__i32_double:
           self._vector = make_shared[vector[cmap[int32_t,double]]]()
           if items:
               for item in items:
-                  deref(self._vector).push_back(cmap[int32_t,double](deref(Map__i32_double(item)._map)))
+                  deref(self._vector).push_back(cmap[int32_t,double](deref(Map__i32_double(item)._map.get())))
 
     @staticmethod
-    cdef create(shared_ptr[vector[cmap[int32_t,double]]] c_items):
+    cdef create(
+            shared_ptr[vector[cmap[int32_t,double]]] c_items):
         inst = <List__Map__i32_double>List__Map__i32_double.__new__(List__Map__i32_double)
         inst._vector = c_items
         return inst
 
     def __getitem__(self, int index):
-        cdef cmap[int32_t,double] citem = deref(self._vector).at(index)
-        return Map__i32_double.create(make_shared[cmap[int32_t,double]](citem))
+        cdef cmap[int32_t,double] citem = (
+            deref(self._vector.get())[index])
+        return Map__i32_double.create(
+    make_shared[cmap[int32_t,double]](citem))
 
     def __len__(self):
         return deref(self._vector).size()
@@ -2044,38 +2106,39 @@ cdef class List__Map__i32_double:
         return hash(tuple(self))
 
     def __contains__(self, item):
-        cdef cmap[int32_t,double] citem = cmap[int32_t,double](deref(Map__i32_double(item)._map))
-        cdef vector[cmap[int32_t,double]] vec = deref(self._vector)
+        cdef cmap[int32_t,double] citem = cmap[int32_t,double](deref(Map__i32_double(item)._map.get()))
+        cdef vector[cmap[int32_t,double]] vec = deref(
+            self._vector.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
         cdef cmap[int32_t,double] citem
         for citem in deref(self._vector):
-            yield Map__i32_double.create(make_shared[cmap[int32_t,double]](citem))
+            yield Map__i32_double.create(
+    make_shared[cmap[int32_t,double]](citem))
 
     def __reversed__(self):
         cdef cmap[int32_t,double] citem
-        cdef vector[cmap[int32_t,double]] vec = deref(self._vector)
+        cdef vector[cmap[int32_t,double]] vec = deref(
+            self._vector.get())
         cdef vector[cmap[int32_t,double]].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
-            yield Map__i32_double.create(make_shared[cmap[int32_t,double]](citem))
+            yield Map__i32_double.create(
+    make_shared[cmap[int32_t,double]](citem))
             inc(loc)
 
     def index(self, item):
-        cdef cmap[int32_t,double] citem = cmap[int32_t,double](deref(Map__i32_double(item)._map))
-        cdef vector[cmap[int32_t,double]] vec = deref(self._vector)
-        cdef vector[cmap[int32_t,double]].iterator loc = std_libcpp.find(
-          vec.begin(),
-          vec.end(),
-          citem)
+        cdef cmap[int32_t,double] citem = cmap[int32_t,double](deref(Map__i32_double(item)._map.get()))
+        cdef vector[cmap[int32_t,double]] vec = deref(self._vector.get())
+        cdef vector[cmap[int32_t,double]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
         raise ValueError("{} is not in list".format(item))
 
     def count(self, item):
-        cdef cmap[int32_t,double] citem = cmap[int32_t,double](deref(Map__i32_double(item)._map))
-        cdef vector[cmap[int32_t,double]] vec = deref(self._vector)
+        cdef cmap[int32_t,double] citem = cmap[int32_t,double](deref(Map__i32_double(item)._map.get()))
+        cdef vector[cmap[int32_t,double]] vec = deref(self._vector.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
@@ -2090,8 +2153,9 @@ A_BIG_NUMBER = 102
 A_REAL_NUMBER = 3.140000
 A_FAKE_NUMBER = 3.0
 A_WORD = cA_WORD().decode('UTF-8')
-A_STRUCT = py3.module_types.SimpleStruct.create(make_shared[py3.module_types.cSimpleStruct](cA_STRUCT()))
+A_STRUCT = SimpleStruct.create(
+    make_shared[cSimpleStruct](cA_STRUCT()))
 WORD_LIST = List__string.create(make_shared[vector[string]](cWORD_LIST()))
 SOME_MAP = List__Map__i32_double.create(make_shared[vector[cmap[int32_t,double]]](cSOME_MAP()))
 DIGITS = Set__i32.create(make_shared[cset[int32_t]](cDIGITS()))
-A_CONST_MAP = Map__string_SimpleStruct.create(make_shared[cmap[string,py3.module_types.cSimpleStruct]](cA_CONST_MAP()))
+A_CONST_MAP = Map__string_SimpleStruct.create(make_shared[cmap[string,cSimpleStruct]](cA_CONST_MAP()))

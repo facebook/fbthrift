@@ -17,7 +17,6 @@ cimport std_libcpp
 
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
-cimport py3.module_types
 cimport py3.includes_types
 import py3.includes_types
 
@@ -30,7 +29,9 @@ cdef class MyStruct:
         MyIncludedField
     ):
         self.c_MyStruct = make_shared[cMyStruct]()
-        deref(self.c_MyStruct).MyIncludedField = deref((<py3.includes_types.Included?> MyIncludedField).c_Included)
+        cdef shared_ptr[py3.includes_types.cIncluded] __MyIncludedField = (
+            <py3.includes_types.Included?> MyIncludedField).c_Included
+        deref(self.c_MyStruct).MyIncludedField = deref(__MyIncludedField.get())
         
     @staticmethod
     cdef create(shared_ptr[cMyStruct] c_MyStruct):
@@ -42,7 +43,8 @@ cdef class MyStruct:
     def MyIncludedField(self):
         cdef shared_ptr[py3.includes_types.cIncluded] item
         if self.__MyIncludedField is None:
-            item = make_shared[py3.includes_types.cIncluded](deref(self.c_MyStruct).MyIncludedField)
+            item = make_shared[py3.includes_types.cIncluded](
+                deref(self.c_MyStruct).MyIncludedField)
             self.__MyIncludedField = py3.includes_types.Included.create(item)
         return self.__MyIncludedField
         

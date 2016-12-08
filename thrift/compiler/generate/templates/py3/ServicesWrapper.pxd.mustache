@@ -25,12 +25,29 @@ from cpython.ref cimport PyObject
 from libcpp.memory cimport shared_ptr
 from thrift.lib.py3.thrift_server cimport cServerInterface
 
-{{#program:services}}
-cimport {{#program:py3Namespaces}}{{value}}{{^last?}}.{{/last?}}{{/program:py3Namespaces}}.{{program:name}}_services
-{{/program:services}}
 {{#program:includeNamespaces}}
 cimport {{#includeNamespace}}{{value}}{{^last?}}.{{/last?}}{{/includeNamespace}}_services_wrapper
 {{/program:includeNamespaces}}
+
+
+{{#program:services}}
+cdef extern from "{{program:includePrefix}}gen-cpp2/{{service:name}}.h"{{!
+  }} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":
+    cdef cppclass c{{service:name}}SvAsyncIf {{!
+      }}"{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{!
+      }}{{service:name}}SvAsyncIf":
+      pass
+
+    cdef cppclass c{{service:name}}SvIf {{!
+      }}"{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{!
+      }}{{service:name}}SvIf"(
+            c{{service:name}}SvAsyncIf,{{#service:extends}}
+            {{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{!
+            }}{{service:programName}}_services_wrapper.c{{service:name}}SvIf,{{/service:extends}}
+            cServerInterface):
+        pass
+
+{{/program:services}}
 
 
 cdef extern from "{{program:includePrefix}}gen-py3/{{#program:py3Namespaces}}{{value}}/{{/program:py3Namespaces}}{{program:name}}_services_wrapper.h"{{!
@@ -38,7 +55,7 @@ cdef extern from "{{program:includePrefix}}gen-py3/{{#program:py3Namespaces}}{{v
 {{#program:services}}
     cdef cppclass c{{service:name}}Wrapper "{{!
     }}{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{service:name}}Wrapper"(
-        {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}_services.c{{service:name}}SvIf{{#service:extends}},
+        c{{service:name}}SvIf{{#service:extends}},
         {{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{service:programName}}_services_wrapper.c{{service:name}}Wrapper{{/service:extends}}
     ):
         pass

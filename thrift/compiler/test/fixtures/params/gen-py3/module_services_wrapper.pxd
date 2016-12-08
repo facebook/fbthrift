@@ -9,12 +9,22 @@ from cpython.ref cimport PyObject
 from libcpp.memory cimport shared_ptr
 from thrift.lib.py3.thrift_server cimport cServerInterface
 
-cimport py3.module_services
+
+
+cdef extern from "src/gen-cpp2/NestedContainers.h" namespace "cpp2":
+    cdef cppclass cNestedContainersSvAsyncIf "cpp2::NestedContainersSvAsyncIf":
+      pass
+
+    cdef cppclass cNestedContainersSvIf "cpp2::NestedContainersSvIf"(
+            cNestedContainersSvAsyncIf,
+            cServerInterface):
+        pass
+
 
 
 cdef extern from "src/gen-py3/py3/module_services_wrapper.h" namespace "cpp2":
     cdef cppclass cNestedContainersWrapper "cpp2::NestedContainersWrapper"(
-        py3.module_services.cNestedContainersSvIf
+        cNestedContainersSvIf
     ):
         pass
 

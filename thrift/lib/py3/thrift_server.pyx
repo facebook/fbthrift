@@ -1,11 +1,5 @@
 cimport cython
 from libcpp.memory cimport unique_ptr, make_unique, shared_ptr
-
-from thrift.lib.py3.thrift_server cimport (
-    cThriftServer,
-    cServerInterface,
-    ServiceInterface
-)
 from folly_futures cimport cFollyPromise, cFollyUnit, c_unit
 
 import asyncio

@@ -5,17 +5,7 @@
 #  @generated
 #
 
-from thrift.lib.py3.thrift_server cimport cServerInterface, ServiceInterface
-
-
-cdef extern from "src/gen-cpp2/NestedContainers.h" namespace "cpp2":
-    cdef cppclass cNestedContainersSvAsyncIf "cpp2::NestedContainersSvAsyncIf":
-      pass
-
-    cdef cppclass cNestedContainersSvIf "cpp2::NestedContainersSvIf"(
-            cNestedContainersSvAsyncIf,
-            cServerInterface):
-        pass
+from thrift.lib.py3.thrift_server cimport ServiceInterface
 
 
 cdef class NestedContainersInterface(ServiceInterface):

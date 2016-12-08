@@ -30,9 +30,16 @@ citem.
 }}{{#type:i32?}}citem{{/type:i32?}}{{!
 }}{{#type:i64?}}citem{{/type:i64?}}{{!
 }}{{#type:double?}}citem{{/type:double?}}{{!
-}}{{#type:string?}}citem.decode(){{/type:string?}}{{!
-}}{{#type:struct}}{{> ModulePath}}.{{type:name}}.create(make_shared[{{> ModulePath}}.c{{struct:name}}](citem)){{/type:struct}}{{!
-}}{{#type:list?}}{{type:flat_name}}.create(make_shared[{{> ContainerCythonFieldType}}](citem)){{/type:list?}}{{!
-}}{{#type:set?}}{{type:flat_name}}.create(make_shared[{{> ContainerCythonFieldType}}](citem)){{/type:set?}}{{!
-}}{{#type:map?}}{{type:flat_name}}.create(make_shared[{{> ContainerCythonFieldType}}](citem)){{/type:map?}}{{!
+}}{{#type:string?}}bytes(citem).decode(){{/type:string?}}{{!
+}}{{#type:struct}}{{!
+    }}{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}{{!
+    }}{{type:name}}.create(make_shared[{{!
+    }}{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}{{!
+    }}c{{struct:name}}](citem)){{/type:struct}}{{!
+}}{{#type:list?}}{{type:flat_name}}.create(
+    make_shared[{{> ContainerCythonFieldTypeConditionally}}](citem)){{/type:list?}}{{!
+}}{{#type:set?}}{{type:flat_name}}.create(
+    make_shared[{{> ContainerCythonFieldTypeConditionally}}](citem)){{/type:set?}}{{!
+}}{{#type:map?}}{{type:flat_name}}.create(
+    make_shared[{{> ContainerCythonFieldTypeConditionally}}](citem)){{/type:map?}}{{!
 }}{{#type:enum}}{{> ModulePath}}.{{enum:name}}(<int> citem){{/type:enum}}

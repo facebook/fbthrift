@@ -32,11 +32,16 @@ key, include the parallel CythonPythonToCppKey file instead.
 }}{{#type:i64?}}item{{/type:i64?}}{{!
 }}{{#type:double?}}item{{/type:double?}}{{!
 }}{{#type:string?}}item.encode('UTF-8'){{/type:string?}}{{!
-}}{{#type:struct}}deref((<{{> ModulePath}}.{{struct:name}}> item).c_{{struct:name}}){{/type:struct}}{{!
-}}{{#type:list?}}vector[{{#type:listElemType}}{{> ContainerCythonFieldType}}{{/type:listElemType}}{{!
-  }}](deref({{type:flat_name}}(item)._vector)){{/type:list?}}{{!
-}}{{#type:set?}}cset[{{#type:setElemType}}{{> ContainerCythonFieldType}}{{/type:setElemType}}{{!
-  }}](deref({{type:flat_name}}(item)._set)){{/type:set?}}{{!
-}}{{#type:map?}}cmap[{{#type:keyType}}{{> ContainerCythonFieldType}}{{/type:keyType}},{{#type:valueType}}{{> ContainerCythonFieldType}}{{/type:valueType}}{{!
-  }}](deref({{type:flat_name}}(item)._map)){{/type:map?}}{{!
+}}{{#type:struct}}deref((<{{!
+  }}{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}{{!
+  }}{{struct:name}}> item).c_{{struct:name}}){{!
+}}{{/type:struct}}{{!
+}}{{#type:list?}}deref({{type:flat_name}}(item)._vector.get()){{/type:list?}}{{!
+}}{{#type:set?}}cset[{{!
+  }}{{#type:setElemType}}{{> ContainerCythonFieldTypeConditionally}}{{/type:setElemType}}{{!
+  }}](deref({{type:flat_name}}(item)._set.get())){{/type:set?}}{{!
+}}{{#type:map?}}cmap[{{!
+  }}{{#type:keyType}}{{> ContainerCythonFieldTypeConditionally}}{{/type:keyType}},{{!
+  }}{{#type:valueType}}{{> ContainerCythonFieldTypeConditionally}}{{/type:valueType}}{{!
+  }}](deref({{type:flat_name}}(item)._map.get())){{/type:map?}}{{!
 }}{{#type:enum}}{{> ModulePath}}.{{enum:name}}_to_cpp(item){{/type:enum}}

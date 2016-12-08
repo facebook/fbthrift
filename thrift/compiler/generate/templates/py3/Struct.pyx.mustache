@@ -46,7 +46,6 @@ cimport std_libcpp
 
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
-cimport {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}_types
 {{#program:includeNamespaces}}
 cimport {{#includeNamespace}}{{value}}{{^last?}}.{{/last?}}{{/includeNamespace}}_types
 {{/program:includeNamespaces}}
@@ -137,20 +136,29 @@ cdef class {{type:flat_name}}:
         if isinstance(items, {{type:flat_name}}):
             self._vector = (<{{type:flat_name}}> items)._vector
         else:
-          self._vector = make_shared[vector[{{#type:listElemType}}{{> ContainerCythonFieldType}}{{/type:listElemType}}]]()
+          self._vector = make_shared[vector[{{#type:listElemType}}{{!
+              }}{{> ContainerCythonFieldTypeConditionally}}{{!
+              }}{{/type:listElemType}}]]()
           if items:
               for item in items:
-                  deref(self._vector).push_back({{#type:listElemType}}{{> CythonPythonToCppItem}}{{/type:listElemType}})
+                  deref(self._vector).push_back({{#type:listElemType}}{{!
+                      }}{{> CythonPythonToCppItem}}{{/type:listElemType}})
 
     @staticmethod
-    cdef create(shared_ptr[vector[{{#type:listElemType}}{{> ContainerCythonFieldType}}{{/type:listElemType}}]] c_items):
+    cdef create(
+            shared_ptr[vector[{{#type:listElemType}}{{!
+            }}{{> ContainerCythonFieldTypeConditionally}}{{/type:listElemType}}{{!
+            }}]] c_items):
         inst = <{{type:flat_name}}>{{type:flat_name}}.__new__({{type:flat_name}})
         inst._vector = c_items
         return inst
 
     def __getitem__(self, int index):
-        cdef {{#type:listElemType}}{{> ContainerCythonFieldType}}{{/type:listElemType}} citem = deref(self._vector).at(index)
-        return {{#type:listElemType}}{{> ContainerCythonCppToPythonItem}}{{/type:listElemType}}
+        {{#type:listElemType}}
+        cdef {{> ContainerCythonFieldTypeConditionally}} citem = (
+            deref(self._vector.get())[index])
+        return {{> ContainerCythonCppToPythonItem}}
+        {{/type:listElemType}}
 
     def __len__(self):
         return deref(self._vector).size()
@@ -174,38 +182,54 @@ cdef class {{type:flat_name}}:
         return hash(tuple(self))
 
     def __contains__(self, item):
-        cdef {{#type:listElemType}}{{> ContainerCythonFieldType}} citem = {{> CythonPythonToCppItem}}{{/type:listElemType}}
-        cdef {{> ContainerCythonFieldType}} vec = deref(self._vector)
+        cdef {{#type:listElemType}}{{!
+          }}{{> ContainerCythonFieldTypeConditionally}} citem = {{!
+          }}{{> CythonPythonToCppItem}}{{/type:listElemType}}
+        cdef {{> ContainerCythonFieldTypeConditionally}} vec = deref(
+            self._vector.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
-        cdef {{#type:listElemType}}{{>ContainerCythonFieldType}}{{/type:listElemType}} citem
+        cdef {{#type:listElemType}}{{!
+            }}{{>ContainerCythonFieldTypeConditionally}}{{!
+            }}{{/type:listElemType}} citem
         for citem in deref(self._vector):
-            yield {{#type:listElemType}}{{> ContainerCythonCppToPythonItem}}{{/type:listElemType}}
+            yield {{#type:listElemType}}{{!
+                }}{{> ContainerCythonCppToPythonItem}}{{!
+                }}{{/type:listElemType}}
 
     def __reversed__(self):
-        cdef {{#type:listElemType}}{{>ContainerCythonFieldType}}{{/type:listElemType}} citem
-        cdef {{> ContainerCythonFieldType}} vec = deref(self._vector)
-        cdef {{>ContainerCythonFieldType}}.reverse_iterator loc = vec.rbegin()
+        cdef {{#type:listElemType}}{{!
+            }}{{>ContainerCythonFieldTypeConditionally}}{{!
+            }}{{/type:listElemType}} citem
+        cdef {{> ContainerCythonFieldTypeConditionally}} vec = deref(
+            self._vector.get())
+        cdef {{>ContainerCythonFieldTypeConditionally}}.reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
-            yield {{#type:listElemType}}{{> ContainerCythonCppToPythonItem}}{{/type:listElemType}}
+            yield {{#type:listElemType}}{{!
+                }}{{> ContainerCythonCppToPythonItem}}{{!
+                }}{{/type:listElemType}}
             inc(loc)
 
     def index(self, item):
-        cdef {{#type:listElemType}}{{> ContainerCythonFieldType}} citem = {{> CythonPythonToCppItem}}{{/type:listElemType}}
-        cdef {{> ContainerCythonFieldType}} vec = deref(self._vector)
-        cdef {{>ContainerCythonFieldType}}.iterator loc = std_libcpp.find(
-          vec.begin(),
-          vec.end(),
-          citem)
+        cdef {{#type:listElemType}}{{!
+            }}{{> ContainerCythonFieldTypeConditionally}} citem = {{!
+            }}{{> CythonPythonToCppItem}}{{/type:listElemType}}
+        cdef {{> ContainerCythonFieldTypeConditionally}} vec = {{!
+            }}deref(self._vector.get())
+        cdef {{>ContainerCythonFieldTypeConditionally}}.iterator loc = {{!
+            }}std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
         raise ValueError("{} is not in list".format(item))
 
     def count(self, item):
-        cdef {{#type:listElemType}}{{> ContainerCythonFieldType}} citem = {{> CythonPythonToCppItem}}{{/type:listElemType}}
-        cdef {{> ContainerCythonFieldType}} vec = deref(self._vector)
+        cdef {{#type:listElemType}}{{!
+            }}{{> ContainerCythonFieldTypeConditionally}} citem = {{!
+            }}{{> CythonPythonToCppItem}}{{/type:listElemType}}
+        cdef {{> ContainerCythonFieldTypeConditionally}} vec = {{!
+            }}deref(self._vector.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
@@ -222,7 +246,9 @@ Sequence.register({{type:flat_name}})
                   deref(self._set).insert({{#type:setElemType}}{{> CythonPythonToCppItem}}{{/type:setElemType}})
 
     @staticmethod
-    cdef create(shared_ptr[cset[{{#type:setElemType}}{{> ContainerCythonFieldType}}{{/type:setElemType}}]] c_items):
+    cdef create(shared_ptr[cset[{{!
+            }}{{#type:setElemType}}{{> ContainerCythonFieldTypeConditionally}}{{/type:setElemType}}{{!
+            }}]] c_items):
         inst = <{{type:flat_name}}>{{type:flat_name}}.__new__({{type:flat_name}})
         inst._set = c_items
         return inst
@@ -398,35 +424,43 @@ Set.register({{type:flat_name}})
         if isinstance(items, {{type:flat_name}}):
             self._map = (<{{type:flat_name}}> items)._map
         else:
-          self._map = make_shared[cmap[{{> CythonMapKeyValue}}]]()
+          self._map = make_shared[cmap[{{> CythonMapKeyValueConditionally}}]]()
           if items:
               for key, item in items.items():
-                  deref(self._map).insert(cpair[{{> CythonMapKeyValue}}]({{#type:keyType}}{{> CythonPythonToCppKey}}{{/type:keyType}}, {{!
-                    }}{{#type:valueType}}{{> CythonPythonToCppItem}}{{/type:valueType}}))
+                  deref(self._map).insert(
+                      cpair[{{> CythonMapKeyValueConditionally}}](
+                          {{#type:keyType}}{{> CythonPythonToCppKey}}{{/type:keyType}},
+                          {{#type:valueType}}{{> CythonPythonToCppItem}}{{/type:valueType}}))
 
     @staticmethod
-    cdef create(shared_ptr[cmap[{{> CythonMapKeyValue}}]] c_items):
+    cdef create(shared_ptr[cmap[{{> CythonMapKeyValueConditionally}}]] c_items):
         inst = <{{type:flat_name}}>{{type:flat_name}}.__new__({{type:flat_name}})
         inst._map = c_items
         return inst
 
     def __getitem__(self, key):
-        cdef {{#type:keyType}}{{> ContainerCythonFieldType}} ckey = {{> CythonPythonToCppKey}}{{/type:keyType}}
-
-        cdef cmap[{{>CythonMapKeyValue}}].iterator iter = deref(self._map).find(ckey)
+        cdef {{#type:keyType}}{{> ContainerCythonFieldTypeConditionally}} ckey = {{!
+            }}{{> CythonPythonToCppKey}}{{/type:keyType}}
+        cdef cmap[{{>CythonMapKeyValueConditionally}}].iterator iter = deref(
+            self._map).find(ckey)
         if iter == deref(self._map).end():
             raise KeyError(str(key))
-        cdef {{#type:valueType}}{{> ContainerCythonFieldType}} citem = deref(iter).second{{/type:valueType}}
-        return {{#type:valueType}}{{> ContainerCythonCppToPythonItem}}{{/type:valueType}}
+        cdef {{#type:valueType}}{{!
+            }}{{> ContainerCythonFieldTypeConditionally}} {{!
+            }}citem = deref(iter).second{{/type:valueType}}
+        return {{#type:valueType}}{{!
+            }}{{> ContainerCythonCppToPythonItem}}{{/type:valueType}}
 
     def __len__(self):
         return deref(self._map).size()
 
     def __iter__(self):
-        cdef {{#type:keyType}}{{> ContainerCythonFieldType}}{{/type:keyType}} citem
+        cdef {{#type:keyType}}{{!
+            }}{{> ContainerCythonFieldTypeConditionally}}{{/type:keyType}} citem
         for pair in deref(self._map):
             citem = pair.first
-            yield {{#type:keyType}}{{> ContainerCythonCppToPythonItem}}{{/type:keyType}}
+            yield {{#type:keyType}}{{!
+                }}{{> ContainerCythonCppToPythonItem}}{{/type:keyType}}
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -450,21 +484,21 @@ Set.register({{type:flat_name}})
 
     def __contains__(self, key):
         cdef {{#type:keyType}}{{!
-          }}{{> ContainerCythonFieldType}} ckey = {{> CythonPythonToCppKey}}{{!
-          }}{{/type:keyType}}
+            }}{{> ContainerCythonFieldTypeConditionally}} ckey = {{!
+            }}{{> CythonPythonToCppKey}}{{/type:keyType}}
         return deref(self._map).count(ckey) > 0
 
     def get(self, key, default=None):
         cdef {{#type:keyType}}{{!
-          }}{{> ContainerCythonFieldType}} ckey = {{> CythonPythonToCppKey}}{{!
-          }}{{/type:keyType}}
-        cdef cmap[{{>CythonMapKeyValue}}].iterator iter = \
+            }}{{> ContainerCythonFieldTypeConditionally}} ckey = {{!
+            }}{{> CythonPythonToCppKey}}{{/type:keyType}}
+        cdef cmap[{{>CythonMapKeyValueConditionally}}].iterator iter = \
             deref(self._map).find(ckey)
         if iter == deref(self._map).end():
             return default
         cdef {{#type:valueType}}{{!
-          }}{{> ContainerCythonFieldType}} citem = deref(iter).second{{!
-          }}{{/type:valueType}}
+            }}{{> ContainerCythonFieldTypeConditionally}} citem = {{!
+            }}deref(iter).second{{/type:valueType}}
         return {{#type:valueType}}{{!
           }}{{> ContainerCythonCppToPythonItem}}{{!
           }}{{/type:valueType}}
@@ -474,7 +508,7 @@ Set.register({{type:flat_name}})
 
     def values(self):
         cdef {{#type:valueType}}{{!
-          }}{{> ContainerCythonFieldType}}{{!
+          }}{{> ContainerCythonFieldTypeConditionally}}{{!
           }}{{/type:valueType}}{{!!
           }} citem
         for pair in deref(self._map):
@@ -485,11 +519,11 @@ Set.register({{type:flat_name}})
 
     def items(self):
         cdef {{#type:keyType}}{{!
-          }}{{> ContainerCythonFieldType}}{{!
+          }}{{> ContainerCythonFieldTypeConditionally}}{{!
           }}{{/type:keyType}}{{!
           }} ckey
         cdef {{#type:valueType}}{{!
-          }}{{> ContainerCythonFieldType}}{{!
+          }}{{> ContainerCythonFieldTypeConditionally}}{{!
           }}{{/type:valueType}} citem
         for pair in deref(self._map):
             ckey = pair.first

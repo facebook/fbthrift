@@ -9,12 +9,22 @@ from cpython.ref cimport PyObject
 from libcpp.memory cimport shared_ptr
 from thrift.lib.py3.thrift_server cimport cServerInterface
 
-cimport py3.module_services
+
+
+cdef extern from "src/gen-cpp2/SimpleService.h" namespace "py3::simple":
+    cdef cppclass cSimpleServiceSvAsyncIf "py3::simple::SimpleServiceSvAsyncIf":
+      pass
+
+    cdef cppclass cSimpleServiceSvIf "py3::simple::SimpleServiceSvIf"(
+            cSimpleServiceSvAsyncIf,
+            cServerInterface):
+        pass
+
 
 
 cdef extern from "src/gen-py3/py3/module_services_wrapper.h" namespace "py3::simple":
     cdef cppclass cSimpleServiceWrapper "py3::simple::SimpleServiceWrapper"(
-        py3.module_services.cSimpleServiceSvIf
+        cSimpleServiceSvIf
     ):
         pass
 

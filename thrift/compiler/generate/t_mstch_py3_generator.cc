@@ -71,6 +71,9 @@ mstch::map t_mstch_py3_generator::extend_program(
   const auto& py3Namespaces = this->get_py3_namespace(program, "");
   mstch::array includeNamespaces;
   for (const auto included_program : program.get_includes()) {
+    if (included_program->get_path() == program.get_path()) {
+      continue;
+    }
     const auto ns = this->get_py3_namespace(
       *included_program,
       included_program->get_name()
