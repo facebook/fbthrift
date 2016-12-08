@@ -24,10 +24,6 @@
 #include <string>
 #include <vector>
 
-
-#include <folly/gen/Base.h>
-#include <folly/gen/String.h>
-
 #include <thrift/compiler/platform.h>
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_oop_generator.h>
@@ -1519,8 +1515,6 @@ string t_hs_generator::render_hs_type_for_function_name(t_type* type) {
  * @param tservice The service to generate a fuzzer for.
  */
 void t_hs_generator::generate_service_fuzzer(t_service *tservice) {
-    using namespace folly;
-
     string f_service_name =
       get_package_dir() + capitalize(service_name_) + "_Fuzzer.hs";
     f_service_fuzzer_.open(f_service_name.c_str());
@@ -1695,23 +1689,35 @@ void t_hs_generator::generate_service_fuzzer(t_service *tservice) {
        // fuzzer invocation
        indent(f_service_fuzzer_) << "_ <- ";
        int argCount = fields.size();
-       auto argList =
-           gen::seq(1, argCount)
-           | gen::map([](int n) { return "a" + std::to_string(n); });
 
-       auto spaceSeparatedArgList = argList | gen::unsplit<string>(" ");
-       auto showArgList =
-           argList
-           | gen::map([](const string& s) { return "Show " + s; })
-           | gen::unsplit<string>(", ");
-       auto showElemList =
-           argList
-           | gen::map([](const string& s) { return "show " + s; })
-           | gen::unsplit<string>(" ++ ");
-       auto paramString =
-           "(" + (argList | gen::unsplit<string>(", ")) + ")";
+       std::vector<std::string> argList;
+       for (int i = 1; i < argCount + 1; ++i) {
+         argList.push_back("a" + std::to_string(i));
+       }
 
-//       assert (1 <= argCount);
+       std::string spaceSeparatedArgList;
+       std::string showArgList;
+       std::string showElemList;
+       std::string fuzzString;
+       std::string paramString("(");
+
+       // iterate through every arg and format it
+       for (const auto& arg : argList) {
+         spaceSeparatedArgList += arg + " ";
+         showArgList += "Show " + arg + ", ";
+         showElemList += "show " + arg + " ++ ";
+         paramString += arg + ", ";
+         fuzzString += arg + " <*> ";
+       }
+
+       // erase extra elements at the end of the string and finish formatting
+       spaceSeparatedArgList.erase(spaceSeparatedArgList.length() - 1);
+       showArgList.erase(showArgList.length() - 2);
+       showElemList.erase(showElemList.length() - 4);
+       fuzzString.erase(fuzzString.length() - 5);
+       paramString.erase(paramString.length() - 2);
+       paramString += ")";
+
        if (argCount == 1) {
            f_service_fuzzer_
                << "forM (Applicative.getZipList a1) "
@@ -1720,7 +1726,7 @@ void t_hs_generator::generate_service_fuzzer(t_service *tservice) {
            f_service_fuzzer_
                << "P.sequence . Applicative.getZipList $ "
                << funname << "_fuzzFunc <$> "
-               << (argList | gen::unsplit<string>(" <*> "));
+               << fuzzString;
        }
        f_service_fuzzer_
            << nl << indent()

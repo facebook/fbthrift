@@ -20,14 +20,11 @@
 #include <iostream>
 #include <vector>
 
-#include <folly/gen/Base.h>
-#include <folly/gen/String.h>
 #include <sys/stat.h>
 
 #include <thrift/compiler/platform.h>
 #include <thrift/compiler/generate/t_java_generator.h>
 
-using namespace folly;
 using namespace std;
 
 /**
@@ -147,7 +144,7 @@ class t_android_lite_generator : public t_java_generator {
     string program_name_;
     string package_dir_;
     bool annotate_;
-    unordered_set<string> used_types_;
+    set<string> used_types_;
 
     // We build up the text of the 3 files in these streams before
     // outputting them into their actual files all in one go.
@@ -368,11 +365,11 @@ void t_android_lite_generator::record_type_use(t_type* ttype) {
 }
 
 string t_android_lite_generator::java_type_imports() {
-  return
-    gen::from(used_types_)
-    | gen::order
-    | gen::map([](const string &v) { return "import " + v + ";\n"; })
-    | gen::unsplit<string>("");
+  std::string type_imports;
+  for (const string& used_type : used_types_) {
+    type_imports += "import " + used_type + ";\n";
+  }
+  return type_imports;
 }
 
 // When we open-source the android compiler, we'll need to also release
