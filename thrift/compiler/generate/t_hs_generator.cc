@@ -369,8 +369,8 @@ string t_hs_generator::hs_imports() {
   for (const auto& program_include : includes) {
     auto module_prefix = get_module_prefix(program_include);
     auto base_name = capitalize(program_include->get_name()) + "_Types";
-    result += folly::to<string>(
-      "import qualified ", module_prefix, base_name, " as ", base_name, "\n");
+    result += "import qualified " + module_prefix + base_name;
+    result += " as " + base_name + "\n";
   }
 
   if (includes.size() > 0)

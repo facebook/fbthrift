@@ -875,7 +875,7 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
 
   auto enum_keyword = gen_enum_strict_ ? "enum class " : "enum ";
   auto name = tenum->get_name();
-  auto fullname = folly::to<string>(ns_prefix_, name);
+  auto fullname = ns_prefix_ + name;
 
   f_types_
     << indent() << enum_keyword << name << explicit_type << " {" << endl;
@@ -911,8 +911,8 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
   const auto map_factory = "apache::thrift::detail::TEnumMapFactory<" +
     name + ", " + value_type + ">";
 
-  auto valuesToNames = folly::to<string>("_", name, "_VALUES_TO_NAMES");
-  auto namesToValues = folly::to<string>("_", name, "_NAMES_TO_VALUES");
+  auto valuesToNames = "_" + name + "_VALUES_TO_NAMES";
+  auto namesToValues = "_" + name + "_NAMES_TO_VALUES";
   f_types_ <<
     indent() <<
     "extern const typename " << map_factory << "::ValuesToNamesMapType " <<

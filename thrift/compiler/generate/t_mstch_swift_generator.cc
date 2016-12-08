@@ -19,7 +19,6 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/replace.hpp>
 
-#include <folly/Conv.h>
 #include <folly/Optional.h>
 
 class t_mstch_swift_generator : public t_mstch_generator {
@@ -54,11 +53,8 @@ class t_mstch_swift_generator : public t_mstch_generator {
     } else if (default_package_.hasValue()) {
       return default_package_.value();
     } else {
-      throw std::runtime_error{folly::to<std::string>(
-          "No namespace '",
-          this->namespace_identifier_,
-          "' in ",
-          prog.get_name())};
+      throw std::runtime_error{"No namespace '" + this->namespace_identifier_ +
+        "' in " + prog.get_name()};
     }
   }
 
