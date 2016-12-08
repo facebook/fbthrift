@@ -1,9 +1,25 @@
 namespace cpp2 static_reflection.demo
+namespace java org.apache.thrift.static_reflection.demo
+namespace py static_reflection.demo
 
 enum some_enum {
   field0,
   field1,
   field2,
+}
+
+struct simple_struct {
+  1: i32 i32_data
+  2: i16 i16_data
+  3: double double_data
+  4: string string_data
+}
+
+union simple_variant {
+  1: i32 i32_data
+  2: i16 i16_data
+  3: double double_data
+  4: string string_data
 }
 
 struct flat_struct {

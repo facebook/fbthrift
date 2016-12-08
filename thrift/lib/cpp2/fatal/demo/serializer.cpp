@@ -17,7 +17,7 @@
 #include <thrift/lib/cpp2/fatal/reflection.h>
 
 #include <thrift/lib/cpp2/fatal/demo/gen-cpp2/data_constants.h>
-#include <thrift/lib/cpp2/fatal/demo/gen-cpp2/data_fatal_all.h>
+#include <thrift/lib/cpp2/fatal/demo/gen-cpp2/data_fatal_types.h>
 
 #include <fatal/type/search.h>
 

@@ -20,10 +20,12 @@
 #include <thrift/lib/cpp2/fatal/demo/json_print.h>
 
 #include <thrift/lib/cpp2/fatal/demo/gen-cpp2/flat_config_constants.h>
-#include <thrift/lib/cpp2/fatal/demo/gen-cpp2/flat_config_fatal_all.h>
+#include <thrift/lib/cpp2/fatal/demo/gen-cpp2/flat_config_fatal_types.h>
 #include <thrift/lib/cpp2/fatal/demo/gen-cpp2/legacy_config_constants.h>
 
 #include <folly/Conv.h>
+#include <folly/init/Init.h>
+
 
 #include <iostream>
 #include <string>
@@ -92,7 +94,9 @@ void test(From const &from) {
   print(to);
 }
 
-int main() {
+int main(int argc, char **argv) {
+  folly::init(&argc, &argv);
+
   std::cerr << "legacy -> flat: ";
   test<static_reflection::demo::flat_config>(
     static_reflection::demo::legacy_config_constants::example()
