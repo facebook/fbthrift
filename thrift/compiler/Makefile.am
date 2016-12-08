@@ -39,7 +39,7 @@ libthriftcompilerbase_la_SOURCES = \
         validator.cc \
         visitor.cc
 
-libthriftcompilerbase_la_LDFLAGS = -lcrypto
+libthriftcompilerbase_la_LDFLAGS = -lfolly -lcrypto
 
 
 thrift1_OBJDIR = obj
@@ -70,7 +70,7 @@ thrift1_SOURCES = main.cc \
                  parse/t_scope.h \
                  parse/t_const.h \
                  parse/t_const_value.h \
-                 valiator.h \
+                 validator.h \
                  visitor.h \
                  generate/common.h \
                  generate/t_generator.h \
