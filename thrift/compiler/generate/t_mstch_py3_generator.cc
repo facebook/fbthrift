@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-#include <thrift/compiler/generate/common.h>
-#include <thrift/compiler/generate/t_mstch_generator.h>
 
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/classification.hpp>
+
+#include <memory>
+
+#include <thrift/compiler/generate/common.h>
+#include <thrift/compiler/generate/t_mstch_generator.h>
 
 namespace {
 
@@ -33,7 +36,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
       this->out_dir_base_ = "gen-py3";
       auto include_prefix = this->get_option("include_prefix");
       if (include_prefix) {
-        program->set_include_prefix(include_prefix.value());
+        program->set_include_prefix(*include_prefix);
       }
     }
 

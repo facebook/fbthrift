@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-#ifndef T_MSTCH_GENERATOR_H
-#define T_MSTCH_GENERATOR_H
+#pragma once
 
 #include <fstream>
+#include <memory>
 #include <sstream>
 #include <stdexcept>
 
@@ -26,8 +26,6 @@
 #include <boost/filesystem.hpp>
 
 #include <thrift/compiler/generate/t_generator.h>
-
-#include <folly/Optional.h>
 
 class t_mstch_generator : public t_generator {
  public:
@@ -168,7 +166,7 @@ class t_mstch_generator : public t_generator {
     }
   }
 
-  folly::Optional<std::string> get_option(const std::string& key) const;
+  std::unique_ptr<std::string> get_option(const std::string& key) const;
 
  private:
   std::map<std::string, std::string> template_map_;
@@ -191,5 +189,3 @@ class t_mstch_generator : public t_generator {
     return std::addressof(x);
   }
 };
-
-#endif // T_MSTCH_GENERATOR_H

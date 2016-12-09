@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include <memory>
+
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
 
@@ -44,7 +46,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   mstch::array get_namespace(const t_program& program) const;
   std::string get_include_prefix(const t_program& program) const;
 
-  folly::Optional<std::string> include_prefix_;
+  std::unique_ptr<std::string> include_prefix_;
   std::vector<std::array<std::string, 3>> protocols_;
 };
 
@@ -153,7 +155,7 @@ bool t_mstch_cpp2_generator::get_is_complex_return_type(
 }
 
 bool t_mstch_cpp2_generator::get_is_stack_args() const {
-  return this->get_option("stack_arguments").hasValue();
+  return this->get_option("stack_arguments") != nullptr;
 }
 
 void t_mstch_cpp2_generator::generate_service(t_service* service) {

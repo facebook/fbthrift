@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-#include <thrift/compiler/generate/t_mstch_generator.h>
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/replace.hpp>
 
-#include <folly/Optional.h>
+#include <thrift/compiler/generate/t_mstch_generator.h>
 
 class t_mstch_swift_generator : public t_mstch_generator {
  public:
@@ -37,7 +36,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
   void generate_program() override;
 
  protected:
-  const folly::Optional<std::string> default_package_;
+  std::unique_ptr<std::string> default_package_;
 
   const std::string namespace_identifier_;
 
@@ -50,8 +49,8 @@ class t_mstch_swift_generator : public t_mstch_generator {
         prog.get_namespace(this->namespace_identifier_);
     if (prog_namespace != "") {
       return prog_namespace;
-    } else if (default_package_.hasValue()) {
-      return default_package_.value();
+    } else if (default_package_) {
+      return *default_package_;
     } else {
       throw std::runtime_error{"No namespace '" + this->namespace_identifier_ +
         "' in " + prog.get_name()};

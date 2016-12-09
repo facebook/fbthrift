@@ -19,6 +19,7 @@
 #include <thrift/compiler/generate/t_generator.h>
 
 #include <fstream>
+#include <memory>
 #include <iostream>
 #include <stdexcept>
 #include <string>
@@ -427,13 +428,13 @@ void t_mstch_generator::write_output(
   this->record_genfile(abs_path.string());
 }
 
-folly::Optional<std::string> t_mstch_generator::get_option(
+std::unique_ptr<std::string> t_mstch_generator::get_option(
     const std::string& key) const {
   auto itr = this->parsed_options_.find(key);
   if (itr == this->parsed_options_.end()) {
-    return folly::none;
+    return nullptr;
   }
-  return itr->second;
+  return std::unique_ptr<std::string>(new std::string(itr->second));
 }
 
 mstch::map t_mstch_generator::prepend_prefix(
