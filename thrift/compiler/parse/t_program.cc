@@ -22,11 +22,10 @@
 #include <string>
 #include <vector>
 
-#include <folly/MapUtil.h>
-
 const std::string& t_program::get_namespace(const std::string& language) const {
+  auto pos = namespaces_.find(language);
   static const auto& kEmpty = *new std::string();
-  return folly::get_ref_default(namespaces_, language, kEmpty);
+  return (pos != namespaces_.end() ? pos->second : kEmpty);
 }
 
 void t_program::set_out_path(std::string out_path, bool out_path_is_absolute) {

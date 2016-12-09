@@ -51,6 +51,7 @@ thrift1_SOURCES = main.cc \
                  generate/t_mstch_generator.cc \
                  globals.h \
                  platform.h \
+                 parse/endianness.h \
                  parse/t_doc.h \
                  parse/t_type.h \
                  parse/t_base_type.h \

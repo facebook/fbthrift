@@ -20,21 +20,24 @@
 #include <sstream>
 
 #include <openssl/sha.h>
-#include <folly/Bits.h>
 
+#include <thrift/compiler/parse/endianness.h>
 #include <thrift/compiler/parse/t_program.h>
 
 constexpr size_t t_types::kTypeBits;
 constexpr uint64_t t_types::kTypeMask;
 
 uint64_t t_type::get_type_id() const {
+  // This union allows the conversion of the SHA char buffer to a 64bit uint
   union {
     uint64_t val;
     unsigned char buf[SHA_DIGEST_LENGTH];
   } u;
+
   std::string name = get_full_name();
   SHA1(reinterpret_cast<const unsigned char*>(name.data()), name.size(), u.buf);
-  uint64_t hash = folly::Endian::little(u.val);
+  const auto hash =
+    apache::thrift::compiler::bswap_host_to_little_endian(u.val);
   TypeValue tv = get_type_value();
 
   return (hash & ~t_types::kTypeMask) | int(tv);
