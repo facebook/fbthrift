@@ -64,8 +64,11 @@ namespace apache { namespace thrift {
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename T, typename Callback>
-bool debug_equals(T const &lhs, T const &rhs, Callback &&callback) {
-  std::string path("<root>");
+bool debug_equals(
+    T const& lhs,
+    T const& rhs,
+    Callback&& callback,
+    std::string path = "$") {
   return detail::debug_equals(path, lhs, rhs, callback);
 }
 

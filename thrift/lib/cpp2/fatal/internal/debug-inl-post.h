@@ -56,24 +56,31 @@ bool debug_equals(
 }
 
 struct scoped_path {
-  template <typename... Args>
-  explicit scoped_path(std::string &path, Args &&...args):
-    size_(path.size()),
-    path_(path)
-  {
-    if (!path.empty()) {
-      path.push_back('.');
-    }
-
-    folly::toAppend(std::forward<Args>(args)..., &path);
-  }
-
+ public:
   ~scoped_path() {
     assert(path_.size() >=  size_);
     path_.resize(size_);
   }
 
-private:
+  static scoped_path member(std::string &path, folly::StringPiece member) {
+    return scoped_path(path, '.', member);
+  }
+
+  static scoped_path index(std::string &path, int64_t index) {
+    return scoped_path(path, '[', index, ']');
+  }
+
+  static scoped_path key(std::string& path, std::string const &key) {
+    return scoped_path(path, '[', key, ']');
+  }
+
+ private:
+   template <typename... Args>
+   explicit scoped_path(std::string &path, Args &&... args)
+       : size_(path.size()), path_(path) {
+     folly::toAppend(std::forward<Args>(args)..., &path);
+  }
+
   std::size_t const size_;
   std::string &path_;
 };
@@ -121,7 +128,7 @@ struct debug_equals_impl<type_class::list<ValueTypeClass>> {
     auto r = traits::begin(rhs);
     auto const re = traits::end(rhs);
     for (std::size_t index = 0; l != le && r != re; ++l, ++r, ++index) {
-      scoped_path guard(path, index);
+      auto guard = scoped_path::index(path, index);
 
       if (!debug_equals_impl<ValueTypeClass>::equals(path, *l, *r, callback)) {
         return false;
@@ -139,16 +146,22 @@ struct debug_equals_impl_pretty {
     return pretty_string(v);
   }
 };
-template <typename Type>
-struct debug_equals_impl_pretty<Type, type_class::string> {
-  static std::string go(Type const &v) {
+template <class T>
+struct debug_equals_impl_pretty<T, type_class::string> {
+  static std::string go(T const &v) {
+    return folly::to<std::string>('\"', v, '\"');
+  }
+};
+template <class T>
+struct debug_equals_impl_pretty<T, type_class::integral> {
+  static std::string go(T const &v) {
     return folly::to<std::string>(v);
   }
 };
-template <>
-struct debug_equals_impl_pretty<std::string, type_class::string> {
-  static std::string const &go(std::string const &v) {
-    return v;
+template <class T>
+struct debug_equals_impl_pretty<T, type_class::floating_point> {
+  static std::string go(T const &v) {
+    return folly::to<std::string>(v);
   }
 };
 
@@ -176,7 +189,7 @@ struct debug_equals_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
 
     for (auto l = traits::begin(lhs); l != le; ++l) {
       auto const &key = traits::key(l);
-      scoped_path guard(path, pretty_key::go(key));
+      auto guard = scoped_path::key(path, pretty_key::go(key));
       if (traits::find(rhs, key) == re) {
         equals = false;
         callback(lhs, rhs, path, "missing");
@@ -184,8 +197,8 @@ struct debug_equals_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
     }
 
     for (auto r = traits::begin(rhs); r != re; ++r) {
-      auto const &key = traits::key(r);
-      scoped_path guard(path, pretty_key::go(key));
+      auto const& key = traits::key(r);
+      auto guard = scoped_path::key(path, pretty_key::go(key));
       if (traits::find(lhs, key) == le) {
         equals = false;
         callback(lhs, rhs, path, "extra");
@@ -193,10 +206,10 @@ struct debug_equals_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
     }
 
     for (auto l = traits::begin(lhs); l != le; ++l) {
-      auto const &key = traits::key(l);
+      auto const& key = traits::key(l);
       auto r = traits::find(rhs, key);
       if (r != re) {
-        scoped_path guard(path, pretty_key::go(key));
+        auto guard = scoped_path::key(path, pretty_key::go(key));
         auto const& lv = traits::mapped(l);
         auto const& rv = traits::mapped(r);
         equals &= mapped_impl::equals(path, lv, rv, callback);
@@ -230,7 +243,7 @@ struct debug_equals_impl<type_class::set<ValueTypeClass>> {
     bool equals = true;
 
     for (auto l = traits::begin(lhs); l != le; ++l) {
-      scoped_path guard(path, pretty_value::go(*l));
+      auto guard = scoped_path::key(path, pretty_value::go(*l));
       if (traits::find(rhs, *l) == re) {
         equals = false;
         callback(lhs, rhs, path, "missing");
@@ -238,7 +251,7 @@ struct debug_equals_impl<type_class::set<ValueTypeClass>> {
     }
 
     for (auto r = traits::begin(rhs); r != re; ++r) {
-      scoped_path guard(path, pretty_value::go(*r));
+      auto guard = scoped_path::key(path, pretty_value::go(*r));
       if (traits::find(lhs, *r) == le) {
         equals = false;
         callback(lhs, rhs, path, "extra");
@@ -267,7 +280,7 @@ struct debug_equals_variant_visitor {
     assert(Descriptor::id::value == VariantTraits::get_id(rhs));
 
     using name = typename Descriptor::metadata::name;
-    scoped_path guard(path, fatal::z_data<name>());
+    auto guard = scoped_path::member(path, fatal::z_data<name>());
 
     using type_class = typename Descriptor::metadata::type_class;
     typename Descriptor::getter getter;
@@ -331,7 +344,8 @@ struct debug_equals_struct_visitor {
       return;
     }
 
-    scoped_path guard(path, fatal::z_data<typename Member::name>());
+    auto guard =
+        scoped_path::member(path, fatal::z_data<typename Member::name>());
 
     using getter = typename Member::getter;
     result = debug_equals_impl<typename Member::type_class>::equals(

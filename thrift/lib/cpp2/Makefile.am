@@ -102,6 +102,7 @@ thrift2include_fatal_HEADERS = \
 	fatal/internal/reflection-inl-post.h \
 	fatal/internal/reflection-inl-pre.h \
 	fatal/reflection.h \
+	fatal/testing.h \
 	fatal/traits_test_helpers.h \
 	fatal/internal/traits_test_helpers-inl.h \
 	fatal/internal/test_helpers.h \
