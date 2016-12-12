@@ -14,7 +14,7 @@ from six import StringIO
 from thrift import Thrift
 from thrift.util import randomizer
 from thrift.protocol.TCompactProtocol import getVarint
-from .THeaderTransport import THeaderTransport
+from .THeaderTransport import THeaderTransport, INFO, HEADER_MAGIC
 
 class TFuzzyHeaderTransport(THeaderTransport):
     """Transport that can optionally fuzz fields in the header or payload.
@@ -202,13 +202,13 @@ class TFuzzyHeaderTransport(THeaderTransport):
         cls._flush_info_headers(
             info_data,
             self._THeaderTransport__write_persistent_headers,
-            self.INFO_PKEYVALUE)
+            INFO.PERSISTENT)
 
         # Write non-persistent kv-headers
         cls._flush_info_headers(
             info_data,
             self._THeaderTransport__write_headers,
-            self.INFO_KEYVALUE)
+            INFO.NORMAL)
 
         header_data = StringIO()
         proto_id = self._get_fuzzy_field(
@@ -232,7 +232,7 @@ class TFuzzyHeaderTransport(THeaderTransport):
         wsz += header_size + 10
 
         self._write_fuzzy_field(buf, 'length', wsz, 'i32')
-        self._write_fuzzy_field(buf, 'magic', self.HEADER_MAGIC, 'i16')
+        self._write_fuzzy_field(buf, 'magic', HEADER_MAGIC >> 16, 'i16')
         self._write_fuzzy_field(
             buf, 'flags', self._THeaderTransport__flags, 'i16')
         self._write_fuzzy_field(

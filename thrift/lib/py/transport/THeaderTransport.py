@@ -33,7 +33,6 @@ else:
     import BaseHTTPServer
     from cStringIO import StringIO
 
-import os
 from struct import pack, unpack
 import sys
 import zlib
@@ -62,34 +61,70 @@ except ImportError:
     snappy = DummySnappy()
 
 
+# Definitions from THeader.h
+
+
+class CLIENT_TYPE:
+    HEADER = 0
+    FRAMED_DEPRECATED = 1
+    UNFRAMED_DEPRECATED = 2
+    HTTP_SERVER = 3
+    HTTP_CLIENT = 4
+    FRAMED_COMPACT = 5
+    HEADER_SASL = 6
+    HTTP_GET = 7
+    UNKNOWN = 8
+    UNFRAMED_COMPACT_DEPRECATED = 9
+
+
+class HEADER_FLAG:
+    SUPPORT_OUT_OF_ORDER = 0x01
+    DUPLEX_REVERSE = 0x08
+    SASL = 0x10
+
+
+class TRANSFORM:
+    NONE = 0x00
+    ZLIB = 0x01
+    HMAC = 0x02
+    SNAPPY = 0x03
+    QLZ = 0x04
+    ZSTD = 0x05
+
+
+class INFO:
+    NORMAL = 1
+    PERSISTENT = 2
+
+
+HEADER_MAGIC = 0x0FFF0000
+HEADER_MASK = 0xFFFF0000
+FLAGS_MASK = 0x0000FFFF
+HTTP_SERVER_MAGIC = 0x504F5354  # POST
+HTTP_CLIENT_MAGIC = 0x48545450  # HTTP
+HTTP_GET_CLIENT_MAGIC = 0x47455420  # GET
+HTTP_HEAD_CLIENT_MAGIC = 0x48454144  # HEAD
+BIG_FRAME_MAGIC = 0x42494746  # BIGF
+MAX_FRAME_SIZE = 0x3FFFFFFF
+
+
 class THeaderTransport(TTransportBase, CReadableTransport):
     """Transport that sends headers.  Also understands framed/unframed/HTTP
     transports and and will do the right thing"""
 
-    # 16th and 32nd bits must be 0 to differentiate framed vs unframed.
-    HEADER_MAGIC = 0x0FFF
-
-    # HTTP has different magic.
-    HTTP_SERVER_MAGIC = 0x504F5354       # 'POST'
-
-    # Note max frame size is slightly less than HTTP_SERVER_MAGIC
-    MAX_FRAME_SIZE = 0x3FFFFFFF
+    # These are left to support existing clients
+    # TODO(fried): remove these and update existing callers to use above
+    MAX_FRAME_SIZE = MAX_FRAME_SIZE
 
     # TRANSFORMS
-    ZLIB_TRANSFORM = 0x01
-    HMAC_TRANSFORM = 0x02   # No longer supported
-    SNAPPY_TRANSFORM = 0x03
-
-    # INFOS
-    INFO_KEYVALUE = 0x01
-    INFO_PKEYVALUE = 0x02
+    ZLIB_TRANSFORM = TRANSFORM.ZLIB
+    SNAPPY_TRANSFORM = TRANSFORM.SNAPPY
 
     # CLIENT TYPES
-    HEADERS_CLIENT_TYPE = 0x00
-    FRAMED_DEPRECATED = 0x01
-    UNFRAMED_DEPRECATED = 0x02
-    HTTP_CLIENT_TYPE = 0x03
-    UNKNOWN_CLIENT_TYPE = 0x04
+    HEADERS_CLIENT_TYPE = CLIENT_TYPE.HEADER
+    FRAMED_DEPRECATED = CLIENT_TYPE.FRAMED_DEPRECATED
+    UNFRAMED_DEPRECATED = CLIENT_TYPE.UNFRAMED_DEPRECATED
+    HTTP_CLIENT_TYPE = CLIENT_TYPE.HTTP_SERVER
 
     __supported_client_types = []
 
@@ -112,19 +147,19 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         self.__read_transforms = []
         self.__write_transforms = []
         self.__supported_client_types = set(client_types or
-                                            (self.HEADERS_CLIENT_TYPE,))
+                                            (CLIENT_TYPE.HEADER,))
         self.__proto_id = 0  # default to binary
-        self.__client_type = client_type or self.HEADERS_CLIENT_TYPE
+        self.__client_type = client_type or CLIENT_TYPE.HEADER
         self.__read_headers = {}
         self.__read_persistent_headers = {}
         self.__write_headers = {}
         self.__write_persistent_headers = {}
 
     def set_max_frame_size(self, size):
-        if size > self.MAX_FRAME_SIZE:
+        if size > MAX_FRAME_SIZE:
             raise TTransportException(TTransportException.INVALID_FRAME_SIZE,
                                       "Cannot set max frame size > %s" %
-                                      self.MAX_FRAME_SIZE)
+                                      MAX_FRAME_SIZE)
         self.__max_frame_size = size
 
     def get_peer_identity(self):
@@ -137,7 +172,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         self.__identity = identity
 
     def get_protocol_id(self):
-        if self.__client_type == self.HEADERS_CLIENT_TYPE:
+        if self.__client_type == CLIENT_TYPE.HEADER:
             return self.__proto_id
         else:
             return 0  # default to Binary for all others
@@ -171,10 +206,10 @@ class THeaderTransport(TTransportBase, CReadableTransport):
 
     def _reset_protocol(self):
         # HTTP calls that are one way need to flush here.
-        if self.__client_type == self.HTTP_CLIENT_TYPE:
+        if self.__client_type == CLIENT_TYPE.HTTP_SERVER:
             self.flush()
         # set to anything except unframed
-        self.__client_type = self.HEADERS_CLIENT_TYPE
+        self.__client_type = CLIENT_TYPE.HEADER
         # Read header bytes to check which protocol to decode
         self.readFrame(0)
 
@@ -195,28 +230,30 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         if len(ret) == sz:
             return ret
 
-        if self.__client_type == self.UNFRAMED_DEPRECATED:
+        if self.__client_type == CLIENT_TYPE.UNFRAMED_DEPRECATED:
             return ret + self.getTransport().read(sz - len(ret))
 
         self.readFrame(sz - len(ret))
         return ret + self.__rbuf.read(sz - len(ret))
 
     def readFrame(self, req_sz):
+        # TODO(fried): Move all the detection logic so we only have to do it once
         self.__rbuf_frame = True
         word1 = self.getTransport().readAll(4)
         # These two unpack statements must use signed integers.
         # See note about hex constants in TBinaryProtocol.py
-        sz, = unpack(b'!i', word1)
+        sz = unpack('!i', word1)[0]
+        # TODO(fried): UNFRAMED_COMPACT_DEPRECATED
         if sz & TBinaryProtocol.VERSION_MASK == TBinaryProtocol.VERSION_1:
             # unframed
-            self.__client_type = self.UNFRAMED_DEPRECATED
+            self.__client_type = CLIENT_TYPE.UNFRAMED_DEPRECATED
             if req_sz <= 4:  # check for reads < 0.
                 self.__rbuf = StringIO(word1)
             else:
                 self.__rbuf = StringIO(word1 + self.getTransport().read(
                     req_sz - 4))
-        elif sz == self.HTTP_SERVER_MAGIC:
-            self.__client_type = self.HTTP_CLIENT_TYPE
+        elif sz == HTTP_SERVER_MAGIC:
+            self.__client_type = CLIENT_TYPE.HTTP_SERVER
             mf = self.getTransport().handle.makefile('rb', -1)
 
             self.handler = self.RequestHandler(mf,
@@ -224,12 +261,13 @@ class THeaderTransport(TTransportBase, CReadableTransport):
             self.header = self.handler.wfile
             self.__rbuf = StringIO(self.handler.data)
         else:
+            # TODO(FRIED): FRAMED_COMPACT
             # could be header format or framed.  Check next byte.
             word2 = self.getTransport().readAll(4)
-            version, = unpack('!i', word2)
+            version = unpack('!i', word2)[0]
             if version & TBinaryProtocol.VERSION_MASK == \
                     TBinaryProtocol.VERSION_1:
-                self.__client_type = self.FRAMED_DEPRECATED
+                self.__client_type = CLIENT_TYPE.FRAMED_DEPRECATED
                 # Framed.
                 if sz > self.__max_frame_size:
                     raise TTransportException(
@@ -237,20 +275,20 @@ class THeaderTransport(TTransportBase, CReadableTransport):
                             "Framed transport frame was too large")
                 self.__rbuf = StringIO(word2 + self.getTransport().readAll(
                     sz - 4))
-            elif (version & 0xFFFF0000) == (self.HEADER_MAGIC << 16):
-                self.__client_type = self.HEADERS_CLIENT_TYPE
+            elif (version & HEADER_MASK) == HEADER_MAGIC:
+                self.__client_type = CLIENT_TYPE.HEADER
                 # header format.
                 if sz > self.__max_frame_size:
                     raise TTransportException(
                             TTransportException.INVALID_FRAME_SIZE,
                             "Header transport frame was too large")
-                self.__flags = (version & 0x0000FFFF)
+                self.__flags = (version & FLAGS_MASK)
                 # TODO use flags
                 n_seq_id = self.getTransport().readAll(4)
-                self.__seq_id, = unpack(b'!I', n_seq_id)
+                self.__seq_id = unpack('!I', n_seq_id)[0]
 
                 n_header_size = self.getTransport().readAll(2)
-                header_size, = unpack(b'!H', n_header_size)
+                header_size = unpack('!H', n_header_size)[0]
 
                 data = StringIO()
                 data.write(word2)
@@ -260,12 +298,12 @@ class THeaderTransport(TTransportBase, CReadableTransport):
                 data.seek(10)
                 self.read_header_format(sz - 10, header_size, data)
             else:
-                self.__client_type = self.UNKNOWN_CLIENT_TYPE
+                self.__client_type = CLIENT_TYPE.UNKNOWN
                 raise TTransportException(
                         TTransportException.INVALID_CLIENT_TYPE,
                         "Could not detect client transport type")
 
-        if not self.__client_type in self.__supported_client_types:
+        if self.__client_type not in self.__supported_client_types:
             raise TTransportException(TTransportException.INVALID_CLIENT_TYPE,
                                         "Client type {} not supported on server"
                                       .format(self.__client_type))
@@ -284,18 +322,18 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         num_headers = readVarint(data)
 
         if self.__proto_id == 1 and self.__client_type != \
-                self.HTTP_CLIENT_TYPE:
+                CLIENT_TYPE.HTTP_SERVER:
             raise TTransportException(TTransportException.INVALID_CLIENT_TYPE,
                     "Trying to recv JSON encoding over binary")
 
         # Read the headers.  Data for each header varies.
         for h in range(0, num_headers):
             trans_id = readVarint(data)
-            if trans_id == self.ZLIB_TRANSFORM:
+            if trans_id == TRANSFORM.ZLIB:
                 self.__read_transforms.insert(0, trans_id)
-            elif trans_id == self.SNAPPY_TRANSFORM:
+            elif trans_id == TRANSFORM.SNAPPY:
                 self.__read_transforms.insert(0, trans_id)
-            elif trans_id == self.HMAC_TRANSFORM:
+            elif trans_id == TRANSFORM.HMAC:
                 raise TApplicationException(
                         TApplicationException.INVALID_TRANSFORM,
                         "Hmac transform is no longer supported: %i" % trans_id)
@@ -311,11 +349,11 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         # Read the info headers.
         while data.tell() < end_header:
             info_id = readVarint(data)
-            if info_id == self.INFO_KEYVALUE:
+            if info_id == INFO.NORMAL:
                 THeaderTransport._read_info_headers(data,
                                                     end_header,
                                                     self.__read_headers)
-            elif info_id == self.INFO_PKEYVALUE:
+            elif info_id == INFO.PERSISTENT:
                 THeaderTransport._read_info_headers(data, end_header,
                         self.__read_persistent_headers)
             else:
@@ -337,9 +375,9 @@ class THeaderTransport(TTransportBase, CReadableTransport):
 
     def transform(self, buf):
         for trans_id in self.__write_transforms:
-            if trans_id == self.ZLIB_TRANSFORM:
+            if trans_id == TRANSFORM.ZLIB:
                 buf = zlib.compress(buf)
-            elif trans_id == self.SNAPPY_TRANSFORM:
+            elif trans_id == TRANSFORM.SNAPPY:
                 buf = snappy.compress(buf)
             else:
                 raise TTransportException(TTransportException.INVALID_TRANSFORM,
@@ -348,11 +386,11 @@ class THeaderTransport(TTransportBase, CReadableTransport):
 
     def untransform(self, buf):
         for trans_id in self.__read_transforms:
-            if trans_id == self.ZLIB_TRANSFORM:
+            if trans_id == TRANSFORM.ZLIB:
                 buf = zlib.decompress(buf)
-            elif trans_id == self.SNAPPY_TRANSFORM:
+            elif trans_id == TRANSFORM.SNAPPY:
                 buf = snappy.decompress(buf)
-            if not trans_id in self.__write_transforms:
+            if trans_id not in self.__write_transforms:
                 self.__write_transforms.append(trans_id)
         return buf
 
@@ -363,7 +401,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         self.flushImpl(True)
 
     def _flushHeaderMessage(self, buf, wout, wsz):
-        """Write a message for self.HEADERS_CLIENT_TYPE
+        """Write a message for CLIENT_TYPE.HEADER
 
         @param buf(StringIO): Buffer to write message to
         @param wout(str): Payload
@@ -385,12 +423,12 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         # Write persistent kv-headers
         THeaderTransport._flush_info_headers(info_data,
             self.get_write_persistent_headers(),
-            self.INFO_PKEYVALUE)
+            INFO.PERSISTENT)
 
         # Write non-persistent kv-headers
         THeaderTransport._flush_info_headers(info_data,
                                              self.__write_headers,
-                                             self.INFO_KEYVALUE)
+                                             INFO.NORMAL)
 
         header_data = StringIO()
         header_data.write(getVarint(self.__proto_id))
@@ -403,10 +441,10 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         header_size = header_size + padding_size
 
         wsz += header_size + 10
-        buf.write(pack(b"!I", wsz))
-        buf.write(pack(b"!HH", self.HEADER_MAGIC, self.__flags))
-        buf.write(pack(b"!I", self.__seq_id))
-        buf.write(pack(b"!H", header_size // 4))
+        buf.write(pack("!I", wsz))
+        buf.write(pack("!HH", HEADER_MAGIC >> 16, self.__flags))
+        buf.write(pack("!I", self.__seq_id))
+        buf.write(pack("!H", header_size // 4))
 
         buf.write(header_data.getvalue())
         buf.write(transform_data.getvalue())
@@ -414,7 +452,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
 
         # Pad out the header with 0x00
         for x in range(0, padding_size, 1):
-            buf.write(pack(b"!c", b'\0'))
+            buf.write(pack("!c", b'\0'))
 
         # Send data section
         buf.write(wout)
@@ -428,25 +466,25 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         self.__wbuf.seek(0)
         self.__wbuf.truncate()
 
-        if self.__proto_id == 1 and self.__client_type != self.HTTP_CLIENT_TYPE:
+        if self.__proto_id == 1 and self.__client_type != CLIENT_TYPE.HTTP_SERVER:
             raise TTransportException(TTransportException.INVALID_CLIENT_TYPE,
                     "Trying to send JSON encoding over binary")
 
         buf = StringIO()
-        if self.__client_type == self.HEADERS_CLIENT_TYPE:
+        if self.__client_type == CLIENT_TYPE.HEADER:
             self._flushHeaderMessage(buf, wout, wsz)
-        elif self.__client_type == self.FRAMED_DEPRECATED:
-            buf.write(pack(b"!I", wsz))
+        elif self.__client_type == CLIENT_TYPE.FRAMED_DEPRECATED:
+            buf.write(pack("!I", wsz))
             buf.write(wout)
-        elif self.__client_type == self.UNFRAMED_DEPRECATED:
+        elif self.__client_type == CLIENT_TYPE.UNFRAMED_DEPRECATED:
             buf.write(wout)
-        elif self.__client_type == self.HTTP_CLIENT_TYPE:
+        elif self.__client_type == CLIENT_TYPE.HTTP_SERVER:
             # Reset the client type if we sent something -
             # oneway calls via HTTP expect a status response otherwise
             buf.write(self.header.getvalue())
             buf.write(wout)
-            self.__client_type == self.HEADERS_CLIENT_TYPE
-        elif self.__client_type == self.UNKNOWN_CLIENT_TYPE:
+            self.__client_type == CLIENT_TYPE.HEADER
+        elif self.__client_type == CLIENT_TYPE.UNKNOWN:
             raise TTransportException(TTransportException.INVALID_CLIENT_TYPE,
                                       "Unknown client type")
 
