@@ -38,8 +38,20 @@ class validator : virtual public visitor {
  private:
   void add_error(std::string error);
 
-  // Enforces that there are no duplicate method names either within this
-  // service or between this service and any of its ancestors.
+  /**
+   * Error messages formatters
+   */
+  void add_error_service_method_names(
+    const std::string& file_path,
+    const int lineno,
+    const std::string& service_name_new,
+    const std::string& service_name_old,
+    const std::string& function_name);
+
+  /**
+   * Enforces that there are no duplicate method names either within this
+   * service or between this service and any of its ancestors.
+   */
   void validate_service_method_names_unique(t_service const* service);
 
   t_program const* program_;

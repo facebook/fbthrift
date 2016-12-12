@@ -16,12 +16,9 @@
 
 #include <thrift/compiler/validator.h>
 
+#include <sstream>
 #include <unordered_map>
 #include <unordered_set>
-
-#include <folly/Format.h>
-#include <folly/MapUtil.h>
-#include <folly/Range.h>
 
 namespace apache { namespace thrift { namespace compiler {
 
@@ -49,44 +46,57 @@ bool validator::visit(t_service const* const service) {
   return true;
 }
 
-void validator::validate_service_method_names_unique(t_service const* const s) {
+void validator::add_error_service_method_names(
+    const std::string& file_path,
+    const int lineno,
+    const std::string& service_name_new,
+    const std::string& service_name_old,
+    const std::string& function_name) {
+  //[FALIURE:{}:{}] Function {}.{} redefines {}.{}
+  std::ostringstream err;
+  err << "[FAILURE:" << file_path << ":" << std::to_string(lineno) << "] "
+      << "Function " << service_name_new << "." << function_name << " "
+      << "redefines " << service_name_old << "." << function_name;
+  add_error(err.str());
+}
+
+void validator::validate_service_method_names_unique(
+  t_service const* const service) {
   // Check for a redefinition of a function in a base service.
-  std::unordered_map<
-    folly::StringPiece, t_service const*, folly::hasher<folly::StringPiece>>
-    base_function_names;
-  for (auto b = s->get_extends(); b != nullptr; b = b->get_extends()) {
-    for (const auto& f : b->get_functions()) {
-      base_function_names[f->get_name()] = b;
+  std::unordered_map<std::string, const t_service*> base_function_names;
+  for (auto e_s = service->get_extends(); e_s; e_s = e_s->get_extends()) {
+    for (const auto& ex_func : e_s->get_functions()) {
+      base_function_names[ex_func->get_name()] = e_s;
     }
   }
-  for (const auto f : s->get_functions()) {
-    auto b = folly::get_default(base_function_names, f->get_name());
-    if (b != nullptr) {
-      add_error(folly::sformat(
-          "[FAILURE:{}:{}] Function {}.{} redefines {}.{}",
-            program_->get_path(),
-            f->get_lineno(),
-            s->get_name(),
-            f->get_name(),
-            b->get_full_name(),
-            f->get_name()));
+  for (const auto fnc : service->get_functions()) {
+    auto s_pos = base_function_names.find(fnc->get_name());
+    const t_service* e_s =
+      s_pos != base_function_names.end() ? s_pos->second : nullptr;
+    if (e_s) {
+      add_error_service_method_names(
+          program_->get_path(),
+          fnc->get_lineno(),
+          service->get_name(),
+          e_s->get_full_name(),
+          fnc->get_name()
+      );
     }
   }
+
   // Check for a redefinition of a function in the same service.
-  std::unordered_set<folly::StringPiece, folly::hasher<folly::StringPiece>>
-    function_names;
-  for (auto f : s->get_functions()) {
-    if (function_names.count(f->get_name())) {
-      add_error(folly::sformat(
-            "[FAILURE:{}:{}] Function {}.{} redefines {}.{}",
-            program_->get_path(),
-            f->get_lineno(),
-            s->get_name(),
-            f->get_name(),
-            s->get_name(),
-            f->get_name()));
+  std::unordered_set<std::string> function_names;
+  for (auto fnc : service->get_functions()) {
+    if (function_names.count(fnc->get_name())) {
+      add_error_service_method_names(
+          program_->get_path(),
+          fnc->get_lineno(),
+          service->get_name(),
+          service->get_name(),
+          fnc->get_name()
+      );
     }
-    function_names.insert(f->get_name());
+    function_names.insert(fnc->get_name());
   }
 }
 
