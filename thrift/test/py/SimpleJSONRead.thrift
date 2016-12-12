@@ -1,3 +1,5 @@
+namespace py SimpleJSONRead
+
 struct SomeStruct {
   1: i32 anInteger,
   2: map<string, double> aMap,

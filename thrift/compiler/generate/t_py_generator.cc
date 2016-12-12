@@ -3460,7 +3460,7 @@ void t_py_generator::generate_serialize_container(ofstream &out,
         sorted << " = " << prefix << ".items()" << endl;
       string tuple = tmp("tuple");
       indent(out) <<
-        sorted << ".sort(key=lambda " << tuple <<
+        sorted << " = sorted(" << sorted << ", key=lambda " << tuple <<
         ": " << tuple << "[0])" << endl;
       indent(out) <<
         "for " << kiter << "," << viter << " in " << sorted << ":" <<
