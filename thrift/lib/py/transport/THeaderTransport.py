@@ -34,13 +34,11 @@ else:
     from cStringIO import StringIO
 
 from struct import pack, unpack
-import sys
 import zlib
 
 from thrift.Thrift import TApplicationException
 from thrift.protocol.TBinaryProtocol import TBinaryProtocol
-from .TTransport import TTransportException, TTransportBase, \
-        CReadableTransport
+from .TTransport import TTransportException, TTransportBase, CReadableTransport
 from thrift.protocol.TCompactProtocol import getVarint, readVarint
 
 # Import the snappy module if it is available
@@ -271,8 +269,8 @@ class THeaderTransport(TTransportBase, CReadableTransport):
                 # Framed.
                 if sz > self.__max_frame_size:
                     raise TTransportException(
-                            TTransportException.INVALID_FRAME_SIZE,
-                            "Framed transport frame was too large")
+                        TTransportException.INVALID_FRAME_SIZE,
+                        "Framed transport frame was too large")
                 self.__rbuf = StringIO(word2 + self.getTransport().readAll(
                     sz - 4))
             elif (version & HEADER_MASK) == HEADER_MAGIC:
@@ -280,8 +278,8 @@ class THeaderTransport(TTransportBase, CReadableTransport):
                 # header format.
                 if sz > self.__max_frame_size:
                     raise TTransportException(
-                            TTransportException.INVALID_FRAME_SIZE,
-                            "Header transport frame was too large")
+                        TTransportException.INVALID_FRAME_SIZE,
+                        "Header transport frame was too large")
                 self.__flags = (version & FLAGS_MASK)
                 # TODO use flags
                 n_seq_id = self.getTransport().readAll(4)
@@ -300,12 +298,12 @@ class THeaderTransport(TTransportBase, CReadableTransport):
             else:
                 self.__client_type = CLIENT_TYPE.UNKNOWN
                 raise TTransportException(
-                        TTransportException.INVALID_CLIENT_TYPE,
-                        "Could not detect client transport type")
+                    TTransportException.INVALID_CLIENT_TYPE,
+                    "Could not detect client transport type")
 
         if self.__client_type not in self.__supported_client_types:
             raise TTransportException(TTransportException.INVALID_CLIENT_TYPE,
-                                        "Client type {} not supported on server"
+                                      "Client type {} not supported on server"
                                       .format(self.__client_type))
 
     def read_header_format(self, sz, header_size, data):
@@ -324,7 +322,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         if self.__proto_id == 1 and self.__client_type != \
                 CLIENT_TYPE.HTTP_SERVER:
             raise TTransportException(TTransportException.INVALID_CLIENT_TYPE,
-                    "Trying to recv JSON encoding over binary")
+                                      "Trying to recv JSON encoding over binary")
 
         # Read the headers.  Data for each header varies.
         for h in range(0, num_headers):
@@ -335,13 +333,13 @@ class THeaderTransport(TTransportBase, CReadableTransport):
                 self.__read_transforms.insert(0, trans_id)
             elif trans_id == TRANSFORM.HMAC:
                 raise TApplicationException(
-                        TApplicationException.INVALID_TRANSFORM,
-                        "Hmac transform is no longer supported: %i" % trans_id)
+                    TApplicationException.INVALID_TRANSFORM,
+                    "Hmac transform is no longer supported: %i" % trans_id)
             else:
                 # TApplicationException will be sent back to client
                 raise TApplicationException(
-                        TApplicationException.INVALID_TRANSFORM,
-                        "Unknown transform in client request: %i" % trans_id)
+                    TApplicationException.INVALID_TRANSFORM,
+                    "Unknown transform in client request: %i" % trans_id)
 
         # Clear out previous info headers.
         self.__read_headers.clear()
@@ -350,12 +348,11 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         while data.tell() < end_header:
             info_id = readVarint(data)
             if info_id == INFO.NORMAL:
-                THeaderTransport._read_info_headers(data,
-                                                    end_header,
-                                                    self.__read_headers)
+                THeaderTransport._read_info_headers(
+                    data, end_header, self.__read_headers)
             elif info_id == INFO.PERSISTENT:
-                THeaderTransport._read_info_headers(data, end_header,
-                        self.__read_persistent_headers)
+                THeaderTransport._read_info_headers(
+                    data, end_header, self.__read_persistent_headers)
             else:
                 break  # Unknown header.  Stop info processing.
 
@@ -422,8 +419,8 @@ class THeaderTransport(TTransportBase, CReadableTransport):
 
         # Write persistent kv-headers
         THeaderTransport._flush_info_headers(info_data,
-            self.get_write_persistent_headers(),
-            INFO.PERSISTENT)
+                                             self.get_write_persistent_headers(),
+                                             INFO.PERSISTENT)
 
         # Write non-persistent kv-headers
         THeaderTransport._flush_info_headers(info_data,
@@ -468,7 +465,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
 
         if self.__proto_id == 1 and self.__client_type != CLIENT_TYPE.HTTP_SERVER:
             raise TTransportException(TTransportException.INVALID_CLIENT_TYPE,
-                    "Trying to send JSON encoding over binary")
+                                      "Trying to send JSON encoding over binary")
 
         buf = StringIO()
         if self.__client_type == CLIENT_TYPE.HEADER:
@@ -492,7 +489,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         # (so -4)
         if buf.tell() - 4 > self.__max_frame_size:
             raise TTransportException(TTransportException.INVALID_FRAME_SIZE,
-                    "Attempting to send frame that is too large")
+                                      "Attempting to send frame that is too large")
         self.getTransport().write(buf.getvalue())
         if oneway:
             self.getTransport().onewayFlush()
@@ -526,10 +523,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         if (len(write_headers) > 0):
             info_data.write(getVarint(type))
             info_data.write(getVarint(len(write_headers)))
-            if sys.version_info[0] >= 3:
-                write_headers_iter = write_headers.items()
-            else:
-                write_headers_iter = write_headers.iteritems()
+            write_headers_iter = write_headers.items()
             for str_key, str_value in write_headers_iter:
                 info_data.write(THeaderTransport._serialize_string(str_key))
                 info_data.write(THeaderTransport._serialize_string(str_value))
