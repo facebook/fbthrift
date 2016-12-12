@@ -26,6 +26,7 @@ struct ComplexStruct {
   3: i32 an_integer
   4: string name
   5: AnEnum an_enum
+  6: binary some_bytes
 }
 
 const bool A_BOOL = true
@@ -36,6 +37,7 @@ const i64 A_BIG_NUMBER = 102
 const double A_REAL_NUMBER = 3.14
 const double A_FAKE_NUMBER = 3
 const string A_WORD = "Good word"
+const binary SOME_BYTES = "bytes"
 const SimpleStruct A_STRUCT = {
   "is_on": true,
   "tiny_int": 5,
@@ -101,4 +103,6 @@ service SimpleService {
   set<i32> get_union(1: list<set<i32>> sets)
   set<string> get_keys(1: list<map<string, string>> string_map)
   double lookup_double(1: i32 key)
+  binary retrieve_binary(1: binary something)
+  set<binary> contain_binary(1: list<binary> binaries)
 }

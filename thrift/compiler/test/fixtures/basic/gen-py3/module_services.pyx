@@ -36,9 +36,11 @@ from py3.module_services_wrapper cimport cMyServicePrioChildInterface
 
 
 cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[cFollyUnit] move(cFollyPromise[cFollyUnit])
     cdef cFollyPromise[unique_ptr[string]] move(cFollyPromise[unique_ptr[string]])
-    cdef cFollyPromise[cbool] move(cFollyPromise[cbool])
+    cdef cFollyPromise[cFollyUnit] move(
+        cFollyPromise[cFollyUnit])
+    cdef cFollyPromise[cbool] move(
+        cFollyPromise[cbool])
 
 cdef class Promise_void:
     cdef cFollyPromise[cFollyUnit] cPromise

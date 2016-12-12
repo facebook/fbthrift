@@ -43,6 +43,9 @@ if they have been previously retrieved.
 }}{{#type:string?}}{{!
   }}return self.c_{{struct:name}}.get().{{field:name}}.decode(){{!
 }}{{/type:string?}}{{!
+}}{{#type:binary?}}{{!
+  }}return self.c_{{struct:name}}.get().{{field:name}}{{!
+}}{{/type:binary?}}{{!
 }}{{#type:struct?}}{{!
 }}cdef shared_ptr[{{> ContainerCythonFieldTypeConditionally}}] item
 if self.__{{field:name}} is None:

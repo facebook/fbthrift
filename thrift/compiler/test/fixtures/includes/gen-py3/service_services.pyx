@@ -40,7 +40,9 @@ from py3.service_services_wrapper cimport cMyServiceInterface
 
 
 cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[cFollyUnit] move(cFollyPromise[cFollyUnit])
+    cdef cFollyPromise[unique_ptr[string]] move(cFollyPromise[unique_ptr[string]])
+    cdef cFollyPromise[cFollyUnit] move(
+        cFollyPromise[cFollyUnit])
 
 cdef class Promise_void:
     cdef cFollyPromise[cFollyUnit] cPromise

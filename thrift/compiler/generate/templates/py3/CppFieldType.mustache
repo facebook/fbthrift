@@ -28,6 +28,7 @@ to define the types that go in those containers.
 }}{{#type:i64?}}int64_t{{/type:i64?}}{{!
 }}{{#type:double?}}double{{/type:double?}}{{!
 }}{{#type:string?}}std::unique_ptr<std::string>{{/type:string?}}{{!
+}}{{#type:binary?}}std::unique_ptr<std::string>{{/type:binary?}}{{!
 }}{{#type:struct}}std::unique_ptr<{{!
   }}{{#type:cppNamespaces}}{{value}}::{{/type:cppNamespaces}}{{struct:name}}{{!
   }}>{{/type:struct}}{{!

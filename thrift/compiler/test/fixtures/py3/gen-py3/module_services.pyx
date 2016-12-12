@@ -32,23 +32,41 @@ from py3.module_services_wrapper cimport cSimpleServiceInterface
 
 
 cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[int32_t] move(cFollyPromise[int32_t])
-    cdef cFollyPromise[cFollyUnit] move(cFollyPromise[cFollyUnit])
     cdef cFollyPromise[unique_ptr[string]] move(cFollyPromise[unique_ptr[string]])
-    cdef cFollyPromise[cbool] move(cFollyPromise[cbool])
-    cdef cFollyPromise[int8_t] move(cFollyPromise[int8_t])
-    cdef cFollyPromise[int16_t] move(cFollyPromise[int16_t])
-    cdef cFollyPromise[int64_t] move(cFollyPromise[int64_t])
-    cdef cFollyPromise[double] move(cFollyPromise[double])
-    cdef cFollyPromise[unique_ptr[py3.module_types.cSimpleStruct]] move(cFollyPromise[unique_ptr[py3.module_types.cSimpleStruct]])
-    cdef cFollyPromise[unique_ptr[vector[int32_t]]] move(cFollyPromise[unique_ptr[vector[int32_t]]])
-    cdef cFollyPromise[unique_ptr[cset[string]]] move(cFollyPromise[unique_ptr[cset[string]]])
-    cdef cFollyPromise[unique_ptr[cmap[string,int16_t]]] move(cFollyPromise[unique_ptr[cmap[string,int16_t]]])
-    cdef cFollyPromise[py3.module_types.cAnEnum] move(cFollyPromise[py3.module_types.cAnEnum])
-    cdef cFollyPromise[unique_ptr[vector[vector[int32_t]]]] move(cFollyPromise[unique_ptr[vector[vector[int32_t]]]])
-    cdef cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] move(cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]])
-    cdef cFollyPromise[unique_ptr[vector[cset[string]]]] move(cFollyPromise[unique_ptr[vector[cset[string]]]])
-    cdef cFollyPromise[unique_ptr[cset[int32_t]]] move(cFollyPromise[unique_ptr[cset[int32_t]]])
+    cdef cFollyPromise[int32_t] move(
+        cFollyPromise[int32_t])
+    cdef cFollyPromise[cFollyUnit] move(
+        cFollyPromise[cFollyUnit])
+    cdef cFollyPromise[cbool] move(
+        cFollyPromise[cbool])
+    cdef cFollyPromise[int8_t] move(
+        cFollyPromise[int8_t])
+    cdef cFollyPromise[int16_t] move(
+        cFollyPromise[int16_t])
+    cdef cFollyPromise[int64_t] move(
+        cFollyPromise[int64_t])
+    cdef cFollyPromise[double] move(
+        cFollyPromise[double])
+    cdef cFollyPromise[unique_ptr[py3.module_types.cSimpleStruct]] move(
+        cFollyPromise[unique_ptr[py3.module_types.cSimpleStruct]])
+    cdef cFollyPromise[unique_ptr[vector[int32_t]]] move(
+        cFollyPromise[unique_ptr[vector[int32_t]]])
+    cdef cFollyPromise[unique_ptr[cset[string]]] move(
+        cFollyPromise[unique_ptr[cset[string]]])
+    cdef cFollyPromise[unique_ptr[cmap[string,int16_t]]] move(
+        cFollyPromise[unique_ptr[cmap[string,int16_t]]])
+    cdef cFollyPromise[py3.module_types.cAnEnum] move(
+        cFollyPromise[py3.module_types.cAnEnum])
+    cdef cFollyPromise[unique_ptr[vector[vector[int32_t]]]] move(
+        cFollyPromise[unique_ptr[vector[vector[int32_t]]]])
+    cdef cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] move(
+        cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]])
+    cdef cFollyPromise[unique_ptr[vector[cset[string]]]] move(
+        cFollyPromise[unique_ptr[vector[cset[string]]]])
+    cdef cFollyPromise[unique_ptr[cset[int32_t]]] move(
+        cFollyPromise[unique_ptr[cset[int32_t]]])
+    cdef cFollyPromise[unique_ptr[cset[string]]] move(
+        cFollyPromise[unique_ptr[cset[string]]])
 
 cdef class Promise_i32:
     cdef cFollyPromise[int32_t] cPromise
@@ -200,6 +218,24 @@ cdef class Promise_Set__i32:
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[cset[int32_t]]] cPromise):
         inst = <Promise_Set__i32>Promise_Set__i32.__new__(Promise_Set__i32)
+        inst.cPromise = move(cPromise)
+        return inst
+
+cdef class Promise_binary:
+    cdef cFollyPromise[unique_ptr[string]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[string]] cPromise):
+        inst = <Promise_binary>Promise_binary.__new__(Promise_binary)
+        inst.cPromise = move(cPromise)
+        return inst
+
+cdef class Promise_Set__binary:
+    cdef cFollyPromise[unique_ptr[cset[string]]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[cset[string]]] cPromise):
+        inst = <Promise_Set__binary>Promise_Set__binary.__new__(Promise_Set__binary)
         inst.cPromise = move(cPromise)
         return inst
 
@@ -1429,6 +1465,73 @@ async def SimpleService_lookup_double_coro(
     else:
         promise.cPromise.setValue(<double> result)
 
+cdef public void call_cy_SimpleService_retrieve_binary(
+    object self,
+    cFollyPromise[unique_ptr[string]] cPromise,
+    unique_ptr[string] something
+) with gil:
+    promise = Promise_binary.create(move(cPromise))
+    arg_something = (deref(something.get()))
+    asyncio.run_coroutine_threadsafe(
+        SimpleService_retrieve_binary_coro(
+            self,
+            promise,
+            arg_something),
+        loop=self.loop)
+
+async def SimpleService_retrieve_binary_coro(
+    object self,
+    Promise_binary promise,
+    something
+):
+    try:
+      result = await self.retrieve_binary(
+          something)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler retrieve_binary:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[string](<string?> result))
+
+cdef public void call_cy_SimpleService_contain_binary(
+    object self,
+    cFollyPromise[unique_ptr[cset[string]]] cPromise,
+    unique_ptr[vector[string]] binaries
+) with gil:
+    promise = Promise_Set__binary.create(move(cPromise))
+    arg_binaries = py3.module_types.List__binary.create(py3.module_types.move(binaries))
+    asyncio.run_coroutine_threadsafe(
+        SimpleService_contain_binary_coro(
+            self,
+            promise,
+            arg_binaries),
+        loop=self.loop)
+
+async def SimpleService_contain_binary_coro(
+    object self,
+    Promise_Set__binary promise,
+    binaries
+):
+    try:
+      result = await self.contain_binary(
+          binaries)
+      result = py3.module_types.Set__binary(result)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler contain_binary:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[cset[string]](deref((<py3.module_types.Set__binary?> result)._set)))
+
 
 cdef class SimpleServiceInterface(
     ServiceInterface
@@ -1658,5 +1761,17 @@ cdef class SimpleServiceInterface(
             self,
             key):
         raise NotImplementedError("async def lookup_double is not implemented")
+
+
+    async def retrieve_binary(
+            self,
+            something):
+        raise NotImplementedError("async def retrieve_binary is not implemented")
+
+
+    async def contain_binary(
+            self,
+            binaries):
+        raise NotImplementedError("async def contain_binary is not implemented")
 
 

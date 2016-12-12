@@ -28,6 +28,7 @@ return types in Cython code.
 }}{{#type:i64?}}int64_t{{/type:i64?}}{{!
 }}{{#type:double?}}double{{/type:double?}}{{!
 }}{{#type:string?}}unique_ptr[string]{{/type:string?}}{{!
+}}{{#type:binary?}}unique_ptr[string]{{/type:binary?}}{{!
 }}{{#type:struct}}unique_ptr[{{> ModulePath}}.c{{struct:name}}]{{/type:struct}}{{!
 }}{{#type:listElemType}}unique_ptr[vector[{{> ContainerCythonFieldType}}]]{{/type:listElemType}}{{!
 }}{{#type:setElemType}}unique_ptr[cset[{{> ContainerCythonFieldType}}]]{{/type:setElemType}}{{!

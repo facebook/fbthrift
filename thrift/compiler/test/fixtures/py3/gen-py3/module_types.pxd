@@ -50,6 +50,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
         int32_t an_integer
         string name
         cAnEnum an_enum
+        string some_bytes
 
 
 cdef extern from "<utility>" namespace "std" nogil:
@@ -168,6 +169,16 @@ cdef class List__Map__string_string:
     @staticmethod
     cdef create(shared_ptr[vector[cmap[string,string]]])
 
+cdef class List__binary:
+    cdef shared_ptr[vector[string]] _vector
+    @staticmethod
+    cdef create(shared_ptr[vector[string]])
+
+cdef class Set__binary:
+    cdef shared_ptr[cset[string]] _set
+    @staticmethod
+    cdef create(shared_ptr[cset[string]])
+
 cdef class Map__i32_double:
     cdef shared_ptr[cmap[int32_t,double]] _map
     @staticmethod
@@ -197,6 +208,8 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[vector[string]]] move(unique_ptr[vector[vector[string]]])
     cdef shared_ptr[vector[cset[int32_t]]] move(unique_ptr[vector[cset[int32_t]]])
     cdef shared_ptr[vector[cmap[string,string]]] move(unique_ptr[vector[cmap[string,string]]])
+    cdef shared_ptr[vector[string]] move(unique_ptr[vector[string]])
+    cdef shared_ptr[cset[string]] move(unique_ptr[cset[string]])
     cdef shared_ptr[cmap[int32_t,double]] move(unique_ptr[cmap[int32_t,double]])
     cdef shared_ptr[vector[cmap[int32_t,double]]] move(unique_ptr[vector[cmap[int32_t,double]]])
 
@@ -209,6 +222,7 @@ cdef extern from "src/gen-cpp2/module_constants.h" namespace "py3::simple":
     cdef double cA_REAL_NUMBER "py3::simple::module_constants::A_REAL_NUMBER"
     cdef double cA_FAKE_NUMBER "py3::simple::module_constants::A_FAKE_NUMBER"
     cdef const char* cA_WORD "py3::simple::module_constants::A_WORD"()
+    cdef string cSOME_BYTES "py3::simple::module_constants::SOME_BYTES"()
     cdef cSimpleStruct cA_STRUCT "py3::simple::module_constants::A_STRUCT"()
     cdef vector[string] cWORD_LIST "py3::simple::module_constants::WORD_LIST"()
     cdef vector[cmap[int32_t,double]] cSOME_MAP "py3::simple::module_constants::SOME_MAP"()

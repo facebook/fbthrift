@@ -28,6 +28,7 @@ to be converted from unicode to binary representation.
 }}{{#type:i64?}}{{field:name}}{{/type:i64?}}{{!
 }}{{#type:double?}}{{field:name}}{{/type:double?}}{{!
 }}{{#type:string?}}(deref({{field:name}}.get())).decode(){{/type:string?}}{{!
+}}{{#type:binary?}}(deref({{field:name}}.get())){{/type:binary?}}{{!
 }}{{#type:struct}}{{> ModulePath}}.{{type:name}}.create({{!
   }}{{> ModulePath}}.move({{field:name}})){{/type:struct}}{{!
 }}{{#type:list?}}{{> ModulePath}}.{{type:flat_name}}.create({{!

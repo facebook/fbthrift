@@ -49,6 +49,9 @@ file.
 {{#type:string?}}
 {{constant:name}} = c{{constant:name}}().decode('UTF-8')
 {{/type:string?}}
+{{#type:binary?}}
+{{constant:name}} = <bytes> c{{constant:name}}()
+{{/type:binary?}}
 {{#type:struct}}
 {{constant:name}} = {{#type:externalProgram?}}{{!
     }}{{> ModulePath}}.{{/type:externalProgram?}}{{type:name}}.create(

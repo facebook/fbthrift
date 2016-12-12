@@ -168,7 +168,8 @@ cdef class ComplexStruct:
         structTwo,
         an_integer,
         name,
-        an_enum
+        an_enum,
+        some_bytes
     ):
         self.c_ComplexStruct = make_shared[cComplexStruct]()
         cdef shared_ptr[cSimpleStruct] __structOne = (
@@ -182,6 +183,8 @@ cdef class ComplexStruct:
             deref(self.c_ComplexStruct).name = name.encode('UTF-8')
         deref(self.c_ComplexStruct).an_enum = AnEnum_to_cpp(an_enum)
         
+        if some_bytes is not None:
+            deref(self.c_ComplexStruct).some_bytes = some_bytes
         
     @staticmethod
     cdef create(shared_ptr[cComplexStruct] c_ComplexStruct):
@@ -223,6 +226,10 @@ cdef class ComplexStruct:
         return AnEnum(value)
         
 
+    @property
+    def some_bytes(self):
+        return self.c_ComplexStruct.get().some_bytes
+
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -250,6 +257,7 @@ cdef class ComplexStruct:
           self.an_integer,
           self.name,
           self.an_enum,
+          self.some_bytes,
         ))
 
 
@@ -1969,6 +1977,256 @@ cdef class List__Map__string_string:
 
 Sequence.register(List__Map__string_string)
 
+cdef class List__binary:
+    def __init__(self, items=None):
+        if isinstance(items, List__binary):
+            self._vector = (<List__binary> items)._vector
+        else:
+          self._vector = make_shared[vector[string]]()
+          if items:
+              for item in items:
+                  deref(self._vector).push_back(item)
+
+    @staticmethod
+    cdef create(
+            shared_ptr[vector[string]] c_items):
+        inst = <List__binary>List__binary.__new__(List__binary)
+        inst._vector = c_items
+        return inst
+
+    def __getitem__(self, int index):
+        cdef string citem = (
+            deref(self._vector.get())[index])
+        return bytes(citem)
+
+    def __len__(self):
+        return deref(self._vector).size()
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
+            return cop != 2
+        if (len(self) != len(other)):
+            return cop != 2
+
+        for one, two in zip(self, other):
+            if one != two:
+                return cop != 2
+
+        return cop == 2
+
+    def __hash__(self):
+        return hash(tuple(self))
+
+    def __contains__(self, item):
+        cdef string citem = item
+        cdef vector[string] vec = deref(
+            self._vector.get())
+        return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        cdef string citem
+        for citem in deref(self._vector):
+            yield bytes(citem)
+
+    def __reversed__(self):
+        cdef string citem
+        cdef vector[string] vec = deref(
+            self._vector.get())
+        cdef vector[string].reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield bytes(citem)
+            inc(loc)
+
+    def index(self, item):
+        cdef string citem = item
+        cdef vector[string] vec = deref(self._vector.get())
+        cdef vector[string].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
+        if loc != vec.end():
+            return <int64_t> std_libcpp.distance(vec.begin(), loc)
+        raise ValueError("{} is not in list".format(item))
+
+    def count(self, item):
+        cdef string citem = item
+        cdef vector[string] vec = deref(self._vector.get())
+        return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
+
+
+Sequence.register(List__binary)
+
+cdef class Set__binary:
+    def __init__(self, items=None):
+        if isinstance(items, Set__binary):
+            self._set = (<Set__binary> items)._set
+        else:
+          self._set = make_shared[cset[string]]()
+          if items:
+              for item in items:
+                  deref(self._set).insert(item)
+
+    @staticmethod
+    cdef create(shared_ptr[cset[string]] c_items):
+        inst = <Set__binary>Set__binary.__new__(Set__binary)
+        inst._set = c_items
+        return inst
+
+    def __contains__(self, item):
+        return pbool(deref(self._set).count(item))
+
+    def __len__(self):
+        return deref(self._set).size()
+
+    def __iter__(self):
+        for citem in deref(self._set):
+            yield bytes(citem)
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        cdef cset[string] cself, cother
+        cdef cbool retval
+        if (isinstance(self, Set__binary) and
+                isinstance(other, Set__binary)):
+            cself = deref((<Set__binary> self)._set)
+            cother = deref((<Set__binary> other)._set)
+            # C level comparisons
+            if cop == 0:    # Less Than (strict subset)
+                if not cself.size() < cother.size():
+                    return False
+                for item in cself:
+                    if not cother.count(item):
+                        return False
+                return True
+            elif cop == 1:  # Less Than or Equal To  (subset)
+                for item in cself:
+                    if not cother.count(item):
+                        return False
+                return True
+            elif cop == 2:  # Equivalent
+                if cself.size() != cother.size():
+                    return False
+                for item in cself:
+                    if not cother.count(item):
+                        return False
+                return True
+            elif cop == 3:  # Not Equivalent
+                for item in cself:
+                    if not cother.count(item):
+                        return True
+                return cself.size() != cother.size()
+            elif cop == 4:  # Greater Than (strict superset)
+                if not cself.size() > cother.size():
+                    return False
+                for item in cother:
+                    if not cself.count(item):
+                        return False
+                return True
+            elif cop == 5:  # Greater Than or Equal To (superset)
+                for item in cother:
+                    if not cself.count(item):
+                        return False
+                return True
+
+        # Python level comparisons
+        if cop == 0:
+            return Set.__lt__(self, other)
+        elif cop == 1:
+            return Set.__le__(self, other)
+        elif cop == 2:
+            return Set.__eq__(self, other)
+        elif cop == 3:
+            return Set.__ne__(self, other)
+        elif cop == 4:
+            return Set.__gt__(self, other)
+        elif cop == 5:
+            return Set.__ge__(self, other)
+
+    def __hash__(self):
+        return hash(tuple(self))
+
+    def __and__(self, other):
+        if not isinstance(self, Set__binary):
+            self = Set__binary(self)
+        if not isinstance(other, Set__binary):
+            other = Set__binary(other)
+
+        cdef shared_ptr[cset[string]] shretval = \
+            make_shared[cset[string]]()
+        for citem in deref((<Set__binary> self)._set):
+            if deref((<Set__binary> other)._set).count(citem) > 0:
+                deref(shretval).insert(citem)
+        return Set__binary.create(shretval)
+
+    def __sub__(self, other):
+        if not isinstance(self, Set__binary):
+            self = Set__binary(self)
+        if not isinstance(other, Set__binary):
+            other = Set__binary(other)
+
+        cdef shared_ptr[cset[string]] shretval = \
+            make_shared[cset[string]]()
+        for citem in deref((<Set__binary> self)._set):
+            if deref((<Set__binary> other)._set).count(citem) == 0:
+                deref(shretval).insert(citem)
+        return Set__binary.create(shretval)
+
+    def __or__(self, other):
+        if not isinstance(self, Set__binary):
+            self = Set__binary(self)
+        if not isinstance(other, Set__binary):
+            other = Set__binary(other)
+
+        cdef shared_ptr[cset[string]] shretval = \
+            make_shared[cset[string]]()
+        for citem in deref((<Set__binary> self)._set):
+                deref(shretval).insert(citem)
+        for citem in deref((<Set__binary> other)._set):
+                deref(shretval).insert(citem)
+        return Set__binary.create(shretval)
+
+    def __xor__(self, other):
+        if not isinstance(self, Set__binary):
+            self = Set__binary(self)
+        if not isinstance(other, Set__binary):
+            other = Set__binary(other)
+
+        cdef shared_ptr[cset[string]] shretval = \
+            make_shared[cset[string]]()
+        for citem in deref((<Set__binary> self)._set):
+            if deref((<Set__binary> other)._set).count(citem) == 0:
+                deref(shretval).insert(citem)
+        for citem in deref((<Set__binary> other)._set):
+            if deref((<Set__binary> self)._set).count(citem) == 0:
+                deref(shretval).insert(citem)
+        return Set__binary.create(shretval)
+
+    def isdisjoint(self, other):
+        return len(self & other) == 0
+
+    def union(self, other):
+        return self | other
+
+    def intersection(self, other):
+        return self & other
+
+    def difference(self, other):
+        return self - other
+
+    def symmetric_difference(self, other):
+        return self ^ other
+
+    def issubset(self, other):
+        return self <= other
+
+    def issuperset(self, other):
+        return self >= other
+
+
+
+Set.register(Set__binary)
+
 cdef class Map__i32_double:
     def __init__(self, items=None):
         if isinstance(items, Map__i32_double):
@@ -2153,6 +2411,7 @@ A_BIG_NUMBER = 102
 A_REAL_NUMBER = 3.140000
 A_FAKE_NUMBER = 3.0
 A_WORD = cA_WORD().decode('UTF-8')
+SOME_BYTES = <bytes> cSOME_BYTES()
 A_STRUCT = SimpleStruct.create(
     make_shared[cSimpleStruct](cA_STRUCT()))
 WORD_LIST = List__string.create(make_shared[vector[string]](cWORD_LIST()))

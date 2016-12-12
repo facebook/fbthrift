@@ -287,6 +287,8 @@ std::string t_mstch_py3_generator::flatten_type_name(const t_type& type) const {
           *dynamic_cast<const t_map&>(type).get_val_type()
         )
       );
+  } else if (type.is_binary()) {
+      return "binary";
   } else {
     return type.get_name();
   }

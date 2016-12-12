@@ -29,6 +29,7 @@ need to be moved to the called function.
 }}{{#type:i64?}}{{field:name}}{{/type:i64?}}{{!
 }}{{#type:double?}}{{field:name}}{{/type:double?}}{{!
 }}{{#type:string?}}std::move({{field:name}}){{/type:string?}}{{!
+}}{{#type:binary?}}std::move({{field:name}}){{/type:binary?}}{{!
 }}{{#type:struct?}}std::move({{field:name}}){{/type:struct?}}{{!
 }}{{#type:list?}}std::move({{field:name}}){{/type:list?}}{{!
 }}{{#type:set?}}std::move({{field:name}}){{/type:set?}}{{!

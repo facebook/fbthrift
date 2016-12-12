@@ -27,8 +27,15 @@ executing.
 }}
 
 cdef extern from "<utility>" namespace "std":
+{{! binary and string both map to string, which causes an
+"ambiguous overloaded method" error.  The overhead of assuming it's
+always there is low, let's do that.}}
+    cdef cFollyPromise[unique_ptr[string]] move(cFollyPromise[unique_ptr[string]])
 {{#program:returnTypes}}
-    cdef cFollyPromise[{{>CythonFieldType}}] move(cFollyPromise[{{>CythonFieldType}}])
+    {{^type:string?}}{{^type:binary?}}
+    cdef cFollyPromise[{{>CythonFieldType}}] move(
+        cFollyPromise[{{>CythonFieldType}}])
+    {{/type:binary?}}{{/type:string?}}
 {{/program:returnTypes}}
 {{^program:returnTypes}}
     pass

@@ -32,6 +32,7 @@ keys (conventionally used for sets, lists, and map values).
 }}{{#type:i64?}}key{{/type:i64?}}{{!
 }}{{#type:double?}}key{{/type:double?}}{{!
 }}{{#type:string?}}key.encode('UTF-8'){{/type:string?}}{{!
+}}{{#type:binary?}}key{{/type:binary?}}{{!
 }}{{#type:struct}}deref((<{{> ModulePath}}.{{struct:name}}> key{{!
   }}).c_{{struct:name}}){{/type:struct}}{{!
 }}{{#type:list?}}deref({{type:flat_name}}(key)._vector.get()){{/type:list?}}{{!

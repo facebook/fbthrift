@@ -31,6 +31,7 @@ import traceback
 
 
 cdef extern from "<utility>" namespace "std":
+    cdef cFollyPromise[unique_ptr[string]] move(cFollyPromise[unique_ptr[string]])
     pass
 
 

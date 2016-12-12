@@ -41,6 +41,10 @@ on a struct from an existing struct passed in by the user.
 }}if {{field:name}} is not None:
     deref(self.c_{{struct:name}}).{{field:name}} = {{field:name}}.encode('UTF-8'){{!
 }}{{/type:string?}}{{!
+}}{{#type:binary?}}{{!
+}}if {{field:name}} is not None:
+    deref(self.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
+}}{{/type:binary?}}{{!
 }}{{#type:struct?}}{{!
   }}cdef shared_ptr[{{!
   }}{{#type:struct}}{{!

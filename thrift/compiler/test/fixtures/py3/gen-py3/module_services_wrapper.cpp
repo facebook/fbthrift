@@ -496,6 +496,32 @@ folly::Future<double> SimpleServiceWrapper::future_lookup_double(
   return future;
 }
 
+folly::Future<std::unique_ptr<std::string>> SimpleServiceWrapper::future_retrieve_binary(
+  std::unique_ptr<std::string> something
+) {
+  folly::Promise<std::unique_ptr<std::string>> promise;
+  auto future = promise.getFuture();
+  call_cy_SimpleService_retrieve_binary(
+    this->if_object,
+    std::move(promise),
+    std::move(something)
+  );
+  return future;
+}
+
+folly::Future<std::unique_ptr<std::set<std::string>>> SimpleServiceWrapper::future_contain_binary(
+  std::unique_ptr<std::vector<std::string>> binaries
+) {
+  folly::Promise<std::unique_ptr<std::set<std::string>>> promise;
+  auto future = promise.getFuture();
+  call_cy_SimpleService_contain_binary(
+    this->if_object,
+    std::move(promise),
+    std::move(binaries)
+  );
+  return future;
+}
+
 std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object) {
   return std::make_shared<SimpleServiceWrapper>(if_object);
 }
