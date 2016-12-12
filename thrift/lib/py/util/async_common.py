@@ -25,7 +25,7 @@ from thrift.transport.TTransport import (
     TTransportBase,
     TTransportException,
 )
-from thrift.transport.THeaderTransport import THeaderTransport
+from thrift.transport.THeaderTransport import THeaderTransport, HEADER_FLAG
 from thrift.Thrift import (
     TApplicationException,
     TMessageType,
@@ -291,6 +291,7 @@ class ThriftHeaderClientProtocolBase(FramedProtocol):
         thrift_protocol = self.THEADER_PROTOCOL_FACTORY(
             client_type=self.client_type,
         ).getProtocol(self.transport)
+        thrift_protocol.trans.set_header_flag(HEADER_FLAG.SUPPORT_OUT_OF_ORDER)
         self.client = self.client_class(thrift_protocol, self.loop)
 
     def connection_lost(self, exc):

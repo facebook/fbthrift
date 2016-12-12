@@ -140,8 +140,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         self.__rbuf = StringIO()
         self.__rbuf_frame = False
         self.__wbuf = StringIO()
-        # 2^32 - 3, to test the rollover code. The start value doesn't matter.
-        self.__seq_id = 4294967293
+        self.seq_id = 0
         self.__flags = 0
         self.__read_transforms = []
         self.__write_transforms = []
@@ -153,6 +152,15 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         self.__read_persistent_headers = {}
         self.__write_headers = {}
         self.__write_persistent_headers = {}
+
+    def set_header_flag(self, flag):
+        self.__flags |= flag
+
+    def clear_header_flag(self, flag):
+        self.__flags &= ~ flag
+
+    def header_flags(self):
+        return self.__flags
 
     def set_max_frame_size(self, size):
         if size > MAX_BIG_FRAME_SIZE:
@@ -290,9 +298,8 @@ class THeaderTransport(TTransportBase, CReadableTransport):
                         TTransportException.INVALID_FRAME_SIZE,
                         "Header transport frame was too large")
                 self.__flags = (version & FLAGS_MASK)
-                # TODO use flags
                 n_seq_id = self.getTransport().readAll(4)
-                self.__seq_id = unpack('!I', n_seq_id)[0]
+                self.seq_id = unpack('!I', n_seq_id)[0]
 
                 n_header_size = self.getTransport().readAll(2)
                 header_size = unpack('!H', n_header_size)[0]
@@ -446,14 +453,15 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         padding_size = 4 - (header_size % 4)
         header_size = header_size + padding_size
 
-        wsz += header_size + 10  # HEADER_MAGIC | FLAGS + seq_id + header_size
+        # MAGIC(2) | FLAGS(2) + SEQ_ID(4) + HEADER_SIZE(2)
+        wsz += header_size + 10
         if wsz > MAX_FRAME_SIZE:
             buf.write(pack("!I", BIG_FRAME_MAGIC))
             buf.write(pack("!Q", wsz))
         else:
             buf.write(pack("!I", wsz))
         buf.write(pack("!HH", HEADER_MAGIC >> 16, self.__flags))
-        buf.write(pack("!I", self.__seq_id))
+        buf.write(pack("!I", self.seq_id))
         buf.write(pack("!H", header_size // 4))
 
         buf.write(header_data.getvalue())

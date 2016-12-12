@@ -82,6 +82,9 @@ class THeaderProtocol(TProtocolBase):
 
     def writeMessageBegin(self, name, type, seqid):
         self.__proto.writeMessageBegin(name, type, seqid)
+        if type == TMessageType.CALL or type == TMessageType.ONEWAY:
+            # All client to server coms should have a unique seq_id in HEADER
+            self.trans.seq_id = seqid
 
     def writeMessageEnd(self):
         self.__proto.writeMessageEnd()

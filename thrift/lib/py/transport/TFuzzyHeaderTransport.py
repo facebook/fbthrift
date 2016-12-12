@@ -234,9 +234,9 @@ class TFuzzyHeaderTransport(THeaderTransport):
         self._write_fuzzy_field(buf, 'length', wsz, 'i32')
         self._write_fuzzy_field(buf, 'magic', HEADER_MAGIC >> 16, 'i16')
         self._write_fuzzy_field(
-            buf, 'flags', self._THeaderTransport__flags, 'i16')
+            buf, 'flags', self.header_flags(), 'i16')
         self._write_fuzzy_field(
-            buf, 'seq_id', self._THeaderTransport__seq_id, 'i32')
+            buf, 'seq_id', self.seq_id, 'i32')
         self._write_fuzzy_field(buf, 'header_size', header_size // 4, 'i16')
 
         buf.write(header_data.getvalue())
