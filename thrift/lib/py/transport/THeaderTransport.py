@@ -104,6 +104,7 @@ HTTP_GET_CLIENT_MAGIC = 0x47455420  # GET
 HTTP_HEAD_CLIENT_MAGIC = 0x48454144  # HEAD
 BIG_FRAME_MAGIC = 0x42494746  # BIGF
 MAX_FRAME_SIZE = 0x3FFFFFFF
+MAX_BIG_FRAME_SIZE = 2 ** 61 - 1
 
 
 class THeaderTransport(TTransportBase, CReadableTransport):
@@ -154,10 +155,15 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         self.__write_persistent_headers = {}
 
     def set_max_frame_size(self, size):
-        if size > MAX_FRAME_SIZE:
+        if size > MAX_BIG_FRAME_SIZE:
             raise TTransportException(TTransportException.INVALID_FRAME_SIZE,
                                       "Cannot set max frame size > %s" %
-                                      MAX_FRAME_SIZE)
+                                      MAX_BIG_FRAME_SIZE)
+        if size > MAX_FRAME_SIZE and self.__client_type != CLIENT_TYPE.HEADER:
+            raise TTransportException(
+                TTransportException.INVALID_FRAME_SIZE,
+                "Cannot set max frame size > %s for clients other than HEADER"
+                % MAX_FRAME_SIZE)
         self.__max_frame_size = size
 
     def get_peer_identity(self):
@@ -259,6 +265,9 @@ class THeaderTransport(TTransportBase, CReadableTransport):
             self.header = self.handler.wfile
             self.__rbuf = StringIO(self.handler.data)
         else:
+            if sz == BIG_FRAME_MAGIC:
+                sz = unpack('!Q', self.getTransport().readAll(8))[0]
+
             # TODO(FRIED): FRAMED_COMPACT
             # could be header format or framed.  Check next byte.
             word2 = self.getTransport().readAll(4)
@@ -267,7 +276,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
                     TBinaryProtocol.VERSION_1:
                 self.__client_type = CLIENT_TYPE.FRAMED_DEPRECATED
                 # Framed.
-                if sz > self.__max_frame_size:
+                if sz > self.__max_frame_size or sz > MAX_FRAME_SIZE:
                     raise TTransportException(
                         TTransportException.INVALID_FRAME_SIZE,
                         "Framed transport frame was too large")
@@ -437,8 +446,12 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         padding_size = 4 - (header_size % 4)
         header_size = header_size + padding_size
 
-        wsz += header_size + 10
-        buf.write(pack("!I", wsz))
+        wsz += header_size + 10  # HEADER_MAGIC | FLAGS + seq_id + header_size
+        if wsz > MAX_FRAME_SIZE:
+            buf.write(pack("!I", BIG_FRAME_MAGIC))
+            buf.write(pack("!Q", wsz))
+        else:
+            buf.write(pack("!I", wsz))
         buf.write(pack("!HH", HEADER_MAGIC >> 16, self.__flags))
         buf.write(pack("!I", self.__seq_id))
         buf.write(pack("!H", header_size // 4))
@@ -486,8 +499,12 @@ class THeaderTransport(TTransportBase, CReadableTransport):
                                       "Unknown client type")
 
         # We don't include the framing bytes as part of the frame size check
-        # (so -4)
-        if buf.tell() - 4 > self.__max_frame_size:
+        frame_size = buf.tell() - (4 if wsz < MAX_FRAME_SIZE else 12)
+        if frame_size > self.__max_frame_size or (
+            # Only HEADER Client can accept BIG_FRAME
+            frame_size > MAX_FRAME_SIZE and
+            self.__client_type != CLIENT_TYPE.HEADER
+        ):
             raise TTransportException(TTransportException.INVALID_FRAME_SIZE,
                                       "Attempting to send frame that is too large")
         self.getTransport().write(buf.getvalue())
