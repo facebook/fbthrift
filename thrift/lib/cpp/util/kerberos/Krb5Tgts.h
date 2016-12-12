@@ -70,6 +70,8 @@ class Krb5Tgts {
   typedef boost::shared_lock<Lock> ReadLock;
 
  protected:
+  static const uint32_t EXPIRATION_THRESHOLD_SEC;
+
   void waitForInit();
   bool isPrincipalInKeytab(const Krb5Principal& princ);
   std::shared_ptr<Krb5Credentials> getForRealm(const std::string& realm);

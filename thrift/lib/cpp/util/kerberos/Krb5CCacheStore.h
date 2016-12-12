@@ -71,6 +71,7 @@ class Krb5CCacheStore {
  protected:
   static const int SERVICE_HISTOGRAM_NUM_BUCKETS;
   static const int SERVICE_HISTOGRAM_PERIOD;
+  static const uint32_t EXPIRATION_THRESHOLD_SEC;
 
   /**
    * Stores data about a service: how often it's accessed,
@@ -87,6 +88,8 @@ class Krb5CCacheStore {
      folly::SharedMutex lockCache;
      // Credentials cache for the service
      std::shared_ptr<Krb5CCache> cache;
+     // Indicates when we want this cache to expire.
+     uint64_t expires;
   };
 
   /**
@@ -95,8 +98,9 @@ class Krb5CCacheStore {
    */
   std::unique_ptr<Krb5CCache> initCacheForService(
     const Krb5Principal& service,
-    const krb5_creds* creds = nullptr,
-    SecurityLogger* logger = nullptr);
+    const krb5_creds* creds,
+    SecurityLogger* logger,
+    uint64_t& expires);
 
   std::shared_ptr<ServiceData> getServiceDataPtr(const Krb5Principal& service);
   std::vector<Krb5Principal> getServicePrincipalList();

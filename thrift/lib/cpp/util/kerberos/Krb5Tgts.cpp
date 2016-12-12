@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp/util/kerberos/Krb5Tgts.h>
 
+#include <chrono>
 #include <glog/logging.h>
 #include <memory>
 #include <set>
@@ -32,6 +33,13 @@
 
 namespace apache { namespace thrift { namespace krb5 {
 using namespace std;
+
+/**
+ * Don't use the tgts if they're about to expire within 5 minutes.
+ * This is to prevent handshake failures where the tgts expire during the
+ * handshake. This is also to make sure clock skew issues are minimized.
+ */
+const uint32_t Krb5Tgts::EXPIRATION_THRESHOLD_SEC = 300;
 
 Krb5Tgts& Krb5Tgts::operator=(Krb5Tgts&& tgts) {
   if (this == &tgts) {
@@ -120,13 +128,18 @@ std::shared_ptr<const Krb5Credentials> Krb5Tgts::getTgt() {
 std::shared_ptr<const Krb5Credentials> Krb5Tgts::getTgtForRealm(
     const std::string& realm) {
   waitForInit();
+  uint64_t curtime = chrono::duration_cast<chrono::seconds>(
+    std::chrono::system_clock::now().time_since_epoch()).count();
 
   {
     ReadLock lock(lock_);
     // We're going cross-realm, we also need the tgt for the other realm.
     std::shared_ptr<Krb5Credentials> tgt = getForRealm(realm);
     if (tgt != nullptr) {
-      return tgt;
+      uint64_t expires = tgt->get().times.endtime;
+      if (expires > curtime + EXPIRATION_THRESHOLD_SEC) {
+        return tgt;
+      }
     }
   }
 
@@ -134,7 +147,10 @@ std::shared_ptr<const Krb5Credentials> Krb5Tgts::getTgtForRealm(
   // Try again
   std::shared_ptr<Krb5Credentials> tgt = getForRealm(realm);
   if (tgt != nullptr) {
-    return tgt;
+    uint64_t expires = tgt->get().times.endtime;
+    if (expires > curtime + EXPIRATION_THRESHOLD_SEC) {
+      return tgt;
+    }
   }
 
   Krb5Principal princ = Krb5Principal::copyPrincipal(

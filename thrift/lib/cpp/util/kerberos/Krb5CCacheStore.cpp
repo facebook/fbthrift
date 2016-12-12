@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp/util/kerberos/Krb5CCacheStore.h>
 
+#include <chrono>
 #include <glog/logging.h>
 #include <memory>
 #include <set>
@@ -36,6 +37,12 @@ using namespace std;
 
 const int Krb5CCacheStore::SERVICE_HISTOGRAM_NUM_BUCKETS = 10;
 const int Krb5CCacheStore::SERVICE_HISTOGRAM_PERIOD = 600;
+/**
+ * Don't use the tickets if they're about to expire within 5 minutes.
+ * This is to prevent handshake failures where the tickets expire during the
+ * handshake. This is also to make sure clock skew issues are minimized.
+ */
+const uint32_t Krb5CCacheStore::EXPIRATION_THRESHOLD_SEC = 300;
 
 static bool serviceCountCompare (
     const pair<string, uint64_t>& i,
@@ -69,6 +76,9 @@ std::shared_ptr<Krb5CCache> Krb5CCacheStore::waitForCache(
     SecurityLogger* logger) {
   std::shared_ptr<ServiceData> dataPtr = getServiceDataPtr(service);
 
+  uint64_t curtime = chrono::duration_cast<chrono::seconds>(
+    std::chrono::system_clock::now().time_since_epoch()).count();
+
   // Bump that we've used the principal
   dataPtr->bumpCount();
 
@@ -81,10 +91,14 @@ std::shared_ptr<Krb5CCache> Krb5CCacheStore::waitForCache(
     // If there is a cache, just return it. Try with a read lock first
     // for performance reasons.
     if (dataPtr->cache) {
-      if (logger) {
-        logger->logEnd("get_prepared_cache");
+      // First check that the service principal in the cache isn't about
+      // to expire.
+      if (dataPtr->expires > curtime + EXPIRATION_THRESHOLD_SEC) {
+        if (logger) {
+          logger->logEnd("get_prepared_cache");
+        }
+        return dataPtr->cache;
       }
-      return dataPtr->cache;
     }
   }
 
@@ -94,17 +108,18 @@ std::shared_ptr<Krb5CCache> Krb5CCacheStore::waitForCache(
   if (logger) {
     logger->logStart("init_cache_for_service", folly::to<string>(service));
   }
-  auto tempCache = initCacheForService(service, nullptr, logger);
+  uint64_t expires{0};
+  auto tempCache = initCacheForService(service, nullptr, logger, expires);
   if (logger) {
     logger->logEnd("init_cache_for_service");
   }
 
-  // Upgrade to a write lock, and initialize the cache only if it is not already
-  // initialized by some other thread meanwhile.
+  // Upgrade to a write lock, and initialize the cache. Overwrite if already
+  // initialized by some other thread.
   folly::SharedMutex::WriteHolder writeLock(dataPtr->lockCache);
-  if (!dataPtr->cache) {
-    dataPtr->cache = std::move(tempCache);
-  }
+  dataPtr->cache = std::move(tempCache);
+  dataPtr->expires = expires;
+
   return dataPtr->cache;
 }
 
@@ -144,8 +159,9 @@ std::shared_ptr<Krb5CCacheStore::ServiceData>
 std::unique_ptr<Krb5CCache> Krb5CCacheStore::initCacheForService(
     const Krb5Principal& service,
     const krb5_creds* creds,
-    SecurityLogger* logger) {
-
+    SecurityLogger* logger,
+    uint64_t& expires) {
+  expires = 0;
   if (logger) {
     logger->logStart("wait_for_tgt");
   }
@@ -182,7 +198,8 @@ std::unique_ptr<Krb5CCache> Krb5CCacheStore::initCacheForService(
     if (logger) {
       logger->logStart("get_credential_from_kdc");
     }
-    mem->getCredentials(service.get());
+    Krb5Credentials cred = mem->getCredentials(service.get());
+    expires = cred.get().times.endtime;
     if (logger) {
       logger->logEnd("get_credential_from_kdc");
     }
@@ -246,13 +263,15 @@ void Krb5CCacheStore::importCache(
     }
     Krb5Principal princ = Krb5Principal::copyPrincipal(
       ctx_.get(), service.get().server);
-    auto mem = initCacheForService(princ, &service.get());
+    uint64_t expires{0};
+    auto mem = initCacheForService(princ, &service.get(), nullptr, expires);
 
     auto data = std::make_shared<ServiceData>();
     std::string name = folly::to<string>(princ);
     new_data_map[name] = data;
     new_data_queue.push(name);
     data->cache = std::move(mem);
+    data->expires = expires;
     data->bumpCount();
     count++;
   }
@@ -295,12 +314,18 @@ uint64_t Krb5CCacheStore::renewCreds() {
   }
   tgts_ = std::move(tgts);
 
+  struct CCachesWithExpiration {
+    std::unique_ptr<Krb5CCache> ccache;
+    uint64_t expires;
+  };
+
   // Renew service creds, and store the renewed creds in a temporary map
-  std::unordered_map<string, std::unique_ptr<Krb5CCache>> renewed_map;
+  std::unordered_map<string, CCachesWithExpiration> renewed_map;
   for (auto& service : getServicePrincipalList()) {
     try {
-      auto mem = initCacheForService(service);
-      renewed_map[folly::to<string>(service)] = std::move(mem);
+      uint64_t expires{0};
+      auto mem = initCacheForService(service, nullptr, nullptr, expires);
+      renewed_map[folly::to<string>(service)] = {std::move(mem), expires};
       renewCount++;
     } catch (const std::runtime_error& e) {
       VLOG(4) << "Failed to renew cred for service: "
@@ -317,7 +342,8 @@ uint64_t Krb5CCacheStore::renewCreds() {
     auto renewed_entry = renewed_map.find(entry.first);
     folly::SharedMutex::WriteHolder lock(entry.second->lockCache);
     if (renewed_entry != renewed_map.end()) {
-      entry.second->cache = std::move(renewed_entry->second);
+      entry.second->cache = std::move(renewed_entry->second.ccache);
+      entry.second->expires = renewed_entry->second.expires;
     } else if (entry.second->cache) {
       // Not found, see if it's a new cred or old one
       auto lifetime = entry.second->cache->getLifetime();
