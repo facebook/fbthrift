@@ -340,17 +340,13 @@ struct debug_equals_struct_visitor {
     Callback &&callback,
     bool &result
   ) const {
-    if (!result) {
-      return;
-    }
-
     auto guard =
         scoped_path::member(path, fatal::z_data<typename Member::name>());
 
     using getter = typename Member::getter;
     result = debug_equals_impl<typename Member::type_class>::equals(
-      path, getter::ref(lhs), getter::ref(rhs), callback
-    );
+                 path, getter::ref(lhs), getter::ref(rhs), callback) &&
+        result;
   }
 };
 
