@@ -1,8 +1,8 @@
 # @lint-avoid-python-3-compatibility-imports
 # @lint-avoid-pyflakes2
 
-from apache.thrift.test.load import LoadTest
-from apache.thrift.test.load.ttypes import LoadError
+from apache.thrift.test.asyncio.load import LoadTest
+from apache.thrift.test.asyncio.load.ttypes import LoadError
 import asyncio
 from concurrent.futures import ProcessPoolExecutor
 import pickle
