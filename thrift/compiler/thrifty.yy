@@ -31,7 +31,6 @@
 #include <stdio.h>
 #include <inttypes.h>
 #include <limits.h>
-#include "folly/String.h"
 #include "thrift/compiler/common.h"
 #include "thrift/compiler/globals.h"
 #include "thrift/compiler/parse/t_program.h"
@@ -1513,7 +1512,10 @@ FunctionAnnotations:
       const auto end = prio_list + sizeof(prio_list)/sizeof(prio_list[0]);
       if (std::find(prio_list, end, prio) == end) {
         std::string s;
-        folly::join(std::string("','"), prio_list, end, s);
+        for (const auto& prio : prio_list) {
+          s += prio + "','";
+        }
+        s.erase(s.length() - 3);
         failure("Bad priority '%s'. Choose one of '%s'.",
                 prio.c_str(), s.c_str());
       }

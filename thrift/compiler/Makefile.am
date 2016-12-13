@@ -39,7 +39,7 @@ libthriftcompilerbase_la_SOURCES = \
         validator.cc \
         visitor.cc
 
-libthriftcompilerbase_la_LDFLAGS = -lfolly -lcrypto
+libthriftcompilerbase_la_LDFLAGS = -lcrypto
 
 
 thrift1_OBJDIR = obj
@@ -102,7 +102,7 @@ thrift1_SOURCES += generate/t_cpp_generator.cc \
                   generate/t_js_generator.cc \
                   generate/t_android_lite_generator.cc
 
-thrift1_LDFLAGS = -lfolly -lcrypto -lglog -lmstch $(BOOST_FILESYSTEM_LIB) $(BOOST_SYSTEM_LIB)
+thrift1_LDFLAGS = -lcrypto -lglog -lmstch $(BOOST_FILESYSTEM_LIB) $(BOOST_SYSTEM_LIB)
 thrift1_LDADD = @LEXLIB@ libparse.la libthriftcompilerbase.la
 
 template_dir = $(pkgdatadir)/templates
