@@ -270,8 +270,8 @@ class THeaderTransport(TTransportBase, CReadableTransport):
             self.__client_type = CLIENT_TYPE.HTTP_SERVER
             mf = self.getTransport().handle.makefile('rb', -1)
 
-            self.handler = self.RequestHandler(mf,
-                                               'client_address:port', '')
+            self.handler = RequestHandler(mf,
+                                          'client_address:port', '')
             self.header = self.handler.wfile
             self.__rbuf = StringIO(self.handler.data)
         else:
@@ -366,10 +366,10 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         while data.tell() < end_header:
             info_id = readVarint(data)
             if info_id == INFO.NORMAL:
-                THeaderTransport._read_info_headers(
+                _read_info_headers(
                     data, end_header, self.__read_headers)
             elif info_id == INFO.PERSISTENT:
-                THeaderTransport._read_info_headers(
+                _read_info_headers(
                     data, end_header, self.__read_persistent_headers)
             else:
                 break  # Unknown header.  Stop info processing.
@@ -436,14 +436,14 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         info_data = StringIO()
 
         # Write persistent kv-headers
-        THeaderTransport._flush_info_headers(info_data,
-                                             self.get_write_persistent_headers(),
-                                             INFO.PERSISTENT)
+        _flush_info_headers(info_data,
+                            self.get_write_persistent_headers(),
+                            INFO.PERSISTENT)
 
         # Write non-persistent kv-headers
-        THeaderTransport._flush_info_headers(info_data,
-                                             self.__write_headers,
-                                             INFO.NORMAL)
+        _flush_info_headers(info_data,
+                            self.__write_headers,
+                            INFO.NORMAL)
 
         header_data = StringIO()
         header_data.write(getVarint(self.__proto_id))
@@ -539,76 +539,77 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         self.__rbuf = StringIO(prefix)
         return self.__rbuf
 
-    @staticmethod
-    def _serialize_string(str_):
-        if sys.version_info[0] >= 3 and not isinstance(str_, bytes):
-            str_ = str_.encode()
-        return getVarint(len(str_)) + str_
 
-    @staticmethod
-    def _flush_info_headers(info_data, write_headers, type):
-        if (len(write_headers) > 0):
-            info_data.write(getVarint(type))
-            info_data.write(getVarint(len(write_headers)))
-            write_headers_iter = write_headers.items()
-            for str_key, str_value in write_headers_iter:
-                info_data.write(THeaderTransport._serialize_string(str_key))
-                info_data.write(THeaderTransport._serialize_string(str_value))
-            write_headers.clear()
+def _serialize_string(str_):
+    if sys.version_info[0] >= 3 and not isinstance(str_, bytes):
+        str_ = str_.encode()
+    return getVarint(len(str_)) + str_
 
-    @staticmethod
-    def _read_string(bufio, buflimit):
-        str_sz = readVarint(bufio)
-        if str_sz + bufio.tell() > buflimit:
-            raise TTransportException(TTransportException.INVALID_FRAME_SIZE,
-                                      "String read too big")
-        return bufio.read(str_sz)
 
-    @staticmethod
-    def _read_info_headers(data, end_header, read_headers):
-        num_keys = readVarint(data)
-        for _ in xrange(num_keys):
-            str_key = THeaderTransport._read_string(data, end_header)
-            str_value = THeaderTransport._read_string(data, end_header)
-            read_headers[str_key] = str_value
+def _flush_info_headers(info_data, write_headers, type):
+    if (len(write_headers) > 0):
+        info_data.write(getVarint(type))
+        info_data.write(getVarint(len(write_headers)))
+        write_headers_iter = write_headers.items()
+        for str_key, str_value in write_headers_iter:
+            info_data.write(_serialize_string(str_key))
+            info_data.write(_serialize_string(str_value))
+        write_headers.clear()
 
-    class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
-        # Same as superclass function, but append 'POST' because we
-        # stripped it in the calling function.  Would be nice if
-        # we had an ungetch instead
-        def handle_one_request(self):
-            self.raw_requestline = self.rfile.readline()
-            if not self.raw_requestline:
-                self.close_connection = 1
-                return
-            self.raw_requestline = "POST" + self.raw_requestline
-            if not self.parse_request():
-                # An error code has been sent, just exit
-                return
-            mname = 'do_' + self.command
-            if not hasattr(self, mname):
-                self.send_error(501, "Unsupported method (%r)" % self.command)
-                return
-            method = getattr(self, mname)
-            method()
+def _read_string(bufio, buflimit):
+    str_sz = readVarint(bufio)
+    if str_sz + bufio.tell() > buflimit:
+        raise TTransportException(TTransportException.INVALID_FRAME_SIZE,
+                                  "String read too big")
+    return bufio.read(str_sz)
 
-        def setup(self):
-            self.rfile = self.request
-            self.wfile = StringIO()  # New output buffer
 
-        def finish(self):
-            if not self.rfile.closed:
-                self.rfile.close()
-            # leave wfile open for reading.
+def _read_info_headers(data, end_header, read_headers):
+    num_keys = readVarint(data)
+    for _ in xrange(num_keys):
+        str_key = _read_string(data, end_header)
+        str_value = _read_string(data, end_header)
+        read_headers[str_key] = str_value
 
-        def do_POST(self):
-            if int(self.headers['Content-Length']) > 0:
-                self.data = self.rfile.read(int(self.headers['Content-Length']))
-            else:
-                self.data = ""
 
-            # Prepare a response header, to be sent later.
-            self.send_response(200)
-            self.send_header("content-type", "application/x-thrift")
-            self.end_headers()
+class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
+
+    # Same as superclass function, but append 'POST' because we
+    # stripped it in the calling function.  Would be nice if
+    # we had an ungetch instead
+    def handle_one_request(self):
+        self.raw_requestline = self.rfile.readline()
+        if not self.raw_requestline:
+            self.close_connection = 1
+            return
+        self.raw_requestline = "POST" + self.raw_requestline
+        if not self.parse_request():
+            # An error code has been sent, just exit
+            return
+        mname = 'do_' + self.command
+        if not hasattr(self, mname):
+            self.send_error(501, "Unsupported method (%r)" % self.command)
+            return
+        method = getattr(self, mname)
+        method()
+
+    def setup(self):
+        self.rfile = self.request
+        self.wfile = StringIO()  # New output buffer
+
+    def finish(self):
+        if not self.rfile.closed:
+            self.rfile.close()
+        # leave wfile open for reading.
+
+    def do_POST(self):
+        if int(self.headers['Content-Length']) > 0:
+            self.data = self.rfile.read(int(self.headers['Content-Length']))
+        else:
+            self.data = ""
+
+        # Prepare a response header, to be sent later.
+        self.send_response(200)
+        self.send_header("content-type", "application/x-thrift")
+        self.end_headers()
