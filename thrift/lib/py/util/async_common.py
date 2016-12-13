@@ -25,7 +25,9 @@ from thrift.transport.TTransport import (
     TTransportBase,
     TTransportException,
 )
-from thrift.transport.THeaderTransport import THeaderTransport, HEADER_FLAG
+from thrift.transport.THeaderTransport import (
+    THeaderTransport, HEADER_FLAG, MAX_FRAME_SIZE, CLIENT_TYPE
+)
 from thrift.Thrift import (
     TApplicationException,
     TMessageType,
@@ -39,8 +41,8 @@ else:
 # We support the deprecated FRAMED transport for old fb303
 # clients that were otherwise failing miserably.
 THEADER_CLIENT_TYPES = {
-    THeaderTransport.HEADERS_CLIENT_TYPE,
-    THeaderTransport.FRAMED_DEPRECATED,
+    CLIENT_TYPE.HEADER,
+    CLIENT_TYPE.FRAMED_DEPRECATED,
 }
 _default_thpfactory = THeaderProtocolFactory(client_types=THEADER_CLIENT_TYPES)
 THeaderProtocol = _default_thpfactory.getProtocol
@@ -203,8 +205,6 @@ class WrappedTransport(TWriteOnlyBuffer):
 class FramedProtocol(asyncio.Protocol):
     """Unpacks Thrift frames and reads them asynchronously."""
 
-    MAX_LENGTH = THeaderTransport.MAX_FRAME_SIZE
-
     def __init__(self, loop=None):
         self.loop = loop or asyncio.get_event_loop()
         self.recvd = b""
@@ -218,7 +218,7 @@ class FramedProtocol(asyncio.Protocol):
         self.recvd = self.recvd + data
         while len(self.recvd) >= 4:
             length, = struct.unpack("!I", self.recvd[:4])
-            if length > self.MAX_LENGTH:
+            if length > MAX_FRAME_SIZE:
                 logger.error(
                     "Frame size %d too large for THeaderProtocol",
                     length,

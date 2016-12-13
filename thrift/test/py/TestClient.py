@@ -87,7 +87,7 @@ class AbstractTest():
         if options.header:
             protocol = THeaderProtocol.THeaderProtocol(socket)
             self.transport = protocol.trans
-            protocol.trans.add_transform(protocol.trans.ZLIB_TRANSFORM)
+            protocol.trans.add_transform(THeaderTransport.TRANSFORM.ZLIB)
 
         self.transport.open()
         self.client = ThriftTest.Client(protocol)

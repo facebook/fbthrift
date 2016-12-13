@@ -26,7 +26,7 @@ from .TProtocol import TProtocolBase, TProtocolException
 from thrift.Thrift import TApplicationException, TMessageType
 from .TBinaryProtocol import TBinaryProtocolAccelerated
 from .TCompactProtocol import TCompactProtocolAccelerated
-from thrift.transport.THeaderTransport import THeaderTransport
+from thrift.transport.THeaderTransport import THeaderTransport, CLIENT_TYPE
 
 class THeaderProtocol(TProtocolBase):
 
@@ -63,14 +63,14 @@ class THeaderProtocol(TProtocolBase):
 
         @param transport(TTransport) The underlying transport.
         @param strictRead(bool) Turn on strictRead if using TBinaryProtocol
-        @param client_types([THeaderTransport.HEADERS_CLIENT_TYPE, ...])
+        @param client_types([CLIENT_TYPE.HEADER, ...])
                    List of client types to support.  Defaults to
-                   HEADERS_CLIENT_TYPE only.
+                   CLIENT_TYPE.HEADER only.
         """
 
         if isinstance(trans, THeaderTransport):
             trans._THeaderTransport__supported_client_types = set(
-                    client_types or (THeaderTransport.HEADERS_CLIENT_TYPE,))
+                client_types or (CLIENT_TYPE.HEADER,))
             if client_type is not None:
                 trans._THeaderTransport__client_type = client_type
             htrans = trans

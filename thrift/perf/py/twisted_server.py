@@ -30,7 +30,7 @@ from apache.thrift.test.twisted.load_handler \
 from thrift.protocol.TBinaryProtocol import TBinaryProtocolAcceleratedFactory
 from thrift.protocol.THeaderProtocol import THeaderProtocol
 from thrift.protocol.THeaderProtocol import THeaderProtocolFactory
-from thrift.transport.THeaderTransport import THeaderTransport
+from thrift.transport.THeaderTransport import CLIENT_TYPE
 from thrift.transport.TTwisted import ThriftServerFactory
 
 
@@ -59,9 +59,11 @@ def main():
         processor = LoadTest.Processor(handler)
 
     if options.header:
-        proto_factory = THeaderProtocolFactory(True,
-                          [THeaderTransport.HEADERS_CLIENT_TYPE,
-                           THeaderTransport.FRAMED_DEPRECATED])
+        proto_factory = THeaderProtocolFactory(
+            True,
+            [CLIENT_TYPE.HEADER,
+             CLIENT_TYPE.FRAMED_DEPRECATED]
+        )
     else:
         proto_factory = TBinaryProtocolAcceleratedFactory()
     server_factory = ThriftServerFactory(processor, proto_factory)

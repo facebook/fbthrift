@@ -111,20 +111,6 @@ class THeaderTransport(TTransportBase, CReadableTransport):
     """Transport that sends headers.  Also understands framed/unframed/HTTP
     transports and and will do the right thing"""
 
-    # These are left to support existing clients
-    # TODO(fried): remove these and update existing callers to use above
-    MAX_FRAME_SIZE = MAX_FRAME_SIZE
-
-    # TRANSFORMS
-    ZLIB_TRANSFORM = TRANSFORM.ZLIB
-    SNAPPY_TRANSFORM = TRANSFORM.SNAPPY
-
-    # CLIENT TYPES
-    HEADERS_CLIENT_TYPE = CLIENT_TYPE.HEADER
-    FRAMED_DEPRECATED = CLIENT_TYPE.FRAMED_DEPRECATED
-    UNFRAMED_DEPRECATED = CLIENT_TYPE.UNFRAMED_DEPRECATED
-    HTTP_CLIENT_TYPE = CLIENT_TYPE.HTTP_SERVER
-
     __supported_client_types = []
 
     __max_frame_size = MAX_FRAME_SIZE

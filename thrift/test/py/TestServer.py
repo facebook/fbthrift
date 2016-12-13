@@ -42,7 +42,7 @@ from thrift import TMultiplexedProcessor
 from thrift.Thrift import TProcessorEventHandler
 from thrift.transport import TTransport
 from thrift.transport import TSocket, TSSLSocket
-from thrift.transport.THeaderTransport import THeaderTransport
+from thrift.transport.THeaderTransport import CLIENT_TYPE
 from thrift.protocol import TBinaryProtocol
 from thrift.protocol import THeaderProtocol
 from thrift.server import TServer, TNonblockingServer, \
@@ -301,11 +301,13 @@ if __name__ == "__main__":
     event_handler = TestServerEventHandler()
 
     if options.header:
-        pfactory = THeaderProtocol.THeaderProtocolFactory(True,
-                [THeaderTransport.HEADERS_CLIENT_TYPE,
-                 THeaderTransport.FRAMED_DEPRECATED,
-                 THeaderTransport.UNFRAMED_DEPRECATED,
-                 THeaderTransport.HTTP_CLIENT_TYPE])
+        pfactory = THeaderProtocol.THeaderProtocolFactory(
+            True,
+            [CLIENT_TYPE.HEADER,
+             CLIENT_TYPE.FRAMED_DEPRECATED,
+             CLIENT_TYPE.UNFRAMED_DEPRECATED,
+             CLIENT_TYPE.HTTP_SERVER]
+        )
     else:
         pfactory = TBinaryProtocol.TBinaryProtocolFactory()
 

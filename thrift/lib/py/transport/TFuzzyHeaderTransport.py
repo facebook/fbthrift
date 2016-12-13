@@ -173,7 +173,7 @@ class TFuzzyHeaderTransport(THeaderTransport):
         buf.write(serialized)
 
     def _flushHeaderMessage(self, buf, wout, wsz):
-        """Write a message for self.HEADERS_CLIENT_TYPE
+        """Write a message for CLIENT_TYPE.HEADER
 
         This method writes a message using the same logic as
         THeaderTransport._flushHeaderMessage

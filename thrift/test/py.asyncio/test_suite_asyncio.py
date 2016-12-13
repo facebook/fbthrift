@@ -12,7 +12,7 @@ from thrift.server.TAsyncioServer import (
     ThriftClientProtocolFactory,
     ThriftAsyncServerFactory,
 )
-from thrift.transport.THeaderTransport import THeaderTransport
+from thrift.transport.THeaderTransport import CLIENT_TYPE
 
 loop = asyncio.get_event_loop()
 loop.set_debug(True)
@@ -311,7 +311,7 @@ class ThriftAsyncTestCase(unittest.TestCase):
 
 
 class FramedThriftCoroTestCase(ThriftCoroTestCase):
-    CLIENT_TYPE = THeaderTransport.FRAMED_DEPRECATED
+    CLIENT_TYPE = CLIENT_TYPE.FRAMED_DEPRECATED
 
 class FramedThriftAsyncTestCase(ThriftAsyncTestCase):
-    CLIENT_TYPE = THeaderTransport.FRAMED_DEPRECATED
+    CLIENT_TYPE = CLIENT_TYPE.FRAMED_DEPRECATED

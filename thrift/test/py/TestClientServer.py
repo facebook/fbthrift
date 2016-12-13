@@ -29,10 +29,13 @@ from ThriftTest import ThriftTest, SecondService
 from ThriftTest.ttypes import *
 
 from thrift.transport import TTransport
-from thrift.transport.THeaderTransport import THeaderTransport
+from thrift.transport.THeaderTransport import (
+    THeaderTransport, TRANSFORM, CLIENT_TYPE,
+)
 from thrift.transport import TSocket, TSSLSocket
-from thrift.protocol import TBinaryProtocol, THeaderProtocol, \
-        TMultiplexedProtocol
+from thrift.protocol import (
+    TBinaryProtocol, THeaderProtocol, TMultiplexedProtocol,
+)
 
 SERVER_TYPES = [
     "TCppServer",
@@ -280,29 +283,31 @@ class AcceleratedBinaryTest(AbstractTest):
 
 
 class HeaderTest(AbstractTest):
-    protocol_factory = THeaderProtocol.THeaderProtocolFactory(True,
-        [THeaderTransport.HEADERS_CLIENT_TYPE,
-         THeaderTransport.FRAMED_DEPRECATED,
-         THeaderTransport.UNFRAMED_DEPRECATED,
-         THeaderTransport.HTTP_CLIENT_TYPE])
+    protocol_factory = THeaderProtocol.THeaderProtocolFactory(
+        True,
+        [CLIENT_TYPE.HEADER,
+         CLIENT_TYPE.FRAMED_DEPRECATED,
+         CLIENT_TYPE.UNFRAMED_DEPRECATED,
+         CLIENT_TYPE.HTTP_SERVER]
+    )
 
     def testZlibCompression(self):
         htrans = self.protocol.trans
         if isinstance(htrans, THeaderTransport):
-            htrans.add_transform(THeaderTransport.ZLIB_TRANSFORM)
+            htrans.add_transform(TRANSFORM.ZLIB)
             self.testStruct()
 
     def testSnappyCompression(self):
         htrans = self.protocol.trans
         if isinstance(htrans, THeaderTransport):
-            htrans.add_transform(THeaderTransport.SNAPPY_TRANSFORM)
+            htrans.add_transform(TRANSFORM.SNAPPY)
             self.testStruct()
 
     def testMultipleCompression(self):
         htrans = self.protocol.trans
         if isinstance(htrans, THeaderTransport):
-            htrans.add_transform(THeaderTransport.ZLIB_TRANSFORM)
-            htrans.add_transform(THeaderTransport.SNAPPY_TRANSFORM)
+            htrans.add_transform(TRANSFORM.ZLIB)
+            htrans.add_transform(TRANSFORM.SNAPPY)
             self.testStruct()
 
     def testKeyValueHeader(self):
@@ -313,43 +318,45 @@ class HeaderTest(AbstractTest):
         htrans = self.protocol.trans
         if isinstance(htrans, THeaderTransport):
             # Try just persistent header
-            htrans.set_persistent_header(b"permanent", b"true")
+            htrans.set_persistent_header("permanent", "true")
             self.client.testString('test')
             headers = htrans.get_headers()
-            self.assertTrue(b"permanent" in headers)
-            self.assertEquals(headers[b"permanent"], b"true")
+            self.assertTrue("permanent" in headers)
+            self.assertEquals(headers["permanent"], "true")
 
             # Try with two transient headers
-            htrans.set_header(b"transient1", b"true")
-            htrans.set_header(b"transient2", b"true")
+            htrans.set_header("transient1", "true")
+            htrans.set_header("transient2", "true")
             self.client.testString('test')
             headers = htrans.get_headers()
-            self.assertTrue(b"permanent" in headers)
-            self.assertEquals(headers[b"permanent"], b"true")
-            self.assertTrue(b"transient1" in headers)
-            self.assertEquals(headers[b"transient1"], b"true")
-            self.assertTrue(b"transient2" in headers)
-            self.assertEquals(headers[b"transient2"], b"true")
+            self.assertTrue("permanent" in headers)
+            self.assertEquals(headers["permanent"], "true")
+            self.assertTrue("transient1" in headers)
+            self.assertEquals(headers["transient1"], "true")
+            self.assertTrue("transient2" in headers)
+            self.assertEquals(headers["transient2"], "true")
 
             # Add one, update one and delete one transient header
-            htrans.set_header(b"transient2", b"false")
-            htrans.set_header(b"transient3", b"true")
+            htrans.set_header("transient2", "false")
+            htrans.set_header("transient3", "true")
             self.client.testString('test')
             headers = htrans.get_headers()
-            self.assertTrue(b"permanent" in headers)
-            self.assertEquals(headers[b"permanent"], b"true")
-            self.assertTrue(b"transient1" not in headers)
-            self.assertTrue(b"transient2" in headers)
-            self.assertEquals(headers[b"transient2"], b"false")
-            self.assertTrue(b"transient3" in headers)
-            self.assertEquals(headers[b"transient3"], b"true")
+            self.assertTrue("permanent" in headers)
+            self.assertEquals(headers["permanent"], "true")
+            self.assertTrue("transient1" not in headers)
+            self.assertTrue("transient2" in headers)
+            self.assertEquals(headers["transient2"], "false")
+            self.assertTrue("transient3" in headers)
+            self.assertEquals(headers["transient3"], "true")
 
 class HeaderAcceleratedCompactTest(AbstractTest):
-    protocol_factory = THeaderProtocol.THeaderProtocolFactory(True,
-        [THeaderTransport.HEADERS_CLIENT_TYPE,
-         THeaderTransport.FRAMED_DEPRECATED,
-         THeaderTransport.UNFRAMED_DEPRECATED,
-         THeaderTransport.HTTP_CLIENT_TYPE])
+    protocol_factory = THeaderProtocol.THeaderProtocolFactory(
+        True,
+        [CLIENT_TYPE.HEADER,
+         CLIENT_TYPE.FRAMED_DEPRECATED,
+         CLIENT_TYPE.UNFRAMED_DEPRECATED,
+         CLIENT_TYPE.HTTP_SERVER]
+    )
 
 def camelcase(s):
     if not s[0].isupper():

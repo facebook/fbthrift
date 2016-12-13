@@ -17,7 +17,7 @@ from thrift.server.TTrolliusServer import (
     ThriftClientProtocolFactory,
     ThriftAsyncServerFactory,
 )
-from thrift.transport.THeaderTransport import THeaderTransport
+from thrift.transport.THeaderTransport import CLIENT_TYPE
 
 import trollius as asyncio
 from trollius import From, Return
@@ -206,4 +206,4 @@ class ThriftCoroTestCase(unittest.TestCase):
 
 
 class FramedThriftCoroTestCase(ThriftCoroTestCase):
-    CLIENT_TYPE = THeaderTransport.FRAMED_DEPRECATED
+    CLIENT_TYPE = CLIENT_TYPE.FRAMED_DEPRECATED
