@@ -125,6 +125,7 @@ mstch::map t_mstch_py3_generator::extend_service(
   const auto program = service.get_program();
   const auto& cppNamespaces = this->get_cpp2_namespace(*program);
   const auto& py3Namespaces = this->get_py3_namespace(*program);
+  string include_prefix = program->get_include_prefix();
   // Used to avoid circular import in ServicesWrapper.h.mustache
   bool externalProgram = false;
   if (service.get_extends()) {
@@ -139,7 +140,8 @@ mstch::map t_mstch_py3_generator::extend_service(
     {"externalProgram?", externalProgram},
     {"cppNamespaces", cppNamespaces},
     {"py3Namespaces", py3Namespaces},
-    {"programName", program->get_name()}
+    {"programName", program->get_name()},
+    {"includePrefix", include_prefix}
   };
   return result;
 }
