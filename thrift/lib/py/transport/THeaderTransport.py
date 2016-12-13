@@ -243,10 +243,12 @@ class THeaderTransport(TTransportBase, CReadableTransport):
             return ret
 
         if self.__client_type == CLIENT_TYPE.UNFRAMED_DEPRECATED:
-            return ret + self.getTransport().read(sz - len(ret))
+            return ret + self.getTransport().readAll(sz - len(ret))
 
         self.readFrame(sz - len(ret))
         return ret + self.__rbuf.read(sz - len(ret))
+
+    readAll = read  # TTransportBase.readAll does a needless copy here.
 
     def readFrame(self, req_sz):
         # TODO(fried): Move all the detection logic so we only have to do it once
