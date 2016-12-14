@@ -7,8 +7,7 @@ import unittest
 
 import sys
 if sys.version_info[0] >= 3:
-    from thrift.util.BytesStrIO import BytesStrIO
-    StringIO = BytesStrIO
+    from io import BytesIO as StringIO
 else:
     from cStringIO import StringIO
 

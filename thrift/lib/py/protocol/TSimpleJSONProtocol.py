@@ -357,8 +357,7 @@ class TSimpleJSONProtocolBase(TProtocolBase):
         self.trans.write(hexChar(ch))
 
     def writeJSONChar(self, ch):
-        charValue = ord(ch) if not isinstance(ch, int) else ch
-        ch = chr(ch) if isinstance(ch, int) else ch
+        charValue = ord(ch)
         if charValue >= 0x30:
             if ch == JSON_BACKSLASH:  # Only special character >= 0x30 is '\'.
                 self.trans.write(JSON_BACKSLASH)
@@ -395,7 +394,7 @@ class TSimpleJSONProtocolBase(TProtocolBase):
     def writeJSONInteger(self, num):
         self.context.write(self.trans)
         escapeNum = self.context.escapeNum()
-        numStr = str(num)
+        numStr = str(num).encode()
         if escapeNum:
             self.trans.write(JSON_STRING_DELIMITER)
         self.trans.write(numStr)
@@ -415,7 +414,7 @@ class TSimpleJSONProtocolBase(TProtocolBase):
 
     def writeJSONDouble(self, num):
         self.context.write(self.trans)
-        numStr = str(num)
+        numStr = str(num).encode()
         special = False
 
         if numStr == "nan":
@@ -491,11 +490,7 @@ class TSimpleJSONProtocolBase(TProtocolBase):
                     self.readJSONSyntaxChar(JSON_ZERO_CHAR)
                     self.readJSONSyntaxChar(JSON_ZERO_CHAR)
                     data = self.trans.read(2)
-                    if sys.version_info[0] >= 3 and isinstance(data, bytes):
-                        ch = json.JSONDecoder().decode(
-                                '"\\u00%s"' % str(data, 'utf-8'))
-                    else:
-                        ch = json.JSONDecoder().decode('"\\u00%s"' % data)
+                    ch = b'"\\u00%s"' % data
                 else:
                     idx = ESCAPE_CHARS.find(ch)
                     if idx == -1:
@@ -652,7 +647,7 @@ class TSimpleJSONProtocol(TSimpleJSONProtocolBase):
         self.pushContext(TJSONPairContext(protocol=self,
             indentLevel=len(self.contexts)))
         self.context.writeNewLine(self.trans)
-        self.writeJSONString(name)
+        self.writeJSONString(name.encode())
 
     def writeFieldEnd(self):
         return

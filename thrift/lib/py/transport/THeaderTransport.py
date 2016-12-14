@@ -27,8 +27,7 @@ if sys.version_info[0] >= 3:
     from http import server
     BaseHTTPServer = server
     xrange = range
-    from thrift.util.BytesStrIO import BytesStrIO
-    StringIO = BytesStrIO
+    from io import BytesIO as StringIO
 else:
     import BaseHTTPServer
     from cStringIO import StringIO
@@ -548,7 +547,11 @@ def _read_string(bufio, buflimit):
     if str_sz + bufio.tell() > buflimit:
         raise TTransportException(TTransportException.INVALID_FRAME_SIZE,
                                   "String read too big")
-    return bufio.read(str_sz)
+    raw_bytes = bufio.read(str_sz)
+    if sys.version_info[0] >= 3:
+        return raw_bytes.decode()
+
+    return raw_bytes
 
 
 def _read_info_headers(data, end_header, read_headers):

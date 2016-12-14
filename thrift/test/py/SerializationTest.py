@@ -70,9 +70,7 @@ class AbstractTest():
             newset=[42, 1, 8],
             newmap={1: 2, 2: 3},
             newstring="Hola!",
-            # json cannot serialize bytes in python 3
-            newunicodestring=u"any\x7f\xff".encode('utf-8')
-                    if sys.version_info[0] < 3 else u"any\x7f\xff",
+            newunicodestring=u"any\x7f\xff".encode('utf-8'),
             newbool=True,
             end_in_both=54321,
             )
@@ -98,21 +96,15 @@ class AbstractTest():
         json.loads(self._serialize(self.v2obj))
 
     def testForwards(self):
-        if isinstance(self, SimpleJSONTest):
-            return
         obj = self._deserialize(VersioningTestV2, self._serialize(self.v1obj))
         self.assertEquals(obj.begin_in_both, self.v1obj.begin_in_both)
         self.assertEquals(obj.end_in_both, self.v1obj.end_in_both)
 
     def testUnicodeString(self):
-        if isinstance(self, SimpleJSONTest):
-            return
         obj = self._deserialize(VersioningTestV2, self._serialize(self.v2obj))
         bytes_comp(self, obj.newunicodestring, self.v2obj.newunicodestring)
 
     def testBackwards(self):
-        if isinstance(self, SimpleJSONTest):
-            return
         obj = self._deserialize(VersioningTestV1, self._serialize(self.v2obj))
         self.assertEquals(obj.begin_in_both, self.v2obj.begin_in_both)
         self.assertEquals(obj.end_in_both, self.v2obj.end_in_both)

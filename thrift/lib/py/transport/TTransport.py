@@ -24,10 +24,7 @@ from __future__ import unicode_literals
 
 import sys
 if sys.version_info[0] >= 3:
-    from io import BytesIO
-    from thrift.util.BytesStrIO import BytesStrIO
-    StringIO = BytesStrIO
-
+    from io import BytesIO as StringIO
 else:
     from cStringIO import StringIO
 from struct import pack, unpack

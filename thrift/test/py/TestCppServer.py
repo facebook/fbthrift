@@ -226,7 +226,7 @@ class OnewayProcess(multiprocessing.Process):
 class TestHeaderProcessor(TProcessor, BaseFacebookTestCase):
     def process(self, iprot, oprot, server_context=None):
         fname, type, seqid = iprot.readMessageBegin()
-        self.assertTrue(iprot.trans.get_headers().get(b"hello") == b"world")
+        self.assertTrue(iprot.trans.get_headers().get("hello") == "world")
         result = SleepService.space_result()
         result.success = "h i"
         oprot.writeMessageBegin(fname, TMessageType.REPLY, seqid)
