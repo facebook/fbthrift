@@ -158,6 +158,7 @@ struct struct3 {
   16: set<structB> fieldP
   17: map<string, structA> fieldQ
   18: hash_map<string, structB> fieldR
+  19: map<binary, binary> fieldS
 }
 
 struct struct4 {

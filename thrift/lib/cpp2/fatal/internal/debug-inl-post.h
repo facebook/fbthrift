@@ -18,6 +18,8 @@
 
 #include <thrift/lib/cpp2/fatal/container_traits.h>
 
+#include <thrift/lib/cpp/protocol/TBase64Utils.h>
+
 #include <folly/Conv.h>
 
 #include <fatal/type/enum.h>
@@ -146,22 +148,25 @@ struct debug_equals_impl_pretty {
     return pretty_string(v);
   }
 };
-template <class T>
-struct debug_equals_impl_pretty<T, type_class::string> {
-  static std::string go(T const &v) {
-    return folly::to<std::string>('\"', v, '\"');
-  }
-};
-template <class T>
-struct debug_equals_impl_pretty<T, type_class::integral> {
-  static std::string go(T const &v) {
-    return folly::to<std::string>(v);
-  }
-};
-template <class T>
-struct debug_equals_impl_pretty<T, type_class::floating_point> {
-  static std::string go(T const &v) {
-    return folly::to<std::string>(v);
+
+template <typename Type>
+struct debug_equals_impl_pretty<Type, type_class::binary> {
+  static std::string go(Type const &v) {
+    std::string out;
+    out.reserve(4 + v.size() * 2);
+
+    auto const to_hex_digit = [](std::uint8_t const c) {
+      return "0123456789ABCDEF"[c & 0xf];
+    };
+
+    out.append("\"0x");
+    for (auto c: v) {
+      out.push_back(to_hex_digit(c >> 4));
+      out.push_back(to_hex_digit(c));
+    }
+    out.push_back('"');
+
+    return out;
   }
 };
 
@@ -381,6 +386,23 @@ struct debug_equals_impl<type_class::string> {
   ) {
     if (lhs != rhs) {
       callback(lhs, rhs, path, "string mismatch");
+      return false;
+    }
+    return true;
+  }
+};
+
+template <>
+struct debug_equals_impl<type_class::binary> {
+  template <typename T, typename Callback>
+  static bool equals(
+    std::string &path,
+    T const &lhs,
+    T const &rhs,
+    Callback &&callback
+  ) {
+    if (lhs != rhs) {
+      callback(lhs, rhs, path, "binary mismatch");
       return false;
     }
     return true;
