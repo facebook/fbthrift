@@ -43,7 +43,8 @@ Team testValue() {
     p.nums.insert(-i);
     folly::toAppend("Person ", i, &p.name);
     team.peopleById[p.id] = p;
-    team.peopleByName[p.name] = std::move(p);
+    auto& peopleByNameEntry = team.peopleByName[p.name];
+    peopleByNameEntry = std::move(p);
   }
   team.projects.insert("alpha");
   team.projects.insert("beta");
