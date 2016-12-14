@@ -31,7 +31,6 @@ class validator : virtual public visitor {
 
   std::vector<std::string>&& get_errors() &&;
 
- protected:
   bool visit(t_program const* program) override;
   bool visit(t_service const* service) override;
 
