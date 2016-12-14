@@ -504,13 +504,6 @@ static void clientSendT(
     });
   }
 }
-
-// Help the compiler to resolve overloaded methods in thrift generated code.
-template <class T, class... Args>
-auto resolve_callback(void(T::*m)(std::unique_ptr<apache::thrift::RequestCallback>, Args...)) -> decltype(m) {
-  return m;
-}
-
 }} // apache::thrift
 
 #endif // #ifndef THRIFT_ASYNC_REQUESTCHANNEL_H_
