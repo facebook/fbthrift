@@ -106,7 +106,8 @@ thrift2include_fatal_HEADERS = \
 	fatal/traits_test_helpers.h \
 	fatal/internal/traits_test_helpers-inl.h \
 	fatal/internal/test_helpers.h \
-	fatal/variant.h
+	fatal/variant.h \
+	fatal/frozen1.h
 
 thrift2include_fatal_SOURCES = \
 	fatal/legacy_reflection.cpp
