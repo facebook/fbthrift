@@ -305,6 +305,8 @@ struct enum_with_special_names_enum_traits {
     using annotations = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::annotations;
     using member = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::member;
     using members = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::members;
+    using field = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field;
+    using fields = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fields;
   };
 
   struct enum_with_special_names__struct_enum_members_get {
@@ -437,6 +439,16 @@ struct enum_with_special_names_enum_traits {
     using value = std::integral_constant<type, type::members>;
   };
 
+  struct enum_with_special_names__struct_enum_members_field {
+    using name = enum_with_special_names__struct_unique_strings_list::field;
+    using value = std::integral_constant<type, type::field>;
+  };
+
+  struct enum_with_special_names__struct_enum_members_fields {
+    using name = enum_with_special_names__struct_unique_strings_list::fields;
+    using value = std::integral_constant<type, type::fields>;
+  };
+
   struct enum_with_special_names__struct_enum_members {
     using get = enum_with_special_names__struct_enum_members_get;
     using getter = enum_with_special_names__struct_enum_members_getter;
@@ -464,6 +476,8 @@ struct enum_with_special_names_enum_traits {
     using annotations = enum_with_special_names__struct_enum_members_annotations;
     using member = enum_with_special_names__struct_enum_members_member;
     using members = enum_with_special_names__struct_enum_members_members;
+    using field = enum_with_special_names__struct_enum_members_field;
+    using fields = enum_with_special_names__struct_enum_members_fields;
   };
 
   using member = enum_with_special_names__struct_enum_members;
@@ -494,7 +508,9 @@ struct enum_with_special_names_enum_traits {
       member::annotation,
       member::annotations,
       member::member,
-      member::members
+      member::members,
+      member::field,
+      member::fields
   >;
 
   class annotations {
@@ -537,6 +553,8 @@ struct enum_with_special_names_enum_traits {
       case type::annotations: return "annotations";
       case type::member: return "member";
       case type::members: return "members";
+      case type::field: return "field";
+      case type::fields: return "fields";
       default: return fallback;
     }
   }

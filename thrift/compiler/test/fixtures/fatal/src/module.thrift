@@ -6,6 +6,9 @@ namespace java.swift test_swift.cpp_reflection
 namespace php test_php.cpp_reflection
 namespace python test_py.cpp_reflection
 
+include "reflection_dep_B.thrift"
+include "reflection_dep_C.thrift"
+
 cpp_include "thrift/test/fatal_custom_types.h"
 
 enum enum1 {
@@ -179,6 +182,12 @@ struct struct_binary {
   1: binary bi
 }
 
+struct dep_A_struct {
+  1: reflection_dep_B.dep_B_struct b
+  2: reflection_dep_C.dep_C_struct c
+  3: i32 i_a
+}
+
 struct annotated {
   1: i32 a (
     m_b_false = 'false',
@@ -263,6 +272,8 @@ enum enum_with_special_names {
   annotations,
   member,
   members,
+  field,
+  fields,
 }
 
 union union_with_special_names {
@@ -292,6 +303,8 @@ union union_with_special_names {
   24: i32 annotations
   25: i32 member
   26: i32 members
+  27: i32 field
+  28: i32 fields
 }
 
 struct struct_with_special_names {
@@ -321,6 +334,8 @@ struct struct_with_special_names {
   24: i32 annotations
   25: i32 member
   26: i32 members
+  27: i32 field
+  28: i32 fields
 }
 
 service service_with_special_names {
@@ -350,6 +365,8 @@ service service_with_special_names {
   i32 annotations()
   i32 member()
   i32 members()
+  i32 field()
+  i32 fields()
 }
 
 const i32 constant_with_special_name = 42;

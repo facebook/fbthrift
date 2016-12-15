@@ -56,6 +56,7 @@ FATAL_S(struct3s, "struct3");
 FATAL_S(struct4s, "struct4");
 FATAL_S(struct5s, "struct5");
 FATAL_S(struct_binarys, "struct_binary");
+FATAL_S(dep_A_structs, "dep_A_struct");
 FATAL_S(annotateds, "annotated");
 FATAL_S(my_structAs, "my_structA");
 
@@ -182,6 +183,7 @@ TEST(fatal, metadata) {
       fatal::pair<struct4, struct4s>,
       fatal::pair<struct5, struct5s>,
       fatal::pair<struct_binary, struct_binarys>,
+      fatal::pair<dep_A_struct, dep_A_structs>,
       fatal::pair<annotated, annotateds>,
       fatal::pair<struct_with_special_names, struct_with_special_namess>,
       fatal::pair<my_structA, my_structAs>

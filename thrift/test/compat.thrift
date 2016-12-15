@@ -156,6 +156,7 @@ struct compat_struct3 {
   16: set<compat_structB> fieldP
   17: map<string, compat_structA> fieldQ
   18: map<string, compat_structB> fieldR
+  19: map<binary, binary> fieldS
 }
 
 service compat_service1 {

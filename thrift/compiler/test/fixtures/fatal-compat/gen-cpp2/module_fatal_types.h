@@ -6,6 +6,7 @@
  */
 #pragma once
 
+
 #include "thrift/compiler/test/fixtures/fatal-compat/gen-cpp2/module_fatal_enum.h"
 #include "thrift/compiler/test/fixtures/fatal-compat/gen-cpp2/module_fatal_union.h"
 #include "thrift/compiler/test/fixtures/fatal-compat/gen-cpp2/module_fatal_struct.h"

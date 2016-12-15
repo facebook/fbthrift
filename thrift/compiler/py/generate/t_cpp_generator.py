@@ -4493,7 +4493,6 @@ class CppGenerator(t_generator.Generator):
             sg('#include <fatal/type/list.h>')
             sg('#include <fatal/type/pair.h>')
             sg('#include <fatal/type/sequence.h>')
-
             sg()
             sg('#include "{0}"'.format(self._with_include_prefix(
                 self._program, name + '_types.h')))
@@ -4521,6 +4520,7 @@ class CppGenerator(t_generator.Generator):
             self.fatal_detail_ns, str_class)
         self.fatal_str_map = {}
         self.fatal_str_uid = []
+        self._fatal_type_dependencies = None
 
         name_id = self._set_fatal_string(name)
 
@@ -4536,6 +4536,10 @@ class CppGenerator(t_generator.Generator):
         # Combo include: types
         context_cmb_types = self._make_context(name + '_fatal_types', tcc=False)
         with get_global_scope(CppPrimitiveFactory, context_cmb_types) as sg:
+            for dep in self._get_fatal_type_dependencies():
+                sg('#include  "{0}_fatal_types.h"'
+                   .format(self._with_include_prefix(dep, dep.name)))
+            sg()
             for what in ['enum', 'union', 'struct']:
                 sg('#include "{0}"'.format(self._with_include_prefix(
                     self._program, name + '_fatal_' + what + '.h')))
@@ -4543,8 +4547,13 @@ class CppGenerator(t_generator.Generator):
         # Combo include: all
         context_cmb_all = self._make_context(name + '_fatal_all', tcc=False)
         with get_global_scope(CppPrimitiveFactory, context_cmb_all) as sg:
+            for dep in self._get_fatal_type_dependencies():
+                sg('#include  "{0}_fatal_all.h"'
+                   .format(self._with_include_prefix(dep, dep.name)))
+            sg()
             sg('#include "{0}_types.h"'.format(
                 self._with_include_prefix(self._program, name)))
+            sg()
             for what in ['types', 'constant', 'service']:
                 sg('#include "{0}"'.format(self._with_include_prefix(
                     self._program, name + '_fatal_' + what + '.h')))
@@ -4656,6 +4665,22 @@ class CppGenerator(t_generator.Generator):
             result += ", '{0}'".format(substitutions.get(i, i))
         result += ">"
         return result
+
+    # this is an attempt to be more conservative on what dependencies require
+    # to enable compile-time reflection than `program.includes`
+    def _get_fatal_type_dependencies(self):
+        if self._fatal_type_dependencies is None:
+            dependencies = set()
+            for struct in self._program.structs:
+                for member in struct.members:
+                    ttype = member.type
+                    if ttype.is_base_type or ttype.program == self._program or \
+                      ttype.program is None:
+                        continue
+                    if ttype.program not in dependencies:
+                        dependencies.add(ttype.program)
+            self._fatal_type_dependencies = list(sorted(dependencies))
+        return self._fatal_type_dependencies
 
     def _render_fatal_type_class(self, ttype):
         while ttype.is_typedef:
@@ -4913,6 +4938,10 @@ class CppGenerator(t_generator.Generator):
 
         context = self._make_context(name + '_fatal_union', tcc=False)
         with get_global_scope(CppPrimitiveFactory, context) as sg:
+            for dep in self._get_fatal_type_dependencies():
+                sg('#include  "{0}_fatal_types.h"'
+                   .format(self._with_include_prefix(dep, dep.name)))
+            sg()
             sg('#include "{0}"'.format(self._with_include_prefix(
                 self._program, name + '_types.h')))
 
@@ -5067,6 +5096,10 @@ class CppGenerator(t_generator.Generator):
         ns = self._get_original_namespace()
         context = self._make_context(name + '_fatal_struct', tcc=False)
         with get_global_scope(CppPrimitiveFactory, context) as sg:
+            for dep in self._get_fatal_type_dependencies():
+                sg('#include  "{0}_fatal_types.h"'
+                   .format(self._with_include_prefix(dep, dep.name)))
+            sg()
             sg('#include "{0}"'.format(self._with_include_prefix(
                 self._program, name + '_types.h')))
             sg()
@@ -5312,11 +5345,7 @@ class CppGenerator(t_generator.Generator):
         context = self._make_context(name + '_fatal_constant', tcc=False)
         with get_global_scope(CppPrimitiveFactory, context) as sg:
             sg('#include "{0}"'.format(self._with_include_prefix(
-                self._program, name + '_fatal_enum.h')))
-            sg('#include "{0}"'.format(self._with_include_prefix(
-                self._program, name + '_fatal_union.h')))
-            sg('#include "{0}"'.format(self._with_include_prefix(
-                self._program, name + '_fatal_struct.h')))
+                self._program, name + '_fatal_types.h')))
             sg()
             if len(ns) > 0:
                 with sg.namespace(ns).scope as sns:

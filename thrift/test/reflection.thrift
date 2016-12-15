@@ -6,6 +6,9 @@ namespace java.swift test_swift.cpp_reflection
 namespace php test_php.cpp_reflection
 namespace python test_py.cpp_reflection
 
+include "thrift/test/reflection_dep_B.thrift"
+include "thrift/test/reflection_dep_C.thrift"
+
 cpp_include "thrift/test/fatal_custom_types.h"
 
 enum enum1 {
@@ -178,6 +181,12 @@ struct struct5 {
 
 struct struct_binary {
   1: binary bi
+}
+
+struct dep_A_struct {
+  1: reflection_dep_B.dep_B_struct b
+  2: reflection_dep_C.dep_C_struct c
+  3: i32 i_a
 }
 
 struct annotated {

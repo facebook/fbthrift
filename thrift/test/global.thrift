@@ -142,6 +142,7 @@ struct global_struct3 {
   16: set<global_structB> fieldP
   17: map<string, global_structA> fieldQ
   18: map<string, global_structB> fieldR
+  19: map<binary, binary> fieldS
 }
 
 service global_service1 {

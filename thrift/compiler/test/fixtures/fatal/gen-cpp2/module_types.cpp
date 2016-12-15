@@ -94,7 +94,7 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-template <> const std::size_t TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum_with_special_names>::size = 26;
+template <> const std::size_t TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum_with_special_names>::size = 28;
 template <> const folly::Range<const  ::test_cpp2::cpp_reflection::enum_with_special_names*> TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum_with_special_names>::values = folly::range( ::test_cpp2::cpp_reflection::_enum_with_special_namesEnumDataStorage::values);
 template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum_with_special_names>::names = folly::range( ::test_cpp2::cpp_reflection::_enum_with_special_namesEnumDataStorage::names);
 template <> const char* TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum_with_special_names>::findName( ::test_cpp2::cpp_reflection::enum_with_special_names value) {
@@ -1468,6 +1468,65 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
+void dep_A_struct::__clear() {
+  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::dep_B_struct>::clear(&b);
+  ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::dep_C_struct>::clear(&c);
+  i_a = 0;
+  __isset.__clear();
+}
+
+bool dep_A_struct::operator==(const dep_A_struct& rhs) const {
+  if (!((b == rhs.b))) {
+    return false;
+  }
+  if (!((c == rhs.c))) {
+    return false;
+  }
+  if (!((i_a == rhs.i_a))) {
+    return false;
+  }
+  return true;
+}
+
+const  ::test_cpp2::cpp_reflection::dep_B_struct& dep_A_struct::get_b() const& {
+  return b;
+}
+
+ ::test_cpp2::cpp_reflection::dep_B_struct dep_A_struct::get_b() && {
+  return std::move(b);
+}
+
+const  ::test_cpp2::cpp_reflection::dep_C_struct& dep_A_struct::get_c() const& {
+  return c;
+}
+
+ ::test_cpp2::cpp_reflection::dep_C_struct dep_A_struct::get_c() && {
+  return std::move(c);
+}
+
+void swap(dep_A_struct& a, dep_A_struct& b) {
+  using ::std::swap;
+  swap(a.b, b.b);
+  swap(a.c, b.c);
+  swap(a.i_a, b.i_a);
+  swap(a.__isset, b.__isset);
+}
+
+template uint32_t dep_A_struct::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t dep_A_struct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t dep_A_struct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t dep_A_struct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t dep_A_struct::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t dep_A_struct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t dep_A_struct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t dep_A_struct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace test_cpp2 { namespace cpp_reflection {
+
 void annotated::__clear() {
   a = 0;
   __isset.__clear();
@@ -1634,6 +1693,16 @@ void union_with_special_names::__clear() {
       destruct(value_.members);
       break;
     }
+    case Type::field:
+    {
+      destruct(value_.field);
+      break;
+    }
+    case Type::fields:
+    {
+      destruct(value_.fields);
+      break;
+    }
     default:
     {
       assert(false);
@@ -1776,6 +1845,16 @@ bool union_with_special_names::operator==(const union_with_special_names& rhs) c
       return value_.members == rhs.value_.members;
       break;
     }
+    case Type::field:
+    {
+      return value_.field == rhs.value_.field;
+      break;
+    }
+    case Type::fields:
+    {
+      return value_.fields == rhs.value_.fields;
+      break;
+    }
     default:
     {
       return true;
@@ -1832,6 +1911,8 @@ void struct_with_special_names::__clear() {
   annotations = 0;
   member = 0;
   members = 0;
+  field = 0;
+  fields = 0;
   __isset.__clear();
 }
 
@@ -1914,6 +1995,12 @@ bool struct_with_special_names::operator==(const struct_with_special_names& rhs)
   if (!((members == rhs.members))) {
     return false;
   }
+  if (!((field == rhs.field))) {
+    return false;
+  }
+  if (!((fields == rhs.fields))) {
+    return false;
+  }
   return true;
 }
 
@@ -1945,6 +2032,8 @@ void swap(struct_with_special_names& a, struct_with_special_names& b) {
   swap(a.annotations, b.annotations);
   swap(a.member, b.member);
   swap(a.members, b.members);
+  swap(a.field, b.field);
+  swap(a.fields, b.fields);
   swap(a.__isset, b.__isset);
 }
 

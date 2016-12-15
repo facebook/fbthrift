@@ -143,7 +143,8 @@ TEST(flatten_getters, no_terminal_filter) {
       flat_getter<fatal::list<>, s3::fieldO>,
       flat_getter<fatal::list<>, s3::fieldP>,
       flat_getter<fatal::list<>, s3::fieldQ>,
-      flat_getter<fatal::list<>, s3::fieldR>
+      flat_getter<fatal::list<>, s3::fieldR>,
+      flat_getter<fatal::list<>, s3::fieldS>
     >,
     flatten_getters<struct3>
   >();

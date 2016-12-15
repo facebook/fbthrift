@@ -424,7 +424,8 @@ std::pair<Struct3, std::string> test_data_1() {
       "a2": { "a": 1001, "b": "foo" },
       "a3": { "a": 654, "b": "bar" }
     },
-    "fieldR": {}
+    "fieldR": {},
+    "fieldS": {}
   })");
 
   return std::make_pair(pod, json);

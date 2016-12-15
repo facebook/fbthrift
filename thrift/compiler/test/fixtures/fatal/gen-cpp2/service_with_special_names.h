@@ -12,6 +12,8 @@
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <folly/futures/Future.h>
 
+#include "reflection_dep_B_types.h"
+#include "reflection_dep_C_types.h"
 
 #include "thrift/test/fatal_custom_types.h"
 
@@ -111,6 +113,12 @@ class service_with_special_namesSvAsyncIf {
   virtual void async_tm_members(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
   virtual void async_members(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = delete;
   virtual folly::Future<int32_t> future_members() = 0;
+  virtual void async_tm_field(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
+  virtual void async_field(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = delete;
+  virtual folly::Future<int32_t> future_field() = 0;
+  virtual void async_tm_fields(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = 0;
+  virtual void async_fields(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) = delete;
+  virtual folly::Future<int32_t> future_fields() = 0;
 };
 
 class service_with_special_namesAsyncProcessor;
@@ -197,6 +205,12 @@ class service_with_special_namesSvIf : public service_with_special_namesSvAsyncI
   virtual int32_t members();
   folly::Future<int32_t> future_members() override;
   void async_tm_members(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
+  virtual int32_t field();
+  folly::Future<int32_t> future_field() override;
+  void async_tm_field(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
+  virtual int32_t fields();
+  folly::Future<int32_t> future_fields() override;
+  void async_tm_fields(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) override;
 };
 
 class service_with_special_namesSvNull : public service_with_special_namesSvIf {
@@ -227,6 +241,8 @@ class service_with_special_namesSvNull : public service_with_special_namesSvIf {
   int32_t annotations() override;
   int32_t member() override;
   int32_t members() override;
+  int32_t field() override;
+  int32_t fields() override;
 };
 
 class service_with_special_namesAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
@@ -516,6 +532,26 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
   static void throw_members(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_members(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void _processInThread_field(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_field(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static folly::IOBufQueue return_field(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_field(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_field(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void _processInThread_fields(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_fields(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static folly::IOBufQueue return_fields(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int32_t const& _return);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_fields(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_fields(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
   service_with_special_namesAsyncProcessor(service_with_special_namesSvIf* iface) :
       iface_(iface) {}
@@ -1036,6 +1072,44 @@ class service_with_special_namesAsyncClient : public apache::thrift::TClientBase
   static folly::exception_wrapper recv_wrapped_membersT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static int32_t recv_membersT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+  virtual void field(std::unique_ptr<apache::thrift::RequestCallback> callback);
+  virtual void field(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  virtual int32_t sync_field();
+  virtual int32_t sync_field(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<int32_t> future_field();
+  virtual folly::Future<int32_t> future_field(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_field(apache::thrift::RpcOptions& rpcOptions);
+  virtual void field(std::function<void (::apache::thrift::ClientReceiveState&&)> callback);
+  static folly::exception_wrapper recv_wrapped_field(int32_t& _return, ::apache::thrift::ClientReceiveState& state);
+  static int32_t recv_field(::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual int32_t recv_instance_field(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_field(int32_t& _return, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  void fieldT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  template <typename Protocol_>
+  static folly::exception_wrapper recv_wrapped_fieldT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  static int32_t recv_fieldT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+  virtual void fields(std::unique_ptr<apache::thrift::RequestCallback> callback);
+  virtual void fields(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  virtual int32_t sync_fields();
+  virtual int32_t sync_fields(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<int32_t> future_fields();
+  virtual folly::Future<int32_t> future_fields(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_fields(apache::thrift::RpcOptions& rpcOptions);
+  virtual void fields(std::function<void (::apache::thrift::ClientReceiveState&&)> callback);
+  static folly::exception_wrapper recv_wrapped_fields(int32_t& _return, ::apache::thrift::ClientReceiveState& state);
+  static int32_t recv_fields(::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual int32_t recv_instance_fields(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_fields(int32_t& _return, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  void fieldsT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  template <typename Protocol_>
+  static folly::exception_wrapper recv_wrapped_fieldsT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  static int32_t recv_fieldsT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
  protected:
   std::unique_ptr<apache::thrift::Cpp2ConnContext> connectionContext_;
   std::shared_ptr<apache::thrift::RequestChannel> channel_;

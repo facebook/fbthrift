@@ -6,6 +6,9 @@
  */
 #pragma once
 
+#include  "reflection_dep_C_fatal_types.h"
+#include  "reflection_dep_B_fatal_types.h"
+
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_types.h"
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_fatal.h"
 
@@ -1311,6 +1314,8 @@ struct union_with_special_names_Type_enum_traits {
     using annotations = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::annotations;
     using member = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::member;
     using members = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::members;
+    using field = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field;
+    using fields = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fields;
   };
 
   struct Type__struct_enum_members_get {
@@ -1443,6 +1448,16 @@ struct union_with_special_names_Type_enum_traits {
     using value = std::integral_constant<type, type::members>;
   };
 
+  struct Type__struct_enum_members_field {
+    using name = Type__struct_unique_strings_list::field;
+    using value = std::integral_constant<type, type::field>;
+  };
+
+  struct Type__struct_enum_members_fields {
+    using name = Type__struct_unique_strings_list::fields;
+    using value = std::integral_constant<type, type::fields>;
+  };
+
   struct Type__struct_enum_members {
     using get = Type__struct_enum_members_get;
     using getter = Type__struct_enum_members_getter;
@@ -1470,6 +1485,8 @@ struct union_with_special_names_Type_enum_traits {
     using annotations = Type__struct_enum_members_annotations;
     using member = Type__struct_enum_members_member;
     using members = Type__struct_enum_members_members;
+    using field = Type__struct_enum_members_field;
+    using fields = Type__struct_enum_members_fields;
   };
 
   using member = Type__struct_enum_members;
@@ -1500,7 +1517,9 @@ struct union_with_special_names_Type_enum_traits {
       member::annotation,
       member::annotations,
       member::member,
-      member::members
+      member::members,
+      member::field,
+      member::fields
   >;
 
   class annotations {
@@ -1543,6 +1562,8 @@ struct union_with_special_names_Type_enum_traits {
       case type::annotations: return "annotations";
       case type::member: return "member";
       case type::members: return "members";
+      case type::field: return "field";
+      case type::fields: return "fields";
       default: return fallback;
     }
   }
@@ -1589,6 +1610,8 @@ class union_with_special_names_variant_traits {
     using annotations = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::annotations>;
     using member = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::member>;
     using members = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::members>;
+    using field = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::field>;
+    using fields = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::fields>;
   };
 
   struct union_with_special_names__struct_unique_getters_list {
@@ -2111,6 +2134,46 @@ class union_with_special_names_variant_traits {
         return std::move(variant).move_members();
       }
     };
+
+    struct field {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_field())
+      {
+        return variant.get_field();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_field())
+      {
+        return variant.mutable_field();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_field())
+      {
+        return std::move(variant).move_field();
+      }
+    };
+
+    struct fields {
+      auto operator ()(union_with_special_names const &variant) const
+        -> decltype(std::declval<union_with_special_names const &>().get_fields())
+      {
+        return variant.get_fields();
+      }
+
+      auto operator ()(union_with_special_names &variant) const
+        -> decltype(std::declval<union_with_special_names &>().mutable_fields())
+      {
+        return variant.mutable_fields();
+      }
+
+      auto operator ()(union_with_special_names &&variant) const
+        -> decltype(std::declval<union_with_special_names &&>().move_fields())
+      {
+        return std::move(variant).move_fields();
+      }
+    };
   };
 
   struct union_with_special_names__struct_unique_setters_list {
@@ -2397,6 +2460,28 @@ class union_with_special_names_variant_traits {
         )
       {
         return variant.set_members(std::forward<Args>(args)...);
+      }
+    };
+
+    struct field {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_field(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_field(std::forward<Args>(args)...);
+      }
+    };
+
+    struct fields {
+      template <typename... Args>
+      auto operator ()(union_with_special_names &variant, Args &&...args) const
+        -> decltype(
+          std::declval<union_with_special_names &>().set_fields(std::forward<Args>(args)...)
+        )
+      {
+        return variant.set_fields(std::forward<Args>(args)...);
       }
     };
   };
@@ -2690,6 +2775,28 @@ class union_with_special_names_variant_traits {
       ::apache::thrift::reflected_variant_member_metadata<
         thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::members,
         26,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_member_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::field,
+      union_with_special_names__struct_unique_getters_list::field,
+      union_with_special_names__struct_unique_setters_list::field,
+      ::apache::thrift::reflected_variant_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field,
+        27,
+        ::apache::thrift::type_class::integral
+      >
+    >,
+    ::fatal::variant_member_descriptor<
+      int32_t,
+      union_with_special_names__struct_unique_identifiers_list::fields,
+      union_with_special_names__struct_unique_getters_list::fields,
+      union_with_special_names__struct_unique_setters_list::fields,
+      ::apache::thrift::reflected_variant_member_metadata<
+        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fields,
+        28,
         ::apache::thrift::type_class::integral
       >
     >

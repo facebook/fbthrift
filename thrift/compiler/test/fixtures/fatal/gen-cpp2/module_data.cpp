@@ -39,8 +39,8 @@ namespace apache { namespace thrift {
 namespace test_cpp2 { namespace cpp_reflection {
 
 constexpr const std::size_t _enum_with_special_namesEnumDataStorage::size;
-constexpr const std::array<enum_with_special_names, 26> _enum_with_special_namesEnumDataStorage::values;
-constexpr const std::array<folly::StringPiece, 26> _enum_with_special_namesEnumDataStorage::names;
+constexpr const std::array<enum_with_special_names, 28> _enum_with_special_namesEnumDataStorage::values;
+constexpr const std::array<folly::StringPiece, 28> _enum_with_special_namesEnumDataStorage::names;
 
 }} // test_cpp2::cpp_reflection
 namespace apache { namespace thrift {

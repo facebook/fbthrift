@@ -12,6 +12,8 @@
 #include <thrift/lib/cpp2/async/FutureRequest.h>
 #include <folly/futures/Future.h>
 
+#include "reflection_dep_B_types.h"
+#include "reflection_dep_C_types.h"
 
 #include "thrift/test/fatal_custom_types.h"
 

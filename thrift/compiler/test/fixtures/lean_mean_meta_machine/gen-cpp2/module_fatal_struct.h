@@ -6,6 +6,7 @@
  */
 #pragma once
 
+
 #include "thrift/compiler/test/fixtures/lean_mean_meta_machine/gen-cpp2/module_types.h"
 
 #include "thrift/compiler/test/fixtures/lean_mean_meta_machine/gen-cpp2/module_fatal.h"

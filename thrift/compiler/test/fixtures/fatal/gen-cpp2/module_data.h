@@ -91,8 +91,8 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 struct _enum_with_special_namesEnumDataStorage {
   using type = enum_with_special_names;
-  static constexpr const std::size_t size = 26;
-  static constexpr const std::array<enum_with_special_names, 26> values = {{
+  static constexpr const std::size_t size = 28;
+  static constexpr const std::array<enum_with_special_names, 28> values = {{
     enum_with_special_names::get,
     enum_with_special_names::getter,
     enum_with_special_names::lists,
@@ -119,8 +119,10 @@ struct _enum_with_special_namesEnumDataStorage {
     enum_with_special_names::annotations,
     enum_with_special_names::member,
     enum_with_special_names::members,
+    enum_with_special_names::field,
+    enum_with_special_names::fields,
   }};
-  static constexpr const std::array<folly::StringPiece, 26> names = {{
+  static constexpr const std::array<folly::StringPiece, 28> names = {{
     "get",
     "getter",
     "lists",
@@ -147,6 +149,8 @@ struct _enum_with_special_namesEnumDataStorage {
     "annotations",
     "member",
     "members",
+    "field",
+    "fields",
   }};
 };
 

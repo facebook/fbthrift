@@ -12,6 +12,8 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
 
+#include "reflection_dep_B_types.h"
+#include "reflection_dep_C_types.h"
 #include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 
 #include "thrift/test/fatal_custom_types.h"
@@ -32,6 +34,7 @@ class struct3;
 class struct4;
 class struct5;
 class struct_binary;
+class dep_A_struct;
 class annotated;
 class union_with_special_names;
 class struct_with_special_names;
@@ -170,7 +173,9 @@ enum class enum_with_special_names {
   annotation = 22,
   annotations = 23,
   member = 24,
-  members = 25
+  members = 25,
+  field = 26,
+  fields = 27
 };
 
 extern const typename apache::thrift::detail::TEnumMapFactory<enum_with_special_names, enum_with_special_names>::ValuesToNamesMapType _enum_with_special_names_VALUES_TO_NAMES;
@@ -197,7 +202,7 @@ template <> constexpr  ::test_cpp2::cpp_reflection::enum_with_special_names TEnu
 }
 
 template <> constexpr  ::test_cpp2::cpp_reflection::enum_with_special_names TEnumTraits< ::test_cpp2::cpp_reflection::enum_with_special_names>::max() {
-  return  ::test_cpp2::cpp_reflection::enum_with_special_names::members;
+  return  ::test_cpp2::cpp_reflection::enum_with_special_names::fields;
 }
 
 }} // apache::thrift
@@ -4043,6 +4048,153 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflect
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
+class dep_A_struct : private apache::thrift::detail::st::ComparisonOperators<dep_A_struct> {
+ public:
+
+  dep_A_struct() :
+      i_a(0) {}
+  // FragileConstructor for use in initialization lists only
+
+  dep_A_struct(apache::thrift::FragileConstructor,  ::test_cpp2::cpp_reflection::dep_B_struct b__arg,  ::test_cpp2::cpp_reflection::dep_C_struct c__arg, int32_t i_a__arg) :
+      b(std::move(b__arg)),
+      c(std::move(c__arg)),
+      i_a(std::move(i_a__arg)) {
+    __isset.b = true;
+    __isset.c = true;
+    __isset.i_a = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  dep_A_struct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    dep_A_struct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    b = arg.move();
+    __isset.b = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  dep_A_struct(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    dep_A_struct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    c = arg.move();
+    __isset.c = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  dep_A_struct(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    dep_A_struct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    i_a = arg.move();
+    __isset.i_a = true;
+  }
+
+  dep_A_struct(dep_A_struct&&) = default;
+
+  dep_A_struct(const dep_A_struct&) = default;
+
+  dep_A_struct& operator=(dep_A_struct&&) = default;
+
+  dep_A_struct& operator=(const dep_A_struct&) = default;
+  void __clear();
+
+  virtual ~dep_A_struct() throw() {}
+
+   ::test_cpp2::cpp_reflection::dep_B_struct b;
+   ::test_cpp2::cpp_reflection::dep_C_struct c;
+  int32_t i_a;
+
+  struct __isset {
+    void __clear() {
+      b = false;
+      c = false;
+      i_a = false;
+    }
+
+    bool b = false;
+    bool c = false;
+    bool i_a = false;
+  } __isset;
+  bool operator==(const dep_A_struct& rhs) const;
+
+  bool operator < (const dep_A_struct& rhs) const {
+    if (!(b == rhs.b)) {
+      return b < rhs.b;
+    }
+    if (!(c == rhs.c)) {
+      return c < rhs.c;
+    }
+    if (!(i_a == rhs.i_a)) {
+      return i_a < rhs.i_a;
+    }
+    (void)rhs;
+    return false;
+  }
+  const  ::test_cpp2::cpp_reflection::dep_B_struct& get_b() const&;
+   ::test_cpp2::cpp_reflection::dep_B_struct get_b() &&;
+  template <typename T_dep_A_struct_b_struct_setter>
+   ::test_cpp2::cpp_reflection::dep_B_struct& set_b(T_dep_A_struct_b_struct_setter&& b_);
+  const  ::test_cpp2::cpp_reflection::dep_C_struct& get_c() const&;
+   ::test_cpp2::cpp_reflection::dep_C_struct get_c() &&;
+  template <typename T_dep_A_struct_c_struct_setter>
+   ::test_cpp2::cpp_reflection::dep_C_struct& set_c(T_dep_A_struct_c_struct_setter&& c_);
+
+  int32_t get_i_a() const {
+    return i_a;
+  }
+
+  int32_t& set_i_a(int32_t i_a_) {
+    i_a = i_a_;
+    __isset.i_a = true;
+    return i_a;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+};
+
+void swap(dep_A_struct& a, dep_A_struct& b);
+extern template uint32_t dep_A_struct::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t dep_A_struct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t dep_A_struct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t dep_A_struct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t dep_A_struct::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t dep_A_struct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t dep_A_struct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t dep_A_struct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::test_cpp2::cpp_reflection::dep_A_struct>::clear( ::test_cpp2::cpp_reflection::dep_A_struct* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp2::cpp_reflection::dep_A_struct>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::dep_A_struct>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::dep_A_struct const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::dep_A_struct>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::dep_A_struct* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::dep_A_struct>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::dep_A_struct const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::dep_A_struct>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::dep_A_struct const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace test_cpp2 { namespace cpp_reflection {
+
 class annotated : private apache::thrift::detail::st::ComparisonOperators<annotated> {
  public:
 
@@ -4182,6 +4334,8 @@ class union_with_special_names : private apache::thrift::detail::st::ComparisonO
     annotations = 24,
     member = 25,
     members = 26,
+    field = 27,
+    fields = 28,
   } ;
 
   union_with_special_names() :
@@ -4320,6 +4474,16 @@ class union_with_special_names : private apache::thrift::detail::st::ComparisonO
       case Type::members:
       {
         set_members(std::move(rhs.value_.members));
+        break;
+      }
+      case Type::field:
+      {
+        set_field(std::move(rhs.value_.field));
+        break;
+      }
+      case Type::fields:
+      {
+        set_fields(std::move(rhs.value_.fields));
         break;
       }
       default:
@@ -4466,6 +4630,16 @@ class union_with_special_names : private apache::thrift::detail::st::ComparisonO
         set_members(rhs.value_.members);
         break;
       }
+      case Type::field:
+      {
+        set_field(rhs.value_.field);
+        break;
+      }
+      case Type::fields:
+      {
+        set_fields(rhs.value_.fields);
+        break;
+      }
       default:
       {
         assert(false);
@@ -4607,6 +4781,16 @@ class union_with_special_names : private apache::thrift::detail::st::ComparisonO
       case Type::members:
       {
         set_members(std::move(rhs.value_.members));
+        break;
+      }
+      case Type::field:
+      {
+        set_field(std::move(rhs.value_.field));
+        break;
+      }
+      case Type::fields:
+      {
+        set_fields(std::move(rhs.value_.fields));
         break;
       }
       default:
@@ -4752,6 +4936,16 @@ class union_with_special_names : private apache::thrift::detail::st::ComparisonO
       case Type::members:
       {
         set_members(rhs.value_.members);
+        break;
+      }
+      case Type::field:
+      {
+        set_field(rhs.value_.field);
+        break;
+      }
+      case Type::fields:
+      {
+        set_fields(rhs.value_.fields);
         break;
       }
       default:
@@ -4918,6 +5112,18 @@ class union_with_special_names : private apache::thrift::detail::st::ComparisonO
   {
     set_members(arg.move());
   }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  union_with_special_names(::apache::thrift::detail::argument_wrapper<27, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_field(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  union_with_special_names(::apache::thrift::detail::argument_wrapper<28, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_fields(arg.move());
+  }
   void __clear();
 
   virtual ~union_with_special_names() throw() {
@@ -4951,6 +5157,8 @@ class union_with_special_names : private apache::thrift::detail::st::ComparisonO
     int32_t annotations;
     int32_t member;
     int32_t members;
+    int32_t field;
+    int32_t fields;
 
     storage_type() {}
     ~storage_type() {}
@@ -5088,6 +5296,16 @@ class union_with_special_names : private apache::thrift::detail::st::ComparisonO
       case Type::members:
       {
         return value_.members < rhs.value_.members;
+        break;
+      }
+      case Type::field:
+      {
+        return value_.field < rhs.value_.field;
+        break;
+      }
+      case Type::fields:
+      {
+        return value_.fields < rhs.value_.fields;
         break;
       }
       default:
@@ -5280,6 +5498,20 @@ class union_with_special_names : private apache::thrift::detail::st::ComparisonO
     return value_.members;
   }
 
+  int32_t& set_field(int32_t t = int32_t()) {
+    __clear();
+    type_ = Type::field;
+    ::new (std::addressof(value_.field)) int32_t(t);
+    return value_.field;
+  }
+
+  int32_t& set_fields(int32_t t = int32_t()) {
+    __clear();
+    type_ = Type::fields;
+    ::new (std::addressof(value_.fields)) int32_t(t);
+    return value_.fields;
+  }
+
   int32_t const & get_get() const {
     assert(type_ == Type::get);
     return value_.get;
@@ -5408,6 +5640,16 @@ class union_with_special_names : private apache::thrift::detail::st::ComparisonO
   int32_t const & get_members() const {
     assert(type_ == Type::members);
     return value_.members;
+  }
+
+  int32_t const & get_field() const {
+    assert(type_ == Type::field);
+    return value_.field;
+  }
+
+  int32_t const & get_fields() const {
+    assert(type_ == Type::fields);
+    return value_.fields;
   }
 
   int32_t & mutable_get() {
@@ -5540,6 +5782,16 @@ class union_with_special_names : private apache::thrift::detail::st::ComparisonO
     return value_.members;
   }
 
+  int32_t & mutable_field() {
+    assert(type_ == Type::field);
+    return value_.field;
+  }
+
+  int32_t & mutable_fields() {
+    assert(type_ == Type::fields);
+    return value_.fields;
+  }
+
   int32_t move_get() {
     assert(type_ == Type::get);
     return std::move(value_.get);
@@ -5670,6 +5922,16 @@ class union_with_special_names : private apache::thrift::detail::st::ComparisonO
     return std::move(value_.members);
   }
 
+  int32_t move_field() {
+    assert(type_ == Type::field);
+    return std::move(value_.field);
+  }
+
+  int32_t move_fields() {
+    assert(type_ == Type::fields);
+    return std::move(value_.fields);
+  }
+
   Type getType() const { return type_; }
 
   template <class Protocol_>
@@ -5759,10 +6021,12 @@ class struct_with_special_names : private apache::thrift::detail::st::Comparison
       annotation(0),
       annotations(0),
       member(0),
-      members(0) {}
+      members(0),
+      field(0),
+      fields(0) {}
   // FragileConstructor for use in initialization lists only
 
-  struct_with_special_names(apache::thrift::FragileConstructor, int32_t get__arg, int32_t getter__arg, int32_t lists__arg, int32_t maps__arg, int32_t name__arg, int32_t name_to_value__arg, int32_t names__arg, int32_t prefix_tree__arg, int32_t sets__arg, int32_t setter__arg, int32_t str__arg, int32_t strings__arg, int32_t type__arg, int32_t value__arg, int32_t value_to_name__arg, int32_t values__arg, int32_t id__arg, int32_t ids__arg, int32_t descriptor__arg, int32_t descriptors__arg, int32_t key__arg, int32_t keys__arg, int32_t annotation__arg, int32_t annotations__arg, int32_t member__arg, int32_t members__arg) :
+  struct_with_special_names(apache::thrift::FragileConstructor, int32_t get__arg, int32_t getter__arg, int32_t lists__arg, int32_t maps__arg, int32_t name__arg, int32_t name_to_value__arg, int32_t names__arg, int32_t prefix_tree__arg, int32_t sets__arg, int32_t setter__arg, int32_t str__arg, int32_t strings__arg, int32_t type__arg, int32_t value__arg, int32_t value_to_name__arg, int32_t values__arg, int32_t id__arg, int32_t ids__arg, int32_t descriptor__arg, int32_t descriptors__arg, int32_t key__arg, int32_t keys__arg, int32_t annotation__arg, int32_t annotations__arg, int32_t member__arg, int32_t members__arg, int32_t field__arg, int32_t fields__arg) :
       get(std::move(get__arg)),
       getter(std::move(getter__arg)),
       lists(std::move(lists__arg)),
@@ -5788,7 +6052,9 @@ class struct_with_special_names : private apache::thrift::detail::st::Comparison
       annotation(std::move(annotation__arg)),
       annotations(std::move(annotations__arg)),
       member(std::move(member__arg)),
-      members(std::move(members__arg)) {
+      members(std::move(members__arg)),
+      field(std::move(field__arg)),
+      fields(std::move(fields__arg)) {
     __isset.get = true;
     __isset.getter = true;
     __isset.lists = true;
@@ -5815,6 +6081,8 @@ class struct_with_special_names : private apache::thrift::detail::st::Comparison
     __isset.annotations = true;
     __isset.member = true;
     __isset.members = true;
+    __isset.field = true;
+    __isset.fields = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   struct_with_special_names(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -5998,6 +6266,20 @@ class struct_with_special_names : private apache::thrift::detail::st::Comparison
     members = arg.move();
     __isset.members = true;
   }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  struct_with_special_names(::apache::thrift::detail::argument_wrapper<27, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    field = arg.move();
+    __isset.field = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  struct_with_special_names(::apache::thrift::detail::argument_wrapper<28, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    struct_with_special_names(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fields = arg.move();
+    __isset.fields = true;
+  }
 
   struct_with_special_names(struct_with_special_names&&) = default;
 
@@ -6036,6 +6318,8 @@ class struct_with_special_names : private apache::thrift::detail::st::Comparison
   int32_t annotations;
   int32_t member;
   int32_t members;
+  int32_t field;
+  int32_t fields;
 
   struct __isset {
     void __clear() {
@@ -6065,6 +6349,8 @@ class struct_with_special_names : private apache::thrift::detail::st::Comparison
       annotations = false;
       member = false;
       members = false;
+      field = false;
+      fields = false;
     }
 
     bool get = false;
@@ -6093,6 +6379,8 @@ class struct_with_special_names : private apache::thrift::detail::st::Comparison
     bool annotations = false;
     bool member = false;
     bool members = false;
+    bool field = false;
+    bool fields = false;
   } __isset;
   bool operator==(const struct_with_special_names& rhs) const;
 
@@ -6174,6 +6462,12 @@ class struct_with_special_names : private apache::thrift::detail::st::Comparison
     }
     if (!(members == rhs.members)) {
       return members < rhs.members;
+    }
+    if (!(field == rhs.field)) {
+      return field < rhs.field;
+    }
+    if (!(fields == rhs.fields)) {
+      return fields < rhs.fields;
     }
     (void)rhs;
     return false;
@@ -6437,6 +6731,26 @@ class struct_with_special_names : private apache::thrift::detail::st::Comparison
     members = members_;
     __isset.members = true;
     return members;
+  }
+
+  int32_t get_field() const {
+    return field;
+  }
+
+  int32_t& set_field(int32_t field_) {
+    field = field_;
+    __isset.field = true;
+    return field;
+  }
+
+  int32_t get_fields() const {
+    return fields;
+  }
+
+  int32_t& set_fields(int32_t fields_) {
+    fields = fields_;
+    __isset.fields = true;
+    return fields;
   }
 
   template <class Protocol_>

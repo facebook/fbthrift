@@ -329,6 +329,30 @@ void service_with_special_namesSvIf::async_tm_members(std::unique_ptr<apache::th
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_members(); });
 }
 
+int32_t service_with_special_namesSvIf::field() {
+  throw apache::thrift::TApplicationException("Function field is unimplemented");
+}
+
+folly::Future<int32_t> service_with_special_namesSvIf::future_field() {
+  return apache::thrift::detail::si::future([&] { return field(); });
+}
+
+void service_with_special_namesSvIf::async_tm_field(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_field(); });
+}
+
+int32_t service_with_special_namesSvIf::fields() {
+  throw apache::thrift::TApplicationException("Function fields is unimplemented");
+}
+
+folly::Future<int32_t> service_with_special_namesSvIf::future_fields() {
+  return apache::thrift::detail::si::future([&] { return fields(); });
+}
+
+void service_with_special_namesSvIf::async_tm_fields(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_fields(); });
+}
+
 int32_t service_with_special_namesSvNull::get() {
   return 0;
 }
@@ -433,6 +457,14 @@ int32_t service_with_special_namesSvNull::members() {
   return 0;
 }
 
+int32_t service_with_special_namesSvNull::field() {
+  return 0;
+}
+
+int32_t service_with_special_namesSvNull::fields() {
+  return 0;
+}
+
 const char* service_with_special_namesAsyncProcessor::getServiceName() {
   return "service_with_special_names";
 }
@@ -482,6 +514,8 @@ const service_with_special_namesAsyncProcessor::BinaryProtocolProcessMap service
   {"annotations", &service_with_special_namesAsyncProcessor::_processInThread_annotations<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"member", &service_with_special_namesAsyncProcessor::_processInThread_member<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"members", &service_with_special_namesAsyncProcessor::_processInThread_members<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"field", &service_with_special_namesAsyncProcessor::_processInThread_field<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"fields", &service_with_special_namesAsyncProcessor::_processInThread_fields<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const service_with_special_namesAsyncProcessor::CompactProtocolProcessMap& service_with_special_namesAsyncProcessor::getCompactProtocolProcessMap() {
@@ -515,6 +549,8 @@ const service_with_special_namesAsyncProcessor::CompactProtocolProcessMap servic
   {"annotations", &service_with_special_namesAsyncProcessor::_processInThread_annotations<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"member", &service_with_special_namesAsyncProcessor::_processInThread_member<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"members", &service_with_special_namesAsyncProcessor::_processInThread_members<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"field", &service_with_special_namesAsyncProcessor::_processInThread_field<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"fields", &service_with_special_namesAsyncProcessor::_processInThread_fields<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 }} // test_cpp2::cpp_reflection
