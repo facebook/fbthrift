@@ -6,5 +6,143 @@
  */
 #pragma once
 
+#include <cstddef>
+
+#include <thrift/lib/cpp/Thrift.h>
+
 #include "thrift/compiler/test/fixtures/fatal-compat/gen-cpp/module_types.h"
+
+namespace test_cpp1 { namespace cpp_reflection {
+struct _enum1EnumDataStorage {
+  using type = enum1;
+  static constexpr const std::size_t size = 3;
+  static constexpr const std::array<enum1, 3> values = {{
+    enum1::field0,
+    enum1::field1,
+    enum1::field2,
+  }};
+  static constexpr const std::array<folly::StringPiece, 3> names = {{
+    "field0",
+    "field1",
+    "field2",
+  }};
+};
+}} // namespace
+namespace apache { namespace thrift {
+template <> struct TEnumDataStorage< ::test_cpp1::cpp_reflection::enum1> {
+  using storage_type =  ::test_cpp1::cpp_reflection::_enum1EnumDataStorage;
+};
+}} // apache::thrift
+
+namespace test_cpp1 { namespace cpp_reflection {
+struct _enum2EnumDataStorage {
+  using type = enum2;
+  static constexpr const std::size_t size = 3;
+  static constexpr const std::array<enum2, 3> values = {{
+    enum2::field0_2,
+    enum2::field1_2,
+    enum2::field2_2,
+  }};
+  static constexpr const std::array<folly::StringPiece, 3> names = {{
+    "field0_2",
+    "field1_2",
+    "field2_2",
+  }};
+};
+}} // namespace
+namespace apache { namespace thrift {
+template <> struct TEnumDataStorage< ::test_cpp1::cpp_reflection::enum2> {
+  using storage_type =  ::test_cpp1::cpp_reflection::_enum2EnumDataStorage;
+};
+}} // apache::thrift
+
+namespace test_cpp1 { namespace cpp_reflection {
+struct _enum3EnumDataStorage {
+  using type = enum3;
+  static constexpr const std::size_t size = 3;
+  static constexpr const std::array<enum3, 3> values = {{
+    enum3::field0_3,
+    enum3::field1_3,
+    enum3::field2_3,
+  }};
+  static constexpr const std::array<folly::StringPiece, 3> names = {{
+    "field0_3",
+    "field1_3",
+    "field2_3",
+  }};
+};
+}} // namespace
+namespace apache { namespace thrift {
+template <> struct TEnumDataStorage< ::test_cpp1::cpp_reflection::enum3> {
+  using storage_type =  ::test_cpp1::cpp_reflection::_enum3EnumDataStorage;
+};
+}} // apache::thrift
+
+namespace test_cpp1 { namespace cpp_reflection {
+struct _enum_with_special_namesEnumDataStorage {
+  using type = enum_with_special_names;
+  static constexpr const std::size_t size = 26;
+  static constexpr const std::array<enum_with_special_names, 26> values = {{
+    enum_with_special_names::get,
+    enum_with_special_names::getter,
+    enum_with_special_names::lists,
+    enum_with_special_names::maps,
+    enum_with_special_names::name,
+    enum_with_special_names::name_to_value,
+    enum_with_special_names::names,
+    enum_with_special_names::prefix_tree,
+    enum_with_special_names::sets,
+    enum_with_special_names::setter,
+    enum_with_special_names::str,
+    enum_with_special_names::strings,
+    enum_with_special_names::type,
+    enum_with_special_names::value,
+    enum_with_special_names::value_to_name,
+    enum_with_special_names::values,
+    enum_with_special_names::id,
+    enum_with_special_names::ids,
+    enum_with_special_names::descriptor,
+    enum_with_special_names::descriptors,
+    enum_with_special_names::key,
+    enum_with_special_names::keys,
+    enum_with_special_names::annotation,
+    enum_with_special_names::annotations,
+    enum_with_special_names::member,
+    enum_with_special_names::members,
+  }};
+  static constexpr const std::array<folly::StringPiece, 26> names = {{
+    "get",
+    "getter",
+    "lists",
+    "maps",
+    "name",
+    "name_to_value",
+    "names",
+    "prefix_tree",
+    "sets",
+    "setter",
+    "str",
+    "strings",
+    "type",
+    "value",
+    "value_to_name",
+    "values",
+    "id",
+    "ids",
+    "descriptor",
+    "descriptors",
+    "key",
+    "keys",
+    "annotation",
+    "annotations",
+    "member",
+    "members",
+  }};
+};
+}} // namespace
+namespace apache { namespace thrift {
+template <> struct TEnumDataStorage< ::test_cpp1::cpp_reflection::enum_with_special_names> {
+  using storage_type =  ::test_cpp1::cpp_reflection::_enum_with_special_namesEnumDataStorage;
+};
+}} // apache::thrift
 

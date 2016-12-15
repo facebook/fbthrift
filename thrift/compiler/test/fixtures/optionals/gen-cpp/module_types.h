@@ -30,6 +30,16 @@ extern const typename apache::thrift::detail::TEnumMapFactory<Animal, int>::Name
 
 
 namespace apache { namespace thrift {
+template <> struct TEnumDataStorage< ::Animal>;
+template <> const std::size_t TEnumTraitsBase< ::Animal>::size;
+template <> const folly::Range<const  ::Animal*> TEnumTraitsBase< ::Animal>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::Animal>::names;
+}} // apache::thrift
+
+
+
+
+namespace apache { namespace thrift {
 template<>
 struct TEnumTraits< ::Animal> : public TEnumTraitsBase< ::Animal>
 {

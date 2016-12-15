@@ -514,28 +514,46 @@ class CppGenerator(t_generator.Generator):
         self._generate_hash_equal_to(tenum)
 
         with self._types_global.namespace('apache.thrift').scope:
+            out(
+                'template <> struct TEnumDataStorage<{fullName}>;'
+                .format(**locals()))
             # TEnumTraitsBase<T> class member specializations
-            # TEnumTraitsBase<T>::enumerators()
-            pairTypeName = "std::pair<{fullName}, folly::StringPiece>"\
-                .format(**locals())
-            with out().defn(
-                    'template <> folly::Range<const {pairTypeName}*> '
-                    'TEnumTraitsBase<{fullName}>::{{name}}()'
-                    .format(**locals()),
-                    name='enumerators'):
-                if constants:
-                    out(
-                        'static constexpr const {pairTypeName} '
-                        'storage[{size}] = {{'
-                        .format(size=len(constants), **locals()))
-                    for c in constants:
-                        out(
-                            '  {{{fullName}::{name}, "{name}"}},'
-                            .format(name=c.name, **locals()))
-                    out('};')
-                    out('return folly::range(storage);')
+            storage_fullname = (
+                '{ns}_{name}EnumDataStorage'.format(ns=ns, name=tenum.name))
+
+            def storage_range_of(field):
+                if not constants:
+                    return '{}'
                 else:
-                    out('return {};')
+                    return 'folly::range({}::{})'.format(
+                        storage_fullname, field)
+            # TEnumTraitsBase<T>::size
+            out(
+                'template <> const std::size_t '
+                'TEnumTraitsBase<{fullName}>::size;'
+                .format(**locals()))
+            out().impl(
+                'template <> const std::size_t '
+                'TEnumTraitsBase<{fullName}>::size = {size};'
+                .format(size=len(constants), **locals()))
+            # TEnumTraitsBase<T>::values
+            out(
+                'template <> const folly::Range<const {fullName}*> '
+                'TEnumTraitsBase<{fullName}>::values;'
+                .format(**locals()))
+            out().impl(
+                'template <> const folly::Range<const {fullName}*> '
+                'TEnumTraitsBase<{fullName}>::values = {range};'
+                .format(range=storage_range_of('values'), **locals()))
+            # TEnumTraitsBase<T>::names
+            out(
+                'template <> const folly::Range<const folly::StringPiece*> '
+                'TEnumTraitsBase<{fullName}>::names;'
+                .format(**locals()))
+            out().impl(
+                'template <> const folly::Range<const folly::StringPiece*> '
+                'TEnumTraitsBase<{fullName}>::names = {range};'
+                .format(range=storage_range_of('names'), **locals()))
             # TEnumTraitsBase<T>::findName()
             with out().defn('template <> const char* TEnumTraitsBase<{fullName}>::'
                         'findName({fullName} value)'.format(**locals()),
@@ -633,8 +651,55 @@ class CppGenerator(t_generator.Generator):
                 self._program, self._program.name + '_data.h')))
             sg()
             return
+        sg('#include <cstddef>')
+        sg()
+        sg('#include <thrift/lib/cpp/Thrift.h>')
+        sg()
         sg('#include "{0}_types.h"'.format(
             self._with_include_prefix(self._program, self._program.name)))
+        sg()
+        for enum in self._program.enums:
+            storage_name = "_{}EnumDataStorage".format(enum.name)
+            sns = sg.namespace(self._get_namespace()).scope
+            with sns:
+                s = sns.cls('struct {}'.format(storage_name)).scope
+                with s:
+                    out('using type = {};'.format(enum.name))
+                    out('static constexpr const std::size_t size = {};'
+                        .format(len(enum.constants)))
+                    out('static constexpr const '
+                        'std::array<{}, {}> values = {{{{'
+                        .format(enum.name, len(enum.constants)))
+                    for c in enum.constants:
+                        out('  {}::{},'.format(enum.name, c.name))
+                    out('}};')
+                    out('static constexpr const '
+                        'std::array<folly::StringPiece, {}> names = {{{{'
+                        .format(len(enum.constants)))
+                    for c in enum.constants:
+                        out('  "{}",'.format(c.name))
+                    out('}};')
+                sns.impl(
+                    'constexpr const std::size_t {}::size;'
+                    .format(storage_name))
+                sns.impl(
+                    'constexpr const '
+                    'std::array<{}, {}> {}::values;'
+                    .format(enum.name, len(enum.constants), storage_name))
+                sns.impl(
+                    'constexpr const '
+                    'std::array<folly::StringPiece, {}> {}::names;'
+                    .format(len(enum.constants), storage_name))
+            sns = sg.namespace('apache.thrift').scope
+            with sns:
+                ns = self._namespace_prefix(self._get_namespace())
+                out(
+                    'template <> struct TEnumDataStorage<{}{}> {{'
+                    .format(ns, enum.name))
+                out(
+                    '  using storage_type = {}{};'
+                    .format(ns, storage_name))
+                out('};')
         sg()
 
     # =====================================================================
@@ -5430,7 +5495,11 @@ class CppGenerator(t_generator.Generator):
                 s('#include "{0}"'.format(inc))
         s()
         # The swap() code needs <algorithm> for std::swap()
-        print >>types_out_impl, '\n#include <algorithm>\n'
+        print >>types_out_impl, '#include <algorithm>\n'
+
+        print >>types_out_impl, '#include "{}_data.h"\n'.format(
+            self._with_include_prefix(self._program, name))
+        print >>types_out_impl, '\n'
 
         fatal_header = '#include "{0}"'.format(self._fatal_header())
         if self.flag_lean_mean_meta_machine:

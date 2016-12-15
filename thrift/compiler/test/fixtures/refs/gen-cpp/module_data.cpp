@@ -6,3 +6,8 @@
  */
 #include "thrift/compiler/test/fixtures/refs/gen-cpp/module_data.h"
 
+
+constexpr const std::size_t _TypedEnumEnumDataStorage::size;
+constexpr const std::array<TypedEnum, 2> _TypedEnumEnumDataStorage::values;
+constexpr const std::array<folly::StringPiece, 2> _TypedEnumEnumDataStorage::names;
+

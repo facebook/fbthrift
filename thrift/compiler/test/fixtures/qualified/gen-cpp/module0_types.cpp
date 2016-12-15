@@ -5,6 +5,7 @@
  *  @generated
  */
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp/module0_types.h"
+#include "thrift/compiler/test/fixtures/qualified/gen-cpp/module0_data.h"
 
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp/module0_reflection.h"
 
@@ -19,15 +20,9 @@ const typename apache::thrift::detail::TEnumMapFactory<Enum, int>::NamesToValues
 
 } // namespace
 namespace apache { namespace thrift {
-template<>
-folly::Range<const std::pair< ::MODULE0::Enum, folly::StringPiece>*> TEnumTraitsBase< ::MODULE0::Enum>::enumerators() {
-  static constexpr const std::pair< ::MODULE0::Enum, folly::StringPiece> storage[3] = {
-    { ::MODULE0::Enum::ONE, "ONE"},
-    { ::MODULE0::Enum::TWO, "TWO"},
-    { ::MODULE0::Enum::THREE, "THREE"},
-  };
-  return folly::range(storage);
-}
+template <>const std::size_t TEnumTraitsBase< ::MODULE0::Enum>::size = 3;
+template <>const folly::Range<const  ::MODULE0::Enum*> TEnumTraitsBase< ::MODULE0::Enum>::values = folly::range( ::MODULE0::_EnumEnumDataStorage::values);
+template <>const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::MODULE0::Enum>::names = folly::range( ::MODULE0::_EnumEnumDataStorage::names);
 
 template<>
 const char* TEnumTraitsBase< ::MODULE0::Enum>::findName( ::MODULE0::Enum value) {

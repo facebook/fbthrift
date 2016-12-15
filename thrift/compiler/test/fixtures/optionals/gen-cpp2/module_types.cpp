@@ -8,8 +8,11 @@
 
 #include "thrift/compiler/test/fixtures/optionals/gen-cpp2/module_types.tcc"
 
-
 #include <algorithm>
+
+#include "thrift/compiler/test/fixtures/optionals/gen-cpp2/module_data.h"
+
+
 
 namespace cpp2 {
 
@@ -22,15 +25,9 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-template <> folly::Range<const std::pair< ::cpp2::Animal, folly::StringPiece>*> TEnumTraitsBase< ::cpp2::Animal>::enumerators() {
-  static constexpr const std::pair< ::cpp2::Animal, folly::StringPiece> storage[3] = {
-    { ::cpp2::Animal::DOG, "DOG"},
-    { ::cpp2::Animal::CAT, "CAT"},
-    { ::cpp2::Animal::TARANTULA, "TARANTULA"},
-  };
-  return folly::range(storage);
-}
-
+template <> const std::size_t TEnumTraitsBase< ::cpp2::Animal>::size = 3;
+template <> const folly::Range<const  ::cpp2::Animal*> TEnumTraitsBase< ::cpp2::Animal>::values = folly::range( ::cpp2::_AnimalEnumDataStorage::values);
+template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::cpp2::Animal>::names = folly::range( ::cpp2::_AnimalEnumDataStorage::names);
 template <> const char* TEnumTraitsBase< ::cpp2::Animal>::findName( ::cpp2::Animal value) {
   return findName( ::cpp2::_Animal_VALUES_TO_NAMES, value);
 }

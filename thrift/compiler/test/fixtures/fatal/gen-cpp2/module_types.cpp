@@ -8,8 +8,11 @@
 
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_types.tcc"
 
-
 #include <algorithm>
+
+#include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_data.h"
+
+
 
 namespace test_cpp2 { namespace cpp_reflection {
 
@@ -22,15 +25,9 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-template <> folly::Range<const std::pair< ::test_cpp2::cpp_reflection::enum1, folly::StringPiece>*> TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum1>::enumerators() {
-  static constexpr const std::pair< ::test_cpp2::cpp_reflection::enum1, folly::StringPiece> storage[3] = {
-    { ::test_cpp2::cpp_reflection::enum1::field0, "field0"},
-    { ::test_cpp2::cpp_reflection::enum1::field1, "field1"},
-    { ::test_cpp2::cpp_reflection::enum1::field2, "field2"},
-  };
-  return folly::range(storage);
-}
-
+template <> const std::size_t TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum1>::size = 3;
+template <> const folly::Range<const  ::test_cpp2::cpp_reflection::enum1*> TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum1>::values = folly::range( ::test_cpp2::cpp_reflection::_enum1EnumDataStorage::values);
+template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum1>::names = folly::range( ::test_cpp2::cpp_reflection::_enum1EnumDataStorage::names);
 template <> const char* TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum1>::findName( ::test_cpp2::cpp_reflection::enum1 value) {
   return findName( ::test_cpp2::cpp_reflection::_enum1_VALUES_TO_NAMES, value);
 }
@@ -51,15 +48,9 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-template <> folly::Range<const std::pair< ::test_cpp2::cpp_reflection::enum2, folly::StringPiece>*> TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum2>::enumerators() {
-  static constexpr const std::pair< ::test_cpp2::cpp_reflection::enum2, folly::StringPiece> storage[3] = {
-    { ::test_cpp2::cpp_reflection::enum2::field0_2, "field0_2"},
-    { ::test_cpp2::cpp_reflection::enum2::field1_2, "field1_2"},
-    { ::test_cpp2::cpp_reflection::enum2::field2_2, "field2_2"},
-  };
-  return folly::range(storage);
-}
-
+template <> const std::size_t TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum2>::size = 3;
+template <> const folly::Range<const  ::test_cpp2::cpp_reflection::enum2*> TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum2>::values = folly::range( ::test_cpp2::cpp_reflection::_enum2EnumDataStorage::values);
+template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum2>::names = folly::range( ::test_cpp2::cpp_reflection::_enum2EnumDataStorage::names);
 template <> const char* TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum2>::findName( ::test_cpp2::cpp_reflection::enum2 value) {
   return findName( ::test_cpp2::cpp_reflection::_enum2_VALUES_TO_NAMES, value);
 }
@@ -80,15 +71,9 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-template <> folly::Range<const std::pair< ::test_cpp2::cpp_reflection::enum3, folly::StringPiece>*> TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum3>::enumerators() {
-  static constexpr const std::pair< ::test_cpp2::cpp_reflection::enum3, folly::StringPiece> storage[3] = {
-    { ::test_cpp2::cpp_reflection::enum3::field0_3, "field0_3"},
-    { ::test_cpp2::cpp_reflection::enum3::field1_3, "field1_3"},
-    { ::test_cpp2::cpp_reflection::enum3::field2_3, "field2_3"},
-  };
-  return folly::range(storage);
-}
-
+template <> const std::size_t TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum3>::size = 3;
+template <> const folly::Range<const  ::test_cpp2::cpp_reflection::enum3*> TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum3>::values = folly::range( ::test_cpp2::cpp_reflection::_enum3EnumDataStorage::values);
+template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum3>::names = folly::range( ::test_cpp2::cpp_reflection::_enum3EnumDataStorage::names);
 template <> const char* TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum3>::findName( ::test_cpp2::cpp_reflection::enum3 value) {
   return findName( ::test_cpp2::cpp_reflection::_enum3_VALUES_TO_NAMES, value);
 }
@@ -109,38 +94,9 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-template <> folly::Range<const std::pair< ::test_cpp2::cpp_reflection::enum_with_special_names, folly::StringPiece>*> TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum_with_special_names>::enumerators() {
-  static constexpr const std::pair< ::test_cpp2::cpp_reflection::enum_with_special_names, folly::StringPiece> storage[26] = {
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::get, "get"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::getter, "getter"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::lists, "lists"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::maps, "maps"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::name, "name"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::name_to_value, "name_to_value"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::names, "names"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::prefix_tree, "prefix_tree"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::sets, "sets"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::setter, "setter"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::str, "str"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::strings, "strings"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::type, "type"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::value, "value"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::value_to_name, "value_to_name"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::values, "values"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::id, "id"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::ids, "ids"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::descriptor, "descriptor"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::descriptors, "descriptors"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::key, "key"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::keys, "keys"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::annotation, "annotation"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::annotations, "annotations"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::member, "member"},
-    { ::test_cpp2::cpp_reflection::enum_with_special_names::members, "members"},
-  };
-  return folly::range(storage);
-}
-
+template <> const std::size_t TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum_with_special_names>::size = 26;
+template <> const folly::Range<const  ::test_cpp2::cpp_reflection::enum_with_special_names*> TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum_with_special_names>::values = folly::range( ::test_cpp2::cpp_reflection::_enum_with_special_namesEnumDataStorage::values);
+template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum_with_special_names>::names = folly::range( ::test_cpp2::cpp_reflection::_enum_with_special_namesEnumDataStorage::names);
 template <> const char* TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum_with_special_names>::findName( ::test_cpp2::cpp_reflection::enum_with_special_names value) {
   return findName( ::test_cpp2::cpp_reflection::_enum_with_special_names_VALUES_TO_NAMES, value);
 }

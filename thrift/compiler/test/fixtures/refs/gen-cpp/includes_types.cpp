@@ -5,6 +5,7 @@
  *  @generated
  */
 #include "thrift/compiler/test/fixtures/refs/gen-cpp/includes_types.h"
+#include "thrift/compiler/test/fixtures/refs/gen-cpp/includes_data.h"
 
 #include "thrift/compiler/test/fixtures/refs/gen-cpp/includes_reflection.h"
 

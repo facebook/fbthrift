@@ -5,6 +5,7 @@
  *  @generated
  */
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp/module2_types.h"
+#include "thrift/compiler/test/fixtures/qualified/gen-cpp/module2_data.h"
 
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp/module2_reflection.h"
 

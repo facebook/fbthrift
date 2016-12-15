@@ -8,8 +8,11 @@
 
 #include "thrift/compiler/test/fixtures/basic/gen-cpp2/module_types.tcc"
 
-
 #include <algorithm>
+
+#include "thrift/compiler/test/fixtures/basic/gen-cpp2/module_data.h"
+
+
 
 namespace cpp2 {
 
@@ -22,14 +25,9 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-template <> folly::Range<const std::pair< ::cpp2::MyEnum, folly::StringPiece>*> TEnumTraitsBase< ::cpp2::MyEnum>::enumerators() {
-  static constexpr const std::pair< ::cpp2::MyEnum, folly::StringPiece> storage[2] = {
-    { ::cpp2::MyEnum::MyValue1, "MyValue1"},
-    { ::cpp2::MyEnum::MyValue2, "MyValue2"},
-  };
-  return folly::range(storage);
-}
-
+template <> const std::size_t TEnumTraitsBase< ::cpp2::MyEnum>::size = 2;
+template <> const folly::Range<const  ::cpp2::MyEnum*> TEnumTraitsBase< ::cpp2::MyEnum>::values = folly::range( ::cpp2::_MyEnumEnumDataStorage::values);
+template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::cpp2::MyEnum>::names = folly::range( ::cpp2::_MyEnumEnumDataStorage::names);
 template <> const char* TEnumTraitsBase< ::cpp2::MyEnum>::findName( ::cpp2::MyEnum value) {
   return findName( ::cpp2::_MyEnum_VALUES_TO_NAMES, value);
 }

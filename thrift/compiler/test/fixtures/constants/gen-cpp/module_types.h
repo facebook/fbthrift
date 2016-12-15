@@ -25,6 +25,16 @@ extern const typename apache::thrift::detail::TEnumMapFactory<EmptyEnum, int>::V
 
 extern const typename apache::thrift::detail::TEnumMapFactory<EmptyEnum, int>::NamesToValuesMapType _EmptyEnum_NAMES_TO_VALUES;
 
+
+namespace apache { namespace thrift {
+template <> struct TEnumDataStorage< ::EmptyEnum>;
+template <> const std::size_t TEnumTraitsBase< ::EmptyEnum>::size;
+template <> const folly::Range<const  ::EmptyEnum*> TEnumTraitsBase< ::EmptyEnum>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::EmptyEnum>::names;
+}} // apache::thrift
+
+
+
 enum City {
   NYC = 0,
   MPK = 1,
@@ -35,6 +45,16 @@ enum City {
 extern const typename apache::thrift::detail::TEnumMapFactory<City, int>::ValuesToNamesMapType _City_VALUES_TO_NAMES;
 
 extern const typename apache::thrift::detail::TEnumMapFactory<City, int>::NamesToValuesMapType _City_NAMES_TO_VALUES;
+
+
+namespace apache { namespace thrift {
+template <> struct TEnumDataStorage< ::City>;
+template <> const std::size_t TEnumTraitsBase< ::City>::size;
+template <> const folly::Range<const  ::City*> TEnumTraitsBase< ::City>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::City>::names;
+}} // apache::thrift
+
+
 
 
 namespace apache { namespace thrift {
@@ -61,6 +81,16 @@ enum Company {
 extern const typename apache::thrift::detail::TEnumMapFactory<Company, int>::ValuesToNamesMapType _Company_VALUES_TO_NAMES;
 
 extern const typename apache::thrift::detail::TEnumMapFactory<Company, int>::NamesToValuesMapType _Company_NAMES_TO_VALUES;
+
+
+namespace apache { namespace thrift {
+template <> struct TEnumDataStorage< ::Company>;
+template <> const std::size_t TEnumTraitsBase< ::Company>::size;
+template <> const folly::Range<const  ::Company*> TEnumTraitsBase< ::Company>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::Company>::names;
+}} // apache::thrift
+
+
 
 
 namespace apache { namespace thrift {

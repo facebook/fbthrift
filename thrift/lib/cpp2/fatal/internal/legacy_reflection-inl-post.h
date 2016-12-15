@@ -175,11 +175,12 @@ struct impl<T, type_class::enumeration> {
     return storage;
   }
   static void go(schema_t& schema) {
+    using traits = TEnumTraits<T>;
     registering_datatype(
         schema, to_c_array<rname>::range(), rid(), [&](datatype_t& dt) {
       dt.__isset.enumValues = true;
-      for (auto e : TEnumTraits<T>::enumerators()) {
-        dt.enumValues[e.second.str()] = int(e.first);
+      for (size_t i = 0; i < traits::size; ++i) {
+        dt.enumValues[traits::names[i].str()] = int(traits::values[i]);
       }
     });
   }

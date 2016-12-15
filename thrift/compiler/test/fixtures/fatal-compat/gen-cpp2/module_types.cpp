@@ -8,8 +8,11 @@
 
 #include "thrift/compiler/test/fixtures/fatal-compat/gen-cpp2/module_types.tcc"
 
-
 #include <algorithm>
+
+#include "thrift/compiler/test/fixtures/fatal-compat/gen-cpp2/module_data.h"
+
+
 
 namespace test_cpp2 { namespace cpp_reflection {
 

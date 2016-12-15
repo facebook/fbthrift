@@ -5,6 +5,7 @@
  *  @generated
  */
 #include "thrift/compiler/test/fixtures/enum-strict/gen-cpp/module_types.h"
+#include "thrift/compiler/test/fixtures/enum-strict/gen-cpp/module_data.h"
 
 #include "thrift/compiler/test/fixtures/enum-strict/gen-cpp/module_reflection.h"
 
@@ -19,10 +20,9 @@ const typename apache::thrift::detail::TEnumMapFactory<EmptyEnum, EmptyEnum>::Na
 
 
 namespace apache { namespace thrift {
-template<>
-folly::Range<const std::pair< ::EmptyEnum, folly::StringPiece>*> TEnumTraitsBase< ::EmptyEnum>::enumerators() {
-  return {};
-}
+template <>const std::size_t TEnumTraitsBase< ::EmptyEnum>::size = 0;
+template <>const folly::Range<const  ::EmptyEnum*> TEnumTraitsBase< ::EmptyEnum>::values = {};
+template <>const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::EmptyEnum>::names = {};
 
 template<>
 const char* TEnumTraitsBase< ::EmptyEnum>::findName( ::EmptyEnum value) {
@@ -42,14 +42,9 @@ const typename apache::thrift::detail::TEnumMapFactory<MyEnum, MyEnum>::NamesToV
 
 
 namespace apache { namespace thrift {
-template<>
-folly::Range<const std::pair< ::MyEnum, folly::StringPiece>*> TEnumTraitsBase< ::MyEnum>::enumerators() {
-  static constexpr const std::pair< ::MyEnum, folly::StringPiece> storage[2] = {
-    { ::MyEnum::kMyFoo, "kMyFoo"},
-    { ::MyEnum::kMyBar, "kMyBar"},
-  };
-  return folly::range(storage);
-}
+template <>const std::size_t TEnumTraitsBase< ::MyEnum>::size = 2;
+template <>const folly::Range<const  ::MyEnum*> TEnumTraitsBase< ::MyEnum>::values = folly::range( ::_MyEnumEnumDataStorage::values);
+template <>const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::MyEnum>::names = folly::range( ::_MyEnumEnumDataStorage::names);
 
 template<>
 const char* TEnumTraitsBase< ::MyEnum>::findName( ::MyEnum value) {

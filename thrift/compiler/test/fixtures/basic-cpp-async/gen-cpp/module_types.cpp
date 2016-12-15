@@ -5,6 +5,7 @@
  *  @generated
  */
 #include "thrift/compiler/test/fixtures/basic-cpp-async/gen-cpp/module_types.h"
+#include "thrift/compiler/test/fixtures/basic-cpp-async/gen-cpp/module_data.h"
 
 #include <algorithm>
 #include <string.h>
@@ -17,14 +18,9 @@ const typename apache::thrift::detail::TEnumMapFactory<MyEnum, int>::NamesToValu
 
 
 namespace apache { namespace thrift {
-template<>
-folly::Range<const std::pair< ::MyEnum, folly::StringPiece>*> TEnumTraitsBase< ::MyEnum>::enumerators() {
-  static constexpr const std::pair< ::MyEnum, folly::StringPiece> storage[2] = {
-    { ::MyEnum::MyValue1, "MyValue1"},
-    { ::MyEnum::MyValue2, "MyValue2"},
-  };
-  return folly::range(storage);
-}
+template <>const std::size_t TEnumTraitsBase< ::MyEnum>::size = 2;
+template <>const folly::Range<const  ::MyEnum*> TEnumTraitsBase< ::MyEnum>::values = folly::range( ::_MyEnumEnumDataStorage::values);
+template <>const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::MyEnum>::names = folly::range( ::_MyEnumEnumDataStorage::names);
 
 template<>
 const char* TEnumTraitsBase< ::MyEnum>::findName( ::MyEnum value) {

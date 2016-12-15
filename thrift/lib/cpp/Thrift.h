@@ -75,11 +75,22 @@ struct TStructType {
 };
 
 /**
+ * Specialization fwd-decl in _types.h.
+ * Specialization defn in _data.h.
+ */
+template <typename T>
+struct TEnumDataStorage;
+
+/**
  * Helper template class for enum<->string conversion.
  */
 template<typename T>
 struct TEnumTraitsBase {
-  static folly::Range<const std::pair<T, folly::StringPiece>*> enumerators();
+  static const std::size_t size;
+  static const folly::Range<const T*> values;
+  static const folly::Range<const folly::StringPiece*> names;
+  // only has data when generated with cpp:enum_struct:
+  static const folly::Range<const folly::StringPiece*> prefixed_names;
 
   /**
    * Finds the name of a given enum value, returning it or nullptr on failure.
@@ -162,18 +173,19 @@ struct TEnumMapFactory {
   using ValueType = ValueTypeT;
   using ValuesToNamesMapType = std::map<ValueType, const char*>;
   using NamesToValuesMapType = std::map<const char*, ValueType, ltstr>;
+  using Traits = TEnumTraits<EnumType>;
 
   static ValuesToNamesMapType makeValuesToNamesMap() {
     ValuesToNamesMapType _return;
-    for (auto kvp : TEnumTraits<EnumType>::enumerators()) {
-      _return.emplace(ValueType(kvp.first), kvp.second.data());
+    for (size_t i = 0; i < Traits::size; ++i) {
+      _return.emplace(ValueType(Traits::values[i]), Traits::names[i].data());
     }
     return _return;
   }
   static NamesToValuesMapType makeNamesToValuesMap() {
     NamesToValuesMapType _return;
-    for (auto kvp : TEnumTraits<EnumType>::enumerators()) {
-      _return.emplace(kvp.second.data(), ValueType(kvp.first));
+    for (size_t i = 0; i < Traits::size; ++i) {
+      _return.emplace(Traits::names[i].data(), ValueType(Traits::values[i]));
     }
     return _return;
   }

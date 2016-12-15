@@ -5,6 +5,7 @@
  *  @generated
  */
 #include "thrift/compiler/test/fixtures/constants/gen-cpp/module_types.h"
+#include "thrift/compiler/test/fixtures/constants/gen-cpp/module_data.h"
 
 #include "thrift/compiler/test/fixtures/constants/gen-cpp/module_reflection.h"
 
@@ -19,10 +20,9 @@ const typename apache::thrift::detail::TEnumMapFactory<EmptyEnum, int>::NamesToV
 
 
 namespace apache { namespace thrift {
-template<>
-folly::Range<const std::pair< ::EmptyEnum, folly::StringPiece>*> TEnumTraitsBase< ::EmptyEnum>::enumerators() {
-  return {};
-}
+template <>const std::size_t TEnumTraitsBase< ::EmptyEnum>::size = 0;
+template <>const folly::Range<const  ::EmptyEnum*> TEnumTraitsBase< ::EmptyEnum>::values = {};
+template <>const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::EmptyEnum>::names = {};
 
 template<>
 const char* TEnumTraitsBase< ::EmptyEnum>::findName( ::EmptyEnum value) {
@@ -42,16 +42,9 @@ const typename apache::thrift::detail::TEnumMapFactory<City, int>::NamesToValues
 
 
 namespace apache { namespace thrift {
-template<>
-folly::Range<const std::pair< ::City, folly::StringPiece>*> TEnumTraitsBase< ::City>::enumerators() {
-  static constexpr const std::pair< ::City, folly::StringPiece> storage[4] = {
-    { ::City::NYC, "NYC"},
-    { ::City::MPK, "MPK"},
-    { ::City::SEA, "SEA"},
-    { ::City::LON, "LON"},
-  };
-  return folly::range(storage);
-}
+template <>const std::size_t TEnumTraitsBase< ::City>::size = 4;
+template <>const folly::Range<const  ::City*> TEnumTraitsBase< ::City>::values = folly::range( ::_CityEnumDataStorage::values);
+template <>const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::City>::names = folly::range( ::_CityEnumDataStorage::names);
 
 template<>
 const char* TEnumTraitsBase< ::City>::findName( ::City value) {
@@ -71,16 +64,9 @@ const typename apache::thrift::detail::TEnumMapFactory<Company, int>::NamesToVal
 
 
 namespace apache { namespace thrift {
-template<>
-folly::Range<const std::pair< ::Company, folly::StringPiece>*> TEnumTraitsBase< ::Company>::enumerators() {
-  static constexpr const std::pair< ::Company, folly::StringPiece> storage[4] = {
-    { ::Company::FACEBOOK, "FACEBOOK"},
-    { ::Company::WHATSAPP, "WHATSAPP"},
-    { ::Company::OCULUS, "OCULUS"},
-    { ::Company::INSTAGRAM, "INSTAGRAM"},
-  };
-  return folly::range(storage);
-}
+template <>const std::size_t TEnumTraitsBase< ::Company>::size = 4;
+template <>const folly::Range<const  ::Company*> TEnumTraitsBase< ::Company>::values = folly::range( ::_CompanyEnumDataStorage::values);
+template <>const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::Company>::names = folly::range( ::_CompanyEnumDataStorage::names);
 
 template<>
 const char* TEnumTraitsBase< ::Company>::findName( ::Company value) {

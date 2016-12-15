@@ -8,8 +8,11 @@
 
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/service_types.tcc"
 
-
 #include <algorithm>
+
+#include "thrift/compiler/test/fixtures/includes/gen-cpp2/service_data.h"
+
+
 
 namespace cpp2 {
 

@@ -6,3 +6,8 @@
  */
 #include "thrift/compiler/test/fixtures/optionals/gen-cpp/module_data.h"
 
+
+constexpr const std::size_t _AnimalEnumDataStorage::size;
+constexpr const std::array<Animal, 3> _AnimalEnumDataStorage::values;
+constexpr const std::array<folly::StringPiece, 3> _AnimalEnumDataStorage::names;
+

@@ -6,5 +6,29 @@
  */
 #pragma once
 
+#include <cstddef>
+
+#include <thrift/lib/cpp/Thrift.h>
+
 #include "thrift/compiler/test/fixtures/basic-cpp-async/gen-cpp/module_types.h"
+
+
+struct _MyEnumEnumDataStorage {
+  using type = MyEnum;
+  static constexpr const std::size_t size = 2;
+  static constexpr const std::array<MyEnum, 2> values = {{
+    MyEnum::MyValue1,
+    MyEnum::MyValue2,
+  }};
+  static constexpr const std::array<folly::StringPiece, 2> names = {{
+    "MyValue1",
+    "MyValue2",
+  }};
+};
+
+namespace apache { namespace thrift {
+template <> struct TEnumDataStorage< ::MyEnum> {
+  using storage_type =  ::_MyEnumEnumDataStorage;
+};
+}} // apache::thrift
 

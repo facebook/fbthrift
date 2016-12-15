@@ -41,7 +41,10 @@ template<> struct equal_to<typename  ::cpp2::Animal> : public apache::thrift::de
 } // std
 namespace apache { namespace thrift {
 
-template <> folly::Range<const std::pair< ::cpp2::Animal, folly::StringPiece>*> TEnumTraitsBase< ::cpp2::Animal>::enumerators();
+template <> struct TEnumDataStorage< ::cpp2::Animal>;
+template <> const std::size_t TEnumTraitsBase< ::cpp2::Animal>::size;
+template <> const folly::Range<const  ::cpp2::Animal*> TEnumTraitsBase< ::cpp2::Animal>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::cpp2::Animal>::names;
 template <> const char* TEnumTraitsBase< ::cpp2::Animal>::findName( ::cpp2::Animal value);
 template <> bool TEnumTraitsBase< ::cpp2::Animal>::findValue(const char* name,  ::cpp2::Animal* outValue);
 

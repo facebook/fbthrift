@@ -6,3 +6,11 @@
  */
 #include "thrift/compiler/test/fixtures/enum-strict/gen-cpp/module_data.h"
 
+
+constexpr const std::size_t _EmptyEnumEnumDataStorage::size;
+
+
+constexpr const std::size_t _MyEnumEnumDataStorage::size;
+constexpr const std::array<MyEnum, 2> _MyEnumEnumDataStorage::values;
+constexpr const std::array<folly::StringPiece, 2> _MyEnumEnumDataStorage::names;
+

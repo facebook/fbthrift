@@ -6,3 +6,8 @@
  */
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp/module0_data.h"
 
+namespace MODULE0 {
+constexpr const std::size_t _EnumEnumDataStorage::size;
+constexpr const std::array<Enum, 3> _EnumEnumDataStorage::values;
+constexpr const std::array<folly::StringPiece, 3> _EnumEnumDataStorage::names;
+} // namespace

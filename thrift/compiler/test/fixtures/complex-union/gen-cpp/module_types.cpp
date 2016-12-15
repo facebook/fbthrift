@@ -5,6 +5,7 @@
  *  @generated
  */
 #include "thrift/compiler/test/fixtures/complex-union/gen-cpp/module_types.h"
+#include "thrift/compiler/test/fixtures/complex-union/gen-cpp/module_data.h"
 
 #include "thrift/compiler/test/fixtures/complex-union/gen-cpp/module_reflection.h"
 

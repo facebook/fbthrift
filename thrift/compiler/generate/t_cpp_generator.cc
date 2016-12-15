@@ -588,6 +588,10 @@ void t_cpp_generator::init_generator() {
   f_data_ <<
     "#pragma once" << endl <<
     endl <<
+    "#include <cstddef>" << endl <<
+    endl <<
+    "#include <thrift/lib/cpp/Thrift.h>" << endl <<
+    endl <<
     "#include \"" <<
     get_include_prefix(*get_program()) << program_name_ << "_types.h" <<
     "\"" << endl <<
@@ -678,6 +682,8 @@ void t_cpp_generator::init_generator() {
   f_types_impl_ <<
     "#include \"" << get_include_prefix(*get_program()) << program_name_ <<
     "_types.h\"" << endl <<
+    "#include \"" << get_include_prefix(*get_program()) << program_name_ <<
+    "_data.h\"" << endl <<
     endl;
   f_types_tcc_ <<
     "#include \"" << get_include_prefix(*get_program()) << program_name_ <<
@@ -919,6 +925,19 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
     "extern const typename " << map_factory << "::NamesToValuesMapType " <<
     namesToValues << ";" << endl << endl;
 
+  f_types_ <<
+    ns_close_ << endl <<
+    "namespace apache { namespace thrift {" << endl <<
+    "template <> struct TEnumDataStorage<" << fullname << ">;" << endl <<
+    "template <> const std::size_t " <<
+    "TEnumTraitsBase<" << fullname << ">::size;" << endl <<
+    "template <> const folly::Range<const " << fullname << "*> " <<
+    "TEnumTraitsBase<" << fullname << ">::values;" << endl <<
+    "template <> const folly::Range<const folly::StringPiece*> " <<
+    "TEnumTraitsBase<" << fullname << ">::names;" << endl <<
+    "}} // apache::thrift" << endl << endl <<
+    ns_open_ << endl << endl;
+
   if (!minName.empty()) {
     f_types_ <<
       ns_close_ << endl <<
@@ -948,39 +967,36 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
     namesToValues << " = " << map_factory << "::makeNamesToValuesMap();" <<
     endl << endl;
 
+  string storage_name = "_" + name + "EnumDataStorage";
+  string storage_fullname = ns_prefix_ + storage_name;
+  auto storage_range_of = [&](const string& field) {
+    return constants.size() == 0
+      ? "{}"
+      : "folly::range(" + storage_fullname + "::" + field + ")";
+  };
+
   // TEnumTraitsBase<T> class member specializations
   f_types_impl_ <<
     ns_close_ << endl <<
     "namespace apache { namespace thrift {" << endl;
-  // TEnumTraitsBase<T>::enumerators()
-  const auto pair_type_name = "std::pair<" + fullname + ", folly::StringPiece>";
+  // TEnumTraitsBase<T>::size
   f_types_impl_ <<
-    "template<>" << endl <<
-    "folly::Range<const " << pair_type_name << "*> " <<
-    "TEnumTraitsBase<" << fullname << ">::enumerators() {" << endl;
-  indent_up();
-  if (constants.size() > 0) {
-    f_types_impl_ <<
-      indent() << "static constexpr const " << pair_type_name << " " <<
-      "storage[" << constants.size() << "] = {" << endl;
-    indent_up();
-    for (const auto c : constants) {
-      f_types_impl_ <<
-        indent() << "{" << fullname << "::" << c->get_name() << ", " <<
-        "\"" << c->get_name() << "\"}," << endl;
-    }
-    indent_down();
-    f_types_impl_ <<
-      indent() << "};" << endl;
-    f_types_impl_ <<
-      indent() << "return folly::range(storage);" << endl;
-  } else {
-    f_types_impl_ <<
-      indent() << "return {};" << endl;
-  }
-  indent_down();
+    "template <>" <<
+    "const std::size_t TEnumTraitsBase<" << fullname << ">::size = " <<
+    constants.size() << ";" << endl;
+  // TEnumTraitsBase<T>::values
   f_types_impl_ <<
-    "}" << endl << endl;
+    "template <>" <<
+    "const folly::Range<const " << fullname << "*> " <<
+    "TEnumTraitsBase<" << fullname << ">::values = " <<
+    storage_range_of("values") << ";" << endl;
+  // TEnumTraitsBase<T>::names
+  f_types_impl_ <<
+    "template <>" <<
+    "const folly::Range<const folly::StringPiece*> " <<
+    "TEnumTraitsBase<" << fullname << ">::names = " <<
+    storage_range_of("names") << ";" << endl;
+  f_types_impl_ << endl;
   // TEnumTraitsBase<T>::findName()
   f_types_impl_ <<
     "template<>" << endl <<
@@ -1002,6 +1018,83 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
     ns_open_ << endl;
 
   generate_hash_and_equal_to(f_types_, tenum, tenum->get_name());
+
+  // generate _data.h code for the enum
+  f_data_ << indent() <<
+    ns_open_ << endl;
+  f_data_ << indent() <<
+    "struct " << storage_name << " {" << endl;
+  indent_up();
+  // type
+  f_data_ << indent() <<
+    "using type = " << name << ";" << endl;
+  // size
+  f_data_ << indent() <<
+    "static constexpr const std::size_t size = " << constants.size() << ";" <<
+    endl;
+  // values
+  f_data_ << indent() <<
+    "static constexpr const " <<
+    "std::array<" << name << ", " << constants.size() << "> " <<
+    "values = {{" << endl;
+  indent_up();
+  for (const auto& c : constants) {
+    f_data_ << indent() <<
+      name << "::" << c->get_name() << "," << endl;
+  }
+  indent_down();
+  f_data_ << indent() <<
+    "}};" << endl;
+  // names
+  f_data_ << indent() <<
+    "static constexpr const " <<
+    "std::array<folly::StringPiece, " << constants.size() << "> " <<
+    "names = {{" << endl;
+  indent_up();
+  for (const auto& c : constants) {
+    f_data_ << indent() <<
+      "\"" << c->get_name() << "\"," << endl;
+  }
+  indent_down();
+  f_data_ << indent() <<
+    "}};" << endl;
+  // trailer
+  indent_down();
+  f_data_ << indent() <<
+    "};" << endl;
+  f_data_ << indent() <<
+    ns_close_ << endl;
+
+  f_data_ << indent() <<
+    "namespace apache { namespace thrift {" << endl;
+  f_data_ << indent() <<
+    "template <> struct TEnumDataStorage<" << fullname << "> {" << endl;
+  indent_up();
+  f_data_ << indent() <<
+    "using storage_type = " << storage_fullname << ";" << endl;
+  indent_down();
+  f_data_ << indent() <<
+    "};" << endl;
+  f_data_ << indent() <<
+    "}} // apache::thrift" << endl << endl;
+
+  // generate _data.cpp code for the enum
+  f_data_impl_ << indent() <<
+    ns_open_ << endl;
+  f_data_impl_ << indent() <<
+    "constexpr const std::size_t " << storage_name << "::size;" << endl;
+  if (constants.size() > 0) {
+    f_data_impl_ << indent() <<
+      "constexpr const " <<
+      "std::array<" << name << ", " << constants.size() << "> " <<
+      storage_name << "::values;" << endl;
+    f_data_impl_ << indent() <<
+      "constexpr const " <<
+      "std::array<folly::StringPiece, " << constants.size() << "> " <<
+      storage_name << "::names;" << endl;
+  }
+  f_data_impl_ << indent() <<
+    ns_close_ << endl;
 }
 
 bool t_cpp_generator::is_inlined(t_const* c) {

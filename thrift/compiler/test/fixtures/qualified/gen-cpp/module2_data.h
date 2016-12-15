@@ -6,5 +6,9 @@
  */
 #pragma once
 
+#include <cstddef>
+
+#include <thrift/lib/cpp/Thrift.h>
+
 #include "thrift/compiler/test/fixtures/qualified/gen-cpp/module2_types.h"
 

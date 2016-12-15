@@ -25,6 +25,16 @@ extern const typename apache::thrift::detail::TEnumMapFactory<EmptyEnum, EmptyEn
 
 extern const typename apache::thrift::detail::TEnumMapFactory<EmptyEnum, EmptyEnum>::NamesToValuesMapType _EmptyEnum_NAMES_TO_VALUES;
 
+
+namespace apache { namespace thrift {
+template <> struct TEnumDataStorage< ::EmptyEnum>;
+template <> const std::size_t TEnumTraitsBase< ::EmptyEnum>::size;
+template <> const folly::Range<const  ::EmptyEnum*> TEnumTraitsBase< ::EmptyEnum>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::EmptyEnum>::names;
+}} // apache::thrift
+
+
+
 enum class MyEnum {
   kMyFoo = 1,
   kMyBar = 2,
@@ -33,6 +43,16 @@ enum class MyEnum {
 extern const typename apache::thrift::detail::TEnumMapFactory<MyEnum, MyEnum>::ValuesToNamesMapType _MyEnum_VALUES_TO_NAMES;
 
 extern const typename apache::thrift::detail::TEnumMapFactory<MyEnum, MyEnum>::NamesToValuesMapType _MyEnum_NAMES_TO_VALUES;
+
+
+namespace apache { namespace thrift {
+template <> struct TEnumDataStorage< ::MyEnum>;
+template <> const std::size_t TEnumTraitsBase< ::MyEnum>::size;
+template <> const folly::Range<const  ::MyEnum*> TEnumTraitsBase< ::MyEnum>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::MyEnum>::names;
+}} // apache::thrift
+
+
 
 
 namespace apache { namespace thrift {

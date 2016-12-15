@@ -6,3 +6,23 @@
  */
 #include "thrift/compiler/test/fixtures/fatal-compat/gen-cpp/module_data.h"
 
+namespace test_cpp1 { namespace cpp_reflection {
+constexpr const std::size_t _enum1EnumDataStorage::size;
+constexpr const std::array<enum1, 3> _enum1EnumDataStorage::values;
+constexpr const std::array<folly::StringPiece, 3> _enum1EnumDataStorage::names;
+}} // namespace
+namespace test_cpp1 { namespace cpp_reflection {
+constexpr const std::size_t _enum2EnumDataStorage::size;
+constexpr const std::array<enum2, 3> _enum2EnumDataStorage::values;
+constexpr const std::array<folly::StringPiece, 3> _enum2EnumDataStorage::names;
+}} // namespace
+namespace test_cpp1 { namespace cpp_reflection {
+constexpr const std::size_t _enum3EnumDataStorage::size;
+constexpr const std::array<enum3, 3> _enum3EnumDataStorage::values;
+constexpr const std::array<folly::StringPiece, 3> _enum3EnumDataStorage::names;
+}} // namespace
+namespace test_cpp1 { namespace cpp_reflection {
+constexpr const std::size_t _enum_with_special_namesEnumDataStorage::size;
+constexpr const std::array<enum_with_special_names, 26> _enum_with_special_namesEnumDataStorage::values;
+constexpr const std::array<folly::StringPiece, 26> _enum_with_special_namesEnumDataStorage::names;
+}} // namespace
