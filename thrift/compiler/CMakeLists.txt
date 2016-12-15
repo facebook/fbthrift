@@ -67,10 +67,11 @@ target_link_libraries(
   ${Boost_LIBRARIES}
 )
 # Force generate_lib linking (compiler will optimize it out otherwise)
-set(
-  GENERATE_LIB_LINKED
-  -Wl,--whole-archive generate_lib -Wl,--no-whole-archive
-)
+if(APPLE)
+  set(GENERATE_LINKED -Wl,-force_load generate_lib)
+elseif(UNIX)
+  set(GENERATE_LINKED -Wl,--whole-archive generate_lib -Wl,--no-whole-archive)
+endif(APPLE)
 
 # Compile Flex and Bison files and tie their dependencies
 BISON_TARGET(ThriftParser thrifty.yy ${CMAKE_BINARY_DIR}/thrifty.cc)
@@ -90,9 +91,8 @@ target_link_libraries(
 
   parse_lib
   thrift_base
-  ${GENERATE_LIB_LINKED}
+  ${GENERATE_LINKED}
   -lcrypto
-  -lglog
   -lmstch
 )
 # Add the parser definition for global variables between lex, parse, main

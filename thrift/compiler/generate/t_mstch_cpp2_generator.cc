@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
+#include <array>
 #include <memory>
+#include <vector>
 
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
