@@ -55,7 +55,7 @@ class TestSimpleJSONRead(unittest.TestCase):
         self.assertEqual(stuff_read.aString, '\\hello')
 
     def test_unusual_numbers(self):
-        j = b'{ "aListOfDouble": ["inf", "-inf", "nan"]}'
+        j = '{ "aListOfDouble": ["inf", "-inf", "nan"]}'
         stuff_read = readStuffFromJSON(j)
         self.assertEqual(len(stuff_read.aListOfDouble), 3)
         self.assertTrue(math.isinf(stuff_read.aListOfDouble[0]))
@@ -64,7 +64,7 @@ class TestSimpleJSONRead(unittest.TestCase):
 
     def test_unexpected_field(self):
         ss = SomeStruct(anInteger=1)
-        j = b'{ "anInteger": 101, "unexpected": 111.1}'
+        j = '{ "anInteger": 101, "unexpected": 111.1}'
         struct_read = readStuffFromJSON(j, struct_type=SomeStruct)
         self.assertEqual(struct_read.anInteger, 101)
 
@@ -132,7 +132,7 @@ class TestSimpleJSONRead(unittest.TestCase):
         self.assertEqual(stuff_read.anotherString, "Hey")
 
     def test_deserializer(self):
-        j = b'{"aShort": 1, "anInteger": 2, "aLong": 3}'
+        j = '{"aShort": 1, "anInteger": 2, "aLong": 3}'
         stuff = Stuff()
         Serializer.deserialize(
             TSimpleJSONProtocol.TSimpleJSONProtocolFactory(), j, stuff)
