@@ -1,39 +1,49 @@
-Thrift Code Compiler
+# FbThrift Compiler
 
-License
-=======
+The Thrift compiler is a standalone binary to read and generate code for any proper *.thrift file.
 
-Licensed to the Apache Software Foundation (ASF) under one
-or more contributor license agreements. See the NOTICE file
-distributed with this work for additional information
-regarding copyright ownership. The ASF licenses this file
-to you under the Apache License, Version 2.0 (the
-"License"); you may not use this file except in compliance
-with the License. You may obtain a copy of the License at
+## Dependencies:
+- [Mustache](https://mustache.github.io/) (Logic-less templates)
+```
+git clone https://github.com/no1msd/mstch
+cd mstch
+cmake .
+make
+sudo make install
+cd ..
+```
 
-  http://www.apache.org/licenses/LICENSE-2.0
+- [Cmake](https://cmake.org/) package builder
+- C++ [Boost](http://www.boost.org/) (On MacOSX version has to be between [1.54](http://www.boost.org/doc/libs/1_54_0/doc/html/quickbook/install.html) and [1.60](http://www.boost.org/doc/libs/1_60_0/doc/html/quickbook/install.html))
+- [Flex](https://github.com/westes/flex) and [Bison](https://www.gnu.org/software/bison/)
+### Ubuntu:
+```
+sudo apt-get install \
+  cmake \
+  flex \
+  bison \
+  libboost-all-dev
+```
+### MacOSX
+Using [Homebrew](http://brew.sh/)
+```
+brew install \
+  cmake \
+  flex \
+  bison \
+  boost155
+```
 
-Unless required by applicable law or agreed to in writing,
-software distributed under the License is distributed on an
-"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, either express or implied. See the License for the
-specific language governing permissions and limitations
-under the License.
+## Building
+This will create a single `thrift` binary file.
+```
+git clone https://github.com/facebook/fbthrift.git
+cd fbthrift/thrift
+cmake ./compiler
+make install
+```
 
-Thrift Code Compiler
-====================
-
-This compiler takes thrift files as input and generates output code across
-various programming languages. To build and install it, do this:
-
-  ./bootstrap.sh
-  ./configure
-  make
-  sudo make install
-
-It requires some form of LEX and YACC to be installed, which should be
-picked up by autoconf.
-
-Not much else to report here. You'll have to look at the code to get your
-questions answered. Or just run the executable after you build and take
-a look at the usage message.
+## Usage
+```
+./thrift --help
+```
