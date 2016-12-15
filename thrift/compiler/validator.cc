@@ -22,18 +22,50 @@
 
 namespace apache { namespace thrift { namespace compiler {
 
+class validator_list {
+ public:
+  explicit validator_list(std::function<void(validator&)> on_add)
+      : on_add_(std::move(on_add)) {}
+
+  std::vector<visitor*> get_pointers() const {
+    auto pointers = std::vector<visitor*>{};
+    for (auto const& v : validators_) {
+      pointers.push_back(v.get());
+    }
+    return pointers;
+  }
+
+  template <typename T, typename... Args>
+  void add(Args&&... args) {
+    auto ptr = std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+    on_add_(*ptr);
+    validators_.push_back(std::move(ptr));
+  }
+
+ private:
+  std::function<void(validator&)> on_add_;
+  std::vector<std::unique_ptr<validator>> validators_;
+};
+
+static void fill_validators(validator_list& vs);
+
 std::vector<std::string> validator::validate(t_program const* const program) {
-  validator _;
-  _.traverse(program);
-  return std::move(_).get_errors();
+  auto errors = std::vector<std::string>{};
+
+  auto validators = validator_list([&](validator& v) { v.errors_ = &errors; });
+  fill_validators(validators);
+
+  interleaved_visitor(validators.get_pointers()).traverse(program);
+
+  return errors;
 }
 
-std::vector<std::string>&& validator::get_errors() && {
-  return std::move(errors_);
-}
-
-void validator::add_error(std::string error) {
-  errors_.push_back(std::move(error));
+void validator::add_error(int const lineno, std::string const& message) {
+  auto const file = program_->get_path();
+  auto const line = std::to_string(lineno);
+  std::ostringstream err;
+  err << "[FAILURE:" << file << ":" << line << "] " << message;
+  errors_->push_back(err.str());
 }
 
 bool validator::visit(t_program const* const program) {
@@ -41,41 +73,44 @@ bool validator::visit(t_program const* const program) {
   return true;
 }
 
-bool validator::visit(t_service const* const service) {
+/**
+ * service_method_name_uniqueness_validator
+ */
+
+bool service_method_name_uniqueness_validator::visit(
+    t_service const* const service) {
   validate_service_method_names_unique(service);
   return true;
 }
 
-void validator::add_error_service_method_names(
-    const std::string& file_path,
-    const int lineno,
-    const std::string& service_name_new,
-    const std::string& service_name_old,
-    const std::string& function_name) {
+void service_method_name_uniqueness_validator::add_error_service_method_names(
+    int const lineno,
+    std::string const& service_name_new,
+    std::string const& service_name_old,
+    std::string const& function_name) {
   //[FALIURE:{}:{}] Function {}.{} redefines {}.{}
   std::ostringstream err;
-  err << "[FAILURE:" << file_path << ":" << std::to_string(lineno) << "] "
-      << "Function " << service_name_new << "." << function_name << " "
+  err << "Function " << service_name_new << "." << function_name << " "
       << "redefines " << service_name_old << "." << function_name;
-  add_error(err.str());
+  add_error(lineno, err.str());
 }
 
-void validator::validate_service_method_names_unique(
-  t_service const* const service) {
+void service_method_name_uniqueness_validator::
+validate_service_method_names_unique(
+    t_service const* const service) {
   // Check for a redefinition of a function in a base service.
-  std::unordered_map<std::string, const t_service*> base_function_names;
+  std::unordered_map<std::string, t_service const*> base_function_names;
   for (auto e_s = service->get_extends(); e_s; e_s = e_s->get_extends()) {
-    for (const auto& ex_func : e_s->get_functions()) {
+    for (auto const ex_func : e_s->get_functions()) {
       base_function_names[ex_func->get_name()] = e_s;
     }
   }
-  for (const auto fnc : service->get_functions()) {
-    auto s_pos = base_function_names.find(fnc->get_name());
-    const t_service* e_s =
+  for (auto const fnc : service->get_functions()) {
+    auto const s_pos = base_function_names.find(fnc->get_name());
+    auto const e_s =
       s_pos != base_function_names.end() ? s_pos->second : nullptr;
     if (e_s) {
       add_error_service_method_names(
-          program_->get_path(),
           fnc->get_lineno(),
           service->get_name(),
           e_s->get_full_name(),
@@ -86,10 +121,9 @@ void validator::validate_service_method_names_unique(
 
   // Check for a redefinition of a function in the same service.
   std::unordered_set<std::string> function_names;
-  for (auto fnc : service->get_functions()) {
+  for (auto const fnc : service->get_functions()) {
     if (function_names.count(fnc->get_name())) {
       add_error_service_method_names(
-          program_->get_path(),
           fnc->get_lineno(),
           service->get_name(),
           service->get_name(),
@@ -98,6 +132,20 @@ void validator::validate_service_method_names_unique(
     }
     function_names.insert(fnc->get_name());
   }
+}
+
+/**
+ * fill_validators - the validator registry
+ *
+ * This is where all concrete validator types must be registered.
+ */
+
+static void fill_validators(validator_list& vs) {
+
+  vs.add<service_method_name_uniqueness_validator>();
+
+  // add more validators here ...
+
 }
 
 }}}

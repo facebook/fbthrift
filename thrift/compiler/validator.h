@@ -27,34 +27,39 @@ class validator : virtual public visitor {
  public:
   static std::vector<std::string> validate(t_program const* program);
 
-  validator() : visitor() {}
-
-  std::vector<std::string>&& get_errors() &&;
+  using visitor::visit;
 
   bool visit(t_program const* program) override;
-  bool visit(t_service const* service) override;
+
+ protected:
+  void add_error(int lineno, std::string const& message);
 
  private:
-  void add_error(std::string error);
+  std::vector<std::string>* errors_{};
+  t_program const* program_{};
+};
 
-  /**
-   * Error messages formatters
-   */
-  void add_error_service_method_names(
-    const std::string& file_path,
-    const int lineno,
-    const std::string& service_name_new,
-    const std::string& service_name_old,
-    const std::string& function_name);
+class service_method_name_uniqueness_validator : virtual public validator {
+ public:
+  using validator::visit;
 
   /**
    * Enforces that there are no duplicate method names either within this
    * service or between this service and any of its ancestors.
    */
-  void validate_service_method_names_unique(t_service const* service);
+  bool visit(t_service const* service) override;
 
-  t_program const* program_;
-  std::vector<std::string> errors_;
+ private:
+  /**
+   * Error messages formatters
+   */
+  void add_error_service_method_names(
+      int lineno,
+      std::string const& service_name_new,
+      std::string const& service_name_old,
+      std::string const& function_name);
+
+  void validate_service_method_names_unique(t_service const* service);
 };
 
 }}}
