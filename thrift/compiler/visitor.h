@@ -48,6 +48,7 @@ class visitor {
    */
   virtual bool visit(t_program const* program);
   virtual bool visit(t_service const* service);
+  virtual bool visit(t_enum const* tenum);
 
  protected:
   visitor() = default;
@@ -59,9 +60,11 @@ class visitor {
    */
   virtual void visit_and_recurse(t_program const* program);
   virtual void visit_and_recurse(t_service const* service);
+  virtual void visit_and_recurse(t_enum const* tenum);
 
   void recurse(t_program const* program);
   void recurse(t_service const* service);
+  void recurse(t_enum const* tenum);
 };
 
 /***
@@ -82,6 +85,7 @@ class interleaved_visitor : public visitor {
  protected:
   void visit_and_recurse(t_program const* program) override;
   void visit_and_recurse(t_service const* service) override;
+  void visit_and_recurse(t_enum const* tenum) override;
 
  private:
   template <typename Visitee>

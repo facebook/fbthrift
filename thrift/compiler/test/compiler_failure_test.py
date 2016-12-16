@@ -103,3 +103,16 @@ class CompilerFailureTest(unittest.TestCase):
             "[FAILURE:baz.thrift:4] Function MyS.meh redefines service "
             "bar.MySB.meh\n",
         )
+
+    def test_duplicate_enum_value_name(self):
+        write_file("foo.thrift", textwrap.dedent("""\
+            enum Foo {
+                Bar = 1,
+                Bar = 2,
+            }
+        """))
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift:3] Redefinition of value Bar in enum Foo\n"
+        )

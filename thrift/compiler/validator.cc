@@ -143,9 +143,35 @@ validate_service_method_names_unique(
 static void fill_validators(validator_list& vs) {
 
   vs.add<service_method_name_uniqueness_validator>();
+  vs.add<enum_value_names_uniqueness_validator>();
 
   // add more validators here ...
 
 }
 
+void enum_value_names_uniqueness_validator::add_validation_error(
+    int const lineno,
+    std::string const& value_name,
+    std::string const& enum_name) {
+  // [FAILURE:{}] Redefinition of value {} in enum {}
+  std::ostringstream err;
+  err << "Redefinition of value " << value_name << " in enum " << enum_name;
+  add_error(lineno, err.str());
+}
+
+bool enum_value_names_uniqueness_validator::visit(t_enum const* const tenum) {
+  validate(tenum);
+  return true;
+}
+
+void enum_value_names_uniqueness_validator::validate(
+    t_enum const* const tenum) {
+  std::unordered_set<std::string> enum_value_names;
+  for (auto v : tenum->get_constants()) {
+    if (enum_value_names.count(v->get_name())) {
+      add_validation_error(v->get_lineno(), v->get_name(), tenum->get_name());
+    }
+    enum_value_names.insert(v->get_name());
+  }
+}
 }}}

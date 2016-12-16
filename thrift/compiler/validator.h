@@ -62,4 +62,19 @@ class service_method_name_uniqueness_validator : virtual public validator {
   void validate_service_method_names_unique(t_service const* service);
 };
 
+class enum_value_names_uniqueness_validator : virtual public validator {
+ public:
+  using validator::visit;
+
+  // Enforces that there are not duplicated enum values
+  bool visit(t_enum const* tenum) override;
+
+ private:
+  void validate(t_enum const* tenum);
+
+  void add_validation_error(
+      int lineno,
+      std::string const& value_name,
+      std::string const& enum_name);
+};
 }}}

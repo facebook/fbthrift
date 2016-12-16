@@ -30,6 +30,10 @@ bool visitor::visit(t_service const* const service) {
   return true;
 }
 
+bool visitor::visit(t_enum const* const tenum) {
+  return true;
+}
+
 void visitor::visit_and_recurse(t_program const* const program) {
   if (visit(program)) {
     recurse(program);
@@ -42,13 +46,26 @@ void visitor::visit_and_recurse(t_service const* const service) {
   }
 }
 
+void visitor::visit_and_recurse(t_enum const* const tenum) {
+  if (visit(tenum)) {
+    recurse(tenum);
+  }
+}
+
 void visitor::recurse(t_program const* const program) {
   for (auto const* const service : program->get_services()) {
     visit_and_recurse(service);
   }
+  for (auto const* const tenum : program->get_enums()) {
+    visit_and_recurse(tenum);
+  }
 }
 
 void visitor::recurse(t_service const* const service) {
+  // partial implementation - that's the end of the line for now
+}
+
+void visitor::recurse(t_enum const* const tenum) {
   // partial implementation - that's the end of the line for now
 }
 
@@ -61,6 +78,10 @@ void interleaved_visitor::visit_and_recurse(t_program const* const program) {
 
 void interleaved_visitor::visit_and_recurse(t_service const* const service) {
   visit_and_recurse_gen(service);
+}
+
+void interleaved_visitor::visit_and_recurse(t_enum const* const tenum) {
+  visit_and_recurse_gen(tenum);
 }
 
 template <typename Visitee>

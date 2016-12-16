@@ -20,6 +20,10 @@
 
 #include <thrift/compiler/parse/t_doc.h>
 
+// Internal variable maintained by `lex` representing
+// the current line number of the input.
+extern int yylineno;
+
 /**
  * class t_enum_value
  *
@@ -68,8 +72,13 @@ class t_enum_value : public t_doc {
 
   bool has_value() { return has_value_; }
 
+  int get_lineno() const {
+    return lineno_;
+  }
+
  private:
   std::string name_;
   int32_t value_{0};
   bool has_value_{false};
+  int lineno_{yylineno};
 };
