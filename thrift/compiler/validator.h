@@ -25,7 +25,8 @@ namespace apache { namespace thrift { namespace compiler {
 
 class validator : virtual public visitor {
  public:
-  static std::vector<std::string> validate(t_program const* program);
+  using errors_t = std::vector<std::string>;
+  static errors_t validate(t_program const* program);
 
   using visitor::visit;
 
@@ -35,9 +36,22 @@ class validator : virtual public visitor {
   void add_error(int lineno, std::string const& message);
 
  private:
-  std::vector<std::string>* errors_{};
+  template <typename T, typename... Args>
+  friend std::unique_ptr<T> make_validator(errors_t&, Args&&...);
+
+  void set_ref_errors(errors_t& errors);
+
+  errors_t* errors_{};
   t_program const* program_{};
 };
+
+template <typename T, typename... Args>
+std::unique_ptr<T> make_validator(
+    validator::errors_t& errors, Args&&... args) {
+  auto ptr = std::unique_ptr<T>(new T(std::forward<Args>(args)...));
+  ptr->set_ref_errors(errors);
+  return ptr;
+}
 
 class service_method_name_uniqueness_validator : virtual public validator {
  public:

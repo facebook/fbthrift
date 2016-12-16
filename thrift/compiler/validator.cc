@@ -24,8 +24,8 @@ namespace apache { namespace thrift { namespace compiler {
 
 class validator_list {
  public:
-  explicit validator_list(std::function<void(validator&)> on_add)
-      : on_add_(std::move(on_add)) {}
+  explicit validator_list(validator::errors_t& errors)
+      : errors_(errors) {}
 
   std::vector<visitor*> get_pointers() const {
     auto pointers = std::vector<visitor*>{};
@@ -37,22 +37,21 @@ class validator_list {
 
   template <typename T, typename... Args>
   void add(Args&&... args) {
-    auto ptr = std::unique_ptr<T>(new T(std::forward<Args>(args)...));
-    on_add_(*ptr);
+    auto ptr = make_validator<T>(errors_, std::forward<Args>(args)...);
     validators_.push_back(std::move(ptr));
   }
 
  private:
-  std::function<void(validator&)> on_add_;
+  validator::errors_t& errors_;
   std::vector<std::unique_ptr<validator>> validators_;
 };
 
 static void fill_validators(validator_list& vs);
 
-std::vector<std::string> validator::validate(t_program const* const program) {
-  auto errors = std::vector<std::string>{};
+validator::errors_t validator::validate(t_program const* const program) {
+  auto errors = validator::errors_t{};
 
-  auto validators = validator_list([&](validator& v) { v.errors_ = &errors; });
+  auto validators = validator_list(errors);
   fill_validators(validators);
 
   interleaved_visitor(validators.get_pointers()).traverse(program);
@@ -71,6 +70,10 @@ void validator::add_error(int const lineno, std::string const& message) {
 bool validator::visit(t_program const* const program) {
   program_ = program;
   return true;
+}
+
+void validator::set_ref_errors(errors_t& errors) {
+  errors_ = &errors;
 }
 
 /**
