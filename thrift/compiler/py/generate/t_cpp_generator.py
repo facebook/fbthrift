@@ -4485,6 +4485,15 @@ class CppGenerator(t_generator.Generator):
         name = self._program.name
         ns = self._get_original_namespace()
         self.fatal_detail_ns = 'thrift_fatal_impl_detail'
+
+        # Module_reflection.h
+        context = self._make_context(name + '_reflection', tcc=False)
+        context.omit_include = True
+        with get_global_scope(CppPrimitiveFactory, context) as sg:
+            sg('#include "{0}"'.format(self._with_include_prefix(
+                self._program, name + '_fatal.h')))
+
+        # Module_fatal.h
         context = self._make_context(name + '_fatal', tcc=False)
         context.omit_include = True
         with get_global_scope(CppPrimitiveFactory, context) as sg:
@@ -4533,7 +4542,14 @@ class CppGenerator(t_generator.Generator):
         items['constant'] = self._generate_fatal_constant(program)
         items['service'] = self._generate_fatal_service(program)
 
-        # Combo include: types
+        # Module_reflection_types.h
+        context_cmb_types = self._make_context(
+            name + '_reflection_types', tcc=False)
+        with get_global_scope(CppPrimitiveFactory, context_cmb_types) as sg:
+            sg('#include "{0}"'.format(self._with_include_prefix(
+                self._program, name + '_fatal_types.h')))
+
+        # Module_fatal_types.h
         context_cmb_types = self._make_context(name + '_fatal_types', tcc=False)
         with get_global_scope(CppPrimitiveFactory, context_cmb_types) as sg:
             for dep in self._get_fatal_type_dependencies():
@@ -4544,7 +4560,14 @@ class CppGenerator(t_generator.Generator):
                 sg('#include "{0}"'.format(self._with_include_prefix(
                     self._program, name + '_fatal_' + what + '.h')))
 
-        # Combo include: all
+        # Module_reflection_all.h
+        context_cmb_all = self._make_context(
+            name + '_reflection_all', tcc=False)
+        with get_global_scope(CppPrimitiveFactory, context_cmb_all) as sg:
+            sg('#include "{0}"'.format(self._with_include_prefix(
+                self._program, name + '_fatal_all.h')))
+
+        # Module_fatal_all.h
         context_cmb_all = self._make_context(name + '_fatal_all', tcc=False)
         with get_global_scope(CppPrimitiveFactory, context_cmb_all) as sg:
             for dep in self._get_fatal_type_dependencies():
@@ -5342,6 +5365,13 @@ class CppGenerator(t_generator.Generator):
         name = self._program.name
         ns = self._get_original_namespace()
 
+        # Module_reflection_constant.h
+        context = self._make_context(name + '_reflection_constant', tcc=False)
+        with get_global_scope(CppPrimitiveFactory, context) as sg:
+            sg('#include "{0}"'.format(self._with_include_prefix(
+                self._program, name + '_fatal_constant.h')))
+
+        # Module_fatal_constant.h
         context = self._make_context(name + '_fatal_constant', tcc=False)
         with get_global_scope(CppPrimitiveFactory, context) as sg:
             sg('#include "{0}"'.format(self._with_include_prefix(
@@ -5363,13 +5393,20 @@ class CppGenerator(t_generator.Generator):
     def _generate_fatal_service(self, program):
         name = self._program.name
         ns = self._get_original_namespace()
+
+        # Module_reflection_service.h
+        context = self._make_context(name + '_reflection_service', tcc=False)
+        with get_global_scope(CppPrimitiveFactory, context) as sg:
+            sg('#include "{0}"'.format(self._with_include_prefix(
+                self._program, name + '_fatal_service.h')))
+
+        # Module_fatal_service.h
         context = self._make_context(name + '_fatal_service', tcc=False)
         with get_global_scope(CppPrimitiveFactory, context) as sg:
             sg('#include "{0}"'.format(self._with_include_prefix(
                 self._program, name + '_types.h')))
             if self.flag_lean_mean_meta_machine:
                 sg('#include "{0}"'.format(self._fatal_header()))
-
             sg()
             if len(ns) > 0:
                 with sg.namespace(ns).scope as sns:
