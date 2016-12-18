@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-#include <cassert>
-
 #include <fstream>
 #include <iostream>
 #include <set>

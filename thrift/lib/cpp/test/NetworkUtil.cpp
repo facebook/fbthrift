@@ -19,7 +19,6 @@
 #include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 
-#include <sys/types.h>
 #include <errno.h>
 #include <ifaddrs.h>
 

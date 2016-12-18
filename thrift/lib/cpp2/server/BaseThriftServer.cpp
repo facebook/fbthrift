@@ -26,9 +26,6 @@
 #include <iostream>
 #include <random>
 #include <fcntl.h>
-#include <errno.h>
-#include <assert.h>
-#include <signal.h>
 
 namespace apache {
 namespace thrift {

@@ -21,7 +21,6 @@
 #include <iostream>
 #include <sstream>
 
-#include <stdlib.h>
 #include <sys/stat.h>
 #include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/generate/t_concat_generator.h>

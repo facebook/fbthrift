@@ -26,8 +26,6 @@
 
 #include <folly/Memory.h>
 
-#include <iomanip>
-
 namespace test_cpp2 {
 namespace simple_cpp_reflection {
 

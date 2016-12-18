@@ -21,7 +21,6 @@
 
 #include <cstdlib>
 #include <sstream>
-#include <cassert>
 #include <boost/algorithm/string.hpp>
 #include <boost/lexical_cast.hpp>
 

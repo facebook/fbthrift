@@ -16,8 +16,6 @@
 
 #include <thrift/lib/cpp/transport/TCallbackTransport.h>
 
-#include <exception>
-
 using namespace std;
 
 namespace apache { namespace thrift { namespace transport {

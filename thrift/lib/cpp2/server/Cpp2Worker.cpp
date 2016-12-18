@@ -25,18 +25,13 @@
 #include <wangle/acceptor/SSLAcceptorHandshakeHelper.h>
 #include <wangle/acceptor/UnencryptedAcceptorHandshakeHelper.h>
 
-
 #include <iostream>
-#include <fcntl.h>
-#include <errno.h>
-#include <assert.h>
 
 #include <glog/logging.h>
 
 #include <folly/String.h>
 #include <folly/io/async/AsyncSSLSocket.h>
 #include <folly/portability/Sockets.h>
-#include <folly/portability/SysUio.h>
 
 DEFINE_int32(pending_interval, 0, "Pending count interval in ms");
 

@@ -18,8 +18,6 @@
  */
 
 #include <iostream>
-#include <climits>
-#include <cassert>
 #include <folly/Memory.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/lib/cpp/protocol/TBinaryProtocol.h>

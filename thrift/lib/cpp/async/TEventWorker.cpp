@@ -28,8 +28,6 @@
 
 #include <iostream>
 #include <fcntl.h>
-#include <errno.h>
-#include <assert.h>
 
 namespace apache { namespace thrift { namespace async {
 

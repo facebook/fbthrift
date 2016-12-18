@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 #include <cmath>
-#include <set>
 
 #include <gtest/gtest.h>
 #include <thrift/lib/cpp/DistinctTable.h>

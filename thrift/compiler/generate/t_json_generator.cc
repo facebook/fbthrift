@@ -23,7 +23,6 @@
 #include <vector>
 #include <map>
 
-#include <stdlib.h>
 #include <sys/stat.h>
 #include <sstream>
 #include <thrift/compiler/generate/t_generator.h>

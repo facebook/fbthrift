@@ -15,7 +15,6 @@
  */
 
 #include <thrift/lib/cpp2/security/SecurityKillSwitchPoller.h>
-#include <thrift/lib/cpp2/security/SecurityKillSwitch.h>
 #include <folly/Singleton.h>
 
 #include <gflags/gflags.h>

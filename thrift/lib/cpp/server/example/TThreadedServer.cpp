@@ -23,8 +23,6 @@
 
 #include <string>
 #include <iostream>
-#include <pthread.h>
-#include <unistd.h>
 
 namespace apache { namespace thrift { namespace server {
 

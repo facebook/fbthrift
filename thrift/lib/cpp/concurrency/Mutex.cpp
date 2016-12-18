@@ -21,10 +21,7 @@
 #include <thrift/lib/cpp/concurrency/ProfiledMutex.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 
-#include <assert.h>
 #include <pthread.h>
-#include <signal.h>
-#include <errno.h>
 
 using std::shared_ptr;
 

@@ -15,7 +15,6 @@
  */
 
 #include <string>
-#include <unordered_map>
 #include <gtest/gtest.h>
 #include <folly/io/async/EventBaseManager.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>

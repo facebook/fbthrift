@@ -19,7 +19,6 @@
 
 #include "SocketRetriever.h"
 
-#include <typeinfo>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/lib/cpp/transport/THeaderTransport.h>
 

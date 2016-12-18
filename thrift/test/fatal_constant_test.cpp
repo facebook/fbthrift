@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-#include <thrift/test/gen-cpp2/reflection_fatal_constant.h>
-
-#include <thrift/lib/cpp2/fatal/internal/test_helpers.h>
-
 #include <gtest/gtest.h>
 
 namespace test_cpp2 {

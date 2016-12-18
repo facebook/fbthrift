@@ -18,8 +18,6 @@
  */
 
 #include <thrift/lib/cpp/transport/TTransportException.h>
-#include <cstring>
-#include <thrift/lib/cpp/thrift_config.h>
 
 using std::string;
 

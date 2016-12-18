@@ -25,8 +25,6 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 
-#include <assert.h>
-
 namespace apache { namespace thrift {
 
 using namespace apache::thrift::protocol;

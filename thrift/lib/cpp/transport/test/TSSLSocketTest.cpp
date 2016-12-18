@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-#include <signal.h>
-#include <pthread.h>
-
 #include <folly/portability/Sockets.h>
 #include <thrift/lib/cpp/server/TServer.h>
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
@@ -27,13 +24,9 @@
 #include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/transport/TRpcTransport.h>
 #include <thrift/lib/cpp/TProcessor.h>
-#include <folly/portability/Unistd.h>
 
-#include <fcntl.h>
 #include <gtest/gtest.h>
 #include <iostream>
-#include <list>
-#include <sys/types.h>
 
 using std::string;
 using std::vector;

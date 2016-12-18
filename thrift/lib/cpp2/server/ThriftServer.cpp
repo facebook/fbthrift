@@ -33,8 +33,6 @@
 #include <iostream>
 #include <random>
 #include <fcntl.h>
-#include <errno.h>
-#include <assert.h>
 #include <signal.h>
 
 DEFINE_string(sasl_policy, "permitted",

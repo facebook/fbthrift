@@ -17,8 +17,6 @@
  * under the License.
  */
 
-#include <cerrno>
-#include <exception>
 #include <iostream>
 
 #include <thrift/lib/cpp/transport/TMemPagedTransport.tcc>

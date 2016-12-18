@@ -23,7 +23,6 @@
 #include <folly/init/Init.h>
 
 #include <fatal/container/variant.h>
-#include <fatal/type/apply.h>
 #include <fatal/type/get_type.h>
 #include <fatal/type/transform.h>
 

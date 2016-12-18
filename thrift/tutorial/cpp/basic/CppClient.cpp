@@ -18,8 +18,6 @@
  */
 
 #include <stdio.h>
-#include <unistd.h>
-#include <sys/time.h>
 
 #include <folly/init/Init.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>

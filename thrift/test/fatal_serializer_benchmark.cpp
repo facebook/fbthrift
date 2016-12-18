@@ -16,7 +16,6 @@
 
 #include <folly/init/Init.h>
 #include <folly/Benchmark.h>
-#include <folly/Foreach.h>
 
 #include <thrift/test/gen-cpp2/simple_reflection_fatal_types.h>
 #include <thrift/test/gen-cpp2/simple_reflection_types_custom_protocol.h>

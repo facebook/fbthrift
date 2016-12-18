@@ -94,7 +94,6 @@ TEST(frozen1, align_up) {
 namespace test_cpp2 {
 namespace cpp_frozen1 {
 
-#include <thrift/test/generated_frozen1_test.h>
 
 } // namespace cpp_frozen1 {
 } // namespace test_cpp2 {

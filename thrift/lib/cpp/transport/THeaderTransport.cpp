@@ -20,7 +20,6 @@
 
 #include <algorithm>
 #include <bitset>
-#include <cassert>
 #include <string>
 
 using std::map;

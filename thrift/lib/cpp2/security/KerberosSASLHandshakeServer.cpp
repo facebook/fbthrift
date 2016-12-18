@@ -18,8 +18,6 @@
 
 #include <gssapi/gssapi_generic.h>
 #include <gssapi/gssapi_krb5.h>
-#include <krb5.h>
-#include <stdlib.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
 

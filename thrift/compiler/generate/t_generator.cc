@@ -15,7 +15,6 @@
  */
 
 #include <thrift/compiler/generate/t_generator.h>
-#include <openssl/sha.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
 
 using namespace std;
