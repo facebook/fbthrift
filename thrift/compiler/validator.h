@@ -53,6 +53,14 @@ std::unique_ptr<T> make_validator(
   return ptr;
 }
 
+template <typename T, typename... Args>
+validator::errors_t run_validator(
+    t_program const* const program, Args&&... args) {
+  validator::errors_t errors;
+  make_validator<T>(errors, std::forward<Args>(args)...)->traverse(program);
+  return errors;
+}
+
 class service_method_name_uniqueness_validator : virtual public validator {
  public:
   using validator::visit;
