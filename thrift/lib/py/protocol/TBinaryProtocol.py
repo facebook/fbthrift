@@ -29,6 +29,9 @@ class TBinaryProtocol(TProtocolBase):
 
     """Binary implementation of the Thrift protocol driver."""
 
+    # For simpler THeaderTransport
+    PROTOCOL_ID = 0x80
+
     # NastyHaxx. Python 2.4+ on 32-bit machines forces hex constants to be
     # positive, converting this into a long. If we hardcode the int value
     # instead it'll stay in 32 bit-land.

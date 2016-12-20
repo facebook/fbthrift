@@ -34,7 +34,7 @@ from thrift.transport.THeaderTransport import (
 )
 from thrift.transport import TSocket, TSSLSocket
 from thrift.protocol import (
-    TBinaryProtocol, THeaderProtocol, TMultiplexedProtocol,
+    TBinaryProtocol, THeaderProtocol, TMultiplexedProtocol, TCompactProtocol
 )
 
 SERVER_TYPES = [
@@ -282,7 +282,7 @@ class AcceleratedBinaryTest(AbstractTest):
     protocol_factory = TBinaryProtocol.TBinaryProtocolAcceleratedFactory()
 
 
-class HeaderTest(AbstractTest):
+class HeaderBase(AbstractTest):
     protocol_factory = THeaderProtocol.THeaderProtocolFactory(
         True,
         [CLIENT_TYPE.HEADER,
@@ -291,6 +291,8 @@ class HeaderTest(AbstractTest):
          CLIENT_TYPE.HTTP_SERVER]
     )
 
+
+class HeaderTest(HeaderBase):
     def testZlibCompression(self):
         htrans = self.protocol.trans
         if isinstance(htrans, THeaderTransport):
@@ -349,14 +351,50 @@ class HeaderTest(AbstractTest):
             self.assertTrue("transient3" in headers)
             self.assertEquals(headers["transient3"], "true")
 
-class HeaderAcceleratedCompactTest(AbstractTest):
-    protocol_factory = THeaderProtocol.THeaderProtocolFactory(
-        True,
-        [CLIENT_TYPE.HEADER,
-         CLIENT_TYPE.FRAMED_DEPRECATED,
-         CLIENT_TYPE.UNFRAMED_DEPRECATED,
-         CLIENT_TYPE.HTTP_SERVER]
-    )
+
+class HeaderAcceleratedCompactTest(HeaderBase):
+    pass
+
+
+class HeaderFramedCompactTest(HeaderBase):
+    def setUp(self):
+        self.socket = TSocket.TSocket("localhost", self._port)
+        self.transport = TTransport.TFramedTransport(self.socket)
+        self.protocol = TCompactProtocol.TCompactProtocol(self.transport)
+        self.transport.open()
+        self.client = ThriftTest.Client(self.protocol)
+        self.client2 = None
+
+
+class HeaderFramedBinaryTest(HeaderBase):
+    def setUp(self):
+        self.socket = TSocket.TSocket("localhost", self._port)
+        self.transport = TTransport.TFramedTransport(self.socket)
+        self.protocol = TBinaryProtocol.TBinaryProtocol(self.transport)
+        self.transport.open()
+        self.client = ThriftTest.Client(self.protocol)
+        self.client2 = None
+
+
+class HeaderUnframedCompactTest(HeaderBase):
+    def setUp(self):
+        self.socket = TSocket.TSocket("localhost", self._port)
+        self.transport = TTransport.TBufferedTransport(self.socket)
+        self.protocol = TCompactProtocol.TCompactProtocol(self.transport)
+        self.transport.open()
+        self.client = ThriftTest.Client(self.protocol)
+        self.client2 = None
+
+
+class HeaderUnframedBinaryTest(HeaderBase):
+    def setUp(self):
+        self.socket = TSocket.TSocket("localhost", self._port)
+        self.transport = TTransport.TBufferedTransport(self.socket)
+        self.protocol = TBinaryProtocol.TBinaryProtocol(self.transport)
+        self.transport.open()
+        self.client = ThriftTest.Client(self.protocol)
+        self.client2 = None
+
 
 def camelcase(s):
     if not s[0].isupper():
@@ -419,6 +457,18 @@ def add_test_classes(module):
             'server_header': False,
             'server_context': False,
             'multiple': False}))
+
+    for klass in (HeaderFramedCompactTest,
+                  HeaderFramedBinaryTest,
+                  HeaderUnframedCompactTest,
+                  HeaderUnframedBinaryTest):
+        classes.append(new_test_class(klass, {
+            'server_type': 'TCppServer',
+            'ssl': False,
+            'server_header': False,
+            'server_context': False,
+            'multiple': False,
+        }))
 
     for cls in classes:
         setattr(module, cls.__name__, cls)

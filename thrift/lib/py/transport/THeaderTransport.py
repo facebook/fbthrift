@@ -27,11 +27,12 @@ if sys.version_info[0] >= 3:
     from http import server
     BaseHTTPServer = server
     xrange = range
-    from thrift.util.BytesStrIO import BytesStrIO
-    StringIO = BytesStrIO
+    from io import BytesIO as StringIO
+    _ord = int
 else:
     import BaseHTTPServer
     from cStringIO import StringIO
+    _ord = ord
 
 from struct import pack, unpack
 import zlib
@@ -39,7 +40,9 @@ import zlib
 from thrift.Thrift import TApplicationException
 from thrift.protocol.TBinaryProtocol import TBinaryProtocol
 from .TTransport import TTransportException, TTransportBase, CReadableTransport
-from thrift.protocol.TCompactProtocol import getVarint, readVarint
+from thrift.protocol.TCompactProtocol import (
+    getVarint, readVarint, TCompactProtocol
+)
 
 # Import the snappy module if it is available
 try:
@@ -95,7 +98,10 @@ class INFO:
     PERSISTENT = 2
 
 
+T_BINARY_PROTOCOL = 0
+T_COMPACT_PROTOCOL = 2
 HEADER_MAGIC = 0x0FFF0000
+PACKED_HEADER_MAGIC = pack('!H', HEADER_MAGIC >> 16)
 HEADER_MASK = 0xFFFF0000
 FLAGS_MASK = 0x0000FFFF
 HTTP_SERVER_MAGIC = 0x504F5354  # POST
@@ -132,12 +138,20 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         self.__write_transforms = []
         self.__supported_client_types = set(client_types or
                                             (CLIENT_TYPE.HEADER,))
-        self.__proto_id = 0  # default to binary
+        self.__proto_id = T_BINARY_PROTOCOL  # default to binary
         self.__client_type = client_type or CLIENT_TYPE.HEADER
         self.__read_headers = {}
         self.__read_persistent_headers = {}
         self.__write_headers = {}
         self.__write_persistent_headers = {}
+
+        # If we support unframed binary / framed binary also support compact
+        if CLIENT_TYPE.UNFRAMED_DEPRECATED in self.__supported_client_types:
+            self.__supported_client_types.add(
+                CLIENT_TYPE.UNFRAMED_COMPACT_DEPRECATED)
+        if CLIENT_TYPE.FRAMED_DEPRECATED in self.__supported_client_types:
+            self.__supported_client_types.add(
+                CLIENT_TYPE.FRAMED_COMPACT)
 
     def set_header_flag(self, flag):
         self.__flags |= flag
@@ -170,10 +184,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         self.__identity = identity
 
     def get_protocol_id(self):
-        if self.__client_type == CLIENT_TYPE.HEADER:
-            return self.__proto_id
-        else:
-            return 0  # default to Binary for all others
+        return self.__proto_id
 
     def set_protocol_id(self, proto_id):
         self.__proto_id = proto_id
@@ -207,7 +218,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         if self.__client_type == CLIENT_TYPE.HTTP_SERVER:
             self.flush()
         # set to anything except unframed
-        self.__client_type = CLIENT_TYPE.HEADER
+        self.__client_type = CLIENT_TYPE.UNKNOWN
         # Read header bytes to check which protocol to decode
         self.readFrame(0)
 
@@ -228,7 +239,8 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         if len(ret) == sz:
             return ret
 
-        if self.__client_type == CLIENT_TYPE.UNFRAMED_DEPRECATED:
+        if self.__client_type in (CLIENT_TYPE.UNFRAMED_DEPRECATED,
+                                  CLIENT_TYPE.UNFRAMED_COMPACT_DEPRECATED):
             return ret + self.getTransport().readAll(sz - len(ret))
 
         self.readFrame(sz - len(ret))
@@ -237,16 +249,21 @@ class THeaderTransport(TTransportBase, CReadableTransport):
     readAll = read  # TTransportBase.readAll does a needless copy here.
 
     def readFrame(self, req_sz):
-        # TODO(fried): Move all the detection logic so we only have to do it once
         self.__rbuf_frame = True
         word1 = self.getTransport().readAll(4)
-        # These two unpack statements must use signed integers.
-        # See note about hex constants in TBinaryProtocol.py
-        sz = unpack('!i', word1)[0]
-        # TODO(fried): UNFRAMED_COMPACT_DEPRECATED
-        if sz & TBinaryProtocol.VERSION_MASK == TBinaryProtocol.VERSION_1:
+        sz = unpack('!I', word1)[0]
+        if _ord(word1[0]) == TBinaryProtocol.PROTOCOL_ID:
             # unframed
             self.__client_type = CLIENT_TYPE.UNFRAMED_DEPRECATED
+            self.__proto_id = T_BINARY_PROTOCOL
+            if req_sz <= 4:  # check for reads < 0.
+                self.__rbuf = StringIO(word1)
+            else:
+                self.__rbuf = StringIO(word1 + self.getTransport().read(
+                    req_sz - 4))
+        elif _ord(word1[0]) == TCompactProtocol.PROTOCOL_ID:
+            self.__client_type = CLIENT_TYPE.UNFRAMED_COMPACT_DEPRECATED
+            self.__proto_id = T_COMPACT_PROTOCOL
             if req_sz <= 4:  # check for reads < 0.
                 self.__rbuf = StringIO(word1)
             else:
@@ -263,39 +280,30 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         else:
             if sz == BIG_FRAME_MAGIC:
                 sz = unpack('!Q', self.getTransport().readAll(8))[0]
-
-            # TODO(FRIED): FRAMED_COMPACT
-            # could be header format or framed.  Check next byte.
-            word2 = self.getTransport().readAll(4)
-            version = unpack('!i', word2)[0]
-            if version & TBinaryProtocol.VERSION_MASK == \
-                    TBinaryProtocol.VERSION_1:
+            # could be header format or framed.  Check next two bytes.
+            magic = self.getTransport().readAll(2)
+            if _ord(magic[0]) == TCompactProtocol.PROTOCOL_ID:
+                self.__client_type = CLIENT_TYPE.FRAMED_COMPACT
+                self.__proto_id = T_COMPACT_PROTOCOL
+                _frame_size_check(sz, self.__max_frame_size, header=False)
+                self.__rbuf = StringIO(magic + self.getTransport().readAll(
+                    sz - 2))
+            elif _ord(magic[0]) == TBinaryProtocol.PROTOCOL_ID:
                 self.__client_type = CLIENT_TYPE.FRAMED_DEPRECATED
-                # Framed.
-                if sz > self.__max_frame_size or sz > MAX_FRAME_SIZE:
-                    raise TTransportException(
-                        TTransportException.INVALID_FRAME_SIZE,
-                        "Framed transport frame was too large")
-                self.__rbuf = StringIO(word2 + self.getTransport().readAll(
-                    sz - 4))
-            elif (version & HEADER_MASK) == HEADER_MAGIC:
+                self.__proto_id = T_BINARY_PROTOCOL
+                _frame_size_check(sz, self.__max_frame_size, header=False)
+                self.__rbuf = StringIO(magic + self.getTransport().readAll(
+                    sz - 2))
+            elif magic == PACKED_HEADER_MAGIC:
                 self.__client_type = CLIENT_TYPE.HEADER
-                # header format.
-                if sz > self.__max_frame_size:
-                    raise TTransportException(
-                        TTransportException.INVALID_FRAME_SIZE,
-                        "Header transport frame was too large")
-                self.__flags = (version & FLAGS_MASK)
-                n_seq_id = self.getTransport().readAll(4)
-                self.seq_id = unpack('!I', n_seq_id)[0]
-
-                n_header_size = self.getTransport().readAll(2)
-                header_size = unpack('!H', n_header_size)[0]
-
+                _frame_size_check(sz, self.__max_frame_size)
+                # flags(2), seq_id(4), header_size(2)
+                n_header_meta = self.getTransport().readAll(8)
+                self.__flags, self.seq_id, header_size = unpack('!HIH',
+                                                                n_header_meta)
                 data = StringIO()
-                data.write(word2)
-                data.write(n_seq_id)
-                data.write(n_header_size)
+                data.write(magic)
+                data.write(n_header_meta)
                 data.write(self.getTransport().readAll(sz - 10))
                 data.seek(10)
                 self.read_header_format(sz - 10, header_size, data)
@@ -479,10 +487,12 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         buf = StringIO()
         if self.__client_type == CLIENT_TYPE.HEADER:
             self._flushHeaderMessage(buf, wout, wsz)
-        elif self.__client_type == CLIENT_TYPE.FRAMED_DEPRECATED:
-            buf.write(pack("!I", wsz))
+        elif self.__client_type in (CLIENT_TYPE.FRAMED_DEPRECATED,
+                                    CLIENT_TYPE.FRAMED_COMPACT):
+            buf.write(pack("!i", wsz))
             buf.write(wout)
-        elif self.__client_type == CLIENT_TYPE.UNFRAMED_DEPRECATED:
+        elif self.__client_type in (CLIENT_TYPE.UNFRAMED_DEPRECATED,
+                                    CLIENT_TYPE.UNFRAMED_COMPACT_DEPRECATED):
             buf.write(wout)
         elif self.__client_type == CLIENT_TYPE.HTTP_SERVER:
             # Reset the client type if we sent something -
@@ -496,13 +506,9 @@ class THeaderTransport(TTransportBase, CReadableTransport):
 
         # We don't include the framing bytes as part of the frame size check
         frame_size = buf.tell() - (4 if wsz < MAX_FRAME_SIZE else 12)
-        if frame_size > self.__max_frame_size or (
-            # Only HEADER Client can accept BIG_FRAME
-            frame_size > MAX_FRAME_SIZE and
-            self.__client_type != CLIENT_TYPE.HEADER
-        ):
-            raise TTransportException(TTransportException.INVALID_FRAME_SIZE,
-                                      "Attempting to send frame that is too large")
+        _frame_size_check(frame_size,
+                          self.__max_frame_size,
+                          header=self.__client_type == CLIENT_TYPE.HEADER)
         self.getTransport().write(buf.getvalue())
         if oneway:
             self.getTransport().onewayFlush()
@@ -520,6 +526,11 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         # self.__rbuf will already be empty here because fastproto doesn't
         # ask for a refill until the previous buffer is empty.  Therefore,
         # we can start reading new frames immediately.
+
+        # On unframed clients, there is a chance there is something left
+        # in rbuf, and the read pointer is not advanced by fastproto
+        # so seek to the end to be safe
+        self.__rbuf.seek(0, 2)
         while len(prefix) < reqlen:
             prefix += self.read(reqlen)
         self.__rbuf = StringIO(prefix)
@@ -557,6 +568,14 @@ def _read_info_headers(data, end_header, read_headers):
         str_key = _read_string(data, end_header)
         str_value = _read_string(data, end_header)
         read_headers[str_key] = str_value
+
+
+def _frame_size_check(sz, set_max_size, header=True):
+    if sz > set_max_size or (not header and sz > MAX_FRAME_SIZE):
+        raise TTransportException(
+            TTransportException.INVALID_FRAME_SIZE,
+            "%s transport frame was too large" % 'Header' if header else 'Framed'
+        )
 
 
 class RequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
