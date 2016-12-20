@@ -6,7 +6,7 @@
  */
 
 #include <src/gen-py3/py3/module_services_wrapper.h>
-#include <src/gen-py3/py3/module_services.h>
+#include <src/gen-py3/py3/module_services_api.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 
 namespace py3 {
@@ -15,6 +15,7 @@ namespace simple {
 SimpleServiceWrapper::SimpleServiceWrapper(PyObject *obj)
   : if_object(obj)
   {
+    import_py3__module_services();
     Py_XINCREF(this->if_object);
   }
 

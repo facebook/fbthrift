@@ -6,7 +6,7 @@
  */
 
 #include <src/gen-py3/py3/module_services_wrapper.h>
-#include <src/gen-py3/py3/module_services.h>
+#include <src/gen-py3/py3/module_services_api.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 
 namespace cpp2 {
@@ -14,6 +14,7 @@ namespace cpp2 {
 MyServiceWrapper::MyServiceWrapper(PyObject *obj)
   : if_object(obj)
   {
+    import_py3__module_services();
     Py_XINCREF(this->if_object);
   }
 
@@ -105,6 +106,7 @@ std::shared_ptr<apache::thrift::ServerInterface> MyServiceInterface(PyObject *if
 MyServiceFastWrapper::MyServiceFastWrapper(PyObject *obj)
   : if_object(obj)
   {
+    import_py3__module_services();
     Py_XINCREF(this->if_object);
   }
 
@@ -196,6 +198,7 @@ std::shared_ptr<apache::thrift::ServerInterface> MyServiceFastInterface(PyObject
 MyServiceEmptyWrapper::MyServiceEmptyWrapper(PyObject *obj)
   : if_object(obj)
   {
+    import_py3__module_services();
     Py_XINCREF(this->if_object);
   }
 
@@ -211,6 +214,7 @@ std::shared_ptr<apache::thrift::ServerInterface> MyServiceEmptyInterface(PyObjec
 MyServicePrioParentWrapper::MyServicePrioParentWrapper(PyObject *obj)
   : if_object(obj)
   {
+    import_py3__module_services();
     Py_XINCREF(this->if_object);
   }
 
@@ -244,7 +248,10 @@ std::shared_ptr<apache::thrift::ServerInterface> MyServicePrioParentInterface(Py
 
 
 MyServicePrioChildWrapper::MyServicePrioChildWrapper(PyObject *obj)
-  : cpp2::MyServicePrioParentWrapper(obj) {}
+  : cpp2::MyServicePrioParentWrapper(obj) 
+  {
+    import_py3__module_services();
+  }
 
 folly::Future<folly::Unit> MyServicePrioChildWrapper::future_pang() {
   folly::Promise<folly::Unit> promise;

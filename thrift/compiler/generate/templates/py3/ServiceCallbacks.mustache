@@ -32,7 +32,7 @@ sets the converted value on that promise.
 
 {{#program:services}}
 {{#service:functions}}
-cdef public void call_cy_{{service:name}}_{{function:name}}(
+cdef api void call_cy_{{service:name}}_{{function:name}}(
     object self,
     cFollyPromise[{{#function:returnType}}{{>CythonFieldType}}{{/function:returnType}}]{{!
     }} cPromise{{#function:args}},

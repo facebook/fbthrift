@@ -53,7 +53,7 @@ cdef class Promise_void:
         inst.cPromise = move(cPromise)
         return inst
 
-cdef public void call_cy_MyService_query(
+cdef api void call_cy_MyService_query(
     object self,
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[py3.module_types.cMyStruct] s,

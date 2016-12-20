@@ -239,7 +239,7 @@ cdef class Promise_Set__binary:
         inst.cPromise = move(cPromise)
         return inst
 
-cdef public void call_cy_SimpleService_get_five(
+cdef api void call_cy_SimpleService_get_five(
     object self,
     cFollyPromise[int32_t] cPromise
 ) with gil:
@@ -267,7 +267,7 @@ async def SimpleService_get_five_coro(
     else:
         promise.cPromise.setValue(<int32_t> result)
 
-cdef public void call_cy_SimpleService_add_five(
+cdef api void call_cy_SimpleService_add_five(
     object self,
     cFollyPromise[int32_t] cPromise,
     int32_t num
@@ -300,7 +300,7 @@ async def SimpleService_add_five_coro(
     else:
         promise.cPromise.setValue(<int32_t> result)
 
-cdef public void call_cy_SimpleService_do_nothing(
+cdef api void call_cy_SimpleService_do_nothing(
     object self,
     cFollyPromise[cFollyUnit] cPromise
 ) with gil:
@@ -328,7 +328,7 @@ async def SimpleService_do_nothing_coro(
     else:
         promise.cPromise.setValue(c_unit)
 
-cdef public void call_cy_SimpleService_concat(
+cdef api void call_cy_SimpleService_concat(
     object self,
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] first,
@@ -366,7 +366,7 @@ async def SimpleService_concat_coro(
     else:
         promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
-cdef public void call_cy_SimpleService_get_value(
+cdef api void call_cy_SimpleService_get_value(
     object self,
     cFollyPromise[int32_t] cPromise,
     unique_ptr[py3.module_types.cSimpleStruct] simple_struct
@@ -399,7 +399,7 @@ async def SimpleService_get_value_coro(
     else:
         promise.cPromise.setValue(<int32_t> result)
 
-cdef public void call_cy_SimpleService_negate(
+cdef api void call_cy_SimpleService_negate(
     object self,
     cFollyPromise[cbool] cPromise,
     cbool input
@@ -432,7 +432,7 @@ async def SimpleService_negate_coro(
     else:
         promise.cPromise.setValue(<cbool> result)
 
-cdef public void call_cy_SimpleService_tiny(
+cdef api void call_cy_SimpleService_tiny(
     object self,
     cFollyPromise[int8_t] cPromise,
     int8_t input
@@ -465,7 +465,7 @@ async def SimpleService_tiny_coro(
     else:
         promise.cPromise.setValue(<int8_t> result)
 
-cdef public void call_cy_SimpleService_small(
+cdef api void call_cy_SimpleService_small(
     object self,
     cFollyPromise[int16_t] cPromise,
     int16_t input
@@ -498,7 +498,7 @@ async def SimpleService_small_coro(
     else:
         promise.cPromise.setValue(<int16_t> result)
 
-cdef public void call_cy_SimpleService_big(
+cdef api void call_cy_SimpleService_big(
     object self,
     cFollyPromise[int64_t] cPromise,
     int64_t input
@@ -531,7 +531,7 @@ async def SimpleService_big_coro(
     else:
         promise.cPromise.setValue(<int64_t> result)
 
-cdef public void call_cy_SimpleService_two(
+cdef api void call_cy_SimpleService_two(
     object self,
     cFollyPromise[double] cPromise,
     double input
@@ -564,7 +564,7 @@ async def SimpleService_two_coro(
     else:
         promise.cPromise.setValue(<double> result)
 
-cdef public void call_cy_SimpleService_expected_exception(
+cdef api void call_cy_SimpleService_expected_exception(
     object self,
     cFollyPromise[cFollyUnit] cPromise
 ) with gil:
@@ -594,7 +594,7 @@ async def SimpleService_expected_exception_coro(
     else:
         promise.cPromise.setValue(c_unit)
 
-cdef public void call_cy_SimpleService_unexpected_exception(
+cdef api void call_cy_SimpleService_unexpected_exception(
     object self,
     cFollyPromise[int32_t] cPromise
 ) with gil:
@@ -622,7 +622,7 @@ async def SimpleService_unexpected_exception_coro(
     else:
         promise.cPromise.setValue(<int32_t> result)
 
-cdef public void call_cy_SimpleService_sum_i16_list(
+cdef api void call_cy_SimpleService_sum_i16_list(
     object self,
     cFollyPromise[int32_t] cPromise,
     unique_ptr[vector[int16_t]] numbers
@@ -655,7 +655,7 @@ async def SimpleService_sum_i16_list_coro(
     else:
         promise.cPromise.setValue(<int32_t> result)
 
-cdef public void call_cy_SimpleService_sum_i32_list(
+cdef api void call_cy_SimpleService_sum_i32_list(
     object self,
     cFollyPromise[int32_t] cPromise,
     unique_ptr[vector[int32_t]] numbers
@@ -688,7 +688,7 @@ async def SimpleService_sum_i32_list_coro(
     else:
         promise.cPromise.setValue(<int32_t> result)
 
-cdef public void call_cy_SimpleService_sum_i64_list(
+cdef api void call_cy_SimpleService_sum_i64_list(
     object self,
     cFollyPromise[int32_t] cPromise,
     unique_ptr[vector[int64_t]] numbers
@@ -721,7 +721,7 @@ async def SimpleService_sum_i64_list_coro(
     else:
         promise.cPromise.setValue(<int32_t> result)
 
-cdef public void call_cy_SimpleService_concat_many(
+cdef api void call_cy_SimpleService_concat_many(
     object self,
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[vector[string]] words
@@ -754,7 +754,7 @@ async def SimpleService_concat_many_coro(
     else:
         promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
-cdef public void call_cy_SimpleService_count_structs(
+cdef api void call_cy_SimpleService_count_structs(
     object self,
     cFollyPromise[int32_t] cPromise,
     unique_ptr[vector[py3.module_types.cSimpleStruct]] items
@@ -787,7 +787,7 @@ async def SimpleService_count_structs_coro(
     else:
         promise.cPromise.setValue(<int32_t> result)
 
-cdef public void call_cy_SimpleService_sum_set(
+cdef api void call_cy_SimpleService_sum_set(
     object self,
     cFollyPromise[int32_t] cPromise,
     unique_ptr[cset[int32_t]] numbers
@@ -820,7 +820,7 @@ async def SimpleService_sum_set_coro(
     else:
         promise.cPromise.setValue(<int32_t> result)
 
-cdef public void call_cy_SimpleService_contains_word(
+cdef api void call_cy_SimpleService_contains_word(
     object self,
     cFollyPromise[cbool] cPromise,
     unique_ptr[cset[string]] words,
@@ -858,7 +858,7 @@ async def SimpleService_contains_word_coro(
     else:
         promise.cPromise.setValue(<cbool> result)
 
-cdef public void call_cy_SimpleService_get_map_value(
+cdef api void call_cy_SimpleService_get_map_value(
     object self,
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[cmap[string,string]] words,
@@ -896,7 +896,7 @@ async def SimpleService_get_map_value_coro(
     else:
         promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
-cdef public void call_cy_SimpleService_map_length(
+cdef api void call_cy_SimpleService_map_length(
     object self,
     cFollyPromise[int16_t] cPromise,
     unique_ptr[cmap[string,py3.module_types.cSimpleStruct]] items
@@ -929,7 +929,7 @@ async def SimpleService_map_length_coro(
     else:
         promise.cPromise.setValue(<int16_t> result)
 
-cdef public void call_cy_SimpleService_sum_map_values(
+cdef api void call_cy_SimpleService_sum_map_values(
     object self,
     cFollyPromise[int16_t] cPromise,
     unique_ptr[cmap[string,int16_t]] items
@@ -962,7 +962,7 @@ async def SimpleService_sum_map_values_coro(
     else:
         promise.cPromise.setValue(<int16_t> result)
 
-cdef public void call_cy_SimpleService_complex_sum_i32(
+cdef api void call_cy_SimpleService_complex_sum_i32(
     object self,
     cFollyPromise[int32_t] cPromise,
     unique_ptr[py3.module_types.cComplexStruct] counter
@@ -995,7 +995,7 @@ async def SimpleService_complex_sum_i32_coro(
     else:
         promise.cPromise.setValue(<int32_t> result)
 
-cdef public void call_cy_SimpleService_repeat_name(
+cdef api void call_cy_SimpleService_repeat_name(
     object self,
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[py3.module_types.cComplexStruct] counter
@@ -1028,7 +1028,7 @@ async def SimpleService_repeat_name_coro(
     else:
         promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
-cdef public void call_cy_SimpleService_get_struct(
+cdef api void call_cy_SimpleService_get_struct(
     object self,
     cFollyPromise[unique_ptr[py3.module_types.cSimpleStruct]] cPromise
 ) with gil:
@@ -1056,7 +1056,7 @@ async def SimpleService_get_struct_coro(
     else:
         promise.cPromise.setValue(make_unique[py3.module_types.cSimpleStruct](deref((<py3.module_types.SimpleStruct?> result).c_SimpleStruct)))
 
-cdef public void call_cy_SimpleService_fib(
+cdef api void call_cy_SimpleService_fib(
     object self,
     cFollyPromise[unique_ptr[vector[int32_t]]] cPromise,
     int16_t n
@@ -1090,7 +1090,7 @@ async def SimpleService_fib_coro(
     else:
         promise.cPromise.setValue(make_unique[vector[int32_t]](deref((<py3.module_types.List__i32?> result)._vector)))
 
-cdef public void call_cy_SimpleService_unique_words(
+cdef api void call_cy_SimpleService_unique_words(
     object self,
     cFollyPromise[unique_ptr[cset[string]]] cPromise,
     unique_ptr[vector[string]] words
@@ -1124,7 +1124,7 @@ async def SimpleService_unique_words_coro(
     else:
         promise.cPromise.setValue(make_unique[cset[string]](deref((<py3.module_types.Set__string?> result)._set)))
 
-cdef public void call_cy_SimpleService_words_count(
+cdef api void call_cy_SimpleService_words_count(
     object self,
     cFollyPromise[unique_ptr[cmap[string,int16_t]]] cPromise,
     unique_ptr[vector[string]] words
@@ -1158,7 +1158,7 @@ async def SimpleService_words_count_coro(
     else:
         promise.cPromise.setValue(make_unique[cmap[string,int16_t]](deref((<py3.module_types.Map__string_i16?> result)._map)))
 
-cdef public void call_cy_SimpleService_set_enum(
+cdef api void call_cy_SimpleService_set_enum(
     object self,
     cFollyPromise[py3.module_types.cAnEnum] cPromise,
     py3.module_types.cAnEnum in_enum
@@ -1191,7 +1191,7 @@ async def SimpleService_set_enum_coro(
     else:
         promise.cPromise.setValue(py3.module_types.AnEnum_to_cpp(result))
 
-cdef public void call_cy_SimpleService_list_of_lists(
+cdef api void call_cy_SimpleService_list_of_lists(
     object self,
     cFollyPromise[unique_ptr[vector[vector[int32_t]]]] cPromise,
     int16_t num_lists,
@@ -1230,7 +1230,7 @@ async def SimpleService_list_of_lists_coro(
     else:
         promise.cPromise.setValue(make_unique[vector[vector[int32_t]]](deref((<py3.module_types.List__List__i32?> result)._vector)))
 
-cdef public void call_cy_SimpleService_word_character_frequency(
+cdef api void call_cy_SimpleService_word_character_frequency(
     object self,
     cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] cPromise,
     unique_ptr[string] sentence
@@ -1264,7 +1264,7 @@ async def SimpleService_word_character_frequency_coro(
     else:
         promise.cPromise.setValue(make_unique[cmap[string,cmap[string,int32_t]]](deref((<py3.module_types.Map__string_Map__string_i32?> result)._map)))
 
-cdef public void call_cy_SimpleService_list_of_sets(
+cdef api void call_cy_SimpleService_list_of_sets(
     object self,
     cFollyPromise[unique_ptr[vector[cset[string]]]] cPromise,
     unique_ptr[string] some_words
@@ -1298,7 +1298,7 @@ async def SimpleService_list_of_sets_coro(
     else:
         promise.cPromise.setValue(make_unique[vector[cset[string]]](deref((<py3.module_types.List__Set__string?> result)._vector)))
 
-cdef public void call_cy_SimpleService_nested_map_argument(
+cdef api void call_cy_SimpleService_nested_map_argument(
     object self,
     cFollyPromise[int32_t] cPromise,
     unique_ptr[cmap[string,vector[py3.module_types.cSimpleStruct]]] struct_map
@@ -1331,7 +1331,7 @@ async def SimpleService_nested_map_argument_coro(
     else:
         promise.cPromise.setValue(<int32_t> result)
 
-cdef public void call_cy_SimpleService_make_sentence(
+cdef api void call_cy_SimpleService_make_sentence(
     object self,
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[vector[vector[string]]] word_chars
@@ -1364,7 +1364,7 @@ async def SimpleService_make_sentence_coro(
     else:
         promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
-cdef public void call_cy_SimpleService_get_union(
+cdef api void call_cy_SimpleService_get_union(
     object self,
     cFollyPromise[unique_ptr[cset[int32_t]]] cPromise,
     unique_ptr[vector[cset[int32_t]]] sets
@@ -1398,7 +1398,7 @@ async def SimpleService_get_union_coro(
     else:
         promise.cPromise.setValue(make_unique[cset[int32_t]](deref((<py3.module_types.Set__i32?> result)._set)))
 
-cdef public void call_cy_SimpleService_get_keys(
+cdef api void call_cy_SimpleService_get_keys(
     object self,
     cFollyPromise[unique_ptr[cset[string]]] cPromise,
     unique_ptr[vector[cmap[string,string]]] string_map
@@ -1432,7 +1432,7 @@ async def SimpleService_get_keys_coro(
     else:
         promise.cPromise.setValue(make_unique[cset[string]](deref((<py3.module_types.Set__string?> result)._set)))
 
-cdef public void call_cy_SimpleService_lookup_double(
+cdef api void call_cy_SimpleService_lookup_double(
     object self,
     cFollyPromise[double] cPromise,
     int32_t key
@@ -1465,7 +1465,7 @@ async def SimpleService_lookup_double_coro(
     else:
         promise.cPromise.setValue(<double> result)
 
-cdef public void call_cy_SimpleService_retrieve_binary(
+cdef api void call_cy_SimpleService_retrieve_binary(
     object self,
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] something
@@ -1498,7 +1498,7 @@ async def SimpleService_retrieve_binary_coro(
     else:
         promise.cPromise.setValue(make_unique[string](<string?> result))
 
-cdef public void call_cy_SimpleService_contain_binary(
+cdef api void call_cy_SimpleService_contain_binary(
     object self,
     cFollyPromise[unique_ptr[cset[string]]] cPromise,
     unique_ptr[vector[string]] binaries

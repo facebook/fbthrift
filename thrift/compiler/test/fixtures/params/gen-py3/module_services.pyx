@@ -45,7 +45,7 @@ cdef class Promise_void:
         inst.cPromise = move(cPromise)
         return inst
 
-cdef public void call_cy_NestedContainers_mapList(
+cdef api void call_cy_NestedContainers_mapList(
     object self,
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[cmap[int32_t,vector[int32_t]]] foo
@@ -78,7 +78,7 @@ async def NestedContainers_mapList_coro(
     else:
         promise.cPromise.setValue(c_unit)
 
-cdef public void call_cy_NestedContainers_mapSet(
+cdef api void call_cy_NestedContainers_mapSet(
     object self,
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[cmap[int32_t,cset[int32_t]]] foo
@@ -111,7 +111,7 @@ async def NestedContainers_mapSet_coro(
     else:
         promise.cPromise.setValue(c_unit)
 
-cdef public void call_cy_NestedContainers_listMap(
+cdef api void call_cy_NestedContainers_listMap(
     object self,
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[vector[cmap[int32_t,int32_t]]] foo
@@ -144,7 +144,7 @@ async def NestedContainers_listMap_coro(
     else:
         promise.cPromise.setValue(c_unit)
 
-cdef public void call_cy_NestedContainers_listSet(
+cdef api void call_cy_NestedContainers_listSet(
     object self,
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[vector[cset[int32_t]]] foo
@@ -177,7 +177,7 @@ async def NestedContainers_listSet_coro(
     else:
         promise.cPromise.setValue(c_unit)
 
-cdef public void call_cy_NestedContainers_turtles(
+cdef api void call_cy_NestedContainers_turtles(
     object self,
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]] foo

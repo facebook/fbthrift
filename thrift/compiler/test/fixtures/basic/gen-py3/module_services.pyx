@@ -69,7 +69,7 @@ cdef class Promise_bool:
         inst.cPromise = move(cPromise)
         return inst
 
-cdef public void call_cy_MyService_ping(
+cdef api void call_cy_MyService_ping(
     object self,
     cFollyPromise[cFollyUnit] cPromise
 ) with gil:
@@ -97,7 +97,7 @@ async def MyService_ping_coro(
     else:
         promise.cPromise.setValue(c_unit)
 
-cdef public void call_cy_MyService_getRandomData(
+cdef api void call_cy_MyService_getRandomData(
     object self,
     cFollyPromise[unique_ptr[string]] cPromise
 ) with gil:
@@ -125,7 +125,7 @@ async def MyService_getRandomData_coro(
     else:
         promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
-cdef public void call_cy_MyService_hasDataById(
+cdef api void call_cy_MyService_hasDataById(
     object self,
     cFollyPromise[cbool] cPromise,
     int64_t id
@@ -158,7 +158,7 @@ async def MyService_hasDataById_coro(
     else:
         promise.cPromise.setValue(<cbool> result)
 
-cdef public void call_cy_MyService_getDataById(
+cdef api void call_cy_MyService_getDataById(
     object self,
     cFollyPromise[unique_ptr[string]] cPromise,
     int64_t id
@@ -191,7 +191,7 @@ async def MyService_getDataById_coro(
     else:
         promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
-cdef public void call_cy_MyService_putDataById(
+cdef api void call_cy_MyService_putDataById(
     object self,
     cFollyPromise[cFollyUnit] cPromise,
     int64_t id,
@@ -229,7 +229,7 @@ async def MyService_putDataById_coro(
     else:
         promise.cPromise.setValue(c_unit)
 
-cdef public void call_cy_MyService_lobDataById(
+cdef api void call_cy_MyService_lobDataById(
     object self,
     cFollyPromise[cFollyUnit] cPromise,
     int64_t id,
@@ -267,7 +267,7 @@ async def MyService_lobDataById_coro(
     else:
         promise.cPromise.setValue(c_unit)
 
-cdef public void call_cy_MyServiceFast_ping(
+cdef api void call_cy_MyServiceFast_ping(
     object self,
     cFollyPromise[cFollyUnit] cPromise
 ) with gil:
@@ -295,7 +295,7 @@ async def MyServiceFast_ping_coro(
     else:
         promise.cPromise.setValue(c_unit)
 
-cdef public void call_cy_MyServiceFast_getRandomData(
+cdef api void call_cy_MyServiceFast_getRandomData(
     object self,
     cFollyPromise[unique_ptr[string]] cPromise
 ) with gil:
@@ -323,7 +323,7 @@ async def MyServiceFast_getRandomData_coro(
     else:
         promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
-cdef public void call_cy_MyServiceFast_hasDataById(
+cdef api void call_cy_MyServiceFast_hasDataById(
     object self,
     cFollyPromise[cbool] cPromise,
     int64_t id
@@ -356,7 +356,7 @@ async def MyServiceFast_hasDataById_coro(
     else:
         promise.cPromise.setValue(<cbool> result)
 
-cdef public void call_cy_MyServiceFast_getDataById(
+cdef api void call_cy_MyServiceFast_getDataById(
     object self,
     cFollyPromise[unique_ptr[string]] cPromise,
     int64_t id
@@ -389,7 +389,7 @@ async def MyServiceFast_getDataById_coro(
     else:
         promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
-cdef public void call_cy_MyServiceFast_putDataById(
+cdef api void call_cy_MyServiceFast_putDataById(
     object self,
     cFollyPromise[cFollyUnit] cPromise,
     int64_t id,
@@ -427,7 +427,7 @@ async def MyServiceFast_putDataById_coro(
     else:
         promise.cPromise.setValue(c_unit)
 
-cdef public void call_cy_MyServiceFast_lobDataById(
+cdef api void call_cy_MyServiceFast_lobDataById(
     object self,
     cFollyPromise[cFollyUnit] cPromise,
     int64_t id,
@@ -465,7 +465,7 @@ async def MyServiceFast_lobDataById_coro(
     else:
         promise.cPromise.setValue(c_unit)
 
-cdef public void call_cy_MyServicePrioParent_ping(
+cdef api void call_cy_MyServicePrioParent_ping(
     object self,
     cFollyPromise[cFollyUnit] cPromise
 ) with gil:
@@ -493,7 +493,7 @@ async def MyServicePrioParent_ping_coro(
     else:
         promise.cPromise.setValue(c_unit)
 
-cdef public void call_cy_MyServicePrioParent_pong(
+cdef api void call_cy_MyServicePrioParent_pong(
     object self,
     cFollyPromise[cFollyUnit] cPromise
 ) with gil:
@@ -521,7 +521,7 @@ async def MyServicePrioParent_pong_coro(
     else:
         promise.cPromise.setValue(c_unit)
 
-cdef public void call_cy_MyServicePrioChild_pang(
+cdef api void call_cy_MyServicePrioChild_pang(
     object self,
     cFollyPromise[cFollyUnit] cPromise
 ) with gil:
