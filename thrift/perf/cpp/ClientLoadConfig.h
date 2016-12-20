@@ -96,8 +96,6 @@ class ClientLoadConfig : public loadgen::WeightedLoadConfig {
 
   bool useAsync() const;
 
-  bool useCpp2() const;
-
   bool useSSL() const;
 
   bool useSR() const;

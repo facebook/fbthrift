@@ -20,9 +20,7 @@
 #include <thrift/lib/cpp/test/loadgen/QpsMonitor.h>
 #include <thrift/lib/cpp/test/loadgen/RNG.h>
 #include <thrift/perf/cpp/ClientLoadConfig.h>
-#include <thrift/perf/cpp/ClientWorker.h>
 #include <thrift/perf/cpp/ClientWorker2.h>
-#include <thrift/perf/cpp/AsyncClientWorker.h>
 #include <thrift/perf/cpp/AsyncClientWorker2.h>
 #include "common/services/cpp/ServiceFramework.h"
 
@@ -67,18 +65,10 @@ int main(int argc, char* argv[]) {
 
   std::shared_ptr<ClientLoadConfig> config(new ClientLoadConfig);
   if (config->useAsync()) {
-    if (config->useCpp2()) {
-      loadgen::runLoadGen<apache::thrift::AsyncClientWorker2>(
-        config, FLAGS_interval);
-    } else {
-      loadgen::runLoadGen<AsyncClientWorker>(config, FLAGS_interval);
-    }
+    loadgen::runLoadGen<apache::thrift::AsyncClientWorker2>(
+      config, FLAGS_interval);
   } else {
-    if (config->useCpp2()) {
-      loadgen::runLoadGen<ClientWorker2>(config, FLAGS_interval);
-    } else {
-      loadgen::runLoadGen<ClientWorker>(config, FLAGS_interval);
-    }
+    loadgen::runLoadGen<ClientWorker2>(config, FLAGS_interval);
   }
 
   fwk->stop();

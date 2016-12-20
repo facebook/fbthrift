@@ -32,7 +32,6 @@ DEFINE_bool(http1, false, "use Proxygen HTTP Protocol");
 DEFINE_bool(http2, false, "use Proxygen HTTP2 Protocol");
 DEFINE_bool(spdy, false, "use Proxygen SPDY Protocol");
 DEFINE_bool(async, false, "Use async client");
-DEFINE_bool(cpp2, false, "Use cpp cpp2");
 DEFINE_bool(ssl, false, "Use SSL");
 DEFINE_bool(sr, false, "Use Service Router");
 DEFINE_bool(single_host, false, "Use Single Hosts option with Service Router");
@@ -204,10 +203,6 @@ bool ClientLoadConfig::useSPDYProtocol() const {
 
 bool ClientLoadConfig::useAsync() const {
   return FLAGS_async;
-}
-
-bool ClientLoadConfig::useCpp2() const {
-  return FLAGS_cpp2;
 }
 
 bool ClientLoadConfig::useSSL() const {

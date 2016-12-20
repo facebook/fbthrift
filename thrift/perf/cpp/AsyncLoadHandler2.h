@@ -23,24 +23,7 @@
 
 #include <thrift/perf/if/gen-cpp2/LoadTest.h>
 
-#include <thrift/lib/cpp/async/TEventServer.h>
-
-using apache::thrift::async::TEventServer;
-
 namespace apache { namespace thrift {
-
-// Using classes as callbacks is _much_ faster than std::function
-class FastNoopCallback
-    : public folly::EventBase::LoopCallback {
- public:
-  FastNoopCallback(std::unique_ptr<HandlerCallback<void>> callback)
-      : callback_(std::move(callback)) {}
-  void runLoopCallback() noexcept override {
-    callback_->done();
-    delete this;
-  }
-  std::unique_ptr<HandlerCallback<void>> callback_;
-};
 
 class AsyncLoadHandler2 : public LoadTestSvIf
                         , public facebook::fb303::FacebookBase2 {
@@ -50,7 +33,7 @@ class AsyncLoadHandler2 : public LoadTestSvIf
     return facebook::fb303::cpp2::fb_status::ALIVE;
   }
 
-  explicit AsyncLoadHandler2(TEventServer* = nullptr)
+  explicit AsyncLoadHandler2()
     : FacebookBase2("AsyncLoadHandler2") {}
 
   void async_eb_noop(std::unique_ptr<HandlerCallback<void>> callback) override;
