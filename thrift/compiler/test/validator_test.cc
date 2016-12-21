@@ -123,3 +123,32 @@ TEST_F(ValidatorTest, RepeatedNameInExtendedService) {
   EXPECT_EQ(1, errors.size());
   EXPECT_EQ(expected, errors.front());
 }
+
+TEST_F(ValidatorTest, RepeatedNamesInEnumValues) {
+  auto tenum = create_fake_enum("foo");
+
+  t_program program("/path/to/file.thrift");
+  program.add_enum(tenum.get());
+
+  t_enum_value enum_value_1("bar", 1);
+  t_enum_value enum_value_2("not_bar", 2);
+  tenum->append(&enum_value_1);
+  tenum->append(&enum_value_2);
+
+  // No errors will be found
+  auto errors =
+    run_validator<enum_value_names_uniqueness_validator>(&program);
+  EXPECT_TRUE(errors.empty());
+
+  // Add enum with repeated value
+  t_enum_value enum_value_3("bar", 3);
+  tenum->append(&enum_value_3);
+
+  // An error will be found
+  const std::string expected = "[FAILURE:/path/to/file.thrift:1] "
+    "Redefinition of value bar in enum foo";
+  errors =
+    run_validator<enum_value_names_uniqueness_validator>(&program);
+  EXPECT_EQ(1, errors.size());
+  EXPECT_EQ(expected, errors.front());
+}

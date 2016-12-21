@@ -21,6 +21,7 @@
 
 #include <thrift/compiler/parse/t_function.h>
 #include <thrift/compiler/parse/t_service.h>
+#include <thrift/compiler/parse/t_enum.h>
 #include <thrift/compiler/test/parser_test_helpers-inl.h>
 
 /**
@@ -57,4 +58,15 @@ std::unique_ptr<t_service> create_fake_service(
   std::unique_ptr<t_service> service(new t_service(program));
   service->set_name(std::move(name));
   return service;
+}
+
+/**
+ * Helper function to instantiate fake t_enums
+ */
+std::unique_ptr<t_enum> create_fake_enum(
+    std::string name,
+    t_program* program = nullptr) {
+  std::unique_ptr<t_enum> tenum(new t_enum(program));
+  tenum->set_name(std::move(name));
+  return tenum;
 }
