@@ -674,7 +674,7 @@ void t_go_generator::init_generator() {
 
   while (true) {
     // TODO: Do better error checking here.
-    MKDIR(package_dir_.c_str());
+    make_dir(package_dir_.c_str());
 
     if (module.empty()) {
       break;
@@ -712,7 +712,7 @@ void t_go_generator::init_generator() {
 
   for (sv_iter = services.begin(); sv_iter != services.end(); ++sv_iter) {
     string service_dir = package_dir_ + "/" + underscore((*sv_iter)->get_name()) + "-remote";
-    MKDIR(service_dir.c_str());
+    make_dir(service_dir.c_str());
   }
 
   // Print header

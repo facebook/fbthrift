@@ -214,7 +214,7 @@ class t_rb_generator : public t_oop_generator {
  */
 void t_rb_generator::init_generator() {
   // Make output directory
-  MKDIR(get_out_dir().c_str());
+  make_dir(get_out_dir().c_str());
 
   // Make output file
   string f_types_name = get_out_dir()+underscore(program_name_)+"_types.rb";

@@ -27,6 +27,7 @@
  *
  */
 
+#include <ctime>
 #include <unistd.h>
 
 #include <thrift/compiler/platform.h>
@@ -356,7 +357,7 @@ int main(int argc, char** argv) {
           // just like how for `-o blah` we make `o/gen-java`
           if (stat(out_path.c_str(), &sb) < 0
               && errno == ENOENT
-              && MKDIR(out_path.c_str()) < 0) {
+              && make_dir(out_path.c_str()) < 0) {
             fprintf(stderr, "Output directory %s is unusable: mkdir: %s\n", out_path.c_str(), strerror(errno));
             return -1;
           }

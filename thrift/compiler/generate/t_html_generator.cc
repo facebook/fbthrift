@@ -206,7 +206,7 @@ void t_html_generator::generate_program_toc_row(t_program* tprog) {
  */
 void t_html_generator::generate_program() {
   // Make output directory
-  MKDIR(get_out_dir().c_str());
+  make_dir(get_out_dir().c_str());
   string fname = get_out_dir() + program_->get_name() + ".html";
   f_out_.open(fname.c_str());
   record_genfile(fname);

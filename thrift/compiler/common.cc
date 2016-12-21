@@ -19,6 +19,10 @@
 
 #include <thrift/compiler/common.h>
 
+#ifdef __MINGW32__
+# include <windows.h> /* for GetFullPathName */
+#endif
+
 /**
  * Global program tree
  */
@@ -137,11 +141,11 @@ int g_allow_64bit_consts = 0;
 
 
 char *saferealpath(const char *path, char *resolved_path) {
-#ifdef MINGW
-  char buf[MAX_PATH];
+#ifdef __MINGW32__
+  char buf[PATH_MAX];
   char* basename;
-  DWORD len = GetFullPathName(path, MAX_PATH, buf, &basename);
-  if (len == 0 || len > MAX_PATH - 1){
+  DWORD len = GetFullPathName(path, PATH_MAX, buf, &basename);
+  if (len == 0 || len > PATH_MAX - 1){
     strcpy(resolved_path, path);
   } else {
     CharLowerBuff(buf, len);

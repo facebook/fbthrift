@@ -168,7 +168,7 @@ class t_erl_generator : public t_concat_generator {
  */
 void t_erl_generator::init_generator() {
   // Make output directory
-  MKDIR(get_out_dir().c_str());
+  make_dir(get_out_dir().c_str());
 
   // setup export lines
   export_lines_first_ = true;

@@ -268,7 +268,7 @@ class t_cocoa_generator : public t_oop_generator {
  */
 void t_cocoa_generator::init_generator() {
   // Make output directory
-  MKDIR(get_out_dir().c_str());
+  make_dir(get_out_dir().c_str());
   cocoa_prefix_ = program_->get_namespace("cocoa");
 
   // we have a .h header file...

@@ -226,7 +226,7 @@ void t_ocaml_generator::generate_program() {
  */
 void t_ocaml_generator::init_generator() {
   // Make output directory
-  MKDIR(get_out_dir().c_str());
+  make_dir(get_out_dir().c_str());
 
   // Make output file
   string f_types_name = get_out_dir()+program_name_+"_types.ml";

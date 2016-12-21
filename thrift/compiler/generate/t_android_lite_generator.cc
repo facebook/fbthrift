@@ -165,19 +165,19 @@ string t_android_lite_generator::temp_variable(const string& prefix,
 }
 
 void t_android_lite_generator::init_generator() {
-  MKDIR(get_out_dir().c_str());
+  make_dir(get_out_dir().c_str());
   string dir = package_name_;
   string subdir = get_out_dir();
   string::size_type loc;
 
   while((loc = dir.find(".")) != string::npos) {
     subdir = subdir + "/" + dir.substr(0, loc);
-    MKDIR(subdir.c_str());
+    make_dir(subdir.c_str());
     dir = dir.substr(loc + 1);
   }
   if (dir.size() > 0) {
     subdir = subdir + "/" + dir;
-    MKDIR(subdir.c_str());
+    make_dir(subdir.c_str());
   }
 
   package_dir_ = subdir;

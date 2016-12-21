@@ -20,25 +20,22 @@
 #ifndef THRIFT_COMPILER_COMMON_
 #define THRIFT_COMPILER_COMMON_ 1
 
-#include <cassert>
-#include <stdlib.h>
-#include <stdio.h>
-#include <stdarg.h>
-#include <string>
 #include <algorithm>
-#include <sys/types.h>
+#include <cassert>
+#include <cerrno>
+#include <climits>
+#include <cstdarg>
+#include <cstdio>
+#include <cstdlib>
 #include <sys/stat.h>
-#include <errno.h>
-#include <limits.h>
+#include <sys/types.h>
+#include <string>
 
 // Careful: must include globals first for extern definitions
 #include <thrift/compiler/globals.h>
 
 #include <thrift/compiler/parse/t_program.h>
 #include <thrift/compiler/parse/t_scope.h>
-#ifdef MINGW
-# include <windows.h> /* for GetFullPathName */
-#endif
 
 namespace {
 using namespace std;

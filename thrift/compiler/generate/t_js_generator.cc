@@ -258,7 +258,7 @@ class t_js_generator : public t_oop_generator {
  */
 void t_js_generator::init_generator() {
   // Make output directory
-  MKDIR(get_out_dir().c_str());
+  make_dir(get_out_dir().c_str());
 
   string outdir = get_out_dir();
 

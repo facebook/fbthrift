@@ -14,9 +14,19 @@
  * limitations under the License.
  */
 
-#pragma once
+#include <thrift/compiler/platform.h>
 
-/*
- * Platform independent mkdir function
- */
-int make_dir(const char *path);
+#ifdef __MINGW32__
+#  include <io.h>
+#else
+#  include <sys/types.h>
+#  include <sys/stat.h>
+#endif
+
+int make_dir(const char *path) {
+  #ifdef __MINGW32__
+    return mkdir(path);
+  #else
+    return mkdir(path, S_IRWXU | S_IRWXG | S_IRWXO);
+  #endif
+}

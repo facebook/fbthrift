@@ -248,7 +248,7 @@ class t_hs_generator : public t_oop_generator {
 void t_hs_generator::init_generator() {
   // Make output directory
   package_dir_ = get_out_dir();
-  MKDIR(package_dir_.c_str());
+  make_dir(package_dir_.c_str());
 
   string hs_namespace = program_->get_namespace("hs");
   if (!hs_namespace.empty()) {
@@ -259,7 +259,7 @@ void t_hs_generator::init_generator() {
       }
       package_dir_ += component;
       package_dir_.push_back('/');
-      MKDIR(package_dir_.c_str());
+      make_dir(package_dir_.c_str());
     }
   }
 

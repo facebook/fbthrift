@@ -93,7 +93,7 @@ class t_xsd_generator : public t_concat_generator {
 
 void t_xsd_generator::init_generator() {
   // Make output directory
-  MKDIR(get_out_dir().c_str());
+  make_dir(get_out_dir().c_str());
 
   // Make output file
   string f_php_name = get_out_dir()+program_->get_name()+"_xsd.php";

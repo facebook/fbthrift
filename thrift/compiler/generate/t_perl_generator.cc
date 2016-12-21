@@ -231,7 +231,7 @@ class t_perl_generator : public t_oop_generator {
  */
 void t_perl_generator::init_generator() {
   // Make output directory
-  MKDIR(get_out_dir().c_str());
+  make_dir(get_out_dir().c_str());
 
   string outdir = get_out_dir();
   std::list<std::string> dirs;
@@ -239,7 +239,7 @@ void t_perl_generator::init_generator() {
   std::list<std::string>::iterator it;
   for (it = dirs.begin(); it != dirs.end(); it++) {
       outdir += *it + "/";
-      MKDIR(outdir.c_str());
+      make_dir(outdir.c_str());
   }
 
   // Make output file

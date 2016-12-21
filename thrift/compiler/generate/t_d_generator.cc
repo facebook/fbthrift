@@ -78,19 +78,19 @@ class t_d_generator : public t_oop_generator {
  protected:
   void init_generator() override {
     // Make output directory
-    MKDIR(get_out_dir().c_str());
+    make_dir(get_out_dir().c_str());
 
     string dir = program_->get_namespace("d");
     string subdir = get_out_dir();
     string::size_type loc;
     while ((loc = dir.find(".")) != string::npos) {
       subdir = subdir + "/" + dir.substr(0, loc);
-      MKDIR(subdir.c_str());
+      make_dir(subdir.c_str());
       dir = dir.substr(loc+1);
     }
     if (!dir.empty()) {
       subdir = subdir + "/" + dir;
-      MKDIR(subdir.c_str());
+      make_dir(subdir.c_str());
     }
 
     package_dir_ = subdir + "/";

@@ -133,7 +133,7 @@ class t_csharp_generator : public t_oop_generator
 
 
 void t_csharp_generator::init_generator() {
-  MKDIR(get_out_dir().c_str());
+  make_dir(get_out_dir().c_str());
   namespace_name_ = program_->get_namespace("csharp");
 
   string dir = namespace_name_;
@@ -142,12 +142,12 @@ void t_csharp_generator::init_generator() {
 
   while ((loc = dir.find(".")) != string::npos) {
     subdir = subdir + "/" + dir.substr(0, loc);
-    MKDIR(subdir.c_str());
+    make_dir(subdir.c_str());
     dir = dir.substr(loc + 1);
   }
   if (dir.size() > 0) {
     subdir = subdir + "/" + dir;
-    MKDIR(subdir.c_str());
+    make_dir(subdir.c_str());
   }
 
   namespace_dir_ = subdir;

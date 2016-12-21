@@ -717,7 +717,7 @@ void t_py_generator::init_generator() {
   assert(package_dir_.back() == '/');
   while (true) {
     // TODO: Do better error checking here.
-    MKDIR(package_dir_.c_str());
+    make_dir(package_dir_.c_str());
     std::ofstream init_py((package_dir_+"__init__.py").c_str());
     init_py << py_autogen_comment();
     init_py.close();

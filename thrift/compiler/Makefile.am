@@ -36,6 +36,7 @@ libthriftcompilerbase_la_SOURCES = \
         parse/t_type.cc \
         parse/t_typedef.cc \
         parse/t_program.cc \
+        platform.cc \
         validator.cc \
         visitor.cc
 

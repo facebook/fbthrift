@@ -74,21 +74,21 @@ class t_json_generator : public t_concat_generator {
  */
 void t_json_generator::generate_program() {
   // Make output directory
-  MKDIR(get_out_dir().c_str());
+  make_dir(get_out_dir().c_str());
   string module_name = program_->get_namespace("json");
   string fname = get_out_dir();
   if (module_name.empty()) {
     module_name = program_->get_name();
   }
   string mangled_module_name = module_name;
-  MKDIR(fname.c_str());
+  make_dir(fname.c_str());
   for (string::size_type pos = mangled_module_name.find('.');
        pos != string::npos;
        pos = mangled_module_name.find('.')) {
     fname += '/';
     fname += mangled_module_name.substr(0, pos);
     mangled_module_name.erase(0, pos+1);
-    MKDIR(fname.c_str());
+    make_dir(fname.c_str());
   }
 
   fname += '/';
