@@ -194,6 +194,7 @@ std::unique_ptr<Krb5CCache> Krb5CCacheStore::initCacheForService(
 
   if (creds != nullptr) {
     mem->storeCred(*creds);
+    expires = creds->times.endtime;
   } else {
     if (logger) {
       logger->logStart("get_credential_from_kdc");
