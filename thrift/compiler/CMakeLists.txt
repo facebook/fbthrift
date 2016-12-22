@@ -6,11 +6,12 @@ get_filename_component(THRIFT_DIR ${COMPILER_DIR} DIRECTORY)
 get_filename_component(THRIFT_ROOT_DIR ${THRIFT_DIR} DIRECTORY)
 include_directories(${THRIFT_ROOT_DIR})
 
+# Add non-standard external dependencies
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/mstch)
+include_directories(${mstch_INCLUDE_DIR})
+
 # Link linked libraries to out of source directory
 link_directories(${CMAKE_BINARY_DIR})
-
-# This is necessary so that find_package can find the Find$x.cmake files
-set(CMAKE_MODULE_PATH ${COMPILER_DIR} ${CMAKE_MODULE_PATH})
 
 # package information
 set(PACKAGE_NAME "thrift_compiler")
@@ -28,6 +29,7 @@ find_package(
     filesystem
     system
 )
+include_directories(${Boost_INCLUDE_DIRS})
 
 # build compiler/parse
 aux_source_directory(./parse PARSE_FILES)
@@ -44,6 +46,7 @@ add_library(
   visitor.h
 
   common.cc
+  platform.cc
   validator.cc
   visitor.cc
 )
@@ -64,12 +67,14 @@ add_library(
 )
 target_link_libraries(
   generate_lib
+  mstch
   ${Boost_LIBRARIES}
 )
+
 # Force generate_lib linking (compiler will optimize it out otherwise)
 if(APPLE)
   set(GENERATE_LINKED -Wl,-force_load generate_lib)
-elseif(UNIX)
+else()
   set(GENERATE_LINKED -Wl,--whole-archive generate_lib -Wl,--no-whole-archive)
 endif(APPLE)
 
@@ -93,7 +98,6 @@ target_link_libraries(
   thrift_base
   ${GENERATE_LINKED}
   -lcrypto
-  -lmstch
 )
 # Add the parser definition for global variables between lex, parse, main
 target_compile_definitions(
