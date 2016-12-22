@@ -50,13 +50,23 @@ template <class E> exception_ptr to_eptr(const E& e) {
   catch (E&) { return current_exception(); }
 }
 
+exception& from_eptr(exception_ptr& eptr) {
+  try {
+    rethrow_exception(eptr);
+  } catch (exception& e) {
+    return e;
+  } catch (...) {
+    throw std::logic_error("impossible");
+  }
+}
+
 class TProcessorEventHandlerTest : public testing::Test {};
 
 }
 
 TEST_F(TProcessorEventHandlerTest, with_full_wrapped_eptr) {
-  auto e = lulz("hello");
-  auto wrap = exception_wrapper(to_eptr(e), e);
+  auto eptr = make_exception_ptr(lulz("hello"));
+  auto wrap = exception_wrapper(eptr, from_eptr(eptr));
   EXPECT_EQ("lulz", wrap.class_name().toStdString());
   EXPECT_EQ("lulz: hello", wrap.what().toStdString());
 
@@ -67,8 +77,8 @@ TEST_F(TProcessorEventHandlerTest, with_full_wrapped_eptr) {
 }
 
 TEST_F(TProcessorEventHandlerTest, with_half_wrapped_eptr) {
-  auto e = lulz("hello");
-  auto wrap = exception_wrapper(to_eptr(e));
+  auto eptr = make_exception_ptr(lulz("hello"));
+  auto wrap = exception_wrapper(eptr);
   EXPECT_EQ("", wrap.class_name().toStdString());
   EXPECT_EQ("", wrap.what().toStdString());
 
@@ -79,8 +89,7 @@ TEST_F(TProcessorEventHandlerTest, with_half_wrapped_eptr) {
 }
 
 TEST_F(TProcessorEventHandlerTest, with_wrap_surprise) {
-  auto e = lulz("hello");
-  auto wrap = exception_wrapper(e);
+  auto wrap = exception_wrapper(lulz("hello"));
   EXPECT_EQ("lulz", wrap.class_name().toStdString());
   EXPECT_EQ("lulz: hello", wrap.what().toStdString());
 
@@ -91,8 +100,7 @@ TEST_F(TProcessorEventHandlerTest, with_wrap_surprise) {
 }
 
 TEST_F(TProcessorEventHandlerTest, with_wrap_declared) {
-  auto e = lulz("hello");
-  auto wrap = exception_wrapper(e);
+  auto wrap = exception_wrapper(lulz("hello"));
   EXPECT_EQ("lulz", wrap.class_name().toStdString());
   EXPECT_EQ("lulz: hello", wrap.what().toStdString());
 
