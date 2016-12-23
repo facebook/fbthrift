@@ -138,7 +138,8 @@ void createSSLSocketPair(EventBase* eventBase,
     acceptSocket.reset();
 
     *server = TAsyncSSLSocket::newSocket(ctx, eventBase, fd);
-    (*server)->sslAccept(&serverHandshakeCallback, 5);
+    (*server)->sslAccept(&serverHandshakeCallback,
+        std::chrono::milliseconds(5));
   });
 
   acceptSocket->addAcceptCallback(&acceptCallback, nullptr);

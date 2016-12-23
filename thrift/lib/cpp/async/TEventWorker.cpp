@@ -111,7 +111,8 @@ void TEventWorker::connectionAccepted(int fd, const folly::SocketAddress& client
 
   if (sslSock != nullptr) {
     // The connection may be deleted in sslAccept().
-    sslSock->sslAccept(this, server_->getRecvTimeout());
+    sslSock->sslAccept(
+        this, std::chrono::milliseconds(server_->getRecvTimeout()));
   } else {
     finishConnectionAccepted(asyncSock);
   }
