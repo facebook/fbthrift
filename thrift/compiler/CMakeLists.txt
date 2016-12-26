@@ -1,39 +1,13 @@
-cmake_minimum_required(VERSION 3.1.3 FATAL_ERROR)
+# Set the compiler directory
+set(COMPILER_HOME ${CMAKE_CURRENT_SOURCE_DIR})
 
-# Get the root directory file inclusion
-set(COMPILER_DIR ${CMAKE_CURRENT_SOURCE_DIR})
-get_filename_component(THRIFT_DIR ${COMPILER_DIR} DIRECTORY)
-get_filename_component(THRIFT_ROOT_DIR ${THRIFT_DIR} DIRECTORY)
-include_directories(${THRIFT_ROOT_DIR})
-
-# Add non-standard external dependencies
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/external/mstch)
-include_directories(${mstch_INCLUDE_DIR})
-
-# Link linked libraries to out of source directory
-link_directories(${CMAKE_BINARY_DIR})
-
-# package information
-set(PACKAGE_NAME "thrift_compiler")
-
-# Set cpp requirements
-project(${PACKAGE_NAME} C CXX)
-set(CMAKE_CXX_STANDARD 11) #Requires CMake 3.1.3
-
-# Find required dependencies
-find_package(BISON REQUIRED)
-find_package(FLEX REQUIRED)
-find_package(
-  Boost 1.54.0 REQUIRED #1.54.0 or greater
-  COMPONENTS
-    filesystem
-    system
-)
-include_directories(${Boost_INCLUDE_DIRS})
+# Override default install path for `make install` step
+set(CMAKE_INSTALL_PREFIX ${THRIFT_HOME})
 
 # build compiler/parse
 aux_source_directory(./parse PARSE_FILES)
 add_library(parse_lib ${PARSE_FILES})
+target_link_libraries(parse_lib crypto)
 
 # build the base libraries
 add_library(
@@ -50,24 +24,22 @@ add_library(
   validator.cc
   visitor.cc
 )
-target_link_libraries(
-  thrift_base
-
-  parse_lib
-  -lcrypto
-)
+target_link_libraries(thrift_base parse_lib)
 
 # build compiler/generate
 aux_source_directory(./generate GENERATOR_FILES)
 aux_source_directory(./generate/templates MSTCH_TEMPLATES)
 add_library(
   generate_lib
+
   ${GENERATOR_FILES}
   ${MSTCH_TEMPLATES}
 )
 target_link_libraries(
   generate_lib
+
   mstch
+  crypto
   ${Boost_LIBRARIES}
 )
 
@@ -79,35 +51,34 @@ else()
 endif(APPLE)
 
 # Compile Flex and Bison files and tie their dependencies
-BISON_TARGET(ThriftParser thrifty.yy ${CMAKE_BINARY_DIR}/thrifty.cc)
-FLEX_TARGET(ThriftScanner thriftl.ll ${CMAKE_BINARY_DIR}/thriftl.cc)
+BISON_TARGET(ThriftParser thrifty.yy ${COMPILER_HOME}/thrifty.cc)
+FLEX_TARGET(ThriftScanner thriftl.ll ${COMPILER_HOME}/thriftl.cc)
 ADD_FLEX_BISON_DEPENDENCY(ThriftScanner ThriftParser)
 
 # Create the thrift compiler binary
 add_executable(
-  thrift
+  thrift-compiler
 
   main.cc
   ${BISON_ThriftParser_OUTPUTS}
   ${FLEX_ThriftScanner_OUTPUTS}
 )
 target_link_libraries(
-  thrift
+  thrift-compiler
 
   parse_lib
   thrift_base
   ${GENERATE_LINKED}
-  -lcrypto
 )
 # Add the parser definition for global variables between lex, parse, main
 target_compile_definitions(
-  thrift
+  thrift-compiler
 
-  PRIVATE -DTHRIFTY_HH=\"${CMAKE_BINARY_DIR}/thrifty.hh\"
+  PRIVATE -DTHRIFTY_HH="${COMPILER_HOME}/thrifty.hh"
 )
 
 # Set the binary destination
 install(
-  TARGETS thrift
-  DESTINATION ${COMPILER_DIR}
+  TARGETS thrift-compiler
+  DESTINATION .
 )

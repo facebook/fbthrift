@@ -10,8 +10,8 @@ git clone https://github.com/facebook/fbthrift.git
 ## Dependencies:
 - [Mustache](https://mustache.github.io/) (Logic-less templates)
 ```
-mkdir fbthrift/thrift/compiler/external
-pushd fbthrift/thrift/compiler/external
+mkdir fbthrift/external
+pushd fbthrift/external
 git clone https://github.com/no1msd/mstch
 popd
 ```
@@ -56,25 +56,26 @@ brew install \
 
 ## Building
 
-### Linux or MacOS
-This will create a single `thrift` binary file.
+### Windows (MinGW)
+This will create a single `thrift-compiler` binary file.
 ```
+mkdir fbthrift/build
 cd fbthrift/thrift
-cmake ./compiler
+cmake ..
 make install
 ```
 
-### Windows
-This will create a single `thrift.exe` executable file.
-Using PowerShell
+### Windows (MinGW)
+This will create a single `thrift-compiler.exe` executable file.
 ```
-# Using PowerShell:
+# Using PowerShell
+mkdir fbthrift/build
 cd fbthrift/thrift
-cmake -DCMAKE_INSTALL_PREFIX:PATH=\. -G"MinGW Makefiles" .\compiler
+cmake -G"MinGW Makefiles" ..
 make install
 ```
 
 ## Usage
 ```
-./thrift --help
+./thrift-compiler --help
 ```
