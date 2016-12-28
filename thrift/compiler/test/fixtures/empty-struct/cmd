@@ -1,6 +1,6 @@
 android_lite src/module.thrift
 cpp2 src/module.thrift
 java src/module.thrift
-mstch_cpp2 src/module.thrift
+#mstch_cpp2 src/module.thrift
 mstch_swift src/module.thrift
 mstch_py3 src/module.thrift

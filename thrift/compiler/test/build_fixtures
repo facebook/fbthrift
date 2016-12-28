@@ -78,8 +78,6 @@ for name, index in zip(fixtureNames, range(len(fixtureNames))):
     for cmd in cmds:
         args = shlex.split(cmd.strip())
         base_args = [thrift, "-r", "--templates", templates, "--gen"]
-        if "mstch_cpp2" in args[0]:
-            continue
         if "cpp" in args[0]:
             path = os.path.join("thrift/compiler/test/fixtures", name)
             extra = "include_prefix=" + path

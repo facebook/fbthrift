@@ -1,2 +1,2 @@
 cpp2:stack_arguments src/module.thrift
-mstch_cpp2:stack_arguments src/module.thrift
+#mstch_cpp2:stack_arguments src/module.thrift
