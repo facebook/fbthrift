@@ -138,7 +138,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         self.__write_transforms = []
         self.__supported_client_types = set(client_types or
                                             (CLIENT_TYPE.HEADER,))
-        self.__proto_id = T_BINARY_PROTOCOL  # default to binary
+        self.__proto_id = T_COMPACT_PROTOCOL  # default to compact like c++
         self.__client_type = client_type or CLIENT_TYPE.HEADER
         self.__read_headers = {}
         self.__read_persistent_headers = {}
