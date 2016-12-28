@@ -44,6 +44,11 @@ all-local: frontend.la
 	PYTHONPATH=$(PY_LOCAL_PATH) $(PYTHON) setup.py install --home=$(PY_LOCAL_ROOT)
 
 # Note, not install-exec-hook, see the comment above
+#
+# --root=$(DESDIR) was added to fix sandboxed installations on
+# Gentoo, but this broke thrift_compiler installation on normal
+# systems by installing into './usr'.  Do two wrongs make a right?
+DESTDIR ?= /                                
 install-exec-am:
 	test -z "$(PY_INSTALL_HOME)" || mkdir -p $(PY_INSTALL_HOME)/lib/python
 	test -z "$(PY_CUSTOM_SITE_PKGS)" || mkdir -p $(PY_CUSTOM_SITE_PKGS)
