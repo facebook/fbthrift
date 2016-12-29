@@ -267,34 +267,6 @@ struct debug_equals_impl<type_class::set<ValueTypeClass>> {
   }
 };
 
-template <typename VariantTraits>
-struct debug_equals_variant_visitor {
-  template <
-    typename Descriptor, std::size_t Index,
-    typename T, typename Callback
-  >
-  void operator ()(
-    fatal::indexed<Descriptor, Index>,
-    std::string &path,
-    T const &lhs,
-    T const &rhs,
-    Callback &&callback,
-    bool &result
-  ) const {
-    assert(Descriptor::id::value == VariantTraits::get_id(lhs));
-    assert(Descriptor::id::value == VariantTraits::get_id(rhs));
-
-    using name = typename Descriptor::metadata::name;
-    auto guard = scoped_path::member(path, fatal::z_data<name>());
-
-    using type_class = typename Descriptor::metadata::type_class;
-    typename Descriptor::getter getter;
-    result = debug_equals_impl<type_class>::equals(
-      path, getter(lhs), getter(rhs), callback
-    );
-  }
-};
-
 template <>
 struct debug_equals_impl<type_class::variant> {
   template <typename T, typename Callback>
@@ -318,40 +290,27 @@ struct debug_equals_impl<type_class::variant> {
     }
 
     bool result = true;
+
     sorted_search<
       sort<typename traits::descriptors, less, get_type::id>,
       get_type::id::apply
-    >(
-      lhs.getType(),
-      debug_equals_variant_visitor<traits>(),
-      path,
-      lhs,
-      rhs,
-      callback,
-      result
-    );
+    >(lhs.getType(), [&](auto indexed) {
+      using descriptor = decltype(fatal::tag_type(indexed));
+
+      assert(descriptor::id::value == traits::get_id(lhs));
+      assert(descriptor::id::value == traits::get_id(rhs));
+
+      using name = typename descriptor::metadata::name;
+      auto guard = scoped_path::member(path, fatal::z_data<name>());
+
+      using type_class = typename descriptor::metadata::type_class;
+      typename descriptor::getter getter;
+      result = debug_equals_impl<type_class>::equals(
+        path, getter(lhs), getter(rhs), callback
+      );
+    });
 
     return result;
-  }
-};
-
-struct debug_equals_struct_visitor {
-  template <typename Member, std::size_t Index, typename T, typename Callback>
-  void operator ()(
-    fatal::indexed<Member, Index>,
-    std::string &path,
-    T const &lhs,
-    T const &rhs,
-    Callback &&callback,
-    bool &result
-  ) const {
-    auto guard =
-        scoped_path::member(path, fatal::z_data<typename Member::name>());
-
-    using getter = typename Member::getter;
-    result = debug_equals_impl<typename Member::type_class>::equals(
-                 path, getter::ref(lhs), getter::ref(rhs), callback) &&
-        result;
   }
 };
 
@@ -366,10 +325,17 @@ struct debug_equals_impl<type_class::structure> {
   ) {
     bool result = true;
 
-    fatal::foreach<typename reflect_struct<T>::members>(
-      debug_equals_struct_visitor(),
-      path, lhs, rhs, callback, result
-    );
+    fatal::foreach<typename reflect_struct<T>::members>([&](auto indexed) {
+      using member = decltype(fatal::tag_type(indexed));
+      using getter = typename member::getter;
+
+      auto guard =
+          scoped_path::member(path, fatal::z_data<typename member::name>());
+
+      result = debug_equals_impl<typename member::type_class>::equals(
+                   path, getter::ref(lhs), getter::ref(rhs), callback) &&
+          result;
+    });
 
     return result;
   }
