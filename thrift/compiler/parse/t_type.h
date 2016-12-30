@@ -22,7 +22,7 @@
 #include <string>
 #include <sstream>
 
-#include <thrift/compiler/parse/t_doc.h>
+#include <thrift/compiler/parse/t_annotated.h>
 
 class t_program;
 
@@ -67,7 +67,7 @@ struct t_types {
  * various types.
  *
  */
-class t_type : public t_doc {
+class t_type : public t_annotated {
  public:
 
   /**
@@ -125,8 +125,6 @@ class t_type : public t_doc {
    */
   const t_program* get_program() const { return program_; }
   const std::string& get_name() const { return name_; }
-
-  std::map<std::string, std::string> annotations_;
 
  protected:
 

@@ -16,38 +16,19 @@
 
 #pragma once
 
+#include <thrift/compiler/parse/t_doc.h>
+
+#include <map>
+#include <string>
+
 /**
- * class t_doc
+ * class t_type
  *
- * Base data structure for every parsed element in
- * a thrift program that supports documentation.
+ * Generic representation of any parsed element that can support annotations
  */
-class t_doc {
+class t_annotated : public t_doc {
  public:
+  virtual ~t_annotated() {}
 
-  /**
-   * Default constructor for t_doc
-   */
-  t_doc() {}
-
-  virtual ~t_doc() {}
-
-  /**
-   * t_doc setters
-   */
-  void set_doc(const std::string& doc) {
-    doc_ = doc;
-    has_doc_ = true;
-  }
-
-  /**
-   * t_doc getters
-   */
-  const std::string& get_doc() const { return doc_; }
-
-  bool has_doc() const { return has_doc_; }
-
- private:
-  std::string doc_;
-  bool has_doc_{false};
+  std::map<std::string, std::string> annotations_;
 };

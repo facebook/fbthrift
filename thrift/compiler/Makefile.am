@@ -55,6 +55,7 @@ thrift1_SOURCES = main.cc \
                  parse/endianness.h \
                  parse/t_doc.h \
                  parse/t_type.h \
+                 parse/t_annotated.h \
                  parse/t_base_type.h \
                  parse/t_enum.h \
                  parse/t_enum_value.h \

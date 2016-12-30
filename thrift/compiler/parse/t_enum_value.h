@@ -16,9 +16,9 @@
 
 #pragma once
 
-#include <string>
+#include <thrift/compiler/parse/t_annotated.h>
 
-#include <thrift/compiler/parse/t_doc.h>
+#include <string>
 
 // Internal variable maintained by `lex` representing
 // the current line number of the input.
@@ -32,7 +32,7 @@ extern int yylineno;
  * with them.
  *
  */
-class t_enum_value : public t_doc {
+class t_enum_value : public t_annotated {
  public:
 
   /**
@@ -53,7 +53,7 @@ class t_enum_value : public t_doc {
     value_(value),
     has_value_(true) {}
 
-  ~t_enum_value() {}
+  virtual ~t_enum_value() {}
 
   /**
    * t_enum_value setters

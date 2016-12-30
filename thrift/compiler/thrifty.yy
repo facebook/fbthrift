@@ -581,7 +581,7 @@ EnumDefList:
     }
 
 EnumDef:
-  CaptureDocText EnumValue CommaOrSemicolonOptional
+  CaptureDocText EnumValue TypeAnnotations CommaOrSemicolonOptional
     {
       pdebug("EnumDef -> EnumValue");
       $$ = $2;

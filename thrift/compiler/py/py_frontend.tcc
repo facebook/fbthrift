@@ -220,6 +220,7 @@ BOOST_PYTHON_MODULE(frontend) {
       .add_property("name",
             make_function(&t_enum_value::get_name, policy_ccr()))
       .add_property("value", &t_enum_value::get_value)
+      .def_readonly("annotations", &t_enum_value::annotations_)
       ;
   indexPtrVec<t_enum_value>("t_enum_value_vec");
 
