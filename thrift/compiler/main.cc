@@ -27,8 +27,10 @@
  *
  */
 
+#ifndef _WIN32
+#  include <unistd.h>
+#endif
 #include <ctime>
-#include <unistd.h>
 
 #include <thrift/compiler/platform.h>
 #include <thrift/compiler/generate/t_generator.h>
@@ -139,7 +141,7 @@ static bool generate(t_program* program,
     for (iter = generator_strings.begin(); iter != generator_strings.end(); ++iter) {
       t_generator* generator = t_generator_registry::get_generator(program, *iter);
 
-      if (generator == nullptr) {
+      if (!apache::thrift::compiler::isWindows() && generator == nullptr) {
         // Attempt to call the new python compiler if we can find it
         string path = argv[0];
         size_t last = path.find_last_of("/");
@@ -341,14 +343,13 @@ int main(int argc, char** argv) {
         }
         out_path = arg;
 
-#ifdef MINGW
-        //strip out trailing \ on Windows
-        int last = out_path.length()-1;
-        if (out_path[last] == '\\')
-        {
-          out_path.erase(last);
+        // Strip out trailing \ on a Windows path
+        if (apache::thrift::compiler::isWindows()) {
+          int last = out_path.length() - 1;
+          if (out_path[last] == '\\') {
+            out_path.erase(last);
+          }
         }
-#endif
 
         struct stat sb;
         if (out_path_is_absolute) {
@@ -366,10 +367,12 @@ int main(int argc, char** argv) {
           fprintf(stderr, "Output directory %s is unusable: %s\n", out_path.c_str(), strerror(errno));
           return -1;
         }
-        if (! S_ISDIR(sb.st_mode)) {
+#       ifndef _WIN32
+        if (!S_ISDIR(sb.st_mode)) {
           fprintf(stderr, "Output directory %s exists but is not a directory\n", out_path.c_str());
           return -1;
         }
+#       endif
       } else {
         fprintf(stderr, "!!! Unrecognized option: %s\n", arg);
         usage();

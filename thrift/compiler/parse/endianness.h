@@ -19,14 +19,18 @@
 namespace apache { namespace thrift { namespace compiler {
 
 inline constexpr bool kIsBigEndian() {
-  return __BYTE_ORDER__ != __ORDER_LITTLE_ENDIAN__;
+  #ifdef _WIN32
+    return false;
+  #else
+    return __BYTE_ORDER__ != __ORDER_LITTLE_ENDIAN__;
+  #endif
 }
 
 /*
  * Use system specific byte swap functions
  */
 inline uint64_t bswap(const uint64_t b) {
-  #ifdef _MSC_VER
+  #ifdef _WIN32
     return _byteswap_uint64(b);
   #else
     return __builtin_bswap64(b);

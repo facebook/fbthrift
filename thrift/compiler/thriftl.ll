@@ -26,6 +26,12 @@
 
 %{
 
+// Flex normally adds: #include <unistd.h>. This include is not supported
+// by MSVC. With this, we get rid of that include to compile with MSVC.
+#ifdef _WIN32
+#  define YY_NO_UNISTD_H
+#endif
+
 #include <errno.h>
 
 #include "thrift/compiler/common.h"

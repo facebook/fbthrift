@@ -2615,17 +2615,7 @@ void t_py_generator::generate_service_remote(t_service* tservice) {
   f_remote.close();
 
   // Make file executable, love that bitwise OR action
-  chmod(f_remote_name.c_str(),
-          S_IRUSR
-        | S_IWUSR
-        | S_IXUSR
-#ifndef MINGW
-        | S_IRGRP
-        | S_IXGRP
-        | S_IROTH
-        | S_IXOTH
-#endif
-  );
+  chmod_to_755(f_remote_name.c_str());
 }
 
 /**
@@ -2663,17 +2653,7 @@ void t_py_generator::generate_service_fuzzer(t_service* /*tservice*/) {
     rename_reserved_keywords(service_name_) <<
     ", ttypes, constants)\n";
   f_fuzzer.close();
-  chmod(f_fuzzer_name.c_str(),
-        S_IRUSR
-        | S_IWUSR
-        | S_IXUSR
-#ifndef MINGW
-        | S_IRGRP
-        | S_IXGRP
-        | S_IROTH
-        | S_IXOTH
-#endif
-  );
+  chmod_to_755(f_fuzzer_name.c_str());
 }
 
 

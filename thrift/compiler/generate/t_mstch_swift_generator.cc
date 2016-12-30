@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <cctype>
 
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/replace.hpp>

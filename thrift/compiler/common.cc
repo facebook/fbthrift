@@ -19,9 +19,11 @@
 
 #include <thrift/compiler/common.h>
 
-#ifdef __MINGW32__
+#ifdef _WIN32
 # include <windows.h> /* for GetFullPathName */
 #endif
+
+#include <thrift/compiler/platform.h>
 
 /**
  * Global program tree
@@ -141,7 +143,7 @@ int g_allow_64bit_consts = 0;
 
 
 char *saferealpath(const char *path, char *resolved_path) {
-#ifdef __MINGW32__
+# ifdef _WIN32
   char buf[PATH_MAX];
   char* basename;
   DWORD len = GetFullPathName(path, PATH_MAX, buf, &basename);
@@ -152,9 +154,9 @@ char *saferealpath(const char *path, char *resolved_path) {
     strcpy(resolved_path, buf);
   }
   return resolved_path;
-#else
+# else
   return realpath(path, resolved_path);
-#endif
+# endif
 }
 
 void yyerror(const char* fmt, ...) {

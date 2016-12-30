@@ -42,7 +42,6 @@ target_link_libraries(
   crypto
   ${Boost_LIBRARIES}
 )
-
 # Force generate_lib linking (compiler will optimize it out otherwise)
 if(APPLE)
   set(GENERATE_LINKED -Wl,-force_load generate_lib)
@@ -50,9 +49,21 @@ else()
   set(GENERATE_LINKED -Wl,--whole-archive generate_lib -Wl,--no-whole-archive)
 endif(APPLE)
 
+# Flex generates functions that have a different naming convention in
+# gcc and msvc (i.e. isatty(...) and _isatty(...)). This flag makes flex use
+# the right functions for every platform.
+if(WIN32)
+  set(FLEXFLAGS "--wincompat")
+endif(WIN32)
 # Compile Flex and Bison files and tie their dependencies
 BISON_TARGET(ThriftParser thrifty.yy ${COMPILER_HOME}/thrifty.cc)
-FLEX_TARGET(ThriftScanner thriftl.ll ${COMPILER_HOME}/thriftl.cc)
+FLEX_TARGET(
+  ThriftScanner
+
+  thriftl.ll
+  ${COMPILER_HOME}/thriftl.cc
+  COMPILE_FLAGS ${FLEXFLAGS}
+)
 ADD_FLEX_BISON_DEPENDENCY(ThriftScanner ThriftParser)
 
 # Create the thrift compiler binary
