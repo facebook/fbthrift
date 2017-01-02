@@ -29,7 +29,6 @@
 #include <thrift/test/gen-cpp/ThriftTest.h>
 
 #include <folly/portability/SysTime.h>
-#include <folly/portability/Unistd.h>
 
 #include <inttypes.h>
 

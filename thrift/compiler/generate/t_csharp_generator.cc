@@ -23,7 +23,6 @@
 #include <vector>
 
 #include <stdlib.h>
-#include <sys/stat.h>
 #include <sstream>
 
 #include <thrift/compiler/platform.h>

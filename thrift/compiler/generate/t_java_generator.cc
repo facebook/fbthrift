@@ -26,7 +26,6 @@
 #include <vector>
 #include <cctype>
 
-#include <sys/stat.h>
 #include <stdexcept>
 
 #include <thrift/compiler/platform.h>

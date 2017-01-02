@@ -22,7 +22,6 @@
 #include <iostream>
 #include <vector>
 
-#include <sys/stat.h>
 #include <sys/types.h>
 #include <sstream>
 #include <thrift/compiler/generate/t_oop_generator.h>

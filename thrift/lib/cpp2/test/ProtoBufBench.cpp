@@ -22,8 +22,6 @@
 #include <folly/Format.h>
 #include <folly/Optional.h>
 
-#include <vector>
-
 using namespace std;
 using namespace folly;
 
