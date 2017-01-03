@@ -538,8 +538,9 @@ void ThreadManager::ImplT<SemType>::setCodelCallback(ExpireCallback expireCallba
 }
 
 template <typename SemType>
-void ThreadManager::ImplT<SemType>::getStats(int64_t& waitTimeUs, int64_t& runTimeUs,
-                                   int64_t maxItems) {
+void ThreadManager::ImplT<SemType>::getStats(std::chrono::microseconds& waitTime,
+                                             std::chrono::microseconds& runTime,
+                                             int64_t maxItems) {
   folly::MSLGuard g(statsLock_);
   if (numTasks_) {
     if (numTasks_ >= maxItems) {
@@ -547,11 +548,11 @@ void ThreadManager::ImplT<SemType>::getStats(int64_t& waitTimeUs, int64_t& runTi
       executingTimeUs_ /= numTasks_;
       numTasks_ = 1;
     }
-    waitTimeUs = waitingTimeUs_ / numTasks_;
-    runTimeUs = executingTimeUs_ / numTasks_;
+    waitTime = waitingTimeUs_ / numTasks_;
+    runTime = executingTimeUs_ / numTasks_;
   } else {
-    waitTimeUs = 0;
-    runTimeUs = 0;
+    waitTime = std::chrono::microseconds::zero();
+    runTime = std::chrono::microseconds::zero();
   }
 }
 
@@ -561,10 +562,10 @@ void ThreadManager::ImplT<SemType>::reportTaskStats(
     const SystemClockTimePoint& workBegin,
     const SystemClockTimePoint& workEnd) {
   auto queueBegin = task.getQueueBeginTime();
-  int64_t waitTimeUs = std::chrono::duration_cast<std::chrono::microseconds>(
-      workBegin - queueBegin).count();
-  int64_t runTimeUs = std::chrono::duration_cast<std::chrono::microseconds>(
-      workEnd - workBegin).count();
+  auto waitTimeUs = std::chrono::duration_cast<std::chrono::microseconds>(
+      workBegin - queueBegin);
+  auto runTimeUs = std::chrono::duration_cast<std::chrono::microseconds>(
+      workEnd - workBegin);
   if (enableTaskStats_) {
     folly::MSLGuard g(statsLock_);
     waitingTimeUs_ += waitTimeUs;

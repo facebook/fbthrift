@@ -221,8 +221,9 @@ class ThreadManager::ImplT : public ThreadManager  {
     initCallback_ = initCallback;
   }
 
-  void getStats(int64_t& waitTimeUs, int64_t& runTimeUs, int64_t maxItems)
-    override;
+  void getStats(std::chrono::microseconds& waitTime,
+                std::chrono::microseconds& runTime,
+                int64_t maxItems) override;
   void enableCodel(bool) override;
   Codel* getCodel() override;
 
@@ -257,8 +258,8 @@ class ThreadManager::ImplT : public ThreadManager  {
 
   const bool enableTaskStats_;
   folly::MicroSpinLock statsLock_;
-  int64_t waitingTimeUs_;
-  int64_t executingTimeUs_;
+  std::chrono::microseconds waitingTimeUs_;
+  std::chrono::microseconds executingTimeUs_;
   int64_t numTasks_;
 
   ExpireCallback expireCallback_;

@@ -182,27 +182,31 @@ static void loadTest(size_t numTasks, int64_t timeout, size_t numWorkers) {
   EXPECT_LT(overheadPct, 0.10);
 
   // Get the task stats
-  int64_t waitTimeUs;
-  int64_t runTimeUs;
+  std::chrono::microseconds waitTimeUs;
+  std::chrono::microseconds runTimeUs;
   threadManager->getStats(waitTimeUs, runTimeUs, numTasks * 2);
 
   // Compute the best possible average wait time
   int64_t fullIterations = numTasks / numWorkers;
   int64_t tasksOnLastIteration = numTasks % numWorkers;
-  int64_t expectedTotalWaitTimeMs =
+  auto expectedTotalWaitTimeMs = std::chrono::milliseconds(
     numWorkers * ((fullIterations * (fullIterations - 1)) / 2) * timeout +
-    tasksOnLastIteration * fullIterations * timeout;
-  int64_t idealAvgWaitUs =
-    (expectedTotalWaitTimeMs * Util::US_PER_MS) / numTasks;
+    tasksOnLastIteration * fullIterations * timeout);
+  auto idealAvgWaitUs = std::chrono::microseconds(expectedTotalWaitTimeMs) /
+    numTasks;
 
-  LOG(INFO) << "avg wait time: " << waitTimeUs << "us "
-            << "avg run time: " << runTimeUs << "us "
-            << "ideal wait time: " << idealAvgWaitUs << "us";
+  LOG(INFO) << "avg wait time: " << waitTimeUs.count() << "us "
+            << "avg run time: " << runTimeUs.count() << "us "
+            << "ideal wait time: " << idealAvgWaitUs.count() << "us";
 
+  const auto doubleMilliToMicro = [](double val) {
+    return std::chrono::duration_cast<std::chrono::microseconds>(
+      std::chrono::duration<double, std::milli>(val));
+  };
   // Verify that the average run time was more than the timeout, but not
   // more than 10% over.
-  EXPECT_GE(runTimeUs, timeout * Util::US_PER_MS);
-  EXPECT_LT(runTimeUs, timeout * Util::US_PER_MS * 1.10);
+  EXPECT_GE(runTimeUs, std::chrono::milliseconds(timeout));
+  EXPECT_LT(runTimeUs, doubleMilliToMicro(timeout * 1.10));
   // Verify that the average wait time was within 10% of the ideal wait time.
   // The calculation for ideal average wait time assumes all tasks were started
   // instantaneously, in reality, starting 1000 tasks takes some non-zero amount
@@ -210,8 +214,8 @@ static void loadTest(size_t numTasks, int64_t timeout, size_t numWorkers) {
   // ideal wait time. Account for this by accepting an actual avg wait time that
   // is less than ideal avg wait time by up to the time it took to start all the
   // tasks.
-  EXPECT_GE(waitTimeUs, idealAvgWaitUs - taskStartTime * Util::US_PER_MS);
-  EXPECT_LT(waitTimeUs, idealAvgWaitUs * 1.10);
+  EXPECT_GE(waitTimeUs, idealAvgWaitUs - doubleMilliToMicro(taskStartTime));
+  EXPECT_LT(waitTimeUs, doubleMilliToMicro(idealAvgWaitUs.count() * 1.10));
 }
 
 TEST_F(ThreadManagerTest, LoadTest) {

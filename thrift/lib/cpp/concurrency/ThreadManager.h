@@ -232,14 +232,15 @@ class ThreadManager : public folly::Executor {
   /**
    * Get an internal statistics.
    *
-   * @param waitTimeUs - average time (us) task spent in a queue
-   * @param runTimeUs - average time (us) task spent running
+   * @param waitTime - average time (us) task spent in a queue
+   * @param runTime - average time (us) task spent running
    * @param maxItems - max items collected for stats
    */
-  virtual void getStats(int64_t& waitTimeUs, int64_t& runTimeUs,
+  virtual void getStats(std::chrono::microseconds& waitTime,
+                        std::chrono::microseconds& runTime,
                         int64_t /*maxItems*/) {
-    waitTimeUs = 0;
-    runTimeUs = 0;
+    waitTime = std::chrono::microseconds::zero();
+    runTime = std::chrono::microseconds::zero();
   }
 
   struct RunStats {
