@@ -122,30 +122,6 @@ struct pretty_print_impl<type_class::set<ValueTypeClass>> {
 };
 
 /**
- * Pretty print visitor for variant (Thrift union) members.
- *
- * @author: Marcelo Juchem <marcelo@fb.com>
- */
-struct pretty_print_variant_visitor {
-  template <
-    typename Descriptor, std::size_t Index,
-    typename OutputStream, typename T
-  >
-  void operator ()(
-    fatal::indexed<Descriptor, Index>,
-    OutputStream &&out,
-    T const &what
-  ) const {
-    out.newline();
-    out << fatal::enum_to_string(what.getType()) << ": ";
-    pretty_print_impl<typename Descriptor::metadata::type_class>::print(
-      out, typename Descriptor::getter()(what)
-    );
-    out.newline();
-  }
-};
-
-/**
  * Pretty print specialization for variants (Thrift unions).
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
@@ -159,41 +135,17 @@ struct pretty_print_impl<type_class::variant> {
     sorted_search<
       sort<typename variant_traits<T>::descriptors, less, get_type::id>,
       get_type::id::apply
-    >(
-      what.getType(),
-      pretty_print_variant_visitor(),
-      out.start_scope(),
-      what
-    );
+    >(what.getType(), [&](auto indexed) {
+      using descriptor = decltype(fatal::tag_type(indexed));
+      auto scope = out.start_scope();
+      scope.newline();
+      scope << fatal::enum_to_string(what.getType()) << ": ";
+      pretty_print_impl<typename descriptor::metadata::type_class>::print(
+        scope, typename descriptor::getter()(what)
+      );
+      scope.newline();
+    });
     out << '}';
-  }
-};
-
-/**
- * Pretty print visitor for structure members.
- *
- * @author: Marcelo Juchem <marcelo@fb.com>
- */
-template <std::size_t Size>
-struct pretty_print_struct_visitor {
-  template <
-    typename MemberInfo, std::size_t Index,
-    typename OutputStream, typename T
-  >
-  void operator ()(
-    fatal::indexed<MemberInfo, Index>,
-    OutputStream &&out,
-    T const &what
-  ) const {
-    auto scope = out.start_scope();
-    scope << fatal::z_data<typename MemberInfo::name>() << ": ";
-    pretty_print_impl<typename MemberInfo::type_class>::print(
-      scope, MemberInfo::getter::ref(what)
-    );
-    if (Index + 1 < Size) {
-      scope << ',';
-    }
-    scope.newline();
   }
 };
 
@@ -209,11 +161,20 @@ struct pretty_print_impl<type_class::structure> {
     out << "<struct>{";
     out.newline();
     using info = reflect_struct<T>;
-    fatal::foreach<typename info::members>(
-      pretty_print_struct_visitor<fatal::size<typename info::members>::value>(),
-      out,
-      what
-    );
+    fatal::foreach<typename info::members>([&](auto indexed) {
+      constexpr auto size = fatal::size<typename info::members>::value;
+      using member = decltype(fatal::tag_type(indexed));
+      auto const index = fatal::tag_index(indexed);
+      auto scope = out.start_scope();
+      scope << fatal::z_data<typename member::name>() << ": ";
+      pretty_print_impl<typename member::type_class>::print(
+        scope, member::getter::ref(what)
+      );
+      if (index + 1 < size) {
+        scope << ',';
+      }
+      scope.newline();
+    });
     out << '}';
   }
 };
