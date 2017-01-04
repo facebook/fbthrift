@@ -23,6 +23,8 @@
 # include <windows.h> /* for GetFullPathName */
 #endif
 
+#include <boost/filesystem.hpp>
+
 #include <thrift/compiler/platform.h>
 
 /**
@@ -141,22 +143,14 @@ int g_allow_neg_enum_vals;
  */
 int g_allow_64bit_consts = 0;
 
-
-char *saferealpath(const char *path, char *resolved_path) {
-# ifdef _WIN32
-  char buf[PATH_MAX];
-  char* basename;
-  DWORD len = GetFullPathName(path, PATH_MAX, buf, &basename);
-  if (len == 0 || len > PATH_MAX - 1){
-    strcpy(resolved_path, path);
-  } else {
-    CharLowerBuff(buf, len);
-    strcpy(resolved_path, buf);
+std::string compute_absolute_path(const std::string& path) {
+  boost::filesystem::path abspath{path};
+  try {
+    abspath = boost::filesystem::canonical(abspath);
+    return abspath.string();
+  } catch (const boost::filesystem::filesystem_error& e) {
+    failure("Could not find file: %s. Error: %s", path.c_str(), e.what());
   }
-  return resolved_path;
-# else
-  return realpath(path, resolved_path);
-# endif
 }
 
 void yyerror(const char* fmt, ...) {
@@ -231,17 +225,7 @@ string directory_name(string filename) {
 string include_file(string filename) {
   // Absolute path? Just try that
   if (filename[0] == '/') {
-    // Realpath!
-    char rp[PATH_MAX];
-    if (saferealpath(filename.c_str(), rp) == nullptr) {
-      failure("Cannot open include file %s\n", filename.c_str());
-    }
-
-    // Stat this file
-    struct stat finfo;
-    if (stat(rp, &finfo) == 0) {
-      return rp;
-    }
+    return compute_absolute_path(filename);
   } else { // relative path, start searching
     // new search path with current dir global
     vector<string> sp = g_incl_searchpath;
@@ -251,23 +235,19 @@ string include_file(string filename) {
     vector<string>::iterator it;
     for (it = sp.begin(); it != sp.end(); it++) {
       string sfilename = *(it) + "/" + filename;
-
-      // Realpath!
-      char rp[PATH_MAX];
-      if (saferealpath(sfilename.c_str(), rp) == nullptr) {
-        continue;
-      }
-
-      // Stat this files
-      struct stat finfo;
-      if (stat(rp, &finfo) == 0) {
-        return rp;
+      boost::filesystem::path abspath{sfilename};
+      try {
+        abspath = boost::filesystem::canonical(abspath);
+        return abspath.string();
+      } catch (const boost::filesystem::filesystem_error& e) {
+        pdebug("Could not find: %s. Error: %s", filename.c_str(), e.what());
       }
     }
+
+    // File was not found
+    failure("Could not find include filex %s", filename.c_str());
   }
 
-  // Uh oh
-  failure("Could not find include file %s", filename.c_str());
 }
 
 void clear_doctext() {

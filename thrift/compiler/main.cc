@@ -467,15 +467,12 @@ int main(int argc, char** argv) {
   }
 
   // Real-pathify it
-  char rp[PATH_MAX];
   if (argv[i] == nullptr) {
     fprintf(stderr, "!!! Missing file name\n");
     usage();
   }
-  if (saferealpath(argv[i], rp) == nullptr) {
-    failure("Could not open input file with realpath: %s", argv[i]);
-  }
-  string input_file(rp);
+
+  std::string input_file = compute_absolute_path(argv[i]);
 
   // Instance of the global parse tree
   t_program* program = new t_program(input_file);

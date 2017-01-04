@@ -40,7 +40,7 @@ libthriftcompilerbase_la_SOURCES = \
         validator.cc \
         visitor.cc
 
-libthriftcompilerbase_la_LDFLAGS = -lcrypto
+libthriftcompilerbase_la_LDFLAGS = -lcrypto $(BOOST_FILESYSTEM_LIB) $(BOOST_SYSTEM_LIB)
 
 
 thrift1_OBJDIR = obj

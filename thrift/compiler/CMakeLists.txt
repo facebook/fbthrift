@@ -24,7 +24,12 @@ add_library(
   validator.cc
   visitor.cc
 )
-target_link_libraries(thrift_base parse_lib)
+target_link_libraries(
+  thrift_base
+
+  parse_lib
+  ${Boost_LIBRARIES}
+)
 
 # build compiler/generate
 aux_source_directory(./generate GENERATOR_FILES)

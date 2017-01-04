@@ -91,10 +91,12 @@ struct t_annotation {
 };
 
 /**
- * MinGW doesn't have realpath, so use fallback implementation in that case,
- * otherwise this just calls through to realpath
+ * Obtain the absolute path name given a path for any platform
+ *
+ * Remarks: This function only works with existing paths but can be
+ *          expanded to work with paths that will exist
  */
-char *saferealpath(const char *path, char *resolved_path);
+std::string compute_absolute_path(const std::string& path);
 
 /**
  * Report an error to the user. This is called yyerror for historical
