@@ -23,6 +23,10 @@ add_subdirectory(${THRIFT_HOME}/external/mstch)
 find_package(BISON REQUIRED)
 find_package(FLEX REQUIRED)
 find_package(OpenSSL REQUIRED)
+
+if(MSVC)
+  set(Boost_USE_STATIC_LIBS ON) #Force static lib in msvc
+endif(MSVC)
 find_package(
   Boost 1.54.0 REQUIRED #1.54.0 or greater
   COMPONENTS
@@ -33,7 +37,6 @@ find_package(
 # Add the required dependency include paths
 include_directories(
   ${mstch_INCLUDE_DIR}
-  ${OpenSSL_INCLUDE_DIRS}
   ${Boost_INCLUDE_DIRS}
 )
 

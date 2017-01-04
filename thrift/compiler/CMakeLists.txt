@@ -48,21 +48,30 @@ target_link_libraries(
   ${Boost_LIBRARIES}
 )
 # Force generate_lib linking (compiler will optimize it out otherwise)
-if(APPLE)
+if(MSVC)
+  set(GENERATE_LINKED generate_lib) #MSVC WHOLEARCHIVE is set after exe
+elseif(APPLE)
   set(GENERATE_LINKED -Wl,-force_load generate_lib)
 else()
   set(GENERATE_LINKED -Wl,--whole-archive generate_lib -Wl,--no-whole-archive)
-endif(APPLE)
+endif(MSVC)
 
 # Flex generates functions that have a different naming convention in
 # gcc and msvc (i.e. isatty(...) and _isatty(...)). This flag makes flex use
 # the right functions for every platform.
 if(WIN32)
-  set(FLEXFLAGS "COMPILE_FLAGS --wincompat")
+  set(FLEX_FLAGS COMPILE_FLAGS) #Command type
+  set(FLEX_FLAGS_TYPE "--wincompat") #String type
 endif(WIN32)
 # Compile Flex and Bison files and tie their dependencies
 BISON_TARGET(ThriftParser thrifty.yy ${COMPILER_HOME}/thrifty.cc)
-FLEX_TARGET(ThriftScanner thriftl.ll ${COMPILER_HOME}/thriftl.cc ${FLEXFLAGS})
+FLEX_TARGET(
+  ThriftScanner
+
+  thriftl.ll
+  ${COMPILER_HOME}/thriftl.cc
+  ${FLEX_FLAGS} ${FLEX_FLAGS_TYPE}
+)
 ADD_FLEX_BISON_DEPENDENCY(ThriftScanner ThriftParser)
 
 # Create the thrift compiler binary
@@ -78,8 +87,16 @@ target_link_libraries(
 
   parse_lib
   thrift_base
-  ${GENERATE_LINKED}
+  generate_lib
 )
+# Force generate_lib linking (compiler will optimize it out otherwise)
+if(MSVC)
+  set_target_properties(
+    thrift-compiler
+
+    PROPERTIES LINK_FLAGS "/WHOLEARCHIVE:generate_lib"
+  )
+endif(MSVC)
 # Add the parser definition for global variables between lex, parse, main
 target_compile_definitions(
   thrift-compiler

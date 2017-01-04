@@ -141,6 +141,7 @@ static bool generate(t_program* program,
     for (iter = generator_strings.begin(); iter != generator_strings.end(); ++iter) {
       t_generator* generator = t_generator_registry::get_generator(program, *iter);
 
+#     ifndef _WIN32
       if (!apache::thrift::compiler::isWindows() && generator == nullptr) {
         // Attempt to call the new python compiler if we can find it
         string path = argv[0];
@@ -178,6 +179,7 @@ static bool generate(t_program* program,
         }
         delete generator;
       }
+#     endif
     }
 
   } catch (const string& s) {
