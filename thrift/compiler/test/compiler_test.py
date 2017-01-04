@@ -129,24 +129,34 @@ class CompilerTest(unittest.TestCase):
             close_fds=True,
         ).splitlines()
         gens = [gen.split('/', 1)[1] for gen in gens]
+
+        # Strip \n
+        cmds = [s.strip() for s in cmds]
+        # Make list into a single string
+        cmd_string = ''.join(cmds)
+        # Match only those who have cpp2 and mstch_cpp2
+        if (re.search('(^|[^#_])cpp2', cmd_string) is not None and
+                re.search('(^|[^#])mstch_cpp2', cmd_string) is not None):
+            self.compare_cpp2_and_mstchcpp2(gens, name, fixtureChildDir)
+
+    # Compare that mstch_cpp2 and cpp2 generate equal files with equal content
+    def compare_cpp2_and_mstchcpp2(self, gens, name, fixtureChildDir):
         try:
-            # TODO: We are currently comparing mstch_cpp2 to the cpp2 files,
-            # but only checking that each file we have generated is the same as
-            # the existing cpp2 implementation. There is no check that we are
-            # generating all of the correct files (because we aren't yet).
-            # When we migrate to mstch completely for cpp2, we should remove
-            # this logic
-            sorted_gens = sorted(gens)
-            sorted_non_mstch_cpp2_gens = [g for g in sorted_gens
-                if "mstch_cpp2" not in g]
-            self.assertEqual(sorted_non_mstch_cpp2_gens, sorted(manifest[name]))
-            for gen in gens:
-                genc = read_file(os.path.join(self.tmp, gen))
-                compare_rel = gen.replace('mstch_cpp2', 'cpp2')
-                fixc = read_resource(os.path.join(fixtureChildDir, compare_rel))
-                if genc != fixc:
+            cpp2_gens = [g for g in gens if "gen-cpp2" in g]
+            cpp2_gens_names = [re.sub(".*\/", "", e) for e in cpp2_gens]
+            mstch_cpp2_gens = [g for g in gens if "gen-mstch_cpp2" in g]
+            mstch_cpp2_gens_names = [re.sub(".*\/", "", e)
+                                     for e in mstch_cpp2_gens]
+            # Compare that both generate the same named files
+            self.assertEqual(sorted(cpp2_gens_names),
+                             sorted(mstch_cpp2_gens_names))
+            for gen in cpp2_gens_names:
+                genc = read_file(os.path.join(self.tmp, 'gen-cpp2/', gen))
+                genm = read_file(os.path.join(self.tmp, 'gen-mstch_cpp2/', gen))
+                if genc != genm:
                     print(os.path.join(name, gen), file=sys.stderr)
-                self.assertMultiLineEqual(genc, fixc)
+                # Compare that the file contents are equal
+                self.assertMultiLineEqual(genc, genm)
         except Exception as e:
             print(self.MSG, file=sys.stderr)
             traceback.print_exc(file=sys.stderr)
