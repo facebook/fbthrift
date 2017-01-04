@@ -53,17 +53,11 @@ endif(APPLE)
 # gcc and msvc (i.e. isatty(...) and _isatty(...)). This flag makes flex use
 # the right functions for every platform.
 if(WIN32)
-  set(FLEXFLAGS "--wincompat")
+  set(FLEXFLAGS "COMPILE_FLAGS --wincompat")
 endif(WIN32)
 # Compile Flex and Bison files and tie their dependencies
 BISON_TARGET(ThriftParser thrifty.yy ${COMPILER_HOME}/thrifty.cc)
-FLEX_TARGET(
-  ThriftScanner
-
-  thriftl.ll
-  ${COMPILER_HOME}/thriftl.cc
-  COMPILE_FLAGS ${FLEXFLAGS}
-)
+FLEX_TARGET(ThriftScanner thriftl.ll ${COMPILER_HOME}/thriftl.cc ${FLEXFLAGS})
 ADD_FLEX_BISON_DEPENDENCY(ThriftScanner ThriftParser)
 
 # Create the thrift compiler binary
