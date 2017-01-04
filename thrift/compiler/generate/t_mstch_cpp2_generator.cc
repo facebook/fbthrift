@@ -43,6 +43,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   bool get_is_eb(const t_function& fn) const;
   bool get_is_complex_return_type(const t_function& fn) const;
   bool get_is_stack_args() const;
+  void generate_structs(const t_program& program);
   void generate_service(t_service* service);
 
   mstch::array get_namespace(const t_program& program) const;
@@ -75,6 +76,8 @@ void t_mstch_cpp2_generator::generate_program() {
   auto services = this->get_program()->get_services();
   auto root = this->dump(*this->get_program());
 
+  this->generate_structs(*this->get_program());
+
   // Generate client_interface_tpl
   for (const auto& service : services ) {
     this->generate_service(service);
@@ -84,6 +87,7 @@ void t_mstch_cpp2_generator::generate_program() {
 mstch::map t_mstch_cpp2_generator::extend_program(
     const t_program& program) const {
   mstch::map m;
+  m.emplace("name", program.get_name());
   m.emplace("normalizedIncludePrefix", this->get_include_prefix(program));
   return m;
 }
@@ -158,6 +162,26 @@ bool t_mstch_cpp2_generator::get_is_complex_return_type(
 
 bool t_mstch_cpp2_generator::get_is_stack_args() const {
   return this->get_option("stack_arguments") != nullptr;
+}
+
+void t_mstch_cpp2_generator::generate_structs(const t_program& program) {
+  auto name = program.get_name();
+  this->render_to_file(program, "Struct_types.h", name + "_types.h");
+  this->render_to_file(program, "Struct_types.tcc", name + "_types.tcc");
+  this->render_to_file(program, "Struct_data.h", name + "_data.h");
+  this->render_to_file(program, "Struct_data.cpp", name + "_data.cpp");
+  this->render_to_file(program, "Struct_types.cpp", name + "_types.cpp");
+  this->render_to_file(program, "Struct_constants.h", name + "_constants.h");
+  this->render_to_file(
+    program,
+    "Struct_constants.cpp",
+    name + "_constants.cpp"
+  );
+  this->render_to_file(
+    program,
+    "Struct_types_custom_protocol.h",
+    name + "_types_custom_protocol.h"
+  );
 }
 
 void t_mstch_cpp2_generator::generate_service(t_service* service) {
