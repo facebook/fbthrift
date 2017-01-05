@@ -249,14 +249,11 @@ template <>
 struct dynamic_converter_impl<type_class::variant> {
   template <typename T>
   static void to(folly::dynamic &out, T const &input, dynamic_format format) {
-    using namespace fatal;
+    using descriptors = typename fatal::variant_traits<T>::descriptors;
 
     out = folly::dynamic::object;
 
-    sorted_search<
-      sort<typename variant_traits<T>::descriptors, less, get_type::id>,
-      get_type::id::apply
-    >(
+    fatal::scalar_search<descriptors, fatal::get_type::id>(
       input.getType(),
       to_dynamic_variant_visitor(),
       out,
