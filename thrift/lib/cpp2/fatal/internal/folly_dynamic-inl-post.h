@@ -333,16 +333,6 @@ struct to_dynamic_struct_visitor {
 };
 
 struct from_dynamic_struct_visitor {
-  using required = std::integral_constant<optionality, optionality::required>;
-
-  template <typename Owner, typename Getter, typename Optionality>
-  typename std::enable_if<Optionality::value == optionality::required>::type
-  assign_is_set(Owner &, bool) const {}
-
-  template <typename Owner, typename Getter, typename Optionality>
-  typename std::enable_if<Optionality::value != optionality::required>::type
-  assign_is_set(Owner &owner, bool v) const { Getter::ref(owner.__isset) = v; }
-
   template <typename Member, typename T>
   void operator ()(
     fatal::tag<Member>,
@@ -351,10 +341,9 @@ struct from_dynamic_struct_visitor {
     dynamic_format format,
     format_adherence adherence
   ) const {
-    using rgetter = typename Member::getter;
-    assign_is_set<T, rgetter, typename Member::optional>(out, true);
+    Member::mark_set(out, true);
     dynamic_converter_impl<typename Member::type_class>::from(
-      rgetter::ref(out), input, format, adherence
+      Member::getter::ref(out), input, format, adherence
     );
   }
 };
