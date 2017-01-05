@@ -35,21 +35,53 @@ struct union1_Type_enum_traits {
   struct Type__struct_enum_members_ui {
     using name = Type__struct_unique_strings_list::ui;
     using value = std::integral_constant<type, type::ui>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_ud {
     using name = Type__struct_unique_strings_list::ud;
     using value = std::integral_constant<type, type::ud>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_us {
     using name = Type__struct_unique_strings_list::us;
     using value = std::integral_constant<type, type::us>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_ue {
     using name = Type__struct_unique_strings_list::ue;
     using value = std::integral_constant<type, type::ue>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members {
@@ -69,13 +101,9 @@ struct union1_Type_enum_traits {
   >;
 
   class annotations {
-    struct annotations__unique_annotations_keys {};
-
-    struct annotations__unique_annotations_values {};
-
     public:
-    using keys = annotations__unique_annotations_keys;
-    using values = annotations__unique_annotations_values;
+    using keys = void;
+    using values = void;
     using map = ::fatal::list<
     >;
   };
@@ -293,13 +321,9 @@ class union1_variant_traits {
   >;
 
   class annotations {
-    struct annotations__unique_annotations_keys {};
-
-    struct annotations__unique_annotations_values {};
-
     public:
-    using keys = annotations__unique_annotations_keys;
-    using values = annotations__unique_annotations_values;
+    using keys = void;
+    using values = void;
     using map = ::fatal::list<
     >;
   };
@@ -334,21 +358,53 @@ struct union2_Type_enum_traits {
   struct Type__struct_enum_members_ui_2 {
     using name = Type__struct_unique_strings_list::ui_2;
     using value = std::integral_constant<type, type::ui_2>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_ud_2 {
     using name = Type__struct_unique_strings_list::ud_2;
     using value = std::integral_constant<type, type::ud_2>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_us_2 {
     using name = Type__struct_unique_strings_list::us_2;
     using value = std::integral_constant<type, type::us_2>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_ue_2 {
     using name = Type__struct_unique_strings_list::ue_2;
     using value = std::integral_constant<type, type::ue_2>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members {
@@ -368,13 +424,9 @@ struct union2_Type_enum_traits {
   >;
 
   class annotations {
-    struct annotations__unique_annotations_keys {};
-
-    struct annotations__unique_annotations_values {};
-
     public:
-    using keys = annotations__unique_annotations_keys;
-    using values = annotations__unique_annotations_values;
+    using keys = void;
+    using values = void;
     using map = ::fatal::list<
     >;
   };
@@ -592,13 +644,9 @@ class union2_variant_traits {
   >;
 
   class annotations {
-    struct annotations__unique_annotations_keys {};
-
-    struct annotations__unique_annotations_values {};
-
     public:
-    using keys = annotations__unique_annotations_keys;
-    using values = annotations__unique_annotations_values;
+    using keys = void;
+    using values = void;
     using map = ::fatal::list<
     >;
   };
@@ -633,21 +681,53 @@ struct union3_Type_enum_traits {
   struct Type__struct_enum_members_ui_3 {
     using name = Type__struct_unique_strings_list::ui_3;
     using value = std::integral_constant<type, type::ui_3>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_ud_3 {
     using name = Type__struct_unique_strings_list::ud_3;
     using value = std::integral_constant<type, type::ud_3>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_us_3 {
     using name = Type__struct_unique_strings_list::us_3;
     using value = std::integral_constant<type, type::us_3>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_ue_3 {
     using name = Type__struct_unique_strings_list::ue_3;
     using value = std::integral_constant<type, type::ue_3>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members {
@@ -667,13 +747,9 @@ struct union3_Type_enum_traits {
   >;
 
   class annotations {
-    struct annotations__unique_annotations_keys {};
-
-    struct annotations__unique_annotations_values {};
-
     public:
-    using keys = annotations__unique_annotations_keys;
-    using values = annotations__unique_annotations_values;
+    using keys = void;
+    using values = void;
     using map = ::fatal::list<
     >;
   };
@@ -891,13 +967,9 @@ class union3_variant_traits {
   >;
 
   class annotations {
-    struct annotations__unique_annotations_keys {};
-
-    struct annotations__unique_annotations_values {};
-
     public:
-    using keys = annotations__unique_annotations_keys;
-    using values = annotations__unique_annotations_values;
+    using keys = void;
+    using values = void;
     using map = ::fatal::list<
     >;
   };
@@ -933,26 +1005,66 @@ struct unionA_Type_enum_traits {
   struct Type__struct_enum_members_i {
     using name = Type__struct_unique_strings_list::i;
     using value = std::integral_constant<type, type::i>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_d {
     using name = Type__struct_unique_strings_list::d;
     using value = std::integral_constant<type, type::d>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_s {
     using name = Type__struct_unique_strings_list::s;
     using value = std::integral_constant<type, type::s>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_e {
     using name = Type__struct_unique_strings_list::e;
     using value = std::integral_constant<type, type::e>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_a {
     using name = Type__struct_unique_strings_list::a;
     using value = std::integral_constant<type, type::a>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members {
@@ -974,13 +1086,9 @@ struct unionA_Type_enum_traits {
   >;
 
   class annotations {
-    struct annotations__unique_annotations_keys {};
-
-    struct annotations__unique_annotations_values {};
-
     public:
-    using keys = annotations__unique_annotations_keys;
-    using values = annotations__unique_annotations_values;
+    using keys = void;
+    using values = void;
     using map = ::fatal::list<
     >;
   };
@@ -1321,141 +1429,365 @@ struct union_with_special_names_Type_enum_traits {
   struct Type__struct_enum_members_get {
     using name = Type__struct_unique_strings_list::get;
     using value = std::integral_constant<type, type::get>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_getter {
     using name = Type__struct_unique_strings_list::getter;
     using value = std::integral_constant<type, type::getter>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_lists {
     using name = Type__struct_unique_strings_list::lists;
     using value = std::integral_constant<type, type::lists>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_maps {
     using name = Type__struct_unique_strings_list::maps;
     using value = std::integral_constant<type, type::maps>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_name {
     using name = Type__struct_unique_strings_list::name;
     using value = std::integral_constant<type, type::name>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_name_to_value {
     using name = Type__struct_unique_strings_list::name_to_value;
     using value = std::integral_constant<type, type::name_to_value>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_names {
     using name = Type__struct_unique_strings_list::names;
     using value = std::integral_constant<type, type::names>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_prefix_tree {
     using name = Type__struct_unique_strings_list::prefix_tree;
     using value = std::integral_constant<type, type::prefix_tree>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_sets {
     using name = Type__struct_unique_strings_list::sets;
     using value = std::integral_constant<type, type::sets>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_setter {
     using name = Type__struct_unique_strings_list::setter;
     using value = std::integral_constant<type, type::setter>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_str {
     using name = Type__struct_unique_strings_list::str;
     using value = std::integral_constant<type, type::str>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_strings {
     using name = Type__struct_unique_strings_list::strings;
     using value = std::integral_constant<type, type::strings>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_type {
     using name = Type__struct_unique_strings_list::type;
     using value = std::integral_constant<type, type::type>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_value {
     using name = Type__struct_unique_strings_list::value;
     using value = std::integral_constant<type, type::value>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_value_to_name {
     using name = Type__struct_unique_strings_list::value_to_name;
     using value = std::integral_constant<type, type::value_to_name>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_values {
     using name = Type__struct_unique_strings_list::values;
     using value = std::integral_constant<type, type::values>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_id {
     using name = Type__struct_unique_strings_list::id;
     using value = std::integral_constant<type, type::id>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_ids {
     using name = Type__struct_unique_strings_list::ids;
     using value = std::integral_constant<type, type::ids>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_descriptor {
     using name = Type__struct_unique_strings_list::descriptor;
     using value = std::integral_constant<type, type::descriptor>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_descriptors {
     using name = Type__struct_unique_strings_list::descriptors;
     using value = std::integral_constant<type, type::descriptors>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_key {
     using name = Type__struct_unique_strings_list::key;
     using value = std::integral_constant<type, type::key>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_keys {
     using name = Type__struct_unique_strings_list::keys;
     using value = std::integral_constant<type, type::keys>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_annotation {
     using name = Type__struct_unique_strings_list::annotation;
     using value = std::integral_constant<type, type::annotation>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_annotations {
     using name = Type__struct_unique_strings_list::annotations;
     using value = std::integral_constant<type, type::annotations>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_member {
     using name = Type__struct_unique_strings_list::member;
     using value = std::integral_constant<type, type::member>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_members {
     using name = Type__struct_unique_strings_list::members;
     using value = std::integral_constant<type, type::members>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_field {
     using name = Type__struct_unique_strings_list::field;
     using value = std::integral_constant<type, type::field>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members_fields {
     using name = Type__struct_unique_strings_list::fields;
     using value = std::integral_constant<type, type::fields>;
+
+    class annotations {
+      public:
+      using keys = void;
+      using values = void;
+      using map = ::fatal::list<
+      >;
+    };
   };
 
   struct Type__struct_enum_members {
@@ -1523,13 +1855,9 @@ struct union_with_special_names_Type_enum_traits {
   >;
 
   class annotations {
-    struct annotations__unique_annotations_keys {};
-
-    struct annotations__unique_annotations_values {};
-
     public:
-    using keys = annotations__unique_annotations_keys;
-    using values = annotations__unique_annotations_values;
+    using keys = void;
+    using values = void;
     using map = ::fatal::list<
     >;
   };
@@ -2803,13 +3131,9 @@ class union_with_special_names_variant_traits {
   >;
 
   class annotations {
-    struct annotations__unique_annotations_keys {};
-
-    struct annotations__unique_annotations_values {};
-
     public:
-    using keys = annotations__unique_annotations_keys;
-    using values = annotations__unique_annotations_values;
+    using keys = void;
+    using values = void;
     using map = ::fatal::list<
     >;
   };

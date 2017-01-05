@@ -617,25 +617,17 @@ struct test_cpp2_cpp_reflection_module__struct_unique_member_pod_list {
 class structA_test_cpp2_cpp_reflection_module__struct_unique_annotations {
   class structA_test_cpp2_cpp_reflection_module__struct_unique_annotations_members {
     class structA_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_a {
-      struct structA_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_a__unique_annotations_keys {};
-
-      struct structA_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_a__unique_annotations_values {};
-
       public:
-      using keys = structA_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_a__unique_annotations_keys;
-      using values = structA_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_a__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structA_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b {
-      struct structA_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b__unique_annotations_keys {};
-
-      struct structA_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b__unique_annotations_values {};
-
       public:
-      using keys = structA_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b__unique_annotations_keys;
-      using values = structA_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
@@ -645,13 +637,9 @@ class structA_test_cpp2_cpp_reflection_module__struct_unique_annotations {
   };
 
   class annotations {
-    struct annotations__unique_annotations_keys {};
-
-    struct annotations__unique_annotations_values {};
-
     public:
-    using keys = annotations__unique_annotations_keys;
-    using values = annotations__unique_annotations_values;
+    using keys = void;
+    using values = void;
     using map = ::fatal::list<
     >;
   };
@@ -692,13 +680,9 @@ struct structA_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
 class structB_test_cpp2_cpp_reflection_module__struct_unique_annotations {
   class structB_test_cpp2_cpp_reflection_module__struct_unique_annotations_members {
     class structB_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_c {
-      struct structB_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_c__unique_annotations_keys {};
-
-      struct structB_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_c__unique_annotations_values {};
-
       public:
-      using keys = structB_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_c__unique_annotations_keys;
-      using values = structB_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_c__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
@@ -801,361 +785,241 @@ struct structB_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
 class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
   class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members {
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_a {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_a__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_a__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_a__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_a__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_c {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_c__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_c__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_c__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_c__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_d {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_d__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_d__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_d__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_d__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_e {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_e__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_e__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_e__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_e__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_f {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_f__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_f__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_f__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_f__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_g {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_g__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_g__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_g__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_g__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_h {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_h__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_h__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_h__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_h__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_i {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_i__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_i__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_i__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_i__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j1 {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j1__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j1__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j1__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j1__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j2 {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j2__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j2__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j2__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j2__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j3 {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j3__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j3__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j3__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_j3__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k1 {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k1__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k1__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k1__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k1__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k2 {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k2__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k2__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k2__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k2__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k3 {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k3__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k3__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k3__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_k3__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l1 {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l1__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l1__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l1__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l1__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l2 {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l2__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l2__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l2__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l2__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l3 {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l3__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l3__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l3__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_l3__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_m1 {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_m1__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_m1__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_m1__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_m1__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_m2 {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_m2__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_m2__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_m2__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_m2__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_m3 {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_m3__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_m3__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_m3__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_m3__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_n1 {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_n1__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_n1__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_n1__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_n1__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_n2 {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_n2__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_n2__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_n2__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_n2__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_n3 {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_n3__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_n3__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_n3__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_n3__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_o1 {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_o1__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_o1__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_o1__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_o1__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_o2 {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_o2__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_o2__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_o2__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_o2__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_o3 {
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_o3__unique_annotations_keys {};
-
-      struct structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_o3__unique_annotations_values {};
-
       public:
-      using keys = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_o3__unique_annotations_keys;
-      using values = structC_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_o3__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
@@ -1193,13 +1057,9 @@ class structC_test_cpp2_cpp_reflection_module__struct_unique_annotations {
   };
 
   class annotations {
-    struct annotations__unique_annotations_keys {};
-
-    struct annotations__unique_annotations_values {};
-
     public:
-    using keys = annotations__unique_annotations_keys;
-    using values = annotations__unique_annotations_values;
+    using keys = void;
+    using values = void;
     using map = ::fatal::list<
     >;
   };
@@ -1576,73 +1436,49 @@ struct structC_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
 class struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations {
   class struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members {
     class struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0 {
-      struct struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0__unique_annotations_keys {};
-
-      struct struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0__unique_annotations_values {};
-
       public:
-      using keys = struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0__unique_annotations_keys;
-      using values = struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1 {
-      struct struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1__unique_annotations_keys {};
-
-      struct struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1__unique_annotations_values {};
-
       public:
-      using keys = struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1__unique_annotations_keys;
-      using values = struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field2 {
-      struct struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field2__unique_annotations_keys {};
-
-      struct struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field2__unique_annotations_values {};
-
       public:
-      using keys = struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field2__unique_annotations_keys;
-      using values = struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field2__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3 {
-      struct struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3__unique_annotations_keys {};
-
-      struct struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3__unique_annotations_values {};
-
       public:
-      using keys = struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3__unique_annotations_keys;
-      using values = struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field4 {
-      struct struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field4__unique_annotations_keys {};
-
-      struct struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field4__unique_annotations_values {};
-
       public:
-      using keys = struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field4__unique_annotations_keys;
-      using values = struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field4__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field5 {
-      struct struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field5__unique_annotations_keys {};
-
-      struct struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field5__unique_annotations_values {};
-
       public:
-      using keys = struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field5__unique_annotations_keys;
-      using values = struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field5__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
@@ -1656,13 +1492,9 @@ class struct1_test_cpp2_cpp_reflection_module__struct_unique_annotations {
   };
 
   class annotations {
-    struct annotations__unique_annotations_keys {};
-
-    struct annotations__unique_annotations_values {};
-
     public:
-    using keys = annotations__unique_annotations_keys;
-    using values = annotations__unique_annotations_values;
+    using keys = void;
+    using values = void;
     using map = ::fatal::list<
     >;
   };
@@ -1751,85 +1583,57 @@ struct struct1_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
 class struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations {
   class struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members {
     class struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldA {
-      struct struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldA__unique_annotations_keys {};
-
-      struct struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldA__unique_annotations_values {};
-
       public:
-      using keys = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldA__unique_annotations_keys;
-      using values = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldA__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldB {
-      struct struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldB__unique_annotations_keys {};
-
-      struct struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldB__unique_annotations_values {};
-
       public:
-      using keys = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldB__unique_annotations_keys;
-      using values = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldB__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldC {
-      struct struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldC__unique_annotations_keys {};
-
-      struct struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldC__unique_annotations_values {};
-
       public:
-      using keys = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldC__unique_annotations_keys;
-      using values = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldC__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldD {
-      struct struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldD__unique_annotations_keys {};
-
-      struct struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldD__unique_annotations_values {};
-
       public:
-      using keys = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldD__unique_annotations_keys;
-      using values = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldD__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldE {
-      struct struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldE__unique_annotations_keys {};
-
-      struct struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldE__unique_annotations_values {};
-
       public:
-      using keys = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldE__unique_annotations_keys;
-      using values = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldE__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldF {
-      struct struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldF__unique_annotations_keys {};
-
-      struct struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldF__unique_annotations_values {};
-
       public:
-      using keys = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldF__unique_annotations_keys;
-      using values = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldF__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldG {
-      struct struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldG__unique_annotations_keys {};
-
-      struct struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldG__unique_annotations_values {};
-
       public:
-      using keys = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldG__unique_annotations_keys;
-      using values = struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldG__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
@@ -1844,13 +1648,9 @@ class struct2_test_cpp2_cpp_reflection_module__struct_unique_annotations {
   };
 
   class annotations {
-    struct annotations__unique_annotations_keys {};
-
-    struct annotations__unique_annotations_values {};
-
     public:
-    using keys = annotations__unique_annotations_keys;
-    using values = annotations__unique_annotations_values;
+    using keys = void;
+    using values = void;
     using map = ::fatal::list<
     >;
   };
@@ -1951,217 +1751,145 @@ struct struct2_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
 class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations {
   class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members {
     class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldA {
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldA__unique_annotations_keys {};
-
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldA__unique_annotations_values {};
-
       public:
-      using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldA__unique_annotations_keys;
-      using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldA__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldB {
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldB__unique_annotations_keys {};
-
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldB__unique_annotations_values {};
-
       public:
-      using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldB__unique_annotations_keys;
-      using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldB__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldC {
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldC__unique_annotations_keys {};
-
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldC__unique_annotations_values {};
-
       public:
-      using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldC__unique_annotations_keys;
-      using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldC__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldD {
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldD__unique_annotations_keys {};
-
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldD__unique_annotations_values {};
-
       public:
-      using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldD__unique_annotations_keys;
-      using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldD__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldE {
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldE__unique_annotations_keys {};
-
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldE__unique_annotations_values {};
-
       public:
-      using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldE__unique_annotations_keys;
-      using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldE__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldF {
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldF__unique_annotations_keys {};
-
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldF__unique_annotations_values {};
-
       public:
-      using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldF__unique_annotations_keys;
-      using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldF__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldG {
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldG__unique_annotations_keys {};
-
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldG__unique_annotations_values {};
-
       public:
-      using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldG__unique_annotations_keys;
-      using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldG__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldH {
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldH__unique_annotations_keys {};
-
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldH__unique_annotations_values {};
-
       public:
-      using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldH__unique_annotations_keys;
-      using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldH__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldI {
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldI__unique_annotations_keys {};
-
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldI__unique_annotations_values {};
-
       public:
-      using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldI__unique_annotations_keys;
-      using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldI__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldJ {
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldJ__unique_annotations_keys {};
-
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldJ__unique_annotations_values {};
-
       public:
-      using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldJ__unique_annotations_keys;
-      using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldJ__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldK {
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldK__unique_annotations_keys {};
-
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldK__unique_annotations_values {};
-
       public:
-      using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldK__unique_annotations_keys;
-      using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldK__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldL {
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldL__unique_annotations_keys {};
-
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldL__unique_annotations_values {};
-
       public:
-      using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldL__unique_annotations_keys;
-      using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldL__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldM {
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldM__unique_annotations_keys {};
-
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldM__unique_annotations_values {};
-
       public:
-      using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldM__unique_annotations_keys;
-      using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldM__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldN {
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldN__unique_annotations_keys {};
-
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldN__unique_annotations_values {};
-
       public:
-      using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldN__unique_annotations_keys;
-      using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldN__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldO {
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldO__unique_annotations_keys {};
-
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldO__unique_annotations_values {};
-
       public:
-      using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldO__unique_annotations_keys;
-      using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldO__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldP {
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldP__unique_annotations_keys {};
-
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldP__unique_annotations_values {};
-
       public:
-      using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldP__unique_annotations_keys;
-      using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldP__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldQ {
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldQ__unique_annotations_keys {};
-
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldQ__unique_annotations_values {};
-
       public:
-      using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldQ__unique_annotations_keys;
-      using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldQ__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldR {
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldR__unique_annotations_keys {};
-
-      struct struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldR__unique_annotations_values {};
-
       public:
-      using keys = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldR__unique_annotations_keys;
-      using values = struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fieldR__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
@@ -2187,13 +1915,9 @@ class struct3_test_cpp2_cpp_reflection_module__struct_unique_annotations {
   };
 
   class annotations {
-    struct annotations__unique_annotations_keys {};
-
-    struct annotations__unique_annotations_values {};
-
     public:
-    using keys = annotations__unique_annotations_keys;
-    using values = annotations__unique_annotations_values;
+    using keys = void;
+    using values = void;
     using map = ::fatal::list<
     >;
   };
@@ -2426,49 +2150,33 @@ struct struct3_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
 class struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations {
   class struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members {
     class struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0 {
-      struct struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0__unique_annotations_keys {};
-
-      struct struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0__unique_annotations_values {};
-
       public:
-      using keys = struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0__unique_annotations_keys;
-      using values = struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1 {
-      struct struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1__unique_annotations_keys {};
-
-      struct struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1__unique_annotations_values {};
-
       public:
-      using keys = struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1__unique_annotations_keys;
-      using values = struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field2 {
-      struct struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field2__unique_annotations_keys {};
-
-      struct struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field2__unique_annotations_values {};
-
       public:
-      using keys = struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field2__unique_annotations_keys;
-      using values = struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field2__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3 {
-      struct struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3__unique_annotations_keys {};
-
-      struct struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3__unique_annotations_values {};
-
       public:
-      using keys = struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3__unique_annotations_keys;
-      using values = struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field3__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
@@ -2480,13 +2188,9 @@ class struct4_test_cpp2_cpp_reflection_module__struct_unique_annotations {
   };
 
   class annotations {
-    struct annotations__unique_annotations_keys {};
-
-    struct annotations__unique_annotations_values {};
-
     public:
-    using keys = annotations__unique_annotations_keys;
-    using values = annotations__unique_annotations_values;
+    using keys = void;
+    using values = void;
     using map = ::fatal::list<
     >;
   };
@@ -2551,37 +2255,25 @@ struct struct4_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
 class struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations {
   class struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations_members {
     class struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0 {
-      struct struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0__unique_annotations_keys {};
-
-      struct struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0__unique_annotations_values {};
-
       public:
-      using keys = struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0__unique_annotations_keys;
-      using values = struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field0__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1 {
-      struct struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1__unique_annotations_keys {};
-
-      struct struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1__unique_annotations_values {};
-
       public:
-      using keys = struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1__unique_annotations_keys;
-      using values = struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field1__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field2 {
-      struct struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field2__unique_annotations_keys {};
-
-      struct struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field2__unique_annotations_values {};
-
       public:
-      using keys = struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field2__unique_annotations_keys;
-      using values = struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field2__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
@@ -2607,13 +2299,9 @@ class struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations {
     };
 
     class struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field4 {
-      struct struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field4__unique_annotations_keys {};
-
-      struct struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field4__unique_annotations_values {};
-
       public:
-      using keys = struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field4__unique_annotations_keys;
-      using values = struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field4__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
@@ -2626,13 +2314,9 @@ class struct5_test_cpp2_cpp_reflection_module__struct_unique_annotations {
   };
 
   class annotations {
-    struct annotations__unique_annotations_keys {};
-
-    struct annotations__unique_annotations_values {};
-
     public:
-    using keys = annotations__unique_annotations_keys;
-    using values = annotations__unique_annotations_values;
+    using keys = void;
+    using values = void;
     using map = ::fatal::list<
     >;
   };
@@ -2709,13 +2393,9 @@ struct struct5_test_cpp2_cpp_reflection_module__struct_unique_member_info_list {
 class struct_binary_test_cpp2_cpp_reflection_module__struct_unique_annotations {
   class struct_binary_test_cpp2_cpp_reflection_module__struct_unique_annotations_members {
     class struct_binary_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_bi {
-      struct struct_binary_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_bi__unique_annotations_keys {};
-
-      struct struct_binary_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_bi__unique_annotations_values {};
-
       public:
-      using keys = struct_binary_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_bi__unique_annotations_keys;
-      using values = struct_binary_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_bi__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
@@ -2724,13 +2404,9 @@ class struct_binary_test_cpp2_cpp_reflection_module__struct_unique_annotations {
   };
 
   class annotations {
-    struct annotations__unique_annotations_keys {};
-
-    struct annotations__unique_annotations_values {};
-
     public:
-    using keys = annotations__unique_annotations_keys;
-    using values = annotations__unique_annotations_values;
+    using keys = void;
+    using values = void;
     using map = ::fatal::list<
     >;
   };
@@ -2759,37 +2435,25 @@ struct struct_binary_test_cpp2_cpp_reflection_module__struct_unique_member_info_
 class dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations {
   class dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members {
     class dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b {
-      struct dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b__unique_annotations_keys {};
-
-      struct dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b__unique_annotations_values {};
-
       public:
-      using keys = dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b__unique_annotations_keys;
-      using values = dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_b__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_c {
-      struct dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_c__unique_annotations_keys {};
-
-      struct dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_c__unique_annotations_values {};
-
       public:
-      using keys = dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_c__unique_annotations_keys;
-      using values = dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_c__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_i_a {
-      struct dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_i_a__unique_annotations_keys {};
-
-      struct dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_i_a__unique_annotations_values {};
-
       public:
-      using keys = dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_i_a__unique_annotations_keys;
-      using values = dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_i_a__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
@@ -2800,13 +2464,9 @@ class dep_A_struct_test_cpp2_cpp_reflection_module__struct_unique_annotations {
   };
 
   class annotations {
-    struct annotations__unique_annotations_keys {};
-
-    struct annotations__unique_annotations_values {};
-
     public:
-    using keys = annotations__unique_annotations_keys;
-    using values = annotations__unique_annotations_values;
+    using keys = void;
+    using values = void;
     using map = ::fatal::list<
     >;
   };
@@ -3157,337 +2817,225 @@ struct annotated_test_cpp2_cpp_reflection_module__struct_unique_member_info_list
 class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations {
   class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members {
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_get {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_get__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_get__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_get__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_get__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_getter {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_getter__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_getter__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_getter__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_getter__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_lists {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_lists__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_lists__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_lists__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_lists__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_maps {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_maps__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_maps__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_maps__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_maps__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_name {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_name__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_name__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_name__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_name__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_name_to_value {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_name_to_value__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_name_to_value__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_name_to_value__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_name_to_value__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_names {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_names__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_names__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_names__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_names__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_prefix_tree {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_prefix_tree__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_prefix_tree__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_prefix_tree__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_prefix_tree__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_sets {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_sets__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_sets__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_sets__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_sets__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_setter {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_setter__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_setter__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_setter__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_setter__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_str {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_str__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_str__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_str__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_str__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_strings {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_strings__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_strings__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_strings__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_strings__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_type {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_type__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_type__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_type__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_type__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_value {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_value__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_value__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_value__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_value__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_value_to_name {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_value_to_name__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_value_to_name__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_value_to_name__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_value_to_name__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_values {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_values__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_values__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_values__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_values__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_id {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_id__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_id__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_id__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_id__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_ids {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_ids__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_ids__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_ids__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_ids__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_descriptor {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_descriptor__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_descriptor__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_descriptor__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_descriptor__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_descriptors {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_descriptors__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_descriptors__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_descriptors__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_descriptors__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_key {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_key__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_key__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_key__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_key__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_keys {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_keys__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_keys__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_keys__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_keys__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_annotation {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_annotation__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_annotation__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_annotation__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_annotation__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_annotations {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_annotations__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_annotations__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_annotations__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_annotations__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_member {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_member__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_member__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_member__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_member__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_members {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_members__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_members__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_members__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_members__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_field__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
 
     class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fields {
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fields__unique_annotations_keys {};
-
-      struct struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fields__unique_annotations_values {};
-
       public:
-      using keys = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fields__unique_annotations_keys;
-      using values = struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_fields__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
       >;
     };
@@ -3523,13 +3071,9 @@ class struct_with_special_names_test_cpp2_cpp_reflection_module__struct_unique_a
   };
 
   class annotations {
-    struct annotations__unique_annotations_keys {};
-
-    struct annotations__unique_annotations_values {};
-
     public:
-    using keys = annotations__unique_annotations_keys;
-    using values = annotations__unique_annotations_values;
+    using keys = void;
+    using values = void;
     using map = ::fatal::list<
     >;
   };

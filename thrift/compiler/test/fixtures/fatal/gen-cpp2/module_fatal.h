@@ -30,7 +30,7 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using setter = ::fatal::sequence<char, 's', 'e', 't', 't', 'e', 'r'>;
   using k3 = ::fatal::sequence<char, 'k', '3'>;
   using us_3 = ::fatal::sequence<char, 'u', 's', '_', '3'>;
-  using field = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd'>;
+  using us_2 = ::fatal::sequence<char, 'u', 's', '_', '2'>;
   using field2 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '2'>;
   using field3 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '3'>;
   using field0 = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '0'>;
@@ -77,6 +77,7 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using unionA = ::fatal::sequence<char, 'u', 'n', 'i', 'o', 'n', 'A'>;
   using enum_with_special_names = ::fatal::sequence<char, 'e', 'n', 'u', 'm', '_', 'w', 'i', 't', 'h', '_', 's', 'p', 'e', 'c', 'i', 'a', 'l', '_', 'n', 'a', 'm', 'e', 's'>;
   using cpp2 = ::fatal::sequence<char, 'c', 'p', 'p', '2'>;
+  using field_annotation = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '_', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
   using j1 = ::fatal::sequence<char, 'j', '1'>;
   using module = ::fatal::sequence<char, 'm', 'o', 'd', 'u', 'l', 'e'>;
   using d = ::fatal::sequence<char, 'd'>;
@@ -94,7 +95,7 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using methodB = ::fatal::sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'B'>;
   using methodC = ::fatal::sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'C'>;
   using methodA = ::fatal::sequence<char, 'm', 'e', 't', 'h', 'o', 'd', 'A'>;
-  using values = ::fatal::sequence<char, 'v', 'a', 'l', 'u', 'e', 's'>;
+  using field_structured_annotation = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', '_', 's', 't', 'r', 'u', 'c', 't', 'u', 'r', 'e', 'd', '_', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
   using s_int_map = ::fatal::sequence<char, 's', '_', 'i', 'n', 't', '_', 'm', 'a', 'p'>;
   using o3 = ::fatal::sequence<char, 'o', '3'>;
   using o2 = ::fatal::sequence<char, 'o', '2'>;
@@ -119,7 +120,6 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using service_with_special_names = ::fatal::sequence<char, 's', 'e', 'r', 'v', 'i', 'c', 'e', '_', 'w', 'i', 't', 'h', '_', 's', 'p', 'e', 'c', 'i', 'a', 'l', '_', 'n', 'a', 'm', 'e', 's'>;
   using g = ::fatal::sequence<char, 'g'>;
   using k = ::fatal::sequence<char, 'k'>;
-  using us_2 = ::fatal::sequence<char, 'u', 's', '_', '2'>;
   using ids = ::fatal::sequence<char, 'i', 'd', 's'>;
   using union1 = ::fatal::sequence<char, 'u', 'n', 'i', 'o', 'n', '1'>;
   using union3 = ::fatal::sequence<char, 'u', 'n', 'i', 'o', 'n', '3'>;
@@ -145,7 +145,7 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using m2 = ::fatal::sequence<char, 'm', '2'>;
   using type = ::fatal::sequence<char, 't', 'y', 'p', 'e'>;
   using annotations = ::fatal::sequence<char, 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n', 's'>;
-  using s_str_map = ::fatal::sequence<char, 's', '_', 's', 't', 'r', '_', 'm', 'a', 'p'>;
+  using field = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd'>;
   using descriptors = ::fatal::sequence<char, 'd', 'e', 's', 'c', 'r', 'i', 'p', 't', 'o', 'r', 's'>;
   using union_with_special_names = ::fatal::sequence<char, 'u', 'n', 'i', 'o', 'n', '_', 'w', 'i', 't', 'h', '_', 's', 'p', 'e', 'c', 'i', 'a', 'l', '_', 'n', 'a', 'm', 'e', 's'>;
   using lists = ::fatal::sequence<char, 'l', 'i', 's', 't', 's'>;
@@ -170,6 +170,7 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using ud = ::fatal::sequence<char, 'u', 'd'>;
   using z = ::fatal::sequence<char, 'z'>;
   using struct_with_special_names = ::fatal::sequence<char, 's', 't', 'r', 'u', 'c', 't', '_', 'w', 'i', 't', 'h', '_', 's', 'p', 'e', 'c', 'i', 'a', 'l', '_', 'n', 'a', 'm', 'e', 's'>;
+  using s_str_map = ::fatal::sequence<char, 's', '_', 's', 't', 'r', '_', 'm', 'a', 'p'>;
   using m = ::fatal::sequence<char, 'm'>;
   using i_a = ::fatal::sequence<char, 'i', '_', 'a'>;
   using java_swift = ::fatal::sequence<char, 'j', 'a', 'v', 'a', '.', 's', 'w', 'i', 'f', 't'>;
@@ -203,6 +204,7 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using e = ::fatal::sequence<char, 'e'>;
   using s_int_list = ::fatal::sequence<char, 's', '_', 'i', 'n', 't', '_', 'l', 'i', 's', 't'>;
   using i = ::fatal::sequence<char, 'i'>;
+  using values = ::fatal::sequence<char, 'v', 'a', 'l', 'u', 'e', 's'>;
   using s_int = ::fatal::sequence<char, 's', '_', 'i', 'n', 't'>;
   using strings = ::fatal::sequence<char, 's', 't', 'r', 'i', 'n', 'g', 's'>;
   using prefix_tree = ::fatal::sequence<char, 'p', 'r', 'e', 'f', 'i', 'x', '_', 't', 'r', 'e', 'e'>;

@@ -211,5 +211,76 @@ TEST(fatal_enum, annotations) {
   >();
 }
 
+FATAL_S(field_annotation, "field_annotation");
+FATAL_S(field_annotated, "field annotated");
+FATAL_S(field_structured_annotation, "field_structured_annotation");
+FATAL_S(
+  field_structured_annotation_text,
+  R"({"a": "foo", "b": 567, "c": true})"
+);
+FATAL_S(some_other_text, "some other text");
+FATAL_S(a, "a");
+FATAL_S(b, "b");
+FATAL_S(c, "c");
+FATAL_S(foo, "foo");
+
+TEST(fatal_enum, field_annotations) {
+  using info = fatal::enum_traits<enum3>;
+  using field0 = info::member::field0_3::annotations;
+  using field1 = info::member::field1_3::annotations;
+  using field2 = info::member::field2_3::annotations;
+
+  EXPECT_SAME<
+    field_annotation,
+    field1::keys::field_annotation
+  >();
+  EXPECT_SAME<
+    field_annotated,
+    field1::values::field_annotation
+  >();
+  EXPECT_SAME<
+    field_structured_annotation,
+    field2::keys::field_structured_annotation
+  >();
+  EXPECT_SAME<
+    field_structured_annotation_text,
+    field2::values::field_structured_annotation
+  >();
+  EXPECT_SAME<
+    field_annotation,
+    field2::keys::field_annotation
+  >();
+  EXPECT_SAME<
+    some_other_text,
+    field2::values::field_annotation
+  >();
+
+  EXPECT_SAME<
+    fatal::list<>,
+    field0::map
+  >();
+  EXPECT_SAME<
+    fatal::list<
+      apache::thrift::annotation<field_annotation, field_annotated>
+    >,
+    field1::map
+  >();
+  EXPECT_SAME<
+    fatal::list<
+      apache::thrift::annotation<field_annotation, some_other_text>,
+      apache::thrift::annotation<
+        field_structured_annotation,
+        field_structured_annotation_text,
+        fatal::list<
+          fatal::pair<a, foo>,
+          fatal::pair<b, std::integral_constant<std::uintmax_t, 567>>,
+          fatal::pair<c, std::true_type>
+        >
+      >
+    >,
+    field2::map
+  >();
+}
+
 } // namespace cpp_reflection {
 } // namespace test_cpp2 {

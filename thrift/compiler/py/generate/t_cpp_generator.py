@@ -4776,20 +4776,25 @@ class CppGenerator(t_generator.Generator):
                 if i not in black_list:
                     annotation_keys.append(i)
         with scope.cls('class {0}'.format(class_name)).scope as aclass:
-            with scope.cls('struct {0}'.format(clsnmkeys)).scope as akeys:
-                for idx, i in enumerate(annotation_keys):
-                    full_id = self._set_fatal_string(i)
-                    short_id = self._get_fatal_string_short_id(i)
-                    akeys('using {0} = {1};'.format(short_id, full_id))
-            with scope.cls('struct {0}'.format(clsnmvalues)).scope as avalues:
-                for idx, i in enumerate(annotation_keys):
-                    avalues('using {0} = {1};'.format(
-                        self._get_fatal_string_short_id(i),
-                        self._render_fatal_string(annotations[i])))
-            aclass()
+            if len(annotation_keys) > 0:
+                with scope.cls('struct {0}'.format(clsnmkeys)).scope as akeys:
+                    for idx, i in enumerate(annotation_keys):
+                        full_id = self._set_fatal_string(i)
+                        short_id = self._get_fatal_string_short_id(i)
+                        akeys('using {0} = {1};'.format(short_id, full_id))
+                with scope.cls('struct {0}'.format(clsnmvalues)).scope as aval:
+                    for idx, i in enumerate(annotation_keys):
+                        aval('using {0} = {1};'.format(
+                            self._get_fatal_string_short_id(i),
+                            self._render_fatal_string(annotations[i])))
+                aclass()
             aclass('public:')
-            aclass('using keys = {0};'.format(clsnmkeys))
-            aclass('using values = {0};'.format(clsnmvalues))
+            if len(annotation_keys) > 0:
+                aclass('using keys = {0};'.format(clsnmkeys))
+                aclass('using values = {0};'.format(clsnmvalues))
+            else:
+                aclass('using keys = void;')
+                aclass('using values = void;')
             aclass('using map = ::fatal::list<')
             import json
             for idx, i in enumerate(annotation_keys):
@@ -4891,6 +4896,8 @@ class CppGenerator(t_generator.Generator):
                         t('using name = {0}::{1};'.format(strcls, i.name))
                         t(('using value = std::integral_constant<type'
                             ', type::{0}>;').format(i.name))
+                        self._render_fatal_annotations(
+                            i.annotations, 'annotations', t)
                 t()
                 mbmcls = '{0}__struct_enum_members'.format(name)
                 with t.cls('struct {0}'.format(mbmcls)):
