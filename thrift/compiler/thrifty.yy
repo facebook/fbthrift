@@ -605,6 +605,10 @@ EnumDef:
               g_parent_prefix + type_prefix + $2->get_name(), constant);
         }
       }
+      if ($3 != NULL) {
+        $$->annotations_ = $3->annotations_;
+        delete $3;
+      }
     }
 
 EnumValue:
