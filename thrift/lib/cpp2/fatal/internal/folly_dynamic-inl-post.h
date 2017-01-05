@@ -209,42 +209,6 @@ struct dynamic_converter_impl<type_class::set<ValueTypeClass>> {
   }
 };
 
-struct to_dynamic_variant_visitor {
-  template <typename Descriptor, std::size_t Index, typename T>
-  void operator ()(
-    fatal::indexed<Descriptor, Index>,
-    folly::dynamic &out,
-    T const &input,
-    dynamic_format format
-  ) const {
-    dynamic_converter_impl<typename Descriptor::metadata::type_class>::to(
-      out[fatal::enum_to_string(input.getType())],
-      typename Descriptor::getter()(input),
-      format
-    );
-  }
-};
-
-template <typename VariantTraits>
-struct from_dynamic_variant_visitor {
-  template <typename T, typename Field>
-  void operator ()(
-    fatal::tag<Field>,
-    T &out,
-    folly::dynamic const &input,
-    dynamic_format format,
-    format_adherence adherence
-  ) const {
-    using id = typename Field::value;
-    using descriptor = typename VariantTraits::by_id::template descriptor<id>;
-
-    VariantTraits::by_id::template set<id>(out);
-    dynamic_converter_impl<typename descriptor::metadata::type_class>::from(
-      VariantTraits::by_id::template get<id>(out), input, format, adherence
-    );
-  }
-};
-
 template <>
 struct dynamic_converter_impl<type_class::variant> {
   template <typename T>
@@ -255,10 +219,14 @@ struct dynamic_converter_impl<type_class::variant> {
 
     fatal::scalar_search<descriptors, fatal::get_type::id>(
       input.getType(),
-      to_dynamic_variant_visitor(),
-      out,
-      input,
-      format
+      [&](auto indexed) {
+        using descriptor = decltype(fatal::tag_type(indexed));
+        dynamic_converter_impl<typename descriptor::metadata::type_class>::to(
+          out[fatal::enum_to_string(input.getType())],
+          typename descriptor::getter()(input),
+          format
+        );
+      }
     );
   }
 
@@ -282,14 +250,20 @@ struct dynamic_converter_impl<type_class::variant> {
       variant_traits::clear(out);
     } else {
       auto const type = i->first.stringPiece();
+      auto const &entry = i->second;
       bool const found = fatal::trie_find<
         typename id_traits::fields, fatal::get_type::name
-      >(
-        type.begin(), type.end(),
-        from_dynamic_variant_visitor<variant_traits>(),
-        out, i->second,
-        format, adherence
-      );
+      >(type.begin(), type.end(), [&](auto tag) {
+        using field = decltype(fatal::tag_type(tag));
+        using id = typename field::value;
+        using descriptor =
+            typename variant_traits::by_id::template descriptor<id>;
+
+        variant_traits::by_id::template set<id>(out);
+        dynamic_converter_impl<typename descriptor::metadata::type_class>::from(
+          variant_traits::by_id::template get<id>(out), entry, format, adherence
+        );
+      });
 
       if (!found) {
         throw std::invalid_argument("unrecognized variant type");
@@ -298,62 +272,34 @@ struct dynamic_converter_impl<type_class::variant> {
   }
 };
 
-struct to_dynamic_struct_visitor {
-  template <typename MemberInfo, std::size_t Index, typename T>
-  void operator ()(
-    fatal::indexed<MemberInfo, Index>,
-    folly::dynamic &out,
-    T const &input,
-    dynamic_format format
-  ) const {
-    using impl = dynamic_converter_impl<typename MemberInfo::type_class>;
-
-    static_assert(
-      fatal::is_complete<impl>::value,
-      "to_dynamic: unsupported type"
-    );
-
-    if (MemberInfo::optional::value == optionality::optional &&
-        !MemberInfo::is_set(input)) {
-      return;
-    }
-
-    impl::to(
-      out[folly::StringPiece(
-        fatal::z_data<typename MemberInfo::name>(),
-        fatal::size<typename MemberInfo::name>::value
-      )],
-      MemberInfo::getter::ref(input),
-      format
-    );
-  }
-};
-
-struct from_dynamic_struct_visitor {
-  template <typename Member, typename T>
-  void operator ()(
-    fatal::tag<Member>,
-    T &out,
-    folly::dynamic const &input,
-    dynamic_format format,
-    format_adherence adherence
-  ) const {
-    Member::mark_set(out, true);
-    dynamic_converter_impl<typename Member::type_class>::from(
-      Member::getter::ref(out), input, format, adherence
-    );
-  }
-};
-
 template <>
 struct dynamic_converter_impl<type_class::structure> {
   template <typename T>
   static void to(folly::dynamic &out, T const &input, dynamic_format format) {
     out = folly::dynamic::object;
-    fatal::foreach<typename reflect_struct<T>::members>(
-      to_dynamic_struct_visitor(),
-      out, input, format
-    );
+    fatal::foreach<typename reflect_struct<T>::members>([&](auto indexed) {
+      using member = decltype(fatal::tag_type(indexed));
+      using impl = dynamic_converter_impl<typename member::type_class>;
+
+      static_assert(
+        fatal::is_complete<impl>::value,
+        "to_dynamic: unsupported type"
+      );
+
+      if (member::optional::value == optionality::optional &&
+          !member::is_set(input)) {
+        return;
+      }
+
+      impl::to(
+        out[folly::StringPiece(
+          fatal::z_data<typename member::name>(),
+          fatal::size<typename member::name>::value
+        )],
+        member::getter::ref(input),
+        format
+      );
+    });
   }
 
   template <typename T>
@@ -364,14 +310,17 @@ struct dynamic_converter_impl<type_class::structure> {
     format_adherence adherence
   ) {
     for (auto const &i: input.items()) {
-      using namespace fatal;
-      auto const member = i.first.stringPiece();
-      trie_find<typename reflect_struct<T>::members, get_type::name>(
-        member.begin(), member.end(),
-        from_dynamic_struct_visitor(),
-        out, i.second,
-        format, adherence
-      );
+      auto const member_name = i.first.stringPiece();
+      fatal::trie_find<
+        typename reflect_struct<T>::members,
+        fatal::get_type::name
+      >(member_name.begin(), member_name.end(), [&](auto tag) {
+        using member = decltype(fatal::tag_type(tag));
+        member::mark_set(out, true);
+        dynamic_converter_impl<typename member::type_class>::from(
+          member::getter::ref(out), i.second, format, adherence
+        );
+      });
     }
   }
 };
