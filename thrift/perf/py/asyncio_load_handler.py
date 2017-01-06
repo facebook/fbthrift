@@ -91,3 +91,13 @@ class LoadHandler(LoadTest.Iface):
 
     def add(self, a, b):
         return a + b
+
+    def largeContainer(self, data):
+        pass
+
+    async def iterAllFields(self, data):
+        for item in data:
+            x = item.stringField
+            for x in item.stringList:
+                pass
+        return data

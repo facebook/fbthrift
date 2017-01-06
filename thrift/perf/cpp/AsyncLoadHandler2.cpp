@@ -208,6 +208,26 @@ AsyncLoadHandler2::future_echo(
   return future;
 }
 
+void AsyncLoadHandler2::async_eb_largeContainer(
+    std::unique_ptr<HandlerCallback<void>> callback,
+    std::unique_ptr<std::vector<BigStruct>>) {
+  callback->done();
+}
+
+void AsyncLoadHandler2::async_eb_iterAllFields(
+    std::unique_ptr<HandlerCallback<std::unique_ptr<std::vector<BigStruct>>>>
+    callback,
+    std::unique_ptr<std::vector<BigStruct>> items) {
+  std::string x;
+  for (auto& item : *items) {
+    x = item.stringField;
+    for (auto& i : item.stringList) {
+      x = i;
+    }
+  }
+  callback->result(std::move(items));
+}
+
 void AsyncLoadHandler2::async_eb_add(
   std::unique_ptr<HandlerCallback<int64_t>> callback,
   int64_t a,

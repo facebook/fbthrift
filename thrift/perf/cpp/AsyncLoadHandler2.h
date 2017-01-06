@@ -78,6 +78,15 @@ class AsyncLoadHandler2 : public LoadTestSvIf
   void async_eb_add(std::unique_ptr<HandlerCallback<int64_t>>,
                     int64_t a,
                     int64_t b) override;
+  void async_eb_largeContainer(
+      std::unique_ptr<HandlerCallback<void>> callback,
+      std::unique_ptr<std::vector<BigStruct>> items) override;
+
+  void async_eb_iterAllFields(
+    std::unique_ptr<HandlerCallback<std::unique_ptr<std::vector<BigStruct>>>>
+      callback,
+    std::unique_ptr<std::vector<BigStruct>> items) override;
+
 };
 
 }} // apache::thrift

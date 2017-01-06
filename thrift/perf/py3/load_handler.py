@@ -43,13 +43,13 @@ class LoadTestHandler(LoadTestInterface):
         self.pool = ProcessPoolExecutor()
         pickle.DEFAULT_PROTOCOL = pickle.HIGHEST_PROTOCOL
 
-    def noop(self):
+    async def noop(self):
         pass
 
-    def onewayNoop(self):
+    async def onewayNoop(self):
         pass
 
-    def asyncNoop(self):
+    async def asyncNoop(self):
         pass
 
     async def sleep(self, us):
@@ -100,3 +100,13 @@ class LoadTestHandler(LoadTestInterface):
 
     async def add(self, a, b):
         return a + b
+
+    async def largeContainer(self, data):
+        pass
+
+    async def iterAllFields(self, data):
+        for item in data:
+            x = item.stringField
+            for x in item.stringList:
+                pass
+        return data
