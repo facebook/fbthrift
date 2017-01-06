@@ -454,6 +454,16 @@ void AsyncRunner2::performAsyncOperation() {
 
     return client_->add(std::move(recvCob), d->a, d->b);
   }
+  case apache::thrift::test::ClientLoadConfig::OP_LARGE_CONTAINER: {
+    std::vector<BigStruct> items;
+    config_->makeBigContainer<BigStruct>(items);
+    return client_->largeContainer(std::move(recvCob), items);
+  }
+  case apache::thrift::test::ClientLoadConfig::OP_ITER_ALL_FIELDS: {
+    std::vector<BigStruct> items;
+    config_->makeBigContainer<BigStruct>(items);
+    return client_->iterAllFields(std::move(recvCob), items);
+  }
   case apache::thrift::test::ClientLoadConfig::NUM_OPS:
     // fall through
     break;
@@ -471,6 +481,7 @@ void AsyncRunner2::genericCob(LoadTestAsyncClient* client,
                               OpData* opData) {
   int64_t int64_result;
   std::string string_result;
+  std::vector<BigStruct> container_result;
 
   n_outstanding_--;
 
@@ -543,6 +554,14 @@ void AsyncRunner2::genericCob(LoadTestAsyncClient* client,
                 opData->a + opData->b);
       }
       break;
+    case apache::thrift::test::ClientLoadConfig::OP_LARGE_CONTAINER: {
+      client->recv_largeContainer(rstate);
+      break;
+    }
+    case apache::thrift::test::ClientLoadConfig::OP_ITER_ALL_FIELDS: {
+      client->recv_iterAllFields(container_result, rstate);
+      break;
+    }
     case apache::thrift::test::ClientLoadConfig::NUM_OPS:
       // fall through
       break;

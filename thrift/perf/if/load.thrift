@@ -13,6 +13,11 @@ exception LoadError {
   1: i32 code
 }
 
+struct BigStruct {
+  1: string stringField,
+  2: list<string> stringList,
+}
+
 service LoadTest extends fb303.FacebookService {
   // Methods for testing server performance
   // Fairly simple requests, to minimize serialization overhead
@@ -120,4 +125,14 @@ service LoadTest extends fb303.FacebookService {
    * Add the two integers
    */
   i64 add(1: i64 a, 2: i64 b)
+
+  /**
+   * Send a large container of large structs
+   */
+  void largeContainer(1: list<BigStruct> items)
+
+  /**
+   * Send a large container, iterate all fields on all structs, echo back
+   */
+  list<BigStruct> iterAllFields(1: list<BigStruct> items)
 }

@@ -66,6 +66,8 @@ class ClientWorker2 : public loadgen::Worker<
   void performSendrecv(const std::shared_ptr<Client>& client);
   void performEcho(const std::shared_ptr<Client>& client);
   void performAdd(const std::shared_ptr<Client>& client);
+  void performLargeContainer(const std::shared_ptr<Client>& client);
+  void performIterAllFields(const std::shared_ptr<Client>& client);
 
   folly::EventBaseManager ebm_;
 };

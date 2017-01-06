@@ -173,6 +173,10 @@ void ClientWorker2::performOperation(const std::shared_ptr<Client>& client,
       return performEcho(client);
     case ClientLoadConfig::OP_ADD:
       return performAdd(client);
+    case ClientLoadConfig::OP_LARGE_CONTAINER:
+      return performLargeContainer(client);
+    case ClientLoadConfig::OP_ITER_ALL_FIELDS:
+      return performIterAllFields(client);
     case ClientLoadConfig::NUM_OPS:
       // fall through
       break;
@@ -281,6 +285,24 @@ void ClientWorker2::performAdd(const std::shared_ptr<Client>& client) {
   if (result != a + b) {
     T_ERROR("add(%" PRId64 ", %" PRId64 " gave wrong result %" PRId64
             "(expected %" PRId64 ")", a, b, result, a + b);
+  }
+}
+
+void ClientWorker2::performLargeContainer(
+    const std::shared_ptr<Client>& client) {
+  std::vector<BigStruct> items;
+  getConfig()->makeBigContainer<BigStruct>(items);
+  client->sync_largeContainer(items);
+}
+
+void ClientWorker2::performIterAllFields(
+    const std::shared_ptr<Client>& client) {
+  std::vector<BigStruct> items;
+  std::vector<BigStruct> out;
+  getConfig()->makeBigContainer<BigStruct>(items);
+  client->sync_iterAllFields(out, items);
+  if (items != out) {
+    T_ERROR("iterAllFields gave wrong result");
   }
 }
 

@@ -45,6 +45,8 @@ class ClientLoadConfig : public loadgen::WeightedLoadConfig {
      OP_SENDRECV,
      OP_ECHO,
      OP_ADD,
+     OP_LARGE_CONTAINER,
+     OP_ITER_ALL_FIELDS,
      NUM_OPS
    };
 
@@ -75,6 +77,40 @@ class ClientLoadConfig : public loadgen::WeightedLoadConfig {
    * Pick a number of bytes for a receive request
    */
   uint32_t pickRecvSize();
+
+  /**
+   * Pick a number of elements for a container request
+   */
+  uint32_t pickContainerSize();
+
+  /**
+   * Pick a number of elements for a field in a big struct
+   */
+  uint32_t pickStructFieldSize();
+
+  /**
+   * Make a big struct with 100 string fields
+   */
+  template<typename T>
+  void makeBigStruct(T& bigstruct) {
+    bigstruct.stringField = std::string(this->pickStructFieldSize(), 'a');
+    for (int i = 0; i < 100; i++) {
+      bigstruct.stringList.push_back(
+          std::string(this->pickStructFieldSize(), 'a'));
+    }
+  }
+
+  /**
+   * Make a large container with several bigstruct objects
+   */
+  template<typename T>
+  void makeBigContainer(std::vector<T>& items) {
+    for (int i=0; i < this->pickContainerSize(); i++) {
+      T item;
+      this->makeBigStruct(item);
+      items.push_back(std::move(item));
+    }
+  }
 
   const folly::SocketAddress* getAddress() const {
     return &address_;
