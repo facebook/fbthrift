@@ -164,7 +164,29 @@ mstch::map t_mstch_cpp2_generator::extend_type(const t_type& t) const {
       default: return std::string();
     }
   }();
+
+  auto const cxx_value_prefix = [&] {
+    using TypeValue = t_types::TypeValue;
+    switch (t.get_type_value()) {
+      case TypeValue::TYPE_BYTE: return std::string("static_cast<int8_t>(");
+      case TypeValue::TYPE_I16: return std::string("static_cast<int16_t>(");
+      default: return std::string();
+    }
+  }();
+
+  auto const cxx_value_suffix = [&] {
+    using TypeValue = t_types::TypeValue;
+    switch (t.get_type_value()) {
+      case TypeValue::TYPE_BYTE: return std::string(")");
+      case TypeValue::TYPE_I16: return std::string(")");
+      case TypeValue::TYPE_I64: return std::string("LL");
+      default: return std::string();
+    }
+  }();
+
   m.emplace("cxx_type", cxx_type);
+  m.emplace("cxx_value_prefix", cxx_value_prefix);
+  m.emplace("cxx_value_suffix", cxx_value_suffix);
 
   return m;
 }

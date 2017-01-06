@@ -10,10 +10,18 @@
 
 namespace cpp2 {
 
-constexpr int32_t const module_constants::anInt_;
+constexpr int8_t const module_constants::aByte_;
 
-constexpr char const * const module_constants::aString_;
+constexpr int16_t const module_constants::a16BitInt_;
+
+constexpr int32_t const module_constants::a32BitInt_;
+
+constexpr int64_t const module_constants::a64BitInt_;
+
+constexpr float const module_constants::aFloat_;
 
 constexpr double const module_constants::aDouble_;
+
+constexpr char const * const module_constants::aString_;
 
 } // cpp2

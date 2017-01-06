@@ -4294,8 +4294,10 @@ class CppGenerator(t_generator.Generator):
                 ('apache::thrift::StringTraits< {0}>::fromStringLiteral(' +
                     '"{1}")').format(self._type_name(t), render_string(x)),
                 t_base.bool: lambda x: (x.integer > 0 and 'true' or 'false'),
-                t_base.byte: lambda x: ("(int8_t)" + str(x.integer)),
-                t_base.i16: lambda x: ("(int16_t)" + str(x.integer)),
+                t_base.byte: lambda x: (
+                    "static_cast<int8_t>(" + str(x.integer) + ")"),
+                t_base.i16: lambda x: (
+                    "static_cast<int16_t>(" + str(x.integer) + ")"),
                 t_base.i32: int32,
                 t_base.i64: int64,
                 t_base.double:

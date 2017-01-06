@@ -120,13 +120,13 @@ struct module_constants {
     return true_c_;
   }
 
-  static constexpr int8_t const zero_byte_ = (int8_t)0;
+  static constexpr int8_t const zero_byte_ = static_cast<int8_t>(0);
 
   static constexpr int8_t zero_byte() {
     return zero_byte_;
   }
 
-  static constexpr int16_t const zero16_ = (int16_t)0;
+  static constexpr int16_t const zero16_ = static_cast<int16_t>(0);
 
   static constexpr int16_t zero16() {
     return zero16_;

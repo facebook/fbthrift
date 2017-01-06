@@ -12,10 +12,40 @@ namespace cpp2 {
 
 struct module_constants {
 
-  static constexpr int32_t const anInt_ = 12;
+  static constexpr int8_t const aByte_ = static_cast<int8_t>(1);
 
-  static constexpr int32_t anInt() {
-    return anInt_;
+  static constexpr int8_t aByte() {
+    return aByte_;
+  }
+
+  static constexpr int16_t const a16BitInt_ = static_cast<int16_t>(12);
+
+  static constexpr int16_t a16BitInt() {
+    return a16BitInt_;
+  }
+
+  static constexpr int32_t const a32BitInt_ = 123;
+
+  static constexpr int32_t a32BitInt() {
+    return a32BitInt_;
+  }
+
+  static constexpr int64_t const a64BitInt_ = 1234LL;
+
+  static constexpr int64_t a64BitInt() {
+    return a64BitInt_;
+  }
+
+  static constexpr float const aFloat_ = 0.1;
+
+  static constexpr float aFloat() {
+    return aFloat_;
+  }
+
+  static constexpr double const aDouble_ = 0.12;
+
+  static constexpr double aDouble() {
+    return aDouble_;
   }
 
   // consider using folly::StringPiece instead of std::string whenever possible
@@ -26,12 +56,6 @@ struct module_constants {
 
   static constexpr char const * aString() {
     return aString_;
-  }
-
-  static constexpr double const aDouble_ = 0.21;
-
-  static constexpr double aDouble() {
-    return aDouble_;
   }
 
 };
