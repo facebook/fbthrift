@@ -24,6 +24,20 @@ namespace cpp2 {
 
 struct <%program:name%>_constants {
 
+<%#program:constants%><%#constant:type%><%#constant:value%>
+  <%#constant:inlinedstring%>
+  // consider using folly::StringPiece instead of std::string whenever possible
+  // to referencing this statically allocated string constant, in order to
+  // prevent unnecessary allocations
+
+  <%/constant:inlinedstring%>
+  static constexpr <%type:cxx_type%> const <%constant:name%>_ = <%type:cast%><%value:cxx_value%>;
+
+  static constexpr <%type:cxx_type%> <%constant:notinlined%><%constant:name%>() {
+    return <%constant:name%>_;
+  }
+
+<%/constant:value%><%/constant:type%><%/program:constants%>
 };
 
 } // cpp2

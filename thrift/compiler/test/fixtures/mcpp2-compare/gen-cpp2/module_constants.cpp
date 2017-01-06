@@ -10,4 +10,10 @@
 
 namespace cpp2 {
 
+constexpr int32_t const module_constants::anInt_;
+
+constexpr char const * const module_constants::aString_;
+
+constexpr double const module_constants::aDouble_;
+
 } // cpp2

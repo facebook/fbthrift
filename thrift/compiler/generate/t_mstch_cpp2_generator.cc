@@ -33,16 +33,20 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   void generate_program() override;
 
  protected:
+  mstch::map extend_const(const t_const& v) const override;
+  mstch::map extend_const_value(const t_const_value& v) const override;
+  mstch::map extend_enum(const t_enum&) const override;
+  mstch::map extend_function(const t_function&) const override;
   mstch::map extend_program(const t_program&) const override;
   mstch::map extend_service(const t_service&) const override;
-  mstch::map extend_function(const t_function&) const override;
   mstch::map extend_struct(const t_struct&) const override;
-  mstch::map extend_enum(const t_enum&) const override;
+  mstch::map extend_type(const t_type& t) const override;
 
  private:
   bool get_is_eb(const t_function& fn) const;
   bool get_is_complex_return_type(const t_function& fn) const;
   bool get_is_stack_args() const;
+  void generate_constants(const t_program& program);
   void generate_structs(const t_program& program);
   void generate_service(t_service* service);
 
@@ -76,6 +80,7 @@ void t_mstch_cpp2_generator::generate_program() {
   auto services = this->get_program()->get_services();
   auto root = this->dump(*this->get_program());
 
+  this->generate_constants(*this->get_program());
   this->generate_structs(*this->get_program());
 
   // Generate client_interface_tpl
@@ -142,6 +147,67 @@ mstch::map t_mstch_cpp2_generator::extend_enum(const t_enum& e) const {
   };
 }
 
+mstch::map t_mstch_cpp2_generator::extend_type(const t_type& t) const {
+  mstch::map m;
+
+  auto const cxx_type = [&] {
+    using TypeValue = t_types::TypeValue;
+    switch (t.get_type_value()) {
+      case TypeValue::TYPE_BOOL: return std::string("bool");
+      case TypeValue::TYPE_BYTE: return std::string("int8_t");
+      case TypeValue::TYPE_I16: return std::string("int16_t");
+      case TypeValue::TYPE_I32: return std::string("int32_t");
+      case TypeValue::TYPE_I64: return std::string("int64_t");
+      case TypeValue::TYPE_DOUBLE: return std::string("double");
+      case TypeValue::TYPE_FLOAT: return std::string("float");
+      case TypeValue::TYPE_STRING: return std::string("char const *");
+      default: return std::string();
+    }
+  }();
+  m.emplace("cxx_type", cxx_type);
+
+  return m;
+}
+
+mstch::map t_mstch_cpp2_generator::extend_const(const t_const& c) const {
+  mstch::map m;
+  const auto ctype = c.get_type();
+  const bool inlined_const = ctype->is_base_type() || ctype->is_enum();
+
+  if (inlined_const && ctype->is_string()) {
+    m.emplace("inlinedstring", true);
+  }
+
+  return m;
+}
+
+mstch::map t_mstch_cpp2_generator::extend_const_value(
+    const t_const_value& v) const {
+  using cv = t_const_value::t_const_value_type;
+  const cv type = v.get_type();
+  mstch::map m;
+
+  auto const format_double_string = [](const double d) {
+    std::string doubleStr = std::to_string(d);
+    doubleStr.erase(doubleStr.find_last_not_of('0') + 1);
+    if (doubleStr.back() == '.') doubleStr.push_back('0');
+    return doubleStr;
+  };
+
+  auto const cxx_value = [&] {
+    using ConstValue = t_const_value::t_const_value_type;
+    switch (v.get_type()) {
+      case ConstValue::CV_INTEGER: return std::to_string(v.get_integer());
+      case ConstValue::CV_DOUBLE: return format_double_string(v.get_double());
+      case ConstValue::CV_STRING: return '"'+v.get_string()+'"';
+      default: return std::string();
+    }
+  }();
+  m.emplace("cxx_value", cxx_value);
+
+  return m;
+}
+
 bool t_mstch_cpp2_generator::get_is_eb(const t_function& fn) const {
   auto annotations = fn.get_annotations();
   if (annotations) {
@@ -164,6 +230,12 @@ bool t_mstch_cpp2_generator::get_is_stack_args() const {
   return this->get_option("stack_arguments") != nullptr;
 }
 
+void t_mstch_cpp2_generator::generate_constants(const t_program& program) {
+  auto name = program.get_name();
+  this->render_to_file(program, "Constants.h", name + "_constants.h");
+  this->render_to_file(program, "Constants.cpp", name + "_constants.cpp");
+}
+
 void t_mstch_cpp2_generator::generate_structs(const t_program& program) {
   auto name = program.get_name();
   this->render_to_file(program, "Struct_types.h", name + "_types.h");
@@ -171,12 +243,6 @@ void t_mstch_cpp2_generator::generate_structs(const t_program& program) {
   this->render_to_file(program, "Struct_data.h", name + "_data.h");
   this->render_to_file(program, "Struct_data.cpp", name + "_data.cpp");
   this->render_to_file(program, "Struct_types.cpp", name + "_types.cpp");
-  this->render_to_file(program, "Struct_constants.h", name + "_constants.h");
-  this->render_to_file(
-    program,
-    "Struct_constants.cpp",
-    name + "_constants.cpp"
-  );
   this->render_to_file(
     program,
     "Struct_types_custom_protocol.h",

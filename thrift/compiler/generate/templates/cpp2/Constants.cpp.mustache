@@ -22,4 +22,8 @@
 
 namespace cpp2 {
 
+<%#program:constants%><%#constant:type%><%#constant:value%>
+constexpr <%type:cxx_type%> const <%program:name%>_constants::<%constant:name%>_;
+
+<%/constant:value%><%/constant:type%><%/program:constants%>
 } // cpp2

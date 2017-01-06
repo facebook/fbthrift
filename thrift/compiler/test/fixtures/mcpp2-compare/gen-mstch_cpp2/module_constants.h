@@ -12,6 +12,28 @@ namespace cpp2 {
 
 struct module_constants {
 
+  static constexpr int32_t const anInt_ = 12;
+
+  static constexpr int32_t anInt() {
+    return anInt_;
+  }
+
+  // consider using folly::StringPiece instead of std::string whenever possible
+  // to referencing this statically allocated string constant, in order to
+  // prevent unnecessary allocations
+
+  static constexpr char const * const aString_ = "Joe Doe";
+
+  static constexpr char const * aString() {
+    return aString_;
+  }
+
+  static constexpr double const aDouble_ = 0.21;
+
+  static constexpr double aDouble() {
+    return aDouble_;
+  }
+
 };
 
 } // cpp2
