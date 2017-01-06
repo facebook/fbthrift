@@ -18,6 +18,7 @@
 #define THRIFT_CONCURRENCY_MUTEX_H_ 1
 
 #include <cstdint>
+#include <chrono>
 #include <memory>
 #include <boost/noncopyable.hpp>
 
@@ -45,7 +46,7 @@ class Mutex {
   virtual ~Mutex() {}
   virtual void lock() const;
   virtual bool trylock() const;
-  virtual bool timedlock(int64_t milliseconds) const;
+  virtual bool timedlock(std::chrono::milliseconds milliseconds) const;
   virtual void unlock() const;
 
   /**
@@ -81,8 +82,8 @@ public:
 
   // these get the lock and block until it is done successfully
   // or run out of time
-  virtual bool timedRead(int64_t milliseconds) const;
-  virtual bool timedWrite(int64_t milliseconds) const;
+  virtual bool timedRead(std::chrono::milliseconds milliseconds) const;
+  virtual bool timedWrite(std::chrono::milliseconds milliseconds) const;
 
   // these attempt to get the lock, returning false immediately if they fail
   virtual bool attemptRead() const;
@@ -111,8 +112,8 @@ public:
 
   // these get the lock and block until it is done successfully
   // or run out of time
-  bool timedRead(int64_t milliseconds) const override;
-  bool timedWrite(int64_t milliseconds) const override;
+  bool timedRead(std::chrono::milliseconds milliseconds) const override;
+  bool timedWrite(std::chrono::milliseconds milliseconds) const override;
 
 private:
   Mutex mutex_;
@@ -121,10 +122,12 @@ private:
 
 class Guard : boost::noncopyable {
  public:
-  explicit Guard(const Mutex& value, int64_t timeout = 0) : mutex_(&value) {
-    if (timeout == 0) {
+  explicit Guard(const Mutex& value,
+    std::chrono::milliseconds timeout = std::chrono::milliseconds::zero())
+    : mutex_(&value) {
+    if (timeout == std::chrono::milliseconds::zero()) {
       value.lock();
-    } else if (timeout < 0) {
+    } else if (timeout < std::chrono::milliseconds::zero()) {
       if (!value.trylock()) {
         mutex_ = nullptr;
       }
@@ -179,17 +182,18 @@ enum RWGuardType {
 class RWGuard : boost::noncopyable {
  public:
   explicit RWGuard(const ReadWriteMutex& value, bool write = false,
-                   int64_t timeout=0)
+                   std::chrono::milliseconds timeout =
+                    std::chrono::milliseconds::zero())
       : rw_mutex_(&value) {
     bool locked = true;
     if (write) {
-      if (timeout) {
+      if (timeout != std::chrono::milliseconds::zero()) {
         locked = rw_mutex_->timedWrite(timeout);
       } else {
         rw_mutex_->acquireWrite();
       }
     } else {
-      if (timeout) {
+      if (timeout != std::chrono::milliseconds::zero()) {
         locked = rw_mutex_->timedRead(timeout);
       } else {
         rw_mutex_->acquireRead();
@@ -199,7 +203,8 @@ class RWGuard : boost::noncopyable {
       rw_mutex_ = nullptr;
     }
   }
-  RWGuard(const ReadWriteMutex& value, RWGuardType type, int64_t timeout = 0)
+  RWGuard(const ReadWriteMutex& value, RWGuardType type,
+          std::chrono::milliseconds timeout = std::chrono::milliseconds::zero())
       : RWGuard(value, type == RW_WRITE, timeout) {
   }
 

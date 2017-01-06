@@ -351,7 +351,7 @@ void ThreadManager::ImplT<SemType>::add(shared_ptr<Runnable> value,
 
   if (pendingTaskCountMax_ > 0
       && tasks_.size() >= folly::to<ssize_t>(pendingTaskCountMax_)) {
-    Guard g(mutex_, timeout);
+    Guard g(mutex_, std::chrono::milliseconds(timeout));
 
     if (!g) {
       throw TimedOutException();

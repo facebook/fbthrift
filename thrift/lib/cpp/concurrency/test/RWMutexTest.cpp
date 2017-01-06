@@ -30,13 +30,14 @@ using namespace std;
 using namespace facebook;
 using namespace apache::thrift::concurrency;
 
+using std::chrono::duration_cast;
+using std::chrono::microseconds;
+using std::chrono::milliseconds;
 
-const int kTimeoutUsec = 10*kUsecPerMs; // 10ms
-const int kTimeoutMs = kTimeoutUsec / kUsecPerMs;
-const int kMaxReaders = 10;
-const int kMicroSecInMilliSec = 1000;
+static constexpr milliseconds kTimeoutMs{10};
+static constexpr int kMaxReaders = 10;
 // user operation time on the lock in milliseconds
-const int kOpTimeInMs = 200;
+static constexpr milliseconds kOpTimeInMs{200};
 
 TEST(RWMutexTest, Max_Readers ) {
   ReadWriteMutex l;
@@ -69,7 +70,7 @@ TEST(RWMutexTest, Writer_Wait_Readers ) {
   for (int i = 0; i < kMaxReaders; ++i) {
     threads_.push_back(std::thread([this, &l] {
       EXPECT_TRUE(l.timedRead(kTimeoutMs));
-      usleep(kOpTimeInMs * kMicroSecInMilliSec);
+      usleep(duration_cast<microseconds>(kOpTimeInMs).count());
       l.release();
     }));
   }
@@ -78,12 +79,12 @@ TEST(RWMutexTest, Writer_Wait_Readers ) {
 
   // wait shorter than the operation time will timeout
   std::thread thread1 = std::thread([this, &l] {
-      EXPECT_FALSE(l.timedWrite(0.5 * kOpTimeInMs));
+      EXPECT_FALSE(l.timedWrite(duration_cast<milliseconds>(0.5 * kOpTimeInMs)));
     });
 
   // wait longer than the operation time will success
   std::thread thread2 = std::thread([this, &l] {
-      EXPECT_TRUE(l.timedWrite(1.5 * kOpTimeInMs));
+      EXPECT_TRUE(l.timedWrite(duration_cast<milliseconds>(1.5 * kOpTimeInMs)));
       l.release();
     });
 
@@ -116,7 +117,7 @@ TEST(RWMutexTest, Readers_Wait_Writer) {
   // Testing Timeout
   std::thread wrThread = std::thread([&l] {
       EXPECT_TRUE(l.timedWrite(kTimeoutMs));
-      usleep(kOpTimeInMs * kMicroSecInMilliSec);
+      usleep(duration_cast<microseconds>(kOpTimeInMs).count());
       l.release();
     });
 
@@ -127,12 +128,12 @@ TEST(RWMutexTest, Readers_Wait_Writer) {
   for (int i = 0; i < kMaxReaders; ++i) {
     // wait shorter than the operation time will timeout
     threads_.push_back(std::thread([&l] {
-      EXPECT_FALSE(l.timedRead(0.5 * kOpTimeInMs));
+      EXPECT_FALSE(l.timedRead(duration_cast<milliseconds>(0.5 * kOpTimeInMs)));
     }));
 
     // wait longer than the operation time will success
     threads_.push_back(std::thread([&l] {
-      EXPECT_TRUE(l.timedRead(1.5 * kOpTimeInMs));
+      EXPECT_TRUE(l.timedRead(duration_cast<milliseconds>(1.5 * kOpTimeInMs)));
       l.release();
     }));
   }
@@ -156,7 +157,7 @@ TEST(RWMutexTest, Writer_Wait_Writer) {
   // Testing Timeout
   std::thread wrThread1 = std::thread([this, &l] {
       EXPECT_TRUE(l.timedWrite(kTimeoutMs));
-      usleep(kOpTimeInMs * kMicroSecInMilliSec);
+      usleep(duration_cast<microseconds>(kOpTimeInMs).count());
       l.release();
     });
 
@@ -165,12 +166,12 @@ TEST(RWMutexTest, Writer_Wait_Writer) {
 
   // wait shorter than the operation time will timeout
   std::thread wrThread2 = std::thread([this, &l] {
-      EXPECT_FALSE(l.timedWrite(0.5 * kOpTimeInMs));
+      EXPECT_FALSE(l.timedWrite(duration_cast<milliseconds>(0.5 * kOpTimeInMs)));
     });
 
   // wait longer than the operation time will success
   std::thread wrThread3 = std::thread([this, &l] {
-      EXPECT_TRUE(l.timedWrite(1.5 * kOpTimeInMs));
+      EXPECT_TRUE(l.timedWrite(duration_cast<milliseconds>(1.5 * kOpTimeInMs)));
       l.release();
     });
 
@@ -246,7 +247,7 @@ TEST(NoStarveRWMutexTest, Writer_Wait_Readers ) {
         readers++;
         cv.notify_one();
       }
-      usleep(kOpTimeInMs * kMicroSecInMilliSec);
+      usleep(duration_cast<microseconds>(kOpTimeInMs).count());
       l.release();
     }));
   }
@@ -258,12 +259,12 @@ TEST(NoStarveRWMutexTest, Writer_Wait_Readers ) {
 
   // wait shorter than the operation time will timeout
   std::thread thread1 = std::thread([this, &l] {
-      EXPECT_FALSE(l.timedWrite(0.5 * kOpTimeInMs));
+      EXPECT_FALSE(l.timedWrite(duration_cast<milliseconds>(0.5 * kOpTimeInMs)));
     });
 
   // wait longer than the operation time will success
   std::thread thread2 = std::thread([this, &l] {
-      EXPECT_TRUE(l.timedWrite(1.5 * kOpTimeInMs));
+      EXPECT_TRUE(l.timedWrite(duration_cast<milliseconds>(1.5 * kOpTimeInMs)));
       l.release();
     });
 
@@ -305,7 +306,7 @@ TEST(NoStarveRWMutexTest, Readers_Wait_Writer) {
         writer = true;
         cv.notify_all();
       }
-      usleep(kOpTimeInMs * kMicroSecInMilliSec);
+      usleep(duration_cast<microseconds>(kOpTimeInMs).count());
       l.release();
     });
 
@@ -317,12 +318,12 @@ TEST(NoStarveRWMutexTest, Readers_Wait_Writer) {
         std::unique_lock<std::mutex> lk(cv_m);
         cv.wait(lk, [&] { return writer; });
       }
-      EXPECT_FALSE(l.timedRead(0.5 * kOpTimeInMs));
+      EXPECT_FALSE(l.timedRead(duration_cast<milliseconds>(0.5 * kOpTimeInMs)));
     }));
 
     // wait longer than the operation time will success
     threads_.push_back(std::thread([&l] {
-      EXPECT_TRUE(l.timedRead(1.5 * kOpTimeInMs));
+      EXPECT_TRUE(l.timedRead(duration_cast<milliseconds>(1.5 * kOpTimeInMs)));
       l.release();
     }));
   }
@@ -346,7 +347,7 @@ TEST(NoStarveRWMutexTest, Writer_Wait_Writer) {
   // Testing Timeout
   std::thread wrThread1 = std::thread([this, &l] {
       EXPECT_TRUE(l.timedWrite(kTimeoutMs));
-      usleep(kOpTimeInMs * kMicroSecInMilliSec);
+      usleep(duration_cast<microseconds>(kOpTimeInMs).count());
       l.release();
     });
 
@@ -355,12 +356,12 @@ TEST(NoStarveRWMutexTest, Writer_Wait_Writer) {
 
   // wait shorter than the operation time will timeout
   std::thread wrThread2 = std::thread([this, &l] {
-      EXPECT_FALSE(l.timedWrite(0.5 * kOpTimeInMs));
+      EXPECT_FALSE(l.timedWrite(duration_cast<milliseconds>(0.5 * kOpTimeInMs)));
     });
 
   // wait longer than the operation time will success
   std::thread wrThread3 = std::thread([this, &l] {
-      EXPECT_TRUE(l.timedWrite(1.5 * kOpTimeInMs));
+      EXPECT_TRUE(l.timedWrite(duration_cast<milliseconds>(1.5 * kOpTimeInMs)));
       l.release();
     });
 
