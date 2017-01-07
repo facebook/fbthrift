@@ -155,7 +155,7 @@ class TEventServer : public apache::thrift::server::TServer {
   int nWorkers_;
 
   //! Milliseconds we'll wait for data to appear (0 = infinity)
-  int timeout_;
+  std::chrono::milliseconds timeout_;
 
   //! Manager of per-thread folly::EventBase objects.
   folly::EventBaseManager eventBaseManager_;
@@ -208,7 +208,7 @@ class TEventServer : public apache::thrift::server::TServer {
    * between the start of a call and the actual invokation of its processor.
    * The connection closes if it is exceeded.
    */
-  int32_t callTimeout_;
+  std::chrono::milliseconds callTimeout_;
 
   /**
    * The thread manager used when we're in queuing mode.
@@ -226,7 +226,7 @@ class TEventServer : public apache::thrift::server::TServer {
    * The time in milliseconds before an unperformed task expires --
    * queuing mode only. (0 == infinite)
    */
-  uint64_t taskExpireTime_;
+  std::chrono::milliseconds taskExpireTime_;
 
   /**
    * The number of incoming connections the TCP stack will buffer up while
@@ -778,7 +778,7 @@ class TEventServer : public apache::thrift::server::TServer {
    *
    *  @return number of milliseconds, or 0 if no timeout set.
    */
-  int getRecvTimeout() const {
+  std::chrono::milliseconds getRecvTimeout() const {
     return timeout_;
   }
 
@@ -787,7 +787,7 @@ class TEventServer : public apache::thrift::server::TServer {
    *
    *  @param timeout number of milliseconds, or 0 to disable timeouts.
    */
-  void setRecvTimeout(int timeout) {
+  void setRecvTimeout(std::chrono::milliseconds timeout) {
     timeout_ = timeout;
   }
 
@@ -918,7 +918,7 @@ class TEventServer : public apache::thrift::server::TServer {
    *
    * @param milliseconds the call timeout (0 inhibits)
    */
-  void setCallTimeout(int32_t milliseconds) {
+  void setCallTimeout(std::chrono::milliseconds milliseconds) {
     callTimeout_ = milliseconds;
   }
 
@@ -927,7 +927,7 @@ class TEventServer : public apache::thrift::server::TServer {
    *
    * @return the call timeout in milliseconds
    */
-  int32_t getCallTimeout() const {
+  std::chrono::milliseconds getCallTimeout() const {
     return callTimeout_;
   }
 
@@ -955,7 +955,7 @@ class TEventServer : public apache::thrift::server::TServer {
    *
    * @return task expire time
    */
-  int64_t getTaskExpireTime() const {
+  std::chrono::milliseconds getTaskExpireTime() const {
     return taskExpireTime_;
   }
 

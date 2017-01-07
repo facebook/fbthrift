@@ -99,11 +99,11 @@ void TEventConnection::init(shared_ptr<TAsyncSocket> asyncSocket,
   // If we're using a non-async processor, construct a task queue adaptor
   if (server->queuingMode()) {
     processor_ = server->getProcessor(&context_);
-    asyncProcessor_.reset(new TQueuingAsyncProcessor(
-                                                processor_,
-                                                server->getThreadManager(),
-                                                server->getTaskExpireTime(),
-                                                this));
+    asyncProcessor_.reset(
+      new TQueuingAsyncProcessor(processor_,
+                                 server->getThreadManager(),
+                                 server->getTaskExpireTime().count(),
+                                 this));
   } else {
     asyncProcessor_ = worker_->getAsyncProcessorFactory()->getProcessor(
       &context_);
@@ -140,7 +140,7 @@ void TEventConnection::init(shared_ptr<TAsyncSocket> asyncSocket,
     default:
       assert(false);
   }
-  asyncChannel_->setRecvTimeout(worker_->getServer()->getRecvTimeout());
+  asyncChannel_->setRecvTimeout(worker_->getServer()->getRecvTimeout().count());
 
   serverEventHandler_ = server->getEventHandler();
   if (serverEventHandler_ != nullptr) {
@@ -391,4 +391,4 @@ void TEventConnection::checkBufferMemoryUsage() {
   }
 }
 
-}}} // apache::thrift::async
+}}} // apache::thrift

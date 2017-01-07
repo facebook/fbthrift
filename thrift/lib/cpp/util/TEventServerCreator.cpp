@@ -117,14 +117,14 @@ TEventServerCreator::createEventServer() {
 
   // Set tunable parameters
   server->setMaxConnectionPoolSize(maxConnPoolSize_);
-  server->setRecvTimeout(recvTimeout_.count());
+  server->setRecvTimeout(recvTimeout_);
   server->setMaxFrameSize(maxFrameSize_);
   server->setReadBufferDefaultSize(defaultReadBufferSize_);
   server->setWriteBufferDefaultSize(defaultWriteBufferSize_);
   server->setIdleReadBufferLimit(idleReadBufferLimit_);
   server->setIdleWriteBufferLimit(idleWriteBufferLimit_);
   server->setResizeBufferEveryN(resizeBufferEveryN_);
-  server->setCallTimeout(workerLatencyLimit_.count());
+  server->setCallTimeout(workerLatencyLimit_);
   server->setListenBacklog(listenBacklog_);
 
   // Let ServerCreatorBase set its parameters
