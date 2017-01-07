@@ -21,6 +21,7 @@
 
 #include <thrift/lib/cpp/util/ServerCreatorBase.h>
 
+#include <chrono>
 #include <stdint.h>
 
 namespace apache { namespace thrift {
@@ -52,7 +53,7 @@ class TEventServerCreator : public ServerCreatorBase {
   static const uint32_t DEFAULT_CONN_POOL_SIZE = 64;
 
   /// By default, close connections after they have are idle for 60 seconds
-  static const int DEFAULT_RECV_TIMEOUT = 60000;
+  static constexpr std::chrono::milliseconds DEFAULT_RECV_TIMEOUT{60000};
 
   /**
    * By default, reject requests over 64MB.
@@ -66,7 +67,7 @@ class TEventServerCreator : public ServerCreatorBase {
    * Start dropping connections to reduce load if a worker's event loop begins
    * taking longer than 2 seconds to process a single event loop.
    */
-  static const int64_t DEFAULT_WORKER_LATENCY = 2000;
+  static constexpr std::chrono::milliseconds DEFAULT_WORKER_LATENCY{2000};
 
   /// Default size of each connection's write buffer
   static const size_t DEFAULT_WRITE_BUFFER_SIZE = 1024;
@@ -148,7 +149,7 @@ class TEventServerCreator : public ServerCreatorBase {
    * Set the maximum amount of time a connection may be idle before it is
    * closed.
    */
-  void setRecvTimeout(int milliseconds) {
+  void setRecvTimeout(std::chrono::milliseconds milliseconds) {
     recvTimeout_ = milliseconds;
   }
 
@@ -206,7 +207,7 @@ class TEventServerCreator : public ServerCreatorBase {
    * Begin taking overload actions when it takes longer than this amount of
    * time to process a single iteration of the event loop.
    */
-  void setWorkerLatencyLimit(int64_t milliseconds) {
+  void setWorkerLatencyLimit(std::chrono::milliseconds milliseconds) {
     workerLatencyLimit_ = milliseconds;
   }
 
@@ -230,14 +231,14 @@ class TEventServerCreator : public ServerCreatorBase {
   size_t numIoThreads_;
   size_t numTaskThreads_;
   uint32_t maxConnPoolSize_;
-  int recvTimeout_;
+  std::chrono::milliseconds recvTimeout_;
   uint32_t maxFrameSize_;
   size_t defaultReadBufferSize_;
   size_t defaultWriteBufferSize_;
   size_t idleReadBufferLimit_;
   size_t idleWriteBufferLimit_;
   int32_t resizeBufferEveryN_;
-  int32_t workerLatencyLimit_;
+  std::chrono::milliseconds workerLatencyLimit_;
 
   /**
    * The number of incoming connections the TCP stack will buffer up while
