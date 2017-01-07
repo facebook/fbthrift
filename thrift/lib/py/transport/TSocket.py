@@ -126,7 +126,7 @@ class ConnectionSelect:
         deadline = time.clock() + float(timeout or 0)
         poll_timeout = timeout
         while True:
-            if timeout > 0:
+            if timeout is not None and timeout > 0:
                 poll_timeout = max(0, deadline - time.clock())
             try:
                 return select.select(list(self.readable), list(self.writable),
