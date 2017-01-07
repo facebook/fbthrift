@@ -170,8 +170,9 @@ void TEventWorker::acceptStopped() noexcept {
  */
 void TEventWorker::registerEvents() {
   if (server_->getCallTimeout() > 0) {
-    eventBase_.setMaxLatency(server_->getCallTimeout() * Util::US_PER_MS,
-                           std::bind(&TEventWorker::maxLatencyCob, this));
+    eventBase_.setMaxLatency(
+        std::chrono::milliseconds(server_->getCallTimeout()),
+        std::bind(&TEventWorker::maxLatencyCob, this));
   }
 
   startConsuming(&eventBase_, &notificationQueue_);
