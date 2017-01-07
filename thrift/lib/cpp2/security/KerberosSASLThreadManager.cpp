@@ -43,7 +43,7 @@ const int kPendingFailureRatio = 1000;
 SaslThreadManager::SaslThreadManager(std::shared_ptr<SecurityLogger> logger,
                                      int threadCount, int stackSizeMb)
   : logger_(logger)
-  , lastActivity_(0)
+  , lastActivity_()
   , healthy_(true) {
 
   secureConnectionsInProgress_ = 0;
@@ -78,12 +78,11 @@ void SaslThreadManager::threadManagerHealthCheck() {
     queueToDrain;
   {
     concurrency::Guard g(mutex_);
-    auto cur = std::chrono::duration_cast<std::chrono::milliseconds>(
-      std::chrono::steady_clock::now().time_since_epoch());
-    auto diff = cur.count() - lastActivity_.count();
+    auto cur = std::chrono::steady_clock::now();
+    auto diff = cur - lastActivity_;
     auto idleWorkers = threadManager_->idleWorkerCount();
     if (idleWorkers == 0 &&
-        diff > FLAGS_sasl_health_check_thread_period_ms) {
+        diff > std::chrono::milliseconds(FLAGS_sasl_health_check_thread_period_ms)) {
       healthy_ = false;
       while (auto el = threadManager_->removeNextPending()) {
         queueToDrain.push_back(el);
@@ -117,8 +116,7 @@ bool SaslThreadManager::isHealthy() {
 
 void SaslThreadManager::recordActivity() {
   concurrency::Guard g(mutex_);
-  lastActivity_ = std::chrono::duration_cast<std::chrono::milliseconds>(
-    std::chrono::steady_clock::now().time_since_epoch());
+  lastActivity_ = std::chrono::steady_clock::now();
 }
 
 void SaslThreadManager::scheduleThreadManagerHealthCheck() {

@@ -66,7 +66,7 @@ class SaslThreadManager {
     pendingSecureStarts_;
   folly::EventBase healthCheckEvb_;
   std::thread healthCheckThread_;
-  std::chrono::milliseconds lastActivity_;
+  std::chrono::steady_clock::time_point lastActivity_;
   std::atomic<bool> healthy_;
 };
 
