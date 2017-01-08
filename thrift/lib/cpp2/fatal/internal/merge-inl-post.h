@@ -80,83 +80,55 @@ struct merge_impl<type_class::structure> {
 template <typename ValueTypeClass>
 struct merge_impl<type_class::list<ValueTypeClass>> {
   template <typename T>
-  struct wrapper {
-    T& rep;
-    using traits = thrift_list_traits<T>;
-    using value_type = typename traits::value_type;
-    void push_back(const value_type& v) { traits::push_back(rep, v); }
-    void push_back(value_type&& v) { traits::push_back(rep, std::move(v)); }
-  };
-  template <typename T>
-  static void go(const T& src, T& dst) {
-    using traits = thrift_list_traits<T>;
-    traits::reserve(dst, traits::size(dst) + traits::size(src));
-    wrapper<T> dstw { dst };
-    std::copy(traits::cbegin(src), traits::cend(src), std::back_inserter(dstw));
+  static void go(const T& src_, T& dst_) {
+    thrift_list_traits_adapter<const T> src { src_ };
+    thrift_list_traits_adapter<T> dst { dst_ };
+    dst.reserve(dst.size() + src.size());
+    std::copy(src.cbegin(), src.cend(), std::back_inserter(dst));
   }
   template <typename T>
-  static void go(T&& src, T& dst) {
-    using traits = thrift_list_traits<T>;
-    traits::reserve(dst, traits::size(dst) + traits::size(src));
-    wrapper<T> dstw { dst };
-    std::move(traits::begin(src), traits::end(src), std::back_inserter(dstw));
+  static void go(T&& src_, T& dst_) {
+    thrift_list_traits_adapter<T> src { src_ };
+    thrift_list_traits_adapter<T> dst { dst_ };
+    dst.reserve(dst.size() + src.size());
+    std::move(src.begin(), src.end(), std::back_inserter(dst));
   }
 };
 
 template <typename ValueTypeClass>
 struct merge_impl<type_class::set<ValueTypeClass>> {
   template <typename T>
-  struct wrapper {
-    T& rep;
-    using traits = thrift_set_traits<T>;
-    using value_type = typename traits::value_type;
-    using iterator = typename traits::iterator;
-    using const_iterator = typename traits::const_iterator;
-    iterator insert(const_iterator position, const value_type& val) {
-      return traits::insert(rep, position, val);
-    }
-    iterator insert(const_iterator position, value_type&& val) {
-      return traits::insert(rep, position, std::move(val));
-    }
-  };
-  template <typename T>
-  static void go(const T& src, T& dst) {
-    using traits = thrift_set_traits<T>;
-    wrapper<T> dstw { dst };
-    std::copy(
-        traits::cbegin(src),
-        traits::cend(src),
-        std::inserter(dstw, traits::end(dst)));
+  static void go(const T& src_, T& dst_) {
+    thrift_set_traits_adapter<const T> src { src_ };
+    thrift_set_traits_adapter<T> dst { dst_ };
+    std::copy(src.cbegin(), src.cend(), std::inserter(dst, dst.end()));
   }
   template <typename T>
-  static void go(T&& src, T& dst) {
-    using traits = thrift_set_traits<T>;
-    wrapper<T> dstw { dst };
-    std::move(
-        traits::begin(src),
-        traits::end(src),
-        std::inserter(dstw, traits::end(dst)));
+  static void go(T&& src_, T& dst_) {
+    thrift_set_traits_adapter<T> src { src_ };
+    thrift_set_traits_adapter<T> dst { dst_ };
+    std::move(src.begin(), src.end(), std::inserter(dst, dst.end()));
   }
 };
 
 template <typename KeyTypeClass, typename MappedTypeClass>
 struct merge_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
   template <typename T>
-  static void go(const T& src, T& dst) {
-    using traits = thrift_map_traits<T>;
-    using M = typename traits::mapped_type;
-    auto r = folly::range(traits::cbegin(src), traits::cend(src));
-    for (const auto& kv : r) {
-      merge<M>::go(kv.second, traits::get_or_create(dst, kv.first));
+  static void go(const T& src_, T& dst_) {
+    using M = typename thrift_map_traits<T>::mapped_type;
+    thrift_map_traits_adapter<const T> src { src_ };
+    thrift_map_traits_adapter<T> dst { dst_ };
+    for (const auto& kv : src) {
+      merge<M>::go(kv.second, dst[kv.first]);
     }
   }
   template <typename T>
-  static void go(T&& src, T& dst) {
-    using traits = thrift_map_traits<T>;
-    using M = typename traits::mapped_type;
-    auto r = folly::range(traits::begin(src), traits::end(src));
-    for (auto& kv : r) {
-      merge<M>::go(std::move(kv.second), traits::get_or_create(dst, kv.first));
+  static void go(T&& src_, T& dst_) {
+    using M = typename thrift_map_traits<T>::mapped_type;
+    thrift_map_traits_adapter<T> src { src_ };
+    thrift_map_traits_adapter<T> dst { dst_ };
+    for (auto& kv : src) {
+      merge<M>::go(std::move(kv.second), dst[kv.first]);
     }
   }
 };

@@ -107,14 +107,14 @@ struct dynamic_converter_impl<type_class::enumeration> {
 template <typename ValueTypeClass>
 struct dynamic_converter_impl<type_class::list<ValueTypeClass>> {
   template <typename T>
-  static void to(folly::dynamic &out, T const &input, dynamic_format format) {
-    using traits = thrift_list_traits<T>;
+  static void to(folly::dynamic &out, T const &input_, dynamic_format format) {
+    thrift_list_traits_adapter<T const> input { input_ };
 
     out = folly::dynamic::array;
 
-    for (auto i = traits::begin(input), e = traits::end(input); i != e; ++i) {
+    for (auto const &i: input) {
       folly::dynamic value(folly::dynamic::object);
-      dynamic_converter_impl<ValueTypeClass>::to(value, *i, format);
+      dynamic_converter_impl<ValueTypeClass>::to(value, i, format);
       out.push_back(std::move(value));
     }
   }
@@ -138,12 +138,13 @@ struct dynamic_converter_impl<type_class::list<ValueTypeClass>> {
 template <typename KeyTypeClass, typename MappedTypeClass>
 struct dynamic_converter_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
   template <typename T>
-  static void to(folly::dynamic &out, T const &input, dynamic_format format) {
+  static void to(folly::dynamic &out, T const &input_, dynamic_format format) {
     using traits = thrift_map_traits<T>;
+    thrift_map_traits_adapter<T const> input { input_ };
 
     out = folly::dynamic::object;
 
-    for (auto i = traits::begin(input), e = traits::end(input); i != e; ++i) {
+    for (auto const &i: input) {
       folly::dynamic key(folly::dynamic::object);
       dynamic_converter_impl<KeyTypeClass>::to(key, traits::key(i), format);
       dynamic_converter_impl<MappedTypeClass>::to(
@@ -180,14 +181,14 @@ struct dynamic_converter_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
 template <typename ValueTypeClass>
 struct dynamic_converter_impl<type_class::set<ValueTypeClass>> {
   template <typename T>
-  static void to(folly::dynamic &out, T const &input, dynamic_format format) {
-    using traits = thrift_set_traits<T>;
+  static void to(folly::dynamic &out, T const &input_, dynamic_format format) {
+    thrift_set_traits_adapter<T const> input { input_ };
 
     out = folly::dynamic::array;
 
-    for (auto i = traits::begin(input), e = traits::end(input); i != e; ++i) {
+    for (auto const &i: input) {
       folly::dynamic value(folly::dynamic::object);
-      dynamic_converter_impl<ValueTypeClass>::to(value, *i, format);
+      dynamic_converter_impl<ValueTypeClass>::to(value, i, format);
       out.push_back(std::move(value));
     }
   }

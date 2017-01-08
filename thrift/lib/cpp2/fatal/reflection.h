@@ -2137,6 +2137,47 @@ struct thrift_string_traits_std {
   }
 };
 
+template <typename String>
+class thrift_string_traits_adapter {
+ private:
+  using orig = String;
+  using type = std::decay_t<orig>;
+  using deco = fatal::add_const_from_t<type, orig>;
+
+  using traits = thrift_string_traits<type>;
+  static_assert(
+      fatal::is_complete<traits>::value,
+      "the required thrift_string_traits specialization is missing");
+
+  deco &_;
+
+ public:
+  using value_type = typename traits::value_type;
+  using size_type = typename traits::size_type;
+  using iterator = typename traits::iterator;
+  using const_iterator = typename traits::const_iterator;
+
+  explicit thrift_string_traits_adapter(deco &what) : _(what) {}
+
+  auto& operator*() { return _; }
+  auto& operator*() const { return _; }
+
+  auto begin() { return traits::begin(_); }
+  auto end() { return traits::end(_); }
+
+  auto cbegin() const { return traits::cbegin(_); }
+  auto begin() const { return traits::begin(_); }
+  auto cend() const { return traits::cend(_); }
+  auto end() const { return traits::end(_); }
+
+  auto clear() { traits::clear(_); }
+  auto empty() const { return traits::empty(_); }
+  auto size() const { return traits::size(_); }
+
+  auto const *data() const { return traits::data(_); }
+  auto const *c_str() const { return traits::c_str(_); }
+};
+
 /**
  * This is the type trait class that provides uniform interface to the
  * properties and functionality of list types.
@@ -2215,6 +2256,47 @@ struct thrift_list_traits_std {
   static inline size_type size(type const &what) { return what.size(); }
 };
 
+template <typename List>
+class thrift_list_traits_adapter {
+ private:
+  using orig = List;
+  using type = std::decay_t<orig>;
+  using deco = fatal::add_const_from_t<type, orig>;
+
+  using traits = thrift_list_traits<type>;
+  static_assert(
+      fatal::is_complete<traits>::value,
+      "the required thrift_list_traits specialization is missing");
+
+  deco &_;
+
+ public:
+  using value_type = typename traits::value_type;
+  using size_type = typename traits::size_type;
+  using iterator = typename traits::iterator;
+  using const_iterator = typename traits::const_iterator;
+
+  explicit thrift_list_traits_adapter(deco &what) : _(what) {}
+
+  auto& operator*() { return _; }
+  auto& operator*() const { return _; }
+
+  auto begin() { return traits::begin(_); }
+  auto end() { return traits::end(_); }
+
+  auto cbegin() const { return traits::cbegin(_); }
+  auto begin() const { return traits::begin(_); }
+  auto cend() const { return traits::cend(_); }
+  auto end() const { return traits::end(_); }
+
+  auto clear() { traits::clear(_); }
+  auto empty() const { return traits::empty(_); }
+  auto push_back(value_type const &e) { traits::push_back(_, e); }
+  auto push_back(value_type &&e) { traits::push_back(_, std::move(e)); }
+  auto reserve(size_type size) { traits::reserve(_, size); }
+  auto size() const { return traits::size(_); }
+};
+
 /**
  * This is the type trait class that provides uniform interface to the
  * properties and functionality of set types.
@@ -2240,9 +2322,8 @@ struct thrift_list_traits_std {
  *    using size_type = typename type::size_type;
  *    using iterator = typename type::iterator;
  *    using const_iterator = typename type::const_iterator;
- *
- *    using value_const_reference = value_type const &;
- *    using value_reference = value_type &;
+ *    using reference = typename type::reference;
+ *    using const_reference = typename type::const_reference;
  *
  *    static iterator begin(type &what) { return what.begin(); }
  *    static iterator end(type &what) { return what.end(); }
@@ -2280,6 +2361,8 @@ struct thrift_set_traits_std {
   using size_type = typename type::size_type;
   using iterator = typename type::iterator;
   using const_iterator = typename type::const_iterator;
+  using reference = typename type::reference;
+  using const_reference = typename type::const_reference;
 
   static inline iterator begin(type &what) { return what.begin(); }
   static inline iterator end(type &what) { return what.end(); }
@@ -2310,6 +2393,53 @@ struct thrift_set_traits_std {
   static inline size_type size(type const &what) { return what.size(); }
 };
 
+template <typename Set>
+class thrift_set_traits_adapter {
+ private:
+  using orig = Set;
+  using type = std::decay_t<orig>;
+  using deco = fatal::add_const_from_t<type, orig>;
+
+  using traits = thrift_set_traits<type>;
+  static_assert(
+      fatal::is_complete<traits>::value,
+      "the required thrift_set_traits specialization is missing");
+
+  deco &_;
+
+ public:
+  using key_type = typename traits::key_type;
+  using value_type = typename traits::value_type;
+  using size_type = typename traits::size_type;
+  using iterator = typename traits::iterator;
+  using const_iterator = typename traits::const_iterator;
+  using reference = typename traits::reference;
+  using const_reference = typename traits::const_reference;
+
+  explicit thrift_set_traits_adapter(deco &what) : _(what) {}
+
+  auto& operator*() { return _; }
+  auto& operator*() const { return _; }
+
+  auto begin() { return traits::begin(_); }
+  auto end() { return traits::end(_); }
+
+  auto cbegin() const { return traits::cbegin(_); }
+  auto begin() const { return traits::begin(_); }
+  auto cend() const { return traits::cend(_); }
+  auto end() const { return traits::end(_); }
+
+  auto clear() { traits::clear(_); }
+  auto empty() const { return traits::empty(_); }
+  auto find(key_type const &k) { return traits::find(_, k); }
+  auto find(key_type const &k) const { return traits::find(_, k); }
+  auto insert(const_iterator position, value_type const &val) {
+    return traits::insert(_, position, val); }
+  auto insert(const_iterator position, value_type &&val) {
+    return traits::insert(_, position, std::move(val)); }
+  auto size() const { return traits::size(_); }
+};
+
 /**
  * This is the type trait class that provides uniform interface to the
  * properties and functionality of map types.
@@ -2336,6 +2466,8 @@ struct thrift_set_traits_std {
  *    using size_type = typename type::size_type;
  *    using iterator = typename type::iterator;
  *    using const_iterator = typename type::const_iterator;
+ *    using reference = typename type::reference;
+ *    using const_reference = typename type::const_reference;
  *
  *    using key_const_reference = key_type const &;
  *    using mapped_const_reference = mapped_type const &;
@@ -2382,6 +2514,8 @@ struct thrift_map_traits_std {
   using size_type = typename type::size_type;
   using iterator = typename type::iterator;
   using const_iterator = typename type::const_iterator;
+  using reference = typename type::reference;
+  using const_reference = typename type::const_reference;
 
   using key_const_reference = key_type const &;
   using mapped_const_reference = mapped_type const &;
@@ -2399,10 +2533,17 @@ struct thrift_map_traits_std {
 
   static inline key_const_reference key(const_iterator i) { return i->first; }
   static inline key_const_reference key(iterator i) { return i->first; }
+  static inline key_const_reference key(const_reference v) {
+    return v.first;
+  }
   static inline mapped_const_reference mapped(const_iterator i) {
     return i->second;
   }
   static inline mapped_reference mapped(iterator i) { return i->second; }
+  static inline mapped_reference mapped(reference v) { return v.second; }
+  static inline mapped_const_reference mapped(const_reference v) {
+    return v.second;
+  }
 
   static inline void clear(type &what) { what.clear(); }
   static inline bool empty(type const &what) { return what.empty(); }
@@ -2419,6 +2560,55 @@ struct thrift_map_traits_std {
     return what[std::move(k)];
   }
   static inline size_type size(type const &what) { return what.size(); }
+};
+
+template <typename Map>
+class thrift_map_traits_adapter {
+ private:
+  using orig = Map;
+  using type = std::decay_t<orig>;
+  using deco = fatal::add_const_from_t<type, orig>;
+
+  using traits = thrift_map_traits<type>;
+  static_assert(
+      fatal::is_complete<traits>::value,
+      "the required thrift_map_traits specialization is missing");
+
+  deco &_;
+
+ public:
+  using key_type = typename traits::key_type;
+  using mapped_type = typename traits::mapped_type;
+  using value_type = typename traits::value_type;
+  using size_type = typename traits::size_type;
+  using iterator = typename traits::iterator;
+  using const_iterator = typename traits::const_iterator;
+
+  using key_const_reference = typename traits::key_const_reference;
+  using mapped_const_reference = typename traits::mapped_const_reference;
+  using mapped_reference = typename traits::mapped_reference;
+
+  explicit thrift_map_traits_adapter(deco &what) : _(what) {}
+
+  auto& operator*() { return _; }
+  auto& operator*() const { return _; }
+
+  auto begin() { return traits::begin(_); }
+  auto end() { return traits::end(_); }
+
+  auto cbegin() const { return traits::cbegin(_); }
+  auto begin() const { return traits::begin(_); }
+  auto cend() const { return traits::cend(_); }
+  auto end() const { return traits::end(_); }
+
+  auto clear() { traits::clear(_); }
+  auto empty() const { return traits::empty(_); }
+  auto find(key_const_reference k) { return traits::find(_, k); }
+  auto find(key_const_reference k) const { return traits::find(_, k); }
+  auto &operator[](key_type const &k) { return traits::get_or_create(_, k); }
+  auto &operator[](key_type &&k) {
+    return traits::get_or_create(_, std::move(k)); }
+  auto size() const { return traits::size(_); }
 };
 
 }} // apache::thrift

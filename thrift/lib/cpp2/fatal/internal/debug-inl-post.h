@@ -114,30 +114,28 @@ struct debug_equals_impl<type_class::list<ValueTypeClass>> {
   template <typename T, typename Callback>
   static bool equals(
     std::string &path,
-    T const &lhs,
-    T const &rhs,
+    T const &lhs_,
+    T const &rhs_,
     Callback &&callback
   ) {
     using traits = thrift_list_traits<T>;
+    thrift_list_traits_adapter<T const> lhs { lhs_ };
+    thrift_list_traits_adapter<T const> rhs { rhs_ };
 
-    if (traits::size(lhs) != traits::size(rhs)) {
-      callback(lhs, rhs, path, "size mismatch");
+    if (lhs.size() != rhs.size()) {
+      callback(*lhs, *rhs, path, "size mismatch");
       return false;
     }
 
-    auto l = traits::begin(lhs);
-    auto const le = traits::end(lhs);
-    auto r = traits::begin(rhs);
-    auto const re = traits::end(rhs);
-    for (std::size_t index = 0; l != le && r != re; ++l, ++r, ++index) {
+    for (std::size_t index = 0; index < lhs.size(); ++index) {
+      auto const l = lhs.begin() + index;
+      auto const r = rhs.begin() + index;
       auto guard = scoped_path::index(path, index);
 
       if (!debug_equals_impl<ValueTypeClass>::equals(path, *l, *r, callback)) {
         return false;
       }
     }
-    assert(l == le);
-    assert(r == re);
     return true;
   }
 };
@@ -175,8 +173,8 @@ struct debug_equals_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
   template <typename T, typename Callback>
   static bool equals(
     std::string &path,
-    T const &lhs,
-    T const &rhs,
+    T const &lhs_,
+    T const &rhs_,
     Callback &&callback
   ) {
     using traits = thrift_map_traits<T>;
@@ -184,39 +182,41 @@ struct debug_equals_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
     using mapped_impl = debug_equals_impl<MappedTypeClass>;
     using pretty_key = debug_equals_impl_pretty<key_type, KeyTypeClass>;
 
-    if (traits::size(lhs) != traits::size(rhs)) {
-      callback(lhs, rhs, path, "size mismatch");
+    thrift_map_traits_adapter<T const> lhs { lhs_ };
+    thrift_map_traits_adapter<T const> rhs { rhs_ };
+
+    if (lhs.size() != rhs.size()) {
+      callback(*lhs, *rhs, path, "size mismatch");
     }
-    auto const le = traits::end(lhs);
-    auto const re = traits::end(rhs);
 
     bool equals = true;
 
-    for (auto l = traits::begin(lhs); l != le; ++l) {
+    for (auto l : lhs) {
       auto const &key = traits::key(l);
       auto guard = scoped_path::key(path, pretty_key::go(key));
-      if (traits::find(rhs, key) == re) {
+      if (rhs.find(key) == rhs.end()) {
         equals = false;
-        callback(lhs, rhs, path, "missing");
+        callback(*lhs, *rhs, path, "missing");
       }
     }
 
-    for (auto r = traits::begin(rhs); r != re; ++r) {
-      auto const& key = traits::key(r);
+    for (auto r : rhs) {
+      auto const &key = traits::key(r);
       auto guard = scoped_path::key(path, pretty_key::go(key));
-      if (traits::find(lhs, key) == le) {
+      if (lhs.find(key) == lhs.end()) {
         equals = false;
-        callback(lhs, rhs, path, "extra");
+        callback(*lhs, *rhs, path, "extra");
       }
     }
 
-    for (auto l = traits::begin(lhs); l != le; ++l) {
-      auto const& key = traits::key(l);
-      auto r = traits::find(rhs, key);
-      if (r != re) {
+    for (auto l : lhs) {
+      auto const &key = traits::key(l);
+      auto const ri = rhs.find(key);
+      if (ri != rhs.end()) {
         auto guard = scoped_path::key(path, pretty_key::go(key));
-        auto const& lv = traits::mapped(l);
-        auto const& rv = traits::mapped(r);
+        auto const &r = *ri;
+        auto const &lv = traits::mapped(l);
+        auto const &rv = traits::mapped(r);
         equals &= mapped_impl::equals(path, lv, rv, callback);
       }
     }
@@ -230,36 +230,36 @@ struct debug_equals_impl<type_class::set<ValueTypeClass>> {
   template <typename T, typename Callback>
   static bool equals(
     std::string &path,
-    T const &lhs,
-    T const &rhs,
+    T const &lhs_,
+    T const &rhs_,
     Callback &&callback
   ) {
     using traits = thrift_set_traits<T>;
     using value_type = typename traits::value_type;
     using pretty_value = debug_equals_impl_pretty<value_type, ValueTypeClass>;
 
-    if (traits::size(lhs) != traits::size(rhs)) {
-      callback(lhs, rhs, path, "size mismatch");
-    }
+    thrift_set_traits_adapter<T const> lhs { lhs_ };
+    thrift_set_traits_adapter<T const> rhs { rhs_ };
 
-    auto const le = traits::end(lhs);
-    auto const re = traits::end(rhs);
+    if (lhs.size() != rhs.size()) {
+      callback(*lhs, *rhs, path, "size mismatch");
+    }
 
     bool equals = true;
 
-    for (auto l = traits::begin(lhs); l != le; ++l) {
-      auto guard = scoped_path::key(path, pretty_value::go(*l));
-      if (traits::find(rhs, *l) == re) {
+    for (auto const &l : lhs) {
+      auto guard = scoped_path::key(path, pretty_value::go(l));
+      if (rhs.find(l) == rhs.end()) {
         equals = false;
-        callback(lhs, rhs, path, "missing");
+        callback(*lhs, *rhs, path, "missing");
       }
     }
 
-    for (auto r = traits::begin(rhs); r != re; ++r) {
-      auto guard = scoped_path::key(path, pretty_value::go(*r));
-      if (traits::find(lhs, *r) == le) {
+    for (auto const &r : rhs) {
+      auto guard = scoped_path::key(path, pretty_value::go(r));
+      if (lhs.find(r) == lhs.end()) {
         equals = false;
-        callback(lhs, rhs, path, "extra");
+        callback(*lhs, *rhs, path, "extra");
       }
     }
 
