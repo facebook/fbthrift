@@ -21,6 +21,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <functional>
+#include <random>
+
 #include <folly/Conv.h>
 #include <folly/Format.h>
 #include <folly/experimental/TestUtil.h>

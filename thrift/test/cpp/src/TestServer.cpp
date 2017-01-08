@@ -447,7 +447,7 @@ int main(int argc, char **argv) {
     }
   } catch (std::exception& e) {
     cerr << e.what() << endl;
-    cerr << usage;
+    cerr << usage.str();
   }
 
     // OpenSSL may trigger SIGPIPE when remote sends connection reset.
