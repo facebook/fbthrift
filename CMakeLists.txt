@@ -19,10 +19,14 @@ set(CMAKE_CXX_STANDARD 11) #Requires CMake 3.1.3
 # Add non-standard external dependencies
 add_subdirectory(${THRIFT_HOME}/external/mstch)
 
+# Set directory of the Find$x.cmake files to properly include dependencies
+set(CMAKE_MODULE_PATH "${THRIFT_HOME}/thrift/cmake" ${CMAKE_MODULE_PATH})
 # Find required dependencies
 find_package(BISON REQUIRED)
 find_package(FLEX REQUIRED)
 find_package(OpenSSL REQUIRED)
+find_package(Folly REQUIRED)
+find_package(Glog REQUIRED)
 
 if(MSVC)
   set(Boost_USE_STATIC_LIBS ON) #Force static lib in msvc
