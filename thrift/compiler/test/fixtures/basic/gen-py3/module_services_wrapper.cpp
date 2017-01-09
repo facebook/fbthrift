@@ -6,7 +6,7 @@
  */
 
 #include <src/gen-py3/py3/module_services_wrapper.h>
-#include <src/gen-py3/py3/module_services_api.h>
+#include <src/module_services_api.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 
 namespace cpp2 {
@@ -248,7 +248,7 @@ std::shared_ptr<apache::thrift::ServerInterface> MyServicePrioParentInterface(Py
 
 
 MyServicePrioChildWrapper::MyServicePrioChildWrapper(PyObject *obj)
-  : cpp2::MyServicePrioParentWrapper(obj) 
+  : cpp2::MyServicePrioParentWrapper(obj)
   {
     import_py3__module_services();
   }

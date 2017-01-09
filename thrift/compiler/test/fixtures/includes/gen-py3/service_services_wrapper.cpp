@@ -6,7 +6,7 @@
  */
 
 #include <src/gen-py3/py3/service_services_wrapper.h>
-#include <src/gen-py3/py3/service_services_api.h>
+#include <src/service_services_api.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 
 namespace cpp2 {
