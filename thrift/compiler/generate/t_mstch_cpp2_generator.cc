@@ -219,6 +219,8 @@ mstch::map t_mstch_cpp2_generator::extend_const_value(
   auto const cxx_value = [&] {
     using ConstValue = t_const_value::t_const_value_type;
     switch (v.get_type()) {
+      case ConstValue::CV_BOOL:
+        return v.get_bool() ? std::string("true") : std::string("false");
       case ConstValue::CV_INTEGER: return std::to_string(v.get_integer());
       case ConstValue::CV_DOUBLE: return format_double_string(v.get_double());
       case ConstValue::CV_STRING: return '"'+v.get_string()+'"';

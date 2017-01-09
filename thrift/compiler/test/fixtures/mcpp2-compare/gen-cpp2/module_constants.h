@@ -12,6 +12,12 @@ namespace cpp2 {
 
 struct module_constants {
 
+  static constexpr bool const aBool_ = true;
+
+  static constexpr bool aBool() {
+    return aBool_;
+  }
+
   static constexpr int8_t const aByte_ = static_cast<int8_t>(1);
 
   static constexpr int8_t aByte() {

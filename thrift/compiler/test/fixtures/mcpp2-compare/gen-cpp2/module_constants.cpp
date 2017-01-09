@@ -10,6 +10,8 @@
 
 namespace cpp2 {
 
+constexpr bool const module_constants::aBool_;
+
 constexpr int8_t const module_constants::aByte_;
 
 constexpr int16_t const module_constants::a16BitInt_;

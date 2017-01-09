@@ -115,8 +115,8 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 }
 {symbol}             { return yytext[0];                }
 
-"false"              { yylval.iconst=0; return tok_int_constant; }
-"true"               { yylval.iconst=1; return tok_int_constant; }
+"false"              { yylval.iconst=0; return tok_bool_constant; }
+"true"               { yylval.iconst=1; return tok_bool_constant; }
 
 "namespace"          { return tok_namespace;            }
 "cpp_namespace"      { return tok_cpp_namespace;        }

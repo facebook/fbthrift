@@ -461,7 +461,8 @@ void validate_const_rec(std::string name, t_type* type, t_const_value* value) {
       }
       break;
     case t_base_type::TYPE_BOOL:
-      if (value->get_type() != t_const_value::CV_INTEGER) {
+      if (value->get_type() != t_const_value::CV_BOOL
+          && value->get_type() != t_const_value::CV_INTEGER) {
         throw string("type error: const \"" + name + "\" was declared as bool");
       }
       break;

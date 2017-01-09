@@ -94,6 +94,7 @@ char* y_enum_name = nullptr;
 /**
  * Constant values
  */
+%token<iconst> tok_bool_constant
 %token<iconst> tok_int_constant
 %token<dconst> tok_dub_constant
 
@@ -687,9 +688,15 @@ Const:
     }
 
 ConstValue:
-  tok_int_constant
+  tok_bool_constant
     {
       pdebug("ConstValue => tok_int_constant");
+      $$ = new t_const_value();
+      $$->set_bool($1);
+    }
+|  tok_int_constant
+    {
+      pdebug("constvalue => tok_int_constant");
       $$ = new t_const_value();
       $$->set_integer($1);
       if (!g_allow_64bit_consts && ($1 < INT32_MIN || $1 > INT32_MAX)) {
@@ -1530,6 +1537,14 @@ IntOrLiteral:
     {
       pdebug("IntOrLiteral -> tok_literal");
       $$ = $1;
+    }
+|
+  tok_bool_constant
+    {
+      char buf[21];  // max len of int64_t as string + null terminator
+      pdebug("IntOrLiteral -> tok_bool_constant");
+      sprintf(buf, "%" PRIi64, $1);
+      $$ = strdup(buf);
     }
 |
   tok_int_constant

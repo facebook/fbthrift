@@ -35,6 +35,7 @@ class t_const_value {
  public:
 
   enum t_const_value_type {
+    CV_BOOL,
     CV_INTEGER,
     CV_DOUBLE,
     CV_STRING,
@@ -81,6 +82,18 @@ class t_const_value {
     return doubleVal_;
   }
 
+  void set_bool(bool val) {
+    valType_ = CV_BOOL;
+    boolVal_ = val;
+    // Added to support backward compatibility with generators that
+    // look for the integer value to determine the boolean value
+    intVal_ = val;
+  }
+
+  bool get_bool() const {
+    return boolVal_;
+  }
+
   void set_map() {
     valType_ = CV_MAP;
   }
@@ -116,6 +129,8 @@ class t_const_value {
         return mapVal_.empty();
       case CV_LIST:
         return listVal_.empty();
+      case CV_BOOL:
+        return boolVal_ == false;
       case CV_INTEGER:
         return intVal_ == 0;
       case CV_DOUBLE:
@@ -140,6 +155,7 @@ class t_const_value {
 
   std::vector<t_const_value*> listVal_;
   std::string stringVal_;
+  bool boolVal_;
   int64_t intVal_;
   double doubleVal_;
 

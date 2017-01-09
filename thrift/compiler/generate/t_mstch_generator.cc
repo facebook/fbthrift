@@ -246,6 +246,7 @@ mstch::map t_mstch_generator::dump(const t_const_value& value) const {
   using cv = t_const_value::t_const_value_type;
   const cv type = value.get_type();
   mstch::map result{
+      {"bool?", type == cv::CV_BOOL},
       {"double?", type == cv::CV_DOUBLE},
       {"integer?", type == cv::CV_INTEGER},
       {"string?", type == cv::CV_STRING},
@@ -257,6 +258,9 @@ mstch::map t_mstch_generator::dump(const t_const_value& value) const {
     case cv::CV_DOUBLE:
       result.emplace("doubleValue", std::to_string(value.get_double()));
       result.emplace("nonzero?", value.get_double() != 0.0);
+      break;
+    case cv::CV_BOOL:
+      result.emplace("nonzero?", value.get_bool() == true);
       break;
     case cv::CV_INTEGER:
       result.emplace("integerValue", std::to_string(value.get_integer()));
