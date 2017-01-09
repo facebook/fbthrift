@@ -60,6 +60,9 @@ FATAL_S(struct_binarys, "struct_binary");
 FATAL_S(dep_A_structs, "dep_A_struct");
 FATAL_S(annotateds, "annotated");
 FATAL_S(my_structAs, "my_structA");
+FATAL_S(hasRefUnique_name, "hasRefUnique");
+FATAL_S(hasRefShared_name, "hasRefShared");
+FATAL_S(hasRefSharedConst_name, "hasRefSharedConst");
 
 FATAL_S(constant1s, "constant1");
 FATAL_S(constant2s, "constant2");
@@ -187,6 +190,9 @@ TEST(fatal, metadata) {
       fatal::pair<dep_A_struct, dep_A_structs>,
       fatal::pair<annotated, annotateds>,
       fatal::pair<struct_with_special_names, struct_with_special_namess>,
+      fatal::pair<hasRefUnique, hasRefUnique_name>,
+      fatal::pair<hasRefShared, hasRefShared_name>,
+      fatal::pair<hasRefSharedConst, hasRefSharedConst_name>,
       fatal::pair<my_structA, my_structAs>
     >,
     info::structs

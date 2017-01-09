@@ -376,3 +376,15 @@ service service_with_special_names {
 }
 
 const i32 constant_with_special_name = 42;
+
+struct hasRefUnique {
+  1: structA a (cpp.ref_type = "unique"),
+}
+
+struct hasRefShared {
+  1: structA a (cpp.ref_type = "shared"),
+}
+
+struct hasRefSharedConst {
+  1: structA a (cpp.ref_type = "shared_const"),
+}

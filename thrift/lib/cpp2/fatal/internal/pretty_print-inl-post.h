@@ -177,6 +177,33 @@ struct pretty_print_impl<type_class::structure> {
     });
     out << '}';
   }
+
+  template <typename OutputStream, typename T>
+  static void print(OutputStream &out, std::unique_ptr<T> const &what) {
+    if (!what) {
+      out << "null";
+      return;
+    }
+    print(out, *what);
+  }
+
+  template <typename OutputStream, typename T>
+  static void print(OutputStream &out, std::shared_ptr<T> const &what) {
+    if (!what) {
+      out << "null";
+      return;
+    }
+    print(out, *what);
+  }
+
+  template <typename OutputStream, typename T>
+  static void print(OutputStream &out, std::shared_ptr<T const> const &what) {
+    if (!what) {
+      out << "null";
+      return;
+    }
+    print(out, *what);
+  }
 };
 
 /**

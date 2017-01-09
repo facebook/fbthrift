@@ -16,6 +16,8 @@
 
 #include <thrift/lib/cpp2/fatal/pretty_print.h>
 
+#include <folly/String.h>
+
 #include <thrift/test/gen-cpp2/reflection_fatal_types.h>
 
 #include <sstream>
@@ -27,6 +29,10 @@ using output_result = std::false_type;
 
 namespace test_cpp2 {
 namespace cpp_reflection {
+
+std::string adjust(std::string input) {
+  return folly::rtrimWhitespace(folly::stripLeftMargin(std::move(input))).str();
+}
 
 #define TEST_IMPL(Expected, ...) \
   do { \
@@ -591,6 +597,63 @@ TEST(fatal_pretty_print, pretty_print) {
     "*-=.|",
     "===>"
   );
+}
+
+TEST(fatal_pretty_print, ref_unique) {
+  hasRefUnique v;
+  TEST_IMPL(adjust(R"(
+    <struct>{
+      a: null
+    }
+  )"), v);
+
+  v.a = folly::make_unique<structA>();
+  TEST_IMPL(adjust(R"(
+    <struct>{
+      a: <struct>{
+        a: 0,
+        b: ""
+      }
+    }
+  )"), v);
+}
+
+TEST(fatal_pretty_print, ref_shared) {
+  hasRefShared v;
+  TEST_IMPL(adjust(R"(
+    <struct>{
+      a: null
+    }
+  )"), v);
+
+  v.a = std::make_shared<structA>();
+  TEST_IMPL(adjust(R"(
+    <struct>{
+      a: <struct>{
+        a: 0,
+        b: ""
+      }
+    }
+  )"), v);
+}
+
+TEST(fatal_pretty_print, ref_shared_const) {
+  hasRefSharedConst v;
+  TEST_IMPL(adjust(R"(
+    <struct>{
+      a: null
+    }
+  )"), v);
+
+  v.a = std::make_shared<structA const>();
+  TEST_IMPL(adjust(R"(
+    <struct>{
+      a: <struct>{
+        a: 0,
+        b: ""
+      }
+    }
+  )"), v);
 }
 
 } // namespace cpp_reflection {
