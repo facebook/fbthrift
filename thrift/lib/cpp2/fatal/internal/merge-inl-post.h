@@ -26,8 +26,33 @@ struct merge {
   static constexpr auto is_known = !std::is_same<
       reflect_type_class<T>, type_class::unknown>::value;
   static_assert(is_known, "merge_into: missing reflection metadata");
+
+  //  regular
   static void go(const T& src, T& dst) { impl::template go<T>(src, dst); }
   static void go(T&& src, T& dst) { impl::template go<T>(std::move(src), dst); }
+
+  static void go(const std::unique_ptr<T>& src, std::unique_ptr<T>& dst) {
+    dst = !src ? nullptr : folly::make_unique<T>(*src);
+  }
+  static void go(std::unique_ptr<T>&& src, std::unique_ptr<T>& dst) {
+    dst = std::move(src);
+  }
+
+  static void go(const std::shared_ptr<T>& src, std::shared_ptr<T>& dst) {
+    dst = src;
+  }
+  static void go(std::shared_ptr<T>&& src, std::shared_ptr<T>& dst) {
+    dst = std::move(src);
+  }
+
+  static void go(
+      const std::shared_ptr<const T>& src, std::shared_ptr<const T>& dst) {
+    dst = src;
+  }
+  static void go(
+      std::shared_ptr<const T>&& src, std::shared_ptr<const T>& dst) {
+    dst = std::move(src);
+  }
 };
 
 template <typename TypeClass>
@@ -55,7 +80,7 @@ struct merge_impl<type_class::structure> {
         T& dst) const {
       using mgetter = typename MemberInfo::getter;
       using merge_field = merge<typename MemberInfo::type>;
-      using mtype = typename MemberInfo::type;
+      using mtype = typename std::decay<decltype(mgetter::ref(src))>::type;
       using mref = typename std::conditional<Move, mtype&&, const mtype&>::type;
       if (MemberInfo::optional::value == optionality::optional &&
           !MemberInfo::is_set(src)) {

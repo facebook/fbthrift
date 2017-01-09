@@ -41,6 +41,19 @@ static std::ostream& operator<<(std::ostream& o, const Nested& v) {
   return o << apache::thrift::pretty_string(v);
 }
 
+static std::ostream& operator<<(std::ostream& o, const NestedRefUnique& v) {
+  return o << apache::thrift::pretty_string(v);
+}
+
+static std::ostream& operator<<(std::ostream& o, const NestedRefShared& v) {
+  return o << apache::thrift::pretty_string(v);
+}
+
+static std::ostream& operator<<(
+    std::ostream& o, const NestedRefSharedConst& v) {
+  return o << apache::thrift::pretty_string(v);
+}
+
 }}}
 
 #define TEST_GROUP(name, constant) \
@@ -79,3 +92,6 @@ TEST_GROUP(list, kBasicListExample);
 TEST_GROUP(set, kBasicSetExample);
 TEST_GROUP(map, kBasicMapExample);
 TEST_GROUP(nested_structure, kNestedExample);
+TEST_GROUP(nested_ref_unique, kNestedRefUniqueExample);
+TEST_GROUP(nested_ref_shared, kNestedRefSharedExample);
+TEST_GROUP(nested_ref_shared_const, kNestedRefSharedConstExample);

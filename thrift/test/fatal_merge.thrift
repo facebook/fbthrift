@@ -167,3 +167,120 @@ const NestedExample kNestedExample = {
   "nil": {
   },
 }
+
+struct NestedRefUnique {
+  1: Basic a (cpp.ref_type = "unique"),
+  2: Basic b (cpp.ref_type = "unique"),
+  3: string c,
+  4: string d,
+}
+
+struct NestedRefUniqueExample {
+  1: NestedRefUnique src,
+  2: NestedRefUnique dst,
+  3: NestedRefUnique exp,
+  4: NestedRefUnique nil,
+}
+
+const NestedRefUniqueExample kNestedRefUniqueExample = {
+  "src": {
+    "b": {
+      "b": "hello",
+    },
+    "d": "bar",
+  },
+  "dst": {
+    "a": {
+      "b": "world",
+    },
+    "c": "foo",
+  },
+  "exp": {
+    # "a": {"b": ""}, # why not this?
+    "b": {
+      "b": "hello",
+    },
+    "c": "", # shouldn't this be "foo"?
+    "d": "bar",
+  },
+  "nil": {
+  },
+}
+
+struct NestedRefShared {
+  1: Basic a (cpp.ref_type = "shared"),
+  2: Basic b (cpp.ref_type = "shared"),
+  3: string c,
+  4: string d,
+}
+
+struct NestedRefSharedExample {
+  1: NestedRefShared src,
+  2: NestedRefShared dst,
+  3: NestedRefShared exp,
+  4: NestedRefShared nil,
+}
+
+const NestedRefSharedExample kNestedRefSharedExample = {
+  "src": {
+    "b": {
+      "b": "hello",
+    },
+    "d": "bar",
+  },
+  "dst": {
+    "a": {
+      "b": "world",
+    },
+    "c": "foo",
+  },
+  "exp": {
+    # should "a" be {"b": ""}?
+    "b": {
+      "b": "hello",
+    },
+    "c": "", # shouldn't this be "foo"?
+    "d": "bar",
+  },
+  "nil": {
+  },
+}
+
+struct NestedRefSharedConst {
+  1: Basic a (cpp.ref_type = "shared_const"),
+  2: Basic b (cpp.ref_type = "shared_const"),
+  3: string c,
+  4: string d,
+}
+
+struct NestedRefSharedConstExample {
+  1: NestedRefSharedConst src,
+  2: NestedRefSharedConst dst,
+  3: NestedRefSharedConst exp,
+  4: NestedRefSharedConst nil,
+}
+
+const NestedRefSharedConstExample kNestedRefSharedConstExample = {
+  "src": {
+    "b": {
+      "b": "hello",
+    },
+    "d": "bar",
+  },
+  "dst": {
+    "a": {
+      "b": "world",
+    },
+    "c": "foo",
+  },
+  "exp": {
+    # should "a" be {"b": ""}?
+    "b": {
+      "b": "hello",
+    },
+    "c": "", # shouldn't this be "foo"?
+    "d": "bar",
+  },
+  "nil": {
+  },
+}
