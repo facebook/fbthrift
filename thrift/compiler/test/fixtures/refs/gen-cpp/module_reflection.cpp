@@ -348,5 +348,210 @@ void reflectionInitializer_17232433652683371404(::apache::thrift::reflection::Sc
   reflectionInitializer_16778989117799402412(schema);  // struct module.MyField
 }
 
+// Reflection initializer for struct module.Empty
+void reflectionInitializer_14313748354111837868(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 14313748354111837868U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.Empty";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+}
+
+void  reflectionInitializer_14313748354111837868(::apache::thrift::reflection::Schema&);  // struct module.Empty
+// Reflection initializer for struct module.StructWithRef
+void reflectionInitializer_11749517231251122252(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 11749517231251122252U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.StructWithRef";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[1];
+    f.isRequired = true;
+    f.type = 14313748354111837868U;
+    f.name = "def_field";
+    f.order = 0;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref"] = "1";
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[2];
+    f.isRequired = false;
+    f.type = 14313748354111837868U;
+    f.name = "opt_field";
+    f.order = 1;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref"] = "1";
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[3];
+    f.isRequired = true;
+    f.type = 14313748354111837868U;
+    f.name = "req_field";
+    f.order = 2;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref"] = "1";
+  }
+  reflectionInitializer_14313748354111837868(schema);  // struct module.Empty
+}
+
+void  reflectionInitializer_14313748354111837868(::apache::thrift::reflection::Schema&);  // struct module.Empty
+// Reflection initializer for struct module.StructWithRefTypeUnique
+void reflectionInitializer_215755688094406540(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 215755688094406540U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.StructWithRefTypeUnique";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[1];
+    f.isRequired = true;
+    f.type = 14313748354111837868U;
+    f.name = "def_field";
+    f.order = 0;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref_type"] = "unique";
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[2];
+    f.isRequired = false;
+    f.type = 14313748354111837868U;
+    f.name = "opt_field";
+    f.order = 1;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref_type"] = "unique";
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[3];
+    f.isRequired = true;
+    f.type = 14313748354111837868U;
+    f.name = "req_field";
+    f.order = 2;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref_type"] = "unique";
+  }
+  reflectionInitializer_14313748354111837868(schema);  // struct module.Empty
+}
+
+void  reflectionInitializer_14313748354111837868(::apache::thrift::reflection::Schema&);  // struct module.Empty
+// Reflection initializer for struct module.StructWithRefTypeShared
+void reflectionInitializer_12352376109981065772(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 12352376109981065772U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.StructWithRefTypeShared";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[1];
+    f.isRequired = true;
+    f.type = 14313748354111837868U;
+    f.name = "def_field";
+    f.order = 0;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref_type"] = "shared";
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[2];
+    f.isRequired = false;
+    f.type = 14313748354111837868U;
+    f.name = "opt_field";
+    f.order = 1;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref_type"] = "shared";
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[3];
+    f.isRequired = true;
+    f.type = 14313748354111837868U;
+    f.name = "req_field";
+    f.order = 2;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref_type"] = "shared";
+  }
+  reflectionInitializer_14313748354111837868(schema);  // struct module.Empty
+}
+
+void  reflectionInitializer_14313748354111837868(::apache::thrift::reflection::Schema&);  // struct module.Empty
+// Reflection initializer for struct module.StructWithRefTypeSharedConst
+void reflectionInitializer_11678635121852876428(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 11678635121852876428U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.StructWithRefTypeSharedConst";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[1];
+    f.isRequired = true;
+    f.type = 14313748354111837868U;
+    f.name = "def_field";
+    f.order = 0;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref_type"] = "shared_const";
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[2];
+    f.isRequired = false;
+    f.type = 14313748354111837868U;
+    f.name = "opt_field";
+    f.order = 1;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref_type"] = "shared_const";
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[3];
+    f.isRequired = true;
+    f.type = 14313748354111837868U;
+    f.name = "req_field";
+    f.order = 2;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref_type"] = "shared_const";
+  }
+  reflectionInitializer_14313748354111837868(schema);  // struct module.Empty
+}
+
+void  reflectionInitializer_14313748354111837868(::apache::thrift::reflection::Schema&);  // struct module.Empty
+// Reflection initializer for struct module.StructWithRefTypeCustom
+void reflectionInitializer_10045417637546770700(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 10045417637546770700U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.StructWithRefTypeCustom";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[1];
+    f.isRequired = true;
+    f.type = 14313748354111837868U;
+    f.name = "def_field";
+    f.order = 0;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref_type"] = "std::unique_ptr";
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[2];
+    f.isRequired = false;
+    f.type = 14313748354111837868U;
+    f.name = "opt_field";
+    f.order = 1;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref_type"] = "std::unique_ptr";
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[3];
+    f.isRequired = true;
+    f.type = 14313748354111837868U;
+    f.name = "req_field";
+    f.order = 2;
+    f.__isset.annotations = true;
+    f.annotations["cpp.ref_type"] = "std::unique_ptr";
+  }
+  reflectionInitializer_14313748354111837868(schema);  // struct module.Empty
+}
+
 }
 

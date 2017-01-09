@@ -661,15 +661,15 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
         case LIST_REF:
           if (field.type == TType.LIST) {
             {
-              TList _list4 = iprot.readListBegin();
-              this.list_ref = new ArrayList<Integer>(Math.max(0, _list4.size));
-              for (int _i5 = 0; 
-                   (_list4.size < 0) ? iprot.peekList() : (_i5 < _list4.size); 
-                   ++_i5)
+              TList _list19 = iprot.readListBegin();
+              this.list_ref = new ArrayList<Integer>(Math.max(0, _list19.size));
+              for (int _i20 = 0; 
+                   (_list19.size < 0) ? iprot.peekList() : (_i20 < _list19.size); 
+                   ++_i20)
               {
-                int _elem6;
-                _elem6 = iprot.readI32();
-                this.list_ref.add(_elem6);
+                int _elem21;
+                _elem21 = iprot.readI32();
+                this.list_ref.add(_elem21);
               }
               iprot.readListEnd();
             }
@@ -680,15 +680,15 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
         case SET_REF:
           if (field.type == TType.SET) {
             {
-              TSet _set7 = iprot.readSetBegin();
-              this.set_ref = new HashSet<Integer>(Math.max(0, 2*_set7.size));
-              for (int _i8 = 0; 
-                   (_set7.size < 0) ? iprot.peekSet() : (_i8 < _set7.size); 
-                   ++_i8)
+              TSet _set22 = iprot.readSetBegin();
+              this.set_ref = new HashSet<Integer>(Math.max(0, 2*_set22.size));
+              for (int _i23 = 0; 
+                   (_set22.size < 0) ? iprot.peekSet() : (_i23 < _set22.size); 
+                   ++_i23)
               {
-                int _elem9;
-                _elem9 = iprot.readI32();
-                this.set_ref.add(_elem9);
+                int _elem24;
+                _elem24 = iprot.readI32();
+                this.set_ref.add(_elem24);
               }
               iprot.readSetEnd();
             }
@@ -699,17 +699,17 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
         case MAP_REF:
           if (field.type == TType.MAP) {
             {
-              TMap _map10 = iprot.readMapBegin();
-              this.map_ref = new HashMap<Integer,Integer>(Math.max(0, 2*_map10.size));
-              for (int _i11 = 0; 
-                   (_map10.size < 0) ? iprot.peekMap() : (_i11 < _map10.size); 
-                   ++_i11)
+              TMap _map25 = iprot.readMapBegin();
+              this.map_ref = new HashMap<Integer,Integer>(Math.max(0, 2*_map25.size));
+              for (int _i26 = 0; 
+                   (_map25.size < 0) ? iprot.peekMap() : (_i26 < _map25.size); 
+                   ++_i26)
               {
-                int _key12;
-                int _val13;
-                _key12 = iprot.readI32();
-                _val13 = iprot.readI32();
-                this.map_ref.put(_key12, _val13);
+                int _key27;
+                int _val28;
+                _key27 = iprot.readI32();
+                _val28 = iprot.readI32();
+                this.map_ref.put(_key27, _val28);
               }
               iprot.readMapEnd();
             }
@@ -720,15 +720,15 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
         case LIST_REF_UNIQUE:
           if (field.type == TType.LIST) {
             {
-              TList _list14 = iprot.readListBegin();
-              this.list_ref_unique = new ArrayList<Integer>(Math.max(0, _list14.size));
-              for (int _i15 = 0; 
-                   (_list14.size < 0) ? iprot.peekList() : (_i15 < _list14.size); 
-                   ++_i15)
+              TList _list29 = iprot.readListBegin();
+              this.list_ref_unique = new ArrayList<Integer>(Math.max(0, _list29.size));
+              for (int _i30 = 0; 
+                   (_list29.size < 0) ? iprot.peekList() : (_i30 < _list29.size); 
+                   ++_i30)
               {
-                int _elem16;
-                _elem16 = iprot.readI32();
-                this.list_ref_unique.add(_elem16);
+                int _elem31;
+                _elem31 = iprot.readI32();
+                this.list_ref_unique.add(_elem31);
               }
               iprot.readListEnd();
             }
@@ -739,15 +739,15 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
         case SET_REF_SHARED:
           if (field.type == TType.SET) {
             {
-              TSet _set17 = iprot.readSetBegin();
-              this.set_ref_shared = new HashSet<Integer>(Math.max(0, 2*_set17.size));
-              for (int _i18 = 0; 
-                   (_set17.size < 0) ? iprot.peekSet() : (_i18 < _set17.size); 
-                   ++_i18)
+              TSet _set32 = iprot.readSetBegin();
+              this.set_ref_shared = new HashSet<Integer>(Math.max(0, 2*_set32.size));
+              for (int _i33 = 0; 
+                   (_set32.size < 0) ? iprot.peekSet() : (_i33 < _set32.size); 
+                   ++_i33)
               {
-                int _elem19;
-                _elem19 = iprot.readI32();
-                this.set_ref_shared.add(_elem19);
+                int _elem34;
+                _elem34 = iprot.readI32();
+                this.set_ref_shared.add(_elem34);
               }
               iprot.readSetEnd();
             }
@@ -758,17 +758,17 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
         case MAP_REF_CUSTOM:
           if (field.type == TType.MAP) {
             {
-              TMap _map20 = iprot.readMapBegin();
-              this.map_ref_custom = new HashMap<Integer,Integer>(Math.max(0, 2*_map20.size));
-              for (int _i21 = 0; 
-                   (_map20.size < 0) ? iprot.peekMap() : (_i21 < _map20.size); 
-                   ++_i21)
+              TMap _map35 = iprot.readMapBegin();
+              this.map_ref_custom = new HashMap<Integer,Integer>(Math.max(0, 2*_map35.size));
+              for (int _i36 = 0; 
+                   (_map35.size < 0) ? iprot.peekMap() : (_i36 < _map35.size); 
+                   ++_i36)
               {
-                int _key22;
-                int _val23;
-                _key22 = iprot.readI32();
-                _val23 = iprot.readI32();
-                this.map_ref_custom.put(_key22, _val23);
+                int _key37;
+                int _val38;
+                _key37 = iprot.readI32();
+                _val38 = iprot.readI32();
+                this.map_ref_custom.put(_key37, _val38);
               }
               iprot.readMapEnd();
             }
@@ -779,15 +779,15 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
         case LIST_REF_SHARED_CONST:
           if (field.type == TType.LIST) {
             {
-              TList _list24 = iprot.readListBegin();
-              this.list_ref_shared_const = new ArrayList<Integer>(Math.max(0, _list24.size));
-              for (int _i25 = 0; 
-                   (_list24.size < 0) ? iprot.peekList() : (_i25 < _list24.size); 
-                   ++_i25)
+              TList _list39 = iprot.readListBegin();
+              this.list_ref_shared_const = new ArrayList<Integer>(Math.max(0, _list39.size));
+              for (int _i40 = 0; 
+                   (_list39.size < 0) ? iprot.peekList() : (_i40 < _list39.size); 
+                   ++_i40)
               {
-                int _elem26;
-                _elem26 = iprot.readI32();
-                this.list_ref_shared_const.add(_elem26);
+                int _elem41;
+                _elem41 = iprot.readI32();
+                this.list_ref_shared_const.add(_elem41);
               }
               iprot.readListEnd();
             }
@@ -798,15 +798,15 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
         case SET_CUSTOM_REF:
           if (field.type == TType.SET) {
             {
-              TSet _set27 = iprot.readSetBegin();
-              this.set_custom_ref = new HashSet<Integer>(Math.max(0, 2*_set27.size));
-              for (int _i28 = 0; 
-                   (_set27.size < 0) ? iprot.peekSet() : (_i28 < _set27.size); 
-                   ++_i28)
+              TSet _set42 = iprot.readSetBegin();
+              this.set_custom_ref = new HashSet<Integer>(Math.max(0, 2*_set42.size));
+              for (int _i43 = 0; 
+                   (_set42.size < 0) ? iprot.peekSet() : (_i43 < _set42.size); 
+                   ++_i43)
               {
-                int _elem29;
-                _elem29 = iprot.readI32();
-                this.set_custom_ref.add(_elem29);
+                int _elem44;
+                _elem44 = iprot.readI32();
+                this.set_custom_ref.add(_elem44);
               }
               iprot.readSetEnd();
             }
@@ -835,8 +835,8 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
       oprot.writeFieldBegin(LIST_REF_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.I32, this.list_ref.size()));
-        for (int _iter30 : this.list_ref)        {
-          oprot.writeI32(_iter30);
+        for (int _iter45 : this.list_ref)        {
+          oprot.writeI32(_iter45);
         }
         oprot.writeListEnd();
       }
@@ -846,8 +846,8 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
       oprot.writeFieldBegin(SET_REF_FIELD_DESC);
       {
         oprot.writeSetBegin(new TSet(TType.I32, this.set_ref.size()));
-        for (int _iter31 : this.set_ref)        {
-          oprot.writeI32(_iter31);
+        for (int _iter46 : this.set_ref)        {
+          oprot.writeI32(_iter46);
         }
         oprot.writeSetEnd();
       }
@@ -857,9 +857,9 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
       oprot.writeFieldBegin(MAP_REF_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.I32, TType.I32, this.map_ref.size()));
-        for (Map.Entry<Integer, Integer> _iter32 : this.map_ref.entrySet())        {
-          oprot.writeI32(_iter32.getKey());
-          oprot.writeI32(_iter32.getValue());
+        for (Map.Entry<Integer, Integer> _iter47 : this.map_ref.entrySet())        {
+          oprot.writeI32(_iter47.getKey());
+          oprot.writeI32(_iter47.getValue());
         }
         oprot.writeMapEnd();
       }
@@ -869,8 +869,8 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
       oprot.writeFieldBegin(LIST_REF_UNIQUE_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.I32, this.list_ref_unique.size()));
-        for (int _iter33 : this.list_ref_unique)        {
-          oprot.writeI32(_iter33);
+        for (int _iter48 : this.list_ref_unique)        {
+          oprot.writeI32(_iter48);
         }
         oprot.writeListEnd();
       }
@@ -880,8 +880,8 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
       oprot.writeFieldBegin(SET_REF_SHARED_FIELD_DESC);
       {
         oprot.writeSetBegin(new TSet(TType.I32, this.set_ref_shared.size()));
-        for (int _iter34 : this.set_ref_shared)        {
-          oprot.writeI32(_iter34);
+        for (int _iter49 : this.set_ref_shared)        {
+          oprot.writeI32(_iter49);
         }
         oprot.writeSetEnd();
       }
@@ -891,9 +891,9 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
       oprot.writeFieldBegin(MAP_REF_CUSTOM_FIELD_DESC);
       {
         oprot.writeMapBegin(new TMap(TType.I32, TType.I32, this.map_ref_custom.size()));
-        for (Map.Entry<Integer, Integer> _iter35 : this.map_ref_custom.entrySet())        {
-          oprot.writeI32(_iter35.getKey());
-          oprot.writeI32(_iter35.getValue());
+        for (Map.Entry<Integer, Integer> _iter50 : this.map_ref_custom.entrySet())        {
+          oprot.writeI32(_iter50.getKey());
+          oprot.writeI32(_iter50.getValue());
         }
         oprot.writeMapEnd();
       }
@@ -903,8 +903,8 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
       oprot.writeFieldBegin(LIST_REF_SHARED_CONST_FIELD_DESC);
       {
         oprot.writeListBegin(new TList(TType.I32, this.list_ref_shared_const.size()));
-        for (int _iter36 : this.list_ref_shared_const)        {
-          oprot.writeI32(_iter36);
+        for (int _iter51 : this.list_ref_shared_const)        {
+          oprot.writeI32(_iter51);
         }
         oprot.writeListEnd();
       }
@@ -914,8 +914,8 @@ public class StructWithContainers implements TBase, java.io.Serializable, Clonea
       oprot.writeFieldBegin(SET_CUSTOM_REF_FIELD_DESC);
       {
         oprot.writeSetBegin(new TSet(TType.I32, this.set_custom_ref.size()));
-        for (int _iter37 : this.set_custom_ref)        {
-          oprot.writeI32(_iter37);
+        for (int _iter52 : this.set_custom_ref)        {
+          oprot.writeI32(_iter52);
         }
         oprot.writeSetEnd();
       }

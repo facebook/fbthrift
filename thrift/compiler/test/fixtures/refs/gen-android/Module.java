@@ -18,7 +18,7 @@ import com.facebook.thrift.lite.annotations.*;
 public class Module {
 
   public enum EventType {
-    MyUnion, MyField, MyStruct, StructWithUnion, RecursiveStruct, StructWithContainers, StructWithSharedConst;
+    MyUnion, MyField, MyStruct, StructWithUnion, RecursiveStruct, StructWithContainers, StructWithSharedConst, Empty, StructWithRef, StructWithRefTypeUnique, StructWithRefTypeShared, StructWithRefTypeSharedConst, StructWithRefTypeCustom;
   }
 
   @TOptional("MyUnion")
@@ -90,5 +90,50 @@ public class Module {
   @TRequired("StructWithSharedConst")
   public static final ThriftProperty<ModuleLogger> StructWithSharedConst_req_shared_const =
       new ThriftProperty<ModuleLogger>("req_shared_const", TType.STRUCT, (short) 3);
+  @TOptional("StructWithRef")
+  public static final ThriftProperty<ModuleLogger> StructWithRef_def_field =
+      new ThriftProperty<ModuleLogger>("def_field", TType.STRUCT, (short) 1);
+  @TOptional("StructWithRef")
+  public static final ThriftProperty<ModuleLogger> StructWithRef_opt_field =
+      new ThriftProperty<ModuleLogger>("opt_field", TType.STRUCT, (short) 2);
+  @TRequired("StructWithRef")
+  public static final ThriftProperty<ModuleLogger> StructWithRef_req_field =
+      new ThriftProperty<ModuleLogger>("req_field", TType.STRUCT, (short) 3);
+  @TOptional("StructWithRefTypeUnique")
+  public static final ThriftProperty<ModuleLogger> StructWithRefTypeUnique_def_field =
+      new ThriftProperty<ModuleLogger>("def_field", TType.STRUCT, (short) 1);
+  @TOptional("StructWithRefTypeUnique")
+  public static final ThriftProperty<ModuleLogger> StructWithRefTypeUnique_opt_field =
+      new ThriftProperty<ModuleLogger>("opt_field", TType.STRUCT, (short) 2);
+  @TRequired("StructWithRefTypeUnique")
+  public static final ThriftProperty<ModuleLogger> StructWithRefTypeUnique_req_field =
+      new ThriftProperty<ModuleLogger>("req_field", TType.STRUCT, (short) 3);
+  @TOptional("StructWithRefTypeShared")
+  public static final ThriftProperty<ModuleLogger> StructWithRefTypeShared_def_field =
+      new ThriftProperty<ModuleLogger>("def_field", TType.STRUCT, (short) 1);
+  @TOptional("StructWithRefTypeShared")
+  public static final ThriftProperty<ModuleLogger> StructWithRefTypeShared_opt_field =
+      new ThriftProperty<ModuleLogger>("opt_field", TType.STRUCT, (short) 2);
+  @TRequired("StructWithRefTypeShared")
+  public static final ThriftProperty<ModuleLogger> StructWithRefTypeShared_req_field =
+      new ThriftProperty<ModuleLogger>("req_field", TType.STRUCT, (short) 3);
+  @TOptional("StructWithRefTypeSharedConst")
+  public static final ThriftProperty<ModuleLogger> StructWithRefTypeSharedConst_def_field =
+      new ThriftProperty<ModuleLogger>("def_field", TType.STRUCT, (short) 1);
+  @TOptional("StructWithRefTypeSharedConst")
+  public static final ThriftProperty<ModuleLogger> StructWithRefTypeSharedConst_opt_field =
+      new ThriftProperty<ModuleLogger>("opt_field", TType.STRUCT, (short) 2);
+  @TRequired("StructWithRefTypeSharedConst")
+  public static final ThriftProperty<ModuleLogger> StructWithRefTypeSharedConst_req_field =
+      new ThriftProperty<ModuleLogger>("req_field", TType.STRUCT, (short) 3);
+  @TOptional("StructWithRefTypeCustom")
+  public static final ThriftProperty<ModuleLogger> StructWithRefTypeCustom_def_field =
+      new ThriftProperty<ModuleLogger>("def_field", TType.STRUCT, (short) 1);
+  @TOptional("StructWithRefTypeCustom")
+  public static final ThriftProperty<ModuleLogger> StructWithRefTypeCustom_opt_field =
+      new ThriftProperty<ModuleLogger>("opt_field", TType.STRUCT, (short) 2);
+  @TRequired("StructWithRefTypeCustom")
+  public static final ThriftProperty<ModuleLogger> StructWithRefTypeCustom_req_field =
+      new ThriftProperty<ModuleLogger>("req_field", TType.STRUCT, (short) 3);
   
 }

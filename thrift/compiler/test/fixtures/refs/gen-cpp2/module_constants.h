@@ -12,6 +12,16 @@ namespace cpp2 {
 
 struct module_constants {
 
+  static  ::cpp2::StructWithRef const& kStructWithRef();
+
+  static  ::cpp2::StructWithRefTypeUnique const& kStructWithRefTypeUnique();
+
+  static  ::cpp2::StructWithRefTypeShared const& kStructWithRefTypeShared();
+
+  static  ::cpp2::StructWithRefTypeSharedConst const& kStructWithRefTypeSharedConst();
+
+  static  ::cpp2::StructWithRefTypeCustom const& kStructWithRefTypeCustom();
+
 };
 
 } // cpp2

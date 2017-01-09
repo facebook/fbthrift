@@ -2624,6 +2624,12 @@ class CppGenerator(t_generator.Generator):
 
                 # SELECTIVE CONSTRUCTOR
                 for member in members:
+                    if self._has_cpp_annotation(member, 'ref'):
+                        ref_type = 'unique'
+                    else:
+                        ref_type = self._cpp_annotation(member, 'ref_type')
+                    decayed = (
+                        'folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>')
                     struct('template <typename T__ThriftWrappedArgument__Ctor, '
                         'typename... Args__ThriftWrappedArgument__Ctor>')
                     struct(('{0}(::apache::thrift::detail::argument_wrapper<'
@@ -2634,7 +2640,18 @@ class CppGenerator(t_generator.Generator):
                         'Args__ThriftWrappedArgument__Ctor>(args)...)').format(
                             obj.name))
                     struct('{')
-                    struct('  {0} = arg.move();'.format(member.name))
+                    if not ref_type:
+                        arg = 'arg.move()'
+                    elif ref_type == 'unique':
+                        arg = 'folly::make_unique<{0}>(arg.move())'.format(
+                            decayed)
+                    elif ref_type == 'shared' or ref_type == 'shared_const':
+                        arg = 'std::make_shared<{0}>(arg.move())'.format(
+                            decayed)
+                    else:
+                        arg = '{0}<{1}>(new {1}(arg.move()))'.format(
+                            ref_type, decayed)
+                    struct('  {0} = {1};'.format(member.name, arg))
                     if self._has_isset(member) and not self.flag_optionals:
                         struct('  __isset.{0} = true;'.format(member.name))
                     struct('}')

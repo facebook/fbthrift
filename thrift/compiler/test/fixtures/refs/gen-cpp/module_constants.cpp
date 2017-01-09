@@ -11,6 +11,51 @@
 
 
 
+StructWithRef const &module_constants::kStructWithRef() {
+  static folly::Indestructible<StructWithRef> const instance{
+    StructWithRef(
+      ::apache::thrift::detail::wrap_argument<1>(Empty()),
+      ::apache::thrift::detail::wrap_argument<2>(Empty()),
+      ::apache::thrift::detail::wrap_argument<3>(Empty()))
+  };
+  return *instance;
+}
+StructWithRefTypeUnique const &module_constants::kStructWithRefTypeUnique() {
+  static folly::Indestructible<StructWithRefTypeUnique> const instance{
+    StructWithRefTypeUnique(
+      ::apache::thrift::detail::wrap_argument<1>(Empty()),
+      ::apache::thrift::detail::wrap_argument<2>(Empty()),
+      ::apache::thrift::detail::wrap_argument<3>(Empty()))
+  };
+  return *instance;
+}
+StructWithRefTypeShared const &module_constants::kStructWithRefTypeShared() {
+  static folly::Indestructible<StructWithRefTypeShared> const instance{
+    StructWithRefTypeShared(
+      ::apache::thrift::detail::wrap_argument<1>(Empty()),
+      ::apache::thrift::detail::wrap_argument<2>(Empty()),
+      ::apache::thrift::detail::wrap_argument<3>(Empty()))
+  };
+  return *instance;
+}
+StructWithRefTypeSharedConst const &module_constants::kStructWithRefTypeSharedConst() {
+  static folly::Indestructible<StructWithRefTypeSharedConst> const instance{
+    StructWithRefTypeSharedConst(
+      ::apache::thrift::detail::wrap_argument<1>(Empty()),
+      ::apache::thrift::detail::wrap_argument<2>(Empty()),
+      ::apache::thrift::detail::wrap_argument<3>(Empty()))
+  };
+  return *instance;
+}
+StructWithRefTypeCustom const &module_constants::kStructWithRefTypeCustom() {
+  static folly::Indestructible<StructWithRefTypeCustom> const instance{
+    StructWithRefTypeCustom(
+      ::apache::thrift::detail::wrap_argument<1>(Empty()),
+      ::apache::thrift::detail::wrap_argument<2>(Empty()),
+      ::apache::thrift::detail::wrap_argument<3>(Empty()))
+  };
+  return *instance;
+}
 
 
 

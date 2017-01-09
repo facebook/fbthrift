@@ -2203,6 +2203,15 @@ void t_cpp_generator::generate_selective_constructor(ofstream& out,
                                                      t_struct* tstruct,
                                                      bool has_isset_flags) {
   for (auto const& member : tstruct->get_members()) {
+    auto const& ref_type =
+        member->annotations_.count("cpp.ref")
+        ? "unique"
+        : member->annotations_.count("cpp.ref_type")
+          ? member->annotations_["cpp.ref_type"]
+          : "";
+    auto const decayed =
+        "folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>";
+
     indent(out) << "template <" << endl;
     indent_up();
     indent(out) << "typename T__ThriftWrappedArgument__Ctor," << endl;
@@ -2224,7 +2233,18 @@ void t_cpp_generator::generate_selective_constructor(ofstream& out,
     indent_down();
     indent(out) << '{' << endl;
     indent_up();
-    indent(out) << member->get_name() << " = arg.move();" << endl;
+    indent(out) << member->get_name() << " = ";
+    if (ref_type.empty()) {
+      out << "arg.move()";
+    } else if (ref_type == "unique") {
+      out << "folly::make_unique<" << decayed << ">(arg.move())";
+    } else if (ref_type == "shared" || ref_type == "shared_const") {
+      out << "std::make_shared<" << decayed << ">(arg.move())";
+    } else {
+      out << ref_type << "<" << decayed << ">("
+          << "new " << decayed << "(arg.move()))";
+    }
+    out << ";" << endl;
     if (has_isset_flags && has_isset(member)) {
       indent(out) << "__isset." << member->get_name() << " = true;" << endl;
     }

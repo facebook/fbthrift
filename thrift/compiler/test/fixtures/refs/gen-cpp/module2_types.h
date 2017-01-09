@@ -51,7 +51,7 @@ class StructUsingOtherNamespace : public apache::thrift::TStructType<StructUsing
   ):
     StructUsingOtherNamespace(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
-    other = arg.move();
+    other = folly::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
 
   StructUsingOtherNamespace(const StructUsingOtherNamespace&);

@@ -24,5 +24,17 @@ void reflectionInitializer_18101585657679500556(::apache::thrift::reflection::Sc
 
 void reflectionInitializer_17232433652683371404(::apache::thrift::reflection::Schema& schema);
 
+void reflectionInitializer_14313748354111837868(::apache::thrift::reflection::Schema& schema);
+
+void reflectionInitializer_11749517231251122252(::apache::thrift::reflection::Schema& schema);
+
+void reflectionInitializer_215755688094406540(::apache::thrift::reflection::Schema& schema);
+
+void reflectionInitializer_12352376109981065772(::apache::thrift::reflection::Schema& schema);
+
+void reflectionInitializer_11678635121852876428(::apache::thrift::reflection::Schema& schema);
+
+void reflectionInitializer_10045417637546770700(::apache::thrift::reflection::Schema& schema);
+
 }
 

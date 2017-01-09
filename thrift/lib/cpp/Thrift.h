@@ -19,7 +19,9 @@
 
 #include <thrift/lib/cpp/thrift_config.h>
 #include <folly/portability/Sockets.h>
+#include <folly/Memory.h>
 #include <folly/Range.h>
+#include <folly/Traits.h>
 
 #ifdef THRIFT_PLATFORM_CONFIG
 # include THRIFT_PLATFORM_CONFIG

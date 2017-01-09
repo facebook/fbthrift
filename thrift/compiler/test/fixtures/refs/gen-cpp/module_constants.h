@@ -11,6 +11,11 @@
 
 
 struct module_constants {
+  static StructWithRef const& kStructWithRef();
+  static StructWithRefTypeUnique const& kStructWithRefTypeUnique();
+  static StructWithRefTypeShared const& kStructWithRefTypeShared();
+  static StructWithRefTypeSharedConst const& kStructWithRefTypeSharedConst();
+  static StructWithRefTypeCustom const& kStructWithRefTypeCustom();
 };
 
 

@@ -441,4 +441,265 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace cpp2 {
 
+bool Empty::operator==(const Empty& /* rhs */) const {
+  return true;
+}
+
+void swap(Empty& a, Empty& b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+}
+
+template uint32_t Empty::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t Empty::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t Empty::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Empty::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Empty::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t Empty::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t Empty::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t Empty::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
+StructWithRef::StructWithRef(const StructWithRef& src) {
+  if (src.def_field) def_field.reset(new  ::cpp2::Empty(*src.def_field));
+  if (src.opt_field) opt_field.reset(new  ::cpp2::Empty(*src.opt_field));
+  if (src.req_field) req_field.reset(new  ::cpp2::Empty(*src.req_field));
+}
+
+StructWithRef& StructWithRef::operator=(const StructWithRef& src) {
+  StructWithRef tmp(src);
+  swap(*this, tmp);
+  return *this;
+}
+
+void StructWithRef::__clear() {
+  __isset.__clear();
+}
+
+bool StructWithRef::operator==(const StructWithRef& rhs) const {
+  if (!(((def_field && rhs.def_field && *def_field == *rhs.def_field) ||(!def_field && !rhs.def_field)))) {
+    return false;
+  }
+  if (!(((opt_field && rhs.opt_field && *opt_field == *rhs.opt_field) ||(!opt_field && !rhs.opt_field)))) {
+    return false;
+  }
+  if (!(((req_field && rhs.req_field && *req_field == *rhs.req_field) ||(!req_field && !rhs.req_field)))) {
+    return false;
+  }
+  return true;
+}
+
+void swap(StructWithRef& a, StructWithRef& b) {
+  using ::std::swap;
+  swap(a.def_field, b.def_field);
+  swap(a.opt_field, b.opt_field);
+  swap(a.req_field, b.req_field);
+  swap(a.__isset, b.__isset);
+}
+
+template uint32_t StructWithRef::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t StructWithRef::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t StructWithRef::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t StructWithRef::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t StructWithRef::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t StructWithRef::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t StructWithRef::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t StructWithRef::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
+StructWithRefTypeUnique::StructWithRefTypeUnique(const StructWithRefTypeUnique& src) {
+  if (src.def_field) def_field.reset(new  ::cpp2::Empty(*src.def_field));
+  if (src.opt_field) opt_field.reset(new  ::cpp2::Empty(*src.opt_field));
+  if (src.req_field) req_field.reset(new  ::cpp2::Empty(*src.req_field));
+}
+
+StructWithRefTypeUnique& StructWithRefTypeUnique::operator=(const StructWithRefTypeUnique& src) {
+  StructWithRefTypeUnique tmp(src);
+  swap(*this, tmp);
+  return *this;
+}
+
+void StructWithRefTypeUnique::__clear() {
+  __isset.__clear();
+}
+
+bool StructWithRefTypeUnique::operator==(const StructWithRefTypeUnique& rhs) const {
+  if (!(((def_field && rhs.def_field && *def_field == *rhs.def_field) ||(!def_field && !rhs.def_field)))) {
+    return false;
+  }
+  if (!(((opt_field && rhs.opt_field && *opt_field == *rhs.opt_field) ||(!opt_field && !rhs.opt_field)))) {
+    return false;
+  }
+  if (!(((req_field && rhs.req_field && *req_field == *rhs.req_field) ||(!req_field && !rhs.req_field)))) {
+    return false;
+  }
+  return true;
+}
+
+void swap(StructWithRefTypeUnique& a, StructWithRefTypeUnique& b) {
+  using ::std::swap;
+  swap(a.def_field, b.def_field);
+  swap(a.opt_field, b.opt_field);
+  swap(a.req_field, b.req_field);
+  swap(a.__isset, b.__isset);
+}
+
+template uint32_t StructWithRefTypeUnique::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t StructWithRefTypeUnique::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t StructWithRefTypeUnique::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t StructWithRefTypeUnique::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t StructWithRefTypeUnique::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t StructWithRefTypeUnique::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t StructWithRefTypeUnique::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t StructWithRefTypeUnique::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
+void StructWithRefTypeShared::__clear() {
+  __isset.__clear();
+}
+
+bool StructWithRefTypeShared::operator==(const StructWithRefTypeShared& rhs) const {
+  if (!(((def_field && rhs.def_field && *def_field == *rhs.def_field) ||(!def_field && !rhs.def_field)))) {
+    return false;
+  }
+  if (!(((opt_field && rhs.opt_field && *opt_field == *rhs.opt_field) ||(!opt_field && !rhs.opt_field)))) {
+    return false;
+  }
+  if (!(((req_field && rhs.req_field && *req_field == *rhs.req_field) ||(!req_field && !rhs.req_field)))) {
+    return false;
+  }
+  return true;
+}
+
+void swap(StructWithRefTypeShared& a, StructWithRefTypeShared& b) {
+  using ::std::swap;
+  swap(a.def_field, b.def_field);
+  swap(a.opt_field, b.opt_field);
+  swap(a.req_field, b.req_field);
+  swap(a.__isset, b.__isset);
+}
+
+template uint32_t StructWithRefTypeShared::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t StructWithRefTypeShared::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t StructWithRefTypeShared::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t StructWithRefTypeShared::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t StructWithRefTypeShared::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t StructWithRefTypeShared::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t StructWithRefTypeShared::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t StructWithRefTypeShared::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
+void StructWithRefTypeSharedConst::__clear() {
+  __isset.__clear();
+}
+
+bool StructWithRefTypeSharedConst::operator==(const StructWithRefTypeSharedConst& rhs) const {
+  if (!(((def_field && rhs.def_field && *def_field == *rhs.def_field) ||(!def_field && !rhs.def_field)))) {
+    return false;
+  }
+  if (!(((opt_field && rhs.opt_field && *opt_field == *rhs.opt_field) ||(!opt_field && !rhs.opt_field)))) {
+    return false;
+  }
+  if (!(((req_field && rhs.req_field && *req_field == *rhs.req_field) ||(!req_field && !rhs.req_field)))) {
+    return false;
+  }
+  return true;
+}
+
+void swap(StructWithRefTypeSharedConst& a, StructWithRefTypeSharedConst& b) {
+  using ::std::swap;
+  swap(a.def_field, b.def_field);
+  swap(a.opt_field, b.opt_field);
+  swap(a.req_field, b.req_field);
+  swap(a.__isset, b.__isset);
+}
+
+template uint32_t StructWithRefTypeSharedConst::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t StructWithRefTypeSharedConst::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t StructWithRefTypeSharedConst::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t StructWithRefTypeSharedConst::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t StructWithRefTypeSharedConst::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t StructWithRefTypeSharedConst::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t StructWithRefTypeSharedConst::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t StructWithRefTypeSharedConst::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
+StructWithRefTypeCustom::StructWithRefTypeCustom(const StructWithRefTypeCustom& src) {
+  if (src.def_field) def_field.reset(new  ::cpp2::Empty(*src.def_field));
+  if (src.opt_field) opt_field.reset(new  ::cpp2::Empty(*src.opt_field));
+  if (src.req_field) req_field.reset(new  ::cpp2::Empty(*src.req_field));
+}
+
+StructWithRefTypeCustom& StructWithRefTypeCustom::operator=(const StructWithRefTypeCustom& src) {
+  StructWithRefTypeCustom tmp(src);
+  swap(*this, tmp);
+  return *this;
+}
+
+void StructWithRefTypeCustom::__clear() {
+  __isset.__clear();
+}
+
+bool StructWithRefTypeCustom::operator==(const StructWithRefTypeCustom& rhs) const {
+  if (!(((def_field && rhs.def_field && *def_field == *rhs.def_field) ||(!def_field && !rhs.def_field)))) {
+    return false;
+  }
+  if (!(((opt_field && rhs.opt_field && *opt_field == *rhs.opt_field) ||(!opt_field && !rhs.opt_field)))) {
+    return false;
+  }
+  if (!(((req_field && rhs.req_field && *req_field == *rhs.req_field) ||(!req_field && !rhs.req_field)))) {
+    return false;
+  }
+  return true;
+}
+
+void swap(StructWithRefTypeCustom& a, StructWithRefTypeCustom& b) {
+  using ::std::swap;
+  swap(a.def_field, b.def_field);
+  swap(a.opt_field, b.opt_field);
+  swap(a.req_field, b.req_field);
+  swap(a.__isset, b.__isset);
+}
+
+template uint32_t StructWithRefTypeCustom::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t StructWithRefTypeCustom::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t StructWithRefTypeCustom::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t StructWithRefTypeCustom::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t StructWithRefTypeCustom::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t StructWithRefTypeCustom::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t StructWithRefTypeCustom::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t StructWithRefTypeCustom::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
 } // cpp2
