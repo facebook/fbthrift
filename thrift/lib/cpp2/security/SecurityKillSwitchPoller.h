@@ -24,7 +24,7 @@
 #include <thread>
 
 #include <folly/io/async/ScopedEventBaseThread.h>
-#include <thrift/lib/cpp2/util/FilePoller.h>
+#include <wangle/util/FilePoller.h>
 
 namespace apache { namespace thrift {
 
@@ -37,17 +37,17 @@ class SecurityKillSwitchPoller {
   bool isKillSwitchEnabled() const { return switchEnabled_; }
 
   virtual void addFileToTrack(const std::string& filePath,
-                              FilePoller::Cob yCob,
-                              FilePoller::Cob nCob = nullptr,
-                              FilePoller::Condition cond =
-                                  FilePoller::fileTouchedCond());
+                              wangle::FilePoller::Cob yCob,
+                              wangle::FilePoller::Cob nCob = nullptr,
+                              wangle::FilePoller::Condition cond =
+                                  wangle::FilePoller::fileTouchedCond());
 
  protected:
   explicit SecurityKillSwitchPoller(bool autostart);
 
   std::atomic<bool> switchEnabled_{false};
 
-  std::unique_ptr<FilePoller> poller_;
+  std::unique_ptr<wangle::FilePoller> poller_;
 };
 }
 }

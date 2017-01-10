@@ -31,7 +31,6 @@
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
-#include <thrift/lib/cpp2/security/TLSCredProcessor.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
@@ -40,6 +39,7 @@
 #include <folly/Memory.h>
 #include <folly/ScopeGuard.h>
 #include <wangle/ssl/SSLContextConfig.h>
+#include <wangle/ssl/TLSCredProcessor.h>
 
 using namespace apache::thrift;
 using apache::thrift::concurrency::PosixThreadFactory;
@@ -51,6 +51,7 @@ using apache::thrift::server::TConnectionContext;
 using folly::SSLContext;
 using wangle::SSLContextConfig;
 using wangle::SSLCacheOptions;
+using wangle::TLSCredProcessor;
 using namespace boost::python;
 
 namespace {

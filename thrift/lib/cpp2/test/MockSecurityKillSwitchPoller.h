@@ -27,16 +27,16 @@ class MockSecurityKillSwitchPoller : public SecurityKillSwitchPoller {
   explicit MockSecurityKillSwitchPoller(std::function<bool()> pollFunc)
       : SecurityKillSwitchPoller(false) {
     auto yCob = [this, pollFunc]() { switchEnabled_ = pollFunc(); };
-    auto condition = FilePoller::doAlwaysCond();
+    auto condition = wangle::FilePoller::doAlwaysCond();
     poller_->addFileToTrack("no_file", yCob, nullptr, condition);
   }
   MOCK_METHOD4(
       addFileToTrack,
       void(
           const std::string&,
-          FilePoller::Cob,
-          FilePoller::Cob,
-          FilePoller::Condition));
+          wangle::FilePoller::Cob,
+          wangle::FilePoller::Cob,
+          wangle::FilePoller::Condition));
 };
 }
 }

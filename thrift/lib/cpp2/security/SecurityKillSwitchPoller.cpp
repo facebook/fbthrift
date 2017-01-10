@@ -26,6 +26,8 @@ DEFINE_string(
     "endpoints, and on servers will downgrade a 'required' SSL policy to "
     "'permitted'");
 
+using wangle::FilePoller;
+
 namespace apache { namespace thrift {
 
 static constexpr std::chrono::seconds kThriftKillSwitchExpired =
