@@ -88,7 +88,7 @@ class ClientReceiveState {
 
   std::exception_ptr exception() {
     if (!exc_ && excw_) {
-      exc_ = excw_.getExceptionPtr();
+      exc_ = excw_.to_exception_ptr();
     }
     return exc_;
   }
