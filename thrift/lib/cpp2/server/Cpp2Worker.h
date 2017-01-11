@@ -77,6 +77,12 @@ class Cpp2Worker
     Acceptor::init(serverSocket, eventBase, stats);
   }
 
+  /*
+   * This is called from ThriftServer::stopDuplex
+   * Necessary for keeping the ThriftServer alive until this Worker dies
+   */
+  void stopDuplex(std::shared_ptr<ThriftServer> ts);
+
   /**
    * Get underlying server.
    *
@@ -162,9 +168,15 @@ class Cpp2Worker
   /// The mother ship.
   ThriftServer* server_;
 
+  // For DuplexChannel case, set only during shutdown so that we can extend the
+  // lifetime of the ThriftServer if the Worker is kept alive by some
+  // Connections which are kept alive by in-flight requests
+  std::shared_ptr<ThriftServer> duplexServer_;
+
   folly::AsyncSocket::UniquePtr makeNewAsyncSocket(folly::EventBase* base,
                                                    int fd) override {
-    return folly::AsyncSocket::UniquePtr(new apache::thrift::async::TAsyncSocket(base, fd));
+    return folly::AsyncSocket::UniquePtr(
+        new apache::thrift::async::TAsyncSocket(base, fd));
   }
 
   folly::AsyncSSLSocket::UniquePtr makeNewAsyncSSLSocket(

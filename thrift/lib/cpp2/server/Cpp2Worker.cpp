@@ -71,8 +71,8 @@ void Cpp2Worker::onNewConnection(
 
   asyncSocket->setIsAccepted(true);
   asyncSocket->setShutdownSocketSet(server_->shutdownSocketSet_.get());
-  std::shared_ptr<Cpp2Connection> result(
-    new Cpp2Connection(asyncSocket, addr, shared_from_this()));
+  auto result = std::make_shared<Cpp2Connection>(
+                                  asyncSocket, addr, shared_from_this());
   Acceptor::addConnection(result.get());
   result->addConnection(result);
   result->start();
@@ -112,11 +112,23 @@ void Cpp2Worker::useExistingChannel(
 
   auto conn = std::make_shared<Cpp2Connection>(
       nullptr, &address, shared_from_this(), serverChannel);
-  Acceptor::getConnectionManager()
-    ->addConnection(conn.get(), false);
+  Acceptor::getConnectionManager()->addConnection(conn.get(), false);
   conn->addConnection(conn);
 
   conn->start();
+}
+
+void Cpp2Worker::stopDuplex(std::shared_ptr<ThriftServer> myServer) {
+  // They better have given us the correct ThriftServer
+  DCHECK(server_ == myServer.get());
+
+  // This does not really fully drain everything but at least
+  // prevents the connections from accepting new requests
+  wangle::Acceptor::drainAllConnections();
+
+  // Capture a shared_ptr to our ThriftServer making sure it will outlive us
+  // Otherwise our raw pointer to it (server_) will be jeopardized.
+  duplexServer_ = myServer;
 }
 
 int Cpp2Worker::computePendingCount() {

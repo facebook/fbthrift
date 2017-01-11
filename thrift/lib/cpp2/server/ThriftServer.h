@@ -613,6 +613,20 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   void cleanUp();
 
   /**
+   * Preferably use this method in order to start ThriftServer created for
+   * DuplexChannel instead of the serve() method.
+   */
+  void startDuplex();
+
+  /**
+   * This method should be used to cleanly stop a ThriftServer created for
+   * DuplexChannel before disposing the ThriftServer. The caller should pass in
+   * a shared_ptr to this ThriftServer since the ThriftServer does not have a
+   * way of getting that (does not inherit from enable_shared_from_this)
+   */
+  void stopDuplex(std::shared_ptr<ThriftServer> thisServer);
+
+  /**
    * One stop solution:
    *
    * starts worker threads, enters accept loop; when

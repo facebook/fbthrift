@@ -134,6 +134,10 @@ ThriftServer::~ThriftServer() {
     // usually ServerBootstrap::stop drains the workers, but ServerBootstrap
     // doesn't know about duplexWorker_
     duplexWorker_->drainAllConnections();
+
+    LOG_IF(ERROR, !duplexWorker_.unique())
+        << activeRequests_ << " active Requests while in destructing"
+        << " duplex ThriftServer. Consider using startDuplex & stopDuplex";
   }
 
   if (stopWorkersOnStopListening_) {
@@ -388,11 +392,7 @@ void ThriftServer::setup() {
       }
 
     } else {
-      CHECK(configMutable());
-      duplexWorker_ = Cpp2Worker::create(this, serverChannel_);
-      // we don't control the EventBase for the duplexWorker, so when we shut
-      // it down, we need to ensure there's no delay
-      duplexWorker_->setGracefulShutdownTimeout(std::chrono::milliseconds(0));
+      startDuplex();
     }
 
     // Do not allow setters to be called past this point until the IO worker
@@ -408,6 +408,37 @@ void ThriftServer::setup() {
     handleSetupFailure();
     throw;
   }
+}
+
+/**
+ * Preferably use this method in order to start ThriftServer created for
+ * DuplexChannel instead of the serve() method.
+ */
+void ThriftServer::startDuplex() {
+  CHECK(configMutable());
+  duplexWorker_ = Cpp2Worker::create(this, serverChannel_);
+  // we don't control the EventBase for the duplexWorker, so when we shut
+  // it down, we need to ensure there's no delay
+  duplexWorker_->setGracefulShutdownTimeout(std::chrono::milliseconds(0));
+}
+
+/**
+ * This method should be used to cleanly stop a ThriftServer created for
+ * DuplexChannel before disposing the ThriftServer. The caller should pass in
+ * a shared_ptr to this ThriftServer since the ThriftServer does not have a
+ * way of getting that (does not inherit from enable_shared_from_this)
+ */
+void ThriftServer::stopDuplex(std::shared_ptr<ThriftServer> thisServer) {
+  DCHECK(this == thisServer.get());
+  DCHECK(duplexWorker_ != nullptr);
+
+  // Try to stop our Worker but this cannot stop in flight requests
+  // Instead, it will capture a shared_ptr back to us, keeping us alive
+  // until it really goes away (when in-flight requests are gone)
+  duplexWorker_->stopDuplex(thisServer);
+
+  // Get rid of our reference to the worker to avoid forming a cycle
+  duplexWorker_ = nullptr;
 }
 
 /**
