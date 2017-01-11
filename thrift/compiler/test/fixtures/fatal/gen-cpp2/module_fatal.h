@@ -149,7 +149,6 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using type = ::fatal::sequence<char, 't', 'y', 'p', 'e'>;
   using annotations = ::fatal::sequence<char, 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n', 's'>;
   using field = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd'>;
-  using cpp_indirection = ::fatal::sequence<char, 'c', 'p', 'p', '.', 'i', 'n', 'd', 'i', 'r', 'e', 'c', 't', 'i', 'o', 'n'>;
   using descriptors = ::fatal::sequence<char, 'd', 'e', 's', 'c', 'r', 'i', 'p', 't', 'o', 'r', 's'>;
   using union_with_special_names = ::fatal::sequence<char, 'u', 'n', 'i', 'o', 'n', '_', 'w', 'i', 't', 'h', '_', 's', 'p', 'e', 'c', 'i', 'a', 'l', '_', 'n', 'a', 'm', 'e', 's'>;
   using lists = ::fatal::sequence<char, 'l', 'i', 's', 't', 's'>;

@@ -1424,8 +1424,6 @@ void reflectionInitializer_1743512479375461036(::apache::thrift::reflection::Sch
     f.type = 5U;
     f.name = "fake";
     f.order = 1;
-    f.__isset.annotations = true;
-    f.annotations["cpp.type"] = "FakeI32";
   }
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[3];
@@ -1433,9 +1431,6 @@ void reflectionInitializer_1743512479375461036(::apache::thrift::reflection::Sch
     f.type = 5U;
     f.name = "number";
     f.order = 2;
-    f.__isset.annotations = true;
-    f.annotations["cpp.indirection"] = ".number";
-    f.annotations["cpp.type"] = "HasANumber";
   }
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[4];
@@ -1443,9 +1438,6 @@ void reflectionInitializer_1743512479375461036(::apache::thrift::reflection::Sch
     f.type = 5U;
     f.name = "result";
     f.order = 3;
-    f.__isset.annotations = true;
-    f.annotations["cpp.indirection"] = ".foo().result()";
-    f.annotations["cpp.type"] = "HasAResult";
   }
 }
 

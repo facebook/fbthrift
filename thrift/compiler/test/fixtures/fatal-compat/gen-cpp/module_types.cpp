@@ -6473,7 +6473,7 @@ void struct_with_indirections::readFromJson(const char* jsonText, size_t len, co
     if (imaxabs(_tmp639) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->number = (int32_t)_tmp639;
+      this->number.number = (int32_t)_tmp639;
     }
     this->__isset.number = true;
   } else {
@@ -6484,7 +6484,7 @@ void struct_with_indirections::readFromJson(const char* jsonText, size_t len, co
     if (imaxabs(_tmp640) > 0x7fffffffL) {
       throw apache::thrift::TLibraryException("number exceeds limit in field");
     } else {
-      this->result = (int32_t)_tmp640;
+      this->result.foo().result() = (int32_t)_tmp640;
     }
     this->__isset.result = true;
   } else {
@@ -6540,7 +6540,7 @@ uint32_t struct_with_indirections::read(apache::thrift::protocol::TProtocol* ipr
         break;
       case 3:
         if (ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32(this->number);
+          xfer += iprot->readI32(this->number.number);
           this->__isset.number = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -6548,7 +6548,7 @@ uint32_t struct_with_indirections::read(apache::thrift::protocol::TProtocol* ipr
         break;
       case 4:
         if (ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32(this->result);
+          xfer += iprot->readI32(this->result.foo().result());
           this->__isset.result = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -6569,8 +6569,8 @@ uint32_t struct_with_indirections::read(apache::thrift::protocol::TProtocol* ipr
 void struct_with_indirections::__clear() {
   real = 0;
   fake = 0;
-  number = 0;
-  result = 0;
+  number.number = 0;
+  result.foo().result() = 0;
   __isset.__clear();
 }
 uint32_t struct_with_indirections::write(apache::thrift::protocol::TProtocol* oprot) const {
@@ -6583,10 +6583,10 @@ uint32_t struct_with_indirections::write(apache::thrift::protocol::TProtocol* op
   xfer += oprot->writeI32(this->fake);
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldBegin("number", apache::thrift::protocol::T_I32, 3);
-  xfer += oprot->writeI32(this->number);
+  xfer += oprot->writeI32(this->number.number);
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldBegin("result", apache::thrift::protocol::T_I32, 4);
-  xfer += oprot->writeI32(this->result);
+  xfer += oprot->writeI32(this->result.foo().result());
   xfer += oprot->writeFieldEnd();
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();

@@ -26,6 +26,12 @@ typedef  ::test_cpp1::cpp_reflection::enum3 enum3;
 typedef  ::test_cpp1::cpp_reflection::enum_with_special_names enum_with_special_names;
 typedef test_cpp_reflection::custom_structA my_structA;
 
+typedef CppFakeI32 FakeI32;
+
+typedef CppHasANumber HasANumber;
+
+typedef CppHasAResult HasAResult;
+
 typedef ::test_cpp1::cpp_reflection::union1 union1;
 template <class Protocol_>
 uint32_t union1_read(Protocol_* iprot, union1* obj);

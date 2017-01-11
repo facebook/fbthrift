@@ -3321,42 +3321,18 @@ class struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_an
     };
 
     class struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_number {
-      struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_number__unique_annotations_keys {
-        using cpp_indirection = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::cpp_indirection;
-      };
-
-      struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_number__unique_annotations_values {
-        using cpp_indirection = ::fatal::sequence<char, '.', 'n', 'u', 'm', 'b', 'e', 'r'>;
-      };
-
       public:
-      using keys = struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_number__unique_annotations_keys;
-      using values = struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_number__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
-        ::apache::thrift::annotation<
-          keys::cpp_indirection,
-          values::cpp_indirection
-        >
       >;
     };
 
     class struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_result {
-      struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_result__unique_annotations_keys {
-        using cpp_indirection = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::cpp_indirection;
-      };
-
-      struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_result__unique_annotations_values {
-        using cpp_indirection = ::fatal::sequence<char, '.', 'f', 'o', 'o', '(', ')', '.', 'r', 'e', 's', 'u', 'l', 't', '(', ')'>;
-      };
-
       public:
-      using keys = struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_result__unique_annotations_keys;
-      using values = struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_annotations_members_result__unique_annotations_values;
+      using keys = void;
+      using values = void;
       using map = ::fatal::list<
-        ::apache::thrift::annotation<
-          keys::cpp_indirection,
-          values::cpp_indirection
-        >
       >;
     };
     public:
@@ -3395,7 +3371,7 @@ struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_m
   >;
   using fake = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fake,
-    int32_t,
+     ::test_cpp2::cpp_reflection::FakeI32,
     2,
     ::apache::thrift::optionality::required_of_writer,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::fake,
@@ -3407,7 +3383,7 @@ struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_m
   >;
   using number = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::number,
-    int32_t,
+     ::test_cpp2::cpp_reflection::HasANumber,
     3,
     ::apache::thrift::optionality::required_of_writer,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::number,
@@ -3419,7 +3395,7 @@ struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_m
   >;
   using result = ::apache::thrift::reflected_struct_data_member<
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::result,
-    int32_t,
+     ::test_cpp2::cpp_reflection::HasAResult,
     4,
     ::apache::thrift::optionality::required_of_writer,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::result,

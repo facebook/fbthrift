@@ -6532,7 +6532,7 @@ uint32_t struct_with_indirections::read(Protocol_* iprot) {
       case 3:
       {
         if (ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32(this->number);
+          xfer += iprot->readI32(this->number.number);
           this->__isset.number = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -6542,7 +6542,7 @@ uint32_t struct_with_indirections::read(Protocol_* iprot) {
       case 4:
       {
         if (ftype == apache::thrift::protocol::T_I32) {
-          xfer += iprot->readI32(this->result);
+          xfer += iprot->readI32(this->result.foo().result());
           this->__isset.result = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -6571,9 +6571,9 @@ uint32_t struct_with_indirections::serializedSize(Protocol_ const* prot_) const 
   xfer += prot_->serializedFieldSize("fake", apache::thrift::protocol::T_I32, 2);
   xfer += prot_->serializedSizeI32(this->fake);
   xfer += prot_->serializedFieldSize("number", apache::thrift::protocol::T_I32, 3);
-  xfer += prot_->serializedSizeI32(this->number);
+  xfer += prot_->serializedSizeI32(this->number.number);
   xfer += prot_->serializedFieldSize("result", apache::thrift::protocol::T_I32, 4);
-  xfer += prot_->serializedSizeI32(this->result);
+  xfer += prot_->serializedSizeI32(this->result.foo().result());
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -6587,9 +6587,9 @@ uint32_t struct_with_indirections::serializedSizeZC(Protocol_ const* prot_) cons
   xfer += prot_->serializedFieldSize("fake", apache::thrift::protocol::T_I32, 2);
   xfer += prot_->serializedSizeI32(this->fake);
   xfer += prot_->serializedFieldSize("number", apache::thrift::protocol::T_I32, 3);
-  xfer += prot_->serializedSizeI32(this->number);
+  xfer += prot_->serializedSizeI32(this->number.number);
   xfer += prot_->serializedFieldSize("result", apache::thrift::protocol::T_I32, 4);
-  xfer += prot_->serializedSizeI32(this->result);
+  xfer += prot_->serializedSizeI32(this->result.foo().result());
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -6605,10 +6605,10 @@ uint32_t struct_with_indirections::write(Protocol_* prot_) const {
   xfer += prot_->writeI32(this->fake);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("number", apache::thrift::protocol::T_I32, 3);
-  xfer += prot_->writeI32(this->number);
+  xfer += prot_->writeI32(this->number.number);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("result", apache::thrift::protocol::T_I32, 4);
-  xfer += prot_->writeI32(this->result);
+  xfer += prot_->writeI32(this->result.foo().result());
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

@@ -229,6 +229,12 @@ class struct_with_indirections;
 
 typedef test_cpp_reflection::custom_structA my_structA;
 
+typedef CppFakeI32 FakeI32;
+
+typedef CppHasANumber HasANumber;
+
+typedef CppHasAResult HasAResult;
+
 class union1 : public apache::thrift::TStructType<union1> {
  public:
   enum class Type {
@@ -5487,9 +5493,9 @@ class struct_with_indirections : public apache::thrift::TStructType<struct_with_
   virtual ~struct_with_indirections() throw() {}
 
   int32_t real;
-  int32_t fake;
-  int32_t number;
-  int32_t result;
+  FakeI32 fake;
+  HasANumber number;
+  HasAResult result;
 
   struct __isset {
     __isset() { __clear(); } 

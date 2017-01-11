@@ -211,6 +211,12 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 typedef test_cpp_reflection::custom_structA my_structA;
 
+typedef CppFakeI32 FakeI32;
+
+typedef CppHasANumber HasANumber;
+
+typedef CppHasAResult HasAResult;
+
 class union1 : private apache::thrift::detail::st::ComparisonOperators<union1> {
  public:
   enum Type {
@@ -6814,7 +6820,7 @@ class struct_with_indirections : private apache::thrift::detail::st::ComparisonO
       result(0) {}
   // FragileConstructor for use in initialization lists only
 
-  struct_with_indirections(apache::thrift::FragileConstructor, int32_t real__arg, int32_t fake__arg, int32_t number__arg, int32_t result__arg) :
+  struct_with_indirections(apache::thrift::FragileConstructor, int32_t real__arg,  ::test_cpp2::cpp_reflection::FakeI32 fake__arg,  ::test_cpp2::cpp_reflection::HasANumber number__arg,  ::test_cpp2::cpp_reflection::HasAResult result__arg) :
       real(std::move(real__arg)),
       fake(std::move(fake__arg)),
       number(std::move(number__arg)),
@@ -6865,9 +6871,9 @@ class struct_with_indirections : private apache::thrift::detail::st::ComparisonO
   virtual ~struct_with_indirections() throw() {}
 
   int32_t real;
-  int32_t fake;
-  int32_t number;
-  int32_t result;
+   ::test_cpp2::cpp_reflection::FakeI32 fake;
+   ::test_cpp2::cpp_reflection::HasANumber number;
+   ::test_cpp2::cpp_reflection::HasAResult result;
 
   struct __isset {
     void __clear() {
@@ -6883,23 +6889,7 @@ class struct_with_indirections : private apache::thrift::detail::st::ComparisonO
     bool result = false;
   } __isset;
   bool operator==(const struct_with_indirections& rhs) const;
-
-  bool operator < (const struct_with_indirections& rhs) const {
-    if (!(real == rhs.real)) {
-      return real < rhs.real;
-    }
-    if (!(fake == rhs.fake)) {
-      return fake < rhs.fake;
-    }
-    if (!(number == rhs.number)) {
-      return number < rhs.number;
-    }
-    if (!(result == rhs.result)) {
-      return result < rhs.result;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator < (const struct_with_indirections& rhs) const;
 
   int32_t get_real() const {
     return real;
@@ -6911,31 +6901,31 @@ class struct_with_indirections : private apache::thrift::detail::st::ComparisonO
     return real;
   }
 
-  int32_t get_fake() const {
+   ::test_cpp2::cpp_reflection::FakeI32 get_fake() const {
     return fake;
   }
 
-  int32_t& set_fake(int32_t fake_) {
+   ::test_cpp2::cpp_reflection::FakeI32& set_fake( ::test_cpp2::cpp_reflection::FakeI32 fake_) {
     fake = fake_;
     __isset.fake = true;
     return fake;
   }
 
-  int32_t get_number() const {
+   ::test_cpp2::cpp_reflection::HasANumber get_number() const {
     return number;
   }
 
-  int32_t& set_number(int32_t number_) {
+   ::test_cpp2::cpp_reflection::HasANumber& set_number( ::test_cpp2::cpp_reflection::HasANumber number_) {
     number = number_;
     __isset.number = true;
     return number;
   }
 
-  int32_t get_result() const {
+   ::test_cpp2::cpp_reflection::HasAResult get_result() const {
     return result;
   }
 
-  int32_t& set_result(int32_t result_) {
+   ::test_cpp2::cpp_reflection::HasAResult& set_result( ::test_cpp2::cpp_reflection::HasAResult result_) {
     result = result_;
     __isset.result = true;
     return result;

@@ -2055,8 +2055,8 @@ namespace test_cpp2 { namespace cpp_reflection {
 void struct_with_indirections::__clear() {
   real = 0;
   fake = 0;
-  number = 0;
-  result = 0;
+  number.number = 0;
+  result.foo().result() = 0;
   __isset.__clear();
 }
 
