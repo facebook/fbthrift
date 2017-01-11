@@ -256,4 +256,19 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
+template uint32_t struct_with_indirections_read<>(apache::thrift::BinaryProtocolReader*, struct_with_indirections*);
+template uint32_t struct_with_indirections_write<>(apache::thrift::BinaryProtocolWriter*, const struct_with_indirections*);
+template uint32_t struct_with_indirections_serializedSize<>(apache::thrift::BinaryProtocolWriter const*, const struct_with_indirections*);
+template uint32_t struct_with_indirections_serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*, const struct_with_indirections*);
+template uint32_t struct_with_indirections_read<>(apache::thrift::CompactProtocolReader*, struct_with_indirections*);
+template uint32_t struct_with_indirections_write<>(apache::thrift::CompactProtocolWriter*, const struct_with_indirections*);
+template uint32_t struct_with_indirections_serializedSize<>(apache::thrift::CompactProtocolWriter const*, const struct_with_indirections*);
+template uint32_t struct_with_indirections_serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*, const struct_with_indirections*);
+
+}} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace test_cpp2 { namespace cpp_reflection {
+
 }} // test_cpp2::cpp_reflection

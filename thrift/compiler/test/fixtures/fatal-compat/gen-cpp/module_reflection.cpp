@@ -1403,6 +1403,52 @@ void reflectionInitializer_8634504681174503372(::apache::thrift::reflection::Sch
   }
 }
 
+// Reflection initializer for struct module.struct_with_indirections
+void reflectionInitializer_1743512479375461036(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 1743512479375461036U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.struct_with_indirections";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[1];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "real";
+    f.order = 0;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[2];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "fake";
+    f.order = 1;
+    f.__isset.annotations = true;
+    f.annotations["cpp.type"] = "FakeI32";
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[3];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "number";
+    f.order = 2;
+    f.__isset.annotations = true;
+    f.annotations["cpp.indirection"] = ".number";
+    f.annotations["cpp.type"] = "HasANumber";
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[4];
+    f.isRequired = true;
+    f.type = 5U;
+    f.name = "result";
+    f.order = 3;
+    f.__isset.annotations = true;
+    f.annotations["cpp.indirection"] = ".foo().result()";
+    f.annotations["cpp.type"] = "HasAResult";
+  }
+}
+
 // Reflection initializer for struct module.service1_method1_args
 void reflectionInitializer_1221581162559054604(::apache::thrift::reflection::Schema& schema) {
   const uint64_t id = 1221581162559054604U;

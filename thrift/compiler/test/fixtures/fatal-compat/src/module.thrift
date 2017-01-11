@@ -358,3 +358,10 @@ service service_with_special_names {
 }
 
 const i32 constant_with_special_name = 42;
+
+struct struct_with_indirections {
+  1: i32 real,
+  2: i32 fake (cpp.type = 'FakeI32'),
+  3: i32 number (cpp.type = 'HasANumber', cpp.indirection = '.number'),
+  4: i32 result (cpp.type = 'HasAResult', cpp.indirection = '.foo().result()'),
+}

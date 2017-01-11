@@ -38,6 +38,7 @@ class dep_A_struct;
 class annotated;
 class union_with_special_names;
 class struct_with_special_names;
+class struct_with_indirections;
 
 enum class enum1 {
   field0 = 0,
@@ -6797,6 +6798,193 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflect
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct_with_special_names>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::struct_with_special_names const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace test_cpp2 { namespace cpp_reflection {
+
+class struct_with_indirections : private apache::thrift::detail::st::ComparisonOperators<struct_with_indirections> {
+ public:
+
+  struct_with_indirections() :
+      real(0),
+      fake(0),
+      number(0),
+      result(0) {}
+  // FragileConstructor for use in initialization lists only
+
+  struct_with_indirections(apache::thrift::FragileConstructor, int32_t real__arg, int32_t fake__arg, int32_t number__arg, int32_t result__arg) :
+      real(std::move(real__arg)),
+      fake(std::move(fake__arg)),
+      number(std::move(number__arg)),
+      result(std::move(result__arg)) {
+    __isset.real = true;
+    __isset.fake = true;
+    __isset.number = true;
+    __isset.result = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  struct_with_indirections(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    struct_with_indirections(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    real = arg.move();
+    __isset.real = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  struct_with_indirections(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    struct_with_indirections(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fake = arg.move();
+    __isset.fake = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  struct_with_indirections(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    struct_with_indirections(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    number = arg.move();
+    __isset.number = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  struct_with_indirections(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    struct_with_indirections(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    result = arg.move();
+    __isset.result = true;
+  }
+
+  struct_with_indirections(struct_with_indirections&&) = default;
+
+  struct_with_indirections(const struct_with_indirections&) = default;
+
+  struct_with_indirections& operator=(struct_with_indirections&&) = default;
+
+  struct_with_indirections& operator=(const struct_with_indirections&) = default;
+  void __clear();
+
+  virtual ~struct_with_indirections() throw() {}
+
+  int32_t real;
+  int32_t fake;
+  int32_t number;
+  int32_t result;
+
+  struct __isset {
+    void __clear() {
+      real = false;
+      fake = false;
+      number = false;
+      result = false;
+    }
+
+    bool real = false;
+    bool fake = false;
+    bool number = false;
+    bool result = false;
+  } __isset;
+  bool operator==(const struct_with_indirections& rhs) const;
+
+  bool operator < (const struct_with_indirections& rhs) const {
+    if (!(real == rhs.real)) {
+      return real < rhs.real;
+    }
+    if (!(fake == rhs.fake)) {
+      return fake < rhs.fake;
+    }
+    if (!(number == rhs.number)) {
+      return number < rhs.number;
+    }
+    if (!(result == rhs.result)) {
+      return result < rhs.result;
+    }
+    (void)rhs;
+    return false;
+  }
+
+  int32_t get_real() const {
+    return real;
+  }
+
+  int32_t& set_real(int32_t real_) {
+    real = real_;
+    __isset.real = true;
+    return real;
+  }
+
+  int32_t get_fake() const {
+    return fake;
+  }
+
+  int32_t& set_fake(int32_t fake_) {
+    fake = fake_;
+    __isset.fake = true;
+    return fake;
+  }
+
+  int32_t get_number() const {
+    return number;
+  }
+
+  int32_t& set_number(int32_t number_) {
+    number = number_;
+    __isset.number = true;
+    return number;
+  }
+
+  int32_t get_result() const {
+    return result;
+  }
+
+  int32_t& set_result(int32_t result_) {
+    result = result_;
+    __isset.result = true;
+    return result;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+};
+
+void swap(struct_with_indirections& a, struct_with_indirections& b);
+extern template uint32_t struct_with_indirections::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t struct_with_indirections::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t struct_with_indirections::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t struct_with_indirections::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t struct_with_indirections::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t struct_with_indirections::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t struct_with_indirections::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t struct_with_indirections::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::test_cpp2::cpp_reflection::struct_with_indirections>::clear( ::test_cpp2::cpp_reflection::struct_with_indirections* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp2::cpp_reflection::struct_with_indirections>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct_with_indirections>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::struct_with_indirections const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct_with_indirections>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::struct_with_indirections* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct_with_indirections>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::struct_with_indirections const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct_with_indirections>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::struct_with_indirections const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

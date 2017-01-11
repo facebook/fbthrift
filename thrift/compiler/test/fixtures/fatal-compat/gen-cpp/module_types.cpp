@@ -6426,4 +6426,206 @@ void merge(struct_with_special_names&& from, struct_with_special_names& to) {
   to.__isset.members = to.__isset.members || from.__isset.members;
 }
 
+const uint64_t struct_with_indirections::_reflection_id;
+void struct_with_indirections::_reflection_register(::apache::thrift::reflection::Schema& schema) {
+   ::test_cpp1::cpp_reflection::module_reflection_::reflectionInitializer_1743512479375461036(schema);
+}
+
+bool struct_with_indirections::operator == (const struct_with_indirections & rhs) const {
+  if (!(this->real == rhs.real))
+    return false;
+  if (!(this->fake == rhs.fake))
+    return false;
+  if (!(this->number == rhs.number))
+    return false;
+  if (!(this->result == rhs.result))
+    return false;
+  return true;
+}
+
+void struct_with_indirections::readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts)
+{
+  folly::dynamic parsed = folly::parseJson(folly::StringPiece(jsonText, len), opts);
+  if (parsed["real"] != nullptr) {
+    int64_t _tmp637 = (int64_t)parsed["real"].asInt();
+    if (imaxabs(_tmp637) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->real = (int32_t)_tmp637;
+    }
+    this->__isset.real = true;
+  } else {
+    this->__isset.real = false;
+  }
+  if (parsed["fake"] != nullptr) {
+    int64_t _tmp638 = (int64_t)parsed["fake"].asInt();
+    if (imaxabs(_tmp638) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->fake = (int32_t)_tmp638;
+    }
+    this->__isset.fake = true;
+  } else {
+    this->__isset.fake = false;
+  }
+  if (parsed["number"] != nullptr) {
+    int64_t _tmp639 = (int64_t)parsed["number"].asInt();
+    if (imaxabs(_tmp639) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->number = (int32_t)_tmp639;
+    }
+    this->__isset.number = true;
+  } else {
+    this->__isset.number = false;
+  }
+  if (parsed["result"] != nullptr) {
+    int64_t _tmp640 = (int64_t)parsed["result"].asInt();
+    if (imaxabs(_tmp640) > 0x7fffffffL) {
+      throw apache::thrift::TLibraryException("number exceeds limit in field");
+    } else {
+      this->result = (int32_t)_tmp640;
+    }
+    this->__isset.result = true;
+  } else {
+    this->__isset.result = false;
+  }
+}
+void struct_with_indirections::readFromJson(const char* jsonText, const folly::json::serialization_opts& opts)
+{
+  readFromJson(jsonText, strlen(jsonText), opts);
+}
+
+uint32_t struct_with_indirections::read(apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string fname;
+  apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
+  if (schema != nullptr) {
+     ::test_cpp1::cpp_reflection::module_reflection_::reflectionInitializer_1743512479375461036(*schema);
+    iprot->setNextStructType(struct_with_indirections::_reflection_id);
+  }
+  xfer += iprot->readStructBegin(fname);
+
+  using apache::thrift::protocol::TProtocolException;
+
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->real);
+          this->__isset.real = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 2:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->fake);
+          this->__isset.fake = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 3:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->number);
+          this->__isset.number = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      case 4:
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->result);
+          this->__isset.result = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+void struct_with_indirections::__clear() {
+  real = 0;
+  fake = 0;
+  number = 0;
+  result = 0;
+  __isset.__clear();
+}
+uint32_t struct_with_indirections::write(apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("struct_with_indirections");
+  xfer += oprot->writeFieldBegin("real", apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32(this->real);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("fake", apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32(this->fake);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("number", apache::thrift::protocol::T_I32, 3);
+  xfer += oprot->writeI32(this->number);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("result", apache::thrift::protocol::T_I32, 4);
+  xfer += oprot->writeI32(this->result);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(struct_with_indirections &a, struct_with_indirections &b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+  swap(a.real, b.real);
+  swap(a.fake, b.fake);
+  swap(a.number, b.number);
+  swap(a.result, b.result);
+  swap(a.__isset, b.__isset);
+}
+
+void merge(const struct_with_indirections& from, struct_with_indirections& to) {
+  using apache::thrift::merge;
+  merge(from.real, to.real);
+  to.__isset.real = to.__isset.real || from.__isset.real;
+  merge(from.fake, to.fake);
+  to.__isset.fake = to.__isset.fake || from.__isset.fake;
+  merge(from.number, to.number);
+  to.__isset.number = to.__isset.number || from.__isset.number;
+  merge(from.result, to.result);
+  to.__isset.result = to.__isset.result || from.__isset.result;
+}
+
+void merge(struct_with_indirections&& from, struct_with_indirections& to) {
+  using apache::thrift::merge;
+  merge(std::move(from.real), to.real);
+  to.__isset.real = to.__isset.real || from.__isset.real;
+  merge(std::move(from.fake), to.fake);
+  to.__isset.fake = to.__isset.fake || from.__isset.fake;
+  merge(std::move(from.number), to.number);
+  to.__isset.number = to.__isset.number || from.__isset.number;
+  merge(std::move(from.result), to.result);
+  to.__isset.result = to.__isset.result || from.__isset.result;
+}
+
 }} // namespace

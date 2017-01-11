@@ -225,6 +225,8 @@ class union_with_special_names;
 
 class struct_with_special_names;
 
+class struct_with_indirections;
+
 typedef test_cpp_reflection::custom_structA my_structA;
 
 class union1 : public apache::thrift::TStructType<union1> {
@@ -5413,5 +5415,112 @@ class struct_with_special_names : public apache::thrift::TStructType<struct_with
 class struct_with_special_names;
 void merge(const struct_with_special_names& from, struct_with_special_names& to);
 void merge(struct_with_special_names&& from, struct_with_special_names& to);
+void swap(struct_with_indirections &a, struct_with_indirections &b);
+
+class struct_with_indirections : public apache::thrift::TStructType<struct_with_indirections> {
+ public:
+
+  static const uint64_t _reflection_id = 1743512479375461036U;
+  static void _reflection_register(::apache::thrift::reflection::Schema&);
+  struct_with_indirections() : real(0), fake(0), number(0), result(0) {
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_indirections(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_indirections(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    real = arg.move();
+    __isset.real = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_indirections(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_indirections(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fake = arg.move();
+    __isset.fake = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_indirections(
+    ::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_indirections(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    number = arg.move();
+    __isset.number = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct_with_indirections(
+    ::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct_with_indirections(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    result = arg.move();
+    __isset.result = true;
+  }
+
+  struct_with_indirections(const struct_with_indirections&) = default;
+  struct_with_indirections& operator=(const struct_with_indirections& src)= default;
+  struct_with_indirections(struct_with_indirections&&) = default;
+  struct_with_indirections& operator=(struct_with_indirections&&) = default;
+
+  void __clear();
+
+  virtual ~struct_with_indirections() throw() {}
+
+  int32_t real;
+  int32_t fake;
+  int32_t number;
+  int32_t result;
+
+  struct __isset {
+    __isset() { __clear(); } 
+    void __clear() {
+      real = false;
+      fake = false;
+      number = false;
+      result = false;
+    }
+    bool real;
+    bool fake;
+    bool number;
+    bool result;
+  } __isset;
+
+  bool operator == (const struct_with_indirections &) const;
+  bool operator != (const struct_with_indirections& rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const struct_with_indirections & ) const;
+
+  void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  void readFromJson(const char* jsonText, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
+  uint32_t read(apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+class struct_with_indirections;
+void merge(const struct_with_indirections& from, struct_with_indirections& to);
+void merge(struct_with_indirections&& from, struct_with_indirections& to);
 }} // namespace
 

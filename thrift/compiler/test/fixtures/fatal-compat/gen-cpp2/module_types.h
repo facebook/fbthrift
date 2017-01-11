@@ -794,4 +794,52 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflect
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
+typedef ::test_cpp1::cpp_reflection::struct_with_indirections struct_with_indirections;
+template <class Protocol_>
+uint32_t struct_with_indirections_read(Protocol_* iprot, struct_with_indirections* obj);
+template <class Protocol_>
+uint32_t struct_with_indirections_serializedSize(Protocol_ const* prot_, const struct_with_indirections* obj);
+template <class Protocol_>
+uint32_t struct_with_indirections_serializedSizeZC(Protocol_ const* prot_, const struct_with_indirections* obj);
+template <class Protocol_>
+uint32_t struct_with_indirections_write(Protocol_* prot_, const struct_with_indirections* obj);
+extern template uint32_t struct_with_indirections_read<>(apache::thrift::BinaryProtocolReader*, struct_with_indirections*);
+extern template uint32_t struct_with_indirections_write<>(apache::thrift::BinaryProtocolWriter*, const struct_with_indirections*);
+extern template uint32_t struct_with_indirections_serializedSize<>(apache::thrift::BinaryProtocolWriter const*, const struct_with_indirections*);
+extern template uint32_t struct_with_indirections_serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*, const struct_with_indirections*);
+extern template uint32_t struct_with_indirections_read<>(apache::thrift::CompactProtocolReader*, struct_with_indirections*);
+extern template uint32_t struct_with_indirections_write<>(apache::thrift::CompactProtocolWriter*, const struct_with_indirections*);
+extern template uint32_t struct_with_indirections_serializedSize<>(apache::thrift::CompactProtocolWriter const*, const struct_with_indirections*);
+extern template uint32_t struct_with_indirections_serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*, const struct_with_indirections*);
+
+}} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::test_cpp2::cpp_reflection::struct_with_indirections>::clear( ::test_cpp2::cpp_reflection::struct_with_indirections* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::test_cpp2::cpp_reflection::struct_with_indirections>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct_with_indirections>::write(Protocol* proto,  ::test_cpp2::cpp_reflection::struct_with_indirections const* obj) {
+  return  ::test_cpp2::cpp_reflection::struct_with_indirections_write(proto, obj);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct_with_indirections>::read(Protocol* proto,  ::test_cpp2::cpp_reflection::struct_with_indirections* obj) {
+  return  ::test_cpp2::cpp_reflection::struct_with_indirections_read(proto, obj);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct_with_indirections>::serializedSize(Protocol const* proto,  ::test_cpp2::cpp_reflection::struct_with_indirections const* obj) {
+  return  ::test_cpp2::cpp_reflection::struct_with_indirections_serializedSize(proto, obj);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::test_cpp2::cpp_reflection::struct_with_indirections>::serializedSizeZC(Protocol const* proto,  ::test_cpp2::cpp_reflection::struct_with_indirections const* obj) {
+  return  ::test_cpp2::cpp_reflection::struct_with_indirections_serializedSizeZC(proto, obj);
+}
+
+}} // apache::thrift
+namespace test_cpp2 { namespace cpp_reflection {
+
 }} // test_cpp2::cpp_reflection

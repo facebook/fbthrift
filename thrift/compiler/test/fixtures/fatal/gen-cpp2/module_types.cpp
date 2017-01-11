@@ -2052,4 +2052,52 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
+void struct_with_indirections::__clear() {
+  real = 0;
+  fake = 0;
+  number = 0;
+  result = 0;
+  __isset.__clear();
+}
+
+bool struct_with_indirections::operator==(const struct_with_indirections& rhs) const {
+  if (!((real == rhs.real))) {
+    return false;
+  }
+  if (!((fake == rhs.fake))) {
+    return false;
+  }
+  if (!((number == rhs.number))) {
+    return false;
+  }
+  if (!((result == rhs.result))) {
+    return false;
+  }
+  return true;
+}
+
+void swap(struct_with_indirections& a, struct_with_indirections& b) {
+  using ::std::swap;
+  swap(a.real, b.real);
+  swap(a.fake, b.fake);
+  swap(a.number, b.number);
+  swap(a.result, b.result);
+  swap(a.__isset, b.__isset);
+}
+
+template uint32_t struct_with_indirections::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t struct_with_indirections::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t struct_with_indirections::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t struct_with_indirections::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t struct_with_indirections::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t struct_with_indirections::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t struct_with_indirections::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t struct_with_indirections::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace test_cpp2 { namespace cpp_reflection {
+
 }} // test_cpp2::cpp_reflection

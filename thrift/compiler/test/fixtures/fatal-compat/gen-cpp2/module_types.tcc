@@ -5916,4 +5916,156 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace test_cpp2 { namespace cpp_reflection {
 
+template <class Protocol_>
+uint32_t struct_with_indirections_read(Protocol_* iprot, struct_with_indirections* obj) {
+  (void)obj;
+  uint32_t xfer = 0;
+  std::string fname;
+  apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using apache::thrift::TProtocolException;
+
+
+  while (true) {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    if (fid == std::numeric_limits<int16_t>::min()) {
+      if (fname == "real") {
+        fid = 1;
+        ftype = apache::thrift::protocol::T_I32;
+      }
+      else if (fname == "fake") {
+        fid = 2;
+        ftype = apache::thrift::protocol::T_I32;
+      }
+      else if (fname == "number") {
+        fid = 3;
+        ftype = apache::thrift::protocol::T_I32;
+      }
+      else if (fname == "result") {
+        fid = 4;
+        ftype = apache::thrift::protocol::T_I32;
+      }
+    }
+    switch (fid) {
+      case 1:
+      {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(obj->real);
+          obj->__isset.real = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 2:
+      {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(obj->fake);
+          obj->__isset.fake = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 3:
+      {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(obj->number);
+          obj->__isset.number = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 4:
+      {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(obj->result);
+          obj->__isset.result = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      default:
+      {
+        xfer += iprot->skip(ftype);
+        break;
+      }
+    }
+    xfer += iprot->readFieldEnd();
+  }
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t struct_with_indirections_serializedSize(Protocol_ const* prot_, const struct_with_indirections* obj) {
+  (void)obj;
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("struct_with_indirections");
+  xfer += prot_->serializedFieldSize("real", apache::thrift::protocol::T_I32, 1);
+  xfer += prot_->serializedSizeI32(obj->real);
+  xfer += prot_->serializedFieldSize("fake", apache::thrift::protocol::T_I32, 2);
+  xfer += prot_->serializedSizeI32(obj->fake);
+  xfer += prot_->serializedFieldSize("number", apache::thrift::protocol::T_I32, 3);
+  xfer += prot_->serializedSizeI32(obj->number);
+  xfer += prot_->serializedFieldSize("result", apache::thrift::protocol::T_I32, 4);
+  xfer += prot_->serializedSizeI32(obj->result);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t struct_with_indirections_serializedSizeZC(Protocol_ const* prot_, const struct_with_indirections* obj) {
+  (void)obj;
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("struct_with_indirections");
+  xfer += prot_->serializedFieldSize("real", apache::thrift::protocol::T_I32, 1);
+  xfer += prot_->serializedSizeI32(obj->real);
+  xfer += prot_->serializedFieldSize("fake", apache::thrift::protocol::T_I32, 2);
+  xfer += prot_->serializedSizeI32(obj->fake);
+  xfer += prot_->serializedFieldSize("number", apache::thrift::protocol::T_I32, 3);
+  xfer += prot_->serializedSizeI32(obj->number);
+  xfer += prot_->serializedFieldSize("result", apache::thrift::protocol::T_I32, 4);
+  xfer += prot_->serializedSizeI32(obj->result);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t struct_with_indirections_write(Protocol_* prot_, const struct_with_indirections* obj) {
+  (void)obj;
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("struct_with_indirections");
+  xfer += prot_->writeFieldBegin("real", apache::thrift::protocol::T_I32, 1);
+  xfer += prot_->writeI32(obj->real);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("fake", apache::thrift::protocol::T_I32, 2);
+  xfer += prot_->writeI32(obj->fake);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("number", apache::thrift::protocol::T_I32, 3);
+  xfer += prot_->writeI32(obj->number);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("result", apache::thrift::protocol::T_I32, 4);
+  xfer += prot_->writeI32(obj->result);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+}} // test_cpp2::cpp_reflection
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace test_cpp2 { namespace cpp_reflection {
+
 }} // test_cpp2::cpp_reflection
