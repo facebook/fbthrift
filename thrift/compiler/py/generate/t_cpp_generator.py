@@ -5233,7 +5233,7 @@ class CppGenerator(t_generator.Generator):
                             self._render_fatal_required_qualifier(m.req)))
                         cmnf('  {0}::{1}::{2},'.format(
                             self.fatal_detail_ns, dtmclsprefix, m.name))
-                        cmnf('        {0},'.format(
+                        cmnf('  {0},'.format(
                             self._render_fatal_type_class(m.type)))
                         cmnf('  {0}::{1}::{2}_{3}_struct_member_pod_{4},'
                             .format(self.fatal_detail_ns, mpdclsprefix,
@@ -5264,7 +5264,7 @@ class CppGenerator(t_generator.Generator):
                         cmnf('  ::apache::thrift::optionality::required,')
                         cmnf('  {0}::{1}::{2},'.format(
                              self.fatal_detail_ns, dtmclsprefix, m.name))
-                        cmnf('        {0},'.format(
+                        cmnf('  {0},'.format(
                              self._render_fatal_type_class(m.type)))
                         cmnf('  {0}::{1}::{2}_{3}_struct_member_pod_{4},'
                              .format(self.fatal_detail_ns, mpdclsprefix,
