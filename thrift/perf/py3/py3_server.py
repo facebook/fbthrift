@@ -23,8 +23,6 @@ import signal
 import sys
 
 from thrift.lib.py3.thrift_server import ThriftServer
-import py3.fb303.fb303_services
-import py3.apache.thrift.test.load.load_services
 from apache.thrift.test.py3.load_handler import LoadTestHandler
 
 
