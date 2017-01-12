@@ -83,6 +83,7 @@ TEST(HeaderClientChannelHttpTest, SimpleTest) {
   std::shared_ptr<TAsyncSocket> socket = TAsyncSocket::newSocket(&eb, *addr);
   auto channel = HeaderClientChannel::newChannel(socket);
   channel->useAsHttpClient("127.0.0.1", "meh");
+  channel->setProtocolId(T_BINARY_PROTOCOL);
   TestServiceAsyncClient client(std::move(channel));
   client.sendResponse(
     [] (apache::thrift::ClientReceiveState&& state) {
@@ -119,6 +120,7 @@ TEST(HeaderClientChannel, LongResponse) {
   std::shared_ptr<TAsyncSocket> socket = TAsyncSocket::newSocket(&eb, *addr);
   auto channel = HeaderClientChannel::newChannel(socket);
   channel->useAsHttpClient("127.0.0.1", "meh");
+  channel->setProtocolId(T_BINARY_PROTOCOL);
   TestServiceAsyncClient client(std::move(channel));
 
   client.serializationTest(

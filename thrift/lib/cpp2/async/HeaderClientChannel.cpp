@@ -394,7 +394,8 @@ void HeaderClientChannel::setRequestHeaderOptions(THeader* header) {
 
 uint16_t HeaderClientChannel::getProtocolId() {
   if (getClientType() == THRIFT_HEADER_CLIENT_TYPE ||
-      getClientType() == THRIFT_HEADER_SASL_CLIENT_TYPE) {
+      getClientType() == THRIFT_HEADER_SASL_CLIENT_TYPE ||
+      getClientType() == THRIFT_HTTP_CLIENT_TYPE) {
     return protocolId_;
   } else if (getClientType() == THRIFT_FRAMED_COMPACT) {
     return T_COMPACT_PROTOCOL;
