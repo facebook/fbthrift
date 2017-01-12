@@ -39,43 +39,72 @@ brew install \
   boost155
 ```
 
-### Windows (MinGW)
-- Install [MinGW with Boost](http://www.nuwen.net/mingw.html) in C:\MinGW
- - Add MinGW to the PATH variable.
+### Windows (MSVC)
+- Install [Microsoft Visual Studio](https://www.visualstudio.com/vs/)
+ - Make sure to select Visual C++ tools and the Windows SDK during installation
+ - Otherwise, open Visual Studio File > New > Project > Online. Then, instal Visual C++ and Windows SDK
+- Install [Microsoft Build Tools](https://www.microsoft.com/en-us/download/details.aspx?id=48159)
+ - Add MSBuild to the PATH variable
  ```
- # Using PowerShell:
- [System.Environment]::SetEnvironmentVariable("PATH", "$env:Path;C\MinGW\bin", [System.EnvironmentVariableTarget]::Machine)
+ # Using Powershell (make sure path matches your install directory):
+ [System.Environment]::SetEnvironmentVariable("PATH", "$env:Path;C\Program Files\MSBuild\14.0\Bin", [System.EnvironmentVariableTarget]::Machine)
  ```
- - Otherwise, make sure any MinGW and Boost paths are set in the PATH variable.
+
 - Install [CMake](http://www.cmake.org)
- - Download and install one of the latest Windows .msi file.
- - During install, select: Make path available for all users or for this user.
+ - Download and install one of the latest Windows .msi file
+ - During install, select: Make path available for all users or for this user
+- Install [precompiled Boost](https://sourceforge.net/projects/boost/files/boost-binaries/), or compile it on your own
+ - Make sure that Boost matches your machine architecture (32 or 64) and your MSVC version
+ - After installing open the installation path an rename the directory 'lib<version>' -> 'lib'
+ - Add C:\path\to\boost_1_<ver>_0 to your PATH variable
+ ```
+ # Using Powershell (make sure path matches your install directory):
+ [System.Environment]::SetEnvironmentVariable("PATH", "$env:Path;C\local\boost_1_<ver>_0", [System.EnvironmentVariableTarget]::Machine)
+ ```
+- Install [precompiled OpenSSL](https://slproweb.com/products/Win32OpenSSL.html), or compile it on your own
+ - Download the complete version (no Light) and make sure that OpenSSL matches your machine architecture (32 or 64)
+ - Default install, it will add the path to your PATH variable
 - Download [winflexbison.zip](https://sourceforge.net/projects/winflexbison/)
- - Unzip and move win_flex.exe, win_bison.exe, and data/ to: C:\MinGW\bin
- - Or, move win_flex_bison to any directory of your choice and add it to the PATH variable
+ - Create a directory where your boost_1_<ver>_0 directory is called 'win_flex_bison'(or any name you want to use)
+ - Unzip and move win_flex.exe, win_bison.exe, and data/ to that directory
+ - Add the directory to your PATH variable
+ ```
+ # Using Powershell (make sure path matches your install directory):
+ [System.Environment]::SetEnvironmentVariable("PATH", "$env:Path;C\local\win_flex_bison", [System.EnvironmentVariableTarget]::Machine)
+ ```
 
 ## Building
 
-### Windows (MinGW)
-This will create a single `thrift-compiler` binary file.
 ```
 mkdir fbthrift/build
 cd fbthrift/thrift
 cmake ..
+```
+
+## Installing
+
+This will create a `thrift-compiler` binary file inside the build directory.
+
+### Linux or MacOSX
+```
 make install
 ```
 
-### Windows (MinGW)
-This will create a single `thrift-compiler.exe` executable file.
+### Windows (MSVC)
 ```
 # Using PowerShell
-mkdir fbthrift/build
-cd fbthrift/thrift
-cmake -G"MinGW Makefiles" ..
-make install
+msbuild .\INSTALL.vcxproj
 ```
 
 ## Usage
+
+### Linux or MacOSX
 ```
 ./thrift-compiler --help
+```
+
+### Windows (MSVC)
+```
+# Using PowerShell
+thrift-compiler.exe --help
 ```
