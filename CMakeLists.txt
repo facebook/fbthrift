@@ -44,4 +44,33 @@ include_directories(
   ${Boost_INCLUDE_DIRS}
 )
 
+# Add the test dependencies
+# To run tests: `make test`
+if(ENABLE_TESTS)
+  find_package(GTest REQUIRED)
+  find_package(GMock REQUIRED)
+  include_directories(
+    ${GTEST_INCLUDE_DIRS}
+    ${GMOCK_INCLUDE_DIRS}
+  )
+
+  enable_testing()
+endif(ENABLE_TESTS)
+
+# Create a generalized function for tests
+function(thrift_gtest tname srcfile)
+  if(ENABLE_TESTS)
+    add_executable("${tname}-t" ${srcfile})
+    target_link_libraries(
+      "${tname}-t"
+
+      ${ARGN}
+      ${GTEST_BOTH_LIBRARIES}
+      ${GMOCK_BOTH_LIBRARIES}
+      pthread
+    )
+    gtest_add_tests("${tname}-t" "" ${srcfile})
+  endif(ENABLE_TESTS)
+endfunction(thrift_gtest)
+
 add_subdirectory(thrift)

@@ -1,5 +1,5 @@
 # Set the compiler directory
-set(COMPILER_HOME ${CMAKE_CURRENT_SOURCE_DIR})
+set(COMPILER_DIR ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Override default install path for `make install` step
 set(CMAKE_INSTALL_PREFIX ${THRIFT_HOME})
@@ -64,12 +64,12 @@ if(WIN32)
   set(FLEX_FLAGS_TYPE "--wincompat") #String type
 endif(WIN32)
 # Compile Flex and Bison files and tie their dependencies
-BISON_TARGET(ThriftParser thrifty.yy ${COMPILER_HOME}/thrifty.cc)
+BISON_TARGET(ThriftParser thrifty.yy ${COMPILER_DIR}/thrifty.cc)
 FLEX_TARGET(
   ThriftScanner
 
   thriftl.ll
-  ${COMPILER_HOME}/thriftl.cc
+  ${COMPILER_DIR}/thriftl.cc
   ${FLEX_FLAGS} ${FLEX_FLAGS_TYPE}
 )
 ADD_FLEX_BISON_DEPENDENCY(ThriftScanner ThriftParser)
@@ -101,7 +101,7 @@ endif(MSVC)
 target_compile_definitions(
   thrift-compiler
 
-  PRIVATE -DTHRIFTY_HH="${COMPILER_HOME}/thrifty.hh"
+  PRIVATE -DTHRIFTY_HH="${COMPILER_DIR}/thrifty.hh"
 )
 
 # Set the binary destination
@@ -109,3 +109,10 @@ install(
   TARGETS thrift-compiler
   DESTINATION .
 )
+
+# Add tests
+set(TEST_DIR ${COMPILER_DIR}/test)
+thrift_gtest(gcommon "${TEST_DIR}/generate_common_test.cc" generate_lib)
+thrift_gtest(tprogram "${TEST_DIR}/t_program_test.cc" parse_lib)
+thrift_gtest(ttype "${TEST_DIR}/t_type_test.cc" parse_lib)
+thrift_gtest(visitor "${TEST_DIR}/visitor_test.cc" thrift_base)
