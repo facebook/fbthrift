@@ -19,7 +19,11 @@ from thrift.lib.py3.thrift_server cimport (
   ServiceInterface,
   cTApplicationException
 )
-from folly_futures cimport cFollyPromise, cFollyUnit, c_unit
+from thrift.lib.py3.folly cimport (
+  cFollyPromise,
+  cFollyUnit,
+  c_unit
+)
 cimport py3.module_types
 import py3.module_types
 

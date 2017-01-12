@@ -39,7 +39,11 @@ from thrift.lib.py3.thrift_server cimport (
   ServiceInterface,
   cTApplicationException
 )
-from folly_futures cimport cFollyPromise, cFollyUnit, c_unit
+from thrift.lib.py3.folly cimport (
+  cFollyPromise,
+  cFollyUnit,
+  c_unit
+)
 cimport {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}_types
 import {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}_types
 {{#program:includeNamespaces}}

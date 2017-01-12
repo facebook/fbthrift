@@ -1,9 +1,6 @@
-cimport cython
-from libcpp.memory cimport unique_ptr, make_unique, shared_ptr
-from folly_futures cimport cFollyPromise, cFollyUnit, c_unit
+from libcpp.memory cimport unique_ptr, make_unique
 
 import asyncio
-
 
 cdef class ThriftServer:
     cdef unique_ptr[cThriftServer] server
