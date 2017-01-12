@@ -221,9 +221,6 @@ cdef class NestedContainersInterface(
     def __cinit__(self):
         self.interface_wrapper = cNestedContainersInterface(<PyObject *> self)
 
-    def __init__(self, loop=None):
-        self.loop = loop or asyncio.get_event_loop()
-
     async def mapList(
             self,
             foo):

@@ -102,9 +102,6 @@ cdef class MyServiceInterface(
     def __cinit__(self):
         self.interface_wrapper = cMyServiceInterface(<PyObject *> self)
 
-    def __init__(self, loop=None):
-        self.loop = loop or asyncio.get_event_loop()
-
     async def query(
             self,
             s,

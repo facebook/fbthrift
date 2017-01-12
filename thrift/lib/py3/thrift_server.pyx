@@ -2,6 +2,13 @@ from libcpp.memory cimport unique_ptr, make_unique
 
 import asyncio
 
+
+cdef class ServiceInterface:
+    def __init__(self, loop=None, **kwargs):
+        super().__init__(**kwargs)
+        self.loop = loop or asyncio.get_event_loop()
+
+
 cdef class ThriftServer:
     cdef unique_ptr[cThriftServer] server
     cdef ServiceInterface handler

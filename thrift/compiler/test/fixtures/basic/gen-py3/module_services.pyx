@@ -560,9 +560,6 @@ cdef class MyServiceInterface(
     def __cinit__(self):
         self.interface_wrapper = cMyServiceInterface(<PyObject *> self)
 
-    def __init__(self, loop=None):
-        self.loop = loop or asyncio.get_event_loop()
-
     async def ping(
             self):
         raise NotImplementedError("async def ping is not implemented")
@@ -604,9 +601,6 @@ cdef class MyServiceFastInterface(
 ):
     def __cinit__(self):
         self.interface_wrapper = cMyServiceFastInterface(<PyObject *> self)
-
-    def __init__(self, loop=None):
-        self.loop = loop or asyncio.get_event_loop()
 
     async def ping(
             self):
@@ -650,17 +644,11 @@ cdef class MyServiceEmptyInterface(
     def __cinit__(self):
         self.interface_wrapper = cMyServiceEmptyInterface(<PyObject *> self)
 
-    def __init__(self, loop=None):
-        self.loop = loop or asyncio.get_event_loop()
-
 cdef class MyServicePrioParentInterface(
     ServiceInterface
 ):
     def __cinit__(self):
         self.interface_wrapper = cMyServicePrioParentInterface(<PyObject *> self)
-
-    def __init__(self, loop=None):
-        self.loop = loop or asyncio.get_event_loop()
 
     async def ping(
             self):
@@ -677,9 +665,6 @@ cdef class MyServicePrioChildInterface(
 ):
     def __cinit__(self):
         self.interface_wrapper = cMyServicePrioChildInterface(<PyObject *> self)
-
-    def __init__(self, loop=None):
-        self.loop = loop or asyncio.get_event_loop()
 
     async def pang(
             self):

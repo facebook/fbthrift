@@ -1543,9 +1543,6 @@ cdef class SimpleServiceInterface(
     def __cinit__(self):
         self.interface_wrapper = cSimpleServiceInterface(<PyObject *> self)
 
-    def __init__(self, loop=None):
-        self.loop = loop or asyncio.get_event_loop()
-
     async def get_five(
             self):
         raise NotImplementedError("async def get_five is not implemented")
