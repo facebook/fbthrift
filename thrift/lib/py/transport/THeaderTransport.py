@@ -28,11 +28,11 @@ if sys.version_info[0] >= 3:
     BaseHTTPServer = server
     xrange = range
     from io import BytesIO as StringIO
-    _ord = int
+    PY3 = True
 else:
     import BaseHTTPServer
     from cStringIO import StringIO
-    _ord = ord
+    PY3 = False
 
 from struct import pack, unpack
 import zlib
@@ -252,7 +252,8 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         self.__rbuf_frame = True
         word1 = self.getTransport().readAll(4)
         sz = unpack('!I', word1)[0]
-        if _ord(word1[0]) == TBinaryProtocol.PROTOCOL_ID:
+        proto_id = word1[0] if PY3 else ord(word1[0])
+        if proto_id == TBinaryProtocol.PROTOCOL_ID:
             # unframed
             self.__client_type = CLIENT_TYPE.UNFRAMED_DEPRECATED
             self.__proto_id = T_BINARY_PROTOCOL
@@ -261,7 +262,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
             else:
                 self.__rbuf = StringIO(word1 + self.getTransport().read(
                     req_sz - 4))
-        elif _ord(word1[0]) == TCompactProtocol.PROTOCOL_ID:
+        elif proto_id == TCompactProtocol.PROTOCOL_ID:
             self.__client_type = CLIENT_TYPE.UNFRAMED_COMPACT_DEPRECATED
             self.__proto_id = T_COMPACT_PROTOCOL
             if req_sz <= 4:  # check for reads < 0.
@@ -282,13 +283,14 @@ class THeaderTransport(TTransportBase, CReadableTransport):
                 sz = unpack('!Q', self.getTransport().readAll(8))[0]
             # could be header format or framed.  Check next two bytes.
             magic = self.getTransport().readAll(2)
-            if _ord(magic[0]) == TCompactProtocol.PROTOCOL_ID:
+            proto_id = magic[0] if PY3 else ord(magic[0])
+            if proto_id == TCompactProtocol.PROTOCOL_ID:
                 self.__client_type = CLIENT_TYPE.FRAMED_COMPACT
                 self.__proto_id = T_COMPACT_PROTOCOL
                 _frame_size_check(sz, self.__max_frame_size, header=False)
                 self.__rbuf = StringIO(magic + self.getTransport().readAll(
                     sz - 2))
-            elif _ord(magic[0]) == TBinaryProtocol.PROTOCOL_ID:
+            elif proto_id == TBinaryProtocol.PROTOCOL_ID:
                 self.__client_type = CLIENT_TYPE.FRAMED_DEPRECATED
                 self.__proto_id = T_BINARY_PROTOCOL
                 _frame_size_check(sz, self.__max_frame_size, header=False)
@@ -538,7 +540,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
 
 
 def _serialize_string(str_):
-    if sys.version_info[0] >= 3 and not isinstance(str_, bytes):
+    if PY3 and not isinstance(str_, bytes):
         str_ = str_.encode()
     return getVarint(len(str_)) + str_
 

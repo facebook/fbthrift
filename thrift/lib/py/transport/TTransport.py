@@ -69,16 +69,16 @@ class TTransportBase(object):
         pass
 
     def readAll(self, sz):
-        buff = bytearray(0)
+        chunks = []
         need = sz
         while need:
             chunk = self.read(need)
             if not chunk:
                 raise TTransportException(TTransportException.END_OF_FILE,
                                           "End of file reading from transport")
-            buff += chunk
+            chunks.append(chunk)
             need -= len(chunk)
-        return bytes(buff)
+        return b''.join(chunks)
 
     def write(self, buf):
         pass
