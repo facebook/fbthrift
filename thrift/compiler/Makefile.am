@@ -83,26 +83,26 @@ thrift1_SOURCES = main.cc \
                  generate/t_html_generator.h
 
 # Specific client generator source
-thrift1_SOURCES += generate/t_cpp_generator.cc \
-                  generate/t_d_generator.cc \
-                  generate/t_java_generator.cc \
+thrift1_SOURCES += generate/t_android_lite_generator.cc \
+                  generate/t_cocoa_generator.cc \
+									generate/t_cpp_generator.cc \
                   generate/t_csharp_generator.cc \
-                  generate/t_py_generator.cc \
-                  generate/t_rb_generator.cc \
+                  generate/t_d_generator.cc \
+                  generate/t_erl_generator.cc \
+                  generate/t_hack_generator.cc \
+                  generate/t_hs_generator.cc \
+                  generate/t_html_generator.cc \
+                  generate/t_java_generator.cc \
+                  generate/t_js_generator.cc \
+                  generate/t_mstch_py3_generator.cc \
+                  generate/t_mstch_swift_generator.cc \
+                  generate/t_ocaml_generator.cc \
                   generate/t_perl_generator.cc \
                   generate/t_php_generator.cc \
-                  generate/t_hack_generator.cc \
-                  generate/t_erl_generator.cc \
-                  generate/t_cocoa_generator.cc \
+                  generate/t_py_generator.cc \
+                  generate/t_rb_generator.cc \
                   generate/t_st_generator.cc \
-                  generate/t_ocaml_generator.cc \
-                  generate/t_hs_generator.cc \
-                  generate/t_xsd_generator.cc \
-                  generate/t_html_generator.cc \
-                  generate/t_mstch_swift_generator.cc \
-                  generate/t_mstch_py3_generator.cc \
-                  generate/t_js_generator.cc \
-                  generate/t_android_lite_generator.cc
+                  generate/t_xsd_generator.cc
 
 thrift1_LDFLAGS = -lcrypto -lglog -lmstch $(BOOST_FILESYSTEM_LIB) $(BOOST_SYSTEM_LIB)
 thrift1_LDADD = @LEXLIB@ libparse.la libthriftcompilerbase.la
