@@ -1,0 +1,71 @@
+{{!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+}}{{!
+
+Included from CythonClients.pyx, this file defines the core adapter between the
+C++ async future calls and Python asyncio futures. The C++ classes defined in
+ClientsWrapper.h and ClientsWrapper.cpp take these callbacks and call into them
+from the IO thread. The callbacks examine the result, extract the exception if
+one occurred, and then schedulde setting the result on the future to be safely
+executed in the asyncio loop.
+
+}}
+
+{{#program:services}}
+{{! One callback for receiving the created C++ wrapper class and wrapping it in
+    a python class. }}
+cdef void made_{{service:name}}_py3_client_callback(
+        PyObject* future,
+        cFollyTry[unique_ptr[c{{service:name}}ClientWrapper]] result) with gil:
+    cdef object pyfuture = <object> future
+    if result.hasException():
+        try:
+            result.exception().throwException()
+        except:
+            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+    else:
+        pyclient = {{service:name}}Client(pyfuture.loop)
+        pyclient._client = move(result.value())
+        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, pyclient)
+
+{{#service:functions}}
+cdef void {{service:name}}_{{function:name}}_callback(
+        PyObject* future,
+        cFollyTry[{{#function:returnType}}{{> CythonValueFieldType}}{{/function:returnType}}] result) with gil:
+    cdef object pyfuture = <object> future
+    cdef {{#function:returnType}}{{> CythonFieldType}}{{/function:returnType}} citem
+    {{#function:exceptions}}
+    cdef unique_ptr[{{#field:type}}{{> ModulePath}}.c{{#type:struct}}{{struct:name}}{{/type:struct}}{{/field:type}}] ex_{{field:name}}
+    {{/function:exceptions}}
+    if {{#function:exceptions}}{{^first?}}elif {{/first?}}{{!
+    }}result.hasException[{{#field:type}}{{> ModulePath}}.c{{#type:struct}}{{struct:name}}{{/type:struct}}{{/field:type}}]():
+        ex_{{field:name}} = py3_get_exception[{{#field:type}}{{#type:struct}}{{> ModulePath}}.c{{struct:name}}{{/type:struct}}{{/field:type}}](result.exception())
+        pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, {{!
+        }}{{#field:type}}{{> ModulePath}}{{#type:struct}}.{{type:name}}.create({{!
+  }}{{> ModulePath}}.move(ex_{{field:name}})){{/type:struct}}{{/field:type}})
+    elif {{/function:exceptions}}{{!
+    }}result.hasException():
+        try:
+            result.exception().throwException()
+        except:
+            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+    else:
+        citem = {{#function:returnType}}{{> CythonCppValueToReturnValue}}{{/function:returnType}};
+        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, {{#function:returnType}}{{> CythonCppItemToPython}}{{/function:returnType}})
+
+{{/service:functions}}
+{{/program:services}}

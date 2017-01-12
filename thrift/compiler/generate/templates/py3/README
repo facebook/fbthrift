@@ -36,7 +36,11 @@ as part of the generated source distribution. They include:
  *  ServicesWrapper.cpp.mustache
  *  ServicesWrapper.h.mustache
  *  ServicesWrapper.pxd.mustache
+ *  ClientsWrapper.cpp.mustache
+ *  ClientsWrapper.h.mustache
+ *  ClientsWrapper.pxd.mustache
  *  CythonServices.pyx.mustache
+ *  CythonClients.pyx.mustache
 
 
 Cython Services included files
@@ -47,6 +51,14 @@ especially if the client requires access to the promises.
 
  *  ServiceCallbacks.mustache
  *  CythonPromises.mustache
+
+
+Cython Clients included files
+-----------------------------
+This file is split out from CythonClients.pyx for the same reason as the files in
+the previous section.
+
+ *  ClientCallbacks.mustache
 
 
 Type-specifiers

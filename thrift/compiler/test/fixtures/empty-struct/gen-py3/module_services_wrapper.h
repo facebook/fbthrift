@@ -7,7 +7,8 @@
 
 #pragma once
 #include <Python.h>
-#include <memory.h>
+
+#include <memory>
 
 namespace cpp2 {
 

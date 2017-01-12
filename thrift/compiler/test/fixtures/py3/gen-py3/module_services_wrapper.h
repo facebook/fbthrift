@@ -8,7 +8,8 @@
 #pragma once
 #include <src/gen-cpp2/SimpleService.h>
 #include <Python.h>
-#include <memory.h>
+
+#include <memory>
 
 namespace py3 {
 namespace simple {

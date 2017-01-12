@@ -8,7 +8,8 @@
 #pragma once
 #include <src/gen-cpp2/MyService.h>
 #include <Python.h>
-#include <memory.h>
+
+#include <memory>
 
 namespace cpp2 {
 

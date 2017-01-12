@@ -49,6 +49,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
     void generate_init_files(const t_program&);
     void generate_structs(const t_program&);
     void generate_services(const t_program&);
+    void generate_clients(const t_program&);
     boost::filesystem::path package_to_path(std::string package);
     mstch::array get_return_types(const t_program&) const;
     mstch::array get_container_types(const t_program&) const;
@@ -179,6 +180,22 @@ void t_mstch_py3_generator::generate_services(const t_program& program) {
     program, "ServicesWrapper.cpp", path / (basename + ".cpp"));
   this->render_to_file(
     program, "ServicesWrapper.pxd", path / (basename + ".pxd"));
+}
+
+void t_mstch_py3_generator::generate_clients(const t_program& program) {
+  auto path = this->package_to_path(program.get_namespace("py3"));
+
+  auto name = this->get_program()->get_name();
+  this->render_to_file(
+    program, "CythonClients.pyx", path / (name + "_clients.pyx"));
+
+  auto basename = name + "_clients_wrapper";
+  this->render_to_file(
+    program, "ClientsWrapper.h", path / (basename + ".h"));
+  this->render_to_file(
+    program, "ClientsWrapper.cpp", path / (basename + ".cpp"));
+  this->render_to_file(
+    program, "ClientsWrapper.pxd", path / (basename + ".pxd"));
 }
 
 boost::filesystem::path t_mstch_py3_generator::package_to_path(
@@ -331,6 +348,7 @@ void t_mstch_py3_generator::generate_program() {
   this->generate_init_files(*this->get_program());
   this->generate_structs(*this->get_program());
   this->generate_services(*this->get_program());
+  this->generate_clients(*this->get_program());
 }
 
 THRIFT_REGISTER_GENERATOR(

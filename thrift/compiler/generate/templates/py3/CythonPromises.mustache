@@ -18,7 +18,7 @@
 
 Included from CythonServices.pyx, it defines a Python wrapper for each type
 of C++ promise that needs to be returned to C++. Cython doesn't support
-templating on Pythno classes. This file is necessary primarily because the
+templating on Python classes. This file is necessary primarily because the
 cPromise shared_ptr needs to point to a promise that wraps a specific return
 type in C++. The Python wrapper then gets passed into a coroutine where the
 promise can have it's value set after the handler coroutine has finished

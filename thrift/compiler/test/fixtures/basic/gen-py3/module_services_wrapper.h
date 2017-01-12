@@ -12,7 +12,8 @@
 #include <src/gen-cpp2/MyServicePrioParent.h>
 #include <src/gen-cpp2/MyServicePrioChild.h>
 #include <Python.h>
-#include <memory.h>
+
+#include <memory>
 
 namespace cpp2 {
 
