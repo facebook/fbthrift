@@ -89,6 +89,7 @@ thrift1_SOURCES += generate/t_android_lite_generator.cc \
                   generate/t_csharp_generator.cc \
                   generate/t_d_generator.cc \
                   generate/t_erl_generator.cc \
+                  generate/t_go_generator.cc \
                   generate/t_hack_generator.cc \
                   generate/t_hs_generator.cc \
                   generate/t_html_generator.cc \
