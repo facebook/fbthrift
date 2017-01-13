@@ -116,11 +116,14 @@ class FunctionRunner : public Runnable {
   }
 
   void run() override {
-    apache::thrift::concurrency::Synchronized s(monitor_);
     if (initFunc_) {
-      initFunc_();
+      apache::thrift::concurrency::Synchronized s(monitor_);
+      if (initFunc_) {
+        initFunc_();
+      }
     }
     if (intervalMs_ != -1) {
+      apache::thrift::concurrency::Synchronized s(monitor_);
       while (repFunc_ && repFunc_()) {
         try {
           // this wait could time out (normal interval-"sleep" case),
