@@ -29,7 +29,7 @@ constexpr <%#type:string?%>char const *<%/type:string?%><%^type:string?%><% > Ty
 <%/constant:inlined%>
 <%#constant:notinlined%>
 <% > Type%> const& <%program:name%>_constants::<%constant:name%>() {
-  static folly::Indestructible<<% > Type%>> const instance(<% > ConstantSignature%><% > ConstantValues%>);
+  static folly::Indestructible<<% > Type%>> const instance(<% > Constants/Signature%><% > Constants/Values%>);
   return *instance;
 }
 

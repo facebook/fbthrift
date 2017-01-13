@@ -18,8 +18,8 @@
 %><%#value:integer?%><%value:integerValue%><%/value:integer?%><%!
 %><%#value:double?%><%value:doubleValue%><%/value:double?%><%!
 %><%#value:string?%>apache::thrift::StringTraits< std::string>::fromStringLiteral("<%value:stringValue%>")<%/value:string?%><%!
-%><%#value:list?%>std::initializer_list<<% > ConstantValueSignature%>>{<%#value:listElements%><% > ConstantValuesInside%><%^last?%>,
+%><%#value:list?%>std::initializer_list<<% > Constants/ValueSignature%>>{<%#value:listElements%><% > Constants/ValuesInside%><%^last?%>,
   <%/last?%><%/value:listElements%>}<%/value:list?%><%!
-%><%#value:map?%>std::initializer_list<<% > ConstantValueSignature%>>{<%#value:mapElements%>{<%#element:key%><% > ConstantValuesInside%>, <%/element:key%><%#element:value%><% > ConstantValuesInside%><%/element:value%>}<%^last?%>,
+%><%#value:map?%>std::initializer_list<<% > Constants/ValueSignature%>>{<%#value:mapElements%>{<%#element:key%><% > Constants/ValuesInside%>, <%/element:key%><%#element:value%><% > Constants/ValuesInside%><%/element:value%>}<%^last?%>,
   <%/last?%><%/value:mapElements%>}<%/value:map?%><%!
 %>

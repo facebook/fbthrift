@@ -54,7 +54,7 @@ t_mstch_generator::t_mstch_generator(
     throw std::runtime_error{s};
   }
 
-  this->gen_template_map(template_prefix);
+  this->gen_template_map(this->template_dir_ / template_prefix, "");
 }
 
 mstch::map t_mstch_generator::dump(const t_program& program) const {
@@ -385,10 +385,9 @@ mstch::map t_mstch_generator::extend_annotation(const annotation&) const {
 }
 
 void t_mstch_generator::gen_template_map(
-    const boost::filesystem::path& prefix) {
-  auto template_dir = this->template_dir_ / prefix;
-  this->template_map_ = {};
-  for (auto itr = boost::filesystem::directory_iterator{template_dir};
+    const boost::filesystem::path& root,
+    const std::string& sub_directory) {
+  for (auto itr = boost::filesystem::directory_iterator{root};
        itr != boost::filesystem::directory_iterator{};
        ++itr) {
     if (boost::filesystem::is_regular_file(itr->path()) &&
@@ -403,7 +402,10 @@ void t_mstch_generator::gen_template_map(
         tpl = "{{=<% %>=}}\n" + tpl;
       }
 
-      this->template_map_.emplace(itr->path().stem().string(), std::move(tpl));
+      this->template_map_.emplace(
+          sub_directory + itr->path().stem().string(), std::move(tpl));
+    } else if (boost::filesystem::is_directory(itr->path())) {
+      gen_template_map(itr->path(), itr->path().filename().string() + "/");
     }
   }
 }

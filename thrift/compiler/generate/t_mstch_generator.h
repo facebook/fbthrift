@@ -169,10 +169,12 @@ class t_mstch_generator : public t_generator {
   std::unique_ptr<std::string> get_option(const std::string& key) const;
 
  private:
-  std::map<std::string, std::string> template_map_;
+  std::map<std::string, std::string> template_map_{};
   bool convert_delimiter_;
 
-  void gen_template_map(const boost::filesystem::path& template_prefix);
+  void gen_template_map(
+      const boost::filesystem::path& root,
+      const std::string& sub_directory);
 
   /**
    * For every key in the map, prepends a prefix to that key for mstch.
