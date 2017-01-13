@@ -31,6 +31,7 @@
 #include <fatal/type/transform.h>
 #include <fatal/type/variant_traits.h>
 
+#include <utility>
 #include <type_traits>
 
 #include <cstdint>

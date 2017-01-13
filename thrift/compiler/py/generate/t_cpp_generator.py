@@ -5148,6 +5148,8 @@ class CppGenerator(t_generator.Generator):
         safe_ns = self._get_namespace().replace('.', '_')
         dtmclsprefix = '{0}_{1}__struct_unique_data_member_getters_list'.format(
             safe_ns, name)
+        indclsprefix = '{0}_{1}__struct_unique_indirections_list'.format(
+            safe_ns, name)
         mpdclsprefix = '{0}_{1}__struct_unique_member_pod_list'.format(
             safe_ns, name)
         annclsprefix = '{0}_{1}__struct_unique_annotations'.format(
@@ -5187,6 +5189,26 @@ class CppGenerator(t_generator.Generator):
             with detail.cls('struct {0}'.format(dtmclsprefix)).scope as dtm:
                 for i in members:
                     dtm('FATAL_DATA_MEMBER_GETTER({0}, {0});'.format(i))
+            for i in structs:
+                if i.is_union:
+                    continue
+                if any(self._type_access_suffix(m.type) for m in i.members):
+                    with detail.cls('struct {0}_{1}'.format(
+                            i.name, indclsprefix)).scope as ind:
+                        for m in i.members:
+                            note = self._type_access_suffix(m.type)
+                            if not note:
+                                continue
+                            with ind.cls('struct {0}'.format(
+                                    m.name)).scope as ind:
+                                out('template <typename T{0}>\n'
+                                    'static auto val(T{0} &&{0}) {{\n'
+                                    '  return std::forward<T{0}>({0}){1};\n'
+                                    '}}'.format('__thrift__arg__', note))
+                                out('template <typename T{0}>\n'
+                                    'static auto &&ref(T{0} &&{0}) {{\n'
+                                    '  return std::forward<T{0}>({0}){1};\n'
+                                    '}}'.format('__thrift__arg__', note))
             with detail.cls('struct {0}'.format(mpdclsprefix)).scope as mpd:
                 pod_arg = 'T_{0}_{1}_struct_member_pod'.format(safe_ns, name)
                 for i in members:
@@ -5231,8 +5253,22 @@ class CppGenerator(t_generator.Generator):
                         cmnf('  {0},'.format(m.key))
                         cmnf('  ::apache::thrift::optionality::{0},'.format(
                             self._render_fatal_required_qualifier(m.req)))
-                        cmnf('  {0}::{1}::{2},'.format(
-                            self.fatal_detail_ns, dtmclsprefix, m.name))
+                        if self._type_access_suffix(m.type):
+                            cmnf('  ::fatal::chained_data_member_getter<')
+                            cmnf('    {0}::{1}::{2},'.format(
+                                self.fatal_detail_ns, dtmclsprefix, m.name))
+                            cmnf('    ::apache::thrift::detail::'
+                                 'reflection_indirection_getter<')
+                            cmnf('      {0}::{1}_{2}::{3}'.format(
+                                self.fatal_detail_ns,
+                                i.name,
+                                indclsprefix,
+                                m.name))
+                            cmnf('    >')
+                            cmnf('  >,')
+                        else:
+                            cmnf('  {0}::{1}::{2},'.format(
+                                self.fatal_detail_ns, dtmclsprefix, m.name))
                         cmnf('  {0},'.format(
                             self._render_fatal_type_class(m.type)))
                         cmnf('  {0}::{1}::{2}_{3}_struct_member_pod_{4},'

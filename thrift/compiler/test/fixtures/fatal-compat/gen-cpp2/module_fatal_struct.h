@@ -106,6 +106,30 @@ struct test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list {
   FATAL_DATA_MEMBER_GETTER(result, result);
 };
 
+struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_indirections_list {
+  struct number {
+    template <typename T__thrift__arg__>
+    static auto val(T__thrift__arg__ &&__thrift__arg__) {
+      return std::forward<T__thrift__arg__>(__thrift__arg__).number;
+    }
+    template <typename T__thrift__arg__>
+    static auto &&ref(T__thrift__arg__ &&__thrift__arg__) {
+      return std::forward<T__thrift__arg__>(__thrift__arg__).number;
+    }
+  };
+
+  struct result {
+    template <typename T__thrift__arg__>
+    static auto val(T__thrift__arg__ &&__thrift__arg__) {
+      return std::forward<T__thrift__arg__>(__thrift__arg__).foo().result();
+    }
+    template <typename T__thrift__arg__>
+    static auto &&ref(T__thrift__arg__ &&__thrift__arg__) {
+      return std::forward<T__thrift__arg__>(__thrift__arg__).foo().result();
+    }
+  };
+};
+
 struct test_cpp2_cpp_reflection_module__struct_unique_member_pod_list {
   template <typename T_test_cpp2_cpp_reflection_module_struct_member_pod>
 
@@ -3386,7 +3410,12 @@ struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_m
      ::test_cpp2::cpp_reflection::HasANumber,
     3,
     ::apache::thrift::optionality::required_of_writer,
-    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::number,
+    ::fatal::chained_data_member_getter<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::number,
+      ::apache::thrift::reflection_indirection_getter<
+        thrift_fatal_impl_detail::struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_indirections_list::number
+      >
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_number,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::number>,
@@ -3398,7 +3427,12 @@ struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_m
      ::test_cpp2::cpp_reflection::HasAResult,
     4,
     ::apache::thrift::optionality::required_of_writer,
-    thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::result,
+    ::fatal::chained_data_member_getter<
+      thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::result,
+      ::apache::thrift::reflection_indirection_getter<
+        thrift_fatal_impl_detail::struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_indirections_list::result
+      >
+    >,
     ::apache::thrift::type_class::integral,
     thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_member_pod_list::test_cpp2_cpp_reflection_module_struct_member_pod_result,
     ::apache::thrift::reflected_annotations<thrift_fatal_impl_detail::struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_annotations::members::result>,
