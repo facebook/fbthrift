@@ -162,6 +162,53 @@ class RequestCallback {
   int64_t securityEnd_ = 0;
 };
 
+/***
+ *  Like RequestCallback, a base class to be derived, but with a different set
+ *  of overridable member functions which may be better suited to some cases.
+ */
+class SendRecvRequestCallback : public RequestCallback {
+ public:
+  virtual void send(folly::exception_wrapper&& ex) = 0;
+  virtual void recv(ClientReceiveState&& state) = 0;
+
+ private:
+  enum struct Phase { Send, Recv };
+
+  void requestSent() final {
+    send({});
+    phase_ = Phase::Recv;
+  }
+  void requestError(ClientReceiveState&& state) final {
+    switch (phase_) {
+      case Phase::Send:
+        send(state.moveExceptionWrapper());
+        phase_ = Phase::Recv;
+        break;
+      case Phase::Recv:
+        recv(std::move(state));
+        break;
+    }
+  }
+  void replyReceived(ClientReceiveState&& state) final {
+    recv(std::move(state));
+  }
+
+  Phase phase_{Phase::Send};
+};
+
+class FunctionSendRecvRequestCallback final : public SendRecvRequestCallback {
+ public:
+  using Send = folly::Function<void(folly::exception_wrapper&&)>;
+  using Recv = folly::Function<void(ClientReceiveState&&)>;
+  FunctionSendRecvRequestCallback(Send sendf, Recv recvf) :
+      sendf_(std::move(sendf)), recvf_(std::move(recvf)) {}
+  void send(folly::exception_wrapper&& ew) override { sendf_(std::move(ew)); }
+  void recv(ClientReceiveState&& state) override { recvf_(std::move(state)); }
+ private:
+  Send sendf_;
+  Recv recvf_;
+};
+
 /* FunctionReplyCallback is meant to make RequestCallback easy to use
  * with folly::Function objects.  It is slower than implementing
  * RequestCallback directly.  It also throws the specific error
