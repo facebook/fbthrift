@@ -337,8 +337,7 @@ void Krb5CCache::getCacheTypeAndName(std::string& cacheType,
   cacheName = std::string(krb5_cc_get_name(ctx, ccache_));
 }
 
-std::pair<uint64_t, uint64_t> Krb5CCache::getLifetime(
-    krb5_principal principal) const {
+Krb5Lifetime Krb5CCache::getLifetime(krb5_principal principal) const {
   const std::string client_realm = getClientPrincipal().getRealm();
   std::string princ_realm;
   krb5_context ctx = context_.get();

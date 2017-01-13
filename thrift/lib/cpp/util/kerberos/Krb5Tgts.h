@@ -58,7 +58,8 @@ class Krb5Tgts {
   /**
    * Get lifetime of the currently loaded creds.
    */
-  std::pair<uint64_t, uint64_t> getLifetime();
+  Krb5Lifetime getLifetime();
+  std::map<std::string, Krb5Lifetime> getLifetimes();
 
   bool isInitialized();
 

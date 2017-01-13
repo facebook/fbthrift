@@ -73,7 +73,8 @@ uint64_t Krb5CCacheStore::ServiceData::getCount() {
 
 std::shared_ptr<Krb5CCache> Krb5CCacheStore::waitForCache(
     const Krb5Principal& service,
-    SecurityLogger* logger) {
+    SecurityLogger* logger,
+    bool* didInitCacheForService) {
   std::shared_ptr<ServiceData> dataPtr = getServiceDataPtr(service);
 
   uint64_t curtime = chrono::duration_cast<chrono::seconds>(
@@ -97,6 +98,9 @@ std::shared_ptr<Krb5CCache> Krb5CCacheStore::waitForCache(
         if (logger) {
           logger->logEnd("get_prepared_cache");
         }
+        if (didInitCacheForService) {
+          *didInitCacheForService = false;
+        }
         return dataPtr->cache;
       }
     }
@@ -119,6 +123,10 @@ std::shared_ptr<Krb5CCache> Krb5CCacheStore::waitForCache(
   folly::SharedMutex::WriteHolder writeLock(dataPtr->lockCache);
   dataPtr->cache = std::move(tempCache);
   dataPtr->expires = expires;
+
+  if (didInitCacheForService) {
+    *didInitCacheForService = true;
+  }
 
   return dataPtr->cache;
 }
@@ -361,6 +369,29 @@ uint64_t Krb5CCacheStore::renewCreds() {
   return renewCount;
 }
 
+std::set<std::string> Krb5CCacheStore::getTopServices(size_t limit) {
+  // Put 'limit' number of most frequently used credentials into the
+  // top_services set.
+  folly::SharedMutex::ReadHolder readLock(serviceDataMapLock_);
+  vector<pair<string, uint64_t>> count_vector;
+  for (auto& element : serviceDataMap_) {
+    count_vector.emplace_back(element.first, element.second->getCount());
+  }
+
+  sort(count_vector.begin(), count_vector.end(), serviceCountCompare);
+
+  std::set<std::string> top_services;
+  int count = 0;
+  for (auto& element : count_vector) {
+    if (count >= limit) {
+      break;
+    }
+    top_services.insert(element.first);
+    count++;
+  }
+  return top_services;
+}
+
 std::unique_ptr<Krb5CCache> Krb5CCacheStore::exportCache(size_t limit) {
   Krb5Principal client_principal = tgts_.getClientPrincipal();
 
@@ -371,25 +402,8 @@ std::unique_ptr<Krb5CCache> Krb5CCacheStore::exportCache(size_t limit) {
   temp_cache->initialize(client_principal.get());
 
   {
-    // Put 'limit' number of most frequently used credentials into the
-    // top_services set.
     folly::SharedMutex::ReadHolder readLock(serviceDataMapLock_);
-    vector<pair<string, uint64_t>> count_vector;
-    for (auto& element : serviceDataMap_) {
-      count_vector.emplace_back(element.first, element.second->getCount());
-    }
-
-    sort(count_vector.begin(), count_vector.end(), serviceCountCompare);
-
-    std::set<string> top_services;
-    int count = 0;
-    for (auto& element : count_vector) {
-      if (count >= limit) {
-        break;
-      }
-      top_services.insert(element.first);
-      count++;
-    }
+    const auto top_services = getTopServices(limit);
 
     for (auto& data : serviceDataMap_) {
       folly::SharedMutex::ReadHolder lock(data.second->lockCache);
@@ -424,7 +438,7 @@ bool Krb5CCacheStore::isInitialized() {
   return tgts_.isInitialized();
 }
 
-std::pair<uint64_t, uint64_t> Krb5CCacheStore::getLifetime() {
+Krb5Lifetime Krb5CCacheStore::getLifetime() {
   return tgts_.getLifetime();
 }
 
@@ -444,4 +458,42 @@ void Krb5CCacheStore::notifyOfError(const std::string& error) {
   tgts_.notifyOfError(error);
 }
 
+std::map<std::string, Krb5Lifetime>
+Krb5CCacheStore::getServicePrincipalLifetimes(size_t limit) {
+  folly::SharedMutex::ReadHolder readLock(serviceDataMapLock_);
+  const auto top_services = getTopServices(limit);
+
+  std::map<std::string, Krb5Lifetime> services;
+  for (auto& data : serviceDataMap_) {
+    folly::SharedMutex::ReadHolder cache_lock(data.second->lockCache);
+    if (!data.second->cache) {
+      continue;
+    }
+    const auto service = getLifetimeOfFirstServicePrincipal(data.second->cache);
+    if (top_services.count(service.first) == 0) {
+      continue;
+    }
+    services[service.first] = service.second;
+  }
+  return services;
+}
+
+std::map<std::string, Krb5Lifetime> Krb5CCacheStore::getTgtLifetimes() {
+  return tgts_.getLifetimes();
+}
+
+std::pair<std::string, Krb5Lifetime>
+Krb5CCacheStore::getLifetimeOfFirstServicePrincipal(
+    const std::shared_ptr<Krb5CCache>& cache) {
+  auto princ_list = cache->getServicePrincipalList();
+  if (princ_list.size() < 1) {
+    throw std::runtime_error("Principal list too small in ccache");
+  }
+  auto princ = std::move(princ_list[0]);
+  auto princStr = folly::to<string>(princ);
+  auto creds = cache->retrieveCred(princ.get());
+  auto lifetime =
+      std::make_pair(creds.get().times.starttime, creds.get().times.endtime);
+  return std::make_pair(folly::to<string>(princ), std::move(lifetime));
+}
 }}}

@@ -183,7 +183,7 @@ vector<string> Krb5Tgts::getValidRealms() {
   return ret;
 }
 
-std::pair<uint64_t, uint64_t> Krb5Tgts::getLifetime() {
+Krb5Lifetime Krb5Tgts::getLifetime() {
   waitForInit();
   // Get the lifetime of the main cred
   ReadLock lock(lock_);
@@ -192,6 +192,18 @@ std::pair<uint64_t, uint64_t> Krb5Tgts::getLifetime() {
     tgt_->get().times.endtime);
 }
 
+std::map<std::string, Krb5Lifetime> Krb5Tgts::getLifetimes() {
+  waitForInit();
+  ReadLock lock(lock_);
+  const auto mainTgtRealm = getClientPrincipal().getRealm();
+  const auto mainTgtLifetime = getLifetime();
+  std::map<std::string, Krb5Lifetime> ret = {{mainTgtRealm, mainTgtLifetime}};
+  for (const auto& entry : realmTgtsMap_) {
+    ret[entry.first] = std::make_pair(
+        entry.second->get().times.starttime, entry.second->get().times.endtime);
+  }
+  return ret;
+}
 
 void Krb5Tgts::waitForInit() {
   MutexGuard guard(initLock_);

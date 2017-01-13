@@ -19,15 +19,15 @@
 #include <thrift/perf/cpp/ClientWorker2.h>
 
 #include <thrift/lib/cpp/ClientUtil.h>
-#include <thrift/lib/cpp/test/loadgen/RNG.h>
-#include <thrift/perf/cpp/ClientLoadConfig.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp/test/loadgen/RNG.h>
+#include <thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h>
+#include <thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManagerLogger.h>
 #include <thrift/lib/cpp2/async/GssSaslClient.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/security/KerberosSASLThreadManager.h>
-#include <thrift/lib/cpp2/security/SecurityLogger.h>
-#include <thrift/lib/cpp/util/kerberos/Krb5CredentialsCacheManager.h>
+#include <thrift/perf/cpp/ClientLoadConfig.h>
 
 using namespace boost;
 using namespace apache::thrift::protocol;
@@ -110,11 +110,13 @@ std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
 
     if (config->SASLPolicy() == "required" ||
         config->SASLPolicy() == "permitted") {
-      static auto securityLogger = std::make_shared<SecurityLogger>();
-      static auto saslThreadManager =
-        std::make_shared<SaslThreadManager>(securityLogger);
+      static auto krb5CredentialsCacheManagerLogger =
+          std::make_shared<krb5::Krb5CredentialsCacheManagerLogger>();
+      static auto saslThreadManager = std::make_shared<SaslThreadManager>(
+          krb5CredentialsCacheManagerLogger);
       static auto credentialsCacheManager =
-        std::make_shared<krb5::Krb5CredentialsCacheManager>(securityLogger);
+          std::make_shared<krb5::Krb5CredentialsCacheManager>(
+              krb5CredentialsCacheManagerLogger);
       headerChannel->setSaslClient(std::unique_ptr<apache::thrift::SaslClient>(
         new apache::thrift::GssSaslClient(socket->getEventBase())
       ));

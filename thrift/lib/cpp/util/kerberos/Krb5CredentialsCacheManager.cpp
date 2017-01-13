@@ -53,14 +53,15 @@ using namespace std;
 const int Krb5CredentialsCacheManager::MANAGE_THREAD_SLEEP_PERIOD = 10*60*1000;
 const int Krb5CredentialsCacheManager::ABOUT_TO_EXPIRE_THRESHOLD = 600;
 const int Krb5CredentialsCacheManager::NUM_ELEMENTS_TO_PERSIST_TO_FILE = 10000;
+const int Krb5CredentialsCacheManager::NUM_ELEMENTS_TO_LOG = 10;
 
 Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
-  const std::shared_ptr<SecurityLogger>& logger,
-  int maxCacheSize)
-    : stopManageThread_(false)
-    , logger_(logger)
-    , ccacheTypeIsMemory_(false)
-    , updateFileCacheEnabled_(true) {
+    const std::shared_ptr<Krb5CredentialsCacheManagerLogger>& logger,
+    int maxCacheSize)
+    : stopManageThread_(false),
+      logger_(logger),
+      ccacheTypeIsMemory_(false),
+      updateFileCacheEnabled_(true) {
   try {
     // These calls can throw if the context cannot be initialized for some
     // reason, e.g. bad config format, etc.
@@ -123,10 +124,12 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
           logger->logStart("init_cache_store");
           initCacheStore();
           logger->logEnd("init_cache_store");
+          logTopCredentials(logger, "init_cache_store");
         } else if (aboutToExpire(store_->getLifetime())) {
           logger->logStart("init_cache_store", "expired");
           initCacheStore();
           logger->logEnd("init_cache_store");
+          logTopCredentials(logger, "init_expired_cache_store");
         }
 
         // If not a user credential and the cache store needs to be renewed,
@@ -141,6 +144,7 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
             uint64_t renewCount = store_->renewCreds();
             logger->logEnd(
               "build_renewed_cache", folly::to<std::string>(renewCount));
+            logTopCredentials(logger, "build_renewed_cache");
           }
 
           if (updateFileCacheEnabled_) {
@@ -412,9 +416,9 @@ int Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
     LOG(ERROR) << "Could not open a temporary cache file with template: "
                << tmp_template << " error: " << strerror(errno);
     logger_->log(
-      "persist_ccache_fail_tmp_file_create_fail",
-      {tmp_template, strerror(errno)},
-      SecurityLogger::TracingOptions::NONE);
+        "persist_ccache_fail_tmp_file_create_fail",
+        {tmp_template, strerror(errno)},
+        Krb5CredentialsCacheManagerLogger::TracingOptions::NONE);
     return -1;
   }
   ret = close(fd);
@@ -475,7 +479,12 @@ std::shared_ptr<Krb5CCache> Krb5CredentialsCacheManager::waitForCache(
   if (!store_) {
     throw std::runtime_error("Kerberos ccache store could not be initialized");
   }
-  return store_->waitForCache(service, logger);
+  bool didInitCacheForService;
+  auto cache = store_->waitForCache(service, logger, &didInitCacheForService);
+  if (didInitCacheForService) {
+    logOneCredential(logger_, "init_cache_for_service", cache);
+  }
+  return cache;
 }
 
 void Krb5CredentialsCacheManager::initCacheStore() {
@@ -560,8 +569,7 @@ bool Krb5CredentialsCacheManager::isPrincipalInKeytab(
   return false;
 }
 
-bool Krb5CredentialsCacheManager::aboutToExpire(
-    const std::pair<uint64_t, uint64_t>& lifetime) {
+bool Krb5CredentialsCacheManager::aboutToExpire(const Krb5Lifetime& lifetime) {
   time_t now;
   time(&now);
   return ((uint64_t) now +
@@ -570,7 +578,8 @@ bool Krb5CredentialsCacheManager::aboutToExpire(
 }
 
 bool Krb5CredentialsCacheManager::reachedRenewTime(
-    const std::pair<uint64_t, uint64_t>& lifetime, const std::string& client) {
+    const Krb5Lifetime& lifetime,
+    const std::string& client) {
   time_t now;
   time(&now);
   size_t sname_hash = std::hash<std::string>()(client);
@@ -585,4 +594,38 @@ bool Krb5CredentialsCacheManager::reachedRenewTime(
   return (uint64_t) now > (half_life_time + renew_offset);
 }
 
+void Krb5CredentialsCacheManager::logTopCredentials(
+    const std::shared_ptr<Krb5CredentialsCacheManagerLogger>& logger,
+    const std::string& key) {
+  logCredentialsCache(
+      logger,
+      key,
+      store_->getServicePrincipalLifetimes(
+          Krb5CredentialsCacheManager::NUM_ELEMENTS_TO_LOG));
+}
+
+void Krb5CredentialsCacheManager::logOneCredential(
+    const std::shared_ptr<Krb5CredentialsCacheManagerLogger>& logger,
+    const std::string& key,
+    const std::shared_ptr<Krb5CCache>& cache) {
+  const auto service = store_->getLifetimeOfFirstServicePrincipal(cache);
+  std::map<std::string, Krb5Lifetime> serviceLifetimes = {
+      {service.first, service.second}};
+
+  logCredentialsCache(logger, key, serviceLifetimes);
+}
+
+void Krb5CredentialsCacheManager::logCredentialsCache(
+    const std::shared_ptr<Krb5CredentialsCacheManagerLogger>& logger,
+    const std::string& key,
+    const std::map<std::string, Krb5Lifetime>& serviceLifetimes) {
+  Krb5Keytab keytab(ctx_->get());
+  logger->logCredentialsCache(
+      key,
+      keytab,
+      store_->getClientPrincipal(),
+      store_->getLifetime(),
+      serviceLifetimes,
+      store_->getTgtLifetimes());
+}
 }}}

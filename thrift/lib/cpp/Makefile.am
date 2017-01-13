@@ -235,7 +235,8 @@ include_utilkerberos_HEADERS = \
 	util/kerberos/FBKrb5GetCreds.h \
 	util/kerberos/Krb5OlderVersionStubs.h \
 	util/kerberos/Krb5Tgts.h \
-	util/kerberos/Krb5Util.h
+	util/kerberos/Krb5Util.h \
+	util/kerberos/Krb5CredentialsCacheManagerLogger.h
 
 include_testdir = $(include_thriftdir)/test
 include_test_HEADERS = \

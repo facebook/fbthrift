@@ -71,7 +71,7 @@ std::ostream& operator<<(std::ostream& os,
 }
 
 namespace apache { namespace thrift { namespace krb5 {
-
+using Krb5Lifetime = std::pair<uint64_t, uint64_t>;
 /**
  * This is a convenience method which will raise a std::runtime_error
  * exception with a useful description if code != 0.
@@ -284,8 +284,7 @@ public:
    * of 'principal'.  If the principal is nullptr, use the ccache's
    * client principal.
    */
-  std::pair<uint64_t, uint64_t> getLifetime(
-    krb5_principal principal = nullptr) const;
+  Krb5Lifetime getLifetime(krb5_principal principal = nullptr) const;
   std::string getName() const;
   Krb5Principal getClientPrincipal() const;
   void initialize(krb5_principal cprinc);
