@@ -39,6 +39,7 @@ _configs.sed
 *.lo
 *.a
 *.la
+*.pyc
 gen-cpp
 gen-cpp2
 /thrift/.python-local/
