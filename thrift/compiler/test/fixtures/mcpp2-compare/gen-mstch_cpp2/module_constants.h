@@ -64,6 +64,16 @@ struct module_constants {
     return aString_;
   }
 
+  static std::vector<bool> const& aList();
+
+  static std::map<int32_t, std::string> const& aMap();
+
+  static std::set<std::string> const& aSet();
+
+  static std::vector<std::vector<int32_t>> const& aListOfLists();
+
+  static std::vector<std::map<std::string, int32_t>> const& states();
+
 };
 
 } // cpp2

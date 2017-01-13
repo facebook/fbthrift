@@ -196,6 +196,12 @@ mstch::map t_mstch_cpp2_generator::extend_const(const t_const& c) const {
   const auto ctype = c.get_type();
   const bool inlined_const = ctype->is_base_type() || ctype->is_enum();
 
+  if (inlined_const) {
+    m.emplace("inlined", true);
+  } else {
+    m.emplace("notinlined", true);
+  }
+
   if (inlined_const && ctype->is_string()) {
     m.emplace("inlinedstring", true);
   }

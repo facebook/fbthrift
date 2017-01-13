@@ -23,7 +23,16 @@
 namespace cpp2 {
 
 <%#program:constants%><%#constant:type%><%#constant:value%>
-constexpr <%type:cxx_type%> const <%program:name%>_constants::<%constant:name%>_;
+<%#constant:inlined%>
+constexpr <%#type:string?%>char const *<%/type:string?%><%^type:string?%><% > Type%><%/type:string?%> const <%program:name%>_constants::<%constant:name%>_;
 
+<%/constant:inlined%>
+<%#constant:notinlined%>
+<% > Type%> const& <%program:name%>_constants::<%constant:name%>() {
+  static folly::Indestructible<<% > Type%>> const instance(<% > ConstantSignature%><% > ConstantValues%>);
+  return *instance;
+}
+
+<%/constant:notinlined%>
 <%/constant:value%><%/constant:type%><%/program:constants%>
 } // cpp2

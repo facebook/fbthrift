@@ -31,12 +31,18 @@ struct <%program:name%>_constants {
   // prevent unnecessary allocations
 
   <%/constant:inlinedstring%>
-  static constexpr <%type:cxx_type%> const <%constant:name%>_ = <%type:cxx_value_prefix%><%value:cxx_value%><%type:cxx_value_suffix%>;
+  <%#constant:inlined%>
+  static constexpr <%#type:string?%>char const *<%/type:string?%><%^type:string?%><% > Type%><%/type:string?%> const <%constant:name%>_ = <%type:cxx_value_prefix%><%value:cxx_value%><%type:cxx_value_suffix%>;
 
-  static constexpr <%type:cxx_type%> <%constant:notinlined%><%constant:name%>() {
+  static constexpr <%#type:string?%>char const *<%/type:string?%><%^type:string?%><% > Type%><%/type:string?%> <%constant:name%>() {
     return <%constant:name%>_;
   }
 
+  <%/constant:inlined%>
+  <%#constant:notinlined%>
+  static <% > Type%> const& <%constant:name%>();
+
+  <%/constant:notinlined%>
 <%/constant:value%><%/constant:type%><%/program:constants%>
 };
 

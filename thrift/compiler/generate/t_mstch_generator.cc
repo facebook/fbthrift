@@ -260,6 +260,7 @@ mstch::map t_mstch_generator::dump(const t_const_value& value) const {
       result.emplace("nonzero?", value.get_double() != 0.0);
       break;
     case cv::CV_BOOL:
+      result.emplace("boolValue", value.get_bool() == true);
       result.emplace("nonzero?", value.get_bool() == true);
       break;
     case cv::CV_INTEGER:

@@ -26,4 +26,45 @@ constexpr double const module_constants::aDouble_;
 
 constexpr char const * const module_constants::aString_;
 
+std::vector<bool> const& module_constants::aList() {
+  static folly::Indestructible<std::vector<bool>> const instance(std::initializer_list<bool>{true,
+  false});
+  return *instance;
+}
+
+std::map<int32_t, std::string> const& module_constants::aMap() {
+  static folly::Indestructible<std::map<int32_t, std::string>> const instance(std::initializer_list<std::pair<const int32_t, std::string>>{{1, apache::thrift::StringTraits< std::string>::fromStringLiteral("foo")},
+  {2, apache::thrift::StringTraits< std::string>::fromStringLiteral("bar")}});
+  return *instance;
+}
+
+std::set<std::string> const& module_constants::aSet() {
+  static folly::Indestructible<std::set<std::string>> const instance(std::initializer_list<std::string>{apache::thrift::StringTraits< std::string>::fromStringLiteral("foo"),
+  apache::thrift::StringTraits< std::string>::fromStringLiteral("bar")});
+  return *instance;
+}
+
+std::vector<std::vector<int32_t>> const& module_constants::aListOfLists() {
+  static folly::Indestructible<std::vector<std::vector<int32_t>>> const instance(std::initializer_list<std::vector<int32_t>>{std::initializer_list<int32_t>{1,
+  3,
+  5,
+  7,
+  9},
+  std::initializer_list<int32_t>{2,
+  4,
+  8,
+  10,
+  12}});
+  return *instance;
+}
+
+std::vector<std::map<std::string, int32_t>> const& module_constants::states() {
+  static folly::Indestructible<std::vector<std::map<std::string, int32_t>>> const instance(std::initializer_list<std::map<std::string, int32_t>>{std::initializer_list<std::pair<const std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("San Diego"), 3211000},
+  {apache::thrift::StringTraits< std::string>::fromStringLiteral("Sacramento"), 479600},
+  {apache::thrift::StringTraits< std::string>::fromStringLiteral("SF"), 837400}},
+  std::initializer_list<std::pair<const std::string, int32_t>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("New York"), 8406000},
+  {apache::thrift::StringTraits< std::string>::fromStringLiteral("Albany"), 98400}}});
+  return *instance;
+}
+
 } // cpp2
