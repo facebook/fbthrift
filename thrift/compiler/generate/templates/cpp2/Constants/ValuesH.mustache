@@ -14,7 +14,18 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%^type:map?%><% > ContainerTypeBase%><%/type:map?%><%!
-%><%#type:map?%><%!
-%>std::map<<%#type:keyType%><% > ContainerType%><%/type:keyType%>, <%#type:valueType%><% > Type%><%/type:valueType%>><%!
-%><%/type:map?%>
+%><%#value:bool?%><%!
+%><%value:boolValue%><%!
+%><%/value:bool?%><%!
+
+%><%#value:integer?%><%!
+%><%value:integerValue%><%!
+%><%/value:integer?%><%!
+
+%><%#value:double?%><%!
+%><%value:doubleValue%><%!
+%><%/value:double?%><%!
+
+%><%#value:string?%><%!
+%>"<%value:stringValue%>"<%!
+%><%/value:string?%>

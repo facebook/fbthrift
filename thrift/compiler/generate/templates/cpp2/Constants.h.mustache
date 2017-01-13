@@ -25,24 +25,32 @@ namespace cpp2 {
 struct <%program:name%>_constants {
 
 <%#program:constants%><%#constant:type%><%#constant:value%>
-  <%#constant:inlinedstring%>
+  <%^type:container?%>
+    <%#type:string?%>
   // consider using folly::StringPiece instead of std::string whenever possible
   // to referencing this statically allocated string constant, in order to
   // prevent unnecessary allocations
 
-  <%/constant:inlinedstring%>
-  <%#constant:inlined%>
-  static constexpr <%#type:string?%>char const *<%/type:string?%><%^type:string?%><% > Type%><%/type:string?%> const <%constant:name%>_ = <%type:cxx_value_prefix%><%value:cxx_value%><%type:cxx_value_suffix%>;
+  static constexpr char const * const <%constant:name%>_ = <%type:cxx_value_prefix%><% > Constants/ValuesH%><%type:cxx_value_suffix%>;
 
-  static constexpr <%#type:string?%>char const *<%/type:string?%><%^type:string?%><% > Type%><%/type:string?%> <%constant:name%>() {
+  static constexpr char const * <%constant:name%>() {
     return <%constant:name%>_;
   }
 
-  <%/constant:inlined%>
-  <%#constant:notinlined%>
+    <%/type:string?%>
+    <%^type:string?%>
+  static constexpr <% > Type%> const <%constant:name%>_ = <%type:cxx_value_prefix%><% > Constants/ValuesH%><%type:cxx_value_suffix%>;
+
+  static constexpr <% > Type%> <%constant:name%>() {
+    return <%constant:name%>_;
+  }
+
+    <%/type:string?%>
+  <%/type:container?%>
+  <%#type:container?%>
   static <% > Type%> const& <%constant:name%>();
 
-  <%/constant:notinlined%>
+  <%/type:container?%>
 <%/constant:value%><%/constant:type%><%/program:constants%>
 };
 

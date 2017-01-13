@@ -33,8 +33,6 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   void generate_program() override;
 
  protected:
-  mstch::map extend_const(const t_const& v) const override;
-  mstch::map extend_const_value(const t_const_value& v) const override;
   mstch::map extend_enum(const t_enum&) const override;
   mstch::map extend_function(const t_function&) const override;
   mstch::map extend_program(const t_program&) const override;
@@ -92,13 +90,11 @@ void t_mstch_cpp2_generator::generate_program() {
 mstch::map t_mstch_cpp2_generator::extend_program(
     const t_program& program) const {
   mstch::map m;
-  m.emplace("name", program.get_name());
   m.emplace("normalizedIncludePrefix", this->get_include_prefix(program));
   return m;
 }
 
 mstch::map t_mstch_cpp2_generator::extend_service(const t_service& svc) const {
-
   mstch::array protocol_array{};
   for (auto it = protocols_.begin(); it != protocols_.end(); ++it) {
     mstch::map m;
@@ -116,6 +112,7 @@ mstch::map t_mstch_cpp2_generator::extend_service(const t_service& svc) const {
     }
   }
   add_first_last(oneway_functions_array);
+
   return mstch::map {
     {"namespaces", this->get_namespace(*svc.get_program())},
     {"onewayfunctions", oneway_functions_array},
@@ -150,21 +147,6 @@ mstch::map t_mstch_cpp2_generator::extend_enum(const t_enum& e) const {
 mstch::map t_mstch_cpp2_generator::extend_type(const t_type& t) const {
   mstch::map m;
 
-  auto const cxx_type = [&] {
-    using TypeValue = t_types::TypeValue;
-    switch (t.get_type_value()) {
-      case TypeValue::TYPE_BOOL: return std::string("bool");
-      case TypeValue::TYPE_BYTE: return std::string("int8_t");
-      case TypeValue::TYPE_I16: return std::string("int16_t");
-      case TypeValue::TYPE_I32: return std::string("int32_t");
-      case TypeValue::TYPE_I64: return std::string("int64_t");
-      case TypeValue::TYPE_DOUBLE: return std::string("double");
-      case TypeValue::TYPE_FLOAT: return std::string("float");
-      case TypeValue::TYPE_STRING: return std::string("char const *");
-      default: return std::string();
-    }
-  }();
-
   auto const cxx_value_prefix = [&] {
     using TypeValue = t_types::TypeValue;
     switch (t.get_type_value()) {
@@ -173,6 +155,7 @@ mstch::map t_mstch_cpp2_generator::extend_type(const t_type& t) const {
       default: return std::string();
     }
   }();
+  m.emplace("cxx_value_prefix", cxx_value_prefix);
 
   auto const cxx_value_suffix = [&] {
     using TypeValue = t_types::TypeValue;
@@ -183,57 +166,7 @@ mstch::map t_mstch_cpp2_generator::extend_type(const t_type& t) const {
       default: return std::string();
     }
   }();
-
-  m.emplace("cxx_type", cxx_type);
-  m.emplace("cxx_value_prefix", cxx_value_prefix);
   m.emplace("cxx_value_suffix", cxx_value_suffix);
-
-  return m;
-}
-
-mstch::map t_mstch_cpp2_generator::extend_const(const t_const& c) const {
-  mstch::map m;
-  const auto ctype = c.get_type();
-  const bool inlined_const = ctype->is_base_type() || ctype->is_enum();
-
-  if (inlined_const) {
-    m.emplace("inlined", true);
-  } else {
-    m.emplace("notinlined", true);
-  }
-
-  if (inlined_const && ctype->is_string()) {
-    m.emplace("inlinedstring", true);
-  }
-
-  return m;
-}
-
-mstch::map t_mstch_cpp2_generator::extend_const_value(
-    const t_const_value& v) const {
-  using cv = t_const_value::t_const_value_type;
-  const cv type = v.get_type();
-  mstch::map m;
-
-  auto const format_double_string = [](const double d) {
-    std::string doubleStr = std::to_string(d);
-    doubleStr.erase(doubleStr.find_last_not_of('0') + 1);
-    if (doubleStr.back() == '.') doubleStr.push_back('0');
-    return doubleStr;
-  };
-
-  auto const cxx_value = [&] {
-    using ConstValue = t_const_value::t_const_value_type;
-    switch (v.get_type()) {
-      case ConstValue::CV_BOOL:
-        return v.get_bool() ? std::string("true") : std::string("false");
-      case ConstValue::CV_INTEGER: return std::to_string(v.get_integer());
-      case ConstValue::CV_DOUBLE: return format_double_string(v.get_double());
-      case ConstValue::CV_STRING: return '"'+v.get_string()+'"';
-      default: return std::string();
-    }
-  }();
-  m.emplace("cxx_value", cxx_value);
 
   return m;
 }

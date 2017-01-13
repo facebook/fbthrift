@@ -1332,9 +1332,9 @@ Mapping.register(Map__string_string)
 myInt = 1337
 name = cname().decode('UTF-8')
 states = List__Map__string_i32.create(make_shared[vector[cmap[string,int32_t]]](cstates()))
-x = 1.000000
+x = 1.0
 y = 1000000.0
-z = 1000000000.000000
+z = 1000000000.0
 instagram = Internship.create(
     make_shared[cInternship](cinstagram()))
 kRanges = List__Range.create(make_shared[vector[cRange]](ckRanges()))
@@ -1352,7 +1352,7 @@ zero_byte = 0
 zero16 = 0
 zero32 = 0
 zero64 = 0
-zero_dot_zero = 0.000000
+zero_dot_zero = 0.0
 empty_string = cempty_string().decode('UTF-8')
 empty_int_list = List__i32.create(make_shared[vector[int32_t]](cempty_int_list()))
 empty_string_list = List__string.create(make_shared[vector[string]](cempty_string_list()))

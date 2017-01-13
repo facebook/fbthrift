@@ -61,9 +61,9 @@ public final class Constants
 
     public static final String tripleApostrophe = "'''";
 
-    public static final double x = 1.000000;
+    public static final double x = 1.0;
 
     public static final double y = 1000000.0;
 
-    public static final double z = 1000000000.000000;
+    public static final double z = 1000000000.0;
 }

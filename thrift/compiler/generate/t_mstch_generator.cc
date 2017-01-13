@@ -254,9 +254,16 @@ mstch::map t_mstch_generator::dump(const t_const_value& value) const {
       {"list?", type == cv::CV_LIST},
   };
 
+  auto const format_double_string = [](const double d) {
+    std::string d_str = std::to_string(d);
+    d_str.erase(d_str.find_last_not_of('0') + 1);
+    if (d_str.back() == '.') d_str.push_back('0');
+    return d_str;
+  };
+
   switch (type) {
     case cv::CV_DOUBLE:
-      result.emplace("doubleValue", std::to_string(value.get_double()));
+      result.emplace("doubleValue", format_double_string(value.get_double()));
       result.emplace("nonzero?", value.get_double() != 0.0);
       break;
     case cv::CV_BOOL:

@@ -110,11 +110,11 @@ public final class Constants
 
     public static final boolean true_c = true;
 
-    public static final double x = 1.000000;
+    public static final double x = 1.0;
 
     public static final double y = 1000000.0;
 
-    public static final double z = 1000000000.000000;
+    public static final double z = 1000000000.0;
 
     public static final short zero16 = 0;
 
@@ -124,5 +124,5 @@ public final class Constants
 
     public static final byte zero_byte = 0;
 
-    public static final double zero_dot_zero = 0.000000;
+    public static final double zero_dot_zero = 0.0;
 }
