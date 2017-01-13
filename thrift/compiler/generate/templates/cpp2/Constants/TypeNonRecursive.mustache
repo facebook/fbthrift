@@ -14,8 +14,31 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#value:list?%><%#value:listElements%><% > Constants/ValuesInside%><%^last?%>,
-  <%/last?%><%/value:listElements%>}<%/value:list?%><%!
-%><%#value:map?%><%#value:mapElements%>{<%#element:key%><% > Constants/ValuesInside%>, <%/element:key%><%#element:value%><% > Constants/ValuesInside%><%/element:value%>}<%^last?%>,
-  <%/last?%><%/value:mapElements%>}<%/value:map?%><%!
-%>
+%><%!
+
+List types
+Format:`Type`
+E.g.:`double`
+%><%#type:list?%><%#type:listElemType%><%!
+  %><% > Type%><%!
+%><%/type:listElemType%><%/type:list?%><%!
+
+Set types
+Format:`Type`
+E.g.:`bool`
+%><%#type:set?%><%#type:setElemType%><%!
+  %><% > Type%><%!
+%><%/type:setElemType%><%/type:set?%><%!
+
+Map Key-Value types
+Form:`Type, Type`
+E.g.:`int64_t, std::string`
+%><%#type:map?%><%!
+  %><%#type:keyType%><%!
+    %><% > Type%><%!
+  %><%/type:keyType%><%!
+  %>, <%!
+  %><%#type:valueType%><%!
+    %><% > Type%><%!
+  %><%/type:valueType%><%!
+%><%/type:map?%>

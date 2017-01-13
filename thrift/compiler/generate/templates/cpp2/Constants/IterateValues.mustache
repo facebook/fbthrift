@@ -1,0 +1,67 @@
+<%!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+%><%!
+
+Base Types:
+
+%><%^value:container?%><%!
+  %><%#value:string?%><%!
+    %>apache::thrift::StringTraits< std::string>::fromStringLiteral(<% > Constants/Value%>)<%!
+  %><%/value:string?%><%!
+
+  %><%^value:string?%><% > Constants/Value%><%/value:string?%><%!
+%><%/value:container?%><%!
+
+Containers:
+
+List
+Form:`std::initializer_list<Type>{Values}`
+E.g.:`std::initializer_list<bool>{true, false, false, true}`
+%><%#value:list?%><%!
+  %>std::initializer_list<<%!
+    %><% > Constants/TypeRecursive%><%!
+  %>>{<%!
+  %><%#value:listElements%><%!
+    %><% > Constants/IterateValues%><%!
+    %><%^last?%>,
+  <%/last?%><%!
+  %><%/value:listElements%><%!
+  %>}<%!
+%><%/value:list?%><%!
+
+Map:
+Form:`std::initializer_list<Type>{{Key, Value}}`
+E.g.:`std::initializer_list<std::pair<int64_t, bool>>{{11, false},{453, false}}`
+%><%#value:map?%><%!
+  %>std::initializer_list<<%!
+    %><% > Constants/TypeRecursive%><%!
+  %>>{<%!
+  %><%#value:mapElements%><%!
+    %>{<%!
+      %><%#element:key%><%!
+        %><% > Constants/IterateValues%><%!
+      %><%/element:key%><%!
+      %>, <%!
+      %><%#element:value%><%!
+        %><% > Constants/IterateValues%><%!
+      %><%/element:value%><%!
+    %>}<%!
+    %><%^last?%>,
+  <%/last?%><%!
+  %><%/value:mapElements%><%!
+  %>}<%!
+%><%/value:map?%>

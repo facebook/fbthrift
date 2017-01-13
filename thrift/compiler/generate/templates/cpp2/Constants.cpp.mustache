@@ -35,7 +35,7 @@ constexpr <% > Type%> const <%program:name%>_constants::<%constant:name%>_;
   <%/type:container?%>
   <%#type:container?%>
 <% > Type%> const& <%program:name%>_constants::<%constant:name%>() {
-  static folly::Indestructible<<% > Type%>> const instance(<% > Constants/Signature%><% > Constants/Values%>);
+  static folly::Indestructible<<% > Type%>> const instance(<% > Constants/TypeFormat%><% > Constants/ValuesFormat%>);
   return *instance;
 }
 

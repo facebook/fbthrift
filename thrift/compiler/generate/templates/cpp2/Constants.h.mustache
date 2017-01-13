@@ -31,7 +31,7 @@ struct <%program:name%>_constants {
   // to referencing this statically allocated string constant, in order to
   // prevent unnecessary allocations
 
-  static constexpr char const * const <%constant:name%>_ = <%type:cxx_value_prefix%><% > Constants/ValuesH%><%type:cxx_value_suffix%>;
+  static constexpr char const * const <%constant:name%>_ = <%type:cxx_value_prefix%><% > Constants/Value%><%type:cxx_value_suffix%>;
 
   static constexpr char const * <%constant:name%>() {
     return <%constant:name%>_;
@@ -39,7 +39,7 @@ struct <%program:name%>_constants {
 
     <%/type:string?%>
     <%^type:string?%>
-  static constexpr <% > Type%> const <%constant:name%>_ = <%type:cxx_value_prefix%><% > Constants/ValuesH%><%type:cxx_value_suffix%>;
+  static constexpr <% > Type%> const <%constant:name%>_ = <%type:cxx_value_prefix%><% > Constants/Value%><%type:cxx_value_suffix%>;
 
   static constexpr <% > Type%> <%constant:name%>() {
     return <%constant:name%>_;

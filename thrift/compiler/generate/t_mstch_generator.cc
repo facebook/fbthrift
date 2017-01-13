@@ -252,6 +252,7 @@ mstch::map t_mstch_generator::dump(const t_const_value& value) const {
       {"string?", type == cv::CV_STRING},
       {"map?", type == cv::CV_MAP},
       {"list?", type == cv::CV_LIST},
+      {"container?", type == cv::CV_MAP || type == cv::CV_LIST}
   };
 
   auto const format_double_string = [](const double d) {

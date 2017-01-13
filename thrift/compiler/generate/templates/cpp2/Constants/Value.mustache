@@ -14,6 +14,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#value:list?%>std::initializer_list<<% > Constants/SignatureType%>>{<%/value:list?%><%!
-%><%#value:map?%>std::initializer_list<std::pair<const <% > Constants/SignatureType%>>>{<%/value:map?%><%!
-%>
+%><%!
+
+Base Constant Values
+
+%><%#value:bool?%><%value:boolValue%><%/value:bool?%><%!
+
+%><%#value:integer?%><%value:integerValue%><%/value:integer?%><%!
+
+%><%#value:double?%><%value:doubleValue%><%/value:double?%><%!
+
+%><%#value:string?%>"<%value:stringValue%>"<%/value:string?%>
