@@ -84,7 +84,7 @@ void registering_datatype(
 // helper for all the assertions. This permits explicit template instantiations
 // of legacy_reflection to reduce the overall template recursion depth.
 
-template <typename T, typename = void>
+template <typename T, typename TC, typename = void>
 struct helper;
 
 // impl
@@ -197,7 +197,8 @@ struct impl<T, type_class::structure> {
         schema_t& schema,
         datatype_t& dt) {
       using type = typename MemberInfo::type;
-      using type_helper = helper<type>;
+      using type_class = typename MemberInfo::type_class;
+      using type_helper = helper<type, type_class>;
       using member_name = typename MemberInfo::name;
       type_helper::register_into(schema);
       auto& f = dt.fields[MemberInfo::id::value];
@@ -234,7 +235,8 @@ struct impl<T, type_class::variant> {
         schema_t& schema,
         datatype_t& dt) {
       using type = typename MemberInfo::type;
-      using type_helper = helper<type>;
+      using type_class = typename MemberInfo::metadata::type_class;
+      using type_helper = helper<type, type_class>;
       using member_name = typename MemberInfo::metadata::name;
       type_helper::register_into(schema);
       auto& f = dt.fields[MemberInfo::metadata::id::value];
@@ -264,7 +266,7 @@ template <typename T, typename ValueTypeClass>
 struct impl<T, type_class::list<ValueTypeClass>> {
   using traits = thrift_list_traits<T>;
   using value_type = typename traits::value_type;
-  using value_helper = helper<value_type>;
+  using value_helper = helper<value_type, ValueTypeClass>;
   FATAL_S(rkind, "list");
   using rname = get_container_name<rkind, typename value_helper::name>;
   static id_t rid() {
@@ -286,7 +288,7 @@ template <typename T, typename ValueTypeClass>
 struct impl<T, type_class::set<ValueTypeClass>> {
   using traits = thrift_set_traits<T>;
   using value_type = typename traits::value_type;
-  using value_helper = helper<value_type>;
+  using value_helper = helper<value_type, ValueTypeClass>;
   FATAL_S(rkind, "set");
   using rname = get_container_name<rkind, typename value_helper::name>;
   static id_t rid() {
@@ -308,9 +310,9 @@ template <typename T, typename KeyTypeClass, typename MappedTypeClass>
 struct impl<T, type_class::map<KeyTypeClass, MappedTypeClass>> {
   using traits = thrift_map_traits<T>;
   using key_type = typename traits::key_type;
-  using key_helper = helper<key_type>;
+  using key_helper = helper<key_type, KeyTypeClass>;
   using mapped_type = typename traits::mapped_type;
-  using mapped_helper = helper<mapped_type>;
+  using mapped_helper = helper<mapped_type, MappedTypeClass>;
   FATAL_S(rkind, "map");
   using rname = get_map_container_name<
     rkind, typename key_helper::name, typename mapped_helper::name>;
@@ -332,32 +334,39 @@ struct impl<T, type_class::map<KeyTypeClass, MappedTypeClass>> {
   }
 };
 
-template <typename T>
-using is_known = std::integral_constant<bool,
-      !std::is_same<reflect_type_class<T>, type_class::unknown>::value>;
+template <typename T, typename TC>
+using is_unknown = std::integral_constant<bool,
+      std::is_same<TC, type_class::unknown>::value || (
+      std::is_same<reflect_type_class<T>, type_class::unknown>::value && (
+        std::is_same<TC, type_class::enumeration>::value ||
+        std::is_same<TC, type_class::structure>::value ||
+        std::is_same<TC, type_class::variant>::value))>;
 
-template <typename T>
-using is_complete = fatal::is_complete<impl<T, reflect_type_class<T>>>;
+template <typename T, typename TC>
+using is_known = std::integral_constant<bool, !is_unknown<T, TC>::value>;
+
+template <typename T, typename TC>
+using is_complete = fatal::is_complete<impl<T, TC>>;
 
 // helper
 
-template <typename T>
-struct helper<T, typename std::enable_if<
-    is_known<T>::value && is_complete<T>::value>::type> {
-  using type_impl = impl<T, reflect_type_class<T>>;
+template <typename T, typename TC>
+struct helper<T, TC, typename std::enable_if<
+    is_known<T, TC>::value && is_complete<T, TC>::value>::type> {
+  using type_impl = impl<T, TC>;
   static void register_into(schema_t& schema) { type_impl::go(schema); }
   using name = typename type_impl::rname;
   static id_t id() { return type_impl::rid(); }
 };
 
-template <typename T>
-struct helper<T, typename std::enable_if<
-    !(is_known<T>::value && is_complete<T>::value)>::type> {
+template <typename T, typename TC>
+struct helper<T, TC, typename std::enable_if<
+    !(is_known<T, TC>::value && is_complete<T, TC>::value)>::type> {
   static_assert(
-      is_known<T>::value,
+      is_known<T, TC>::value,
       "legacy_reflection: missing reflection metadata");
   static_assert(
-      !is_known<T>::value || is_complete<T>::value,
+      !is_known<T, TC>::value || is_complete<T, TC>::value,
       "legacy_reflection: incomplete handler");
 
   static void register_into(schema_t&) {}
@@ -371,7 +380,8 @@ struct helper<T, typename std::enable_if<
 
 template <typename T>
 void legacy_reflection<T>::register_into(legacy_reflection_schema_t& schema) {
-  legacy_reflection_detail::helper<T>::register_into(schema);
+  using TC = reflect_type_class<T>;
+  legacy_reflection_detail::helper<T, TC>::register_into(schema);
 }
 
 template <typename T>
@@ -383,13 +393,15 @@ legacy_reflection_schema_t legacy_reflection<T>::schema() {
 
 template <typename T>
 constexpr folly::StringPiece legacy_reflection<T>::name() {
-  using name = typename legacy_reflection_detail::helper<T>::name;
+  using TC = reflect_type_class<T>;
+  using name = typename legacy_reflection_detail::helper<T, TC>::name;
   return legacy_reflection_detail::to_c_array<name>::range();
 }
 
 template <typename T>
 legacy_reflection_id_t legacy_reflection<T>::id() {
-  return legacy_reflection_detail::helper<T>::id();
+  using TC = reflect_type_class<T>;
+  return legacy_reflection_detail::helper<T, TC>::id();
 }
 
 }}
