@@ -27,7 +27,8 @@ to be converted from unicode to binary representation.
 }}{{#type:i32?}}citem{{/type:i32?}}{{!
 }}{{#type:i64?}}citem{{/type:i64?}}{{!
 }}{{#type:double?}}citem{{/type:double?}}{{!
-}}{{#type:string?}}(deref(citem.get())).decode(){{/type:string?}}{{!
+}}{{#type:string?}}(deref(citem.get())).decode('UTF-8'){{/type:string?}}{{!
+}}{{#type:binary?}}(deref(citem.get())){{/type:binary?}}{{!
 }}{{#type:struct}}{{> ModulePath}}.{{type:name}}.create({{!
   }}{{> ModulePath}}.move(citem)){{/type:struct}}{{!
 }}{{#type:list?}}{{> ModulePath}}.{{type:flat_name}}.create({{!

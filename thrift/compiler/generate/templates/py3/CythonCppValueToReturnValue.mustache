@@ -26,6 +26,7 @@ cpp type.
 }}{{#type:i64?}}result.value(){{/type:i64?}}{{!
 }}{{#type:double?}}result.value(){{/type:double?}}{{!
 }}{{#type:string?}}make_unique[string](result.value()){{/type:string?}}{{!
+}}{{#type:binary?}}make_unique[string](result.value()){{/type:binary?}}{{!
 }}{{#type:struct}}make_unique[{{> ModulePath}}.c{{struct:name}}]({{!
   }}result.value()){{/type:struct}}{{!
 }}{{#type:list?}}make_unique[vector[{{#type:listElemType}}{{>ContainerCythonFieldType}}{{/type:listElemType}}]]({{!
