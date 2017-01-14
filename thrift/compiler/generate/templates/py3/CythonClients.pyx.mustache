@@ -41,14 +41,14 @@ import asyncio
 import sys
 import traceback
 
-cimport {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}_types
-from {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}_clients_wrapper cimport move
+cimport {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types
+from {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.clients_wrapper cimport move
 {{#program:includeNamespaces}}
-cimport {{#includeNamespace}}{{value}}{{^last?}}.{{/last?}}{{/includeNamespace}}_types
+cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}types
 {{/program:includeNamespaces}}
 
 {{#program:services}}
-from {{#program:py3Namespaces}}{{value}}{{^last?}}.{{/last?}}{{/program:py3Namespaces}}.{{program:name}}_clients_wrapper cimport c{{service:name}}AsyncClient, c{{service:name}}ClientWrapper
+from {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.clients_wrapper cimport c{{service:name}}AsyncClient, c{{service:name}}ClientWrapper
 {{/program:services}}
 
 {{> ClientCallbacks}}

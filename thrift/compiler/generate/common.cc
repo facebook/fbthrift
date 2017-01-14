@@ -30,7 +30,9 @@ std::vector<std::string> split_namespace(const std::string& s) {
     last_match = next_match + 1;
     next_match = s.find(token, last_match);
   }
-  output.push_back(s.substr(last_match));
+  if (!s.empty()) {
+    output.push_back(s.substr(last_match));
+  }
 
   return output;
 }

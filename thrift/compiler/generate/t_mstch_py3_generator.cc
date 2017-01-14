@@ -101,7 +101,7 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) const {
   const auto program = type_program? type_program: this->get_program();
   const auto modulePath = this->get_py3_namespace(
     *program,
-    program->get_name() + "_types"
+    program->get_name() + ".types"
   );
   const auto& cppNamespaces = this->get_cpp2_namespace(*program);
 
@@ -158,44 +158,44 @@ void t_mstch_py3_generator::generate_init_files(const t_program& program) {
 
 void t_mstch_py3_generator::generate_structs(const t_program& program) {
   auto path = this->package_to_path(program.get_namespace("py3"));
-
-  auto basename = program.get_name() + "_types";
-  this->render_to_file(program, "Struct.pxd", path / (basename + ".pxd"));
-  this->render_to_file(program, "Struct.pyx", path / (basename + ".pyx"));
+  auto name = program.get_name();
+  std::string module = "types";
+  this->render_to_file(program, "Struct.pxd", path / name / (module + ".pxd"));
+  this->render_to_file(program, "Struct.pyx", path / name / (module + ".pyx"));
 }
 
 void t_mstch_py3_generator::generate_services(const t_program& program) {
   auto path = this->package_to_path(program.get_namespace("py3"));
 
-  auto name = this->get_program()->get_name();
+  auto name = program.get_name();
   this->render_to_file(
-    program, "Services.pxd", path / (name + "_services.pxd"));
+    program, "Services.pxd", path / name / "services.pxd");
   this->render_to_file(
-    program, "CythonServices.pyx", path / (name + "_services.pyx"));
+    program, "CythonServices.pyx", path / name / "services.pyx");
 
-  auto basename = name + "_services_wrapper";
+  std::string basename = "services_wrapper";
   this->render_to_file(
-    program, "ServicesWrapper.h", path / (basename + ".h"));
+    program, "ServicesWrapper.h", path / name / (basename + ".h"));
   this->render_to_file(
-    program, "ServicesWrapper.cpp", path / (basename + ".cpp"));
+    program, "ServicesWrapper.cpp", path / name / (basename + ".cpp"));
   this->render_to_file(
-    program, "ServicesWrapper.pxd", path / (basename + ".pxd"));
+    program, "ServicesWrapper.pxd", path / name / (basename + ".pxd"));
 }
 
 void t_mstch_py3_generator::generate_clients(const t_program& program) {
   auto path = this->package_to_path(program.get_namespace("py3"));
 
-  auto name = this->get_program()->get_name();
+  auto name = program.get_name();
   this->render_to_file(
-    program, "CythonClients.pyx", path / (name + "_clients.pyx"));
+    program, "CythonClients.pyx", path / name / "clients.pyx");
 
-  auto basename = name + "_clients_wrapper";
+  std::string basename = "clients_wrapper";
   this->render_to_file(
-    program, "ClientsWrapper.h", path / (basename + ".h"));
+    program, "ClientsWrapper.h", path / name / (basename + ".h"));
   this->render_to_file(
-    program, "ClientsWrapper.cpp", path / (basename + ".cpp"));
+    program, "ClientsWrapper.cpp", path / name / (basename + ".cpp"));
   this->render_to_file(
-    program, "ClientsWrapper.pxd", path / (basename + ".pxd"));
+    program, "ClientsWrapper.pxd", path / name / (basename + ".pxd"));
 }
 
 boost::filesystem::path t_mstch_py3_generator::package_to_path(
@@ -334,8 +334,7 @@ mstch::array t_mstch_py3_generator::get_py3_namespace(
   const t_program& program,
   const string& tail
 ) const {
-  const auto& py3_ns_raw = program.get_namespace("py3");
-  const auto& py3_namespace = py3_ns_raw.empty() ? "py3" : py3_ns_raw;
+  const auto& py3_namespace = program.get_namespace("py3");
   vector<string> ns = split_namespace(py3_namespace);
   if (tail != "") {
     ns.push_back(tail);

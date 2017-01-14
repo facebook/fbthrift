@@ -34,10 +34,10 @@ keys (conventionally used for sets, lists, and map values).
 }}{{#type:string?}}arg_{{field:name}}.encode('UTF-8'){{/type:string?}}{{!
 }}{{#type:struct}}deref((<{{> ModulePath}}.{{struct:name}}>arg_{{field:name}}{{!
   }}).c_{{struct:name}}){{/type:struct}}{{!
-}}{{#type:list?}}deref((<{{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}_types.{{!
+}}{{#type:list?}}deref((<{{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types.{{!
   }}{{type:flat_name}}>arg_{{field:name}})._vector){{/type:list?}}{{!
-}}{{#type:set?}}deref((<{{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}_types.{{!
+}}{{#type:set?}}deref((<{{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types.{{!
   }}{{type:flat_name}}>arg_{{field:name}})._set){{/type:set?}}{{!
-}}{{#type:map?}}deref((<{{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}_types.{{!
+}}{{#type:map?}}deref((<{{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types.{{!
   }}{{type:flat_name}}>arg_{{field:name}})._map){{/type:map?}}{{!
 }}{{#type:enum}}{{> ModulePath}}.{{enum:name}}_to_cpp(arg_{{field:name}}){{/type:enum}}

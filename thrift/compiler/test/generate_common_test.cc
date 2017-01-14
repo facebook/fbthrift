@@ -30,7 +30,7 @@ TEST(GenerateCommon, SplitNamespace) {
   };
 
   const std::vector<std::vector<std::string>> expected{
-    { "" },
+    {},
     {"this"},
     {"this", "is"},
     {"this", "is", "valid"},

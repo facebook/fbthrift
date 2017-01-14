@@ -26,7 +26,7 @@ created by the thrift compiler for generated cpp2 code.
 #include <{{program:includePrefix}}gen-cpp2/{{service:name}}.h>
 {{#service:externalProgram?}}
 {{#service:extends}}
-#include <{{service:includePrefix}}gen-py3/{{#service:py3Namespaces}}{{value}}/{{/service:py3Namespaces}}{{service:programName}}_services_wrapper.h>
+#include <{{service:includePrefix}}{{service:programName}}/services_wrapper.h>
 {{/service:extends}}
 {{/service:externalProgram?}}
 {{/program:services}}
