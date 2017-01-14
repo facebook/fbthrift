@@ -66,10 +66,10 @@ def parse_manifest(raw):
         manifest[fixture].append(filename)
     return manifest
 
-exe = os.path.join(os.getcwd(), sys.argv[0])
-thrift = ascend_find_exe(exe, 'thrift')
+thrift = os.getenv('THRIFT_COMPILER_BIN')
 fixtureDir = 'fixtures'
 
+exe = os.path.join(os.getcwd(), sys.argv[0])
 templateDir = ascend_find_dir(exe, 'thrift/compiler/generate/templates')
 
 manifest = parse_manifest(read_resource(os.path.join(fixtureDir, 'MANIFEST')))
