@@ -1,0 +1,44 @@
+digraph A {
+  subgraph cluster_toplevel {
+    label="cpp2/"
+    labeljust="l"
+    "Type" [shape=square]
+    "Constants.h"
+    "Constants.cpp"
+    graph[style=dashed]
+  }
+
+  subgraph cluster_constants {
+    label="cpp2/Constants/"
+    labeljust="l"
+    "TypeFormat"
+    "TypeNonRecursive"
+    "TypeRecursive"
+    "ValuesFormat"
+    "IterateValues"
+    "Value" [shape=square]
+    graph[style=dashed]
+  }
+
+  "Constants.h" -> "ValuesFormat"
+  "Constants.cpp" -> "TypeFormat"
+  "Constants.cpp" -> "ValuesFormat"
+
+  "TypeFormat" -> "TypeNonRecursive"
+  "TypeNonRecursive" -> "Type"
+  "ValuesFormat" -> "IterateValues"
+  "IterateValues" -> "TypeRecursive"
+  "TypeRecursive" -> "TypeRecursive" [label=" container?"]
+  "TypeRecursive" -> "Type" [label=" base?"]
+  "IterateValues" -> "IterateValues" [label=" container?"]
+  "IterateValues" -> "Value" [label=" base?"]
+
+  subgraph cluster_legend {
+    label="Legend"
+    labeljust="r"
+    "IncludesAFile"
+    "BaseFile" [shape=square]
+    "Diectory" [shape=square,style=dashed]
+     graph[style=dotted]
+  }
+}
