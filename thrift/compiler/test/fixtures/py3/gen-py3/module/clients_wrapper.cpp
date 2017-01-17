@@ -5,7 +5,7 @@
  *  @generated
  */
 
-#include <src/gen-py3/module/clients_wrapper.h>
+#include <src/module/clients_wrapper.h>
 
 namespace py3 {
 namespace simple {

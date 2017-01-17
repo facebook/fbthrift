@@ -5,7 +5,7 @@
  *  @generated
  */
 
-#include <gen-py3/module/clients_wrapper.h>
+#include <module/clients_wrapper.h>
 
 namespace cpp2 {
 } // namespace cpp2

@@ -96,7 +96,7 @@ cdef void SimpleService_concat_callback(
             pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
     else:
         citem = make_unique[string](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())).decode())
+        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())).decode('UTF-8'))
 
 cdef void SimpleService_get_value_callback(
         PyObject* future,
@@ -268,7 +268,7 @@ cdef void SimpleService_concat_many_callback(
             pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
     else:
         citem = make_unique[string](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())).decode())
+        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())).decode('UTF-8'))
 
 cdef void SimpleService_count_structs_callback(
         PyObject* future,
@@ -324,7 +324,7 @@ cdef void SimpleService_get_map_value_callback(
             pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
     else:
         citem = make_unique[string](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())).decode())
+        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())).decode('UTF-8'))
 
 cdef void SimpleService_map_length_callback(
         PyObject* future,
@@ -380,7 +380,7 @@ cdef void SimpleService_repeat_name_callback(
             pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
     else:
         citem = make_unique[string](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())).decode())
+        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())).decode('UTF-8'))
 
 cdef void SimpleService_get_struct_callback(
         PyObject* future,
@@ -520,7 +520,7 @@ cdef void SimpleService_make_sentence_callback(
             pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
     else:
         citem = make_unique[string](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())).decode())
+        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())).decode('UTF-8'))
 
 cdef void SimpleService_get_union_callback(
         PyObject* future,
@@ -575,8 +575,8 @@ cdef void SimpleService_retrieve_binary_callback(
         except:
             pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
     else:
-        citem = ;
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, )
+        citem = make_unique[string](result.value());
+        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())))
 
 cdef void SimpleService_contain_binary_callback(
         PyObject* future,

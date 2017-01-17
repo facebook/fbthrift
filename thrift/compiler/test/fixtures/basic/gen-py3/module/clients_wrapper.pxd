@@ -55,7 +55,7 @@ cdef extern from "src/gen-cpp2/MyServicePrioChild.h" namespace "cpp2":
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cMyServicePrioChildClientWrapper] move(unique_ptr[cMyServicePrioChildClientWrapper])
 
-cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
+cdef extern from "src/module/clients_wrapper.h" namespace "cpp2":
   cdef cppclass cMyServiceClientWrapper "cpp2::MyServiceClientWrapper":
     cMyServiceClientWrapper(
       shared_ptr[cMyServiceAsyncClient] async_client,

@@ -27,7 +27,7 @@ cdef extern from "src/gen-cpp2/SimpleService.h" namespace "py3::simple":
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cSimpleServiceClientWrapper] move(unique_ptr[cSimpleServiceClientWrapper])
 
-cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "py3::simple":
+cdef extern from "src/module/clients_wrapper.h" namespace "py3::simple":
   cdef cppclass cSimpleServiceClientWrapper "py3::simple::SimpleServiceClientWrapper":
     cSimpleServiceClientWrapper(
       shared_ptr[cSimpleServiceAsyncClient] async_client,

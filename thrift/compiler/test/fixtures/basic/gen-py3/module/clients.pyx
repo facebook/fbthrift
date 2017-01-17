@@ -72,7 +72,7 @@ cdef void MyService_getRandomData_callback(
             pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
     else:
         citem = make_unique[string](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())).decode())
+        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())).decode('UTF-8'))
 
 cdef void MyService_hasDataById_callback(
         PyObject* future,
@@ -100,7 +100,7 @@ cdef void MyService_getDataById_callback(
             pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
     else:
         citem = make_unique[string](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())).decode())
+        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())).decode('UTF-8'))
 
 cdef void MyService_putDataById_callback(
         PyObject* future,
@@ -170,7 +170,7 @@ cdef void MyServiceFast_getRandomData_callback(
             pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
     else:
         citem = make_unique[string](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())).decode())
+        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())).decode('UTF-8'))
 
 cdef void MyServiceFast_hasDataById_callback(
         PyObject* future,
@@ -198,7 +198,7 @@ cdef void MyServiceFast_getDataById_callback(
             pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
     else:
         citem = make_unique[string](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())).decode())
+        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())).decode('UTF-8'))
 
 cdef void MyServiceFast_putDataById_callback(
         PyObject* future,
