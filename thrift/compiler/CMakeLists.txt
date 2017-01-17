@@ -43,9 +43,9 @@ add_library(
 target_link_libraries(
   generate_lib
 
-  mstch
   OpenSSL::Crypto
   ${Boost_LIBRARIES}
+  ${MSTCH_LIBRARIES}
 )
 # Force generate_lib linking (compiler will optimize it out otherwise)
 if(MSVC)

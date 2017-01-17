@@ -10,9 +10,10 @@ git clone https://github.com/facebook/fbthrift.git
 ## Dependencies:
 - [Mustache](https://mustache.github.io/) (Logic-less templates)
 ```
-mkdir fbthrift/external
-pushd fbthrift/external
-git clone https://github.com/no1msd/mstch
+git clone https://github.com/no1msd/mstch fbthrift/
+pushd fbthrift/mstch
+cmake .
+make install
 popd
 ```
 
