@@ -339,8 +339,8 @@ cdef api void call_cy_SimpleService_concat(
     unique_ptr[string] second
 ) with gil:
     promise = Promise_string.create(move(cPromise))
-    arg_first = (deref(first.get())).decode()
-    arg_second = (deref(second.get())).decode()
+    arg_first = (deref(first.get())).decode('UTF-8')
+    arg_second = (deref(second.get())).decode('UTF-8')
     asyncio.run_coroutine_threadsafe(
         SimpleService_concat_coro(
             self,
@@ -832,7 +832,7 @@ cdef api void call_cy_SimpleService_contains_word(
 ) with gil:
     promise = Promise_bool.create(move(cPromise))
     arg_words = module.types.Set__string.create(module.types.move(words))
-    arg_word = (deref(word.get())).decode()
+    arg_word = (deref(word.get())).decode('UTF-8')
     asyncio.run_coroutine_threadsafe(
         SimpleService_contains_word_coro(
             self,
@@ -870,7 +870,7 @@ cdef api void call_cy_SimpleService_get_map_value(
 ) with gil:
     promise = Promise_string.create(move(cPromise))
     arg_words = module.types.Map__string_string.create(module.types.move(words))
-    arg_key = (deref(key.get())).decode()
+    arg_key = (deref(key.get())).decode('UTF-8')
     asyncio.run_coroutine_threadsafe(
         SimpleService_get_map_value_coro(
             self,
@@ -1240,7 +1240,7 @@ cdef api void call_cy_SimpleService_word_character_frequency(
     unique_ptr[string] sentence
 ) with gil:
     promise = Promise_Map__string_Map__string_i32.create(move(cPromise))
-    arg_sentence = (deref(sentence.get())).decode()
+    arg_sentence = (deref(sentence.get())).decode('UTF-8')
     asyncio.run_coroutine_threadsafe(
         SimpleService_word_character_frequency_coro(
             self,
@@ -1274,7 +1274,7 @@ cdef api void call_cy_SimpleService_list_of_sets(
     unique_ptr[string] some_words
 ) with gil:
     promise = Promise_List__Set__string.create(move(cPromise))
-    arg_some_words = (deref(some_words.get())).decode()
+    arg_some_words = (deref(some_words.get())).decode('UTF-8')
     asyncio.run_coroutine_threadsafe(
         SimpleService_list_of_sets_coro(
             self,

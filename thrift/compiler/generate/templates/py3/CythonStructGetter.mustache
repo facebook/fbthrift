@@ -41,7 +41,7 @@ if they have been previously retrieved.
   }}return self.c_{{struct:name}}.get().{{field:name}}{{!
 }}{{/type:double?}}{{!
 }}{{#type:string?}}{{!
-  }}return self.c_{{struct:name}}.get().{{field:name}}.decode(){{!
+  }}return self.c_{{struct:name}}.get().{{field:name}}.decode('UTF-8'){{!
 }}{{/type:string?}}{{!
 }}{{#type:binary?}}{{!
   }}return self.c_{{struct:name}}.get().{{field:name}}{{!

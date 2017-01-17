@@ -30,7 +30,7 @@ ckey.
 }}{{#type:i32?}}ckey{{/type:i32?}}{{!
 }}{{#type:i64?}}ckey{{/type:i64?}}{{!
 }}{{#type:double?}}ckey{{/type:double?}}{{!
-}}{{#type:string?}}ckey.decode(){{/type:string?}}{{!
+}}{{#type:string?}}ckey.decode('UTF-8'){{/type:string?}}{{!
 }}{{#type:binary?}}ckey{{/type:binary?}}{{!
 }}{{#type:struct}}{{> ModulePath}}.{{type:name}}.create(make_shared[{{> ModulePath}}.c{{struct:name}}](ckey)){{/type:struct}}{{!
 }}{{#type:list?}}{{type:flat_name}}.create(make_shared[{{> ContainerCythonFieldType}}](ckey)){{/type:list?}}{{!

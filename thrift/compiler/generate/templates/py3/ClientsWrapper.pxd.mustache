@@ -51,7 +51,7 @@ cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[c{{service:name}}ClientWrapper] move(unique_ptr[c{{service:name}}ClientWrapper])
 
 {{/program:services}}
-cdef extern from "{{program:includePrefix}}{{program:name}}/clients_wrapper.h"{{!
+cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/clients_wrapper.h"{{!
     }} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":{{!
     }}{{^program:services}}
   pass{{/program:services}}{{#program:services}}

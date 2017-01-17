@@ -218,7 +218,7 @@ cdef class ComplexStruct:
 
     @property
     def name(self):
-        return self.c_ComplexStruct.get().name.decode()
+        return self.c_ComplexStruct.get().name.decode('UTF-8')
 
     @property
     def an_enum(self):
@@ -522,7 +522,7 @@ cdef class List__string:
     def __getitem__(self, int index):
         cdef string citem = (
             deref(self._vector.get())[index])
-        return bytes(citem).decode()
+        return bytes(citem).decode('UTF-8')
 
     def __len__(self):
         return deref(self._vector).size()
@@ -554,7 +554,7 @@ cdef class List__string:
     def __iter__(self):
         cdef string citem
         for citem in deref(self._vector):
-            yield bytes(citem).decode()
+            yield bytes(citem).decode('UTF-8')
 
     def __reversed__(self):
         cdef string citem
@@ -563,7 +563,7 @@ cdef class List__string:
         cdef vector[string].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
-            yield bytes(citem).decode()
+            yield bytes(citem).decode('UTF-8')
             inc(loc)
 
     def index(self, item):
@@ -856,7 +856,7 @@ cdef class Set__string:
 
     def __iter__(self):
         for citem in deref(self._set):
-            yield bytes(citem).decode()
+            yield bytes(citem).decode('UTF-8')
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1028,7 +1028,7 @@ cdef class Map__string_string:
         if iter == deref(self._map).end():
             raise KeyError(str(key))
         cdef string citem = deref(iter).second
-        return bytes(citem).decode()
+        return bytes(citem).decode('UTF-8')
 
     def __len__(self):
         return deref(self._map).size()
@@ -1037,7 +1037,7 @@ cdef class Map__string_string:
         cdef string citem
         for pair in deref(self._map):
             citem = pair.first
-            yield bytes(citem).decode()
+            yield bytes(citem).decode('UTF-8')
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1070,7 +1070,7 @@ cdef class Map__string_string:
         if iter == deref(self._map).end():
             return default
         cdef string citem = deref(iter).second
-        return bytes(citem).decode()
+        return bytes(citem).decode('UTF-8')
 
     def keys(self):
         return self.__iter__()
@@ -1079,7 +1079,7 @@ cdef class Map__string_string:
         cdef string citem
         for pair in deref(self._map):
             citem = pair.second
-            yield bytes(citem).decode()
+            yield bytes(citem).decode('UTF-8')
 
     def items(self):
         cdef string ckey
@@ -1088,7 +1088,7 @@ cdef class Map__string_string:
             ckey = pair.first
             citem = pair.second
 
-            yield (ckey.decode(), bytes(citem).decode())
+            yield (ckey.decode('UTF-8'), bytes(citem).decode('UTF-8'))
 
 
 
@@ -1129,7 +1129,7 @@ cdef class Map__string_SimpleStruct:
         cdef string citem
         for pair in deref(self._map):
             citem = pair.first
-            yield bytes(citem).decode()
+            yield bytes(citem).decode('UTF-8')
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1180,7 +1180,7 @@ cdef class Map__string_SimpleStruct:
             ckey = pair.first
             citem = pair.second
 
-            yield (ckey.decode(), SimpleStruct.create(make_shared[cSimpleStruct](citem)))
+            yield (ckey.decode('UTF-8'), SimpleStruct.create(make_shared[cSimpleStruct](citem)))
 
 
 
@@ -1221,7 +1221,7 @@ cdef class Map__string_i16:
         cdef string citem
         for pair in deref(self._map):
             citem = pair.first
-            yield bytes(citem).decode()
+            yield bytes(citem).decode('UTF-8')
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1272,7 +1272,7 @@ cdef class Map__string_i16:
             ckey = pair.first
             citem = pair.second
 
-            yield (ckey.decode(), citem)
+            yield (ckey.decode('UTF-8'), citem)
 
 
 
@@ -1396,7 +1396,7 @@ cdef class Map__string_i32:
         cdef string citem
         for pair in deref(self._map):
             citem = pair.first
-            yield bytes(citem).decode()
+            yield bytes(citem).decode('UTF-8')
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1447,7 +1447,7 @@ cdef class Map__string_i32:
             ckey = pair.first
             citem = pair.second
 
-            yield (ckey.decode(), citem)
+            yield (ckey.decode('UTF-8'), citem)
 
 
 
@@ -1489,7 +1489,7 @@ cdef class Map__string_Map__string_i32:
         cdef string citem
         for pair in deref(self._map):
             citem = pair.first
-            yield bytes(citem).decode()
+            yield bytes(citem).decode('UTF-8')
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1542,7 +1542,7 @@ cdef class Map__string_Map__string_i32:
             ckey = pair.first
             citem = pair.second
 
-            yield (ckey.decode(), Map__string_i32.create(
+            yield (ckey.decode('UTF-8'), Map__string_i32.create(
     make_shared[cmap[string,int32_t]](citem)))
 
 
@@ -1668,7 +1668,7 @@ cdef class Map__string_List__SimpleStruct:
         cdef string citem
         for pair in deref(self._map):
             citem = pair.first
-            yield bytes(citem).decode()
+            yield bytes(citem).decode('UTF-8')
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1721,7 +1721,7 @@ cdef class Map__string_List__SimpleStruct:
             ckey = pair.first
             citem = pair.second
 
-            yield (ckey.decode(), List__SimpleStruct.create(
+            yield (ckey.decode('UTF-8'), List__SimpleStruct.create(
     make_shared[vector[cSimpleStruct]](citem)))
 
 

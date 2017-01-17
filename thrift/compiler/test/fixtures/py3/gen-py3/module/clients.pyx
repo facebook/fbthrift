@@ -566,7 +566,7 @@ cdef void SimpleService_lookup_double_callback(
 
 cdef void SimpleService_retrieve_binary_callback(
         PyObject* future,
-        cFollyTry[] result) with gil:
+        cFollyTry[string] result) with gil:
     cdef object pyfuture = <object> future
     cdef unique_ptr[string] citem
     if result.hasException():
@@ -1027,7 +1027,7 @@ cdef class SimpleServiceClient:
         future = self.loop.create_future()
         future.loop = self.loop
         deref(self._client).retrieve_binary(
-            ,
+            arg_something,
             SimpleService_retrieve_binary_callback,
             future)
         return future

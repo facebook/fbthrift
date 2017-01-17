@@ -28,6 +28,7 @@ Cython code.
 }}{{#type:i64?}}int64_t{{/type:i64?}}{{!
 }}{{#type:double?}}double{{/type:double?}}{{!
 }}{{#type:string?}}string{{/type:string?}}{{!
+}}{{#type:binary?}}string{{/type:binary?}}{{!
 }}{{#type:struct}}{{> ModulePath}}.c{{struct:name}}{{/type:struct}}{{!
 }}{{#type:listElemType}}vector[{{> ContainerCythonFieldType}}]{{/type:listElemType}}{{!
 }}{{#type:setElemType}}cset[{{> ContainerCythonFieldType}}]{{/type:setElemType}}{{!

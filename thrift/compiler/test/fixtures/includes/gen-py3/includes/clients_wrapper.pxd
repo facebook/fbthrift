@@ -20,5 +20,5 @@ from thrift.lib.py3.folly cimport cFollyEventBase, cFollyTry, cFollyUnit
 cimport includes.types
 
 
-cdef extern from "includes/clients_wrapper.h" namespace "cpp2":
+cdef extern from "gen-py3/includes/clients_wrapper.h" namespace "cpp2":
   pass

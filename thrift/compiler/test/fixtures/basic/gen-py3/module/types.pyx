@@ -53,7 +53,7 @@ cdef class MyStruct:
 
     @property
     def MyStringField(self):
-        return self.c_MyStruct.get().MyStringField.decode()
+        return self.c_MyStruct.get().MyStringField.decode('UTF-8')
 
 
     def __richcmp__(self, other, op):

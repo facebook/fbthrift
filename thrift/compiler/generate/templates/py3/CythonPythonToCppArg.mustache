@@ -32,6 +32,7 @@ keys (conventionally used for sets, lists, and map values).
 }}{{#type:i64?}}arg_{{field:name}}{{/type:i64?}}{{!
 }}{{#type:double?}}arg_{{field:name}}{{/type:double?}}{{!
 }}{{#type:string?}}arg_{{field:name}}.encode('UTF-8'){{/type:string?}}{{!
+}}{{#type:binary?}}arg_{{field:name}}{{/type:binary?}}{{!
 }}{{#type:struct}}deref((<{{> ModulePath}}.{{struct:name}}>arg_{{field:name}}{{!
   }}).c_{{struct:name}}){{/type:struct}}{{!
 }}{{#type:list?}}deref((<{{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types.{{!

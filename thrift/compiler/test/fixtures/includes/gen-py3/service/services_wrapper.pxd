@@ -24,7 +24,7 @@ cdef extern from "src/gen-cpp2/MyService.h" namespace "cpp2":
 
 
 
-cdef extern from "src/service/services_wrapper.h" namespace "cpp2":
+cdef extern from "src/gen-py3/service/services_wrapper.h" namespace "cpp2":
     cdef cppclass cMyServiceWrapper "cpp2::MyServiceWrapper"(
         cMyServiceSvIf
     ):

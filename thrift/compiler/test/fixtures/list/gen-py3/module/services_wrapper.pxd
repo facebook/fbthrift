@@ -13,5 +13,5 @@ from thrift.lib.py3.thrift_server cimport cServerInterface
 
 
 
-cdef extern from "src/module/services_wrapper.h" namespace "cpp2":
+cdef extern from "src/gen-py3/module/services_wrapper.h" namespace "cpp2":
     pass

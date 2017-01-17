@@ -21,5 +21,5 @@ cimport module.types
 
 cimport includes.types
 
-cdef extern from "module/clients_wrapper.h" namespace "cpp2":
+cdef extern from "gen-py3/module/clients_wrapper.h" namespace "cpp2":
   pass

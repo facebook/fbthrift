@@ -27,7 +27,7 @@ cdef extern from "src/gen-cpp2/SimpleService.h" namespace "py3::simple":
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cSimpleServiceClientWrapper] move(unique_ptr[cSimpleServiceClientWrapper])
 
-cdef extern from "src/module/clients_wrapper.h" namespace "py3::simple":
+cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "py3::simple":
   cdef cppclass cSimpleServiceClientWrapper "py3::simple::SimpleServiceClientWrapper":
     cSimpleServiceClientWrapper(
       shared_ptr[cSimpleServiceAsyncClient] async_client,
@@ -180,8 +180,8 @@ cdef extern from "src/module/clients_wrapper.h" namespace "py3::simple":
       void (*callback) (PyObject*, cFollyTry[double]),
       object py_future)
     void retrieve_binary(
-       arg_something,
-      void (*callback) (PyObject*, cFollyTry[]),
+      string arg_something,
+      void (*callback) (PyObject*, cFollyTry[string]),
       object py_future)
     void contain_binary(
       vector[string] arg_binaries,

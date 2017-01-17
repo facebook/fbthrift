@@ -80,7 +80,7 @@ cdef class Internship:
 
     @property
     def title(self):
-        return self.c_Internship.get().title.decode()
+        return self.c_Internship.get().title.decode('UTF-8')
 
     @property
     def employer(self):
@@ -252,7 +252,7 @@ cdef class Map__string_i32:
         cdef string citem
         for pair in deref(self._map):
             citem = pair.first
-            yield bytes(citem).decode()
+            yield bytes(citem).decode('UTF-8')
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -303,7 +303,7 @@ cdef class Map__string_i32:
             ckey = pair.first
             citem = pair.second
 
-            yield (ckey.decode(), citem)
+            yield (ckey.decode('UTF-8'), citem)
 
 
 
@@ -572,7 +572,7 @@ cdef class List__string:
     def __getitem__(self, int index):
         cdef string citem = (
             deref(self._vector.get())[index])
-        return bytes(citem).decode()
+        return bytes(citem).decode('UTF-8')
 
     def __len__(self):
         return deref(self._vector).size()
@@ -604,7 +604,7 @@ cdef class List__string:
     def __iter__(self):
         cdef string citem
         for citem in deref(self._vector):
-            yield bytes(citem).decode()
+            yield bytes(citem).decode('UTF-8')
 
     def __reversed__(self):
         cdef string citem
@@ -613,7 +613,7 @@ cdef class List__string:
         cdef vector[string].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
-            yield bytes(citem).decode()
+            yield bytes(citem).decode('UTF-8')
             inc(loc)
 
     def index(self, item):
@@ -906,7 +906,7 @@ cdef class Set__string:
 
     def __iter__(self):
         for citem in deref(self._set):
-            yield bytes(citem).decode()
+            yield bytes(citem).decode('UTF-8')
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1170,7 +1170,7 @@ cdef class Map__i32_string:
         if iter == deref(self._map).end():
             raise KeyError(str(key))
         cdef string citem = deref(iter).second
-        return bytes(citem).decode()
+        return bytes(citem).decode('UTF-8')
 
     def __len__(self):
         return deref(self._map).size()
@@ -1212,7 +1212,7 @@ cdef class Map__i32_string:
         if iter == deref(self._map).end():
             return default
         cdef string citem = deref(iter).second
-        return bytes(citem).decode()
+        return bytes(citem).decode('UTF-8')
 
     def keys(self):
         return self.__iter__()
@@ -1221,7 +1221,7 @@ cdef class Map__i32_string:
         cdef string citem
         for pair in deref(self._map):
             citem = pair.second
-            yield bytes(citem).decode()
+            yield bytes(citem).decode('UTF-8')
 
     def items(self):
         cdef int32_t ckey
@@ -1230,7 +1230,7 @@ cdef class Map__i32_string:
             ckey = pair.first
             citem = pair.second
 
-            yield (ckey, bytes(citem).decode())
+            yield (ckey, bytes(citem).decode('UTF-8'))
 
 
 
@@ -1262,7 +1262,7 @@ cdef class Map__string_string:
         if iter == deref(self._map).end():
             raise KeyError(str(key))
         cdef string citem = deref(iter).second
-        return bytes(citem).decode()
+        return bytes(citem).decode('UTF-8')
 
     def __len__(self):
         return deref(self._map).size()
@@ -1271,7 +1271,7 @@ cdef class Map__string_string:
         cdef string citem
         for pair in deref(self._map):
             citem = pair.first
-            yield bytes(citem).decode()
+            yield bytes(citem).decode('UTF-8')
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1304,7 +1304,7 @@ cdef class Map__string_string:
         if iter == deref(self._map).end():
             return default
         cdef string citem = deref(iter).second
-        return bytes(citem).decode()
+        return bytes(citem).decode('UTF-8')
 
     def keys(self):
         return self.__iter__()
@@ -1313,7 +1313,7 @@ cdef class Map__string_string:
         cdef string citem
         for pair in deref(self._map):
             citem = pair.second
-            yield bytes(citem).decode()
+            yield bytes(citem).decode('UTF-8')
 
     def items(self):
         cdef string ckey
@@ -1322,7 +1322,7 @@ cdef class Map__string_string:
             ckey = pair.first
             citem = pair.second
 
-            yield (ckey.decode(), bytes(citem).decode())
+            yield (ckey.decode('UTF-8'), bytes(citem).decode('UTF-8'))
 
 
 

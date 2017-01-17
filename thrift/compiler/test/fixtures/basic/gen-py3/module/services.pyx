@@ -203,7 +203,7 @@ cdef api void call_cy_MyService_putDataById(
 ) with gil:
     promise = Promise_void.create(move(cPromise))
     arg_id = id
-    arg_data = (deref(data.get())).decode()
+    arg_data = (deref(data.get())).decode('UTF-8')
     asyncio.run_coroutine_threadsafe(
         MyService_putDataById_coro(
             self,
@@ -241,7 +241,7 @@ cdef api void call_cy_MyService_lobDataById(
 ) with gil:
     promise = Promise_void.create(move(cPromise))
     arg_id = id
-    arg_data = (deref(data.get())).decode()
+    arg_data = (deref(data.get())).decode('UTF-8')
     asyncio.run_coroutine_threadsafe(
         MyService_lobDataById_coro(
             self,
@@ -401,7 +401,7 @@ cdef api void call_cy_MyServiceFast_putDataById(
 ) with gil:
     promise = Promise_void.create(move(cPromise))
     arg_id = id
-    arg_data = (deref(data.get())).decode()
+    arg_data = (deref(data.get())).decode('UTF-8')
     asyncio.run_coroutine_threadsafe(
         MyServiceFast_putDataById_coro(
             self,
@@ -439,7 +439,7 @@ cdef api void call_cy_MyServiceFast_lobDataById(
 ) with gil:
     promise = Promise_void.create(move(cPromise))
     arg_id = id
-    arg_data = (deref(data.get())).decode()
+    arg_data = (deref(data.get())).decode('UTF-8')
     asyncio.run_coroutine_threadsafe(
         MyServiceFast_lobDataById_coro(
             self,

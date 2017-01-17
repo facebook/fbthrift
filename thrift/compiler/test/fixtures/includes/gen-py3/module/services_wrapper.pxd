@@ -14,5 +14,5 @@ cimport includes.services_wrapper
 
 
 
-cdef extern from "module/services_wrapper.h" namespace "cpp2":
+cdef extern from "gen-py3/module/services_wrapper.h" namespace "cpp2":
     pass

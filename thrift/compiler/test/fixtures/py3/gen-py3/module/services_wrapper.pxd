@@ -22,7 +22,7 @@ cdef extern from "src/gen-cpp2/SimpleService.h" namespace "py3::simple":
 
 
 
-cdef extern from "src/module/services_wrapper.h" namespace "py3::simple":
+cdef extern from "src/gen-py3/module/services_wrapper.h" namespace "py3::simple":
     cdef cppclass cSimpleServiceWrapper "py3::simple::SimpleServiceWrapper"(
         cSimpleServiceSvIf
     ):

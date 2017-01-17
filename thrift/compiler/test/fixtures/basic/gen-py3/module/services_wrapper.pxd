@@ -59,7 +59,7 @@ cdef extern from "src/gen-cpp2/MyServicePrioChild.h" namespace "cpp2":
 
 
 
-cdef extern from "src/module/services_wrapper.h" namespace "cpp2":
+cdef extern from "src/gen-py3/module/services_wrapper.h" namespace "cpp2":
     cdef cppclass cMyServiceWrapper "cpp2::MyServiceWrapper"(
         cMyServiceSvIf
     ):

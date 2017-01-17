@@ -497,13 +497,13 @@ void SimpleServiceClientWrapper::lookup_double(
 }
 
 void SimpleServiceClientWrapper::retrieve_binary(
-     arg_something,
-    std::function<void(PyObject*, folly::Try<>)> callback,
+    std::string arg_something,
+    std::function<void(PyObject*, folly::Try<std::string>)> callback,
     PyObject* py_future) {
   async_client->future_retrieve_binary(
     arg_something
   ).via(event_base.get()).then(
-    [=] (folly::Try<>&& result) {
+    [=] (folly::Try<std::string>&& result) {
       callback(py_future, result);
     }
   );

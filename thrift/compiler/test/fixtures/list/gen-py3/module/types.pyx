@@ -41,7 +41,7 @@ cdef class List__string:
     def __getitem__(self, int index):
         cdef string citem = (
             deref(self._vector.get())[index])
-        return bytes(citem).decode()
+        return bytes(citem).decode('UTF-8')
 
     def __len__(self):
         return deref(self._vector).size()
@@ -73,7 +73,7 @@ cdef class List__string:
     def __iter__(self):
         cdef string citem
         for citem in deref(self._vector):
-            yield bytes(citem).decode()
+            yield bytes(citem).decode('UTF-8')
 
     def __reversed__(self):
         cdef string citem
@@ -82,7 +82,7 @@ cdef class List__string:
         cdef vector[string].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
-            yield bytes(citem).decode()
+            yield bytes(citem).decode('UTF-8')
             inc(loc)
 
     def index(self, item):

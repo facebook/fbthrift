@@ -181,8 +181,8 @@ class SimpleServiceClientWrapper {
       std::function<void(PyObject*, folly::Try<double>)> callback,
       PyObject* py_future);
     void retrieve_binary(
-       arg_something,
-      std::function<void(PyObject*, folly::Try<>)> callback,
+      std::string arg_something,
+      std::function<void(PyObject*, folly::Try<std::string>)> callback,
       PyObject* py_future);
     void contain_binary(
       std::vector<std::string> arg_binaries,
