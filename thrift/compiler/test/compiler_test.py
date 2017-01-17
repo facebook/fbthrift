@@ -1,79 +1,47 @@
-from __future__ import absolute_import
-from __future__ import division
 from __future__ import print_function
-from __future__ import unicode_literals
 
 import os
-import pkg_resources
 import re
-import unittest
 import shlex
 import shutil
 import subprocess
 import sys
 import tempfile
 import traceback
+import unittest
 
-def ascend_find_exe(path, target):
-    if not os.path.isdir(path):
-        path = os.path.dirname(path)
-    while True:
-        test = os.path.join(path, target)
-        if os.access(test, os.X_OK):
-            return test
-        parent = os.path.dirname(path)
-        if os.path.samefile(parent, path):
-            return None
-        path = parent
-
-def ascend_find_dir(path, target):
-    if not os.path.isdir(path):
-        path = os.path.dirname(path)
-    while True:
-        test = os.path.join(path, target)
-        if os.path.isdir(test):
-            return test
-        parent = os.path.dirname(path)
-        if os.path.samefile(parent, path):
-            return None
-        path = parent
+thrift = os.getenv('THRIFT_COMPILER_BIN')
+fixtures_root_dir = os.getenv('THRIFT_FIXTURES_DIR')
+templateDir = os.getenv('THRIFT_TEMPLATES_DIR')
 
 def read_file(path):
     with open(path, 'r') as f:
         return f.read()
 
-def write_file(path, content):
-    with open(path, 'w') as f:
-        f.write(content)
-
-def read_resource(path):
-    return pkg_resources.resource_string(__name__, path)
-
 def read_lines(path):
     with open(path, 'r') as f:
         return f.readlines()
 
-def mkdir_p(path, mode):
-    if not os.path.isdir(path):
-        os.makedirs(path, mode)
+def read_directory_filenames(path):
+    files = []
+    for filename in os.listdir(path):
+        files.append(filename)
+    return files
 
-def parse_manifest(raw):
-    manifest = {}
-    for line in raw.splitlines():
-        fixture, filename = line.split('/', 1)
-        if fixture not in manifest:
-            manifest[fixture] = []
-        manifest[fixture].append(filename)
-    return manifest
+def find_recursive_files(path):
+    files = subprocess.check_output(
+        ["find", ".", "-type", "f"],
+        cwd=path,
+        close_fds=True,
+    ).splitlines()
+    return [f.split('/', 1)[1] for f in files]
 
-thrift = os.getenv('THRIFT_COMPILER_BIN')
-fixtureDir = 'fixtures'
-
-exe = os.path.join(os.getcwd(), sys.argv[0])
-templateDir = ascend_find_dir(exe, 'thrift/compiler/generate/templates')
-
-manifest = parse_manifest(read_resource(os.path.join(fixtureDir, 'MANIFEST')))
-fixtureNames = manifest.keys()
+def cp_dir(source_dir, dest_dir):
+    if not os.path.isdir(dest_dir):
+        os.makedirs(dest_dir, 0o700)
+    srcs = find_recursive_files(source_dir)
+    for src in srcs:
+        shutil.copy2(os.path.join(source_dir, src), dest_dir)
 
 class CompilerTest(unittest.TestCase):
 
@@ -85,6 +53,24 @@ class CompilerTest(unittest.TestCase):
         "may be found.",
     ])
 
+    def compare_code(self, path1, path2):
+        gens = find_recursive_files(path1)
+        fixt = find_recursive_files(path2)
+        try:
+            # Compare that the generated files are the same
+            self.assertEqual(sorted(gens), sorted(fixt))
+            for gen in gens:
+                geng = read_file(os.path.join(path1, gen))
+                genf = read_file(os.path.join(path2, gen))
+                if geng != genf:
+                    print(os.path.join(path1, gen), file=sys.stderr)
+                # Compare that the file contents are equal
+                self.assertMultiLineEqual(geng, genf)
+        except Exception as e:
+            print(self.MSG, file=sys.stderr)
+            traceback.print_exc(file=sys.stderr)
+            raise e
+
     def setUp(self):
         tmp = tempfile.mkdtemp()
         self.addCleanup(shutil.rmtree, tmp, True)
@@ -92,75 +78,61 @@ class CompilerTest(unittest.TestCase):
         self.maxDiff = None
 
     def runTest(self, name):
-        fixtureChildDir = os.path.join(fixtureDir, name)
-        cmdc = read_resource(os.path.join(fixtureChildDir, 'cmd'))
-        write_file(os.path.join(self.tmp, "cmd"), cmdc)
-        for fn in manifest[name]:
-            if fn.startswith('src/'):
-                out = os.path.join(self.tmp, fn)
-                mkdir_p(os.path.dirname(out), 0o700)
-                srcc = read_resource(os.path.join(fixtureChildDir, fn))
-                write_file(out, srcc)
-        cmds = read_lines(os.path.join(self.tmp, 'cmd'))
-        for cmd in cmds:
+        fixture_dir = os.path.join(fixtures_root_dir, name)
+        # Copy source *.thrift files to temporary folder for relative code gen
+        cp_dir(os.path.join(fixture_dir, 'src'), os.path.join(self.tmp, 'src'))
+
+        languages = set()
+        for cmd in read_lines(os.path.join(fixture_dir, 'cmd')):
+            # Skip commented out commands
+            if cmd[0] == '#':
+                continue
+
             args = shlex.split(cmd.strip())
-            base_args = [thrift, '-r', '--templates', templateDir, '--gen']
-            if "cpp" in args[0]:
+            # Get cmd language
+            lang = args[0].rsplit(':', 1)[0] if ":" in args[0] else args[0]
+            # Add to list of generated languages
+            languages.add(lang)
+
+            # Fix cpp args
+            if "cpp" in lang:
                 path = os.path.join("thrift/compiler/test/fixtures", name)
                 extra = "include_prefix=" + path
                 join = "," if ":" in args[0] else ":"
                 args[0] = args[0] + join + extra
-            if ("cpp2" in args[0] and "mstch" not in args[0]) or \
-               ("schema" in args[0]):
-                # do not recurse in py generators. This is a hack because there
-                # is a bug in the python generator that appears hard to fix.
-                # This is a workaround. In future, we will use mstch, and the
-                # mstch generator does not have this issue.
-                base_args.remove('-r')
 
-            subprocess.check_call(
-                base_args + args,
-                cwd=self.tmp,
-                close_fds=True,
-            )
-        gens = subprocess.check_output(
-            ["find", ".", "-type", "f"],
-            cwd=self.tmp,
-            close_fds=True,
-        ).splitlines()
-        gens = [gen.split('/', 1)[1] for gen in gens]
+            # Generate arguments to run binary
+            args = [
+                thrift, '-r',
+                '--templates', templateDir,
+                '--gen', args[0],
+                args[1]
+            ]
 
-        # Strip \n
-        cmds = [s.strip() for s in cmds]
-        # Make list into a single string
-        cmd_string = ''.join(cmds)
-        # Match only those who have cpp2 and mstch_cpp2
-        if (re.search('(^|[^#_])cpp2', cmd_string) is not None and
-                re.search('(^|[^#])mstch_cpp2', cmd_string) is not None):
-            self.compare_cpp2_and_mstchcpp2(gens, name, fixtureChildDir)
+            # Do not recurse in py generators due to a bug in the py generator
+            # Remove once migration to mustache is done
+            if ("cpp2" == lang) or ("schema" == lang):
+                args.remove('-r')
 
-    # Compare that mstch_cpp2 and cpp2 generate equal files with equal content
-    def compare_cpp2_and_mstchcpp2(self, gens, name, fixtureChildDir):
-        try:
-            cpp2_gens = [g for g in gens if "gen-cpp2" in g]
-            cpp2_gens_names = [re.sub(".*\/", "", e) for e in cpp2_gens]
-            mstch_cpp2_gens = [g for g in gens if "gen-mstch_cpp2" in g]
-            mstch_cpp2_gens_names = [re.sub(".*\/", "", e)
-                                     for e in mstch_cpp2_gens]
-            # Compare that both generate the same named files
-            self.assertEqual(sorted(cpp2_gens_names),
-                             sorted(mstch_cpp2_gens_names))
-            for gen in cpp2_gens_names:
-                genc = read_file(os.path.join(self.tmp, 'gen-cpp2/', gen))
-                genm = read_file(os.path.join(self.tmp, 'gen-mstch_cpp2/', gen))
-                if genc != genm:
-                    print(os.path.join(name, gen), file=sys.stderr)
-                # Compare that the file contents are equal
-                self.assertMultiLineEqual(genc, genm)
-        except Exception as e:
-            print(self.MSG, file=sys.stderr)
-            traceback.print_exc(file=sys.stderr)
-            raise e
+            # Run thrift compiler and generate files
+            subprocess.check_call(args, cwd=self.tmp, close_fds=True)
+
+        # Compare generated code to fixture code
+        for lang in languages:
+            # Edit lang to find correct directory
+            lang = lang.rsplit('_', 1)[0] if "android_lite" in lang else lang
+            if "cpp2" not in lang:  # Remove 'mstch' if present expt in cpp2
+                lang = lang.rsplit('_', 1)[1] if "mstch_" in lang else lang
+
+            gen_code = os.path.join(self.tmp, 'gen-' + lang)
+            fixture_code = os.path.join(fixture_dir, 'gen-' + lang)
+            self.compare_code(gen_code, fixture_code)
+
+        # Compare the generate code of cpp2 and mstch_cpp2 if both present
+        if ("cpp2" in languages and "mstch_cpp2" in languages):
+            gen_code = os.path.join(self.tmp, 'gen-cpp2')
+            fixture_code = os.path.join(fixture_dir, 'gen-mstch_cpp2')
+            self.compare_code(gen_code, fixture_code)
 
 def add_fixture(klazz, name):
     def test_method(self):
@@ -168,5 +140,6 @@ def add_fixture(klazz, name):
     test_method.__name__ = str('test_' + re.sub('[^0-9a-zA-Z]', '_', name))
     setattr(klazz, test_method.__name__, test_method)
 
+fixtureNames = read_directory_filenames(fixtures_root_dir)
 for name in fixtureNames:
     add_fixture(CompilerTest, name)
