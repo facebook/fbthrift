@@ -45,8 +45,7 @@ from thrift.transport import TSocket, TSSLSocket
 from thrift.transport.THeaderTransport import CLIENT_TYPE
 from thrift.protocol import TBinaryProtocol
 from thrift.protocol import THeaderProtocol
-from thrift.server import TServer, TNonblockingServer, \
-    TProcessPoolServer, THttpServer, TCppServer
+from thrift.server import TServer, TCppServer
 
 class SecondHandler(SecondService.Iface):
     def blahBlah(self):
@@ -331,37 +330,8 @@ if __name__ == "__main__":
             processor.registerProcessor("SecondService",
                     SecondService.Processor(SecondHandler()))
 
-    if args[0] == "THttpServer":
-        try:
-            server = THttpServer.THttpServer(
-                    processor, ('', options.port), pfactory)
-        except:
-            print("Could not load THttpServer")
-            raise
-    elif args[0] == "TCppServer":
-        server = TCppServer.TCppServer(processor)
-        server.setPort(options.port)
-    else:
-        if options.ssl:
-            cert_path = 'thrift/test/py/test_cert.pem'
-            transport = TSSLSocket.TSSLServerSocket(options.port,
-                    certfile=cert_path)
-        else:
-            transport = TSocket.TServerSocket(options.port)
-        tfactory = TTransport.TBufferedTransportFactory()
-
-        server_class_name = args[0]
-
-        if args[0] == "TNonblockingServer":
-            server = TNonblockingServer.TNonblockingServer(
-                    processor, transport, pfactory,
-                    readTimeout=options.timeout)
-        elif args[0] == "TProcessPoolServer":
-            server = TProcessPoolServer.TProcessPoolServer(
-                    processor, transport, tfactory, pfactory)
-        else:
-            ServerClass = getattr(TServer, server_class_name)
-            server = ServerClass(processor, transport, tfactory, pfactory)
+    server = TCppServer.TCppServer(processor)
+    server.setPort(options.port)
 
     if options.header:
         server.processor.setEventHandler(HeaderEventHandler())
