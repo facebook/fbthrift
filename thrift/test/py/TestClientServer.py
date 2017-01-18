@@ -37,12 +37,6 @@ from thrift.protocol import (
     TBinaryProtocol, THeaderProtocol, TMultiplexedProtocol, TCompactProtocol
 )
 
-SERVER_TYPES = [
-    "TCppServer",
-    ]
-if sys.version_info[0] < 3:
-    SERVER_TYPES.append("TNonblockingServer")
-FRAMED_TYPES = ["TNonblockingServer"]
 _servers = []
 _ports = {}
 
@@ -64,8 +58,6 @@ def start_server(server_type, ssl, server_header, server_context,
         args.append('--ssl')
     if server_header:
         args.append('--header')
-    if server_type == "TNonblockingServer":
-        args.append('--timeout=1')
     if server_context:
         args.append('--context')
     if multiple:
@@ -151,12 +143,7 @@ class AbstractTest(object):
         else:
             self.socket = TSocket.TSocket("localhost", self._port)
 
-        if self.server_type in FRAMED_TYPES \
-                and not isinstance(self, HeaderTest):
-            self.transport = TTransport.TFramedTransport(self.socket)
-        else:
-            self.transport = TTransport.TBufferedTransport(self.socket)
-
+        self.transport = TTransport.TBufferedTransport(self.socket)
         self.protocol = self.protocol_factory.getProtocol(self.transport)
         if isinstance(self, HeaderAcceleratedCompactTest):
             self.protocol.trans.set_protocol_id(
@@ -252,26 +239,11 @@ class AbstractTest(object):
 
     def testRequestCount(self):
         count = self.client.testRequestCount()
-        # not updated for TNonblockingServer
         self.assertTrue(count >= 0)
 
     def testConnectionDestroyed(self):
         count = self.client.testConnectionDestroyed()
         self.assertTrue(count >= 0)
-
-    def testNonblockingTimeout(self):
-        if self.server_type == "TNonblockingServer":
-            self.socket.close()
-            self.socket.open()
-            stime = time.time()
-            try:
-                self.socket.read(1)
-            except TTransport.TTransportException:
-                total_time = time.time() - stime
-                self.assertTrue(total_time > 1, "Read timeout was too short")
-                self.assertTrue(total_time < 10, "Read timeout took too long")
-                return
-            self.assertTrue(False, "Read timeout never fired")
 
 
 class NormalBinaryTest(AbstractTest):
@@ -313,10 +285,6 @@ class HeaderTest(HeaderBase):
             self.testStruct()
 
     def testKeyValueHeader(self):
-        if self.server_header and self.server_type == 'TNonblockingServer':
-            # TNonblockingServer uses different protocol instances for input
-            # and output so persistent header won't work
-            return
         htrans = self.protocol.trans
         if isinstance(htrans, THeaderTransport):
             # Try just persistent header
@@ -427,48 +395,34 @@ def new_test_class(cls, vars):
 
 def add_test_classes(module):
     classes = []
-    for server_type in SERVER_TYPES:
-        for ssl in (True, False):
-            if ssl and (server_type in FRAMED_TYPES or server_type == "TCppServer"):
-                continue
-            for server_header in (True, False):
-                if server_header is True and server_type == "TCppServer":
-                    continue
-                for server_context in (True, False):
-                    for multiple in (True, False):
-                        vars = {
-                            'server_type': server_type,
-                            'ssl': ssl,
-                            'server_header': server_header,
-                            'server_context': server_context,
-                            'multiple': multiple,
-                        }
-                        classes.append(new_test_class(NormalBinaryTest, vars))
-                        classes.append(new_test_class(AcceleratedBinaryTest,
-                            vars))
-                        # header client to non-header server hangs
-                        if server_header:
-                            classes.append(new_test_class(HeaderTest, vars))
+    for server_context in (True, False):
+        for multiple in (True, False):
+            config1 = {
+                'server_type': "TCppServer",
+                'ssl': False,
+                'server_header': False,
+                'server_context': server_context,
+                'multiple': multiple,
+            }
+            classes.append(new_test_class(NormalBinaryTest, config1))
+            classes.append(new_test_class(AcceleratedBinaryTest, config1))
+
+    config2 = {
+        'server_type': "TCppServer",
+        'ssl': False,
+        'server_header': False,
+        'server_context': False,
+        'multiple': False,
+    }
 
     if fastproto is not None:
-        classes.append(new_test_class(HeaderAcceleratedCompactTest, {
-            'server_type': "TCppServer",
-            'ssl': False,
-            'server_header': False,
-            'server_context': False,
-            'multiple': False}))
+        classes.append(new_test_class(HeaderAcceleratedCompactTest, config2))
 
-    for klass in (HeaderFramedCompactTest,
+    for header in (HeaderFramedCompactTest,
                   HeaderFramedBinaryTest,
                   HeaderUnframedCompactTest,
                   HeaderUnframedBinaryTest):
-        classes.append(new_test_class(klass, {
-            'server_type': 'TCppServer',
-            'ssl': False,
-            'server_header': False,
-            'server_context': False,
-            'multiple': False,
-        }))
+        classes.append(new_test_class(header, config2))
 
     for cls in classes:
         setattr(module, cls.__name__, cls)
