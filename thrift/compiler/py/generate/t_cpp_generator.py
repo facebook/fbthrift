@@ -4692,12 +4692,28 @@ class CppGenerator(t_generator.Generator):
             dependencies = set()
             for struct in self._program.structs:
                 for member in struct.members:
-                    ttype = member.type
-                    if ttype.is_base_type or ttype.program == self._program or \
-                      ttype.program is None:
-                        continue
-                    if ttype.program not in dependencies:
-                        dependencies.add(ttype.program)
+                    def traverse(type):
+                        type = self._get_true_type(type)
+                        if type.is_struct:
+                            yield type
+                        if type.is_enum:
+                            yield type
+                        if type.is_list:
+                            for t in traverse(type.elem_type):
+                                yield t
+                        if type.is_set:
+                            for t in traverse(type.elem_type):
+                                yield t
+                        if type.is_map:
+                            for t in traverse(type.key_type):
+                                yield t
+                            for t in traverse(type.value_type):
+                                yield t
+                    dependencies.update(
+                        t.program
+                        for t in traverse(member.type)
+                        if t.program is not None and t.program != self._program
+                    )
             self._fatal_type_dependencies = list(sorted(dependencies))
         return self._fatal_type_dependencies
 
