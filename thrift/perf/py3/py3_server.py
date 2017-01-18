@@ -22,7 +22,7 @@ import asyncio
 import signal
 import sys
 
-from thrift.lib.py3.thrift_server import ThriftServer
+from thrift.py3.server import ThriftServer
 from apache.thrift.test.py3.load_handler import LoadTestHandler
 
 

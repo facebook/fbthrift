@@ -1,6 +1,6 @@
 from cython.operator cimport dereference as deref
 from libcpp.memory cimport shared_ptr, make_shared
-from thrift.lib.py3.folly cimport cFollyEventBase
+from thrift.py3.folly cimport cFollyEventBase
 
 from concurrent.futures import ThreadPoolExecutor
 

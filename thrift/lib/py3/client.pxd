@@ -1,5 +1,5 @@
 from cpython.ref cimport PyObject
-from thrift.lib.py3.folly cimport (
+from thrift.py3.folly cimport (
     cFollyEventBase,
     cFollyExceptionWrapper,
     cFollyTry
@@ -13,7 +13,7 @@ cdef extern from "thrift/lib/cpp/EventHandlerBase.h" \
     cdef cppclass cTClientBase "apache::thrift::TClientBase":
         pass
 
-cdef extern from "thrift/lib/py3/thrift_client.h" namespace "apache::thrift":
+cdef extern from "thrift/lib/py3/client.h" namespace "apache::thrift":
     cdef void make_py3_client[T, U](
         shared_ptr[cFollyEventBase] event_base,
         const string& host,

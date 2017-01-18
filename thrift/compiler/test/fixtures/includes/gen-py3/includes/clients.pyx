@@ -14,9 +14,9 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
-from thrift.lib.py3.thrift_client cimport EventBase, make_py3_client, py3_get_exception
-from thrift.lib.py3.thrift_client import get_event_base
-from thrift.lib.py3.folly cimport cFollyEventBase, cFollyTry, cFollyUnit, c_unit
+from thrift.py3.client cimport EventBase, make_py3_client, py3_get_exception
+from thrift.py3.client import get_event_base
+from thrift.py3.folly cimport cFollyEventBase, cFollyTry, cFollyUnit, c_unit
 
 import asyncio
 import sys

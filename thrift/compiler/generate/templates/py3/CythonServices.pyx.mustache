@@ -35,11 +35,9 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
-from thrift.lib.py3.thrift_server cimport (
-  ServiceInterface,
-  cTApplicationException
-)
-from thrift.lib.py3.folly cimport (
+from thrift.py3.exceptions cimport cTApplicationException
+from thrift.py3.server cimport ServiceInterface
+from thrift.py3.folly cimport (
   cFollyPromise,
   cFollyUnit,
   c_unit

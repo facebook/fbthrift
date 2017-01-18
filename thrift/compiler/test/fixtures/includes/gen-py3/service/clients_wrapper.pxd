@@ -14,8 +14,8 @@ from libcpp.set cimport set as cset
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from thrift.lib.py3.thrift_client cimport cTClientBase
-from thrift.lib.py3.folly cimport cFollyEventBase, cFollyTry, cFollyUnit
+from thrift.py3.client cimport cTClientBase
+from thrift.py3.folly cimport cFollyEventBase, cFollyTry, cFollyUnit
 
 cimport service.types
 

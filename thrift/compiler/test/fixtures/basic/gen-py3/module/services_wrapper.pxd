@@ -7,7 +7,7 @@
 
 from cpython.ref cimport PyObject
 from libcpp.memory cimport shared_ptr
-from thrift.lib.py3.thrift_server cimport cServerInterface
+from thrift.py3.server cimport cServerInterface
 
 
 

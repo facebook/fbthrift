@@ -23,7 +23,7 @@ Pxd file to expose the interface defined in ServicesWrapper.h to the pyx files.
 
 from cpython.ref cimport PyObject
 from libcpp.memory cimport shared_ptr
-from thrift.lib.py3.thrift_server cimport cServerInterface
+from thrift.py3.server cimport cServerInterface
 
 {{#program:includeNamespaces}}
 cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}services_wrapper
