@@ -8,17 +8,8 @@ git clone https://github.com/facebook/fbthrift.git
 ```
 
 ## Dependencies:
-- [Mustache](https://mustache.github.io/) (Logic-less templates)
-```
-git clone https://github.com/no1msd/mstch fbthrift/
-pushd fbthrift/mstch
-cmake .
-make install
-popd
-```
-
 - [Cmake](https://cmake.org/) package builder
-- C++ [Boost](http://www.boost.org/) (On MacOSX version has to be between [1.54](http://www.boost.org/doc/libs/1_54_0/doc/html/quickbook/install.html) and [1.61](http://www.boost.org/doc/libs/1_61_0/doc/html/quickbook/install.html))
+- C++ [Boost](http://www.boost.org/)
 - [Flex](https://github.com/westes/flex) and [Bison](https://www.gnu.org/software/bison/)
 
 ### Ubuntu:
@@ -37,7 +28,7 @@ brew install \
   cmake \
   flex \
   bison \
-  boost155
+  boost
 ```
 
 ### Windows (MSVC)
@@ -74,12 +65,83 @@ brew install \
  [System.Environment]::SetEnvironmentVariable("PATH", "$env:Path;C\local\win_flex_bison", [System.EnvironmentVariableTarget]::Machine)
  ```
 
-## Building
+### Non-packed Depdendencies
+- [Mustache](https://mustache.github.io/) (Logic-less templates)
+```
+mkdir -p ~/tmp/mstch
+git clone https://github.com/no1msd/mstch ~/tmp/mstch
+cd ~/tmp/mstch
+cmake .
+make
+```
+Global Install:
+```
+make install
+``` 
 
+## Building
 ```
 mkdir fbthrift/build
-cd fbthrift/thrift
-cmake ..
+cd fbthrift/build
+```
+Locally installed dependencies:
+```
+cmake \
+  -Dcompiler_only=ON \
+  -DMSTCH_ROOT="~/tmp/mstch" \
+  ..
+```
+Globally installed dependencies:
+```
+cmake -Dcompiler_only=ON ..
+```
+
+## Testing
+To test, you need to install the external dependencies and then build with the proper flags
+
+### Dependencies
+- [Python](https://www.python.org/)
+- [GTest and GMock](https://github.com/google/googletest)
+```
+mkdir -p ~/tmp/gtest
+git clone https://github.com/google/googletest ~/tmp/gtest
+cd ~/tmp/gtest/googletest
+cmake .
+make
+cd ~/tmp/gtest/googlemock
+cmake .
+make
+```
+Global Install:
+```
+cd ~/tmp/gtest/googletest
+make install
+cd ~/tmp/gtest/googlemock
+make install
+``` 
+
+### Building and Running Tests
+```
+mkdir fbthrift/build
+cd fbthrift/build
+```
+Locally installed dependencies:
+```
+cmake \
+  -Denable_tests=ON \
+  -Dcompiler_only=ON \
+  -DMSTCH_ROOT="~/tmp/mstch" \
+  -DGTEST_ROOT="~/tmp/googletest" \
+  -DGMOCK_ROOT="~/tmp/googlemock" \
+  ..
+make
+make test
+```
+Globally installed dependencies:
+```
+cmake -Denable_tests=ON -Dcompiler_only=ON ..
+make
+make test
 ```
 
 ## Installing
