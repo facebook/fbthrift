@@ -1,9 +1,5 @@
 #!/usr/bin/env python
 
-# This is loosely based on RunClientServer.py and TestClient.py, but
-# is heavily modified to work in fbcode.  In particular, all the assertions
-# are borrowed from testClient.py
-#
 # This starts up a bunch of servers, one for each of the server type
 # and socket typecombinations we have. It then runs through the tests
 # for each server, which entails connecting to calling a method on the
