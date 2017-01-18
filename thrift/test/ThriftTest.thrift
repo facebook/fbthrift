@@ -116,10 +116,6 @@ service ThriftTest
   list<i32>    testList(1: list<i32> thing),
   Numberz      testEnum(1: Numberz thing),
   UserId       testTypedef(1: UserId thing),
-  i32          testRequestCount();
-  i32          testPreServe();
-  i32          testNewConnection();
-  i32          testConnectionDestroyed();
 
   map<i32,map<i32,i32>> testMapMap(1: i32 hello),
 

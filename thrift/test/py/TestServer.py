@@ -129,18 +129,6 @@ class TestHandler(ThriftTest.Iface):
     def testTypedef(self, thing):
         return thing
 
-    def testRequestCount(self):
-        return event_handler.request_count
-
-    def testNewConnection(self):
-        return event_handler.num_new_conns
-
-    def testPreServe(self):
-        return event_handler.num_pre_serve
-
-    def testConnectionDestroyed(self):
-        return event_handler.num_conns_destroyed
-
 
 class TestContextHandler(ThriftTest.ContextIface):
 
@@ -206,18 +194,6 @@ class TestContextHandler(ThriftTest.ContextIface):
 
     def testTypedef(self, handler_ctx, thing):
         return self.th.testTypedef(thing)
-
-    def testRequestCount(self, handler_ctx):
-        return self.th.testRequestCount()
-
-    def testNewConnection(self, handler_ctx):
-        return self.th.testNewConnection()
-
-    def testPreServe(self, handler_ctx):
-        return self.th.testPreServe()
-
-    def testConnectionDestroyed(self, handler_ctx):
-        return self.th.testConnectionDestroyed()
 
 
 class ContextEventHandler(TProcessorEventHandler):

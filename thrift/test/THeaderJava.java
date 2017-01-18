@@ -249,22 +249,6 @@ public class THeaderJava extends junit.framework.TestCase {
 
     public TestHandler() {}
 
-    public int testConnectionDestroyed() {
-      return 0;
-    }
-
-    public int testNewConnection() {
-      return 0;
-    }
-
-    public int testPreServe() {
-      return 0;
-    }
-
-    public int testRequestCount() {
-      return 0;
-    }
-
     public void testVoid() {
     }
 

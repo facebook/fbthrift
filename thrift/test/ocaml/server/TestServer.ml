@@ -118,11 +118,6 @@ object (self)
       res
   method testOneway i =
     Unix.sleep (Int32.to_int (sod i))
-
-  method testRequestCount = 1l
-  method testPreServe = 1l
-  method testNewConnection = 1l
-  method testConnectionDestroyed = 1l
 end;;
 
 let h = new test_handler in

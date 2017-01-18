@@ -49,10 +49,6 @@ instance ThriftTest_Iface TestHandler where
     testEnum a (Just x) = do print x; return x
     testTypedef a (Just x) = do print x; return x
     testMapMap a (Just x) = return (Map.fromList [(1,Map.fromList [(2,2)])])
-    testRequestCount a = return 1
-    testPreServe a = return 1
-    testNewConnection a = return 1
-    testConnectionDestroyed a = return 1
     testInsanity a (Just x) = return (Map.fromList [(1,Map.fromList [(ONE,x)])])
     testMulti a a1 a2 a3 a4 a5 a6 = return (Xtruct Nothing Nothing Nothing Nothing)
     testException a c = throw (Xception (Just 1) (Just "bya"))

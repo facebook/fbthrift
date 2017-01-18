@@ -223,24 +223,6 @@ class AbstractTest(object):
         if self.client2:
             self.assertEqual(self.client2.blahBlah(), None)
 
-    def testPreServe(self):
-        count = self.client.testPreServe()
-        self.assertGreaterEqual(count, 1)
-
-    def testNewConnection(self):
-        if self.server_type == "TCppServer":
-            return
-        count = self.client.testNewConnection()
-        self.assertTrue(count > 0)
-
-    def testRequestCount(self):
-        count = self.client.testRequestCount()
-        self.assertTrue(count >= 0)
-
-    def testConnectionDestroyed(self):
-        count = self.client.testConnectionDestroyed()
-        self.assertTrue(count >= 0)
-
 
 class NormalBinaryTest(AbstractTest):
     protocol_factory = TBinaryProtocol.TBinaryProtocolFactory()

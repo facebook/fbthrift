@@ -167,26 +167,6 @@ class TestHandler : public ThriftTestIf {
     return thing;
   }
 
-  int32_t testRequestCount() override {
-    printf("testRequestCount not implemented\n");
-    return 0;
-  }
-
-  int32_t testPreServe() override {
-    printf("testPreServe not implemented\n");
-    return 0;
-  }
-
-  int32_t testNewConnection() override {
-    printf("testNewConnection not implemented\n");
-    return 0;
-  }
-
-  int32_t testConnectionDestroyed() override {
-    printf("testConnectionDestroyed not implemented\n");
-    return 0;
-  }
-
   void testMapMap(map<int32_t, map<int32_t, int32_t>>& mapmap,
                   const int32_t hello) override {
     printf("testMapMap(%d)\n", hello);

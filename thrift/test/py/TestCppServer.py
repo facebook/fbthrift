@@ -310,8 +310,6 @@ class BaseTestServer(TestServer):
         self.assertEquals(space.exitcode, 0)
         self.assertEquals(self.event_handler.last_peer_name, client_sockname)
         self.assertEquals(self.event_handler.last_sock_name, client_peername)
-        self.assertEquals(self.serverEventHandler.connCreated, 1)
-        self.assertEquals(self.serverEventHandler.connDestroyed, 1)
 
     def testHeader(self):
         header = HeaderProcess(self.server_addr)
