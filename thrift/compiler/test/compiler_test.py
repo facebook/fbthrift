@@ -13,7 +13,7 @@ import unittest
 skip_py_generate = os.getenv('THRIFT_COMPILER_TEST_SKIP_PY_GENERATE')
 thrift = os.getenv('THRIFT_COMPILER_BIN')
 fixtures_root_dir = os.getenv('THRIFT_FIXTURES_DIR')
-templateDir = os.getenv('THRIFT_TEMPLATES_DIR')
+templates_dir = os.getenv('THRIFT_TEMPLATES_DIR')
 
 def read_file(path):
     with open(path, 'r') as f:
@@ -30,12 +30,9 @@ def read_directory_filenames(path):
     return files
 
 def find_recursive_files(path):
-    files = subprocess.check_output(
-        ["find", ".", "-type", "f"],
-        cwd=path,
-        close_fds=True,
-    ).splitlines()
-    return [f.split('/', 1)[1] for f in files]
+    for root, dirs, files in os.walk(path):
+        for f in files:
+            yield os.path.relpath(os.path.join(root, f), path)
 
 def cp_dir(source_dir, dest_dir):
     if not os.path.isdir(dest_dir):
@@ -70,7 +67,7 @@ class CompilerTest(unittest.TestCase):
         except Exception as e:
             print(self.MSG, file=sys.stderr)
             traceback.print_exc(file=sys.stderr)
-            raise e
+            raise
 
     def setUp(self):
         tmp = tempfile.mkdtemp()
@@ -111,7 +108,7 @@ class CompilerTest(unittest.TestCase):
             # Generate arguments to run binary
             args = [
                 thrift, '-r',
-                '--templates', templateDir,
+                '--templates', templates_dir,
                 '--gen', args[0],
                 args[1]
             ]
@@ -136,7 +133,7 @@ class CompilerTest(unittest.TestCase):
             self.compare_code(gen_code, fixture_code)
 
         # Compare the generate code of cpp2 and mstch_cpp2 if both present
-        if ("cpp2" in languages and "mstch_cpp2" in languages):
+        if "cpp2" in languages and "mstch_cpp2" in languages:
             gen_code = os.path.join(self.tmp, 'gen-cpp2')
             fixture_code = os.path.join(fixture_dir, 'gen-mstch_cpp2')
             self.compare_code(gen_code, fixture_code)
