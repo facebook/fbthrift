@@ -1,9 +1,6 @@
 # Set the lib directory
 set(LIB_THRIFT_HOME ${CMAKE_CURRENT_SOURCE_DIR})
 
-# Set the path for the thrift-compiler binary
-set(THRIFT_BINARY ${THRIFT_BUILD}/thrift/compiler/thrift-compiler)
-
 # Generate needed files
 add_custom_target(lib-thrift ALL)
 

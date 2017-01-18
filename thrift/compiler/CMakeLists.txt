@@ -87,7 +87,7 @@ target_link_libraries(
 
   parse_lib
   thrift_base
-  generate_lib
+  ${GENERATE_LINKED}
 )
 # Force generate_lib linking (compiler will optimize it out otherwise)
 if(MSVC)
@@ -111,8 +111,18 @@ install(
 )
 
 # Add tests
-set(TEST_DIR ${COMPILER_DIR}/test)
-thrift_gtest(gcommon "${TEST_DIR}/generate_common_test.cc" generate_lib)
-thrift_gtest(tprogram "${TEST_DIR}/t_program_test.cc" parse_lib)
-thrift_gtest(ttype "${TEST_DIR}/t_type_test.cc" parse_lib)
-thrift_gtest(visitor "${TEST_DIR}/visitor_test.cc" thrift_base)
+if(enable_tests)
+  set(TEST_DIR ${COMPILER_DIR}/test)
+  thrift_gtest(gcommon "${TEST_DIR}/generate_common_test.cc" generate_lib)
+  thrift_gtest(tprogram "${TEST_DIR}/t_program_test.cc" parse_lib)
+  thrift_gtest(ttype "${TEST_DIR}/t_type_test.cc" parse_lib)
+  thrift_gtest(visitor "${TEST_DIR}/visitor_test.cc" thrift_base)
+
+  set(PY_ENV_VARS
+    THRIFT_COMPILER_TEST_SKIP_PY_GENERATE=True
+    THRIFT_COMPILER_BIN=${THRIFT_BINARY}
+    THRIFT_FIXTURES_DIR=${COMPILER_DIR}/test/fixtures
+    THRIFT_TEMPLATES_DIR=${COMPILER_DIR}/generate/templates)
+  add_test(compiler-gen ${PYTHON_EXECUTABLE} ${TEST_DIR}/compiler_test.py)
+  set_tests_properties(compiler-gen PROPERTIES ENVIRONMENT "${PY_ENV_VARS}")
+endif(enable_tests)

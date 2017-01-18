@@ -46,6 +46,7 @@ if(compiler_only OR build_all)
   find_package(FLEX REQUIRED)
   find_package(Mstch REQUIRED)
   include_directories(${MSTCH_INCLUDE_DIRS})
+  set(THRIFT_BINARY ${THRIFT_BUILD}/thrift/compiler/thrift-compiler)
 endif(compiler_only OR build_all)
 
 # Find required dependencies for thrift/lib
@@ -57,6 +58,7 @@ endif(lib_only OR build_all)
 # Add the test dependencies
 # To run tests: `make test`
 if(enable_tests)
+  find_package(PythonInterp REQUIRED)
   find_package(GTest REQUIRED)
   find_package(GMock REQUIRED)
   include_directories(
@@ -68,18 +70,16 @@ endif(enable_tests)
 
 # Create a generalized function for tests
 function(thrift_gtest tname srcfile)
-  if(ENABLE_TESTS)
-    add_executable("${tname}-t" ${srcfile})
-    target_link_libraries(
-      "${tname}-t"
+  add_executable("${tname}-t" ${srcfile})
+  target_link_libraries(
+    "${tname}-t"
 
-      ${ARGN}
-      ${GTEST_BOTH_LIBRARIES}
-      ${GMOCK_BOTH_LIBRARIES}
-      pthread
-    )
-    gtest_add_tests("${tname}-t" "" ${srcfile})
-  endif(ENABLE_TESTS)
+    ${ARGN}
+    ${GTEST_BOTH_LIBRARIES}
+    ${GMOCK_BOTH_LIBRARIES}
+    pthread
+  )
+  gtest_add_tests("${tname}-t" "" ${srcfile})
 endfunction(thrift_gtest)
 
 add_subdirectory(thrift)
