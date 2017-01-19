@@ -72,7 +72,7 @@ cdef class {{service:name}}{{#service:extends}}({{!
         self.loop = loop
 
     @staticmethod
-    cdef _{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_{{service:name}}_set_client({{service:name}} inst, shared_ptr[c{{service:name}}ClientWrapper] c_obj):
+    cdef _{{program:name}}_{{service:name}}_set_client({{service:name}} inst, shared_ptr[c{{service:name}}ClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
         inst._{{program:name}}_{{service:name}}_client = c_obj
 {{#service:extends}}
