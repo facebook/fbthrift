@@ -33,7 +33,7 @@ from thrift.transport.THeaderTransport import CLIENT_TYPE
 from thrift.transport import TSocket, TSSLSocket
 from thrift.transport import TTransport
 from thrift.server import TServer, TNonblockingServer, \
-    TProcessPoolServer, THttpServer, TCppServer
+    TProcessPoolServer, TCppServer
 
 def main():
     op = optparse.OptionParser(usage='%prog [options]', add_help_option=False)
