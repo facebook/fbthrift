@@ -37,6 +37,7 @@ cimport {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:
 
 {{#program:includeNamespaces}}
 cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}types
+cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}clients_wrapper
 {{/program:includeNamespaces}}
 
 {{#program:services}}

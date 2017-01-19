@@ -187,6 +187,8 @@ void t_mstch_py3_generator::generate_clients(const t_program& program) {
 
   auto name = program.get_name();
   this->render_to_file(
+    program, "Clients.pxd", path / name / "clients.pxd");
+  this->render_to_file(
     program, "CythonClients.pyx", path / name / "clients.pyx");
 
   std::string basename = "clients_wrapper";

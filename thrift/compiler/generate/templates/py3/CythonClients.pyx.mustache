@@ -45,32 +45,50 @@ cimport {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:
 from {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.clients_wrapper cimport move
 {{#program:includeNamespaces}}
 cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}types
+import {{#includeNamespace}}{{value}}.{{/includeNamespace}}types
+cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}clients
+import {{#includeNamespace}}{{value}}.{{/includeNamespace}}clients
 {{/program:includeNamespaces}}
 
 {{#program:services}}
 from {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.clients_wrapper cimport c{{service:name}}AsyncClient, c{{service:name}}ClientWrapper
+{{#service:extends}}
+from {{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{service:programName}}.clients_wrapper cimport c{{service:name}}ClientWrapper
+{{/service:extends}}
 {{/program:services}}
 
 {{> ClientCallbacks}}
 
 {{#program:services}}
-cdef class {{service:name}}Client:
-    cdef unique_ptr[c{{service:name}}ClientWrapper] _client
-    cdef object loop
+cdef class {{service:name}}{{#service:extends}}({{!
+  }}{{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{!
+    }}{{service:programName}}.clients.{{service:name}}{{!
+  }}){{/service:extends}}:
+
+    def __init__(self, *args, **kwds):
+        raise TypeError('Use {{service:name}}.connect() instead.')
 
     def __cinit__(self, loop):
         self.loop = loop
 
     @staticmethod
-    async def make_client(bytes host, int port, loop=None):
-        if loop is None:
-           loop = asyncio.get_event_loop()
+    cdef _{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_{{service:name}}_set_client({{service:name}} inst, shared_ptr[c{{service:name}}ClientWrapper] c_obj):
+        """So the class hierarchy talks to the correct pointer type"""
+        inst._{{program:name}}_{{service:name}}_client = c_obj
+{{#service:extends}}
+        {{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{service:programName}}.clients.{{service:name}}._{{service:programName}}_{{service:name}}_set_client(inst, <shared_ptr[c{{service:name}}ClientWrapper]>c_obj)
+{{/service:extends}}
+
+    @staticmethod
+    async def connect(str host, int port, loop=None):
+        loop = loop or asyncio.get_event_loop()
         future = loop.create_future()
         future.loop = loop
         eb = await get_event_base(loop)
+        cdef string _host = host.encode('UTF-8')
         make_py3_client[c{{service:name}}AsyncClient, c{{service:name}}ClientWrapper](
             (<EventBase> eb)._folly_event_base,
-            host,
+            _host,
             port,
             0,
             made_{{service:name}}_py3_client_callback,
@@ -83,11 +101,28 @@ cdef class {{service:name}}Client:
             arg_{{field:name}}{{/function:args}}):
         future = self.loop.create_future()
         future.loop = self.loop
-        deref(self._client).{{function:name}}({{#function:args}}
+        deref(self._{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_{{service:name}}_client).{{function:name}}({{#function:args}}
             {{#field:type}}{{> CythonPythonToCppArg}}{{/field:type}},{{/function:args}}
             {{service:name}}_{{function:name}}_callback,
             future)
         return future
 
     {{/service:functions}}
+
+{{! One callback for receiving the created C++ wrapper class and wrapping it in
+    a python class. }}
+cdef void made_{{service:name}}_py3_client_callback(
+        PyObject* future,
+        cFollyTry[shared_ptr[c{{service:name}}ClientWrapper]] result) with gil:
+    cdef object pyfuture = <object> future
+    if result.hasException():
+        try:
+            result.exception().throwException()
+        except:
+            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+    else:
+        pyclient = <{{service:name}}> {{service:name}}.__new__({{service:name}}, pyfuture.loop)
+        {{service:name}}._{{program:name}}_{{service:name}}_set_client(pyclient, result.value())
+        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, pyclient)
+
 {{/program:services}}

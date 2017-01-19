@@ -19,7 +19,7 @@ cdef extern from "thrift/lib/py3/client.h" namespace "apache::thrift":
         const string& host,
         const uint16_t port,
         const uint32_t connect_timeout,
-        void (*callback) (PyObject*, cFollyTry[unique_ptr[U]]),
+        void (*callback) (PyObject*, cFollyTry[shared_ptr[U]]),
         object py_future)
 
     cdef unique_ptr[T] py3_get_exception[T](

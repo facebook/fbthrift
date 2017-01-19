@@ -26,22 +26,6 @@ executed in the asyncio loop.
 }}
 
 {{#program:services}}
-{{! One callback for receiving the created C++ wrapper class and wrapping it in
-    a python class. }}
-cdef void made_{{service:name}}_py3_client_callback(
-        PyObject* future,
-        cFollyTry[unique_ptr[c{{service:name}}ClientWrapper]] result) with gil:
-    cdef object pyfuture = <object> future
-    if result.hasException():
-        try:
-            result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
-    else:
-        pyclient = {{service:name}}Client(pyfuture.loop)
-        pyclient._client = move(result.value())
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, pyclient)
-
 {{#service:functions}}
 cdef void {{service:name}}_{{function:name}}_callback(
         PyObject* future,

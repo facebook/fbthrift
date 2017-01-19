@@ -30,21 +30,8 @@ from module.clients_wrapper cimport cMyServiceFastAsyncClient, cMyServiceFastCli
 from module.clients_wrapper cimport cMyServiceEmptyAsyncClient, cMyServiceEmptyClientWrapper
 from module.clients_wrapper cimport cMyServicePrioParentAsyncClient, cMyServicePrioParentClientWrapper
 from module.clients_wrapper cimport cMyServicePrioChildAsyncClient, cMyServicePrioChildClientWrapper
+from module.clients_wrapper cimport cMyServicePrioParentClientWrapper
 
-
-cdef void made_MyService_py3_client_callback(
-        PyObject* future,
-        cFollyTry[unique_ptr[cMyServiceClientWrapper]] result) with gil:
-    cdef object pyfuture = <object> future
-    if result.hasException():
-        try:
-            result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
-    else:
-        pyclient = MyServiceClient(pyfuture.loop)
-        pyclient._client = move(result.value())
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, pyclient)
 
 cdef void MyService_ping_callback(
         PyObject* future,
@@ -130,20 +117,6 @@ cdef void MyService_lobDataById_callback(
         citem = c_unit;
         pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, None)
 
-cdef void made_MyServiceFast_py3_client_callback(
-        PyObject* future,
-        cFollyTry[unique_ptr[cMyServiceFastClientWrapper]] result) with gil:
-    cdef object pyfuture = <object> future
-    if result.hasException():
-        try:
-            result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
-    else:
-        pyclient = MyServiceFastClient(pyfuture.loop)
-        pyclient._client = move(result.value())
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, pyclient)
-
 cdef void MyServiceFast_ping_callback(
         PyObject* future,
         cFollyTry[cFollyUnit] result) with gil:
@@ -228,34 +201,6 @@ cdef void MyServiceFast_lobDataById_callback(
         citem = c_unit;
         pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, None)
 
-cdef void made_MyServiceEmpty_py3_client_callback(
-        PyObject* future,
-        cFollyTry[unique_ptr[cMyServiceEmptyClientWrapper]] result) with gil:
-    cdef object pyfuture = <object> future
-    if result.hasException():
-        try:
-            result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
-    else:
-        pyclient = MyServiceEmptyClient(pyfuture.loop)
-        pyclient._client = move(result.value())
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, pyclient)
-
-cdef void made_MyServicePrioParent_py3_client_callback(
-        PyObject* future,
-        cFollyTry[unique_ptr[cMyServicePrioParentClientWrapper]] result) with gil:
-    cdef object pyfuture = <object> future
-    if result.hasException():
-        try:
-            result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
-    else:
-        pyclient = MyServicePrioParentClient(pyfuture.loop)
-        pyclient._client = move(result.value())
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, pyclient)
-
 cdef void MyServicePrioParent_ping_callback(
         PyObject* future,
         cFollyTry[cFollyUnit] result) with gil:
@@ -284,20 +229,6 @@ cdef void MyServicePrioParent_pong_callback(
         citem = c_unit;
         pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, None)
 
-cdef void made_MyServicePrioChild_py3_client_callback(
-        PyObject* future,
-        cFollyTry[unique_ptr[cMyServicePrioChildClientWrapper]] result) with gil:
-    cdef object pyfuture = <object> future
-    if result.hasException():
-        try:
-            result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
-    else:
-        pyclient = MyServicePrioChildClient(pyfuture.loop)
-        pyclient._client = move(result.value())
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, pyclient)
-
 cdef void MyServicePrioChild_pang_callback(
         PyObject* future,
         cFollyTry[cFollyUnit] result) with gil:
@@ -313,23 +244,29 @@ cdef void MyServicePrioChild_pang_callback(
         pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, None)
 
 
-cdef class MyServiceClient:
-    cdef unique_ptr[cMyServiceClientWrapper] _client
-    cdef object loop
+cdef class MyService:
+
+    def __init__(self, *args, **kwds):
+        raise TypeError('Use MyService.connect() instead.')
 
     def __cinit__(self, loop):
         self.loop = loop
 
     @staticmethod
-    async def make_client(bytes host, int port, loop=None):
-        if loop is None:
-           loop = asyncio.get_event_loop()
+    cdef _module_MyService_set_client(MyService inst, shared_ptr[cMyServiceClientWrapper] c_obj):
+        """So the class hierarchy talks to the correct pointer type"""
+        inst._module_MyService_client = c_obj
+
+    @staticmethod
+    async def connect(str host, int port, loop=None):
+        loop = loop or asyncio.get_event_loop()
         future = loop.create_future()
         future.loop = loop
         eb = await get_event_base(loop)
+        cdef string _host = host.encode('UTF-8')
         make_py3_client[cMyServiceAsyncClient, cMyServiceClientWrapper](
             (<EventBase> eb)._folly_event_base,
-            host,
+            _host,
             port,
             0,
             made_MyService_py3_client_callback,
@@ -340,7 +277,7 @@ cdef class MyServiceClient:
             self):
         future = self.loop.create_future()
         future.loop = self.loop
-        deref(self._client).ping(
+        deref(self._module_MyService_client).ping(
             MyService_ping_callback,
             future)
         return future
@@ -349,7 +286,7 @@ cdef class MyServiceClient:
             self):
         future = self.loop.create_future()
         future.loop = self.loop
-        deref(self._client).getRandomData(
+        deref(self._module_MyService_client).getRandomData(
             MyService_getRandomData_callback,
             future)
         return future
@@ -359,7 +296,7 @@ cdef class MyServiceClient:
             arg_id):
         future = self.loop.create_future()
         future.loop = self.loop
-        deref(self._client).hasDataById(
+        deref(self._module_MyService_client).hasDataById(
             arg_id,
             MyService_hasDataById_callback,
             future)
@@ -370,7 +307,7 @@ cdef class MyServiceClient:
             arg_id):
         future = self.loop.create_future()
         future.loop = self.loop
-        deref(self._client).getDataById(
+        deref(self._module_MyService_client).getDataById(
             arg_id,
             MyService_getDataById_callback,
             future)
@@ -382,7 +319,7 @@ cdef class MyServiceClient:
             arg_data):
         future = self.loop.create_future()
         future.loop = self.loop
-        deref(self._client).putDataById(
+        deref(self._module_MyService_client).putDataById(
             arg_id,
             arg_data.encode('UTF-8'),
             MyService_putDataById_callback,
@@ -395,30 +332,51 @@ cdef class MyServiceClient:
             arg_data):
         future = self.loop.create_future()
         future.loop = self.loop
-        deref(self._client).lobDataById(
+        deref(self._module_MyService_client).lobDataById(
             arg_id,
             arg_data.encode('UTF-8'),
             MyService_lobDataById_callback,
             future)
         return future
 
-cdef class MyServiceFastClient:
-    cdef unique_ptr[cMyServiceFastClientWrapper] _client
-    cdef object loop
+
+cdef void made_MyService_py3_client_callback(
+        PyObject* future,
+        cFollyTry[shared_ptr[cMyServiceClientWrapper]] result) with gil:
+    cdef object pyfuture = <object> future
+    if result.hasException():
+        try:
+            result.exception().throwException()
+        except:
+            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+    else:
+        pyclient = <MyService> MyService.__new__(MyService, pyfuture.loop)
+        MyService._module_MyService_set_client(pyclient, result.value())
+        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, pyclient)
+
+cdef class MyServiceFast:
+
+    def __init__(self, *args, **kwds):
+        raise TypeError('Use MyServiceFast.connect() instead.')
 
     def __cinit__(self, loop):
         self.loop = loop
 
     @staticmethod
-    async def make_client(bytes host, int port, loop=None):
-        if loop is None:
-           loop = asyncio.get_event_loop()
+    cdef _module_MyServiceFast_set_client(MyServiceFast inst, shared_ptr[cMyServiceFastClientWrapper] c_obj):
+        """So the class hierarchy talks to the correct pointer type"""
+        inst._module_MyServiceFast_client = c_obj
+
+    @staticmethod
+    async def connect(str host, int port, loop=None):
+        loop = loop or asyncio.get_event_loop()
         future = loop.create_future()
         future.loop = loop
         eb = await get_event_base(loop)
+        cdef string _host = host.encode('UTF-8')
         make_py3_client[cMyServiceFastAsyncClient, cMyServiceFastClientWrapper](
             (<EventBase> eb)._folly_event_base,
-            host,
+            _host,
             port,
             0,
             made_MyServiceFast_py3_client_callback,
@@ -429,7 +387,7 @@ cdef class MyServiceFastClient:
             self):
         future = self.loop.create_future()
         future.loop = self.loop
-        deref(self._client).ping(
+        deref(self._module_MyServiceFast_client).ping(
             MyServiceFast_ping_callback,
             future)
         return future
@@ -438,7 +396,7 @@ cdef class MyServiceFastClient:
             self):
         future = self.loop.create_future()
         future.loop = self.loop
-        deref(self._client).getRandomData(
+        deref(self._module_MyServiceFast_client).getRandomData(
             MyServiceFast_getRandomData_callback,
             future)
         return future
@@ -448,7 +406,7 @@ cdef class MyServiceFastClient:
             arg_id):
         future = self.loop.create_future()
         future.loop = self.loop
-        deref(self._client).hasDataById(
+        deref(self._module_MyServiceFast_client).hasDataById(
             arg_id,
             MyServiceFast_hasDataById_callback,
             future)
@@ -459,7 +417,7 @@ cdef class MyServiceFastClient:
             arg_id):
         future = self.loop.create_future()
         future.loop = self.loop
-        deref(self._client).getDataById(
+        deref(self._module_MyServiceFast_client).getDataById(
             arg_id,
             MyServiceFast_getDataById_callback,
             future)
@@ -471,7 +429,7 @@ cdef class MyServiceFastClient:
             arg_data):
         future = self.loop.create_future()
         future.loop = self.loop
-        deref(self._client).putDataById(
+        deref(self._module_MyServiceFast_client).putDataById(
             arg_id,
             arg_data.encode('UTF-8'),
             MyServiceFast_putDataById_callback,
@@ -484,53 +442,95 @@ cdef class MyServiceFastClient:
             arg_data):
         future = self.loop.create_future()
         future.loop = self.loop
-        deref(self._client).lobDataById(
+        deref(self._module_MyServiceFast_client).lobDataById(
             arg_id,
             arg_data.encode('UTF-8'),
             MyServiceFast_lobDataById_callback,
             future)
         return future
 
-cdef class MyServiceEmptyClient:
-    cdef unique_ptr[cMyServiceEmptyClientWrapper] _client
-    cdef object loop
+
+cdef void made_MyServiceFast_py3_client_callback(
+        PyObject* future,
+        cFollyTry[shared_ptr[cMyServiceFastClientWrapper]] result) with gil:
+    cdef object pyfuture = <object> future
+    if result.hasException():
+        try:
+            result.exception().throwException()
+        except:
+            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+    else:
+        pyclient = <MyServiceFast> MyServiceFast.__new__(MyServiceFast, pyfuture.loop)
+        MyServiceFast._module_MyServiceFast_set_client(pyclient, result.value())
+        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, pyclient)
+
+cdef class MyServiceEmpty:
+
+    def __init__(self, *args, **kwds):
+        raise TypeError('Use MyServiceEmpty.connect() instead.')
 
     def __cinit__(self, loop):
         self.loop = loop
 
     @staticmethod
-    async def make_client(bytes host, int port, loop=None):
-        if loop is None:
-           loop = asyncio.get_event_loop()
+    cdef _module_MyServiceEmpty_set_client(MyServiceEmpty inst, shared_ptr[cMyServiceEmptyClientWrapper] c_obj):
+        """So the class hierarchy talks to the correct pointer type"""
+        inst._module_MyServiceEmpty_client = c_obj
+
+    @staticmethod
+    async def connect(str host, int port, loop=None):
+        loop = loop or asyncio.get_event_loop()
         future = loop.create_future()
         future.loop = loop
         eb = await get_event_base(loop)
+        cdef string _host = host.encode('UTF-8')
         make_py3_client[cMyServiceEmptyAsyncClient, cMyServiceEmptyClientWrapper](
             (<EventBase> eb)._folly_event_base,
-            host,
+            _host,
             port,
             0,
             made_MyServiceEmpty_py3_client_callback,
             future)
         return await future
 
-cdef class MyServicePrioParentClient:
-    cdef unique_ptr[cMyServicePrioParentClientWrapper] _client
-    cdef object loop
+
+cdef void made_MyServiceEmpty_py3_client_callback(
+        PyObject* future,
+        cFollyTry[shared_ptr[cMyServiceEmptyClientWrapper]] result) with gil:
+    cdef object pyfuture = <object> future
+    if result.hasException():
+        try:
+            result.exception().throwException()
+        except:
+            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+    else:
+        pyclient = <MyServiceEmpty> MyServiceEmpty.__new__(MyServiceEmpty, pyfuture.loop)
+        MyServiceEmpty._module_MyServiceEmpty_set_client(pyclient, result.value())
+        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, pyclient)
+
+cdef class MyServicePrioParent:
+
+    def __init__(self, *args, **kwds):
+        raise TypeError('Use MyServicePrioParent.connect() instead.')
 
     def __cinit__(self, loop):
         self.loop = loop
 
     @staticmethod
-    async def make_client(bytes host, int port, loop=None):
-        if loop is None:
-           loop = asyncio.get_event_loop()
+    cdef _module_MyServicePrioParent_set_client(MyServicePrioParent inst, shared_ptr[cMyServicePrioParentClientWrapper] c_obj):
+        """So the class hierarchy talks to the correct pointer type"""
+        inst._module_MyServicePrioParent_client = c_obj
+
+    @staticmethod
+    async def connect(str host, int port, loop=None):
+        loop = loop or asyncio.get_event_loop()
         future = loop.create_future()
         future.loop = loop
         eb = await get_event_base(loop)
+        cdef string _host = host.encode('UTF-8')
         make_py3_client[cMyServicePrioParentAsyncClient, cMyServicePrioParentClientWrapper](
             (<EventBase> eb)._folly_event_base,
-            host,
+            _host,
             port,
             0,
             made_MyServicePrioParent_py3_client_callback,
@@ -541,7 +541,7 @@ cdef class MyServicePrioParentClient:
             self):
         future = self.loop.create_future()
         future.loop = self.loop
-        deref(self._client).ping(
+        deref(self._module_MyServicePrioParent_client).ping(
             MyServicePrioParent_ping_callback,
             future)
         return future
@@ -550,28 +550,50 @@ cdef class MyServicePrioParentClient:
             self):
         future = self.loop.create_future()
         future.loop = self.loop
-        deref(self._client).pong(
+        deref(self._module_MyServicePrioParent_client).pong(
             MyServicePrioParent_pong_callback,
             future)
         return future
 
-cdef class MyServicePrioChildClient:
-    cdef unique_ptr[cMyServicePrioChildClientWrapper] _client
-    cdef object loop
+
+cdef void made_MyServicePrioParent_py3_client_callback(
+        PyObject* future,
+        cFollyTry[shared_ptr[cMyServicePrioParentClientWrapper]] result) with gil:
+    cdef object pyfuture = <object> future
+    if result.hasException():
+        try:
+            result.exception().throwException()
+        except:
+            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+    else:
+        pyclient = <MyServicePrioParent> MyServicePrioParent.__new__(MyServicePrioParent, pyfuture.loop)
+        MyServicePrioParent._module_MyServicePrioParent_set_client(pyclient, result.value())
+        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, pyclient)
+
+cdef class MyServicePrioChild(module.clients.MyServicePrioParent):
+
+    def __init__(self, *args, **kwds):
+        raise TypeError('Use MyServicePrioChild.connect() instead.')
 
     def __cinit__(self, loop):
         self.loop = loop
 
     @staticmethod
-    async def make_client(bytes host, int port, loop=None):
-        if loop is None:
-           loop = asyncio.get_event_loop()
+    cdef _module_MyServicePrioChild_set_client(MyServicePrioChild inst, shared_ptr[cMyServicePrioChildClientWrapper] c_obj):
+        """So the class hierarchy talks to the correct pointer type"""
+        inst._module_MyServicePrioChild_client = c_obj
+        module.clients.MyServicePrioParent._module_MyServicePrioParent_set_client(inst, <shared_ptr[cMyServicePrioParentClientWrapper]>c_obj)
+
+    @staticmethod
+    async def connect(str host, int port, loop=None):
+        loop = loop or asyncio.get_event_loop()
         future = loop.create_future()
         future.loop = loop
         eb = await get_event_base(loop)
+        cdef string _host = host.encode('UTF-8')
         make_py3_client[cMyServicePrioChildAsyncClient, cMyServicePrioChildClientWrapper](
             (<EventBase> eb)._folly_event_base,
-            host,
+            _host,
             port,
             0,
             made_MyServicePrioChild_py3_client_callback,
@@ -582,8 +604,23 @@ cdef class MyServicePrioChildClient:
             self):
         future = self.loop.create_future()
         future.loop = self.loop
-        deref(self._client).pang(
+        deref(self._module_MyServicePrioChild_client).pang(
             MyServicePrioChild_pang_callback,
             future)
         return future
+
+
+cdef void made_MyServicePrioChild_py3_client_callback(
+        PyObject* future,
+        cFollyTry[shared_ptr[cMyServicePrioChildClientWrapper]] result) with gil:
+    cdef object pyfuture = <object> future
+    if result.hasException():
+        try:
+            result.exception().throwException()
+        except:
+            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+    else:
+        pyclient = <MyServicePrioChild> MyServicePrioChild.__new__(MyServicePrioChild, pyfuture.loop)
+        MyServicePrioChild._module_MyServicePrioChild_set_client(pyclient, result.value())
+        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, pyclient)
 

@@ -5,7 +5,7 @@
  *  @generated
  */
 
-#include <src/module/clients_wrapper.h>
+#include <src/gen-py3/module/clients_wrapper.h>
 
 namespace cpp2 {
 NestedContainersClientWrapper::NestedContainersClientWrapper(

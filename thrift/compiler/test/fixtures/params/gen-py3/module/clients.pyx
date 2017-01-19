@@ -28,20 +28,6 @@ from module.clients_wrapper cimport move
 from module.clients_wrapper cimport cNestedContainersAsyncClient, cNestedContainersClientWrapper
 
 
-cdef void made_NestedContainers_py3_client_callback(
-        PyObject* future,
-        cFollyTry[unique_ptr[cNestedContainersClientWrapper]] result) with gil:
-    cdef object pyfuture = <object> future
-    if result.hasException():
-        try:
-            result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
-    else:
-        pyclient = NestedContainersClient(pyfuture.loop)
-        pyclient._client = move(result.value())
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, pyclient)
-
 cdef void NestedContainers_mapList_callback(
         PyObject* future,
         cFollyTry[cFollyUnit] result) with gil:
@@ -113,23 +99,29 @@ cdef void NestedContainers_turtles_callback(
         pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, None)
 
 
-cdef class NestedContainersClient:
-    cdef unique_ptr[cNestedContainersClientWrapper] _client
-    cdef object loop
+cdef class NestedContainers:
+
+    def __init__(self, *args, **kwds):
+        raise TypeError('Use NestedContainers.connect() instead.')
 
     def __cinit__(self, loop):
         self.loop = loop
 
     @staticmethod
-    async def make_client(bytes host, int port, loop=None):
-        if loop is None:
-           loop = asyncio.get_event_loop()
+    cdef _module_NestedContainers_set_client(NestedContainers inst, shared_ptr[cNestedContainersClientWrapper] c_obj):
+        """So the class hierarchy talks to the correct pointer type"""
+        inst._module_NestedContainers_client = c_obj
+
+    @staticmethod
+    async def connect(str host, int port, loop=None):
+        loop = loop or asyncio.get_event_loop()
         future = loop.create_future()
         future.loop = loop
         eb = await get_event_base(loop)
+        cdef string _host = host.encode('UTF-8')
         make_py3_client[cNestedContainersAsyncClient, cNestedContainersClientWrapper](
             (<EventBase> eb)._folly_event_base,
-            host,
+            _host,
             port,
             0,
             made_NestedContainers_py3_client_callback,
@@ -141,7 +133,7 @@ cdef class NestedContainersClient:
             arg_foo):
         future = self.loop.create_future()
         future.loop = self.loop
-        deref(self._client).mapList(
+        deref(self._module_NestedContainers_client).mapList(
             deref((<module.types.Map__i32_List__i32>arg_foo)._map),
             NestedContainers_mapList_callback,
             future)
@@ -152,7 +144,7 @@ cdef class NestedContainersClient:
             arg_foo):
         future = self.loop.create_future()
         future.loop = self.loop
-        deref(self._client).mapSet(
+        deref(self._module_NestedContainers_client).mapSet(
             deref((<module.types.Map__i32_Set__i32>arg_foo)._map),
             NestedContainers_mapSet_callback,
             future)
@@ -163,7 +155,7 @@ cdef class NestedContainersClient:
             arg_foo):
         future = self.loop.create_future()
         future.loop = self.loop
-        deref(self._client).listMap(
+        deref(self._module_NestedContainers_client).listMap(
             deref((<module.types.List__Map__i32_i32>arg_foo)._vector),
             NestedContainers_listMap_callback,
             future)
@@ -174,7 +166,7 @@ cdef class NestedContainersClient:
             arg_foo):
         future = self.loop.create_future()
         future.loop = self.loop
-        deref(self._client).listSet(
+        deref(self._module_NestedContainers_client).listSet(
             deref((<module.types.List__Set__i32>arg_foo)._vector),
             NestedContainers_listSet_callback,
             future)
@@ -185,9 +177,24 @@ cdef class NestedContainersClient:
             arg_foo):
         future = self.loop.create_future()
         future.loop = self.loop
-        deref(self._client).turtles(
+        deref(self._module_NestedContainers_client).turtles(
             deref((<module.types.List__List__Map__i32_Map__i32_Set__i32>arg_foo)._vector),
             NestedContainers_turtles_callback,
             future)
         return future
+
+
+cdef void made_NestedContainers_py3_client_callback(
+        PyObject* future,
+        cFollyTry[shared_ptr[cNestedContainersClientWrapper]] result) with gil:
+    cdef object pyfuture = <object> future
+    if result.hasException():
+        try:
+            result.exception().throwException()
+        except:
+            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+    else:
+        pyclient = <NestedContainers> NestedContainers.__new__(NestedContainers, pyfuture.loop)
+        NestedContainers._module_NestedContainers_set_client(pyclient, result.value())
+        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, pyclient)
 

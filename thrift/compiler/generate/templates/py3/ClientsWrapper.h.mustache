@@ -25,7 +25,7 @@ Header file for ClientsWrapper.cpp for cython to import in CythonClients.pxd.
 #include <{{program:includePrefix}}gen-cpp2/{{service:name}}.h>
 {{#service:externalProgram?}}
 {{#service:extends}}
-#include <{{program:includePrefix}}gen-py3/{{service:programName}}/clients_wrapper.h>
+#include <{{service:includePrefix}}gen-py3/{{service:programName}}/clients_wrapper.h>
 {{/service:extends}}
 {{/service:externalProgram?}}
 {{/program:services}}
@@ -47,7 +47,7 @@ Header file for ClientsWrapper.cpp for cython to import in CythonClients.pxd.
 {{/program:cppNamespaces}}
 
 {{#program:services}}
-class {{service:name}}ClientWrapper{{#service:extends?}}: {{/service:extends?}}{{!
+class {{service:name}}ClientWrapper{{#service:extends?}} : {{/service:extends?}}{{!
   }}{{#service:extends}}virtual public {{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}ClientWrapper{{^last?}}, {{/last?}}{{/service:extends}}{{!
 }} {
   protected:

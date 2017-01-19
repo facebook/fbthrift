@@ -38,7 +38,7 @@ void make_py3_client(
     const std::string& host,
     const uint16_t port,
     const uint32_t connect_timeout,
-    std::function<void(PyObject*, folly::Try<std::unique_ptr<U>>)> callback,
+    std::function<void(PyObject*, folly::Try<std::shared_ptr<U>>)> callback,
     PyObject* py_future) {
   folly::via(
     event_base.get(),
@@ -47,14 +47,14 @@ void make_py3_client(
         py_future,
         folly::makeTryWith(
           [&] {
-            auto client = std::make_unique<T>(
+            auto client = std::make_shared<T>(
               HeaderClientChannel::newChannel(
                 async::TAsyncSocket::newSocket(
                   event_base.get(),
                   host,
                   port,
                   connect_timeout)));
-            return std::make_unique<U>(std::move(client), event_base);
+            return std::make_shared<U>(client, event_base);
           }));
     });
 }

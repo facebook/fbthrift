@@ -5,7 +5,7 @@
  *  @generated
  */
 
-#include <src/service/clients_wrapper.h>
+#include <src/gen-py3/service/clients_wrapper.h>
 
 namespace cpp2 {
 MyServiceClientWrapper::MyServiceClientWrapper(

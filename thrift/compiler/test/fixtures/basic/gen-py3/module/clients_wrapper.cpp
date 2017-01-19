@@ -5,7 +5,7 @@
  *  @generated
  */
 
-#include <src/module/clients_wrapper.h>
+#include <src/gen-py3/module/clients_wrapper.h>
 
 namespace cpp2 {
 MyServiceClientWrapper::MyServiceClientWrapper(
@@ -225,10 +225,9 @@ void MyServicePrioParentClientWrapper::pong(
 MyServicePrioChildClientWrapper::MyServicePrioChildClientWrapper(
     std::shared_ptr<cpp2::MyServicePrioChildAsyncClient> async_client,
     std::shared_ptr<folly::EventBase> event_base) : 
-    MyServicePrioParentClientWrapper(std::dynamic_pointer_cast<MyServicePrioParentAsyncClient>(async_client), event_base),
+    MyServicePrioParentClientWrapper(std::dynamic_pointer_cast<cpp2::MyServicePrioParentAsyncClient>(async_client), event_base),
     async_client(async_client) {}
 
-MyServicePrioChildClientWrapper::~MyServicePrioChildClientWrapper() {}
 
 void MyServicePrioChildClientWrapper::pang(
     std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
