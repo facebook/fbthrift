@@ -30,8 +30,7 @@ from thrift.protocol.THeaderProtocol import THeaderProtocolFactory
 from thrift.transport.THeaderTransport import CLIENT_TYPE
 from thrift.transport import TSocket, TSSLSocket
 from thrift.transport import TTransport
-from thrift.server import TServer, TNonblockingServer, \
-    TProcessPoolServer, TCppServer
+from thrift.server import TServer, TNonblockingServer, TCppServer
 
 def main():
     op = optparse.OptionParser(usage='%prog [options]', add_help_option=False)
@@ -102,12 +101,6 @@ def main():
         if options.servertype == "TNonblockingServer":
             server = TNonblockingServer.TNonblockingServer(processor, transport,
                                 pfactory, maxQueueSize=options.max_queue_size)
-        elif options.servertype == "TProcessPoolServer":
-            server = TProcessPoolServer.TProcessPoolServer(processor, transport,
-                                                           tfactory,
-                                                           pfactory)
-            print 'Worker processes: ' + str(options.workers)
-            server.setNumWorkers(options.workers)
         elif options.servertype == "TGeventServer":
             print 'Worker processes: ' + str(options.workers)
             # Gevent makes its own server transport.
