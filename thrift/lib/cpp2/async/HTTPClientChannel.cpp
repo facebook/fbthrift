@@ -43,6 +43,11 @@ using apache::thrift::transport::THeader;
 using HResClock = std::chrono::high_resolution_clock;
 using Us = std::chrono::microseconds;
 using apache::thrift::transport::TTransportException;
+using proxygen::WheelTimerInstance;
+
+namespace {
+const std::chrono::seconds kTransactionTimeout(60);
+}
 
 namespace apache {
 namespace thrift {
@@ -82,18 +87,14 @@ HTTPClientChannel::HTTPClientChannel(TAsyncTransport::UniquePtr transport,
       timeout_(0),
       keepRegisteredForClose_(true),
       evb_(transport->getEventBase()),
-      timer_(folly::HHWheelTimer::newTimer(
-          evb_,
-          std::chrono::milliseconds(folly::HHWheelTimer::DEFAULT_TICK_INTERVAL),
-          folly::AsyncTimeout::InternalEnum::NORMAL,
-          std::chrono::seconds(60))),
+      timer_(kTransactionTimeout, evb_),
       protocolId_(apache::thrift::protocol::T_COMPACT_PROTOCOL) {
   folly::SocketAddress localAddr;
   folly::SocketAddress peerAddr;
   transport->getLocalAddress(&localAddr);
   transport->getPeerAddress(&peerAddr);
 
-  httpSession_ = new proxygen::HTTPUpstreamSession(timer_.get(),
+  httpSession_ = new proxygen::HTTPUpstreamSession(timer_,
                                                    std::move(transport),
                                                    localAddr,
                                                    peerAddr,
@@ -110,7 +111,7 @@ void HTTPClientChannel::closeNow() {
     httpSession_->setInfoCallback(nullptr);
     httpSession_->shutdownTransport();
     httpSession_ = nullptr;
-    timer_.reset();
+    timer_ = WheelTimerInstance();
   }
 }
 
@@ -120,7 +121,7 @@ void HTTPClientChannel::destroy() {
 }
 
 void HTTPClientChannel::attachEventBase(EventBase* eventBase) {
-  timer_->attachEventBase(eventBase);
+  timer_ = WheelTimerInstance(kTransactionTimeout, eventBase);
   if (httpSession_) {
     auto trans = httpSession_->getTransport();
     if (trans) {
@@ -131,7 +132,10 @@ void HTTPClientChannel::attachEventBase(EventBase* eventBase) {
 }
 
 void HTTPClientChannel::detachEventBase() {
-  timer_->detachEventBase();
+  // The two way callback must not exist right now.  It schedules a
+  // timeout, which is cancelled in the destructor, and the old call
+  // to timer_->detachEventBase would have FATAL'd.
+  timer_ = WheelTimerInstance();
   if (httpSession_) {
     auto trans = httpSession_->getTransport();
     if (trans) {
@@ -142,7 +146,8 @@ void HTTPClientChannel::detachEventBase() {
 }
 
 bool HTTPClientChannel::isDetachable() {
-  return timer_->isDetachable() &&
+  auto timer = timer_.getWheelTimer();
+  return timer && timer->isDetachable() &&
          (!httpSession_ || httpSession_->getTransport()->isDetachable());
 }
 
@@ -242,7 +247,7 @@ uint32_t HTTPClientChannel::sendRequest(
                                         std::move(ctx),
                                         isSecurityActive(),
                                         protocolId_,
-                                        timer_.get(),
+                                        *timer_.getWheelTimer(),
                                         std::chrono::milliseconds(timeout_));
 
   if (!httpSession_) {

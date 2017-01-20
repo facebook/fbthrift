@@ -161,17 +161,16 @@ class HTTPClientChannel : public ClientChannel,
         std::unique_ptr<apache::thrift::ContextStack> ctx,
         bool isSecurityActive,
         uint16_t protoId,
-        folly::HHWheelTimer* timer,
+        folly::HHWheelTimer& timer,
         std::chrono::milliseconds timeout)
         : cb_(std::move(cb)),
           ctx_(std::move(ctx)),
           cbCalled_(false),
           isSecurityActive_(isSecurityActive),
           protoId_(protoId),
-          timer_(timer),
           txn_(nullptr) {
       if (timeout.count()) {
-        timer_->scheduleTimeout(this, timeout);
+        timer.scheduleTimeout(this, timeout);
       }
     }
 
@@ -343,7 +342,6 @@ class HTTPClientChannel : public ClientChannel,
     bool cbCalled_;
     bool isSecurityActive_;
     uint16_t protoId_;
-    folly::HHWheelTimer* timer_;
 
     bool sendQueued_ = true;
     proxygen::HTTPTransaction* txn_;
@@ -503,7 +501,7 @@ class HTTPClientChannel : public ClientChannel,
   bool keepRegisteredForClose_;
 
   folly::EventBase* evb_;
-  folly::HHWheelTimer::UniquePtr timer_;
+  proxygen::WheelTimerInstance timer_;
 
   uint16_t protocolId_;
 };
