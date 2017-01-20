@@ -29,7 +29,7 @@ def read_directory_filenames(path):
         files.append(filename)
     return files
 
-def find_recursive_files(path):
+def gen_find_recursive_files(path):
     for root, dirs, files in os.walk(path):
         for f in files:
             yield os.path.relpath(os.path.join(root, f), path)
@@ -37,8 +37,7 @@ def find_recursive_files(path):
 def cp_dir(source_dir, dest_dir):
     if not os.path.isdir(dest_dir):
         os.makedirs(dest_dir, 0o700)
-    srcs = find_recursive_files(source_dir)
-    for src in srcs:
+    for src in gen_find_recursive_files(source_dir):
         shutil.copy2(os.path.join(source_dir, src), dest_dir)
 
 class CompilerTest(unittest.TestCase):
@@ -52,8 +51,8 @@ class CompilerTest(unittest.TestCase):
     ])
 
     def compare_code(self, path1, path2):
-        gens = find_recursive_files(path1)
-        fixt = find_recursive_files(path2)
+        gens = list(gen_find_recursive_files(path1))
+        fixt = list(gen_find_recursive_files(path2))
         try:
             # Compare that the generated files are the same
             self.assertEqual(sorted(gens), sorted(fixt))
