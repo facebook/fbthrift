@@ -256,68 +256,6 @@ class TThreadedServer(TServer):
                 logging.exception(x)
 
 
-class TThreadPoolServer(TServer):
-
-    """Server with a fixed size pool of threads which service requests."""
-
-    def __init__(self, *args, **kwargs):
-        warnings.warn("TThreadPoolServer is deprecated. Please use one of "
-                      "Nonblocking, Twisted, or Gevent server instead.",
-                      DeprecationWarning)
-        TServer.__init__(self, *args)
-        queue_size = kwargs.get("queueSize", 0)
-        self.clients = Queue.Queue(queue_size)
-        self.threads = 10
-        self.daemon = kwargs.get("daemon", False)
-        self.timeout = kwargs.get("timeout", None)
-
-    def setNumThreads(self, num):
-        """Set the number of worker threads that should be created"""
-        self.threads = num
-
-    def serveThread(self):
-        """
-        Loop around getting clients from the shared queue and process them.
-        """
-        while True:
-            try:
-                client = self.clients.get()
-                if self.timeout:
-                    client.setTimeout(self.timeout)
-                self.handle(client)
-            except Exception as x:
-                logging.exception(x)
-
-    def serve(self):
-        """
-        Start a fixed number of worker threads and put client into a queue
-        """
-        for i in range(self.threads):
-            try:
-                t = threading.Thread(target=self.serveThread)
-                t.daemon = self.daemon
-                t.start()
-            except Exception as x:
-                logging.exception(x)
-
-        # Pump the socket for clients
-        self.serverTransport.listen()
-        for name in self.serverTransport.getSocketNames():
-            self.serverEventHandler.preServe(name)
-        while True:
-            client = None
-            try:
-                client = self.serverTransport.accept()
-                self.clients.put(client)
-            except Exception as x:
-                logging.exception(x)
-                if client:
-                    itrans = self.inputTransportFactory.getTransport(client)
-                    otrans = self.outputTransportFactory.getTransport(client)
-                    itrans.close()
-                    otrans.close()
-
-
 class TForkingServer(TServer):
 
     """A Thrift server that forks a new process for each request"""

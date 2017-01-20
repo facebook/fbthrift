@@ -88,7 +88,6 @@ server = TServer.TSimpleServer(handler, transport, tfactory, pfactory)
 
 # You could do one of these for a multithreaded server
 #server = TServer.TThreadedServer(handler, transport, tfactory, pfactory)
-#server = TServer.TThreadPoolServer(handler, transport, tfactory, pfactory)
 
 print('Starting the server...')
 server.serve()
