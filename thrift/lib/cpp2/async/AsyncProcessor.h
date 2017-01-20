@@ -848,8 +848,6 @@ class ServerInterface : public AsyncProcessorFactory {
 
  private:
   /**
-   * TODO(davejwatson): c++11 thread_local in gcc 4.8
-   *
    * This variable is only used for sync calls when in a threadpool it
    * is threadlocal, because the threadpool will probably be
    * processing multiple requests simultaneously, and we don't want to
@@ -860,9 +858,9 @@ class ServerInterface : public AsyncProcessorFactory {
    * use the callback->getConnectionContext() method.  This reqCtx_
    * will be NULL for async calls.
    */
-  static __thread Cpp2RequestContext* reqCtx_;
-  static __thread apache::thrift::concurrency::ThreadManager* tm_;
-  static __thread folly::EventBase* eb_;
+  static thread_local Cpp2RequestContext* reqCtx_;
+  static thread_local apache::thrift::concurrency::ThreadManager* tm_;
+  static thread_local folly::EventBase* eb_;
 };
 
 }} // apache::thrift
