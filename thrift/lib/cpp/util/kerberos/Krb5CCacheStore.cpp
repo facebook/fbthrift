@@ -73,8 +73,7 @@ uint64_t Krb5CCacheStore::ServiceData::getCount() {
 
 std::shared_ptr<Krb5CCache> Krb5CCacheStore::waitForCache(
     const Krb5Principal& service,
-    SecurityLogger* logger,
-    bool* didInitCacheForService) {
+    SecurityLogger* logger) {
   std::shared_ptr<ServiceData> dataPtr = getServiceDataPtr(service);
 
   uint64_t curtime = chrono::duration_cast<chrono::seconds>(
@@ -98,9 +97,6 @@ std::shared_ptr<Krb5CCache> Krb5CCacheStore::waitForCache(
         if (logger) {
           logger->logEnd("get_prepared_cache");
         }
-        if (didInitCacheForService) {
-          *didInitCacheForService = false;
-        }
         return dataPtr->cache;
       }
     }
@@ -123,10 +119,6 @@ std::shared_ptr<Krb5CCache> Krb5CCacheStore::waitForCache(
   folly::SharedMutex::WriteHolder writeLock(dataPtr->lockCache);
   dataPtr->cache = std::move(tempCache);
   dataPtr->expires = expires;
-
-  if (didInitCacheForService) {
-    *didInitCacheForService = true;
-  }
 
   return dataPtr->cache;
 }

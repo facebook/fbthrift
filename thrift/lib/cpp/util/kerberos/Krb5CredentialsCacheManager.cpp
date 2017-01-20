@@ -479,12 +479,7 @@ std::shared_ptr<Krb5CCache> Krb5CredentialsCacheManager::waitForCache(
   if (!store_) {
     throw std::runtime_error("Kerberos ccache store could not be initialized");
   }
-  bool didInitCacheForService;
-  auto cache = store_->waitForCache(service, logger, &didInitCacheForService);
-  if (didInitCacheForService) {
-    logOneCredential(logger_, "init_cache_for_service", cache);
-  }
-  return cache;
+  return store_->waitForCache(service, logger);
 }
 
 void Krb5CredentialsCacheManager::initCacheStore() {
@@ -597,35 +592,14 @@ bool Krb5CredentialsCacheManager::reachedRenewTime(
 void Krb5CredentialsCacheManager::logTopCredentials(
     const std::shared_ptr<Krb5CredentialsCacheManagerLogger>& logger,
     const std::string& key) {
-  logCredentialsCache(
-      logger,
-      key,
-      store_->getServicePrincipalLifetimes(
-          Krb5CredentialsCacheManager::NUM_ELEMENTS_TO_LOG));
-}
-
-void Krb5CredentialsCacheManager::logOneCredential(
-    const std::shared_ptr<Krb5CredentialsCacheManagerLogger>& logger,
-    const std::string& key,
-    const std::shared_ptr<Krb5CCache>& cache) {
-  const auto service = store_->getLifetimeOfFirstServicePrincipal(cache);
-  std::map<std::string, Krb5Lifetime> serviceLifetimes = {
-      {service.first, service.second}};
-
-  logCredentialsCache(logger, key, serviceLifetimes);
-}
-
-void Krb5CredentialsCacheManager::logCredentialsCache(
-    const std::shared_ptr<Krb5CredentialsCacheManagerLogger>& logger,
-    const std::string& key,
-    const std::map<std::string, Krb5Lifetime>& serviceLifetimes) {
   Krb5Keytab keytab(ctx_->get());
   logger->logCredentialsCache(
       key,
       keytab,
       store_->getClientPrincipal(),
       store_->getLifetime(),
-      serviceLifetimes,
+      store_->getServicePrincipalLifetimes(
+          Krb5CredentialsCacheManager::NUM_ELEMENTS_TO_LOG),
       store_->getTgtLifetimes());
 }
 }}}

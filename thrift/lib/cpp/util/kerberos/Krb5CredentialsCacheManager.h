@@ -116,14 +116,6 @@ class Krb5CredentialsCacheManager {
   void logTopCredentials(
       const std::shared_ptr<Krb5CredentialsCacheManagerLogger>& logger,
       const std::string& key);
-  void logOneCredential(
-      const std::shared_ptr<Krb5CredentialsCacheManagerLogger>& logger,
-      const std::string& key,
-      const std::shared_ptr<Krb5CCache>& cache);
-  void logCredentialsCache(
-      const std::shared_ptr<Krb5CredentialsCacheManagerLogger>& logger,
-      const std::string& key,
-      const std::map<std::string, Krb5Lifetime>& serviceLifetimes);
 
   std::unique_ptr<Krb5Context> ctx_;
 

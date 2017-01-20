@@ -50,8 +50,7 @@ class Krb5CCacheStore {
 
   std::shared_ptr<Krb5CCache> waitForCache(
       const Krb5Principal& service,
-      SecurityLogger* logger = nullptr,
-      bool* didInitCacheForService = nullptr);
+      SecurityLogger* logger = nullptr);
 
   void kInit(const Krb5Principal& client);
   bool isInitialized();

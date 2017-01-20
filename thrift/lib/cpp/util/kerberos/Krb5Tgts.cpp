@@ -195,8 +195,11 @@ Krb5Lifetime Krb5Tgts::getLifetime() {
 std::map<std::string, Krb5Lifetime> Krb5Tgts::getLifetimes() {
   waitForInit();
   ReadLock lock(lock_);
-  const auto mainTgtRealm = getClientPrincipal().getRealm();
-  const auto mainTgtLifetime = getLifetime();
+  const auto mainTgtClientPrincipal =
+      Krb5Principal::copyPrincipal(ctx_.get(), client_->get());
+  const auto mainTgtRealm = mainTgtClientPrincipal.getRealm();
+  const auto mainTgtLifetime =
+      std::make_pair(tgt_->get().times.starttime, tgt_->get().times.endtime);
   std::map<std::string, Krb5Lifetime> ret = {{mainTgtRealm, mainTgtLifetime}};
   for (const auto& entry : realmTgtsMap_) {
     ret[entry.first] = std::make_pair(
