@@ -52,7 +52,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
     void generate_clients(const t_program&);
     boost::filesystem::path package_to_path(std::string package);
     mstch::array get_return_types(const t_program&) const;
-    mstch::array get_container_types(const t_program&) const;
+    void add_container_types(const t_program&, mstch::map&) const;
     mstch::array get_cpp2_namespace(const t_program&) const;
     mstch::array get_py3_namespace(
       const t_program&,
@@ -88,11 +88,11 @@ mstch::map t_mstch_py3_generator::extend_program(
 
   mstch::map result {
     {"returnTypes", this->get_return_types(program)},
-    {"containerTypes", this->get_container_types(program)},
     {"cppNamespaces", cppNamespaces},
     {"py3Namespaces", py3Namespaces},
     {"includeNamespaces", includeNamespaces},
   };
+  this->add_container_types(program, result);
   return result;
 }
 
@@ -226,10 +226,17 @@ mstch::array t_mstch_py3_generator::get_return_types(
   return distinct_return_types;
 }
 
-mstch::array t_mstch_py3_generator::get_container_types(
-  const t_program& program
+/*
+ * Add two items to the results map, one "containerTypes" that lists all
+ * container types, and one "moveContainerTypes" that treats binary and string
+ * as one type. Required because in pxd's we can't have duplicate move(string)
+ * definitions */
+void t_mstch_py3_generator::add_container_types(
+  const t_program& program,
+  mstch::map& results
 ) const {
   vector<t_type*> container_types;
+  vector<t_type*> move_container_types;
   std::set<string> visited_names;
 
   for (const auto service : program.get_services()) {
@@ -246,18 +253,34 @@ mstch::array t_mstch_py3_generator::get_container_types(
       this->load_container_type(container_types, visited_names, return_type);
     }
   }
-  for (const auto object :program.get_objects()) {
+  for (const auto object : program.get_objects()) {
     for (const auto field : object->get_members()) {
       auto ref_type = field->get_type();
       this->load_container_type(container_types, visited_names, ref_type);
     }
   }
-  for (const auto constant: program.get_consts()) {
+  for (const auto constant : program.get_consts()) {
     const auto const_type = constant->get_type();
     this->load_container_type(container_types, visited_names, const_type);
 
   }
-  return this->dump_elems(container_types);
+
+  results.emplace("containerTypes", this->dump_elems(container_types));
+
+  // create second set that treats strings and binaries the same
+  visited_names.clear();
+
+  for (const auto type : container_types) {
+    auto flat_name = this->flatten_type_name(*type);
+    boost::algorithm::replace_all(flat_name, "binary", "string");
+
+    if(visited_names.count(flat_name)) {
+      continue;
+    }
+    visited_names.insert(flat_name);
+    move_container_types.push_back(type);
+  }
+  results.emplace("moveContainerTypes", this->dump_elems(move_container_types));
 }
 
 void t_mstch_py3_generator::load_container_type(

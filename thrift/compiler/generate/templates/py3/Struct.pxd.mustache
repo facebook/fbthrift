@@ -107,14 +107,14 @@ cdef class {{type:flat_name}}:
     cdef create(shared_ptr[cmap[{{> CythonCppWrapperMapKeyValue}}]])
 {{/type:map?}}
 
-{{/program:containerTypes}}{{#program:containerTypes}}
+{{/program:containerTypes}}{{#program:moveContainerTypes}}
 {{#first?}}cdef extern from "<utility>" namespace "std" nogil:{{/first?}}
 {{#type:listElemType}}    cdef shared_ptr[vector[{{> CythonCppWrapperFieldType}}]] {{!
 }}move(unique_ptr[vector[{{> CythonCppWrapperFieldType}}]]){{/type:listElemType}}{{!
 }}{{#type:setElemType}}    cdef shared_ptr[cset[{{> CythonCppWrapperFieldType}}]] {{!
 }}move(unique_ptr[cset[{{> CythonCppWrapperFieldType}}]]){{/type:setElemType}}{{!
 }}{{#type:map?}}    cdef shared_ptr[cmap[{{> CythonCppWrapperMapKeyValue}}]] {{!
-}}move(unique_ptr[cmap[{{> CythonCppWrapperMapKeyValue}}]]){{/type:map?}}{{/program:containerTypes}}
+}}move(unique_ptr[cmap[{{> CythonCppWrapperMapKeyValue}}]]){{/type:map?}}{{/program:moveContainerTypes}}
 
 {{#program:constants}}
 {{#first?}}cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_constants.h"{{!
