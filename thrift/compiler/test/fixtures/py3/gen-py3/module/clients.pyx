@@ -612,6 +612,7 @@ cdef class SimpleService:
             self):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).get_five(
             SimpleService_get_five_callback,
             future)
@@ -622,6 +623,7 @@ cdef class SimpleService:
             arg_num):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).add_five(
             arg_num,
             SimpleService_add_five_callback,
@@ -632,6 +634,7 @@ cdef class SimpleService:
             self):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).do_nothing(
             SimpleService_do_nothing_callback,
             future)
@@ -643,6 +646,7 @@ cdef class SimpleService:
             arg_second):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).concat(
             arg_first.encode('UTF-8'),
             arg_second.encode('UTF-8'),
@@ -655,6 +659,7 @@ cdef class SimpleService:
             arg_simple_struct):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).get_value(
             deref((<module.types.SimpleStruct>arg_simple_struct).c_SimpleStruct),
             SimpleService_get_value_callback,
@@ -666,6 +671,7 @@ cdef class SimpleService:
             arg_input):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).negate(
             arg_input,
             SimpleService_negate_callback,
@@ -677,6 +683,7 @@ cdef class SimpleService:
             arg_input):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).tiny(
             arg_input,
             SimpleService_tiny_callback,
@@ -688,6 +695,7 @@ cdef class SimpleService:
             arg_input):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).small(
             arg_input,
             SimpleService_small_callback,
@@ -699,6 +707,7 @@ cdef class SimpleService:
             arg_input):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).big(
             arg_input,
             SimpleService_big_callback,
@@ -710,6 +719,7 @@ cdef class SimpleService:
             arg_input):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).two(
             arg_input,
             SimpleService_two_callback,
@@ -720,6 +730,7 @@ cdef class SimpleService:
             self):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).expected_exception(
             SimpleService_expected_exception_callback,
             future)
@@ -729,6 +740,7 @@ cdef class SimpleService:
             self):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).unexpected_exception(
             SimpleService_unexpected_exception_callback,
             future)
@@ -739,6 +751,7 @@ cdef class SimpleService:
             arg_numbers):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).sum_i16_list(
             deref((<module.types.List__i16>arg_numbers)._vector),
             SimpleService_sum_i16_list_callback,
@@ -750,6 +763,7 @@ cdef class SimpleService:
             arg_numbers):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).sum_i32_list(
             deref((<module.types.List__i32>arg_numbers)._vector),
             SimpleService_sum_i32_list_callback,
@@ -761,6 +775,7 @@ cdef class SimpleService:
             arg_numbers):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).sum_i64_list(
             deref((<module.types.List__i64>arg_numbers)._vector),
             SimpleService_sum_i64_list_callback,
@@ -772,6 +787,7 @@ cdef class SimpleService:
             arg_words):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).concat_many(
             deref((<module.types.List__string>arg_words)._vector),
             SimpleService_concat_many_callback,
@@ -783,6 +799,7 @@ cdef class SimpleService:
             arg_items):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).count_structs(
             deref((<module.types.List__SimpleStruct>arg_items)._vector),
             SimpleService_count_structs_callback,
@@ -794,6 +811,7 @@ cdef class SimpleService:
             arg_numbers):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).sum_set(
             deref((<module.types.Set__i32>arg_numbers)._set),
             SimpleService_sum_set_callback,
@@ -806,6 +824,7 @@ cdef class SimpleService:
             arg_word):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).contains_word(
             deref((<module.types.Set__string>arg_words)._set),
             arg_word.encode('UTF-8'),
@@ -819,6 +838,7 @@ cdef class SimpleService:
             arg_key):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).get_map_value(
             deref((<module.types.Map__string_string>arg_words)._map),
             arg_key.encode('UTF-8'),
@@ -831,6 +851,7 @@ cdef class SimpleService:
             arg_items):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).map_length(
             deref((<module.types.Map__string_SimpleStruct>arg_items)._map),
             SimpleService_map_length_callback,
@@ -842,6 +863,7 @@ cdef class SimpleService:
             arg_items):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).sum_map_values(
             deref((<module.types.Map__string_i16>arg_items)._map),
             SimpleService_sum_map_values_callback,
@@ -853,6 +875,7 @@ cdef class SimpleService:
             arg_counter):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).complex_sum_i32(
             deref((<module.types.ComplexStruct>arg_counter).c_ComplexStruct),
             SimpleService_complex_sum_i32_callback,
@@ -864,6 +887,7 @@ cdef class SimpleService:
             arg_counter):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).repeat_name(
             deref((<module.types.ComplexStruct>arg_counter).c_ComplexStruct),
             SimpleService_repeat_name_callback,
@@ -874,6 +898,7 @@ cdef class SimpleService:
             self):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).get_struct(
             SimpleService_get_struct_callback,
             future)
@@ -884,6 +909,7 @@ cdef class SimpleService:
             arg_n):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).fib(
             arg_n,
             SimpleService_fib_callback,
@@ -895,6 +921,7 @@ cdef class SimpleService:
             arg_words):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).unique_words(
             deref((<module.types.List__string>arg_words)._vector),
             SimpleService_unique_words_callback,
@@ -906,6 +933,7 @@ cdef class SimpleService:
             arg_words):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).words_count(
             deref((<module.types.List__string>arg_words)._vector),
             SimpleService_words_count_callback,
@@ -917,6 +945,7 @@ cdef class SimpleService:
             arg_in_enum):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).set_enum(
             module.types.AnEnum_to_cpp(arg_in_enum),
             SimpleService_set_enum_callback,
@@ -929,6 +958,7 @@ cdef class SimpleService:
             arg_num_items):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).list_of_lists(
             arg_num_lists,
             arg_num_items,
@@ -941,6 +971,7 @@ cdef class SimpleService:
             arg_sentence):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).word_character_frequency(
             arg_sentence.encode('UTF-8'),
             SimpleService_word_character_frequency_callback,
@@ -952,6 +983,7 @@ cdef class SimpleService:
             arg_some_words):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).list_of_sets(
             arg_some_words.encode('UTF-8'),
             SimpleService_list_of_sets_callback,
@@ -963,6 +995,7 @@ cdef class SimpleService:
             arg_struct_map):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).nested_map_argument(
             deref((<module.types.Map__string_List__SimpleStruct>arg_struct_map)._map),
             SimpleService_nested_map_argument_callback,
@@ -974,6 +1007,7 @@ cdef class SimpleService:
             arg_word_chars):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).make_sentence(
             deref((<module.types.List__List__string>arg_word_chars)._vector),
             SimpleService_make_sentence_callback,
@@ -985,6 +1019,7 @@ cdef class SimpleService:
             arg_sets):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).get_union(
             deref((<module.types.List__Set__i32>arg_sets)._vector),
             SimpleService_get_union_callback,
@@ -996,6 +1031,7 @@ cdef class SimpleService:
             arg_string_map):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).get_keys(
             deref((<module.types.List__Map__string_string>arg_string_map)._vector),
             SimpleService_get_keys_callback,
@@ -1007,6 +1043,7 @@ cdef class SimpleService:
             arg_key):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).lookup_double(
             arg_key,
             SimpleService_lookup_double_callback,
@@ -1018,6 +1055,7 @@ cdef class SimpleService:
             arg_something):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).retrieve_binary(
             arg_something,
             SimpleService_retrieve_binary_callback,
@@ -1029,6 +1067,7 @@ cdef class SimpleService:
             arg_binaries):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_SimpleService_client).contain_binary(
             deref((<module.types.List__binary>arg_binaries)._vector),
             SimpleService_contain_binary_callback,

@@ -133,6 +133,7 @@ cdef class NestedContainers:
             arg_foo):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_NestedContainers_client).mapList(
             deref((<module.types.Map__i32_List__i32>arg_foo)._map),
             NestedContainers_mapList_callback,
@@ -144,6 +145,7 @@ cdef class NestedContainers:
             arg_foo):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_NestedContainers_client).mapSet(
             deref((<module.types.Map__i32_Set__i32>arg_foo)._map),
             NestedContainers_mapSet_callback,
@@ -155,6 +157,7 @@ cdef class NestedContainers:
             arg_foo):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_NestedContainers_client).listMap(
             deref((<module.types.List__Map__i32_i32>arg_foo)._vector),
             NestedContainers_listMap_callback,
@@ -166,6 +169,7 @@ cdef class NestedContainers:
             arg_foo):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_NestedContainers_client).listSet(
             deref((<module.types.List__Set__i32>arg_foo)._vector),
             NestedContainers_listSet_callback,
@@ -177,6 +181,7 @@ cdef class NestedContainers:
             arg_foo):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_NestedContainers_client).turtles(
             deref((<module.types.List__List__Map__i32_Map__i32_Set__i32>arg_foo)._vector),
             NestedContainers_turtles_callback,

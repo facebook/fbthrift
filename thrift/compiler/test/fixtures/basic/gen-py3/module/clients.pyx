@@ -277,6 +277,7 @@ cdef class MyService:
             self):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_MyService_client).ping(
             MyService_ping_callback,
             future)
@@ -286,6 +287,7 @@ cdef class MyService:
             self):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_MyService_client).getRandomData(
             MyService_getRandomData_callback,
             future)
@@ -296,6 +298,7 @@ cdef class MyService:
             arg_id):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_MyService_client).hasDataById(
             arg_id,
             MyService_hasDataById_callback,
@@ -307,6 +310,7 @@ cdef class MyService:
             arg_id):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_MyService_client).getDataById(
             arg_id,
             MyService_getDataById_callback,
@@ -319,6 +323,7 @@ cdef class MyService:
             arg_data):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_MyService_client).putDataById(
             arg_id,
             arg_data.encode('UTF-8'),
@@ -332,6 +337,7 @@ cdef class MyService:
             arg_data):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_MyService_client).lobDataById(
             arg_id,
             arg_data.encode('UTF-8'),
@@ -387,6 +393,7 @@ cdef class MyServiceFast:
             self):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_MyServiceFast_client).ping(
             MyServiceFast_ping_callback,
             future)
@@ -396,6 +403,7 @@ cdef class MyServiceFast:
             self):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_MyServiceFast_client).getRandomData(
             MyServiceFast_getRandomData_callback,
             future)
@@ -406,6 +414,7 @@ cdef class MyServiceFast:
             arg_id):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_MyServiceFast_client).hasDataById(
             arg_id,
             MyServiceFast_hasDataById_callback,
@@ -417,6 +426,7 @@ cdef class MyServiceFast:
             arg_id):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_MyServiceFast_client).getDataById(
             arg_id,
             MyServiceFast_getDataById_callback,
@@ -429,6 +439,7 @@ cdef class MyServiceFast:
             arg_data):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_MyServiceFast_client).putDataById(
             arg_id,
             arg_data.encode('UTF-8'),
@@ -442,6 +453,7 @@ cdef class MyServiceFast:
             arg_data):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_MyServiceFast_client).lobDataById(
             arg_id,
             arg_data.encode('UTF-8'),
@@ -541,6 +553,7 @@ cdef class MyServicePrioParent:
             self):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_MyServicePrioParent_client).ping(
             MyServicePrioParent_ping_callback,
             future)
@@ -550,6 +563,7 @@ cdef class MyServicePrioParent:
             self):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_MyServicePrioParent_client).pong(
             MyServicePrioParent_pong_callback,
             future)
@@ -604,6 +618,7 @@ cdef class MyServicePrioChild(module.clients.MyServicePrioParent):
             self):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._module_MyServicePrioChild_client).pang(
             MyServicePrioChild_pang_callback,
             future)

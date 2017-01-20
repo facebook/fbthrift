@@ -86,6 +86,7 @@ cdef class MyService:
             arg_i):
         future = self.loop.create_future()
         future.loop = self.loop
+
         deref(self._service_MyService_client).query(
             deref((<module.types.MyStruct>arg_s).c_MyStruct),
             deref((<includes.types.Included>arg_i).c_Included),

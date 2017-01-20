@@ -101,7 +101,8 @@ cdef class {{service:name}}{{#service:extends}}({{!
             arg_{{field:name}}{{/function:args}}):
         future = self.loop.create_future()
         future.loop = self.loop
-        deref(self._{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_{{service:name}}_client).{{function:name}}({{#function:args}}
+
+        deref(self._{{program:name}}_{{service:name}}_client).{{function:name}}({{#function:args}}
             {{#field:type}}{{> CythonPythonToCppArg}}{{/field:type}},{{/function:args}}
             {{service:name}}_{{function:name}}_callback,
             future)
