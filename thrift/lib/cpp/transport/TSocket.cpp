@@ -34,6 +34,8 @@ namespace apache { namespace thrift { namespace transport {
 
 using namespace std;
 
+namespace fsp = folly::portability::sockets;
+
 // Global var to track total socket sys calls
 uint32_t g_socket_syscalls = 0;
 
@@ -153,9 +155,9 @@ void TSocket::openConnection(struct addrinfo *res) {
   }
 
   if (!path_.empty()) {
-    socket_ = socket(PF_UNIX, SOCK_STREAM, IPPROTO_IP);
+    socket_ = fsp::socket(PF_UNIX, SOCK_STREAM, IPPROTO_IP);
   } else {
-    socket_ = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+    socket_ = fsp::socket(res->ai_family, res->ai_socktype, res->ai_protocol);
   }
   if (socket_ == -1) {
     int errno_copy = errno;

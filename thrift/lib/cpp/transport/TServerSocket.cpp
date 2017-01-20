@@ -34,6 +34,8 @@ namespace apache { namespace thrift { namespace transport {
 using namespace std;
 using std::shared_ptr;
 
+namespace fsp = folly::portability::sockets;
+
 TServerSocket::TServerSocket(int port) :
   port_(port),
   serverSocket_(-1),
@@ -152,9 +154,10 @@ void TServerSocket::listen() {
   }
 
   if (!path_.empty()) {
-    serverSocket_ = socket(PF_UNIX, SOCK_STREAM, IPPROTO_IP);
+    serverSocket_ = fsp::socket(PF_UNIX, SOCK_STREAM, IPPROTO_IP);
   } else {
-    serverSocket_ = socket(res->ai_family, res->ai_socktype, res->ai_protocol);
+    serverSocket_ = fsp::socket(
+        res->ai_family, res->ai_socktype, res->ai_protocol);
   }
 
   if (serverSocket_ == -1) {
