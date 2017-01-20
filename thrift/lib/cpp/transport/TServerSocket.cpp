@@ -18,14 +18,14 @@
 
 #include <cstring>
 #include <sys/types.h>
-#include <fcntl.h>
 #include <errno.h>
 
+#include <folly/portability/Fcntl.h>
 #include <folly/portability/Sockets.h>
+#include <folly/portability/Unistd.h>
+
 #include <thrift/lib/cpp/transport/TSocket.h>
 #include <thrift/lib/cpp/util/FdUtils.h>
-
-#include <folly/portability/Unistd.h>
 
 #include <memory>
 

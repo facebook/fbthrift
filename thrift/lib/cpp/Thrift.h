@@ -19,6 +19,7 @@
 
 #include <thrift/lib/cpp/thrift_config.h>
 #include <folly/portability/Sockets.h>
+#include <folly/portability/Time.h>
 #include <folly/Memory.h>
 #include <folly/Range.h>
 #include <folly/Traits.h>

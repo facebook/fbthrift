@@ -19,7 +19,7 @@
 
 #include <thrift/lib/cpp/util/FdUtils.h>
 
-#include <fcntl.h>
+#include <folly/portability/Fcntl.h>
 
 namespace apache { namespace thrift { namespace util {
 

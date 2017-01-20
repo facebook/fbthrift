@@ -16,18 +16,19 @@
 
 #include <thrift/lib/cpp/transport/TSocket.h>
 
+#include <folly/portability/Fcntl.h>
 #include <folly/portability/Sockets.h>
+#include <folly/portability/Unistd.h>
+
 #include <thrift/lib/cpp/thrift_config.h>
 #include <thrift/lib/cpp/util/PausableTimer.h>
 #include <cstring>
 #include <sstream>
 #include <sys/types.h>
 #include <errno.h>
-#include <fcntl.h>
 
 #include <thrift/lib/cpp/transport/TTransportException.h>
 
-#include <folly/portability/Unistd.h>
 
 namespace apache { namespace thrift { namespace transport {
 

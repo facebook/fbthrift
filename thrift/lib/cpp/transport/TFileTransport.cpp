@@ -33,8 +33,8 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
-#include <sys/stat.h>
 
+#include <folly/portability/SysStat.h>
 #include <folly/portability/SysTime.h>
 #include <folly/portability/Unistd.h>
 
