@@ -36,7 +36,6 @@
 
 #include <bitset>
 #include <boost/scoped_array.hpp>
-#include <pwd.h>
 
 namespace apache { namespace thrift { namespace transport {
 

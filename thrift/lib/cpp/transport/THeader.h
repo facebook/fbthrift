@@ -28,7 +28,6 @@
 #include <thrift/lib/cpp/concurrency/Thread.h>
 
 #include <bitset>
-#include <pwd.h>
 #include <chrono>
 
 // Don't include the unknown client.
