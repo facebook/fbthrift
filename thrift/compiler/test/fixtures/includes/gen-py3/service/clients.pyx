@@ -23,6 +23,8 @@ import sys
 import traceback
 
 cimport service.types
+import service.types
+
 from service.clients_wrapper cimport move
 cimport module.types
 import module.types

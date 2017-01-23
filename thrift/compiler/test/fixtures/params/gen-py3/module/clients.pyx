@@ -23,6 +23,8 @@ import sys
 import traceback
 
 cimport module.types
+import module.types
+
 from module.clients_wrapper cimport move
 
 from module.clients_wrapper cimport cNestedContainersAsyncClient, cNestedContainersClientWrapper
@@ -135,7 +137,7 @@ cdef class NestedContainers:
         future.loop = self.loop
 
         deref(self._module_NestedContainers_client).mapList(
-            deref((<module.types.Map__i32_List__i32>arg_foo)._map),
+            cmap[int32_t,vector[int32_t]](deref(module.types.Map__i32_List__i32(arg_foo)._map.get())),
             NestedContainers_mapList_callback,
             future)
         return future
@@ -147,7 +149,7 @@ cdef class NestedContainers:
         future.loop = self.loop
 
         deref(self._module_NestedContainers_client).mapSet(
-            deref((<module.types.Map__i32_Set__i32>arg_foo)._map),
+            cmap[int32_t,cset[int32_t]](deref(module.types.Map__i32_Set__i32(arg_foo)._map.get())),
             NestedContainers_mapSet_callback,
             future)
         return future
@@ -159,7 +161,7 @@ cdef class NestedContainers:
         future.loop = self.loop
 
         deref(self._module_NestedContainers_client).listMap(
-            deref((<module.types.List__Map__i32_i32>arg_foo)._vector),
+            deref(module.types.List__Map__i32_i32(arg_foo)._vector.get()),
             NestedContainers_listMap_callback,
             future)
         return future
@@ -171,7 +173,7 @@ cdef class NestedContainers:
         future.loop = self.loop
 
         deref(self._module_NestedContainers_client).listSet(
-            deref((<module.types.List__Set__i32>arg_foo)._vector),
+            deref(module.types.List__Set__i32(arg_foo)._vector.get()),
             NestedContainers_listSet_callback,
             future)
         return future
@@ -183,7 +185,7 @@ cdef class NestedContainers:
         future.loop = self.loop
 
         deref(self._module_NestedContainers_client).turtles(
-            deref((<module.types.List__List__Map__i32_Map__i32_Set__i32>arg_foo)._vector),
+            deref(module.types.List__List__Map__i32_Map__i32_Set__i32(arg_foo)._vector.get()),
             NestedContainers_turtles_callback,
             future)
         return future

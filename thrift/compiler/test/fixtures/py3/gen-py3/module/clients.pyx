@@ -23,6 +23,8 @@ import sys
 import traceback
 
 cimport module.types
+import module.types
+
 from module.clients_wrapper cimport move
 
 from module.clients_wrapper cimport cSimpleServiceAsyncClient, cSimpleServiceClientWrapper
@@ -753,7 +755,7 @@ cdef class SimpleService:
         future.loop = self.loop
 
         deref(self._module_SimpleService_client).sum_i16_list(
-            deref((<module.types.List__i16>arg_numbers)._vector),
+            deref(module.types.List__i16(arg_numbers)._vector.get()),
             SimpleService_sum_i16_list_callback,
             future)
         return future
@@ -765,7 +767,7 @@ cdef class SimpleService:
         future.loop = self.loop
 
         deref(self._module_SimpleService_client).sum_i32_list(
-            deref((<module.types.List__i32>arg_numbers)._vector),
+            deref(module.types.List__i32(arg_numbers)._vector.get()),
             SimpleService_sum_i32_list_callback,
             future)
         return future
@@ -777,7 +779,7 @@ cdef class SimpleService:
         future.loop = self.loop
 
         deref(self._module_SimpleService_client).sum_i64_list(
-            deref((<module.types.List__i64>arg_numbers)._vector),
+            deref(module.types.List__i64(arg_numbers)._vector.get()),
             SimpleService_sum_i64_list_callback,
             future)
         return future
@@ -789,7 +791,7 @@ cdef class SimpleService:
         future.loop = self.loop
 
         deref(self._module_SimpleService_client).concat_many(
-            deref((<module.types.List__string>arg_words)._vector),
+            deref(module.types.List__string(arg_words)._vector.get()),
             SimpleService_concat_many_callback,
             future)
         return future
@@ -801,7 +803,7 @@ cdef class SimpleService:
         future.loop = self.loop
 
         deref(self._module_SimpleService_client).count_structs(
-            deref((<module.types.List__SimpleStruct>arg_items)._vector),
+            deref(module.types.List__SimpleStruct(arg_items)._vector.get()),
             SimpleService_count_structs_callback,
             future)
         return future
@@ -813,7 +815,7 @@ cdef class SimpleService:
         future.loop = self.loop
 
         deref(self._module_SimpleService_client).sum_set(
-            deref((<module.types.Set__i32>arg_numbers)._set),
+            cset[int32_t](deref(module.types.Set__i32(arg_numbers)._set.get())),
             SimpleService_sum_set_callback,
             future)
         return future
@@ -826,7 +828,7 @@ cdef class SimpleService:
         future.loop = self.loop
 
         deref(self._module_SimpleService_client).contains_word(
-            deref((<module.types.Set__string>arg_words)._set),
+            cset[string](deref(module.types.Set__string(arg_words)._set.get())),
             arg_word.encode('UTF-8'),
             SimpleService_contains_word_callback,
             future)
@@ -840,7 +842,7 @@ cdef class SimpleService:
         future.loop = self.loop
 
         deref(self._module_SimpleService_client).get_map_value(
-            deref((<module.types.Map__string_string>arg_words)._map),
+            cmap[string,string](deref(module.types.Map__string_string(arg_words)._map.get())),
             arg_key.encode('UTF-8'),
             SimpleService_get_map_value_callback,
             future)
@@ -853,7 +855,7 @@ cdef class SimpleService:
         future.loop = self.loop
 
         deref(self._module_SimpleService_client).map_length(
-            deref((<module.types.Map__string_SimpleStruct>arg_items)._map),
+            cmap[string,module.types.cSimpleStruct](deref(module.types.Map__string_SimpleStruct(arg_items)._map.get())),
             SimpleService_map_length_callback,
             future)
         return future
@@ -865,7 +867,7 @@ cdef class SimpleService:
         future.loop = self.loop
 
         deref(self._module_SimpleService_client).sum_map_values(
-            deref((<module.types.Map__string_i16>arg_items)._map),
+            cmap[string,int16_t](deref(module.types.Map__string_i16(arg_items)._map.get())),
             SimpleService_sum_map_values_callback,
             future)
         return future
@@ -923,7 +925,7 @@ cdef class SimpleService:
         future.loop = self.loop
 
         deref(self._module_SimpleService_client).unique_words(
-            deref((<module.types.List__string>arg_words)._vector),
+            deref(module.types.List__string(arg_words)._vector.get()),
             SimpleService_unique_words_callback,
             future)
         return future
@@ -935,7 +937,7 @@ cdef class SimpleService:
         future.loop = self.loop
 
         deref(self._module_SimpleService_client).words_count(
-            deref((<module.types.List__string>arg_words)._vector),
+            deref(module.types.List__string(arg_words)._vector.get()),
             SimpleService_words_count_callback,
             future)
         return future
@@ -997,7 +999,7 @@ cdef class SimpleService:
         future.loop = self.loop
 
         deref(self._module_SimpleService_client).nested_map_argument(
-            deref((<module.types.Map__string_List__SimpleStruct>arg_struct_map)._map),
+            cmap[string,vector[module.types.cSimpleStruct]](deref(module.types.Map__string_List__SimpleStruct(arg_struct_map)._map.get())),
             SimpleService_nested_map_argument_callback,
             future)
         return future
@@ -1009,7 +1011,7 @@ cdef class SimpleService:
         future.loop = self.loop
 
         deref(self._module_SimpleService_client).make_sentence(
-            deref((<module.types.List__List__string>arg_word_chars)._vector),
+            deref(module.types.List__List__string(arg_word_chars)._vector.get()),
             SimpleService_make_sentence_callback,
             future)
         return future
@@ -1021,7 +1023,7 @@ cdef class SimpleService:
         future.loop = self.loop
 
         deref(self._module_SimpleService_client).get_union(
-            deref((<module.types.List__Set__i32>arg_sets)._vector),
+            deref(module.types.List__Set__i32(arg_sets)._vector.get()),
             SimpleService_get_union_callback,
             future)
         return future
@@ -1033,7 +1035,7 @@ cdef class SimpleService:
         future.loop = self.loop
 
         deref(self._module_SimpleService_client).get_keys(
-            deref((<module.types.List__Map__string_string>arg_string_map)._vector),
+            deref(module.types.List__Map__string_string(arg_string_map)._vector.get()),
             SimpleService_get_keys_callback,
             future)
         return future
@@ -1069,7 +1071,7 @@ cdef class SimpleService:
         future.loop = self.loop
 
         deref(self._module_SimpleService_client).contain_binary(
-            deref((<module.types.List__binary>arg_binaries)._vector),
+            deref(module.types.List__binary(arg_binaries)._vector.get()),
             SimpleService_contain_binary_callback,
             future)
         return future

@@ -23,6 +23,8 @@ import sys
 import traceback
 
 cimport includes.types
+import includes.types
+
 from includes.clients_wrapper cimport move
 
 

@@ -23,6 +23,8 @@ import sys
 import traceback
 
 cimport module.types
+import module.types
+
 from module.clients_wrapper cimport move
 
 
