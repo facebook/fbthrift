@@ -22,6 +22,7 @@
 #include <stdlib.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
+#include <folly/Format.h>
 #include <folly/Memory.h>
 #include <folly/Singleton.h>
 #include <thrift/lib/cpp/concurrency/Mutex.h>
@@ -282,18 +283,39 @@ void KerberosSASLHandshakeClient::startClientHandshake() {
       string("Kerberos ccache init error: ") + e.what());
   }
 
-  logger_->logStart("import_cred");
-  maj_stat = gss_krb5_import_cred(
-    &min_stat,
-    cc_->get(),
-    nullptr,
-    nullptr,
-    &clientCreds_);
-  logger_->logEnd("import_cred");
+  if (*client_name != GSS_C_NO_NAME) {
+    logger_->logStart("acquire_cred");
+    maj_stat = gss_acquire_cred(
+        &min_stat,
+        *client_name,
+        GSS_C_INDEFINITE,
+        GSS_C_NO_OID_SET,
+        GSS_C_INITIATE,
+        &clientCreds_,
+        nullptr,
+        nullptr);
+    logger_->logEnd("acquire_cred");
+  } else {
+    logger_->logStart("import_cred");
+    maj_stat = gss_krb5_import_cred(
+        &min_stat, cc_->get(), nullptr, nullptr, &clientCreds_);
+    logger_->logEnd("import_cred");
+  }
 
   if (maj_stat != GSS_S_COMPLETE) {
-    KerberosSASLHandshakeUtils::throwGSSException(
-      "Error establishing client credentials", maj_stat, min_stat);
+    if (*client_name == GSS_C_NO_NAME) {
+      KerberosSASLHandshakeUtils::throwGSSException(
+          "Error importing client credentials with no client name specified",
+          maj_stat,
+          min_stat);
+    } else {
+      KerberosSASLHandshakeUtils::throwGSSException(
+          folly::sformat(
+              "Error acquiring client credentials for specified client name {}",
+              clientPrincipal_),
+          maj_stat,
+          min_stat);
+    }
   }
 
   // Init phase complete, start establishing security context
