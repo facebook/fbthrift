@@ -50,7 +50,7 @@ dependencies (like `folly`).
     - autoconf
     - libtool
     - g++
-    - libboost-dev-all
+    - libboost-all-dev
     - libevent-dev
     - flex
     - bison
