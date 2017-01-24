@@ -60,15 +60,9 @@ public:
   }
 };
 
-using FailureReason = uint32_t;
-static constexpr uint32_t FailureReasonNoFailure = 0U;
-static constexpr uint32_t FailureReasonBadService = 0x1U;
-static constexpr uint32_t FailureReasonBadClient = 0x2U;
-
-void enableSecurity(
-    HeaderClientChannel* channel,
-    const apache::thrift::SecurityMech mech,
-    FailureReason failureReasons = FailureReasonNoFailure) {
+void enableSecurity(HeaderClientChannel* channel,
+                    const apache::thrift::SecurityMech mech,
+                    bool failSecurity = false) {
   char hostname[256];
   EXPECT_EQ(gethostname(hostname, 255), 0);
 
@@ -79,17 +73,16 @@ void enableSecurity(
   std::string serviceIdentityPrefix = std::string("sys.") +
     hostnameStr.substr(0, end) + std::string("@");
 
+  std::string clientIdentity = std::string("host/") + hostname;
   std::string serviceIdentity = serviceIdentityPrefix + hostname;
-  if (failureReasons & FailureReasonBadService) {
+  if (failSecurity) {
     serviceIdentity = "bogus";
   }
 
   channel->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);
 
   auto saslClient = folly::make_unique<GssSaslClient>(channel->getEventBase());
-  if (failureReasons & FailureReasonBadClient) {
-    saslClient->setClientIdentity("bogus");
-  }
+  saslClient->setClientIdentity(clientIdentity);
   saslClient->setServiceIdentity(serviceIdentity);
   saslClient->setSaslThreadManager(make_shared<SaslThreadManager>(
       make_shared<SecurityLogger>()));
@@ -99,15 +92,14 @@ void enableSecurity(
   channel->setSaslClient(std::move(saslClient));
 }
 
-HeaderClientChannel::Ptr getClientChannel(
-    EventBase* eb,
-    const folly::SocketAddress& address,
-    FailureReason failureReasons = FailureReasonNoFailure) {
+HeaderClientChannel::Ptr getClientChannel(EventBase* eb,
+                                          const folly::SocketAddress& address,
+                                          bool failSecurity = false) {
   auto socket = TAsyncSocket::newSocket(eb, address);
   auto channel = HeaderClientChannel::newChannel(socket);
 
-  enableSecurity(
-      channel.get(), apache::thrift::SecurityMech::KRB5_GSS, failureReasons);
+  enableSecurity(channel.get(), apache::thrift::SecurityMech::KRB5_GSS,
+                 failSecurity);
 
   return channel;
 }
@@ -428,12 +420,12 @@ TEST(Security, DuplexGSSNoMutual) {
 
 // Test if multiple requests are pending in a queue, for security to establish,
 // then we flow RequestContext correctly with each request.
-void runRequestContextTest(FailureReason failureReasons) {
+void runRequestContextTest(bool failSecurity) {
   apache::thrift::TestThriftServerFactory<TestServiceInterface> factory;
   factory.useStubSaslServer(false);
   ScopedServerThread sst(factory.create());
   EventBase base;
-  auto channel = getClientChannel(&base, *sst.getAddress(), failureReasons);
+  auto channel = getClientChannel(&base, *sst.getAddress(), failSecurity);
   TestServiceAsyncClient client(std::move(channel));
   Countdown c(2, [&base](){base.terminateLoopSoon();});
 
@@ -466,15 +458,11 @@ void runRequestContextTest(FailureReason failureReasons) {
 }
 
 TEST(SecurityRequestContext, Success) {
-  runRequestContextTest(FailureReasonNoFailure);
+  runRequestContextTest(false);
 }
 
-TEST(SecurityRequestContext, FailBadService) {
-  runRequestContextTest(FailureReasonBadService);
-}
-
-TEST(SecurityRequestContext, FailBadClient) {
-  runRequestContextTest(FailureReasonBadClient);
+TEST(SecurityRequestContext, Fail) {
+  runRequestContextTest(true);
 }
 
 int main(int argc, char** argv) {
