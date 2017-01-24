@@ -26,6 +26,31 @@
 
 
 
+<%#program:structs%>
+namespace cpp2 {
+<%#struct:base_fields?%>
+
+<% > Structs/declare_members.cpp%>
+<%/struct:base_fields?%>
+
+<% > Structs/eq_overload.cpp%>
+
+<% > Structs/swap.cpp%>
+
+template uint32_t Empty::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t Empty::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t Empty::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Empty::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Empty::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t Empty::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t Empty::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t Empty::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+<%/program:structs%>
 namespace cpp2 {
 
 } // cpp2
