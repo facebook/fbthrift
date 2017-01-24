@@ -25,16 +25,16 @@ Struct() :
   element1(val),
   element2(val) {}
 %>  <%struct:name%>()<%!
-  %><%#struct:base_fields_non_empty_strings%><%!%><% > Misc/ColonNewLine%><%!
+  %><%#struct:base_fields_non_empty_strings%><%!%><% > common/colon_newline%><%!
     %><%#field:type%><%!
-      %>        <%field:name%>(<%!
+      %>      <%field:name%>(<%!
       %><%#field:value%><%!
         %><%type:cxx_value_prefix%><% > Constants/IterateValues%><%type:cxx_value_suffix%><%!
       %><%/field:value%><%!
       %><%^field:value%><%!
         %>0<%!
       %><%/field:value%><%!
-      %>)<% > Misc/CommaNewLine%><%!
+      %>)<% > common/comma_newline%><%!
     %><%/field:type%><%!
   %><%/struct:base_fields_non_empty_strings%><%!
 %> {}

@@ -14,22 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>template <class Protocol_>
-uint32_t <%struct:name%>::read(Protocol_* iprot) {
-  uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
-  int16_t fid;
+%><%!
+Form:
+...;
+class Struct;
+%><%#first?%>
 
-  xfer += iprot->readStructBegin(fname);
-
-  using apache::thrift::TProtocolException;
-
-
-  <% > Structs/read_field.tcc%>
-  xfer += iprot->readStructEnd();
-
-  return xfer;
-}
+  <%#program:structs%>
+class <%struct:name%><% > common/semicolon_newline%><%!
+  %><%/program:structs%><%!
+%><%/first?%>
 <%!
 %>

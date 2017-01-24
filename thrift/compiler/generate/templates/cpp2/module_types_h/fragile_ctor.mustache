@@ -32,14 +32,14 @@ Struct(apache::thrift::FragileConstructor, ...) :
 %>  <%struct:name%>(<%!
 %>apache::thrift::FragileConstructor<%!
 
-%><%#struct:base_fields%><% > Misc/CommaSpace%><%!
+%><%#struct:base_fields%><% > common/comma_space%><%!
 %><%#field:type%><%!
   %><% > Type%> <%field:name%>__arg<%!
 %><%/field:type%><%!
 %><%/struct:base_fields%><%!
 %>)<%!
-%><%#struct:base_fields%><% > Misc/ColonNewLine%><%!
-  %>      <%field:name%>(std:move(<%field:name%>__arg))<% > Misc/CommaNewLine%><%!
+%><%#struct:base_fields%><% > common/colon_newline%><%!
+  %>      <%field:name%>(std::move(<%field:name%>__arg))<% > common/comma_newline%><%!
 %><%/struct:base_fields%><%!
 %> {<%#struct:base_fields%>
     __isset.<%field:name%> = true;<%!

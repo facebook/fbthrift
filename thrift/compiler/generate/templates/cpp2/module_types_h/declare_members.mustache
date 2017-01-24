@@ -15,14 +15,29 @@
   limitations under the License.
 
 %><%!
+
+Base constructor:
 Form:
 ...;
-class Struct;
-%><%#first?%>
+type element;
 
-  <%#program:structs%>
-class <%struct:name%><% > Misc/SemicolonNewLine%><%!
-  %><%/program:structs%><%!
-%><%/first?%>
-<%!
-%>
+struct __isset {
+  void __clear() {
+    ....;
+    element = false;
+  }
+}
+%><%#struct:base_fields%><%#field:type%><%!
+    %>  <% > Type%> <%field:name%><% > common/semicolon_newline%><%!
+%><%/field:type%><%/struct:base_fields%>
+  struct __isset {
+    void __clear() {
+<%#struct:base_fields%><%!
+  %>      <%field:name%> = false<% > common/semicolon_newline%><%!
+%><%/struct:base_fields%><%!
+%>    }
+
+<%#struct:base_fields%><%!
+  %>    bool <%field:name%> = false<% > common/semicolon_newline%><%!
+%><%/struct:base_fields%><%!
+%>  } __isset;

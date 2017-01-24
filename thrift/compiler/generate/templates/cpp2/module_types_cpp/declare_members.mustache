@@ -16,28 +16,29 @@
 
 %><%!
 
-Base constructor:
 Form:
-...;
-type element;
-
-struct __isset {
-  void __clear() {
-    ....;
-    element = false;
-  }
+void Struct::__clear() {
+  ....;
+  element = val;
+  __isset.__clear();
 }
-%><%#struct:base_fields%><%#field:type%><%!
-    %>  <% > Type%> <%field:name%><% > Misc/SemicolonNewLine%><%!
-%><%/field:type%><%/struct:base_fields%>
-  struct __isset {
-    void __clear() {
+%>void <%struct:name%>::__clear() {
 <%#struct:base_fields%><%#field:type%><%!
-  %>      <%field:name%> = false<%^last?%><% > Misc/SemicolonNewLine%><%/last?%><%!
-%><%/field:type%><%/struct:base_fields%>
-    }
-
-<%#struct:base_fields%><%#field:type%><%!
-  %>    <%field:type%> <%field:name%> = false<%^last?%><% > Misc/SemicolonNewLine%><%/last?%><%!
-%><%/field:type%><%/struct:base_fields%>
-  } __isset;
+  %>  <%field:name%> = <%!
+  %><%#field:value%><%!
+    %><%type:cxx_value_prefix%><% > Constants/IterateValues%><%type:cxx_value_suffix%><%!
+  %><%/field:value%><%!
+  %><%^field:value%><%!
+    %><%#type:string?%><%!
+      %>std::string()<%!
+    %><%/type:string?%><%!
+    %><%^type:string?%><%!
+      %>0<%!
+    %><%/type:string?%><%!
+  %><%/field:value%><%!
+  %><% > common/semicolon_newline%><%!
+%><%/field:type%><%/struct:base_fields%><%!
+%>  __isset.__clear();
+}
+<%!
+%>

@@ -30,15 +30,15 @@
 
 <%#program:structs%>
 namespace cpp2 {
-<% > Structs/forward_declare%><%!
+<% > module_types_h/forward_declare%><%!
 %>class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<<%struct:name%>> {
  public:
 
-<% > Structs/base_ctor%>
+<% > module_types_h/base_ctor%>
 
-<% > Structs/fragile_ctor%>
+<% > module_types_h/fragile_ctor%>
 
-<% > Structs/template_ctor%>
+<% > module_types_h/template_ctor%>
 
   <%struct:name%>(<%struct:name%>&&) = default;
 
@@ -54,15 +54,15 @@ namespace cpp2 {
   virtual ~<%struct:name%>() throw() {}
 
 <%#struct:base_fields?%>
-<% > Structs/declare_members%>
+<% > module_types_h/declare_members%>
 
 <%/struct:base_fields?%>
-<% > Structs/eq_overload%>
+<% > module_types_h/eq_overload%>
 
-<% > Structs/lt_overload%>
+<% > module_types_h/lt_overload%>
 
 <%#struct:base_fields?%>
-<% > Structs/getters_setters%>
+<% > module_types_h/getters_setters%>
 <%/struct:base_fields?%>
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

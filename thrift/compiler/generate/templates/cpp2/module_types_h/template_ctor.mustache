@@ -14,12 +14,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%!
-%>  bool operator==(const <%struct:name%>& <%!
-  %><%#struct:base_fields?%><%!
-    %>rhs<%!
-  %><%/struct:base_fields?%><%!
-  %><%^struct:base_fields?%><%!
-    %>/* rhs */<%!
-  %><%/struct:base_fields?%><%!
-%>) const<% > Misc/SemicolonNewLine%>
+%><%#struct:base_fields%><%!
+%>  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  <%struct:name%>(::apache::thrift::detail::argument_wrapper<<%field:key%>, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    <%struct:name%>(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    <%field:name%> = arg.move()<% > common/semicolon_newline%><%!
+%>    __isset.<%field:name%> = true<% > common/semicolon_newline%><%!
+%>  }
+<%/struct:base_fields%>

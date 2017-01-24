@@ -30,21 +30,21 @@
 namespace cpp2 {
 <%#struct:base_fields?%>
 
-<% > Structs/declare_members.cpp%>
+<% > module_types_cpp/declare_members%>
 <%/struct:base_fields?%>
 
-<% > Structs/eq_overload.cpp%>
+<% > module_types_cpp/eq_overload%>
 
-<% > Structs/swap.cpp%>
+<% > module_types_cpp/swap%>
 
-template uint32_t Empty::read<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t Empty::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t Empty::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Empty::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t Empty::read<>(apache::thrift::CompactProtocolReader*);
-template uint32_t Empty::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t Empty::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t Empty::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t <%struct:name%>::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t <%struct:name%>::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t <%struct:name%>::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t <%struct:name%>::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t <%struct:name%>::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t <%struct:name%>::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t <%struct:name%>::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t <%struct:name%>::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace apache { namespace thrift {

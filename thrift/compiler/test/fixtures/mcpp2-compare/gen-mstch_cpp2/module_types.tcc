@@ -30,22 +30,22 @@ uint32_t Empty::read(Protocol_* iprot) {
   using apache::thrift::TProtocolException;
 
 
-    while (true) {
-      xfer += iprot->readFieldBegin(fname, ftype, fid);
-      if (ftype == apache::thrift::protocol::T_STOP) {
+  while (true) {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    if (fid == std::numeric_limits<int16_t>::min()) {}
+    switch (fid) {
+      default:
+      {
+        xfer += iprot->skip(ftype);
         break;
       }
-      if (fid == std::numeric_limits<int16_t>::min()) {}
-      switch (fid) {
-        default:
-        {
-          xfer += iprot->skip(ftype);
-          break;
-        }
-      }
-      xfer += iprot->readFieldEnd();
+    }
+    xfer += iprot->readFieldEnd();
   }
-    xfer += iprot->readStructEnd();
+  xfer += iprot->readStructEnd();
 
   return xfer;
 }
@@ -93,79 +93,79 @@ uint32_t MyStruct::read(Protocol_* iprot) {
   using apache::thrift::TProtocolException;
 
 
-    while (true) {
-      xfer += iprot->readFieldBegin(fname, ftype, fid);
-      if (ftype == apache::thrift::protocol::T_STOP) {
-        break;
+  while (true) {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    if (fid == std::numeric_limits<int16_t>::min()) {
+      if (fname == "MyBoolField") {
+        fid = 1;
+        ftype = apache::thrift::protocol::T_BOOL;
       }
-      if (fid == std::numeric_limits<int16_t>::min()) {
-        if (fname == "MyBoolField") {
-          fid = 1;
-          ftype = apache::thrift::protocol::T_BOOL;
-        }
-        if (fname == "MyIntField") {
-          fid = 2;
-          ftype = apache::thrift::protocol::T_I64;
-        }
-        if (fname == "MyStringField") {
-          fid = 3;
-          ftype = apache::thrift::protocol::T_STRING;
-        }
-        if (fname == "MyStringField2") {
-          fid = 4;
-          ftype = apache::thrift::protocol::T_STRING;
-        }
+      else if (fname == "MyIntField") {
+        fid = 2;
+        ftype = apache::thrift::protocol::T_I64;
       }
-      switch (fid) {
-        case 1:
-        {
-          if (ftype == apache::thrift::protocol::T_BOOL) {
-            xfer += iprot->readBool(this->MyBoolField);
-            this->__isset.MyBoolField = true;
-          } else {
-            xfer += iprot->skip(ftype);
-          }
-        break;
-       }
-        case 2:
-        {
-          if (ftype == apache::thrift::protocol::T_I64) {
-            xfer += iprot->readI64(this->MyIntField);
-            this->__isset.MyIntField = true;
-          } else {
-            xfer += iprot->skip(ftype);
-          }
-        break;
-       }
-        case 3:
-        {
-          if (ftype == apache::thrift::protocol::T_STRING) {
-            xfer += iprot->readString(this->MyStringField);
-            this->__isset.MyStringField = true;
-          } else {
-            xfer += iprot->skip(ftype);
-          }
-        break;
-       }
-        case 4:
-        {
-          if (ftype == apache::thrift::protocol::T_STRING) {
-            xfer += iprot->readString(this->MyStringField2);
-            this->__isset.MyStringField2 = true;
-          } else {
-            xfer += iprot->skip(ftype);
-          }
-        break;
-       }
-        default:
-        {
+      else if (fname == "MyStringField") {
+        fid = 3;
+        ftype = apache::thrift::protocol::T_STRING;
+      }
+      else if (fname == "MyStringField2") {
+        fid = 4;
+        ftype = apache::thrift::protocol::T_STRING;
+      }
+    }
+    switch (fid) {
+      case 1:
+      {
+        if (ftype == apache::thrift::protocol::T_BOOL) {
+          xfer += iprot->readBool(this->MyBoolField);
+          this->__isset.MyBoolField = true;
+        } else {
           xfer += iprot->skip(ftype);
-          break;
         }
+        break;
       }
-      xfer += iprot->readFieldEnd();
+      case 2:
+      {
+        if (ftype == apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->MyIntField);
+          this->__isset.MyIntField = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 3:
+      {
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->MyStringField);
+          this->__isset.MyStringField = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 4:
+      {
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->MyStringField2);
+          this->__isset.MyStringField2 = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      default:
+      {
+        xfer += iprot->skip(ftype);
+        break;
+      }
+    }
+    xfer += iprot->readFieldEnd();
   }
-    xfer += iprot->readStructEnd();
+  xfer += iprot->readStructEnd();
 
   return xfer;
 }

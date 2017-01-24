@@ -224,14 +224,14 @@ void t_mstch_cpp2_generator::generate_constants(const t_program& program) {
 
 void t_mstch_cpp2_generator::generate_structs(const t_program& program) {
   auto name = program.get_name();
-  this->render_to_file(program, "Struct_data.h", name + "_data.h");
-  this->render_to_file(program, "Struct_data.cpp", name + "_data.cpp");
-  this->render_to_file(program, "Struct_types.h", name + "_types.h");
-  this->render_to_file(program, "Struct_types.tcc", name + "_types.tcc");
-  this->render_to_file(program, "Struct_types.cpp", name + "_types.cpp");
+  this->render_to_file(program, "module_data.h", name + "_data.h");
+  this->render_to_file(program, "module_data.cpp", name + "_data.cpp");
+  this->render_to_file(program, "module_types.h", name + "_types.h");
+  this->render_to_file(program, "module_types.tcc", name + "_types.tcc");
+  this->render_to_file(program, "module_types.cpp", name + "_types.cpp");
   this->render_to_file(
     program,
-    "Struct_types_custom_protocol.h",
+    "module_types_custom_protocol.h",
     name + "_types_custom_protocol.h"
   );
 }

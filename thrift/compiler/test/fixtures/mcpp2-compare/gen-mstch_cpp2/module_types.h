@@ -42,8 +42,8 @@ class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
   bool operator==(const Empty& /* rhs */) const;
 
   bool operator < (const Empty& rhs) const {
-      (void)rhs;
-      return false;
+    (void)rhs;
+    return false;
   }
 
   template <class Protocol_>
@@ -96,16 +96,16 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
  public:
 
   MyStruct() :
-        MyBoolField(0),
-        MyIntField(12LL),
-        MyStringField(apache::thrift::StringTraits< std::string>::fromStringLiteral("test")) {}
+      MyBoolField(0),
+      MyIntField(12LL),
+      MyStringField(apache::thrift::StringTraits< std::string>::fromStringLiteral("test")) {}
   // FragileConstructor for use in initialization lists only
 
   MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, int64_t MyIntField__arg, std::string MyStringField__arg, std::string MyStringField2__arg) :
-      MyBoolField(std:move(MyBoolField__arg)),
-      MyIntField(std:move(MyIntField__arg)),
-      MyStringField(std:move(MyStringField__arg)),
-      MyStringField2(std:move(MyStringField2__arg)) {
+      MyBoolField(std::move(MyBoolField__arg)),
+      MyIntField(std::move(MyIntField__arg)),
+      MyStringField(std::move(MyStringField__arg)),
+      MyStringField2(std::move(MyStringField2__arg)) {
     __isset.MyBoolField = true;
     __isset.MyIntField = true;
     __isset.MyStringField = true;
@@ -119,21 +119,21 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
     __isset.MyBoolField = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  MyStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+  MyStruct(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     MyIntField = arg.move();
     __isset.MyIntField = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  MyStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+  MyStruct(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     MyStringField = arg.move();
     __isset.MyStringField = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  MyStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+  MyStruct(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     MyStringField2 = arg.move();
@@ -161,13 +161,13 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
       MyBoolField = false;
       MyIntField = false;
       MyStringField = false;
-      MyStringField2 = false
+      MyStringField2 = false;
     }
 
-     MyBoolField = false;
-     MyIntField = false;
-     MyStringField = false;
-     MyStringField2 = false
+    bool MyBoolField = false;
+    bool MyIntField = false;
+    bool MyStringField = false;
+    bool MyStringField2 = false;
   } __isset;
   bool operator==(const MyStruct& rhs) const;
 
@@ -184,8 +184,8 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
     if (!(MyStringField2 == rhs.MyStringField2)) {
       return MyStringField2 < rhs.MyStringField2;
     }
-      (void)rhs;
-      return false;
+    (void)rhs;
+    return false;
   }
 
   bool get_MyBoolField() const {
@@ -208,7 +208,7 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
     return MyIntField;
   }
 
-  const std::string get_MyStringField() const& {
+  const std::string& get_MyStringField() const& {
     return MyStringField;
   }
 
@@ -223,7 +223,7 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
     return MyStringField;
   }
 
-  const std::string get_MyStringField2() const& {
+  const std::string& get_MyStringField2() const& {
     return MyStringField2;
   }
 
