@@ -29,6 +29,7 @@
 #include <iostream>
 
 #include <folly/String.h>
+#include <folly/ThreadId.h>
 #include <folly/portability/SysResource.h>
 #include <glog/logging.h>
 
@@ -52,7 +53,7 @@ bool PthreadThread::updateName() {
 PthreadThread::PthreadThread(int policy, int priority, int stackSize,
                              bool detached,
                              shared_ptr<Runnable> runnable) :
-  pthread_(0),
+  pthread_(),
   state_(uninitialized),
   policy_(policy),
   priority_(priority),
@@ -138,7 +139,11 @@ void PthreadThread::join() {
 }
 
 Thread::id_t PthreadThread::getId() {
-  return (Thread::id_t)pthread_;
+#ifdef _WIN32
+  return (Thread::id_t)pthread_getw32threadid_np(pthread_);
+#else
+   return (Thread::id_t)pthread_;
+#endif
 }
 
 shared_ptr<Runnable> PthreadThread::runnable() const {
@@ -305,7 +310,7 @@ void PosixThreadFactory::Impl::setDetachState(DetachState value) {
 }
 
 Thread::id_t PosixThreadFactory::Impl::getCurrentThreadId() const {
-  return (Thread::id_t)pthread_self();
+  return (Thread::id_t)folly::getCurrentThreadID();
 }
 
 
