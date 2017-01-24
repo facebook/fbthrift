@@ -28,6 +28,18 @@
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+<%#program:structs%>
+namespace cpp2 {
+
+<% > Structs/read.tcc%>
+
+<% > Structs/serialize.tcc%>
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+<%/program:structs%>
 namespace cpp2 {
 
 } // cpp2
