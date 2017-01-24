@@ -13,7 +13,7 @@ interface BarAsyncIf extends \IThriftAsyncIf {
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b);
    */
-  public function baz(Set<int> $a, \Indexish<int, \Indexish<int, Set<string>>> $b): Awaitable<string>;
+  public function baz(keyset<int> $a, \Indexish<int, \Indexish<int, keyset<string>>> $b): Awaitable<string>;
 }
 
 interface BarIf extends \IThriftSyncIf {
@@ -23,19 +23,17 @@ interface BarIf extends \IThriftSyncIf {
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b);
    */
-  public function baz(Set<int> $a, \Indexish<int, \Indexish<int, Set<string>>> $b): string;
+  public function baz(keyset<int> $a, \Indexish<int, \Indexish<int, keyset<string>>> $b): string;
 }
 
 trait BarClientBase {
   require extends ThriftClientBase;
 
-  protected function sendImpl_baz(Set<int> $a, \Indexish<int, \Indexish<int, Set<string>>> $b): int {
+  protected function sendImpl_baz(keyset<int> $a, \Indexish<int, \Indexish<int, keyset<string>>> $b): int {
     $currentseqid = $this->getNextSequenceID();
     $args = new Bar_baz_args();
     $args->a = $a;
-    $args->b = (new Vector($b))->map(
-      $_val0 ==> (new Map($_val0))
-    );
+    $args->b = ThriftUtil::mapVec($b, $_val0 ==> ThriftUtil::mapDict($_val0, $_val1 ==> keyset($_val1)));
     try {
       $this->eventHandler_->preSend('baz', $args, $currentseqid);
       if ($this->output_ instanceof \TBinaryProtocolAccelerated)
@@ -139,7 +137,7 @@ class BarAsyncClient extends ThriftClientBase implements BarAsyncIf {
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b);
    */
-  public async function baz(Set<int> $a, \Indexish<int, \Indexish<int, Set<string>>> $b): Awaitable<string> {
+  public async function baz(keyset<int> $a, \Indexish<int, \Indexish<int, keyset<string>>> $b): Awaitable<string> {
     $currentseqid = $this->sendImpl_baz($a, $b);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_baz($currentseqid);
@@ -156,19 +154,19 @@ class BarClient extends ThriftClientBase implements BarIf {
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b);
    */
-  public function baz(Set<int> $a, \Indexish<int, \Indexish<int, Set<string>>> $b): string {
+  public function baz(keyset<int> $a, \Indexish<int, \Indexish<int, keyset<string>>> $b): string {
     $currentseqid = $this->sendImpl_baz($a, $b);
     return $this->recvImpl_baz($currentseqid);
   }
 
-  public async function gen_baz(Set<int> $a, \Indexish<int, \Indexish<int, Set<string>>> $b): Awaitable<string> {
+  public async function gen_baz(keyset<int> $a, \Indexish<int, \Indexish<int, keyset<string>>> $b): Awaitable<string> {
     $currentseqid = $this->sendImpl_baz($a, $b);
     await $this->asyncHandler_->genWait($currentseqid);
     return $this->recvImpl_baz($currentseqid);
   }
 
   /* send and recv functions */
-  public function send_baz(Set<int> $a, \Indexish<int, \Indexish<int, Set<string>>> $b): int {
+  public function send_baz(keyset<int> $a, \Indexish<int, \Indexish<int, keyset<string>>> $b): int {
     return $this->sendImpl_baz($a, $b);
   }
   public function recv_baz(?int $expectedsequenceid = null): string {
@@ -187,7 +185,7 @@ class Bar_baz_args implements \IThriftStruct {
       'elem' => array(
         'type' => \TType::I32,
         ),
-        'format' => 'collection',
+        'format' => 'harray',
       ),
     2 => array(
       'var' => 'b',
@@ -206,11 +204,11 @@ class Bar_baz_args implements \IThriftStruct {
           'elem' => array(
             'type' => \TType::STRING,
             ),
-            'format' => 'collection',
+            'format' => 'harray',
           ),
-          'format' => 'collection',
+          'format' => 'harray',
         ),
-        'format' => 'collection',
+        'format' => 'harray',
       ),
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -218,17 +216,17 @@ class Bar_baz_args implements \IThriftStruct {
     'b' => 2,
   };
   const int STRUCTURAL_ID = 5283012534631553068;
-  public Set<int> $a;
-  public Vector<Map<int, Set<string>>> $b;
+  public keyset<int> $a;
+  public vec<dict<int, keyset<string>>> $b;
 
-  public function __construct(?Set<int> $a = null, ?Vector<Map<int, Set<string>>> $b = null  ) {
+  public function __construct(?keyset<int> $a = null, ?vec<dict<int, keyset<string>>> $b = null  ) {
     if ($a === null) {
-      $this->a = Set {};
+      $this->a = keyset[];
     } else {
       $this->a = $a;
     }
     if ($b === null) {
-      $this->b = Vector {};
+      $this->b = vec[];
     } else {
       $this->b = $b;
     }
@@ -262,7 +260,7 @@ class Bar_baz_args implements \IThriftStruct {
           if ($ftype == \TType::SET) {
             $_size1 = 0;
             $_etype4 = 0;
-            $_val0 = Set{};
+            $_val0 = keyset[];
             $xfer += $input->readSetBegin($_etype4, $_size1);
             for ($_i5 = 0; $_size1 === null || $_i5 < $_size1; ++$_i5)
             {
@@ -284,7 +282,7 @@ class Bar_baz_args implements \IThriftStruct {
         case 2:
           if ($ftype == \TType::LST) {
             $_size8 = 0;
-            $_val7 = Vector {};
+            $_val7 = vec[];
             $_etype11 = 0;
             $xfer += $input->readListBegin($_etype11, $_size8);
             for ($_i12 = 0; $_size8 === null || $_i12 < $_size8; ++$_i12)
@@ -293,7 +291,7 @@ class Bar_baz_args implements \IThriftStruct {
                 break;
               }
               $_size15 = 0;
-              $_val14 = Map {};
+              $_val14 = dict[];
               $_ktype16 = 0;
               $_vtype17 = 0;
               $xfer += $input->readMapBegin($_ktype16, $_vtype17, $_size15);
@@ -306,7 +304,7 @@ class Bar_baz_args implements \IThriftStruct {
                 $xfer += $input->readI32($key20);
                 $_size23 = 0;
                 $_etype26 = 0;
-                $_val22 = Set{};
+                $_val22 = keyset[];
                 $xfer += $input->readSetBegin($_etype26, $_size23);
                 for ($_i27 = 0; $_size23 === null || $_i27 < $_size23; ++$_i27)
                 {
@@ -352,7 +350,7 @@ class Bar_baz_args implements \IThriftStruct {
     $xfer += $output->writeStructBegin('Bar_baz_args');
     if ($this->a !== null) {
       $_val0 = $this->a;
-      if (!($_val0 instanceof Set)) {
+      if (!(is_keyset($_val0))) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
       $xfer += $output->writeFieldBegin('a', \TType::SET, 1);

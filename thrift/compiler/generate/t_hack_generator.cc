@@ -56,6 +56,7 @@ class t_hack_generator : public t_oop_generator {
     shape_arraykeys_ = option_is_specified(parsed_options, "shape_arraykeys");
     shape_unsafe_json_ = option_is_specified(parsed_options, "shape_unsafe_json");
     lazy_constants_ = option_is_specified(parsed_options, "lazy_constants");
+    arrays_ = option_is_specified(parsed_options, "arrays");
 
     mangled_services_ = option_is_set(parsed_options, "mangledsvcs", false);
 
@@ -479,6 +480,11 @@ class t_hack_generator : public t_oop_generator {
    * True if we should generate lazy initialization code for constants
    */
   bool lazy_constants_;
+
+  /**
+   * True to use Hack arrays instead of collections
+   */
+  bool arrays_;
 };
 
 void t_hack_generator::generate_json_enum(
@@ -598,11 +604,21 @@ void t_hack_generator::generate_json_container(std::ofstream& out,
 
   indent(out) << json << " = " << prefix_json << ";" << endl;
   if (ttype->is_map()) {
-    indent(out) << container << " = Map {};" << endl;
+    if (arrays_) {
+      indent(out) << container << " = dict[];" << endl;
+    } else {
+      indent(out) << container << " = Map {};" << endl;
+    }
   } else if (ttype->is_list()) {
-    indent(out) << container << " = Vector {};" << endl;
+    if (arrays_) {
+      indent(out) << container << " = vec[];" << endl;
+    } else {
+      indent(out) << container << " = Vector {};" << endl;
+    }
   } else if (ttype->is_set()) {
-    if (arraysets_) {
+    if (arrays_) {
+      indent(out) << container << " = keyset[];" << endl;
+    } else if (arraysets_) {
       indent(out) << container << " = array();" << endl;
     } else {
       indent(out) << container << " = Set {};" << endl;
@@ -647,7 +663,9 @@ void t_hack_generator::generate_json_set_element(std::ofstream& out,
   t_field felem(tset->get_elem_type(), elem);
   indent(out) << declare_field(&felem, true, true, true).substr(1) << endl;
   generate_json_field(out, namer, &felem, "", "", value);
-  if (arraysets_) {
+  if (arrays_) {
+    indent(out) << prefix_thrift << " []= " << elem << ";" << endl;
+  } else if (arraysets_) {
     indent(out) << prefix_thrift << "[" << elem << "] = true;" << endl;
   } else {
     indent(out) << prefix_thrift << "->add(" << elem << ");" << endl;
@@ -1046,7 +1064,11 @@ string t_hack_generator::render_const_value(
     out << "new " << hack_name(type) << "(" << endl;
     indent_up();
     if (map_construct_) {
-      out << indent() << "Map {" << endl;
+      if (arrays_) {
+        out << indent() << "dict[" << endl;
+      } else {
+        out << indent() << "Map {" << endl;
+      }
       indent_up();
     }
     const vector<t_field*>& fields = ((t_struct*)type)->get_members();
@@ -1092,14 +1114,22 @@ string t_hack_generator::render_const_value(
     }
     if (map_construct_) {
       indent_down();
-      out << indent() << "}" << endl;
+      if (arrays_) {
+        out << indent() << "]" << endl;
+      } else {
+        out << indent() << "}" << endl;
+      }
     }
     indent_down();
     indent(out) << ")";
   } else if (type->is_map()) {
     t_type* ktype = ((t_map*)type)->get_key_type();
     t_type* vtype = ((t_map*)type)->get_val_type();
-    out << "Map {" << endl;
+    if (arrays_) {
+      out << "dict[" << endl;
+    } else {
+      out << "Map {" << endl;
+    }
     indent_up();
     const vector<pair<t_const_value*, t_const_value*>>& val = value->get_map();
     vector<pair<t_const_value*, t_const_value*>>::const_iterator v_iter;
@@ -1111,10 +1141,18 @@ string t_hack_generator::render_const_value(
       out << "," << endl;
     }
     indent_down();
-    indent(out) << "}";
+    if (arrays_) {
+      indent(out) << "]";
+    } else {
+      indent(out) << "}";
+    }
   } else if (type->is_list()) {
     t_type* etype = ((t_list*)type)->get_elem_type();
-    out << "Vector {" << endl;
+    if (arrays_) {
+      out << "vec[" << endl;
+    } else {
+      out << "Vector {" << endl;
+    }
     indent_up();
     const vector<t_const_value*>& val = value->get_list();
     vector<t_const_value*>::const_iterator v_iter;
@@ -1124,13 +1162,26 @@ string t_hack_generator::render_const_value(
       out << "," << endl;
     }
     indent_down();
-    indent(out) << "}";
+    if (arrays_) {
+      indent(out) << "]";
+    } else {
+      indent(out) << "}";
+    }
   } else if (type->is_set()) {
     t_type* etype = ((t_set*)type)->get_elem_type();
     indent_up();
     const vector<t_const_value*>& val = value->get_list();
     vector<t_const_value*>::const_iterator v_iter;
-    if (arraysets_) {
+    if (arrays_) {
+      out << "keyset[" << endl;
+      for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
+        out << indent();
+        out << render_const_value(etype, *v_iter);
+        out << "," << endl;
+      }
+      indent_down();
+      indent(out) << "]";
+    } else if (arraysets_) {
       out << "array(" << endl;
       for (v_iter = val.begin(); v_iter != val.end(); ++v_iter) {
         out << indent();
@@ -1190,11 +1241,21 @@ string t_hack_generator::render_default_value(t_type* type) {
       dval = "null";
     }
   } else if (type->is_map()) {
-    dval = "Map {}";
+    if (arrays_) {
+      dval = "dict[]";
+    } else {
+      dval = "Map {}";
+    }
   } else if (type->is_list()) {
-    dval = "Vector {}";
+    if (arrays_) {
+      dval = "vec[]";
+    } else {
+      dval = "Vector {}";
+    }
   } else if (type->is_set()) {
-    if (arraysets_) {
+    if (arrays_) {
+      dval = "keyset[]";
+    } else if (arraysets_) {
       dval = "array()";
     } else {
       dval = "Set {}";
@@ -1254,7 +1315,11 @@ void t_hack_generator::generate_php_type_spec(ofstream& out,
     indent_up();
     generate_php_type_spec(out, vtype);
     indent(out) << ")," << endl;
-    indent(out) << "'format' => 'collection'," << endl;
+    if (arrays_) {
+      indent(out) << "'format' => 'harray'," << endl;
+    } else {
+      indent(out) << "'format' => 'collection'," << endl;
+    }
     indent_down();
   } else if (t->is_list()) {
     t_type* etype = get_true_type(((t_list*)t)->get_elem_type());
@@ -1263,7 +1328,11 @@ void t_hack_generator::generate_php_type_spec(ofstream& out,
     indent_up();
     generate_php_type_spec(out, etype);
     indent(out) << ")," << endl;
-    indent(out) << "'format' => 'collection'," << endl;
+    if (arrays_) {
+      indent(out) << "'format' => 'harray'," << endl;
+    } else {
+      indent(out) << "'format' => 'collection'," << endl;
+    }
     indent_down();
   } else if (t->is_set()) {
     t_type* etype = get_true_type(((t_set*)t)->get_elem_type());
@@ -1272,10 +1341,11 @@ void t_hack_generator::generate_php_type_spec(ofstream& out,
     indent_up();
     generate_php_type_spec(out, etype);
     indent(out) << ")," << endl;
-    if (arraysets_) {
+    if (arrays_) {
+      indent(out) << "'format' => 'harray'," << endl;
+    } else if (arraysets_) {
       indent(out) << "'format' => 'array'," << endl;
     } else {
-      // TODO(ckwalsh) Re-add this flag
       indent(out) << "'format' => 'collection'," << endl;
     }
     indent_down();
@@ -2494,13 +2564,21 @@ void t_hack_generator::generate_php_struct_writer(ofstream& out,
         indent() << "if (";
       if (strict_types_) {
         if (type->is_map()) {
-          out <<
-            "!($" << val << " instanceof Map)";
+          if (arrays_) {
+            out << "!(is_dict($" << val << "))";
+          } else {
+            out << "!($" << val << " instanceof Map)";
+          }
         } else if (type->is_list()) {
-          out <<
-            "!($" << val << " instanceof Vector)";
+          if (arrays_) {
+            out << "!(is_vec($" << val << "))";
+          } else {
+            out << "!($" << val << " instanceof Vector)";
+          }
         } else if (type->is_set()) {
-          if (arraysets_) {
+          if (arrays_) {
+            out << "!(is_keyset($" << val << "))";
+          } else if (arraysets_) {
             out <<
               "!($" << val << " instanceof \\Indexish) && " <<
               "!(($" << val << " instanceof \\Iterator || " <<
@@ -2516,8 +2594,11 @@ void t_hack_generator::generate_php_struct_writer(ofstream& out,
         }
       } else {
         if (type->is_set() && !arraysets_) {
-          out <<
-            "!($" << val << " instanceof Set)";
+          if (arrays_) {
+            out << "!(is_keyset($" << val << "))";
+          } else {
+            out << "!($" << val << " instanceof Set)";
+          }
         } else if (type->is_container()) {
           out <<
             "!($" << val << " instanceof \\Indexish) && " <<
@@ -3068,10 +3149,10 @@ string t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool sha
   } else if (ttype->is_struct() || ttype->is_xception()) {
     return (nullable ? "?" : "") + hack_name(ttype) + (shape ? "::TShape" : "");
   } else if (ttype->is_list()) {
-    string prefix = shape ? "array" : "Vector";
+    string prefix = arrays_ ? "vec" : (shape ? "array" : "Vector");
     return prefix + "<" + type_to_typehint(((t_list*)ttype)->get_elem_type(), false, shape)  + ">";
   } else if (ttype->is_map()) {
-    string prefix = shape ? "array" : "Map";
+    string prefix = arrays_ ? "dict" : (shape ? "array" : "Map");
     string key_type =  type_to_typehint(((t_map*)ttype)->get_key_type(), nullable, shape);
     if (shape &&
         shape_arraykeys_ &&
@@ -3080,8 +3161,8 @@ string t_hack_generator::type_to_typehint(t_type* ttype, bool nullable, bool sha
     }
     return prefix + "<" + key_type + ", "  + type_to_typehint(((t_map*)ttype)->get_val_type(), false, shape) + ">";
   } else if (ttype->is_set()) {
-    string prefix = (arraysets_ || shape) ? "array" : "Set";
-    string suffix = (arraysets_ || shape) ? ", bool>" : ">";
+    string prefix = arraysets_ ? "array" : (arrays_ ? "keyset" : (shape ? "array" : "Set"));
+    string suffix = (arraysets_ || (shape && !arrays_)) ? ", bool>" : ">";
     return prefix + "<" + type_to_typehint(((t_set*)ttype)->get_elem_type(), false, shape) + suffix;
   } else {
     return "mixed";
@@ -3285,94 +3366,157 @@ void t_hack_generator::_generate_service_client(
     out << indent() << "$currentseqid = $this->getNextSequenceID();" << endl
         << indent() << "$args = new " << argsname << "();" << endl;
 
+    // Loop through the fields and assign to the args struct
     for (fld_iter = fields.begin(); fld_iter != fields.end(); ++fld_iter) {
       out << indent() << "$args->" << (*fld_iter)->get_name() << " = ";
       t_type* t = (*fld_iter)->get_type();
       if (!strict_types_ && t->is_container() && !t->is_set()) {
-        t_type* val_type;
-        if (t->is_map()) {
-          out << "(new Map($" << (*fld_iter)->get_name() << "))";
-          val_type = ((t_map*)t)->get_val_type();
+        // If !strict_types, containers are typehinted as Indexish<Key, Value>
+        // to better support passing in arrays/dicts/maps/vecs/vectors and
+        // handle backwards compatibility. However, structs are typehinted as
+        // the actual container (ex: Map<Key, Val>), and we need to safely
+        // convert the typehints.
+        //
+        // This isn't as simple as dict($param) or new Map($param). If there is
+        // a nested container, that also needs to have its typehints converted.
+        // This iterates through the type object and generates the appropriate
+        // code to convert all the nested typehints.
+        //
+        // sets are treated somewhat specially in this code, since we are
+        // guaranteed sets in Hack cannot contain complex structures, and are
+        // not typed as Indexish at any point.
+        if (arrays_) {
+          t_type* val_type;
+          std::string var = "$" + (*fld_iter)->get_name();
+          t_name_generator namer;
+          int close_parens = 0;
+          while (t->is_container()) {
+            if (t->is_map()) {
+              val_type = ((t_map*)t)->get_val_type();
+            } else if (t->is_list()) {
+              val_type = ((t_list*)t)->get_elem_type();
+            } else if (t->is_set()) {
+              val_type = ((t_set*)t)->get_elem_type();
+            } else {
+              throw std::runtime_error("Unknown container type");
+            }
+            val_type = get_true_type(val_type);
+            if (val_type->is_container()) {
+              if (t->is_map()) {
+                out << "ThriftUtil::mapDict(" << var << ", ";
+              } else if (t->is_list()) {
+                out << "ThriftUtil::mapVec(" << var << ", ";
+              } else if (t->is_set()) {
+                out << "ThriftUtil::mapKeyset(" << var << ", ";
+              } else {
+                throw std::runtime_error("Unknown container type");
+              }
+              var = "$"+namer("_val");
+              out << var << " ==> ";
+              close_parens++;
+            } else {
+              if (t->is_map()) {
+                out << "dict(" << var << ")";
+              } else if (t->is_list()) {
+                out << "vec(" << var << ")";
+              } else if (t->is_set()) {
+                out << "keyset(" << var << ")";
+              } else {
+                throw std::runtime_error("Unknown container type");
+              }
+            }
+            t = val_type;
+          }
+          for (int i = 0; i < close_parens; i++) {
+            out << ")";
+          }
+          out << ";" << endl;
         } else {
-          out << "(new Vector($" << (*fld_iter)->get_name() << "))";
-          val_type = ((t_list*)t)->get_elem_type();
-        }
-        val_type = get_true_type(val_type);
-        int nest = 0;
-        t_name_generator namer;
-        while (val_type->is_container() && !val_type->is_set()) {
-          nest++;
-          string val = namer("_val");
-          indent_up();
-          out << "->map(" << endl << indent() << "$" << val << " ==> ";
-          if (val_type->is_map()) {
-            out << "(new Map($" << val << "))";
-            val_type = ((t_map*)val_type)->get_val_type();
+          t_type* val_type;
+          if (t->is_map()) {
+            out << "(new Map($" << (*fld_iter)->get_name() << "))";
+            val_type = ((t_map*)t)->get_val_type();
           } else {
-            out << "(new Vector($" << val << "))";
-            val_type = ((t_list*)val_type)->get_elem_type();
+            out << "(new Vector($" << (*fld_iter)->get_name() << "))";
+            val_type = ((t_list*)t)->get_elem_type();
           }
           val_type = get_true_type(val_type);
+          int nest = 0;
+          t_name_generator namer;
+          while (val_type->is_container() && !val_type->is_set()) {
+            nest++;
+            string val = namer("_val");
+            indent_up();
+            out << "->map(" << endl << indent() << "$" << val << " ==> ";
+            if (val_type->is_map()) {
+              out << "(new Map($" << val << "))";
+              val_type = ((t_map*)val_type)->get_val_type();
+            } else {
+              out << "(new Vector($" << val << "))";
+              val_type = ((t_list*)val_type)->get_elem_type();
+            }
+            val_type = get_true_type(val_type);
+          }
+          for (int i = nest; i > 0; i--) {
+            indent_down();
+            out << endl << indent() << ")";
+          }
+          out << ";" << endl;
         }
-        for (int i = nest; i > 0; i--) {
-          indent_down();
-          out << endl << indent() << ")";
-        }
-        out << ";" << endl;
       } else {
         out << "$" << (*fld_iter)->get_name() << ";" << endl;
       }
-      }
+    }
 
-      out << indent() << "try {" << endl;
-      indent_up();
-      out <<
-        indent() << "$this->eventHandler_->preSend('" << (*f_iter)->get_name() <<
-                    "', $args, $currentseqid);" << endl;
-      out <<
-        indent() << "if ($this->output_ instanceof \\TBinaryProtocolAccelerated)" << endl;
-      scope_up(out);
+    out << indent() << "try {" << endl;
+    indent_up();
+    out <<
+      indent() << "$this->eventHandler_->preSend('" << (*f_iter)->get_name() <<
+                  "', $args, $currentseqid);" << endl;
+    out <<
+      indent() << "if ($this->output_ instanceof \\TBinaryProtocolAccelerated)" << endl;
+    scope_up(out);
 
-      out <<
-        indent() << "thrift_protocol_write_binary($this->output_, '" <<
-        (*f_iter)->get_name() << "', " <<
-        "\\TMessageType::CALL, $args, $currentseqid, " <<
-        "$this->output_->isStrictWrite(), " <<
-        ((*f_iter)->is_oneway() ? "true" : "false") << ");" << endl;
+    out <<
+      indent() << "thrift_protocol_write_binary($this->output_, '" <<
+      (*f_iter)->get_name() << "', " <<
+      "\\TMessageType::CALL, $args, $currentseqid, " <<
+      "$this->output_->isStrictWrite(), " <<
+      ((*f_iter)->is_oneway() ? "true" : "false") << ");" << endl;
 
-      scope_down(out);
-      out <<
-        indent() << "else if ($this->output_ instanceof \\TCompactProtocolAccelerated)" << endl;
-      scope_up(out);
+    scope_down(out);
+    out <<
+      indent() << "else if ($this->output_ instanceof \\TCompactProtocolAccelerated)" << endl;
+    scope_up(out);
 
-      out <<
-        indent() << "thrift_protocol_write_compact($this->output_, '" <<
-        (*f_iter)->get_name() << "', " <<
-        "\\TMessageType::CALL, $args, $currentseqid, " <<
-        ((*f_iter)->is_oneway() ? "true" : "false") << ");" << endl;
+    out <<
+      indent() << "thrift_protocol_write_compact($this->output_, '" <<
+      (*f_iter)->get_name() << "', " <<
+      "\\TMessageType::CALL, $args, $currentseqid, " <<
+      ((*f_iter)->is_oneway() ? "true" : "false") << ");" << endl;
 
-      scope_down(out);
-      out <<
-        indent() << "else" << endl;
-      scope_up(out);
+    scope_down(out);
+    out <<
+      indent() << "else" << endl;
+    scope_up(out);
 
-      // Serialize the request header
-      out <<
-        indent() << "$this->output_->writeMessageBegin('" <<
-        (*f_iter)->get_name() <<
-        "', \\TMessageType::CALL, $currentseqid);" << endl;
+    // Serialize the request header
+    out <<
+      indent() << "$this->output_->writeMessageBegin('" <<
+      (*f_iter)->get_name() <<
+      "', \\TMessageType::CALL, $currentseqid);" << endl;
 
-      // Write to the stream
+    // Write to the stream
+    out <<
+      indent() << "$args->write($this->output_);" << endl <<
+      indent() << "$this->output_->writeMessageEnd();" << endl;
+    if ((*f_iter)->is_oneway()) {
       out <<
-        indent() << "$args->write($this->output_);" << endl <<
-        indent() << "$this->output_->writeMessageEnd();" << endl;
-      if ((*f_iter)->is_oneway()) {
-        out <<
-          indent() << "$this->output_->getTransport()->onewayFlush();" << endl;
-      } else {
-        out <<
-          indent() << "$this->output_->getTransport()->flush();" << endl;
-      }
+        indent() << "$this->output_->getTransport()->onewayFlush();" << endl;
+    } else {
+      out <<
+        indent() << "$this->output_->getTransport()->flush();" << endl;
+    }
 
     scope_down(out);
 
@@ -3852,29 +3996,36 @@ void t_hack_generator::generate_deserialize_container(ofstream& out,
 
   // Declare variables, read header
   if (ttype->is_map()) {
+    if (arrays_) {
+      out << indent() << "$" << val << " = dict[];" << endl;
+    } else {
+      out << indent() << "$" << val << " = Map {};" << endl;
+    }
     out <<
-      indent() << "$" << val << " = Map {};" << endl <<
       indent() << "$" << ktype << " = 0;" << endl <<
       indent() << "$" << vtype << " = 0;" << endl;
     out <<
       indent() << "$xfer += $input->readMapBegin(" <<
       "$" << ktype << ", $" << vtype << ", $" << size << ");" << endl;
   } else if (ttype->is_set()) {
-    out <<
-      indent() << "$" << etype << " = 0;" << endl;
-    if (arraysets_) {
-      out <<
-        indent() << "$" << val << " = array();" << endl;
+    out << indent() << "$" << etype << " = 0;" << endl;
+    if (arrays_) {
+      out << indent() << "$" << val << " = keyset[];" << endl;
+    } else if (arraysets_) {
+      out << indent() << "$" << val << " = array();" << endl;
     } else {
-      out <<
-        indent() << "$" << val << " = Set{};" << endl;
+      out << indent() << "$" << val << " = Set{};" << endl;
     }
     out <<
       indent() << "$xfer += $input->readSetBegin(" <<
       "$" << etype << ", $" << size << ");" << endl;
   } else if (ttype->is_list()) {
+    if (arrays_) {
+      out << indent() << "$" << val << " = vec[];" << endl;
+    } else {
+      out << indent() << "$" << val << " = Vector {};" << endl;
+    }
     out <<
-      indent() << "$" << val << " = Vector {};" << endl <<
       indent() << "$" << etype << " = 0;" << endl <<
       indent() << "$xfer += $input->readListBegin(" <<
       "$" << etype << ", $" << size << ");" << endl;
@@ -4243,11 +4394,21 @@ string t_hack_generator::declare_field(t_field* tfield, bool init,
     } else if (type->is_enum()) {
       result += " = null";
     } else if (type->is_map()) {
-      result += " = Map {}";
+      if (arrays_) {
+        result += " = dict[]";
+      } else {
+        result += " = Map {}";
+      }
     } else if (type->is_list()) {
-      result += " = Vector {}";
+      if (arrays_) {
+        result += " = vec[]";
+      } else {
+        result += " = Vector {}";
+      }
     } else if (type->is_set()) {
-      if (arraysets_) {
+      if (arrays_) {
+        result += " = keyset[]";
+      } else if (arraysets_) {
         result += " = array()";
       } else {
         result += " = Set {}";
@@ -4411,4 +4572,5 @@ THRIFT_REGISTER_GENERATOR(hack, "HACK",
 "                        replace array<string, TValue> with array<arraykey, TValue>\n"
 "    shape_unsafe_json When converting json to Shapes, do not validate.\n"
 "    lazy_constants   Generate lazy initialization code for global constants.\n"
+"    arrays           Use Hack arrays for maps/lists/sets instead of objects.\n"
 );

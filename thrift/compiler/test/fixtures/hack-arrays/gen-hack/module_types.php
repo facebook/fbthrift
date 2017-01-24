@@ -15,7 +15,7 @@ class Foo implements \IThriftStruct {
       'elem' => array(
         'type' => \TType::STRING,
         ),
-        'format' => 'collection',
+        'format' => 'harray',
       ),
     2 => array(
       'var' => 'b',
@@ -34,11 +34,11 @@ class Foo implements \IThriftStruct {
           'elem' => array(
             'type' => \TType::I32,
             ),
-            'format' => 'collection',
+            'format' => 'harray',
           ),
-          'format' => 'collection',
+          'format' => 'harray',
         ),
-        'format' => 'collection',
+        'format' => 'harray',
       ),
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -46,17 +46,17 @@ class Foo implements \IThriftStruct {
     'b' => 2,
   };
   const int STRUCTURAL_ID = 5283012534631553068;
-  public Vector<string> $a;
-  public Map<string, Vector<Set<int>>> $b;
+  public vec<string> $a;
+  public dict<string, vec<keyset<int>>> $b;
 
-  public function __construct(?Vector<string> $a = null, ?Map<string, Vector<Set<int>>> $b = null  ) {
+  public function __construct(?vec<string> $a = null, ?dict<string, vec<keyset<int>>> $b = null  ) {
     if ($a === null) {
-      $this->a = Vector {};
+      $this->a = vec[];
     } else {
       $this->a = $a;
     }
     if ($b === null) {
-      $this->b = Map {};
+      $this->b = dict[];
     } else {
       $this->b = $b;
     }
@@ -89,7 +89,7 @@ class Foo implements \IThriftStruct {
         case 1:
           if ($ftype == \TType::LST) {
             $_size1 = 0;
-            $_val0 = Vector {};
+            $_val0 = vec[];
             $_etype4 = 0;
             $xfer += $input->readListBegin($_etype4, $_size1);
             for ($_i5 = 0; $_size1 === null || $_i5 < $_size1; ++$_i5)
@@ -112,7 +112,7 @@ class Foo implements \IThriftStruct {
         case 2:
           if ($ftype == \TType::MAP) {
             $_size8 = 0;
-            $_val7 = Map {};
+            $_val7 = dict[];
             $_ktype9 = 0;
             $_vtype10 = 0;
             $xfer += $input->readMapBegin($_ktype9, $_vtype10, $_size8);
@@ -124,7 +124,7 @@ class Foo implements \IThriftStruct {
               $key13 = null;
               $xfer += $input->readString($key13);
               $_size16 = 0;
-              $_val15 = Vector {};
+              $_val15 = vec[];
               $_etype19 = 0;
               $xfer += $input->readListBegin($_etype19, $_size16);
               for ($_i20 = 0; $_size16 === null || $_i20 < $_size16; ++$_i20)
@@ -134,7 +134,7 @@ class Foo implements \IThriftStruct {
                 }
                 $_size23 = 0;
                 $_etype26 = 0;
-                $_val22 = Set{};
+                $_val22 = keyset[];
                 $xfer += $input->readSetBegin($_etype26, $_size23);
                 for ($_i27 = 0; $_size23 === null || $_i27 < $_size23; ++$_i27)
                 {

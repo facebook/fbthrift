@@ -1,1 +1,1 @@
-hack src/module.thrift
+hack:arrays=1 src/module.thrift
