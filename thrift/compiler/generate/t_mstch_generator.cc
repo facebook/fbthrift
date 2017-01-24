@@ -105,6 +105,10 @@ mstch::map t_mstch_generator::dump(const t_field& field) const {
       {"annotations", this->dump_elems(field.annotations_)},
   };
 
+  if (field.get_value() != nullptr) {
+    result.emplace("value", this->dump(*field.get_value()));
+  }
+
   mstch::map extension = this->extend_field(field);
   result.insert(extension.begin(), extension.end());
   return this->prepend_prefix("field", std::move(result));
@@ -129,6 +133,7 @@ mstch::map t_mstch_generator::dump(const t_type& type) const {
       {"enum?", type.is_enum()},
       {"stream?", type.is_stream()},
       {"service?", type.is_service()},
+      {"base?", type.is_base_type()},
       {"container?", type.is_container()},
       {"list?", type.is_list()},
       {"set?", type.is_set()},
@@ -250,9 +255,14 @@ mstch::map t_mstch_generator::dump(const t_const_value& value) const {
       {"double?", type == cv::CV_DOUBLE},
       {"integer?", type == cv::CV_INTEGER},
       {"string?", type == cv::CV_STRING},
+      {"base?", type == cv::CV_BOOL ||
+                type == cv::CV_DOUBLE ||
+                type == cv::CV_INTEGER ||
+                type == cv::CV_STRING},
       {"map?", type == cv::CV_MAP},
       {"list?", type == cv::CV_LIST},
-      {"container?", type == cv::CV_MAP || type == cv::CV_LIST}
+      {"container?", type == cv::CV_MAP ||
+                     type == cv::CV_LIST},
   };
 
   auto const format_double_string = [](const double d) {
@@ -264,18 +274,22 @@ mstch::map t_mstch_generator::dump(const t_const_value& value) const {
 
   switch (type) {
     case cv::CV_DOUBLE:
+      result.emplace("value", format_double_string(value.get_double()));
       result.emplace("doubleValue", format_double_string(value.get_double()));
       result.emplace("nonzero?", value.get_double() != 0.0);
       break;
     case cv::CV_BOOL:
+      result.emplace("value", std::to_string(value.get_bool()));
       result.emplace("boolValue", value.get_bool() == true);
       result.emplace("nonzero?", value.get_bool() == true);
       break;
     case cv::CV_INTEGER:
+      result.emplace("value", std::to_string(value.get_integer()));
       result.emplace("integerValue", std::to_string(value.get_integer()));
       result.emplace("nonzero?", value.get_integer() != 0);
       break;
     case cv::CV_STRING:
+      result.emplace("value", value.get_string());
       result.emplace("stringValue", value.get_string());
       break;
     case cv::CV_MAP:

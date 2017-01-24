@@ -28,6 +28,93 @@
 
 
 
+<%#program:structs%>
+namespace cpp2 {
+<% > Structs/forward_declare%><%!
+%>class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<<%struct:name%>> {
+ public:
+
+<% > Structs/base_ctor%>
+
+<% > Structs/fragile_ctor%>
+
+<% > Structs/template_ctor%>
+
+  <%struct:name%>(<%struct:name%>&&) = default;
+
+  <%struct:name%>(const <%struct:name%>&) = default;
+
+  <%struct:name%>& operator=(<%struct:name%>&&) = default;
+
+  <%struct:name%>& operator=(const <%struct:name%>&) = default;
+<%#struct:base_fields?%>
+  void __clear();
+<%/struct:base_fields?%>
+
+  virtual ~<%struct:name%>() throw() {}
+
+<%#struct:base_fields?%>
+<% > Structs/declare_members%>
+
+<%/struct:base_fields?%>
+<% > Structs/eq_overload%>
+
+<% > Structs/lt_overload%>
+
+<%#struct:base_fields?%>
+<% > Structs/getters_setters%>
+<%/struct:base_fields?%>
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+};
+
+void swap(<%struct:name%>& a, <%struct:name%>& b);
+extern template uint32_t <%struct:name%>::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t <%struct:name%>::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t <%struct:name%>::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t <%struct:name%>::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t <%struct:name%>::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t <%struct:name%>::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t <%struct:name%>::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t <%struct:name%>::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace apache { namespace thrift {
+<%#struct:base_fields?%>
+
+template <> inline void Cpp2Ops< ::cpp2::<%struct:name%>>::clear( ::cpp2::<%struct:name%>* obj) {
+  return obj->__clear();
+}
+<%/struct:base_fields?%>
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::<%struct:name%>>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::<%struct:name%>>::write(Protocol* proto,  ::cpp2::<%struct:name%> const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::<%struct:name%>>::read(Protocol* proto,  ::cpp2::<%struct:name%>* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::<%struct:name%>>::serializedSize(Protocol const* proto,  ::cpp2::<%struct:name%> const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::<%struct:name%>>::serializedSizeZC(Protocol const* proto,  ::cpp2::<%struct:name%> const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+<%/program:structs%>
 namespace cpp2 {
 
 } // cpp2

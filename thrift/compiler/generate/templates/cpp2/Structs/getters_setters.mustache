@@ -1,0 +1,48 @@
+<%!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+%><%!
+%><%#struct:base_fields%><%#field:type%>
+<%^type:string?%>
+  <% > Type%> get_<%field:name%>() const {
+    return <%field:name%>;
+  }
+
+  <% > Type%>& set_<%field:name%>(<% > Type%> <%field:name%>_) {
+    <%field:name%> = <%field:name%>_;
+    __isset.<%field:name%> = true;
+    return <%field:name%>;
+  }
+
+<%/type:string?%>
+<%#type:string?%>
+  const <% > Type%> get_<%field:name%>() const& {
+    return <%field:name%>;
+  }
+
+  <% > Type%> get_<%field:name%>() && {
+    return std::move(<%field:name%>);
+  }
+
+  template <typename T_<%struct:name%>_<%field:name%>_struct_setter>
+  <% > Type%>& set_<%field:name%>(T_<%struct:name%>_<%field:name%>_struct_setter&& <%field:name%>_) {
+    <%field:name%> = std::forward<T_<%struct:name%>_<%field:name%>_struct_setter>(<%field:name%>_);
+    __isset.<%field:name%> = true;
+    return <%field:name%>;
+  }
+
+<%/type:string?%>
+<%/field:type%><%/struct:base_fields%>

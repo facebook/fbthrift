@@ -133,8 +133,31 @@ mstch::map t_mstch_cpp2_generator::extend_function(const t_function& fn) const {
 }
 
 mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) const {
+  std::vector<t_field*> s_members = s.get_members();
+  std::vector<t_field*> base_members;
+  // Obtain base types
+  std::copy_if(
+    s_members.begin(),
+    s_members.end(),
+    std::back_inserter(base_members),
+    [](t_field* f){ return f->get_type()->is_base_type(); }
+  );
+  // Specialize base_members to non empty strings for base ctor.
+  std::vector<t_field*> base_members_non_empty_strings;
+  std::copy_if(
+    base_members.begin(),
+    base_members.end(),
+    std::back_inserter(base_members_non_empty_strings),
+    [](t_field* f){
+      return !f->get_type()->is_string() || f->get_value() != nullptr;
+  });
+
   return mstch::map {
     {"namespaces", this->get_namespace(*s.get_program())},
+    {"base_fields_non_empty_strings",
+        this->dump_elems(base_members_non_empty_strings)},
+    {"base_fields", this->dump_elems(base_members)},
+    {"base_fields?", !base_members.empty() },
   };
 }
 
@@ -201,10 +224,10 @@ void t_mstch_cpp2_generator::generate_constants(const t_program& program) {
 
 void t_mstch_cpp2_generator::generate_structs(const t_program& program) {
   auto name = program.get_name();
-  this->render_to_file(program, "Struct_types.h", name + "_types.h");
-  this->render_to_file(program, "Struct_types.tcc", name + "_types.tcc");
   this->render_to_file(program, "Struct_data.h", name + "_data.h");
   this->render_to_file(program, "Struct_data.cpp", name + "_data.cpp");
+  this->render_to_file(program, "Struct_types.h", name + "_types.h");
+  this->render_to_file(program, "Struct_types.tcc", name + "_types.tcc");
   this->render_to_file(program, "Struct_types.cpp", name + "_types.cpp");
   this->render_to_file(
     program,

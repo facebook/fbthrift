@@ -21,3 +21,13 @@ const list<map<string, i32>> states = [
   {"San Diego": 3211000, "Sacramento": 479600, "SF": 837400},
   {"New York": 8406000, "Albany": 98400}
 ]
+
+struct Empty {
+}
+
+struct MyStruct {
+  1: bool MyBoolField,
+  2: i64 MyIntField = 12,
+  3: string MyStringField = "test"
+  4: string MyStringField2
+}
