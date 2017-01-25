@@ -175,6 +175,7 @@ class THeader {
 
   // these work with write headers
   void setHeader(const std::string& key, const std::string& value);
+  void setHeader(const std::string& key, std::string&& value);
   void setHeader(const char* key, size_t keyLength, const char* value,
                  size_t valueLength);
   void setHeaders(StringToStringMap&&);

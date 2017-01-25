@@ -847,6 +847,10 @@ void THeader::setHeader(const string& key, const string& value) {
   writeHeaders_[key] = value;
 }
 
+void THeader::setHeader(const string& key, string&& value) {
+  writeHeaders_[key] = std::move(value);
+}
+
 void THeader::setHeader(const char* key,
                         size_t keyLength,
                         const char* value,
