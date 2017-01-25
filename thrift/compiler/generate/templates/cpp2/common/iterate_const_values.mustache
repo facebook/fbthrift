@@ -20,10 +20,10 @@ Base Types:
 
 %><%^value:container?%><%!
   %><%#value:string?%><%!
-    %>apache::thrift::StringTraits< std::string>::fromStringLiteral(<% > Constants/Value%>)<%!
+    %>apache::thrift::StringTraits< std::string>::fromStringLiteral(<% > common/const_value%>)<%!
   %><%/value:string?%><%!
 
-  %><%^value:string?%><% > Constants/Value%><%/value:string?%><%!
+  %><%^value:string?%><% > common/const_value%><%/value:string?%><%!
 %><%/value:container?%><%!
 
 Containers:
@@ -33,10 +33,10 @@ Form:`std::initializer_list<Type>{Values}`
 E.g.:`std::initializer_list<bool>{true, false, false, true}`
 %><%#value:list?%><%!
   %>std::initializer_list<<%!
-    %><% > Constants/TypeRecursive%><%!
+    %><% > common/const_type_recursive%><%!
   %>>{<%!
   %><%#value:listElements%><%!
-    %><% > Constants/IterateValues%><%!
+    %><% > common/iterate_const_values%><%!
     %><%^last?%>,
   <%/last?%><%!
   %><%/value:listElements%><%!
@@ -48,16 +48,16 @@ Form:`std::initializer_list<Type>{{Key, Value}}`
 E.g.:`std::initializer_list<std::pair<int64_t, bool>>{{11, false},{453, false}}`
 %><%#value:map?%><%!
   %>std::initializer_list<<%!
-    %><% > Constants/TypeRecursive%><%!
+    %><% > common/const_type_recursive%><%!
   %>>{<%!
   %><%#value:mapElements%><%!
     %>{<%!
       %><%#element:key%><%!
-        %><% > Constants/IterateValues%><%!
+        %><% > common/iterate_const_values%><%!
       %><%/element:key%><%!
       %>, <%!
       %><%#element:value%><%!
-        %><% > Constants/IterateValues%><%!
+        %><% > common/iterate_const_values%><%!
       %><%/element:value%><%!
     %>}<%!
     %><%^last?%>,

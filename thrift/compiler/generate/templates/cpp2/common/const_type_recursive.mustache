@@ -23,11 +23,11 @@ Base types:
 Containers:
 
 %><%#type:list?%><%#type:listElemType%><%!
-  %><% > Constants/TypeRecursive%><%!
+  %><% > common/const_type_recursive%><%!
 %><%/type:listElemType%><%/type:list?%><%!
 
 %><%#type:set?%><%#type:setElemType%><%!
-  %><% > Constants/TypeRecursive%><%!
+  %><% > common/const_type_recursive%><%!
 %><%/type:setElemType%><%/type:set?%><%!
 
 Map
@@ -36,11 +36,11 @@ E.g.:`std::pair<const int16_t, std::string>`
 %><%#type:map?%><%!
   %>std::pair<const <%!
     %><%#type:keyType%><%!
-      %><% > Constants/TypeRecursive%><%!
+      %><% > common/const_type_recursive%><%!
     %><%/type:keyType%><%!
     %>, <%!
     %><%#type:valueType%><%!
-      %><% > Constants/TypeRecursive%><%!
+      %><% > common/const_type_recursive%><%!
     %><%/type:valueType%><%!
   %>><%!
 %><%/type:map?%>

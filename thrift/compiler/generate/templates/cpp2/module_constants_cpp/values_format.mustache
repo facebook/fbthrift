@@ -32,7 +32,7 @@ E.g.:`...42}` or
 `
 %><%#value:list?%><%!
   %><%#value:listElements%><%!
-    %><% > Constants/IterateValues%><%!
+    %><% > common/iterate_const_values%><%!
     %><%^last?%>,
   <%/last?%><%!
   %><%/value:listElements%><%!
@@ -52,11 +52,11 @@ E.g.:`...{9, "baz"}}` or
   %><%#value:mapElements%><%!
     %>{<%!
       %><%#element:key%><%!
-        %><% > Constants/IterateValues%><%!
+        %><% > common/iterate_const_values%><%!
       %><%/element:key%><%!
       %>, <%!
       %><%#element:value%><%!
-        %><% > Constants/IterateValues%><%!
+        %><% > common/iterate_const_values%><%!
       %><%/element:value%><%!
     %>}<%!
     %><%^last?%>,

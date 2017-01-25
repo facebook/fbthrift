@@ -218,8 +218,12 @@ bool t_mstch_cpp2_generator::get_is_stack_args() const {
 
 void t_mstch_cpp2_generator::generate_constants(const t_program& program) {
   auto name = program.get_name();
-  this->render_to_file(program, "Constants.h", name + "_constants.h");
-  this->render_to_file(program, "Constants.cpp", name + "_constants.cpp");
+  this->render_to_file(program, "module_constants.h", name + "_constants.h");
+  this->render_to_file(
+    program,
+    "module_constants.cpp",
+    name + "_constants.cpp"
+  );
 }
 
 void t_mstch_cpp2_generator::generate_structs(const t_program& program) {
