@@ -370,7 +370,8 @@ void ThreadManager::ImplT<SemType>::add(shared_ptr<Runnable> value,
   auto task = folly::make_unique<Task>(std::move(value),
                                        std::chrono::milliseconds{expiration});
   if (!tasks_.write(std::move(task))) {
-    LOG(ERROR) << "Failed to enqueue item. Increase maxQueueLen?";
+    LOG(ERROR) << "Failed to enqueue item (name prefix: " << getNamePrefix()
+               << "). Increase maxQueueLen?";
     throw TooManyPendingTasksException();
   }
 
