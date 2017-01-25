@@ -30,8 +30,11 @@
 
 <%#program:structs%>
 namespace cpp2 {
-<% > module_types_h/forward_declare%><%!
-%>class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<<%struct:name%>> {
+<% > module_types_h/struct_forward_declare%><%!
+%><% > module_types_h/typedef_initialize%><%!
+%>
+
+class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<<%struct:name%>> {
  public:
 
 <% > module_types_h/base_ctor%>

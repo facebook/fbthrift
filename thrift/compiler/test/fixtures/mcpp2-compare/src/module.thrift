@@ -31,3 +31,10 @@ struct MyStruct {
   3: string MyStringField = "test"
   4: string MyStringField2
 }
+
+typedef i32 simpleTypeDef
+typedef map<i16, string> containerTypeDef
+typedef list<map<i16, string>> complexContainerTypeDef
+typedef list<MyStruct> structTypeDef
+typedef list<map<Empty, MyStruct>> complexStructTypeDef
+typedef list<complexStructTypeDef> mostComplexTypeDef

@@ -330,7 +330,8 @@ mstch::map t_mstch_generator::dump(const annotation& pair) const {
 
 mstch::map t_mstch_generator::dump(const t_typedef& typdef) const {
   mstch::map result{
-      {"symbolic", typdef.get_symbolic()}, {"type", typdef.get_type()},
+      {"type", this->dump(*typdef.get_type())},
+      {"symbolic", typdef.get_symbolic()},
   };
 
   mstch::map extension = this->extend_typedef(typdef);

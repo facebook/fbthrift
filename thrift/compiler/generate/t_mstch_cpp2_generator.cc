@@ -39,6 +39,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   mstch::map extend_service(const t_service&) const override;
   mstch::map extend_struct(const t_struct&) const override;
   mstch::map extend_type(const t_type& t) const override;
+  mstch::map extend_typedef(const t_typedef& td) const override;
 
  private:
   bool get_is_eb(const t_function& fn) const;
@@ -164,6 +165,12 @@ mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) const {
 mstch::map t_mstch_cpp2_generator::extend_enum(const t_enum& e) const {
   return mstch::map {
     {"namespaces", this->get_namespace(*e.get_program())},
+  };
+}
+
+mstch::map t_mstch_cpp2_generator::extend_typedef(const t_typedef& td) const {
+  return mstch::map {
+    {"namespaces", this->get_namespace(*td.get_program())},
   };
 }
 

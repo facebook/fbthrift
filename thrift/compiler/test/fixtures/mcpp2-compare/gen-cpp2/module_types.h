@@ -20,6 +20,20 @@ namespace cpp2 {
 
 class Empty;
 class MyStruct;
+typedef int32_t simpleTypeDef;
+
+typedef std::map<int16_t, std::string> containerTypeDef;
+
+typedef std::vector<std::map<int16_t, std::string>> complexContainerTypeDef;
+
+class MyStruct;
+typedef std::vector< ::cpp2::MyStruct> structTypeDef;
+
+class Empty;
+class MyStruct;
+typedef std::vector<std::map< ::cpp2::Empty,  ::cpp2::MyStruct>> complexStructTypeDef;
+
+typedef std::vector< ::cpp2::complexStructTypeDef> mostComplexTypeDef;
 
 class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
  public:
