@@ -14,7 +14,7 @@
 
 
 
-namespace cpp2 {
+namespace some { namespace valid { namespace ns {
 
 bool Empty::operator==(const Empty& /* rhs */) const {
   return true;
@@ -35,11 +35,11 @@ template uint32_t Empty::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t Empty::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t Empty::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
+}}} // some::valid::ns
 namespace apache { namespace thrift {
 
 }} // apache::thrift
-namespace cpp2 {
+namespace some { namespace valid { namespace ns {
 
 void MyStruct::__clear() {
   MyBoolField = 0;
@@ -83,10 +83,10 @@ template uint32_t MyStruct::write<>(apache::thrift::CompactProtocolWriter*) cons
 template uint32_t MyStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
+}}} // some::valid::ns
 namespace apache { namespace thrift {
 
 }} // apache::thrift
-namespace cpp2 {
+namespace some { namespace valid { namespace ns {
 
-} // cpp2
+}}} // some::valid::ns

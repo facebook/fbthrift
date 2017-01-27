@@ -23,9 +23,9 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-<%#service:namespaces%>
+<%#program:namespace_cpp2%>
 namespace <%namespace:name%> {<%^last?%> <%/last?%><%!
-%><%/service:namespaces%>
+%><%/program:namespace_cpp2%>
 
 std::unique_ptr<apache::thrift::AsyncProcessor> <%!
     %><%service:name%>SvIf::getProcessor() {
@@ -145,12 +145,12 @@ const <%service:name%>AsyncProcessor::<%protocol:longName%>ProcessMap& <%!
 
 <%/service:separate_processmap%>
 <%/service:protocols%>
-<%#service:namespaces%>
-}<%/service:namespaces%><%!
+<%#program:namespace_cpp2%>
+}<%/program:namespace_cpp2%><%!
 %> // <%!
-%><%#service:namespaces%><%!
+%><%#program:namespace_cpp2%><%!
     %><%namespace:name%><%^last?%>::<%/last?%><%!
-%><%/service:namespaces%>
+%><%/program:namespace_cpp2%>
 namespace apache { namespace thrift {
 
 }} // apache::thrift

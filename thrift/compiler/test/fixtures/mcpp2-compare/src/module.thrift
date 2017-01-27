@@ -1,3 +1,5 @@
+namespace cpp2 some.valid.ns
+
 // Generate base consts
 const bool aBool = true
 const byte aByte = 1

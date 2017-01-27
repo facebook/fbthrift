@@ -20,7 +20,8 @@
 
 #include <folly/Indestructible.h>
 
-namespace cpp2 {
+<% > common/namespace_cpp2_begin%>
+
 
 <%#program:constants%><%#constant:type%><%#constant:value%>
   <%^type:container?%>
@@ -41,4 +42,4 @@ constexpr <% > Type%> const <%program:name%>_constants::<%constant:name%>_;
 
   <%/type:container?%>
 <%/constant:value%><%/constant:type%><%/program:constants%>
-} // cpp2
+<% > common/namespace_cpp2_end%>

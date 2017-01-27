@@ -28,8 +28,9 @@
 
 
 
-<%#program:structs%>
-namespace cpp2 {
+<%#program:structs%><%!
+%><% > common/namespace_cpp2_begin%>
+
 <% > module_types_h/struct_forward_declare%><%!
 %><% > module_types_h/typedef_initialize%><%!
 %>
@@ -87,37 +88,39 @@ extern template uint32_t <%struct:name%>::write<>(apache::thrift::CompactProtoco
 extern template uint32_t <%struct:name%>::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 extern template uint32_t <%struct:name%>::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
+<% > common/namespace_cpp2_end%>
+
 namespace apache { namespace thrift {
 <%#struct:base_fields?%>
 
-template <> inline void Cpp2Ops< ::cpp2::<%struct:name%>>::clear( ::cpp2::<%struct:name%>* obj) {
+template <> inline void Cpp2Ops<<% > common/namespace_cpp2%><%struct:name%>>::clear(<% > common/namespace_cpp2%><%struct:name%>* obj) {
   return obj->__clear();
 }
 <%/struct:base_fields?%>
 
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::<%struct:name%>>::thriftType() {
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops<<% > common/namespace_cpp2%><%struct:name%>>::thriftType() {
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::<%struct:name%>>::write(Protocol* proto,  ::cpp2::<%struct:name%> const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops<<% > common/namespace_cpp2%><%struct:name%>>::write(Protocol* proto, <% > common/namespace_cpp2%><%struct:name%> const* obj) {
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::<%struct:name%>>::read(Protocol* proto,  ::cpp2::<%struct:name%>* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops<<% > common/namespace_cpp2%><%struct:name%>>::read(Protocol* proto, <% > common/namespace_cpp2%><%struct:name%>* obj) {
   return obj->read(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::<%struct:name%>>::serializedSize(Protocol const* proto,  ::cpp2::<%struct:name%> const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops<<% > common/namespace_cpp2%><%struct:name%>>::serializedSize(Protocol const* proto, <% > common/namespace_cpp2%><%struct:name%> const* obj) {
   return obj->serializedSize(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::<%struct:name%>>::serializedSizeZC(Protocol const* proto,  ::cpp2::<%struct:name%> const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops<<% > common/namespace_cpp2%><%struct:name%>>::serializedSizeZC(Protocol const* proto, <% > common/namespace_cpp2%><%struct:name%> const* obj) {
   return obj->serializedSizeZC(proto);
 }
 
 }} // apache::thrift
 <%/program:structs%>
-namespace cpp2 {
+<% > common/namespace_cpp2_begin%>
 
-} // cpp2
+
+<% > common/namespace_cpp2_end%>

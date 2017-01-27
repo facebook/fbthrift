@@ -8,7 +8,7 @@
 
 #include <folly/Indestructible.h>
 
-namespace cpp2 {
+namespace some { namespace valid { namespace ns {
 
 constexpr bool const module_constants::aBool_;
 
@@ -67,4 +67,4 @@ std::vector<std::map<std::string, int32_t>> const& module_constants::states() {
   return *instance;
 }
 
-} // cpp2
+}}} // some::valid::ns

@@ -45,9 +45,9 @@ namespace apache { namespace thrift {
   namespace transport { class THeader; }
 }}
 
-<%#service:namespaces%>
+<%#program:namespace_cpp2%>
 namespace <%namespace:name%> {<%^last?%> <%/last?%><%!
-%><%/service:namespaces%>
+%><%/program:namespace_cpp2%>
 
 class <%service:name%>SvAsyncIf {
  public:
@@ -344,12 +344,12 @@ class <%service:name%>AsyncClient : public <%!
  <%/service:extends?%>
 };
 
-<%#service:namespaces%>
-}<%/service:namespaces%><%!
+<%#program:namespace_cpp2%>
+}<%/program:namespace_cpp2%><%!
 %> // <%!
-%><%#service:namespaces%><%!
+%><%#program:namespace_cpp2%><%!
     %><%namespace:name%><%^last?%>::<%/last?%><%!
-%><%/service:namespaces%>
+%><%/program:namespace_cpp2%>
 namespace apache { namespace thrift {
 
 }} // apache::thrift

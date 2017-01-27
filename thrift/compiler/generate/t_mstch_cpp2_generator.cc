@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <array>
 #include <memory>
 #include <vector>
@@ -33,13 +32,11 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   void generate_program() override;
 
  protected:
-  mstch::map extend_enum(const t_enum&) const override;
   mstch::map extend_function(const t_function&) const override;
   mstch::map extend_program(const t_program&) const override;
   mstch::map extend_service(const t_service&) const override;
   mstch::map extend_struct(const t_struct&) const override;
   mstch::map extend_type(const t_type& t) const override;
-  mstch::map extend_typedef(const t_typedef& td) const override;
 
  private:
   bool get_is_eb(const t_function& fn) const;
@@ -91,6 +88,7 @@ void t_mstch_cpp2_generator::generate_program() {
 mstch::map t_mstch_cpp2_generator::extend_program(
     const t_program& program) const {
   mstch::map m;
+  m.emplace("namespace_cpp2", this->get_namespace(program)),
   m.emplace("normalizedIncludePrefix", this->get_include_prefix(program));
   return m;
 }
@@ -115,7 +113,6 @@ mstch::map t_mstch_cpp2_generator::extend_service(const t_service& svc) const {
   add_first_last(oneway_functions_array);
 
   return mstch::map {
-    {"namespaces", this->get_namespace(*svc.get_program())},
     {"onewayfunctions", oneway_functions_array},
     {"protocols", protocol_array},
     {"programName", svc.get_program()->get_name()},
@@ -154,23 +151,10 @@ mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) const {
   });
 
   return mstch::map {
-    {"namespaces", this->get_namespace(*s.get_program())},
     {"base_fields_non_empty_strings",
         this->dump_elems(base_members_non_empty_strings)},
     {"base_fields", this->dump_elems(base_members)},
     {"base_fields?", !base_members.empty() },
-  };
-}
-
-mstch::map t_mstch_cpp2_generator::extend_enum(const t_enum& e) const {
-  return mstch::map {
-    {"namespaces", this->get_namespace(*e.get_program())},
-  };
-}
-
-mstch::map t_mstch_cpp2_generator::extend_typedef(const t_typedef& td) const {
-  return mstch::map {
-    {"namespaces", this->get_namespace(*td.get_program())},
   };
 }
 

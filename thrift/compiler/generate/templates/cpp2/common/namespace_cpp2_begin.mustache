@@ -14,26 +14,6 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>
-<% > Autogen%>
-#include "<%service:programIncludePrefix%><%service:name%>.h"
-
-#include "<%service:programIncludePrefix%><%service:name%>.tcc"
-
-<%#program:namespace_cpp2%>
-namespace <%namespace:name%> {<%^last?%> <%/last?%><%!
-%><%/program:namespace_cpp2%>
-
-<%#service:separate_processmap%>
-<% > ProcessMap%>
-
-<%/service:separate_processmap%>
-<%#program:namespace_cpp2%>
-}<%/program:namespace_cpp2%><%!
-%> // <%!
 %><%#program:namespace_cpp2%><%!
-    %><%namespace:name%><%^last?%>::<%/last?%><%!
+  %>namespace <%namespace:name%> {<%^last?%> <%/last?%><%!
 %><%/program:namespace_cpp2%>
-namespace apache { namespace thrift {
-
-}} // apache::thrift

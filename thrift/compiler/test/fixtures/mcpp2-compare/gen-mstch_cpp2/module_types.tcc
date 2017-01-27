@@ -16,7 +16,7 @@
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-namespace cpp2 {
+namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 uint32_t Empty::read(Protocol_* iprot) {
@@ -75,11 +75,11 @@ uint32_t Empty::write(Protocol_* prot_) const {
   return xfer;
 }
 
-} // cpp2
+}}} // some::valid::ns
 namespace apache { namespace thrift {
 
 }} // apache::thrift
-namespace cpp2 {
+namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
 uint32_t MyStruct::read(Protocol_* iprot) {
@@ -223,10 +223,10 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
   return xfer;
 }
 
-} // cpp2
+}}} // some::valid::ns
 namespace apache { namespace thrift {
 
 }} // apache::thrift
-namespace cpp2 {
+namespace some { namespace valid { namespace ns {
 
-} // cpp2
+}}} // some::valid::ns

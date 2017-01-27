@@ -22,9 +22,9 @@
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-<%#service:namespaces%>
+<%#program:namespace_cpp2%>
 namespace <%namespace:name%> {<%^last?%> <%/last?%><%!
-%><%/service:namespaces%>
+%><%/program:namespace_cpp2%>
 
 const char* <%service:name%>AsyncClient::getServiceName() {
   return "<%service:name%>";
@@ -264,12 +264,12 @@ folly::exception_wrapper <%service:name%>AsyncClient::recv_instance_wrapped_<%!
 <%/function:oneway?%>
 
 <%/service:functions%>
-<%#service:namespaces%>
-}<%/service:namespaces%><%!
+<%#program:namespace_cpp2%>
+}<%/program:namespace_cpp2%><%!
 %> // <%!
-%><%#service:namespaces%><%!
+%><%#program:namespace_cpp2%><%!
     %><%namespace:name%><%^last?%>::<%/last?%><%!
-%><%/service:namespaces%>
+%><%/program:namespace_cpp2%>
 namespace apache { namespace thrift {
 
 }} // apache::thrift

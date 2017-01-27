@@ -26,8 +26,9 @@
 
 
 
-<%#program:structs%>
-namespace cpp2 {
+<%#program:structs%><%!
+%><% > common/namespace_cpp2_begin%>
+
 <%#struct:base_fields?%>
 
 <% > module_types_cpp/declare_members%>
@@ -46,11 +47,13 @@ template uint32_t <%struct:name%>::write<>(apache::thrift::CompactProtocolWriter
 template uint32_t <%struct:name%>::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t <%struct:name%>::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
-} // cpp2
+<% > common/namespace_cpp2_end%>
+
 namespace apache { namespace thrift {
 
 }} // apache::thrift
 <%/program:structs%>
-namespace cpp2 {
+<% > common/namespace_cpp2_begin%>
 
-} // cpp2
+
+<% > common/namespace_cpp2_end%>
