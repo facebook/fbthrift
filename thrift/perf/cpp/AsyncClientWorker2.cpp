@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #define __STDC_FORMAT_MACROS
 
 #include <thrift/perf/cpp/AsyncClientWorker2.h>
@@ -166,13 +165,13 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
     facebook::servicerouter::ConnConfigs configs;
     if (config->useSingleHost()) {
       if (!config->srTier().empty()) {
-        std::vector<facebook::servicerouter::Host> hosts;
-        facebook::servicerouter::cpp2::getClientFactory()
+        auto selection = facebook::servicerouter::cpp2::getClientFactory()
           .getSelector()
-          ->getSelection(hosts, config->srTier());
+          ->getSelection(config->srTier());
 
-        options["single_host"] = {hosts[0].ip(),
-                                  folly::to<std::string>(hosts[0].port())};
+        options["single_host"] = {
+          selection.hosts->at(0)->getIp(),
+          folly::to<std::string>(selection.hosts->at(0)->port)};
       } else {
         // hit the specified server/port
         auto socketAddr = config->getAddress();
