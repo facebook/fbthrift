@@ -41,7 +41,6 @@
 #include <thrift/lib/cpp2/async/StubSaslServer.h>
 #include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
 
-#include <boost/cast.hpp>
 #include <memory>
 
 using namespace apache::thrift;

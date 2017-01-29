@@ -14,6 +14,5 @@
  * limitations under the License.
  */
 
-#include "thrift/test/gen-cpp/ReferencesConstants_types.h"
 
 // this page intentionally left blank

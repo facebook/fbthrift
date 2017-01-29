@@ -30,7 +30,6 @@
 #include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
-#include <boost/cast.hpp>
 #include <boost/lexical_cast.hpp>
 #include <memory>
 #include <atomic>

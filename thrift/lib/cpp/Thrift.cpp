@@ -18,7 +18,6 @@
  */
 
 #include <thrift/lib/cpp/Thrift.h>
-#include <cstring>
 #include <boost/lexical_cast.hpp>
 #include <stdarg.h>
 #include <stdio.h>

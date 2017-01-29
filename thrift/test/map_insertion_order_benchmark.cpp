@@ -17,7 +17,6 @@
 #include <thrift/lib/cpp2/util/MapCopy.h>
 
 #include <folly/Benchmark.h>
-#include <folly/Foreach.h>
 
 #include <gtest/gtest.h>
 

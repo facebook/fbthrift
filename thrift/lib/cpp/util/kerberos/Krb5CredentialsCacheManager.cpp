@@ -24,7 +24,6 @@
 
 #include <folly/stats/BucketedTimeSeries-defs.h>
 #include <folly/Memory.h>
-#include <folly/ScopeGuard.h>
 #include <folly/String.h>
 #include <folly/ThreadName.h>
 #include <folly/portability/GFlags.h>

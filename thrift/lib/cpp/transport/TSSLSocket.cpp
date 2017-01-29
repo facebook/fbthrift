@@ -22,7 +22,6 @@
 #include <boost/scoped_array.hpp>
 #include <errno.h>
 #include <folly/String.h>
-#include <glog/logging.h>
 #include <openssl/err.h>
 #include <openssl/rand.h>
 #include <openssl/ssl.h>

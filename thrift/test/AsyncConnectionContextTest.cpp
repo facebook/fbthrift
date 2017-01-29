@@ -22,7 +22,6 @@
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/server/TServer.h>
 #include <thrift/lib/cpp/util/TEventServerCreator.h>
-#include <thrift/lib/cpp/util/example/TSimpleServerCreator.h>
 #include <thrift/lib/cpp/async/TEventServer.h>
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
