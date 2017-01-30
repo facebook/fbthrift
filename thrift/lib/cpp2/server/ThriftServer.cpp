@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 
 #include <folly/Conv.h>
@@ -550,11 +549,7 @@ void ThriftServer::updateTicketSeeds(wangle::TLSTicketKeySeeds seeds) {
       return;
     }
     evb->runInEventBaseThread([acceptor, seeds] {
-      auto ctxMgr = acceptor->getSSLContextManager();
-      if (!ctxMgr) {
-        return;
-      }
-      ctxMgr->reloadTLSTicketKeys(
+      acceptor->setTLSTicketSecrets(
           seeds.oldSeeds, seeds.currentSeeds, seeds.newSeeds);
     });
   });
