@@ -16,9 +16,12 @@
 #ifndef THRIFT_FATAL_REFLECTION_H_
 #define THRIFT_FATAL_REFLECTION_H_ 1
 
+#include <folly/Traits.h>
+
 #include <thrift/lib/cpp2/fatal/internal/reflection-inl-pre.h>
 
 #include <fatal/type/convert.h>
+#include <fatal/type/data_member_getter.h>
 #include <fatal/type/enum.h>
 #include <fatal/type/foreach.h>
 #include <fatal/type/get.h>
@@ -1391,9 +1394,9 @@ struct reflected_struct_data_member {
    */
   template <typename T>
   static constexpr inline bool is_set(T const &owner) {
-    return detail::reflection_impl::is_set<
-        Owner, getter, HasIsSet
-      >::check(owner);
+    namespace impl = detail::reflection_impl;
+    using getter = impl::getter_direct_getter_t<getter>;
+    return impl::is_set<Owner, getter, HasIsSet>::check(owner);
   }
 
   /**
@@ -1424,11 +1427,11 @@ struct reflected_struct_data_member {
    */
   template <typename T>
   static constexpr inline bool mark_set(T& owner, bool set) {
-    return detail::reflection_impl::mark_set<Owner, getter, HasIsSet>::mark(
-      owner,
-      set
-    );
+    namespace impl = detail::reflection_impl;
+    using getter = impl::getter_direct_getter_t<getter>;
+    return impl::mark_set<Owner, getter, HasIsSet>::mark(owner, set);
   }
+
 };
 
 /**

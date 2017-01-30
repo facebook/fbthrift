@@ -41,7 +41,7 @@ template <typename Owner, typename Getter, bool HasIsSet>
 struct mark_set {
   template <typename T>
   static constexpr inline bool mark(T& owner, bool set) {
-    return Getter::set(owner.__isset, set), set;
+    return Getter::ref(owner.__isset) = set;
   }
 };
 
@@ -53,6 +53,21 @@ struct mark_set<Owner, Getter, false> {
 
 } // reflection_impl
 
+template <typename...>
+struct chained_data_member_getter;
+
+template <typename OuterGetter, typename... Getters>
+struct chained_data_member_getter<OuterGetter, Getters...> :
+    fatal::chained_data_member_getter<OuterGetter, Getters...> {
+  using head = OuterGetter;
+  using tail = chained_data_member_getter<Getters...>;
+};
+template <>
+struct chained_data_member_getter<> : fatal::chained_data_member_getter<> {
+  using head = void;
+  using tail = void;
+};
+
 template <typename Impl>
 struct reflection_indirection_getter {
   template <typename T>
@@ -62,7 +77,7 @@ struct reflection_indirection_getter {
   using reference = decltype(Impl::ref(std::declval<T &&>()));
 
   template <typename T>
-  static auto &&ref(T &&arg) {
+  static inline auto &&ref(T &&arg) {
     return Impl::ref(std::forward<T>(arg));
   }
 };

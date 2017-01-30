@@ -40,6 +40,17 @@ struct struct_traits_metadata_tag {};
 
 namespace reflection_impl {
 
+template <typename G, typename = folly::void_t<>>
+struct getter_direct_getter {
+  using type = G;
+};
+template <typename G>
+struct getter_direct_getter<G, folly::void_t<typename G::head>> {
+  using type = typename G::head;
+};
+template <typename G>
+using getter_direct_getter_t = folly::_t<getter_direct_getter<G>>;
+
 template <typename, typename, bool> struct is_set;
 template <typename, typename, bool> struct mark_set;
 template <typename, typename, bool> struct unmark_set;

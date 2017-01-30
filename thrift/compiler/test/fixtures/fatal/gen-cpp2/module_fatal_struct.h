@@ -3559,7 +3559,7 @@ struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_m
      ::test_cpp2::cpp_reflection::HasANumber,
     3,
     ::apache::thrift::optionality::required_of_writer,
-    ::fatal::chained_data_member_getter<
+    ::apache::thrift::detail::chained_data_member_getter<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::number,
       ::apache::thrift::detail::reflection_indirection_getter<
         thrift_fatal_impl_detail::struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_indirections_list::number
@@ -3576,7 +3576,7 @@ struct struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_m
      ::test_cpp2::cpp_reflection::HasAResult,
     4,
     ::apache::thrift::optionality::required_of_writer,
-    ::fatal::chained_data_member_getter<
+    ::apache::thrift::detail::chained_data_member_getter<
       thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__struct_unique_data_member_getters_list::result,
       ::apache::thrift::detail::reflection_indirection_getter<
         thrift_fatal_impl_detail::struct_with_indirections_test_cpp2_cpp_reflection_module__struct_unique_indirections_list::result

@@ -5270,7 +5270,8 @@ class CppGenerator(t_generator.Generator):
                         cmnf('  ::apache::thrift::optionality::{0},'.format(
                             self._render_fatal_required_qualifier(m.req)))
                         if self._type_access_suffix(m.type):
-                            cmnf('  ::fatal::chained_data_member_getter<')
+                            cmnf('  ::apache::thrift::detail::'
+                                 'chained_data_member_getter<')
                             cmnf('    {0}::{1}::{2},'.format(
                                 self.fatal_detail_ns, dtmclsprefix, m.name))
                             cmnf('    ::apache::thrift::detail::'

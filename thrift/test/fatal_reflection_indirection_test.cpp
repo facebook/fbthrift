@@ -31,53 +31,109 @@ using type = reflection_indirection::struct_with_indirections;
 using info = apache::thrift::reflect_struct<type>;
 
 TEST_F(FatalReflectionIndirectionTest, sanity_check_no_indirection) {
+  using member = info::member::real;
+
+  EXPECT_SAME<
+    std::int32_t &,
+    decltype(member::getter::ref(std::declval<type &>()))
+  >();
+  EXPECT_SAME<
+    std::int32_t &&,
+    decltype(member::getter::ref(std::declval<type &&>()))
+  >();
+  EXPECT_SAME<
+    std::int32_t const&,
+    decltype(member::getter::ref(std::declval<type const&>()))
+  >();
+
   type obj;
-  obj.real = 12;
-  EXPECT_EQ(12, obj.real);
+  member::getter::ref(obj) = 12;
+  EXPECT_EQ(12, member::getter::ref(obj));
+
+  EXPECT_FALSE(member::is_set(obj));
+  member::mark_set(obj, true);
+  EXPECT_TRUE(member::is_set(obj));
+  member::mark_set(obj, false);
+  EXPECT_FALSE(member::is_set(obj));
 }
 
 TEST_F(FatalReflectionIndirectionTest, simple_alias_no_indirection) {
+  using member = info::member::fake;
+
+  EXPECT_SAME<
+    std::int32_t &,
+    decltype(member::getter::ref(std::declval<type &>()))
+  >();
+  EXPECT_SAME<
+    std::int32_t &&,
+    decltype(member::getter::ref(std::declval<type &&>()))
+  >();
+  EXPECT_SAME<
+    std::int32_t const&,
+    decltype(member::getter::ref(std::declval<type const&>()))
+  >();
+
   type obj;
-  obj.fake = 15;
-  EXPECT_EQ(15, obj.fake);
+  member::getter::ref(obj) = 15;
+  EXPECT_EQ(15, member::getter::ref(obj));
+
+  EXPECT_FALSE(member::is_set(obj));
+  member::mark_set(obj, true);
+  EXPECT_TRUE(member::is_set(obj));
+  member::mark_set(obj, false);
+  EXPECT_FALSE(member::is_set(obj));
 }
 
 TEST_F(FatalReflectionIndirectionTest, indirection_via_single_member_field) {
-  using getter = info::member::number::getter;
+  using member = info::member::number;
+
   EXPECT_SAME<
     std::int32_t &,
-    decltype(getter::ref(std::declval<type &>()))
+    decltype(member::getter::ref(std::declval<type &>()))
   >();
   EXPECT_SAME<
     std::int32_t &&,
-    decltype(getter::ref(std::declval<type &&>()))
+    decltype(member::getter::ref(std::declval<type &&>()))
   >();
   EXPECT_SAME<
     std::int32_t const&,
-    decltype(getter::ref(std::declval<type const&>()))
+    decltype(member::getter::ref(std::declval<type const&>()))
   >();
 
   type obj;
-  obj.number.number = -43;
-  EXPECT_EQ(-43, getter::ref(obj));
+  member::getter::ref(obj) = -43;
+  EXPECT_EQ(-43, member::getter::ref(obj));
+
+  EXPECT_FALSE(member::is_set(obj));
+  member::mark_set(obj, true);
+  EXPECT_TRUE(member::is_set(obj));
+  member::mark_set(obj, false);
+  EXPECT_FALSE(member::is_set(obj));
 }
 
 TEST_F(FatalReflectionIndirectionTest, indirection_via_chained_member_funcs) {
-  using getter = info::member::result::getter;
+  using member = info::member::result;
+
   EXPECT_SAME<
     std::int32_t &,
-    decltype(getter::ref(std::declval<type &>()))
+    decltype(member::getter::ref(std::declval<type &>()))
   >();
   EXPECT_SAME<
     std::int32_t &&,
-    decltype(getter::ref(std::declval<type &&>()))
+    decltype(member::getter::ref(std::declval<type &&>()))
   >();
   EXPECT_SAME<
     std::int32_t const&,
-    decltype(getter::ref(std::declval<type const&>()))
+    decltype(member::getter::ref(std::declval<type const&>()))
   >();
 
   type obj;
-  obj.result.foo().result() = -2;
-  EXPECT_EQ(-2, getter::ref(obj));
+  member::getter::ref(obj) = -2;
+  EXPECT_EQ(-2, member::getter::ref(obj));
+
+  EXPECT_FALSE(member::is_set(obj));
+  member::mark_set(obj, true);
+  EXPECT_TRUE(member::is_set(obj));
+  member::mark_set(obj, false);
+  EXPECT_FALSE(member::is_set(obj));
 }
