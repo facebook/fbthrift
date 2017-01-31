@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,6 +69,15 @@ struct merge_impl {
 
 template <>
 struct merge_impl<type_class::structure> {
+  template <typename T>
+  struct deref { using type = T; };
+  template <typename T, typename D>
+  struct deref<std::unique_ptr<T, D>> : deref<T> {};
+  template <typename T>
+  struct deref<std::shared_ptr<T>> : deref<T> {};
+  template <typename T>
+  struct deref<std::shared_ptr<T const>> : deref<T> {};
+
   template <bool Move>
   struct visitor {
     template <typename T>
@@ -79,8 +88,8 @@ struct merge_impl<type_class::structure> {
         Src<T>& src,
         T& dst) const {
       using mgetter = typename MemberInfo::getter;
-      using merge_field = merge<typename MemberInfo::type>;
       using mtype = typename std::decay<decltype(mgetter::ref(src))>::type;
+      using merge_field = merge<typename deref<mtype>::type>;
       using mref = typename std::conditional<Move, mtype&&, const mtype&>::type;
       if (MemberInfo::optional::value == optionality::optional &&
           !MemberInfo::is_set(src)) {

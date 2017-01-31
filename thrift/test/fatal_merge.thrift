@@ -3,6 +3,8 @@
 # nil = the expected new value of src after merging with rvalue-ref
 #
 
+cpp_include "thrift/test/fatal_merge_types.h"
+
 namespace cpp apache.thrift.test
 
 enum FooBar {
@@ -283,4 +285,34 @@ const NestedRefSharedConstExample kNestedRefSharedConstExample = {
   },
   "nil": {
   },
+}
+
+typedef i32 (cpp.type = 'CppHasANumber', cpp.indirection = '.number') HasANumber
+
+struct Indirection {
+  1: i32 real,
+  2: HasANumber fake,
+}
+
+struct IndirectionExample {
+  1: Indirection src,
+  2: Indirection dst,
+  3: Indirection exp,
+  4: Indirection nil,
+}
+
+const IndirectionExample kIndirectionExample = {
+  "src": {
+    "real": 45,
+    "fake": 33,
+  },
+  "dst": {},
+  "exp": {
+    "real": 45,
+    "fake": 33,
+  },
+  "nil": {
+    "real": 45,
+    "fake": 33,
+  }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,3 +95,4 @@ TEST_GROUP(nested_structure, kNestedExample);
 TEST_GROUP(nested_ref_unique, kNestedRefUniqueExample);
 TEST_GROUP(nested_ref_shared, kNestedRefSharedExample);
 TEST_GROUP(nested_ref_shared_const, kNestedRefSharedConstExample);
+TEST_GROUP(indirection, kIndirectionExample);
