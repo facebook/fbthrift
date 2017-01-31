@@ -49,7 +49,8 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
       manager_(manager),
       requestHeader_(nullptr),
       duplexChannel_(duplexChannel),
-      peerCert_(peerCert) {
+      peerCert_(peerCert),
+      peerIdentities_(nullptr, [](void*){}) {
     if (address) {
       peerAddress_ = *address;
     }
@@ -114,6 +115,14 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     return isTls_;
   }
 
+  virtual void* getPeerIdentities() const {
+    return peerIdentities_.get();
+  }
+
+  virtual void setPeerIdentities(std::unique_ptr<void, void (*)(void*)> ids) {
+    peerIdentities_.swap(ids);
+  }
+
  private:
   const apache::thrift::SaslServer* saslServer_;
   folly::EventBaseManager* manager_;
@@ -122,6 +131,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   std::shared_ptr<TClientBase> duplexClient_;
   std::shared_ptr<X509> peerCert_;
   bool isTls_{false};
+  std::unique_ptr<void, void (*)(void*)> peerIdentities_;
 };
 
 // Request-specific context
