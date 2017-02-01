@@ -1,6 +1,10 @@
 namespace cpp apache.thrift.cpp1
 namespace cpp2 apache.thrift.cpp2
 
+struct StructWithEmptyMap {
+  1: map<string, i64> myMap,
+}
+
 struct SubStruct {
   3: i64 mySubI64 = 17,
   12: string mySubString = "foobar",

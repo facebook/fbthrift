@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,14 +28,17 @@ using namespace folly;
 using namespace apache::thrift;
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
+using namespace apache::thrift::util;
 
 namespace {
 
 class JSONProtocolTest : public testing::Test {};
 
 using P1 = TJSONProtocol;
+using S1 = ThriftSerializerJson<>;
 using W2 = JSONProtocolWriter;
 using R2 = JSONProtocolReader;
+using S2 = JSONSerializer;
 
 template <typename T>
 struct action_traits_impl;
@@ -702,21 +705,24 @@ TEST_F(JSONProtocolTest, readMessage) {
 
 TEST_F(JSONProtocolTest, roundtrip) {
   //  cpp2 -> str -> cpp2
-  const auto orig = cpp2::OneOfEach{};
-  const auto serialized = JSONSerializer::serialize<string>(orig);
-  cpp2::OneOfEach deserialized;
-  const auto size = JSONSerializer::deserialize(serialized, deserialized);
+  using type = cpp2::OneOfEach;
+  const auto orig = type{};
+  const auto serialized = S2::serialize<string>(orig);
+  type deserialized;
+  const auto size = S2::deserialize(serialized, deserialized);
   EXPECT_EQ(serialized.size(), size);
   EXPECT_EQ(orig, deserialized);
 }
 
 TEST_F(JSONProtocolTest, super_roundtrip) {
-  //  cpp2 -> str -> cp1 -> str -> cpp2
-  util::ThriftSerializerJson<> cpp1_serializer;
-  const auto orig = cpp2::OneOfEach{};
-  const auto serialized_1 = JSONSerializer::serialize<string>(orig);
+  //  cpp2 -> str -> cpp1 -> str -> cpp2
+  using cpp1_type = cpp1::OneOfEach;
+  using cpp2_type = cpp2::OneOfEach;
+  S1 cpp1_serializer;
+  const auto orig = cpp2_type{};
+  const auto serialized_1 = S2::serialize<string>(orig);
   const auto deserialized_size_1 =
-    returning([&](tuple<cpp1::OneOfEach, uint32_t>& _) {
+    returning([&](tuple<cpp1_type, uint32_t>& _) {
         get<1>(_) = cpp1_serializer.deserialize(serialized_1, &get<0>(_));
     });
   const auto deserialized_1 = get<0>(deserialized_size_1);
@@ -727,8 +733,8 @@ TEST_F(JSONProtocolTest, super_roundtrip) {
   });
   EXPECT_EQ(serialized_1, serialized_2);
   const auto deserialized_size_2 =
-    returning([&](tuple<cpp2::OneOfEach, uint32_t>& _) {
-        get<1>(_) = JSONSerializer::deserialize(serialized_2, get<0>(_));
+    returning([&](tuple<cpp2_type, uint32_t>& _) {
+        get<1>(_) = S2::deserialize(serialized_2, get<0>(_));
     });
   const auto deserialized_2 = get<0>(deserialized_size_2);
   const auto size_2 = get<1>(deserialized_size_2);
