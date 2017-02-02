@@ -628,6 +628,7 @@ BOOST_PYTHON_MODULE(CppServerWrapper) {
     .def("setNumIOWorkerThreads", &CppServerWrapper::setNumIOWorkerThreads)
     .def("setListenBacklog", &CppServerWrapper::setListenBacklog)
     .def("setPort", &CppServerWrapper::setPort)
+    .def("setReusePort", &CppServerWrapper::setReusePort)
     .def("stop", &CppServerWrapper::stop)
     .def("setMaxConnections", &CppServerWrapper::setMaxConnections)
     .def("getMaxConnections", &CppServerWrapper::getMaxConnections)

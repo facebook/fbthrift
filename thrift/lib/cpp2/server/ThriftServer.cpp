@@ -349,6 +349,9 @@ void ThriftServer::setup() {
     if (!serverChannel_) {
 
       ServerBootstrap::socketConfig.acceptBacklog = listenBacklog_;
+      if (reusePort_) {
+        ServerBootstrap::setReusePort(true);
+      }
       if (enableTFO_) {
         ServerBootstrap::socketConfig.enableTCPFastOpen = *enableTFO_;
         ServerBootstrap::socketConfig.fastOpenQueueSize = fastOpenQueueSize_;

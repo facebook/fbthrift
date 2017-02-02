@@ -75,6 +75,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   std::shared_ptr<wangle::SSLContextConfig> sslContext_;
   folly::Optional<wangle::TLSTicketKeySeeds> ticketSeeds_;
 
+  folly::Optional<bool> reusePort_;
   folly::Optional<bool> enableTFO_;
   uint32_t fastOpenQueueSize_{10000};
 
@@ -324,6 +325,14 @@ class ThriftServer : public apache::thrift::BaseThriftServer
 
   folly::Optional<bool> getTFOEnabled() {
     return enableTFO_;
+  }
+
+  void setReusePort(bool reusePort) {
+    reusePort_ = reusePort;
+  }
+
+  folly::Optional<bool> getReusePort() {
+    return reusePort_;
   }
 
   std::shared_ptr<wangle::SSLContextConfig>
