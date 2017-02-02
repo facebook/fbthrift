@@ -4504,7 +4504,8 @@ class CppGenerator(t_generator.Generator):
         name = self._program.name
         ns = self._get_original_namespace()
         self.fatal_detail_ns = 'thrift_fatal_impl_detail'
-        context = self._make_context(name + '_fatal', tcc=False)
+        context = self._make_context(
+            name + '_fatal', tcc=False, impl=False)
         context.omit_include = True
         with get_global_scope(CppPrimitiveFactory, context) as sg:
             sg('#include <thrift/lib/cpp2/fatal/reflection.h>')
@@ -4553,7 +4554,8 @@ class CppGenerator(t_generator.Generator):
         items['service'] = self._generate_fatal_service(program)
 
         # Combo include: types
-        context_cmb_types = self._make_context(name + '_fatal_types', tcc=False)
+        context_cmb_types = self._make_context(
+            name + '_fatal_types', tcc=False, impl=False)
         with get_global_scope(CppPrimitiveFactory, context_cmb_types) as sg:
             for dep in self._get_fatal_type_dependencies():
                 sg('#include  "{0}_fatal_types.h"'
@@ -4564,7 +4566,8 @@ class CppGenerator(t_generator.Generator):
                     self._program, name + '_fatal_' + what + '.h')))
 
         # Combo include: all
-        context_cmb_all = self._make_context(name + '_fatal_all', tcc=False)
+        context_cmb_all = self._make_context(
+            name + '_fatal_all', tcc=False, impl=False)
         with get_global_scope(CppPrimitiveFactory, context_cmb_all) as sg:
             for dep in self._get_fatal_type_dependencies():
                 sg('#include  "{0}_fatal_all.h"'
@@ -4881,7 +4884,8 @@ class CppGenerator(t_generator.Generator):
         name = self._program.name
         ns = self._get_original_namespace()
 
-        context = self._make_context(name + '_fatal_enum', tcc=False)
+        context = self._make_context(
+            name + '_fatal_enum', tcc=False, impl=False)
         with get_global_scope(CppPrimitiveFactory, context) as sg:
             sg('#include "{0}"'.format(self._with_include_prefix(
                 self._program, name + '_types.h')))
@@ -4978,7 +4982,8 @@ class CppGenerator(t_generator.Generator):
         name = self._program.name
         ns = self._get_original_namespace()
 
-        context = self._make_context(name + '_fatal_union', tcc=False)
+        context = self._make_context(
+            name + '_fatal_union', tcc=False, impl=False)
         with get_global_scope(CppPrimitiveFactory, context) as sg:
             for dep in self._get_fatal_type_dependencies():
                 sg('#include  "{0}_fatal_types.h"'
@@ -5136,7 +5141,8 @@ class CppGenerator(t_generator.Generator):
     def _generate_fatal_struct(self, program):
         name = self._program.name
         ns = self._get_original_namespace()
-        context = self._make_context(name + '_fatal_struct', tcc=False)
+        context = self._make_context(
+            name + '_fatal_struct', tcc=False, impl=False)
         with get_global_scope(CppPrimitiveFactory, context) as sg:
             for dep in self._get_fatal_type_dependencies():
                 sg('#include  "{0}_fatal_types.h"'
@@ -5421,7 +5427,8 @@ class CppGenerator(t_generator.Generator):
         name = self._program.name
         ns = self._get_original_namespace()
 
-        context = self._make_context(name + '_fatal_constant', tcc=False)
+        context = self._make_context(
+            name + '_fatal_constant', tcc=False, impl=False)
         with get_global_scope(CppPrimitiveFactory, context) as sg:
             sg('#include "{0}"'.format(self._with_include_prefix(
                 self._program, name + '_fatal_types.h')))
@@ -5442,7 +5449,8 @@ class CppGenerator(t_generator.Generator):
     def _generate_fatal_service(self, program):
         name = self._program.name
         ns = self._get_original_namespace()
-        context = self._make_context(name + '_fatal_service', tcc=False)
+        context = self._make_context(
+            name + '_fatal_service', tcc=False, impl=False)
         with get_global_scope(CppPrimitiveFactory, context) as sg:
             sg('#include "{0}"'.format(self._with_include_prefix(
                 self._program, name + '_types.h')))
@@ -5479,11 +5487,12 @@ class CppGenerator(t_generator.Generator):
                       tcc=False,
                       processmap=False,
                       separateclient=False,
-                      custom_protocol=False):
+                      custom_protocol=False,
+                      impl=True):
         'Convenience method to get the context and outputs for some file pair'
         # open files and instantiate outputs
         output_h = self._write_to(filename + '.h')
-        output_impl = self._write_to(filename + '.cpp')
+        output_impl = self._write_to(filename + '.cpp') if impl else None
         output_tcc = self._write_to(filename + '.tcc') if tcc else None
         additional_outputs = []
         custom_protocol_h = self._write_to(filename + "_custom_protocol.h") \

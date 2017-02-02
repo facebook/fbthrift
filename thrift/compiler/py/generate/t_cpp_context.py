@@ -194,7 +194,8 @@ class Class(Primitive):
         # already on an empty line. If we are not then we introduce a
         # newline before the class defn
         context.h.double_space()
-        context.impl.double_space()
+        if context.impl:
+            context.impl.double_space()
         print >>context.h, self,
         # the scope of this will be written to output_h
         self.output = context.h
@@ -358,10 +359,12 @@ class CppOutputContext(OutputContext):
         self._additional_outputs = additional_outputs
         self._custom_protocol_h = custom_protocol_h
         self._header_path = header_path
-        outputs = [output_cpp, output_h] + additional_outputs
-
+        outputs = [output_h]
+        if output_cpp:
+            outputs.append(output_cpp)
         if output_tcc:
             outputs.append(output_tcc)
+        outputs.extend(additional_outputs)
 
         for output in outputs:
             output.make_scope = create_scope_factory(CppScope, output)
@@ -424,14 +427,16 @@ class CppOutputContext(OutputContext):
                         self._header_path)
             # include h in cpp
             if not self.omit_include:
-                print >>self._output_cpp, '#include "{0}.h"\n'.format(
+                if self._output_cpp:
+                    print >>self._output_cpp, '#include "{0}.h"\n'.format(
                             self._header_path)
             for output in self._additional_outputs:
                 print >>output, '#include "{0}.h"\n'.format(
                     self._header_path)
             if self._output_tcc:
-                print >>self._output_cpp, '#include "{0}.tcc"\n'.format(
-                    self._header_path)
+                if self._output_cpp:
+                    print >>self._output_cpp, '#include "{0}.tcc"\n'.format(
+                        self._header_path)
                 for output in self._additional_outputs:
                     print >>output, '#include "{0}.tcc"\n'.format(
                         self._header_path)
