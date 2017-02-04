@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -126,6 +126,10 @@ struct dynamic_converter_impl<type_class::list<ValueTypeClass>> {
     dynamic_format format,
     format_adherence adherence
   ) {
+    if (input.empty()) {
+      return;
+    }
+
     for (auto const &i: input) {
       out.emplace_back();
       dynamic_converter_impl<ValueTypeClass>::from(
@@ -161,6 +165,10 @@ struct dynamic_converter_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
     format_adherence adherence
   ) {
     using traits = thrift_map_traits<T>;
+
+    if (input.empty()) {
+      return;
+    }
 
     for (auto const &i: input.items()) {
       typename traits::key_type key;
@@ -201,6 +209,10 @@ struct dynamic_converter_impl<type_class::set<ValueTypeClass>> {
     format_adherence adherence
   ) {
     using traits = thrift_set_traits<T>;
+
+    if (input.empty()) {
+      return;
+    }
 
     for (auto const &i: input) {
       typename traits::value_type value;

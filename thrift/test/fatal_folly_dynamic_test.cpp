@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,6 +15,8 @@
  */
 
 #include <thrift/lib/cpp2/fatal/folly_dynamic.h>
+#include <thrift/lib/cpp2/fatal/helpers.h>
+#include <thrift/lib/cpp2/fatal/internal/test_helpers.h>
 
 #include <thrift/lib/cpp2/fatal/debug.h>
 #include <thrift/lib/cpp2/fatal/pretty_print.h>
@@ -526,4 +528,62 @@ TEST(fatal_folly_dynamic, optional_string) {
       apache::thrift::dynamic_format::PORTABLE);
   EXPECT_TRUE(obj.__isset.field1);
   EXPECT_EQ("asdf", obj.field1);
+}
+
+TEST(fatal_folly_dynamic, list_from_empty_object) {
+  // some dynamic languages (lua, php) conflate empty array and empty object;
+  // check that we do not throw in such cases
+  using type = global_structC;
+  using member_name = fatal::sequence<char, 'j', '3'>;
+  using member_meta =
+      apache::thrift::get_struct_member_by_name<type, member_name>;
+  EXPECT_SAME< // sanity check
+      member_meta::type_class,
+      apache::thrift::type_class::list<
+        apache::thrift::type_class::structure>>();
+  auto obj = apache::thrift::from_dynamic<type>(
+      folly::dynamic::object(
+        fatal::z_data<member_name>(), folly::dynamic::object),
+      apache::thrift::dynamic_format::PORTABLE);
+  EXPECT_TRUE(member_meta::is_set(obj));
+  EXPECT_EQ(0, member_meta::getter::ref(obj).size());
+}
+
+TEST(fatal_folly_dynamic, set_from_empty_object) {
+  // some dynamic languages (lua, php) conflate empty array and empty object;
+  // check that we do not throw in such cases
+  using type = global_structC;
+  using member_name = fatal::sequence<char, 'k', '3'>;
+  using member_meta =
+      apache::thrift::get_struct_member_by_name<type, member_name>;
+  EXPECT_SAME< // sanity check
+      member_meta::type_class,
+      apache::thrift::type_class::set<
+        apache::thrift::type_class::structure>>();
+  auto obj = apache::thrift::from_dynamic<type>(
+      folly::dynamic::object(
+        fatal::z_data<member_name>(), folly::dynamic::object),
+      apache::thrift::dynamic_format::PORTABLE);
+  EXPECT_TRUE(member_meta::is_set(obj));
+  EXPECT_EQ(0, member_meta::getter::ref(obj).size());
+}
+
+TEST(fatal_folly_dynamic, map_from_empty_array) {
+  // some dynamic languages (lua, php) conflate empty array and empty object;
+  // check that we do not throw in such cases
+  using type = global_structC;
+  using member_name = fatal::sequence<char, 'l', '3'>;
+  using member_meta =
+      apache::thrift::get_struct_member_by_name<type, member_name>;
+  EXPECT_SAME< // sanity check
+      member_meta::type_class,
+      apache::thrift::type_class::map<
+        apache::thrift::type_class::integral,
+        apache::thrift::type_class::structure>>();
+  auto obj = apache::thrift::from_dynamic<type>(
+      folly::dynamic::object(
+        fatal::z_data<member_name>(), folly::dynamic::array),
+      apache::thrift::dynamic_format::PORTABLE);
+  EXPECT_TRUE(member_meta::is_set(obj));
+  EXPECT_EQ(0, member_meta::getter::ref(obj).size());
 }
