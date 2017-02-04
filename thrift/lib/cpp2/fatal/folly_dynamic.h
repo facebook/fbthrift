@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -164,6 +164,13 @@ void from_dynamic(
 
   impl::from(out, input, format, adherence);
 }
+template <typename T>
+void from_dynamic(
+  T &out,
+  folly::StringPiece input,
+  dynamic_format format,
+  format_adherence adherence = format_adherence::STRICT
+) = delete;
 
 /**
  * Converts an object from its `folly::dynamic` representation using Thrift's
@@ -186,6 +193,12 @@ T from_dynamic(
 
   return result;
 }
+template <typename T>
+T from_dynamic(
+  folly::StringPiece input,
+  dynamic_format format,
+  format_adherence adherence = format_adherence::STRICT
+) = delete;
 
 }} // apache::thrift
 
