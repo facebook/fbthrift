@@ -42,7 +42,7 @@ namespace apache { namespace thrift {
 namespace cpp2 {
 
 void Fiery::__clear() {
-  message = std::string();
+  message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
 }
 
 bool Fiery::operator==(const Fiery& rhs) const {

@@ -180,8 +180,9 @@ struct test_cpp2_cpp_reflection_module__unique_strings_list {
   using i_a = ::fatal::sequence<char, 'i', '_', 'a'>;
   using java_swift = ::fatal::sequence<char, 'j', 'a', 'v', 'a', '.', 's', 'w', 'i', 'f', 't'>;
   using annotate_here = ::fatal::sequence<char, 'a', 'n', 'n', 'o', 't', 'a', 't', 'e', '_', 'h', 'e', 'r', 'e'>;
-  using service3 = ::fatal::sequence<char, 's', 'e', 'r', 'v', 'i', 'c', 'e', '3'>;
   using service2 = ::fatal::sequence<char, 's', 'e', 'r', 'v', 'i', 'c', 'e', '2'>;
+  using service3 = ::fatal::sequence<char, 's', 'e', 'r', 'v', 'i', 'c', 'e', '3'>;
+  using phrase = ::fatal::sequence<char, 'p', 'h', 'r', 'a', 's', 'e'>;
   using service1 = ::fatal::sequence<char, 's', 'e', 'r', 'v', 'i', 'c', 'e', '1'>;
   using constant1 = ::fatal::sequence<char, 'c', 'o', 'n', 's', 't', 'a', 'n', 't', '1'>;
   using duplicate_id_annotation_2 = ::fatal::sequence<char, 'd', 'u', 'p', 'l', 'i', 'c', 'a', 't', 'e', '_', 'i', 'd', '_', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n', '_', '2'>;

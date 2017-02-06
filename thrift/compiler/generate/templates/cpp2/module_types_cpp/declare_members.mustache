@@ -30,7 +30,7 @@ void Struct::__clear() {
   %><%/field:value%><%!
   %><%^field:value%><%!
     %><%#type:string?%><%!
-      %>std::string()<%!
+      %>apache::thrift::StringTraits< std::string>::fromStringLiteral("")<%!
     %><%/type:string?%><%!
     %><%^type:string?%><%!
       %>0<%!

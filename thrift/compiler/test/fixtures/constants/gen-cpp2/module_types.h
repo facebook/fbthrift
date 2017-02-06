@@ -125,7 +125,7 @@ class Internship : private apache::thrift::detail::st::ComparisonOperators<Inter
 
   Internship() :
       weeks(0),
-      employer( ::cpp2::Company()) {}
+      employer( ::cpp2::Company::FACEBOOK) {}
   // FragileConstructor for use in initialization lists only
 
   Internship(apache::thrift::FragileConstructor, int32_t weeks__arg, std::string title__arg,  ::cpp2::Company employer__arg) :

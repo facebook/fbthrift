@@ -362,7 +362,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 void structA::__clear() {
   a = 0;
-  b = std::string();
+  b = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   __isset.__clear();
 }
 
@@ -532,11 +532,11 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 void structC::__clear() {
   a = 0;
-  b = std::string();
+  b = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   c = 0;
   d = 0;
-  e =  ::test_cpp2::cpp_reflection::enum1();
-  f =  ::test_cpp2::cpp_reflection::enum2();
+  e =  ::test_cpp2::cpp_reflection::enum1::field0;
+  f =  ::test_cpp2::cpp_reflection::enum2::field0_2;
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::clear(&g);
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::unionA>::clear(&h);
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::unionA>::clear(&i);
@@ -902,9 +902,9 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 void struct1::__clear() {
   field0 = 0;
-  field1 = std::string();
-  field2 =  ::test_cpp2::cpp_reflection::enum1();
-  field3 =  ::test_cpp2::cpp_reflection::enum2();
+  field1 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
+  field3 =  ::test_cpp2::cpp_reflection::enum2::field0_2;
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::clear(&field4);
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union2>::clear(&field5);
   __isset.__clear();
@@ -982,9 +982,9 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 void struct2::__clear() {
   fieldA = 0;
-  fieldB = std::string();
-  fieldC =  ::test_cpp2::cpp_reflection::enum1();
-  fieldD =  ::test_cpp2::cpp_reflection::enum2();
+  fieldB = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  fieldC =  ::test_cpp2::cpp_reflection::enum1::field0;
+  fieldD =  ::test_cpp2::cpp_reflection::enum2::field0_2;
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::clear(&fieldE);
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union2>::clear(&fieldF);
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::struct1>::clear(&fieldG);
@@ -1069,9 +1069,9 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 void struct3::__clear() {
   fieldA = 0;
-  fieldB = std::string();
-  fieldC =  ::test_cpp2::cpp_reflection::enum1();
-  fieldD =  ::test_cpp2::cpp_reflection::enum2();
+  fieldB = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  fieldC =  ::test_cpp2::cpp_reflection::enum1::field0;
+  fieldD =  ::test_cpp2::cpp_reflection::enum2::field0_2;
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::clear(&fieldE);
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union2>::clear(&fieldF);
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::struct1>::clear(&fieldG);
@@ -1314,8 +1314,8 @@ struct4& struct4::operator=(const struct4& src) {
 
 void struct4::__clear() {
   field0 = 0;
-  field1 = std::string();
-  field2 =  ::test_cpp2::cpp_reflection::enum1();
+  field1 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
   if (field3) ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::clear(field3.get());
   __isset.__clear();
 }
@@ -1365,8 +1365,8 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 void struct5::__clear() {
   field0 = 0;
-  field1 = std::string();
-  field2 =  ::test_cpp2::cpp_reflection::enum1();
+  field1 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::clear(&field3);
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structB>::clear(&field4);
   __isset.__clear();
@@ -1436,7 +1436,7 @@ namespace apache { namespace thrift {
 namespace test_cpp2 { namespace cpp_reflection {
 
 void struct_binary::__clear() {
-  bi = std::string();
+  bi = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   __isset.__clear();
 }
 
@@ -2057,6 +2057,7 @@ void struct_with_indirections::__clear() {
   fake = 0;
   number.number = 0;
   result.foo().result() = 0;
+  phrase.phrase = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   __isset.__clear();
 }
 
@@ -2073,6 +2074,9 @@ bool struct_with_indirections::operator==(const struct_with_indirections& rhs) c
   if (!((result == rhs.result))) {
     return false;
   }
+  if (!((phrase == rhs.phrase))) {
+    return false;
+  }
   return true;
 }
 
@@ -2082,6 +2086,7 @@ void swap(struct_with_indirections& a, struct_with_indirections& b) {
   swap(a.fake, b.fake);
   swap(a.number, b.number);
   swap(a.result, b.result);
+  swap(a.phrase, b.phrase);
   swap(a.__isset, b.__isset);
 }
 

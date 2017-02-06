@@ -1,4 +1,6 @@
 /*
+ * Copyright 2011-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -207,6 +209,15 @@ struct StringTraits {
 
 template <>
 struct StringTraits<folly::IOBuf> {
+  // Use with string literals only!
+  static folly::IOBuf fromStringLiteral(const char* str) {
+    return folly::IOBuf::wrapBufferAsValue(str, strlen(str));
+  }
+
+  static bool isEmpty(const folly::IOBuf& str) {
+    return str.empty();
+  }
+
   static bool isEqual(const folly::IOBuf& lhs, const folly::IOBuf& rhs) {
     auto llink = &lhs;
     auto rlink = &rhs;

@@ -133,7 +133,7 @@ namespace cpp2 {
 
 void Person::__clear() {
   id = 0;
-  name = std::string();
+  name = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   age.clear();
   address.clear();
   favoriteColor.clear();

@@ -45,7 +45,7 @@ void MyStruct::__clear() {
   MyBoolField = 0;
   MyIntField = 12LL;
   MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("test");
-  MyStringField2 = std::string();
+  MyStringField2 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   __isset.__clear();
 }
 

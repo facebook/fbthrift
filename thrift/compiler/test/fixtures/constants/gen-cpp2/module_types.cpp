@@ -87,8 +87,8 @@ namespace cpp2 {
 
 void Internship::__clear() {
   weeks = 0;
-  title = std::string();
-  employer =  ::cpp2::Company();
+  title = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  employer =  ::cpp2::Company::FACEBOOK;
   __isset.__clear();
 }
 

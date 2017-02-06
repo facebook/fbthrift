@@ -41,7 +41,7 @@ namespace cpp2 {
 
 void MyStruct::__clear() {
   MyIntField = 0;
-  MyStringField = std::string();
+  MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   __isset.__clear();
 }
 

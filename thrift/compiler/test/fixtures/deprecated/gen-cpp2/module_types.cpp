@@ -18,7 +18,7 @@ namespace cpp2 {
 
 void House::__clear() {
   id = 0;
-  houseName = std::string();
+  houseName = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   houseColors.clear();
 }
 

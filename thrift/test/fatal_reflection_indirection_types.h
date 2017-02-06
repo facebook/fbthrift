@@ -61,4 +61,12 @@ class CppHasAResult {
   std::int32_t result_{};
   Foo foo_{result_};
 };
+
+struct CppHasAPhrase {
+  std::string phrase{};
+  CppHasAPhrase() {}
+  explicit CppHasAPhrase(std::string phrase_) : phrase(std::move(phrase_)) {}
+  bool operator==(CppHasAPhrase that) const { return phrase == that.phrase; }
+  bool operator!=(CppHasAPhrase that) const { return phrase != that.phrase; }
+};
 }

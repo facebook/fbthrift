@@ -2078,8 +2078,8 @@ class structC : private apache::thrift::detail::st::ComparisonOperators<structC>
       a(0),
       c(0),
       d(0),
-      e( ::test_cpp2::cpp_reflection::enum1()),
-      f( ::test_cpp2::cpp_reflection::enum2()) {}
+      e( ::test_cpp2::cpp_reflection::enum1::field0),
+      f( ::test_cpp2::cpp_reflection::enum2::field0_2) {}
   // FragileConstructor for use in initialization lists only
 
   structC(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg, double c__arg, bool d__arg,  ::test_cpp2::cpp_reflection::enum1 e__arg,  ::test_cpp2::cpp_reflection::enum2 f__arg,  ::test_cpp2::cpp_reflection::union1 g__arg,  ::test_cpp2::cpp_reflection::unionA h__arg,  ::test_cpp2::cpp_reflection::unionA i__arg, std::vector<int32_t> j__arg, std::vector<int32_t> j1__arg, std::vector< ::test_cpp2::cpp_reflection::enum1> j2__arg, std::vector< ::test_cpp2::cpp_reflection::structA> j3__arg, std::set<int32_t> k__arg, std::set<int32_t> k1__arg, std::set< ::test_cpp2::cpp_reflection::enum2> k2__arg, std::set< ::test_cpp2::cpp_reflection::structB> k3__arg, std::map<int32_t, int32_t> l__arg, std::map<int32_t, int32_t> l1__arg, std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1> l2__arg, std::map<int32_t,  ::test_cpp2::cpp_reflection::structB> l3__arg, std::map< ::test_cpp2::cpp_reflection::enum1, int32_t> m1__arg, std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2> m2__arg, std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB> m3__arg, std::map<std::string, int32_t> n1__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::enum1> n2__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structB> n3__arg, std::map< ::test_cpp2::cpp_reflection::structA, int32_t> o1__arg, std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1> o2__arg, std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB> o3__arg) :
@@ -2775,8 +2775,8 @@ class struct1 : private apache::thrift::detail::st::ComparisonOperators<struct1>
 
   struct1() :
       field0(0),
-      field2( ::test_cpp2::cpp_reflection::enum1()),
-      field3( ::test_cpp2::cpp_reflection::enum2()) {}
+      field2( ::test_cpp2::cpp_reflection::enum1::field0),
+      field3( ::test_cpp2::cpp_reflection::enum2::field0_2) {}
   // FragileConstructor for use in initialization lists only
 
   struct1(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg,  ::test_cpp2::cpp_reflection::enum2 field3__arg,  ::test_cpp2::cpp_reflection::union1 field4__arg,  ::test_cpp2::cpp_reflection::union2 field5__arg) :
@@ -2974,8 +2974,8 @@ class struct2 : private apache::thrift::detail::st::ComparisonOperators<struct2>
 
   struct2() :
       fieldA(0),
-      fieldC( ::test_cpp2::cpp_reflection::enum1()),
-      fieldD( ::test_cpp2::cpp_reflection::enum2()) {}
+      fieldC( ::test_cpp2::cpp_reflection::enum1::field0),
+      fieldD( ::test_cpp2::cpp_reflection::enum2::field0_2) {}
   // FragileConstructor for use in initialization lists only
 
   struct2(apache::thrift::FragileConstructor, int32_t fieldA__arg, std::string fieldB__arg,  ::test_cpp2::cpp_reflection::enum1 fieldC__arg,  ::test_cpp2::cpp_reflection::enum2 fieldD__arg,  ::test_cpp2::cpp_reflection::union1 fieldE__arg,  ::test_cpp2::cpp_reflection::union2 fieldF__arg,  ::test_cpp2::cpp_reflection::struct1 fieldG__arg) :
@@ -3197,8 +3197,8 @@ class struct3 : private apache::thrift::detail::st::ComparisonOperators<struct3>
 
   struct3() :
       fieldA(0),
-      fieldC( ::test_cpp2::cpp_reflection::enum1()),
-      fieldD( ::test_cpp2::cpp_reflection::enum2()) {}
+      fieldC( ::test_cpp2::cpp_reflection::enum1::field0),
+      fieldD( ::test_cpp2::cpp_reflection::enum2::field0_2) {}
   // FragileConstructor for use in initialization lists only
 
   struct3(apache::thrift::FragileConstructor, int32_t fieldA__arg, std::string fieldB__arg,  ::test_cpp2::cpp_reflection::enum1 fieldC__arg,  ::test_cpp2::cpp_reflection::enum2 fieldD__arg,  ::test_cpp2::cpp_reflection::union1 fieldE__arg,  ::test_cpp2::cpp_reflection::union2 fieldF__arg,  ::test_cpp2::cpp_reflection::struct1 fieldG__arg,  ::test_cpp2::cpp_reflection::union2 fieldH__arg, std::vector<int32_t> fieldI__arg, std::vector<std::string> fieldJ__arg, std::vector<std::string> fieldK__arg, std::vector< ::test_cpp2::cpp_reflection::structA> fieldL__arg, std::set<int32_t> fieldM__arg, std::set<std::string> fieldN__arg, std::set<std::string> fieldO__arg, std::set< ::test_cpp2::cpp_reflection::structB> fieldP__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structA> fieldQ__arg, std::map<std::string,  ::test_cpp2::cpp_reflection::structB> fieldR__arg) :
@@ -3596,7 +3596,7 @@ class struct4 : private apache::thrift::detail::st::ComparisonOperators<struct4>
 
   struct4() :
       field0(0),
-      field2( ::test_cpp2::cpp_reflection::enum1()) {}
+      field2( ::test_cpp2::cpp_reflection::enum1::field0) {}
   // FragileConstructor for use in initialization lists only
 
   struct4(apache::thrift::FragileConstructor, int32_t field0__arg, std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg, std::unique_ptr< ::test_cpp2::cpp_reflection::structA> field3__arg) :

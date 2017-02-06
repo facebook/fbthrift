@@ -137,3 +137,30 @@ TEST_F(FatalReflectionIndirectionTest, indirection_via_chained_member_funcs) {
   member::mark_set(obj, false);
   EXPECT_FALSE(member::is_set(obj));
 }
+
+TEST_F(FatalReflectionIndirectionTest, indirection_string_field) {
+  using member = info::member::phrase;
+
+  EXPECT_SAME<
+    std::string &,
+    decltype(member::getter::ref(std::declval<type &>()))
+  >();
+  EXPECT_SAME<
+    std::string &&,
+    decltype(member::getter::ref(std::declval<type &&>()))
+  >();
+  EXPECT_SAME<
+    std::string const&,
+    decltype(member::getter::ref(std::declval<type const&>()))
+  >();
+
+  type obj;
+  member::getter::ref(obj) = "aloha";
+  EXPECT_EQ("aloha", member::getter::ref(obj));
+
+  EXPECT_FALSE(member::is_set(obj));
+  member::mark_set(obj, true);
+  EXPECT_TRUE(member::is_set(obj));
+  member::mark_set(obj, false);
+  EXPECT_FALSE(member::is_set(obj));
+}

@@ -6507,6 +6507,10 @@ uint32_t struct_with_indirections::read(Protocol_* iprot) {
         fid = 4;
         ftype = apache::thrift::protocol::T_I32;
       }
+      else if (fname == "phrase") {
+        fid = 5;
+        ftype = apache::thrift::protocol::T_STRING;
+      }
     }
     switch (fid) {
       case 1:
@@ -6549,6 +6553,16 @@ uint32_t struct_with_indirections::read(Protocol_* iprot) {
         }
         break;
       }
+      case 5:
+      {
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->phrase.phrase);
+          this->__isset.phrase = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
       default:
       {
         xfer += iprot->skip(ftype);
@@ -6574,6 +6588,8 @@ uint32_t struct_with_indirections::serializedSize(Protocol_ const* prot_) const 
   xfer += prot_->serializedSizeI32(this->number.number);
   xfer += prot_->serializedFieldSize("result", apache::thrift::protocol::T_I32, 4);
   xfer += prot_->serializedSizeI32(this->result.foo().result());
+  xfer += prot_->serializedFieldSize("phrase", apache::thrift::protocol::T_STRING, 5);
+  xfer += prot_->serializedSizeString(this->phrase.phrase);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -6590,6 +6606,8 @@ uint32_t struct_with_indirections::serializedSizeZC(Protocol_ const* prot_) cons
   xfer += prot_->serializedSizeI32(this->number.number);
   xfer += prot_->serializedFieldSize("result", apache::thrift::protocol::T_I32, 4);
   xfer += prot_->serializedSizeI32(this->result.foo().result());
+  xfer += prot_->serializedFieldSize("phrase", apache::thrift::protocol::T_STRING, 5);
+  xfer += prot_->serializedSizeString(this->phrase.phrase);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -6609,6 +6627,9 @@ uint32_t struct_with_indirections::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("result", apache::thrift::protocol::T_I32, 4);
   xfer += prot_->writeI32(this->result.foo().result());
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("phrase", apache::thrift::protocol::T_STRING, 5);
+  xfer += prot_->writeString(this->phrase.phrase);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

@@ -164,8 +164,11 @@ class CppGenerator(t_generator.Generator):
     def _has_cpp_annotation(self, type, key):
         return self._cpp_annotation(type, key) is not None
 
-    def _cpp_type_name(self, type, default=None):
-        return self._cpp_annotation(type, 'type', default)
+    def _cpp_type_name(self, type, default=None, direct=False):
+        if direct and self._has_cpp_annotation(type, 'indirection'):
+            return default
+        else:
+            return self._cpp_annotation(type, 'type', default)
 
     def _cpp_ref_type(self, type, name):
         # backward compatibility with 'ref' annotation
@@ -191,7 +194,7 @@ class CppGenerator(t_generator.Generator):
         return self._cpp_ref_type(type, '') == 'std::unique_ptr<>'
 
     def _type_name(self, ttype, in_typedef=False,
-                   arg=False, scope=None, unique=False):
+                   arg=False, scope=None, unique=False, direct=False):
         unique = unique and not self.flag_stack_arguments
         if ttype.is_stream:
             ttype = ttype.as_stream.elem_type
@@ -201,7 +204,7 @@ class CppGenerator(t_generator.Generator):
             bname = self._base_type_name(btype.base)
             if arg and ttype.is_string:
                 return self._reference_name(bname, unique)
-            return self._cpp_type_name(ttype, bname)
+            return self._cpp_type_name(ttype, bname, direct=direct)
         # Check for a custom overloaded C++ name
         if ttype.is_container:
             tcontainer = ttype.as_container
@@ -2374,7 +2377,7 @@ class CppGenerator(t_generator.Generator):
         if t.is_base_type and not t.is_string:
             return '0'
         if explicit or t.is_enum:
-            return '{0}()'.format(self._type_name(t))
+            return self._render_const_value(t, member.value)
         return ''
 
     def _get_serialized_fields_options(self, obj):
@@ -4305,11 +4308,12 @@ class CppGenerator(t_generator.Generator):
             int64 = lambda x: str(x.integer) + "LL"
 
             bt = t.as_base_type
-            render_string = lambda x: x.string.replace('"', '\\"')
+            render_string = lambda x: x.string.replace('"', '\\"') if x else ''
             mapping = {
                 t_base.string: lambda x: render_string(x) if literal else
-                ('apache::thrift::StringTraits< {0}>::fromStringLiteral(' +
-                    '"{1}")').format(self._type_name(t), render_string(x)),
+                ('apache::thrift::StringTraits< {0}>::'
+                 'fromStringLiteral("{1}")').format(
+                     self._type_name(t, direct=True), render_string(x)),
                 t_base.bool: lambda x: (x.integer > 0 and 'true' or 'false'),
                 t_base.byte: lambda x: (
                     "static_cast<int8_t>(" + str(x.integer) + ")"),
@@ -4335,11 +4339,12 @@ class CppGenerator(t_generator.Generator):
             return mapping[bt.base](value)
         elif t.is_enum:
             name = self._type_name(t)
-            const = t.find_value(value.integer)
+            integer = value.integer if value else 0
+            const = t.find_value(integer)
             if const:
                 return '{0}::{1}'.format(name, const.name)
             else:
-                return 'static_cast<{0}>({1})'.format(name, value.integer)
+                return 'static_cast<{0}>({1})'.format(name, integer)
         elif t.is_struct or t.is_xception:
             value_map = {}
             for k, v in value.map.items():

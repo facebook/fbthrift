@@ -6,10 +6,13 @@ typedef i32 (cpp.type = 'CppFakeI32') FakeI32
 typedef i32 (cpp.type = 'CppHasANumber', cpp.indirection = '.number') HasANumber
 typedef i32 (cpp.type = 'CppHasAResult', cpp.indirection = '.foo().result()')
     HasAResult
+typedef string (cpp.type = 'CppHasAPhrase', cpp.indirection = '.phrase')
+    HasAPhrase
 
 struct struct_with_indirections {
   1: i32 real,
   2: FakeI32 fake,
   3: HasANumber number,
   4: HasAResult result,
+  5: HasAPhrase phrase,
 }
