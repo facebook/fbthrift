@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,8 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/algorithm/string/classification.hpp>
 
@@ -174,10 +172,11 @@ void t_mstch_py3_generator::generate_services(const t_program& program) {
     program, "CythonServices.pyx", path / name / "services.pyx");
 
   std::string basename = "services_wrapper";
+  auto cpp_path = boost::filesystem::path{name};
   this->render_to_file(
-    program, "ServicesWrapper.h", path / name / (basename + ".h"));
+    program, "ServicesWrapper.h", cpp_path / (basename + ".h"));
   this->render_to_file(
-    program, "ServicesWrapper.cpp", path / name / (basename + ".cpp"));
+    program, "ServicesWrapper.cpp", cpp_path / (basename + ".cpp"));
   this->render_to_file(
     program, "ServicesWrapper.pxd", path / name / (basename + ".pxd"));
 }
@@ -192,10 +191,11 @@ void t_mstch_py3_generator::generate_clients(const t_program& program) {
     program, "CythonClients.pyx", path / name / "clients.pyx");
 
   std::string basename = "clients_wrapper";
+  auto cpp_path = boost::filesystem::path{name};
   this->render_to_file(
-    program, "ClientsWrapper.h", path / name / (basename + ".h"));
+    program, "ClientsWrapper.h", cpp_path / (basename + ".h"));
   this->render_to_file(
-    program, "ClientsWrapper.cpp", path / name / (basename + ".cpp"));
+    program, "ClientsWrapper.cpp", cpp_path / (basename + ".cpp"));
   this->render_to_file(
     program, "ClientsWrapper.pxd", path / name / (basename + ".pxd"));
 }
