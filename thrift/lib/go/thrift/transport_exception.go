@@ -41,6 +41,16 @@ const (
 	ALREADY_OPEN                = 2
 	TIMED_OUT                   = 3
 	END_OF_FILE                 = 4
+	INTERRUPTED                 = 5
+	BAD_ARGS                    = 6
+	CORRUPTED_DATA              = 7
+	NOT_SUPPORTED               = 9
+	INVALID_STATE               = 10
+	INVALID_FRAME_SIZE          = 11
+	SSL_ERROR                   = 12
+	COULD_NOT_BIND              = 13
+	SASL_HANDSHAKE_TIMEOUT      = 14
+	NETWORK_ERROR               = 15
 )
 
 type tTransportException struct {

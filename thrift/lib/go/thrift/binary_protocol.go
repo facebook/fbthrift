@@ -27,6 +27,9 @@ import (
 	"math"
 )
 
+const BinaryVersionMask uint32 = 0xffff0000
+const BinaryVersion1 uint32 = 0x80010000
+
 type TBinaryProtocol struct {
 	trans         TRichTransport
 	origTransport TTransport
@@ -99,7 +102,6 @@ func (p *TBinaryProtocol) WriteMessageBegin(name string, typeId TMessageType, se
 		e = p.WriteI32(seqId)
 		return e
 	}
-	return nil
 }
 
 func (p *TBinaryProtocol) WriteMessageEnd() error {

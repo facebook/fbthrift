@@ -23,6 +23,17 @@ import (
 	"errors"
 )
 
+type ProtocolID int16
+
+const (
+	BinaryProtocol     ProtocolID = 0
+	JSONProtocol       ProtocolID = 1
+	CompactProtocol    ProtocolID = 2
+	DebugProtocol      ProtocolID = 3
+	VirtualProtocol    ProtocolID = 4
+	SimpleJSONProtocol ProtocolID = 5
+)
+
 const (
 	VERSION_MASK = 0xffff0000
 	VERSION_1    = 0x80010000
