@@ -45,10 +45,14 @@ from thrift.py3.folly cimport (
 cimport {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types
 import {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types
 {{#program:includeNamespaces}}
-cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}types
+{{#hasServices?}}
 cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}services
-import {{#includeNamespace}}{{value}}.{{/includeNamespace}}types
 import {{#includeNamespace}}{{value}}.{{/includeNamespace}}services
+{{/hasServices?}}
+{{#hasTypes?}}
+import {{#includeNamespace}}{{value}}.{{/includeNamespace}}types
+cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}types
+{{/hasTypes?}}
 {{/program:includeNamespaces}}
 
 import asyncio

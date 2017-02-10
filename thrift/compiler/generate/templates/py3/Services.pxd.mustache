@@ -30,7 +30,9 @@ file exposes Python wrappers of the services to the end user.
 from thrift.py3.server cimport ServiceInterface
 
 {{#program:includeNamespaces}}
+{{#hasServices?}}
 cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}services
+{{/hasServices?}}
 {{/program:includeNamespaces}}
 
 {{#program:services}}

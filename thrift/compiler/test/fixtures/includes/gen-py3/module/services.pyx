@@ -24,10 +24,8 @@ from thrift.py3.folly cimport (
 )
 cimport module.types
 import module.types
-cimport includes.types
-cimport includes.services
 import includes.types
-import includes.services
+cimport includes.types
 
 import asyncio
 import functools

@@ -9,7 +9,6 @@ from cpython.ref cimport PyObject
 from libcpp.memory cimport shared_ptr
 from thrift.py3.server cimport cServerInterface
 
-cimport includes.services_wrapper
 
 
 

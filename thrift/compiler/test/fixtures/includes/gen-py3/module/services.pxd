@@ -7,5 +7,4 @@
 
 from thrift.py3.server cimport ServiceInterface
 
-cimport includes.services
 

@@ -26,7 +26,9 @@ from libcpp.memory cimport shared_ptr
 from thrift.py3.server cimport cServerInterface
 
 {{#program:includeNamespaces}}
+{{#hasServices?}}
 cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}services_wrapper
+{{/hasServices?}}
 {{/program:includeNamespaces}}
 
 

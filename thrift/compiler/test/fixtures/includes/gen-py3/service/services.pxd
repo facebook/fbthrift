@@ -7,8 +7,6 @@
 
 from thrift.py3.server cimport ServiceInterface
 
-cimport module.services
-cimport includes.services
 
 cdef class MyServiceInterface(ServiceInterface):
     pass

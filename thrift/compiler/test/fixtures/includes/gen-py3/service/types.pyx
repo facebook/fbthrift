@@ -18,8 +18,8 @@ cimport thrift.py3.std_libcpp as std_libcpp
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
 cimport module.types
-cimport includes.types
 import module.types
+cimport includes.types
 import includes.types
 
 

@@ -9,8 +9,6 @@ from cpython.ref cimport PyObject
 from libcpp.memory cimport shared_ptr
 from thrift.py3.server cimport cServerInterface
 
-cimport module.services_wrapper
-cimport includes.services_wrapper
 
 
 cdef extern from "src/gen-cpp2/MyService.h" namespace "cpp2":

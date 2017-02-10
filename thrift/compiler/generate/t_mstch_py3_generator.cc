@@ -80,7 +80,15 @@ mstch::map t_mstch_py3_generator::extend_program(
       *included_program,
       included_program->get_name()
     );
-    const mstch::map include_ns {{"includeNamespace", ns}};
+    auto const hasServices = included_program->get_services().size() > 0;
+    auto const hasStructs = included_program->get_structs().size() > 0;
+    auto const hasEnums = included_program->get_enums().size() > 0;
+    auto const hasTypes = hasStructs || hasEnums;
+    const mstch::map include_ns {
+      {"includeNamespace", ns},
+      {"hasServices?", hasServices},
+      {"hasTypes?", hasTypes},
+    };
     includeNamespaces.push_back(include_ns);
   }
 

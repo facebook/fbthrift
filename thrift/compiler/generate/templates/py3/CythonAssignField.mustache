@@ -57,15 +57,18 @@ deref(self.c_{{struct:name}}).{{field:name}} = deref(__{{field:name}}.get()){{!
 }}{{/type:struct?}}{{!
 }}{{#type:list?}}{{!
 }}pylist = {{type:flat_name}}({{field:name}})
-deref(self.c_{{struct:name}}).{{field:name}} = deref(pylist._vector){{!
+deref(self.c_{{struct:name}}).{{field:name}} = deref(
+    (<{{type:flat_name}}> pylist)._vector){{!
 }}{{/type:list?}}{{!
 }}{{#type:set?}}{{!
 }}pyset = {{type:flat_name}}({{field:name}})
-deref(self.c_{{struct:name}}).{{field:name}} = deref(pyset._set){{!
+deref(self.c_{{struct:name}}).{{field:name}} = deref(
+    (<{{type:flat_name}}> pyset)._set){{!
 }}{{/type:set?}}{{!
 }}{{#type:map?}}{{!
 }}pymap = {{type:flat_name}}({{field:name}})
-deref(self.c_{{struct:name}}).{{field:name}} = deref(pymap._map){{!
+deref(self.c_{{struct:name}}).{{field:name}} = deref(
+    (<{{type:flat_name}}> pymap)._map){{!
 }}{{/type:map?}}{{!
 }}{{#type:enum?}}{{!
 }}deref(self.c_{{struct:name}}).{{field:name}} = {{#type:enum}}{{!

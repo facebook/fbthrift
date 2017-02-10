@@ -47,10 +47,10 @@ cimport thrift.py3.std_libcpp as std_libcpp
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
 {{#program:includeNamespaces}}
+{{#hasTypes?}}
 cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}types
-{{/program:includeNamespaces}}
-{{#program:includeNamespaces}}
 import {{#includeNamespace}}{{value}}.{{/includeNamespace}}types
+{{/hasTypes?}}
 {{/program:includeNamespaces}}
 
 

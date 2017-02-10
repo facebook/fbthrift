@@ -52,4 +52,4 @@ This file is included from Struct.pyx
   }}{{#type:keyType}}{{> ContainerCythonFieldTypeConditionally}}{{/type:keyType}},{{!
   }}{{#type:valueType}}{{> ContainerCythonFieldTypeConditionally}}{{/type:valueType}}{{!
 }}]{{/type:map?}}{{!
-}}{{#type:enum}}{{> ModulePath}}.c{{enum:name}}{{/type:enum}}
+}}{{#type:enum}}{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}c{{enum:name}}{{/type:enum}}

@@ -45,4 +45,6 @@ key, include the parallel CythonPythonToCppKey file instead.
   }}{{#type:keyType}}{{> ContainerCythonFieldTypeConditionally}}{{/type:keyType}},{{!
   }}{{#type:valueType}}{{> ContainerCythonFieldTypeConditionally}}{{/type:valueType}}{{!
   }}](deref({{type:flat_name}}(item)._map.get())){{/type:map?}}{{!
-}}{{#type:enum}}{{> ModulePath}}.{{enum:name}}_to_cpp(item){{/type:enum}}
+}}{{#type:enum}}{{!
+  }}<{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}{{!
+  }}c{{enum:name}}> {{> ModulePath}}.{{enum:name}}_to_cpp(item){{/type:enum}}
