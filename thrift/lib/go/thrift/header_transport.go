@@ -22,6 +22,7 @@ package thrift
 import (
 	"bufio"
 	"bytes"
+	"encoding/binary"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -206,6 +207,17 @@ func (t *THeaderTransport) ResetProtocol() error {
 
 	// Set new header
 	t.readHeader = hdr
+	// Adopt the client's protocol
+	t.protoID = hdr.protoID
+	t.clientType = hdr.clientType
+	t.seqID = hdr.seq
+	t.flags = hdr.flags
+
+	// If the client is using unframed, just pass up the data to the protocol
+	if t.clientType == UnframedDeprecated || t.clientType == UnframedCompactDeprecated {
+		t.framebuf = t.rbuf
+		return nil
+	}
 
 	// Make sure we can't read past the current frame length
 	t.frameSize = hdr.length
@@ -233,12 +245,6 @@ func (t *THeaderTransport) ResetProtocol() error {
 
 	// respond in kind with the client's transforms
 	t.writeTransforms = hdr.transforms
-
-	// Adopt the client's protocol
-	t.protoID = hdr.protoID
-	t.clientType = hdr.clientType
-	t.seqID = hdr.seq
-	t.flags = hdr.flags
 
 	return nil
 }
@@ -338,12 +344,7 @@ func (t *THeaderTransport) applyTransforms() error {
 	return nil
 }
 
-func (t *THeaderTransport) Flush() error {
-	// Closure incase wbuf pointer changes in xform
-	defer func(tp *THeaderTransport) {
-		tp.wbuf.Reset()
-	}(t)
-
+func (t *THeaderTransport) flushHeader() error {
 	hdr := tHeader{}
 	hdr.headers = t.writeInfoHeaders
 	hdr.pHeaders = t.persistentWriteInfoHeaders
@@ -379,8 +380,54 @@ func (t *THeaderTransport) Flush() error {
 	if err != nil {
 		return NewTTransportExceptionFromError(err)
 	}
+	return nil
+}
 
-	if hdr.payloadLen > 0 {
+func (t *THeaderTransport) flushFramed() error {
+	buflen := t.wbuf.Len()
+	framesize := uint32(buflen)
+	if buflen > int(MaxFrameSize) {
+		return NewTTransportException(
+			INVALID_FRAME_SIZE,
+			fmt.Sprintf("cannot send bigframe of size %d", buflen),
+		)
+	}
+
+	err := binary.Write(t.transport, binary.BigEndian, framesize)
+	return NewTTransportExceptionFromError(err)
+}
+
+func (t *THeaderTransport) Flush() error {
+	// Closure incase wbuf pointer changes in xform
+	defer func(tp *THeaderTransport) {
+		tp.wbuf.Reset()
+	}(t)
+	var err error
+
+	switch t.clientType {
+	case HeaderClientType:
+		err = t.flushHeader()
+	case FramedDeprecated:
+		err = t.flushFramed()
+	case FramedCompact:
+		err = t.flushFramed()
+	case UnframedCompactDeprecated:
+		err = nil
+	case UnframedDeprecated:
+		err = nil
+	default:
+		return NewTTransportException(
+			UNKNOWN_TRANSPORT_EXCEPTION,
+			fmt.Sprintf("tHeader cannot flush for clientType %s", t.clientType.String()),
+		)
+	}
+
+	if err != nil {
+		return err
+	}
+
+	// Writeout the payload
+	if t.wbuf.Len() > 0 {
 		_, err = t.wbuf.WriteTo(t.transport)
 		if err != nil {
 			return NewTTransportExceptionFromError(err)

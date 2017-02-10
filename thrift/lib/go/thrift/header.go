@@ -462,16 +462,28 @@ func (hdr *tHeader) Read(buf *bufio.Reader) error {
 		err        error
 		firstword  uint32
 		secondword uint32
+		wordbuf    []byte
 	)
 
-	err = binary.Read(buf, binary.BigEndian, &firstword)
-	if err != nil {
+	if wordbuf, err = buf.Peek(4); err != nil {
 		return NewTTransportExceptionFromError(err)
 	}
+	firstword = binary.BigEndian.Uint32(wordbuf)
 
 	// Check the first word if it matches http/unframed signatures
 	// We don't support non-framed protocols, so bail out
-	if clientType := analyzeFirst32Bit(firstword); clientType != UnknownClientType {
+	switch clientType := analyzeFirst32Bit(firstword); clientType {
+	case UnframedDeprecated:
+		hdr.clientType = clientType
+		hdr.protoID = BinaryProtocol
+		return nil
+	case UnframedCompactDeprecated:
+		hdr.clientType = clientType
+		hdr.protoID = CompactProtocol
+		return nil
+	case UnknownClientType:
+		break
+	default:
 		return NewTTransportExceptionFromError(
 			fmt.Errorf("Transport %s not supported on tHeader (word=%#x)", clientType, firstword),
 		)
@@ -485,14 +497,29 @@ func (hdr *tHeader) Read(buf *bufio.Reader) error {
 		)
 	}
 
-	err = binary.Read(buf, binary.BigEndian, &secondword)
+	// First word is always length, discard.
+	_, err = buf.Discard(4)
 	if err != nil {
+		// Shouldn't be possible to fail here, but check anyways
 		return NewTTransportExceptionFromError(err)
 	}
 
-	// The client is not tHeader, either process as basic framed or bail out
+	// Only peek here. If it was framed transport, we are now reading payload.
+	if wordbuf, err = buf.Peek(4); err != nil {
+		return NewTTransportExceptionFromError(err)
+	}
+	secondword = binary.BigEndian.Uint32(wordbuf)
+
+	// Check if we can detect a framed proto, and bail out if we do.
 	if clientType := analyzeSecond32Bit(secondword); clientType != HeaderClientType {
 		return checkFramed(hdr, clientType)
+	}
+
+	// It was not framed proto, assume header and discard that word.
+	_, err = buf.Discard(4)
+	if err != nil {
+		// Shouldn't be possible to fail here, but check anyways
+		return NewTTransportExceptionFromError(err)
 	}
 
 	// Assume header protocol from here on in, parse rest of header
@@ -641,9 +668,11 @@ func (hdr *tHeader) calcLenFromPayload() error {
 	fixedlen := uint64(0)
 	switch hdr.clientType {
 	case FramedCompact:
-		fallthrough
+		hdr.length = hdr.payloadLen
+		return nil
 	case FramedDeprecated:
-		fixedlen = 4
+		hdr.length = hdr.payloadLen
+		return nil
 	case HeaderClientType:
 		// TODO: Changes with bigframes
 		fixedlen = 10
