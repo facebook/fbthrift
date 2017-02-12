@@ -5,6 +5,7 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import re
 import os
 import shlex
 import shutil
@@ -76,6 +77,8 @@ for name, index in zip(fixtureNames, range(len(fixtureNames))):
         shutil.rmtree(os.path.join(cwd, fn))
     cmds = read_lines(os.path.join(cwd, 'cmd'))
     for cmd in cmds:
+        if re.match(r"^\s*#", cmd):
+            continue
         args = shlex.split(cmd.strip())
         base_args = [thrift, "-r", "--templates", templates, "--gen"]
         if "cpp" in args[0]:
@@ -98,6 +101,7 @@ for name, index in zip(fixtureNames, range(len(fixtureNames))):
             stderr=subprocess.PIPE,
         )
         out, err = p.communicate()
+        sys.stdout.write(out)
         if p.returncode != 0:
             hasErrors = True
             sys.stderr.write(err)
