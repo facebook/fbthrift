@@ -4113,7 +4113,10 @@ void t_hack_generator::generate_deserialize_set_element(ofstream& out,
   indent(out) <<
     "if ($" << elem << " !== null) {" << endl;
   indent_up();
-  if (arraysets_) {
+  if (arrays_) {
+    indent(out) <<
+      "$" << prefix << "[] = $" << elem << ";" << endl;
+  } else if (arraysets_) {
     indent(out) <<
       "$" << prefix << "[$" << elem << "] = true;" << endl;
   } else {

@@ -144,7 +144,7 @@ class Foo implements \IThriftStruct {
                   $elem28 = null;
                   $xfer += $input->readI32($elem28);
                   if ($elem28 !== null) {
-                    $_val22->add($elem28);
+                    $_val22[] = $elem28;
                   }
                 }
                 $xfer += $input->readSetEnd();

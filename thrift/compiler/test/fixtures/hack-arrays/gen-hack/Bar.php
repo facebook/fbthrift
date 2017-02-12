@@ -270,7 +270,7 @@ class Bar_baz_args implements \IThriftStruct {
               $elem6 = null;
               $xfer += $input->readI32($elem6);
               if ($elem6 !== null) {
-                $_val0->add($elem6);
+                $_val0[] = $elem6;
               }
             }
             $xfer += $input->readSetEnd();
@@ -314,7 +314,7 @@ class Bar_baz_args implements \IThriftStruct {
                   $elem28 = null;
                   $xfer += $input->readString($elem28);
                   if ($elem28 !== null) {
-                    $_val22->add($elem28);
+                    $_val22[] = $elem28;
                   }
                 }
                 $xfer += $input->readSetEnd();
