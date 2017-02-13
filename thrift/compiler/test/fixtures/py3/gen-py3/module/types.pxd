@@ -13,7 +13,8 @@ from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
-from thrift.py3.exceptions cimport cTException, TException
+from thrift.py3.exceptions cimport cTException
+cimport thrift.py3.types
 
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
@@ -27,13 +28,33 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
 cdef cAnEnum AnEnum_to_cpp(value)
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
+    cdef cppclass cSimpleException__isset "py3::simple::SimpleException::__isset":
+        bint err_code
+
+    # Forward Declaration
+    cdef cppclass cSimpleException "py3::simple::SimpleException"(cTException)
+
     cdef cppclass cSimpleException "py3::simple::SimpleException"(cTException):
         cSimpleException() except +
+        cSimpleException(const cSimpleException&) except +
         bint operator==(cSimpleException&)
         int16_t err_code
+        cSimpleException__isset __isset
+
+    cdef cppclass cSimpleStruct__isset "py3::simple::SimpleStruct::__isset":
+        bint is_on
+        bint tiny_int
+        bint small_int
+        bint nice_sized_int
+        bint big_int
+        bint real
+
+    # Forward Declaration
+    cdef cppclass cSimpleStruct "py3::simple::SimpleStruct"
 
     cdef cppclass cSimpleStruct "py3::simple::SimpleStruct":
         cSimpleStruct() except +
+        cSimpleStruct(const cSimpleStruct&) except +
         bint operator==(cSimpleStruct&)
         cbool is_on
         int8_t tiny_int
@@ -41,9 +62,22 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
         int32_t nice_sized_int
         int64_t big_int
         double real
+        cSimpleStruct__isset __isset
+
+    cdef cppclass cComplexStruct__isset "py3::simple::ComplexStruct::__isset":
+        bint structOne
+        bint structTwo
+        bint an_integer
+        bint name
+        bint an_enum
+        bint some_bytes
+
+    # Forward Declaration
+    cdef cppclass cComplexStruct "py3::simple::ComplexStruct"
 
     cdef cppclass cComplexStruct "py3::simple::ComplexStruct":
         cComplexStruct() except +
+        cComplexStruct(const cComplexStruct&) except +
         bint operator==(cComplexStruct&)
         cSimpleStruct structOne
         cSimpleStruct structTwo
@@ -51,6 +85,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
         string name
         cAnEnum an_enum
         string some_bytes
+        cComplexStruct__isset __isset
 
 
 cdef extern from "<utility>" namespace "std" nogil:
@@ -58,19 +93,34 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cSimpleStruct] move(unique_ptr[cSimpleStruct])
     cdef shared_ptr[cComplexStruct] move(unique_ptr[cComplexStruct])
 
-cdef class SimpleException(TException):
+# Forward Definition of the cython struct
+cdef class SimpleException(thrift.py3.types.Exception)
+
+cdef class SimpleException(thrift.py3.types.Exception):
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cSimpleException] c_SimpleException
 
     @staticmethod
     cdef create(shared_ptr[cSimpleException] c_SimpleException)
 
-cdef class SimpleStruct:
+# Forward Definition of the cython struct
+cdef class SimpleStruct(thrift.py3.types.Struct)
+
+cdef class SimpleStruct(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cSimpleStruct] c_SimpleStruct
 
     @staticmethod
     cdef create(shared_ptr[cSimpleStruct] c_SimpleStruct)
 
-cdef class ComplexStruct:
+# Forward Definition of the cython struct
+cdef class ComplexStruct(thrift.py3.types.Struct)
+
+cdef class ComplexStruct(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cComplexStruct] c_ComplexStruct
     cdef SimpleStruct __structOne
     cdef SimpleStruct __structTwo
@@ -80,116 +130,162 @@ cdef class ComplexStruct:
 
 
 cdef class List__i16:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[vector[int16_t]] _vector
     @staticmethod
     cdef create(shared_ptr[vector[int16_t]])
 
 cdef class List__i32:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[vector[int32_t]] _vector
     @staticmethod
     cdef create(shared_ptr[vector[int32_t]])
 
 cdef class List__i64:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[vector[int64_t]] _vector
     @staticmethod
     cdef create(shared_ptr[vector[int64_t]])
 
 cdef class List__string:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[vector[string]] _vector
     @staticmethod
     cdef create(shared_ptr[vector[string]])
 
 cdef class List__SimpleStruct:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[vector[cSimpleStruct]] _vector
     @staticmethod
     cdef create(shared_ptr[vector[cSimpleStruct]])
 
 cdef class Set__i32:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cset[int32_t]] _set
     @staticmethod
     cdef create(shared_ptr[cset[int32_t]])
 
 cdef class Set__string:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cset[string]] _set
     @staticmethod
     cdef create(shared_ptr[cset[string]])
 
 cdef class Map__string_string:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cmap[string,string]] _map
     @staticmethod
     cdef create(shared_ptr[cmap[string,string]])
 
 cdef class Map__string_SimpleStruct:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cmap[string,cSimpleStruct]] _map
     @staticmethod
     cdef create(shared_ptr[cmap[string,cSimpleStruct]])
 
 cdef class Map__string_i16:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cmap[string,int16_t]] _map
     @staticmethod
     cdef create(shared_ptr[cmap[string,int16_t]])
 
 cdef class List__List__i32:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[vector[vector[int32_t]]] _vector
     @staticmethod
     cdef create(shared_ptr[vector[vector[int32_t]]])
 
 cdef class Map__string_i32:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cmap[string,int32_t]] _map
     @staticmethod
     cdef create(shared_ptr[cmap[string,int32_t]])
 
 cdef class Map__string_Map__string_i32:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cmap[string,cmap[string,int32_t]]] _map
     @staticmethod
     cdef create(shared_ptr[cmap[string,cmap[string,int32_t]]])
 
 cdef class List__Set__string:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[vector[cset[string]]] _vector
     @staticmethod
     cdef create(shared_ptr[vector[cset[string]]])
 
 cdef class Map__string_List__SimpleStruct:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cmap[string,vector[cSimpleStruct]]] _map
     @staticmethod
     cdef create(shared_ptr[cmap[string,vector[cSimpleStruct]]])
 
 cdef class List__List__string:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[vector[vector[string]]] _vector
     @staticmethod
     cdef create(shared_ptr[vector[vector[string]]])
 
 cdef class List__Set__i32:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[vector[cset[int32_t]]] _vector
     @staticmethod
     cdef create(shared_ptr[vector[cset[int32_t]]])
 
 cdef class List__Map__string_string:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[vector[cmap[string,string]]] _vector
     @staticmethod
     cdef create(shared_ptr[vector[cmap[string,string]]])
 
 cdef class List__binary:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[vector[string]] _vector
     @staticmethod
     cdef create(shared_ptr[vector[string]])
 
 cdef class Set__binary:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cset[string]] _set
     @staticmethod
     cdef create(shared_ptr[cset[string]])
 
 cdef class List__AnEnum:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[vector[cAnEnum]] _vector
     @staticmethod
     cdef create(shared_ptr[vector[cAnEnum]])
 
 cdef class Map__i32_double:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cmap[int32_t,double]] _map
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,double]])
 
 cdef class List__Map__i32_double:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[vector[cmap[int32_t,double]]] _vector
     @staticmethod
     cdef create(shared_ptr[vector[cmap[int32_t,double]]])

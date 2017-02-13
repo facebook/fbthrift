@@ -12,9 +12,12 @@ from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from cython.operator cimport dereference as deref, preincrement as inc
-from thrift.py3.exceptions cimport TException
+import thrift.py3.types
+cimport thrift.py3.types
+from thrift.py3.types import NOTSET
 cimport thrift.py3.std_libcpp as std_libcpp
 
+import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
 cimport includes.types
@@ -23,16 +26,60 @@ import includes.types
 
 
 
-cdef class MyStruct:
+cdef class MyStruct(thrift.py3.types.Struct):
+
     def __init__(
         MyStruct self,
-        MyIncludedField
+        MyIncludedField=None
     ):
         self.c_MyStruct = make_shared[cMyStruct]()
-        cdef shared_ptr[includes.types.cIncluded] __MyIncludedField = (
+
+        inst = self
+        cdef shared_ptr[includes.types.cIncluded] __MyIncludedField
+        if MyIncludedField is not None:
+            __MyIncludedField = (
             <includes.types.Included?> MyIncludedField).c_Included
-        deref(self.c_MyStruct).MyIncludedField = deref(__MyIncludedField.get())
-        
+            deref(inst.c_MyStruct).MyIncludedField = deref(__MyIncludedField.get())
+            deref(inst.c_MyStruct).__isset.MyIncludedField = True
+
+
+    def __call__(
+        MyStruct self,
+        MyIncludedField=NOTSET
+    ):
+        changes = any((
+            MyIncludedField is not NOTSET,
+        ))
+
+        if not changes:
+            return self
+
+        inst = <MyStruct>MyStruct.__new__(MyStruct)
+        inst.c_MyStruct = make_shared[cMyStruct](deref(self.c_MyStruct))
+        cdef MyStruct defaults = MyStruct_defaults
+
+        # Convert None's to default value.
+        if MyIncludedField is None:
+            deref(inst.c_MyStruct).MyIncludedField = deref(defaults.c_MyStruct).MyIncludedField
+            deref(inst.c_MyStruct).__isset.MyIncludedField = False
+        if MyIncludedField is NOTSET:
+            MyIncludedField = None
+
+        cdef shared_ptr[includes.types.cIncluded] __MyIncludedField
+        if MyIncludedField is not None:
+            __MyIncludedField = (
+            <includes.types.Included?> MyIncludedField).c_Included
+            deref(inst.c_MyStruct).MyIncludedField = deref(__MyIncludedField.get())
+            deref(inst.c_MyStruct).__isset.MyIncludedField = True
+
+        return inst
+
+    def __iter__(self):
+        yield 'MyIncludedField', self.MyIncludedField
+
+    def __bool__(self):
+        return deref(self.c_MyStruct).__isset.MyIncludedField
+
     @staticmethod
     cdef create(shared_ptr[cMyStruct] c_MyStruct):
         inst = <MyStruct>MyStruct.__new__(MyStruct)
@@ -41,6 +88,7 @@ cdef class MyStruct:
 
     @property
     def MyIncludedField(self):
+
         cdef shared_ptr[includes.types.cIncluded] item
         if self.__MyIncludedField is None:
             item = make_shared[includes.types.cIncluded](
@@ -70,10 +118,17 @@ cdef class MyStruct:
         return not cmp
 
     def __hash__(MyStruct self):
-        return hash((
-          self.MyIncludedField,
-        ))
+        if not self.__hash:
+            self.__hash = hash((
+            self.MyIncludedField,
+            ))
+        return self.__hash
 
+    def __repr__(MyStruct self):
+        return f'MyStruct(MyIncludedField={repr(self.MyIncludedField)})'
+
+
+MyStruct_defaults = MyStruct()
 
 
 

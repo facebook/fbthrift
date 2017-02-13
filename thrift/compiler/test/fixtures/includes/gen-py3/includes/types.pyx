@@ -12,23 +12,66 @@ from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from cython.operator cimport dereference as deref, preincrement as inc
-from thrift.py3.exceptions cimport TException
+import thrift.py3.types
+cimport thrift.py3.types
+from thrift.py3.types import NOTSET
 cimport thrift.py3.std_libcpp as std_libcpp
 
+import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
 
 
 
 
-cdef class Included:
+cdef class Included(thrift.py3.types.Struct):
+
     def __init__(
         Included self,
-        MyIntField
+        MyIntField=None
     ):
         self.c_Included = make_shared[cIncluded]()
-        deref(self.c_Included).MyIntField = MyIntField
-        
+
+        inst = self
+        if MyIntField is not None:
+            deref(inst.c_Included).MyIntField = MyIntField
+            deref(inst.c_Included).__isset.MyIntField = True
+
+
+    def __call__(
+        Included self,
+        MyIntField=NOTSET
+    ):
+        changes = any((
+            MyIntField is not NOTSET,
+        ))
+
+        if not changes:
+            return self
+
+        inst = <Included>Included.__new__(Included)
+        inst.c_Included = make_shared[cIncluded](deref(self.c_Included))
+        cdef Included defaults = Included_defaults
+
+        # Convert None's to default value.
+        if MyIntField is None:
+            deref(inst.c_Included).MyIntField = deref(defaults.c_Included).MyIntField
+            deref(inst.c_Included).__isset.MyIntField = False
+        if MyIntField is NOTSET:
+            MyIntField = None
+
+        if MyIntField is not None:
+            deref(inst.c_Included).MyIntField = MyIntField
+            deref(inst.c_Included).__isset.MyIntField = True
+
+        return inst
+
+    def __iter__(self):
+        yield 'MyIntField', self.MyIntField
+
+    def __bool__(self):
+        return deref(self.c_Included).__isset.MyIntField
+
     @staticmethod
     cdef create(shared_ptr[cIncluded] c_Included):
         inst = <Included>Included.__new__(Included)
@@ -37,6 +80,7 @@ cdef class Included:
 
     @property
     def MyIntField(self):
+
         return self.c_Included.get().MyIntField
 
 
@@ -60,10 +104,17 @@ cdef class Included:
         return not cmp
 
     def __hash__(Included self):
-        return hash((
-          self.MyIntField,
-        ))
+        if not self.__hash:
+            self.__hash = hash((
+            self.MyIntField,
+            ))
+        return self.__hash
 
+    def __repr__(Included self):
+        return f'Included(MyIntField={repr(self.MyIntField)})'
+
+
+Included_defaults = Included()
 
 
 

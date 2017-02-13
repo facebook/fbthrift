@@ -13,7 +13,8 @@ from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
-from thrift.py3.exceptions cimport cTException, TException
+from thrift.py3.exceptions cimport cTException
+cimport thrift.py3.types
 
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
@@ -25,17 +26,31 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
 cdef cMyEnum MyEnum_to_cpp(value)
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
+    cdef cppclass cMyStruct__isset "cpp2::MyStruct::__isset":
+        bint MyIntField
+        bint MyStringField
+
+    # Forward Declaration
+    cdef cppclass cMyStruct "cpp2::MyStruct"
+
     cdef cppclass cMyStruct "cpp2::MyStruct":
         cMyStruct() except +
+        cMyStruct(const cMyStruct&) except +
         bint operator==(cMyStruct&)
         int64_t MyIntField
         string MyStringField
+        cMyStruct__isset __isset
 
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cMyStruct] move(unique_ptr[cMyStruct])
 
-cdef class MyStruct:
+# Forward Definition of the cython struct
+cdef class MyStruct(thrift.py3.types.Struct)
+
+cdef class MyStruct(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cMyStruct] c_MyStruct
 
     @staticmethod

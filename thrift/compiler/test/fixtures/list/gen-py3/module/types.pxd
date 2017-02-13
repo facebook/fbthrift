@@ -13,7 +13,8 @@ from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
-from thrift.py3.exceptions cimport cTException, TException
+from thrift.py3.exceptions cimport cTException
+cimport thrift.py3.types
 
 
 
@@ -23,11 +24,15 @@ from thrift.py3.exceptions cimport cTException, TException
 
 
 cdef class List__string:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[vector[string]] _vector
     @staticmethod
     cdef create(shared_ptr[vector[string]])
 
 cdef class Map__i64_List__string:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cmap[int64_t,vector[string]]] _map
     @staticmethod
     cdef create(shared_ptr[cmap[int64_t,vector[string]]])

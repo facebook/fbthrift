@@ -12,9 +12,12 @@ from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from cython.operator cimport dereference as deref, preincrement as inc
-from thrift.py3.exceptions cimport TException
+import thrift.py3.types
+cimport thrift.py3.types
+from thrift.py3.types import NOTSET
 cimport thrift.py3.std_libcpp as std_libcpp
 
+import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
 
@@ -39,6 +42,15 @@ cdef class List__string:
         return inst
 
     def __getitem__(self, int index):
+        size = len(self)
+        # Convert a negative index
+        if index < 0:
+            index = size - index
+        if index >= size:
+            raise IndexError('list index out of range')
+        # Support negative indexes
+        if index < 0:
+            index = size - index
         cdef string citem = (
             deref(self._vector.get())[index])
         return bytes(citem).decode('UTF-8')
@@ -62,20 +74,33 @@ cdef class List__string:
         return cop == 2
 
     def __hash__(self):
-        return hash(tuple(self))
+        if not self.__hash:
+            self._hash = hash(tuple(self))
+        return self.__hash
 
     def __contains__(self, item):
+        if not self:
+            return False
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(
             self._vector.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
+        if not self:
+            raise StopIteration
         cdef string citem
         for citem in deref(self._vector):
             yield bytes(citem).decode('UTF-8')
 
+    def __repr__(self):
+        if not self:
+            return 'i[]'
+        return f'i[{", ".join(map(repr, self))}]'
+
     def __reversed__(self):
+        if not self:
+            raise StopIteration
         cdef string citem
         cdef vector[string] vec = deref(
             self._vector.get())
@@ -86,14 +111,18 @@ cdef class List__string:
             inc(loc)
 
     def index(self, item):
+        if not self:
+            raise ValueError(f'{item} is not in list')
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(self._vector.get())
         cdef vector[string].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError("{} is not in list".format(item))
+        raise ValueError(f'{item} is not in list')
 
     def count(self, item):
+        if not self:
+            return 0
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(self._vector.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
@@ -121,11 +150,13 @@ cdef class Map__i64_List__string:
         return inst
 
     def __getitem__(self, key):
+        if not self:
+            raise KeyError(f'{key}')
         cdef int64_t ckey = key
         cdef cmap[int64_t,vector[string]].iterator iter = deref(
             self._map).find(ckey)
         if iter == deref(self._map).end():
-            raise KeyError(str(key))
+            raise KeyError(f'{key}')
         cdef vector[string] citem = deref(iter).second
         return List__string.create(
     make_shared[vector[string]](citem))
@@ -134,6 +165,8 @@ cdef class Map__i64_List__string:
         return deref(self._map).size()
 
     def __iter__(self):
+        if not self:
+            raise StopIteration
         cdef int64_t citem
         for pair in deref(self._map):
             citem = pair.first
@@ -157,13 +190,24 @@ cdef class Map__i64_List__string:
         return cop == 2
 
     def __hash__(self):
-        return hash(tuple((tuple(self), tuple(self[k] for k in self))))
+        if not self.__hash:
+            self.__hash = hash(tuple(self.items()))
+        return self.__hash
+
+    def __repr__(self):
+        if not self:
+            return 'i{}'
+        return f'i{{{", ".join(map(lambda i: f"{i[0]}: {i[1]}", self.items()))}}}'
+
+
 
     def __contains__(self, key):
         cdef int64_t ckey = key
         return deref(self._map).count(ckey) > 0
 
     def get(self, key, default=None):
+        if not self:
+            return default
         cdef int64_t ckey = key
         cdef cmap[int64_t,vector[string]].iterator iter = \
             deref(self._map).find(ckey)
@@ -177,6 +221,8 @@ cdef class Map__i64_List__string:
         return self.__iter__()
 
     def values(self):
+        if not self:
+            raise StopIteration
         cdef vector[string] citem
         for pair in deref(self._map):
             citem = pair.second
@@ -184,6 +230,8 @@ cdef class Map__i64_List__string:
     make_shared[vector[string]](citem))
 
     def items(self):
+        if not self:
+            raise StopIteration
         cdef int64_t ckey
         cdef vector[string] citem
         for pair in deref(self._map):

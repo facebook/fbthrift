@@ -68,5 +68,8 @@ return self.__{{field:name}}
 {{/type:container?}}{{!
 }}{{#type:enum}}
 cdef int value = <int> deref(self.c_{{struct:name}}).{{field:name}}
-return {{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}{{enum:name}}(value)
+try:
+    return {{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}{{enum:name}}(value)
+except ValueError:
+    return thrift.py3.types.BadEnum({{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}{{enum:name}}, value)
 {{/type:enum}}

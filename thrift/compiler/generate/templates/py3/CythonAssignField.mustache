@@ -20,58 +20,70 @@ Called specifically from Struct.pyx when initializing the individual attributes
 on a struct from an existing struct passed in by the user.
 
 }}{{#type:bool?}}{{!
-}}deref(self.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
+}}if {{field:name}} is not None:
+    deref(inst.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
 }}{{/type:bool?}}{{!
 }}{{#type:byte?}}{{!
-}}deref(self.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
+}}if {{field:name}} is not None:
+    deref(inst.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
 }}{{/type:byte?}}{{!
 }}{{#type:i16?}}{{!
-}}deref(self.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
+}}if {{field:name}} is not None:
+    deref(inst.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
 }}{{/type:i16?}}{{!
 }}{{#type:i32?}}{{!
-}}deref(self.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
+}}if {{field:name}} is not None:
+    deref(inst.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
 }}{{/type:i32?}}{{!
 }}{{#type:i64?}}{{!
-}}deref(self.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
+}}if {{field:name}} is not None:
+    deref(inst.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
 }}{{/type:i64?}}{{!
 }}{{#type:double?}}{{!
-}}deref(self.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
+}}if {{field:name}} is not None:
+    deref(inst.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
 }}{{/type:double?}}{{!
 }}{{#type:string?}}{{!
 }}if {{field:name}} is not None:
-    deref(self.c_{{struct:name}}).{{field:name}} = {{field:name}}.encode('UTF-8'){{!
+    deref(inst.c_{{struct:name}}).{{field:name}} = {{field:name}}.encode('UTF-8'){{!
 }}{{/type:string?}}{{!
 }}{{#type:binary?}}{{!
 }}if {{field:name}} is not None:
-    deref(self.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
+    deref(inst.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
 }}{{/type:binary?}}{{!
 }}{{#type:struct?}}{{!
   }}cdef shared_ptr[{{!
   }}{{#type:struct}}{{!
     }}{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}{{!
-    }}c{{struct:name}}{{/type:struct}}] __{{field:name}} = (
+    }}c{{struct:name}}{{/type:struct}}] __{{field:name}}
+if {{field:name}} is not None:
+    __{{field:name}} = (
     <{{#type:struct}}{{#type:externalProgram?}}{{> ModulePath}}.{{!
         }}{{/type:externalProgram?}}{{struct:name}}{{/type:struct}}?> {{!
     }}{{field:name}}).c_{{#field:type}}{{type:name}}{{/field:type}}
-deref(self.c_{{struct:name}}).{{field:name}} = deref(__{{field:name}}.get()){{!
+    deref(inst.c_{{struct:name}}).{{field:name}} = deref(__{{field:name}}.get()){{!
 }}{{/type:struct?}}{{!
 }}{{#type:list?}}{{!
-}}pylist = {{type:flat_name}}({{field:name}})
-deref(self.c_{{struct:name}}).{{field:name}} = deref(
-    (<{{type:flat_name}}> pylist)._vector){{!
+}}cdef {{type:flat_name}} _{{field:name}}
+if {{field:name}} is not None:
+    _{{field:name}} = {{type:flat_name}}({{field:name}})
+    deref(inst.c_{{struct:name}}).{{field:name}} = deref(_{{field:name}}._vector){{!
 }}{{/type:list?}}{{!
 }}{{#type:set?}}{{!
-}}pyset = {{type:flat_name}}({{field:name}})
-deref(self.c_{{struct:name}}).{{field:name}} = deref(
-    (<{{type:flat_name}}> pyset)._set){{!
+}}cdef {{type:flat_name}} _{{field:name}}
+if {{field:name}} is not None:
+    _{{field:name}} = {{type:flat_name}}({{field:name}})
+    deref(inst.c_{{struct:name}}).{{field:name}} = deref(_{{field:name}}._set){{!
 }}{{/type:set?}}{{!
 }}{{#type:map?}}{{!
-}}pymap = {{type:flat_name}}({{field:name}})
-deref(self.c_{{struct:name}}).{{field:name}} = deref(
-    (<{{type:flat_name}}> pymap)._map){{!
+}}cdef {{type:flat_name}} _{{field:name}}
+if {{field:name}} is not None:
+    _{{field:name}} = {{type:flat_name}}({{field:name}})
+    deref(inst.c_{{struct:name}}).{{field:name}} = deref(_{{field:name}}._map){{!
 }}{{/type:map?}}{{!
 }}{{#type:enum?}}{{!
-}}deref(self.c_{{struct:name}}).{{field:name}} = {{#type:enum}}{{!
+}}if {{field:name}} is not None:
+    deref(inst.c_{{struct:name}}).{{field:name}} = {{#type:enum}}{{!
 }}{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}{{!
 }}{{enum:name}}{{/type:enum}}_to_cpp({{field:name}})
 {{/type:enum?}}

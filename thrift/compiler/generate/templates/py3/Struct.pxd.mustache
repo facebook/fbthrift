@@ -32,7 +32,8 @@ from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
-from thrift.py3.exceptions cimport cTException, TException
+from thrift.py3.exceptions cimport cTException
+cimport thrift.py3.types
 {{#program:includeNamespaces}}
 cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}types
 {{/program:includeNamespaces}}
@@ -59,12 +60,22 @@ cdef c{{enum:name}} {{enum:name}}_to_cpp(value)
 cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
 }} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":
 {{/first?}}
+    cdef cppclass c{{struct:name}}__isset "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::__isset":
+    {{#struct:fields}}
+        bint {{field:name}}
+    {{/struct:fields}}
+
+    # Forward Declaration
+    cdef cppclass c{{struct:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}"{{#struct:exception?}}(cTException){{/struct:exception?}}
+
     cdef cppclass c{{struct:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}"{{#struct:exception?}}(cTException){{/struct:exception?}}:
         c{{struct:name}}() except +
+        c{{struct:name}}(const c{{struct:name}}&) except +
         bint operator==(c{{struct:name}}&)
     {{#struct:fields}}
         {{#field:type}}{{> CythonCppWrapperFieldType}}{{/field:type}} {{field:name}}
     {{/struct:fields}}
+        c{{struct:name}}__isset __isset
 
 {{/program:structs}}
 
@@ -73,7 +84,12 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
     cdef shared_ptr[c{{struct:name}}] move(unique_ptr[c{{struct:name}}]){{/program:structs}}
 
 {{#program:structs}}
-cdef class {{struct:name}}{{#struct:exception?}}(TException){{/struct:exception?}}:
+# Forward Definition of the cython struct
+cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.types.Exception){{/struct:exception?}}{{^struct:exception?}}(thrift.py3.types.Struct){{/struct:exception?}}
+
+cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.types.Exception){{/struct:exception?}}{{^struct:exception?}}(thrift.py3.types.Struct){{/struct:exception?}}:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[c{{struct:name}}] c_{{struct:name}}
     {{!Memoized Python wrappers of struct fields, created lazily}}
     {{#struct:fields}}
@@ -91,6 +107,8 @@ cdef class {{struct:name}}{{#struct:exception?}}(TException){{/struct:exception?
 
 {{#program:containerTypes}}
 cdef class {{type:flat_name}}:
+    cdef object __hash
+    cdef object __weakref__
 {{#type:listElemType}}
     cdef shared_ptr[vector[{{> CythonCppWrapperFieldType}}]] _vector
     @staticmethod

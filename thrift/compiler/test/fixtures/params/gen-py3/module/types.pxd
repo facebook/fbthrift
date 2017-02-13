@@ -13,7 +13,8 @@ from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
-from thrift.py3.exceptions cimport cTException, TException
+from thrift.py3.exceptions cimport cTException
+cimport thrift.py3.types
 
 
 
@@ -23,51 +24,71 @@ from thrift.py3.exceptions cimport cTException, TException
 
 
 cdef class List__i32:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[vector[int32_t]] _vector
     @staticmethod
     cdef create(shared_ptr[vector[int32_t]])
 
 cdef class Map__i32_List__i32:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cmap[int32_t,vector[int32_t]]] _map
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,vector[int32_t]]])
 
 cdef class Set__i32:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cset[int32_t]] _set
     @staticmethod
     cdef create(shared_ptr[cset[int32_t]])
 
 cdef class Map__i32_Set__i32:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cmap[int32_t,cset[int32_t]]] _map
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,cset[int32_t]]])
 
 cdef class Map__i32_i32:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cmap[int32_t,int32_t]] _map
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,int32_t]])
 
 cdef class List__Map__i32_i32:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[vector[cmap[int32_t,int32_t]]] _vector
     @staticmethod
     cdef create(shared_ptr[vector[cmap[int32_t,int32_t]]])
 
 cdef class List__Set__i32:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[vector[cset[int32_t]]] _vector
     @staticmethod
     cdef create(shared_ptr[vector[cset[int32_t]]])
 
 cdef class Map__i32_Map__i32_Set__i32:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cmap[int32_t,cmap[int32_t,cset[int32_t]]]] _map
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,cmap[int32_t,cset[int32_t]]]])
 
 cdef class List__Map__i32_Map__i32_Set__i32:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]] _vector
     @staticmethod
     cdef create(shared_ptr[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]])
 
 cdef class List__List__Map__i32_Map__i32_Set__i32:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]] _vector
     @staticmethod
     cdef create(shared_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]])

@@ -41,9 +41,12 @@ from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from cython.operator cimport dereference as deref, preincrement as inc
-from thrift.py3.exceptions cimport TException
+import thrift.py3.types
+cimport thrift.py3.types
+from thrift.py3.types import NOTSET
 cimport thrift.py3.std_libcpp as std_libcpp
 
+import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
 {{#program:includeNamespaces}}
@@ -69,20 +72,70 @@ cdef c{{enum:name}} {{enum:name}}_to_cpp(value):
 
 
 {{#program:structs}}
-cdef class {{struct:name}}{{#struct:exception?}}(TException){{/struct:exception?}}:
+cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.types.Exception){{/struct:exception?}}{{^struct:exception?}}(thrift.py3.types.Struct){{/struct:exception?}}:
+
     def __init__(
         {{struct:name}} self{{#struct:fields}},
-        {{field:name}}{{/struct:fields}}
+        {{field:name}}=None{{/struct:fields}}
     ):
         self.c_{{struct:name}} = make_shared[c{{struct:name}}]()
+
+        inst = self
         {{#struct:fields}}
         {{#field:type}}
         {{> CythonAssignField}}
 
+            deref(inst.c_{{struct:name}}).__isset.{{field:name}} = True
+
         {{/field:type}}
         {{/struct:fields}}
-        {{^struct:fields}}pass
-{{/struct:fields}}
+
+    {{^struct:exception?}}
+    def __call__(
+        {{struct:name}} self{{#struct:fields}},
+        {{field:name}}=NOTSET{{/struct:fields}}
+    ):
+        changes = any(({{#struct:fields}}
+            {{field:name}} is not NOTSET,
+            {{/struct:fields}}
+        ))
+
+        if not changes:
+            return self
+
+        inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}})
+        inst.c_{{struct:name}} = make_shared[c{{struct:name}}](deref(self.c_{{struct:name}}))
+        cdef {{struct:name}} defaults = {{struct:name}}_defaults
+
+        # Convert None's to default value.
+        {{#struct:fields}}
+        if {{field:name}} is None:
+            deref(inst.c_{{struct:name}}).{{field:name}} = deref(defaults.c_{{struct:name}}).{{field:name}}
+            deref(inst.c_{{struct:name}}).__isset.{{field:name}} = False
+        if {{field:name}} is NOTSET:
+            {{field:name}} = None
+        {{/struct:fields}}
+
+        {{#struct:fields}}
+        {{#field:type}}
+        {{> CythonAssignField}}
+
+            deref(inst.c_{{struct:name}}).__isset.{{field:name}} = True
+
+        {{/field:type}}
+        {{/struct:fields}}
+        return inst
+    {{/struct:exception?}}
+
+    def __iter__(self):
+        {{#struct:fields}}
+        yield '{{field:name}}', self.{{field:name}}
+        {{/struct:fields}}
+
+    def __bool__(self):
+        return {{#struct:fields}}{{!
+            }}deref(self.c_{{struct:name}}).__isset.{{field:name}}{{!
+            }}{{^last?}} or {{/last?}}{{/struct:fields}}
 
     @staticmethod
     cdef create(shared_ptr[c{{struct:name}}] c_{{struct:name}}):
@@ -94,6 +147,12 @@ cdef class {{struct:name}}{{#struct:exception?}}(TException){{/struct:exception?
     @property
     def {{field:name}}(self):
         {{#field:type}}
+        {{^field:value}}
+        {{! If there is no value and not ___isset we can say its None}}
+        if not deref(self.c_{{struct:name}}).__isset.{{field:name}}:
+            return None
+        {{/field:value}}
+
         {{> CythonStructGetter}}
 
         {{/field:type}}
@@ -120,12 +179,21 @@ cdef class {{struct:name}}{{#struct:exception?}}(TException){{/struct:exception?
         return not cmp
 
     def __hash__({{struct:name}} self):
-        return hash((
-          {{#struct:fields}}
-          self.{{field:name}},
-          {{/struct:fields}}
-        ))
+        if not self.__hash:
+            self.__hash = hash((
+            {{#struct:fields}}
+            self.{{field:name}},
+            {{/struct:fields}}
+            ))
+        return self.__hash
 
+    def __repr__({{struct:name}} self):
+        return f'{{struct:name}}({{#struct:fields}}{{field:name}}={repr(self.{{field:name}})}{{^last?}}, {{/last?}}{{/struct:fields}})'
+{{^struct:exception?}}
+
+
+{{struct:name}}_defaults = {{struct:name}}()
+{{/struct:exception?}}
 
 
 {{/program:structs}}
@@ -154,6 +222,15 @@ cdef class {{type:flat_name}}:
         return inst
 
     def __getitem__(self, int index):
+        size = len(self)
+        # Convert a negative index
+        if index < 0:
+            index = size - index
+        if index >= size:
+            raise IndexError('list index out of range')
+        # Support negative indexes
+        if index < 0:
+            index = size - index
         {{#type:listElemType}}
         cdef {{> ContainerCythonFieldTypeConditionally}} citem = (
             deref(self._vector.get())[index])
@@ -179,9 +256,13 @@ cdef class {{type:flat_name}}:
         return cop == 2
 
     def __hash__(self):
-        return hash(tuple(self))
+        if not self.__hash:
+            self._hash = hash(tuple(self))
+        return self.__hash
 
     def __contains__(self, item):
+        if not self:
+            return False
         cdef {{#type:listElemType}}{{!
           }}{{> ContainerCythonFieldTypeConditionally}} citem = {{!
           }}{{> CythonPythonToCppItem}}{{/type:listElemType}}
@@ -190,6 +271,8 @@ cdef class {{type:flat_name}}:
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
+        if not self:
+            raise StopIteration
         cdef {{#type:listElemType}}{{!
             }}{{>ContainerCythonFieldTypeConditionally}}{{!
             }}{{/type:listElemType}} citem
@@ -198,7 +281,14 @@ cdef class {{type:flat_name}}:
                 }}{{> ContainerCythonCppToPythonItem}}{{!
                 }}{{/type:listElemType}}
 
+    def __repr__(self):
+        if not self:
+            return 'i[]'
+        return f'i[{", ".join(map(repr, self))}]'
+
     def __reversed__(self):
+        if not self:
+            raise StopIteration
         cdef {{#type:listElemType}}{{!
             }}{{>ContainerCythonFieldTypeConditionally}}{{!
             }}{{/type:listElemType}} citem
@@ -213,6 +303,8 @@ cdef class {{type:flat_name}}:
             inc(loc)
 
     def index(self, item):
+        if not self:
+            raise ValueError(f'{item} is not in list')
         cdef {{#type:listElemType}}{{!
             }}{{> ContainerCythonFieldTypeConditionally}} citem = {{!
             }}{{> CythonPythonToCppItem}}{{/type:listElemType}}
@@ -222,9 +314,11 @@ cdef class {{type:flat_name}}:
             }}std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError("{} is not in list".format(item))
+        raise ValueError(f'{item} is not in list')
 
     def count(self, item):
+        if not self:
+            return 0
         cdef {{#type:listElemType}}{{!
             }}{{> ContainerCythonFieldTypeConditionally}} citem = {{!
             }}{{> CythonPythonToCppItem}}{{/type:listElemType}}
@@ -254,14 +348,25 @@ Sequence.register({{type:flat_name}})
         return inst
 
     def __contains__(self, item):
+        if not self:
+            return False
         return pbool(deref(self._set).count({{#type:setElemType}}{{>CythonPythonToCppItem}}{{/type:setElemType}}))
 
     def __len__(self):
         return deref(self._set).size()
 
     def __iter__(self):
+        if not self:
+            raise StopIteration
         for citem in deref(self._set):
             yield {{#type:setElemType}}{{> ContainerCythonCppToPythonItem}}{{/type:setElemType}}
+
+    def __repr__(self):
+    {{=<% %>=}}
+        if not self:
+            return 'iset()'
+        return f'i{{{", ".join(map(repr, self))}}}'
+    <%={{ }}=%>
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -328,7 +433,9 @@ Sequence.register({{type:flat_name}})
             return Set.__ge__(self, other)
 
     def __hash__(self):
-        return hash(tuple(self))
+        if not self.__hash:
+            self.__hash = hash(tuple(self))
+        return self.__hash
 
     def __and__(self, other):
         if not isinstance(self, {{type:flat_name}}):
@@ -416,7 +523,6 @@ Sequence.register({{type:flat_name}})
         return self >= other
 
 
-
 Set.register({{type:flat_name}})
 {{/type:set?}}
 {{#type:map?}}
@@ -439,12 +545,14 @@ Set.register({{type:flat_name}})
         return inst
 
     def __getitem__(self, key):
+        if not self:
+            raise KeyError(f'{key}')
         cdef {{#type:keyType}}{{> ContainerCythonFieldTypeConditionally}} ckey = {{!
             }}{{> CythonPythonToCppKey}}{{/type:keyType}}
         cdef cmap[{{>CythonMapKeyValueConditionally}}].iterator iter = deref(
             self._map).find(ckey)
         if iter == deref(self._map).end():
-            raise KeyError(str(key))
+            raise KeyError(f'{key}')
         cdef {{#type:valueType}}{{!
             }}{{> ContainerCythonFieldTypeConditionally}} {{!
             }}citem = deref(iter).second{{/type:valueType}}
@@ -455,6 +563,8 @@ Set.register({{type:flat_name}})
         return deref(self._map).size()
 
     def __iter__(self):
+        if not self:
+            raise StopIteration
         cdef {{#type:keyType}}{{!
             }}{{> ContainerCythonFieldTypeConditionally}}{{/type:keyType}} citem
         for pair in deref(self._map):
@@ -480,7 +590,18 @@ Set.register({{type:flat_name}})
         return cop == 2
 
     def __hash__(self):
-        return hash(tuple((tuple(self), tuple(self[k] for k in self))))
+        if not self.__hash:
+            self.__hash = hash(tuple(self.items()))
+        return self.__hash
+
+    def __repr__(self):
+    {{=<% %>=}}
+        if not self:
+            return 'i{}'
+        return f'i{{{", ".join(map(lambda i: f"{i[0]}: {i[1]}", self.items()))}}}'
+    <%={{ }}=%>
+
+
 
     def __contains__(self, key):
         cdef {{#type:keyType}}{{!
@@ -489,6 +610,8 @@ Set.register({{type:flat_name}})
         return deref(self._map).count(ckey) > 0
 
     def get(self, key, default=None):
+        if not self:
+            return default
         cdef {{#type:keyType}}{{!
             }}{{> ContainerCythonFieldTypeConditionally}} ckey = {{!
             }}{{> CythonPythonToCppKey}}{{/type:keyType}}
@@ -507,6 +630,8 @@ Set.register({{type:flat_name}})
         return self.__iter__()
 
     def values(self):
+        if not self:
+            raise StopIteration
         cdef {{#type:valueType}}{{!
           }}{{> ContainerCythonFieldTypeConditionally}}{{!
           }}{{/type:valueType}}{{!!
@@ -518,6 +643,8 @@ Set.register({{type:flat_name}})
               }}{{/type:valueType}}
 
     def items(self):
+        if not self:
+            raise StopIteration
         cdef {{#type:keyType}}{{!
           }}{{> ContainerCythonFieldTypeConditionally}}{{!
           }}{{/type:keyType}}{{!

@@ -12,9 +12,12 @@ from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from cython.operator cimport dereference as deref, preincrement as inc
-from thrift.py3.exceptions cimport TException
+import thrift.py3.types
+cimport thrift.py3.types
+from thrift.py3.types import NOTSET
 cimport thrift.py3.std_libcpp as std_libcpp
 
+import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
 
@@ -30,17 +33,72 @@ cdef cMyEnum MyEnum_to_cpp(value):
         return MyEnum__MyValue2
 
 
-cdef class MyStruct:
+cdef class MyStruct(thrift.py3.types.Struct):
+
     def __init__(
         MyStruct self,
-        MyIntField,
-        MyStringField
+        MyIntField=None,
+        MyStringField=None
     ):
         self.c_MyStruct = make_shared[cMyStruct]()
-        deref(self.c_MyStruct).MyIntField = MyIntField
+
+        inst = self
+        if MyIntField is not None:
+            deref(inst.c_MyStruct).MyIntField = MyIntField
+            deref(inst.c_MyStruct).__isset.MyIntField = True
+
         if MyStringField is not None:
-            deref(self.c_MyStruct).MyStringField = MyStringField.encode('UTF-8')
-        
+            deref(inst.c_MyStruct).MyStringField = MyStringField.encode('UTF-8')
+            deref(inst.c_MyStruct).__isset.MyStringField = True
+
+
+    def __call__(
+        MyStruct self,
+        MyIntField=NOTSET,
+        MyStringField=NOTSET
+    ):
+        changes = any((
+            MyIntField is not NOTSET,
+
+            MyStringField is not NOTSET,
+        ))
+
+        if not changes:
+            return self
+
+        inst = <MyStruct>MyStruct.__new__(MyStruct)
+        inst.c_MyStruct = make_shared[cMyStruct](deref(self.c_MyStruct))
+        cdef MyStruct defaults = MyStruct_defaults
+
+        # Convert None's to default value.
+        if MyIntField is None:
+            deref(inst.c_MyStruct).MyIntField = deref(defaults.c_MyStruct).MyIntField
+            deref(inst.c_MyStruct).__isset.MyIntField = False
+        if MyIntField is NOTSET:
+            MyIntField = None
+        if MyStringField is None:
+            deref(inst.c_MyStruct).MyStringField = deref(defaults.c_MyStruct).MyStringField
+            deref(inst.c_MyStruct).__isset.MyStringField = False
+        if MyStringField is NOTSET:
+            MyStringField = None
+
+        if MyIntField is not None:
+            deref(inst.c_MyStruct).MyIntField = MyIntField
+            deref(inst.c_MyStruct).__isset.MyIntField = True
+
+        if MyStringField is not None:
+            deref(inst.c_MyStruct).MyStringField = MyStringField.encode('UTF-8')
+            deref(inst.c_MyStruct).__isset.MyStringField = True
+
+        return inst
+
+    def __iter__(self):
+        yield 'MyIntField', self.MyIntField
+        yield 'MyStringField', self.MyStringField
+
+    def __bool__(self):
+        return deref(self.c_MyStruct).__isset.MyIntField or deref(self.c_MyStruct).__isset.MyStringField
+
     @staticmethod
     cdef create(shared_ptr[cMyStruct] c_MyStruct):
         inst = <MyStruct>MyStruct.__new__(MyStruct)
@@ -49,10 +107,16 @@ cdef class MyStruct:
 
     @property
     def MyIntField(self):
+        if not deref(self.c_MyStruct).__isset.MyIntField:
+            return None
+
         return self.c_MyStruct.get().MyIntField
 
     @property
     def MyStringField(self):
+        if not deref(self.c_MyStruct).__isset.MyStringField:
+            return None
+
         return self.c_MyStruct.get().MyStringField.decode('UTF-8')
 
 
@@ -76,11 +140,18 @@ cdef class MyStruct:
         return not cmp
 
     def __hash__(MyStruct self):
-        return hash((
-          self.MyIntField,
-          self.MyStringField,
-        ))
+        if not self.__hash:
+            self.__hash = hash((
+            self.MyIntField,
+            self.MyStringField,
+            ))
+        return self.__hash
 
+    def __repr__(MyStruct self):
+        return f'MyStruct(MyIntField={repr(self.MyIntField)}, MyStringField={repr(self.MyStringField)})'
+
+
+MyStruct_defaults = MyStruct()
 
 
 

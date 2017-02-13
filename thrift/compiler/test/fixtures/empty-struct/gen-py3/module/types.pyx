@@ -12,21 +12,47 @@ from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
 from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from cython.operator cimport dereference as deref, preincrement as inc
-from thrift.py3.exceptions cimport TException
+import thrift.py3.types
+cimport thrift.py3.types
+from thrift.py3.types import NOTSET
 cimport thrift.py3.std_libcpp as std_libcpp
 
+import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
 from enum import Enum
 
 
 
 
-cdef class Empty:
+cdef class Empty(thrift.py3.types.Struct):
+
     def __init__(
         Empty self
     ):
         self.c_Empty = make_shared[cEmpty]()
-        pass
+
+        inst = self
+
+    def __call__(
+        Empty self
+    ):
+        changes = any((        ))
+
+        if not changes:
+            return self
+
+        inst = <Empty>Empty.__new__(Empty)
+        inst.c_Empty = make_shared[cEmpty](deref(self.c_Empty))
+        cdef Empty defaults = Empty_defaults
+
+        # Convert None's to default value.
+
+        return inst
+
+    def __iter__(self):
+
+    def __bool__(self):
+        return 
 
     @staticmethod
     cdef create(shared_ptr[cEmpty] c_Empty):
@@ -55,9 +81,16 @@ cdef class Empty:
         return not cmp
 
     def __hash__(Empty self):
-        return hash((
-        ))
+        if not self.__hash:
+            self.__hash = hash((
+            ))
+        return self.__hash
 
+    def __repr__(Empty self):
+        return f'Empty()'
+
+
+Empty_defaults = Empty()
 
 
 

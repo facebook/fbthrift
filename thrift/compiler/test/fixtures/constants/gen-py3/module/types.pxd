@@ -13,7 +13,8 @@ from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
-from thrift.py3.exceptions cimport cTException, TException
+from thrift.py3.exceptions cimport cTException
+cimport thrift.py3.types
 
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
@@ -37,23 +38,50 @@ cdef cCity City_to_cpp(value)
 cdef cCompany Company_to_cpp(value)
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
+    cdef cppclass cInternship__isset "cpp2::Internship::__isset":
+        bint weeks
+        bint title
+        bint employer
+
+    # Forward Declaration
+    cdef cppclass cInternship "cpp2::Internship"
+
     cdef cppclass cInternship "cpp2::Internship":
         cInternship() except +
+        cInternship(const cInternship&) except +
         bint operator==(cInternship&)
         int32_t weeks
         string title
         cCompany employer
+        cInternship__isset __isset
+
+    cdef cppclass cUnEnumStruct__isset "cpp2::UnEnumStruct::__isset":
+        bint city
+
+    # Forward Declaration
+    cdef cppclass cUnEnumStruct "cpp2::UnEnumStruct"
 
     cdef cppclass cUnEnumStruct "cpp2::UnEnumStruct":
         cUnEnumStruct() except +
+        cUnEnumStruct(const cUnEnumStruct&) except +
         bint operator==(cUnEnumStruct&)
         cCity city
+        cUnEnumStruct__isset __isset
+
+    cdef cppclass cRange__isset "cpp2::Range::__isset":
+        bint min
+        bint max
+
+    # Forward Declaration
+    cdef cppclass cRange "cpp2::Range"
 
     cdef cppclass cRange "cpp2::Range":
         cRange() except +
+        cRange(const cRange&) except +
         bint operator==(cRange&)
         int32_t min
         int32_t max
+        cRange__isset __isset
 
 
 cdef extern from "<utility>" namespace "std" nogil:
@@ -61,19 +89,34 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cUnEnumStruct] move(unique_ptr[cUnEnumStruct])
     cdef shared_ptr[cRange] move(unique_ptr[cRange])
 
-cdef class Internship:
+# Forward Definition of the cython struct
+cdef class Internship(thrift.py3.types.Struct)
+
+cdef class Internship(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cInternship] c_Internship
 
     @staticmethod
     cdef create(shared_ptr[cInternship] c_Internship)
 
-cdef class UnEnumStruct:
+# Forward Definition of the cython struct
+cdef class UnEnumStruct(thrift.py3.types.Struct)
+
+cdef class UnEnumStruct(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cUnEnumStruct] c_UnEnumStruct
 
     @staticmethod
     cdef create(shared_ptr[cUnEnumStruct] c_UnEnumStruct)
 
-cdef class Range:
+# Forward Definition of the cython struct
+cdef class Range(thrift.py3.types.Struct)
+
+cdef class Range(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cRange] c_Range
 
     @staticmethod
@@ -81,56 +124,78 @@ cdef class Range:
 
 
 cdef class Map__string_i32:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cmap[string,int32_t]] _map
     @staticmethod
     cdef create(shared_ptr[cmap[string,int32_t]])
 
 cdef class List__Map__string_i32:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[vector[cmap[string,int32_t]]] _vector
     @staticmethod
     cdef create(shared_ptr[vector[cmap[string,int32_t]]])
 
 cdef class List__Range:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[vector[cRange]] _vector
     @staticmethod
     cdef create(shared_ptr[vector[cRange]])
 
 cdef class List__Internship:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[vector[cInternship]] _vector
     @staticmethod
     cdef create(shared_ptr[vector[cInternship]])
 
 cdef class List__string:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[vector[string]] _vector
     @staticmethod
     cdef create(shared_ptr[vector[string]])
 
 cdef class List__i32:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[vector[int32_t]] _vector
     @staticmethod
     cdef create(shared_ptr[vector[int32_t]])
 
 cdef class Set__i32:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cset[int32_t]] _set
     @staticmethod
     cdef create(shared_ptr[cset[int32_t]])
 
 cdef class Set__string:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cset[string]] _set
     @staticmethod
     cdef create(shared_ptr[cset[string]])
 
 cdef class Map__i32_i32:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cmap[int32_t,int32_t]] _map
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,int32_t]])
 
 cdef class Map__i32_string:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cmap[int32_t,string]] _map
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,string]])
 
 cdef class Map__string_string:
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cmap[string,string]] _map
     @staticmethod
     cdef create(shared_ptr[cmap[string,string]])

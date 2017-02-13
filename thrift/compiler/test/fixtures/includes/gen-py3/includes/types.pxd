@@ -13,22 +13,36 @@ from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
-from thrift.py3.exceptions cimport cTException, TException
+from thrift.py3.exceptions cimport cTException
+cimport thrift.py3.types
 
 
 
 
 cdef extern from "gen-cpp2/includes_types.h" namespace "cpp2":
+    cdef cppclass cIncluded__isset "cpp2::Included::__isset":
+        bint MyIntField
+
+    # Forward Declaration
+    cdef cppclass cIncluded "cpp2::Included"
+
     cdef cppclass cIncluded "cpp2::Included":
         cIncluded() except +
+        cIncluded(const cIncluded&) except +
         bint operator==(cIncluded&)
         int64_t MyIntField
+        cIncluded__isset __isset
 
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cIncluded] move(unique_ptr[cIncluded])
 
-cdef class Included:
+# Forward Definition of the cython struct
+cdef class Included(thrift.py3.types.Struct)
+
+cdef class Included(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
     cdef shared_ptr[cIncluded] c_Included
 
     @staticmethod
