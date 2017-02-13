@@ -180,7 +180,6 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
             folly::to<std::string>(socketAddr->getPort())};
       }
     }
-    std::shared_ptr<LoadTestAsyncClient> loadClient;
     if (config->useSSL()) {
       configs["thrift_security_mech"] = "tls";
       configs["thrift_security"] = "required";
@@ -201,10 +200,9 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
     if (!config->SASLServiceTier().empty()) {
       configs["thrift_security_service_tier"] = config->SASLServiceTier();
     }
-    loadClient.reset(facebook::servicerouter::cpp2::getClientFactory()
-                     .getClient<LoadTestAsyncClient>(
-                       config->srTier(), &eb_, options, configs));
-    return loadClient;
+    return facebook::servicerouter::cpp2::getClientFactory()
+                     .getClientUnique<LoadTestAsyncClient>(
+                       config->srTier(), &eb_, options, configs);
   } else {
     if (config->useHTTP1Protocol()) {
       TAsyncTransport::UniquePtr socket(
