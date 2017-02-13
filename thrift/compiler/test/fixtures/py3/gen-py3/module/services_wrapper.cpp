@@ -523,6 +523,19 @@ folly::Future<std::unique_ptr<std::set<std::string>>> SimpleServiceWrapper::futu
   return future;
 }
 
+folly::Future<std::unique_ptr<std::vector<py3::simple::AnEnum>>> SimpleServiceWrapper::future_contain_enum(
+  std::unique_ptr<std::vector<py3::simple::AnEnum>> the_enum
+) {
+  folly::Promise<std::unique_ptr<std::vector<py3::simple::AnEnum>>> promise;
+  auto future = promise.getFuture();
+  call_cy_SimpleService_contain_enum(
+    this->if_object,
+    std::move(promise),
+    std::move(the_enum)
+  );
+  return future;
+}
+
 std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object) {
   return std::make_shared<SimpleServiceWrapper>(if_object);
 }

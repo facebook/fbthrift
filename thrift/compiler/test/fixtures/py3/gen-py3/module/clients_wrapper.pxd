@@ -187,4 +187,8 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "py3::simple":
       vector[string] arg_binaries,
       void (*callback) (PyObject*, cFollyTry[cset[string]]),
       object py_future)
+    void contain_enum(
+      vector[module.types.cAnEnum] arg_the_enum,
+      void (*callback) (PyObject*, cFollyTry[vector[module.types.cAnEnum]]),
+      object py_future)
 

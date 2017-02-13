@@ -580,6 +580,20 @@ cdef void SimpleService_contain_binary_callback(
         citem = make_unique[cset[string]](result.value());
         pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, module.types.Set__binary.create(module.types.move(citem)))
 
+cdef void SimpleService_contain_enum_callback(
+        PyObject* future,
+        cFollyTry[vector[module.types.cAnEnum]] result) with gil:
+    cdef object pyfuture = <object> future
+    cdef unique_ptr[vector[module.types.cAnEnum]] citem
+    if result.hasException():
+        try:
+            result.exception().throwException()
+        except:
+            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+    else:
+        citem = make_unique[vector[module.types.cAnEnum]](result.value());
+        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, module.types.List__AnEnum.create(module.types.move(citem)))
+
 
 cdef class SimpleService:
 
@@ -1073,6 +1087,18 @@ cdef class SimpleService:
         deref(self._module_SimpleService_client).contain_binary(
             deref(module.types.List__binary(arg_binaries)._vector.get()),
             SimpleService_contain_binary_callback,
+            future)
+        return future
+
+    def contain_enum(
+            self,
+            arg_the_enum):
+        future = self.loop.create_future()
+        future.loop = self.loop
+
+        deref(self._module_SimpleService_client).contain_enum(
+            deref(module.types.List__AnEnum(arg_the_enum)._vector.get()),
+            SimpleService_contain_enum_callback,
             future)
         return future
 

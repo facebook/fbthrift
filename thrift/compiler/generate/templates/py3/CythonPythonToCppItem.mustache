@@ -47,4 +47,6 @@ key, include the parallel CythonPythonToCppKey file instead.
   }}](deref({{type:flat_name}}(item)._map.get())){{/type:map?}}{{!
 }}{{#type:enum}}{{!
   }}<{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}{{!
-  }}c{{enum:name}}> {{> ModulePath}}.{{enum:name}}_to_cpp(item){{/type:enum}}
+  }}c{{enum:name}}> {{!
+  }}{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}{{!
+  }}{{enum:name}}_to_cpp(item){{/type:enum}}

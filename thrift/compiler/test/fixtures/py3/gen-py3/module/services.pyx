@@ -69,6 +69,8 @@ cdef extern from "<utility>" namespace "std":
         cFollyPromise[unique_ptr[cset[int32_t]]])
     cdef cFollyPromise[unique_ptr[cset[string]]] move(
         cFollyPromise[unique_ptr[cset[string]]])
+    cdef cFollyPromise[unique_ptr[vector[module.types.cAnEnum]]] move(
+        cFollyPromise[unique_ptr[vector[module.types.cAnEnum]]])
 
 cdef class Promise_i32:
     cdef cFollyPromise[int32_t] cPromise
@@ -238,6 +240,15 @@ cdef class Promise_Set__binary:
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[cset[string]]] cPromise):
         inst = <Promise_Set__binary>Promise_Set__binary.__new__(Promise_Set__binary)
+        inst.cPromise = move(cPromise)
+        return inst
+
+cdef class Promise_List__AnEnum:
+    cdef cFollyPromise[unique_ptr[vector[module.types.cAnEnum]]] cPromise
+
+    @staticmethod
+    cdef create(cFollyPromise[unique_ptr[vector[module.types.cAnEnum]]] cPromise):
+        inst = <Promise_List__AnEnum>Promise_List__AnEnum.__new__(Promise_List__AnEnum)
         inst.cPromise = move(cPromise)
         return inst
 
@@ -1534,6 +1545,40 @@ async def SimpleService_contain_binary_coro(
     else:
         promise.cPromise.setValue(make_unique[cset[string]](deref((<module.types.Set__binary?> result)._set)))
 
+cdef api void call_cy_SimpleService_contain_enum(
+    object self,
+    cFollyPromise[unique_ptr[vector[module.types.cAnEnum]]] cPromise,
+    unique_ptr[vector[module.types.cAnEnum]] the_enum
+) with gil:
+    promise = Promise_List__AnEnum.create(move(cPromise))
+    arg_the_enum = module.types.List__AnEnum.create(module.types.move(the_enum))
+    asyncio.run_coroutine_threadsafe(
+        SimpleService_contain_enum_coro(
+            self,
+            promise,
+            arg_the_enum),
+        loop=self.loop)
+
+async def SimpleService_contain_enum_coro(
+    object self,
+    Promise_List__AnEnum promise,
+    the_enum
+):
+    try:
+      result = await self.contain_enum(
+          the_enum)
+      result = module.types.List__AnEnum(result)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler contain_enum:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[vector[module.types.cAnEnum]](deref((<module.types.List__AnEnum?> result)._vector)))
+
 
 cdef class SimpleServiceInterface(
     ServiceInterface
@@ -1772,5 +1817,11 @@ cdef class SimpleServiceInterface(
             self,
             binaries):
         raise NotImplementedError("async def contain_binary is not implemented")
+
+
+    async def contain_enum(
+            self,
+            the_enum):
+        raise NotImplementedError("async def contain_enum is not implemented")
 
 

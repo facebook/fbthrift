@@ -522,6 +522,19 @@ void SimpleServiceClientWrapper::contain_binary(
   );
 }
 
+void SimpleServiceClientWrapper::contain_enum(
+    std::vector<py3::simple::AnEnum> arg_the_enum,
+    std::function<void(PyObject*, folly::Try<std::vector<py3::simple::AnEnum>>)> callback,
+    PyObject* py_future) {
+  async_client->future_contain_enum(
+    arg_the_enum
+  ).via(event_base.get()).then(
+    [=] (folly::Try<std::vector<py3::simple::AnEnum>>&& result) {
+      callback(py_future, result);
+    }
+  );
+}
+
 
 } // namespace py3
 } // namespace simple

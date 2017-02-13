@@ -179,6 +179,11 @@ cdef class Set__binary:
     @staticmethod
     cdef create(shared_ptr[cset[string]])
 
+cdef class List__AnEnum:
+    cdef shared_ptr[vector[cAnEnum]] _vector
+    @staticmethod
+    cdef create(shared_ptr[vector[cAnEnum]])
+
 cdef class Map__i32_double:
     cdef shared_ptr[cmap[int32_t,double]] _map
     @staticmethod
@@ -208,6 +213,7 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[vector[string]]] move(unique_ptr[vector[vector[string]]])
     cdef shared_ptr[vector[cset[int32_t]]] move(unique_ptr[vector[cset[int32_t]]])
     cdef shared_ptr[vector[cmap[string,string]]] move(unique_ptr[vector[cmap[string,string]]])
+    cdef shared_ptr[vector[cAnEnum]] move(unique_ptr[vector[cAnEnum]])
     cdef shared_ptr[cmap[int32_t,double]] move(unique_ptr[cmap[int32_t,double]])
     cdef shared_ptr[vector[cmap[int32_t,double]]] move(unique_ptr[vector[cmap[int32_t,double]]])
 

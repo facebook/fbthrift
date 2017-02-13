@@ -105,4 +105,5 @@ service SimpleService {
   double lookup_double(1: i32 key)
   binary retrieve_binary(1: binary something)
   set<binary> contain_binary(1: list<binary> binaries)
+  list<AnEnum> contain_enum(1:list<AnEnum> the_enum)
 }

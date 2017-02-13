@@ -2227,6 +2227,86 @@ cdef class Set__binary:
 
 Set.register(Set__binary)
 
+cdef class List__AnEnum:
+    def __init__(self, items=None):
+        if isinstance(items, List__AnEnum):
+            self._vector = (<List__AnEnum> items)._vector
+        else:
+          self._vector = make_shared[vector[cAnEnum]]()
+          if items:
+              for item in items:
+                  deref(self._vector).push_back(<cAnEnum> AnEnum_to_cpp(item))
+
+    @staticmethod
+    cdef create(
+            shared_ptr[vector[cAnEnum]] c_items):
+        inst = <List__AnEnum>List__AnEnum.__new__(List__AnEnum)
+        inst._vector = c_items
+        return inst
+
+    def __getitem__(self, int index):
+        cdef cAnEnum citem = (
+            deref(self._vector.get())[index])
+        return module.types.AnEnum(<int> citem)
+
+    def __len__(self):
+        return deref(self._vector).size()
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
+            return cop != 2
+        if (len(self) != len(other)):
+            return cop != 2
+
+        for one, two in zip(self, other):
+            if one != two:
+                return cop != 2
+
+        return cop == 2
+
+    def __hash__(self):
+        return hash(tuple(self))
+
+    def __contains__(self, item):
+        cdef cAnEnum citem = <cAnEnum> AnEnum_to_cpp(item)
+        cdef vector[cAnEnum] vec = deref(
+            self._vector.get())
+        return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        cdef cAnEnum citem
+        for citem in deref(self._vector):
+            yield module.types.AnEnum(<int> citem)
+
+    def __reversed__(self):
+        cdef cAnEnum citem
+        cdef vector[cAnEnum] vec = deref(
+            self._vector.get())
+        cdef vector[cAnEnum].reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield module.types.AnEnum(<int> citem)
+            inc(loc)
+
+    def index(self, item):
+        cdef cAnEnum citem = <cAnEnum> AnEnum_to_cpp(item)
+        cdef vector[cAnEnum] vec = deref(self._vector.get())
+        cdef vector[cAnEnum].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
+        if loc != vec.end():
+            return <int64_t> std_libcpp.distance(vec.begin(), loc)
+        raise ValueError("{} is not in list".format(item))
+
+    def count(self, item):
+        cdef cAnEnum citem = <cAnEnum> AnEnum_to_cpp(item)
+        cdef vector[cAnEnum] vec = deref(self._vector.get())
+        return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
+
+
+Sequence.register(List__AnEnum)
+
 cdef class Map__i32_double:
     def __init__(self, items=None):
         if isinstance(items, Map__i32_double):

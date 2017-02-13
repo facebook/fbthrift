@@ -188,6 +188,10 @@ class SimpleServiceClientWrapper {
       std::vector<std::string> arg_binaries,
       std::function<void(PyObject*, folly::Try<std::set<std::string>>)> callback,
       PyObject* py_future);
+    void contain_enum(
+      std::vector<py3::simple::AnEnum> arg_the_enum,
+      std::function<void(PyObject*, folly::Try<std::vector<py3::simple::AnEnum>>)> callback,
+      PyObject* py_future);
 };
 
 
