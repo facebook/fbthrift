@@ -29,7 +29,7 @@ import (
 )
 
 const (
-	DefaultProtoID    = BinaryProtocol
+	DefaultProtoID    = CompactProtocol
 	DefaultClientType = HeaderClientType
 )
 
@@ -377,10 +377,7 @@ func (t *THeaderTransport) flushHeader() error {
 	}
 
 	_, err = hdrbuf.WriteTo(t.transport)
-	if err != nil {
-		return NewTTransportExceptionFromError(err)
-	}
-	return nil
+	return NewTTransportExceptionFromError(err)
 }
 
 func (t *THeaderTransport) flushFramed() error {

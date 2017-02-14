@@ -400,8 +400,8 @@ func (hdr *tHeader) readVarHeader(buf byteReader) error {
 func isCompactFramed(magic uint32) bool {
 	protocolID := int8(magic >> 24)
 	protocolVersion := int8((magic >> 16) & uint32(COMPACT_VERSION_MASK))
-	return uint8(protocolID) == uint8(COMPACT_PROTOCOL_ID) &&
-		protocolVersion == int8(COMPACT_VERSION)
+	return uint8(protocolID) == uint8(COMPACT_PROTOCOL_ID) && (protocolVersion == int8(COMPACT_VERSION) ||
+		protocolVersion == int8(COMPACT_VERSION_BE))
 }
 
 // analyzeFirst32Bit Guess client type from the first 4 bytes
@@ -551,7 +551,7 @@ func (hdr *tHeader) Read(buf *bufio.Reader) error {
 
 func writeTransforms(transforms []TransformID, buf io.Writer) (int, error) {
 	size := 0
-	n, err := writeVarint(int64(len(transforms)), buf)
+	n, err := writeUvarint(uint64(len(transforms)), buf)
 	size += n
 	if err != nil {
 		return size, err
@@ -563,19 +563,13 @@ func writeTransforms(transforms []TransformID, buf io.Writer) (int, error) {
 
 	for _, trans := range transforms {
 		// FIXME: We should only write supported xforms
-		n, err = writeVarint(int64(trans), buf)
+		n, err = writeUvarint(uint64(trans), buf)
 		size += n
 		if err != nil {
 			return size, err
 		}
 	}
 	return size, nil
-}
-
-func writeVarint(v int64, buf io.Writer) (int, error) {
-	var b [10]byte
-	n := binary.PutVarint(b[:], v)
-	return buf.Write(b[:n])
 }
 
 func writeUvarint(v uint64, buf io.Writer) (int, error) {
@@ -585,7 +579,7 @@ func writeUvarint(v uint64, buf io.Writer) (int, error) {
 }
 
 func writeVarString(s string, buf io.Writer) (int, error) {
-	n, err := writeVarint(int64(len(s)), buf)
+	n, err := writeUvarint(uint64(len(s)), buf)
 	if err != nil {
 		return n, err
 	}
@@ -600,13 +594,13 @@ func writeInfoHeaders(headers map[string]string, infoidtype InfoIDType, buf io.W
 		return 0, nil
 	}
 
-	n, err := writeVarint(int64(infoidtype), buf)
+	n, err := writeUvarint(uint64(infoidtype), buf)
 	size += n
 	if err != nil {
 		return 0, err
 	}
 
-	n, err = writeVarint(int64(cnt), buf)
+	n, err = writeUvarint(uint64(cnt), buf)
 	size += n
 	if err != nil {
 		return 0, err

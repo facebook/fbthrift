@@ -44,7 +44,7 @@ func (p *THeaderProtocolFactory) GetProtocol(trans TTransport) TProtocol {
 func NewTHeaderProtocol(trans TTransport) *THeaderProtocol {
 	p := &THeaderProtocol{
 		origTransport: trans,
-		protoID:       BinaryProtocol,
+		protoID:       CompactProtocol,
 	}
 	if et, ok := trans.(*THeaderTransport); ok {
 		p.trans = et

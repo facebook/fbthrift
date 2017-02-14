@@ -28,8 +28,8 @@ import (
 
 const (
 	COMPACT_PROTOCOL_ID       = 0x082
-	COMPACT_VERSION           = 1
-	COMPACT_VERSION_BE        = 2
+	COMPACT_VERSION           = 0x01
+	COMPACT_VERSION_BE        = 0x02
 	COMPACT_VERSION_MASK      = 0x1f
 	COMPACT_TYPE_MASK         = 0x0E0
 	COMPACT_TYPE_BITS         = 0x07
@@ -133,7 +133,7 @@ func (p *TCompactProtocol) WriteMessageBegin(name string, typeId TMessageType, s
 	if err != nil {
 		return NewTProtocolException(err)
 	}
-	err = p.writeByteDirect((COMPACT_VERSION & COMPACT_VERSION_MASK) | ((byte(typeId) << COMPACT_TYPE_SHIFT_AMOUNT) & COMPACT_TYPE_MASK))
+	err = p.writeByteDirect((byte(p.version) & COMPACT_VERSION_MASK) | ((byte(typeId) << COMPACT_TYPE_SHIFT_AMOUNT) & COMPACT_TYPE_MASK))
 	if err != nil {
 		return NewTProtocolException(err)
 	}
