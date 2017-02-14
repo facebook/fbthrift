@@ -17,10 +17,12 @@
 #include <thrift/lib/cpp/util/THttpParser.h>
 
 #include <thrift/lib/cpp/transport/TTransportException.h>
+
+#include <folly/String.h>
+
 #include <cstdlib>
 #include <sstream>
 #include <cassert>
-#include <boost/algorithm/string.hpp>
 
 namespace apache { namespace thrift { namespace util {
 
@@ -302,30 +304,29 @@ THttpParser::HttpParseResult THttpParser::parseTrailing() {
   return THttpParser::HTTP_PARSE_RESULT_CONTINUE;
 }
 
-void THttpClientParser::parseHeaderLine(const char* header) {
-  const char* colon = strchr(header, ':');
-  if (colon == nullptr) {
+void THttpClientParser::parseHeaderLine(const char* headerStr) {
+  const folly::StringPiece header = headerStr;
+
+  auto const colonPos = header.find(':');
+  if (colonPos == std::string::npos) {
     return;
   }
-  const char* value = colon + 1;
-  while (*value && *value == ' ') {
-    value++;
-  }
 
-  readHeaders_.insert(std::make_pair(
-    std::string(header, colon - header),
-    std::string(value)
-  ));
+  auto const value = folly::ltrimWhitespace(header.subpiece(colonPos + 1));
 
-  if (boost::istarts_with(header, "Transfer-Encoding")) {
-    if (boost::iends_with(value, "chunked")) {
+  readHeaders_.emplace(header.subpiece(0, colonPos).str(), value.str());
+
+  const folly::AsciiCaseInsensitive i;
+
+  if (header.startsWith("Transfer-Encoding", i)) {
+    if (value.endsWith("chunked", i)) {
       chunked_ = true;
     }
-  } else if (boost::istarts_with(header, "Content-Length")) {
+  } else if (header.startsWith("Content-Length", i)) {
     chunked_ = false;
-    contentLength_ = atoi(value);
-  } else if (boost::istarts_with(header, "Connection")) {
-    if (boost::iends_with(header, "close")) {
+    contentLength_ = atoi(value.begin());
+  } else if (header.startsWith("Connection", i)) {
+    if (header.endsWith("close", i)) {
       connectionClosedByServer_ = true;
     }
   }
