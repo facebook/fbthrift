@@ -34,6 +34,25 @@ const (
 	SimpleJSONProtocol ProtocolID = 5
 )
 
+func (p ProtocolID) String() string {
+	switch p {
+	case BinaryProtocol:
+		return "binary"
+	case JSONProtocol:
+		return "json"
+	case CompactProtocol:
+		return "compact"
+	case DebugProtocol:
+		return "debug"
+	case VirtualProtocol:
+		return "virtual"
+	case SimpleJSONProtocol:
+		return "simplejson"
+	default:
+		return "unknown"
+	}
+}
+
 const (
 	VERSION_MASK = 0xffff0000
 	VERSION_1    = 0x80010000

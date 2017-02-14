@@ -22,10 +22,11 @@ package thrift
 import (
 	"bufio"
 	"bytes"
+	"compress/zlib"
 	"encoding/binary"
 	"fmt"
-	"io"
 	"io/ioutil"
+	"math"
 )
 
 const (
@@ -74,6 +75,8 @@ func NewTHeaderTransport(transport TTransport) *THeaderTransport {
 	return &THeaderTransport{
 		transport: transport,
 		rbuf:      bufio.NewReader(transport),
+		framebuf:  newLimitedByteReader(bytes.NewReader(nil), 0),
+		frameSize: 0,
 
 		wbuf:                       bytes.NewBuffer(nil),
 		writeInfoHeaders:           map[string]string{},
@@ -94,6 +97,23 @@ func (t *THeaderTransport) SeqID() uint32 {
 	return t.seqID
 }
 
+func (t *THeaderTransport) Identity() string {
+	return t.identity
+}
+
+func (t *THeaderTransport) SetIdentity(identity string) {
+	t.identity = identity
+}
+
+func (t *THeaderTransport) PeerIdentity() string {
+	v, ok := t.ReadHeader(IdentityHeader)
+	vers, versok := t.ReadHeader(IDVersionHeader)
+	if ok && versok && vers == IDVersion {
+		return v
+	}
+	return ""
+}
+
 func (t *THeaderTransport) SetPersistentHeader(key, value string) {
 	t.persistentWriteInfoHeaders[key] = value
 }
@@ -105,7 +125,7 @@ func (t *THeaderTransport) PersistentHeader(key string) (string, bool) {
 
 func (t *THeaderTransport) PersistentHeaders() map[string]string {
 	res := map[string]string{}
-	for k, v := range t.writeInfoHeaders {
+	for k, v := range t.persistentWriteInfoHeaders {
 		res[k] = v
 	}
 	return res
@@ -140,6 +160,10 @@ func (t *THeaderTransport) ReadHeader(key string) (string, bool) {
 	if t.readHeader == nil {
 		return "", false
 	}
+	// per the C++ implementation, prefer persistent headers
+	if v, ok := t.readHeader.pHeaders[key]; ok {
+		return v, ok
+	}
 	v, ok := t.readHeader.headers[key]
 	return v, ok
 }
@@ -152,6 +176,9 @@ func (t *THeaderTransport) ReadHeaders() map[string]string {
 	for k, v := range t.readHeader.headers {
 		res[k] = v
 	}
+	for k, v := range t.readHeader.pHeaders {
+		res[k] = v
+	}
 	return res
 }
 
@@ -161,7 +188,9 @@ func (t *THeaderTransport) ProtocolID() ProtocolID {
 
 func (t *THeaderTransport) SetProtocolID(protoID ProtocolID) error {
 	if !(protoID == BinaryProtocol || protoID == CompactProtocol) {
-		return NewTTransportException(NOT_IMPLEMENTED, "unimplemented proto ID")
+		return NewTTransportException(
+			NOT_IMPLEMENTED, fmt.Sprintf("unimplemented proto ID: %s (%#x)", protoID.String(), int64(protoID)),
+		)
 	}
 	t.protoID = protoID
 	return nil
@@ -169,7 +198,9 @@ func (t *THeaderTransport) SetProtocolID(protoID ProtocolID) error {
 
 func (t *THeaderTransport) AddTransform(trans TransformID) error {
 	if sup, ok := supportedTransforms[trans]; !ok || !sup {
-		return NewTTransportException(NOT_IMPLEMENTED, "unimplemented transform ID")
+		return NewTTransportException(
+			NOT_IMPLEMENTED, fmt.Sprintf("unimplemented transform ID: %s (%#x)", trans.String(), int64(trans)),
+		)
 	}
 	for _, t := range t.writeTransforms {
 		if t == trans {
@@ -188,7 +219,7 @@ func (t *THeaderTransport) applyUntransform() error {
 		return err
 	}
 	t.frameSize = uint64(len(out))
-	t.framebuf = newLimitedByteReader(bytes.NewBuffer(out), int64(t.frameSize))
+	t.framebuf = newLimitedByteReader(bytes.NewBuffer(out), int64(t.readHeader.payloadLen))
 	return nil
 }
 
@@ -197,6 +228,9 @@ func (t *THeaderTransport) applyUntransform() error {
 // frame and protocol / metadata info.
 func (t *THeaderTransport) ResetProtocol() error {
 	t.readHeader = nil
+	// TODO(carlverge): We should probably just read in the whole
+	// frame here. A bit of extra memory, probably a lot less CPU.
+	// Needs benchmark to test.
 
 	hdr := &tHeader{}
 	// Consume the header from the input stream
@@ -220,8 +254,8 @@ func (t *THeaderTransport) ResetProtocol() error {
 	}
 
 	// Make sure we can't read past the current frame length
-	t.frameSize = hdr.length
-	t.framebuf = newLimitedByteReader(t.rbuf, int64(hdr.length))
+	t.frameSize = hdr.payloadLen
+	t.framebuf = newLimitedByteReader(t.rbuf, int64(hdr.payloadLen))
 
 	for _, trans := range hdr.transforms {
 		xformer, terr := trans.Untransformer()
@@ -266,10 +300,9 @@ func (t *THeaderTransport) Close() error {
 
 // Read Read from the current framebuffer. EOF if the frame is done.
 func (t *THeaderTransport) Read(buf []byte) (int, error) {
-	if t.framebuf == nil {
-		return 0, NewTTransportExceptionFromError(
-			fmt.Errorf("no framebuffer, ResetProtocol() must be called first"),
-		)
+	// If we detected unframed, just pass the transport up
+	if t.clientType == UnframedDeprecated || t.clientType == UnframedCompactDeprecated {
+		return t.framebuf.Read(buf)
 	}
 	n, err := t.framebuf.Read(buf)
 	// Shouldn't be possibe, but just in case the frame size was flubbed
@@ -282,10 +315,9 @@ func (t *THeaderTransport) Read(buf []byte) (int, error) {
 
 // ReadByte Read a single byte from the current framebuffer. EOF if the frame is done.
 func (t *THeaderTransport) ReadByte() (byte, error) {
-	if t.framebuf == nil {
-		return '0', NewTTransportExceptionFromError(
-			fmt.Errorf("no framebuffer, ResetProtocol() must be called first"),
-		)
+	// If we detected unframed, just pass the transport up
+	if t.clientType == UnframedDeprecated || t.clientType == UnframedCompactDeprecated {
+		return t.framebuf.ReadByte()
 	}
 	b, err := t.framebuf.ReadByte()
 	t.frameSize--
@@ -312,36 +344,36 @@ func (t *THeaderTransport) WriteString(s string) (int, error) {
 
 // RemainingBytes Return how many bytes remain in the current recv framebuffer.
 func (t *THeaderTransport) RemainingBytes() uint64 {
+	if t.clientType == UnframedDeprecated || t.clientType == UnframedCompactDeprecated {
+		// We cannot really tell the size without reading the whole struct in here
+		return math.MaxUint64
+	}
 	return t.frameSize
 }
 
-func (t *THeaderTransport) applyTransforms() error {
-	// Apply transforms if we have them
-	if len(t.writeTransforms) > 0 {
-		// We need to fully transform the output data before we calculate
-		// the payload size for the header
-		tmpbuf := bytes.NewBuffer(nil)
-		var tmpwr io.Writer = bufio.NewWriter(tmpbuf)
-		for _, trans := range t.writeTransforms {
-			xformer, err := trans.Transformer()
+func applyTransforms(buf *bytes.Buffer, transforms []TransformID) (*bytes.Buffer, error) {
+	tmpbuf := bytes.NewBuffer(nil)
+	for _, trans := range transforms {
+		switch trans {
+		case TransformZlib:
+			zwr := zlib.NewWriter(tmpbuf)
+			_, err := buf.WriteTo(zwr)
 			if err != nil {
-				return err
+				return nil, err
 			}
-			tmpwr, err = xformer(tmpwr)
+			err = zwr.Close()
 			if err != nil {
-				return err
+				return nil, err
 			}
+			buf, tmpbuf = tmpbuf, buf
+			tmpbuf.Reset()
+		default:
+			return nil, NewTTransportException(
+				NOT_IMPLEMENTED, fmt.Sprintf("unimplemented transform ID: %s (%#x)", trans.String(), int64(trans)),
+			)
 		}
-		_, err := t.wbuf.WriteTo(tmpbuf)
-		if err != nil {
-			return err
-		}
-
-		// Swap the output buffer with the one we wrote transformed data to
-		t.wbuf.Reset()
-		t.wbuf = tmpbuf
 	}
-	return nil
+	return buf, nil
 }
 
 func (t *THeaderTransport) flushHeader() error {
@@ -352,16 +384,18 @@ func (t *THeaderTransport) flushHeader() error {
 	hdr.clientType = t.clientType
 	hdr.seq = t.seqID
 	hdr.flags = t.flags
+	hdr.transforms = t.writeTransforms
 
 	if t.identity != "" {
-		hdr.headers["identity"] = t.identity
-		hdr.headers["id_version"] = "1"
+		hdr.headers[IdentityHeader] = t.identity
+		hdr.headers[IDVersionHeader] = IDVersion
 	}
 
-	err := t.applyTransforms()
+	outbuf, err := applyTransforms(t.wbuf, t.writeTransforms)
 	if err != nil {
 		return NewTTransportExceptionFromError(err)
 	}
+	t.wbuf = outbuf
 
 	hdr.payloadLen = uint64(t.wbuf.Len())
 	err = hdr.calcLenFromPayload()
@@ -432,7 +466,7 @@ func (t *THeaderTransport) Flush() error {
 	}
 
 	// Remove the non-persistent headers on flush
-	t.writeInfoHeaders = map[string]string{}
+	t.ClearHeaders()
 
 	err = t.transport.Flush()
 	return NewTTransportExceptionFromError(err)

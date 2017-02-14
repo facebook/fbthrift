@@ -67,7 +67,8 @@ func (p *THeaderProtocol) ResetProtocol() error {
 	p.protoID = p.trans.ProtocolID()
 	switch p.protoID {
 	case BinaryProtocol:
-		p.TProtocol = NewTBinaryProtocol(p.trans, false, false)
+		// These defaults match cpp implementation
+		p.TProtocol = NewTBinaryProtocol(p.trans, false, true)
 	case CompactProtocol:
 		p.TProtocol = NewTCompactProtocol(p.trans)
 	default:
@@ -119,4 +120,70 @@ func (p *THeaderProtocol) Skip(fieldType TType) (err error) {
 
 func (p *THeaderProtocol) Transport() TTransport {
 	return p.origTransport
+}
+
+func (p *THeaderProtocol) HeaderTransport() TTransport {
+	return p.trans
+}
+
+// Control underlying header transport
+
+func (p *THeaderProtocol) SetIdentity(identity string) {
+	p.trans.SetIdentity(identity)
+}
+
+func (p *THeaderProtocol) Identity() string {
+	return p.trans.Identity()
+}
+
+func (p *THeaderProtocol) PeerIdentity() string {
+	return p.trans.PeerIdentity()
+}
+
+func (p *THeaderProtocol) SetPersistentHeader(key, value string) {
+	p.trans.SetPersistentHeader(key, value)
+}
+
+func (p *THeaderProtocol) PersistentHeader(key string) (string, bool) {
+	return p.trans.PersistentHeader(key)
+}
+
+func (p *THeaderProtocol) PersistentHeaders() map[string]string {
+	return p.trans.PersistentHeaders()
+}
+
+func (p *THeaderProtocol) ClearPersistentHeaders() {
+	p.trans.ClearPersistentHeaders()
+}
+
+func (p *THeaderProtocol) SetHeader(key, value string) {
+	p.trans.SetHeader(key, value)
+}
+
+func (p *THeaderProtocol) Header(key string) (string, bool) {
+	return p.trans.Header(key)
+}
+
+func (p *THeaderProtocol) Headers() map[string]string {
+	return p.trans.Headers()
+}
+
+func (p *THeaderProtocol) ClearHeaders() {
+	p.trans.ClearHeaders()
+}
+
+func (p *THeaderProtocol) ReadHeader(key string) (string, bool) {
+	return p.trans.ReadHeader(key)
+}
+
+func (p *THeaderProtocol) ReadHeaders() map[string]string {
+	return p.trans.ReadHeaders()
+}
+
+func (p *THeaderProtocol) ProtocolID() ProtocolID {
+	return p.protoID
+}
+
+func (p *THeaderProtocol) AddTransform(trans TransformID) error {
+	return p.trans.AddTransform(trans)
 }

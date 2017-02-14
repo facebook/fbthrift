@@ -177,24 +177,6 @@ func (c TransformID) Untransformer() (func(byteReader) (byteReader, error), erro
 	}
 }
 
-// Transformer Get a function to wrap a writer with to xform the data.
-func (c TransformID) Transformer() (func(io.Writer) (io.Writer, error), error) {
-	switch c {
-	case TransformNone:
-		return func(wr io.Writer) (io.Writer, error) {
-			return wr, nil
-		}, nil
-	case TransformZlib:
-		return func(wr io.Writer) (io.Writer, error) {
-			return zlib.NewWriter(wr), nil
-		}, nil
-	default:
-		return nil, NewTProtocolExceptionWithType(
-			NOT_IMPLEMENTED, fmt.Errorf("THeader transform '%s' not supported", c.String()),
-		)
-	}
-}
-
 type tHeader struct {
 	length     uint64
 	flags      uint16
@@ -444,10 +426,12 @@ func checkFramed(hdr *tHeader, clientType ClientType) error {
 	case FramedDeprecated:
 		hdr.protoID = BinaryProtocol
 		hdr.clientType = clientType
+		hdr.payloadLen = hdr.length
 		return nil
 	case FramedCompact:
 		hdr.protoID = CompactProtocol
 		hdr.clientType = clientType
+		hdr.payloadLen = hdr.length
 		return nil
 	default:
 		return NewTProtocolExceptionWithType(
