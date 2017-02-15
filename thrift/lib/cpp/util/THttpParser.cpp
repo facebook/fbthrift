@@ -205,12 +205,14 @@ THttpParser::HttpParseResult THttpParser::parseStart() {
 THttpParser::HttpParseResult THttpParser::parseHeader() {
   // Loop until headers are finished
   while (true) {
-    const folly::StringPiece line = readLine();
+    auto const lineStr = readLine();
 
     // No line is found, need wait for more data.
-    if (line.begin() == nullptr) {
+    if (lineStr == nullptr) {
       return HTTP_PARSE_RESULT_BLOCK;
     }
+
+    const folly::StringPiece line = lineStr;
 
     if (line.empty()) {
       if (finished_) {
