@@ -26,14 +26,6 @@ cimport service.types
 import service.types
 
 from service.clients_wrapper cimport move
-cimport module.types
-import module.types
-cimport module.clients
-import module.clients
-cimport includes.types
-import includes.types
-cimport includes.clients
-import includes.clients
 
 from service.clients_wrapper cimport cMyServiceAsyncClient, cMyServiceClientWrapper
 

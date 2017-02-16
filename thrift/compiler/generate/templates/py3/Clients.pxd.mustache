@@ -29,7 +29,9 @@ file exposes Python wrappers of the services client to the end user.
 from libcpp.memory cimport shared_ptr
 
 {{#program:includeNamespaces}}
+{{#hasServices?}}
 cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}clients
+{{/hasServices?}}
 {{/program:includeNamespaces}}
 
 {{#program:services}}

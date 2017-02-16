@@ -6,6 +6,5 @@
 #
 from libcpp.memory cimport shared_ptr
 
-cimport includes.clients
 
 

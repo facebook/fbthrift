@@ -46,10 +46,14 @@ import {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:n
 
 from {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.clients_wrapper cimport move
 {{#program:includeNamespaces}}
+{{#hasTypes}}
 cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}types
 import {{#includeNamespace}}{{value}}.{{/includeNamespace}}types
+{{/hasTypes}}
+{{#hasServices}}
 cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}clients
 import {{#includeNamespace}}{{value}}.{{/includeNamespace}}clients
+{{/hasServices}}
 {{/program:includeNamespaces}}
 
 {{#program:services}}

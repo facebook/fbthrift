@@ -35,7 +35,7 @@ cdef void {{service:name}}_{{function:name}}_callback(
     {{#function:exceptions}}
     cdef unique_ptr[{{#field:type}}{{> ModulePath}}.c{{#type:struct}}{{struct:name}}{{/type:struct}}{{/field:type}}] ex_{{field:name}}
     {{/function:exceptions}}
-    if {{#function:exceptions}}{{^first?}}elif {{/first?}}{{!
+    if {{#function:exceptions}}{{!
     }}result.hasException[{{#field:type}}{{> ModulePath}}.c{{#type:struct}}{{struct:name}}{{/type:struct}}{{/field:type}}]():
         ex_{{field:name}} = py3_get_exception[{{#field:type}}{{#type:struct}}{{> ModulePath}}.c{{struct:name}}{{/type:struct}}{{/field:type}}](result.exception())
         pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, {{!

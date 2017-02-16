@@ -20,9 +20,7 @@ from thrift.py3.folly cimport cFollyEventBase, cFollyTry, cFollyUnit
 cimport service.types
 
 cimport module.types
-cimport module.clients_wrapper
 cimport includes.types
-cimport includes.clients_wrapper
 
 cdef extern from "src/gen-cpp2/MyService.h" namespace "cpp2":
   cdef cppclass cMyServiceAsyncClient "cpp2::MyServiceAsyncClient":

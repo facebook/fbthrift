@@ -6,8 +6,6 @@
 #
 from libcpp.memory cimport shared_ptr
 
-cimport module.clients
-cimport includes.clients
 
 from service.clients_wrapper cimport cMyServiceClientWrapper
 
