@@ -2370,6 +2370,7 @@ class CppGenerator(t_generator.Generator):
 
     def _member_default_value(self, member, explicit=False):
         t = self._get_true_type(member.type)
+        rt = self._cpp_ref_type(member, self._type_name(t))
         if member.value:
             return self._render_const_value(t, member.value)
         if self._is_optional_wrapped(member):
@@ -2378,6 +2379,19 @@ class CppGenerator(t_generator.Generator):
             return '0'
         if explicit or t.is_enum:
             return self._render_const_value(t, member.value)
+        if t.is_container and rt:
+            tn = self._type_name(t)
+            rann = (
+                (self._cpp_annotation(member, 'ref') and 'unique') or
+                self._cpp_annotation(member, 'ref_type'))
+            rkey = {
+                'unique': 'std::make_unique',
+                'shared': 'std::make_shared',
+                'shared_const': 'std::make_shared',
+            }.get(rann)
+            if rkey:
+                return '{rkey}<{tn}>()'.format(rkey=rkey, tn=tn)
+            return '{rt}(new {tn}())'.format(rt=rt, tn=tn)
         return ''
 
     def _get_serialized_fields_options(self, obj):

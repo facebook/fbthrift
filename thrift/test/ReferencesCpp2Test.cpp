@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,6 +49,20 @@ TEST(References, nonopt_ref_fields) {
   a.opt_field = std::make_unique<cpp2::RefStruct>();
   EXPECT_EQ(415, a.serializedSize(&writer));
   EXPECT_EQ(415, a.serializedSizeZC(&writer));
+}
+
+TEST(References, ref_container_fields) {
+  StructWithContainers a;
+
+  // tests that we initialize ref container fields
+  EXPECT_NE(nullptr, a.list_ref);
+  EXPECT_NE(nullptr, a.set_ref);
+  EXPECT_NE(nullptr, a.map_ref);
+  EXPECT_NE(nullptr, a.list_ref_unique);
+  EXPECT_NE(nullptr, a.set_ref_shared);
+  EXPECT_NE(nullptr, a.map_ref_custom);
+  EXPECT_NE(nullptr, a.list_ref_shared_const);
+  EXPECT_NE(nullptr, a.set_custom_ref);
 }
 
 } // namespace cpp2
