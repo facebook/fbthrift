@@ -217,7 +217,7 @@ struct dynamic_converter_impl<type_class::set<ValueTypeClass>> {
     for (auto const &i: input) {
       typename traits::value_type value;
       dynamic_converter_impl<ValueTypeClass>::from(value, i, format, adherence);
-      out.emplace(std::move(value));
+      out.insert(std::move(value));
     }
   }
 };
