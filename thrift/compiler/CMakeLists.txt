@@ -7,7 +7,7 @@ set(CMAKE_INSTALL_PREFIX ${THRIFT_HOME})
 # build compiler/parse
 aux_source_directory(./parse PARSE_FILES)
 add_library(parse_lib ${PARSE_FILES})
-target_link_libraries(parse_lib OpenSSL::Crypto)
+target_link_libraries(parse_lib ${OPENSSL_LIBRARIES})
 
 # build the base libraries
 add_library(
@@ -43,9 +43,9 @@ add_library(
 target_link_libraries(
   generate_lib
 
-  OpenSSL::Crypto
   ${Boost_LIBRARIES}
   ${MSTCH_LIBRARIES}
+  ${OPENSSL_LIBRARIES}
 )
 # Force generate_lib linking (compiler will optimize it out otherwise)
 if(MSVC)
