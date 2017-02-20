@@ -36,6 +36,7 @@ def create_client(
         *,
         host=None,
         port=None,
+        sock=None,
         loop=None,
         timeouts=None,
         client_type=None
@@ -60,6 +61,7 @@ def create_client(
     :param client_klass: thrift Client class
     :param host: hostname/ip, None = loopback
     :param port: port number
+    :param sock: socket.socket object
     :param loop: asyncio event loop
     :returns: an Async Context Manager
     """
@@ -75,6 +77,7 @@ def create_client(
         ),
         host=host,
         port=port,
+        sock=sock,
     )
     return async_protocol_manager(coro)
 
