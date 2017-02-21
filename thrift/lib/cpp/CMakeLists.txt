@@ -10,5 +10,5 @@ target_link_libraries(
   concurrency-util
 
   ${FOLLY_LIBRARIES}
-  ${LIBGLOG_LIBRARIES}
+  ${GLOG_LIBRARIES}
 )

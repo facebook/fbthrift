@@ -1,20 +1,29 @@
-# Find libglog
+# Find Glog
 #
-#  LIBGLOG_INCLUDE_DIR - where to find glog/logging.h, etc.
-#  LIBGLOG_LIBRARY     - List of libraries when using libglog.
-#  LIBGLOG_FOUND       - True if libglog found.
+# This will define:
+#  GLOG_FOUND
+#  GLOG_INCLUDE_DIRS
+#  GLOG_LIBRARIES
 
-find_path(LIBGLOG_INCLUDE_DIR glog/logging.h)
-find_library(LIBGLOG_LIBRARY glog)
+find_path(
+  GLOG_INCLUDE_DIRS glog/logging.h
+  HINTS
+      $ENV{GLOG_ROOT}/include
+      ${GLOG_ROOT}/include
+)
 
-set(LIBGLOG_LIBRARIES ${LIBGLOG_LIBRARY})
+find_library(
+  GLOG_LIBRARIES glog
+  HINTS
+      $ENV{GLOG_ROOT}/src
+      ${GLOG_ROOT}/src
+)
+
+mark_as_advanced(GLOG_INCLUDE_DIRS GLOG_LIBRARIES)
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(
-    LIBGLOG DEFAULT_MSG LIBGLOG_INCLUDE_DIR LIBGLOG_LIBRARIES)
+find_package_handle_standard_args(Glog GLOG_INCLUDE_DIRS GLOG_LIBRARIES)
 
-mark_as_advanced(LIBGLOG_INCLUDE_DIR LIBGLOG_LIBRARIES LIBGLOG_FOUND)
-
-if(LIBGLOG_FOUND AND NOT LIBGLOG_FIND_QUIETLY)
-    message(STATUS "LIBGLOG: ${LIBGLOG_INCLUDE_DIR}")
+if(GLOG_FOUND AND NOT GLOG_FIND_QUIETLY)
+    message(STATUS "GLOG: ${GLOG_INCLUDE_DIRS}")
 endif()

@@ -1,31 +1,30 @@
-# - Try to find Facebook folly library
-# This will define
+# Find Folly
+#
+# This will define:
 # FOLLY_FOUND
-# FOLLY_INCLUDE_DIR
+# FOLLY_INCLUDE_DIRS
 # FOLLY_LIBRARIES
 
 find_path(
-    FOLLY_INCLUDE_DIR
-    NAMES "folly/String.h"
+    FOLLY_INCLUDE_DIRS folly/String.h
     HINTS
-        "/usr/local/facebook/include"
+        $ENV{FOLLY_ROOT}/include
+        ${FOLLY_ROOT}/include
 )
 
 find_library(
-    FOLLY_LIBRARY
+    FOLLY_LIBRARIES
     NAMES folly
     HINTS
-        "/usr/local/facebook/lib"
+        $ENV{FOLLY_ROOT}/lib
+        ${FOLLY_ROOT}/lib
 )
 
-set(FOLLY_LIBRARIES ${FOLLY_LIBRARY})
+mark_as_advanced(FOLLY_INCLUDE_DIRS FOLLY_LIBRARIES)
 
 include(FindPackageHandleStandardArgs)
-find_package_handle_standard_args(
-    FOLLY DEFAULT_MSG FOLLY_INCLUDE_DIR FOLLY_LIBRARIES)
-
-mark_as_advanced(FOLLY_INCLUDE_DIR FOLLY_LIBRARIES FOLLY_FOUND)
+find_package_handle_standard_args(FOLLY FOLLY_INCLUDE_DIRS FOLLY_LIBRARIES)
 
 if(FOLLY_FOUND AND NOT FOLLY_FIND_QUIETLY)
-    message(STATUS "FOLLY: ${FOLLY_INCLUDE_DIR}")
+    message(STATUS "FOLLY: ${FOLLY_INCLUDE_DIRS}")
 endif()
