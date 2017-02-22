@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 
 #include <assert.h>
@@ -334,11 +333,25 @@ bool ThreadManager::ImplT<SemType>::canSleep() {
 }
 
 template <typename SemType>
-void ThreadManager::ImplT<SemType>::add(shared_ptr<Runnable> value,
-                                        int64_t timeout,
-                                        int64_t expiration,
-                                        bool /*cancellable*/,
-                                        bool numa) {
+void ThreadManager::ImplT<SemType>::add(
+  shared_ptr<Runnable> value,
+  int64_t timeout,
+  int64_t expiration,
+  bool cancellable,
+  bool numa
+) {
+  add(1, value, timeout, expiration, cancellable, numa);
+}
+
+template <typename SemType>
+void ThreadManager::ImplT<SemType>::add(
+  size_t priority,
+  shared_ptr<Runnable> value,
+  int64_t timeout,
+  int64_t expiration,
+  bool /*cancellable*/,
+  bool numa
+) {
   if (numa) {
     VLOG_EVERY_N(1, 100) << "ThreadManager::add called with numa == true, but "
                          << "not a NumaThreadManager";
@@ -350,7 +363,7 @@ void ThreadManager::ImplT<SemType>::add(shared_ptr<Runnable> value,
   }
 
   if (pendingTaskCountMax_ > 0
-      && tasks_.size() >= folly::to<ssize_t>(pendingTaskCountMax_)) {
+      && tasks_.size() >= pendingTaskCountMax_) {
     Guard g(mutex_, std::chrono::milliseconds(timeout));
 
     if (!g) {
@@ -358,7 +371,7 @@ void ThreadManager::ImplT<SemType>::add(shared_ptr<Runnable> value,
     }
     if (canSleep() && timeout >= 0) {
       while (pendingTaskCountMax_ > 0
-             && tasks_.size() >= folly::to<ssize_t>(pendingTaskCountMax_)) {
+             && tasks_.size() >= pendingTaskCountMax_) {
         // This is thread safe because the mutex is shared between monitors.
         maxMonitor_.wait(timeout);
       }
@@ -369,7 +382,7 @@ void ThreadManager::ImplT<SemType>::add(shared_ptr<Runnable> value,
 
   auto task = folly::make_unique<Task>(std::move(value),
                                        std::chrono::milliseconds{expiration});
-  if (!tasks_.write(std::move(task))) {
+  if (!tasks_.writeWithPriority(std::move(task), priority)) {
     LOG(ERROR) << "Failed to enqueue item (name prefix: " << getNamePrefix()
                << "). Increase maxQueueLen?";
     throw TooManyPendingTasksException();
@@ -386,17 +399,25 @@ void ThreadManager::ImplT<SemType>::add(shared_ptr<Runnable> value,
 
 template <typename SemType>
 bool ThreadManager::ImplT<SemType>::tryAdd(shared_ptr<Runnable> value) {
+  return tryAdd(1, value);
+}
+
+template <typename SemType>
+bool ThreadManager::ImplT<SemType>::tryAdd(
+  size_t priority,
+  shared_ptr<Runnable> value
+) {
   if (state_ != ThreadManager::STARTED) {
     return false;
   }
   if (pendingTaskCountMax_ > 0 &&
-      tasks_.size() >= folly::to<ssize_t>(pendingTaskCountMax_)) {
+      tasks_.size() >= pendingTaskCountMax_) {
     return false;
   }
 
   auto task = folly::make_unique<Task>(std::move(value),
                                        std::chrono::milliseconds{0});
-  if (!tasks_.write(std::move(task))) {
+  if (!tasks_.writeWithPriority(std::move(task), priority)) {
     return false;
   }
 
@@ -502,7 +523,7 @@ ThreadManager::ImplT<SemType>::waitOnTask() {
 template <typename SemType>
 void ThreadManager::ImplT<SemType>::maybeNotifyMaxMonitor(bool shouldLock) {
   if (pendingTaskCountMax_ != 0
-      && tasks_.size() < folly::to<ssize_t>(pendingTaskCountMax_)) {
+      && tasks_.size() < pendingTaskCountMax_) {
     if (shouldLock) {
       Guard g(mutex_);
       maxMonitor_.notify();
@@ -582,9 +603,10 @@ void ThreadManager::ImplT<SemType>::reportTaskStats(
       // Note: We are assuming the namePrefix_ does not change after the thread is
       // started.
       // TODO: enforce this.
+      auto seriesName = folly::to<std::string>(namePrefix_, statContext(task));
       ThreadManager::ImplT<SemType>::observer_->postRun(
           task.getContext().get(),
-          {namePrefix_, queueBegin, workBegin, workEnd});
+          {seriesName, queueBegin, workBegin, workEnd});
     }
   }
 }
@@ -623,7 +645,6 @@ class SimpleThreadManager : public ThreadManager::ImplT<SemType> {
   const size_t workerCount_;
 };
 
-
 template <typename SemType>
 shared_ptr<ThreadManager> ThreadManager::newSimpleThreadManager(
                                                     size_t count,
@@ -632,6 +653,95 @@ shared_ptr<ThreadManager> ThreadManager::newSimpleThreadManager(
                                                     size_t maxQueueLen) {
   return make_shared<SimpleThreadManager<SemType>>(count, pendingTaskCountMax,
                                           enableTaskStats, maxQueueLen);
+}
+
+template <typename SemType>
+class PriorityQueueThreadManager : public ThreadManager::ImplT<SemType> {
+ public:
+  typedef apache::thrift::concurrency::PRIORITY PRIORITY;
+  explicit PriorityQueueThreadManager(
+    size_t numThreads,
+    size_t pendingTaskCountMax = 0,
+    bool enableTaskStats = false,
+    size_t maxQueueLen = 0
+  ) :
+      ThreadManager::ImplT<SemType>(
+        pendingTaskCountMax,
+        enableTaskStats,
+        maxQueueLen,
+        N_PRIORITIES
+      ),
+      numThreads_(numThreads) {}
+
+  using ThreadManager::ImplT<SemType>::add;
+
+  void add(
+    std::shared_ptr<Runnable> task,
+    int64_t timeout = 0,
+    int64_t expiration = 0,
+    bool cancellable = false,
+    bool numa = false
+  ) override {
+    PriorityRunnable* p = dynamic_cast<PriorityRunnable*>(task.get());
+    PRIORITY prio = p ? p->getPriority() : NORMAL;
+    ThreadManager::ImplT<SemType>::add(prio, std::move(task), timeout,
+                                       expiration, cancellable, numa);
+  }
+
+  bool tryAdd(std::shared_ptr<Runnable> task) override {
+    PriorityRunnable* p = dynamic_cast<PriorityRunnable*>(task.get());
+    PRIORITY prio = p ? p->getPriority() : NORMAL;
+    return ThreadManager::ImplT<SemType>::tryAdd(prio, std::move(task));
+  }
+
+  uint8_t getNumPriorities() const override {
+    return N_PRIORITIES;
+  }
+
+  void start() override {
+    ThreadManager::ImplT<SemType>::start();
+    ThreadManager::ImplT<SemType>::addWorker(numThreads_);
+  }
+
+  void setNamePrefix(const std::string& name) override {
+    // This isn't thread safe, but neither is PriorityThreadManager's version
+    // This should only be called at initialization
+    ThreadManager::ImplT<SemType>::setNamePrefix(name);
+    for (int i = 0; i < N_PRIORITIES; i++) {
+      statContexts_[i] = folly::to<std::string>(name, "-pri", i);
+    }
+  }
+
+  using Task = typename ThreadManager::ImplT<SemType>::Task;
+
+  std::string statContext(const Task& task) override {
+    PriorityRunnable* p = dynamic_cast<PriorityRunnable*>(
+      task.getRunnable().get()
+    );
+    return statContexts_[p->getPriority()];
+  }
+
+ private:
+  size_t numThreads_;
+  std::string statContexts_[N_PRIORITIES];
+};
+
+static inline shared_ptr<ThreadFactory> Factory(
+  PosixThreadFactory::PRIORITY prio
+) {
+  return make_shared<PosixThreadFactory>(PosixThreadFactory::OTHER, prio);
+}
+
+template <typename SemType>
+shared_ptr<ThreadManager> ThreadManager::newPriorityQueueThreadManager(
+  size_t numThreads,
+  bool enableTaskStats,
+  size_t maxQueueLen
+) {
+  auto tm = make_shared<PriorityQueueThreadManager<SemType>>(
+    numThreads, /* pendingTaskCountMax = */ 0, enableTaskStats, maxQueueLen);
+  tm->threadFactory(Factory(PosixThreadFactory::NORMAL));
+  return tm;
 }
 
 template <typename SemType>
@@ -881,10 +991,6 @@ private:
   size_t counts_[N_PRIORITIES];
   Mutex mutex_;
 };
-
-static inline shared_ptr<ThreadFactory> Factory(PosixThreadFactory::PRIORITY prio) {
-  return make_shared<PosixThreadFactory>(PosixThreadFactory::OTHER, prio);
-}
 
 static const size_t NORMAL_PRIORITY_MINIMUM_THREADS = 1;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #ifndef _THRIFT_CONCURRENCY_THREADMANAGER_H_
 #define _THRIFT_CONCURRENCY_THREADMANAGER_H_ 1
 
@@ -228,6 +227,20 @@ class ThreadManager : public folly::Executor {
                            size_t pendingTaskCountMax = 0,
                            bool enableTaskStats = false,
                            size_t maxQueueLen = 0);
+
+  /**
+   * Creates a thread manager with support for priorities. Unlike
+   * PriorityThreadManager, requests are still served from a single
+   * thread pool. Arguments are the same as the standard threadManager,
+   * except that MaxQueueLen is the max for any single priority
+   */
+  template <typename SemType = folly::LifoSem>
+  static std::shared_ptr<ThreadManager>
+  newPriorityQueueThreadManager(
+    size_t numThreads,
+    bool enableTaskStats = false,
+    size_t maxQueueLen = 0
+  );
 
   /**
    * Get an internal statistics.
