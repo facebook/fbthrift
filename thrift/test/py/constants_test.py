@@ -44,5 +44,9 @@ class TestPythonConstants(unittest.TestCase):
         self.assertEquals(constants.char2ascii["\\"], 92)
         self.assertEquals(constants.char2ascii["a"], 97)
 
+    def testStruct(self):
+        from .constants import constants
+        self.assertEquals(constants.str2struct["foo"].bar, {"baz": "qux"})
+
 if __name__ == '__main__':
     unittest.main()

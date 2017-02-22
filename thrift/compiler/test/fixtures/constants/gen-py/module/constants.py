@@ -12,6 +12,7 @@ from thrift.Thrift import *
 from thrift.protocol.TProtocol import TProtocolException
 
 
+
 from .ttypes import *
 
 myInt = 1337

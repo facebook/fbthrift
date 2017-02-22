@@ -17,35 +17,8 @@
  * under the License.
  */
 
-namespace py thrift.test.py.constants
+namespace py thrift.test.py.constants_include
 
-include "constants_include.thrift"
-
-const string apostrophe = "'";
-const string tripleApostrophe = "'''";
-const string quotationMark = '"'; //" //fix syntax highlighting
-const string quote = 'this is a "quote"';
-const string backslash = "\\";
-const string escaped_a = "\x61";
-
-const map<string, string> escapeChars = {
-  "apostrophe" : "'",
-  "quotationMark" : '"',
-  "backslash" : "\\",
-  "escaped_a" : "\x61",
-};
-
-const map<string, i32> char2ascii = {
-  "'" : 39,
-  '"' : 34,
-  "\\" : 92,
-  "\x61" : 97,
-};
-
-const map<string, constants_include.Foo> str2struct = {
-  "foo": {
-    "bar": {
-      "baz": "qux",
-    },
-  }
+struct Foo {
+  1: map<string, string> bar;
 }

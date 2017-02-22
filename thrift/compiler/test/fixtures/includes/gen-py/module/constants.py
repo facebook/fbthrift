@@ -12,5 +12,8 @@ from thrift.Thrift import *
 from thrift.protocol.TProtocol import TProtocolException
 
 
+import includes.ttypes
+
+
 from .ttypes import *
 
