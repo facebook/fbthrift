@@ -154,6 +154,8 @@ static bool generate(t_program* program,
             "py/thrift.lpar",
             "py/thrift.par",
             "../py/thrift.par",
+            "py/thrift.xar",
+            "../py/thrift.xar",
           };
           for (const auto& comp : pycompilers) {
             pycompiler = dirname + comp;

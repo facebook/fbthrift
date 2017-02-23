@@ -850,6 +850,7 @@ string t_py_generator::py_autogen_comment() {
 string t_py_generator::py_par_warning(string service_tool_name) {
   return
     "if (not sys.argv[0].endswith(\"par\") and\n"
+    "    not sys.argv[0].endswith(\"xar\") and\n"
     "    os.getenv('PAR_UNPACK_TMP') == None):\n"
     "\n"
     "    f = open(sys.argv[0], \"r\")\n"
