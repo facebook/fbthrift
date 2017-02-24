@@ -193,6 +193,21 @@ class CppGenerator(t_generator.Generator):
     def _apply_unique_ptr_hack(self, type):
         return self._cpp_ref_type(type, '') == 'std::unique_ptr<>'
 
+    def _nested_containers(self, ttype):
+        ttype = self._get_true_type(ttype)
+        if ttype.is_container:
+            if ttype.is_map:
+                tmap = ttype.as_map
+                return '_rk' + self._nested_containers(tmap.key_type) + '_rv' + self._nested_containers(tmap.value_type)
+            elif ttype.is_set:
+                tset = ttype.as_set
+                return '_r' + self._nested_containers(tset.elem_type)
+            elif ttype.is_list:
+                tlist = ttype.as_list
+                return '_r' + self._nested_containers(tlist.elem_type)
+        else:
+            return ''
+
     def _type_name(self, ttype, in_typedef=False,
                    arg=False, scope=None, unique=False, direct=False):
         unique = unique and not self.flag_stack_arguments
@@ -3505,10 +3520,10 @@ class CppGenerator(t_generator.Generator):
     def _generate_deserialize_container(self, scope, cont, prefix,
                                         otype, pointer, optional_wrapped):
         s = scope
-        size = self.tmp('_size')
-        ktype = self.tmp('_ktype')
-        vtype = self.tmp('_vtype')
-        etype = self.tmp('_etype')
+        size = '_size' + self._nested_containers(otype)
+        ktype = '_ktype' + self._nested_containers(otype)
+        vtype = '_vtype' + self._nested_containers(otype)
+        etype = '_etype' + self._nested_containers(otype)
         cpptype = self._cpp_type_name(cont)
         use_push = (cpptype is not None and 'list' in cpptype) \
             or self._has_cpp_annotation(cont, 'template')
@@ -3547,7 +3562,7 @@ class CppGenerator(t_generator.Generator):
             txt = 'xfer += iprot->readListBegin({0}, {1});'.format(etype, size)
             s(txt)
         # For loop iterates over elements
-        i = self.tmp('_i')
+        i = '_i' + self._nested_containers(otype)
         s('uint32_t {0};'.format(i))
 
         with s('if ({0} == {1})'
@@ -3579,12 +3594,12 @@ class CppGenerator(t_generator.Generator):
             val_reader = None
             if cont.is_map:
                 # lambdas passed to deserialization routine
-                key_reader = self.tmp('_kreader')
-                val_reader = self.tmp('_vreader')
+                key_reader = '_kreader' + self._nested_containers(cont)
+                val_reader = '_vreader' + self._nested_containers(cont)
 
                 # args passed to lambdas
-                key_var = self.tmp('_key')
-                val_var = self.tmp('_val')
+                key_var = '_key' + self._nested_containers(cont.key_type)
+                val_var = '_val' + self._nested_containers(cont.value_type)
                 key_field = frontend.t_field(cont.key_type, key_var)
                 val_field = frontend.t_field(cont.value_type, val_var)
 
@@ -3633,14 +3648,18 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_deserialize_map_element(self, scope, tmap, prefix):
         'Generates code to deserialize a map'
-        key = self.tmp('_key')
-        val = self.tmp('_val')
+        key_index = '_key_index' + self._nested_containers(tmap)
+        key = '_key' + self._nested_containers(tmap.key_type)
+        val = '_val' + self._nested_containers(tmap.value_type)
         fkey = frontend.t_field(tmap.key_type, key)
         fval = frontend.t_field(tmap.value_type, val)
-        scope(self._declare_field(fkey))
-        self._generate_deserialize_field(scope, fkey)
+        with scope('auto const {} = [&]'.format(key_index)):
+            scope(self._declare_field(fkey))
+            self._generate_deserialize_field(scope, fkey)
+            scope('return {};'.format(key))
+        scope('();')
         scope('{0} = {1}[std::move({2})];'.format(
-            self._declare_field(fval, reference=True), prefix, key))
+            self._declare_field(fval, reference=True), prefix, key_index))
         self._generate_deserialize_field(scope, fval)
 
     def _generate_deserialize_set_element(self, scope, tset, prefix):

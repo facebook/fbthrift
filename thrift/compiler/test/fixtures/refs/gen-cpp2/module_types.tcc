@@ -698,20 +698,20 @@ uint32_t RecursiveStruct::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
           this->mes = std::vector< ::cpp2::RecursiveStruct>();
-          uint32_t _size4;
-          apache::thrift::protocol::TType _etype7;
-          xfer += iprot->readListBegin(_etype7, _size4);
-          uint32_t _i8;
-          if (_size4 == std::numeric_limits<uint32_t>::max()) {
-            for (_i8 = 0; iprot->peekList(); _i8++) {
-              this->mes.resize(_i8 + 1);
-              xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::RecursiveStruct>::read(iprot, &this->mes[_i8]);
+          uint32_t _size_r;
+          apache::thrift::protocol::TType _etype_r;
+          xfer += iprot->readListBegin(_etype_r, _size_r);
+          uint32_t _i_r;
+          if (_size_r == std::numeric_limits<uint32_t>::max()) {
+            for (_i_r = 0; iprot->peekList(); _i_r++) {
+              this->mes.resize(_i_r + 1);
+              xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::RecursiveStruct>::read(iprot, &this->mes[_i_r]);
             }
           }
           else {
-            this->mes.resize(_size4);
-            for (_i8 = 0; _i8 < _size4; ++_i8) {
-              xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::RecursiveStruct>::read(iprot, &this->mes[_i8]);
+            this->mes.resize(_size_r);
+            for (_i_r = 0; _i_r < _size_r; ++_i_r) {
+              xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::RecursiveStruct>::read(iprot, &this->mes[_i_r]);
             }
           }
           xfer += iprot->readListEnd();
@@ -741,8 +741,8 @@ uint32_t RecursiveStruct::serializedSize(Protocol_ const* prot_) const {
   if (this->__isset.mes) {
     xfer += prot_->serializedFieldSize("mes", apache::thrift::protocol::T_LIST, 1);
     xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_STRUCT, this->mes.size());
-    for (auto _iter9 = this->mes.begin(); _iter9 != this->mes.end(); ++_iter9) {
-      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::RecursiveStruct>::serializedSize(prot_, &(*_iter9));
+    for (auto _iter4 = this->mes.begin(); _iter4 != this->mes.end(); ++_iter4) {
+      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::RecursiveStruct>::serializedSize(prot_, &(*_iter4));
     }
     xfer += prot_->serializedSizeListEnd();
   }
@@ -757,8 +757,8 @@ uint32_t RecursiveStruct::serializedSizeZC(Protocol_ const* prot_) const {
   if (this->__isset.mes) {
     xfer += prot_->serializedFieldSize("mes", apache::thrift::protocol::T_LIST, 1);
     xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_STRUCT, this->mes.size());
-    for (auto _iter10 = this->mes.begin(); _iter10 != this->mes.end(); ++_iter10) {
-      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::RecursiveStruct>::serializedSizeZC(prot_, &(*_iter10));
+    for (auto _iter5 = this->mes.begin(); _iter5 != this->mes.end(); ++_iter5) {
+      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::RecursiveStruct>::serializedSizeZC(prot_, &(*_iter5));
     }
     xfer += prot_->serializedSizeListEnd();
   }
@@ -773,8 +773,8 @@ uint32_t RecursiveStruct::write(Protocol_* prot_) const {
   if (this->__isset.mes) {
     xfer += prot_->writeFieldBegin("mes", apache::thrift::protocol::T_LIST, 1);
     xfer += prot_->writeListBegin(apache::thrift::protocol::T_STRUCT, this->mes.size());
-    for (auto _iter11 = this->mes.begin(); _iter11 != this->mes.end(); ++_iter11) {
-      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::RecursiveStruct>::write(prot_, &(*_iter11));
+    for (auto _iter6 = this->mes.begin(); _iter6 != this->mes.end(); ++_iter6) {
+      xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::RecursiveStruct>::write(prot_, &(*_iter6));
     }
     xfer += prot_->writeListEnd();
     xfer += prot_->writeFieldEnd();
@@ -846,25 +846,25 @@ uint32_t StructWithContainers::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->list_ref)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype16(new element_type());
-          auto& _rtype17 = *_ptype16;
-          uint32_t _size12;
-          apache::thrift::protocol::TType _etype15;
-          xfer += iprot->readListBegin(_etype15, _size12);
-          uint32_t _i18;
-          if (_size12 == std::numeric_limits<uint32_t>::max()) {
-            for (_i18 = 0; iprot->peekList(); _i18++) {
-              _rtype17.resize(_i18 + 1);
-              xfer += iprot->readI32(_rtype17[_i18]);
+          std::unique_ptr<element_type> _ptype7(new element_type());
+          auto& _rtype8 = *_ptype7;
+          uint32_t _size_r;
+          apache::thrift::protocol::TType _etype_r;
+          xfer += iprot->readListBegin(_etype_r, _size_r);
+          uint32_t _i_r;
+          if (_size_r == std::numeric_limits<uint32_t>::max()) {
+            for (_i_r = 0; iprot->peekList(); _i_r++) {
+              _rtype8.resize(_i_r + 1);
+              xfer += iprot->readI32(_rtype8[_i_r]);
             }
           }
           else {
-            _rtype17.resize(_size12);
-            for (_i18 = 0; _i18 < _size12; ++_i18) {
-              xfer += iprot->readI32(_rtype17[_i18]);
+            _rtype8.resize(_size_r);
+            for (_i_r = 0; _i_r < _size_r; ++_i_r) {
+              xfer += iprot->readI32(_rtype8[_i_r]);
             }
           }
-          this->list_ref = std::move(_ptype16);
+          this->list_ref = std::move(_ptype7);
           xfer += iprot->readListEnd();
         } else {
           xfer += iprot->skip(ftype);
@@ -875,27 +875,27 @@ uint32_t StructWithContainers::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_SET) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->set_ref)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype23(new element_type());
-          auto& _rtype24 = *_ptype23;
-          uint32_t _size19;
-          apache::thrift::protocol::TType _etype22;
-          xfer += iprot->readSetBegin(_etype22, _size19);
-          uint32_t _i25;
-          if (_size19 == std::numeric_limits<uint32_t>::max()) {
-            for (_i25 = 0; iprot->peekSet(); _i25++) {
-              int32_t _elem26;
-              xfer += iprot->readI32(_elem26);
-              _rtype24.insert(std::move(_elem26));
+          std::unique_ptr<element_type> _ptype9(new element_type());
+          auto& _rtype10 = *_ptype9;
+          uint32_t _size_r;
+          apache::thrift::protocol::TType _etype_r;
+          xfer += iprot->readSetBegin(_etype_r, _size_r);
+          uint32_t _i_r;
+          if (_size_r == std::numeric_limits<uint32_t>::max()) {
+            for (_i_r = 0; iprot->peekSet(); _i_r++) {
+              int32_t _elem11;
+              xfer += iprot->readI32(_elem11);
+              _rtype10.insert(std::move(_elem11));
             }
           }
           else {
-            for (_i25 = 0; _i25 < _size19; ++_i25) {
-              int32_t _elem27;
-              xfer += iprot->readI32(_elem27);
-              _rtype24.insert(std::move(_elem27));
+            for (_i_r = 0; _i_r < _size_r; ++_i_r) {
+              int32_t _elem12;
+              xfer += iprot->readI32(_elem12);
+              _rtype10.insert(std::move(_elem12));
             }
           }
-          this->set_ref = std::move(_ptype23);
+          this->set_ref = std::move(_ptype9);
           xfer += iprot->readSetEnd();
         } else {
           xfer += iprot->skip(ftype);
@@ -906,33 +906,37 @@ uint32_t StructWithContainers::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_MAP) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->map_ref)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype32(new element_type());
-          auto& _rtype33 = *_ptype32;
-          uint32_t _size28;
-          apache::thrift::protocol::TType _ktype29;
-          apache::thrift::protocol::TType _vtype30;
-          xfer += iprot->readMapBegin(_ktype29, _vtype30, _size28);
-          uint32_t _i34;
-          if (_size28 == std::numeric_limits<uint32_t>::max()) {
-            for (_i34 = 0; iprot->peekMap(); _i34++) {
-              int32_t _key35;
-              xfer += iprot->readI32(_key35);
-              int32_t& _val36 = _rtype33[std::move(_key35)];
-              xfer += iprot->readI32(_val36);
+          std::unique_ptr<element_type> _ptype13(new element_type());
+          auto& _rtype14 = *_ptype13;
+          uint32_t _size_rk_rv;
+          apache::thrift::protocol::TType _ktype_rk_rv;
+          apache::thrift::protocol::TType _vtype_rk_rv;
+          xfer += iprot->readMapBegin(_ktype_rk_rv, _vtype_rk_rv, _size_rk_rv);
+          uint32_t _i_rk_rv;
+          if (_size_rk_rv == std::numeric_limits<uint32_t>::max()) {
+            for (_i_rk_rv = 0; iprot->peekMap(); _i_rk_rv++) {
+              auto const _key_index_rk_rv = [&] {
+                int32_t _key;
+                xfer += iprot->readI32(_key);
+                return _key;
+              }
+              ();
+              int32_t& _val = _rtype14[std::move(_key_index_rk_rv)];
+              xfer += iprot->readI32(_val);
             }
           }
           else {
-            auto const _kreader37 = [&xfer, &iprot](auto& _key39) {
-              xfer += iprot->readI32(_key39);
+            auto const _kreader_rk_rv = [&xfer, &iprot](auto& _key) {
+              xfer += iprot->readI32(_key);
             }
             ;
-            auto const _vreader38 = [&xfer, &iprot](auto& _val40) {
-              xfer += iprot->readI32(_val40);
+            auto const _vreader_rk_rv = [&xfer, &iprot](auto& _val) {
+              xfer += iprot->readI32(_val);
             }
             ;
-            ::apache::thrift::deserialize_known_length_map(_rtype33, _size28, _kreader37, _vreader38);
+            ::apache::thrift::deserialize_known_length_map(_rtype14, _size_rk_rv, _kreader_rk_rv, _vreader_rk_rv);
           }
-          this->map_ref = std::move(_ptype32);
+          this->map_ref = std::move(_ptype13);
           xfer += iprot->readMapEnd();
         } else {
           xfer += iprot->skip(ftype);
@@ -943,25 +947,25 @@ uint32_t StructWithContainers::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->list_ref_unique)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype45(new element_type());
-          auto& _rtype46 = *_ptype45;
-          uint32_t _size41;
-          apache::thrift::protocol::TType _etype44;
-          xfer += iprot->readListBegin(_etype44, _size41);
-          uint32_t _i47;
-          if (_size41 == std::numeric_limits<uint32_t>::max()) {
-            for (_i47 = 0; iprot->peekList(); _i47++) {
-              _rtype46.resize(_i47 + 1);
-              xfer += iprot->readI32(_rtype46[_i47]);
+          std::unique_ptr<element_type> _ptype15(new element_type());
+          auto& _rtype16 = *_ptype15;
+          uint32_t _size_r;
+          apache::thrift::protocol::TType _etype_r;
+          xfer += iprot->readListBegin(_etype_r, _size_r);
+          uint32_t _i_r;
+          if (_size_r == std::numeric_limits<uint32_t>::max()) {
+            for (_i_r = 0; iprot->peekList(); _i_r++) {
+              _rtype16.resize(_i_r + 1);
+              xfer += iprot->readI32(_rtype16[_i_r]);
             }
           }
           else {
-            _rtype46.resize(_size41);
-            for (_i47 = 0; _i47 < _size41; ++_i47) {
-              xfer += iprot->readI32(_rtype46[_i47]);
+            _rtype16.resize(_size_r);
+            for (_i_r = 0; _i_r < _size_r; ++_i_r) {
+              xfer += iprot->readI32(_rtype16[_i_r]);
             }
           }
-          this->list_ref_unique = std::move(_ptype45);
+          this->list_ref_unique = std::move(_ptype15);
           xfer += iprot->readListEnd();
         } else {
           xfer += iprot->skip(ftype);
@@ -972,27 +976,27 @@ uint32_t StructWithContainers::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_SET) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->set_ref_shared)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype52(new element_type());
-          auto& _rtype53 = *_ptype52;
-          uint32_t _size48;
-          apache::thrift::protocol::TType _etype51;
-          xfer += iprot->readSetBegin(_etype51, _size48);
-          uint32_t _i54;
-          if (_size48 == std::numeric_limits<uint32_t>::max()) {
-            for (_i54 = 0; iprot->peekSet(); _i54++) {
-              int32_t _elem55;
-              xfer += iprot->readI32(_elem55);
-              _rtype53.insert(std::move(_elem55));
+          std::unique_ptr<element_type> _ptype17(new element_type());
+          auto& _rtype18 = *_ptype17;
+          uint32_t _size_r;
+          apache::thrift::protocol::TType _etype_r;
+          xfer += iprot->readSetBegin(_etype_r, _size_r);
+          uint32_t _i_r;
+          if (_size_r == std::numeric_limits<uint32_t>::max()) {
+            for (_i_r = 0; iprot->peekSet(); _i_r++) {
+              int32_t _elem19;
+              xfer += iprot->readI32(_elem19);
+              _rtype18.insert(std::move(_elem19));
             }
           }
           else {
-            for (_i54 = 0; _i54 < _size48; ++_i54) {
-              int32_t _elem56;
-              xfer += iprot->readI32(_elem56);
-              _rtype53.insert(std::move(_elem56));
+            for (_i_r = 0; _i_r < _size_r; ++_i_r) {
+              int32_t _elem20;
+              xfer += iprot->readI32(_elem20);
+              _rtype18.insert(std::move(_elem20));
             }
           }
-          this->set_ref_shared = std::move(_ptype52);
+          this->set_ref_shared = std::move(_ptype17);
           xfer += iprot->readSetEnd();
         } else {
           xfer += iprot->skip(ftype);
@@ -1003,33 +1007,37 @@ uint32_t StructWithContainers::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_MAP) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->map_ref_custom)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype61(new element_type());
-          auto& _rtype62 = *_ptype61;
-          uint32_t _size57;
-          apache::thrift::protocol::TType _ktype58;
-          apache::thrift::protocol::TType _vtype59;
-          xfer += iprot->readMapBegin(_ktype58, _vtype59, _size57);
-          uint32_t _i63;
-          if (_size57 == std::numeric_limits<uint32_t>::max()) {
-            for (_i63 = 0; iprot->peekMap(); _i63++) {
-              int32_t _key64;
-              xfer += iprot->readI32(_key64);
-              int32_t& _val65 = _rtype62[std::move(_key64)];
-              xfer += iprot->readI32(_val65);
+          std::unique_ptr<element_type> _ptype21(new element_type());
+          auto& _rtype22 = *_ptype21;
+          uint32_t _size_rk_rv;
+          apache::thrift::protocol::TType _ktype_rk_rv;
+          apache::thrift::protocol::TType _vtype_rk_rv;
+          xfer += iprot->readMapBegin(_ktype_rk_rv, _vtype_rk_rv, _size_rk_rv);
+          uint32_t _i_rk_rv;
+          if (_size_rk_rv == std::numeric_limits<uint32_t>::max()) {
+            for (_i_rk_rv = 0; iprot->peekMap(); _i_rk_rv++) {
+              auto const _key_index_rk_rv = [&] {
+                int32_t _key;
+                xfer += iprot->readI32(_key);
+                return _key;
+              }
+              ();
+              int32_t& _val = _rtype22[std::move(_key_index_rk_rv)];
+              xfer += iprot->readI32(_val);
             }
           }
           else {
-            auto const _kreader66 = [&xfer, &iprot](auto& _key68) {
-              xfer += iprot->readI32(_key68);
+            auto const _kreader_rk_rv = [&xfer, &iprot](auto& _key) {
+              xfer += iprot->readI32(_key);
             }
             ;
-            auto const _vreader67 = [&xfer, &iprot](auto& _val69) {
-              xfer += iprot->readI32(_val69);
+            auto const _vreader_rk_rv = [&xfer, &iprot](auto& _val) {
+              xfer += iprot->readI32(_val);
             }
             ;
-            ::apache::thrift::deserialize_known_length_map(_rtype62, _size57, _kreader66, _vreader67);
+            ::apache::thrift::deserialize_known_length_map(_rtype22, _size_rk_rv, _kreader_rk_rv, _vreader_rk_rv);
           }
-          this->map_ref_custom = std::move(_ptype61);
+          this->map_ref_custom = std::move(_ptype21);
           xfer += iprot->readMapEnd();
         } else {
           xfer += iprot->skip(ftype);
@@ -1040,25 +1048,25 @@ uint32_t StructWithContainers::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->list_ref_shared_const)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype74(new element_type());
-          auto& _rtype75 = *_ptype74;
-          uint32_t _size70;
-          apache::thrift::protocol::TType _etype73;
-          xfer += iprot->readListBegin(_etype73, _size70);
-          uint32_t _i76;
-          if (_size70 == std::numeric_limits<uint32_t>::max()) {
-            for (_i76 = 0; iprot->peekList(); _i76++) {
-              _rtype75.resize(_i76 + 1);
-              xfer += iprot->readI32(_rtype75[_i76]);
+          std::unique_ptr<element_type> _ptype23(new element_type());
+          auto& _rtype24 = *_ptype23;
+          uint32_t _size_r;
+          apache::thrift::protocol::TType _etype_r;
+          xfer += iprot->readListBegin(_etype_r, _size_r);
+          uint32_t _i_r;
+          if (_size_r == std::numeric_limits<uint32_t>::max()) {
+            for (_i_r = 0; iprot->peekList(); _i_r++) {
+              _rtype24.resize(_i_r + 1);
+              xfer += iprot->readI32(_rtype24[_i_r]);
             }
           }
           else {
-            _rtype75.resize(_size70);
-            for (_i76 = 0; _i76 < _size70; ++_i76) {
-              xfer += iprot->readI32(_rtype75[_i76]);
+            _rtype24.resize(_size_r);
+            for (_i_r = 0; _i_r < _size_r; ++_i_r) {
+              xfer += iprot->readI32(_rtype24[_i_r]);
             }
           }
-          this->list_ref_shared_const = std::move(_ptype74);
+          this->list_ref_shared_const = std::move(_ptype23);
           xfer += iprot->readListEnd();
         } else {
           xfer += iprot->skip(ftype);
@@ -1069,27 +1077,27 @@ uint32_t StructWithContainers::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_SET) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->set_custom_ref)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype81(new element_type());
-          auto& _rtype82 = *_ptype81;
-          uint32_t _size77;
-          apache::thrift::protocol::TType _etype80;
-          xfer += iprot->readSetBegin(_etype80, _size77);
-          uint32_t _i83;
-          if (_size77 == std::numeric_limits<uint32_t>::max()) {
-            for (_i83 = 0; iprot->peekSet(); _i83++) {
-              int32_t _elem84;
-              xfer += iprot->readI32(_elem84);
-              _rtype82.insert(std::move(_elem84));
+          std::unique_ptr<element_type> _ptype25(new element_type());
+          auto& _rtype26 = *_ptype25;
+          uint32_t _size_r;
+          apache::thrift::protocol::TType _etype_r;
+          xfer += iprot->readSetBegin(_etype_r, _size_r);
+          uint32_t _i_r;
+          if (_size_r == std::numeric_limits<uint32_t>::max()) {
+            for (_i_r = 0; iprot->peekSet(); _i_r++) {
+              int32_t _elem27;
+              xfer += iprot->readI32(_elem27);
+              _rtype26.insert(std::move(_elem27));
             }
           }
           else {
-            for (_i83 = 0; _i83 < _size77; ++_i83) {
-              int32_t _elem85;
-              xfer += iprot->readI32(_elem85);
-              _rtype82.insert(std::move(_elem85));
+            for (_i_r = 0; _i_r < _size_r; ++_i_r) {
+              int32_t _elem28;
+              xfer += iprot->readI32(_elem28);
+              _rtype26.insert(std::move(_elem28));
             }
           }
-          this->set_custom_ref = std::move(_ptype81);
+          this->set_custom_ref = std::move(_ptype25);
           xfer += iprot->readSetEnd();
         } else {
           xfer += iprot->skip(ftype);
@@ -1115,10 +1123,10 @@ uint32_t StructWithContainers::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("StructWithContainers");
   xfer += prot_->serializedFieldSize("list_ref", apache::thrift::protocol::T_LIST, 1);
   if (this->list_ref) {
-    const auto& _rtype86 = *this->list_ref;
-    xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, _rtype86.size());
-    for (auto _iter87 = _rtype86.begin(); _iter87 != _rtype86.end(); ++_iter87) {
-      xfer += prot_->serializedSizeI32((*_iter87));
+    const auto& _rtype29 = *this->list_ref;
+    xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, _rtype29.size());
+    for (auto _iter30 = _rtype29.begin(); _iter30 != _rtype29.end(); ++_iter30) {
+      xfer += prot_->serializedSizeI32((*_iter30));
     }
     xfer += prot_->serializedSizeListEnd();
   }
@@ -1128,10 +1136,10 @@ uint32_t StructWithContainers::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("set_ref", apache::thrift::protocol::T_SET, 2);
   if (this->set_ref) {
-    const auto& _rtype88 = *this->set_ref;
-    xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I32, _rtype88.size());
-    for (auto _iter89 = _rtype88.begin(); _iter89 != _rtype88.end(); ++_iter89) {
-      xfer += prot_->serializedSizeI32((*_iter89));
+    const auto& _rtype31 = *this->set_ref;
+    xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I32, _rtype31.size());
+    for (auto _iter32 = _rtype31.begin(); _iter32 != _rtype31.end(); ++_iter32) {
+      xfer += prot_->serializedSizeI32((*_iter32));
     }
     xfer += prot_->serializedSizeSetEnd();
   }
@@ -1141,11 +1149,11 @@ uint32_t StructWithContainers::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("map_ref", apache::thrift::protocol::T_MAP, 3);
   if (this->map_ref) {
-    const auto& _rtype90 = *this->map_ref;
-    xfer += prot_->serializedSizeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, _rtype90.size());
-    for (auto _iter91 = _rtype90.begin(); _iter91 != _rtype90.end(); ++_iter91) {
-      xfer += prot_->serializedSizeI32(_iter91->first);
-      xfer += prot_->serializedSizeI32(_iter91->second);
+    const auto& _rtype33 = *this->map_ref;
+    xfer += prot_->serializedSizeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, _rtype33.size());
+    for (auto _iter34 = _rtype33.begin(); _iter34 != _rtype33.end(); ++_iter34) {
+      xfer += prot_->serializedSizeI32(_iter34->first);
+      xfer += prot_->serializedSizeI32(_iter34->second);
     }
     xfer += prot_->serializedSizeMapEnd();
   }
@@ -1155,10 +1163,10 @@ uint32_t StructWithContainers::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("list_ref_unique", apache::thrift::protocol::T_LIST, 4);
   if (this->list_ref_unique) {
-    const auto& _rtype92 = *this->list_ref_unique;
-    xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, _rtype92.size());
-    for (auto _iter93 = _rtype92.begin(); _iter93 != _rtype92.end(); ++_iter93) {
-      xfer += prot_->serializedSizeI32((*_iter93));
+    const auto& _rtype35 = *this->list_ref_unique;
+    xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, _rtype35.size());
+    for (auto _iter36 = _rtype35.begin(); _iter36 != _rtype35.end(); ++_iter36) {
+      xfer += prot_->serializedSizeI32((*_iter36));
     }
     xfer += prot_->serializedSizeListEnd();
   }
@@ -1168,10 +1176,10 @@ uint32_t StructWithContainers::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("set_ref_shared", apache::thrift::protocol::T_SET, 5);
   if (this->set_ref_shared) {
-    const auto& _rtype94 = *this->set_ref_shared;
-    xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I32, _rtype94.size());
-    for (auto _iter95 = _rtype94.begin(); _iter95 != _rtype94.end(); ++_iter95) {
-      xfer += prot_->serializedSizeI32((*_iter95));
+    const auto& _rtype37 = *this->set_ref_shared;
+    xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I32, _rtype37.size());
+    for (auto _iter38 = _rtype37.begin(); _iter38 != _rtype37.end(); ++_iter38) {
+      xfer += prot_->serializedSizeI32((*_iter38));
     }
     xfer += prot_->serializedSizeSetEnd();
   }
@@ -1181,11 +1189,11 @@ uint32_t StructWithContainers::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("map_ref_custom", apache::thrift::protocol::T_MAP, 6);
   if (this->map_ref_custom) {
-    const auto& _rtype96 = *this->map_ref_custom;
-    xfer += prot_->serializedSizeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, _rtype96.size());
-    for (auto _iter97 = _rtype96.begin(); _iter97 != _rtype96.end(); ++_iter97) {
-      xfer += prot_->serializedSizeI32(_iter97->first);
-      xfer += prot_->serializedSizeI32(_iter97->second);
+    const auto& _rtype39 = *this->map_ref_custom;
+    xfer += prot_->serializedSizeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, _rtype39.size());
+    for (auto _iter40 = _rtype39.begin(); _iter40 != _rtype39.end(); ++_iter40) {
+      xfer += prot_->serializedSizeI32(_iter40->first);
+      xfer += prot_->serializedSizeI32(_iter40->second);
     }
     xfer += prot_->serializedSizeMapEnd();
   }
@@ -1195,10 +1203,10 @@ uint32_t StructWithContainers::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("list_ref_shared_const", apache::thrift::protocol::T_LIST, 7);
   if (this->list_ref_shared_const) {
-    const auto& _rtype98 = *this->list_ref_shared_const;
-    xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, _rtype98.size());
-    for (auto _iter99 = _rtype98.begin(); _iter99 != _rtype98.end(); ++_iter99) {
-      xfer += prot_->serializedSizeI32((*_iter99));
+    const auto& _rtype41 = *this->list_ref_shared_const;
+    xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, _rtype41.size());
+    for (auto _iter42 = _rtype41.begin(); _iter42 != _rtype41.end(); ++_iter42) {
+      xfer += prot_->serializedSizeI32((*_iter42));
     }
     xfer += prot_->serializedSizeListEnd();
   }
@@ -1208,10 +1216,10 @@ uint32_t StructWithContainers::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("set_custom_ref", apache::thrift::protocol::T_SET, 8);
   if (this->set_custom_ref) {
-    const auto& _rtype100 = *this->set_custom_ref;
-    xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I32, _rtype100.size());
-    for (auto _iter101 = _rtype100.begin(); _iter101 != _rtype100.end(); ++_iter101) {
-      xfer += prot_->serializedSizeI32((*_iter101));
+    const auto& _rtype43 = *this->set_custom_ref;
+    xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I32, _rtype43.size());
+    for (auto _iter44 = _rtype43.begin(); _iter44 != _rtype43.end(); ++_iter44) {
+      xfer += prot_->serializedSizeI32((*_iter44));
     }
     xfer += prot_->serializedSizeSetEnd();
   }
@@ -1229,10 +1237,10 @@ uint32_t StructWithContainers::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("StructWithContainers");
   xfer += prot_->serializedFieldSize("list_ref", apache::thrift::protocol::T_LIST, 1);
   if (this->list_ref) {
-    const auto& _rtype102 = *this->list_ref;
-    xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, _rtype102.size());
-    for (auto _iter103 = _rtype102.begin(); _iter103 != _rtype102.end(); ++_iter103) {
-      xfer += prot_->serializedSizeI32((*_iter103));
+    const auto& _rtype45 = *this->list_ref;
+    xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, _rtype45.size());
+    for (auto _iter46 = _rtype45.begin(); _iter46 != _rtype45.end(); ++_iter46) {
+      xfer += prot_->serializedSizeI32((*_iter46));
     }
     xfer += prot_->serializedSizeListEnd();
   }
@@ -1242,10 +1250,10 @@ uint32_t StructWithContainers::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("set_ref", apache::thrift::protocol::T_SET, 2);
   if (this->set_ref) {
-    const auto& _rtype104 = *this->set_ref;
-    xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I32, _rtype104.size());
-    for (auto _iter105 = _rtype104.begin(); _iter105 != _rtype104.end(); ++_iter105) {
-      xfer += prot_->serializedSizeI32((*_iter105));
+    const auto& _rtype47 = *this->set_ref;
+    xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I32, _rtype47.size());
+    for (auto _iter48 = _rtype47.begin(); _iter48 != _rtype47.end(); ++_iter48) {
+      xfer += prot_->serializedSizeI32((*_iter48));
     }
     xfer += prot_->serializedSizeSetEnd();
   }
@@ -1255,11 +1263,11 @@ uint32_t StructWithContainers::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("map_ref", apache::thrift::protocol::T_MAP, 3);
   if (this->map_ref) {
-    const auto& _rtype106 = *this->map_ref;
-    xfer += prot_->serializedSizeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, _rtype106.size());
-    for (auto _iter107 = _rtype106.begin(); _iter107 != _rtype106.end(); ++_iter107) {
-      xfer += prot_->serializedSizeI32(_iter107->first);
-      xfer += prot_->serializedSizeI32(_iter107->second);
+    const auto& _rtype49 = *this->map_ref;
+    xfer += prot_->serializedSizeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, _rtype49.size());
+    for (auto _iter50 = _rtype49.begin(); _iter50 != _rtype49.end(); ++_iter50) {
+      xfer += prot_->serializedSizeI32(_iter50->first);
+      xfer += prot_->serializedSizeI32(_iter50->second);
     }
     xfer += prot_->serializedSizeMapEnd();
   }
@@ -1269,10 +1277,10 @@ uint32_t StructWithContainers::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("list_ref_unique", apache::thrift::protocol::T_LIST, 4);
   if (this->list_ref_unique) {
-    const auto& _rtype108 = *this->list_ref_unique;
-    xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, _rtype108.size());
-    for (auto _iter109 = _rtype108.begin(); _iter109 != _rtype108.end(); ++_iter109) {
-      xfer += prot_->serializedSizeI32((*_iter109));
+    const auto& _rtype51 = *this->list_ref_unique;
+    xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, _rtype51.size());
+    for (auto _iter52 = _rtype51.begin(); _iter52 != _rtype51.end(); ++_iter52) {
+      xfer += prot_->serializedSizeI32((*_iter52));
     }
     xfer += prot_->serializedSizeListEnd();
   }
@@ -1282,10 +1290,10 @@ uint32_t StructWithContainers::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("set_ref_shared", apache::thrift::protocol::T_SET, 5);
   if (this->set_ref_shared) {
-    const auto& _rtype110 = *this->set_ref_shared;
-    xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I32, _rtype110.size());
-    for (auto _iter111 = _rtype110.begin(); _iter111 != _rtype110.end(); ++_iter111) {
-      xfer += prot_->serializedSizeI32((*_iter111));
+    const auto& _rtype53 = *this->set_ref_shared;
+    xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I32, _rtype53.size());
+    for (auto _iter54 = _rtype53.begin(); _iter54 != _rtype53.end(); ++_iter54) {
+      xfer += prot_->serializedSizeI32((*_iter54));
     }
     xfer += prot_->serializedSizeSetEnd();
   }
@@ -1295,11 +1303,11 @@ uint32_t StructWithContainers::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("map_ref_custom", apache::thrift::protocol::T_MAP, 6);
   if (this->map_ref_custom) {
-    const auto& _rtype112 = *this->map_ref_custom;
-    xfer += prot_->serializedSizeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, _rtype112.size());
-    for (auto _iter113 = _rtype112.begin(); _iter113 != _rtype112.end(); ++_iter113) {
-      xfer += prot_->serializedSizeI32(_iter113->first);
-      xfer += prot_->serializedSizeI32(_iter113->second);
+    const auto& _rtype55 = *this->map_ref_custom;
+    xfer += prot_->serializedSizeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, _rtype55.size());
+    for (auto _iter56 = _rtype55.begin(); _iter56 != _rtype55.end(); ++_iter56) {
+      xfer += prot_->serializedSizeI32(_iter56->first);
+      xfer += prot_->serializedSizeI32(_iter56->second);
     }
     xfer += prot_->serializedSizeMapEnd();
   }
@@ -1309,10 +1317,10 @@ uint32_t StructWithContainers::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("list_ref_shared_const", apache::thrift::protocol::T_LIST, 7);
   if (this->list_ref_shared_const) {
-    const auto& _rtype114 = *this->list_ref_shared_const;
-    xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, _rtype114.size());
-    for (auto _iter115 = _rtype114.begin(); _iter115 != _rtype114.end(); ++_iter115) {
-      xfer += prot_->serializedSizeI32((*_iter115));
+    const auto& _rtype57 = *this->list_ref_shared_const;
+    xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, _rtype57.size());
+    for (auto _iter58 = _rtype57.begin(); _iter58 != _rtype57.end(); ++_iter58) {
+      xfer += prot_->serializedSizeI32((*_iter58));
     }
     xfer += prot_->serializedSizeListEnd();
   }
@@ -1322,10 +1330,10 @@ uint32_t StructWithContainers::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedFieldSize("set_custom_ref", apache::thrift::protocol::T_SET, 8);
   if (this->set_custom_ref) {
-    const auto& _rtype116 = *this->set_custom_ref;
-    xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I32, _rtype116.size());
-    for (auto _iter117 = _rtype116.begin(); _iter117 != _rtype116.end(); ++_iter117) {
-      xfer += prot_->serializedSizeI32((*_iter117));
+    const auto& _rtype59 = *this->set_custom_ref;
+    xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I32, _rtype59.size());
+    for (auto _iter60 = _rtype59.begin(); _iter60 != _rtype59.end(); ++_iter60) {
+      xfer += prot_->serializedSizeI32((*_iter60));
     }
     xfer += prot_->serializedSizeSetEnd();
   }
@@ -1343,10 +1351,10 @@ uint32_t StructWithContainers::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("StructWithContainers");
   xfer += prot_->writeFieldBegin("list_ref", apache::thrift::protocol::T_LIST, 1);
   if (this->list_ref) {
-    const auto& _rtype118 = *this->list_ref;
-    xfer += prot_->writeListBegin(apache::thrift::protocol::T_I32, _rtype118.size());
-    for (auto _iter119 = _rtype118.begin(); _iter119 != _rtype118.end(); ++_iter119) {
-      xfer += prot_->writeI32((*_iter119));
+    const auto& _rtype61 = *this->list_ref;
+    xfer += prot_->writeListBegin(apache::thrift::protocol::T_I32, _rtype61.size());
+    for (auto _iter62 = _rtype61.begin(); _iter62 != _rtype61.end(); ++_iter62) {
+      xfer += prot_->writeI32((*_iter62));
     }
     xfer += prot_->writeListEnd();
   }
@@ -1357,10 +1365,10 @@ uint32_t StructWithContainers::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("set_ref", apache::thrift::protocol::T_SET, 2);
   if (this->set_ref) {
-    const auto& _rtype120 = *this->set_ref;
-    xfer += prot_->writeSetBegin(apache::thrift::protocol::T_I32, _rtype120.size());
-    for (auto _iter121 = _rtype120.begin(); _iter121 != _rtype120.end(); ++_iter121) {
-      xfer += prot_->writeI32((*_iter121));
+    const auto& _rtype63 = *this->set_ref;
+    xfer += prot_->writeSetBegin(apache::thrift::protocol::T_I32, _rtype63.size());
+    for (auto _iter64 = _rtype63.begin(); _iter64 != _rtype63.end(); ++_iter64) {
+      xfer += prot_->writeI32((*_iter64));
     }
     xfer += prot_->writeSetEnd();
   }
@@ -1371,11 +1379,11 @@ uint32_t StructWithContainers::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("map_ref", apache::thrift::protocol::T_MAP, 3);
   if (this->map_ref) {
-    const auto& _rtype122 = *this->map_ref;
-    xfer += prot_->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, _rtype122.size());
-    for (auto _iter123 = _rtype122.begin(); _iter123 != _rtype122.end(); ++_iter123) {
-      xfer += prot_->writeI32(_iter123->first);
-      xfer += prot_->writeI32(_iter123->second);
+    const auto& _rtype65 = *this->map_ref;
+    xfer += prot_->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, _rtype65.size());
+    for (auto _iter66 = _rtype65.begin(); _iter66 != _rtype65.end(); ++_iter66) {
+      xfer += prot_->writeI32(_iter66->first);
+      xfer += prot_->writeI32(_iter66->second);
     }
     xfer += prot_->writeMapEnd();
   }
@@ -1386,10 +1394,10 @@ uint32_t StructWithContainers::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("list_ref_unique", apache::thrift::protocol::T_LIST, 4);
   if (this->list_ref_unique) {
-    const auto& _rtype124 = *this->list_ref_unique;
-    xfer += prot_->writeListBegin(apache::thrift::protocol::T_I32, _rtype124.size());
-    for (auto _iter125 = _rtype124.begin(); _iter125 != _rtype124.end(); ++_iter125) {
-      xfer += prot_->writeI32((*_iter125));
+    const auto& _rtype67 = *this->list_ref_unique;
+    xfer += prot_->writeListBegin(apache::thrift::protocol::T_I32, _rtype67.size());
+    for (auto _iter68 = _rtype67.begin(); _iter68 != _rtype67.end(); ++_iter68) {
+      xfer += prot_->writeI32((*_iter68));
     }
     xfer += prot_->writeListEnd();
   }
@@ -1400,10 +1408,10 @@ uint32_t StructWithContainers::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("set_ref_shared", apache::thrift::protocol::T_SET, 5);
   if (this->set_ref_shared) {
-    const auto& _rtype126 = *this->set_ref_shared;
-    xfer += prot_->writeSetBegin(apache::thrift::protocol::T_I32, _rtype126.size());
-    for (auto _iter127 = _rtype126.begin(); _iter127 != _rtype126.end(); ++_iter127) {
-      xfer += prot_->writeI32((*_iter127));
+    const auto& _rtype69 = *this->set_ref_shared;
+    xfer += prot_->writeSetBegin(apache::thrift::protocol::T_I32, _rtype69.size());
+    for (auto _iter70 = _rtype69.begin(); _iter70 != _rtype69.end(); ++_iter70) {
+      xfer += prot_->writeI32((*_iter70));
     }
     xfer += prot_->writeSetEnd();
   }
@@ -1414,11 +1422,11 @@ uint32_t StructWithContainers::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("map_ref_custom", apache::thrift::protocol::T_MAP, 6);
   if (this->map_ref_custom) {
-    const auto& _rtype128 = *this->map_ref_custom;
-    xfer += prot_->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, _rtype128.size());
-    for (auto _iter129 = _rtype128.begin(); _iter129 != _rtype128.end(); ++_iter129) {
-      xfer += prot_->writeI32(_iter129->first);
-      xfer += prot_->writeI32(_iter129->second);
+    const auto& _rtype71 = *this->map_ref_custom;
+    xfer += prot_->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_I32, _rtype71.size());
+    for (auto _iter72 = _rtype71.begin(); _iter72 != _rtype71.end(); ++_iter72) {
+      xfer += prot_->writeI32(_iter72->first);
+      xfer += prot_->writeI32(_iter72->second);
     }
     xfer += prot_->writeMapEnd();
   }
@@ -1429,10 +1437,10 @@ uint32_t StructWithContainers::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("list_ref_shared_const", apache::thrift::protocol::T_LIST, 7);
   if (this->list_ref_shared_const) {
-    const auto& _rtype130 = *this->list_ref_shared_const;
-    xfer += prot_->writeListBegin(apache::thrift::protocol::T_I32, _rtype130.size());
-    for (auto _iter131 = _rtype130.begin(); _iter131 != _rtype130.end(); ++_iter131) {
-      xfer += prot_->writeI32((*_iter131));
+    const auto& _rtype73 = *this->list_ref_shared_const;
+    xfer += prot_->writeListBegin(apache::thrift::protocol::T_I32, _rtype73.size());
+    for (auto _iter74 = _rtype73.begin(); _iter74 != _rtype73.end(); ++_iter74) {
+      xfer += prot_->writeI32((*_iter74));
     }
     xfer += prot_->writeListEnd();
   }
@@ -1443,10 +1451,10 @@ uint32_t StructWithContainers::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("set_custom_ref", apache::thrift::protocol::T_SET, 8);
   if (this->set_custom_ref) {
-    const auto& _rtype132 = *this->set_custom_ref;
-    xfer += prot_->writeSetBegin(apache::thrift::protocol::T_I32, _rtype132.size());
-    for (auto _iter133 = _rtype132.begin(); _iter133 != _rtype132.end(); ++_iter133) {
-      xfer += prot_->writeI32((*_iter133));
+    const auto& _rtype75 = *this->set_custom_ref;
+    xfer += prot_->writeSetBegin(apache::thrift::protocol::T_I32, _rtype75.size());
+    for (auto _iter76 = _rtype75.begin(); _iter76 != _rtype75.end(); ++_iter76) {
+      xfer += prot_->writeI32((*_iter76));
     }
     xfer += prot_->writeSetEnd();
   }
@@ -1503,9 +1511,9 @@ uint32_t StructWithSharedConst::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->opt_shared_const)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype134(new element_type());
-          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::read(iprot, _ptype134.get());
-          this->opt_shared_const = std::move(_ptype134);
+          std::unique_ptr<element_type> _ptype77(new element_type());
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::read(iprot, _ptype77.get());
+          this->opt_shared_const = std::move(_ptype77);
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -1515,9 +1523,9 @@ uint32_t StructWithSharedConst::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->shared_const)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype135(new element_type());
-          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::read(iprot, _ptype135.get());
-          this->shared_const = std::move(_ptype135);
+          std::unique_ptr<element_type> _ptype78(new element_type());
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::read(iprot, _ptype78.get());
+          this->shared_const = std::move(_ptype78);
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -1527,9 +1535,9 @@ uint32_t StructWithSharedConst::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->req_shared_const)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype136(new element_type());
-          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::read(iprot, _ptype136.get());
-          this->req_shared_const = std::move(_ptype136);
+          std::unique_ptr<element_type> _ptype79(new element_type());
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::read(iprot, _ptype79.get());
+          this->req_shared_const = std::move(_ptype79);
           isset_req_shared_const = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -1767,9 +1775,9 @@ uint32_t StructWithRef::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->def_field)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype137(new element_type());
-          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype137.get());
-          this->def_field = std::move(_ptype137);
+          std::unique_ptr<element_type> _ptype80(new element_type());
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype80.get());
+          this->def_field = std::move(_ptype80);
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -1779,9 +1787,9 @@ uint32_t StructWithRef::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->opt_field)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype138(new element_type());
-          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype138.get());
-          this->opt_field = std::move(_ptype138);
+          std::unique_ptr<element_type> _ptype81(new element_type());
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype81.get());
+          this->opt_field = std::move(_ptype81);
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -1791,9 +1799,9 @@ uint32_t StructWithRef::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->req_field)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype139(new element_type());
-          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype139.get());
-          this->req_field = std::move(_ptype139);
+          std::unique_ptr<element_type> _ptype82(new element_type());
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype82.get());
+          this->req_field = std::move(_ptype82);
           isset_req_field = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -1968,9 +1976,9 @@ uint32_t StructWithRefTypeUnique::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->def_field)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype140(new element_type());
-          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype140.get());
-          this->def_field = std::move(_ptype140);
+          std::unique_ptr<element_type> _ptype83(new element_type());
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype83.get());
+          this->def_field = std::move(_ptype83);
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -1980,9 +1988,9 @@ uint32_t StructWithRefTypeUnique::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->opt_field)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype141(new element_type());
-          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype141.get());
-          this->opt_field = std::move(_ptype141);
+          std::unique_ptr<element_type> _ptype84(new element_type());
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype84.get());
+          this->opt_field = std::move(_ptype84);
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -1992,9 +2000,9 @@ uint32_t StructWithRefTypeUnique::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->req_field)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype142(new element_type());
-          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype142.get());
-          this->req_field = std::move(_ptype142);
+          std::unique_ptr<element_type> _ptype85(new element_type());
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype85.get());
+          this->req_field = std::move(_ptype85);
           isset_req_field = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -2169,9 +2177,9 @@ uint32_t StructWithRefTypeShared::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->def_field)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype143(new element_type());
-          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype143.get());
-          this->def_field = std::move(_ptype143);
+          std::unique_ptr<element_type> _ptype86(new element_type());
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype86.get());
+          this->def_field = std::move(_ptype86);
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -2181,9 +2189,9 @@ uint32_t StructWithRefTypeShared::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->opt_field)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype144(new element_type());
-          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype144.get());
-          this->opt_field = std::move(_ptype144);
+          std::unique_ptr<element_type> _ptype87(new element_type());
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype87.get());
+          this->opt_field = std::move(_ptype87);
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -2193,9 +2201,9 @@ uint32_t StructWithRefTypeShared::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->req_field)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype145(new element_type());
-          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype145.get());
-          this->req_field = std::move(_ptype145);
+          std::unique_ptr<element_type> _ptype88(new element_type());
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype88.get());
+          this->req_field = std::move(_ptype88);
           isset_req_field = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -2370,9 +2378,9 @@ uint32_t StructWithRefTypeSharedConst::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->def_field)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype146(new element_type());
-          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype146.get());
-          this->def_field = std::move(_ptype146);
+          std::unique_ptr<element_type> _ptype89(new element_type());
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype89.get());
+          this->def_field = std::move(_ptype89);
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -2382,9 +2390,9 @@ uint32_t StructWithRefTypeSharedConst::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->opt_field)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype147(new element_type());
-          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype147.get());
-          this->opt_field = std::move(_ptype147);
+          std::unique_ptr<element_type> _ptype90(new element_type());
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype90.get());
+          this->opt_field = std::move(_ptype90);
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -2394,9 +2402,9 @@ uint32_t StructWithRefTypeSharedConst::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->req_field)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype148(new element_type());
-          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype148.get());
-          this->req_field = std::move(_ptype148);
+          std::unique_ptr<element_type> _ptype91(new element_type());
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype91.get());
+          this->req_field = std::move(_ptype91);
           isset_req_field = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -2571,9 +2579,9 @@ uint32_t StructWithRefTypeCustom::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->def_field)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype149(new element_type());
-          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype149.get());
-          this->def_field = std::move(_ptype149);
+          std::unique_ptr<element_type> _ptype92(new element_type());
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype92.get());
+          this->def_field = std::move(_ptype92);
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -2583,9 +2591,9 @@ uint32_t StructWithRefTypeCustom::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->opt_field)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype150(new element_type());
-          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype150.get());
-          this->opt_field = std::move(_ptype150);
+          std::unique_ptr<element_type> _ptype93(new element_type());
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype93.get());
+          this->opt_field = std::move(_ptype93);
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -2595,9 +2603,9 @@ uint32_t StructWithRefTypeCustom::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->req_field)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype151(new element_type());
-          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype151.get());
-          this->req_field = std::move(_ptype151);
+          std::unique_ptr<element_type> _ptype94(new element_type());
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Empty>::read(iprot, _ptype94.get());
+          this->req_field = std::move(_ptype94);
           isset_req_field = true;
         } else {
           xfer += iprot->skip(ftype);
