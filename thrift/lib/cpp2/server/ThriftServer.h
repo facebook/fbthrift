@@ -157,8 +157,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer
 
   void addWorker();
 
-  void stopWorkers();
-
   void handleSetupFailure(void);
 
   // Minimum size of response before it might be compressed
@@ -526,6 +524,14 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   void clearWorkers() {
     ioThreadPool_->join();
   }
+
+  /**
+   * Stops workers.  Call this method after calling stopListening() if you
+   * disabled the stopping of workers upon stopListening() via
+   * setStopWorkersOnStopListening() and need to stop the workers explicitly
+   * before server destruction.
+   */
+  void stopWorkers();
 
   /**
    * Set the thread stack size in MB
