@@ -13,6 +13,7 @@ import os
 import sys
 
 if (not sys.argv[0].endswith("par") and
+    not sys.argv[0].endswith("xar") and
     os.getenv('PAR_UNPACK_TMP') == None):
 
     f = open(sys.argv[0], "r")
