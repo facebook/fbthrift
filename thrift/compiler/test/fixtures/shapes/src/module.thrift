@@ -38,4 +38,17 @@ struct B {
   58: optional map<string, list<A>>  optional_map_of_string_to_list_of_A;
   59: optional map<string, set<i32>>  optional_map_of_string_to_set_of_i32;
   60: optional Enum optional_enum;
+
+  80: string string_with_default_value = "de_fault_in_our_stars";
+  81: i32 i32_with_default_value = 1729;
+  82: double double_with_default_value = 3.1415926;
+  83: Enum enum_with_default_value = ENUM;
+  84: A A_with_default_value = {"a": "bc"};
+  85: set<i32> set_of_i32_with_default_value = [3 7 31 127];
+  86: map<i32, string> map_of_i32_to_string_with_default_value
+        = {1: "fish", 2: "fish"};
+  87: list<string> list_of_string_with_default_value
+        = ["red fish" "blue fish"];
+  88: map<string, list<i32>> map_of_string_to_list_of_i32_with_default_value
+        = {"Jenny": [8 6 7 5 3 0 9]};
 }

@@ -45,7 +45,16 @@ public final class B
         @ThriftField(value=57, name="optional_map_of_string_to_list_of_i32", requiredness=Requiredness.OPTIONAL) final Map<String, List<Integer>> optionalMapOfStringToListOfI32,
         @ThriftField(value=58, name="optional_map_of_string_to_list_of_A", requiredness=Requiredness.OPTIONAL) final Map<String, List<test.fixtures.shapes.A>> optionalMapOfStringToListOfA,
         @ThriftField(value=59, name="optional_map_of_string_to_set_of_i32", requiredness=Requiredness.OPTIONAL) final Map<String, Set<Integer>> optionalMapOfStringToSetOfI32,
-        @ThriftField(value=60, name="optional_enum", requiredness=Requiredness.OPTIONAL) final test.fixtures.shapes.Enum optionalEnum
+        @ThriftField(value=60, name="optional_enum", requiredness=Requiredness.OPTIONAL) final test.fixtures.shapes.Enum optionalEnum,
+        @ThriftField(value=80, name="string_with_default_value", requiredness=Requiredness.NONE) final String stringWithDefaultValue,
+        @ThriftField(value=81, name="i32_with_default_value", requiredness=Requiredness.NONE) final int i32WithDefaultValue,
+        @ThriftField(value=82, name="double_with_default_value", requiredness=Requiredness.NONE) final double doubleWithDefaultValue,
+        @ThriftField(value=83, name="enum_with_default_value", requiredness=Requiredness.NONE) final test.fixtures.shapes.Enum enumWithDefaultValue,
+        @ThriftField(value=84, name="A_with_default_value", requiredness=Requiredness.NONE) final test.fixtures.shapes.A aWithDefaultValue,
+        @ThriftField(value=85, name="set_of_i32_with_default_value", requiredness=Requiredness.NONE) final Set<Integer> setOfI32WithDefaultValue,
+        @ThriftField(value=86, name="map_of_i32_to_string_with_default_value", requiredness=Requiredness.NONE) final Map<Integer, String> mapOfI32ToStringWithDefaultValue,
+        @ThriftField(value=87, name="list_of_string_with_default_value", requiredness=Requiredness.NONE) final List<String> listOfStringWithDefaultValue,
+        @ThriftField(value=88, name="map_of_string_to_list_of_i32_with_default_value", requiredness=Requiredness.NONE) final Map<String, List<Integer>> mapOfStringToListOfI32WithDefaultValue
     ) {
         this.justAnA = justAnA;
         this.setOfI32 = setOfI32;
@@ -74,6 +83,15 @@ public final class B
         this.optionalMapOfStringToListOfA = optionalMapOfStringToListOfA;
         this.optionalMapOfStringToSetOfI32 = optionalMapOfStringToSetOfI32;
         this.optionalEnum = optionalEnum;
+        this.stringWithDefaultValue = stringWithDefaultValue;
+        this.i32WithDefaultValue = i32WithDefaultValue;
+        this.doubleWithDefaultValue = doubleWithDefaultValue;
+        this.enumWithDefaultValue = enumWithDefaultValue;
+        this.aWithDefaultValue = aWithDefaultValue;
+        this.setOfI32WithDefaultValue = setOfI32WithDefaultValue;
+        this.mapOfI32ToStringWithDefaultValue = mapOfI32ToStringWithDefaultValue;
+        this.listOfStringWithDefaultValue = listOfStringWithDefaultValue;
+        this.mapOfStringToListOfI32WithDefaultValue = mapOfStringToListOfI32WithDefaultValue;
     }
 
     public static class Builder {
@@ -239,6 +257,60 @@ public final class B
             this.optionalEnum = optionalEnum;
             return this;
         }
+        private String stringWithDefaultValue;
+
+        public Builder setStringWithDefaultValue(String stringWithDefaultValue) {
+            this.stringWithDefaultValue = stringWithDefaultValue;
+            return this;
+        }
+        private int i32WithDefaultValue;
+
+        public Builder setI32WithDefaultValue(int i32WithDefaultValue) {
+            this.i32WithDefaultValue = i32WithDefaultValue;
+            return this;
+        }
+        private double doubleWithDefaultValue;
+
+        public Builder setDoubleWithDefaultValue(double doubleWithDefaultValue) {
+            this.doubleWithDefaultValue = doubleWithDefaultValue;
+            return this;
+        }
+        private test.fixtures.shapes.Enum enumWithDefaultValue;
+
+        public Builder setEnumWithDefaultValue(test.fixtures.shapes.Enum enumWithDefaultValue) {
+            this.enumWithDefaultValue = enumWithDefaultValue;
+            return this;
+        }
+        private test.fixtures.shapes.A aWithDefaultValue;
+
+        public Builder setAWithDefaultValue(test.fixtures.shapes.A aWithDefaultValue) {
+            this.aWithDefaultValue = aWithDefaultValue;
+            return this;
+        }
+        private Set<Integer> setOfI32WithDefaultValue;
+
+        public Builder setSetOfI32WithDefaultValue(Set<Integer> setOfI32WithDefaultValue) {
+            this.setOfI32WithDefaultValue = setOfI32WithDefaultValue;
+            return this;
+        }
+        private Map<Integer, String> mapOfI32ToStringWithDefaultValue;
+
+        public Builder setMapOfI32ToStringWithDefaultValue(Map<Integer, String> mapOfI32ToStringWithDefaultValue) {
+            this.mapOfI32ToStringWithDefaultValue = mapOfI32ToStringWithDefaultValue;
+            return this;
+        }
+        private List<String> listOfStringWithDefaultValue;
+
+        public Builder setListOfStringWithDefaultValue(List<String> listOfStringWithDefaultValue) {
+            this.listOfStringWithDefaultValue = listOfStringWithDefaultValue;
+            return this;
+        }
+        private Map<String, List<Integer>> mapOfStringToListOfI32WithDefaultValue;
+
+        public Builder setMapOfStringToListOfI32WithDefaultValue(Map<String, List<Integer>> mapOfStringToListOfI32WithDefaultValue) {
+            this.mapOfStringToListOfI32WithDefaultValue = mapOfStringToListOfI32WithDefaultValue;
+            return this;
+        }
 
         public Builder() { }
         public Builder(B other) {
@@ -269,6 +341,15 @@ public final class B
             this.optionalMapOfStringToListOfA = other.optionalMapOfStringToListOfA;
             this.optionalMapOfStringToSetOfI32 = other.optionalMapOfStringToSetOfI32;
             this.optionalEnum = other.optionalEnum;
+            this.stringWithDefaultValue = other.stringWithDefaultValue;
+            this.i32WithDefaultValue = other.i32WithDefaultValue;
+            this.doubleWithDefaultValue = other.doubleWithDefaultValue;
+            this.enumWithDefaultValue = other.enumWithDefaultValue;
+            this.aWithDefaultValue = other.aWithDefaultValue;
+            this.setOfI32WithDefaultValue = other.setOfI32WithDefaultValue;
+            this.mapOfI32ToStringWithDefaultValue = other.mapOfI32ToStringWithDefaultValue;
+            this.listOfStringWithDefaultValue = other.listOfStringWithDefaultValue;
+            this.mapOfStringToListOfI32WithDefaultValue = other.mapOfStringToListOfI32WithDefaultValue;
         }
 
         public B build() {
@@ -299,7 +380,16 @@ public final class B
                 this.optionalMapOfStringToListOfI32,
                 this.optionalMapOfStringToListOfA,
                 this.optionalMapOfStringToSetOfI32,
-                this.optionalEnum
+                this.optionalEnum,
+                this.stringWithDefaultValue,
+                this.i32WithDefaultValue,
+                this.doubleWithDefaultValue,
+                this.enumWithDefaultValue,
+                this.aWithDefaultValue,
+                this.setOfI32WithDefaultValue,
+                this.mapOfI32ToStringWithDefaultValue,
+                this.listOfStringWithDefaultValue,
+                this.mapOfStringToListOfI32WithDefaultValue
             );
         }
     }
@@ -439,6 +529,51 @@ public final class B
     @ThriftField(value=60, name="optional_enum", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.shapes.Enum getOptionalEnum() { return optionalEnum; }
 
+    private final String stringWithDefaultValue;
+
+    @ThriftField(value=80, name="string_with_default_value", requiredness=Requiredness.NONE)
+    public String getStringWithDefaultValue() { return stringWithDefaultValue; }
+
+    private final int i32WithDefaultValue;
+
+    @ThriftField(value=81, name="i32_with_default_value", requiredness=Requiredness.NONE)
+    public int getI32WithDefaultValue() { return i32WithDefaultValue; }
+
+    private final double doubleWithDefaultValue;
+
+    @ThriftField(value=82, name="double_with_default_value", requiredness=Requiredness.NONE)
+    public double getDoubleWithDefaultValue() { return doubleWithDefaultValue; }
+
+    private final test.fixtures.shapes.Enum enumWithDefaultValue;
+
+    @ThriftField(value=83, name="enum_with_default_value", requiredness=Requiredness.NONE)
+    public test.fixtures.shapes.Enum getEnumWithDefaultValue() { return enumWithDefaultValue; }
+
+    private final test.fixtures.shapes.A aWithDefaultValue;
+
+    @ThriftField(value=84, name="A_with_default_value", requiredness=Requiredness.NONE)
+    public test.fixtures.shapes.A getAWithDefaultValue() { return aWithDefaultValue; }
+
+    private final Set<Integer> setOfI32WithDefaultValue;
+
+    @ThriftField(value=85, name="set_of_i32_with_default_value", requiredness=Requiredness.NONE)
+    public Set<Integer> getSetOfI32WithDefaultValue() { return setOfI32WithDefaultValue; }
+
+    private final Map<Integer, String> mapOfI32ToStringWithDefaultValue;
+
+    @ThriftField(value=86, name="map_of_i32_to_string_with_default_value", requiredness=Requiredness.NONE)
+    public Map<Integer, String> getMapOfI32ToStringWithDefaultValue() { return mapOfI32ToStringWithDefaultValue; }
+
+    private final List<String> listOfStringWithDefaultValue;
+
+    @ThriftField(value=87, name="list_of_string_with_default_value", requiredness=Requiredness.NONE)
+    public List<String> getListOfStringWithDefaultValue() { return listOfStringWithDefaultValue; }
+
+    private final Map<String, List<Integer>> mapOfStringToListOfI32WithDefaultValue;
+
+    @ThriftField(value=88, name="map_of_string_to_list_of_i32_with_default_value", requiredness=Requiredness.NONE)
+    public Map<String, List<Integer>> getMapOfStringToListOfI32WithDefaultValue() { return mapOfStringToListOfI32WithDefaultValue; }
+
     @Override
     public String toString()
     {
@@ -470,6 +605,15 @@ public final class B
             .add("optionalMapOfStringToListOfA", optionalMapOfStringToListOfA)
             .add("optionalMapOfStringToSetOfI32", optionalMapOfStringToSetOfI32)
             .add("optionalEnum", optionalEnum)
+            .add("stringWithDefaultValue", stringWithDefaultValue)
+            .add("i32WithDefaultValue", i32WithDefaultValue)
+            .add("doubleWithDefaultValue", doubleWithDefaultValue)
+            .add("enumWithDefaultValue", enumWithDefaultValue)
+            .add("aWithDefaultValue", aWithDefaultValue)
+            .add("setOfI32WithDefaultValue", setOfI32WithDefaultValue)
+            .add("mapOfI32ToStringWithDefaultValue", mapOfI32ToStringWithDefaultValue)
+            .add("listOfStringWithDefaultValue", listOfStringWithDefaultValue)
+            .add("mapOfStringToListOfI32WithDefaultValue", mapOfStringToListOfI32WithDefaultValue)
             .toString();
     }
 
@@ -511,7 +655,16 @@ public final class B
             Objects.equals(optionalMapOfStringToListOfI32, other.optionalMapOfStringToListOfI32) &&
             Objects.equals(optionalMapOfStringToListOfA, other.optionalMapOfStringToListOfA) &&
             Objects.equals(optionalMapOfStringToSetOfI32, other.optionalMapOfStringToSetOfI32) &&
-            Objects.equals(optionalEnum, other.optionalEnum);
+            Objects.equals(optionalEnum, other.optionalEnum) &&
+            Objects.equals(stringWithDefaultValue, other.stringWithDefaultValue) &&
+            Objects.equals(i32WithDefaultValue, other.i32WithDefaultValue) &&
+            Objects.equals(doubleWithDefaultValue, other.doubleWithDefaultValue) &&
+            Objects.equals(enumWithDefaultValue, other.enumWithDefaultValue) &&
+            Objects.equals(aWithDefaultValue, other.aWithDefaultValue) &&
+            Objects.equals(setOfI32WithDefaultValue, other.setOfI32WithDefaultValue) &&
+            Objects.equals(mapOfI32ToStringWithDefaultValue, other.mapOfI32ToStringWithDefaultValue) &&
+            Objects.equals(listOfStringWithDefaultValue, other.listOfStringWithDefaultValue) &&
+            Objects.equals(mapOfStringToListOfI32WithDefaultValue, other.mapOfStringToListOfI32WithDefaultValue);
     }
 
     @Override
@@ -543,7 +696,16 @@ public final class B
             optionalMapOfStringToListOfI32,
             optionalMapOfStringToListOfA,
             optionalMapOfStringToSetOfI32,
-            optionalEnum
+            optionalEnum,
+            stringWithDefaultValue,
+            i32WithDefaultValue,
+            doubleWithDefaultValue,
+            enumWithDefaultValue,
+            aWithDefaultValue,
+            setOfI32WithDefaultValue,
+            mapOfI32ToStringWithDefaultValue,
+            listOfStringWithDefaultValue,
+            mapOfStringToListOfI32WithDefaultValue
         });
     }
 }
