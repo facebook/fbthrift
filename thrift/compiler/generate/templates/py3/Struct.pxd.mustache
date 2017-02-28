@@ -64,6 +64,9 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
     {{#struct:fields}}
         bint {{field:name}}
     {{/struct:fields}}
+    {{^struct:fields}}
+        pass
+    {{/struct:fields}}
 
     # Forward Declaration
     cdef cppclass c{{struct:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}"{{#struct:exception?}}(cTException){{/struct:exception?}}

@@ -94,11 +94,7 @@ cdef class SimpleException(thrift.py3.types.Exception):
         return not cmp
 
     def __hash__(SimpleException self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.err_code,
-            ))
-        return self.__hash
+        return super().__hash__()
 
     def __repr__(SimpleException self):
         return f'SimpleException(err_code={repr(self.err_code)})'

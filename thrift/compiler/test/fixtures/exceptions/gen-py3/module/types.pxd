@@ -21,6 +21,7 @@ cimport thrift.py3.types
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
     cdef cppclass cBanal__isset "cpp2::Banal::__isset":
+        pass
 
     # Forward Declaration
     cdef cppclass cBanal "cpp2::Banal"(cTException)

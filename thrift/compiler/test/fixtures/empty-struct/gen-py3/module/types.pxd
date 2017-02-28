@@ -21,6 +21,7 @@ cimport thrift.py3.types
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
     cdef cppclass cEmpty__isset "cpp2::Empty::__isset":
+        pass
 
     # Forward Declaration
     cdef cppclass cEmpty "cpp2::Empty"

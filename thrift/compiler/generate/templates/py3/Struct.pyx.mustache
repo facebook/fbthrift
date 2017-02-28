@@ -131,11 +131,15 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.types.Exception){{/s
         {{#struct:fields}}
         yield '{{field:name}}', self.{{field:name}}
         {{/struct:fields}}
+        {{^struct:fields}}
+        return iter(())
+        {{/struct:fields}}
 
     def __bool__(self):
         return {{#struct:fields}}{{!
             }}deref(self.c_{{struct:name}}).__isset.{{field:name}}{{!
-            }}{{^last?}} or {{/last?}}{{/struct:fields}}
+            }}{{^last?}} or {{/last?}}{{/struct:fields}}{{!
+            }}{{^struct:fields}}True{{/struct:fields}}
 
     @staticmethod
     cdef create(shared_ptr[c{{struct:name}}] c_{{struct:name}}):
@@ -179,13 +183,21 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.types.Exception){{/s
         return not cmp
 
     def __hash__({{struct:name}} self):
+        {{^struct:exception?}}
         if not self.__hash:
             self.__hash = hash((
             {{#struct:fields}}
             self.{{field:name}},
             {{/struct:fields}}
+            {{^struct:fields}}
+            type(self)   # Hash the class there are no fields
+            {{/struct:fields}}
             ))
         return self.__hash
+        {{/struct:exception?}}
+        {{#struct:exception?}}
+        return super().__hash__()
+        {{/struct:exception?}}
 
     def __repr__({{struct:name}} self):
         return f'{{struct:name}}({{#struct:fields}}{{field:name}}={repr(self.{{field:name}})}{{^last?}}, {{/last?}}{{/struct:fields}})'

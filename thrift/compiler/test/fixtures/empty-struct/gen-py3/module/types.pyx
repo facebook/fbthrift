@@ -50,9 +50,10 @@ cdef class Empty(thrift.py3.types.Struct):
         return inst
 
     def __iter__(self):
+        return iter(())
 
     def __bool__(self):
-        return 
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cEmpty] c_Empty):
@@ -83,6 +84,7 @@ cdef class Empty(thrift.py3.types.Struct):
     def __hash__(Empty self):
         if not self.__hash:
             self.__hash = hash((
+            type(self)   # Hash the class there are no fields
             ))
         return self.__hash
 

@@ -35,9 +35,10 @@ cdef class Banal(thrift.py3.types.Exception):
 
 
     def __iter__(self):
+        return iter(())
 
     def __bool__(self):
-        return 
+        return True
 
     @staticmethod
     cdef create(shared_ptr[cBanal] c_Banal):
@@ -66,10 +67,7 @@ cdef class Banal(thrift.py3.types.Exception):
         return not cmp
 
     def __hash__(Banal self):
-        if not self.__hash:
-            self.__hash = hash((
-            ))
-        return self.__hash
+        return super().__hash__()
 
     def __repr__(Banal self):
         return f'Banal()'
@@ -130,11 +128,7 @@ cdef class Fiery(thrift.py3.types.Exception):
         return not cmp
 
     def __hash__(Fiery self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.message,
-            ))
-        return self.__hash
+        return super().__hash__()
 
     def __repr__(Fiery self):
         return f'Fiery(message={repr(self.message)})'
