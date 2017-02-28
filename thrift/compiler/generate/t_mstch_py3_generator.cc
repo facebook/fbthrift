@@ -135,13 +135,9 @@ mstch::map t_mstch_py3_generator::extend_service(
   string include_prefix = program->get_include_prefix();
   // Used to avoid circular import in ServicesWrapper.h.mustache
   bool externalProgram = false;
-  if (service.get_extends()) {
-    const auto ext_program = service.get_extends()->get_program();
-    const auto& ext_path = ext_program->get_path();
-    const auto& prog_path = program->get_path();
-    if (ext_path != prog_path) {
-      externalProgram = true;
-    }
+  const auto& prog_path = program->get_path();
+  if (prog_path != this->get_program()->get_path()) {
+    externalProgram = true;
   }
   mstch::map result {
     {"externalProgram?", externalProgram},

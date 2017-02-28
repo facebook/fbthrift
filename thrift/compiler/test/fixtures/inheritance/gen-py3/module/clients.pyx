@@ -29,9 +29,7 @@ from module.clients_wrapper cimport move
 
 from module.clients_wrapper cimport cMyRootAsyncClient, cMyRootClientWrapper
 from module.clients_wrapper cimport cMyNodeAsyncClient, cMyNodeClientWrapper
-from module.clients_wrapper cimport cMyRootClientWrapper
 from module.clients_wrapper cimport cMyLeafAsyncClient, cMyLeafClientWrapper
-from module.clients_wrapper cimport cMyNodeClientWrapper
 
 
 cdef void MyRoot_do_root_callback(
@@ -131,7 +129,7 @@ cdef void made_MyRoot_py3_client_callback(
         MyRoot._module_MyRoot_set_client(pyclient, result.value())
         pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, pyclient)
 
-cdef class MyNode(module.clients.MyRoot):
+cdef class MyNode(MyRoot):
 
     def __init__(self, *args, **kwds):
         raise TypeError('Use MyNode.connect() instead.')
@@ -143,7 +141,7 @@ cdef class MyNode(module.clients.MyRoot):
     cdef _module_MyNode_set_client(MyNode inst, shared_ptr[cMyNodeClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
         inst._module_MyNode_client = c_obj
-        module.clients.MyRoot._module_MyRoot_set_client(inst, <shared_ptr[cMyRootClientWrapper]>c_obj)
+        MyRoot._module_MyRoot_set_client(inst, <shared_ptr[cMyRootClientWrapper]>c_obj)
 
     @staticmethod
     async def connect(str host, int port, loop=None):
@@ -186,7 +184,7 @@ cdef void made_MyNode_py3_client_callback(
         MyNode._module_MyNode_set_client(pyclient, result.value())
         pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, pyclient)
 
-cdef class MyLeaf(module.clients.MyNode):
+cdef class MyLeaf(MyNode):
 
     def __init__(self, *args, **kwds):
         raise TypeError('Use MyLeaf.connect() instead.')
@@ -198,7 +196,7 @@ cdef class MyLeaf(module.clients.MyNode):
     cdef _module_MyLeaf_set_client(MyLeaf inst, shared_ptr[cMyLeafClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
         inst._module_MyLeaf_client = c_obj
-        module.clients.MyNode._module_MyNode_set_client(inst, <shared_ptr[cMyNodeClientWrapper]>c_obj)
+        MyNode._module_MyNode_set_client(inst, <shared_ptr[cMyNodeClientWrapper]>c_obj)
 
     @staticmethod
     async def connect(str host, int port, loop=None):

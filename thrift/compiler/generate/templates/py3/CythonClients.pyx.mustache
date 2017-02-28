@@ -46,29 +46,31 @@ import {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:n
 
 from {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.clients_wrapper cimport move
 {{#program:includeNamespaces}}
-{{#hasTypes}}
+{{#hasTypes?}}
 cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}types
 import {{#includeNamespace}}{{value}}.{{/includeNamespace}}types
-{{/hasTypes}}
-{{#hasServices}}
+{{/hasTypes?}}
+{{#hasServices?}}
 cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}clients
 import {{#includeNamespace}}{{value}}.{{/includeNamespace}}clients
-{{/hasServices}}
+{{/hasServices?}}
 {{/program:includeNamespaces}}
 
 {{#program:services}}
 from {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.clients_wrapper cimport c{{service:name}}AsyncClient, c{{service:name}}ClientWrapper
 {{#service:extends}}
+{{#service:externalProgram?}}
 from {{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{service:programName}}.clients_wrapper cimport c{{service:name}}ClientWrapper
+{{/service:externalProgram?}}
 {{/service:extends}}
 {{/program:services}}
 
 {{> ClientCallbacks}}
 
 {{#program:services}}
-cdef class {{service:name}}{{#service:extends}}({{!
+cdef class {{service:name}}{{#service:extends}}({{#service:externalProgram?}}{{!
   }}{{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{!
-    }}{{service:programName}}.clients.{{service:name}}{{!
+  }}{{service:programName}}.clients.{{/service:externalProgram?}}{{service:name}}{{!
   }}){{/service:extends}}:
 
     def __init__(self, *args, **kwds):
@@ -82,7 +84,7 @@ cdef class {{service:name}}{{#service:extends}}({{!
         """So the class hierarchy talks to the correct pointer type"""
         inst._{{program:name}}_{{service:name}}_client = c_obj
 {{#service:extends}}
-        {{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{service:programName}}.clients.{{service:name}}._{{service:programName}}_{{service:name}}_set_client(inst, <shared_ptr[c{{service:name}}ClientWrapper]>c_obj)
+        {{#service:externalProgram?}}{{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{service:programName}}.clients.{{/service:externalProgram?}}{{service:name}}._{{service:programName}}_{{service:name}}_set_client(inst, <shared_ptr[c{{service:name}}ClientWrapper]>c_obj)
 {{/service:extends}}
 
     @staticmethod

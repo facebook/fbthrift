@@ -24,11 +24,11 @@ created by the thrift compiler for generated cpp2 code.
 #pragma once
 {{#program:services}}
 #include <{{program:includePrefix}}gen-cpp2/{{service:name}}.h>
-{{#service:externalProgram?}}
 {{#service:extends}}
+{{#service:externalProgram?}}
 #include <{{service:includePrefix}}gen-py3/{{service:programName}}/services_wrapper.h>
-{{/service:extends}}
 {{/service:externalProgram?}}
+{{/service:extends}}
 {{/program:services}}
 #include <Python.h>
 

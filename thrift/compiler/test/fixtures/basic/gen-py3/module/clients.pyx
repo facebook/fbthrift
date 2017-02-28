@@ -32,7 +32,6 @@ from module.clients_wrapper cimport cMyServiceFastAsyncClient, cMyServiceFastCli
 from module.clients_wrapper cimport cMyServiceEmptyAsyncClient, cMyServiceEmptyClientWrapper
 from module.clients_wrapper cimport cMyServicePrioParentAsyncClient, cMyServicePrioParentClientWrapper
 from module.clients_wrapper cimport cMyServicePrioChildAsyncClient, cMyServicePrioChildClientWrapper
-from module.clients_wrapper cimport cMyServicePrioParentClientWrapper
 
 
 cdef void MyService_ping_callback(
@@ -586,7 +585,7 @@ cdef void made_MyServicePrioParent_py3_client_callback(
         MyServicePrioParent._module_MyServicePrioParent_set_client(pyclient, result.value())
         pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, pyclient)
 
-cdef class MyServicePrioChild(module.clients.MyServicePrioParent):
+cdef class MyServicePrioChild(MyServicePrioParent):
 
     def __init__(self, *args, **kwds):
         raise TypeError('Use MyServicePrioChild.connect() instead.')
@@ -598,7 +597,7 @@ cdef class MyServicePrioChild(module.clients.MyServicePrioParent):
     cdef _module_MyServicePrioChild_set_client(MyServicePrioChild inst, shared_ptr[cMyServicePrioChildClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
         inst._module_MyServicePrioChild_client = c_obj
-        module.clients.MyServicePrioParent._module_MyServicePrioParent_set_client(inst, <shared_ptr[cMyServicePrioParentClientWrapper]>c_obj)
+        MyServicePrioParent._module_MyServicePrioParent_set_client(inst, <shared_ptr[cMyServicePrioParentClientWrapper]>c_obj)
 
     @staticmethod
     async def connect(str host, int port, loop=None):

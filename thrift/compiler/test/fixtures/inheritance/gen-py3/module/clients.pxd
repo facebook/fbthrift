@@ -19,13 +19,13 @@ cdef class MyRoot:
     @staticmethod
     cdef _module_MyRoot_set_client(MyRoot inst, shared_ptr[cMyRootClientWrapper] c_obj)
 
-cdef class MyNode(module.clients.MyRoot):
+cdef class MyNode(MyRoot):
     cdef shared_ptr[cMyNodeClientWrapper] _module_MyNode_client
 
     @staticmethod
     cdef _module_MyNode_set_client(MyNode inst, shared_ptr[cMyNodeClientWrapper] c_obj)
 
-cdef class MyLeaf(module.clients.MyNode):
+cdef class MyLeaf(MyNode):
     cdef shared_ptr[cMyLeafClientWrapper] _module_MyLeaf_client
 
     @staticmethod

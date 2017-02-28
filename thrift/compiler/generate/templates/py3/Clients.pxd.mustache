@@ -39,9 +39,9 @@ from {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:nam
 {{/program:services}}
 
 {{#program:services}}
-cdef class {{service:name}}{{#service:extends}}({{!
+cdef class {{service:name}}{{#service:extends}}({{#service:externalProgram?}}{{!
   }}{{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{!
-    }}{{service:programName}}.clients.{{service:name}}{{!
+    }}{{service:programName}}.clients.{{/service:externalProgram?}}{{service:name}}{{!
   }}){{/service:extends}}:
     cdef shared_ptr[c{{service:name}}ClientWrapper] _{{program:name}}_{{service:name}}_client
 {{^service:extends?}}

@@ -26,6 +26,10 @@ cimport my.namespacing.extend.test.extend.types
 import my.namespacing.extend.test.extend.types
 
 from my.namespacing.extend.test.extend.clients_wrapper cimport move
+cimport hsmodule.types
+import hsmodule.types
+cimport hsmodule.clients
+import hsmodule.clients
 
 from my.namespacing.extend.test.extend.clients_wrapper cimport cExtendTestServiceAsyncClient, cExtendTestServiceClientWrapper
 from hsmodule.clients_wrapper cimport cHsTestServiceClientWrapper

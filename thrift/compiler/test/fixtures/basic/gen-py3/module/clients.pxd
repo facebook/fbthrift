@@ -45,7 +45,7 @@ cdef class MyServicePrioParent:
     @staticmethod
     cdef _module_MyServicePrioParent_set_client(MyServicePrioParent inst, shared_ptr[cMyServicePrioParentClientWrapper] c_obj)
 
-cdef class MyServicePrioChild(module.clients.MyServicePrioParent):
+cdef class MyServicePrioChild(MyServicePrioParent):
     cdef shared_ptr[cMyServicePrioChildClientWrapper] _module_MyServicePrioChild_client
 
     @staticmethod

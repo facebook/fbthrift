@@ -23,11 +23,11 @@ Header file for ClientsWrapper.cpp for cython to import in CythonClients.pxd.
 #pragma once
 {{#program:services}}
 #include <{{program:includePrefix}}gen-cpp2/{{service:name}}.h>
-{{#service:externalProgram?}}
 {{#service:extends}}
+{{#service:externalProgram?}}
 #include <{{service:includePrefix}}gen-py3/{{service:programName}}/clients_wrapper.h>
-{{/service:extends}}
 {{/service:externalProgram?}}
+{{/service:extends}}
 {{/program:services}}
 
 #include <folly/Try.h>
