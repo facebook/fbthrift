@@ -1,4 +1,5 @@
 namespace hs My.Namespacing.Extend.Test
+namespace py3 my.namespacing.extend.test
 
 include "hsmodule.thrift"
 

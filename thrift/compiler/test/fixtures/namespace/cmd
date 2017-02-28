@@ -1,3 +1,5 @@
 py src/module.thrift
 hs src/module.thrift
 hs src/extend.thrift
+mstch_py3 src/module.thrift
+mstch_py3 src/extend.thrift
