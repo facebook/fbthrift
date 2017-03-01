@@ -54,7 +54,7 @@ SaslThreadManager::SaslThreadManager(std::shared_ptr<SecurityLogger> logger,
     maxSimultaneousSecureConnections_ = -1;
   }
 
-  LOG(INFO) << "Starting " << threadCount << " threads for SASLThreadManager";
+  VLOG(1) << "Starting " << threadCount << " threads for SaslThreadManager";
 
   threadManager_ = concurrency::ThreadManager::newSimpleThreadManager(
     threadCount);
