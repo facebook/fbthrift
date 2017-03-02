@@ -14,13 +14,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%!
 %>  bool operator < (const <%struct:name%>& rhs) const {
-<%#struct:base_fields%>
+<%#struct:fields%>
     if (!(<%field:name%> == rhs.<%field:name%>)) {
       return <%field:name%> < rhs.<%field:name%>;
     }
-<%/struct:base_fields%>
+<%/struct:fields%>
     (void)rhs;
     return false;
   }

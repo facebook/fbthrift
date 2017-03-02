@@ -16,16 +16,21 @@
 
 %><%!
 
-Base constructor:
-Form:
+####################### FORMAT #######################
+
 Struct() {}
-or
+
+-----------------------------------------------------
+
 Struct() :
   ...,
   element1(val),
   element2(val) {}
+
+######################################################
+
 %>  <%struct:name%>()<%!
-  %><%#struct:base_fields_non_empty_strings%><%!%><% > common/colon_newline%><%!
+  %><%#struct:filtered_fields%><% > common/colon_newline%><%!
     %><%#field:type%><%!
       %>      <%field:name%>(<%!
       %><%#field:value%><%!
@@ -36,5 +41,5 @@ Struct() :
       %><%/field:value%><%!
       %>)<% > common/comma_newline%><%!
     %><%/field:type%><%!
-  %><%/struct:base_fields_non_empty_strings%><%!
+  %><%/struct:filtered_fields%><%!
 %> {}

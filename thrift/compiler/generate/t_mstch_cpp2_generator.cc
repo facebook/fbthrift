@@ -131,31 +131,40 @@ mstch::map t_mstch_cpp2_generator::extend_function(const t_function& fn) const {
 }
 
 mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) const {
+  mstch::map m;
+  m.emplace("namespaces", this->get_namespace(*s.get_program()));
+
   std::vector<t_field*> s_members = s.get_members();
+
+  // obtain base types
   std::vector<t_field*> base_members;
-  // Obtain base types
+
   std::copy_if(
     s_members.begin(),
     s_members.end(),
     std::back_inserter(base_members),
     [](t_field* f){ return f->get_type()->is_base_type(); }
   );
-  // Specialize base_members to non empty strings for base ctor.
-  std::vector<t_field*> base_members_non_empty_strings;
-  std::copy_if(
-    base_members.begin(),
-    base_members.end(),
-    std::back_inserter(base_members_non_empty_strings),
-    [](t_field* f){
-      return !f->get_type()->is_string() || f->get_value() != nullptr;
-  });
+  m.emplace("base_fields?", !base_members.empty());
+  m.emplace("base_fields", this->dump_elems(base_members));
 
-  return mstch::map {
-    {"base_fields_non_empty_strings",
-        this->dump_elems(base_members_non_empty_strings)},
-    {"base_fields", this->dump_elems(base_members)},
-    {"base_fields?", !base_members.empty() },
-  };
+  // Filter fields according to the following criteria:
+  // Get all base_types but strings (empty and non-empty)
+  // Get all non empty strings
+  // Get all non empty containers
+  std::vector<t_field*> filtered_fields;
+  std::copy_if(
+    s_members.begin(),
+    s_members.end(),
+    std::back_inserter(filtered_fields),
+    [](t_field* f){
+      return (f->get_type()->is_base_type() && !f->get_type()->is_string()) ||
+      (f->get_type()->is_string() && f->get_value() != nullptr) ||
+      (f->get_type()->is_container() && f->get_value() != nullptr);
+  });
+  m.emplace("filtered_fields", this->dump_elems(filtered_fields));
+
+  return m;
 }
 
 mstch::map t_mstch_cpp2_generator::extend_type(const t_type& t) const {

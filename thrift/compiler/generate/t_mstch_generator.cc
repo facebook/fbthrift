@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <thrift/compiler/generate/t_mstch_generator.h>
 #include <thrift/compiler/common.h>
 #include <thrift/compiler/generate/t_generator.h>
@@ -79,6 +78,7 @@ mstch::map t_mstch_generator::dump(const t_program& program) const {
 mstch::map t_mstch_generator::dump(const t_struct& strct, bool shallow) const {
   mstch::map result{
       {"name", strct.get_name()},
+      {"fields?", !strct.get_members().empty()},
       {"fields",
        shallow ? static_cast<mstch::node>(false)
                : this->dump_elems(strct.get_members())},

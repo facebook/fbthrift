@@ -16,34 +16,51 @@
 
 %><%!
 
-Base constructor:
-Form:
+####################### FORMAT #######################
+
+  // FragileConstructor for use in initialization lists only
+
 Struct(apache::thrift::FragileConstructor) {}
-or
+
+-----------------------------------------------------
+
+  // FragileConstructor for use in initialization lists only
+
 Struct(apache::thrift::FragileConstructor, ...) :
     ...,
     element1(std::move(element1__arg)) {
   ...;
   __isset.element1 = true;
 }
+
+######################################################
+
 %>  // FragileConstructor for use in initialization lists only
 
 <%!
 %>  <%struct:name%>(<%!
 %>apache::thrift::FragileConstructor<%!
 
-%><%#struct:base_fields%><% > common/comma_space%><%!
-%><%#field:type%><%!
-  %><% > Type%> <%field:name%>__arg<%!
-%><%/field:type%><%!
-%><%/struct:base_fields%><%!
+Arguments
+
+%><%#struct:fields%><% > common/comma_space%><%!
+  %><%#field:type%><%!
+    %><% > Type%> <%field:name%>__arg<%!
+  %><%/field:type%><%!
+%><%/struct:fields%><%!
 %>)<%!
-%><%#struct:base_fields%><% > common/colon_newline%><%!
-  %>      <%field:name%>(std::move(<%field:name%>__arg))<% > common/comma_newline%><%!
-%><%/struct:base_fields%><%!
-%> {<%#struct:base_fields%>
+
+Fields
+
+%><%#struct:fields%><% > common/colon_newline%><%!
+%>      <%field:name%>(std::move(<%field:name%>__arg))<% > common/comma_newline%><%!
+%><%/struct:fields%><%!
+
+__isset
+
+%> {<%#struct:fields%>
     __isset.<%field:name%> = true;<%!
 %><%#last?%>
   <%/last?%><%!
-%><%/struct:base_fields%><%!
+%><%/struct:fields%><%!
 %>}
