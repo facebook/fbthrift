@@ -3524,9 +3524,9 @@ class CppGenerator(t_generator.Generator):
         ktype = '_ktype' + self._nested_containers(otype)
         vtype = '_vtype' + self._nested_containers(otype)
         etype = '_etype' + self._nested_containers(otype)
+        elem = '_elem' + self._nested_containers(otype)
+        i = '_i' + self._nested_containers(otype)
         cpptype = self._cpp_type_name(cont)
-        use_push = (cpptype is not None and 'list' in cpptype) \
-            or self._has_cpp_annotation(cont, 'template')
 
         if pointer:
             # Use unique_ptr as a temporary deserialization container
@@ -3561,9 +3561,9 @@ class CppGenerator(t_generator.Generator):
             s('apache::thrift::protocol::TType {0};'.format(etype))
             txt = 'xfer += iprot->readListBegin({0}, {1});'.format(etype, size)
             s(txt)
-        # For loop iterates over elements
-        i = '_i' + self._nested_containers(otype)
-        s('uint32_t {0};'.format(i))
+
+        if not cont.is_list:
+            s('uint32_t {0};'.format(i))
 
         with s('if ({0} == {1})'
                .format(size, 'std::numeric_limits<uint32_t>::max()')):
@@ -3575,19 +3575,21 @@ class CppGenerator(t_generator.Generator):
             elif cont.is_list:
                 peek = 'iprot->peekList()'
 
-            with s('for ({0} = 0; {1}; {0}++)'.format(i, peek)):
-                if cont.is_map:
+            if cont.is_map:
+                with s('for ({0} = 0; {1}; ++{0})'.format(i, peek)):
                     self._generate_deserialize_map_element(
-                            out(), cont.as_map, cont_ref)
-                elif cont.is_set:
+                        out(), cont.as_map, cont_ref)
+            elif cont.is_set:
+                with s('for ({0} = 0; {1}; ++{0})'.format(i, peek)):
                     self._generate_deserialize_set_element(
-                            out(), cont.as_set, cont_ref)
-                elif cont.is_list:
-                    if not use_push:
-                        s('{0}.resize({1} + 1);'.format(cont_ref, i))
+                        out(), cont.as_set, cont_ref)
+            elif cont.is_list:
+                with s('while ({0})'.format(peek)):
+                    scope('{0}.emplace_back();'.format(cont_ref))
+                    scope('{0}::reference {1} = {2}.back();'.format(
+                        self._type_name(otype), elem, cont_ref))
                     self._generate_deserialize_list_element(out(), cont.as_list,
-                                                            cont_ref, use_push,
-                                                            i)
+                                                            cont_ref, i)
         with s('else'):
             # set up temporary vector to contain sorted key/value pairs
             key_reader = None
@@ -3615,21 +3617,21 @@ class CppGenerator(t_generator.Generator):
                     self._generate_deserialize_field(out(), val_field)
                 s(';')
 
-            if cont.is_list and not use_push:
-                s('{0}.resize({1});'.format(cont_ref, size))
             elif ((cont.is_map and cont.as_map.is_unordered) or
                   (cont.is_set and cont.as_set.is_unordered)):
                 s('{0}.reserve({1});'.format(cont_ref, size))
 
-            if cont.is_set or cont.is_list:
+            if cont.is_set:
                 with s('for ({0} = 0; {0} < {1}; ++{0})'.format(i, size)):
-                    if cont.is_set:
-                        self._generate_deserialize_set_element(
-                                out(), cont.as_set, cont_ref)
-                    elif cont.is_list:
-                        self._generate_deserialize_list_element(
-                            out(), cont.as_list, cont_ref, use_push, i)
-            if cont.is_map:
+                    self._generate_deserialize_set_element(
+                        out(), cont.as_set, cont_ref)
+            elif cont.is_list:
+                scope('{0}.resize({1});'.format(cont_ref, size))
+                with s('for ({0}::reference {1} : {2})'.format(
+                        self._type_name(otype), elem, cont_ref)):
+                    self._generate_deserialize_list_element(
+                        out(), cont.as_list, cont_ref, i)
+            elif cont.is_map:
                 s('::apache::thrift::'
                   'deserialize_known_length_map('
                   '{0}, {1}, {2}, {3});'.format(
@@ -3663,24 +3665,16 @@ class CppGenerator(t_generator.Generator):
         self._generate_deserialize_field(scope, fval)
 
     def _generate_deserialize_set_element(self, scope, tset, prefix):
-        elem = self.tmp('_elem')
+        elem = '_elem' + self._nested_containers(tset)
         felem = frontend.t_field(tset.elem_type, elem)
         scope(self._declare_field(felem))
         self._generate_deserialize_field(scope, felem)
         scope('{0}.insert(std::move({1}));'.format(prefix, elem))
 
-    def _generate_deserialize_list_element(self, scope, tlist, prefix,
-                                           use_push, index):
-        if use_push:
-            elem = self.tmp('_elem')
-            felem = frontend.t_field(tlist.elem_type, elem)
-            scope(self._declare_field(felem))
-            self._generate_deserialize_field(scope, felem)
-            scope('{0}.push_back(std::move({1}));'.format(prefix, elem))
-        else:
-            felem = frontend.t_field(tlist.elem_type, '{0}[{1}]'.format(prefix,
-                                                                        index))
-            self._generate_deserialize_field(scope, felem)
+    def _generate_deserialize_list_element(self, scope, tlist, prefix, index):
+        elem = '_elem' + self._nested_containers(tlist)
+        felem = frontend.t_field(tlist.elem_type, elem)
+        self._generate_deserialize_field(scope, felem)
 
     # ======================================================================
     # SERIALIZATION CODE
@@ -4090,7 +4084,7 @@ class CppGenerator(t_generator.Generator):
                     method,
                     tte(ttype.as_list.elem_type),
                     prefix))
-        ite = self.tmp('_iter')
+        ite = '_iter' + self._nested_containers(ttype)
         typename = self._type_name(ttype)
         with s('for (auto {0} = {1}.begin(); {0} != {1}.end(); ++{0})'.format(
                 ite, prefix)):
