@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. "deps_common.sh"
+. "$(dirname "$0")/deps_common.sh"
 
 sudo yum install -y \
     openssl-devel \
@@ -16,6 +16,7 @@ sudo yum install -y \
     libevent \
     flex \
     bison \
+    scons \
     krb5-devel \
     snappy-devel \
     libgsasl-devel \
@@ -23,7 +24,8 @@ sudo yum install -y \
     numactl-libs \
     cmake
 
-if [ ! -e "double-conversion" ]; then
+# no rpm for this?
+if [ ! -e double-conversion ]; then
   echo "Fetching double-conversion from git (yum failed)"
   git clone https://github.com/floitsch/double-conversion.git double-conversion
   cd double-conversion
@@ -32,9 +34,7 @@ if [ ! -e "double-conversion" ]; then
   cd ..
 fi
 
-install_zstd centos
-install_mstch centos
-install_libsodium centos
-install_libzmq centos
-install_folly centos
-install_fbthrift centos
+install_folly centos  # needs git
+install_mstch centos  # needs git, cmake
+install_zstd centos   # needs git
+install_wangle centos
