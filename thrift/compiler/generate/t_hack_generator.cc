@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -1768,10 +1767,23 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     t_type* t = get_true_type((*m_iter)->get_type());
 
-    string dval = render_default_value(t);
+    string dval = "";
+    // If a value was specified for the field in the thrift file, and the field
+    // is not a struct or exception, use the value as the default.
+    if ((*m_iter)->get_value() != nullptr
+        && !(t->is_struct() || t->is_xception())) {
+      dval = render_const_value(t, (*m_iter)->get_value());
+    // Otherwise, the default value is null (or equivalent).
+    } else {
+      dval = render_default_value(t);
+    }
+
     bool nullable = field_is_nullable(tstruct, *m_iter, render_default_value(t));
     out << endl;
 
+    // Note: default values are not currently working for non-POD types.
+    // The logic below needs to be reworked so that dval is used for nullable
+    // types (if available). See D4609418 for more information.
     if (!shape_unsafe_json_) {
       indent(out) << "if (!array_key_exists('"
                   << (*m_iter)->get_name() << "', $shape_data)) {" << endl;

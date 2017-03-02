@@ -1394,21 +1394,21 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
 
     if (!array_key_exists('string_with_default_value', $shape_data)) {
-      $shape_data['string_with_default_value'] = '';
+      $shape_data['string_with_default_value'] = "de_fault_in_our_stars";
     }
     if (!is_string($shape_data['string_with_default_value'])) {
       return null;
     }
 
     if (!array_key_exists('i32_with_default_value', $shape_data)) {
-      $shape_data['i32_with_default_value'] = 0;
+      $shape_data['i32_with_default_value'] = 1729;
     }
     if (!is_int($shape_data['i32_with_default_value'])) {
       return null;
     }
 
     if (!array_key_exists('double_with_default_value', $shape_data)) {
-      $shape_data['double_with_default_value'] = 0.0;
+      $shape_data['double_with_default_value'] = 3.14159;
     }
     if (!(is_float($shape_data['double_with_default_value']) || is_int($shape_data['double_with_default_value']))) {
       return null;
