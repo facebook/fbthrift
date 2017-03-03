@@ -77,17 +77,17 @@ uint32_t House::read(Protocol_* iprot) {
           xfer += iprot->readSetBegin(_etype_r, _size_r);
           uint32_t _i_r;
           if (_size_r == std::numeric_limits<uint32_t>::max()) {
-            for (_i_r = 0; iprot->peekSet(); ++_i_r) {
-               ::cpp2::ColorID _elem_r;
-              xfer += iprot->readI64(_elem_r);
-              this->houseColors.value().insert(std::move(_elem_r));
+            for (_i_r = 0; iprot->peekSet(); _i_r++) {
+               ::cpp2::ColorID _elem0;
+              xfer += iprot->readI64(_elem0);
+              this->houseColors.value().insert(std::move(_elem0));
             }
           }
           else {
             for (_i_r = 0; _i_r < _size_r; ++_i_r) {
-               ::cpp2::ColorID _elem_r;
-              xfer += iprot->readI64(_elem_r);
-              this->houseColors.value().insert(std::move(_elem_r));
+               ::cpp2::ColorID _elem1;
+              xfer += iprot->readI64(_elem1);
+              this->houseColors.value().insert(std::move(_elem1));
             }
           }
           xfer += iprot->readSetEnd();
@@ -120,8 +120,8 @@ uint32_t House::serializedSize(Protocol_ const* prot_) const {
   if (this->houseColors.hasValue()) {
     xfer += prot_->serializedFieldSize("houseColors", apache::thrift::protocol::T_SET, 3);
     xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I64, this->houseColors.value().size());
-    for (auto _iter_r = this->houseColors.value().begin(); _iter_r != this->houseColors.value().end(); ++_iter_r) {
-      xfer += prot_->serializedSizeI64((*_iter_r));
+    for (auto _iter2 = this->houseColors.value().begin(); _iter2 != this->houseColors.value().end(); ++_iter2) {
+      xfer += prot_->serializedSizeI64((*_iter2));
     }
     xfer += prot_->serializedSizeSetEnd();
   }
@@ -140,8 +140,8 @@ uint32_t House::serializedSizeZC(Protocol_ const* prot_) const {
   if (this->houseColors.hasValue()) {
     xfer += prot_->serializedFieldSize("houseColors", apache::thrift::protocol::T_SET, 3);
     xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I64, this->houseColors.value().size());
-    for (auto _iter_r = this->houseColors.value().begin(); _iter_r != this->houseColors.value().end(); ++_iter_r) {
-      xfer += prot_->serializedSizeI64((*_iter_r));
+    for (auto _iter3 = this->houseColors.value().begin(); _iter3 != this->houseColors.value().end(); ++_iter3) {
+      xfer += prot_->serializedSizeI64((*_iter3));
     }
     xfer += prot_->serializedSizeSetEnd();
   }
@@ -162,8 +162,8 @@ uint32_t House::write(Protocol_* prot_) const {
   if (this->houseColors.hasValue()) {
     xfer += prot_->writeFieldBegin("houseColors", apache::thrift::protocol::T_SET, 3);
     xfer += prot_->writeSetBegin(apache::thrift::protocol::T_I64, this->houseColors.value().size());
-    for (auto _iter_r = this->houseColors.value().begin(); _iter_r != this->houseColors.value().end(); ++_iter_r) {
-      xfer += prot_->writeI64((*_iter_r));
+    for (auto _iter4 = this->houseColors.value().begin(); _iter4 != this->houseColors.value().end(); ++_iter4) {
+      xfer += prot_->writeI64((*_iter4));
     }
     xfer += prot_->writeSetEnd();
     xfer += prot_->writeFieldEnd();
