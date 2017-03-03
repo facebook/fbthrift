@@ -919,7 +919,7 @@ func (p *MyServiceGetRandomDataArgs) String() string {
 // Attributes:
 //  - Success
 type MyServiceGetRandomDataResult struct {
-  Success *string `thrift:"success,0" json:"success,omitempty"`
+  Success *string `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
 func NewMyServiceGetRandomDataResult() *MyServiceGetRandomDataResult {
@@ -1011,7 +1011,7 @@ func (p *MyServiceGetRandomDataResult) String() string {
 // Attributes:
 //  - Id
 type MyServiceHasDataByIdArgs struct {
-  Id int64 `thrift:"id,1" json:"id"`
+  Id int64 `thrift:"id,1" db:"id" json:"id"`
 }
 
 func NewMyServiceHasDataByIdArgs() *MyServiceHasDataByIdArgs {
@@ -1094,7 +1094,7 @@ func (p *MyServiceHasDataByIdArgs) String() string {
 // Attributes:
 //  - Success
 type MyServiceHasDataByIdResult struct {
-  Success *bool `thrift:"success,0" json:"success,omitempty"`
+  Success *bool `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
 func NewMyServiceHasDataByIdResult() *MyServiceHasDataByIdResult {
@@ -1186,7 +1186,7 @@ func (p *MyServiceHasDataByIdResult) String() string {
 // Attributes:
 //  - Id
 type MyServiceGetDataByIdArgs struct {
-  Id int64 `thrift:"id,1" json:"id"`
+  Id int64 `thrift:"id,1" db:"id" json:"id"`
 }
 
 func NewMyServiceGetDataByIdArgs() *MyServiceGetDataByIdArgs {
@@ -1269,7 +1269,7 @@ func (p *MyServiceGetDataByIdArgs) String() string {
 // Attributes:
 //  - Success
 type MyServiceGetDataByIdResult struct {
-  Success *string `thrift:"success,0" json:"success,omitempty"`
+  Success *string `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
 func NewMyServiceGetDataByIdResult() *MyServiceGetDataByIdResult {
@@ -1362,8 +1362,8 @@ func (p *MyServiceGetDataByIdResult) String() string {
 //  - Id
 //  - Data
 type MyServicePutDataByIdArgs struct {
-  Id int64 `thrift:"id,1" json:"id"`
-  Data string `thrift:"data,2" json:"data"`
+  Id int64 `thrift:"id,1" db:"id" json:"id"`
+  Data string `thrift:"data,2" db:"data" json:"data"`
 }
 
 func NewMyServicePutDataByIdArgs() *MyServicePutDataByIdArgs {
@@ -1524,8 +1524,8 @@ func (p *MyServicePutDataByIdResult) String() string {
 //  - Id
 //  - Data
 type MyServiceLobDataByIdArgs struct {
-  Id int64 `thrift:"id,1" json:"id"`
-  Data string `thrift:"data,2" json:"data"`
+  Id int64 `thrift:"id,1" db:"id" json:"id"`
+  Data string `thrift:"data,2" db:"data" json:"data"`
 }
 
 func NewMyServiceLobDataByIdArgs() *MyServiceLobDataByIdArgs {

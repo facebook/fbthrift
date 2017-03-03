@@ -752,8 +752,8 @@ func (p *RaiserDoRaiseArgs) String() string {
 //  - B
 //  - F
 type RaiserDoRaiseResult struct {
-  B *Banal `thrift:"b,1" json:"b,omitempty"`
-  F *Fiery `thrift:"f,2" json:"f,omitempty"`
+  B *Banal `thrift:"b,1" db:"b" json:"b,omitempty"`
+  F *Fiery `thrift:"f,2" db:"f" json:"f,omitempty"`
 }
 
 func NewRaiserDoRaiseResult() *RaiserDoRaiseResult {
@@ -931,7 +931,7 @@ func (p *RaiserGet200Args) String() string {
 // Attributes:
 //  - Success
 type RaiserGet200Result struct {
-  Success *string `thrift:"success,0" json:"success,omitempty"`
+  Success *string `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
 func NewRaiserGet200Result() *RaiserGet200Result {
@@ -1074,9 +1074,9 @@ func (p *RaiserGet500Args) String() string {
 //  - F
 //  - B
 type RaiserGet500Result struct {
-  Success *string `thrift:"success,0" json:"success,omitempty"`
-  F *Fiery `thrift:"f,1" json:"f,omitempty"`
-  B *Banal `thrift:"b,2" json:"b,omitempty"`
+  Success *string `thrift:"success,0" db:"success" json:"success,omitempty"`
+  F *Fiery `thrift:"f,1" db:"f" json:"f,omitempty"`
+  B *Banal `thrift:"b,2" db:"b" json:"b,omitempty"`
 }
 
 func NewRaiserGet500Result() *RaiserGet500Result {

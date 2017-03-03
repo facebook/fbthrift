@@ -73,7 +73,7 @@ func (p *Banal) Error() string {
 // Attributes:
 //  - Message
 type Fiery struct {
-  Message string `thrift:"message,1,required" json:"message"`
+  Message string `thrift:"message,1,required" db:"message" json:"message"`
 }
 
 func NewFiery() *Fiery {

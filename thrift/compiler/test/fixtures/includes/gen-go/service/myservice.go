@@ -225,8 +225,8 @@ func (p *myServiceProcessorQuery) Process(seqId int32, iprot, oprot thrift.TProt
 //  - S
 //  - I
 type MyServiceQueryArgs struct {
-  S *module.MyStruct `thrift:"s,1" json:"s"`
-  I *includes.Included `thrift:"i,2" json:"i"`
+  S *module.MyStruct `thrift:"s,1" db:"s" json:"s"`
+  I *includes.Included `thrift:"i,2" db:"i" json:"i"`
 }
 
 func NewMyServiceQueryArgs() *MyServiceQueryArgs {

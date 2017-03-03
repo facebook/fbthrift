@@ -36,6 +36,19 @@ func EmptyEnumFromString(s string) (EmptyEnum, error) {
 
 func EmptyEnumPtr(v EmptyEnum) *EmptyEnum { return &v }
 
+func (p EmptyEnum) MarshalText() ([]byte, error) {
+return []byte(p.String()), nil
+}
+
+func (p *EmptyEnum) UnmarshalText(text []byte) error {
+q, err := EmptyEnumFromString(string(text))
+if (err != nil) {
+return err
+}
+*p = q
+return nil
+}
+
 type City int64
 const (
   City_NYC City = 0
@@ -66,6 +79,19 @@ func CityFromString(s string) (City, error) {
 
 
 func CityPtr(v City) *City { return &v }
+
+func (p City) MarshalText() ([]byte, error) {
+return []byte(p.String()), nil
+}
+
+func (p *City) UnmarshalText(text []byte) error {
+q, err := CityFromString(string(text))
+if (err != nil) {
+return err
+}
+*p = q
+return nil
+}
 
 type Company int64
 const (
@@ -98,14 +124,27 @@ func CompanyFromString(s string) (Company, error) {
 
 func CompanyPtr(v Company) *Company { return &v }
 
+func (p Company) MarshalText() ([]byte, error) {
+return []byte(p.String()), nil
+}
+
+func (p *Company) UnmarshalText(text []byte) error {
+q, err := CompanyFromString(string(text))
+if (err != nil) {
+return err
+}
+*p = q
+return nil
+}
+
 // Attributes:
 //  - Weeks
 //  - Title
 //  - Employer
 type Internship struct {
-  Weeks int32 `thrift:"weeks,1,required" json:"weeks"`
-  Title string `thrift:"title,2" json:"title"`
-  Employer *Company `thrift:"employer,3" json:"employer,omitempty"`
+  Weeks int32 `thrift:"weeks,1,required" db:"weeks" json:"weeks"`
+  Title string `thrift:"title,2" db:"title" json:"title"`
+  Employer *Company `thrift:"employer,3" db:"employer" json:"employer,omitempty"`
 }
 
 func NewInternship() *Internship {
@@ -259,7 +298,7 @@ func (p *Internship) String() string {
 // Attributes:
 //  - City
 type UnEnumStruct struct {
-  City City `thrift:"city,1" json:"city"`
+  City City `thrift:"city,1" db:"city" json:"city"`
 }
 
 func NewUnEnumStruct() *UnEnumStruct {
@@ -346,8 +385,8 @@ func (p *UnEnumStruct) String() string {
 //  - Min
 //  - Max
 type Range struct {
-  Min int32 `thrift:"min,1,required" json:"min"`
-  Max int32 `thrift:"max,2,required" json:"max"`
+  Min int32 `thrift:"min,1,required" db:"min" json:"min"`
+  Max int32 `thrift:"max,2,required" db:"max" json:"max"`
 }
 
 func NewRange() *Range {

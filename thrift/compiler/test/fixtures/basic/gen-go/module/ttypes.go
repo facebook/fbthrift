@@ -42,12 +42,25 @@ func MyEnumFromString(s string) (MyEnum, error) {
 
 func MyEnumPtr(v MyEnum) *MyEnum { return &v }
 
+func (p MyEnum) MarshalText() ([]byte, error) {
+return []byte(p.String()), nil
+}
+
+func (p *MyEnum) UnmarshalText(text []byte) error {
+q, err := MyEnumFromString(string(text))
+if (err != nil) {
+return err
+}
+*p = q
+return nil
+}
+
 // Attributes:
 //  - MyIntField
 //  - MyStringField
 type MyStruct struct {
-  MyIntField int64 `thrift:"MyIntField,1" json:"MyIntField"`
-  MyStringField string `thrift:"MyStringField,2" json:"MyStringField"`
+  MyIntField int64 `thrift:"MyIntField,1" db:"MyIntField" json:"MyIntField"`
+  MyStringField string `thrift:"MyStringField,2" db:"MyStringField" json:"MyStringField"`
 }
 
 func NewMyStruct() *MyStruct {

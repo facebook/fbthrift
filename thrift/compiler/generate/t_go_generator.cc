@@ -908,6 +908,19 @@ void t_go_generator::generate_enum(t_enum* tenum) {
   // type.
   f_types_ << "func " << tenum_name << "Ptr(v " << tenum_name << ") *" << tenum_name
            << " { return &v }" << endl << endl;
+
+  // Generate MarshalText
+  f_types_ << "func (p " << tenum_name << ") MarshalText() ([]byte, error) {" << endl;
+  f_types_ << "return []byte(p.String()), nil" << endl;
+  f_types_ << "}" << endl << endl;
+
+  // Generate UnmarshalText
+  f_types_ << "func (p *" << tenum_name << ") UnmarshalText(text []byte) error {" << endl;
+  f_types_ << "q, err := " << tenum_name << "FromString(string(text))" << endl;
+  f_types_ << "if (err != nil) {" << endl << "return err" << endl << "}" << endl;
+  f_types_ << "*p = q" << endl;
+  f_types_ << "return nil" << endl;
+  f_types_ << "}" << endl << endl;
 }
 
 /**
@@ -1185,12 +1198,14 @@ void t_go_generator::generate_go_struct_definition(ofstream& out,
 
       t_type* fieldType = (*m_iter)->get_type();
       string goType = type_to_go_type_with_opt(fieldType, is_pointer_field(*m_iter));
-      string gotag;
+      string gotag = "db:\"" + escape_string((*m_iter)->get_name())  + "\" ";
       if ((*m_iter)->get_req() == t_field::T_OPTIONAL) {
-        gotag = "json:\"" + escape_string((*m_iter)->get_name()) + ",omitempty\"";
+        gotag += "json:\"" + escape_string((*m_iter)->get_name()) + ",omitempty\"";
       } else {
-        gotag = "json:\"" + escape_string((*m_iter)->get_name()) + "\"";
+        gotag += "json:\"" + escape_string((*m_iter)->get_name()) + "\"";
       }
+
+      // Check for user override of db and json tags using "go.tag"
       std::map<string, string>::iterator it = (*m_iter)->annotations_.find("go.tag");
       if (it != (*m_iter)->annotations_.end()) {
         gotag = it->second;

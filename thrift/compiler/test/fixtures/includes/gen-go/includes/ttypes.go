@@ -20,7 +20,7 @@ var GoUnusedProtection__ int;
 // Attributes:
 //  - MyIntField
 type Included struct {
-  MyIntField int64 `thrift:"MyIntField,1" json:"MyIntField"`
+  MyIntField int64 `thrift:"MyIntField,1" db:"MyIntField" json:"MyIntField"`
 }
 
 func NewIncluded() *Included {

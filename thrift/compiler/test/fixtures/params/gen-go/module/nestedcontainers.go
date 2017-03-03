@@ -712,7 +712,7 @@ func (p *nestedContainersProcessorTurtles) Process(seqId int32, iprot, oprot thr
 // Attributes:
 //  - Foo
 type NestedContainersMapListArgs struct {
-  Foo map[int32][]int32 `thrift:"foo,1" json:"foo"`
+  Foo map[int32][]int32 `thrift:"foo,1" db:"foo" json:"foo"`
 }
 
 func NewNestedContainersMapListArgs() *NestedContainersMapListArgs {
@@ -893,7 +893,7 @@ func (p *NestedContainersMapListResult) String() string {
 // Attributes:
 //  - Foo
 type NestedContainersMapSetArgs struct {
-  Foo map[int32]map[int32]bool `thrift:"foo,1" json:"foo"`
+  Foo map[int32]map[int32]bool `thrift:"foo,1" db:"foo" json:"foo"`
 }
 
 func NewNestedContainersMapSetArgs() *NestedContainersMapSetArgs {
@@ -1074,7 +1074,7 @@ func (p *NestedContainersMapSetResult) String() string {
 // Attributes:
 //  - Foo
 type NestedContainersListMapArgs struct {
-  Foo []map[int32]int32 `thrift:"foo,1" json:"foo"`
+  Foo []map[int32]int32 `thrift:"foo,1" db:"foo" json:"foo"`
 }
 
 func NewNestedContainersListMapArgs() *NestedContainersListMapArgs {
@@ -1255,7 +1255,7 @@ func (p *NestedContainersListMapResult) String() string {
 // Attributes:
 //  - Foo
 type NestedContainersListSetArgs struct {
-  Foo []map[int32]bool `thrift:"foo,1" json:"foo"`
+  Foo []map[int32]bool `thrift:"foo,1" db:"foo" json:"foo"`
 }
 
 func NewNestedContainersListSetArgs() *NestedContainersListSetArgs {
@@ -1428,7 +1428,7 @@ func (p *NestedContainersListSetResult) String() string {
 // Attributes:
 //  - Foo
 type NestedContainersTurtlesArgs struct {
-  Foo [][]map[int32]map[int32]map[int32]bool `thrift:"foo,1" json:"foo"`
+  Foo [][]map[int32]map[int32]map[int32]bool `thrift:"foo,1" db:"foo" json:"foo"`
 }
 
 func NewNestedContainersTurtlesArgs() *NestedContainersTurtlesArgs {

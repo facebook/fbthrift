@@ -24,11 +24,11 @@ var GoUnusedProtection__ int;
 //  - StringListValue
 //  - StringRef
 type ComplexUnion struct {
-  IntValue *int64 `thrift:"intValue,1" json:"intValue,omitempty"`
-  StringValue *string `thrift:"stringValue,2" json:"stringValue,omitempty"`
-  IntListValue []int64 `thrift:"intListValue,3" json:"intListValue,omitempty"`
-  StringListValue []string `thrift:"stringListValue,4" json:"stringListValue,omitempty"`
-  StringRef *string `thrift:"stringRef,5" json:"stringRef,omitempty"`
+  IntValue *int64 `thrift:"intValue,1" db:"intValue" json:"intValue,omitempty"`
+  StringValue *string `thrift:"stringValue,2" db:"stringValue" json:"stringValue,omitempty"`
+  IntListValue []int64 `thrift:"intListValue,3" db:"intListValue" json:"intListValue,omitempty"`
+  StringListValue []string `thrift:"stringListValue,4" db:"stringListValue" json:"stringListValue,omitempty"`
+  StringRef *string `thrift:"stringRef,5" db:"stringRef" json:"stringRef,omitempty"`
 }
 
 func NewComplexUnion() *ComplexUnion {

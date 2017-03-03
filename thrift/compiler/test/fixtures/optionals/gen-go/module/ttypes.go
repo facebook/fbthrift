@@ -45,6 +45,19 @@ func AnimalFromString(s string) (Animal, error) {
 
 func AnimalPtr(v Animal) *Animal { return &v }
 
+func (p Animal) MarshalText() ([]byte, error) {
+return []byte(p.String()), nil
+}
+
+func (p *Animal) UnmarshalText(text []byte) error {
+q, err := AnimalFromString(string(text))
+if (err != nil) {
+return err
+}
+*p = q
+return nil
+}
+
 type PersonID int64
 
 func PersonIDPtr(v PersonID) *PersonID { return &v }
@@ -55,10 +68,10 @@ func PersonIDPtr(v PersonID) *PersonID { return &v }
 //  - Blue
 //  - Alpha
 type Color struct {
-  Red float64 `thrift:"red,1" json:"red"`
-  Green float64 `thrift:"green,2" json:"green"`
-  Blue float64 `thrift:"blue,3" json:"blue"`
-  Alpha float64 `thrift:"alpha,4" json:"alpha"`
+  Red float64 `thrift:"red,1" db:"red" json:"red"`
+  Green float64 `thrift:"green,2" db:"green" json:"green"`
+  Blue float64 `thrift:"blue,3" db:"blue" json:"blue"`
+  Alpha float64 `thrift:"alpha,4" db:"alpha" json:"alpha"`
 }
 
 func NewColor() *Color {
@@ -228,10 +241,10 @@ func (p *Color) String() string {
 //  - Description
 //  - Name
 type Vehicle struct {
-  Color *Color `thrift:"color,1" json:"color"`
-  LicensePlate *string `thrift:"licensePlate,2" json:"licensePlate,omitempty"`
-  Description *string `thrift:"description,3" json:"description,omitempty"`
-  Name *string `thrift:"name,4" json:"name,omitempty"`
+  Color *Color `thrift:"color,1" db:"color" json:"color"`
+  LicensePlate *string `thrift:"licensePlate,2" db:"licensePlate" json:"licensePlate,omitempty"`
+  Description *string `thrift:"description,3" db:"description" json:"description,omitempty"`
+  Name *string `thrift:"name,4" db:"name" json:"name,omitempty"`
 }
 
 func NewVehicle() *Vehicle {
@@ -441,16 +454,16 @@ func (p *Vehicle) String() string {
 //  - AfraidOfAnimal
 //  - Vehicles
 type Person struct {
-  Id PersonID `thrift:"id,1" json:"id"`
-  Name string `thrift:"name,2" json:"name"`
-  Age *int16 `thrift:"age,3" json:"age,omitempty"`
-  Address *string `thrift:"address,4" json:"address,omitempty"`
-  FavoriteColor *Color `thrift:"favoriteColor,5" json:"favoriteColor,omitempty"`
-  Friends map[int64]bool `thrift:"friends,6" json:"friends,omitempty"`
-  BestFriend *PersonID `thrift:"bestFriend,7" json:"bestFriend,omitempty"`
-  PetNames map[Animal]string `thrift:"petNames,8" json:"petNames,omitempty"`
-  AfraidOfAnimal *Animal `thrift:"afraidOfAnimal,9" json:"afraidOfAnimal,omitempty"`
-  Vehicles []*Vehicle `thrift:"vehicles,10" json:"vehicles,omitempty"`
+  Id PersonID `thrift:"id,1" db:"id" json:"id"`
+  Name string `thrift:"name,2" db:"name" json:"name"`
+  Age *int16 `thrift:"age,3" db:"age" json:"age,omitempty"`
+  Address *string `thrift:"address,4" db:"address" json:"address,omitempty"`
+  FavoriteColor *Color `thrift:"favoriteColor,5" db:"favoriteColor" json:"favoriteColor,omitempty"`
+  Friends map[int64]bool `thrift:"friends,6" db:"friends" json:"friends,omitempty"`
+  BestFriend *PersonID `thrift:"bestFriend,7" db:"bestFriend" json:"bestFriend,omitempty"`
+  PetNames map[Animal]string `thrift:"petNames,8" db:"petNames" json:"petNames,omitempty"`
+  AfraidOfAnimal *Animal `thrift:"afraidOfAnimal,9" db:"afraidOfAnimal" json:"afraidOfAnimal,omitempty"`
+  Vehicles []*Vehicle `thrift:"vehicles,10" db:"vehicles" json:"vehicles,omitempty"`
 }
 
 func NewPerson() *Person {

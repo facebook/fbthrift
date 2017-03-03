@@ -919,7 +919,7 @@ func (p *MyServiceFastGetRandomDataArgs) String() string {
 // Attributes:
 //  - Success
 type MyServiceFastGetRandomDataResult struct {
-  Success *string `thrift:"success,0" json:"success,omitempty"`
+  Success *string `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
 func NewMyServiceFastGetRandomDataResult() *MyServiceFastGetRandomDataResult {
@@ -1011,7 +1011,7 @@ func (p *MyServiceFastGetRandomDataResult) String() string {
 // Attributes:
 //  - Id
 type MyServiceFastHasDataByIdArgs struct {
-  Id int64 `thrift:"id,1" json:"id"`
+  Id int64 `thrift:"id,1" db:"id" json:"id"`
 }
 
 func NewMyServiceFastHasDataByIdArgs() *MyServiceFastHasDataByIdArgs {
@@ -1094,7 +1094,7 @@ func (p *MyServiceFastHasDataByIdArgs) String() string {
 // Attributes:
 //  - Success
 type MyServiceFastHasDataByIdResult struct {
-  Success *bool `thrift:"success,0" json:"success,omitempty"`
+  Success *bool `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
 func NewMyServiceFastHasDataByIdResult() *MyServiceFastHasDataByIdResult {
@@ -1186,7 +1186,7 @@ func (p *MyServiceFastHasDataByIdResult) String() string {
 // Attributes:
 //  - Id
 type MyServiceFastGetDataByIdArgs struct {
-  Id int64 `thrift:"id,1" json:"id"`
+  Id int64 `thrift:"id,1" db:"id" json:"id"`
 }
 
 func NewMyServiceFastGetDataByIdArgs() *MyServiceFastGetDataByIdArgs {
@@ -1269,7 +1269,7 @@ func (p *MyServiceFastGetDataByIdArgs) String() string {
 // Attributes:
 //  - Success
 type MyServiceFastGetDataByIdResult struct {
-  Success *string `thrift:"success,0" json:"success,omitempty"`
+  Success *string `thrift:"success,0" db:"success" json:"success,omitempty"`
 }
 
 func NewMyServiceFastGetDataByIdResult() *MyServiceFastGetDataByIdResult {
@@ -1362,8 +1362,8 @@ func (p *MyServiceFastGetDataByIdResult) String() string {
 //  - Id
 //  - Data
 type MyServiceFastPutDataByIdArgs struct {
-  Id int64 `thrift:"id,1" json:"id"`
-  Data string `thrift:"data,2" json:"data"`
+  Id int64 `thrift:"id,1" db:"id" json:"id"`
+  Data string `thrift:"data,2" db:"data" json:"data"`
 }
 
 func NewMyServiceFastPutDataByIdArgs() *MyServiceFastPutDataByIdArgs {
@@ -1524,8 +1524,8 @@ func (p *MyServiceFastPutDataByIdResult) String() string {
 //  - Id
 //  - Data
 type MyServiceFastLobDataByIdArgs struct {
-  Id int64 `thrift:"id,1" json:"id"`
-  Data string `thrift:"data,2" json:"data"`
+  Id int64 `thrift:"id,1" db:"id" json:"id"`
+  Data string `thrift:"data,2" db:"data" json:"data"`
 }
 
 func NewMyServiceFastLobDataByIdArgs() *MyServiceFastLobDataByIdArgs {

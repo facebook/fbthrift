@@ -23,7 +23,7 @@ var GoUnusedProtection__ int;
 // Attributes:
 //  - MyIncludedField
 type MyStruct struct {
-  MyIncludedField *includes.Included `thrift:"MyIncludedField,1" json:"MyIncludedField"`
+  MyIncludedField *includes.Included `thrift:"MyIncludedField,1" db:"MyIncludedField" json:"MyIncludedField"`
 }
 
 func NewMyStruct() *MyStruct {
