@@ -1,4 +1,6 @@
 /*
+ * Copyright 2017-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #include <folly/Benchmark.h>
 
 #include <thrift/lib/cpp/transport/TBufferTransports.h>
@@ -195,7 +196,7 @@ BENCHMARK(BM_ReadHeaderGeneric, iters) {
 }
 
 int main(int argc, char** argv) {
-  google::ParseCommandLineFlags(&argc, &argv, true);
+  gflags::ParseCommandLineFlags(&argc, &argv, true);
 
   // Run the benchmarks
   folly::runBenchmarksOnFlag();

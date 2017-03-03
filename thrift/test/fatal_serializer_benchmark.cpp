@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <folly/init/Init.h>
 #include <folly/Benchmark.h>
 
@@ -158,7 +157,7 @@ BENCHMARK_RELATIVE(Compact_NewSerializerReader, iters) {
 int main(int argc, char** argv) {
   std::random_device r;
   FLAGS_seed = r();
-  google::ParseCommandLineFlags(&argc, &argv, true);
+  gflags::ParseCommandLineFlags(&argc, &argv, true);
 
   std::cout << "using seed " << FLAGS_seed << std::endl;
 
