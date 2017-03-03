@@ -6,6 +6,7 @@ mstch_swift src/service.thrift
 cpp2 src/service.thrift
 cpp2 src/module.thrift
 cpp2 src/includes.thrift
+go src/service.thrift
 #mstch_cpp2 src/service.thrift
 mstch_py3 src/module.thrift
 mstch_py3 src/includes.thrift
