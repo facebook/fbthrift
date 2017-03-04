@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,19 +27,24 @@ namespace apache { namespace thrift {
 
 ScopedServerInterfaceThread::ScopedServerInterfaceThread(
     shared_ptr<AsyncProcessorFactory> apf,
-    const string& host,
-    uint16_t port) {
+    SocketAddress const& addr) {
   auto tm = ThreadManager::newSimpleThreadManager(1, 5, false, 50);
   tm->threadFactory(make_shared<PosixThreadFactory>());
   tm->start();
   auto ts = make_shared<ThriftServer>();
-  ts->setAddress(host, port);
+  ts->setAddress(addr);
   ts->setProcessorFactory(move(apf));
   ts->setNumIOWorkerThreads(1);
   ts->setThreadManager(tm);
   ts_ = move(ts);
   sst_.start(ts_);
 }
+
+ScopedServerInterfaceThread::ScopedServerInterfaceThread(
+    shared_ptr<AsyncProcessorFactory> apf,
+    const string& host,
+    uint16_t port) :
+      ScopedServerInterfaceThread(std::move(apf), SocketAddress(host, port)) {}
 
 ScopedServerInterfaceThread::ScopedServerInterfaceThread(
     shared_ptr<ThriftServer> ts) {
