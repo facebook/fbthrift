@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -123,6 +123,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   folly::HHWheelTimer::UniquePtr serverTimer_;
   folly::Optional<IdleServerAction> idleServer_;
   std::chrono::milliseconds idleServerTimeout_ = std::chrono::milliseconds(0);
+  folly::Optional<std::chrono::milliseconds> sslHandshakeTimeout_;
   std::atomic<monotonic_clock::duration::rep> lastRequestTime_;
 
   monotonic_clock::time_point lastRequestTime() const noexcept;
@@ -306,6 +307,18 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   }
 
   /**
+   * Set the ssl handshake timeout.
+   */
+  void setSSLHandshakeTimeout(
+      folly::Optional<std::chrono::milliseconds> timeout) {
+    sslHandshakeTimeout_ = timeout;
+  }
+
+  folly::Optional<std::chrono::milliseconds> getSSLHandshakeTimeout() const {
+    return sslHandshakeTimeout_;
+  }
+
+  /**
    * Stops the Thrift server if it's idle for the given time.
    */
   void setIdleServerTimeout(std::chrono::milliseconds timeout) {
@@ -363,6 +376,12 @@ class ThriftServer : public apache::thrift::BaseThriftServer
     if (enableTFO_) {
       config.enableTCPFastOpen = *enableTFO_;
       config.fastOpenQueueSize = fastOpenQueueSize_;
+    }
+    if (sslHandshakeTimeout_) {
+      config.sslHandshakeTimeout = *sslHandshakeTimeout_;
+    } else if (getIdleTimeout() == std::chrono::milliseconds::zero()) {
+      // make sure a handshake that takes too long doesn't kill the connection
+      config.sslHandshakeTimeout = std::chrono::milliseconds::zero();
     }
     return config;
   }

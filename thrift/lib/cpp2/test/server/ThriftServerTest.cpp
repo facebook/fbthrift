@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <memory>
 #include <gtest/gtest.h>
 #include <thrift/lib/cpp2/test/gen-cpp/TestService.h>
@@ -38,6 +37,7 @@
 #include <thrift/lib/cpp2/test/util/TestHeaderClientChannelFactory.h>
 
 #include <folly/fibers/FiberManagerMap.h>
+#include <wangle/acceptor/ServerSocketConfig.h>
 #include <wangle/concurrent/GlobalExecutor.h>
 
 #include <boost/cast.hpp>
@@ -840,4 +840,31 @@ TEST(ThriftServer, LocalIPCheck) {
   // expect true for matches
   EXPECT_TRUE(Cpp2Connection::isClientLocal(v4NonLocal1, v4NonLocal1));
   EXPECT_TRUE(Cpp2Connection::isClientLocal(v6NonLocal1, v6NonLocal1));
+}
+
+TEST(ThriftServer, ServerConfigTest) {
+  ThriftServer server;
+
+  wangle::ServerSocketConfig defaultConfig;
+  // If nothing is set, expect defaults
+  auto serverConfig = server.getServerSocketConfig();
+  EXPECT_EQ(serverConfig.sslHandshakeTimeout,
+            defaultConfig.sslHandshakeTimeout);
+
+  // Idle timeout of 0 with no SSL handshake set, expect it to be 0.
+  server.setIdleTimeout(std::chrono::milliseconds::zero());
+  serverConfig = server.getServerSocketConfig();
+  EXPECT_EQ(serverConfig.sslHandshakeTimeout,
+            std::chrono::milliseconds::zero());
+
+  // Expect the explicit to always win
+  server.setSSLHandshakeTimeout(std::chrono::milliseconds(100));
+  serverConfig = server.getServerSocketConfig();
+  EXPECT_EQ(serverConfig.sslHandshakeTimeout, std::chrono::milliseconds(100));
+
+  // Clear it and expect it to be zero again (due to idle timeout = 0)
+  server.setSSLHandshakeTimeout(folly::none);
+  serverConfig = server.getServerSocketConfig();
+  EXPECT_EQ(serverConfig.sslHandshakeTimeout,
+            std::chrono::milliseconds::zero());
 }
