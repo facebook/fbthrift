@@ -632,7 +632,7 @@ cdef class List__i16:
 
     def __hash__(self):
         if not self.__hash:
-            self._hash = hash(tuple(self))
+            self.__hash = hash(tuple(self))
         return self.__hash
 
     def __contains__(self, item):
@@ -738,7 +738,7 @@ cdef class List__i32:
 
     def __hash__(self):
         if not self.__hash:
-            self._hash = hash(tuple(self))
+            self.__hash = hash(tuple(self))
         return self.__hash
 
     def __contains__(self, item):
@@ -844,7 +844,7 @@ cdef class List__i64:
 
     def __hash__(self):
         if not self.__hash:
-            self._hash = hash(tuple(self))
+            self.__hash = hash(tuple(self))
         return self.__hash
 
     def __contains__(self, item):
@@ -950,7 +950,7 @@ cdef class List__string:
 
     def __hash__(self):
         if not self.__hash:
-            self._hash = hash(tuple(self))
+            self.__hash = hash(tuple(self))
         return self.__hash
 
     def __contains__(self, item):
@@ -1056,7 +1056,7 @@ cdef class List__SimpleStruct:
 
     def __hash__(self):
         if not self.__hash:
-            self._hash = hash(tuple(self))
+            self.__hash = hash(tuple(self))
         return self.__hash
 
     def __contains__(self, item):
@@ -1856,7 +1856,7 @@ cdef class List__List__i32:
 
     def __hash__(self):
         if not self.__hash:
-            self._hash = hash(tuple(self))
+            self.__hash = hash(tuple(self))
         return self.__hash
 
     def __contains__(self, item):
@@ -2191,7 +2191,7 @@ cdef class List__Set__string:
 
     def __hash__(self):
         if not self.__hash:
-            self._hash = hash(tuple(self))
+            self.__hash = hash(tuple(self))
         return self.__hash
 
     def __contains__(self, item):
@@ -2415,7 +2415,7 @@ cdef class List__List__string:
 
     def __hash__(self):
         if not self.__hash:
-            self._hash = hash(tuple(self))
+            self.__hash = hash(tuple(self))
         return self.__hash
 
     def __contains__(self, item):
@@ -2524,7 +2524,7 @@ cdef class List__Set__i32:
 
     def __hash__(self):
         if not self.__hash:
-            self._hash = hash(tuple(self))
+            self.__hash = hash(tuple(self))
         return self.__hash
 
     def __contains__(self, item):
@@ -2633,7 +2633,7 @@ cdef class List__Map__string_string:
 
     def __hash__(self):
         if not self.__hash:
-            self._hash = hash(tuple(self))
+            self.__hash = hash(tuple(self))
         return self.__hash
 
     def __contains__(self, item):
@@ -2741,7 +2741,7 @@ cdef class List__binary:
 
     def __hash__(self):
         if not self.__hash:
-            self._hash = hash(tuple(self))
+            self.__hash = hash(tuple(self))
         return self.__hash
 
     def __contains__(self, item):
@@ -3027,7 +3027,7 @@ cdef class List__AnEnum:
 
     def __hash__(self):
         if not self.__hash:
-            self._hash = hash(tuple(self))
+            self.__hash = hash(tuple(self))
         return self.__hash
 
     def __contains__(self, item):
@@ -3245,7 +3245,7 @@ cdef class List__Map__i32_double:
 
     def __hash__(self):
         if not self.__hash:
-            self._hash = hash(tuple(self))
+            self.__hash = hash(tuple(self))
         return self.__hash
 
     def __contains__(self, item):

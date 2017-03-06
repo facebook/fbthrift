@@ -595,7 +595,7 @@ cdef class List__Map__string_i32:
 
     def __hash__(self):
         if not self.__hash:
-            self._hash = hash(tuple(self))
+            self.__hash = hash(tuple(self))
         return self.__hash
 
     def __contains__(self, item):
@@ -703,7 +703,7 @@ cdef class List__Range:
 
     def __hash__(self):
         if not self.__hash:
-            self._hash = hash(tuple(self))
+            self.__hash = hash(tuple(self))
         return self.__hash
 
     def __contains__(self, item):
@@ -809,7 +809,7 @@ cdef class List__Internship:
 
     def __hash__(self):
         if not self.__hash:
-            self._hash = hash(tuple(self))
+            self.__hash = hash(tuple(self))
         return self.__hash
 
     def __contains__(self, item):
@@ -915,7 +915,7 @@ cdef class List__string:
 
     def __hash__(self):
         if not self.__hash:
-            self._hash = hash(tuple(self))
+            self.__hash = hash(tuple(self))
         return self.__hash
 
     def __contains__(self, item):
@@ -1021,7 +1021,7 @@ cdef class List__i32:
 
     def __hash__(self):
         if not self.__hash:
-            self._hash = hash(tuple(self))
+            self.__hash = hash(tuple(self))
         return self.__hash
 
     def __contains__(self, item):
