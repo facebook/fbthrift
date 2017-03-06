@@ -45,19 +45,6 @@ func AnimalFromString(s string) (Animal, error) {
 
 func AnimalPtr(v Animal) *Animal { return &v }
 
-func (p Animal) MarshalText() ([]byte, error) {
-return []byte(p.String()), nil
-}
-
-func (p *Animal) UnmarshalText(text []byte) error {
-q, err := AnimalFromString(string(text))
-if (err != nil) {
-return err
-}
-*p = q
-return nil
-}
-
 type PersonID int64
 
 func PersonIDPtr(v PersonID) *PersonID { return &v }

@@ -36,19 +36,6 @@ func EmptyEnumFromString(s string) (EmptyEnum, error) {
 
 func EmptyEnumPtr(v EmptyEnum) *EmptyEnum { return &v }
 
-func (p EmptyEnum) MarshalText() ([]byte, error) {
-return []byte(p.String()), nil
-}
-
-func (p *EmptyEnum) UnmarshalText(text []byte) error {
-q, err := EmptyEnumFromString(string(text))
-if (err != nil) {
-return err
-}
-*p = q
-return nil
-}
-
 type City int64
 const (
   City_NYC City = 0
@@ -80,19 +67,6 @@ func CityFromString(s string) (City, error) {
 
 func CityPtr(v City) *City { return &v }
 
-func (p City) MarshalText() ([]byte, error) {
-return []byte(p.String()), nil
-}
-
-func (p *City) UnmarshalText(text []byte) error {
-q, err := CityFromString(string(text))
-if (err != nil) {
-return err
-}
-*p = q
-return nil
-}
-
 type Company int64
 const (
   Company_FACEBOOK Company = 0
@@ -123,19 +97,6 @@ func CompanyFromString(s string) (Company, error) {
 
 
 func CompanyPtr(v Company) *Company { return &v }
-
-func (p Company) MarshalText() ([]byte, error) {
-return []byte(p.String()), nil
-}
-
-func (p *Company) UnmarshalText(text []byte) error {
-q, err := CompanyFromString(string(text))
-if (err != nil) {
-return err
-}
-*p = q
-return nil
-}
 
 // Attributes:
 //  - Weeks

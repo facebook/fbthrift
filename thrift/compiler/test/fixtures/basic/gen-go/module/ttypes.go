@@ -42,19 +42,6 @@ func MyEnumFromString(s string) (MyEnum, error) {
 
 func MyEnumPtr(v MyEnum) *MyEnum { return &v }
 
-func (p MyEnum) MarshalText() ([]byte, error) {
-return []byte(p.String()), nil
-}
-
-func (p *MyEnum) UnmarshalText(text []byte) error {
-q, err := MyEnumFromString(string(text))
-if (err != nil) {
-return err
-}
-*p = q
-return nil
-}
-
 // Attributes:
 //  - MyIntField
 //  - MyStringField
