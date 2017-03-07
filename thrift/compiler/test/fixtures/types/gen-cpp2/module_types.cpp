@@ -16,6 +16,12 @@
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+}}}} // apache::thrift::fixtures::types
+namespace std {
+
+} // std
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 void decorated_struct::__clear() {
   field = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   __isset.__clear();

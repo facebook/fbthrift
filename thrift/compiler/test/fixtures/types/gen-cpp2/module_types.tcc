@@ -18,6 +18,12 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+}}}} // apache::thrift::fixtures::types
+namespace std {
+
+} // std
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 template <class Protocol_>
 uint32_t decorated_struct::read(Protocol_* iprot) {
   uint32_t xfer = 0;

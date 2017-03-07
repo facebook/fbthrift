@@ -599,11 +599,24 @@ class CppGenerator(t_generator.Generator):
         s.acquire()
 
     def _generate_typedef(self, ttypedef):
-        the_type = self._type_name(ttypedef.type, in_typedef=True,
-                                   scope=self._types_scope)
+        # We write all of these to the types scope
+        scope = self._types_scope
+        the_type = self._type_name(ttypedef.type, in_typedef=True, scope=scope)
         txt = 'typedef {0} {1};\n\n'.format(the_type, ttypedef.symbolic)
-        # write it to the types scope
-        self._types_scope(txt)
+        scope(txt)
+
+        if self._should_generate_hash_equal_to(ttypedef):
+            # We're at types scope now
+            scope.release()
+
+            # std::hash and std::equal_to declarations
+            self._generate_hash_equal_to(ttypedef)
+
+            # Re-enter types scope, but we can't actually re-enter a scope,
+            # so let's recreate it
+            scope = self._types_scope = \
+                    scope.namespace(self._get_namespace()).scope
+            scope.acquire()
 
     def _declare_field(self, field, pointer=False, constant=False,
                         reference=False, optional_wrapped=False,
@@ -4251,17 +4264,31 @@ class CppGenerator(t_generator.Generator):
                                '\n  ' + fieldFmt))
 
 
+    def _should_generate_hash_equal_to(self, obj):
+        # Don't generate these declarations if in compatibility mode since
+        # they're already declared for cpp.
+        if self.flag_compatibility:
+            return False
+
+        annotated = obj.type if obj.is_typedef else obj
+        is_enum = isinstance(obj, frontend.t_enum)
+        gen_hash = is_enum or self._has_cpp_annotation(annotated, 'declare_hash')
+        gen_equal_to = is_enum or self._has_cpp_annotation(annotated, 'declare_equal_to')
+        return gen_hash or gen_equal_to
+
     def _generate_hash_equal_to(self, obj):
         # Don't generate these declarations if in compatibility mode since
         # they're already declared for cpp.
         if self.flag_compatibility:
             return
 
+        annotated = obj.type if obj.is_typedef else obj
         is_enum = isinstance(obj, frontend.t_enum)
-        gen_hash = is_enum or self._has_cpp_annotation(obj, 'declare_hash')
-        gen_equal_to = is_enum or self._has_cpp_annotation(obj, 'declare_equal_to')
+        gen_hash = is_enum or self._has_cpp_annotation(annotated, 'declare_hash')
+        gen_equal_to = is_enum or self._has_cpp_annotation(annotated, 'declare_equal_to')
         if gen_hash or gen_equal_to:
-            full_name = self._namespace_prefix(self._get_namespace()) + obj.name
+            name = obj.symbolic if obj.is_typedef else obj.name
+            full_name = self._namespace_prefix(self._get_namespace()) + name
             with self._types_global.namespace('std').scope:
                 if gen_hash:
                     if is_enum:
