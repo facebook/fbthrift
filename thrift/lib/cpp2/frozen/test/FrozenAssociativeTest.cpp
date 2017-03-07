@@ -138,6 +138,13 @@ TEST(FrozenMap, GetDefault) {
   EXPECT_EQ(-1, fmap.getDefault(5, -1));
 }
 
+TEST(FrozenMap, GetOptional) {
+  auto fmap = freeze(osquares);
+  EXPECT_EQ(4, *fmap.getOptional(2));
+  EXPECT_EQ(9, *fmap.getOptional(3));
+  EXPECT_FALSE(fmap.getOptional(5));
+}
+
 TEST(FrozenMap, Nested) {
   std::map<uint32_t, std::map<uint32_t, uint32_t>> roots;
   for (uint32_t i = 0; i < 100; ++i) {

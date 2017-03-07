@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,6 +80,15 @@ struct MapTableLayout
         return std::move(def);
       }
       return found->second();
+    }
+
+    folly::Optional<mapped_type> getOptional(const key_type& key) const {
+      folly::Optional<mapped_type> rv;
+      auto found = this->find(key);
+      if (found != this->end()) {
+        rv.assign(found->second());
+      }
+      return rv;
     }
 
     mapped_type at(const key_type& key) const {
