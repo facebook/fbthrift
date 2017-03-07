@@ -87,7 +87,7 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
           xfer += iprot->readListBegin(_etype_r, _size_r);
           uint32_t _i_r;
           if (_size_r == std::numeric_limits<uint32_t>::max()) {
-            for (_i_r = 0; iprot->peekList(); _i_r++) {
+            for (_i_r = 0; iprot->peekList(); ++_i_r) {
               this->mutable_intListValue().resize(_i_r + 1);
               xfer += iprot->readI64(this->mutable_intListValue()[_i_r]);
             }
@@ -114,7 +114,7 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
           xfer += iprot->readListBegin(_etype_r, _size_r);
           uint32_t _i_r;
           if (_size_r == std::numeric_limits<uint32_t>::max()) {
-            for (_i_r = 0; iprot->peekList(); _i_r++) {
+            for (_i_r = 0; iprot->peekList(); ++_i_r) {
               this->mutable_stringListValue().resize(_i_r + 1);
               xfer += iprot->readString(this->mutable_stringListValue()[_i_r]);
             }
@@ -180,8 +180,8 @@ uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
     {
       xfer += prot_->serializedFieldSize("intListValue", apache::thrift::protocol::T_LIST, 3);
       xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I64, this->get_intListValue().size());
-      for (auto _iter0 = this->get_intListValue().begin(); _iter0 != this->get_intListValue().end(); ++_iter0) {
-        xfer += prot_->serializedSizeI64((*_iter0));
+      for (auto _iter_r = this->get_intListValue().begin(); _iter_r != this->get_intListValue().end(); ++_iter_r) {
+        xfer += prot_->serializedSizeI64((*_iter_r));
       }
       xfer += prot_->serializedSizeListEnd();
       break;
@@ -190,8 +190,8 @@ uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
     {
       xfer += prot_->serializedFieldSize("stringListValue", apache::thrift::protocol::T_LIST, 4);
       xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_STRING, this->get_stringListValue().size());
-      for (auto _iter1 = this->get_stringListValue().begin(); _iter1 != this->get_stringListValue().end(); ++_iter1) {
-        xfer += prot_->serializedSizeString((*_iter1));
+      for (auto _iter_r = this->get_stringListValue().begin(); _iter_r != this->get_stringListValue().end(); ++_iter_r) {
+        xfer += prot_->serializedSizeString((*_iter_r));
       }
       xfer += prot_->serializedSizeListEnd();
       break;
@@ -229,8 +229,8 @@ uint32_t ComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
     {
       xfer += prot_->serializedFieldSize("intListValue", apache::thrift::protocol::T_LIST, 3);
       xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I64, this->get_intListValue().size());
-      for (auto _iter2 = this->get_intListValue().begin(); _iter2 != this->get_intListValue().end(); ++_iter2) {
-        xfer += prot_->serializedSizeI64((*_iter2));
+      for (auto _iter_r = this->get_intListValue().begin(); _iter_r != this->get_intListValue().end(); ++_iter_r) {
+        xfer += prot_->serializedSizeI64((*_iter_r));
       }
       xfer += prot_->serializedSizeListEnd();
       break;
@@ -239,8 +239,8 @@ uint32_t ComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
     {
       xfer += prot_->serializedFieldSize("stringListValue", apache::thrift::protocol::T_LIST, 4);
       xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_STRING, this->get_stringListValue().size());
-      for (auto _iter3 = this->get_stringListValue().begin(); _iter3 != this->get_stringListValue().end(); ++_iter3) {
-        xfer += prot_->serializedSizeString((*_iter3));
+      for (auto _iter_r = this->get_stringListValue().begin(); _iter_r != this->get_stringListValue().end(); ++_iter_r) {
+        xfer += prot_->serializedSizeString((*_iter_r));
       }
       xfer += prot_->serializedSizeListEnd();
       break;
@@ -280,8 +280,8 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
     {
       xfer += prot_->writeFieldBegin("intListValue", apache::thrift::protocol::T_LIST, 3);
       xfer += prot_->writeListBegin(apache::thrift::protocol::T_I64, this->get_intListValue().size());
-      for (auto _iter4 = this->get_intListValue().begin(); _iter4 != this->get_intListValue().end(); ++_iter4) {
-        xfer += prot_->writeI64((*_iter4));
+      for (auto _iter_r = this->get_intListValue().begin(); _iter_r != this->get_intListValue().end(); ++_iter_r) {
+        xfer += prot_->writeI64((*_iter_r));
       }
       xfer += prot_->writeListEnd();
       xfer += prot_->writeFieldEnd();
@@ -291,8 +291,8 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
     {
       xfer += prot_->writeFieldBegin("stringListValue", apache::thrift::protocol::T_LIST, 4);
       xfer += prot_->writeListBegin(apache::thrift::protocol::T_STRING, this->get_stringListValue().size());
-      for (auto _iter5 = this->get_stringListValue().begin(); _iter5 != this->get_stringListValue().end(); ++_iter5) {
-        xfer += prot_->writeString((*_iter5));
+      for (auto _iter_r = this->get_stringListValue().begin(); _iter_r != this->get_stringListValue().end(); ++_iter_r) {
+        xfer += prot_->writeString((*_iter_r));
       }
       xfer += prot_->writeListEnd();
       xfer += prot_->writeFieldEnd();

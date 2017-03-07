@@ -3588,7 +3588,7 @@ class CppGenerator(t_generator.Generator):
             elif cont.is_list:
                 peek = 'iprot->peekList()'
 
-            with s('for ({0} = 0; {1}; {0}++)'.format(i, peek)):
+            with s('for ({0} = 0; {1}; ++{0})'.format(i, peek)):
                 if cont.is_map:
                     self._generate_deserialize_map_element(
                             out(), cont.as_map, cont_ref)
@@ -3676,7 +3676,7 @@ class CppGenerator(t_generator.Generator):
         self._generate_deserialize_field(scope, fval)
 
     def _generate_deserialize_set_element(self, scope, tset, prefix):
-        elem = self.tmp('_elem')
+        elem = '_elem' + self._nested_containers(tset)
         felem = frontend.t_field(tset.elem_type, elem)
         scope(self._declare_field(felem))
         self._generate_deserialize_field(scope, felem)
@@ -3685,7 +3685,7 @@ class CppGenerator(t_generator.Generator):
     def _generate_deserialize_list_element(self, scope, tlist, prefix,
                                            use_push, index):
         if use_push:
-            elem = self.tmp('_elem')
+            elem = '_elem' + self._nested_containers(tlist)
             felem = frontend.t_field(tlist.elem_type, elem)
             scope(self._declare_field(felem))
             self._generate_deserialize_field(scope, felem)
@@ -4103,7 +4103,7 @@ class CppGenerator(t_generator.Generator):
                     method,
                     tte(ttype.as_list.elem_type),
                     prefix))
-        ite = self.tmp('_iter')
+        ite = '_iter' + self._nested_containers(ttype)
         typename = self._type_name(ttype)
         with s('for (auto {0} = {1}.begin(); {0} != {1}.end(); ++{0})'.format(
                 ite, prefix)):
