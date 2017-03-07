@@ -30,6 +30,7 @@
 
 #include <folly/String.h>
 #include <folly/ThreadId.h>
+#include <folly/portability/PThread.h>
 #include <folly/portability/SysResource.h>
 #include <glog/logging.h>
 
