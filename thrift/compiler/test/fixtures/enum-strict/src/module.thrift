@@ -1,9 +1,9 @@
-enum EmptyEnum {}
+enum EmptyEnum {} (cpp.enum_strict)
 
 enum MyEnum {
   kMyFoo = 1,
   kMyBar = 2,
-}
+} (cpp.enum_strict)
 
 const MyEnum kFoo = MyEnum.kMyFoo
 

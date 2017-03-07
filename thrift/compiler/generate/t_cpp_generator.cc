@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -873,11 +873,13 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
     value_type = typeAnnotation->second;
     explicit_type = string(" : ") + typeAnnotation->second;
   }
-  if (gen_enum_strict_) {
+  bool gen_enum_strict =
+      gen_enum_strict_ || tenum->annotations_.count("cpp.enum_strict");
+  if (gen_enum_strict) {
     value_type = tenum->get_name().c_str();
   }
 
-  auto enum_keyword = gen_enum_strict_ ? "enum class " : "enum ";
+  auto enum_keyword = gen_enum_strict ? "enum class " : "enum ";
   auto name = tenum->get_name();
   auto fullname = ns_prefix_ + name;
 

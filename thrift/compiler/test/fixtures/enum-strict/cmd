@@ -1,1 +1,1 @@
-cpp:enum_strict src/module.thrift
+cpp src/module.thrift
