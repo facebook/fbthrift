@@ -46,28 +46,6 @@ using std::shared_ptr;
 using namespace std;
 using namespace apache::thrift::protocol;
 
-#ifndef THRIFT_HAVE_CLOCK_GETTIME
-
-/**
- * Fake clock_gettime for systems like darwin
- *
- */
-#define CLOCK_REALTIME 0
-static int clock_gettime(int clk_id /*ignored*/, struct timespec *tp) {
-  struct timeval now;
-  (void)clk_id;
-
-  int rv = gettimeofday(&now, nullptr);
-  if (rv != 0) {
-    return rv;
-  }
-
-  tp->tv_sec = now.tv_sec;
-  tp->tv_nsec = now.tv_usec * 1000;
-  return 0;
-}
-#endif
-
 TFileTransport::TFileTransport(string path, bool readOnly)
   : readState_()
   , readBuff_(nullptr)
