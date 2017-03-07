@@ -11,9 +11,11 @@ from contextlib import contextmanager
 from thrift_asyncio.tutorial import Calculator
 from thrift_asyncio.sleep import Sleep
 from thrift.util.asyncio import create_client
+from thrift.protocol.THeaderProtocol import THeaderProtocol
 from thrift.server.TAsyncioServer import (
     ThriftAsyncServerFactory,
     ThriftClientProtocolFactory,
+    ThriftHeaderClientProtocol,
 )
 from thrift.server.test.handler import (
     AsyncCalculatorHandler,
@@ -26,12 +28,11 @@ def server_loop_runner(loop, sock, handler):
         ThriftAsyncServerFactory(handler, port=None, loop=loop, sock=sock),
     )
 
-
 @asyncio.coroutine
-def test_server_with_client(sock, loop):
+def test_server_with_client(sock, loop, factory=ThriftClientProtocolFactory):
     port = sock.getsockname()[1]
     (transport, protocol) = yield from loop.create_connection(
-        ThriftClientProtocolFactory(Calculator.Client, loop=loop),
+        factory(Calculator.Client, loop=loop),
         host='localhost',
         port=port,
     )
@@ -46,7 +47,79 @@ def test_server_with_client(sock, loop):
     return add_result
 
 
+class TestTHeaderProtocol(THeaderProtocol):
+
+    def __init__(self, probe, *args, **kwargs):
+        THeaderProtocol.__init__(self, *args, **kwargs)
+        self.probe = probe
+
+    def readMessageBegin(self):
+        self.probe.touch()
+        return THeaderProtocol.readMessageBegin(self)
+
+
+class TestTHeaderProtocolFactory(object):
+
+    def __init__(self, probe, *args, **kwargs):
+        self.probe = probe
+        self.args = args
+        self.kwargs = kwargs
+
+    def getProtocol(self, trans):
+        return TestTHeaderProtocol(
+            self.probe,
+            trans,
+            *self.args,
+            **self.kwargs,
+        )
+
+
+class TestThriftClientProtocol(ThriftHeaderClientProtocol):
+    THEADER_PROTOCOL_FACTORY = None
+
+    def __init__(self, probe, *args, **kwargs):
+        ThriftHeaderClientProtocol.__init__(self, *args, **kwargs)
+
+        def factory(*args, **kwargs):
+            return TestTHeaderProtocolFactory(probe, *args, **kwargs)
+
+        self.THEADER_PROTOCOL_FACTORY = factory
+
+
 class TAsyncioServerTest(unittest.TestCase):
+
+    def test_THEADER_PROTOCOL_FACTORY_readMessageBegin(self):
+        loop = asyncio.get_event_loop()
+        loop.set_debug(True)
+        sock = socket.socket()
+        server_loop_runner(loop, sock, AsyncCalculatorHandler())
+
+        class Probe(object):
+            def __init__(self):
+                self.touched = False
+
+            def touch(self):
+                self.touched = True
+
+        probe = Probe()
+
+        def factory(*args, **kwargs):
+            return functools.partial(
+                TestThriftClientProtocol,
+                probe,
+                *args,
+                **kwargs,
+            )
+
+        add_result = loop.run_until_complete(
+            test_server_with_client(
+                sock,
+                loop,
+                factory=factory,
+            )
+        )
+        self.assertTrue(probe.touched)
+        self.assertEqual(42, add_result)
 
     def _test_using_event_loop(self, loop):
         sock = socket.socket()

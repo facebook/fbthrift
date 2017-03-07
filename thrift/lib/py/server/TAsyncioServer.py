@@ -201,7 +201,9 @@ class ThriftHeaderClientProtocol(ThriftHeaderClientProtocolBase):
     @asyncio.coroutine
     def message_received(self, frame, delay=0):
         tmi = TReadOnlyBuffer(frame)
-        iprot = THeaderProtocol(tmi)
+        iprot = self.THEADER_PROTOCOL_FACTORY(
+            client_type=self.client_type,
+        ).getProtocol(tmi)
         (fname, mtype, seqid) = iprot.readMessageBegin()
 
         if delay:

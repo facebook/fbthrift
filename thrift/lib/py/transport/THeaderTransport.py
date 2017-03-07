@@ -145,6 +145,8 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         self.__write_headers = {}
         self.__write_persistent_headers = {}
 
+        self.__supported_client_types.add(self.__client_type)
+
         # If we support unframed binary / framed binary also support compact
         if CLIENT_TYPE.UNFRAMED_DEPRECATED in self.__supported_client_types:
             self.__supported_client_types.add(
