@@ -318,7 +318,7 @@ void THttpClientParser::parseHeaderLine(folly::StringPiece header) {
 
   readHeaders_.emplace(header.subpiece(0, colonPos).str(), value.str());
 
-  const folly::AsciiCaseInsensitive i;
+  const folly::AsciiCaseInsensitive i{};
 
   if (header.startsWith("Transfer-Encoding", i)) {
     if (value.endsWith("chunked", i)) {

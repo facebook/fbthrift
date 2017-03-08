@@ -41,7 +41,7 @@ frontend_la_LIBADD = ../libparse.la ../libthriftcompilerbase.la
 all-local: frontend.la
 	$(PYTHON) setup.py build
 	mkdir -p $(PY_LOCAL_PATH)
-	PYTHONPATH=$(PY_LOCAL_PATH) $(PYTHON) setup.py install --home=$(PY_LOCAL_ROOT)
+	PYTHONPATH=$(PY_LOCAL_PATH) $(PYTHON) setup.py install --home=$(PY_LOCAL_ROOT) --prefix=
 
 # Note, not install-exec-hook, see the comment above
 #
