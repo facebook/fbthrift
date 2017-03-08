@@ -15,20 +15,13 @@
   limitations under the License.
 
 %><%!
-%>bool <%struct:name%>::operator==(const <%struct:name%>& <%!
-  %><%#struct:base_fields?%><%!
-    %>rhs<%!
-  %><%/struct:base_fields?%><%!
-  %><%^struct:base_fields?%><%!
-    %>/* rhs */<%!
-  %><%/struct:base_fields?%><%!
-%>) const {
-  <%#struct:fields%>
-  if (!((<%field:name%> == rhs.<%field:name%>))) {
-    return false;
-  }
-  <%/struct:fields%>
-  return true;
+%><%#struct:fields%><%#field:type%><%#type:container?%>
+const <% > Type%>& containerStruct::get_<%field:name%>() const& {
+  return <%field:name%>;
 }
-<%!
-%>
+
+<% > Type%> containerStruct::get_<%field:name%>() && {
+  return std::move(<%field:name%>);
+}
+
+<%/type:container?%><%/field:type%><%/struct:fields%>

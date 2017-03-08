@@ -3676,7 +3676,7 @@ class CppGenerator(t_generator.Generator):
         self._generate_deserialize_field(scope, fval)
 
     def _generate_deserialize_set_element(self, scope, tset, prefix):
-        elem = '_elem' + self._nested_containers(tset)
+        elem = '_elem' + self._nested_containers(tset.elem_type)
         felem = frontend.t_field(tset.elem_type, elem)
         scope(self._declare_field(felem))
         self._generate_deserialize_field(scope, felem)

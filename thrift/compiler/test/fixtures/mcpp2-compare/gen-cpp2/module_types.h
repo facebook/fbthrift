@@ -20,6 +20,7 @@ namespace some { namespace valid { namespace ns {
 
 class Empty;
 class MyStruct;
+class containerStruct;
 typedef int32_t simpleTypeDef;
 
 typedef std::map<int16_t, std::string> containerTypeDef;
@@ -296,6 +297,153 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::MyStr
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::MyStruct>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::MyStruct const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
+class containerStruct : private apache::thrift::detail::st::ComparisonOperators<containerStruct> {
+ public:
+
+  containerStruct() :
+      fieldA(0) {}
+  // FragileConstructor for use in initialization lists only
+
+  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, std::set<int32_t> fieldB__arg, std::set<std::set<std::set<std::string>>> fieldC__arg) :
+      fieldA(std::move(fieldA__arg)),
+      fieldB(std::move(fieldB__arg)),
+      fieldC(std::move(fieldC__arg)) {
+    __isset.fieldA = true;
+    __isset.fieldB = true;
+    __isset.fieldC = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldA = arg.move();
+    __isset.fieldA = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldB = arg.move();
+    __isset.fieldB = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldC = arg.move();
+    __isset.fieldC = true;
+  }
+
+  containerStruct(containerStruct&&) = default;
+
+  containerStruct(const containerStruct&) = default;
+
+  containerStruct& operator=(containerStruct&&) = default;
+
+  containerStruct& operator=(const containerStruct&) = default;
+  void __clear();
+
+  virtual ~containerStruct() throw() {}
+
+  bool fieldA;
+  std::set<int32_t> fieldB;
+  std::set<std::set<std::set<std::string>>> fieldC;
+
+  struct __isset {
+    void __clear() {
+      fieldA = false;
+      fieldB = false;
+      fieldC = false;
+    }
+
+    bool fieldA = false;
+    bool fieldB = false;
+    bool fieldC = false;
+  } __isset;
+  bool operator==(const containerStruct& rhs) const;
+
+  bool operator < (const containerStruct& rhs) const {
+    if (!(fieldA == rhs.fieldA)) {
+      return fieldA < rhs.fieldA;
+    }
+    if (!(fieldB == rhs.fieldB)) {
+      return fieldB < rhs.fieldB;
+    }
+    if (!(fieldC == rhs.fieldC)) {
+      return fieldC < rhs.fieldC;
+    }
+    (void)rhs;
+    return false;
+  }
+
+  bool get_fieldA() const {
+    return fieldA;
+  }
+
+  bool& set_fieldA(bool fieldA_) {
+    fieldA = fieldA_;
+    __isset.fieldA = true;
+    return fieldA;
+  }
+  const std::set<int32_t>& get_fieldB() const&;
+  std::set<int32_t> get_fieldB() &&;
+  template <typename T_containerStruct_fieldB_struct_setter>
+  std::set<int32_t>& set_fieldB(T_containerStruct_fieldB_struct_setter&& fieldB_);
+  const std::set<std::set<std::set<std::string>>>& get_fieldC() const&;
+  std::set<std::set<std::set<std::string>>> get_fieldC() &&;
+  template <typename T_containerStruct_fieldC_struct_setter>
+  std::set<std::set<std::set<std::string>>>& set_fieldC(T_containerStruct_fieldC_struct_setter&& fieldC_);
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+};
+
+void swap(containerStruct& a, containerStruct& b);
+extern template uint32_t containerStruct::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t containerStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t containerStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t containerStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t containerStruct::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t containerStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t containerStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t containerStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::some::valid::ns::containerStruct>::clear( ::some::valid::ns::containerStruct* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::containerStruct>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::containerStruct>::write(Protocol* proto,  ::some::valid::ns::containerStruct const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::containerStruct>::read(Protocol* proto,  ::some::valid::ns::containerStruct* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::containerStruct>::serializedSize(Protocol const* proto,  ::some::valid::ns::containerStruct const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::containerStruct>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::containerStruct const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

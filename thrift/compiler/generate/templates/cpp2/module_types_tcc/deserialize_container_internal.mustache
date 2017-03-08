@@ -14,21 +14,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%!
-%>bool <%struct:name%>::operator==(const <%struct:name%>& <%!
-  %><%#struct:base_fields?%><%!
-    %>rhs<%!
-  %><%/struct:base_fields?%><%!
-  %><%^struct:base_fields?%><%!
-    %>/* rhs */<%!
-  %><%/struct:base_fields?%><%!
-%>) const {
-  <%#struct:fields%>
-  if (!((<%field:name%> == rhs.<%field:name%>))) {
-    return false;
-  }
-  <%/struct:fields%>
-  return true;
-}
-<%!
-%>
+%><%type:indent4%>          <% > Type%> _elem<% > module_types_tcc/variable_name%>;
+  <%#type:container?%>
+<%type:indent4%>          _elem<% > module_types_tcc/variable_name%> = <% > Type%>();
+<% > module_types_tcc/deserialize_container%>
+  <%/type:container?%>
+  <%^type:container?%>
+<%type:indent4%>          xfer += iprot->read<% > module_types_tcc/struct_field_type%>(_elem<% > module_type_tcc/variable_name%>);
+  <%/type:container?%>

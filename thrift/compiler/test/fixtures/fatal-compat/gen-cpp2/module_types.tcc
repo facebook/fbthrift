@@ -1488,16 +1488,16 @@ uint32_t structC_read(Protocol_* iprot, structC* obj) {
           uint32_t _i_r;
           if (_size_r == std::numeric_limits<uint32_t>::max()) {
             for (_i_r = 0; iprot->peekSet(); ++_i_r) {
-              int32_t _elem_r;
-              xfer += iprot->readI32(_elem_r);
-              obj->k.insert(std::move(_elem_r));
+              int32_t _elem;
+              xfer += iprot->readI32(_elem);
+              obj->k.insert(std::move(_elem));
             }
           }
           else {
             for (_i_r = 0; _i_r < _size_r; ++_i_r) {
-              int32_t _elem_r;
-              xfer += iprot->readI32(_elem_r);
-              obj->k.insert(std::move(_elem_r));
+              int32_t _elem;
+              xfer += iprot->readI32(_elem);
+              obj->k.insert(std::move(_elem));
             }
           }
           xfer += iprot->readSetEnd();
@@ -1517,16 +1517,16 @@ uint32_t structC_read(Protocol_* iprot, structC* obj) {
           uint32_t _i_r;
           if (_size_r == std::numeric_limits<uint32_t>::max()) {
             for (_i_r = 0; iprot->peekSet(); ++_i_r) {
-              int32_t _elem_r;
-              xfer += iprot->readI32(_elem_r);
-              obj->k1.insert(std::move(_elem_r));
+              int32_t _elem;
+              xfer += iprot->readI32(_elem);
+              obj->k1.insert(std::move(_elem));
             }
           }
           else {
             for (_i_r = 0; _i_r < _size_r; ++_i_r) {
-              int32_t _elem_r;
-              xfer += iprot->readI32(_elem_r);
-              obj->k1.insert(std::move(_elem_r));
+              int32_t _elem;
+              xfer += iprot->readI32(_elem);
+              obj->k1.insert(std::move(_elem));
             }
           }
           xfer += iprot->readSetEnd();
@@ -1546,20 +1546,20 @@ uint32_t structC_read(Protocol_* iprot, structC* obj) {
           uint32_t _i_r;
           if (_size_r == std::numeric_limits<uint32_t>::max()) {
             for (_i_r = 0; iprot->peekSet(); ++_i_r) {
-               ::test_cpp2::cpp_reflection::enum2 _elem_r;
+               ::test_cpp2::cpp_reflection::enum2 _elem;
               int32_t ecast8;
               xfer += iprot->readI32(ecast8);
-              _elem_r = ( ::test_cpp2::cpp_reflection::enum2)ecast8;
-              obj->k2.insert(std::move(_elem_r));
+              _elem = ( ::test_cpp2::cpp_reflection::enum2)ecast8;
+              obj->k2.insert(std::move(_elem));
             }
           }
           else {
             for (_i_r = 0; _i_r < _size_r; ++_i_r) {
-               ::test_cpp2::cpp_reflection::enum2 _elem_r;
+               ::test_cpp2::cpp_reflection::enum2 _elem;
               int32_t ecast9;
               xfer += iprot->readI32(ecast9);
-              _elem_r = ( ::test_cpp2::cpp_reflection::enum2)ecast9;
-              obj->k2.insert(std::move(_elem_r));
+              _elem = ( ::test_cpp2::cpp_reflection::enum2)ecast9;
+              obj->k2.insert(std::move(_elem));
             }
           }
           xfer += iprot->readSetEnd();
@@ -1579,16 +1579,16 @@ uint32_t structC_read(Protocol_* iprot, structC* obj) {
           uint32_t _i_r;
           if (_size_r == std::numeric_limits<uint32_t>::max()) {
             for (_i_r = 0; iprot->peekSet(); ++_i_r) {
-               ::test_cpp2::cpp_reflection::structB _elem_r;
-              xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structB>::read(iprot, &_elem_r);
-              obj->k3.insert(std::move(_elem_r));
+               ::test_cpp2::cpp_reflection::structB _elem;
+              xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structB>::read(iprot, &_elem);
+              obj->k3.insert(std::move(_elem));
             }
           }
           else {
             for (_i_r = 0; _i_r < _size_r; ++_i_r) {
-               ::test_cpp2::cpp_reflection::structB _elem_r;
-              xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structB>::read(iprot, &_elem_r);
-              obj->k3.insert(std::move(_elem_r));
+               ::test_cpp2::cpp_reflection::structB _elem;
+              xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structB>::read(iprot, &_elem);
+              obj->k3.insert(std::move(_elem));
             }
           }
           xfer += iprot->readSetEnd();
@@ -3413,16 +3413,16 @@ uint32_t struct3_read(Protocol_* iprot, struct3* obj) {
           uint32_t _i_r;
           if (_size_r == std::numeric_limits<uint32_t>::max()) {
             for (_i_r = 0; iprot->peekSet(); ++_i_r) {
-              int32_t _elem_r;
-              xfer += iprot->readI32(_elem_r);
-              obj->fieldM.insert(std::move(_elem_r));
+              int32_t _elem;
+              xfer += iprot->readI32(_elem);
+              obj->fieldM.insert(std::move(_elem));
             }
           }
           else {
             for (_i_r = 0; _i_r < _size_r; ++_i_r) {
-              int32_t _elem_r;
-              xfer += iprot->readI32(_elem_r);
-              obj->fieldM.insert(std::move(_elem_r));
+              int32_t _elem;
+              xfer += iprot->readI32(_elem);
+              obj->fieldM.insert(std::move(_elem));
             }
           }
           xfer += iprot->readSetEnd();
@@ -3442,16 +3442,16 @@ uint32_t struct3_read(Protocol_* iprot, struct3* obj) {
           uint32_t _i_r;
           if (_size_r == std::numeric_limits<uint32_t>::max()) {
             for (_i_r = 0; iprot->peekSet(); ++_i_r) {
-              std::string _elem_r;
-              xfer += iprot->readString(_elem_r);
-              obj->fieldN.insert(std::move(_elem_r));
+              std::string _elem;
+              xfer += iprot->readString(_elem);
+              obj->fieldN.insert(std::move(_elem));
             }
           }
           else {
             for (_i_r = 0; _i_r < _size_r; ++_i_r) {
-              std::string _elem_r;
-              xfer += iprot->readString(_elem_r);
-              obj->fieldN.insert(std::move(_elem_r));
+              std::string _elem;
+              xfer += iprot->readString(_elem);
+              obj->fieldN.insert(std::move(_elem));
             }
           }
           xfer += iprot->readSetEnd();
@@ -3471,16 +3471,16 @@ uint32_t struct3_read(Protocol_* iprot, struct3* obj) {
           uint32_t _i_r;
           if (_size_r == std::numeric_limits<uint32_t>::max()) {
             for (_i_r = 0; iprot->peekSet(); ++_i_r) {
-              std::string _elem_r;
-              xfer += iprot->readString(_elem_r);
-              obj->fieldO.insert(std::move(_elem_r));
+              std::string _elem;
+              xfer += iprot->readString(_elem);
+              obj->fieldO.insert(std::move(_elem));
             }
           }
           else {
             for (_i_r = 0; _i_r < _size_r; ++_i_r) {
-              std::string _elem_r;
-              xfer += iprot->readString(_elem_r);
-              obj->fieldO.insert(std::move(_elem_r));
+              std::string _elem;
+              xfer += iprot->readString(_elem);
+              obj->fieldO.insert(std::move(_elem));
             }
           }
           xfer += iprot->readSetEnd();
@@ -3500,16 +3500,16 @@ uint32_t struct3_read(Protocol_* iprot, struct3* obj) {
           uint32_t _i_r;
           if (_size_r == std::numeric_limits<uint32_t>::max()) {
             for (_i_r = 0; iprot->peekSet(); ++_i_r) {
-               ::test_cpp2::cpp_reflection::structB _elem_r;
-              xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structB>::read(iprot, &_elem_r);
-              obj->fieldP.insert(std::move(_elem_r));
+               ::test_cpp2::cpp_reflection::structB _elem;
+              xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structB>::read(iprot, &_elem);
+              obj->fieldP.insert(std::move(_elem));
             }
           }
           else {
             for (_i_r = 0; _i_r < _size_r; ++_i_r) {
-               ::test_cpp2::cpp_reflection::structB _elem_r;
-              xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structB>::read(iprot, &_elem_r);
-              obj->fieldP.insert(std::move(_elem_r));
+               ::test_cpp2::cpp_reflection::structB _elem;
+              xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structB>::read(iprot, &_elem);
+              obj->fieldP.insert(std::move(_elem));
             }
           }
           xfer += iprot->readSetEnd();

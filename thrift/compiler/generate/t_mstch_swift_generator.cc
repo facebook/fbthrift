@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <cctype>
 
 #include <boost/algorithm/string/predicate.hpp>
@@ -146,7 +145,9 @@ class t_mstch_swift_generator : public t_mstch_generator {
    * a primitive representation. We need this because these types are treated
    * differently when they are arguments to type constructors in Java.
    */
-  mstch::map extend_type(const t_type& type) const override {
+  mstch::map extend_type(
+      const t_type& type,
+      const int32_t depth) const override {
     return mstch::map{
         {"primitive?",
          type.is_void() || type.is_bool() || type.is_byte() || type.is_i16() ||

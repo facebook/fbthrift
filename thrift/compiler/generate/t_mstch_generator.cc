@@ -114,7 +114,9 @@ mstch::map t_mstch_generator::dump(const t_field& field) const {
   return this->prepend_prefix("field", std::move(result));
 }
 
-mstch::map t_mstch_generator::dump(const t_type& type) const {
+mstch::map t_mstch_generator::dump(
+    const t_type& type,
+    const int32_t depth) const {
   mstch::map result{
       {"name", type.get_name()},
       {"annotations", this->dump_elems(type.annotations_)},
@@ -152,7 +154,8 @@ mstch::map t_mstch_generator::dump(const t_type& type) const {
   } else if (type.is_list()) {
     result.emplace(
         "listElemType",
-        this->dump(*dynamic_cast<const t_list&>(type).get_elem_type()));
+        this->dump(
+          *dynamic_cast<const t_list&>(type).get_elem_type(), depth + 1));
   } else if (type.is_stream()) {
     result.emplace(
         "streamElemType",
@@ -160,21 +163,24 @@ mstch::map t_mstch_generator::dump(const t_type& type) const {
   } else if (type.is_set()) {
     result.emplace(
         "setElemType",
-        this->dump(*dynamic_cast<const t_set&>(type).get_elem_type()));
+        this->dump(
+          *dynamic_cast<const t_set&>(type).get_elem_type(), depth + 1));
   } else if (type.is_map()) {
     result.emplace(
         "keyType",
-        this->dump(*dynamic_cast<const t_map&>(type).get_key_type()));
+        this->dump(
+          *dynamic_cast<const t_map&>(type).get_key_type(), depth + 1));
     result.emplace(
         "valueType",
-        this->dump(*dynamic_cast<const t_map&>(type).get_val_type()));
+        this->dump(
+          *dynamic_cast<const t_map&>(type).get_val_type(), depth + 1));
   } else if (type.is_typedef()) {
     result.emplace(
         "typedefType",
         this->dump(*dynamic_cast<const t_typedef&>(type).get_type()));
   }
 
-  mstch::map extension = this->extend_type(type);
+  mstch::map extension = this->extend_type(type, depth);
   result.insert(extension.begin(), extension.end());
   return this->prepend_prefix("type", std::move(result));
 }
@@ -366,7 +372,9 @@ mstch::map t_mstch_generator::extend_field(const t_field&) const {
   return {};
 }
 
-mstch::map t_mstch_generator::extend_type(const t_type&) const {
+mstch::map t_mstch_generator::extend_type(
+    const t_type&,
+    const int32_t depth) const {
   return {};
 }
 

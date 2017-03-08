@@ -14,21 +14,5 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%!
-%>bool <%struct:name%>::operator==(const <%struct:name%>& <%!
-  %><%#struct:base_fields?%><%!
-    %>rhs<%!
-  %><%/struct:base_fields?%><%!
-  %><%^struct:base_fields?%><%!
-    %>/* rhs */<%!
-  %><%/struct:base_fields?%><%!
-%>) const {
-  <%#struct:fields%>
-  if (!((<%field:name%> == rhs.<%field:name%>))) {
-    return false;
-  }
-  <%/struct:fields%>
-  return true;
-}
-<%!
-%>
+
+%><%#type:set?%><%#type:setElemType%>_r<% > module_types_tcc/variable_name%><%/type:setElemType%><%/type:set?%>

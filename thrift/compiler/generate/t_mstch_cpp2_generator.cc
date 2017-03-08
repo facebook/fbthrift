@@ -36,7 +36,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   mstch::map extend_program(const t_program&) const override;
   mstch::map extend_service(const t_service&) const override;
   mstch::map extend_struct(const t_struct&) const override;
-  mstch::map extend_type(const t_type& t) const override;
+  mstch::map extend_type(const t_type& t, const int32_t depth) const override;
 
  private:
   bool get_is_eb(const t_function& fn) const;
@@ -138,7 +138,6 @@ mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) const {
 
   // obtain base types
   std::vector<t_field*> base_members;
-
   std::copy_if(
     s_members.begin(),
     s_members.end(),
@@ -147,6 +146,16 @@ mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) const {
   );
   m.emplace("base_fields?", !base_members.empty());
   m.emplace("base_fields", this->dump_elems(base_members));
+
+ // obtain container types
+  std::vector<t_field*> container_members;
+  std::copy_if(
+    s_members.begin(),
+    s_members.end(),
+    std::back_inserter(container_members),
+    [](t_field* f){ return f->get_type()->is_container(); }
+  );
+  m.emplace("container_fields", this->dump_elems(container_members));
 
   // Filter fields according to the following criteria:
   // Get all base_types but strings (empty and non-empty)
@@ -167,8 +176,19 @@ mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) const {
   return m;
 }
 
-mstch::map t_mstch_cpp2_generator::extend_type(const t_type& t) const {
+mstch::map t_mstch_cpp2_generator::extend_type(
+    const t_type& t,
+    const int32_t depth) const {
   mstch::map m;
+
+  // Indent recursive code generation
+  m.emplace("indent2", std::string(depth * 2, ' '));
+  m.emplace("indent4", std::string(depth * 4, ' '));
+
+  // Determine if you are inside a container
+  if (depth > 0) {
+    m.emplace("inner_container?", std::to_string(depth));
+  }
 
   auto const cxx_value_prefix = [&] {
     using TypeValue = t_types::TypeValue;

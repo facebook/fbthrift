@@ -29,13 +29,16 @@
 <%#program:structs%><%!
 %><% > common/namespace_cpp2_begin%>
 
-<%#struct:base_fields?%>
+<%#struct:fields?%>
 
 <% > module_types_cpp/declare_members%>
-<%/struct:base_fields?%>
+<%/struct:fields?%>
 
 <% > module_types_cpp/eq_overload%>
 
+<%#struct:fields?%>
+<% > module_types_cpp/getters_setters%>
+<%/struct:fields?%>
 <% > module_types_cpp/swap%>
 
 template uint32_t <%struct:name%>::read<>(apache::thrift::BinaryProtocolReader*);

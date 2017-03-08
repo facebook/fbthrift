@@ -25,16 +25,16 @@ void swap(Struct& a, Struct& b) {
 
 %>void swap(<%struct:name%>& a, <%struct:name%>& b) {
   using ::std::swap;
-<%#struct:base_fields%>
+<%#struct:fields%>
   swap(a.<%field:name%>, b.<%field:name%>);
-<%/struct:base_fields%>
-<%#struct:base_fields?%>
+<%/struct:fields%>
+<%#struct:fields?%>
   swap(a.__isset, b.__isset);
-<%/struct:base_fields?%>
-<%^struct:base_fields?%>
+<%/struct:fields?%>
+<%^struct:fields?%>
   (void)a;
   (void)b;
-<%/struct:base_fields?%>
+<%/struct:fields?%>
 }
 <%!
 %>

@@ -40,7 +40,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
 
     void generate_program() override;
     mstch::map extend_program(const t_program&) const override;
-    mstch::map extend_type(const t_type&) const override;
+    mstch::map extend_type(const t_type&, const int32_t depth) const override;
     mstch::map extend_service(const t_service&) const override;
 
   protected:
@@ -102,7 +102,9 @@ mstch::map t_mstch_py3_generator::extend_program(
   return result;
 }
 
-mstch::map t_mstch_py3_generator::extend_type(const t_type& type) const {
+mstch::map t_mstch_py3_generator::extend_type(
+    const t_type& type,
+    const int32_t depth) const {
   const auto type_program = type.get_program();
   const auto program = type_program? type_program: this->get_program();
   const auto modulePath = this->get_py3_namespace(

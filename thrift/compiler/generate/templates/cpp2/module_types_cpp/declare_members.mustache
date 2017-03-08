@@ -38,6 +38,9 @@ void Struct::__clear() {
   %><%/field:value%><%!
   %><% > common/semicolon_newline%><%!
 %><%/field:type%><%/struct:base_fields%><%!
+%><%#struct:container_fields%><%#field:type%><%!
+  %>  <%field:name%>.clear();
+<%/field:type%><%/struct:container_fields%><%!
 %>  __isset.__clear();
 }
 <%!

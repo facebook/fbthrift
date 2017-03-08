@@ -22,6 +22,10 @@ uint32_t <%struct:name%>::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
   xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>(this-><%field:name%>);
 <%/field:type%><%/struct:base_fields%>
+<%#struct:container_fields%><%#field:type%>
+  xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
+<% > module_types_tcc/serialize_container%>
+<%/field:type%><%/struct:container_fields%>
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -34,6 +38,10 @@ uint32_t <%struct:name%>::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
   xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>(this-><%field:name%>);
 <%/field:type%><%/struct:base_fields%>
+<%#struct:container_fields%><%#field:type%>
+  xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
+<% > module_types_tcc/serialize_container%>
+<%/field:type%><%/struct:container_fields%>
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -47,6 +55,11 @@ uint32_t <%struct:name%>::write(Protocol_* prot_) const {
   xfer += prot_->write<% > module_types_tcc/struct_field_type%>(this-><%field:name%>);
   xfer += prot_->writeFieldEnd();
 <%/field:type%><%/struct:base_fields%>
+<%#struct:container_fields%><%#field:type%>
+  xfer += prot_->writeFieldBegin("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
+<% > module_types_tcc/serialize_container_write%>
+  xfer += prot_->writeFieldEnd();
+<%/field:type%><%/struct:container_fields%>
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;

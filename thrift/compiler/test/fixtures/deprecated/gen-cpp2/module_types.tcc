@@ -78,16 +78,16 @@ uint32_t House::read(Protocol_* iprot) {
           uint32_t _i_r;
           if (_size_r == std::numeric_limits<uint32_t>::max()) {
             for (_i_r = 0; iprot->peekSet(); ++_i_r) {
-               ::cpp2::ColorID _elem_r;
-              xfer += iprot->readI64(_elem_r);
-              this->houseColors.value().insert(std::move(_elem_r));
+               ::cpp2::ColorID _elem;
+              xfer += iprot->readI64(_elem);
+              this->houseColors.value().insert(std::move(_elem));
             }
           }
           else {
             for (_i_r = 0; _i_r < _size_r; ++_i_r) {
-               ::cpp2::ColorID _elem_r;
-              xfer += iprot->readI64(_elem_r);
-              this->houseColors.value().insert(std::move(_elem_r));
+               ::cpp2::ColorID _elem;
+              xfer += iprot->readI64(_elem);
+              this->houseColors.value().insert(std::move(_elem));
             }
           }
           xfer += iprot->readSetEnd();

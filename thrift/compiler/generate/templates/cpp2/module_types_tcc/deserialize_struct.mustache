@@ -46,8 +46,12 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
         if (ftype == apache::thrift::protocol::<% > module_types_tcc/struct_type%>) {
 <%#type:base?%>
           xfer += iprot->read<% > module_types_tcc/struct_field_type%>(this-><%field:name%>);
-          this->__isset.<%field:name%> = true;
 <%/type:base?%>
+<%#type:container?%>
+          this-><%field:name%> = <% > Type%>();
+<% > module_types_tcc/deserialize_container%>
+<%/type:container?%>
+          this->__isset.<%field:name%> = true;
         } else {
           xfer += iprot->skip(ftype);
         }

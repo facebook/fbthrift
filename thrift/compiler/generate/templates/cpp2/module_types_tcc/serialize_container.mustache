@@ -1,0 +1,39 @@
+<%!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+%><%!
+
+Serialize Containers
+
+%><%#type:container?%>
+<%#type:inner_container?%>
+<%type:indent2%>  xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>Begin(apache::thrift::protocol::<%#type:set?%><%#type:setElemType%><% > module_types_tcc/struct_type%><%/type:setElemType%><%/type:set?%>, (*_iter_r<% > module_types_tcc/variable_name%>).size());
+<%type:indent2%>  for (auto _iter<% > module_types_tcc/variable_name%> = (*_iter_r<% > module_types_tcc/variable_name%>).begin(); _iter<% > module_types_tcc/variable_name%> != (*_iter_r<% > module_types_tcc/variable_name%>).end(); ++_iter<% > module_types_tcc/variable_name%>) {
+<%/type:inner_container?%>
+<%^type:inner_container?%>
+<%type:indent2%>  xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>Begin(apache::thrift::protocol::<%#type:set?%><%#type:setElemType%><% > module_types_tcc/struct_type%><%/type:setElemType%><%/type:set?%>, this-><%field:name%>.size());
+<%type:indent2%>  for (auto _iter<% > module_types_tcc/variable_name%> = this-><%field:name%>.begin(); _iter<% > module_types_tcc/variable_name%> != this-><%field:name%>.end(); ++_iter<% > module_types_tcc/variable_name%>) {
+<%/type:inner_container?%>
+<%#type:set?%><%#type:setElemType%><% > module_types_tcc/serialize_container%><%/type:setElemType%><%/type:set?%>
+<%type:indent2%>  }
+<%type:indent2%>  xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>End();
+<%/type:container?%><%!
+
+Serialize Primitive Types
+
+%><%^type:container?%>
+<%type:indent2%>  xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>((*_iter_r));
+<%/type:container?%>

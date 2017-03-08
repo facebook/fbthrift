@@ -883,16 +883,16 @@ uint32_t StructWithContainers::read(Protocol_* iprot) {
           uint32_t _i_r;
           if (_size_r == std::numeric_limits<uint32_t>::max()) {
             for (_i_r = 0; iprot->peekSet(); ++_i_r) {
-              int32_t _elem_r;
-              xfer += iprot->readI32(_elem_r);
-              _rtype7.insert(std::move(_elem_r));
+              int32_t _elem;
+              xfer += iprot->readI32(_elem);
+              _rtype7.insert(std::move(_elem));
             }
           }
           else {
             for (_i_r = 0; _i_r < _size_r; ++_i_r) {
-              int32_t _elem_r;
-              xfer += iprot->readI32(_elem_r);
-              _rtype7.insert(std::move(_elem_r));
+              int32_t _elem;
+              xfer += iprot->readI32(_elem);
+              _rtype7.insert(std::move(_elem));
             }
           }
           this->set_ref = std::move(_ptype6);
@@ -984,16 +984,16 @@ uint32_t StructWithContainers::read(Protocol_* iprot) {
           uint32_t _i_r;
           if (_size_r == std::numeric_limits<uint32_t>::max()) {
             for (_i_r = 0; iprot->peekSet(); ++_i_r) {
-              int32_t _elem_r;
-              xfer += iprot->readI32(_elem_r);
-              _rtype13.insert(std::move(_elem_r));
+              int32_t _elem;
+              xfer += iprot->readI32(_elem);
+              _rtype13.insert(std::move(_elem));
             }
           }
           else {
             for (_i_r = 0; _i_r < _size_r; ++_i_r) {
-              int32_t _elem_r;
-              xfer += iprot->readI32(_elem_r);
-              _rtype13.insert(std::move(_elem_r));
+              int32_t _elem;
+              xfer += iprot->readI32(_elem);
+              _rtype13.insert(std::move(_elem));
             }
           }
           this->set_ref_shared = std::move(_ptype12);
@@ -1085,16 +1085,16 @@ uint32_t StructWithContainers::read(Protocol_* iprot) {
           uint32_t _i_r;
           if (_size_r == std::numeric_limits<uint32_t>::max()) {
             for (_i_r = 0; iprot->peekSet(); ++_i_r) {
-              int32_t _elem_r;
-              xfer += iprot->readI32(_elem_r);
-              _rtype19.insert(std::move(_elem_r));
+              int32_t _elem;
+              xfer += iprot->readI32(_elem);
+              _rtype19.insert(std::move(_elem));
             }
           }
           else {
             for (_i_r = 0; _i_r < _size_r; ++_i_r) {
-              int32_t _elem_r;
-              xfer += iprot->readI32(_elem_r);
-              _rtype19.insert(std::move(_elem_r));
+              int32_t _elem;
+              xfer += iprot->readI32(_elem);
+              _rtype19.insert(std::move(_elem));
             }
           }
           this->set_custom_ref = std::move(_ptype18);

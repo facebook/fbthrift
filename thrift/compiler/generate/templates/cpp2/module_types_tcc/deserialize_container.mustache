@@ -1,0 +1,53 @@
+<%!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+%><%!
+
+Deserialize Set
+
+%><%#type:set?%>
+<%type:indent4%>          uint32_t _size<% > module_types_tcc/variable_name%>;
+<%type:indent4%>          apache::thrift::protocol::TType _etype<% > module_types_tcc/variable_name%>;
+<%type:indent4%>          xfer += iprot->readSetBegin(_etype<% > module_types_tcc/variable_name%>, _size<% > module_types_tcc/variable_name%>);
+<%type:indent4%>          uint32_t _i<% > module_types_tcc/variable_name%>;
+<%type:indent4%>          if (_size<% > module_types_tcc/variable_name%> == std::numeric_limits<uint32_t>::max()) {
+<%type:indent4%>            for (_i<% > module_types_tcc/variable_name%> = 0; iprot->peekSet(); ++_i<% > module_types_tcc/variable_name%>) {
+  <%#type:setElemType%>
+<% > module_types_tcc/deserialize_container_internal%>
+  <%/type:setElemType%>
+  <%#type:inner_container?%>
+<%type:indent4%>              _elem<% > module_types_tcc/variable_name%>.insert(std::move(<%#type:setElemType%>_elem<% > module_types_tcc/variable_name%><%/type:setElemType%>));
+  <%/type:inner_container?%>
+  <%^type:inner_container?%>
+<%type:indent4%>              this-><%field:name%>.insert(std::move(<%#type:setElemType%>_elem<% > module_types_tcc/variable_name%><%/type:setElemType%>));
+  <%/type:inner_container?%>
+<%type:indent4%>            }
+<%type:indent4%>          }
+<%type:indent4%>          else {
+<%type:indent4%>            for (_i<% > module_types_tcc/variable_name%> = 0; _i<% > module_types_tcc/variable_name%> < _size<% > module_types_tcc/variable_name%>; ++_i<% > module_types_tcc/variable_name%>) {
+  <%#type:setElemType%>
+<% > module_types_tcc/deserialize_container_internal%>
+  <%/type:setElemType%>
+  <%#type:inner_container?%>
+<%type:indent4%>              _elem<% > module_types_tcc/variable_name%>.insert(std::move(<%#type:setElemType%>_elem<% > module_types_tcc/variable_name%><%/type:setElemType%>));
+  <%/type:inner_container?%>
+  <%^type:inner_container?%>
+<%type:indent4%>              this-><%field:name%>.insert(std::move(<%#type:setElemType%>_elem<% > module_types_tcc/variable_name%><%/type:setElemType%>));
+  <%/type:inner_container?%>
+<%type:indent4%>            }
+<%type:indent4%>          }
+<%type:indent4%>          xfer += iprot->readSetEnd();
+<%/type:set?%>
