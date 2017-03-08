@@ -30,7 +30,6 @@ import sys
 import errno
 import select
 import socket
-import fcntl
 import warnings
 import time
 
@@ -185,6 +184,8 @@ class TSocketBase(TTransportBase):
             self._setHandleCloseOnExec(handle)
 
     def _setHandleCloseOnExec(self, handle):
+        # Windows doesn't have fnctl, only import when needed
+        import fcntl
         flags = fcntl.fcntl(handle, fcntl.F_GETFD, 0)
         if flags < 0:
             raise IOError('Error in retrieving file options')

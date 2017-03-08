@@ -25,7 +25,6 @@ from __future__ import unicode_literals
 import contextlib
 import logging
 import os
-import resource
 import six
 from concurrent.futures import Future
 from functools import partial
@@ -54,6 +53,8 @@ def get_memory_usage():
     rss_pages = int(stat_string.split()[23])
     #/proc/pid/stat excludes 3 administrative pages from the count
     rss_pages += 3
+    # Windows doesn't have fnctl, only import when needed
+    import resource
     return rss_pages * resource.getpagesize()
 
 
