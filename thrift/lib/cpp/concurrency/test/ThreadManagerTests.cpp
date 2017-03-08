@@ -45,7 +45,7 @@ class ThreadManagerTest : public testing::Test {
     ThreadManager::setObserver(nullptr);
   }
  private:
-  google::FlagSaver flagsaver_;
+  gflags::FlagSaver flagsaver_;
 };
 
 // Loops until x==y for up to timeout ms.
@@ -661,7 +661,7 @@ class TestObserver : public ThreadManager::Observer {
 };
 
 TEST_F(ThreadManagerTest, NumaThreadManagerTest) {
-  google::FlagSaver saver;
+  gflags::FlagSaver saver;
   FLAGS_thrift_numa_enabled = true;
 
   if (numa_available() == -1) {
@@ -785,7 +785,7 @@ TEST_F(ThreadManagerTest, ThreadStartFailureTest) {
 }
 
 TEST_F(ThreadManagerTest, NumaThreadManagerBind) {
-  google::FlagSaver saver;
+  gflags::FlagSaver saver;
   FLAGS_thrift_numa_enabled = true;
 
   auto numa = folly::make_unique<NumaThreadManager>(2);

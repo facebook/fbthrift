@@ -381,7 +381,7 @@ TEST_P(SharedServerTests, OnewaySyncClientTest) {
 TEST_P(SharedServerTests, ThriftServerSizeLimits) {
   init();
 
-  google::FlagSaver flagSaver;
+  gflags::FlagSaver flagSaver;
   FLAGS_thrift_cpp2_protocol_reader_string_limit = 1024 * 1024;
 
   std::string response;
