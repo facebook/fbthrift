@@ -18,7 +18,6 @@
 # under the License.
 #
 
-from cStringIO import StringIO
 from itertools import chain, ifilter
 from collections import namedtuple
 import copy
@@ -26,7 +25,6 @@ import errno
 import os
 import re
 import string
-import sys
 
 from thrift_compiler import frontend
 # Easy access to the enum of t_base_type::t_base
@@ -1162,7 +1160,6 @@ class CppGenerator(t_generator.Generator):
         name = "future_" + function.name
         sig = self._get_process_function_signature_future(service, function)
         with out().defn(sig, name=name, override=True):
-            rettype = self._type_name(function.returntype)
             if self.flag_stack_arguments:
                 args = [m.name for m in function.arglist.members]
                 if not self._is_complex_type(function.returntype):
@@ -1527,7 +1524,6 @@ class CppGenerator(t_generator.Generator):
 
             out().label('private:')
             for function in service.functions:
-                loadname = '"{0}.{1}"'.format(service.name, function.name)
                 if not self._is_processed_in_eb(function):
                     with out().defn(
                             'template <typename ProtocolIn_, '
@@ -2158,8 +2154,6 @@ class CppGenerator(t_generator.Generator):
                     with out().case('apache::thrift::protocol::' + prottype,
                                     nobreak=True):
                         out("apache::thrift::{0}Reader reader;".format(value))
-
-                        callee_name = "recv_wrapped" + function.name + "T"
 
                         args = ["&reader"]
 
@@ -4104,7 +4098,6 @@ class CppGenerator(t_generator.Generator):
                     tte(ttype.as_list.elem_type),
                     prefix))
         ite = '_iter' + self._nested_containers(ttype)
-        typename = self._type_name(ttype)
         with s('for (auto {0} = {1}.begin(); {0} != {1}.end(); ++{0})'.format(
                 ite, prefix)):
             if ttype.is_map:
@@ -5158,7 +5151,6 @@ class CppGenerator(t_generator.Generator):
         return name
 
     def _generate_fatal_union_traits_getter(self, union, field, scope):
-        ftname = self._type_name(field.type)
         with scope.cls('struct {0}'.format(field.name)):
             scope('auto operator ()({0} const &variant) const'
                 .format(union.name))
@@ -5185,7 +5177,6 @@ class CppGenerator(t_generator.Generator):
             scope('}')
 
     def _generate_fatal_union_traits_setter(self, union, field, scope):
-        ftname = self._type_name(field.type)
         with scope.cls('struct {0}'.format(field.name)):
             scope('template <typename... Args>')
             scope('auto operator ()({0} &variant, Args &&...args) const'
@@ -5439,8 +5430,6 @@ class CppGenerator(t_generator.Generator):
             # MembersAnnotations
             sns('  {0}::members,'.format(annclsnm))
 
-            required_members = [m for m in i.members if m.req == e_req.required]
-            nonreq_members = [m for m in i.members if m.req != e_req.required]
             # Metadata
             self._render_fatal_type_common_metadata(
                 annclsnm, i.type_id, sns, '  ')
@@ -5530,8 +5519,6 @@ class CppGenerator(t_generator.Generator):
                 return self._generate_fatal_service_impl(sg, program)
 
     def _generate_fatal_service_impl(self, sns, program):
-        name = self._program.name
-        safe_ns = self._get_namespace().replace('.', '_')
         with sns.namespace(self.fatal_detail_ns).scope:
             for s in program.services:
                 for m in s.functions:
@@ -5632,7 +5619,6 @@ class CppGenerator(t_generator.Generator):
         s = self._types_global = get_global_scope(CppPrimitiveFactory, context)
 
         self._types_out_impl = types_out_impl = context.impl
-        self._types_out_h = types_out_h = context.h
         self._out_tcc = types_out_tcc = context.tcc
         self._generated_types = []
         # Enter the scope (prints guard)
