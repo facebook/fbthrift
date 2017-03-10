@@ -1,4 +1,6 @@
 /*
+ * Copyright 2017-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -87,7 +89,7 @@ class TServerEventHandler {
   }
 
   /**
-   * Called when a new client has connected and is about to being processing.
+   * Called when a new client has connected and is about to begin processing.
    *
    * @param ctx A pointer to the connection context.  The context will remain
    *            valid until the corresponding connectionDestroyed() call.

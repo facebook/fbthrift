@@ -1,4 +1,6 @@
 /*
+ * Copyright 2017-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,6 +18,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 #ifndef THRIFT_UTIL_SHARED_PTR_UTIL_H_
 #define THRIFT_UTIL_SHARED_PTR_UTIL_H_ 1
 
@@ -32,7 +35,7 @@
  * other shared_ptr type.  (Even if it would be a compile error to actually try
  * to instantiate the constructor.)  These macros add an extra argument to the
  * function to cause it to only be instantiated if a pointer of type T is
- * convertible to a pointer of type U.
+ * convertible to a pointer of type Y.
  *
  * THRIFT_OVERLOAD_IF should be used in function declarations.
  * THRIFT_OVERLOAD_IF_DEFN should be used in the function definition, if it is

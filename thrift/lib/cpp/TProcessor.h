@@ -1,4 +1,6 @@
 /*
+ * Copyright 2017-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -34,7 +36,6 @@ namespace apache { namespace thrift {
  * an input and the other an output. The definition of this object is loose,
  * though the typical case is for some sort of server that either generates
  * responses to an input stream or forwards data from one pipe onto another.
- *
  */
 class TProcessor : public TProcessorBase {
  public:
