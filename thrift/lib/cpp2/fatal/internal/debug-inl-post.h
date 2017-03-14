@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -118,7 +118,6 @@ struct debug_equals_impl<type_class::list<ValueTypeClass>> {
     T const &rhs_,
     Callback &&callback
   ) {
-    using traits = thrift_list_traits<T>;
     thrift_list_traits_adapter<T const> lhs { lhs_ };
     thrift_list_traits_adapter<T const> rhs { rhs_ };
 
