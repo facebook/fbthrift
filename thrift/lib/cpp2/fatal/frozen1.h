@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,7 +78,7 @@ template <
 struct L {
   static_assert(Bit < CHAR_BIT, "internal error");
 
-  /* implicit */ inline operator bool () const {
+  /* implicit */ inline operator bool () const { // @nolint
     return static_cast<bool>(
       reinterpret_cast<std::uint8_t const *>(this)[DesiredOffset - ActualOffset]
         & (1u << Bit)
@@ -342,9 +342,11 @@ using enable_if_struct = typename std::enable_if<
 
 template <typename FrozenType>
 struct I {
+  using iterator_category = std::random_access_iterator_tag;
   using value_type = FrozenType const;
   using pointer = value_type *;
   using reference = value_type &;
+  using difference_type = std::ptrdiff_t;
 
   explicit I(pointer i): i_(i) {}
 
@@ -374,7 +376,7 @@ struct I {
     return *this;
   }
 
-  I operator +(std::ptrdiff_t increment) const {
+  I operator +(difference_type increment) const {
     DCHECK_EQ(0, increment % FrozenSizeOf<FrozenType>::size());
     return I(
       reinterpret_cast<pointer>(reinterpret_cast<char const *>(i_)
@@ -382,7 +384,7 @@ struct I {
     );
   }
 
-  I operator -(std::ptrdiff_t decrement) const {
+  I operator -(difference_type decrement) const {
     DCHECK_EQ(0, decrement % FrozenSizeOf<FrozenType>::size());
     return I(
       reinterpret_cast<pointer>(reinterpret_cast<char const *>(i_)
@@ -390,7 +392,15 @@ struct I {
     );
   }
 
-  std::ptrdiff_t operator -(I const &rhs) const {
+  I& operator +=(difference_type increment) {
+    return *this = *this + increment;
+  }
+
+  I& operator -=(difference_type increment) {
+    return *this = *this - increment;
+  }
+
+  difference_type operator -(I const &rhs) const {
     DCHECK_EQ(
       0,
       (reinterpret_cast<char const *>(i_)
