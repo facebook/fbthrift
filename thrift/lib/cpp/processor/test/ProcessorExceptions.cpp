@@ -1,4 +1,6 @@
 /*
+ * Copyright 2017-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,8 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-
 // This test checks for an exception when a server receives a struct
 // with a required member missing.
 // We test it by using a fake client (SampleService2) whose arguments
@@ -153,9 +153,4 @@ TEST(ProcessorExceptionTest, throw_if_map_key_inner_required_missing) {
       a.complex_key.insert(elem);
     }),
     TApplicationException);
-}
-
-int main(int argc, char* argv[]) {
-  ::testing::InitGoogleTest(&argc, argv);
-  return RUN_ALL_TESTS();
 }

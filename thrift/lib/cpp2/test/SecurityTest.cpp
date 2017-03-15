@@ -30,6 +30,8 @@
 
 #include <thrift/lib/cpp2/async/GssSaslClient.h>
 
+#include <folly/init/Init.h>
+
 #include <boost/cast.hpp>
 #include <boost/lexical_cast.hpp>
 #include <memory>
@@ -466,9 +468,7 @@ TEST(SecurityRequestContext, Fail) {
 
 int main(int argc, char** argv) {
   setenv("KRB5_CONFIG", "/etc/krb5-thrift.conf", 0);
-  testing::InitGoogleTest(&argc, argv);
-  google::InitGoogleLogging(argv[0]);
-  gflags::ParseCommandLineFlags(&argc, &argv, true);
-
+  ::testing::InitGoogleTest(&argc, argv);
+  folly::init(&argc, &argv);
   return RUN_ALL_TESTS();
 }

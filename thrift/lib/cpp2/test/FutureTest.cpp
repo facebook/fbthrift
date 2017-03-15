@@ -315,11 +315,3 @@ TEST(ThriftServer, FutureHeaderClientTest) {
   const auto& headers = future.value().second->getHeaders();
   EXPECT_EQ(get_default(headers, "header_from_server"), "1");
 }
-
-int main(int argc, char** argv) {
-  testing::InitGoogleTest(&argc, argv);
-  google::InitGoogleLogging(argv[0]);
-  gflags::ParseCommandLineFlags(&argc, &argv, true);
-
-  return RUN_ALL_TESTS();
-}
