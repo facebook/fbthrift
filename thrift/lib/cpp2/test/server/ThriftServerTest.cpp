@@ -868,3 +868,29 @@ TEST(ThriftServer, ServerConfigTest) {
   EXPECT_EQ(serverConfig.sslHandshakeTimeout,
             std::chrono::milliseconds::zero());
 }
+
+TEST(ThriftServer, ClientIdentityHook) {
+  /* Tests that the server calls the client identity hook when creating a new
+     connection context */
+
+  std::atomic<bool> flag{false};
+  auto hook = [&flag](
+      const X509* /* unused */,
+      const SaslServer* /* unused */,
+      const folly::SocketAddress& /* unused */) {
+    flag = true;
+    return std::unique_ptr<void, void (*)(void*)>(nullptr, [](void *){});
+  };
+
+  TestThriftServerFactory<TestInterface> factory;
+  auto server = factory.create();
+  server->setClientIdentityHook(hook);
+  apache::thrift::util::ScopedServerThread st(server);
+
+  folly::EventBase base;
+  auto socket = TAsyncSocket::newSocket(&base, *st.getAddress());
+  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
+  std::string response;
+  client.sync_sendResponse(response, 64);
+  EXPECT_TRUE(flag);
+}

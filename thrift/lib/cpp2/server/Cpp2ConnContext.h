@@ -33,6 +33,11 @@ using apache::thrift::concurrency::PriorityThreadManager;
 
 namespace apache { namespace thrift {
 
+using ClientIdentityHook = std::function<std::unique_ptr<void, void (*)(void*)>(
+    X509* cert,
+    const apache::thrift::SaslServer* sasl,
+    const folly::SocketAddress& peerAddress)>;
+
 class RequestChannel;
 class TClientBase;
 
@@ -44,7 +49,8 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     const apache::thrift::SaslServer* sasl_server = nullptr,
     folly::EventBaseManager* manager = nullptr,
     const std::shared_ptr<RequestChannel>& duplexChannel = nullptr,
-    const std::shared_ptr<X509> peerCert = nullptr /*overridden from socket*/)
+    const std::shared_ptr<X509> peerCert = nullptr /*overridden from socket*/,
+    apache::thrift::ClientIdentityHook clientIdentityHook = nullptr)
     : saslServer_(sasl_server),
       manager_(manager),
       requestHeader_(nullptr),
@@ -60,6 +66,11 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
         peerCert_ = sslSocket->getPeerCert();
         isTls_ = true;
       }
+    }
+
+    if (clientIdentityHook) {
+      peerIdentities_ = clientIdentityHook(
+          peerCert_.get(), sasl_server, peerAddress_);
     }
   }
 
@@ -117,10 +128,6 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
 
   virtual void* getPeerIdentities() const {
     return peerIdentities_.get();
-  }
-
-  virtual void setPeerIdentities(std::unique_ptr<void, void (*)(void*)> ids) {
-    peerIdentities_.swap(ids);
   }
 
  private:

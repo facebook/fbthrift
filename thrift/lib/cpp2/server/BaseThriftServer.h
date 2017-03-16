@@ -192,6 +192,8 @@ class BaseThriftServer : public apache::thrift::server::TServer {
   getHandlerFunc getHandler_;
   GetHeaderHandlerFunc getHeaderHandler_;
 
+  ClientIdentityHook clientIdentityHook_;
+
   // Flag indicating whether it is safe to mutate the server config through its
   // setters.
   std::atomic<bool> configMutable_{true};
@@ -648,6 +650,17 @@ class BaseThriftServer : public apache::thrift::server::TServer {
   }
 
   GetHeaderHandlerFunc getGetHeaderHandler() { return getHeaderHandler_; }
+
+  /**
+   * Set the client identity hook for the server, which will be called in
+   * Cpp2ConnContext(). It can be used to cache client identities for each
+   * connection. They can be retrieved with Cpp2ConnContext::getPeerIdentities.
+   */
+  void setClientIdentityHook(ClientIdentityHook func) {
+    clientIdentityHook_ = func;
+  }
+
+  ClientIdentityHook getClientIdentityHook() { return clientIdentityHook_; }
 };
 }
 } // apache::thrift

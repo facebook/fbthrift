@@ -68,7 +68,9 @@ Cpp2Connection::Cpp2Connection(
                asyncSocket.get(),
                channel_->getSaslServer(),
                worker_->getServer()->getEventBaseManager(),
-               duplexChannel_ ? duplexChannel_->getClientChannel() : nullptr)
+               duplexChannel_ ? duplexChannel_->getClientChannel() : nullptr,
+               nullptr,
+               worker_->getServer()->getClientIdentityHook())
     , socket_(asyncSocket)
     , threadManager_(worker_->getServer()->getThreadManager()) {
 
