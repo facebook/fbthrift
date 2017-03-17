@@ -589,6 +589,7 @@ void t_cpp_generator::init_generator() {
   f_data_ <<
     "#pragma once" << endl <<
     endl <<
+    "#include <array>" << endl <<
     "#include <cstddef>" << endl <<
     endl <<
     "#include <thrift/lib/cpp/Thrift.h>" << endl <<

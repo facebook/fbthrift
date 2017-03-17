@@ -680,6 +680,7 @@ class CppGenerator(t_generator.Generator):
                 self._program, self._program.name + '_data.h')))
             sg()
             return
+        sg('#include <array>')
         sg('#include <cstddef>')
         sg()
         sg('#include <thrift/lib/cpp/Thrift.h>')

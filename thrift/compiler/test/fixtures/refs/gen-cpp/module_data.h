@@ -6,6 +6,7 @@
  */
 #pragma once
 
+#include <array>
 #include <cstddef>
 
 #include <thrift/lib/cpp/Thrift.h>
