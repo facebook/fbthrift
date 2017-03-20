@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <cassert>
 #include <string>
 #include <fstream>
@@ -308,7 +307,7 @@ class t_py_generator : public t_concat_generator {
   bool gen_utf8strings_;
 
   /**
-   * True iff we serialize maps in the ascending order of ther keys
+   * True iff we serialize maps sorted by key and sets by value
    */
   bool sort_keys_;
 
@@ -3458,8 +3457,13 @@ void t_py_generator::generate_serialize_container(ofstream &out,
     indent_down();
   } else if (ttype->is_set()) {
     string iter = tmp("iter");
-    indent(out) <<
-      "for " << iter << " in " << prefix << ":" << endl;
+    if (sort_keys_) {
+      indent(out) <<
+        "for " << iter << " in sorted(" << prefix << "):" << endl;
+    } else {
+      indent(out) <<
+        "for " << iter << " in " << prefix << ":" << endl;
+    }
     indent_up();
     generate_serialize_set_element(out, (t_set*)ttype, iter);
     indent_down();
@@ -3782,7 +3786,7 @@ THRIFT_REGISTER_GENERATOR(py, "Python",
 "    json:            Generate function to parse entity from json\n"
 "    new_style:       Generate new-style classes.\n"
 "    slots:           Generate code using slots for instance members.\n"
-"    sort_keys:       Serialize maps in the ascending order of their keys.\n"
+"    sort_keys:       Serialize maps sorted by key and sets by value.\n"
 "    thrift_port=NNN: Default port to use in remote client (default 9090).\n"
 "    twisted:         Generate Twisted-friendly RPC services.\n"
 "    asyncio:         Generate asyncio-friendly RPC services.\n"

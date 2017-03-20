@@ -120,7 +120,7 @@ class Foo:
     if self.myset != None:
       oprot.writeFieldBegin('myset', TType.SET, 2)
       oprot.writeSetBegin(TType.STRING, len(self.myset))
-      for iter20 in self.myset:
+      for iter20 in sorted(self.myset):
         oprot.writeString(iter20.encode('utf-8')) if UTF8STRINGS and not isinstance(iter20, bytes) else oprot.writeString(iter20)
       oprot.writeSetEnd()
       oprot.writeFieldEnd()

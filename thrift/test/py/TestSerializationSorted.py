@@ -22,12 +22,14 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import unittest
+import textwrap
 
 from thrift.protocol import TSimpleJSONProtocol
 from thrift.transport.TTransport import TMemoryBuffer
 
 # The sorted one.
 from SortKeys.ttypes import SortedStruct
+from SortSets.ttypes import SortedSetStruct
 
 
 def writeToJSON(obj):
@@ -52,6 +54,27 @@ class TestSortKeys(unittest.TestCase):
         unsorted_blob = b'{\n  "aMap": {\n    "b": 1.0,\n    "a": 1.0\n  }\n}'
         sorted_blob = b'{\n  "aMap": {\n    "a": 1.0,\n    "b": 1.0\n  }\n}'
         sorted_struct = readStructFromJSON(unsorted_blob, SortedStruct)
+        blob = writeToJSON(sorted_struct)
+        self.assertNotEqual(blob, unsorted_blob)
+        self.assertEqual(blob, sorted_blob)
+        self.assertEqual(static_struct, sorted_struct)
+
+    def testSetSorted(self):
+        unsorted_set = set(['5', '4', '3', '2', '1', '0'])
+        static_struct = SortedSetStruct(aSet=unsorted_set)
+        unsorted_blob = textwrap.dedent("""\
+            {{
+              "aSet": [
+                "{}"
+              ]
+            }}""").format('",\n    "'.join(unsorted_set)).encode()
+        sorted_blob = textwrap.dedent("""\
+            {{
+              "aSet": [
+                "{}"
+              ]
+            }}""").format('",\n    "'.join(sorted(unsorted_set))).encode()
+        sorted_struct = readStructFromJSON(unsorted_blob, SortedSetStruct)
         blob = writeToJSON(sorted_struct)
         self.assertNotEqual(blob, unsorted_blob)
         self.assertEqual(blob, sorted_blob)
