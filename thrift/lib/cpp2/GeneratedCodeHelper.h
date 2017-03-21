@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,55 @@
 namespace apache { namespace thrift {
 
 namespace detail {
+
+class container_traits {
+ public:
+  template <typename ...>
+  static std::false_type has_insert(...);
+
+  template <
+    typename T,
+    typename V = typename T::value_type,
+    typename = decltype(std::declval<T&>().insert(std::declval<V&&>()))>
+  static std::true_type has_insert(T*);
+
+  template <typename ...>
+  static std::false_type has_op_brace(...);
+
+  template <
+    typename T,
+    typename K = typename T::key_type,
+    typename = decltype(std::declval<T>()[std::declval<K>()])>
+  static std::true_type has_op_brace(T*);
+
+  template <typename T>
+  using is_map_or_set = decltype(has_insert(static_cast<T*>(nullptr)));
+
+  template <typename T>
+  using is_map_not_set = decltype(has_op_brace(static_cast<T*>(nullptr)));
+
+  template <typename ...>
+  static std::false_type has_push_back(...);
+
+  template <
+    typename T,
+    typename V = typename T::value_type,
+    typename = decltype(std::declval<T&>().push_back(std::declval<V&&>()))>
+  static std::true_type has_push_back(T*);
+
+  template <typename T>
+  using is_map = std::integral_constant<bool, is_map_not_set<T>::value>;
+
+  template <typename T>
+  using is_set = std::integral_constant<bool,
+        is_map_or_set<T>::value && !is_map_not_set<T>::value>;
+
+  template <typename T>
+  using is_vector = std::integral_constant<bool,
+        !is_map_or_set<T>::value &&
+        decltype(has_push_back(static_cast<T*>(nullptr)))::value>;
+};
+
 template <int N, int Size, class F, class Tuple>
 struct ForEachImpl {
   static uint32_t forEach(Tuple&& tuple, F&& f) {
