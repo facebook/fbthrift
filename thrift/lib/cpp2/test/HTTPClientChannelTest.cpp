@@ -270,3 +270,35 @@ TEST(HTTPClientChannelTest, NoBodyResponse) {
     EXPECT_STREQ("Empty HTTP response, status code = 400", e.what());
   });
 }
+
+TEST(HTTPClientChannelTest, NoGoodChannel) {
+  std::unique_ptr<ScopedServerThread> serverThread = createHttpServer();
+
+  folly::EventBase eb;
+  const folly::SocketAddress* addr = serverThread->getAddress();
+  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, *addr));
+
+  auto channel = HTTPClientChannel::newHTTP2Channel(std::move(socket));
+
+  EXPECT_TRUE(channel->good());
+
+  channel->getTransport()->close();
+
+  EXPECT_FALSE(channel->good());
+}
+
+TEST(HTTPClientChannelTest, NoGoodChannel2) {
+  std::unique_ptr<ScopedServerThread> serverThread = createHttpServer();
+
+  folly::EventBase eb;
+  const folly::SocketAddress* addr = serverThread->getAddress();
+  TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, *addr));
+
+  auto channel = HTTPClientChannel::newHTTP2Channel(std::move(socket));
+
+  EXPECT_TRUE(channel->good());
+
+  channel->closeNow();
+
+  EXPECT_FALSE(channel->good());
+}

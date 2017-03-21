@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -86,6 +86,11 @@ void HeaderClientChannel::useAsHttpClient(const std::string& host,
                                           const std::string& uri) {
   setClientType(THRIFT_HTTP_CLIENT_TYPE);
   httpClientParser_ = std::make_shared<util::THttpClientParser>(host, uri);
+}
+
+bool HeaderClientChannel::good() {
+  auto transport = getTransport();
+  return transport && transport->good();
 }
 
 void HeaderClientChannel::attachEventBase(

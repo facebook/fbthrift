@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,6 +35,8 @@ class ClientChannel : public RequestChannel, public HeaderChannel {
     Ptr;
 
   virtual apache::thrift::async::TAsyncTransport* getTransport() = 0;
+
+  virtual bool good() = 0;
 
   virtual void attachEventBase(folly::EventBase*) = 0;
   virtual void detachEventBase() = 0;

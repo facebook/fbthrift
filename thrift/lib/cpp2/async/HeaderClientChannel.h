@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -148,6 +148,8 @@ class HeaderClientChannel : public ClientChannel,
    * Set the channel up in HTTP CLIENT mode. host can be an empty string
    */
   void useAsHttpClient(const std::string& host, const std::string& uri);
+
+  bool good() override;
 
   // event base methods
   void attachEventBase(folly::EventBase*) override;

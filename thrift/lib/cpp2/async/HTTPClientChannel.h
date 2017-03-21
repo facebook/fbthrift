@@ -64,6 +64,8 @@ class HTTPClientChannel : public ClientChannel,
 
   void closeNow() override;
 
+  bool good() override;
+
   void attachEventBase(folly::EventBase*) override;
   void detachEventBase() override;
   bool isDetachable() override;

@@ -95,6 +95,11 @@ HTTPClientChannel::~HTTPClientChannel() {
 
 // apache::thrift::ClientChannel methods
 
+bool HTTPClientChannel::good() {
+  auto transport = httpSession_ ? httpSession_->getTransport() : nullptr;
+  return transport && transport->good();
+}
+
 void HTTPClientChannel::closeNow() {
   if (httpSession_) {
     httpSession_->setInfoCallback(nullptr);
