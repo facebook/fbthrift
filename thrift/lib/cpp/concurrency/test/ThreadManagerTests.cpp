@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <numa.h>
 
 #include <chrono>
@@ -23,6 +22,7 @@
 #include <random>
 #include <thread>
 
+#include <folly/Baton.h>
 #include <folly/Synchronized.h>
 #include <folly/portability/SysResource.h>
 #include <folly/portability/SysTime.h>
@@ -924,4 +924,31 @@ TEST_F(ThreadManagerTest, PriorityThreadManagerWorkerCount) {
   EXPECT_EQ(3, threadManager->workerCount(PRIORITY::IMPORTANT));
   EXPECT_EQ(4, threadManager->workerCount(PRIORITY::NORMAL));
   EXPECT_EQ(5, threadManager->workerCount(PRIORITY::BEST_EFFORT));
+}
+
+TEST_F(ThreadManagerTest, PriorityQueueThreadManagerExecutor) {
+  auto threadManager = ThreadManager::newPriorityQueueThreadManager(
+    1,
+    true /*stats*/,
+    10
+  );
+  threadManager->start();
+  folly::Baton<> reqSyncBaton;
+  folly::Baton<> reqDoneBaton;
+  // block the TM
+  threadManager->add([&] {reqSyncBaton.wait();});
+
+  std::string foo = "";
+  threadManager->addWithPriority([&] {foo += "a"; reqDoneBaton.post();}, 0);
+  // Should be added by default at highest priority
+  threadManager->add([&] {foo += "b";});
+  threadManager->addWithPriority([&] {foo += "c";}, 1);
+
+  // unblock the TM
+  reqSyncBaton.post();
+
+  // wait until the request that's supposed to finish last is done
+  reqDoneBaton.wait();
+
+  EXPECT_EQ("bca", foo);
 }

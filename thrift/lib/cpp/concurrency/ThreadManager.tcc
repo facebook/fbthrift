@@ -694,6 +694,46 @@ class PriorityQueueThreadManager : public ThreadManager::ImplT<SemType> {
     return ThreadManager::ImplT<SemType>::tryAdd(prio, std::move(task));
   }
 
+  /**
+   * Implements folly::Executor::add()
+   */
+  void add(folly::Func f) override {
+    // We default adds of this kind to highest priority; as ThriftServer
+    // doesn't use this itself, this is typically used by the application,
+    // and we want to prioritize inflight requests over admitting new request.
+    // arguably, we may even want a priority above the max we ever allow for
+    // initial queueing
+    ThreadManager::ImplT<SemType>::add(
+      HIGH_IMPORTANT,
+      FunctionRunner::create(std::move(f)),
+      0,
+      0,
+      false,
+      false
+    );
+  }
+
+  /**
+   * Implements folly::Executor::addWithPriority()
+   */
+  void addWithPriority(folly::Func f, int8_t priority) override {
+    // Wangle priorities are also inverted from thrift (higher is higher)
+    priority = N_PRIORITIES - priority - 1;
+    // Wangle priorities put normal at 0, so shift the priority
+    priority -= PRIORITY::NORMAL;
+    if (priority < 0) {
+      priority = 0;
+    }
+    ThreadManager::ImplT<SemType>::add(
+      priority,
+      FunctionRunner::create(std::move(f)),
+      0,
+      0,
+      false,
+      false
+    );
+  }
+
   uint8_t getNumPriorities() const override {
     return N_PRIORITIES;
   }
@@ -718,7 +758,8 @@ class PriorityQueueThreadManager : public ThreadManager::ImplT<SemType> {
     PriorityRunnable* p = dynamic_cast<PriorityRunnable*>(
       task.getRunnable().get()
     );
-    return statContexts_[p->getPriority()];
+    PRIORITY prio = p ? p->getPriority() : NORMAL;
+    return statContexts_[prio];
   }
 
  private:
