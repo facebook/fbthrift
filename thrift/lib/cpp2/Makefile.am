@@ -63,6 +63,7 @@ thrift2include_async_HEADERS = \
 	async/GssSaslServer.h \
 	async/HeaderClientChannel.h \
 	async/HeaderServerChannel.h \
+	async/HTTPClientChannel.h \
 	async/MessageChannel.h \
 	async/RequestChannel.h \
 	async/ResponseChannel.h \
@@ -194,6 +195,7 @@ libthriftcpp2_la_SOURCES = Version.cpp \
 			   async/HeaderChannelTrait.cpp \
 			   async/HeaderClientChannel.cpp \
 			   async/HeaderServerChannel.cpp \
+			   async/HTTPClientChannel.cpp \
 			   async/StubSaslClient.cpp \
 			   async/StubSaslServer.cpp \
 			   async/SaslEndpoint.cpp \

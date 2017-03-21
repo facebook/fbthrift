@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -269,10 +269,4 @@ TEST(HTTPClientChannelTest, NoBodyResponse) {
   ex.with_exception([&](TTransportException const& e) {
     EXPECT_STREQ("Empty HTTP response, status code = 400", e.what());
   });
-}
-
-int main(int argc, char** argv) {
-  testing::InitGoogleTest(&argc, argv);
-
-  return RUN_ALL_TESTS();
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,20 @@
 
 #pragma once
 
+#include <deque>
+#include <memory>
+#include <unordered_map>
+
+#include <folly/io/async/DelayedDestruction.h>
+#include <folly/io/async/EventBase.h>
 #include <folly/io/async/HHWheelTimer.h>
-#include <proxygen/lib/http/codec/HTTPCodec.h>
-#include <thrift/lib/cpp2/async/ClientChannel.h>
+#include <folly/io/async/Request.h>
+#include <proxygen/lib/http/HTTPConnector.h>
 #include <proxygen/lib/http/session/HTTPTransaction.h>
 #include <proxygen/lib/http/session/HTTPUpstreamSession.h>
 #include <thrift/lib/cpp/async/TAsyncTransport.h>
-#include <folly/io/async/DelayedDestruction.h>
-#include <folly/io/async/Request.h>
 #include <thrift/lib/cpp/transport/THeader.h>
-#include <folly/io/async/EventBase.h>
-#include <memory>
-
-#include <unordered_map>
-#include <deque>
+#include <thrift/lib/cpp2/async/ClientChannel.h>
 
 namespace apache {
 namespace thrift {
@@ -43,45 +43,54 @@ namespace thrift {
 class HTTPClientChannel : public ClientChannel,
                           private proxygen::HTTPSession::InfoCallback,
                           virtual public folly::DelayedDestruction {
- protected:
-  ~HTTPClientChannel() override {}
-
  public:
-  explicit HTTPClientChannel(
-      apache::thrift::async::TAsyncTransport::UniquePtr transport,
-      const std::string& host,
-      const std::string& url,
-      std::unique_ptr<proxygen::HTTPCodec> codec);
+  using Ptr = std::unique_ptr<HTTPClientChannel,
+                              folly::DelayedDestruction::Destructor>;
 
-  typedef std::unique_ptr<HTTPClientChannel,
-                          folly::DelayedDestruction::Destructor> Ptr;
+  static HTTPClientChannel::Ptr newHTTP1xChannel(
+      async::TAsyncTransport::UniquePtr transport,
+      const std::string& httpHost,
+      const std::string& httpUrl);
 
-  static Ptr newChannel(
-      apache::thrift::async::TAsyncTransport::UniquePtr transport,
-      const std::string& host,
-      const std::string& url,
-      std::unique_ptr<proxygen::HTTPCodec> codec) {
-    return Ptr(new HTTPClientChannel(
-        std::move(transport), host, url, std::move(codec)));
-  }
+  static HTTPClientChannel::Ptr newHTTP2Channel(
+      async::TAsyncTransport::UniquePtr transport);
 
-  static Ptr newHTTP1xChannel(
-      apache::thrift::async::TAsyncTransport::UniquePtr transport,
-      const std::string& host,
-      const std::string& url);
+  void setHTTPHost(const std::string& host) { httpHost_ = host; }
+  void setHTTPUrl(const std::string& url) { httpUrl_ = url; }
 
-  static Ptr newHTTP2Channel(
-      apache::thrift::async::TAsyncTransport::UniquePtr transport,
-      const std::string& host,
-      const std::string& url);
+  void setProtocolId(uint16_t protocolId) { protocolId_ = protocolId; }
+
+  // apache::thrift::ClientChannel methods
 
   void closeNow() override;
 
-  // DelayedDestruction methods
+  void attachEventBase(folly::EventBase*) override;
+  void detachEventBase() override;
+  bool isDetachable() override;
+
+  bool isSecurityActive() override { return false; }
+
+  // Client timeouts for read, write.
+  // Servers should use timeout methods on underlying transport.
+  void setTimeout(uint32_t ms) override {
+      timeout_ = std::chrono::milliseconds(ms);
+  }
+  uint32_t getTimeout() override { return timeout_.count(); }
+
+  CLIENT_TYPE getClientType() override { return THRIFT_HTTP_CLIENT_TYPE; }
+
+  // end apache::thrift::ClientChannel methods
+
+  // folly::DelayedDestruction methods
+
   void destroy() override;
 
-  // Client interface from RequestChannel
-  using RequestChannel::sendRequest;
+  // end folly::DelayedDestruction methods
+
+  // apache::thrift::RequestChannel methods
+
+  folly::EventBase* getEventBase() const override { return evb_; }
+
   uint32_t sendRequest(
       RpcOptions&,
       std::unique_ptr<RequestCallback>,
@@ -89,7 +98,6 @@ class HTTPClientChannel : public ClientChannel,
       std::unique_ptr<folly::IOBuf>,
       std::shared_ptr<apache::thrift::transport::THeader>) override;
 
-  using RequestChannel::sendOnewayRequest;
   uint32_t sendOnewayRequest(
       RpcOptions&,
       std::unique_ptr<RequestCallback>,
@@ -97,38 +105,9 @@ class HTTPClientChannel : public ClientChannel,
       std::unique_ptr<folly::IOBuf>,
       std::shared_ptr<apache::thrift::transport::THeader>) override;
 
-  void setCloseCallback(CloseCallback*) override;
-
-  // Client timeouts for read, write.
-  // Servers should use timeout methods on underlying transport.
-  void setTimeout(uint32_t ms) override;
-  uint32_t getTimeout() override { return timeout_; }
-
-  void setFlowControl(size_t initialReceiveWindow,
-                      size_t receiveStreamWindowSize,
-                      size_t receiveSessionWindowSize);
-
-  // If a Close Callback is set, should we reregister callbacks for it
-  // alone?  Basically, this means that loop() will return if the only thing
-  // outstanding is close callbacks.
-  void setKeepRegisteredForClose(bool keepRegisteredForClose) {
-    keepRegisteredForClose_ = keepRegisteredForClose;
-    setBaseReceivedCallback();
-  }
-
-  bool getKeepRegisteredForClose() { return keepRegisteredForClose_; }
-
-  folly::EventBase* getEventBase() const override { return evb_; }
-
-  // event base methods
-  void attachEventBase(folly::EventBase*) override;
-  void detachEventBase() override;
-  bool isDetachable() override;
+  void setCloseCallback(CloseCallback* cb) override { closeCallback_ = cb; }
 
   uint16_t getProtocolId() override { return protocolId_; }
-  void setProtocolId(uint16_t protocolId) { protocolId_ = protocolId; }
-
-  bool isSecurityActive() override { return false; }
 
   async::TAsyncTransport* getTransport() override {
     if (httpSession_) {
@@ -139,337 +118,168 @@ class HTTPClientChannel : public ClientChannel,
     }
   }
 
-  CLIENT_TYPE getClientType() override { return THRIFT_HTTP_CLIENT_TYPE; }
+  // end apache::thrift::RequestChannel methods
 
-  void setHTTPHost(const std::string& host) {
-    httpHost_ = host;
-  }
+  void setFlowControl(size_t initialReceiveWindow,
+                      size_t receiveStreamWindowSize,
+                      size_t receiveSessionWindowSize);
 
-  void setHTTPUrl(const std::string& url) {
-    httpUrl_ = url;
-  }
+ protected:
+   uint32_t sendRequest_(
+       RpcOptions&,
+       bool oneway,
+       std::unique_ptr<RequestCallback>,
+       std::unique_ptr<apache::thrift::ContextStack>,
+       std::unique_ptr<folly::IOBuf>,
+       std::shared_ptr<apache::thrift::transport::THeader>);
 
  private:
-  class HTTPTransactionTwowayCallback
+  HTTPClientChannel(
+      async::TAsyncTransport::UniquePtr transport,
+      std::unique_ptr<proxygen::HTTPCodec> codec);
+
+  ~HTTPClientChannel() override;
+
+  class HTTPTransactionCallback
       : public MessageChannel::SendCallback,
         public proxygen::HTTPTransactionHandler,
         public proxygen::HTTPTransaction::TransportCallback,
         public folly::HHWheelTimer::Callback {
    public:
-    explicit HTTPTransactionTwowayCallback(
+    HTTPTransactionCallback(
+        bool oneway,
         std::unique_ptr<RequestCallback> cb,
         std::unique_ptr<apache::thrift::ContextStack> ctx,
         bool isSecurityActive,
-        uint16_t protoId,
+        uint16_t protoId);
+
+    ~HTTPTransactionCallback();
+
+    void startTimer(
         folly::HHWheelTimer& timer,
-        std::chrono::milliseconds timeout)
-        : cb_(std::move(cb)),
-          ctx_(std::move(ctx)),
-          cbCalled_(false),
-          isSecurityActive_(isSecurityActive),
-          protoId_(protoId),
-          txn_(nullptr) {
-      if (timeout.count()) {
-        timer.scheduleTimeout(this, timeout);
-      }
+        std::chrono::milliseconds timeout);
+
+    // MessageChannel::SendCallback methods
+
+    void sendQueued() override { }
+
+    void messageSent() override;
+
+    void messageSendError(folly::exception_wrapper&& ex) override;
+
+    // end MessageChannel::SendCallback methods
+
+    // proxygen::HTTPTransactionHandler methods
+
+    void setTransaction(proxygen::HTTPTransaction* txn) noexcept override;
+
+    void detachTransaction() noexcept override;
+
+    void onHeadersComplete(
+        std::unique_ptr<proxygen::HTTPMessage> msg) noexcept override;
+
+    void onBody(std::unique_ptr<folly::IOBuf> body) noexcept override;
+
+    void onChunkHeader(size_t /* length */) noexcept override {
+      // HTTP/1.1 function, do not need attention here
     }
 
-    ~HTTPTransactionTwowayCallback() {
-      cancelTimeout();
-      if (txn_) {
-        txn_->setHandler(nullptr);
-        txn_->setTransportCallback(nullptr);
-      }
+    void onChunkComplete() noexcept override {
+      // HTTP/1.1 function, do not need attention here
     }
 
-    virtual void setTransaction(
-        proxygen::HTTPTransaction* txn) noexcept override {
-      txn_ = txn;
-      txn_->setTransportCallback(this);
+    void onTrailers(
+        std::unique_ptr<proxygen::HTTPHeaders> trailers) noexcept override;
+
+    void onEOM() noexcept override;
+
+    void onUpgrade(proxygen::UpgradeProtocol /*protocol*/) noexcept override {
+      // If code comes here, it is seriously wrong
+      // TODO (geniusye) destroy the channel here
     }
+
+    void onError(const proxygen::HTTPException& error) noexcept override;
+
+    void onEgressPaused() noexcept override {
+      // we could notify servicerouter to throttle on this channel
+      // it is okay not to throttle too,
+      // it won't immediately causing any problem
+    }
+
+    void onEgressResumed() noexcept override {
+      // we could notify servicerouter to stop throttle on this channel
+      // it is okay not to throttle too,
+      // it won't immediately causing any problem
+    }
+
+    void onPushedTransaction(
+        proxygen::HTTPTransaction* /*txn*/) noexcept override {}
+
+    // end proxygen::HTTPTransactionHandler methods
+
+    // proxygen::HTTPTransaction::TransportCallback methods
+
+    // most of the methods in TransportCallback is not interesting to us,
+    // thus, we don't have to handle them, except the one that notifies the
+    // fact the request is sent.
+
+    void firstHeaderByteFlushed() noexcept override {}
+    void firstByteFlushed() noexcept override {}
+
+    void lastByteFlushed() noexcept override;
+
+    void lastByteAcked(
+        std::chrono::milliseconds /*latency*/) noexcept override {}
+    void headerBytesGenerated(
+        proxygen::HTTPHeaderSize& /*size*/) noexcept override {}
+    void headerBytesReceived(
+        const proxygen::HTTPHeaderSize& /*size*/) noexcept override {}
+    void bodyBytesGenerated(size_t /*nbytes*/) noexcept override {}
+    void bodyBytesReceived(size_t /*size*/) noexcept override {}
+
+    // end proxygen::HTTPTransaction::TransportCallback methods
+
+    // folly::HHWheelTimer::Callback methods
+
+    void timeoutExpired() noexcept override;
+
+    // end folly::HHWheelTimer::Callback methods
+
+    void requestError(folly::exception_wrapper ex);
 
     proxygen::HTTPTransaction* getTransaction() noexcept { return txn_; }
 
-    virtual void detachTransaction() noexcept override { delete this; }
-
-    void sendQueued() override {}
-
-    void messageSent() override {
-      CHECK(cb_);
-      folly::RequestContextScopeGuard rctx(cb_->context_);
-      cb_->requestSent();
-    }
-
-    void messageSendError(folly::exception_wrapper&& ex) override {
-      if (!cbCalled_) {
-        cbCalled_ = true;
-        folly::RequestContextScopeGuard rctx(cb_->context_);
-        cb_->requestError(ClientReceiveState(
-            std::move(ex), std::move(ctx_), isSecurityActive_));
-      }
-    }
-
-    void requestError(folly::exception_wrapper ex) {
-      CHECK(cb_);
-
-      if (!cbCalled_) {
-        cbCalled_ = true;
-        folly::RequestContextScopeGuard rctx(cb_->context_);
-        cb_->requestError(ClientReceiveState(
-            std::move(ex), std::move(ctx_), isSecurityActive_));
-      }
-    }
-
-    virtual void onHeadersComplete(
-        std::unique_ptr<proxygen::HTTPMessage> msg) noexcept override {
-      msg_ = std::move(msg);
-    }
-
-    virtual void onBody(std::unique_ptr<folly::IOBuf> body) noexcept override {
-      if (body_) {
-        body_->prependChain(std::move(body));
-      } else {
-        body_ = std::move(body);
-      }
-    }
-
-    /*
-    virtual void onChunkHeader(size_t length) noexcept override {
-      // TODO(ckwalsh): Look into streaming support over http
-    }
-
-    virtual void onChunkComplete() noexcept override {
-      // TODO(ckwalsh): Look into streaming support over http
-    }
-    */
-
-    virtual void onTrailers(
-        std::unique_ptr<proxygen::HTTPHeaders> trailers) noexcept override {
-      trailers_ = std::move(trailers);
-    }
-
-    virtual void onEOM() noexcept override {
-      if (!body_) {
-        DCHECK(msg_);
-        requestError(
-            folly::make_exception_wrapper<transport::TTransportException>(
-                folly::format(
-                    "Empty HTTP response, status code = {}",
-                    msg_->getStatusCode())
-                    .str()));
-        return;
-      }
-      auto header = folly::make_unique<transport::THeader>();
-      header->setClientType(THRIFT_HTTP_CLIENT_TYPE);
-      apache::thrift::transport::THeader::StringToStringMap readHeaders;
-      msg_->getHeaders().forEach(
-          [&readHeaders](const std::string& key, const std::string& val) {
-            readHeaders[key] = val;
-          });
-      header->setReadHeaders(std::move(readHeaders));
-      // TODO(ckwalsh) Does THeader need additional data?
-
-      CHECK(!cbCalled_);
-      CHECK(cb_);
-      cbCalled_ = true;
-
-      folly::RequestContextScopeGuard rctx(cb_->context_);
-      cb_->replyReceived(ClientReceiveState(protoId_,
-                                            std::move(body_),
-                                            std::move(header),
-                                            std::move(ctx_),
-                                            isSecurityActive_,
-                                            true));
-    }
-
-    virtual void onUpgrade(
-        proxygen::UpgradeProtocol /*protocol*/) noexcept override {}
-
-    virtual void onError(
-        const proxygen::HTTPException& error) noexcept override {
-      if (sendQueued_) {
-        messageSendError(
-            folly::make_exception_wrapper<transport::TTransportException>(
-                error.what()));
-      } else {
-        requestError(
-            folly::make_exception_wrapper<transport::TTransportException>(
-                error.what()));
-      }
-    }
-
-    virtual void onEgressPaused() noexcept override {}
-
-    virtual void onEgressResumed() noexcept override {}
-
-    virtual void onPushedTransaction(
-        proxygen::HTTPTransaction* /*txn*/) noexcept override {}
-
-    // proxygen::HTTPTransaction::TransportCallback
-    virtual void firstHeaderByteFlushed() noexcept override {}
-    virtual void firstByteFlushed() noexcept override {}
-
-    virtual void lastByteFlushed() noexcept override {
-      folly::RequestContextScopeGuard rctx(cb_->context_);
-      cb_->requestSent();
-      sendQueued_ = false;
-    }
-
-    virtual void lastByteAcked(
-        std::chrono::milliseconds /*latency*/) noexcept override {}
-    virtual void headerBytesGenerated(
-        proxygen::HTTPHeaderSize& /*size*/) noexcept override {}
-    virtual void headerBytesReceived(
-        const proxygen::HTTPHeaderSize& /*size*/) noexcept override {}
-    virtual void bodyBytesGenerated(size_t /*nbytes*/) noexcept override {}
-    virtual void bodyBytesReceived(size_t /*size*/) noexcept override {}
-
-    void timeoutExpired() noexcept override {
-      using apache::thrift::transport::TTransportException;
-
-      TTransportException ex(TTransportException::TIMED_OUT, "Timed Out");
-      ex.setOptions(TTransportException::CHANNEL_IS_VALID);
-
-      requestError(
-          folly::make_exception_wrapper<TTransportException>(std::move(ex)));
-
-      delete this;
-    }
-
    private:
+    bool oneway_;
+
     std::unique_ptr<RequestCallback> cb_;
     std::unique_ptr<apache::thrift::ContextStack> ctx_;
-    bool cbCalled_;
     bool isSecurityActive_;
     uint16_t protoId_;
 
-    bool sendQueued_ = true;
     proxygen::HTTPTransaction* txn_;
     std::unique_ptr<proxygen::HTTPMessage> msg_;
-    std::unique_ptr<folly::IOBuf> body_;
+    std::unique_ptr<folly::IOBufQueue> body_;
     std::unique_ptr<proxygen::HTTPHeaders> trailers_;
-  };
-
-  class HTTPTransactionOnewayCallback
-      : public MessageChannel::SendCallback,
-        public proxygen::HTTPTransactionHandler,
-        public proxygen::HTTPTransaction::TransportCallback {
-   public:
-    HTTPTransactionOnewayCallback(
-        std::unique_ptr<RequestCallback> cb,
-        std::unique_ptr<apache::thrift::ContextStack> ctx,
-        bool isSecurityActive)
-        : cb_(std::move(cb)),
-          ctx_(std::move(ctx)),
-          isSecurityActive_(isSecurityActive),
-          txn_(nullptr),
-          active_(true) {}
-
-    virtual ~HTTPTransactionOnewayCallback() {
-      if (txn_) {
-        txn_->setHandler(nullptr);
-        txn_->setTransportCallback(nullptr);
-      }
-    }
-
-    proxygen::HTTPTransaction* getTransaction() noexcept { return txn_; }
-
-    virtual void detachTransaction() noexcept override { delete this; }
-
-    virtual void setTransaction(
-        proxygen::HTTPTransaction* txn) noexcept override {
-      txn_ = txn;
-      txn_->setTransportCallback(this);
-    }
-
-    void sendQueued() override {}
-    void messageSent() override {
-      CHECK(cb_);
-      folly::RequestContextScopeGuard rctx(cb_->context_);
-      cb_->requestSent();
-      active_ = false;
-    }
-
-    void messageSendError(folly::exception_wrapper&& ex) override {
-      CHECK(cb_);
-      folly::RequestContextScopeGuard rctx(cb_->context_);
-      cb_->requestError(
-          ClientReceiveState(ex, std::move(ctx_), isSecurityActive_));
-      active_ = false;
-    }
-
-    virtual void onHeadersComplete(
-        std::unique_ptr<proxygen::HTTPMessage> /*msg*/) noexcept override {}
-
-    virtual void onBody(
-        std::unique_ptr<folly::IOBuf> /*chain*/) noexcept override {}
-
-    virtual void onTrailers(
-        std::unique_ptr<proxygen::HTTPHeaders> /*trailers*/) noexcept override {
-    }
-
-    virtual void onEOM() noexcept override {}
-
-    virtual void onUpgrade(
-        proxygen::UpgradeProtocol /*protocol*/) noexcept override {}
-
-    virtual void onError(
-        const proxygen::HTTPException& error) noexcept override {
-      if (active_) {
-        messageSendError(
-            folly::make_exception_wrapper<transport::TTransportException>(
-                error.what()));
-      }
-    }
-
-    virtual void onEgressPaused() noexcept override {}
-
-    virtual void onEgressResumed() noexcept override {}
-
-    virtual void onPushedTransaction(
-        proxygen::HTTPTransaction* /*txn*/) noexcept override {}
-
-    // proxygen::HTTPTransaction::TransportCallback
-    virtual void firstHeaderByteFlushed() noexcept override {}
-    virtual void firstByteFlushed() noexcept override {}
-
-    virtual void lastByteFlushed() noexcept override { messageSent(); }
-
-    virtual void lastByteAcked(
-        std::chrono::milliseconds /*latency*/) noexcept override {}
-    virtual void headerBytesGenerated(
-        proxygen::HTTPHeaderSize& /*size*/) noexcept override {}
-    virtual void headerBytesReceived(
-        const proxygen::HTTPHeaderSize& /*size*/) noexcept override {}
-    virtual void bodyBytesGenerated(size_t /*nbytes*/) noexcept override {}
-    virtual void bodyBytesReceived(size_t /*size*/) noexcept override {}
-
-   private:
-    std::unique_ptr<RequestCallback> cb_;
-    std::unique_ptr<apache::thrift::ContextStack> ctx_;
-    bool isSecurityActive_;
-    proxygen::HTTPTransaction* txn_;
-    bool active_;
   };
 
   proxygen::HTTPMessage buildHTTPMessage(transport::THeader* header);
 
   // HTTPSession::InfoCallback methods
+
   void onCreate(const proxygen::HTTPSession&) override {}
   void onIngressError(const proxygen::HTTPSession&,
                       proxygen::ProxygenError /*error*/) override {}
   void onIngressEOF() override {}
   void onRead(const proxygen::HTTPSession&, size_t /*bytesRead*/) override {}
-  void onWrite(const proxygen::HTTPSession&, size_t /*bytesWritten*/) override {
-  }
+  void onWrite(
+      const proxygen::HTTPSession&, size_t /*bytesWritten*/) override { }
   void onRequestBegin(const proxygen::HTTPSession&) override {}
   void onRequestEnd(const proxygen::HTTPSession&,
                     uint32_t /*maxIngressQueueSize*/) override {}
   void onActivateConnection(const proxygen::HTTPSession&) override {}
   void onDeactivateConnection(const proxygen::HTTPSession&) override {}
-  void onDestroy(const proxygen::HTTPSession&) override {
-    httpSession_ = nullptr;
-  }
+  void onDestroy(const proxygen::HTTPSession&) override;
   void onIngressMessage(const proxygen::HTTPSession&,
                         const proxygen::HTTPMessage&) override {}
   void onIngressLimitExceeded(const proxygen::HTTPSession&) override {}
@@ -478,32 +288,25 @@ class HTTPClientChannel : public ClientChannel,
   void onPingReplySent(int64_t /*latency*/) override {}
   void onPingReplyReceived() override {}
   void onSettingsOutgoingStreamsFull(const proxygen::HTTPSession&) override {}
-  void onSettingsOutgoingStreamsNotFull(const proxygen::HTTPSession&) override {
-  }
+  void onSettingsOutgoingStreamsNotFull(
+      const proxygen::HTTPSession&) override { }
   void onFlowControlWindowClosed(const proxygen::HTTPSession&) override {}
   void onEgressBuffered(const proxygen::HTTPSession&) override {}
   void onEgressBufferCleared(const proxygen::HTTPSession&) override {}
 
+  // end HTTPSession::InfoCallback methods
+
   void setRequestHeaderOptions(apache::thrift::transport::THeader* header);
 
-  // Set the base class callback based on current state.
-  void setBaseReceivedCallback();
-
-  proxygen::HTTPUpstreamSession* httpSession_;
+  proxygen::HTTPUpstreamSession* httpSession_ = nullptr;
+  folly::EventBase* evb_;
   std::string httpHost_;
   std::string httpUrl_;
-
-  // TODO(ckwalsh): wire this up
+  std::chrono::milliseconds timeout_;
+  proxygen::WheelTimerInstance timer_;
+  uint16_t protocolId_;
   CloseCallback* closeCallback_;
 
-  uint32_t timeout_;
-
-  bool keepRegisteredForClose_;
-
-  folly::EventBase* evb_;
-  proxygen::WheelTimerInstance timer_;
-
-  uint16_t protocolId_;
 };
-}
-} // apache::thrift
+
+}} // apache::thrift

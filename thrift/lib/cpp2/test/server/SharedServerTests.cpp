@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -110,7 +110,6 @@ class SharedServerTests
       case HTTP2: {
         ASSERT_EQ(THRIFT_SECURITY_DISABLED, securityPolicy);
         auto c = folly::make_unique<TestHTTPClientChannelFactory>();
-        c->setCodec(TestHTTPClientChannelFactory::Codec::HTTP2);
         c->setProtocolId(protocolId);
         channelFactory = std::move(c);
         break;
