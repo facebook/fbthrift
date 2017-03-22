@@ -106,6 +106,7 @@ class CppGenerator(t_generator.Generator):
         'fatal': '(deprecated) use `reflection` instead',
         'reflection': 'generate static reflection metadata',
         'lean_mean_meta_machine': 'use templated Fatal metadata based codegen',
+        'tmp_templated_deserialize': 'Deserialize using a templated approach',
     }
     _out_dir_base = 'gen-cpp2'
     _compatibility_dir_base = 'gen-cpp'
@@ -3451,9 +3452,16 @@ class CppGenerator(t_generator.Generator):
             self._generate_deserialize_struct(
                 scope, otype, ttype.as_struct, name, pointer, optional_wrapped)
         elif ttype.is_container:
-            self._generate_deserialize_container(scope, ttype.as_container,
-                                                 name, otype, pointer,
-                                                 optional_wrapped)
+            if self.flag_tmp_templated_deserialize:
+                self._generate_templated_deserialize_container(
+                    scope, otype,
+                    ttype.as_container,
+                    name, ttype, pointer,
+                    optional_wrapped)
+            else:
+                self._generate_deserialize_container(scope, ttype.as_container,
+                                                     name, otype, pointer,
+                                                     optional_wrapped)
         elif ttype.is_base_type:
             if optional_wrapped:
                 # assign a new default-constructed value into the Optional
@@ -3503,6 +3511,31 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_deserialize_struct(self, scope, otype, struct, prefix,
                                      pointer=False, optional_wrapped=False):
+        s = scope
+        if pointer:
+            ptrtype = self.tmp('_ptype')
+            s('using element_type = typename std::remove_const<typename '
+                    'std::remove_reference<decltype({0})>::type::element_type>'
+                    '::type;'.format(prefix))
+            s('std::unique_ptr<element_type> {0}(new element_type());'
+                    .format(ptrtype))
+            s('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
+                'iprot, {1}.get());'.format(self._type_name(otype), ptrtype))
+            s('{0} = std::move({1});'.format(prefix, ptrtype))
+        elif optional_wrapped:
+            scope("{0} = {1}();".format(
+                prefix, self._type_name(otype)))
+            scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
+                  'iprot, &{1}.value());'.format(
+                      self._type_name(otype), prefix))
+        else:
+            scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
+                  'iprot, &{1});'.format(
+                      self._type_name(otype), prefix))
+
+    def _generate_templated_deserialize_container(self, scope, otype, struct,
+                                                  prefix, ttype, pointer=False,
+                                                  optional_wrapped=False):
         s = scope
         if pointer:
             ptrtype = self.tmp('_ptype')
