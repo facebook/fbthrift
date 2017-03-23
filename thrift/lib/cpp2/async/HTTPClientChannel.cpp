@@ -379,6 +379,7 @@ void HTTPClientChannel::HTTPTransactionCallback::messageSendError(
     folly::RequestContextScopeGuard rctx(cb_->context_);
     cb_->requestError(ClientReceiveState(
         std::move(ex), std::move(ctx_), isSecurityActive_));
+    cb_ = nullptr;
   }
 }
 
@@ -388,6 +389,7 @@ void HTTPClientChannel::HTTPTransactionCallback::requestError(
     folly::RequestContextScopeGuard rctx(cb_->context_);
     cb_->requestError(ClientReceiveState(
         std::move(ex), std::move(ctx_), isSecurityActive_));
+    cb_ = nullptr;
   }
 }
 
@@ -455,7 +457,7 @@ void HTTPClientChannel::HTTPTransactionCallback::onEOM() noexcept {
                                           std::move(ctx_),
                                           isSecurityActive_,
                                           true));
-
+    cb_ = nullptr;
   }
 }
 
