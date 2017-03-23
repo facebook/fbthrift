@@ -39,6 +39,7 @@ gen-cpp2/SaslAuthService_client.cpp: gen-cpp2/Sasl_types.h
 thrift2includedir = $(includedir)/thrift/lib/cpp2
 
 thrift2include_HEADERS = \
+	TypeClass.h \
 	Thrift.h \
 	GeneratedCodeHelper.h \
 	GeneratedHeaderHelper.h \

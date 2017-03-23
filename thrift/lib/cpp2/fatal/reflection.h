@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,8 @@
 #define THRIFT_FATAL_REFLECTION_H_ 1
 
 #include <folly/Traits.h>
+
+#include <thrift/lib/cpp2/TypeClass.h>
 
 #include <thrift/lib/cpp2/fatal/internal/reflection-inl-pre.h>
 
@@ -120,151 +122,6 @@ using field_id_t = std::int16_t;
 using legacy_type_id_t = std::uint64_t;
 
 /**
- * The type class of a type as declared on a Thrift file.
- *
- * See `reflect_type_class` for more information.
- *
- * @author: Marcelo Juchem <marcelo@fb.com>
- */
-namespace type_class {
-  /**
-   * Represents types unknown to the reflection framework.
-   *
-   * NOTE: if this is the returned type class, there's a good chance that's
-   * because it's a custom type with no specialization of the approriate
-   * container trait class. See documentation for `string`, `list`, `set`
-   * and `map` enum values below.
-   *
-   * @author: Marcelo Juchem <marcelo@fb.com>
-   */
-  struct unknown {};
-
-  /**
-   * Represents types with no actual data representation. Most commonly `void`.
-   *
-   * @author: Marcelo Juchem <marcelo@fb.com>
-   */
-  struct nothing {};
-
-  /**
-   * Represents all signed and unsigned integral types, including `bool`.
-   *
-   * @author: Marcelo Juchem <marcelo@fb.com>
-   */
-  struct integral {};
-
-  /**
-   * Represents all floating point types.
-   *
-   * @author: Marcelo Juchem <marcelo@fb.com>
-   */
-  struct floating_point {};
-
-  /**
-   * Represents opaque binary data.
-   *
-   * @author: Marcelo Juchem <marcelo@fb.com>
-   */
-  struct binary {};
-
-  /**
-   * Represents all known string implementations.
-   *
-   * NOTE: if this is not the type class returned for a string, there's a good
-   * chance that's because it's a custom type with no specialization of the
-   * string trait class. See documentation for `thrift_string_traits`.
-   *
-   * @author: Marcelo Juchem <marcelo@fb.com>
-   */
-  struct string {};
-
-  /**
-   * Represents an enum.
-   *
-   * @author: Marcelo Juchem <marcelo@fb.com>
-   */
-  struct enumeration {};
-
-  /**
-   * Represents an class or structure.
-   *
-   * @author: Marcelo Juchem <marcelo@fb.com>
-   */
-  struct structure {};
-
-  /**
-   * Represents a variant (or union, as the Thrift IDL grammar goes).
-   *
-   * @author: Marcelo Juchem <marcelo@fb.com>
-   */
-  struct variant {};
-
-  /**
-   * Represents all known list implementations.
-   *
-   * NOTE: if this is not the type class returned for a list, there's a good
-   * chance that's because it's a custom type with no specialization of the
-   * list trait class. See documentation for `thrift_list_traits`.
-   *
-   * @author: Marcelo Juchem <marcelo@fb.com>
-   */
-  template <typename ValueTypeClass>
-  struct list {
-    /**
-     * The type class of the elements of this container.
-     *
-     * @author: Marcelo Juchem <marcelo@fb.com>
-     */
-    using value_type_class = ValueTypeClass;
-  };
-
-  /**
-   * Represents all known set implementations.
-   *
-   * NOTE: if this is not the type class returned for a set, there's a good
-   * chance that's because it's a custom type with no specialization of the
-   * set trait class. See documentation for `thrift_set_traits`.
-   *
-   * @author: Marcelo Juchem <marcelo@fb.com>
-   */
-  template <typename ValueTypeClass>
-  struct set {
-    /**
-     * The type class of the elements of this container.
-     *
-     * @author: Marcelo Juchem <marcelo@fb.com>
-     */
-    using value_type_class = ValueTypeClass;
-  };
-
-  /**
-   * Represents all known map implementations.
-   *
-   * NOTE: if this is not the type class returned for a map, there's a good
-   * chance that's because it's a custom type with no specialization of the
-   * map trait class. See documentation for `thrift_map_traits`.
-   *
-   * @author: Marcelo Juchem <marcelo@fb.com>
-   */
-  template <typename KeyTypeClass, typename MappedTypeClass>
-  struct map {
-    /**
-     * The type class of the keys of this container.
-     *
-     * @author: Marcelo Juchem <marcelo@fb.com>
-     */
-    using key_type_class = KeyTypeClass;
-
-    /**
-     * The type class of the mapped elements of this container.
-     *
-     * @author: Marcelo Juchem <marcelo@fb.com>
-     */
-    using mapped_type_class = MappedTypeClass;
-  };
-} // type_class
-
-/**
  * Represents whether a field is required to be set in a given structure or not.
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
@@ -296,6 +153,9 @@ enum class optionality {
 
 /**
  * Returns the type class of a type.
+ *
+ * The type classes are defined in `namespace apache::thrift::type_class` in the
+ * header `thrift/lib/cpp2/Thrift.h`.
  *
  * To keep compilation times at bay, strings and containers are not detected by
  * default, therefore they will yield `unknown` as their type class. To enable
