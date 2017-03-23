@@ -14,7 +14,7 @@ import com.facebook.thrift.lite.protocol.*;
 public class Module {
 
   public enum EventType {
-    Empty;
+    Empty, Nada;
   }
 
   

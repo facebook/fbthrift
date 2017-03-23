@@ -41,4 +41,36 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace cpp2 {
 
+bool Nada::operator==(const Nada& /* rhs */) const {
+  if (type_ != rhs.type_) { return false; }
+  switch(type_) {
+    default:
+    {
+      return true;
+      break;
+    }
+  }
+}
+
+void swap(Nada& a, Nada& b) {
+  Nada temp(std::move(a));
+  a = std::move(b);
+  b = std::move(temp);
+}
+
+template uint32_t Nada::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t Nada::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t Nada::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Nada::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t Nada::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t Nada::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t Nada::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t Nada::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
 } // cpp2

@@ -32,9 +32,22 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         bint operator==(cEmpty&)
         cEmpty__isset __isset
 
+    cdef cppclass cNada__isset "cpp2::Nada::__isset":
+        pass
+
+    # Forward Declaration
+    cdef cppclass cNada "cpp2::Nada"
+
+    cdef cppclass cNada "cpp2::Nada":
+        cNada() except +
+        cNada(const cNada&) except +
+        bint operator==(cNada&)
+        cNada__isset __isset
+
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cEmpty] move(unique_ptr[cEmpty])
+    cdef shared_ptr[cNada] move(unique_ptr[cNada])
 
 # Forward Definition of the cython struct
 cdef class Empty(thrift.py3.types.Struct)
@@ -46,6 +59,17 @@ cdef class Empty(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cEmpty] c_Empty)
+
+# Forward Definition of the cython struct
+cdef class Nada(thrift.py3.types.Struct)
+
+cdef class Nada(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cNada] c_Nada
+
+    @staticmethod
+    cdef create(shared_ptr[cNada] c_Nada)
 
 
 

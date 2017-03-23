@@ -95,4 +95,75 @@ cdef class Empty(thrift.py3.types.Struct):
 Empty_defaults = Empty()
 
 
+cdef class Nada(thrift.py3.types.Struct):
+
+    def __init__(
+        Nada self
+    ):
+        self.c_Nada = make_shared[cNada]()
+
+        inst = self
+
+    def __call__(
+        Nada self
+    ):
+        changes = any((        ))
+
+        if not changes:
+            return self
+
+        inst = <Nada>Nada.__new__(Nada)
+        inst.c_Nada = make_shared[cNada](deref(self.c_Nada))
+        cdef Nada defaults = Nada_defaults
+
+        # Convert None's to default value.
+
+        return inst
+
+    def __iter__(self):
+        return iter(())
+
+    def __bool__(self):
+        return True
+
+    @staticmethod
+    cdef create(shared_ptr[cNada] c_Nada):
+        inst = <Nada>Nada.__new__(Nada)
+        inst.c_Nada = c_Nada
+        return inst
+
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, Nada) and
+                isinstance(other, Nada)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cNada cself = deref((<Nada>self).c_Nada)
+        cdef cNada cother = deref((<Nada>other).c_Nada)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    def __hash__(Nada self):
+        if not self.__hash:
+            self.__hash = hash((
+            type(self)   # Hash the class there are no fields
+            ))
+        return self.__hash
+
+    def __repr__(Nada self):
+        return f'Nada()'
+
+
+Nada_defaults = Nada()
+
+
 
