@@ -63,6 +63,7 @@ using apache::thrift::concurrency::ThreadManager;
 using apache::thrift::concurrency::PriorityThreadManager;
 using wangle::IOThreadPoolExecutor;
 using wangle::NamedThreadFactory;
+using wangle::TLSCredProcessor;
 
 namespace {
 struct DisableKerberosReplayCacheSingleton {
@@ -571,6 +572,40 @@ void ThriftServer::updateTLSCert() {
       acceptor->resetSSLContextConfigs();
     });
   });
+}
+
+void ThriftServer::watchCertForChanges(const std::string& certPath) {
+  auto& processor = getCredProcessor();
+  processor.setCertPathToWatch(certPath);
+}
+
+void ThriftServer::watchTicketPathForChanges(
+    const std::string& ticketPath,
+    bool initializeTickets) {
+  if (initializeTickets) {
+    auto seeds = TLSCredProcessor::processTLSTickets(ticketPath);
+    if (seeds) {
+      setTicketSeeds(std::move(*seeds));
+    }
+  }
+  auto& processor = getCredProcessor();
+  processor.setTicketPathToWatch(ticketPath);
+}
+
+TLSCredProcessor& ThriftServer::getCredProcessor() {
+  if (!tlsCredProcessor_) {
+    tlsCredProcessor_ = std::make_unique<TLSCredProcessor>();
+    // setup callbacks once.  These will not be fired unless files are being
+    // watched and modified.
+    tlsCredProcessor_->addTicketCallback(
+        [this](wangle::TLSTicketKeySeeds seeds) {
+      updateTicketSeeds(std::move(seeds));
+    });
+    tlsCredProcessor_->addCertCallback([this] {
+      updateTLSCert();
+    });
+  }
+  return *tlsCredProcessor_;
 }
 
 bool ThriftServer::isOverloaded(const THeader* header) {

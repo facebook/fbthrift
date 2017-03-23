@@ -25,30 +25,30 @@
 #include <vector>
 
 #include <folly/Memory.h>
+#include <folly/Singleton.h>
+#include <folly/SocketAddress.h>
 #include <folly/io/ShutdownSocketSet.h>
-#include <folly/io/async/EventBaseManager.h>
-#include <wangle/bootstrap/ServerBootstrap.h>
-#include <wangle/concurrent/IOThreadPoolExecutor.h>
 #include <folly/io/async/AsyncServerSocket.h>
 #include <folly/io/async/EventBase.h>
+#include <folly/io/async/EventBaseManager.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/server/TServer.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
-#include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/transport/TTransportUtils.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
-#include <thrift/lib/cpp2/async/SaslServer.h>
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
-#include <thrift/lib/cpp2/server/BaseThriftServer.h>
+#include <thrift/lib/cpp2/async/SaslServer.h>
 #include <thrift/lib/cpp2/security/SecurityKillSwitchPoller.h>
-#include <folly/Singleton.h>
-
-#include <wangle/ssl/SSLContextConfig.h>
+#include <thrift/lib/cpp2/server/BaseThriftServer.h>
 #include <wangle/acceptor/ServerSocketConfig.h>
+#include <wangle/bootstrap/ServerBootstrap.h>
+#include <wangle/concurrent/IOThreadPoolExecutor.h>
+#include <wangle/ssl/SSLContextConfig.h>
+#include <wangle/ssl/TLSCredProcessor.h>
 
 namespace apache { namespace thrift {
 
@@ -192,7 +192,10 @@ class ThriftServer : public apache::thrift::BaseThriftServer
     return getIOGroup();
   }
 
+  wangle::TLSCredProcessor& getCredProcessor();
+
   SecurityKillSwitchPoller securityKillSwitchPoller_;
+  std::unique_ptr<wangle::TLSCredProcessor> tlsCredProcessor_;
 
   friend class Cpp2Connection;
   friend class Cpp2Worker;
@@ -328,6 +331,23 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   void updateTicketSeeds(wangle::TLSTicketKeySeeds seeds);
 
   void updateTLSCert();
+
+  /**
+   * Tells the thrift server to update certs when the passed in file at the
+   * given path has been modified.  The cert file previously being watched will
+   * no longer be watched.  This is not threadsafe.
+   */
+  void watchCertForChanges(const std::string& certPath);
+
+  /**
+   * Tells the thrift server to update ticket seeds with the contents of the
+   * ticket path when modified.  The seed file previously being watched will
+   * no longer be watched.  This is not thread safe.
+   * If initializeTickets is true, seeds are set on the thrift server.
+   */
+  void watchTicketPathForChanges(
+      const std::string& ticketPath,
+      bool initializeTickets);
 
   void setFastOpenOptions(bool enableTFO, uint32_t fastOpenQueueSize) {
     enableTFO_ = enableTFO;

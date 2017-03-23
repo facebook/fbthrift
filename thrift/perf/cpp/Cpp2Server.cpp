@@ -1,4 +1,6 @@
 /*
+ * Copyright 2017-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,17 +18,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+#include <iostream>
+#include <signal.h>
+
+#include <folly/Random.h>
+#include <folly/String.h>
+
 #include <thrift/perf/cpp/AsyncLoadHandler2.h>
-
 #include <thrift/lib/cpp2/server/ThriftServer.h>
-
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
 
 #include "common/init/Init.h"
 #include "common/services/cpp/ServiceFramework.h"
-
-#include <iostream>
-#include <signal.h>
 
 using std::cout;
 using namespace boost;
@@ -49,6 +52,7 @@ DEFINE_int32(max_requests, 0, "max active requests");
 DEFINE_string(cert, "", "server SSL certificate file");
 DEFINE_string(key, "", "server SSL private key file");
 DEFINE_string(client_ca_list, "", "file pointing to a client CA or list");
+DEFINE_string(ticket_seeds, "", "server Ticket seeds file");
 DEFINE_bool(queue_sends, true, "Queue sends for better throughput");
 DEFINE_string(ecc_curve, "prime256v1",
     "The ECC curve to use for EC handshakes");
@@ -101,19 +105,29 @@ int main(int argc, char* argv[]) {
   server->setMaxRequests(FLAGS_max_requests);
   server->setQueueSends(FLAGS_queue_sends);
   server->setFastOpenOptions(FLAGS_enable_tfo, FLAGS_tfo_queue_size);
-  wangle::TLSTicketKeySeeds seeds = {
-    { "11111111" },
-    { "22111111" },
-    { "33111111" }
-  };
-  server->setTicketSeeds(std::move(seeds));
 
   if (FLAGS_cert.length() > 0 && FLAGS_key.length() > 0) {
-    std::shared_ptr<wangle::SSLContextConfig> sslContext(new wangle::SSLContextConfig());
+    auto sslContext = std::make_shared<wangle::SSLContextConfig>();
     sslContext->setCertificate(FLAGS_cert, FLAGS_key, "");
     sslContext->clientCAFile = FLAGS_client_ca_list;
     sslContext->eccCurveName = FLAGS_ecc_curve;
     server->setSSLConfig(sslContext);
+    server->watchCertForChanges(FLAGS_cert);
+  }
+  if (!FLAGS_ticket_seeds.empty()) {
+    server->watchTicketPathForChanges(FLAGS_ticket_seeds, true);
+  } else {
+    // Generate random seeds to use for all workers.  If no seeds are set, then
+    // each worker gets its own random seeds, so session resumptions fail across
+    // workers.
+    wangle::TLSTicketKeySeeds seeds;
+    for (auto* seed : {&seeds.oldSeeds, &seeds.currentSeeds, &seeds.newSeeds}) {
+      auto randomData = folly::Random::secureRandom<uint64_t>();
+      auto asHex = folly::hexlify(
+        folly::ByteRange((const unsigned char*) &randomData, sizeof(uint64_t)));
+      seed->push_back(std::move(asHex));
+    }
+    server->setTicketSeeds(std::move(seeds));
   }
 
   // Set tunable server parameters
