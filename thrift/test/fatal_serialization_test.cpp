@@ -133,10 +133,10 @@ TYPED_TEST(MultiProtocolTest, test_serialization) {
   EXPECT_EQ(a.field8, b.field8); // default fields are always written out
   EXPECT_EQ(a.field10, b.field10);
 
-  EXPECT_EQ(true, b.__isset.field1);
-  EXPECT_EQ(true, b.__isset.field2);
-  EXPECT_EQ(true, b.__isset.field7);
-  EXPECT_EQ(true, b.__isset.field8);
+  EXPECT_TRUE(b.__isset.field1);
+  EXPECT_TRUE(b.__isset.field2);
+  EXPECT_TRUE(b.__isset.field7);
+  EXPECT_TRUE(b.__isset.field8);
 }
 
 TYPED_TEST(MultiProtocolTest, test_legacy_serialization) {
@@ -163,10 +163,10 @@ TYPED_TEST(MultiProtocolTest, test_legacy_serialization) {
   EXPECT_EQ(a.field7, b.field7);
   EXPECT_EQ(a.field8, b.field8); // default fields are always written out
 
-  EXPECT_EQ(true, b.__isset.field1);
-  EXPECT_EQ(true, b.__isset.field2);
-  EXPECT_EQ(true, b.__isset.field7);
-  EXPECT_EQ(true, b.__isset.field8);
+  EXPECT_TRUE(b.__isset.field1);
+  EXPECT_TRUE(b.__isset.field2);
+  EXPECT_TRUE(b.__isset.field7);
+  EXPECT_TRUE(b.__isset.field8);
 }
 
 TYPED_TEST(MultiProtocolTest, test_other_containers) {
@@ -180,9 +180,9 @@ TYPED_TEST(MultiProtocolTest, test_other_containers) {
   this->prep_read();
   serializer_read(b, this->reader);
 
-  EXPECT_EQ(true, b.__isset.um_field);
-  EXPECT_EQ(true, b.__isset.us_field);
-  EXPECT_EQ(true, b.__isset.deq_field);
+  EXPECT_TRUE(b.__isset.um_field);
+  EXPECT_TRUE(b.__isset.us_field);
+  EXPECT_TRUE(b.__isset.deq_field);
   EXPECT_EQ(a.um_field, b.um_field);
   EXPECT_EQ(a.us_field, b.us_field);
   EXPECT_EQ(a.deq_field, b.deq_field);
@@ -357,9 +357,9 @@ TYPED_TEST(MultiProtocolTest, test_binary_containers) {
 
   serializer_read(b, this->reader);
 
-  EXPECT_EQ(true, b.__isset.def_field);
-  EXPECT_EQ(true, b.__isset.iobuf_field);
-  EXPECT_EQ(true, b.__isset.iobufptr_field);
+  EXPECT_TRUE(b.__isset.def_field);
+  EXPECT_TRUE(b.__isset.iobuf_field);
+  EXPECT_TRUE(b.__isset.iobufptr_field);
   EXPECT_EQ(a.def_field, b.def_field);
 
   EXPECT_EQ(test_range, b.iobuf_field.coalesce());
@@ -376,8 +376,8 @@ TYPED_TEST(MultiProtocolTest, test_workaround_binary) {
   this->prep_read();
   serializer_read(b, this->reader);
 
-  EXPECT_EQ(true, b.__isset.def_field);
-  EXPECT_EQ(true, b.__isset.iobuf_field);
+  EXPECT_TRUE(b.__isset.def_field);
+  EXPECT_TRUE(b.__isset.iobuf_field);
   EXPECT_EQ(test_string.str(), b.def_field);
   EXPECT_EQ(test_range2, b.iobuf_field.coalesce());
   expect_same_serialized_size(a, this->writer);
@@ -542,8 +542,8 @@ TEST_F(SimpleJsonTest, handles_unset_default_member) {
   set_input("{" KVS("req_string", "required") "}");
   struct2 a;
   serializer_read(a, reader);
-  EXPECT_TRUE(false == a.__isset.opt_string); // gcc bug?
-  EXPECT_TRUE(false == a.__isset.def_string);
+  EXPECT_FALSE(a.__isset.opt_string); // gcc bug?
+  EXPECT_FALSE(a.__isset.def_string);
   EXPECT_EQ("required", a.req_string);
   EXPECT_EQ("", a.opt_string);
   EXPECT_EQ("", a.def_string);
@@ -555,8 +555,8 @@ TEST_F(SimpleJsonTest, sets_opt_members) {
   "}");
   struct2 a;
   serializer_read(a, reader);
-  EXPECT_TRUE(true == a.__isset.opt_string); // gcc bug?
-  EXPECT_TRUE(false == a.__isset.def_string);
+  EXPECT_TRUE(a.__isset.opt_string); // gcc bug?
+  EXPECT_FALSE(a.__isset.def_string);
   EXPECT_EQ("required", a.req_string);
   EXPECT_EQ("optional", a.opt_string);
   EXPECT_EQ("", a.def_string);
@@ -568,8 +568,8 @@ TEST_F(SimpleJsonTest, sets_def_members) {
   "}");
   struct2 a;
   serializer_read(a, reader);
-  EXPECT_TRUE(false == a.__isset.opt_string);
-  EXPECT_EQ(true,  a.__isset.def_string);
+  EXPECT_FALSE(a.__isset.opt_string);
+  EXPECT_TRUE( a.__isset.def_string);
   EXPECT_EQ("required", a.req_string);
   EXPECT_EQ("", a.opt_string);
   EXPECT_EQ("default", a.def_string);

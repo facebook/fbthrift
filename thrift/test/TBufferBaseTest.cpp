@@ -616,7 +616,7 @@ TEST_F(TBufferBaseTest, test_BufferedTransport_putBack) {
   TBufferedTransport trans(buffer);
   uint8_t out[10];
 
-  EXPECT_EQ(true, trans.peek());
+  EXPECT_TRUE(trans.peek());
   trans.read(out, 1);
   EXPECT_EQ(out[0], 0);
   trans.putBack(out, 1); // Put back.  Shouldn't call memmove

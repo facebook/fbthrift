@@ -788,9 +788,9 @@ TEST(fatal_struct, set_methods) {
   >;
 
   struct4 a;
-  EXPECT_EQ(true, req_field::is_set(a));
+  EXPECT_TRUE(req_field::is_set(a));
   req_field::mark_set(a, true);
-  EXPECT_EQ(true, req_field::is_set(a));
+  EXPECT_TRUE(req_field::is_set(a));
   req_field::mark_set(a, false);
 
   EXPECT_FALSE(bool(opt_field::is_set(a)));
@@ -805,9 +805,9 @@ TEST(fatal_struct, set_methods) {
   def_field::mark_set(a, false);
   EXPECT_FALSE(bool(def_field::is_set(a)));
 
-  EXPECT_EQ(true, ref_field::is_set(a));
+  EXPECT_TRUE(ref_field::is_set(a));
   ref_field::mark_set(a, true);
-  EXPECT_EQ(true, req_field::is_set(a));
+  EXPECT_TRUE(req_field::is_set(a));
 }
 
 } // namespace cpp_reflection {

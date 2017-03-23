@@ -78,9 +78,9 @@ TEST(EnumTest, test_enum_parse) {
   MyEnum2 e2;
   MyEnum3 e3;
 
-  EXPECT_EQ(true, tryParseEnum("ME2_2", &e2));
+  EXPECT_TRUE(tryParseEnum("ME2_2", &e2));
   EXPECT_EQ((int)MyEnum2::ME2_2, (int)e2);
-  EXPECT_EQ(true, tryParseEnum("ME3_N2", &e3));
+  EXPECT_TRUE(tryParseEnum("ME3_N2", &e3));
   EXPECT_EQ((int)MyEnum3::ME3_N2, (int)e3);
 
   EXPECT_FALSE(tryParseEnum("FOO_ME2_0", &e2));

@@ -182,13 +182,13 @@ TEST(fatal_typedef, is_set_methods) {
 
   my_structA pod;
 
-  EXPECT_EQ(true, field_a::is_set(pod));
+  EXPECT_TRUE(field_a::is_set(pod));
   field_a::mark_set(pod, true);
-  EXPECT_EQ(true, field_a::is_set(pod));
+  EXPECT_TRUE(field_a::is_set(pod));
 
-  EXPECT_EQ(true, field_b::is_set(pod));
+  EXPECT_TRUE(field_b::is_set(pod));
   field_b::mark_set(pod, true);
-  EXPECT_EQ(true, field_b::is_set(pod));
+  EXPECT_TRUE(field_b::is_set(pod));
 }
 
 } // namespace cpp_reflection {
