@@ -48,6 +48,24 @@ using std::dynamic_pointer_cast;
 using std::unique_ptr;
 using folly::RequestContext;
 
+/* Translates from wangle priorities (normal at 0, higher is higher)
+   to thrift priorities */
+
+inline PRIORITY translatePriority(int8_t priority) {
+  if (priority >= 3) {
+    return PRIORITY::HIGH_IMPORTANT;
+  } else if (priority == 2) {
+    return PRIORITY::HIGH;
+  } else if (priority == 1) {
+    return PRIORITY::IMPORTANT;
+  } else if (priority == 0) {
+    return PRIORITY::NORMAL;
+  } else if (priority <= -1) {
+    return PRIORITY::BEST_EFFORT;
+  }
+  folly::assume_unreachable();
+}
+
 /**
  * ThreadManager class
  *
@@ -673,6 +691,23 @@ class PriorityQueueThreadManager : public ThreadManager::ImplT<SemType> {
       ),
       numThreads_(numThreads) {}
 
+  class PriorityFunctionRunner :
+      public virtual apache::thrift::concurrency::PriorityRunnable,
+      public virtual FunctionRunner {
+   public:
+    PriorityFunctionRunner(
+      apache::thrift::concurrency::PriorityThreadManager::PRIORITY priority,
+      folly::Func&& f)
+        : FunctionRunner(std::move(f))
+        , priority_(priority) {}
+
+    apache::thrift::concurrency::PRIORITY getPriority() const override {
+      return priority_;
+    }
+   private:
+    apache::thrift::concurrency::PriorityThreadManager::PRIORITY priority_;
+  };
+
   using ThreadManager::ImplT<SemType>::add;
 
   void add(
@@ -705,7 +740,7 @@ class PriorityQueueThreadManager : public ThreadManager::ImplT<SemType> {
     // initial queueing
     ThreadManager::ImplT<SemType>::add(
       HIGH_IMPORTANT,
-      FunctionRunner::create(std::move(f)),
+      make_shared<PriorityFunctionRunner>(HIGH_IMPORTANT, std::move(f)),
       0,
       0,
       false,
@@ -717,16 +752,10 @@ class PriorityQueueThreadManager : public ThreadManager::ImplT<SemType> {
    * Implements folly::Executor::addWithPriority()
    */
   void addWithPriority(folly::Func f, int8_t priority) override {
-    // Wangle priorities are also inverted from thrift (higher is higher)
-    priority = N_PRIORITIES - priority - 1;
-    // Wangle priorities put normal at 0, so shift the priority
-    priority -= PRIORITY::NORMAL;
-    if (priority < 0) {
-      priority = 0;
-    }
+    auto prio = translatePriority(priority);
     ThreadManager::ImplT<SemType>::add(
-      priority,
-      FunctionRunner::create(std::move(f)),
+      prio,
+      make_shared<PriorityFunctionRunner>(prio, std::move(f)),
       0,
       0,
       false,
@@ -939,18 +968,7 @@ class PriorityThreadManager::PriorityImplT : public PriorityThreadManager {
    *  <= -1 pri tasks to 'BEST_EFFORT' threads,
    */
   void addWithPriority(folly::Func f, int8_t priority) override {
-    PRIORITY prio = PRIORITY::NORMAL;
-    if (priority >= 3) {
-      prio = PRIORITY::HIGH_IMPORTANT;
-    } else if (priority == 2) {
-      prio = PRIORITY::HIGH;
-    } else if (priority == 1) {
-      prio = PRIORITY::IMPORTANT;
-    } else if (priority == 0) {
-      prio = PRIORITY::NORMAL;
-    } else if (priority <= -1) {
-      prio = PRIORITY::BEST_EFFORT;
-    }
+    auto prio = translatePriority(priority);
     add(prio, FunctionRunner::create(std::move(f)));
   }
 
