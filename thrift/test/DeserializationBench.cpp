@@ -73,13 +73,6 @@ void buildRandomStructA(cpp2::StructA& obj) {
   }
 }
 
-/*
-============================================================================
-thrift/test/DeserializationBench.cpp            relative  time/iter  iters/s
-============================================================================
-Deserialization                                               1.36s  734.51m
-============================================================================
-*/
 BENCHMARK(Deserialization, iters) {
   for (size_t i = 0; i < iters; ++i) {
     // Stop time during object construction
@@ -115,3 +108,11 @@ int main(int argc, char** argv) {
   folly::runBenchmarks();
   return 0;
 }
+
+/*
+============================================================================
+thrift/test/DeserializationBench.cpp            relative  time/iter  iters/s
+============================================================================
+Deserialization                                               1.36s  734.51m
+============================================================================
+*/
