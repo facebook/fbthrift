@@ -16,7 +16,7 @@
 #include <folly/Benchmark.h>
 #include <folly/Random.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-#include <thrift/test/gen-cpp2/BenchmarkDeserialization_types.h>
+#include <thrift/test/gen-cpp2/DeserializationBench_types.h>
 #include <gflags/gflags.h>
 
 folly::Random::DefaultGenerator rng_(12345);
@@ -74,7 +74,7 @@ void buildRandomStructA(cpp2::StructA& obj) {
 
 /*
 ============================================================================
-thrift/test/BenchmarkDeserialization.cpp        relative  time/iter  iters/s
+thrift/test/DeserializationBench.cpp            relative  time/iter  iters/s
 ============================================================================
 Deserialization                                               1.36s  734.51m
 ============================================================================
