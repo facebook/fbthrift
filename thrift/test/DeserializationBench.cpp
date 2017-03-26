@@ -74,32 +74,30 @@ void buildRandomStructA(cpp2::StructA& obj) {
 }
 
 BENCHMARK(Deserialization, iters) {
+  folly::BenchmarkSuspender braces; // stop the clock by default
+
   for (size_t i = 0; i < iters; ++i) {
-    // Stop time during object construction
-    folly::BenchmarkSuspender braces;
-      cpp2::StructA obj;
-      cpp2::StructA obj2;
-      apache::thrift::CompactProtocolWriter writer;
-      apache::thrift::CompactProtocolReader reader;
+    // Prep, untimed:
+    cpp2::StructA obj;
+    cpp2::StructA obj2;
+    apache::thrift::CompactProtocolWriter writer;
+    apache::thrift::CompactProtocolReader reader;
 
-      buildRandomStructA(obj);
+    buildRandomStructA(obj);
 
-      // Prepare Serialization
-      size_t bufSize = obj.serializedSize(&writer);
-      folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-      writer.setOutput(&queue, bufSize);
+    // Serialize, untimed:
+    size_t bufSize = obj.serializedSize(&writer);
+    folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+    writer.setOutput(&queue, bufSize);
+    obj.write(&writer);
 
-      // Serialize
-      obj.write(&writer);
-
-      // Prepare Deserialization
-      bufSize = queue.chainLength();
-      auto buf = queue.move();
-      reader.setInput(buf.get());
-    braces.dismiss();
-
-    // Deserialize
-    obj2.read(&reader);
+    // Deserialize, timed:
+    bufSize = queue.chainLength();
+    auto buf = queue.move();
+    reader.setInput(buf.get());
+    braces.dismissing([&] {
+      obj2.read(&reader);
+    });
   }
 }
 
