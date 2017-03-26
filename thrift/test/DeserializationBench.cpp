@@ -85,6 +85,7 @@ BENCHMARK(Deserialization, iters) {
 
     // Serialize, untimed:
     auto buf = serializer::serialize<folly::IOBufQueue>(obj).move();
+    buf->coalesce(); // so we can ignore serialization artifacts later
 
     // Deserialize, timed:
     cpp2::StructA obj2;
