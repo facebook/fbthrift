@@ -17,7 +17,7 @@
 #include <folly/Benchmark.h>
 #include <folly/Random.h>
 #include <folly/init/Init.h>
-#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/test/gen-cpp2/DeserializationBench_types.h>
 
 folly::Random::DefaultGenerator rng_(12345);
@@ -74,29 +74,22 @@ void buildRandomStructA(cpp2::StructA& obj) {
 }
 
 BENCHMARK(Deserialization, iters) {
+  using serializer = apache::thrift::CompactSerializer;
+
   folly::BenchmarkSuspender braces; // stop the clock by default
 
   for (size_t i = 0; i < iters; ++i) {
     // Prep, untimed:
     cpp2::StructA obj;
-    cpp2::StructA obj2;
-    apache::thrift::CompactProtocolWriter writer;
-    apache::thrift::CompactProtocolReader reader;
-
     buildRandomStructA(obj);
 
     // Serialize, untimed:
-    size_t bufSize = obj.serializedSize(&writer);
-    folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-    writer.setOutput(&queue, bufSize);
-    obj.write(&writer);
+    auto buf = serializer::serialize<folly::IOBufQueue>(obj).move();
 
     // Deserialize, timed:
-    bufSize = queue.chainLength();
-    auto buf = queue.move();
-    reader.setInput(buf.get());
+    cpp2::StructA obj2;
     braces.dismissing([&] {
-      obj2.read(&reader);
+      serializer::deserialize(buf.get(), obj2);
     });
   }
 }
