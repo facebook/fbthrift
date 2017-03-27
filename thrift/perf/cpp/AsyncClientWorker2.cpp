@@ -18,8 +18,6 @@
 #include <thrift/perf/cpp/AsyncClientWorker2.h>
 
 #include <proxygen/lib/http/codec/HTTP2Codec.h>
-#include <proxygen/lib/http/codec/SPDYCodec.h>
-#include <proxygen/lib/http/codec/SPDYVersion.h>
 #include <thrift/lib/cpp/ClientUtil.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
@@ -219,23 +217,9 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
       std::unique_ptr<apache::thrift::HTTPClientChannel,
                       folly::DelayedDestruction::Destructor>
           channel(HTTPClientChannel::newHTTP2Channel(
-              std::move(socket),
-              "localhost",
-              "/"));
-
-      return std::make_shared<LoadTestAsyncClient>(std::move(channel));
-    } else if (config->useSPDYProtocol()) {
-      TAsyncTransport::UniquePtr socket(
-          new TAsyncSocket(&eb_, *config->getAddress(), kTimeout));
-      std::unique_ptr<apache::thrift::HTTPClientChannel,
-                      folly::DelayedDestruction::Destructor>
-          channel(HTTPClientChannel::newChannel(
-              std::move(socket),
-              "localhost",
-              "/",
-              folly::make_unique<proxygen::SPDYCodec>(
-                  proxygen::TransportDirection::UPSTREAM,
-                  proxygen::SPDYVersion::SPDY3_1)));
+                    std::move(socket)));
+      channel->setHTTPHost("localhost");
+      channel->setHTTPUrl("/");
 
       return std::make_shared<LoadTestAsyncClient>(std::move(channel));
     }

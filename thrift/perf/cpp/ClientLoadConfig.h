@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #ifndef THRIFT_TEST_PERF_CLIENTLOADCONFIG_H_
 #define THRIFT_TEST_PERF_CLIENTLOADCONFIG_H_ 1
 
@@ -127,8 +126,6 @@ class ClientLoadConfig : public loadgen::WeightedLoadConfig {
   bool useHTTP1Protocol() const;
 
   bool useHTTP2Protocol() const;
-
-  bool useSPDYProtocol() const;
 
   bool useAsync() const;
 

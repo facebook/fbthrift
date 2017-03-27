@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #define __STDC_FORMAT_MACROS
 
 #include <thrift/perf/cpp/ClientLoadConfig.h>
@@ -30,7 +29,6 @@ DEFINE_bool(framed, true, "use TFramedTransport");
 DEFINE_bool(header, false, "use THeaderProtocol");
 DEFINE_bool(http1, false, "use Proxygen HTTP Protocol");
 DEFINE_bool(http2, false, "use Proxygen HTTP2 Protocol");
-DEFINE_bool(spdy, false, "use Proxygen SPDY Protocol");
 DEFINE_bool(async, false, "Use async client");
 DEFINE_bool(ssl, false, "Use SSL");
 DEFINE_bool(sr, false, "Use Service Router");
@@ -222,10 +220,6 @@ bool ClientLoadConfig::useHTTP1Protocol() const {
 
 bool ClientLoadConfig::useHTTP2Protocol() const {
   return FLAGS_http2;
-}
-
-bool ClientLoadConfig::useSPDYProtocol() const {
-  return FLAGS_spdy;
 }
 
 bool ClientLoadConfig::useAsync() const {
