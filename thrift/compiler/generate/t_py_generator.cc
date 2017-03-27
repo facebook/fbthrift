@@ -1183,8 +1183,7 @@ void t_py_generator::generate_py_union(ofstream& out, t_struct* tstruct) {
   indent(out) << "  return self.field" << endl << endl;
 
   // According to Python doc, __repr__() "should" return a valid expression
-  // such that `object == eval(object.__repr__())` is true. Otherwise
-  // just print some useful description
+  // such that `object == eval(repr(object))` is true.
   out <<
     indent() << "def __repr__(self):" << endl <<
     indent() << "  value = pprint.pformat(self.value)" << endl <<
@@ -1586,16 +1585,20 @@ void t_py_generator::generate_py_struct_definition(ofstream& out,
   }
 
   if (!gen_slots_) {
-    // Printing utilities so that on the command line thrift
-    // structs look somewhat human readable
+    // According to Python doc, __repr__() "should" return a valid expression
+    // such that `object == eval(repr(object))` is true.
     out <<
       indent() << "def __repr__(self):" << endl <<
       indent() << "  L = []" << endl <<
-      indent() << "  for key, value in six.iteritems(self.__dict__):" << endl <<
-      indent() << "    padding = ' ' * 4" << endl <<
-      indent() << "    value = pprint.pformat(value, indent=0)" << endl <<
-      indent() << "    value = padding.join(value.splitlines(True))" << endl <<
-      indent() << "    L.append('    %s=%s' % (key, value))" << endl;
+      indent() << "  padding = ' ' * 4" << endl;
+    for (auto const& member : members) {
+      auto key = rename_reserved_keywords(member->get_name());
+      out <<
+        indent() << "  value = pprint.pformat(self." << key
+                 << ", indent=0)" << endl <<
+        indent() << "  value = padding.join(value.splitlines(True))" << endl <<
+        indent() << "  L.append('    " << key << "=%s' % (value))" << endl;
+    }
 
     // For exceptions only, force message attribute to be included in
     // __repr__(). This is because BaseException.message has been deprecated as

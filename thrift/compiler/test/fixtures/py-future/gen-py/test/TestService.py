@@ -122,11 +122,7 @@ class sleep_args:
 
   def __repr__(self):
     L = []
-    for key, value in six.iteritems(self.__dict__):
-      padding = ' ' * 4
-      value = pprint.pformat(value, indent=0)
-      value = padding.join(value.splitlines(True))
-      L.append('    %s=%s' % (key, value))
+    padding = ' ' * 4
     return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
 
   def __eq__(self, other):
@@ -196,11 +192,7 @@ class sleep_result:
 
   def __repr__(self):
     L = []
-    for key, value in six.iteritems(self.__dict__):
-      padding = ' ' * 4
-      value = pprint.pformat(value, indent=0)
-      value = padding.join(value.splitlines(True))
-      L.append('    %s=%s' % (key, value))
+    padding = ' ' * 4
     return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
 
   def __eq__(self, other):
@@ -284,11 +276,10 @@ class isPrime_args:
 
   def __repr__(self):
     L = []
-    for key, value in six.iteritems(self.__dict__):
-      padding = ' ' * 4
-      value = pprint.pformat(value, indent=0)
-      value = padding.join(value.splitlines(True))
-      L.append('    %s=%s' % (key, value))
+    padding = ' ' * 4
+    value = pprint.pformat(self.num, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    num=%s' % (value))
     return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
 
   def __eq__(self, other):
@@ -378,11 +369,10 @@ class isPrime_result:
 
   def __repr__(self):
     L = []
-    for key, value in six.iteritems(self.__dict__):
-      padding = ' ' * 4
-      value = pprint.pformat(value, indent=0)
-      value = padding.join(value.splitlines(True))
-      L.append('    %s=%s' % (key, value))
+    padding = ' ' * 4
+    value = pprint.pformat(self.success, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    success=%s' % (value))
     return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
 
   def __eq__(self, other):
@@ -458,11 +448,7 @@ class getResult_args:
 
   def __repr__(self):
     L = []
-    for key, value in six.iteritems(self.__dict__):
-      padding = ' ' * 4
-      value = pprint.pformat(value, indent=0)
-      value = padding.join(value.splitlines(True))
-      L.append('    %s=%s' % (key, value))
+    padding = ' ' * 4
     return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
 
   def __eq__(self, other):
@@ -547,11 +533,10 @@ class getResult_result:
 
   def __repr__(self):
     L = []
-    for key, value in six.iteritems(self.__dict__):
-      padding = ' ' * 4
-      value = pprint.pformat(value, indent=0)
-      value = padding.join(value.splitlines(True))
-      L.append('    %s=%s' % (key, value))
+    padding = ' ' * 4
+    value = pprint.pformat(self.success, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    success=%s' % (value))
     return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
 
   def __eq__(self, other):

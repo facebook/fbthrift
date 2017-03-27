@@ -159,11 +159,16 @@ class Internship:
 
   def __repr__(self):
     L = []
-    for key, value in six.iteritems(self.__dict__):
-      padding = ' ' * 4
-      value = pprint.pformat(value, indent=0)
-      value = padding.join(value.splitlines(True))
-      L.append('    %s=%s' % (key, value))
+    padding = ' ' * 4
+    value = pprint.pformat(self.weeks, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    weeks=%s' % (value))
+    value = pprint.pformat(self.title, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    title=%s' % (value))
+    value = pprint.pformat(self.employer, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    employer=%s' % (value))
     return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
 
   def __eq__(self, other):
@@ -238,11 +243,10 @@ class UnEnumStruct:
 
   def __repr__(self):
     L = []
-    for key, value in six.iteritems(self.__dict__):
-      padding = ' ' * 4
-      value = pprint.pformat(value, indent=0)
-      value = padding.join(value.splitlines(True))
-      L.append('    %s=%s' % (key, value))
+    padding = ' ' * 4
+    value = pprint.pformat(self.city, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    city=%s' % (value))
     return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
 
   def __eq__(self, other):
@@ -333,11 +337,13 @@ class Range:
 
   def __repr__(self):
     L = []
-    for key, value in six.iteritems(self.__dict__):
-      padding = ' ' * 4
-      value = pprint.pformat(value, indent=0)
-      value = padding.join(value.splitlines(True))
-      L.append('    %s=%s' % (key, value))
+    padding = ' ' * 4
+    value = pprint.pformat(self.min, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    min=%s' % (value))
+    value = pprint.pformat(self.max, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    max=%s' % (value))
     return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
 
   def __eq__(self, other):

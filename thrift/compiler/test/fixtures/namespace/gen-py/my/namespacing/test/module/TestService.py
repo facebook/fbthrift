@@ -110,11 +110,10 @@ class init_args:
 
   def __repr__(self):
     L = []
-    for key, value in six.iteritems(self.__dict__):
-      padding = ' ' * 4
-      value = pprint.pformat(value, indent=0)
-      value = padding.join(value.splitlines(True))
-      L.append('    %s=%s' % (key, value))
+    padding = ' ' * 4
+    value = pprint.pformat(self.int1, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    int1=%s' % (value))
     return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
 
   def __eq__(self, other):
@@ -205,11 +204,10 @@ class init_result:
 
   def __repr__(self):
     L = []
-    for key, value in six.iteritems(self.__dict__):
-      padding = ' ' * 4
-      value = pprint.pformat(value, indent=0)
-      value = padding.join(value.splitlines(True))
-      L.append('    %s=%s' % (key, value))
+    padding = ' ' * 4
+    value = pprint.pformat(self.success, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    success=%s' % (value))
     return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
 
   def __eq__(self, other):
