@@ -319,7 +319,6 @@ StructWithContainers::StructWithContainers(const StructWithContainers& src) {
   if (src.map_ref) map_ref.reset(new std::map<int32_t, int32_t>(*src.map_ref));
   if (src.list_ref_unique) list_ref_unique.reset(new std::vector<int32_t>(*src.list_ref_unique));
   set_ref_shared = src.set_ref_shared;
-  map_ref_custom = src.map_ref_custom;
   list_ref_shared_const = src.list_ref_shared_const;
   if (src.set_custom_ref) set_custom_ref.reset(new std::set<int32_t>(*src.set_custom_ref));
 }
@@ -336,7 +335,6 @@ void StructWithContainers::__clear() {
   map_ref.reset(new typename decltype(map_ref)::element_type());
   list_ref_unique.reset(new typename decltype(list_ref_unique)::element_type());
   set_ref_shared.reset(new typename decltype(set_ref_shared)::element_type());
-  map_ref_custom.reset(new typename decltype(map_ref_custom)::element_type());
   list_ref_shared_const.reset(new typename decltype(list_ref_shared_const)::element_type());
   set_custom_ref.reset(new typename decltype(set_custom_ref)::element_type());
   __isset.__clear();
@@ -358,9 +356,6 @@ bool StructWithContainers::operator==(const StructWithContainers& rhs) const {
   if (!(((set_ref_shared && rhs.set_ref_shared && *set_ref_shared == *rhs.set_ref_shared) ||(!set_ref_shared && !rhs.set_ref_shared)))) {
     return false;
   }
-  if (!(((map_ref_custom && rhs.map_ref_custom && *map_ref_custom == *rhs.map_ref_custom) ||(!map_ref_custom && !rhs.map_ref_custom)))) {
-    return false;
-  }
   if (!(((list_ref_shared_const && rhs.list_ref_shared_const && *list_ref_shared_const == *rhs.list_ref_shared_const) ||(!list_ref_shared_const && !rhs.list_ref_shared_const)))) {
     return false;
   }
@@ -377,7 +372,6 @@ void swap(StructWithContainers& a, StructWithContainers& b) {
   swap(a.map_ref, b.map_ref);
   swap(a.list_ref_unique, b.list_ref_unique);
   swap(a.set_ref_shared, b.set_ref_shared);
-  swap(a.map_ref_custom, b.map_ref_custom);
   swap(a.list_ref_shared_const, b.list_ref_shared_const);
   swap(a.set_custom_ref, b.set_custom_ref);
   swap(a.__isset, b.__isset);

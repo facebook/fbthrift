@@ -274,29 +274,19 @@ void reflectionInitializer_18101585657679500556(::apache::thrift::reflection::Sc
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[6];
     f.isRequired = true;
-    f.type = 7009713166249494859U;
-    f.name = "map_ref_custom";
-    f.order = 5;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref_type"] = "shared";
-    f.annotations["cpp2.ref_type"] = "shared";
-  }
-  {
-    ::apache::thrift::reflection::StructField& f = dt.fields[7];
-    f.isRequired = true;
     f.type = 12058391220869880681U;
     f.name = "list_ref_shared_const";
-    f.order = 6;
+    f.order = 5;
     f.__isset.annotations = true;
     f.annotations["cpp.ref_type"] = "shared_const";
     f.annotations["cpp2.ref_type"] = "shared_const";
   }
   {
-    ::apache::thrift::reflection::StructField& f = dt.fields[8];
+    ::apache::thrift::reflection::StructField& f = dt.fields[7];
     f.isRequired = true;
     f.type = 10941653322204590122U;
     f.name = "set_custom_ref";
-    f.order = 7;
+    f.order = 6;
     f.__isset.annotations = true;
     f.annotations["cpp.ref_type"] = "std::unique_ptr";
     f.annotations["cpp2.ref_type"] = "std::unique_ptr";

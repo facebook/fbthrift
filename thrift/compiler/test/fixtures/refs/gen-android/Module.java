@@ -73,14 +73,11 @@ public class Module {
   public static final ThriftProperty<Set<Integer>> StructWithContainers_set_ref_shared =
       new ThriftProperty<Set<Integer>>("set_ref_shared", TType.SET, (short) 5);
   @TOptional("StructWithContainers")
-  public static final ThriftProperty<Map<Integer,Integer>> StructWithContainers_map_ref_custom =
-      new ThriftProperty<Map<Integer,Integer>>("map_ref_custom", TType.MAP, (short) 6);
-  @TOptional("StructWithContainers")
   public static final ThriftProperty<List<Integer>> StructWithContainers_list_ref_shared_const =
-      new ThriftProperty<List<Integer>>("list_ref_shared_const", TType.LIST, (short) 7);
+      new ThriftProperty<List<Integer>>("list_ref_shared_const", TType.LIST, (short) 6);
   @TOptional("StructWithContainers")
   public static final ThriftProperty<Set<Integer>> StructWithContainers_set_custom_ref =
-      new ThriftProperty<Set<Integer>>("set_custom_ref", TType.SET, (short) 8);
+      new ThriftProperty<Set<Integer>>("set_custom_ref", TType.SET, (short) 7);
   @TOptional("StructWithSharedConst")
   public static final ThriftProperty<ModuleLogger> StructWithSharedConst_opt_shared_const =
       new ThriftProperty<ModuleLogger>("opt_shared_const", TType.STRUCT, (short) 1);

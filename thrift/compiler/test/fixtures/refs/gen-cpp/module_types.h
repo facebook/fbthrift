@@ -622,7 +622,6 @@ class StructWithContainers : public apache::thrift::TStructType<StructWithContai
     map_ref.reset(new typename decltype(map_ref)::element_type());
     list_ref_unique.reset(new typename decltype(list_ref_unique)::element_type());
     set_ref_shared.reset(new typename decltype(set_ref_shared)::element_type());
-    map_ref_custom.reset(new typename decltype(map_ref_custom)::element_type());
     list_ref_shared_const.reset(new typename decltype(list_ref_shared_const)::element_type());
     set_custom_ref.reset(new typename decltype(set_custom_ref)::element_type());
   }
@@ -696,18 +695,6 @@ class StructWithContainers : public apache::thrift::TStructType<StructWithContai
   ):
     StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
-    map_ref_custom = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
-  }
-  template <
-    typename T__ThriftWrappedArgument__Ctor,
-    typename... Args__ThriftWrappedArgument__Ctor
-  >
-  explicit StructWithContainers(
-    ::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg,
-    Args__ThriftWrappedArgument__Ctor&&... args
-  ):
-    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
     list_ref_shared_const = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <
@@ -715,7 +702,7 @@ class StructWithContainers : public apache::thrift::TStructType<StructWithContai
     typename... Args__ThriftWrappedArgument__Ctor
   >
   explicit StructWithContainers(
-    ::apache::thrift::detail::argument_wrapper<8, T__ThriftWrappedArgument__Ctor> arg,
+    ::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg,
     Args__ThriftWrappedArgument__Ctor&&... args
   ):
     StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -741,7 +728,6 @@ class StructWithContainers : public apache::thrift::TStructType<StructWithContai
   std::unique_ptr<std::map<int32_t, int32_t> > map_ref;
   std::unique_ptr<std::vector<int32_t> > list_ref_unique;
   std::shared_ptr<std::set<int32_t> > set_ref_shared;
-  std::shared_ptr<const std::map<int32_t, int32_t>> map_ref_custom;
   std::shared_ptr<const std::vector<int32_t> > list_ref_shared_const;
   std::unique_ptr<std::set<int32_t> > set_custom_ref;
 

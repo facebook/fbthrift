@@ -13,10 +13,8 @@ struct StructWithContainers {
   4: list<i32> list_ref_unique
       (cpp.ref_type = "unique", cpp2.ref_type = "unique")
   5: set<i32> set_ref_shared (cpp.ref_type = "shared", cpp2.ref_type = "shared")
-  6: map<i32, i32> (cpp.type = "const std::map<int32_t, int32_t>")
-      map_ref_custom (cpp.ref_type = "shared", cpp2.ref_type = "shared")
-  7: list<i32> list_ref_shared_const
+  6: list<i32> list_ref_shared_const
       (cpp.ref_type = "shared_const", cpp2.ref_type = "shared_const")
-  8: set<i32> set_custom_ref
+  7: set<i32> set_custom_ref
       (cpp.ref_type = "std::unique_ptr", cpp2.ref_type = "std::unique_ptr")
 }

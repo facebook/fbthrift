@@ -222,18 +222,6 @@ public class ModuleLogger {
           oprot.writeFieldEnd();
         }
       
-        if (mMap.containsKey(Module.StructWithContainers_map_ref_custom) && mMap.get(Module.StructWithContainers_map_ref_custom) != null) {
-          writeFieldBegin(oprot, Module.StructWithContainers_map_ref_custom);
-          Map<Integer,Integer> var0 = (Map<Integer,Integer>) mMap.get(Module.StructWithContainers_map_ref_custom);
-          oprot.writeMapBegin(new TMap(TType.I32, TType.I32, var0.size()));
-          for (Map.Entry<Integer, Integer> iter0 : var0.entrySet()) {
-            oprot.writeI32(iter0.getKey());
-            oprot.writeI32(iter0.getValue());
-          }
-          oprot.writeMapEnd();
-          oprot.writeFieldEnd();
-        }
-      
         if (mMap.containsKey(Module.StructWithContainers_list_ref_shared_const) && mMap.get(Module.StructWithContainers_list_ref_shared_const) != null) {
           writeFieldBegin(oprot, Module.StructWithContainers_list_ref_shared_const);
           List<Integer> var0 = (List<Integer>) mMap.get(Module.StructWithContainers_list_ref_shared_const);

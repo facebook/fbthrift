@@ -815,18 +815,16 @@ class StructWithContainers : private apache::thrift::detail::st::ComparisonOpera
       map_ref(std::make_unique<std::map<int32_t, int32_t>>()),
       list_ref_unique(std::make_unique<std::vector<int32_t>>()),
       set_ref_shared(std::make_shared<std::set<int32_t>>()),
-      map_ref_custom(std::make_shared<const std::map<int32_t, int32_t>>()),
       list_ref_shared_const(std::make_shared<std::vector<int32_t>>()),
       set_custom_ref(std::unique_ptr<std::set<int32_t>>(new std::set<int32_t>())) {}
   // FragileConstructor for use in initialization lists only
 
-  StructWithContainers(apache::thrift::FragileConstructor, std::unique_ptr<std::vector<int32_t>> list_ref__arg, std::unique_ptr<std::set<int32_t>> set_ref__arg, std::unique_ptr<std::map<int32_t, int32_t>> map_ref__arg, std::unique_ptr<std::vector<int32_t>> list_ref_unique__arg, std::shared_ptr<std::set<int32_t>> set_ref_shared__arg, std::shared_ptr<const std::map<int32_t, int32_t>> map_ref_custom__arg, std::shared_ptr<const std::vector<int32_t>> list_ref_shared_const__arg, std::unique_ptr<std::set<int32_t>> set_custom_ref__arg) :
+  StructWithContainers(apache::thrift::FragileConstructor, std::unique_ptr<std::vector<int32_t>> list_ref__arg, std::unique_ptr<std::set<int32_t>> set_ref__arg, std::unique_ptr<std::map<int32_t, int32_t>> map_ref__arg, std::unique_ptr<std::vector<int32_t>> list_ref_unique__arg, std::shared_ptr<std::set<int32_t>> set_ref_shared__arg, std::shared_ptr<const std::vector<int32_t>> list_ref_shared_const__arg, std::unique_ptr<std::set<int32_t>> set_custom_ref__arg) :
       list_ref(std::move(list_ref__arg)),
       set_ref(std::move(set_ref__arg)),
       map_ref(std::move(map_ref__arg)),
       list_ref_unique(std::move(list_ref_unique__arg)),
       set_ref_shared(std::move(set_ref_shared__arg)),
-      map_ref_custom(std::move(map_ref_custom__arg)),
       list_ref_shared_const(std::move(list_ref_shared_const__arg)),
       set_custom_ref(std::move(set_custom_ref__arg)) {}
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
@@ -863,16 +861,10 @@ class StructWithContainers : private apache::thrift::detail::st::ComparisonOpera
   StructWithContainers(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
-    map_ref_custom = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
-  }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithContainers(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
     list_ref_shared_const = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithContainers(::apache::thrift::detail::argument_wrapper<8, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+  StructWithContainers(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     set_custom_ref = std::unique_ptr<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(new folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>(arg.move()));
@@ -892,7 +884,6 @@ class StructWithContainers : private apache::thrift::detail::st::ComparisonOpera
   std::unique_ptr<std::map<int32_t, int32_t>> map_ref;
   std::unique_ptr<std::vector<int32_t>> list_ref_unique;
   std::shared_ptr<std::set<int32_t>> set_ref_shared;
-  std::shared_ptr<const std::map<int32_t, int32_t>> map_ref_custom;
   std::shared_ptr<const std::vector<int32_t>> list_ref_shared_const;
   std::unique_ptr<std::set<int32_t>> set_custom_ref;
 
@@ -917,9 +908,6 @@ class StructWithContainers : private apache::thrift::detail::st::ComparisonOpera
     }
     if (!(set_ref_shared == rhs.set_ref_shared)) {
       return set_ref_shared < rhs.set_ref_shared;
-    }
-    if (!(map_ref_custom == rhs.map_ref_custom)) {
-      return map_ref_custom < rhs.map_ref_custom;
     }
     if (!(list_ref_shared_const == rhs.list_ref_shared_const)) {
       return list_ref_shared_const < rhs.list_ref_shared_const;
