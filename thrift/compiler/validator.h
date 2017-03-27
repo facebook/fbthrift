@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -88,6 +88,22 @@ class enum_value_names_uniqueness_validator : virtual public validator {
  public:
   using validator::visit;
 
+  // Enforces that there are not duplicated enum value names
+  bool visit(t_enum const* tenum) override;
+
+ private:
+  void validate(t_enum const* tenum);
+
+  void add_validation_error(
+      int const lineno,
+      std::string const& value_name,
+      std::string const& enum_name);
+};
+
+class enum_values_uniqueness_validator : virtual public validator {
+ public:
+  using validator::visit;
+
   // Enforces that there are not duplicated enum values
   bool visit(t_enum const* tenum) override;
 
@@ -95,8 +111,10 @@ class enum_value_names_uniqueness_validator : virtual public validator {
   void validate(t_enum const* tenum);
 
   void add_validation_error(
-      int lineno,
-      std::string const& value_name,
+      int const lineno,
+      t_enum_value const& enum_value,
+      std::string const& existing_value_name,
       std::string const& enum_name);
 };
+
 }}}

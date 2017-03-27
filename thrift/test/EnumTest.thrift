@@ -22,7 +22,7 @@ enum MyEnum3 {
   ME3_D1,
   ME3_9 = 9,
   ME3_10,
-}
+} (thrift.duplicate_values)
 
 enum MyEnum4 {
   ME4_A = 0x7ffffffd
@@ -49,4 +49,3 @@ struct MyStruct {
 }
 
 const MyEnum4 c_me4_a = ME4_A
-

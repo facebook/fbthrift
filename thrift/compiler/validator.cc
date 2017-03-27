@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,9 @@
 #include <sstream>
 #include <unordered_map>
 #include <unordered_set>
+
+#include <thrift/compiler/globals.h>
+#include <thrift/compiler/common.h>
 
 namespace apache { namespace thrift { namespace compiler {
 
@@ -147,6 +150,7 @@ static void fill_validators(validator_list& vs) {
 
   vs.add<service_method_name_uniqueness_validator>();
   vs.add<enum_value_names_uniqueness_validator>();
+  vs.add<enum_values_uniqueness_validator>();
 
   // add more validators here ...
 
@@ -170,11 +174,47 @@ bool enum_value_names_uniqueness_validator::visit(t_enum const* const tenum) {
 void enum_value_names_uniqueness_validator::validate(
     t_enum const* const tenum) {
   std::unordered_set<std::string> enum_value_names;
-  for (auto v : tenum->get_constants()) {
+  for (auto const v : tenum->get_constants()) {
     if (enum_value_names.count(v->get_name())) {
       add_validation_error(v->get_lineno(), v->get_name(), tenum->get_name());
     }
     enum_value_names.insert(v->get_name());
+  }
+}
+
+void enum_values_uniqueness_validator::add_validation_error(
+    int const lineno,
+    t_enum_value const& enum_value,
+    std::string const& existing_value_name,
+    std::string const& enum_name) {
+  std::ostringstream err;
+  err << "Duplicate value " << enum_value.get_name() << "="
+      << enum_value.get_value() << " with value " << existing_value_name
+      << " in enum " << enum_name << ". "
+      << "Add thrift.duplicate_values annotation "
+      << "to enum to suppress this error";
+  add_error(lineno, err.str());
+}
+
+bool enum_values_uniqueness_validator::visit(t_enum const* const tenum) {
+  validate(tenum);
+  return true;
+}
+
+void enum_values_uniqueness_validator::validate(t_enum const* const tenum) {
+  if (tenum->annotations_.count("thrift.duplicate_values")) {
+    // opt-out mechanism
+    return;
+  }
+  std::unordered_map<int32_t, t_enum_value const*> enum_values;
+  for (auto v : tenum->get_constants()) {
+    auto it = enum_values.find(v->get_value());
+    if (it != enum_values.end()) {
+      add_validation_error(
+          v->get_lineno(), *v, it->second->get_name(), tenum->get_name());
+    } else {
+      enum_values[v->get_value()] = v;
+    }
   }
 }
 }}}

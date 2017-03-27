@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -151,4 +151,30 @@ TEST_F(ValidatorTest, RepeatedNamesInEnumValues) {
     run_validator<enum_value_names_uniqueness_validator>(&program);
   EXPECT_EQ(1, errors.size());
   EXPECT_EQ(expected, errors.front());
+}
+
+TEST_F(ValidatorTest, DuplicatedEnumValues) {
+  auto tenum = create_fake_enum("foo");
+
+  t_program program("/path/to/file.thrift");
+  program.add_enum(tenum.get());
+
+  t_enum_value enum_value_1("bar", 1);
+  t_enum_value enum_value_2("foo", 1);
+  tenum->append(&enum_value_1);
+  tenum->append(&enum_value_2);
+
+  // An error will be found
+  const std::string expected =
+      "[FAILURE:/path/to/file.thrift:1] "
+      "Duplicate value foo=1 with value bar in enum foo. "
+      "Add thrift.duplicate_values annotation to enum to suppress this error";
+  auto errors = run_validator<enum_values_uniqueness_validator>(&program);
+  EXPECT_EQ(1, errors.size());
+  EXPECT_EQ(expected, errors.front());
+
+  // Now check that opt-out mechanism works
+  tenum->annotations_["thrift.duplicate_values"] = "";
+  errors = run_validator<enum_values_uniqueness_validator>(&program);
+  EXPECT_TRUE(errors.empty());
 }
