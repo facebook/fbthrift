@@ -98,8 +98,9 @@ class TJSONContext:
         self.indent(trans)
 
     def indent(self, trans):
-        for i in range(self.indentLevel):
+        for _i in range(self.indentLevel):
             trans.write(JSON_TAB)
+
 
 class TJSONPairContext(TJSONContext):
     def __init__(self, protocol, indentLevel=0, isMapPair=False):
@@ -178,10 +179,12 @@ class LookaheadReader():
             self.hasData = True
         return self.data
 
+
 class ThriftSpec():
     def __init__(self, spec):
         self.spec = spec
         self.nextSpec = None
+
 
 class StructSpec(ThriftSpec):
     '''
@@ -210,6 +213,7 @@ class StructSpec(ThriftSpec):
 
     def getNextSpec(self):
         return self.nextSpec
+
 
 class ListOrSetSpec(ThriftSpec):
     '''Wraps a list or set's 2-tuple nested type spec.
@@ -248,6 +252,7 @@ class ListOrSetSpec(ThriftSpec):
             elif self.spec[0] == TType.MAP:
                 self.nextSpec = MapSpec(self.spec[1])
         return self.nextSpec
+
 
 class MapSpec(ThriftSpec):
     '''Wraps a map's 4-tuple key/vale type spec.
@@ -289,12 +294,15 @@ class MapSpec(ThriftSpec):
 
         return self.nextSpec
 
-class TSimpleJSONProtocolBase(TProtocolBase):
+
+class TSimpleJSONProtocolBase(TProtocolBase, object):
     def __init__(self, trans, spec=None):
         TProtocolBase.__init__(self, trans)
         # Used as stack for contexts.
         self.contexts = [TJSONContext(protocol=self)]
         self.context = TJSONContext(protocol=self)
+        self.pair_context_class = TJSONPairContext
+        self.list_context_class = TJSONListContext
         self.reader = LookaheadReader(self)
         self.specs = []
         self.spec = StructSpec(spec)
@@ -319,7 +327,7 @@ class TSimpleJSONProtocolBase(TProtocolBase):
         skipped = 0
         while True:
             ch = self.reader.peek()
-            if not ch in (JSON_NEW_LINE,
+            if ch not in (JSON_NEW_LINE,
                           TAB,
                           JSON_CARRIAGE_RETURN,
                           JSON_SPACE):
@@ -438,7 +446,8 @@ class TSimpleJSONProtocolBase(TProtocolBase):
     def writeJSONObjectStart(self):
         self.context.write(self.trans)
         self.trans.write(JSON_OBJECT_START)
-        self.pushContext(TJSONPairContext(protocol=self,
+        self.pushContext(self.pair_context_class(
+            protocol=self,
             indentLevel=len(self.contexts)))
 
     def writeJSONObjectEnd(self):
@@ -449,7 +458,8 @@ class TSimpleJSONProtocolBase(TProtocolBase):
     def writeJSONArrayStart(self):
         self.context.write(self.trans)
         self.trans.write(JSON_ARRAY_START)
-        self.pushContext(TJSONListContext(protocol=self,
+        self.pushContext(self.list_context_class(
+            protocol=self,
             indentLevel=len(self.contexts)))
 
     def writeJSONArrayEnd(self):
@@ -460,7 +470,8 @@ class TSimpleJSONProtocolBase(TProtocolBase):
     def writeJSONMapStart(self):
         self.context.write(self.trans)
         self.trans.write(JSON_OBJECT_START)
-        self.pushContext(TJSONListContext(protocol=self,
+        self.pushContext(self.list_context_class(
+            protocol=self,
             indentLevel=len(self.contexts)))
 
     def writeJSONMapEnd(self):
@@ -591,7 +602,8 @@ class TSimpleJSONProtocolBase(TProtocolBase):
         self.context.read(self.reader)
         self.skipWhitespace()
         self.readJSONSyntaxChar(JSON_ARRAY_START)
-        self.pushContext(TJSONListContext(protocol=self,
+        self.pushContext(self.list_context_class(
+            protocol=self,
             indentLevel=len(self.contexts)))
 
     def readJSONArrayEnd(self):
@@ -603,7 +615,8 @@ class TSimpleJSONProtocolBase(TProtocolBase):
         self.context.read(self.reader)
         self.skipWhitespace()
         self.readJSONSyntaxChar(JSON_OBJECT_START)
-        self.pushContext(TJSONListContext(protocol=self,
+        self.pushContext(self.list_context_class(
+            protocol=self,
             indentLevel=len(self.contexts)))
 
     def readJSONMapEnd(self):
@@ -615,13 +628,15 @@ class TSimpleJSONProtocolBase(TProtocolBase):
         self.context.read(self.reader)
         self.skipWhitespace()
         self.readJSONSyntaxChar(JSON_OBJECT_START)
-        self.pushContext(TJSONPairContext(protocol=self,
+        self.pushContext(self.pair_context_class(
+            protocol=self,
             indentLevel=len(self.contexts)))
 
     def readJSONObjectEnd(self):
         self.popContext()
         self.skipWhitespace()
         self.readJSONSyntaxChar(JSON_OBJECT_END)
+
 
 class TSimpleJSONProtocol(TSimpleJSONProtocolBase):
     """
@@ -649,7 +664,8 @@ class TSimpleJSONProtocol(TSimpleJSONProtocolBase):
     def writeFieldBegin(self, name, fieldType, fieldId):
         self.context.write(self.trans)
         self.popContext()
-        self.pushContext(TJSONPairContext(protocol=self,
+        self.pushContext(self.pair_context_class(
+            protocol=self,
             indentLevel=len(self.contexts)))
         self.context.writeNewLine(self.trans)
         self.writeJSONString(name)
@@ -663,7 +679,8 @@ class TSimpleJSONProtocol(TSimpleJSONProtocolBase):
     def writeMapBegin(self, keyType, valType, size):
         self.writeJSONMapStart()
         self.context.writeNewLine(self.trans)
-        self.pushContext(TJSONPairContext(protocol=self,
+        self.pushContext(self.pair_context_class(
+            protocol=self,
             indentLevel=len(self.contexts) - 1, isMapPair=True))
 
     def writeMapEnd(self):
@@ -743,7 +760,8 @@ class TSimpleJSONProtocol(TSimpleJSONProtocolBase):
             return (None, TType.STOP, 0)
         self.context.read(self.reader)
         self.popContext()
-        self.pushContext(TJSONPairContext(protocol=self,
+        self.pushContext(self.pair_context_class(
+            protocol=self,
             indentLevel=len(self.contexts)))
         self.skipWhitespace()
         fname = self.readJSONString()
@@ -784,7 +802,8 @@ class TSimpleJSONProtocol(TSimpleJSONProtocolBase):
     def readMapBegin(self):
         self.readJSONMapStart()
         self.skipWhitespace()
-        self.pushContext(TJSONPairContext(protocol=self,
+        self.pushContext(self.pair_context_class(
+            protocol=self,
             indentLevel=len(self.contexts) - 1, isMapPair=True))
         self.pushSpec(self.spec.getNextSpec())
         return self.spec.readMapBegin()
@@ -815,6 +834,7 @@ class TSimpleJSONProtocol(TSimpleJSONProtocolBase):
         self.readJSONArrayEnd()
         self.popSpec()
     readSetEnd = readListEnd
+
 
 class TSimpleJSONProtocolFactory:
     def getProtocol(self, trans, spec=None):
