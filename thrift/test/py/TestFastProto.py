@@ -136,6 +136,12 @@ class AbstractTest():
         # at least a varint and 1 more byte.
         self.decode_helper(OneOfEach(aMap={b"h": 1}), split=0.1)
 
+    def test_decode_negative(self):
+        buf = TMemoryBuffer(b'\x80\x01\x00\x02\x80\x01\x00\x02foobar')
+        prot = TBinaryProtocol.TBinaryProtocol(buf)
+        with self.assertRaises(TProtocol.TProtocolException):
+            prot.readMessageBegin()
+
     def test_decode_union(self):
         u = TestUnion(i32_field=123)
         self.decode_helper(u)
