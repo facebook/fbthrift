@@ -245,7 +245,7 @@ string include_file(string filename) {
     }
 
     // File was not found
-    failure("Could not find include filex %s", filename.c_str());
+    failure("Could not find include file %s", filename.c_str());
   }
 
 }
