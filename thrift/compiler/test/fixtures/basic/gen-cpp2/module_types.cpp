@@ -40,6 +40,7 @@ template <> bool TEnumTraitsBase< ::cpp2::MyEnum>::findValue(const char* name,  
 namespace cpp2 {
 
 void MyStruct::__clear() {
+  // clear all fields
   MyIntField = 0;
   MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   __isset.__clear();

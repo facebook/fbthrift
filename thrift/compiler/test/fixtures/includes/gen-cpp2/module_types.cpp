@@ -17,6 +17,7 @@
 namespace cpp2 {
 
 void MyStruct::__clear() {
+  // clear all fields
   ::apache::thrift::Cpp2Ops<  ::cpp2::Included>::clear(&MyIncludedField);
   __isset.__clear();
 }

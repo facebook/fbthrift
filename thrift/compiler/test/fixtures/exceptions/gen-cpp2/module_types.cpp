@@ -16,6 +16,10 @@
 
 namespace cpp2 {
 
+void Banal::__clear() {
+  // clear all fields
+}
+
 bool Banal::operator==(const Banal& /* rhs */) const {
   return true;
 }
@@ -42,6 +46,7 @@ namespace apache { namespace thrift {
 namespace cpp2 {
 
 void Fiery::__clear() {
+  // clear all fields
   message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
 }
 

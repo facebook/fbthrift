@@ -16,6 +16,10 @@
 
 namespace some { namespace valid { namespace ns {
 
+void Empty::__clear() {
+  // clear all fields
+}
+
 bool Empty::operator==(const Empty& /* rhs */) const {
   return true;
 }
@@ -42,6 +46,7 @@ namespace apache { namespace thrift {
 namespace some { namespace valid { namespace ns {
 
 void MyStruct::__clear() {
+  // clear all fields
   MyBoolField = 0;
   MyIntField = 12LL;
   MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("test");
@@ -90,6 +95,7 @@ namespace apache { namespace thrift {
 namespace some { namespace valid { namespace ns {
 
 void containerStruct::__clear() {
+  // clear all fields
   fieldA = 0;
   fieldB.clear();
   fieldC.clear();

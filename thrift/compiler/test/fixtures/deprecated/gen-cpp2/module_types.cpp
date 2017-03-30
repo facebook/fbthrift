@@ -17,6 +17,7 @@
 namespace cpp2 {
 
 void House::__clear() {
+  // clear all fields
   id = 0;
   houseName = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   houseColors.clear();
@@ -58,6 +59,7 @@ namespace apache { namespace thrift {
 namespace cpp2 {
 
 void Field::__clear() {
+  // clear all fields
   id = 0;
   fieldType = 5;
 }

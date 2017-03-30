@@ -36,6 +36,7 @@ class Banal : private apache::thrift::detail::st::ComparisonOperators<Banal>, pu
   Banal& operator=(Banal&&) = default;
 
   Banal& operator=(const Banal&) = default;
+  void __clear();
 
   virtual ~Banal() throw() {}
 
@@ -72,6 +73,10 @@ extern template uint32_t Banal::serializedSizeZC<>(apache::thrift::CompactProtoc
 
 } // cpp2
 namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::cpp2::Banal>::clear( ::cpp2::Banal* obj) {
+  return obj->__clear();
+}
 
 template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::Banal>::thriftType() {
   return apache::thrift::protocol::T_STRUCT;

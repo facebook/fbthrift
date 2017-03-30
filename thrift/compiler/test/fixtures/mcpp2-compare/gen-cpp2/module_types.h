@@ -51,6 +51,7 @@ class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
   Empty& operator=(Empty&&) = default;
 
   Empty& operator=(const Empty&) = default;
+  void __clear();
 
   virtual ~Empty() throw() {}
 
@@ -83,6 +84,10 @@ extern template uint32_t Empty::serializedSizeZC<>(apache::thrift::CompactProtoc
 
 }}} // some::valid::ns
 namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::some::valid::ns::Empty>::clear( ::some::valid::ns::Empty* obj) {
+  return obj->__clear();
+}
 
 template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::Empty>::thriftType() {
   return apache::thrift::protocol::T_STRUCT;

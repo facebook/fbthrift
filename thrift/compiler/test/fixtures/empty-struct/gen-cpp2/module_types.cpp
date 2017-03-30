@@ -16,6 +16,10 @@
 
 namespace cpp2 {
 
+void Empty::__clear() {
+  // clear all fields
+}
+
 bool Empty::operator==(const Empty& /* rhs */) const {
   return true;
 }
@@ -40,6 +44,19 @@ namespace apache { namespace thrift {
 
 }} // apache::thrift
 namespace cpp2 {
+
+void Nada::__clear() {
+  // clear all fields
+  if (type_ == Type::__EMPTY__) { return; }
+  switch(type_) {
+    default:
+    {
+      assert(false);
+      break;
+    }
+  }
+  type_ = Type::__EMPTY__;
+}
 
 bool Nada::operator==(const Nada& /* rhs */) const {
   if (type_ != rhs.type_) { return false; }

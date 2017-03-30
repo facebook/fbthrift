@@ -2778,57 +2778,57 @@ class CppGenerator(t_generator.Generator):
                     struct('}')
                 # SELECTIVE CONSTRUCTOR
 
-            if len(members) > 0:
-                with struct.defn('void {name}()', name="__clear"):
-                    if obj.is_union:
-                        out('if (type_ == Type::__EMPTY__) { return; }')
-                        self._gen_union_switch(members,
-                            'destruct(value_.{field});',
-                            'destruct(value_.{field});')
-                        out('type_ = Type::__EMPTY__;')
-                    else:
-                        for member in members:
-                            t = self._get_true_type(member.type)
-                            name = member.name + \
-                                self._type_access_suffix(member.type)
-                            if self._is_optional_wrapped(member):
-                                # trumps below conditions, regardless of type
-                                out(('{0}.clear();').format(name))
-                            elif t.is_base_type or t.is_enum:
-                                dval = self._member_default_value(
-                                        member, explicit=True)
-                                out('{0} = {1};'.format(name, dval))
-                            elif t.is_struct or t.is_xception:
-                                if t.members:
-                                    if self._is_reference(member):
-                                        if self._is_const_shared_ptr(member):
-                                            out('{0}.reset();'.format(name))
-                                        else:
-                                            out(('if ({1}) ::apache::thrift' +
-                                                 '::Cpp2Ops< {0}>' +
-                                                 '::clear({1}.get());').format(
-                                                     self._type_name(
-                                                         member.type),
-                                                     name))
-                                    else:
-                                        out(('::apache::thrift::Cpp2Ops< {0}>' +
-                                             '::clear(&{1});').format(
-                                                 self._type_name(member.type),
-                                                                 name))
-                            elif t.is_container:
+            with struct.defn('void {name}()', name="__clear"):
+                out('// clear all fields')
+                if obj.is_union:
+                    out('if (type_ == Type::__EMPTY__) { return; }')
+                    self._gen_union_switch(members,
+                        'destruct(value_.{field});',
+                        'destruct(value_.{field});')
+                    out('type_ = Type::__EMPTY__;')
+                else:
+                    for member in members:
+                        t = self._get_true_type(member.type)
+                        name = member.name + \
+                            self._type_access_suffix(member.type)
+                        if self._is_optional_wrapped(member):
+                            # trumps below conditions, regardless of type
+                            out(('{0}.clear();').format(name))
+                        elif t.is_base_type or t.is_enum:
+                            dval = self._member_default_value(
+                                    member, explicit=True)
+                            out('{0} = {1};'.format(name, dval))
+                        elif t.is_struct or t.is_xception:
+                            if t.members:
                                 if self._is_reference(member):
-                                    out('{0}.reset(new typename decltype({0})'
-                                        '::element_type());'.format(name))
+                                    if self._is_const_shared_ptr(member):
+                                        out('{0}.reset();'.format(name))
+                                    else:
+                                        out(('if ({1}) ::apache::thrift' +
+                                             '::Cpp2Ops< {0}>' +
+                                             '::clear({1}.get());').format(
+                                                 self._type_name(
+                                                     member.type),
+                                                 name))
                                 else:
-                                    out('{0}.clear();'.format(name))
+                                    out(('::apache::thrift::Cpp2Ops< {0}>' +
+                                         '::clear(&{1});').format(
+                                             self._type_name(member.type),
+                                                             name))
+                        elif t.is_container:
+                            if self._is_reference(member):
+                                out('{0}.reset(new typename decltype({0})'
+                                    '::element_type());'.format(name))
                             else:
-                                raise TypeError('Unknown type for member:' +
-                                                member.name)
-                        if should_generate_isset:
-                            out('__isset.__clear();')
-                        if struct_options.has_serialized_fields:
-                            out('{0}.reset();'.format(
-                                self._serialized_fields_name))
+                                out('{0}.clear();'.format(name))
+                        else:
+                            raise TypeError('Unknown type for member:' +
+                                            member.name)
+                    if should_generate_isset:
+                        out('__isset.__clear();')
+                    if struct_options.has_serialized_fields:
+                        out('{0}.reset();'.format(
+                            self._serialized_fields_name))
         # END if not pointers
 
         if 'final' not in obj.annotations:
@@ -4216,7 +4216,7 @@ class CppGenerator(t_generator.Generator):
         compat_full_name = compat_ns + obj.name
         full_name = ns + obj.name
 
-        if not compat and len(obj.members) > 0:
+        if not compat > 0:
             with scope.defn(
                 ('template <> inline '
                  'void Cpp2Ops<{compat_full_name}>::clear('

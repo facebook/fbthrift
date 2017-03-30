@@ -17,6 +17,7 @@
 namespace cpp2 {
 
 void Included::__clear() {
+  // clear all fields
   MyIntField = 0LL;
   __isset.__clear();
 }

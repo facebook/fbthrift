@@ -109,6 +109,7 @@ template <> bool TEnumTraitsBase< ::test_cpp2::cpp_reflection::enum_with_special
 namespace test_cpp2 { namespace cpp_reflection {
 
 void union1::__clear() {
+  // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::ui:
@@ -193,6 +194,7 @@ namespace apache { namespace thrift {
 namespace test_cpp2 { namespace cpp_reflection {
 
 void union2::__clear() {
+  // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::ui_2:
@@ -277,6 +279,7 @@ namespace apache { namespace thrift {
 namespace test_cpp2 { namespace cpp_reflection {
 
 void union3::__clear() {
+  // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::ui_3:
@@ -361,6 +364,7 @@ namespace apache { namespace thrift {
 namespace test_cpp2 { namespace cpp_reflection {
 
 void structA::__clear() {
+  // clear all fields
   a = 0;
   b = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   __isset.__clear();
@@ -399,6 +403,7 @@ namespace apache { namespace thrift {
 namespace test_cpp2 { namespace cpp_reflection {
 
 void unionA::__clear() {
+  // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::i:
@@ -493,6 +498,7 @@ namespace apache { namespace thrift {
 namespace test_cpp2 { namespace cpp_reflection {
 
 void structB::__clear() {
+  // clear all fields
   c = 0;
   d = 0;
   __isset.__clear();
@@ -531,6 +537,7 @@ namespace apache { namespace thrift {
 namespace test_cpp2 { namespace cpp_reflection {
 
 void structC::__clear() {
+  // clear all fields
   a = 0;
   b = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   c = 0;
@@ -901,6 +908,7 @@ namespace apache { namespace thrift {
 namespace test_cpp2 { namespace cpp_reflection {
 
 void struct1::__clear() {
+  // clear all fields
   field0 = 0;
   field1 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
@@ -981,6 +989,7 @@ namespace apache { namespace thrift {
 namespace test_cpp2 { namespace cpp_reflection {
 
 void struct2::__clear() {
+  // clear all fields
   fieldA = 0;
   fieldB = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   fieldC =  ::test_cpp2::cpp_reflection::enum1::field0;
@@ -1068,6 +1077,7 @@ namespace apache { namespace thrift {
 namespace test_cpp2 { namespace cpp_reflection {
 
 void struct3::__clear() {
+  // clear all fields
   fieldA = 0;
   fieldB = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   fieldC =  ::test_cpp2::cpp_reflection::enum1::field0;
@@ -1313,6 +1323,7 @@ struct4& struct4::operator=(const struct4& src) {
 }
 
 void struct4::__clear() {
+  // clear all fields
   field0 = 0;
   field1 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
@@ -1364,6 +1375,7 @@ namespace apache { namespace thrift {
 namespace test_cpp2 { namespace cpp_reflection {
 
 void struct5::__clear() {
+  // clear all fields
   field0 = 0;
   field1 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
@@ -1436,6 +1448,7 @@ namespace apache { namespace thrift {
 namespace test_cpp2 { namespace cpp_reflection {
 
 void struct_binary::__clear() {
+  // clear all fields
   bi = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   __isset.__clear();
 }
@@ -1469,6 +1482,7 @@ namespace apache { namespace thrift {
 namespace test_cpp2 { namespace cpp_reflection {
 
 void dep_A_struct::__clear() {
+  // clear all fields
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::dep_B_struct>::clear(&b);
   ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::dep_C_struct>::clear(&c);
   i_a = 0;
@@ -1528,6 +1542,7 @@ namespace apache { namespace thrift {
 namespace test_cpp2 { namespace cpp_reflection {
 
 void annotated::__clear() {
+  // clear all fields
   a = 0;
   __isset.__clear();
 }
@@ -1561,6 +1576,7 @@ namespace apache { namespace thrift {
 namespace test_cpp2 { namespace cpp_reflection {
 
 void union_with_special_names::__clear() {
+  // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::get:
@@ -1885,6 +1901,7 @@ namespace apache { namespace thrift {
 namespace test_cpp2 { namespace cpp_reflection {
 
 void struct_with_special_names::__clear() {
+  // clear all fields
   get = 0;
   getter = 0;
   lists = 0;
@@ -2053,6 +2070,7 @@ namespace apache { namespace thrift {
 namespace test_cpp2 { namespace cpp_reflection {
 
 void struct_with_indirections::__clear() {
+  // clear all fields
   real = 0;
   fake = 0;
   number.number = 0;

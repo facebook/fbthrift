@@ -23,6 +23,7 @@ void Struct::__clear() {
   __isset.__clear();
 }
 %>void <%struct:name%>::__clear() {
+  // clear all fields
 <%#struct:base_fields%><%#field:type%><%!
   %>  <%field:name%> = <%!
   %><%#field:value%><%!
@@ -41,7 +42,9 @@ void Struct::__clear() {
 %><%#struct:container_fields%><%#field:type%><%!
   %>  <%field:name%>.clear();
 <%/field:type%><%/struct:container_fields%><%!
+%><%#struct:fields?%><%!
 %>  __isset.__clear();
-}
+<%/struct:fields?%><%!
+%>}
 <%!
 %>

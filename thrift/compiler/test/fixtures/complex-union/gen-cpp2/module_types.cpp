@@ -17,6 +17,7 @@
 namespace cpp2 {
 
 void ComplexUnion::__clear() {
+  // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::intValue:

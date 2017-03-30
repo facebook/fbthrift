@@ -86,6 +86,7 @@ template <> bool TEnumTraitsBase< ::cpp2::Company>::findValue(const char* name, 
 namespace cpp2 {
 
 void Internship::__clear() {
+  // clear all fields
   weeks = 0;
   title = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   employer =  ::cpp2::Company::FACEBOOK;
@@ -132,6 +133,7 @@ namespace apache { namespace thrift {
 namespace cpp2 {
 
 void UnEnumStruct::__clear() {
+  // clear all fields
   city = static_cast< ::cpp2::City>(-1);
   __isset.__clear();
 }
@@ -165,6 +167,7 @@ namespace apache { namespace thrift {
 namespace cpp2 {
 
 void Range::__clear() {
+  // clear all fields
   min = 0;
   max = 0;
 }

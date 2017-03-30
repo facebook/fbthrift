@@ -40,6 +40,7 @@ template <> bool TEnumTraitsBase< ::cpp2::Animal>::findValue(const char* name,  
 namespace cpp2 {
 
 void Color::__clear() {
+  // clear all fields
   red = 0;
   green = 0;
   blue = 0;
@@ -86,6 +87,7 @@ namespace apache { namespace thrift {
 namespace cpp2 {
 
 void Vehicle::__clear() {
+  // clear all fields
   ::apache::thrift::Cpp2Ops<  ::cpp2::Color>::clear(&color);
   licensePlate.clear();
   description.clear();
@@ -132,6 +134,7 @@ namespace apache { namespace thrift {
 namespace cpp2 {
 
 void Person::__clear() {
+  // clear all fields
   id = 0;
   name = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   age.clear();

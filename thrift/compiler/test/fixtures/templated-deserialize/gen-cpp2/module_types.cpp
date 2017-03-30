@@ -17,6 +17,7 @@
 namespace cpp2 {
 
 void containerStruct::__clear() {
+  // clear all fields
   fieldA = 0;
   fieldB.clear();
   fieldC.clear();

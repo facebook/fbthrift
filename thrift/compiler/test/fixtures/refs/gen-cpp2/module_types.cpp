@@ -40,6 +40,7 @@ template <> bool TEnumTraitsBase< ::cpp2::TypedEnum>::findValue(const char* name
 namespace cpp2 {
 
 void MyUnion::__clear() {
+  // clear all fields
   if (type_ == Type::__EMPTY__) { return; }
   switch(type_) {
     case Type::anInteger:
@@ -104,6 +105,7 @@ namespace apache { namespace thrift {
 namespace cpp2 {
 
 void MyField::__clear() {
+  // clear all fields
   opt_value = 0;
   value = 0;
   req_value = 0;
@@ -162,6 +164,7 @@ MyStruct& MyStruct::operator=(const MyStruct& src) {
 }
 
 void MyStruct::__clear() {
+  // clear all fields
   if (opt_ref) ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::clear(opt_ref.get());
   if (ref) ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::clear(ref.get());
   if (req_ref) ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::clear(req_ref.get());
@@ -219,6 +222,7 @@ StructWithUnion& StructWithUnion::operator=(const StructWithUnion& src) {
 }
 
 void StructWithUnion::__clear() {
+  // clear all fields
   if (u) ::apache::thrift::Cpp2Ops<  ::cpp2::MyUnion>::clear(u.get());
   aDouble = 0;
   ::apache::thrift::Cpp2Ops<  ::cpp2::MyField>::clear(&f);
@@ -270,6 +274,7 @@ namespace apache { namespace thrift {
 namespace cpp2 {
 
 void RecursiveStruct::__clear() {
+  // clear all fields
   mes.clear();
   __isset.__clear();
 }
@@ -330,6 +335,7 @@ StructWithContainers& StructWithContainers::operator=(const StructWithContainers
 }
 
 void StructWithContainers::__clear() {
+  // clear all fields
   list_ref.reset(new typename decltype(list_ref)::element_type());
   set_ref.reset(new typename decltype(set_ref)::element_type());
   map_ref.reset(new typename decltype(map_ref)::element_type());
@@ -393,6 +399,7 @@ namespace apache { namespace thrift {
 namespace cpp2 {
 
 void StructWithSharedConst::__clear() {
+  // clear all fields
   opt_shared_const.reset();
   shared_const.reset();
   req_shared_const.reset();
@@ -435,6 +442,10 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace cpp2 {
 
+void Empty::__clear() {
+  // clear all fields
+}
+
 bool Empty::operator==(const Empty& /* rhs */) const {
   return true;
 }
@@ -473,6 +484,7 @@ StructWithRef& StructWithRef::operator=(const StructWithRef& src) {
 }
 
 void StructWithRef::__clear() {
+  // clear all fields
   __isset.__clear();
 }
 
@@ -525,6 +537,7 @@ StructWithRefTypeUnique& StructWithRefTypeUnique::operator=(const StructWithRefT
 }
 
 void StructWithRefTypeUnique::__clear() {
+  // clear all fields
   __isset.__clear();
 }
 
@@ -565,6 +578,7 @@ namespace apache { namespace thrift {
 namespace cpp2 {
 
 void StructWithRefTypeShared::__clear() {
+  // clear all fields
   __isset.__clear();
 }
 
@@ -605,6 +619,7 @@ namespace apache { namespace thrift {
 namespace cpp2 {
 
 void StructWithRefTypeSharedConst::__clear() {
+  // clear all fields
   __isset.__clear();
 }
 
@@ -657,6 +672,7 @@ StructWithRefTypeCustom& StructWithRefTypeCustom::operator=(const StructWithRefT
 }
 
 void StructWithRefTypeCustom::__clear() {
+  // clear all fields
   __isset.__clear();
 }
 
