@@ -64,9 +64,17 @@ class FramingHandler
     protectionHandler_ = h;
   }
 
-  void setReadBufferSize(size_t readBufferSize) {
-    readBufferSize_ = std::max(
-      readBufferSize, static_cast<size_t>(DEFAULT_BUFFER_SIZE));
+  /**
+   * Set read buffer size.
+   *
+   * @param readBufferSize   The read buffer size to set
+   * @param strict           True means given size will always be used; false
+   *                         means given size may not be used if it is too small
+   */
+  void setReadBufferSize(size_t readBufferSize, bool strict = false) {
+    readBufferSize_ = strict
+        ? readBufferSize
+        : std::max<size_t>(readBufferSize, DEFAULT_BUFFER_SIZE);
   }
 
   folly::Future<folly::Unit> close(Context* ctx) override;

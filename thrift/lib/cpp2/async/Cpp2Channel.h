@@ -137,11 +137,18 @@ class Cpp2Channel
     return protectionHandler_.get();
   }
 
-  void setReadBufferSize(uint32_t readBufferSize) {
-    framingHandler_->setReadBufferSize(readBufferSize);
+  /**
+   * Set read buffer size.
+   *
+   * @param readBufferSize   The read buffer size to set
+   * @param strict           True means given size will always be used; false
+   *                         means given size may not be used if it is too small
+   */
+  void setReadBufferSize(uint32_t readBufferSize, bool strict = false) {
+    framingHandler_->setReadBufferSize(readBufferSize, strict);
   }
 
-private:
+ private:
   std::shared_ptr<apache::thrift::async::TAsyncTransport> transport_;
   std::unique_ptr<folly::IOBufQueue> queue_;
   std::deque<SendCallback*> sendCallbacks_;
