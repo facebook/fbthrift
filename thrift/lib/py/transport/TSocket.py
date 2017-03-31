@@ -33,6 +33,12 @@ import socket
 import warnings
 import time
 
+try:
+    import fcntl
+except ImportError:
+    # Windows doesn't have this module
+    fcntl = None
+
 class ConnectionEpoll:
     """ epoll is preferred over select due to its efficiency and ability to
         handle more than 1024 simultaneous connections """
@@ -184,8 +190,6 @@ class TSocketBase(TTransportBase):
             self._setHandleCloseOnExec(handle)
 
     def _setHandleCloseOnExec(self, handle):
-        # Windows doesn't have fnctl, only import when needed
-        import fcntl
         flags = fcntl.fcntl(handle, fcntl.F_GETFD, 0)
         if flags < 0:
             raise IOError('Error in retrieving file options')
