@@ -38,9 +38,6 @@ template<> struct equal_to<typename  ::cpp2::MyEnum> : public apache::thrift::de
 namespace apache { namespace thrift {
 
 template <> struct TEnumDataStorage< ::cpp2::MyEnum>;
-template <> const std::size_t TEnumTraitsBase< ::cpp2::MyEnum>::size;
-template <> const folly::Range<const  ::cpp2::MyEnum*> TEnumTraitsBase< ::cpp2::MyEnum>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::cpp2::MyEnum>::names;
 template <> const char* TEnumTraitsBase< ::cpp2::MyEnum>::findName( ::cpp2::MyEnum value);
 template <> bool TEnumTraitsBase< ::cpp2::MyEnum>::findValue(const char* name,  ::cpp2::MyEnum* outValue);
 

@@ -37,9 +37,6 @@ template<> struct equal_to<typename  ::cpp2::EmptyEnum> : public apache::thrift:
 namespace apache { namespace thrift {
 
 template <> struct TEnumDataStorage< ::cpp2::EmptyEnum>;
-template <> const std::size_t TEnumTraitsBase< ::cpp2::EmptyEnum>::size;
-template <> const folly::Range<const  ::cpp2::EmptyEnum*> TEnumTraitsBase< ::cpp2::EmptyEnum>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::cpp2::EmptyEnum>::names;
 template <> const char* TEnumTraitsBase< ::cpp2::EmptyEnum>::findName( ::cpp2::EmptyEnum value);
 template <> bool TEnumTraitsBase< ::cpp2::EmptyEnum>::findValue(const char* name,  ::cpp2::EmptyEnum* outValue);
 
@@ -66,9 +63,6 @@ template<> struct equal_to<typename  ::cpp2::City> : public apache::thrift::deta
 namespace apache { namespace thrift {
 
 template <> struct TEnumDataStorage< ::cpp2::City>;
-template <> const std::size_t TEnumTraitsBase< ::cpp2::City>::size;
-template <> const folly::Range<const  ::cpp2::City*> TEnumTraitsBase< ::cpp2::City>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::cpp2::City>::names;
 template <> const char* TEnumTraitsBase< ::cpp2::City>::findName( ::cpp2::City value);
 template <> bool TEnumTraitsBase< ::cpp2::City>::findValue(const char* name,  ::cpp2::City* outValue);
 
@@ -103,9 +97,6 @@ template<> struct equal_to<typename  ::cpp2::Company> : public apache::thrift::d
 namespace apache { namespace thrift {
 
 template <> struct TEnumDataStorage< ::cpp2::Company>;
-template <> const std::size_t TEnumTraitsBase< ::cpp2::Company>::size;
-template <> const folly::Range<const  ::cpp2::Company*> TEnumTraitsBase< ::cpp2::Company>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::cpp2::Company>::names;
 template <> const char* TEnumTraitsBase< ::cpp2::Company>::findName( ::cpp2::Company value);
 template <> bool TEnumTraitsBase< ::cpp2::Company>::findValue(const char* name,  ::cpp2::Company* outValue);
 

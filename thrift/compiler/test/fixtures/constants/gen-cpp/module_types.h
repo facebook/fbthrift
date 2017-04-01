@@ -28,9 +28,6 @@ extern const typename apache::thrift::detail::TEnumMapFactory<EmptyEnum, int>::N
 
 namespace apache { namespace thrift {
 template <> struct TEnumDataStorage< ::EmptyEnum>;
-template <> const std::size_t TEnumTraitsBase< ::EmptyEnum>::size;
-template <> const folly::Range<const  ::EmptyEnum*> TEnumTraitsBase< ::EmptyEnum>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::EmptyEnum>::names;
 }} // apache::thrift
 
 
@@ -49,9 +46,6 @@ extern const typename apache::thrift::detail::TEnumMapFactory<City, int>::NamesT
 
 namespace apache { namespace thrift {
 template <> struct TEnumDataStorage< ::City>;
-template <> const std::size_t TEnumTraitsBase< ::City>::size;
-template <> const folly::Range<const  ::City*> TEnumTraitsBase< ::City>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::City>::names;
 }} // apache::thrift
 
 
@@ -85,9 +79,6 @@ extern const typename apache::thrift::detail::TEnumMapFactory<Company, int>::Nam
 
 namespace apache { namespace thrift {
 template <> struct TEnumDataStorage< ::Company>;
-template <> const std::size_t TEnumTraitsBase< ::Company>::size;
-template <> const folly::Range<const  ::Company*> TEnumTraitsBase< ::Company>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::Company>::names;
 }} // apache::thrift
 
 

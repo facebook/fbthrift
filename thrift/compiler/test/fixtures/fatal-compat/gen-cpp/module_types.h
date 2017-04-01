@@ -43,9 +43,6 @@ extern const typename apache::thrift::detail::TEnumMapFactory<enum1, int>::Names
 }} // namespace
 namespace apache { namespace thrift {
 template <> struct TEnumDataStorage< ::test_cpp1::cpp_reflection::enum1>;
-template <> const std::size_t TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum1>::size;
-template <> const folly::Range<const  ::test_cpp1::cpp_reflection::enum1*> TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum1>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum1>::names;
 }} // apache::thrift
 
 namespace test_cpp1 { namespace cpp_reflection {
@@ -78,9 +75,6 @@ extern const typename apache::thrift::detail::TEnumMapFactory<enum2, int>::Names
 }} // namespace
 namespace apache { namespace thrift {
 template <> struct TEnumDataStorage< ::test_cpp1::cpp_reflection::enum2>;
-template <> const std::size_t TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum2>::size;
-template <> const folly::Range<const  ::test_cpp1::cpp_reflection::enum2*> TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum2>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum2>::names;
 }} // apache::thrift
 
 namespace test_cpp1 { namespace cpp_reflection {
@@ -113,9 +107,6 @@ extern const typename apache::thrift::detail::TEnumMapFactory<enum3, int>::Names
 }} // namespace
 namespace apache { namespace thrift {
 template <> struct TEnumDataStorage< ::test_cpp1::cpp_reflection::enum3>;
-template <> const std::size_t TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum3>::size;
-template <> const folly::Range<const  ::test_cpp1::cpp_reflection::enum3*> TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum3>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum3>::names;
 }} // apache::thrift
 
 namespace test_cpp1 { namespace cpp_reflection {
@@ -171,9 +162,6 @@ extern const typename apache::thrift::detail::TEnumMapFactory<enum_with_special_
 }} // namespace
 namespace apache { namespace thrift {
 template <> struct TEnumDataStorage< ::test_cpp1::cpp_reflection::enum_with_special_names>;
-template <> const std::size_t TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum_with_special_names>::size;
-template <> const folly::Range<const  ::test_cpp1::cpp_reflection::enum_with_special_names*> TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum_with_special_names>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum_with_special_names>::names;
 }} // apache::thrift
 
 namespace test_cpp1 { namespace cpp_reflection {
