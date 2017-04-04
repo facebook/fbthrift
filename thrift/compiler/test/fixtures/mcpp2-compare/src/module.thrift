@@ -40,9 +40,3 @@ typedef list<map<i16, string>> complexContainerTypeDef
 typedef list<MyStruct> structTypeDef
 typedef list<map<Empty, MyStruct>> complexStructTypeDef
 typedef list<complexStructTypeDef> mostComplexTypeDef
-
-struct containerStruct {
-  1: bool fieldA
-  2: set<i32> fieldB
-  3: set<set<set<string>>> fieldC
-}
