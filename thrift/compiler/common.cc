@@ -235,12 +235,10 @@ string include_file(string filename) {
     vector<string>::iterator it;
     for (it = sp.begin(); it != sp.end(); it++) {
       string sfilename = *(it) + "/" + filename;
-      boost::filesystem::path abspath{sfilename};
-      try {
-        abspath = boost::filesystem::canonical(abspath);
-        return abspath.string();
-      } catch (const boost::filesystem::filesystem_error& e) {
-        pdebug("Could not find: %s. Error: %s", filename.c_str(), e.what());
+      if (boost::filesystem::exists(sfilename)) {
+        return sfilename;
+      } else {
+        pdebug("Could not find: %s.", sfilename.c_str());
       }
     }
 
