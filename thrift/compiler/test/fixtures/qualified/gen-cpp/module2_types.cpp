@@ -12,6 +12,8 @@
 #include <algorithm>
 #include <string.h>
 
+#include <folly/Indestructible.h>
+
 namespace MODULE2 {
 
 const uint64_t Struct::_reflection_id;

@@ -21,9 +21,11 @@ class Schema;
 enum EmptyEnum {
 };
 
-extern const typename apache::thrift::detail::TEnumMapFactory<EmptyEnum, int>::ValuesToNamesMapType _EmptyEnum_VALUES_TO_NAMES;
+using _EmptyEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<EmptyEnum, int>;
 
-extern const typename apache::thrift::detail::TEnumMapFactory<EmptyEnum, int>::NamesToValuesMapType _EmptyEnum_NAMES_TO_VALUES;
+extern const _EmptyEnum_EnumMapFactory::ValuesToNamesMapType _EmptyEnum_VALUES_TO_NAMES;
+
+extern const _EmptyEnum_EnumMapFactory::NamesToValuesMapType _EmptyEnum_NAMES_TO_VALUES;
 
 
 namespace apache { namespace thrift {
@@ -39,9 +41,11 @@ enum City {
   LON = 3,
 };
 
-extern const typename apache::thrift::detail::TEnumMapFactory<City, int>::ValuesToNamesMapType _City_VALUES_TO_NAMES;
+using _City_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<City, int>;
 
-extern const typename apache::thrift::detail::TEnumMapFactory<City, int>::NamesToValuesMapType _City_NAMES_TO_VALUES;
+extern const _City_EnumMapFactory::ValuesToNamesMapType _City_VALUES_TO_NAMES;
+
+extern const _City_EnumMapFactory::NamesToValuesMapType _City_NAMES_TO_VALUES;
 
 
 namespace apache { namespace thrift {
@@ -72,9 +76,11 @@ enum Company {
   INSTAGRAM = 3,
 };
 
-extern const typename apache::thrift::detail::TEnumMapFactory<Company, int>::ValuesToNamesMapType _Company_VALUES_TO_NAMES;
+using _Company_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<Company, int>;
 
-extern const typename apache::thrift::detail::TEnumMapFactory<Company, int>::NamesToValuesMapType _Company_NAMES_TO_VALUES;
+extern const _Company_EnumMapFactory::ValuesToNamesMapType _Company_VALUES_TO_NAMES;
+
+extern const _Company_EnumMapFactory::NamesToValuesMapType _Company_NAMES_TO_VALUES;
 
 
 namespace apache { namespace thrift {

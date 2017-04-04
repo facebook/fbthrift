@@ -12,6 +12,8 @@
 #include <algorithm>
 #include <string.h>
 
+#include <folly/Indestructible.h>
+
 namespace cpp1 {
 
 const uint64_t Included::_reflection_id;

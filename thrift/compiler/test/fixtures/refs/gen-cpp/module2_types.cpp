@@ -12,6 +12,8 @@
 #include <algorithm>
 #include <string.h>
 
+#include <folly/Indestructible.h>
+
 
 
 const uint64_t StructUsingOtherNamespace::_reflection_id;

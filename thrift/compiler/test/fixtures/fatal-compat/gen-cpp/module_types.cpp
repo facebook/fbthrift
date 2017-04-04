@@ -12,11 +12,13 @@
 #include <algorithm>
 #include <string.h>
 
+#include <folly/Indestructible.h>
+
 namespace test_cpp1 { namespace cpp_reflection {
 
-const typename apache::thrift::detail::TEnumMapFactory<enum1, int>::ValuesToNamesMapType _enum1_VALUES_TO_NAMES = apache::thrift::detail::TEnumMapFactory<enum1, int>::makeValuesToNamesMap();
+const typename _enum1_EnumMapFactory::ValuesToNamesMapType _enum1_VALUES_TO_NAMES = _enum1_EnumMapFactory::makeValuesToNamesMap();
 
-const typename apache::thrift::detail::TEnumMapFactory<enum1, int>::NamesToValuesMapType _enum1_NAMES_TO_VALUES = apache::thrift::detail::TEnumMapFactory<enum1, int>::makeNamesToValuesMap();
+const typename _enum1_EnumMapFactory::NamesToValuesMapType _enum1_NAMES_TO_VALUES = _enum1_EnumMapFactory::makeNamesToValuesMap();
 
 }} // namespace
 namespace apache { namespace thrift {
@@ -26,19 +28,21 @@ template <>const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::test
 
 template<>
 const char* TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum1>::findName( ::test_cpp1::cpp_reflection::enum1 value) {
-return findName( ::test_cpp1::cpp_reflection::_enum1_VALUES_TO_NAMES, value);
+  static const auto map = folly::Indestructible< ::test_cpp1::cpp_reflection::_enum1_EnumMapFactory::ValuesToNamesMapType>{ ::test_cpp1::cpp_reflection::_enum1_EnumMapFactory::makeValuesToNamesMap()};
+  return findName(*map, value);
 }
 
 template<>
 bool TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum1>::findValue(const char* name,  ::test_cpp1::cpp_reflection::enum1* out) {
-return findValue( ::test_cpp1::cpp_reflection::_enum1_NAMES_TO_VALUES, name, out);
+  static const auto map = folly::Indestructible< ::test_cpp1::cpp_reflection::_enum1_EnumMapFactory::NamesToValuesMapType>{ ::test_cpp1::cpp_reflection::_enum1_EnumMapFactory::makeNamesToValuesMap()};
+  return findValue(*map, name, out);
 }
 }} // apache::thrift
 
 namespace test_cpp1 { namespace cpp_reflection {
-const typename apache::thrift::detail::TEnumMapFactory<enum2, int>::ValuesToNamesMapType _enum2_VALUES_TO_NAMES = apache::thrift::detail::TEnumMapFactory<enum2, int>::makeValuesToNamesMap();
+const typename _enum2_EnumMapFactory::ValuesToNamesMapType _enum2_VALUES_TO_NAMES = _enum2_EnumMapFactory::makeValuesToNamesMap();
 
-const typename apache::thrift::detail::TEnumMapFactory<enum2, int>::NamesToValuesMapType _enum2_NAMES_TO_VALUES = apache::thrift::detail::TEnumMapFactory<enum2, int>::makeNamesToValuesMap();
+const typename _enum2_EnumMapFactory::NamesToValuesMapType _enum2_NAMES_TO_VALUES = _enum2_EnumMapFactory::makeNamesToValuesMap();
 
 }} // namespace
 namespace apache { namespace thrift {
@@ -48,19 +52,21 @@ template <>const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::test
 
 template<>
 const char* TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum2>::findName( ::test_cpp1::cpp_reflection::enum2 value) {
-return findName( ::test_cpp1::cpp_reflection::_enum2_VALUES_TO_NAMES, value);
+  static const auto map = folly::Indestructible< ::test_cpp1::cpp_reflection::_enum2_EnumMapFactory::ValuesToNamesMapType>{ ::test_cpp1::cpp_reflection::_enum2_EnumMapFactory::makeValuesToNamesMap()};
+  return findName(*map, value);
 }
 
 template<>
 bool TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum2>::findValue(const char* name,  ::test_cpp1::cpp_reflection::enum2* out) {
-return findValue( ::test_cpp1::cpp_reflection::_enum2_NAMES_TO_VALUES, name, out);
+  static const auto map = folly::Indestructible< ::test_cpp1::cpp_reflection::_enum2_EnumMapFactory::NamesToValuesMapType>{ ::test_cpp1::cpp_reflection::_enum2_EnumMapFactory::makeNamesToValuesMap()};
+  return findValue(*map, name, out);
 }
 }} // apache::thrift
 
 namespace test_cpp1 { namespace cpp_reflection {
-const typename apache::thrift::detail::TEnumMapFactory<enum3, int>::ValuesToNamesMapType _enum3_VALUES_TO_NAMES = apache::thrift::detail::TEnumMapFactory<enum3, int>::makeValuesToNamesMap();
+const typename _enum3_EnumMapFactory::ValuesToNamesMapType _enum3_VALUES_TO_NAMES = _enum3_EnumMapFactory::makeValuesToNamesMap();
 
-const typename apache::thrift::detail::TEnumMapFactory<enum3, int>::NamesToValuesMapType _enum3_NAMES_TO_VALUES = apache::thrift::detail::TEnumMapFactory<enum3, int>::makeNamesToValuesMap();
+const typename _enum3_EnumMapFactory::NamesToValuesMapType _enum3_NAMES_TO_VALUES = _enum3_EnumMapFactory::makeNamesToValuesMap();
 
 }} // namespace
 namespace apache { namespace thrift {
@@ -70,19 +76,21 @@ template <>const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::test
 
 template<>
 const char* TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum3>::findName( ::test_cpp1::cpp_reflection::enum3 value) {
-return findName( ::test_cpp1::cpp_reflection::_enum3_VALUES_TO_NAMES, value);
+  static const auto map = folly::Indestructible< ::test_cpp1::cpp_reflection::_enum3_EnumMapFactory::ValuesToNamesMapType>{ ::test_cpp1::cpp_reflection::_enum3_EnumMapFactory::makeValuesToNamesMap()};
+  return findName(*map, value);
 }
 
 template<>
 bool TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum3>::findValue(const char* name,  ::test_cpp1::cpp_reflection::enum3* out) {
-return findValue( ::test_cpp1::cpp_reflection::_enum3_NAMES_TO_VALUES, name, out);
+  static const auto map = folly::Indestructible< ::test_cpp1::cpp_reflection::_enum3_EnumMapFactory::NamesToValuesMapType>{ ::test_cpp1::cpp_reflection::_enum3_EnumMapFactory::makeNamesToValuesMap()};
+  return findValue(*map, name, out);
 }
 }} // apache::thrift
 
 namespace test_cpp1 { namespace cpp_reflection {
-const typename apache::thrift::detail::TEnumMapFactory<enum_with_special_names, int>::ValuesToNamesMapType _enum_with_special_names_VALUES_TO_NAMES = apache::thrift::detail::TEnumMapFactory<enum_with_special_names, int>::makeValuesToNamesMap();
+const typename _enum_with_special_names_EnumMapFactory::ValuesToNamesMapType _enum_with_special_names_VALUES_TO_NAMES = _enum_with_special_names_EnumMapFactory::makeValuesToNamesMap();
 
-const typename apache::thrift::detail::TEnumMapFactory<enum_with_special_names, int>::NamesToValuesMapType _enum_with_special_names_NAMES_TO_VALUES = apache::thrift::detail::TEnumMapFactory<enum_with_special_names, int>::makeNamesToValuesMap();
+const typename _enum_with_special_names_EnumMapFactory::NamesToValuesMapType _enum_with_special_names_NAMES_TO_VALUES = _enum_with_special_names_EnumMapFactory::makeNamesToValuesMap();
 
 }} // namespace
 namespace apache { namespace thrift {
@@ -92,12 +100,14 @@ template <>const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::test
 
 template<>
 const char* TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum_with_special_names>::findName( ::test_cpp1::cpp_reflection::enum_with_special_names value) {
-return findName( ::test_cpp1::cpp_reflection::_enum_with_special_names_VALUES_TO_NAMES, value);
+  static const auto map = folly::Indestructible< ::test_cpp1::cpp_reflection::_enum_with_special_names_EnumMapFactory::ValuesToNamesMapType>{ ::test_cpp1::cpp_reflection::_enum_with_special_names_EnumMapFactory::makeValuesToNamesMap()};
+  return findName(*map, value);
 }
 
 template<>
 bool TEnumTraitsBase< ::test_cpp1::cpp_reflection::enum_with_special_names>::findValue(const char* name,  ::test_cpp1::cpp_reflection::enum_with_special_names* out) {
-return findValue( ::test_cpp1::cpp_reflection::_enum_with_special_names_NAMES_TO_VALUES, name, out);
+  static const auto map = folly::Indestructible< ::test_cpp1::cpp_reflection::_enum_with_special_names_EnumMapFactory::NamesToValuesMapType>{ ::test_cpp1::cpp_reflection::_enum_with_special_names_EnumMapFactory::makeNamesToValuesMap()};
+  return findValue(*map, name, out);
 }
 }} // apache::thrift
 

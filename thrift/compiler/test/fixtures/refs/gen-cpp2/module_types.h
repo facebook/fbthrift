@@ -37,8 +37,9 @@ enum class TypedEnum : short {
   VAL2 = 1
 };
 
-extern const typename apache::thrift::detail::TEnumMapFactory<TypedEnum, TypedEnum>::ValuesToNamesMapType _TypedEnum_VALUES_TO_NAMES;
-extern const typename apache::thrift::detail::TEnumMapFactory<TypedEnum, TypedEnum>::NamesToValuesMapType _TypedEnum_NAMES_TO_VALUES;
+using _TypedEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<TypedEnum, TypedEnum>;
+extern const _TypedEnum_EnumMapFactory::ValuesToNamesMapType _TypedEnum_VALUES_TO_NAMES;
+extern const _TypedEnum_EnumMapFactory::NamesToValuesMapType _TypedEnum_NAMES_TO_VALUES;
 
 } // cpp2
 namespace std {

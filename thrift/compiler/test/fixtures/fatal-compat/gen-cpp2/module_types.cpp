@@ -10,6 +10,8 @@
 
 #include <algorithm>
 
+#include <folly/Indestructible.h>
+
 #include "thrift/compiler/test/fixtures/fatal-compat/gen-cpp2/module_data.h"
 
 

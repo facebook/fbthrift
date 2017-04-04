@@ -10,14 +10,16 @@
 
 #include <algorithm>
 
+#include <folly/Indestructible.h>
+
 #include "thrift/compiler/test/fixtures/optionals/gen-cpp2/module_data.h"
 
 
 
 namespace cpp2 {
 
-const typename apache::thrift::detail::TEnumMapFactory<Animal, Animal>::ValuesToNamesMapType _Animal_VALUES_TO_NAMES = apache::thrift::detail::TEnumMapFactory<Animal, Animal>::makeValuesToNamesMap();
-const typename apache::thrift::detail::TEnumMapFactory<Animal, Animal>::NamesToValuesMapType _Animal_NAMES_TO_VALUES = apache::thrift::detail::TEnumMapFactory<Animal, Animal>::makeNamesToValuesMap();
+const _Animal_EnumMapFactory::ValuesToNamesMapType _Animal_VALUES_TO_NAMES = _Animal_EnumMapFactory::makeValuesToNamesMap();
+const _Animal_EnumMapFactory::NamesToValuesMapType _Animal_NAMES_TO_VALUES = _Animal_EnumMapFactory::makeNamesToValuesMap();
 
 } // cpp2
 namespace std {
@@ -29,11 +31,13 @@ template <> const std::size_t TEnumTraitsBase< ::cpp2::Animal>::size = 3;
 template <> const folly::Range<const  ::cpp2::Animal*> TEnumTraitsBase< ::cpp2::Animal>::values = folly::range( ::cpp2::_AnimalEnumDataStorage::values);
 template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::cpp2::Animal>::names = folly::range( ::cpp2::_AnimalEnumDataStorage::names);
 template <> const char* TEnumTraitsBase< ::cpp2::Animal>::findName( ::cpp2::Animal value) {
-  return findName( ::cpp2::_Animal_VALUES_TO_NAMES, value);
+  static auto const map = folly::Indestructible< ::cpp2::_Animal_EnumMapFactory::ValuesToNamesMapType>{ ::cpp2::_Animal_EnumMapFactory::makeValuesToNamesMap()};
+  return findName(*map, value);
 }
 
 template <> bool TEnumTraitsBase< ::cpp2::Animal>::findValue(const char* name,  ::cpp2::Animal* outValue) {
-  return findValue( ::cpp2::_Animal_NAMES_TO_VALUES, name, outValue);
+  static auto const map = folly::Indestructible< ::cpp2::_Animal_EnumMapFactory::NamesToValuesMapType>{ ::cpp2::_Animal_EnumMapFactory::makeNamesToValuesMap()};
+  return findValue(*map, name, outValue);
 }
 
 }} // apache::thrift

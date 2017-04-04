@@ -10,6 +10,8 @@
 
 #include <algorithm>
 
+#include <folly/Indestructible.h>
+
 #include "thrift/compiler/test/fixtures/deprecated/gen-cpp2/module_data.h"
 
 

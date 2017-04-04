@@ -498,16 +498,17 @@ class CppGenerator(t_generator.Generator):
         with primitive:
             out(self._generate_enum_constant_list(tenum.name, constants,
                     quote_names=False, include_values=True))
-        map_factory = "apache::thrift::detail::TEnumMapFactory<{0}, {0}>"\
-            .format(tenum.name)
+        map_factory = '_{0}_EnumMapFactory'.format(tenum.name)
+        s('using {0} = apache::thrift::detail::TEnumMapFactory<{1}, {1}>;'
+            .format(map_factory, tenum.name))
         s.extern(
-            'const typename {0}::ValuesToNamesMapType _{1}_VALUES_TO_NAMES'
+            'const {0}::ValuesToNamesMapType _{1}_VALUES_TO_NAMES'
             .format(map_factory, tenum.name),
             value=(
                 ' = {0}::makeValuesToNamesMap();'
                 .format(map_factory)))
         s.extern(
-            'const typename {0}::NamesToValuesMapType _{1}_NAMES_TO_VALUES'
+            'const {0}::NamesToValuesMapType _{1}_NAMES_TO_VALUES'
             .format(map_factory, tenum.name),
             value=(
                 ' = {0}::makeNamesToValuesMap();'
@@ -563,14 +564,18 @@ class CppGenerator(t_generator.Generator):
             with out().defn('template <> const char* TEnumTraitsBase<{fullName}>::'
                         'findName({fullName} value)'.format(**locals()),
                         name='findName'):
-                out('return findName({ns}_{tenum.name}_VALUES_TO_NAMES, '
-                    'value);'.format(**locals()))
+                out('static auto const map = folly::Indestructible<{0}{1}'
+                    '::ValuesToNamesMapType>{{{0}{1}::makeValuesToNamesMap()}};'
+                    .format(ns, map_factory))
+                out('return findName(*map, value);')
             # TEnumTraitsBase<T>::findValue()
             with out().defn('template <> bool TEnumTraitsBase<{fullName}>::'
                         'findValue(const char* name, {fullName}* outValue)'.
                         format(**locals()), name='findName'):
-                out('return findValue({ns}_{tenum.name}_NAMES_TO_VALUES, '
-                    'name, outValue);'.format(**locals()))
+                out('static auto const map = folly::Indestructible<{0}{1}'
+                    '::NamesToValuesMapType>{{{0}{1}::makeNamesToValuesMap()}};'
+                    .format(ns, map_factory))
+                out('return findValue(*map, name, outValue);')
             # TEnumTraits<T> class member specializations
             if minName is not None and maxName is not None:
                 with out().defn('template <> constexpr {fullName} '
@@ -5686,6 +5691,8 @@ class CppGenerator(t_generator.Generator):
         s()
         # The swap() code needs <algorithm> for std::swap()
         print >>types_out_impl, '#include <algorithm>\n'
+
+        print >>types_out_impl, '#include <folly/Indestructible.h>\n'
 
         print >>types_out_impl, '#include "{}_data.h"\n'.format(
             self._with_include_prefix(self._program, name))

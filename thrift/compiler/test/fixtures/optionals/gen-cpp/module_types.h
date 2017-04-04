@@ -24,9 +24,11 @@ enum Animal {
   TARANTULA = 3,
 };
 
-extern const typename apache::thrift::detail::TEnumMapFactory<Animal, int>::ValuesToNamesMapType _Animal_VALUES_TO_NAMES;
+using _Animal_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<Animal, int>;
 
-extern const typename apache::thrift::detail::TEnumMapFactory<Animal, int>::NamesToValuesMapType _Animal_NAMES_TO_VALUES;
+extern const _Animal_EnumMapFactory::ValuesToNamesMapType _Animal_VALUES_TO_NAMES;
+
+extern const _Animal_EnumMapFactory::NamesToValuesMapType _Animal_NAMES_TO_VALUES;
 
 
 namespace apache { namespace thrift {

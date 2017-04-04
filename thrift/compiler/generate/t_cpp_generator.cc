@@ -703,7 +703,8 @@ void t_cpp_generator::init_generator() {
   // The swap() code needs <algorithm> for std::swap()
   // ltstr needs string.h for strcmp
   f_types_impl_ << "#include <algorithm>" << endl
-                << "#include <string.h>" << endl << endl;
+                << "#include <string.h>" << endl << endl
+                << "#include <folly/Indestructible.h>" << endl << endl;
 
   f_reflection_impl_ <<
     "#include \"" << get_include_prefix(*get_program()) << program_name_ <<
@@ -915,18 +916,22 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
     }
   }
 
-  const auto map_factory = "apache::thrift::detail::TEnumMapFactory<" +
-    name + ", " + value_type + ">";
+  const auto map_factory = "_" + name + "_EnumMapFactory";
+
+  f_types_ <<
+    indent() << "using " << map_factory << " = " <<
+    "apache::thrift::detail::TEnumMapFactory<" <<
+    name << ", " << value_type << ">;" << endl << endl;
 
   auto valuesToNames = "_" + name + "_VALUES_TO_NAMES";
   auto namesToValues = "_" + name + "_NAMES_TO_VALUES";
   f_types_ <<
     indent() <<
-    "extern const typename " << map_factory << "::ValuesToNamesMapType " <<
+    "extern const " << map_factory << "::ValuesToNamesMapType " <<
     valuesToNames << ";" << endl << endl;
   f_types_ <<
     indent() <<
-    "extern const typename " << map_factory << "::NamesToValuesMapType " <<
+    "extern const " << map_factory << "::NamesToValuesMapType " <<
     namesToValues << ";" << endl << endl;
 
   f_types_ <<
@@ -973,6 +978,9 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
       : "folly::range(" + storage_fullname + "::" + field + ")";
   };
 
+  const auto map_factory_ns = "apache::thrift::detail::TEnumMapFactory<" +
+    fullname + ", " + value_type + ">";
+
   // TEnumTraitsBase<T> class member specializations
   f_types_impl_ <<
     ns_close_ << endl <<
@@ -997,20 +1005,34 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
   f_types_impl_ << endl;
   // TEnumTraitsBase<T>::findName()
   f_types_impl_ <<
-    "template<>" << endl <<
+    indent() << "template<>" << endl <<
     "const char* TEnumTraitsBase<" << fullname <<
-      ">::findName(" << fullname << " value) {" << endl <<
-    indent() << "return findName(" << ns_prefix_ <<
-      valuesToNames << ", value);" << endl <<
-    "}" << endl << endl;
+      ">::findName(" << fullname << " value) {" << endl;
+  indent_up();
+  f_types_impl_ <<
+    indent() << "static const auto map = " <<
+      "folly::Indestructible<" << ns_prefix_ << map_factory <<
+      "::ValuesToNamesMapType>{" << ns_prefix_ << map_factory <<
+      "::makeValuesToNamesMap()};" << endl <<
+    indent() << "return findName(*map, value);" << endl;
+  indent_down();
+  f_types_impl_ <<
+    indent() << "}" << endl << endl;
   // TEnumTraitsBase<T>::findValue()
   f_types_impl_ <<
-    "template<>" << endl <<
-    "bool TEnumTraitsBase<" << fullname <<
-      ">::findValue(const char* name, " << fullname << "* out) {" << endl <<
-    indent() << "return findValue(" <<
-      ns_prefix_ << namesToValues << ", name, out);" << endl <<
-    "}" << endl;
+    indent() << "template<>" << endl <<
+      "bool TEnumTraitsBase<" << fullname <<
+      ">::findValue(const char* name, " << fullname << "* out) {" << endl;
+  indent_up();
+  f_types_impl_ <<
+    indent() << "static const auto map = " <<
+      "folly::Indestructible<" << ns_prefix_ << map_factory <<
+      "::NamesToValuesMapType>{" << ns_prefix_ <<map_factory <<
+      "::makeNamesToValuesMap()};" << endl <<
+    indent() << "return findValue(*map, name, out);" << endl;
+  indent_down();
+  f_types_impl_ <<
+    indent() << "}" << endl;
   f_types_impl_ <<
     "}} // apache::thrift" << endl << endl <<
     ns_open_ << endl;

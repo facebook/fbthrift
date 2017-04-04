@@ -24,9 +24,11 @@ enum Enum {
   THREE = 3,
 };
 
-extern const typename apache::thrift::detail::TEnumMapFactory<Enum, int>::ValuesToNamesMapType _Enum_VALUES_TO_NAMES;
+using _Enum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<Enum, int>;
 
-extern const typename apache::thrift::detail::TEnumMapFactory<Enum, int>::NamesToValuesMapType _Enum_NAMES_TO_VALUES;
+extern const _Enum_EnumMapFactory::ValuesToNamesMapType _Enum_VALUES_TO_NAMES;
+
+extern const _Enum_EnumMapFactory::NamesToValuesMapType _Enum_NAMES_TO_VALUES;
 
 } // namespace
 namespace apache { namespace thrift {

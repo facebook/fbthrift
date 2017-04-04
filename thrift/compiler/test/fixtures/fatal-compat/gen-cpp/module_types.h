@@ -36,9 +36,11 @@ enum enum1 {
   field2 = 2,
 };
 
-extern const typename apache::thrift::detail::TEnumMapFactory<enum1, int>::ValuesToNamesMapType _enum1_VALUES_TO_NAMES;
+using _enum1_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<enum1, int>;
 
-extern const typename apache::thrift::detail::TEnumMapFactory<enum1, int>::NamesToValuesMapType _enum1_NAMES_TO_VALUES;
+extern const _enum1_EnumMapFactory::ValuesToNamesMapType _enum1_VALUES_TO_NAMES;
+
+extern const _enum1_EnumMapFactory::NamesToValuesMapType _enum1_NAMES_TO_VALUES;
 
 }} // namespace
 namespace apache { namespace thrift {
@@ -68,9 +70,11 @@ enum enum2 {
   field2_2 = 2,
 };
 
-extern const typename apache::thrift::detail::TEnumMapFactory<enum2, int>::ValuesToNamesMapType _enum2_VALUES_TO_NAMES;
+using _enum2_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<enum2, int>;
 
-extern const typename apache::thrift::detail::TEnumMapFactory<enum2, int>::NamesToValuesMapType _enum2_NAMES_TO_VALUES;
+extern const _enum2_EnumMapFactory::ValuesToNamesMapType _enum2_VALUES_TO_NAMES;
+
+extern const _enum2_EnumMapFactory::NamesToValuesMapType _enum2_NAMES_TO_VALUES;
 
 }} // namespace
 namespace apache { namespace thrift {
@@ -100,9 +104,11 @@ enum enum3 {
   field2_3 = 2,
 };
 
-extern const typename apache::thrift::detail::TEnumMapFactory<enum3, int>::ValuesToNamesMapType _enum3_VALUES_TO_NAMES;
+using _enum3_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<enum3, int>;
 
-extern const typename apache::thrift::detail::TEnumMapFactory<enum3, int>::NamesToValuesMapType _enum3_NAMES_TO_VALUES;
+extern const _enum3_EnumMapFactory::ValuesToNamesMapType _enum3_VALUES_TO_NAMES;
+
+extern const _enum3_EnumMapFactory::NamesToValuesMapType _enum3_NAMES_TO_VALUES;
 
 }} // namespace
 namespace apache { namespace thrift {
@@ -155,9 +161,11 @@ enum enum_with_special_names {
   members = 25,
 };
 
-extern const typename apache::thrift::detail::TEnumMapFactory<enum_with_special_names, int>::ValuesToNamesMapType _enum_with_special_names_VALUES_TO_NAMES;
+using _enum_with_special_names_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<enum_with_special_names, int>;
 
-extern const typename apache::thrift::detail::TEnumMapFactory<enum_with_special_names, int>::NamesToValuesMapType _enum_with_special_names_NAMES_TO_VALUES;
+extern const _enum_with_special_names_EnumMapFactory::ValuesToNamesMapType _enum_with_special_names_VALUES_TO_NAMES;
+
+extern const _enum_with_special_names_EnumMapFactory::NamesToValuesMapType _enum_with_special_names_NAMES_TO_VALUES;
 
 }} // namespace
 namespace apache { namespace thrift {

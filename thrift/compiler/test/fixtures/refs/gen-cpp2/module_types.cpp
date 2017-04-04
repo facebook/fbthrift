@@ -10,14 +10,16 @@
 
 #include <algorithm>
 
+#include <folly/Indestructible.h>
+
 #include "thrift/compiler/test/fixtures/refs/gen-cpp2/module_data.h"
 
 
 
 namespace cpp2 {
 
-const typename apache::thrift::detail::TEnumMapFactory<TypedEnum, TypedEnum>::ValuesToNamesMapType _TypedEnum_VALUES_TO_NAMES = apache::thrift::detail::TEnumMapFactory<TypedEnum, TypedEnum>::makeValuesToNamesMap();
-const typename apache::thrift::detail::TEnumMapFactory<TypedEnum, TypedEnum>::NamesToValuesMapType _TypedEnum_NAMES_TO_VALUES = apache::thrift::detail::TEnumMapFactory<TypedEnum, TypedEnum>::makeNamesToValuesMap();
+const _TypedEnum_EnumMapFactory::ValuesToNamesMapType _TypedEnum_VALUES_TO_NAMES = _TypedEnum_EnumMapFactory::makeValuesToNamesMap();
+const _TypedEnum_EnumMapFactory::NamesToValuesMapType _TypedEnum_NAMES_TO_VALUES = _TypedEnum_EnumMapFactory::makeNamesToValuesMap();
 
 } // cpp2
 namespace std {
@@ -29,11 +31,13 @@ template <> const std::size_t TEnumTraitsBase< ::cpp2::TypedEnum>::size = 2;
 template <> const folly::Range<const  ::cpp2::TypedEnum*> TEnumTraitsBase< ::cpp2::TypedEnum>::values = folly::range( ::cpp2::_TypedEnumEnumDataStorage::values);
 template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::cpp2::TypedEnum>::names = folly::range( ::cpp2::_TypedEnumEnumDataStorage::names);
 template <> const char* TEnumTraitsBase< ::cpp2::TypedEnum>::findName( ::cpp2::TypedEnum value) {
-  return findName( ::cpp2::_TypedEnum_VALUES_TO_NAMES, value);
+  static auto const map = folly::Indestructible< ::cpp2::_TypedEnum_EnumMapFactory::ValuesToNamesMapType>{ ::cpp2::_TypedEnum_EnumMapFactory::makeValuesToNamesMap()};
+  return findName(*map, value);
 }
 
 template <> bool TEnumTraitsBase< ::cpp2::TypedEnum>::findValue(const char* name,  ::cpp2::TypedEnum* outValue) {
-  return findValue( ::cpp2::_TypedEnum_NAMES_TO_VALUES, name, outValue);
+  static auto const map = folly::Indestructible< ::cpp2::_TypedEnum_EnumMapFactory::NamesToValuesMapType>{ ::cpp2::_TypedEnum_EnumMapFactory::makeNamesToValuesMap()};
+  return findValue(*map, name, outValue);
 }
 
 }} // apache::thrift

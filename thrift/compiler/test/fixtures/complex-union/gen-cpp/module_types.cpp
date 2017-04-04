@@ -12,6 +12,8 @@
 #include <algorithm>
 #include <string.h>
 
+#include <folly/Indestructible.h>
+
 
 
 uint32_t ComplexUnion::read(apache::thrift::protocol::TProtocol* iprot) {

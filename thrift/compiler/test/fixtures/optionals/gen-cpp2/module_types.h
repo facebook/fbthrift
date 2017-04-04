@@ -29,8 +29,9 @@ enum class Animal {
   TARANTULA = 3
 };
 
-extern const typename apache::thrift::detail::TEnumMapFactory<Animal, Animal>::ValuesToNamesMapType _Animal_VALUES_TO_NAMES;
-extern const typename apache::thrift::detail::TEnumMapFactory<Animal, Animal>::NamesToValuesMapType _Animal_NAMES_TO_VALUES;
+using _Animal_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<Animal, Animal>;
+extern const _Animal_EnumMapFactory::ValuesToNamesMapType _Animal_VALUES_TO_NAMES;
+extern const _Animal_EnumMapFactory::NamesToValuesMapType _Animal_NAMES_TO_VALUES;
 
 } // cpp2
 namespace std {

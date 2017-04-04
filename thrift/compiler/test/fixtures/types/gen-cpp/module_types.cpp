@@ -12,6 +12,8 @@
 #include <algorithm>
 #include <string.h>
 
+#include <folly/Indestructible.h>
+
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 const uint64_t decorated_struct::_reflection_id;
