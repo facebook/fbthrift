@@ -14,5 +14,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types { nam
 
 void reflectionInitializer_2133116297910176940(::apache::thrift::reflection::Schema& schema);
 
+void reflectionInitializer_11962737781608441260(::apache::thrift::reflection::Schema& schema);
+
 }}}}} // namespace
 

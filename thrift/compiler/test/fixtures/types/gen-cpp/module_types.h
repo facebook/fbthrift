@@ -20,6 +20,8 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 class decorated_struct;
 
+class ContainerStruct;
+
 typedef std::map<std::string, int64_t>  decorated_map;
 
 }}}} // namespace
@@ -107,5 +109,158 @@ const  ::apache::thrift::fixtures::types::decorated_struct&) const;
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+void swap(ContainerStruct &a, ContainerStruct &b);
+
+class ContainerStruct : public apache::thrift::TStructType<ContainerStruct> {
+ public:
+
+  static const uint64_t _reflection_id = 11962737781608441260U;
+  static void _reflection_register(::apache::thrift::reflection::Schema&);
+  ContainerStruct() {
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit ContainerStruct(
+    ::apache::thrift::detail::argument_wrapper<12, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldA = arg.move();
+    __isset.fieldA = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit ContainerStruct(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldB = arg.move();
+    __isset.fieldB = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit ContainerStruct(
+    ::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldC = arg.move();
+    __isset.fieldC = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit ContainerStruct(
+    ::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldD = arg.move();
+    __isset.fieldD = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit ContainerStruct(
+    ::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldE = arg.move();
+    __isset.fieldE = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit ContainerStruct(
+    ::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldF = arg.move();
+    __isset.fieldF = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit ContainerStruct(
+    ::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldG = arg.move();
+    __isset.fieldG = true;
+  }
+
+  ContainerStruct(const ContainerStruct&) = default;
+  ContainerStruct& operator=(const ContainerStruct& src)= default;
+  ContainerStruct(ContainerStruct&&) = default;
+  ContainerStruct& operator=(ContainerStruct&&) = default;
+
+  void __clear();
+
+  virtual ~ContainerStruct() throw() {}
+
+  std::vector<int32_t>  fieldA;
+  std::list<int32_t>  fieldB;
+  std::deque<int32_t>  fieldC;
+  folly::fbvector<int32_t>  fieldD;
+  folly::small_vector<int32_t>  fieldE;
+  folly::sorted_vector_set<int32_t>  fieldF;
+  folly::sorted_vector_map<int32_t, std::string>  fieldG;
+
+  struct __isset {
+    __isset() { __clear(); } 
+    void __clear() {
+      fieldA = false;
+      fieldB = false;
+      fieldC = false;
+      fieldD = false;
+      fieldE = false;
+      fieldF = false;
+      fieldG = false;
+    }
+    bool fieldA;
+    bool fieldB;
+    bool fieldC;
+    bool fieldD;
+    bool fieldE;
+    bool fieldF;
+    bool fieldG;
+  } __isset;
+
+  bool operator == (const ContainerStruct &) const;
+  bool operator != (const ContainerStruct& rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const ContainerStruct & ) const;
+
+  uint32_t read(apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+class ContainerStruct;
+void merge(const ContainerStruct& from, ContainerStruct& to);
+void merge(ContainerStruct&& from, ContainerStruct& to);
 }}}} // namespace
 

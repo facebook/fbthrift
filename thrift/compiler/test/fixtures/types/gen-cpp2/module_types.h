@@ -19,6 +19,7 @@
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 class decorated_struct;
+class ContainerStruct;
 typedef std::map<std::string, int64_t> decorated_map;
 
 }}}} // apache::thrift::fixtures::types
@@ -155,6 +156,197 @@ template<> struct equal_to<typename  ::apache::thrift::fixtures::types::decorate
 };
 
 } // std
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+class ContainerStruct : private apache::thrift::detail::st::ComparisonOperators<ContainerStruct> {
+ public:
+
+  ContainerStruct() {}
+  // FragileConstructor for use in initialization lists only
+
+  ContainerStruct(apache::thrift::FragileConstructor, std::vector<int32_t> fieldA__arg, std::list<int32_t> fieldB__arg, std::deque<int32_t> fieldC__arg, folly::fbvector<int32_t> fieldD__arg, folly::small_vector<int32_t> fieldE__arg, folly::sorted_vector_set<int32_t> fieldF__arg, folly::sorted_vector_map<int32_t, std::string> fieldG__arg) :
+      fieldA(std::move(fieldA__arg)),
+      fieldB(std::move(fieldB__arg)),
+      fieldC(std::move(fieldC__arg)),
+      fieldD(std::move(fieldD__arg)),
+      fieldE(std::move(fieldE__arg)),
+      fieldF(std::move(fieldF__arg)),
+      fieldG(std::move(fieldG__arg)) {
+    __isset.fieldA = true;
+    __isset.fieldB = true;
+    __isset.fieldC = true;
+    __isset.fieldD = true;
+    __isset.fieldE = true;
+    __isset.fieldF = true;
+    __isset.fieldG = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  ContainerStruct(::apache::thrift::detail::argument_wrapper<12, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldA = arg.move();
+    __isset.fieldA = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  ContainerStruct(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldB = arg.move();
+    __isset.fieldB = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  ContainerStruct(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldC = arg.move();
+    __isset.fieldC = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  ContainerStruct(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldD = arg.move();
+    __isset.fieldD = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  ContainerStruct(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldE = arg.move();
+    __isset.fieldE = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  ContainerStruct(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldF = arg.move();
+    __isset.fieldF = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  ContainerStruct(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    ContainerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldG = arg.move();
+    __isset.fieldG = true;
+  }
+
+  ContainerStruct(ContainerStruct&&) = default;
+
+  ContainerStruct(const ContainerStruct&) = default;
+
+  ContainerStruct& operator=(ContainerStruct&&) = default;
+
+  ContainerStruct& operator=(const ContainerStruct&) = default;
+  void __clear();
+
+  virtual ~ContainerStruct() throw() {}
+
+  std::vector<int32_t> fieldA;
+  std::list<int32_t> fieldB;
+  std::deque<int32_t> fieldC;
+  folly::fbvector<int32_t> fieldD;
+  folly::small_vector<int32_t> fieldE;
+  folly::sorted_vector_set<int32_t> fieldF;
+  folly::sorted_vector_map<int32_t, std::string> fieldG;
+
+  struct __isset {
+    void __clear() {
+      fieldA = false;
+      fieldB = false;
+      fieldC = false;
+      fieldD = false;
+      fieldE = false;
+      fieldF = false;
+      fieldG = false;
+    }
+
+    bool fieldA = false;
+    bool fieldB = false;
+    bool fieldC = false;
+    bool fieldD = false;
+    bool fieldE = false;
+    bool fieldF = false;
+    bool fieldG = false;
+  } __isset;
+  bool operator==(const ContainerStruct& rhs) const;
+  bool operator < (const ContainerStruct& rhs) const;
+  const std::vector<int32_t>& get_fieldA() const&;
+  std::vector<int32_t> get_fieldA() &&;
+  template <typename T_ContainerStruct_fieldA_struct_setter>
+  std::vector<int32_t>& set_fieldA(T_ContainerStruct_fieldA_struct_setter&& fieldA_);
+  const std::list<int32_t>& get_fieldB() const&;
+  std::list<int32_t> get_fieldB() &&;
+  template <typename T_ContainerStruct_fieldB_struct_setter>
+  std::list<int32_t>& set_fieldB(T_ContainerStruct_fieldB_struct_setter&& fieldB_);
+  const std::deque<int32_t>& get_fieldC() const&;
+  std::deque<int32_t> get_fieldC() &&;
+  template <typename T_ContainerStruct_fieldC_struct_setter>
+  std::deque<int32_t>& set_fieldC(T_ContainerStruct_fieldC_struct_setter&& fieldC_);
+  const folly::fbvector<int32_t>& get_fieldD() const&;
+  folly::fbvector<int32_t> get_fieldD() &&;
+  template <typename T_ContainerStruct_fieldD_struct_setter>
+  folly::fbvector<int32_t>& set_fieldD(T_ContainerStruct_fieldD_struct_setter&& fieldD_);
+  const folly::small_vector<int32_t>& get_fieldE() const&;
+  folly::small_vector<int32_t> get_fieldE() &&;
+  template <typename T_ContainerStruct_fieldE_struct_setter>
+  folly::small_vector<int32_t>& set_fieldE(T_ContainerStruct_fieldE_struct_setter&& fieldE_);
+  const folly::sorted_vector_set<int32_t>& get_fieldF() const&;
+  folly::sorted_vector_set<int32_t> get_fieldF() &&;
+  template <typename T_ContainerStruct_fieldF_struct_setter>
+  folly::sorted_vector_set<int32_t>& set_fieldF(T_ContainerStruct_fieldF_struct_setter&& fieldF_);
+  const folly::sorted_vector_map<int32_t, std::string>& get_fieldG() const&;
+  folly::sorted_vector_map<int32_t, std::string> get_fieldG() &&;
+  template <typename T_ContainerStruct_fieldG_struct_setter>
+  folly::sorted_vector_map<int32_t, std::string>& set_fieldG(T_ContainerStruct_fieldG_struct_setter&& fieldG_);
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+};
+
+void swap(ContainerStruct& a, ContainerStruct& b);
+extern template uint32_t ContainerStruct::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t ContainerStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t ContainerStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t ContainerStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t ContainerStruct::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t ContainerStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t ContainerStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t ContainerStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}}} // apache::thrift::fixtures::types
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::apache::thrift::fixtures::types::ContainerStruct>::clear( ::apache::thrift::fixtures::types::ContainerStruct* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::apache::thrift::fixtures::types::ContainerStruct>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::ContainerStruct>::write(Protocol* proto,  ::apache::thrift::fixtures::types::ContainerStruct const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::ContainerStruct>::read(Protocol* proto,  ::apache::thrift::fixtures::types::ContainerStruct* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::ContainerStruct>::serializedSize(Protocol const* proto,  ::apache::thrift::fixtures::types::ContainerStruct const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::apache::thrift::fixtures::types::ContainerStruct>::serializedSizeZC(Protocol const* proto,  ::apache::thrift::fixtures::types::ContainerStruct const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 }}}} // apache::thrift::fixtures::types

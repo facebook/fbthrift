@@ -26,5 +26,105 @@ void reflectionInitializer_2133116297910176940(::apache::thrift::reflection::Sch
   }
 }
 
+// Reflection initializer for list<i32>
+static void reflectionInitializer_12058391220869880681(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 12058391220869880681U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "list<i32>";
+  schema.names[dt.name] = id;
+  dt.__isset.valueType = true;
+  dt.valueType = 5U;
+}
+
+// Reflection initializer for set<i32>
+static void reflectionInitializer_10941653322204590122(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 10941653322204590122U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "set<i32>";
+  schema.names[dt.name] = id;
+  dt.__isset.valueType = true;
+  dt.valueType = 5U;
+}
+
+// Reflection initializer for map<i32, string>
+static void reflectionInitializer_673983474151144843(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 673983474151144843U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "map<i32, string>";
+  schema.names[dt.name] = id;
+  dt.__isset.mapKeyType = true;
+  dt.mapKeyType = 5U;
+  dt.__isset.valueType = true;
+  dt.valueType = 1U;
+}
+
+static void  reflectionInitializer_10941653322204590122(::apache::thrift::reflection::Schema&);  // set<i32>
+static void  reflectionInitializer_12058391220869880681(::apache::thrift::reflection::Schema&);  // list<i32>
+static void  reflectionInitializer_673983474151144843(::apache::thrift::reflection::Schema&);  // map<i32, string>
+// Reflection initializer for struct module.ContainerStruct
+void reflectionInitializer_11962737781608441260(::apache::thrift::reflection::Schema& schema) {
+  const uint64_t id = 11962737781608441260U;
+  if (schema.dataTypes.count(id)) return;
+  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
+  dt.name = "struct module.ContainerStruct";
+  schema.names[dt.name] = id;
+  dt.__isset.fields = true;
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[12];
+    f.isRequired = true;
+    f.type = 12058391220869880681U;
+    f.name = "fieldA";
+    f.order = 0;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[2];
+    f.isRequired = true;
+    f.type = 12058391220869880681U;
+    f.name = "fieldB";
+    f.order = 1;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[3];
+    f.isRequired = true;
+    f.type = 12058391220869880681U;
+    f.name = "fieldC";
+    f.order = 2;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[4];
+    f.isRequired = true;
+    f.type = 12058391220869880681U;
+    f.name = "fieldD";
+    f.order = 3;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[5];
+    f.isRequired = true;
+    f.type = 12058391220869880681U;
+    f.name = "fieldE";
+    f.order = 4;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[6];
+    f.isRequired = true;
+    f.type = 10941653322204590122U;
+    f.name = "fieldF";
+    f.order = 5;
+  }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[7];
+    f.isRequired = true;
+    f.type = 673983474151144843U;
+    f.name = "fieldG";
+    f.order = 6;
+  }
+  reflectionInitializer_10941653322204590122(schema);  // set<i32>
+  reflectionInitializer_12058391220869880681(schema);  // list<i32>
+  reflectionInitializer_673983474151144843(schema);  // map<i32, string>
+}
+
 }}}}} // namespace
 
