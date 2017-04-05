@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <thrift/lib/cpp/async/TEventTask.h>
 #include <thrift/lib/cpp/async/TEventWorker.h>
 
 #include <folly/portability/Sockets.h>
@@ -21,7 +22,6 @@
 #include <thrift/lib/cpp/async/TEventServer.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
-#include <thrift/lib/cpp/async/TEventTask.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 
 #include <folly/portability/SysUio.h>

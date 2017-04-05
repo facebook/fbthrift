@@ -20,6 +20,7 @@
 #include <thrift/lib/cpp/server/TConnectionContext.h>
 #include <folly/SocketAddress.h>
 #include <thrift/lib/cpp/async/TEventServer.h>
+#include <thrift/lib/cpp/async/TEventTask.h>
 #include <memory>
 #include <boost/noncopyable.hpp>
 
