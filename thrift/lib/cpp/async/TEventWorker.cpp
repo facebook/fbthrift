@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <thrift/lib/cpp/async/TEventWorker.h>
 
 #include <folly/portability/Sockets.h>
@@ -224,7 +223,7 @@ bool TEventWorker::notifyCompletion(TaskCompletionMessage &&msg) {
 /**
   * A task called notifyCompletion(); make the appropriate callback
   */
-void TEventWorker::messageAvailable(TaskCompletionMessage &&msg) {
+void TEventWorker::messageAvailable(TaskCompletionMessage&& msg) noexcept {
   // for now, just invoke task complete.  Next diff will also handle
   // input/output memory buffers.
   msg.connection->handleAsyncTaskComplete(true);
