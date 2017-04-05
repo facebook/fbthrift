@@ -85,7 +85,7 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   return _future;
 }
 
-void MyRootAsyncClient::do_root(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
+void MyRootAsyncClient::do_root(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   do_root(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 

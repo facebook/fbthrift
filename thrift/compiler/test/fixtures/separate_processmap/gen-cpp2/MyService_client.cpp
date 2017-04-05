@@ -85,7 +85,7 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   return _future;
 }
 
-void MyServiceAsyncClient::ping(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
+void MyServiceAsyncClient::ping(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   ping(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
@@ -199,7 +199,7 @@ folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::
   return _future;
 }
 
-void MyServiceAsyncClient::getRandomData(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
+void MyServiceAsyncClient::getRandomData(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   getRandomData(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
@@ -313,7 +313,7 @@ folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader
   return _future;
 }
 
-void MyServiceAsyncClient::hasDataById(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id) {
+void MyServiceAsyncClient::hasDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id) {
   hasDataById(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), id);
 }
 
@@ -429,7 +429,7 @@ folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::
   return _future;
 }
 
-void MyServiceAsyncClient::getDataById(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id) {
+void MyServiceAsyncClient::getDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id) {
   getDataById(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), id);
 }
 
@@ -543,7 +543,7 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   return _future;
 }
 
-void MyServiceAsyncClient::putDataById(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const std::string& data) {
+void MyServiceAsyncClient::putDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const std::string& data) {
   putDataById(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), id, data);
 }
 
@@ -639,7 +639,7 @@ folly::Future<folly::Unit> MyServiceAsyncClient::future_lobDataById(apache::thri
   return _future;
 }
 
-void MyServiceAsyncClient::lobDataById(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const std::string& data) {
+void MyServiceAsyncClient::lobDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const std::string& data) {
   lobDataById(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), id, data);
 }
 

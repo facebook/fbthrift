@@ -1026,7 +1026,7 @@ class CppGenerator(t_generator.Generator):
                                 service, function,
                                 uses_rpc_options=True, header=True)
 
-                self._generate_client_std_function(function)
+                self._generate_client_folly_function(function)
 
                 if self._is_stream_type(function.returntype):
                     self._generate_client_streaming_function(service, function)
@@ -2077,8 +2077,8 @@ class CppGenerator(t_generator.Generator):
 
         return signature_prefix + "void {name}(" + param_list + ")"
 
-    def _generate_client_std_function(self, function, name_prefix=""):
-        sig = ("void {name}(std::function<void ("
+    def _generate_client_folly_function(self, function, name_prefix=""):
+        sig = ("void {name}(folly::Function<void ("
                "::apache::thrift::ClientReceiveState&&)> callback" +
                self._argument_list(function.arglist, True, unique=False) + ")")
 

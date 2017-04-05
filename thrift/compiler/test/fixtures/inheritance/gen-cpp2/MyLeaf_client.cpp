@@ -85,7 +85,7 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   return _future;
 }
 
-void MyLeafAsyncClient::do_leaf(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
+void MyLeafAsyncClient::do_leaf(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   do_leaf(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 

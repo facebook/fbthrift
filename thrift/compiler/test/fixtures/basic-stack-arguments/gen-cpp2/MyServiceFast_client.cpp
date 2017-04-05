@@ -85,7 +85,7 @@ folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader
   return _future;
 }
 
-void MyServiceFastAsyncClient::hasDataById(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id) {
+void MyServiceFastAsyncClient::hasDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id) {
   hasDataById(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), id);
 }
 
@@ -201,7 +201,7 @@ folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::
   return _future;
 }
 
-void MyServiceFastAsyncClient::getDataById(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id) {
+void MyServiceFastAsyncClient::getDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id) {
   getDataById(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), id);
 }
 
@@ -315,7 +315,7 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   return _future;
 }
 
-void MyServiceFastAsyncClient::putDataById(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const std::string& data) {
+void MyServiceFastAsyncClient::putDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const std::string& data) {
   putDataById(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), id, data);
 }
 
@@ -411,7 +411,7 @@ folly::Future<folly::Unit> MyServiceFastAsyncClient::future_lobDataById(apache::
   return _future;
 }
 
-void MyServiceFastAsyncClient::lobDataById(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const std::string& data) {
+void MyServiceFastAsyncClient::lobDataById(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t id, const std::string& data) {
   lobDataById(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), id, data);
 }
 

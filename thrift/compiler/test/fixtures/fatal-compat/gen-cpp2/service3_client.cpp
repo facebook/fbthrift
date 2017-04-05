@@ -181,7 +181,7 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   return _future;
 }
 
-void service3AsyncClient::methodA(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
+void service3AsyncClient::methodA(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   methodA(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
@@ -295,7 +295,7 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   return _future;
 }
 
-void service3AsyncClient::methodB(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z) {
+void service3AsyncClient::methodB(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t x, const  ::test_cpp2::cpp_reflection::struct1& y, double z) {
   methodB(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), x, y, z);
 }
 
@@ -409,7 +409,7 @@ folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THea
   return _future;
 }
 
-void service3AsyncClient::methodC(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
+void service3AsyncClient::methodC(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   methodC(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
@@ -525,7 +525,7 @@ folly::Future<std::pair<int32_t, std::unique_ptr<apache::thrift::transport::THea
   return _future;
 }
 
-void service3AsyncClient::methodD(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k) {
+void service3AsyncClient::methodD(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t i, const  ::test_cpp2::cpp_reflection::struct1& j, double k) {
   methodD(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), i, j, k);
 }
 
@@ -641,7 +641,7 @@ folly::Future<std::pair< ::test_cpp2::cpp_reflection::struct2, std::unique_ptr<a
   return _future;
 }
 
-void service3AsyncClient::methodE(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
+void service3AsyncClient::methodE(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   methodE(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
@@ -755,7 +755,7 @@ folly::Future<std::pair< ::test_cpp2::cpp_reflection::struct3, std::unique_ptr<a
   return _future;
 }
 
-void service3AsyncClient::methodF(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n) {
+void service3AsyncClient::methodF(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t l, const  ::test_cpp2::cpp_reflection::struct1& m, double n) {
   methodF(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), l, m, n);
 }
 

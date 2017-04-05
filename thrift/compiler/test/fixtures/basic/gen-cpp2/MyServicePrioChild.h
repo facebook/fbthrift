@@ -115,7 +115,7 @@ class MyServicePrioChildAsyncClient : public  ::cpp2::MyServicePrioParentAsyncCl
   virtual folly::Future<folly::Unit> future_pang();
   virtual folly::Future<folly::Unit> future_pang(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_pang(apache::thrift::RpcOptions& rpcOptions);
-  virtual void pang(std::function<void (::apache::thrift::ClientReceiveState&&)> callback);
+  virtual void pang(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
   static folly::exception_wrapper recv_wrapped_pang(::apache::thrift::ClientReceiveState& state);
   static void recv_pang(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method

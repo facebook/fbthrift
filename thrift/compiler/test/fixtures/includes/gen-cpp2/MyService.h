@@ -125,7 +125,7 @@ class MyServiceAsyncClient : public apache::thrift::TClientBase {
   virtual folly::Future<folly::Unit> future_query(const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual folly::Future<folly::Unit> future_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
-  virtual void query(std::function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
+  virtual void query(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   static folly::exception_wrapper recv_wrapped_query(::apache::thrift::ClientReceiveState& state);
   static void recv_query(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method

@@ -85,7 +85,7 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   return _future;
 }
 
-void MyServicePrioParentAsyncClient::ping(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
+void MyServicePrioParentAsyncClient::ping(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   ping(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
@@ -199,7 +199,7 @@ folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::
   return _future;
 }
 
-void MyServicePrioParentAsyncClient::pong(std::function<void (::apache::thrift::ClientReceiveState&&)> callback) {
+void MyServicePrioParentAsyncClient::pong(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
   pong(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 

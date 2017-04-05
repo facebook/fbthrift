@@ -123,7 +123,7 @@ class MyRootAsyncClient : public apache::thrift::TClientBase {
   virtual folly::Future<folly::Unit> future_do_root();
   virtual folly::Future<folly::Unit> future_do_root(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_do_root(apache::thrift::RpcOptions& rpcOptions);
-  virtual void do_root(std::function<void (::apache::thrift::ClientReceiveState&&)> callback);
+  virtual void do_root(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
   static folly::exception_wrapper recv_wrapped_do_root(::apache::thrift::ClientReceiveState& state);
   static void recv_do_root(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method

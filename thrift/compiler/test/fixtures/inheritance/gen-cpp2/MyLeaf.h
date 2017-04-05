@@ -115,7 +115,7 @@ class MyLeafAsyncClient : public  ::cpp2::MyNodeAsyncClient {
   virtual folly::Future<folly::Unit> future_do_leaf();
   virtual folly::Future<folly::Unit> future_do_leaf(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_do_leaf(apache::thrift::RpcOptions& rpcOptions);
-  virtual void do_leaf(std::function<void (::apache::thrift::ClientReceiveState&&)> callback);
+  virtual void do_leaf(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
   static folly::exception_wrapper recv_wrapped_do_leaf(::apache::thrift::ClientReceiveState& state);
   static void recv_do_leaf(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method

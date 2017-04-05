@@ -291,7 +291,7 @@ class <%service:name%>AsyncClient : public <%!
   <%/function:oneway?%><%!
 
   %>
-  virtual void <%function:name%>(std::function<void (<%!
+  virtual void <%function:name%>(folly::Function<void (<%!
       %>::apache::thrift::ClientReceiveState&&)> callback<%!
       %><% > CommaIfArgs%><% > StackArgList%>);<%!
 

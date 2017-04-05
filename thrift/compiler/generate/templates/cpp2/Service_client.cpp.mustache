@@ -161,7 +161,7 @@ void <%service:name%>AsyncClient::<%function:name%>(<%!
 <%/function:oneway?%>
 
 void <%service:name%>AsyncClient::<%function:name%>(<%!
-    %>std::function<void (::apache::thrift::ClientReceiveState&&)> callback<%!
+    %>folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback<%!
     %><% > CommaIfArgs%><% > StackArgList%>) {
   <%function:name%>(folly::make_unique<apache::thrift::FunctionReplyCallback><%!
       %>(std::move(callback))<% > CommaIfArgs%><% > ArgList%>);
