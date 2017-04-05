@@ -45,3 +45,21 @@ TEST(QualifiedEnums, Defaults) {
   EXPECT_EQ(MyEnum1::ME1_1, actual.field4);
   EXPECT_EQ(MyEnum4::ME4_A, actual.field5);
 }
+
+TEST(QualifiedEnums, BitwiseOps) {
+  using EnumType = MyBitMaskEnum;
+  EXPECT_EQ(sizeof(int32_t), sizeof(EnumType));
+  EXPECT_EQ(EnumType::kBar, EnumType::kBar & EnumType(11));
+  EXPECT_EQ(EnumType(5), EnumType::kFoo | EnumType::kBaz);
+  EXPECT_EQ(EnumType(5), EnumType(3) ^ EnumType(6));
+  EXPECT_EQ(EnumType(-1), ~EnumType(0));
+}
+
+TEST(QualifiedEnums, BitwiseOpsShort) {
+  using EnumType = MyBitMaskEnumShort;
+  EXPECT_EQ(sizeof(int16_t), sizeof(EnumType));
+  EXPECT_EQ(EnumType::kBar, EnumType::kBar & EnumType(11));
+  EXPECT_EQ(EnumType(5), EnumType::kFoo | EnumType::kBaz);
+  EXPECT_EQ(EnumType(5), EnumType(3) ^ EnumType(6));
+  EXPECT_EQ(EnumType(-1), ~EnumType(0));
+}

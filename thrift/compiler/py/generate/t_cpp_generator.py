@@ -516,6 +516,33 @@ class CppGenerator(t_generator.Generator):
         s()
         s.impl('\n')
 
+        if self._cpp_annotation(tenum, 'declare_bitwise_ops'):
+            for op in ['&', '|', '^']:
+                with s.defn(
+                        '{0} {{name}}({0} a, {0} b)'.format(tenum.name),
+                        name='operator{0}'.format(op),
+                        in_header=True,
+                        modifiers='inline constexpr'):
+                    out('using E = {0};'.format(tenum.name))
+                    out('using U = std::underlying_type_t<E>;')
+                    out('return static_cast<E>('
+                        'static_cast<U>(a) {0} static_cast<U>(b));'.format(op))
+                with s.defn(
+                        '{0}& {{name}}({0}& a, {0} b)'.format(tenum.name),
+                        name='operator{0}='.format(op),
+                        in_header=True,
+                        modifiers='inline constexpr'):
+                    out('return a = a {0} b;'.format(op))
+            for op in ['~']:
+                with s.defn(
+                        '{0} {{name}}({0} a)'.format(tenum.name),
+                        name='operator{0}'.format(op),
+                        in_header=True,
+                        modifiers='inline constexpr'):
+                    out('using E = {0};'.format(tenum.name))
+                    out('using U = std::underlying_type_t<E>;')
+                    out('return static_cast<E>({0}static_cast<U>(a));'.format(op))
+
         # specialize TEnumTraitsBase
         s.release()
 

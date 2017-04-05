@@ -20,6 +20,79 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 class decorated_struct;
 class ContainerStruct;
+
+enum class has_bitwise_ops {
+  none = 0,
+  zero = 1,
+  one = 2,
+  two = 4,
+  three = 8
+};
+
+using _has_bitwise_ops_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<has_bitwise_ops, has_bitwise_ops>;
+extern const _has_bitwise_ops_EnumMapFactory::ValuesToNamesMapType _has_bitwise_ops_VALUES_TO_NAMES;
+extern const _has_bitwise_ops_EnumMapFactory::NamesToValuesMapType _has_bitwise_ops_NAMES_TO_VALUES;
+
+inline constexpr has_bitwise_ops operator&(has_bitwise_ops a, has_bitwise_ops b) {
+  using E = has_bitwise_ops;
+  using U = std::underlying_type_t<E>;
+  return static_cast<E>(static_cast<U>(a) & static_cast<U>(b));
+}
+
+inline constexpr has_bitwise_ops& operator&=(has_bitwise_ops& a, has_bitwise_ops b) {
+  return a = a & b;
+}
+
+inline constexpr has_bitwise_ops operator|(has_bitwise_ops a, has_bitwise_ops b) {
+  using E = has_bitwise_ops;
+  using U = std::underlying_type_t<E>;
+  return static_cast<E>(static_cast<U>(a) | static_cast<U>(b));
+}
+
+inline constexpr has_bitwise_ops& operator|=(has_bitwise_ops& a, has_bitwise_ops b) {
+  return a = a | b;
+}
+
+inline constexpr has_bitwise_ops operator^(has_bitwise_ops a, has_bitwise_ops b) {
+  using E = has_bitwise_ops;
+  using U = std::underlying_type_t<E>;
+  return static_cast<E>(static_cast<U>(a) ^ static_cast<U>(b));
+}
+
+inline constexpr has_bitwise_ops& operator^=(has_bitwise_ops& a, has_bitwise_ops b) {
+  return a = a ^ b;
+}
+
+inline constexpr has_bitwise_ops operator~(has_bitwise_ops a) {
+  using E = has_bitwise_ops;
+  using U = std::underlying_type_t<E>;
+  return static_cast<E>(~static_cast<U>(a));
+}
+
+}}}} // apache::thrift::fixtures::types
+namespace std {
+
+template<> struct hash<typename  ::apache::thrift::fixtures::types::has_bitwise_ops> : public apache::thrift::detail::enum_hash<typename  ::apache::thrift::fixtures::types::has_bitwise_ops> {};
+template<> struct equal_to<typename  ::apache::thrift::fixtures::types::has_bitwise_ops> : public apache::thrift::detail::enum_equal_to<typename  ::apache::thrift::fixtures::types::has_bitwise_ops> {};
+
+} // std
+namespace apache { namespace thrift {
+
+template <> struct TEnumDataStorage< ::apache::thrift::fixtures::types::has_bitwise_ops>;
+template <> const char* TEnumTraitsBase< ::apache::thrift::fixtures::types::has_bitwise_ops>::findName( ::apache::thrift::fixtures::types::has_bitwise_ops value);
+template <> bool TEnumTraitsBase< ::apache::thrift::fixtures::types::has_bitwise_ops>::findValue(const char* name,  ::apache::thrift::fixtures::types::has_bitwise_ops* outValue);
+
+template <> constexpr  ::apache::thrift::fixtures::types::has_bitwise_ops TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::min() {
+  return  ::apache::thrift::fixtures::types::has_bitwise_ops::none;
+}
+
+template <> constexpr  ::apache::thrift::fixtures::types::has_bitwise_ops TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::max() {
+  return  ::apache::thrift::fixtures::types::has_bitwise_ops::three;
+}
+
+}} // apache::thrift
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
 typedef std::map<std::string, int64_t> decorated_map;
 
 }}}} // apache::thrift::fixtures::types

@@ -16,6 +16,30 @@
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+const typename _has_bitwise_ops_EnumMapFactory::ValuesToNamesMapType _has_bitwise_ops_VALUES_TO_NAMES = _has_bitwise_ops_EnumMapFactory::makeValuesToNamesMap();
+
+const typename _has_bitwise_ops_EnumMapFactory::NamesToValuesMapType _has_bitwise_ops_NAMES_TO_VALUES = _has_bitwise_ops_EnumMapFactory::makeNamesToValuesMap();
+
+}}}} // namespace
+namespace apache { namespace thrift {
+template <>const std::size_t TEnumTraitsBase< ::apache::thrift::fixtures::types::has_bitwise_ops>::size = 5;
+template <>const folly::Range<const  ::apache::thrift::fixtures::types::has_bitwise_ops*> TEnumTraitsBase< ::apache::thrift::fixtures::types::has_bitwise_ops>::values = folly::range( ::apache::thrift::fixtures::types::_has_bitwise_opsEnumDataStorage::values);
+template <>const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::apache::thrift::fixtures::types::has_bitwise_ops>::names = folly::range( ::apache::thrift::fixtures::types::_has_bitwise_opsEnumDataStorage::names);
+
+template<>
+const char* TEnumTraitsBase< ::apache::thrift::fixtures::types::has_bitwise_ops>::findName( ::apache::thrift::fixtures::types::has_bitwise_ops value) {
+  static const auto map = folly::Indestructible< ::apache::thrift::fixtures::types::_has_bitwise_ops_EnumMapFactory::ValuesToNamesMapType>{ ::apache::thrift::fixtures::types::_has_bitwise_ops_EnumMapFactory::makeValuesToNamesMap()};
+  return findName(*map, value);
+}
+
+template<>
+bool TEnumTraitsBase< ::apache::thrift::fixtures::types::has_bitwise_ops>::findValue(const char* name,  ::apache::thrift::fixtures::types::has_bitwise_ops* out) {
+  static const auto map = folly::Indestructible< ::apache::thrift::fixtures::types::_has_bitwise_ops_EnumMapFactory::NamesToValuesMapType>{ ::apache::thrift::fixtures::types::_has_bitwise_ops_EnumMapFactory::makeNamesToValuesMap()};
+  return findValue(*map, name, out);
+}
+}} // apache::thrift
+
+namespace apache { namespace thrift { namespace fixtures { namespace types {
 const uint64_t decorated_struct::_reflection_id;
 void decorated_struct::_reflection_register(::apache::thrift::reflection::Schema& schema) {
    ::apache::thrift::fixtures::types::module_reflection_::reflectionInitializer_2133116297910176940(schema);

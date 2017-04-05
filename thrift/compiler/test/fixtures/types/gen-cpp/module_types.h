@@ -18,6 +18,42 @@ class Schema;
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+enum has_bitwise_ops {
+  none = 0,
+  zero = 1,
+  one = 2,
+  two = 4,
+  three = 8,
+};
+
+using _has_bitwise_ops_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<has_bitwise_ops, int>;
+
+extern const _has_bitwise_ops_EnumMapFactory::ValuesToNamesMapType _has_bitwise_ops_VALUES_TO_NAMES;
+
+extern const _has_bitwise_ops_EnumMapFactory::NamesToValuesMapType _has_bitwise_ops_NAMES_TO_VALUES;
+
+}}}} // namespace
+namespace apache { namespace thrift {
+template <> struct TEnumDataStorage< ::apache::thrift::fixtures::types::has_bitwise_ops>;
+}} // apache::thrift
+
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+}}}} // namespace
+namespace apache { namespace thrift {
+template<>
+struct TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops> : public TEnumTraitsBase< ::apache::thrift::fixtures::types::has_bitwise_ops>
+{
+inline static constexpr  ::apache::thrift::fixtures::types::has_bitwise_ops min() {
+return  ::apache::thrift::fixtures::types::has_bitwise_ops::none;
+}
+inline static constexpr  ::apache::thrift::fixtures::types::has_bitwise_ops max() {
+return  ::apache::thrift::fixtures::types::has_bitwise_ops::three;
+}
+};
+}} // apache:thrift
+
+namespace apache { namespace thrift { namespace fixtures { namespace types {
 class decorated_struct;
 
 class ContainerStruct;

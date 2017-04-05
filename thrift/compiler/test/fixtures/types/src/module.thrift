@@ -18,3 +18,11 @@ struct ContainerStruct {
   6: set<i32> (cpp.template = "folly::sorted_vector_set") fieldF
   7: map<i32, string> (cpp.template = "folly::sorted_vector_map") fieldG
 }
+
+enum has_bitwise_ops {
+  none = 0,
+  zero = 1,
+  one = 2,
+  two = 4,
+  three = 8,
+} (cpp.declare_bitwise_ops)
