@@ -42,7 +42,7 @@ SecurityKillSwitchPoller::SecurityKillSwitchPoller()
     : SecurityKillSwitchPoller(true) {}
 
 SecurityKillSwitchPoller::SecurityKillSwitchPoller(bool autostart)
-    : poller_(folly::make_unique<FilePoller>(kPollInterval)) {
+    : poller_(std::make_unique<FilePoller>(kPollInterval)) {
   auto yCob = [this]() { switchEnabled_ = true; };
   auto nCob = [this]() { switchEnabled_ = false; };
   auto condition = FilePoller::fileTouchedWithinCond(kThriftKillSwitchExpired);

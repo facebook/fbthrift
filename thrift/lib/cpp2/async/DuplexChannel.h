@@ -271,9 +271,9 @@ class DuplexChannel {
     }
 
     void initializeHandlers(HeaderServerChannel& serverChannel) {
-      serverHandler_ = folly::make_unique<HeaderServerChannel::ServerSaslNegotiationHandler>(serverChannel);
+      serverHandler_ = std::make_unique<HeaderServerChannel::ServerSaslNegotiationHandler>(serverChannel);
       serverHandler_->setProtectionHandler(duplex_.getCpp2Channel()->getProtectionHandler());
-      clientHandler_ = folly::make_unique<DummySaslNegotiationHandler>();
+      clientHandler_ = std::make_unique<DummySaslNegotiationHandler>();
       clientHandler_->setProtectionHandler(duplex_.getCpp2Channel()->getProtectionHandler());
     }
 

@@ -52,7 +52,7 @@ std::unique_ptr<ScopedServerThread> createThriftServer() {
   server->setPort(0);
   server->setInterface(std::unique_ptr<ExceptionThrowingHandler>(
     new ExceptionThrowingHandler));
-  return folly::make_unique<ScopedServerThread>(server);
+  return std::make_unique<ScopedServerThread>(server);
 }
 
 TEST(ExceptionThrowingTest, Thrift1Client) {

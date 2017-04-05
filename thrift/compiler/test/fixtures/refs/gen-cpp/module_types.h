@@ -396,7 +396,7 @@ class MyStruct : public apache::thrift::TStructType<MyStruct> {
   ):
     MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
-    opt_ref = folly::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+    opt_ref = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <
     typename T__ThriftWrappedArgument__Ctor,
@@ -408,7 +408,7 @@ class MyStruct : public apache::thrift::TStructType<MyStruct> {
   ):
     MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
-    ref = folly::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+    ref = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <
     typename T__ThriftWrappedArgument__Ctor,
@@ -420,7 +420,7 @@ class MyStruct : public apache::thrift::TStructType<MyStruct> {
   ):
     MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
-    req_ref = folly::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+    req_ref = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
 
   MyStruct(const MyStruct&);
@@ -480,7 +480,7 @@ class StructWithUnion : public apache::thrift::TStructType<StructWithUnion> {
   ):
     StructWithUnion(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
-    u = folly::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+    u = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <
     typename T__ThriftWrappedArgument__Ctor,
@@ -634,7 +634,7 @@ class StructWithContainers : public apache::thrift::TStructType<StructWithContai
   ):
     StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
-    list_ref = folly::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+    list_ref = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <
     typename T__ThriftWrappedArgument__Ctor,
@@ -646,7 +646,7 @@ class StructWithContainers : public apache::thrift::TStructType<StructWithContai
   ):
     StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
-    set_ref = folly::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+    set_ref = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <
     typename T__ThriftWrappedArgument__Ctor,
@@ -658,7 +658,7 @@ class StructWithContainers : public apache::thrift::TStructType<StructWithContai
   ):
     StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
-    map_ref = folly::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+    map_ref = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <
     typename T__ThriftWrappedArgument__Ctor,
@@ -670,7 +670,7 @@ class StructWithContainers : public apache::thrift::TStructType<StructWithContai
   ):
     StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
-    list_ref_unique = folly::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+    list_ref_unique = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <
     typename T__ThriftWrappedArgument__Ctor,
@@ -885,7 +885,7 @@ class StructWithRef : public apache::thrift::TStructType<StructWithRef> {
   ):
     StructWithRef(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
-    def_field = folly::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+    def_field = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <
     typename T__ThriftWrappedArgument__Ctor,
@@ -897,7 +897,7 @@ class StructWithRef : public apache::thrift::TStructType<StructWithRef> {
   ):
     StructWithRef(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
-    opt_field = folly::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+    opt_field = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <
     typename T__ThriftWrappedArgument__Ctor,
@@ -909,7 +909,7 @@ class StructWithRef : public apache::thrift::TStructType<StructWithRef> {
   ):
     StructWithRef(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
-    req_field = folly::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+    req_field = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
 
   StructWithRef(const StructWithRef&);
@@ -969,7 +969,7 @@ class StructWithRefTypeUnique : public apache::thrift::TStructType<StructWithRef
   ):
     StructWithRefTypeUnique(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
-    def_field = folly::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+    def_field = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <
     typename T__ThriftWrappedArgument__Ctor,
@@ -981,7 +981,7 @@ class StructWithRefTypeUnique : public apache::thrift::TStructType<StructWithRef
   ):
     StructWithRefTypeUnique(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
-    opt_field = folly::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+    opt_field = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <
     typename T__ThriftWrappedArgument__Ctor,
@@ -993,7 +993,7 @@ class StructWithRefTypeUnique : public apache::thrift::TStructType<StructWithRef
   ):
     StructWithRefTypeUnique(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
-    req_field = folly::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+    req_field = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
 
   StructWithRefTypeUnique(const StructWithRefTypeUnique&);

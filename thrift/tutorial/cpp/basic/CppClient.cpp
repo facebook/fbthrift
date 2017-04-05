@@ -35,7 +35,7 @@ int main(int argc, char** argv) {
   folly::init(&argc, &argv, true);
 
   EventBase eb;
-  auto client = folly::make_unique<CalculatorAsyncClient>(
+  auto client = std::make_unique<CalculatorAsyncClient>(
       HeaderClientChannel::newChannel(
         async::TAsyncSocket::newSocket(
           &eb, {"localhost", 9090})));

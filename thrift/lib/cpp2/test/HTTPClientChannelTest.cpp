@@ -143,7 +143,7 @@ std::unique_ptr<ScopedServerThread> createHttpServer() {
       std::make_shared<TBinaryProtocolFactoryT<THttpServer>>();
   TThreadedServerCreator serverCreator(
       processor, 0, transportFactory, protocolFactory);
-  return folly::make_unique<ScopedServerThread>(&serverCreator);
+  return std::make_unique<ScopedServerThread>(&serverCreator);
 }
 
 TEST(HTTPClientChannelTest, SimpleTestAsync) {

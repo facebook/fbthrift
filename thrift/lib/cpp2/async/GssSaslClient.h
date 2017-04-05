@@ -69,7 +69,7 @@ public:
       std::string("Phase: ") +
       std::to_string((int)clientHandshake_->getPhase()) +
       " " + str;
-    errorString_ = folly::make_unique<std::string>(err);
+    errorString_ = std::make_unique<std::string>(err);
   }
 
   void setSaslThreadManager(

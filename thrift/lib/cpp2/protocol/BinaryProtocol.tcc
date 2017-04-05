@@ -554,7 +554,7 @@ uint32_t BinaryProtocolReader::readBinary(StrType& str) {
 
 uint32_t BinaryProtocolReader::readBinary(std::unique_ptr<folly::IOBuf>& str) {
   if (!str) {
-    str = folly::make_unique<folly::IOBuf>();
+    str = std::make_unique<folly::IOBuf>();
   }
   return readBinary(*str);
 }

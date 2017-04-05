@@ -105,7 +105,7 @@ void service_with_special_namesAsyncProcessor::process_get(std::unique_ptr<apach
       LOG(ERROR) << ex.what() << " in oneway function get";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_get<ProtocolIn_,ProtocolOut_>, throw_get<ProtocolIn_, ProtocolOut_>, throw_wrapped_get<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_get<ProtocolIn_,ProtocolOut_>, throw_get<ProtocolIn_, ProtocolOut_>, throw_wrapped_get<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -216,7 +216,7 @@ void service_with_special_namesAsyncProcessor::process_getter(std::unique_ptr<ap
       LOG(ERROR) << ex.what() << " in oneway function getter";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_getter<ProtocolIn_,ProtocolOut_>, throw_getter<ProtocolIn_, ProtocolOut_>, throw_wrapped_getter<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_getter<ProtocolIn_,ProtocolOut_>, throw_getter<ProtocolIn_, ProtocolOut_>, throw_wrapped_getter<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -327,7 +327,7 @@ void service_with_special_namesAsyncProcessor::process_lists(std::unique_ptr<apa
       LOG(ERROR) << ex.what() << " in oneway function lists";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_lists<ProtocolIn_,ProtocolOut_>, throw_lists<ProtocolIn_, ProtocolOut_>, throw_wrapped_lists<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_lists<ProtocolIn_,ProtocolOut_>, throw_lists<ProtocolIn_, ProtocolOut_>, throw_wrapped_lists<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -438,7 +438,7 @@ void service_with_special_namesAsyncProcessor::process_maps(std::unique_ptr<apac
       LOG(ERROR) << ex.what() << " in oneway function maps";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_maps<ProtocolIn_,ProtocolOut_>, throw_maps<ProtocolIn_, ProtocolOut_>, throw_wrapped_maps<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_maps<ProtocolIn_,ProtocolOut_>, throw_maps<ProtocolIn_, ProtocolOut_>, throw_wrapped_maps<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -549,7 +549,7 @@ void service_with_special_namesAsyncProcessor::process_name(std::unique_ptr<apac
       LOG(ERROR) << ex.what() << " in oneway function name";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_name<ProtocolIn_,ProtocolOut_>, throw_name<ProtocolIn_, ProtocolOut_>, throw_wrapped_name<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_name<ProtocolIn_,ProtocolOut_>, throw_name<ProtocolIn_, ProtocolOut_>, throw_wrapped_name<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -660,7 +660,7 @@ void service_with_special_namesAsyncProcessor::process_name_to_value(std::unique
       LOG(ERROR) << ex.what() << " in oneway function name_to_value";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_name_to_value<ProtocolIn_,ProtocolOut_>, throw_name_to_value<ProtocolIn_, ProtocolOut_>, throw_wrapped_name_to_value<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_name_to_value<ProtocolIn_,ProtocolOut_>, throw_name_to_value<ProtocolIn_, ProtocolOut_>, throw_wrapped_name_to_value<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -771,7 +771,7 @@ void service_with_special_namesAsyncProcessor::process_names(std::unique_ptr<apa
       LOG(ERROR) << ex.what() << " in oneway function names";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_names<ProtocolIn_,ProtocolOut_>, throw_names<ProtocolIn_, ProtocolOut_>, throw_wrapped_names<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_names<ProtocolIn_,ProtocolOut_>, throw_names<ProtocolIn_, ProtocolOut_>, throw_wrapped_names<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -882,7 +882,7 @@ void service_with_special_namesAsyncProcessor::process_prefix_tree(std::unique_p
       LOG(ERROR) << ex.what() << " in oneway function prefix_tree";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_prefix_tree<ProtocolIn_,ProtocolOut_>, throw_prefix_tree<ProtocolIn_, ProtocolOut_>, throw_wrapped_prefix_tree<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_prefix_tree<ProtocolIn_,ProtocolOut_>, throw_prefix_tree<ProtocolIn_, ProtocolOut_>, throw_wrapped_prefix_tree<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -993,7 +993,7 @@ void service_with_special_namesAsyncProcessor::process_sets(std::unique_ptr<apac
       LOG(ERROR) << ex.what() << " in oneway function sets";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_sets<ProtocolIn_,ProtocolOut_>, throw_sets<ProtocolIn_, ProtocolOut_>, throw_wrapped_sets<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_sets<ProtocolIn_,ProtocolOut_>, throw_sets<ProtocolIn_, ProtocolOut_>, throw_wrapped_sets<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1104,7 +1104,7 @@ void service_with_special_namesAsyncProcessor::process_setter(std::unique_ptr<ap
       LOG(ERROR) << ex.what() << " in oneway function setter";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_setter<ProtocolIn_,ProtocolOut_>, throw_setter<ProtocolIn_, ProtocolOut_>, throw_wrapped_setter<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_setter<ProtocolIn_,ProtocolOut_>, throw_setter<ProtocolIn_, ProtocolOut_>, throw_wrapped_setter<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1215,7 +1215,7 @@ void service_with_special_namesAsyncProcessor::process_str(std::unique_ptr<apach
       LOG(ERROR) << ex.what() << " in oneway function str";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_str<ProtocolIn_,ProtocolOut_>, throw_str<ProtocolIn_, ProtocolOut_>, throw_wrapped_str<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_str<ProtocolIn_,ProtocolOut_>, throw_str<ProtocolIn_, ProtocolOut_>, throw_wrapped_str<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1326,7 +1326,7 @@ void service_with_special_namesAsyncProcessor::process_strings(std::unique_ptr<a
       LOG(ERROR) << ex.what() << " in oneway function strings";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_strings<ProtocolIn_,ProtocolOut_>, throw_strings<ProtocolIn_, ProtocolOut_>, throw_wrapped_strings<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_strings<ProtocolIn_,ProtocolOut_>, throw_strings<ProtocolIn_, ProtocolOut_>, throw_wrapped_strings<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1437,7 +1437,7 @@ void service_with_special_namesAsyncProcessor::process_type(std::unique_ptr<apac
       LOG(ERROR) << ex.what() << " in oneway function type";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_type<ProtocolIn_,ProtocolOut_>, throw_type<ProtocolIn_, ProtocolOut_>, throw_wrapped_type<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_type<ProtocolIn_,ProtocolOut_>, throw_type<ProtocolIn_, ProtocolOut_>, throw_wrapped_type<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1548,7 +1548,7 @@ void service_with_special_namesAsyncProcessor::process_value(std::unique_ptr<apa
       LOG(ERROR) << ex.what() << " in oneway function value";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_value<ProtocolIn_,ProtocolOut_>, throw_value<ProtocolIn_, ProtocolOut_>, throw_wrapped_value<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_value<ProtocolIn_,ProtocolOut_>, throw_value<ProtocolIn_, ProtocolOut_>, throw_wrapped_value<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1659,7 +1659,7 @@ void service_with_special_namesAsyncProcessor::process_value_to_name(std::unique
       LOG(ERROR) << ex.what() << " in oneway function value_to_name";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_value_to_name<ProtocolIn_,ProtocolOut_>, throw_value_to_name<ProtocolIn_, ProtocolOut_>, throw_wrapped_value_to_name<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_value_to_name<ProtocolIn_,ProtocolOut_>, throw_value_to_name<ProtocolIn_, ProtocolOut_>, throw_wrapped_value_to_name<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1770,7 +1770,7 @@ void service_with_special_namesAsyncProcessor::process_values(std::unique_ptr<ap
       LOG(ERROR) << ex.what() << " in oneway function values";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_values<ProtocolIn_,ProtocolOut_>, throw_values<ProtocolIn_, ProtocolOut_>, throw_wrapped_values<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_values<ProtocolIn_,ProtocolOut_>, throw_values<ProtocolIn_, ProtocolOut_>, throw_wrapped_values<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1881,7 +1881,7 @@ void service_with_special_namesAsyncProcessor::process_id(std::unique_ptr<apache
       LOG(ERROR) << ex.what() << " in oneway function id";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_id<ProtocolIn_,ProtocolOut_>, throw_id<ProtocolIn_, ProtocolOut_>, throw_wrapped_id<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_id<ProtocolIn_,ProtocolOut_>, throw_id<ProtocolIn_, ProtocolOut_>, throw_wrapped_id<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1992,7 +1992,7 @@ void service_with_special_namesAsyncProcessor::process_ids(std::unique_ptr<apach
       LOG(ERROR) << ex.what() << " in oneway function ids";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_ids<ProtocolIn_,ProtocolOut_>, throw_ids<ProtocolIn_, ProtocolOut_>, throw_wrapped_ids<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_ids<ProtocolIn_,ProtocolOut_>, throw_ids<ProtocolIn_, ProtocolOut_>, throw_wrapped_ids<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -2103,7 +2103,7 @@ void service_with_special_namesAsyncProcessor::process_descriptor(std::unique_pt
       LOG(ERROR) << ex.what() << " in oneway function descriptor";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_descriptor<ProtocolIn_,ProtocolOut_>, throw_descriptor<ProtocolIn_, ProtocolOut_>, throw_wrapped_descriptor<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_descriptor<ProtocolIn_,ProtocolOut_>, throw_descriptor<ProtocolIn_, ProtocolOut_>, throw_wrapped_descriptor<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -2214,7 +2214,7 @@ void service_with_special_namesAsyncProcessor::process_descriptors(std::unique_p
       LOG(ERROR) << ex.what() << " in oneway function descriptors";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_descriptors<ProtocolIn_,ProtocolOut_>, throw_descriptors<ProtocolIn_, ProtocolOut_>, throw_wrapped_descriptors<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_descriptors<ProtocolIn_,ProtocolOut_>, throw_descriptors<ProtocolIn_, ProtocolOut_>, throw_wrapped_descriptors<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -2325,7 +2325,7 @@ void service_with_special_namesAsyncProcessor::process_key(std::unique_ptr<apach
       LOG(ERROR) << ex.what() << " in oneway function key";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_key<ProtocolIn_,ProtocolOut_>, throw_key<ProtocolIn_, ProtocolOut_>, throw_wrapped_key<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_key<ProtocolIn_,ProtocolOut_>, throw_key<ProtocolIn_, ProtocolOut_>, throw_wrapped_key<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -2436,7 +2436,7 @@ void service_with_special_namesAsyncProcessor::process_keys(std::unique_ptr<apac
       LOG(ERROR) << ex.what() << " in oneway function keys";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_keys<ProtocolIn_,ProtocolOut_>, throw_keys<ProtocolIn_, ProtocolOut_>, throw_wrapped_keys<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_keys<ProtocolIn_,ProtocolOut_>, throw_keys<ProtocolIn_, ProtocolOut_>, throw_wrapped_keys<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -2547,7 +2547,7 @@ void service_with_special_namesAsyncProcessor::process_annotation(std::unique_pt
       LOG(ERROR) << ex.what() << " in oneway function annotation";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_annotation<ProtocolIn_,ProtocolOut_>, throw_annotation<ProtocolIn_, ProtocolOut_>, throw_wrapped_annotation<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_annotation<ProtocolIn_,ProtocolOut_>, throw_annotation<ProtocolIn_, ProtocolOut_>, throw_wrapped_annotation<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -2658,7 +2658,7 @@ void service_with_special_namesAsyncProcessor::process_annotations(std::unique_p
       LOG(ERROR) << ex.what() << " in oneway function annotations";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_annotations<ProtocolIn_,ProtocolOut_>, throw_annotations<ProtocolIn_, ProtocolOut_>, throw_wrapped_annotations<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_annotations<ProtocolIn_,ProtocolOut_>, throw_annotations<ProtocolIn_, ProtocolOut_>, throw_wrapped_annotations<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -2769,7 +2769,7 @@ void service_with_special_namesAsyncProcessor::process_member(std::unique_ptr<ap
       LOG(ERROR) << ex.what() << " in oneway function member";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_member<ProtocolIn_,ProtocolOut_>, throw_member<ProtocolIn_, ProtocolOut_>, throw_wrapped_member<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_member<ProtocolIn_,ProtocolOut_>, throw_member<ProtocolIn_, ProtocolOut_>, throw_wrapped_member<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -2880,7 +2880,7 @@ void service_with_special_namesAsyncProcessor::process_members(std::unique_ptr<a
       LOG(ERROR) << ex.what() << " in oneway function members";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_members<ProtocolIn_,ProtocolOut_>, throw_members<ProtocolIn_, ProtocolOut_>, throw_wrapped_members<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_members<ProtocolIn_,ProtocolOut_>, throw_members<ProtocolIn_, ProtocolOut_>, throw_wrapped_members<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -2991,7 +2991,7 @@ void service_with_special_namesAsyncProcessor::process_field(std::unique_ptr<apa
       LOG(ERROR) << ex.what() << " in oneway function field";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_field<ProtocolIn_,ProtocolOut_>, throw_field<ProtocolIn_, ProtocolOut_>, throw_wrapped_field<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_field<ProtocolIn_,ProtocolOut_>, throw_field<ProtocolIn_, ProtocolOut_>, throw_wrapped_field<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -3102,7 +3102,7 @@ void service_with_special_namesAsyncProcessor::process_fields(std::unique_ptr<ap
       LOG(ERROR) << ex.what() << " in oneway function fields";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_fields<ProtocolIn_,ProtocolOut_>, throw_fields<ProtocolIn_, ProtocolOut_>, throw_wrapped_fields<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_fields<ProtocolIn_,ProtocolOut_>, throw_fields<ProtocolIn_, ProtocolOut_>, throw_wrapped_fields<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;

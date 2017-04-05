@@ -83,7 +83,7 @@ void Krb5Tgts::setTgtForRealm(const std::string& realm,
 
 void Krb5Tgts::setClientPrincipal(const Krb5Principal& client) {
   WriteLock lock(lock_);
-  client_ = folly::make_unique<Krb5Principal>(
+  client_ = std::make_unique<Krb5Principal>(
     Krb5Principal::copyPrincipal(ctx_.get(), client.get()));
 }
 
@@ -98,7 +98,7 @@ void Krb5Tgts::kInit(const Krb5Principal& client) {
   }
   Krb5Credentials new_creds = keytab.getInitCreds(client.get());
   WriteLock lock(lock_);
-  client_ = folly::make_unique<Krb5Principal>(
+  client_ = std::make_unique<Krb5Principal>(
     Krb5Principal::copyPrincipal(ctx_.get(), client.get()));
   // Other realm credentials become invalid, clear them
   realmTgtsMap_.clear();

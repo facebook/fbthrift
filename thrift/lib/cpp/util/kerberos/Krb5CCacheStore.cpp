@@ -182,7 +182,7 @@ std::unique_ptr<Krb5CCache> Krb5CCacheStore::initCacheForService(
     logger->logStart("init_barebones_ccache");
   }
   // Make a new memory cache.
-  auto mem = folly::make_unique<Krb5CCache>(
+  auto mem = std::make_unique<Krb5CCache>(
     Krb5CCache::makeNewUnique("MEMORY"));
   // Initialize the new CC
   mem->setDestroyOnClose();
@@ -243,11 +243,11 @@ void Krb5CCacheStore::importCache(
     Krb5Principal server_principal = Krb5Principal::copyPrincipal(
       ctx_.get(), tgt.get().server);
     if (server_principal.getComponent(1) == client_principal.getRealm()) {
-      tgts_obj.setTgt(folly::make_unique<Krb5Credentials>(std::move(tgt)));
+      tgts_obj.setTgt(std::make_unique<Krb5Credentials>(std::move(tgt)));
     } else {
       tgts_obj.setTgtForRealm(
         server_principal.getComponent(1),
-        folly::make_unique<Krb5Credentials>(std::move(tgt)));
+        std::make_unique<Krb5Credentials>(std::move(tgt)));
     }
   }
   tgts_ = std::move(tgts_obj);
@@ -388,7 +388,7 @@ std::unique_ptr<Krb5CCache> Krb5CCacheStore::exportCache(size_t limit) {
   Krb5Principal client_principal = tgts_.getClientPrincipal();
 
   // Make a new memory cache.
-  auto temp_cache = folly::make_unique<Krb5CCache>(
+  auto temp_cache = std::make_unique<Krb5CCache>(
     Krb5CCache::makeNewUnique("MEMORY"));
   // Initialize the new CC
   temp_cache->initialize(client_principal.get());

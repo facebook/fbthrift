@@ -235,7 +235,7 @@ std::ostream& operator<<(std::ostream& os, const Krb5Principal& obj) {
 
 Krb5Credentials::Krb5Credentials(krb5_creds&& creds)
   : context_(true)
-  , creds_(folly::make_unique<krb5_creds>()) {
+  , creds_(std::make_unique<krb5_creds>()) {
   // struct assignment.  About 16 words.
   *creds_ = creds;
   // Zero the struct we copied from.  This can be safely passed to
@@ -606,7 +606,7 @@ Krb5Credentials Krb5Keytab::getInitCreds(
 
 std::unique_ptr<Krb5Principal> Krb5Keytab::getFirstPrincipalInKeytab() {
   for (auto& ktentry : *this) {
-    return folly::make_unique<Krb5Principal>(
+    return std::make_unique<Krb5Principal>(
        context_, std::move(ktentry.principal));
   }
   return nullptr;

@@ -61,7 +61,7 @@ void NestedContainersAsyncProcessor::process_mapList(std::unique_ptr<apache::thr
       LOG(ERROR) << ex.what() << " in oneway function mapList";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_mapList<ProtocolIn_,ProtocolOut_>, throw_mapList<ProtocolIn_, ProtocolOut_>, throw_wrapped_mapList<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_mapList<ProtocolIn_,ProtocolOut_>, throw_mapList<ProtocolIn_, ProtocolOut_>, throw_wrapped_mapList<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -172,7 +172,7 @@ void NestedContainersAsyncProcessor::process_mapSet(std::unique_ptr<apache::thri
       LOG(ERROR) << ex.what() << " in oneway function mapSet";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_mapSet<ProtocolIn_,ProtocolOut_>, throw_mapSet<ProtocolIn_, ProtocolOut_>, throw_wrapped_mapSet<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_mapSet<ProtocolIn_,ProtocolOut_>, throw_mapSet<ProtocolIn_, ProtocolOut_>, throw_wrapped_mapSet<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -283,7 +283,7 @@ void NestedContainersAsyncProcessor::process_listMap(std::unique_ptr<apache::thr
       LOG(ERROR) << ex.what() << " in oneway function listMap";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_listMap<ProtocolIn_,ProtocolOut_>, throw_listMap<ProtocolIn_, ProtocolOut_>, throw_wrapped_listMap<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_listMap<ProtocolIn_,ProtocolOut_>, throw_listMap<ProtocolIn_, ProtocolOut_>, throw_wrapped_listMap<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -394,7 +394,7 @@ void NestedContainersAsyncProcessor::process_listSet(std::unique_ptr<apache::thr
       LOG(ERROR) << ex.what() << " in oneway function listSet";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_listSet<ProtocolIn_,ProtocolOut_>, throw_listSet<ProtocolIn_, ProtocolOut_>, throw_wrapped_listSet<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_listSet<ProtocolIn_,ProtocolOut_>, throw_listSet<ProtocolIn_, ProtocolOut_>, throw_wrapped_listSet<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -505,7 +505,7 @@ void NestedContainersAsyncProcessor::process_turtles(std::unique_ptr<apache::thr
       LOG(ERROR) << ex.what() << " in oneway function turtles";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_turtles<ProtocolIn_,ProtocolOut_>, throw_turtles<ProtocolIn_, ProtocolOut_>, throw_wrapped_turtles<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_turtles<ProtocolIn_,ProtocolOut_>, throw_turtles<ProtocolIn_, ProtocolOut_>, throw_wrapped_turtles<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;

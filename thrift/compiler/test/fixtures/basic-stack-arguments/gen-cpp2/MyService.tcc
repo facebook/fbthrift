@@ -60,7 +60,7 @@ void MyServiceAsyncProcessor::process_hasDataById(std::unique_ptr<apache::thrift
       LOG(ERROR) << ex.what() << " in oneway function hasDataById";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(c), return_hasDataById<ProtocolIn_,ProtocolOut_>, throw_hasDataById<ProtocolIn_, ProtocolOut_>, throw_wrapped_hasDataById<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(c), return_hasDataById<ProtocolIn_,ProtocolOut_>, throw_hasDataById<ProtocolIn_, ProtocolOut_>, throw_wrapped_hasDataById<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -171,7 +171,7 @@ void MyServiceAsyncProcessor::process_getDataById(std::unique_ptr<apache::thrift
       LOG(ERROR) << ex.what() << " in oneway function getDataById";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<std::string>>(std::move(req), std::move(c), return_getDataById<ProtocolIn_,ProtocolOut_>, throw_getDataById<ProtocolIn_, ProtocolOut_>, throw_wrapped_getDataById<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::string>>(std::move(req), std::move(c), return_getDataById<ProtocolIn_,ProtocolOut_>, throw_getDataById<ProtocolIn_, ProtocolOut_>, throw_wrapped_getDataById<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -282,7 +282,7 @@ void MyServiceAsyncProcessor::process_putDataById(std::unique_ptr<apache::thrift
       LOG(ERROR) << ex.what() << " in oneway function putDataById";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_putDataById<ProtocolIn_,ProtocolOut_>, throw_putDataById<ProtocolIn_, ProtocolOut_>, throw_wrapped_putDataById<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_putDataById<ProtocolIn_,ProtocolOut_>, throw_putDataById<ProtocolIn_, ProtocolOut_>, throw_wrapped_putDataById<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;

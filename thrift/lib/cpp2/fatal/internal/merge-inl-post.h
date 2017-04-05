@@ -32,7 +32,7 @@ struct merge {
   static void go(T&& src, T& dst) { impl::template go<T>(std::move(src), dst); }
 
   static void go(const std::unique_ptr<T>& src, std::unique_ptr<T>& dst) {
-    dst = !src ? nullptr : folly::make_unique<T>(*src);
+    dst = !src ? nullptr : std::make_unique<T>(*src);
   }
   static void go(std::unique_ptr<T>&& src, std::unique_ptr<T>& dst) {
     dst = std::move(src);

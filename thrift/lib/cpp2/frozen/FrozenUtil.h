@@ -82,7 +82,7 @@ void deserializeRootLayout(folly::ByteRange& range, Layout<T>& layoutOut) {
 template <class T>
 void freezeToFile(const T& x, folly::File file) {
   std::string schemaStr;
-  auto layout = folly::make_unique<Layout<T>>();
+  auto layout = std::make_unique<Layout<T>>();
   auto contentSize = LayoutRoot::layout(x, *layout);
 
   serializeRootLayout(*layout, schemaStr);
@@ -100,7 +100,7 @@ void freezeToFile(const T& x, folly::File file) {
 template <class T>
 void freezeToString(const T& x, std::string& out) {
   out.clear();
-  auto layout = folly::make_unique<Layout<T>>();
+  auto layout = std::make_unique<Layout<T>>();
   size_t contentSize = LayoutRoot::layout(x, *layout);
   serializeRootLayout(*layout, out);
 
@@ -133,7 +133,7 @@ using MappedFrozen = Bundled<typename Layout<T>::View>;
 
 template <class T>
 MappedFrozen<T> mapFrozen(folly::ByteRange range) {
-  auto layout = folly::make_unique<Layout<T>>();
+  auto layout = std::make_unique<Layout<T>>();
   deserializeRootLayout(range, *layout);
   MappedFrozen<T> ret(layout->view({range.begin(), 0}));
   ret.hold(std::move(layout));
@@ -159,8 +159,8 @@ MappedFrozen<T> mapFrozen(folly::MemoryMapping mapping) {
  */
 template <class T>
 MappedFrozen<T> mapFrozen(std::string&& str, bool trim = true) {
-  auto layout = folly::make_unique<Layout<T>>();
-  auto holder = folly::make_unique<HolderImpl<std::string>>(std::move(str));
+  auto layout = std::make_unique<Layout<T>>();
+  auto holder = std::make_unique<HolderImpl<std::string>>(std::move(str));
   auto& ownedStr = holder->t_;
   folly::ByteRange rangeBefore = folly::StringPiece(ownedStr);
   folly::ByteRange range = rangeBefore;

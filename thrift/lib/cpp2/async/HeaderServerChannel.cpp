@@ -28,7 +28,7 @@ using std::unique_ptr;
 using std::pair;
 using folly::IOBuf;
 using folly::IOBufQueue;
-using folly::make_unique;
+using std::make_unique;
 using namespace apache::thrift::transport;
 using namespace apache::thrift;
 using folly::EventBase;

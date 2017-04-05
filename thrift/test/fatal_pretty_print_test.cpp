@@ -607,7 +607,7 @@ TEST(fatal_pretty_print, ref_unique) {
     }
   )"), v);
 
-  v.a = folly::make_unique<structA>();
+  v.a = std::make_unique<structA>();
   TEST_IMPL(adjust(R"(
     <struct>{
       a: <struct>{

@@ -2256,7 +2256,7 @@ void t_cpp_generator::generate_selective_constructor(ofstream& out,
     if (ref_type.empty()) {
       out << "arg.move()";
     } else if (ref_type == "unique") {
-      out << "folly::make_unique<" << decayed << ">(arg.move())";
+      out << "std::make_unique<" << decayed << ">(arg.move())";
     } else if (ref_type == "shared" || ref_type == "shared_const") {
       out << "std::make_shared<" << decayed << ">(arg.move())";
     } else {

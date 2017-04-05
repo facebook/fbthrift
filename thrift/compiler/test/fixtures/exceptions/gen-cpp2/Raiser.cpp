@@ -14,7 +14,7 @@
 namespace cpp2 {
 
 std::unique_ptr<apache::thrift::AsyncProcessor> RaiserSvIf::getProcessor() {
-  return folly::make_unique<RaiserAsyncProcessor>(this);
+  return std::make_unique<RaiserAsyncProcessor>(this);
 }
 
 void RaiserSvIf::doBland() {

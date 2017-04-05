@@ -50,7 +50,7 @@ void IOBufPtrTestService::async_tm_combine(
   queue.append(req->three.clone());
   queue.append(")");
   callback.release()->resultInThread(
-      folly::make_unique<IOBufPtr>(queue.move()));
+      std::make_unique<IOBufPtr>(queue.move()));
 }
 
 class IOBufPtrTest : public ::testing::Test {
@@ -93,7 +93,7 @@ IOBufPtrTest::IOBufPtrTest() : serverEventBase_(nullptr) {
       getServerAddress());
 
   auto channel = apache::thrift::HeaderClientChannel::newChannel(socket);
-  client_ = folly::make_unique<IOBufPtrTestServiceAsyncClient>(
+  client_ = std::make_unique<IOBufPtrTestServiceAsyncClient>(
       std::move(channel));
 }
 
@@ -104,7 +104,7 @@ IOBufPtrTest::~IOBufPtrTest() {
 
 void IOBufPtrTest::serverThreadLoop() {
   server_.setPort(0);  // pick one
-  server_.setInterface(folly::make_unique<IOBufPtrTestService>());
+  server_.setInterface(std::make_unique<IOBufPtrTestService>());
   server_.setup();
   SCOPE_EXIT { server_.cleanUp(); };
   {

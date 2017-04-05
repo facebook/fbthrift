@@ -413,7 +413,7 @@ public:
     : adapter_(adapter) {}
 
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
-    return folly::make_unique<PythonAsyncProcessor>(adapter_);
+    return std::make_unique<PythonAsyncProcessor>(adapter_);
   }
 
 private:
@@ -427,7 +427,7 @@ public:
     // factory handing won't ever try to manipulate python reference
     // counts without the GIL.
     setProcessorFactory(
-      folly::make_unique<PythonAsyncProcessorFactory>(
+      std::make_unique<PythonAsyncProcessorFactory>(
         std::make_shared<object>(adapter)));
   }
 

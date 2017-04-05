@@ -82,7 +82,7 @@ void enableSecurity(HeaderClientChannel* channel,
 
   channel->setSecurityPolicy(THRIFT_SECURITY_REQUIRED);
 
-  auto saslClient = folly::make_unique<GssSaslClient>(channel->getEventBase());
+  auto saslClient = std::make_unique<GssSaslClient>(channel->getEventBase());
   saslClient->setClientIdentity(clientIdentity);
   saslClient->setServiceIdentity(serviceIdentity);
   saslClient->setSaslThreadManager(make_shared<SaslThreadManager>(
@@ -135,7 +135,7 @@ void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
   RpcOptions rpcOptions;
   rpcOptions.setWriteHeader("security_test",
                             sp == THRIFT_SECURITY_REQUIRED ? "1" : "0");
-  client.sendResponse(rpcOptions, folly::make_unique<FunctionReplyCallback>(
+  client.sendResponse(rpcOptions, std::make_unique<FunctionReplyCallback>(
                       [&base,&client,&c,&sp](ClientReceiveState&& state) {
     EXPECT_FALSE(state.isException());
     if (sp == THRIFT_SECURITY_REQUIRED) {
@@ -161,7 +161,7 @@ void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
     RpcOptions rpcOptions1;
     rpcOptions1.setWriteHeader("security_test",
                               sp == THRIFT_SECURITY_REQUIRED ? "1" : "0");
-    client.sendResponse(rpcOptions1, folly::make_unique<FunctionReplyCallback>(
+    client.sendResponse(rpcOptions1, std::make_unique<FunctionReplyCallback>(
           [&base,&c,&sp](ClientReceiveState&& state) {
       EXPECT_FALSE(state.isException());
       if (sp == THRIFT_SECURITY_REQUIRED) {
@@ -182,7 +182,7 @@ void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
     RpcOptions rpcOptions2;
     rpcOptions2.setWriteHeader("security_test",
                               sp == THRIFT_SECURITY_REQUIRED ? "1" : "0");
-    client.sendResponse(rpcOptions2, folly::make_unique<FunctionReplyCallback>(
+    client.sendResponse(rpcOptions2, std::make_unique<FunctionReplyCallback>(
           [&base,&c,&sp](ClientReceiveState&& state) {
       EXPECT_FALSE(state.isException());
       if (sp == THRIFT_SECURITY_REQUIRED) {

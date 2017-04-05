@@ -14,7 +14,7 @@
 namespace cpp2 {
 
 std::unique_ptr<apache::thrift::AsyncProcessor> MyNodeSvIf::getProcessor() {
-  return folly::make_unique<MyNodeAsyncProcessor>(this);
+  return std::make_unique<MyNodeAsyncProcessor>(this);
 }
 
 void MyNodeSvIf::do_mid() {

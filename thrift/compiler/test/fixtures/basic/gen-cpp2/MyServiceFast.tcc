@@ -54,7 +54,7 @@ void MyServiceFastAsyncProcessor::process_ping(std::unique_ptr<apache::thrift::R
       LOG(ERROR) << ex.what() << " in oneway function ping";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_ping<ProtocolIn_,ProtocolOut_>, throw_ping<ProtocolIn_, ProtocolOut_>, throw_wrapped_ping<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_ping<ProtocolIn_,ProtocolOut_>, throw_ping<ProtocolIn_, ProtocolOut_>, throw_wrapped_ping<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_ping(std::move(callback));
 }
@@ -153,7 +153,7 @@ void MyServiceFastAsyncProcessor::process_getRandomData(std::unique_ptr<apache::
       LOG(ERROR) << ex.what() << " in oneway function getRandomData";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>>(std::move(req), std::move(c), return_getRandomData<ProtocolIn_,ProtocolOut_>, throw_getRandomData<ProtocolIn_, ProtocolOut_>, throw_wrapped_getRandomData<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>>(std::move(req), std::move(c), return_getRandomData<ProtocolIn_,ProtocolOut_>, throw_getRandomData<ProtocolIn_, ProtocolOut_>, throw_wrapped_getRandomData<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_getRandomData(std::move(callback));
 }
@@ -256,7 +256,7 @@ void MyServiceFastAsyncProcessor::process_hasDataById(std::unique_ptr<apache::th
       LOG(ERROR) << ex.what() << " in oneway function hasDataById";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(c), return_hasDataById<ProtocolIn_,ProtocolOut_>, throw_hasDataById<ProtocolIn_, ProtocolOut_>, throw_wrapped_hasDataById<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<bool>>(std::move(req), std::move(c), return_hasDataById<ProtocolIn_,ProtocolOut_>, throw_hasDataById<ProtocolIn_, ProtocolOut_>, throw_wrapped_hasDataById<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_hasDataById(std::move(callback), args.get<0>().ref());
 }
@@ -359,7 +359,7 @@ void MyServiceFastAsyncProcessor::process_getDataById(std::unique_ptr<apache::th
       LOG(ERROR) << ex.what() << " in oneway function getDataById";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>>(std::move(req), std::move(c), return_getDataById<ProtocolIn_,ProtocolOut_>, throw_getDataById<ProtocolIn_, ProtocolOut_>, throw_wrapped_getDataById<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>>(std::move(req), std::move(c), return_getDataById<ProtocolIn_,ProtocolOut_>, throw_getDataById<ProtocolIn_, ProtocolOut_>, throw_wrapped_getDataById<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_getDataById(std::move(callback), args.get<0>().ref());
 }
@@ -464,7 +464,7 @@ void MyServiceFastAsyncProcessor::process_putDataById(std::unique_ptr<apache::th
       LOG(ERROR) << ex.what() << " in oneway function putDataById";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_putDataById<ProtocolIn_,ProtocolOut_>, throw_putDataById<ProtocolIn_, ProtocolOut_>, throw_wrapped_putDataById<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_putDataById<ProtocolIn_,ProtocolOut_>, throw_putDataById<ProtocolIn_, ProtocolOut_>, throw_wrapped_putDataById<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   ctx->setStartedProcessing();
   iface_->async_eb_putDataById(std::move(callback), args.get<0>().ref(), std::move(uarg_data));
 }

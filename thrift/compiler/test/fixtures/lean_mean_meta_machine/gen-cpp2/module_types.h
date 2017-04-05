@@ -3623,7 +3623,7 @@ class struct4 : private apache::thrift::detail::st::ComparisonOperators<struct4>
   struct4(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     struct4(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
-    field3 = folly::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+    field3 = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
 
   struct4(struct4&&) = default;

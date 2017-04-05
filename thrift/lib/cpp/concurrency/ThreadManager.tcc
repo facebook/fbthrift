@@ -398,7 +398,7 @@ void ThreadManager::ImplT<SemType>::add(
     }
   }
 
-  auto task = folly::make_unique<Task>(std::move(value),
+  auto task = std::make_unique<Task>(std::move(value),
                                        std::chrono::milliseconds{expiration});
   if (!tasks_.writeWithPriority(std::move(task), priority)) {
     LOG(ERROR) << "Failed to enqueue item (name prefix: " << getNamePrefix()
@@ -433,7 +433,7 @@ bool ThreadManager::ImplT<SemType>::tryAdd(
     return false;
   }
 
-  auto task = folly::make_unique<Task>(std::move(value),
+  auto task = std::make_unique<Task>(std::move(value),
                                        std::chrono::milliseconds{0});
   if (!tasks_.writeWithPriority(std::move(task), priority)) {
     return false;

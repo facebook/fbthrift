@@ -1000,7 +1000,7 @@ void process_pmap(
   folly::io::Cursor cursor(buf.get());
   cursor.skip(ctx->getMessageBeginSize());
 
-  auto iprot = folly::make_unique<ProtocolReader>();
+  auto iprot = std::make_unique<ProtocolReader>();
   iprot->setInput(cursor);
 
   (proc->*(pfn->second))(
@@ -1095,7 +1095,7 @@ future_returning(F&& f) {
 template <class F>
 std::unique_ptr<arg<F>>
 returning_uptr(F&& f) {
-  auto ret = folly::make_unique<arg<F>>();
+  auto ret = std::make_unique<arg<F>>();
   f(*ret);
   return ret;
 }

@@ -49,7 +49,7 @@ void MyNodeAsyncClient::sync_do_mid() {
 
 void MyNodeAsyncClient::sync_do_mid(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
   do_mid(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
@@ -72,7 +72,7 @@ folly::Future<folly::Unit> MyNodeAsyncClient::future_do_mid() {
 folly::Future<folly::Unit> MyNodeAsyncClient::future_do_mid(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
-  auto callback = folly::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_do_mid, channel_);
+  auto callback = std::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_do_mid, channel_);
   do_mid(rpcOptions, std::move(callback));
   return _future;
 }
@@ -80,13 +80,13 @@ folly::Future<folly::Unit> MyNodeAsyncClient::future_do_mid(apache::thrift::RpcO
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyNodeAsyncClient::header_future_do_mid(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
-  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_do_mid, channel_);
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_do_mid, channel_);
   do_mid(rpcOptions, std::move(callback));
   return _future;
 }
 
 void MyNodeAsyncClient::do_mid(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
-  do_mid(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
+  do_mid(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
 folly::exception_wrapper MyNodeAsyncClient::recv_wrapped_do_mid(::apache::thrift::ClientReceiveState& state) {

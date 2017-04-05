@@ -46,7 +46,7 @@ TEST(ScopedServerThreadTest, BindFailure) {
   folly::SocketAddress squattingAddress;
   squattingAddress.setFromLocalPort(static_cast<uint16_t>(0));
   squattingServer->setAddress(squattingAddress);
-  auto squattingThread = folly::make_unique<ScopedServerThread>(
+  auto squattingThread = std::make_unique<ScopedServerThread>(
       squattingServer);
 
   // Try to start another server on the same port.
@@ -55,7 +55,7 @@ TEST(ScopedServerThreadTest, BindFailure) {
   folly::SocketAddress address;
   address.setFromLocalPort(squattingServer->getAddress().getPort());
   server->setAddress(address);
-  EXPECT_THROW(folly::make_unique<ScopedServerThread>(server), exception);
+  EXPECT_THROW(std::make_unique<ScopedServerThread>(server), exception);
   // Make sure there wasn't a leak of the ThriftServer, (cf. t13139338).
   EXPECT_TRUE(server.unique());
 }

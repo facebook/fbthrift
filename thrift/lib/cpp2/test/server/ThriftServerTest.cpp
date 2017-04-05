@@ -234,7 +234,7 @@ TEST(ThriftServer, DefaultCompressionTest) {
       TAsyncSocket::newSocket(&base, *sst.getAddress()));
   TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
   client.sendResponse(
-    folly::make_unique<Callback>(
+    std::make_unique<Callback>(
       true, apache::thrift::transport::THeader::ZLIB_TRANSFORM
     ),
     64
@@ -246,7 +246,7 @@ TEST(ThriftServer, DefaultCompressionTest) {
     boost::polymorphic_downcast<HeaderClientChannel*>(client.getChannel());
   channel->setTransform(apache::thrift::transport::THeader::SNAPPY_TRANSFORM);
   client.sendResponse(
-    folly::make_unique<Callback>(
+    std::make_unique<Callback>(
       true, apache::thrift::transport::THeader::SNAPPY_TRANSFORM
     ),
     64
@@ -259,7 +259,7 @@ TEST(ThriftServer, DefaultCompressionTest) {
   std::shared_ptr<TAsyncSocket> socket2(
       TAsyncSocket::newSocket(&base, *sst.getAddress()));
   TestServiceAsyncClient client2(HeaderClientChannel::newChannel(socket2));
-  client2.sendResponse(folly::make_unique<Callback>(false, 0), 64);
+  client2.sendResponse(std::make_unique<Callback>(false, 0), 64);
   base.loop();
 
 }
@@ -317,15 +317,15 @@ TEST(ThriftServer, LoadHeaderTest) {
   folly::EventBase base;
   auto client = runner.newClient<TestServiceAsyncClient>(&base);
 
-  client->voidResponse(folly::make_unique<Callback>(false));
+  client->voidResponse(std::make_unique<Callback>(false));
 
   RpcOptions emptyLoadOptions;
   emptyLoadOptions.setWriteHeader(Cpp2Connection::loadHeader, "");
-  client->voidResponse(emptyLoadOptions, folly::make_unique<Callback>(true));
+  client->voidResponse(emptyLoadOptions, std::make_unique<Callback>(true));
 
   RpcOptions customLoadOptions;
   customLoadOptions.setWriteHeader(Cpp2Connection::loadHeader, "foo");
-  client->voidResponse(customLoadOptions, folly::make_unique<Callback>(true));
+  client->voidResponse(customLoadOptions, std::make_unique<Callback>(true));
 
   base.loop();
 }
@@ -644,7 +644,7 @@ TEST(ThriftServer, FailureInjection) {
 
     expected = exp;
 
-    auto callback = folly::make_unique<Callback>(&expected);
+    auto callback = std::make_unique<Callback>(&expected);
     client.sendResponse(rpcOptions, std::move(callback), 1);
     base.loop();
   }

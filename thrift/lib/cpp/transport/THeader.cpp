@@ -789,7 +789,7 @@ unique_ptr<IOBuf> THeader::transform(unique_ptr<IOBuf> buf,
 }
 
 std::unique_ptr<THeader> THeader::clone() {
-  auto clone = folly::make_unique<THeader>();
+  auto clone = std::make_unique<THeader>();
   clone->setProtocolId(protoId_);
   clone->setTransforms(writeTrans_);
   clone->setMinCompressBytes(minCompressBytes_);

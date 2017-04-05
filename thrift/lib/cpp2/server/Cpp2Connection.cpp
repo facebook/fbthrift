@@ -55,7 +55,7 @@ Cpp2Connection::Cpp2Connection(
   const std::shared_ptr<HeaderServerChannel>& serverChannel)
     : processor_(worker->getServer()->getCpp2Processor())
     , duplexChannel_(worker->getServer()->isDuplex() ?
-        folly::make_unique<DuplexChannel>(
+        std::make_unique<DuplexChannel>(
             DuplexChannel::Who::SERVER, asyncSocket) :
         nullptr)
     , channel_(serverChannel ? serverChannel :  // used by client

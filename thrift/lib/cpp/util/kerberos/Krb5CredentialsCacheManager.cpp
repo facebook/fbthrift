@@ -64,8 +64,8 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
   try {
     // These calls can throw if the context cannot be initialized for some
     // reason, e.g. bad config format, etc.
-    ctx_ = folly::make_unique<Krb5Context>();
-    store_ = folly::make_unique<Krb5CCacheStore>(logger, maxCacheSize);
+    ctx_ = std::make_unique<Krb5Context>();
+    store_ = std::make_unique<Krb5CCacheStore>(logger, maxCacheSize);
   } catch (const std::runtime_error& e) {
     // Caught exception while trying to initialize the context / store.
     // The ccache manager thread will detect this and attempt to initialize them
@@ -110,10 +110,10 @@ Krb5CredentialsCacheManager::Krb5CredentialsCacheManager(
       try {
         // If the context or store are not initialized, try to initialize them.
         if (!ctx_) {
-          ctx_ = folly::make_unique<Krb5Context>();
+          ctx_ = std::make_unique<Krb5Context>();
         }
         if (!store_) {
-          store_ = folly::make_unique<Krb5CCacheStore>(
+          store_ = std::make_unique<Krb5CCacheStore>(
             logger, maxCacheSize);
         }
 
@@ -228,7 +228,7 @@ bool Krb5CredentialsCacheManager::waitUntilCacheStoreInitialized(
 
 std::unique_ptr<Krb5CCache> Krb5CredentialsCacheManager::readInCache() {
   auto default_cache =
-      folly::make_unique<Krb5CCache>(Krb5CCache::makeDefault());
+      std::make_unique<Krb5CCache>(Krb5CCache::makeDefault());
   std::unique_ptr<Krb5CCache> file_cache;
   std::unique_ptr<Krb5Principal> client;
 
@@ -242,7 +242,7 @@ std::unique_ptr<Krb5CCache> Krb5CredentialsCacheManager::readInCache() {
 
   }
   if (store_->isInitialized()) {
-    client = folly::make_unique<Krb5Principal>(store_->getClientPrincipal());
+    client = std::make_unique<Krb5Principal>(store_->getClientPrincipal());
   }
 
   if (default_type == "FILE") {
@@ -257,7 +257,7 @@ std::unique_ptr<Krb5CCache> Krb5CredentialsCacheManager::readInCache() {
     }
     file_cache.swap(default_cache);
     client =
-        folly::make_unique<Krb5Principal>(file_cache->getClientPrincipal());
+        std::make_unique<Krb5Principal>(file_cache->getClientPrincipal());
   }
   else if (default_type == "DIR") {
     if(default_path[0] == ':') {
@@ -289,7 +289,7 @@ std::unique_ptr<Krb5CCache> Krb5CredentialsCacheManager::readInCache() {
     const std::string ccache_path =
         folly::to<string>(default_dir, "/tkt_", client_princ_str);
 
-    file_cache = folly::make_unique<Krb5CCache>(Krb5CCache::makeResolve(
+    file_cache = std::make_unique<Krb5CCache>(Krb5CCache::makeResolve(
           folly::to<string>("DIR::", ccache_path)));
     if (*client != file_cache->getClientPrincipal()) {
       throw std::runtime_error(
@@ -298,7 +298,7 @@ std::unique_ptr<Krb5CCache> Krb5CredentialsCacheManager::readInCache() {
                           " but ", *client, " was required"));
     }
   }
-  auto mem = folly::make_unique<Krb5CCache>(
+  auto mem = std::make_unique<Krb5CCache>(
     Krb5CCache::makeNewUnique("MEMORY"));
   mem->setDestroyOnClose();
   mem->initialize(client->get());
@@ -317,7 +317,7 @@ int Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
   }
 
   auto default_cache =
-      folly::make_unique<Krb5CCache>(Krb5CCache::makeDefault());
+      std::make_unique<Krb5CCache>(Krb5CCache::makeDefault());
   std::string default_type, default_path;
   default_cache->getCacheTypeAndName(default_type, default_path);
   if (default_type == "MEMORY") {
@@ -367,7 +367,7 @@ int Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
                            client_princ_str.end());
     file_path =
         folly::to<string>(default_dir, "/tkt_", client_princ_str);
-    file_cache = folly::make_unique<Krb5CCache>(Krb5CCache::makeResolve(
+    file_cache = std::make_unique<Krb5CCache>(Krb5CCache::makeResolve(
         folly::to<string>("DIR::", file_path)));
   }
   // Check if client matches.
@@ -437,7 +437,7 @@ int Krb5CredentialsCacheManager::writeOutCache(size_t limit) {
   temp_cache->setDestroyOnClose();
 
   // Move the in-memory temp_cache to a temporary file
-  auto tmp_file_cache = folly::make_unique<Krb5CCache>(Krb5CCache::makeResolve(
+  auto tmp_file_cache = std::make_unique<Krb5CCache>(Krb5CCache::makeResolve(
       folly::to<string>("FILE:", str_buf)));
   tmp_file_cache->initialize(client.get());
   krb5_error_code code = krb5_cc_copy_creds(

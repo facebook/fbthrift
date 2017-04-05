@@ -55,7 +55,7 @@ struct TestProxygenThriftServerFactory : public TestServerFactory {
       server->setServerEventHandler(serverEventHandler_);
     }
 
-    server->setInterface(folly::make_unique<Interface>());
+    server->setInterface(std::make_unique<Interface>());
     return server;
   }
 

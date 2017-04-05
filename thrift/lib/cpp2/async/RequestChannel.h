@@ -68,7 +68,7 @@ class ClientReceiveState {
                      bool _isSecurityActive)
     : protocolId_(-1),
       ctx_(std::move(_ctx)),
-      header_(folly::make_unique<apache::thrift::transport::THeader>()),
+      header_(std::make_unique<apache::thrift::transport::THeader>()),
       excw_(std::move(_excw)),
       isSecurityActive_(_isSecurityActive),
       isStreamEnd_(false) {

@@ -33,9 +33,9 @@ namespace apache { namespace thrift {
 std::unique_ptr<VirtualReaderBase> makeVirtualReader(ProtocolType type) {
   switch (type) {
   case ProtocolType::T_BINARY_PROTOCOL:
-    return folly::make_unique<VirtualReader<BinaryProtocolReader>>();
+    return std::make_unique<VirtualReader<BinaryProtocolReader>>();
   case ProtocolType::T_COMPACT_PROTOCOL:
-    return folly::make_unique<VirtualReader<CompactProtocolReader>>();
+    return std::make_unique<VirtualReader<CompactProtocolReader>>();
   default:
     break;
   }
@@ -46,9 +46,9 @@ std::unique_ptr<VirtualReaderBase> makeVirtualReader(ProtocolType type) {
 std::unique_ptr<VirtualWriterBase> makeVirtualWriter(ProtocolType type) {
   switch (type) {
   case ProtocolType::T_BINARY_PROTOCOL:
-    return folly::make_unique<VirtualWriter<BinaryProtocolWriter>>();
+    return std::make_unique<VirtualWriter<BinaryProtocolWriter>>();
   case ProtocolType::T_COMPACT_PROTOCOL:
-    return folly::make_unique<VirtualWriter<CompactProtocolWriter>>();
+    return std::make_unique<VirtualWriter<CompactProtocolWriter>>();
   default:
     break;
   }

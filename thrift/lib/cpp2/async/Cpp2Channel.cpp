@@ -55,7 +55,7 @@ Cpp2Channel::Cpp2Channel(
   framingHandler_->setProtectionHandler(protectionHandler_.get());
 
   if (!saslNegotiationHandler_) {
-    saslNegotiationHandler_ = folly::make_unique<DummySaslNegotiationHandler>();
+    saslNegotiationHandler_ = std::make_unique<DummySaslNegotiationHandler>();
   }
   saslNegotiationHandler_->setProtectionHandler(protectionHandler_.get());
   auto pcapLoggingHandler = std::make_shared<PcapLoggingHandler>([this]{

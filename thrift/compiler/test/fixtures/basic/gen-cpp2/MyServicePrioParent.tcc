@@ -53,7 +53,7 @@ void MyServicePrioParentAsyncProcessor::process_ping(std::unique_ptr<apache::thr
       LOG(ERROR) << ex.what() << " in oneway function ping";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_ping<ProtocolIn_,ProtocolOut_>, throw_ping<ProtocolIn_, ProtocolOut_>, throw_wrapped_ping<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_ping<ProtocolIn_,ProtocolOut_>, throw_ping<ProtocolIn_, ProtocolOut_>, throw_wrapped_ping<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -162,7 +162,7 @@ void MyServicePrioParentAsyncProcessor::process_pong(std::unique_ptr<apache::thr
       LOG(ERROR) << ex.what() << " in oneway function pong";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_pong<ProtocolIn_,ProtocolOut_>, throw_pong<ProtocolIn_, ProtocolOut_>, throw_wrapped_pong<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_pong<ProtocolIn_,ProtocolOut_>, throw_pong<ProtocolIn_, ProtocolOut_>, throw_wrapped_pong<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;

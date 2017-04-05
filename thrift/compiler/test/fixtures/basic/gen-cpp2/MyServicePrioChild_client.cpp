@@ -49,7 +49,7 @@ void MyServicePrioChildAsyncClient::sync_pang() {
 
 void MyServicePrioChildAsyncClient::sync_pang(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = folly::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
   pang(rpcOptions, std::move(callback));
   getChannel()->getEventBase()->loopForever();
   SCOPE_EXIT {
@@ -72,7 +72,7 @@ folly::Future<folly::Unit> MyServicePrioChildAsyncClient::future_pang() {
 folly::Future<folly::Unit> MyServicePrioChildAsyncClient::future_pang(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<folly::Unit> _promise;
   auto _future = _promise.getFuture();
-  auto callback = folly::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_pang, channel_);
+  auto callback = std::make_unique<apache::thrift::FutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_pang, channel_);
   pang(rpcOptions, std::move(callback));
   return _future;
 }
@@ -80,13 +80,13 @@ folly::Future<folly::Unit> MyServicePrioChildAsyncClient::future_pang(apache::th
 folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServicePrioChildAsyncClient::header_future_pang(apache::thrift::RpcOptions& rpcOptions) {
   folly::Promise<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
   auto _future = _promise.getFuture();
-  auto callback = folly::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_pang, channel_);
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<folly::Unit>>(std::move(_promise), recv_wrapped_pang, channel_);
   pang(rpcOptions, std::move(callback));
   return _future;
 }
 
 void MyServicePrioChildAsyncClient::pang(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
-  pang(folly::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
+  pang(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
 }
 
 folly::exception_wrapper MyServicePrioChildAsyncClient::recv_wrapped_pang(::apache::thrift::ClientReceiveState& state) {

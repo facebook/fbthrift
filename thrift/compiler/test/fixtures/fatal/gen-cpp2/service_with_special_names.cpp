@@ -14,7 +14,7 @@
 namespace test_cpp2 { namespace cpp_reflection {
 
 std::unique_ptr<apache::thrift::AsyncProcessor> service_with_special_namesSvIf::getProcessor() {
-  return folly::make_unique<service_with_special_namesAsyncProcessor>(this);
+  return std::make_unique<service_with_special_namesAsyncProcessor>(this);
 }
 
 int32_t service_with_special_namesSvIf::get() {

@@ -14,7 +14,7 @@
 namespace cpp2 {
 
 std::unique_ptr<apache::thrift::AsyncProcessor> MyServiceFastSvIf::getProcessor() {
-  return folly::make_unique<MyServiceFastAsyncProcessor>(this);
+  return std::make_unique<MyServiceFastAsyncProcessor>(this);
 }
 
 bool MyServiceFastSvIf::hasDataById(int64_t /*id*/) {

@@ -81,7 +81,7 @@ class SharedServerTests
 
     switch (std::get<0>(GetParam())) {
       case THRIFT_SERVER: {
-        auto f = folly::make_unique<TestThriftServerFactory<TestInterface>>();
+        auto f = std::make_unique<TestThriftServerFactory<TestInterface>>();
         if (securityPolicy != THRIFT_SECURITY_DISABLED) {
           f->useStubSaslServer(true);
         }
@@ -90,7 +90,7 @@ class SharedServerTests
       }
       case PROXYGEN: {
         ASSERT_EQ(THRIFT_SECURITY_DISABLED, securityPolicy);
-        serverFactory = folly::make_unique<
+        serverFactory = std::make_unique<
             TestProxygenThriftServerFactory<TestInterface>>();
         break;
       }
@@ -101,7 +101,7 @@ class SharedServerTests
 
     switch (std::get<1>(GetParam())) {
       case HEADER: {
-        auto c = folly::make_unique<TestHeaderClientChannelFactory>();
+        auto c = std::make_unique<TestHeaderClientChannelFactory>();
         c->setProtocolId(protocolId);
         c->setSecurityPolicy(securityPolicy);
         channelFactory = std::move(c);
@@ -109,7 +109,7 @@ class SharedServerTests
       }
       case HTTP2: {
         ASSERT_EQ(THRIFT_SECURITY_DISABLED, securityPolicy);
-        auto c = folly::make_unique<TestHTTPClientChannelFactory>();
+        auto c = std::make_unique<TestHTTPClientChannelFactory>();
         c->setProtocolId(protocolId);
         channelFactory = std::move(c);
         break;
@@ -126,7 +126,7 @@ class SharedServerTests
     if (!server) {
       createServer();
     }
-    sst = folly::make_unique<ScopedServerThread>(server);
+    sst = std::make_unique<ScopedServerThread>(server);
   }
 
   void createSocket() {
@@ -148,7 +148,7 @@ class SharedServerTests
     if (!channel) {
       createChannel();
     }
-    client = folly::make_unique<TestServiceAsyncClient>(std::move(channel));
+    client = std::make_unique<TestServiceAsyncClient>(std::move(channel));
   }
 
   void init() {

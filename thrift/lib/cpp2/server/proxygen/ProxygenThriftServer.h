@@ -246,7 +246,7 @@ class ProxygenThriftServer : public BaseThriftServer,
 
   // proxygen::HTTPSession::InfoCallback methods
   void onCreate(const proxygen::HTTPSession& session) override {
-    auto ctx = folly::make_unique<ConnectionContext>(session);
+    auto ctx = std::make_unique<ConnectionContext>(session);
     if (eventHandler_) {
       eventHandler_->newConnection(ctx.get());
     }

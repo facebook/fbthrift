@@ -669,7 +669,7 @@ TEST_F(ThreadManagerTest, NumaThreadManagerTest) {
     return;
   }
 
-  auto numa = folly::make_unique<NumaThreadManager>(2);
+  auto numa = std::make_unique<NumaThreadManager>(2);
   bool failed = false;
 
   numa->setNamePrefix("foo");
@@ -788,7 +788,7 @@ TEST_F(ThreadManagerTest, NumaThreadManagerBind) {
   gflags::FlagSaver saver;
   FLAGS_thrift_numa_enabled = true;
 
-  auto numa = folly::make_unique<NumaThreadManager>(2);
+  auto numa = std::make_unique<NumaThreadManager>(2);
   numa->setNamePrefix("foo");
   numa->start();
 

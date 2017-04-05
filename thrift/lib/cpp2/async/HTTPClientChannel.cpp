@@ -31,7 +31,7 @@ using std::pair;
 using folly::IOBuf;
 using folly::IOBufQueue;
 using folly::RequestContext;
-using folly::make_unique;
+using std::make_unique;
 using namespace apache::thrift::transport;
 using folly::EventBase;
 using apache::thrift::async::TAsyncTransport;
@@ -440,7 +440,7 @@ void HTTPClientChannel::HTTPTransactionCallback::onEOM() noexcept {
     return;
   }
   if (cb_) {
-    auto header = folly::make_unique<transport::THeader>();
+    auto header = std::make_unique<transport::THeader>();
     header->setClientType(THRIFT_HTTP_CLIENT_TYPE);
     apache::thrift::transport::THeader::StringToStringMap readHeaders;
     msg_->getHeaders().forEach(

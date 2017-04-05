@@ -14,7 +14,7 @@
 namespace cpp2 {
 
 std::unique_ptr<apache::thrift::AsyncProcessor> MyServicePrioParentSvIf::getProcessor() {
-  return folly::make_unique<MyServicePrioParentAsyncProcessor>(this);
+  return std::make_unique<MyServicePrioParentAsyncProcessor>(this);
 }
 
 void MyServicePrioParentSvIf::ping() {

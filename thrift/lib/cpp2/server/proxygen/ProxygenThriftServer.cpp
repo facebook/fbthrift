@@ -366,7 +366,7 @@ void ProxygenThriftServer::serve() {
 
   configMutable_ = false;
 
-  server_ = folly::make_unique<HTTPServer>(std::move(options));
+  server_ = std::make_unique<HTTPServer>(std::move(options));
   server_->bind(IPs);
   server_->setSessionInfoCallback(this);
 

@@ -66,7 +66,7 @@ int main(int argc, char* argv[]) {
   try {
     cout << "Connecting to " << host << ":" << port << "..." << endl;
     EventBase eb;
-    auto client = folly::make_unique<SorterAsyncClient>(
+    auto client = std::make_unique<SorterAsyncClient>(
         HeaderClientChannel::newChannel(
           async::TAsyncSocket::newSocket(
             &eb, {host, port})));

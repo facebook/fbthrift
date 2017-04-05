@@ -41,7 +41,7 @@ using std::unique_ptr;
 using folly::IOBuf;
 using folly::IOBufQueue;
 using std::shared_ptr;
-using folly::make_unique;
+using std::make_unique;
 
 // +/- for checking timing due to timer granularity, in microseconds
 constexpr size_t kTimingEpsilon = 1000;
@@ -510,11 +510,11 @@ class HeaderChannelClosedTest
     TestRequestCallback::reset();
     channel1_->getTransport()->shutdownWrite();
     seqId_ = channel0_->sendRequest(
-      folly::make_unique<Callback>(this),
+      std::make_unique<Callback>(this),
       // Fake method name for creating a ContextStatck
-      folly::make_unique<ContextStack>("{ChannelTest}"),
+      std::make_unique<ContextStack>("{ChannelTest}"),
       makeTestBuf(42),
-      folly::make_unique<THeader>());
+      std::make_unique<THeader>());
   }
 
   void postLoop() override {

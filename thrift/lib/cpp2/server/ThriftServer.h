@@ -95,7 +95,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   std::string saslThreadsNamePrefix_ = "thrift-sasl";
 
   std::unique_ptr<folly::ShutdownSocketSet> shutdownSocketSet_ =
-      folly::make_unique<folly::ShutdownSocketSet>();
+      std::make_unique<folly::ShutdownSocketSet>();
 
   //! Listen socket
   folly::AsyncServerSocket::UniquePtr socket_;

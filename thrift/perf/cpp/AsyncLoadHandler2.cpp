@@ -202,7 +202,7 @@ AsyncLoadHandler2::future_echo(
     [this, promise = std::move(promise), data = std::move(data)]() mutable {
       std::string output;
       sync_echo(output, std::move(data));
-      promise.setValue(folly::make_unique<std::string>(std::move(output)));
+      promise.setValue(std::make_unique<std::string>(std::move(output)));
     });
 
   return future;

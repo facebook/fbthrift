@@ -14,7 +14,7 @@
 namespace cpp2 {
 
 std::unique_ptr<apache::thrift::AsyncProcessor> NestedContainersSvIf::getProcessor() {
-  return folly::make_unique<NestedContainersAsyncProcessor>(this);
+  return std::make_unique<NestedContainersAsyncProcessor>(this);
 }
 
 void NestedContainersSvIf::mapList(std::unique_ptr<std::map<int32_t, std::vector<int32_t>>> /*foo*/) {

@@ -121,7 +121,7 @@ void NumaThreadFactory::setNumaNode() {
   if (node_ != -1) {
     RequestContext::get()->setContextData(
       NumaContextData::ContextDataVal,
-      folly::make_unique<NumaContextData>(node_));
+      std::make_unique<NumaContextData>(node_));
   }
 }
 

@@ -51,7 +51,7 @@ void MyServicePrioChildAsyncProcessor::process_pang(std::unique_ptr<apache::thri
       LOG(ERROR) << ex.what() << " in oneway function pang";
     }
   }
-  auto callback = folly::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_pang<ProtocolIn_,ProtocolOut_>, throw_pang<ProtocolIn_, ProtocolOut_>, throw_wrapped_pang<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_pang<ProtocolIn_,ProtocolOut_>, throw_pang<ProtocolIn_, ProtocolOut_>, throw_wrapped_pang<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;

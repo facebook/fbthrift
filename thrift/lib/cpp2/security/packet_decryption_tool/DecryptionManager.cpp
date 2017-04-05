@@ -33,7 +33,7 @@ DecryptionManager::DecryptionManager(
   const string& pcapInput,
   const string& pcapOutput)
     : count_(0) {
-  ctx_ = folly::make_unique<Krb5Context>();
+  ctx_ = std::make_unique<Krb5Context>();
 
   if (serverKeytab == "") {
     initCCache(ccache);
@@ -41,13 +41,13 @@ DecryptionManager::DecryptionManager(
     initServerKeytab(serverKeytab);
   }
 
-  capturer_ = folly::make_unique<Capturer>(pcapInput, pcapOutput);
+  capturer_ = std::make_unique<Capturer>(pcapInput, pcapOutput);
 }
 
 void DecryptionManager::initCCache(const string& ccache) {
   Krb5CCache file_cache = Krb5CCache::makeResolve(ccache);
   Krb5Principal client = file_cache.getClientPrincipal();
-  ccache_ = folly::make_unique<Krb5CCache>(
+  ccache_ = std::make_unique<Krb5CCache>(
     Krb5CCache::makeNewUnique("MEMORY"));
   ccache_->setDestroyOnClose();
   ccache_->initialize(client.get());
@@ -59,7 +59,7 @@ void DecryptionManager::initCCache(const string& ccache) {
 }
 
 void DecryptionManager::initServerKeytab(const string& serverKeytab) {
-  serverKeytab_ = folly::make_unique<Krb5Keytab>(ctx_->get(), serverKeytab);
+  serverKeytab_ = std::make_unique<Krb5Keytab>(ctx_->get(), serverKeytab);
 }
 
 void DecryptionManager::decrypt() {
@@ -111,7 +111,7 @@ void DecryptionManager::printSummary() {
 void DecryptionManager::handlePacket(const struct pcap_pkthdr *hdr,
                                      const unsigned char *bytes) {
   count_++;
-  auto p = folly::make_unique<Packet>(hdr, bytes);
+  auto p = std::make_unique<Packet>(hdr, bytes);
 
   auto it = packetHandlerMap_.find(std::make_pair(p->srcAddr_, p->dstAddr_));
   if (it == packetHandlerMap_.end()) {
@@ -145,11 +145,11 @@ DecryptionManager::PacketHandler::PacketHandler(
   , errorReason_("")
   , decryptionManager_(manager)
   , header_(new apache::thrift::transport::THeader)
-  , ctx_(folly::make_unique<Krb5Context>())
+  , ctx_(std::make_unique<Krb5Context>())
   , subkey_(nullptr)
   , sessionKey_(nullptr)
   , remaining_(0)
-  , cipher_(folly::make_unique<IOBufQueue>(IOBufQueue::cacheChainLength())) {
+  , cipher_(std::make_unique<IOBufQueue>(IOBufQueue::cacheChainLength())) {
 }
 
 DecryptionManager::PacketHandler::~PacketHandler() {
@@ -345,7 +345,7 @@ void DecryptionManager::PacketHandler::parseSecondMessage(Packet* packet) {
 
 unique_ptr<IOBuf>
 DecryptionManager::PacketHandler::removeThriftHeader(Packet* packet) {
-  unique_ptr<IOBufQueue> queue = folly::make_unique<IOBufQueue>();
+  unique_ptr<IOBufQueue> queue = std::make_unique<IOBufQueue>();
   queue->wrapBuffer(packet->payload_, packet->payloadSize_);
 
   unique_ptr<IOBuf> msg;

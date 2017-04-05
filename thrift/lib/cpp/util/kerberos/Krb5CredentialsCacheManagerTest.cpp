@@ -29,7 +29,7 @@ class Krb5CredentialsCacheManagerTest : public ::testing::Test {
 protected:
  void SetUp() override {
     // Set up a temporary directory for the test
-    tmpDir_ = folly::make_unique<folly::test::TemporaryDirectory>(
+    tmpDir_ = std::make_unique<folly::test::TemporaryDirectory>(
       "krb5ccmanagertest");
 
     // Modify the gflag for cc manager kill switch for the test to a file in
@@ -38,7 +38,7 @@ protected:
       tmpDir_->path().string(),
       "/cc_manager_kill_switch");
 
-    ctx_ = folly::make_unique<Krb5Context>();
+    ctx_ = std::make_unique<Krb5Context>();
   }
 
   void TearDown() override {}
@@ -65,7 +65,7 @@ protected:
 TEST_F(Krb5CredentialsCacheManagerTest, KillSwitchTest) {
   // Activate the cc manager kill switch before starting the thread.
   enableCCManagaerKillSwitch();
-  ccManager_ = folly::make_unique<Krb5CredentialsCacheManager>();
+  ccManager_ = std::make_unique<Krb5CredentialsCacheManager>();
 
   // Since the cc manager kill switch is activated before startig the cc manager
   // thread, the underlying ccStore should not be initialized.
