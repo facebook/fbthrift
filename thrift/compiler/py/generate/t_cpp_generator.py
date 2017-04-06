@@ -3597,9 +3597,7 @@ class CppGenerator(t_generator.Generator):
         ktype = '_ktype' + self._nested_containers(otype)
         vtype = '_vtype' + self._nested_containers(otype)
         etype = '_etype' + self._nested_containers(otype)
-        cpptype = self._cpp_type_name(cont)
-        use_push = (cpptype is not None and 'list' in cpptype) \
-            or self._has_cpp_annotation(cont, 'template')
+        use_push = self._cpp_annotation(cont, 'template') == 'std::list'
 
         if pointer:
             # Use unique_ptr as a temporary deserialization container

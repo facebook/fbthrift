@@ -284,16 +284,14 @@ uint32_t ContainerStruct::read(Protocol_* iprot) {
           uint32_t _i_r;
           if (_size_r == std::numeric_limits<uint32_t>::max()) {
             for (_i_r = 0; iprot->peekList(); ++_i_r) {
-              int32_t _elem_r;
-              xfer += iprot->readI32(_elem_r);
-              this->fieldC.push_back(std::move(_elem_r));
+              this->fieldC.resize(_i_r + 1);
+              xfer += iprot->readI32(this->fieldC[_i_r]);
             }
           }
           else {
+            this->fieldC.resize(_size_r);
             for (_i_r = 0; _i_r < _size_r; ++_i_r) {
-              int32_t _elem_r;
-              xfer += iprot->readI32(_elem_r);
-              this->fieldC.push_back(std::move(_elem_r));
+              xfer += iprot->readI32(this->fieldC[_i_r]);
             }
           }
           xfer += iprot->readListEnd();
@@ -313,16 +311,14 @@ uint32_t ContainerStruct::read(Protocol_* iprot) {
           uint32_t _i_r;
           if (_size_r == std::numeric_limits<uint32_t>::max()) {
             for (_i_r = 0; iprot->peekList(); ++_i_r) {
-              int32_t _elem_r;
-              xfer += iprot->readI32(_elem_r);
-              this->fieldD.push_back(std::move(_elem_r));
+              this->fieldD.resize(_i_r + 1);
+              xfer += iprot->readI32(this->fieldD[_i_r]);
             }
           }
           else {
+            this->fieldD.resize(_size_r);
             for (_i_r = 0; _i_r < _size_r; ++_i_r) {
-              int32_t _elem_r;
-              xfer += iprot->readI32(_elem_r);
-              this->fieldD.push_back(std::move(_elem_r));
+              xfer += iprot->readI32(this->fieldD[_i_r]);
             }
           }
           xfer += iprot->readListEnd();
@@ -342,16 +338,14 @@ uint32_t ContainerStruct::read(Protocol_* iprot) {
           uint32_t _i_r;
           if (_size_r == std::numeric_limits<uint32_t>::max()) {
             for (_i_r = 0; iprot->peekList(); ++_i_r) {
-              int32_t _elem_r;
-              xfer += iprot->readI32(_elem_r);
-              this->fieldE.push_back(std::move(_elem_r));
+              this->fieldE.resize(_i_r + 1);
+              xfer += iprot->readI32(this->fieldE[_i_r]);
             }
           }
           else {
+            this->fieldE.resize(_size_r);
             for (_i_r = 0; _i_r < _size_r; ++_i_r) {
-              int32_t _elem_r;
-              xfer += iprot->readI32(_elem_r);
-              this->fieldE.push_back(std::move(_elem_r));
+              xfer += iprot->readI32(this->fieldE[_i_r]);
             }
           }
           xfer += iprot->readListEnd();
