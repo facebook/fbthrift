@@ -177,7 +177,7 @@ class TBinaryProtocol(TProtocolBase):
     def readMapBegin(self):
         ktype = self.readByte()
         vtype = self.readByte()
-        size = self.checkNonNegative(self.readI32())
+        size = self.readI32()
         return (ktype, vtype, size)
 
     def readMapEnd(self):
@@ -185,7 +185,7 @@ class TBinaryProtocol(TProtocolBase):
 
     def readListBegin(self):
         etype = self.readByte()
-        size = self.checkNonNegative(self.readI32())
+        size = self.readI32()
         return (etype, size)
 
     def readListEnd(self):
@@ -193,7 +193,7 @@ class TBinaryProtocol(TProtocolBase):
 
     def readSetBegin(self):
         etype = self.readByte()
-        size = self.checkNonNegative(self.readI32())
+        size = self.readI32()
         return (etype, size)
 
     def readSetEnd(self):
@@ -236,17 +236,9 @@ class TBinaryProtocol(TProtocolBase):
         return val
 
     def readString(self):
-        len = self.checkNonNegative(self.readI32())
+        len = self.readI32()
         str = self.trans.readAll(len)
         return str
-
-    def checkNonNegative(self, val):
-        if val < 0:
-            raise TProtocolException(
-                TProtocolException.NEGATIVE_SIZE,
-                'Expecting non-negative size, got: %d' % (val)
-            )
-        return val
 
 
 class TBinaryProtocolFactory:
