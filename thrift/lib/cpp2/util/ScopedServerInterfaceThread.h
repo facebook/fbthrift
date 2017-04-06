@@ -17,10 +17,11 @@
 #ifndef THRIFT_UTIL_SCOPEDSERVEREVENTBASETHREAD_H
 #define THRIFT_UTIL_SCOPEDSERVEREVENTBASETHREAD_H
 
-#include <memory>
-#include <folly/io/async/EventBase.h>
+#include <folly/Function.h>
 #include <folly/SocketAddress.h>
+#include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/util/ScopedServerThread.h>
+#include <memory>
 
 namespace apache { namespace thrift {
 
@@ -33,17 +34,18 @@ class ThriftServer;
  * The server is stopped automatically when the instance is destroyed.
  */
 class ScopedServerInterfaceThread {
-
  public:
-
+  using ServerConfigCb = folly::Function<void(apache::thrift::ThriftServer&)>;
   ScopedServerInterfaceThread(
       std::shared_ptr<AsyncProcessorFactory> apf,
-      folly::SocketAddress const& addr);
+      folly::SocketAddress const& addr,
+      ServerConfigCb configCb = {});
 
   explicit ScopedServerInterfaceThread(
       std::shared_ptr<AsyncProcessorFactory> apf,
       const std::string& host = "::1",
-      uint16_t port = 0);
+      uint16_t port = 0,
+      ServerConfigCb configCb = {});
 
   explicit ScopedServerInterfaceThread(
       std::shared_ptr<ThriftServer> ts);

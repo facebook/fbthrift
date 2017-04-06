@@ -27,7 +27,8 @@ namespace apache { namespace thrift {
 
 ScopedServerInterfaceThread::ScopedServerInterfaceThread(
     shared_ptr<AsyncProcessorFactory> apf,
-    SocketAddress const& addr) {
+    SocketAddress const& addr,
+    ServerConfigCb configCb) {
   auto tm = ThreadManager::newSimpleThreadManager(1, 5, false, 50);
   tm->threadFactory(make_shared<PosixThreadFactory>());
   tm->start();
@@ -36,6 +37,9 @@ ScopedServerInterfaceThread::ScopedServerInterfaceThread(
   ts->setProcessorFactory(move(apf));
   ts->setNumIOWorkerThreads(1);
   ts->setThreadManager(tm);
+  if (configCb) {
+    configCb(*ts);
+  }
   ts_ = move(ts);
   sst_.start(ts_);
 }
@@ -43,8 +47,12 @@ ScopedServerInterfaceThread::ScopedServerInterfaceThread(
 ScopedServerInterfaceThread::ScopedServerInterfaceThread(
     shared_ptr<AsyncProcessorFactory> apf,
     const string& host,
-    uint16_t port) :
-      ScopedServerInterfaceThread(std::move(apf), SocketAddress(host, port)) {}
+    uint16_t port,
+    ServerConfigCb configCb)
+    : ScopedServerInterfaceThread(
+          move(apf),
+          SocketAddress(host, port),
+          move(configCb)) {}
 
 ScopedServerInterfaceThread::ScopedServerInterfaceThread(
     shared_ptr<ThriftServer> ts) {

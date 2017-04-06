@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,8 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
+
+#include <atomic>
 
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
@@ -101,4 +102,13 @@ TEST(ScopedServerInterfaceThread, ctor_with_thriftserver) {
         &eb, ssit.getAddress())));
 
   EXPECT_EQ(6, cli.sync_add(-3, 9));
+}
+
+TEST(ScopedServerInterfaceThread, configureCbCalled) {
+  std::atomic<bool> configCalled{false};
+  ScopedServerInterfaceThread ssit(
+      make_shared<SimpleServiceImpl>(), "::1", 0, [&](ThriftServer&) {
+        configCalled = true;
+      });
+  EXPECT_TRUE(configCalled);
 }
