@@ -35,6 +35,9 @@ extern const _has_bitwise_ops_EnumMapFactory::NamesToValuesMapType _has_bitwise_
 }}}} // namespace
 namespace apache { namespace thrift {
 template <> struct TEnumDataStorage< ::apache::thrift::fixtures::types::has_bitwise_ops>;
+template <> const std::size_t TEnumTraitsBase< ::apache::thrift::fixtures::types::has_bitwise_ops>::size;
+template <> const folly::Range<const  ::apache::thrift::fixtures::types::has_bitwise_ops*> TEnumTraitsBase< ::apache::thrift::fixtures::types::has_bitwise_ops>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::apache::thrift::fixtures::types::has_bitwise_ops>::names;
 }} // apache::thrift
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
