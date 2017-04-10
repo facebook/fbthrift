@@ -22,6 +22,10 @@ from folly cimport (
   cFollyUnit,
   c_unit
 )
+
+cimport folly.futures
+from folly.executor cimport get_executor
+
 cimport includes.types
 import includes.types
 

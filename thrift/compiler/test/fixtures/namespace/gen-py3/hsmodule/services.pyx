@@ -22,6 +22,10 @@ from folly cimport (
   cFollyUnit,
   c_unit
 )
+
+cimport folly.futures
+from folly.executor cimport get_executor
+
 cimport hsmodule.types
 import hsmodule.types
 
@@ -51,15 +55,16 @@ cdef api void call_cy_HsTestService_init(
     object self,
     cFollyPromise[int64_t] cPromise,
     int64_t int1
-) with gil:
+):  
     promise = Promise_i64.create(move(cPromise))
     arg_int1 = int1
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         HsTestService_init_coro(
             self,
             promise,
-            arg_int1),
-        loop=self.loop)
+            arg_int1
+        )
+    )
 
 async def HsTestService_init_coro(
     object self,
@@ -85,7 +90,10 @@ cdef class HsTestServiceInterface(
     ServiceInterface
 ):
     def __cinit__(self):
-        self.interface_wrapper = cHsTestServiceInterface(<PyObject *> self)
+        self.interface_wrapper = cHsTestServiceInterface(
+            <PyObject *> self,
+            get_executor()
+        )
 
     async def init(
             self,

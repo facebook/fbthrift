@@ -22,6 +22,10 @@ from folly cimport (
   cFollyUnit,
   c_unit
 )
+
+cimport folly.futures
+from folly.executor cimport get_executor
+
 cimport service.types
 import service.types
 import module.types
@@ -56,17 +60,18 @@ cdef api void call_cy_MyService_query(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[module.types.cMyStruct] s,
     unique_ptr[includes.types.cIncluded] i
-) with gil:
+):  
     promise = Promise_void.create(move(cPromise))
     arg_s = module.types.MyStruct.create(module.types.move(s))
     arg_i = includes.types.Included.create(includes.types.move(i))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         MyService_query_coro(
             self,
             promise,
             arg_s,
-            arg_i),
-        loop=self.loop)
+            arg_i
+        )
+    )
 
 async def MyService_query_coro(
     object self,
@@ -94,7 +99,10 @@ cdef class MyServiceInterface(
     ServiceInterface
 ):
     def __cinit__(self):
-        self.interface_wrapper = cMyServiceInterface(<PyObject *> self)
+        self.interface_wrapper = cMyServiceInterface(
+            <PyObject *> self,
+            get_executor()
+        )
 
     async def query(
             self,

@@ -7,6 +7,7 @@
 
 #pragma once
 #include <src/gen-cpp2/MyService.h>
+#include <folly/python/futures.h>
 #include <Python.h>
 
 #include <memory>
@@ -16,8 +17,9 @@ namespace cpp2 {
 class MyServiceWrapper : virtual public MyServiceSvIf {
   protected:
     PyObject *if_object;
+    folly::Executor *executor;
   public:
-    explicit MyServiceWrapper(PyObject *if_object);
+    explicit MyServiceWrapper(PyObject *if_object, folly::Executor *exc);
     virtual ~MyServiceWrapper();
     folly::Future<folly::Unit> future_query(
         std::unique_ptr<cpp2::MyStruct> s,
@@ -25,5 +27,5 @@ class MyServiceWrapper : virtual public MyServiceSvIf {
     ) override;
 };
 
-std::shared_ptr<apache::thrift::ServerInterface> MyServiceInterface(PyObject *if_object);
+std::shared_ptr<apache::thrift::ServerInterface> MyServiceInterface(PyObject *if_object, folly::Executor *exc);
 } // namespace cpp2

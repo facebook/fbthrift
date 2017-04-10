@@ -42,6 +42,10 @@ from folly cimport (
   cFollyUnit,
   c_unit
 )
+
+cimport folly.futures
+from folly.executor cimport get_executor
+
 cimport {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types
 import {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types
 {{#program:includeNamespaces}}
@@ -78,7 +82,10 @@ cdef class {{service:name}}Interface(
     {{/service:extends?}}
 ):
     def __cinit__(self):
-        self.interface_wrapper = c{{service:name}}Interface(<PyObject *> self)
+        self.interface_wrapper = c{{service:name}}Interface(
+            <PyObject *> self,
+            get_executor()
+        )
 
     {{#service:functions}}
     async def {{function:name}}(

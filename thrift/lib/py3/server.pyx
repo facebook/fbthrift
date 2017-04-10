@@ -4,9 +4,9 @@ import asyncio
 
 
 cdef class ServiceInterface:
-    def __init__(self, loop=None, **kwargs):
+    def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.loop = loop or asyncio.get_event_loop()
+        self.loop = asyncio.get_event_loop()
 
 
 cdef class ThriftServer:
@@ -17,9 +17,8 @@ cdef class ThriftServer:
     def __cinit__(self):
         self.server = make_unique[cThriftServer]()
 
-
-    def __init__(self, ServiceInterface handler, port, loop=None):
-        self.loop = loop or asyncio.get_event_loop()
+    def __init__(self, ServiceInterface handler, port):
+        self.loop = asyncio.get_event_loop()
         self.handler = handler
         self.server.get().setInterface(handler.interface_wrapper)
         self.server.get().setPort(port)

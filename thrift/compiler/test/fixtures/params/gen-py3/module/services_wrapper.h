@@ -7,6 +7,7 @@
 
 #pragma once
 #include <src/gen-cpp2/NestedContainers.h>
+#include <folly/python/futures.h>
 #include <Python.h>
 
 #include <memory>
@@ -16,8 +17,9 @@ namespace cpp2 {
 class NestedContainersWrapper : virtual public NestedContainersSvIf {
   protected:
     PyObject *if_object;
+    folly::Executor *executor;
   public:
-    explicit NestedContainersWrapper(PyObject *if_object);
+    explicit NestedContainersWrapper(PyObject *if_object, folly::Executor *exc);
     virtual ~NestedContainersWrapper();
     folly::Future<folly::Unit> future_mapList(
         std::unique_ptr<std::map<int32_t,std::vector<int32_t>>> foo
@@ -36,5 +38,5 @@ class NestedContainersWrapper : virtual public NestedContainersSvIf {
     ) override;
 };
 
-std::shared_ptr<apache::thrift::ServerInterface> NestedContainersInterface(PyObject *if_object);
+std::shared_ptr<apache::thrift::ServerInterface> NestedContainersInterface(PyObject *if_object, folly::Executor *exc);
 } // namespace cpp2

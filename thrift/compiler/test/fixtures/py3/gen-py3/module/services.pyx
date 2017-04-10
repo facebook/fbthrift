@@ -22,6 +22,10 @@ from folly cimport (
   cFollyUnit,
   c_unit
 )
+
+cimport folly.futures
+from folly.executor cimport get_executor
+
 cimport module.types
 import module.types
 
@@ -255,13 +259,14 @@ cdef class Promise_List__AnEnum:
 cdef api void call_cy_SimpleService_get_five(
     object self,
     cFollyPromise[int32_t] cPromise
-) with gil:
+):  
     promise = Promise_i32.create(move(cPromise))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_get_five_coro(
             self,
-            promise),
-        loop=self.loop)
+            promise
+        )
+    )
 
 async def SimpleService_get_five_coro(
     object self,
@@ -284,15 +289,16 @@ cdef api void call_cy_SimpleService_add_five(
     object self,
     cFollyPromise[int32_t] cPromise,
     int32_t num
-) with gil:
+):  
     promise = Promise_i32.create(move(cPromise))
     arg_num = num
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_add_five_coro(
             self,
             promise,
-            arg_num),
-        loop=self.loop)
+            arg_num
+        )
+    )
 
 async def SimpleService_add_five_coro(
     object self,
@@ -316,13 +322,14 @@ async def SimpleService_add_five_coro(
 cdef api void call_cy_SimpleService_do_nothing(
     object self,
     cFollyPromise[cFollyUnit] cPromise
-) with gil:
+):  
     promise = Promise_void.create(move(cPromise))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_do_nothing_coro(
             self,
-            promise),
-        loop=self.loop)
+            promise
+        )
+    )
 
 async def SimpleService_do_nothing_coro(
     object self,
@@ -346,17 +353,18 @@ cdef api void call_cy_SimpleService_concat(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] first,
     unique_ptr[string] second
-) with gil:
+):  
     promise = Promise_string.create(move(cPromise))
     arg_first = (deref(first.get())).decode('UTF-8')
     arg_second = (deref(second.get())).decode('UTF-8')
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_concat_coro(
             self,
             promise,
             arg_first,
-            arg_second),
-        loop=self.loop)
+            arg_second
+        )
+    )
 
 async def SimpleService_concat_coro(
     object self,
@@ -383,15 +391,16 @@ cdef api void call_cy_SimpleService_get_value(
     object self,
     cFollyPromise[int32_t] cPromise,
     unique_ptr[module.types.cSimpleStruct] simple_struct
-) with gil:
+):  
     promise = Promise_i32.create(move(cPromise))
     arg_simple_struct = module.types.SimpleStruct.create(module.types.move(simple_struct))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_get_value_coro(
             self,
             promise,
-            arg_simple_struct),
-        loop=self.loop)
+            arg_simple_struct
+        )
+    )
 
 async def SimpleService_get_value_coro(
     object self,
@@ -416,15 +425,16 @@ cdef api void call_cy_SimpleService_negate(
     object self,
     cFollyPromise[cbool] cPromise,
     cbool input
-) with gil:
+):  
     promise = Promise_bool.create(move(cPromise))
     arg_input = input
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_negate_coro(
             self,
             promise,
-            arg_input),
-        loop=self.loop)
+            arg_input
+        )
+    )
 
 async def SimpleService_negate_coro(
     object self,
@@ -449,15 +459,16 @@ cdef api void call_cy_SimpleService_tiny(
     object self,
     cFollyPromise[int8_t] cPromise,
     int8_t input
-) with gil:
+):  
     promise = Promise_byte.create(move(cPromise))
     arg_input = input
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_tiny_coro(
             self,
             promise,
-            arg_input),
-        loop=self.loop)
+            arg_input
+        )
+    )
 
 async def SimpleService_tiny_coro(
     object self,
@@ -482,15 +493,16 @@ cdef api void call_cy_SimpleService_small(
     object self,
     cFollyPromise[int16_t] cPromise,
     int16_t input
-) with gil:
+):  
     promise = Promise_i16.create(move(cPromise))
     arg_input = input
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_small_coro(
             self,
             promise,
-            arg_input),
-        loop=self.loop)
+            arg_input
+        )
+    )
 
 async def SimpleService_small_coro(
     object self,
@@ -515,15 +527,16 @@ cdef api void call_cy_SimpleService_big(
     object self,
     cFollyPromise[int64_t] cPromise,
     int64_t input
-) with gil:
+):  
     promise = Promise_i64.create(move(cPromise))
     arg_input = input
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_big_coro(
             self,
             promise,
-            arg_input),
-        loop=self.loop)
+            arg_input
+        )
+    )
 
 async def SimpleService_big_coro(
     object self,
@@ -548,15 +561,16 @@ cdef api void call_cy_SimpleService_two(
     object self,
     cFollyPromise[double] cPromise,
     double input
-) with gil:
+):  
     promise = Promise_double.create(move(cPromise))
     arg_input = input
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_two_coro(
             self,
             promise,
-            arg_input),
-        loop=self.loop)
+            arg_input
+        )
+    )
 
 async def SimpleService_two_coro(
     object self,
@@ -580,13 +594,14 @@ async def SimpleService_two_coro(
 cdef api void call_cy_SimpleService_expected_exception(
     object self,
     cFollyPromise[cFollyUnit] cPromise
-) with gil:
+):  
     promise = Promise_void.create(move(cPromise))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_expected_exception_coro(
             self,
-            promise),
-        loop=self.loop)
+            promise
+        )
+    )
 
 async def SimpleService_expected_exception_coro(
     object self,
@@ -610,13 +625,14 @@ async def SimpleService_expected_exception_coro(
 cdef api void call_cy_SimpleService_unexpected_exception(
     object self,
     cFollyPromise[int32_t] cPromise
-) with gil:
+):  
     promise = Promise_i32.create(move(cPromise))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_unexpected_exception_coro(
             self,
-            promise),
-        loop=self.loop)
+            promise
+        )
+    )
 
 async def SimpleService_unexpected_exception_coro(
     object self,
@@ -639,15 +655,16 @@ cdef api void call_cy_SimpleService_sum_i16_list(
     object self,
     cFollyPromise[int32_t] cPromise,
     unique_ptr[vector[int16_t]] numbers
-) with gil:
+):  
     promise = Promise_i32.create(move(cPromise))
     arg_numbers = module.types.List__i16.create(module.types.move(numbers))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_sum_i16_list_coro(
             self,
             promise,
-            arg_numbers),
-        loop=self.loop)
+            arg_numbers
+        )
+    )
 
 async def SimpleService_sum_i16_list_coro(
     object self,
@@ -672,15 +689,16 @@ cdef api void call_cy_SimpleService_sum_i32_list(
     object self,
     cFollyPromise[int32_t] cPromise,
     unique_ptr[vector[int32_t]] numbers
-) with gil:
+):  
     promise = Promise_i32.create(move(cPromise))
     arg_numbers = module.types.List__i32.create(module.types.move(numbers))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_sum_i32_list_coro(
             self,
             promise,
-            arg_numbers),
-        loop=self.loop)
+            arg_numbers
+        )
+    )
 
 async def SimpleService_sum_i32_list_coro(
     object self,
@@ -705,15 +723,16 @@ cdef api void call_cy_SimpleService_sum_i64_list(
     object self,
     cFollyPromise[int32_t] cPromise,
     unique_ptr[vector[int64_t]] numbers
-) with gil:
+):  
     promise = Promise_i32.create(move(cPromise))
     arg_numbers = module.types.List__i64.create(module.types.move(numbers))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_sum_i64_list_coro(
             self,
             promise,
-            arg_numbers),
-        loop=self.loop)
+            arg_numbers
+        )
+    )
 
 async def SimpleService_sum_i64_list_coro(
     object self,
@@ -738,15 +757,16 @@ cdef api void call_cy_SimpleService_concat_many(
     object self,
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[vector[string]] words
-) with gil:
+):  
     promise = Promise_string.create(move(cPromise))
     arg_words = module.types.List__string.create(module.types.move(words))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_concat_many_coro(
             self,
             promise,
-            arg_words),
-        loop=self.loop)
+            arg_words
+        )
+    )
 
 async def SimpleService_concat_many_coro(
     object self,
@@ -771,15 +791,16 @@ cdef api void call_cy_SimpleService_count_structs(
     object self,
     cFollyPromise[int32_t] cPromise,
     unique_ptr[vector[module.types.cSimpleStruct]] items
-) with gil:
+):  
     promise = Promise_i32.create(move(cPromise))
     arg_items = module.types.List__SimpleStruct.create(module.types.move(items))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_count_structs_coro(
             self,
             promise,
-            arg_items),
-        loop=self.loop)
+            arg_items
+        )
+    )
 
 async def SimpleService_count_structs_coro(
     object self,
@@ -804,15 +825,16 @@ cdef api void call_cy_SimpleService_sum_set(
     object self,
     cFollyPromise[int32_t] cPromise,
     unique_ptr[cset[int32_t]] numbers
-) with gil:
+):  
     promise = Promise_i32.create(move(cPromise))
     arg_numbers = module.types.Set__i32.create(module.types.move(numbers))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_sum_set_coro(
             self,
             promise,
-            arg_numbers),
-        loop=self.loop)
+            arg_numbers
+        )
+    )
 
 async def SimpleService_sum_set_coro(
     object self,
@@ -838,17 +860,18 @@ cdef api void call_cy_SimpleService_contains_word(
     cFollyPromise[cbool] cPromise,
     unique_ptr[cset[string]] words,
     unique_ptr[string] word
-) with gil:
+):  
     promise = Promise_bool.create(move(cPromise))
     arg_words = module.types.Set__string.create(module.types.move(words))
     arg_word = (deref(word.get())).decode('UTF-8')
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_contains_word_coro(
             self,
             promise,
             arg_words,
-            arg_word),
-        loop=self.loop)
+            arg_word
+        )
+    )
 
 async def SimpleService_contains_word_coro(
     object self,
@@ -876,17 +899,18 @@ cdef api void call_cy_SimpleService_get_map_value(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[cmap[string,string]] words,
     unique_ptr[string] key
-) with gil:
+):  
     promise = Promise_string.create(move(cPromise))
     arg_words = module.types.Map__string_string.create(module.types.move(words))
     arg_key = (deref(key.get())).decode('UTF-8')
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_get_map_value_coro(
             self,
             promise,
             arg_words,
-            arg_key),
-        loop=self.loop)
+            arg_key
+        )
+    )
 
 async def SimpleService_get_map_value_coro(
     object self,
@@ -913,15 +937,16 @@ cdef api void call_cy_SimpleService_map_length(
     object self,
     cFollyPromise[int16_t] cPromise,
     unique_ptr[cmap[string,module.types.cSimpleStruct]] items
-) with gil:
+):  
     promise = Promise_i16.create(move(cPromise))
     arg_items = module.types.Map__string_SimpleStruct.create(module.types.move(items))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_map_length_coro(
             self,
             promise,
-            arg_items),
-        loop=self.loop)
+            arg_items
+        )
+    )
 
 async def SimpleService_map_length_coro(
     object self,
@@ -946,15 +971,16 @@ cdef api void call_cy_SimpleService_sum_map_values(
     object self,
     cFollyPromise[int16_t] cPromise,
     unique_ptr[cmap[string,int16_t]] items
-) with gil:
+):  
     promise = Promise_i16.create(move(cPromise))
     arg_items = module.types.Map__string_i16.create(module.types.move(items))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_sum_map_values_coro(
             self,
             promise,
-            arg_items),
-        loop=self.loop)
+            arg_items
+        )
+    )
 
 async def SimpleService_sum_map_values_coro(
     object self,
@@ -979,15 +1005,16 @@ cdef api void call_cy_SimpleService_complex_sum_i32(
     object self,
     cFollyPromise[int32_t] cPromise,
     unique_ptr[module.types.cComplexStruct] counter
-) with gil:
+):  
     promise = Promise_i32.create(move(cPromise))
     arg_counter = module.types.ComplexStruct.create(module.types.move(counter))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_complex_sum_i32_coro(
             self,
             promise,
-            arg_counter),
-        loop=self.loop)
+            arg_counter
+        )
+    )
 
 async def SimpleService_complex_sum_i32_coro(
     object self,
@@ -1012,15 +1039,16 @@ cdef api void call_cy_SimpleService_repeat_name(
     object self,
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[module.types.cComplexStruct] counter
-) with gil:
+):  
     promise = Promise_string.create(move(cPromise))
     arg_counter = module.types.ComplexStruct.create(module.types.move(counter))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_repeat_name_coro(
             self,
             promise,
-            arg_counter),
-        loop=self.loop)
+            arg_counter
+        )
+    )
 
 async def SimpleService_repeat_name_coro(
     object self,
@@ -1044,13 +1072,14 @@ async def SimpleService_repeat_name_coro(
 cdef api void call_cy_SimpleService_get_struct(
     object self,
     cFollyPromise[unique_ptr[module.types.cSimpleStruct]] cPromise
-) with gil:
+):  
     promise = Promise_SimpleStruct.create(move(cPromise))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_get_struct_coro(
             self,
-            promise),
-        loop=self.loop)
+            promise
+        )
+    )
 
 async def SimpleService_get_struct_coro(
     object self,
@@ -1073,15 +1102,16 @@ cdef api void call_cy_SimpleService_fib(
     object self,
     cFollyPromise[unique_ptr[vector[int32_t]]] cPromise,
     int16_t n
-) with gil:
+):  
     promise = Promise_List__i32.create(move(cPromise))
     arg_n = n
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_fib_coro(
             self,
             promise,
-            arg_n),
-        loop=self.loop)
+            arg_n
+        )
+    )
 
 async def SimpleService_fib_coro(
     object self,
@@ -1107,15 +1137,16 @@ cdef api void call_cy_SimpleService_unique_words(
     object self,
     cFollyPromise[unique_ptr[cset[string]]] cPromise,
     unique_ptr[vector[string]] words
-) with gil:
+):  
     promise = Promise_Set__string.create(move(cPromise))
     arg_words = module.types.List__string.create(module.types.move(words))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_unique_words_coro(
             self,
             promise,
-            arg_words),
-        loop=self.loop)
+            arg_words
+        )
+    )
 
 async def SimpleService_unique_words_coro(
     object self,
@@ -1141,15 +1172,16 @@ cdef api void call_cy_SimpleService_words_count(
     object self,
     cFollyPromise[unique_ptr[cmap[string,int16_t]]] cPromise,
     unique_ptr[vector[string]] words
-) with gil:
+):  
     promise = Promise_Map__string_i16.create(move(cPromise))
     arg_words = module.types.List__string.create(module.types.move(words))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_words_count_coro(
             self,
             promise,
-            arg_words),
-        loop=self.loop)
+            arg_words
+        )
+    )
 
 async def SimpleService_words_count_coro(
     object self,
@@ -1175,15 +1207,16 @@ cdef api void call_cy_SimpleService_set_enum(
     object self,
     cFollyPromise[module.types.cAnEnum] cPromise,
     module.types.cAnEnum in_enum
-) with gil:
+):  
     promise = Promise_AnEnum.create(move(cPromise))
     arg_in_enum = module.types.AnEnum(<int> in_enum)
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_set_enum_coro(
             self,
             promise,
-            arg_in_enum),
-        loop=self.loop)
+            arg_in_enum
+        )
+    )
 
 async def SimpleService_set_enum_coro(
     object self,
@@ -1209,17 +1242,18 @@ cdef api void call_cy_SimpleService_list_of_lists(
     cFollyPromise[unique_ptr[vector[vector[int32_t]]]] cPromise,
     int16_t num_lists,
     int16_t num_items
-) with gil:
+):  
     promise = Promise_List__List__i32.create(move(cPromise))
     arg_num_lists = num_lists
     arg_num_items = num_items
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_list_of_lists_coro(
             self,
             promise,
             arg_num_lists,
-            arg_num_items),
-        loop=self.loop)
+            arg_num_items
+        )
+    )
 
 async def SimpleService_list_of_lists_coro(
     object self,
@@ -1247,15 +1281,16 @@ cdef api void call_cy_SimpleService_word_character_frequency(
     object self,
     cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] cPromise,
     unique_ptr[string] sentence
-) with gil:
+):  
     promise = Promise_Map__string_Map__string_i32.create(move(cPromise))
     arg_sentence = (deref(sentence.get())).decode('UTF-8')
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_word_character_frequency_coro(
             self,
             promise,
-            arg_sentence),
-        loop=self.loop)
+            arg_sentence
+        )
+    )
 
 async def SimpleService_word_character_frequency_coro(
     object self,
@@ -1281,15 +1316,16 @@ cdef api void call_cy_SimpleService_list_of_sets(
     object self,
     cFollyPromise[unique_ptr[vector[cset[string]]]] cPromise,
     unique_ptr[string] some_words
-) with gil:
+):  
     promise = Promise_List__Set__string.create(move(cPromise))
     arg_some_words = (deref(some_words.get())).decode('UTF-8')
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_list_of_sets_coro(
             self,
             promise,
-            arg_some_words),
-        loop=self.loop)
+            arg_some_words
+        )
+    )
 
 async def SimpleService_list_of_sets_coro(
     object self,
@@ -1315,15 +1351,16 @@ cdef api void call_cy_SimpleService_nested_map_argument(
     object self,
     cFollyPromise[int32_t] cPromise,
     unique_ptr[cmap[string,vector[module.types.cSimpleStruct]]] struct_map
-) with gil:
+):  
     promise = Promise_i32.create(move(cPromise))
     arg_struct_map = module.types.Map__string_List__SimpleStruct.create(module.types.move(struct_map))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_nested_map_argument_coro(
             self,
             promise,
-            arg_struct_map),
-        loop=self.loop)
+            arg_struct_map
+        )
+    )
 
 async def SimpleService_nested_map_argument_coro(
     object self,
@@ -1348,15 +1385,16 @@ cdef api void call_cy_SimpleService_make_sentence(
     object self,
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[vector[vector[string]]] word_chars
-) with gil:
+):  
     promise = Promise_string.create(move(cPromise))
     arg_word_chars = module.types.List__List__string.create(module.types.move(word_chars))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_make_sentence_coro(
             self,
             promise,
-            arg_word_chars),
-        loop=self.loop)
+            arg_word_chars
+        )
+    )
 
 async def SimpleService_make_sentence_coro(
     object self,
@@ -1381,15 +1419,16 @@ cdef api void call_cy_SimpleService_get_union(
     object self,
     cFollyPromise[unique_ptr[cset[int32_t]]] cPromise,
     unique_ptr[vector[cset[int32_t]]] sets
-) with gil:
+):  
     promise = Promise_Set__i32.create(move(cPromise))
     arg_sets = module.types.List__Set__i32.create(module.types.move(sets))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_get_union_coro(
             self,
             promise,
-            arg_sets),
-        loop=self.loop)
+            arg_sets
+        )
+    )
 
 async def SimpleService_get_union_coro(
     object self,
@@ -1415,15 +1454,16 @@ cdef api void call_cy_SimpleService_get_keys(
     object self,
     cFollyPromise[unique_ptr[cset[string]]] cPromise,
     unique_ptr[vector[cmap[string,string]]] string_map
-) with gil:
+):  
     promise = Promise_Set__string.create(move(cPromise))
     arg_string_map = module.types.List__Map__string_string.create(module.types.move(string_map))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_get_keys_coro(
             self,
             promise,
-            arg_string_map),
-        loop=self.loop)
+            arg_string_map
+        )
+    )
 
 async def SimpleService_get_keys_coro(
     object self,
@@ -1449,15 +1489,16 @@ cdef api void call_cy_SimpleService_lookup_double(
     object self,
     cFollyPromise[double] cPromise,
     int32_t key
-) with gil:
+):  
     promise = Promise_double.create(move(cPromise))
     arg_key = key
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_lookup_double_coro(
             self,
             promise,
-            arg_key),
-        loop=self.loop)
+            arg_key
+        )
+    )
 
 async def SimpleService_lookup_double_coro(
     object self,
@@ -1482,15 +1523,16 @@ cdef api void call_cy_SimpleService_retrieve_binary(
     object self,
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] something
-) with gil:
+):  
     promise = Promise_binary.create(move(cPromise))
     arg_something = (deref(something.get()))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_retrieve_binary_coro(
             self,
             promise,
-            arg_something),
-        loop=self.loop)
+            arg_something
+        )
+    )
 
 async def SimpleService_retrieve_binary_coro(
     object self,
@@ -1515,15 +1557,16 @@ cdef api void call_cy_SimpleService_contain_binary(
     object self,
     cFollyPromise[unique_ptr[cset[string]]] cPromise,
     unique_ptr[vector[string]] binaries
-) with gil:
+):  
     promise = Promise_Set__binary.create(move(cPromise))
     arg_binaries = module.types.List__binary.create(module.types.move(binaries))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_contain_binary_coro(
             self,
             promise,
-            arg_binaries),
-        loop=self.loop)
+            arg_binaries
+        )
+    )
 
 async def SimpleService_contain_binary_coro(
     object self,
@@ -1549,15 +1592,16 @@ cdef api void call_cy_SimpleService_contain_enum(
     object self,
     cFollyPromise[unique_ptr[vector[module.types.cAnEnum]]] cPromise,
     unique_ptr[vector[module.types.cAnEnum]] the_enum
-) with gil:
+):  
     promise = Promise_List__AnEnum.create(move(cPromise))
     arg_the_enum = module.types.List__AnEnum.create(module.types.move(the_enum))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         SimpleService_contain_enum_coro(
             self,
             promise,
-            arg_the_enum),
-        loop=self.loop)
+            arg_the_enum
+        )
+    )
 
 async def SimpleService_contain_enum_coro(
     object self,
@@ -1584,7 +1628,10 @@ cdef class SimpleServiceInterface(
     ServiceInterface
 ):
     def __cinit__(self):
-        self.interface_wrapper = cSimpleServiceInterface(<PyObject *> self)
+        self.interface_wrapper = cSimpleServiceInterface(
+            <PyObject *> self,
+            get_executor()
+        )
 
     async def get_five(
             self):

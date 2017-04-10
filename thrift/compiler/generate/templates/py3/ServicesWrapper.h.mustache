@@ -30,6 +30,7 @@ created by the thrift compiler for generated cpp2 code.
 {{/service:externalProgram?}}
 {{/service:extends}}
 {{/program:services}}
+#include <folly/python/futures.h>
 #include <Python.h>
 
 #include <memory>
@@ -45,9 +46,10 @@ class {{service:name}}Wrapper : {{!
 {{^service:extends?}}
   protected:
     PyObject *if_object;
+    folly::Executor *executor;
 {{/service:extends?}}
   public:
-    explicit {{service:name}}Wrapper(PyObject *if_object);
+    explicit {{service:name}}Wrapper(PyObject *if_object, folly::Executor *exc);
 {{^service:extends?}}
     virtual ~{{service:name}}Wrapper();
 {{/service:extends?}}
@@ -58,7 +60,7 @@ class {{service:name}}Wrapper : {{!
     {{/last?}}{{/function:args}}) override;
 {{/service:functions}}};
 
-std::shared_ptr<apache::thrift::ServerInterface> {{service:name}}Interface(PyObject *if_object);
+std::shared_ptr<apache::thrift::ServerInterface> {{service:name}}Interface(PyObject *if_object, folly::Executor *exc);
 {{^last?}}
 
 

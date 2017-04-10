@@ -22,6 +22,10 @@ from folly cimport (
   cFollyUnit,
   c_unit
 )
+
+cimport folly.futures
+from folly.executor cimport get_executor
+
 cimport module.types
 import module.types
 
@@ -51,15 +55,16 @@ cdef api void call_cy_NestedContainers_mapList(
     object self,
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[cmap[int32_t,vector[int32_t]]] foo
-) with gil:
+):  
     promise = Promise_void.create(move(cPromise))
     arg_foo = module.types.Map__i32_List__i32.create(module.types.move(foo))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         NestedContainers_mapList_coro(
             self,
             promise,
-            arg_foo),
-        loop=self.loop)
+            arg_foo
+        )
+    )
 
 async def NestedContainers_mapList_coro(
     object self,
@@ -84,15 +89,16 @@ cdef api void call_cy_NestedContainers_mapSet(
     object self,
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[cmap[int32_t,cset[int32_t]]] foo
-) with gil:
+):  
     promise = Promise_void.create(move(cPromise))
     arg_foo = module.types.Map__i32_Set__i32.create(module.types.move(foo))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         NestedContainers_mapSet_coro(
             self,
             promise,
-            arg_foo),
-        loop=self.loop)
+            arg_foo
+        )
+    )
 
 async def NestedContainers_mapSet_coro(
     object self,
@@ -117,15 +123,16 @@ cdef api void call_cy_NestedContainers_listMap(
     object self,
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[vector[cmap[int32_t,int32_t]]] foo
-) with gil:
+):  
     promise = Promise_void.create(move(cPromise))
     arg_foo = module.types.List__Map__i32_i32.create(module.types.move(foo))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         NestedContainers_listMap_coro(
             self,
             promise,
-            arg_foo),
-        loop=self.loop)
+            arg_foo
+        )
+    )
 
 async def NestedContainers_listMap_coro(
     object self,
@@ -150,15 +157,16 @@ cdef api void call_cy_NestedContainers_listSet(
     object self,
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[vector[cset[int32_t]]] foo
-) with gil:
+):  
     promise = Promise_void.create(move(cPromise))
     arg_foo = module.types.List__Set__i32.create(module.types.move(foo))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         NestedContainers_listSet_coro(
             self,
             promise,
-            arg_foo),
-        loop=self.loop)
+            arg_foo
+        )
+    )
 
 async def NestedContainers_listSet_coro(
     object self,
@@ -183,15 +191,16 @@ cdef api void call_cy_NestedContainers_turtles(
     object self,
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]] foo
-) with gil:
+):  
     promise = Promise_void.create(move(cPromise))
     arg_foo = module.types.List__List__Map__i32_Map__i32_Set__i32.create(module.types.move(foo))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         NestedContainers_turtles_coro(
             self,
             promise,
-            arg_foo),
-        loop=self.loop)
+            arg_foo
+        )
+    )
 
 async def NestedContainers_turtles_coro(
     object self,
@@ -217,7 +226,10 @@ cdef class NestedContainersInterface(
     ServiceInterface
 ):
     def __cinit__(self):
-        self.interface_wrapper = cNestedContainersInterface(<PyObject *> self)
+        self.interface_wrapper = cNestedContainersInterface(
+            <PyObject *> self,
+            get_executor()
+        )
 
     async def mapList(
             self,

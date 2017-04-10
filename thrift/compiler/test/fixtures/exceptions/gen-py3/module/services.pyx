@@ -22,6 +22,10 @@ from folly cimport (
   cFollyUnit,
   c_unit
 )
+
+cimport folly.futures
+from folly.executor cimport get_executor
+
 cimport module.types
 import module.types
 
@@ -59,13 +63,14 @@ cdef class Promise_string:
 cdef api void call_cy_Raiser_doBland(
     object self,
     cFollyPromise[cFollyUnit] cPromise
-) with gil:
+):  
     promise = Promise_void.create(move(cPromise))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         Raiser_doBland_coro(
             self,
-            promise),
-        loop=self.loop)
+            promise
+        )
+    )
 
 async def Raiser_doBland_coro(
     object self,
@@ -87,13 +92,14 @@ async def Raiser_doBland_coro(
 cdef api void call_cy_Raiser_doRaise(
     object self,
     cFollyPromise[cFollyUnit] cPromise
-) with gil:
+):  
     promise = Promise_void.create(move(cPromise))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         Raiser_doRaise_coro(
             self,
-            promise),
-        loop=self.loop)
+            promise
+        )
+    )
 
 async def Raiser_doRaise_coro(
     object self,
@@ -119,13 +125,14 @@ async def Raiser_doRaise_coro(
 cdef api void call_cy_Raiser_get200(
     object self,
     cFollyPromise[unique_ptr[string]] cPromise
-) with gil:
+):  
     promise = Promise_string.create(move(cPromise))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         Raiser_get200_coro(
             self,
-            promise),
-        loop=self.loop)
+            promise
+        )
+    )
 
 async def Raiser_get200_coro(
     object self,
@@ -147,13 +154,14 @@ async def Raiser_get200_coro(
 cdef api void call_cy_Raiser_get500(
     object self,
     cFollyPromise[unique_ptr[string]] cPromise
-) with gil:
+):  
     promise = Promise_string.create(move(cPromise))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         Raiser_get500_coro(
             self,
-            promise),
-        loop=self.loop)
+            promise
+        )
+    )
 
 async def Raiser_get500_coro(
     object self,
@@ -181,7 +189,10 @@ cdef class RaiserInterface(
     ServiceInterface
 ):
     def __cinit__(self):
-        self.interface_wrapper = cRaiserInterface(<PyObject *> self)
+        self.interface_wrapper = cRaiserInterface(
+            <PyObject *> self,
+            get_executor()
+        )
 
     async def doBland(
             self):

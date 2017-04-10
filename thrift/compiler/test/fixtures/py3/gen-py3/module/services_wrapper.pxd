@@ -8,6 +8,7 @@
 from cpython.ref cimport PyObject
 from libcpp.memory cimport shared_ptr
 from thrift.py3.server cimport cServerInterface
+from folly cimport cFollyExecutor
 
 
 
@@ -28,4 +29,4 @@ cdef extern from "src/gen-py3/module/services_wrapper.h" namespace "py3::simple"
     ):
         pass
 
-    shared_ptr[cServerInterface] cSimpleServiceInterface "py3::simple::SimpleServiceInterface"(PyObject *if_object)
+    shared_ptr[cServerInterface] cSimpleServiceInterface "py3::simple::SimpleServiceInterface"(PyObject *if_object, cFollyExecutor* Q)

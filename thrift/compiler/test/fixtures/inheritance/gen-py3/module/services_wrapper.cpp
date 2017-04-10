@@ -11,8 +11,8 @@
 
 namespace cpp2 {
 
-MyRootWrapper::MyRootWrapper(PyObject *obj)
-  : if_object(obj)
+MyRootWrapper::MyRootWrapper(PyObject *obj, folly::Executor* exc)
+  : if_object(obj), executor(exc)
   {
     import_module__services();
     Py_XINCREF(this->if_object);
@@ -25,20 +25,25 @@ MyRootWrapper::~MyRootWrapper() {
 folly::Future<folly::Unit> MyRootWrapper::future_do_root() {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
-  call_cy_MyRoot_do_root(
-    this->if_object,
-    std::move(promise)
-  );
+  folly::via(
+    this->executor,
+    [this,
+     promise = std::move(promise)    ]() mutable {
+        call_cy_MyRoot_do_root(
+            this->if_object,
+            std::move(promise)        );
+    });
+
   return future;
 }
 
-std::shared_ptr<apache::thrift::ServerInterface> MyRootInterface(PyObject *if_object) {
-  return std::make_shared<MyRootWrapper>(if_object);
+std::shared_ptr<apache::thrift::ServerInterface> MyRootInterface(PyObject *if_object, folly::Executor *exc) {
+  return std::make_shared<MyRootWrapper>(if_object, exc);
 }
 
 
-MyNodeWrapper::MyNodeWrapper(PyObject *obj)
-  : cpp2::MyRootWrapper(obj)
+MyNodeWrapper::MyNodeWrapper(PyObject *obj, folly::Executor* exc)
+  : cpp2::MyRootWrapper(obj, exc)
   {
     import_module__services();
   }
@@ -46,20 +51,25 @@ MyNodeWrapper::MyNodeWrapper(PyObject *obj)
 folly::Future<folly::Unit> MyNodeWrapper::future_do_mid() {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
-  call_cy_MyNode_do_mid(
-    this->if_object,
-    std::move(promise)
-  );
+  folly::via(
+    this->executor,
+    [this,
+     promise = std::move(promise)    ]() mutable {
+        call_cy_MyNode_do_mid(
+            this->if_object,
+            std::move(promise)        );
+    });
+
   return future;
 }
 
-std::shared_ptr<apache::thrift::ServerInterface> MyNodeInterface(PyObject *if_object) {
-  return std::make_shared<MyNodeWrapper>(if_object);
+std::shared_ptr<apache::thrift::ServerInterface> MyNodeInterface(PyObject *if_object, folly::Executor *exc) {
+  return std::make_shared<MyNodeWrapper>(if_object, exc);
 }
 
 
-MyLeafWrapper::MyLeafWrapper(PyObject *obj)
-  : cpp2::MyNodeWrapper(obj)
+MyLeafWrapper::MyLeafWrapper(PyObject *obj, folly::Executor* exc)
+  : cpp2::MyNodeWrapper(obj, exc)
   {
     import_module__services();
   }
@@ -67,14 +77,19 @@ MyLeafWrapper::MyLeafWrapper(PyObject *obj)
 folly::Future<folly::Unit> MyLeafWrapper::future_do_leaf() {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
-  call_cy_MyLeaf_do_leaf(
-    this->if_object,
-    std::move(promise)
-  );
+  folly::via(
+    this->executor,
+    [this,
+     promise = std::move(promise)    ]() mutable {
+        call_cy_MyLeaf_do_leaf(
+            this->if_object,
+            std::move(promise)        );
+    });
+
   return future;
 }
 
-std::shared_ptr<apache::thrift::ServerInterface> MyLeafInterface(PyObject *if_object) {
-  return std::make_shared<MyLeafWrapper>(if_object);
+std::shared_ptr<apache::thrift::ServerInterface> MyLeafInterface(PyObject *if_object, folly::Executor *exc) {
+  return std::make_shared<MyLeafWrapper>(if_object, exc);
 }
 } // namespace cpp2

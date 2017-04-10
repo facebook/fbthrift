@@ -9,6 +9,7 @@
 #include <src/gen-cpp2/MyRoot.h>
 #include <src/gen-cpp2/MyNode.h>
 #include <src/gen-cpp2/MyLeaf.h>
+#include <folly/python/futures.h>
 #include <Python.h>
 
 #include <memory>
@@ -18,29 +19,30 @@ namespace cpp2 {
 class MyRootWrapper : virtual public MyRootSvIf {
   protected:
     PyObject *if_object;
+    folly::Executor *executor;
   public:
-    explicit MyRootWrapper(PyObject *if_object);
+    explicit MyRootWrapper(PyObject *if_object, folly::Executor *exc);
     virtual ~MyRootWrapper();
     folly::Future<folly::Unit> future_do_root() override;
 };
 
-std::shared_ptr<apache::thrift::ServerInterface> MyRootInterface(PyObject *if_object);
+std::shared_ptr<apache::thrift::ServerInterface> MyRootInterface(PyObject *if_object, folly::Executor *exc);
 
 
 class MyNodeWrapper : virtual public cpp2::MyRootWrapper, virtual public MyNodeSvIf {
   public:
-    explicit MyNodeWrapper(PyObject *if_object);
+    explicit MyNodeWrapper(PyObject *if_object, folly::Executor *exc);
     folly::Future<folly::Unit> future_do_mid() override;
 };
 
-std::shared_ptr<apache::thrift::ServerInterface> MyNodeInterface(PyObject *if_object);
+std::shared_ptr<apache::thrift::ServerInterface> MyNodeInterface(PyObject *if_object, folly::Executor *exc);
 
 
 class MyLeafWrapper : virtual public cpp2::MyNodeWrapper, virtual public MyLeafSvIf {
   public:
-    explicit MyLeafWrapper(PyObject *if_object);
+    explicit MyLeafWrapper(PyObject *if_object, folly::Executor *exc);
     folly::Future<folly::Unit> future_do_leaf() override;
 };
 
-std::shared_ptr<apache::thrift::ServerInterface> MyLeafInterface(PyObject *if_object);
+std::shared_ptr<apache::thrift::ServerInterface> MyLeafInterface(PyObject *if_object, folly::Executor *exc);
 } // namespace cpp2

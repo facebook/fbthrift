@@ -11,8 +11,8 @@
 
 namespace cpp2 {
 
-TestServiceWrapper::TestServiceWrapper(PyObject *obj)
-  : if_object(obj)
+TestServiceWrapper::TestServiceWrapper(PyObject *obj, folly::Executor* exc)
+  : if_object(obj), executor(exc)
   {
     import_my__namespacing__test__module__module__services();
     Py_XINCREF(this->if_object);
@@ -27,15 +27,21 @@ folly::Future<int64_t> TestServiceWrapper::future_init(
 ) {
   folly::Promise<int64_t> promise;
   auto future = promise.getFuture();
-  call_cy_TestService_init(
-    this->if_object,
-    std::move(promise),
-    int1
-  );
+  folly::via(
+    this->executor,
+    [this,
+     promise = std::move(promise),
+int1    ]() mutable {
+        call_cy_TestService_init(
+            this->if_object,
+            std::move(promise),
+    int1        );
+    });
+
   return future;
 }
 
-std::shared_ptr<apache::thrift::ServerInterface> TestServiceInterface(PyObject *if_object) {
-  return std::make_shared<TestServiceWrapper>(if_object);
+std::shared_ptr<apache::thrift::ServerInterface> TestServiceInterface(PyObject *if_object, folly::Executor *exc) {
+  return std::make_shared<TestServiceWrapper>(if_object, exc);
 }
 } // namespace cpp2

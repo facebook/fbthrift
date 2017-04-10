@@ -22,6 +22,10 @@ from folly cimport (
   cFollyUnit,
   c_unit
 )
+
+cimport folly.futures
+from folly.executor cimport get_executor
+
 cimport module.types
 import module.types
 
@@ -74,13 +78,14 @@ cdef class Promise_bool:
 cdef api void call_cy_MyService_ping(
     object self,
     cFollyPromise[cFollyUnit] cPromise
-) with gil:
+):  
     promise = Promise_void.create(move(cPromise))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         MyService_ping_coro(
             self,
-            promise),
-        loop=self.loop)
+            promise
+        )
+    )
 
 async def MyService_ping_coro(
     object self,
@@ -102,13 +107,14 @@ async def MyService_ping_coro(
 cdef api void call_cy_MyService_getRandomData(
     object self,
     cFollyPromise[unique_ptr[string]] cPromise
-) with gil:
+):  
     promise = Promise_string.create(move(cPromise))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         MyService_getRandomData_coro(
             self,
-            promise),
-        loop=self.loop)
+            promise
+        )
+    )
 
 async def MyService_getRandomData_coro(
     object self,
@@ -131,15 +137,16 @@ cdef api void call_cy_MyService_hasDataById(
     object self,
     cFollyPromise[cbool] cPromise,
     int64_t id
-) with gil:
+):  
     promise = Promise_bool.create(move(cPromise))
     arg_id = id
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         MyService_hasDataById_coro(
             self,
             promise,
-            arg_id),
-        loop=self.loop)
+            arg_id
+        )
+    )
 
 async def MyService_hasDataById_coro(
     object self,
@@ -164,15 +171,16 @@ cdef api void call_cy_MyService_getDataById(
     object self,
     cFollyPromise[unique_ptr[string]] cPromise,
     int64_t id
-) with gil:
+):  
     promise = Promise_string.create(move(cPromise))
     arg_id = id
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         MyService_getDataById_coro(
             self,
             promise,
-            arg_id),
-        loop=self.loop)
+            arg_id
+        )
+    )
 
 async def MyService_getDataById_coro(
     object self,
@@ -198,17 +206,18 @@ cdef api void call_cy_MyService_putDataById(
     cFollyPromise[cFollyUnit] cPromise,
     int64_t id,
     unique_ptr[string] data
-) with gil:
+):  
     promise = Promise_void.create(move(cPromise))
     arg_id = id
     arg_data = (deref(data.get())).decode('UTF-8')
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         MyService_putDataById_coro(
             self,
             promise,
             arg_id,
-            arg_data),
-        loop=self.loop)
+            arg_data
+        )
+    )
 
 async def MyService_putDataById_coro(
     object self,
@@ -236,17 +245,18 @@ cdef api void call_cy_MyService_lobDataById(
     cFollyPromise[cFollyUnit] cPromise,
     int64_t id,
     unique_ptr[string] data
-) with gil:
+):  
     promise = Promise_void.create(move(cPromise))
     arg_id = id
     arg_data = (deref(data.get())).decode('UTF-8')
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         MyService_lobDataById_coro(
             self,
             promise,
             arg_id,
-            arg_data),
-        loop=self.loop)
+            arg_data
+        )
+    )
 
 async def MyService_lobDataById_coro(
     object self,
@@ -272,13 +282,14 @@ async def MyService_lobDataById_coro(
 cdef api void call_cy_MyServiceFast_ping(
     object self,
     cFollyPromise[cFollyUnit] cPromise
-) with gil:
+):  
     promise = Promise_void.create(move(cPromise))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         MyServiceFast_ping_coro(
             self,
-            promise),
-        loop=self.loop)
+            promise
+        )
+    )
 
 async def MyServiceFast_ping_coro(
     object self,
@@ -300,13 +311,14 @@ async def MyServiceFast_ping_coro(
 cdef api void call_cy_MyServiceFast_getRandomData(
     object self,
     cFollyPromise[unique_ptr[string]] cPromise
-) with gil:
+):  
     promise = Promise_string.create(move(cPromise))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         MyServiceFast_getRandomData_coro(
             self,
-            promise),
-        loop=self.loop)
+            promise
+        )
+    )
 
 async def MyServiceFast_getRandomData_coro(
     object self,
@@ -329,15 +341,16 @@ cdef api void call_cy_MyServiceFast_hasDataById(
     object self,
     cFollyPromise[cbool] cPromise,
     int64_t id
-) with gil:
+):  
     promise = Promise_bool.create(move(cPromise))
     arg_id = id
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         MyServiceFast_hasDataById_coro(
             self,
             promise,
-            arg_id),
-        loop=self.loop)
+            arg_id
+        )
+    )
 
 async def MyServiceFast_hasDataById_coro(
     object self,
@@ -362,15 +375,16 @@ cdef api void call_cy_MyServiceFast_getDataById(
     object self,
     cFollyPromise[unique_ptr[string]] cPromise,
     int64_t id
-) with gil:
+):  
     promise = Promise_string.create(move(cPromise))
     arg_id = id
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         MyServiceFast_getDataById_coro(
             self,
             promise,
-            arg_id),
-        loop=self.loop)
+            arg_id
+        )
+    )
 
 async def MyServiceFast_getDataById_coro(
     object self,
@@ -396,17 +410,18 @@ cdef api void call_cy_MyServiceFast_putDataById(
     cFollyPromise[cFollyUnit] cPromise,
     int64_t id,
     unique_ptr[string] data
-) with gil:
+):  
     promise = Promise_void.create(move(cPromise))
     arg_id = id
     arg_data = (deref(data.get())).decode('UTF-8')
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         MyServiceFast_putDataById_coro(
             self,
             promise,
             arg_id,
-            arg_data),
-        loop=self.loop)
+            arg_data
+        )
+    )
 
 async def MyServiceFast_putDataById_coro(
     object self,
@@ -434,17 +449,18 @@ cdef api void call_cy_MyServiceFast_lobDataById(
     cFollyPromise[cFollyUnit] cPromise,
     int64_t id,
     unique_ptr[string] data
-) with gil:
+):  
     promise = Promise_void.create(move(cPromise))
     arg_id = id
     arg_data = (deref(data.get())).decode('UTF-8')
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         MyServiceFast_lobDataById_coro(
             self,
             promise,
             arg_id,
-            arg_data),
-        loop=self.loop)
+            arg_data
+        )
+    )
 
 async def MyServiceFast_lobDataById_coro(
     object self,
@@ -470,13 +486,14 @@ async def MyServiceFast_lobDataById_coro(
 cdef api void call_cy_MyServicePrioParent_ping(
     object self,
     cFollyPromise[cFollyUnit] cPromise
-) with gil:
+):  
     promise = Promise_void.create(move(cPromise))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         MyServicePrioParent_ping_coro(
             self,
-            promise),
-        loop=self.loop)
+            promise
+        )
+    )
 
 async def MyServicePrioParent_ping_coro(
     object self,
@@ -498,13 +515,14 @@ async def MyServicePrioParent_ping_coro(
 cdef api void call_cy_MyServicePrioParent_pong(
     object self,
     cFollyPromise[cFollyUnit] cPromise
-) with gil:
+):  
     promise = Promise_void.create(move(cPromise))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         MyServicePrioParent_pong_coro(
             self,
-            promise),
-        loop=self.loop)
+            promise
+        )
+    )
 
 async def MyServicePrioParent_pong_coro(
     object self,
@@ -526,13 +544,14 @@ async def MyServicePrioParent_pong_coro(
 cdef api void call_cy_MyServicePrioChild_pang(
     object self,
     cFollyPromise[cFollyUnit] cPromise
-) with gil:
+):  
     promise = Promise_void.create(move(cPromise))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         MyServicePrioChild_pang_coro(
             self,
-            promise),
-        loop=self.loop)
+            promise
+        )
+    )
 
 async def MyServicePrioChild_pang_coro(
     object self,
@@ -556,7 +575,10 @@ cdef class MyServiceInterface(
     ServiceInterface
 ):
     def __cinit__(self):
-        self.interface_wrapper = cMyServiceInterface(<PyObject *> self)
+        self.interface_wrapper = cMyServiceInterface(
+            <PyObject *> self,
+            get_executor()
+        )
 
     async def ping(
             self):
@@ -598,7 +620,10 @@ cdef class MyServiceFastInterface(
     ServiceInterface
 ):
     def __cinit__(self):
-        self.interface_wrapper = cMyServiceFastInterface(<PyObject *> self)
+        self.interface_wrapper = cMyServiceFastInterface(
+            <PyObject *> self,
+            get_executor()
+        )
 
     async def ping(
             self):
@@ -640,13 +665,19 @@ cdef class MyServiceEmptyInterface(
     ServiceInterface
 ):
     def __cinit__(self):
-        self.interface_wrapper = cMyServiceEmptyInterface(<PyObject *> self)
+        self.interface_wrapper = cMyServiceEmptyInterface(
+            <PyObject *> self,
+            get_executor()
+        )
 
 cdef class MyServicePrioParentInterface(
     ServiceInterface
 ):
     def __cinit__(self):
-        self.interface_wrapper = cMyServicePrioParentInterface(<PyObject *> self)
+        self.interface_wrapper = cMyServicePrioParentInterface(
+            <PyObject *> self,
+            get_executor()
+        )
 
     async def ping(
             self):
@@ -662,7 +693,10 @@ cdef class MyServicePrioChildInterface(
     module.services.MyServicePrioParentInterface
 ):
     def __cinit__(self):
-        self.interface_wrapper = cMyServicePrioChildInterface(<PyObject *> self)
+        self.interface_wrapper = cMyServicePrioChildInterface(
+            <PyObject *> self,
+            get_executor()
+        )
 
     async def pang(
             self):

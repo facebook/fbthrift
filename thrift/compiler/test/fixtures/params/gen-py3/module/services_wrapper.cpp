@@ -11,8 +11,8 @@
 
 namespace cpp2 {
 
-NestedContainersWrapper::NestedContainersWrapper(PyObject *obj)
-  : if_object(obj)
+NestedContainersWrapper::NestedContainersWrapper(PyObject *obj, folly::Executor* exc)
+  : if_object(obj), executor(exc)
   {
     import_module__services();
     Py_XINCREF(this->if_object);
@@ -27,11 +27,17 @@ folly::Future<folly::Unit> NestedContainersWrapper::future_mapList(
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
-  call_cy_NestedContainers_mapList(
-    this->if_object,
-    std::move(promise),
-    std::move(foo)
-  );
+  folly::via(
+    this->executor,
+    [this,
+     promise = std::move(promise),
+foo = std::move(foo)    ]() mutable {
+        call_cy_NestedContainers_mapList(
+            this->if_object,
+            std::move(promise),
+    std::move(foo)        );
+    });
+
   return future;
 }
 
@@ -40,11 +46,17 @@ folly::Future<folly::Unit> NestedContainersWrapper::future_mapSet(
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
-  call_cy_NestedContainers_mapSet(
-    this->if_object,
-    std::move(promise),
-    std::move(foo)
-  );
+  folly::via(
+    this->executor,
+    [this,
+     promise = std::move(promise),
+foo = std::move(foo)    ]() mutable {
+        call_cy_NestedContainers_mapSet(
+            this->if_object,
+            std::move(promise),
+    std::move(foo)        );
+    });
+
   return future;
 }
 
@@ -53,11 +65,17 @@ folly::Future<folly::Unit> NestedContainersWrapper::future_listMap(
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
-  call_cy_NestedContainers_listMap(
-    this->if_object,
-    std::move(promise),
-    std::move(foo)
-  );
+  folly::via(
+    this->executor,
+    [this,
+     promise = std::move(promise),
+foo = std::move(foo)    ]() mutable {
+        call_cy_NestedContainers_listMap(
+            this->if_object,
+            std::move(promise),
+    std::move(foo)        );
+    });
+
   return future;
 }
 
@@ -66,11 +84,17 @@ folly::Future<folly::Unit> NestedContainersWrapper::future_listSet(
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
-  call_cy_NestedContainers_listSet(
-    this->if_object,
-    std::move(promise),
-    std::move(foo)
-  );
+  folly::via(
+    this->executor,
+    [this,
+     promise = std::move(promise),
+foo = std::move(foo)    ]() mutable {
+        call_cy_NestedContainers_listSet(
+            this->if_object,
+            std::move(promise),
+    std::move(foo)        );
+    });
+
   return future;
 }
 
@@ -79,15 +103,21 @@ folly::Future<folly::Unit> NestedContainersWrapper::future_turtles(
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
-  call_cy_NestedContainers_turtles(
-    this->if_object,
-    std::move(promise),
-    std::move(foo)
-  );
+  folly::via(
+    this->executor,
+    [this,
+     promise = std::move(promise),
+foo = std::move(foo)    ]() mutable {
+        call_cy_NestedContainers_turtles(
+            this->if_object,
+            std::move(promise),
+    std::move(foo)        );
+    });
+
   return future;
 }
 
-std::shared_ptr<apache::thrift::ServerInterface> NestedContainersInterface(PyObject *if_object) {
-  return std::make_shared<NestedContainersWrapper>(if_object);
+std::shared_ptr<apache::thrift::ServerInterface> NestedContainersInterface(PyObject *if_object, folly::Executor *exc) {
+  return std::make_shared<NestedContainersWrapper>(if_object, exc);
 }
 } // namespace cpp2

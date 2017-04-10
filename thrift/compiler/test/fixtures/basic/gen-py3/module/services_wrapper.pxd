@@ -8,6 +8,7 @@
 from cpython.ref cimport PyObject
 from libcpp.memory cimport shared_ptr
 from thrift.py3.server cimport cServerInterface
+from folly cimport cFollyExecutor
 
 
 
@@ -65,29 +66,29 @@ cdef extern from "src/gen-py3/module/services_wrapper.h" namespace "cpp2":
     ):
         pass
 
-    shared_ptr[cServerInterface] cMyServiceInterface "cpp2::MyServiceInterface"(PyObject *if_object)
+    shared_ptr[cServerInterface] cMyServiceInterface "cpp2::MyServiceInterface"(PyObject *if_object, cFollyExecutor* Q)
     cdef cppclass cMyServiceFastWrapper "cpp2::MyServiceFastWrapper"(
         cMyServiceFastSvIf
     ):
         pass
 
-    shared_ptr[cServerInterface] cMyServiceFastInterface "cpp2::MyServiceFastInterface"(PyObject *if_object)
+    shared_ptr[cServerInterface] cMyServiceFastInterface "cpp2::MyServiceFastInterface"(PyObject *if_object, cFollyExecutor* Q)
     cdef cppclass cMyServiceEmptyWrapper "cpp2::MyServiceEmptyWrapper"(
         cMyServiceEmptySvIf
     ):
         pass
 
-    shared_ptr[cServerInterface] cMyServiceEmptyInterface "cpp2::MyServiceEmptyInterface"(PyObject *if_object)
+    shared_ptr[cServerInterface] cMyServiceEmptyInterface "cpp2::MyServiceEmptyInterface"(PyObject *if_object, cFollyExecutor* Q)
     cdef cppclass cMyServicePrioParentWrapper "cpp2::MyServicePrioParentWrapper"(
         cMyServicePrioParentSvIf
     ):
         pass
 
-    shared_ptr[cServerInterface] cMyServicePrioParentInterface "cpp2::MyServicePrioParentInterface"(PyObject *if_object)
+    shared_ptr[cServerInterface] cMyServicePrioParentInterface "cpp2::MyServicePrioParentInterface"(PyObject *if_object, cFollyExecutor* Q)
     cdef cppclass cMyServicePrioChildWrapper "cpp2::MyServicePrioChildWrapper"(
         cMyServicePrioChildSvIf,
         module.services_wrapper.cMyServicePrioParentWrapper
     ):
         pass
 
-    shared_ptr[cServerInterface] cMyServicePrioChildInterface "cpp2::MyServicePrioChildInterface"(PyObject *if_object)
+    shared_ptr[cServerInterface] cMyServicePrioChildInterface "cpp2::MyServicePrioChildInterface"(PyObject *if_object, cFollyExecutor* Q)

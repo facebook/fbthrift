@@ -22,6 +22,10 @@ from folly cimport (
   cFollyUnit,
   c_unit
 )
+
+cimport folly.futures
+from folly.executor cimport get_executor
+
 cimport my.namespacing.test.module.module.types
 import my.namespacing.test.module.module.types
 
@@ -51,15 +55,16 @@ cdef api void call_cy_TestService_init(
     object self,
     cFollyPromise[int64_t] cPromise,
     int64_t int1
-) with gil:
+):  
     promise = Promise_i64.create(move(cPromise))
     arg_int1 = int1
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         TestService_init_coro(
             self,
             promise,
-            arg_int1),
-        loop=self.loop)
+            arg_int1
+        )
+    )
 
 async def TestService_init_coro(
     object self,
@@ -85,7 +90,10 @@ cdef class TestServiceInterface(
     ServiceInterface
 ):
     def __cinit__(self):
-        self.interface_wrapper = cTestServiceInterface(<PyObject *> self)
+        self.interface_wrapper = cTestServiceInterface(
+            <PyObject *> self,
+            get_executor()
+        )
 
     async def init(
             self,

@@ -8,6 +8,7 @@
 from cpython.ref cimport PyObject
 from libcpp.memory cimport shared_ptr
 from thrift.py3.server cimport cServerInterface
+from folly cimport cFollyExecutor
 
 
 

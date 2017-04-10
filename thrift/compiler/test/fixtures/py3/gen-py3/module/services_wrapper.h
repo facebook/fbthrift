@@ -7,6 +7,7 @@
 
 #pragma once
 #include <src/gen-cpp2/SimpleService.h>
+#include <folly/python/futures.h>
 #include <Python.h>
 
 #include <memory>
@@ -17,8 +18,9 @@ namespace simple {
 class SimpleServiceWrapper : virtual public SimpleServiceSvIf {
   protected:
     PyObject *if_object;
+    folly::Executor *executor;
   public:
-    explicit SimpleServiceWrapper(PyObject *if_object);
+    explicit SimpleServiceWrapper(PyObject *if_object, folly::Executor *exc);
     virtual ~SimpleServiceWrapper();
     folly::Future<int32_t> future_get_five() override;
     folly::Future<int32_t> future_add_five(
@@ -136,6 +138,6 @@ class SimpleServiceWrapper : virtual public SimpleServiceSvIf {
     ) override;
 };
 
-std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object);
+std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object, folly::Executor *exc);
 } // namespace py3
 } // namespace simple

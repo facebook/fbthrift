@@ -22,6 +22,10 @@ from folly cimport (
   cFollyUnit,
   c_unit
 )
+
+cimport folly.futures
+from folly.executor cimport get_executor
+
 cimport my.namespacing.extend.test.extend.types
 import my.namespacing.extend.test.extend.types
 cimport hsmodule.services
@@ -55,15 +59,16 @@ cdef api void call_cy_ExtendTestService_check(
     object self,
     cFollyPromise[cbool] cPromise,
     unique_ptr[hsmodule.types.cHsFoo] struct1
-) with gil:
+):  
     promise = Promise_bool.create(move(cPromise))
     arg_struct1 = hsmodule.types.HsFoo.create(hsmodule.types.move(struct1))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         ExtendTestService_check_coro(
             self,
             promise,
-            arg_struct1),
-        loop=self.loop)
+            arg_struct1
+        )
+    )
 
 async def ExtendTestService_check_coro(
     object self,
@@ -89,7 +94,10 @@ cdef class ExtendTestServiceInterface(
     hsmodule.services.HsTestServiceInterface
 ):
     def __cinit__(self):
-        self.interface_wrapper = cExtendTestServiceInterface(<PyObject *> self)
+        self.interface_wrapper = cExtendTestServiceInterface(
+            <PyObject *> self,
+            get_executor()
+        )
 
     async def check(
             self,

@@ -7,6 +7,7 @@
 
 #pragma once
 #include <src/gen-cpp2/TestService.h>
+#include <folly/python/futures.h>
 #include <Python.h>
 
 #include <memory>
@@ -16,13 +17,14 @@ namespace cpp2 {
 class TestServiceWrapper : virtual public TestServiceSvIf {
   protected:
     PyObject *if_object;
+    folly::Executor *executor;
   public:
-    explicit TestServiceWrapper(PyObject *if_object);
+    explicit TestServiceWrapper(PyObject *if_object, folly::Executor *exc);
     virtual ~TestServiceWrapper();
     folly::Future<int64_t> future_init(
         int64_t int1
     ) override;
 };
 
-std::shared_ptr<apache::thrift::ServerInterface> TestServiceInterface(PyObject *if_object);
+std::shared_ptr<apache::thrift::ServerInterface> TestServiceInterface(PyObject *if_object, folly::Executor *exc);
 } // namespace cpp2

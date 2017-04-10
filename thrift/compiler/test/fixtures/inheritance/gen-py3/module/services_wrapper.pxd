@@ -8,6 +8,7 @@
 from cpython.ref cimport PyObject
 from libcpp.memory cimport shared_ptr
 from thrift.py3.server cimport cServerInterface
+from folly cimport cFollyExecutor
 
 
 
@@ -48,18 +49,18 @@ cdef extern from "src/gen-py3/module/services_wrapper.h" namespace "cpp2":
     ):
         pass
 
-    shared_ptr[cServerInterface] cMyRootInterface "cpp2::MyRootInterface"(PyObject *if_object)
+    shared_ptr[cServerInterface] cMyRootInterface "cpp2::MyRootInterface"(PyObject *if_object, cFollyExecutor* Q)
     cdef cppclass cMyNodeWrapper "cpp2::MyNodeWrapper"(
         cMyNodeSvIf,
         module.services_wrapper.cMyRootWrapper
     ):
         pass
 
-    shared_ptr[cServerInterface] cMyNodeInterface "cpp2::MyNodeInterface"(PyObject *if_object)
+    shared_ptr[cServerInterface] cMyNodeInterface "cpp2::MyNodeInterface"(PyObject *if_object, cFollyExecutor* Q)
     cdef cppclass cMyLeafWrapper "cpp2::MyLeafWrapper"(
         cMyLeafSvIf,
         module.services_wrapper.cMyNodeWrapper
     ):
         pass
 
-    shared_ptr[cServerInterface] cMyLeafInterface "cpp2::MyLeafInterface"(PyObject *if_object)
+    shared_ptr[cServerInterface] cMyLeafInterface "cpp2::MyLeafInterface"(PyObject *if_object, cFollyExecutor* Q)

@@ -7,6 +7,7 @@
 
 #pragma once
 #include <src/gen-cpp2/Raiser.h>
+#include <folly/python/futures.h>
 #include <Python.h>
 
 #include <memory>
@@ -16,8 +17,9 @@ namespace cpp2 {
 class RaiserWrapper : virtual public RaiserSvIf {
   protected:
     PyObject *if_object;
+    folly::Executor *executor;
   public:
-    explicit RaiserWrapper(PyObject *if_object);
+    explicit RaiserWrapper(PyObject *if_object, folly::Executor *exc);
     virtual ~RaiserWrapper();
     folly::Future<folly::Unit> future_doBland() override;
     folly::Future<folly::Unit> future_doRaise() override;
@@ -25,5 +27,5 @@ class RaiserWrapper : virtual public RaiserSvIf {
     folly::Future<std::unique_ptr<std::string>> future_get500() override;
 };
 
-std::shared_ptr<apache::thrift::ServerInterface> RaiserInterface(PyObject *if_object);
+std::shared_ptr<apache::thrift::ServerInterface> RaiserInterface(PyObject *if_object, folly::Executor *exc);
 } // namespace cpp2

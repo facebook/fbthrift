@@ -24,6 +24,7 @@ Pxd file to expose the interface defined in ServicesWrapper.h to the pyx files.
 from cpython.ref cimport PyObject
 from libcpp.memory cimport shared_ptr
 from thrift.py3.server cimport cServerInterface
+from folly cimport cFollyExecutor
 
 {{#program:includeNamespaces}}
 {{#hasServices?}}
@@ -64,7 +65,7 @@ cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/services_wra
 
     shared_ptr[cServerInterface] c{{service:name}}Interface {{!
       }}"{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{!
-      }}{{service:name}}Interface"(PyObject *if_object)
+      }}{{service:name}}Interface"(PyObject *if_object, cFollyExecutor* Q)
 {{/program:services}}
 {{^program:services}}
     pass

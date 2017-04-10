@@ -22,7 +22,7 @@ import asyncio
 import signal
 import sys
 
-from thrift.py3.server import ThriftServer
+from thrift.py3 import ThriftServer
 from apache.thrift.test.py3.load_handler import LoadTestHandler
 
 
@@ -37,7 +37,7 @@ def main():
     options = parser.parse_args()
     loop = asyncio.get_event_loop()
     handler = LoadTestHandler(loop)
-    server = ThriftServer(handler, options.port, loop=loop)
+    server = ThriftServer(handler, options.port)
     loop.add_signal_handler(signal.SIGINT, server.stop)
     loop.add_signal_handler(signal.SIGTERM, server.stop)
     print("Running Py3 server on port {}".format(options.port))

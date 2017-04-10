@@ -11,8 +11,8 @@
 
 namespace cpp2 {
 
-ExtendTestServiceWrapper::ExtendTestServiceWrapper(PyObject *obj)
-  : cpp2::HsTestServiceWrapper(obj)
+ExtendTestServiceWrapper::ExtendTestServiceWrapper(PyObject *obj, folly::Executor* exc)
+  : cpp2::HsTestServiceWrapper(obj, exc)
   {
     import_my__namespacing__extend__test__extend__services();
   }
@@ -22,15 +22,21 @@ folly::Future<bool> ExtendTestServiceWrapper::future_check(
 ) {
   folly::Promise<bool> promise;
   auto future = promise.getFuture();
-  call_cy_ExtendTestService_check(
-    this->if_object,
-    std::move(promise),
-    std::move(struct1)
-  );
+  folly::via(
+    this->executor,
+    [this,
+     promise = std::move(promise),
+struct1 = std::move(struct1)    ]() mutable {
+        call_cy_ExtendTestService_check(
+            this->if_object,
+            std::move(promise),
+    std::move(struct1)        );
+    });
+
   return future;
 }
 
-std::shared_ptr<apache::thrift::ServerInterface> ExtendTestServiceInterface(PyObject *if_object) {
-  return std::make_shared<ExtendTestServiceWrapper>(if_object);
+std::shared_ptr<apache::thrift::ServerInterface> ExtendTestServiceInterface(PyObject *if_object, folly::Executor *exc) {
+  return std::make_shared<ExtendTestServiceWrapper>(if_object, exc);
 }
 } // namespace cpp2

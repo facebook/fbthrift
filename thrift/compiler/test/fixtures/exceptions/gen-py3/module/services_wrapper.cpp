@@ -11,8 +11,8 @@
 
 namespace cpp2 {
 
-RaiserWrapper::RaiserWrapper(PyObject *obj)
-  : if_object(obj)
+RaiserWrapper::RaiserWrapper(PyObject *obj, folly::Executor* exc)
+  : if_object(obj), executor(exc)
   {
     import_module__services();
     Py_XINCREF(this->if_object);
@@ -25,44 +25,64 @@ RaiserWrapper::~RaiserWrapper() {
 folly::Future<folly::Unit> RaiserWrapper::future_doBland() {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
-  call_cy_Raiser_doBland(
-    this->if_object,
-    std::move(promise)
-  );
+  folly::via(
+    this->executor,
+    [this,
+     promise = std::move(promise)    ]() mutable {
+        call_cy_Raiser_doBland(
+            this->if_object,
+            std::move(promise)        );
+    });
+
   return future;
 }
 
 folly::Future<folly::Unit> RaiserWrapper::future_doRaise() {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
-  call_cy_Raiser_doRaise(
-    this->if_object,
-    std::move(promise)
-  );
+  folly::via(
+    this->executor,
+    [this,
+     promise = std::move(promise)    ]() mutable {
+        call_cy_Raiser_doRaise(
+            this->if_object,
+            std::move(promise)        );
+    });
+
   return future;
 }
 
 folly::Future<std::unique_ptr<std::string>> RaiserWrapper::future_get200() {
   folly::Promise<std::unique_ptr<std::string>> promise;
   auto future = promise.getFuture();
-  call_cy_Raiser_get200(
-    this->if_object,
-    std::move(promise)
-  );
+  folly::via(
+    this->executor,
+    [this,
+     promise = std::move(promise)    ]() mutable {
+        call_cy_Raiser_get200(
+            this->if_object,
+            std::move(promise)        );
+    });
+
   return future;
 }
 
 folly::Future<std::unique_ptr<std::string>> RaiserWrapper::future_get500() {
   folly::Promise<std::unique_ptr<std::string>> promise;
   auto future = promise.getFuture();
-  call_cy_Raiser_get500(
-    this->if_object,
-    std::move(promise)
-  );
+  folly::via(
+    this->executor,
+    [this,
+     promise = std::move(promise)    ]() mutable {
+        call_cy_Raiser_get500(
+            this->if_object,
+            std::move(promise)        );
+    });
+
   return future;
 }
 
-std::shared_ptr<apache::thrift::ServerInterface> RaiserInterface(PyObject *if_object) {
-  return std::make_shared<RaiserWrapper>(if_object);
+std::shared_ptr<apache::thrift::ServerInterface> RaiserInterface(PyObject *if_object, folly::Executor *exc) {
+  return std::make_shared<RaiserWrapper>(if_object, exc);
 }
 } // namespace cpp2

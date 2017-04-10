@@ -22,6 +22,10 @@ from folly cimport (
   cFollyUnit,
   c_unit
 )
+
+cimport folly.futures
+from folly.executor cimport get_executor
+
 cimport module.types
 import module.types
 
@@ -52,13 +56,14 @@ cdef class Promise_void:
 cdef api void call_cy_MyRoot_do_root(
     object self,
     cFollyPromise[cFollyUnit] cPromise
-) with gil:
+):  
     promise = Promise_void.create(move(cPromise))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         MyRoot_do_root_coro(
             self,
-            promise),
-        loop=self.loop)
+            promise
+        )
+    )
 
 async def MyRoot_do_root_coro(
     object self,
@@ -80,13 +85,14 @@ async def MyRoot_do_root_coro(
 cdef api void call_cy_MyNode_do_mid(
     object self,
     cFollyPromise[cFollyUnit] cPromise
-) with gil:
+):  
     promise = Promise_void.create(move(cPromise))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         MyNode_do_mid_coro(
             self,
-            promise),
-        loop=self.loop)
+            promise
+        )
+    )
 
 async def MyNode_do_mid_coro(
     object self,
@@ -108,13 +114,14 @@ async def MyNode_do_mid_coro(
 cdef api void call_cy_MyLeaf_do_leaf(
     object self,
     cFollyPromise[cFollyUnit] cPromise
-) with gil:
+):  
     promise = Promise_void.create(move(cPromise))
-    asyncio.run_coroutine_threadsafe(
+    asyncio.get_event_loop().create_task(
         MyLeaf_do_leaf_coro(
             self,
-            promise),
-        loop=self.loop)
+            promise
+        )
+    )
 
 async def MyLeaf_do_leaf_coro(
     object self,
@@ -138,7 +145,10 @@ cdef class MyRootInterface(
     ServiceInterface
 ):
     def __cinit__(self):
-        self.interface_wrapper = cMyRootInterface(<PyObject *> self)
+        self.interface_wrapper = cMyRootInterface(
+            <PyObject *> self,
+            get_executor()
+        )
 
     async def do_root(
             self):
@@ -149,7 +159,10 @@ cdef class MyNodeInterface(
     module.services.MyRootInterface
 ):
     def __cinit__(self):
-        self.interface_wrapper = cMyNodeInterface(<PyObject *> self)
+        self.interface_wrapper = cMyNodeInterface(
+            <PyObject *> self,
+            get_executor()
+        )
 
     async def do_mid(
             self):
@@ -160,7 +173,10 @@ cdef class MyLeafInterface(
     module.services.MyNodeInterface
 ):
     def __cinit__(self):
-        self.interface_wrapper = cMyLeafInterface(<PyObject *> self)
+        self.interface_wrapper = cMyLeafInterface(
+            <PyObject *> self,
+            get_executor()
+        )
 
     async def do_leaf(
             self):
