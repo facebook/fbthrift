@@ -14,8 +14,7 @@ from libcpp.set cimport set as cset
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from thrift.py3.client cimport cTClientBase
-from thrift.py3.folly cimport cFollyEventBase, cFollyTry, cFollyUnit
+from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 
 cimport my.namespacing.extend.test.extend.types
 
@@ -32,10 +31,7 @@ cdef extern from "<utility>" namespace "std":
 cdef extern from "src/gen-py3/extend/clients_wrapper.h" namespace "cpp2":
   cdef cppclass cExtendTestServiceClientWrapper "cpp2::ExtendTestServiceClientWrapper"(hsmodule.clients_wrapper.cHsTestServiceClientWrapper):
     cExtendTestServiceClientWrapper(
-      shared_ptr[cExtendTestServiceAsyncClient] async_client,
-      shared_ptr[cFollyEventBase] event_base)
-    void check(
-      hsmodule.types.cHsFoo arg_struct1,
-      void (*callback) (PyObject*, cFollyTry[cbool]),
-      object py_future)
+      shared_ptr[cExtendTestServiceAsyncClient] async_client)
+    cFollyFuture[cbool] check(
+      hsmodule.types.cHsFoo arg_struct1,)
 

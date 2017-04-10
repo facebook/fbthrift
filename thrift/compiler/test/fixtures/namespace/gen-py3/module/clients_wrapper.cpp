@@ -9,24 +9,28 @@
 
 namespace cpp2 {
 TestServiceClientWrapper::TestServiceClientWrapper(
-    std::shared_ptr<cpp2::TestServiceAsyncClient> async_client,
-    std::shared_ptr<folly::EventBase> event_base) : 
-    async_client(async_client),
-    event_base(event_base) {}
+    std::shared_ptr<cpp2::TestServiceAsyncClient> async_client) : 
+    async_client(async_client) {}
 
 TestServiceClientWrapper::~TestServiceClientWrapper() {}
 
-void TestServiceClientWrapper::init(
-    int64_t arg_int1,
-    std::function<void(PyObject*, folly::Try<int64_t>)> callback,
-    PyObject* py_future) {
-  async_client->future_init(
-    arg_int1
-  ).via(event_base.get()).then(
-    [=] (folly::Try<int64_t>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<folly::Unit> TestServiceClientWrapper::disconnect() {
+  return folly::via(
+    this->async_client->getChannel()->getEventBase(),
+    [this] { disconnectInLoop(); });
+}
+
+void TestServiceClientWrapper::disconnectInLoop() {
+    async_client.reset();
+}
+
+
+folly::Future<int64_t>
+TestServiceClientWrapper::init(
+    int64_t arg_int1) {
+ return async_client->future_init(
+   arg_int1
+ );
 }
 
 

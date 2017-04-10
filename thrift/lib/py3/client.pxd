@@ -1,31 +1,44 @@
-from cpython.ref cimport PyObject
-from thrift.py3.folly cimport (
-    cFollyEventBase,
+from folly cimport (
     cFollyExceptionWrapper,
+    cFollyFuture,
+    cFollyExecutor,
     cFollyTry
 )
 from libc.stdint cimport uint16_t, uint32_t
 from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.string cimport string
+from libcpp.typeinfo cimport type_info
+from cpython.ref cimport PyObject
 
-cdef extern from "thrift/lib/cpp/EventHandlerBase.h" \
-        namespace "apache::thrift":
-    cdef cppclass cTClientBase "apache::thrift::TClientBase":
+cdef extern from "thrift/lib/cpp2/async/RequestChannel.h" namespace "apache::thrift":
+    cdef cppclass cRequestChannel "apache::thrift::RequestChannel":
         pass
 
-cdef extern from "thrift/lib/py3/client.h" namespace "apache::thrift":
-    cdef void make_py3_client[T, U](
-        shared_ptr[cFollyEventBase] event_base,
+ctypedef shared_ptr[cRequestChannel] cRequestChannel_ptr
+
+cdef extern from "thrift/lib/py3/client.h" namespace "thrift::py3":
+    cdef cFollyFuture[cRequestChannel_ptr] createThriftChannel(
         const string& host,
         const uint16_t port,
-        const uint32_t connect_timeout,
-        void (*callback) (PyObject*, cFollyTry[shared_ptr[U]]),
-        object py_future)
+        const uint32_t connect_timeout)
+
+    cdef shared_ptr[U] makeClientWrapper[T, U](cRequestChannel_ptr channel)
 
     cdef unique_ptr[T] py3_get_exception[T](
         const cFollyExceptionWrapper& excepton)
 
-cdef class EventBase:
-    cdef shared_ptr[cFollyEventBase] _folly_event_base
-    cdef object asyncio_loop
-    cdef object executor
+cdef class Client:
+    cdef object __weakref__
+    cdef object _connect_future
+    cdef cFollyExecutor* _executor
+    cdef cRequestChannel_ptr _cRequestChannel
+    cdef inline _check_connect_future(self):
+        ex = self._connect_future.exception()
+        if ex:
+            raise ex
+
+    cdef const type_info* _typeid(self)
+
+cdef void requestchannel_callback(
+        cFollyTry[cRequestChannel_ptr]&& result,
+        PyObject* userData)

@@ -8,11 +8,9 @@
 #pragma once
 #include <src/gen-cpp2/TestService.h>
 
-#include <folly/Try.h>
+#include <folly/futures/Future.h>
+#include <folly/futures/Promise.h>
 #include <folly/Unit.h>
-#include <folly/io/async/EventBase.h>
-
-#include <Python.h>
 
 #include <cstdint>
 #include <functional>
@@ -26,16 +24,16 @@ namespace cpp2 {
 class TestServiceClientWrapper {
   protected:
     std::shared_ptr<cpp2::TestServiceAsyncClient> async_client;
-    std::shared_ptr<folly::EventBase> event_base;
   public:
     explicit TestServiceClientWrapper(
-      std::shared_ptr<cpp2::TestServiceAsyncClient> async_client,
-      std::shared_ptr<folly::EventBase> event_base);
+      std::shared_ptr<cpp2::TestServiceAsyncClient> async_client);
     virtual ~TestServiceClientWrapper();
-    void init(
-      int64_t arg_int1,
-      std::function<void(PyObject*, folly::Try<int64_t>)> callback,
-      PyObject* py_future);
+
+    folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
+
+    folly::Future<int64_t> init(
+      int64_t arg_int1);
 };
 
 

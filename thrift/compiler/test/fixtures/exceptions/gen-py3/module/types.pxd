@@ -13,7 +13,7 @@ from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
-from thrift.py3.exceptions cimport cTException
+from thrift.py3.exceptions cimport cTException, Error
 cimport thrift.py3.types
 
 
@@ -51,9 +51,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cFiery] move(unique_ptr[cFiery])
 
 # Forward Definition of the cython struct
-cdef class Banal(thrift.py3.types.Exception)
+cdef class Banal(Error)
 
-cdef class Banal(thrift.py3.types.Exception):
+cdef class Banal(Error):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cBanal] c_Banal
@@ -62,9 +62,9 @@ cdef class Banal(thrift.py3.types.Exception):
     cdef create(shared_ptr[cBanal] c_Banal)
 
 # Forward Definition of the cython struct
-cdef class Fiery(thrift.py3.types.Exception)
+cdef class Fiery(Error)
 
-cdef class Fiery(thrift.py3.types.Exception):
+cdef class Fiery(Error):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cFiery] c_Fiery

@@ -30,8 +30,7 @@ from libcpp.set cimport set as cset
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from thrift.py3.client cimport cTClientBase
-from thrift.py3.folly cimport cFollyEventBase, cFollyTry, cFollyUnit
+from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 
 cimport {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:name}}.types
 
@@ -64,13 +63,13 @@ cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/clients_wrap
   }}{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{service:name}}ClientWrapper"{{!
   }}{{#service:extends}}({{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{service:programName}}.clients_wrapper.c{{service:name}}ClientWrapper){{/service:extends}}:
     c{{service:name}}ClientWrapper(
-      shared_ptr[c{{service:name}}AsyncClient] async_client,
-      shared_ptr[cFollyEventBase] event_base)
+      shared_ptr[c{{service:name}}AsyncClient] async_client)
+    {{^service:extends?}}
+    cFollyFuture[cFollyUnit] disconnect()
+    {{/service:extends?}}
     {{#service:functions}}
-    void {{function:name}}({{#function:args}}
-      {{#field:type}}{{> CythonValueFieldType}}{{/field:type}} arg_{{field:name}},{{/function:args}}
-      void (*callback) (PyObject*, cFollyTry[{{#function:returnType}}{{> CythonValueFieldType}}{{/function:returnType}}]),
-      object py_future)
+    cFollyFuture[{{#function:returnType}}{{> CythonValueFieldType}}{{/function:returnType}}] {{function:name}}({{#function:args}}
+      {{#field:type}}{{> CythonValueFieldType}}{{/field:type}} arg_{{field:name}},{{/function:args}})
     {{/service:functions}}
 
 {{/program:services}}

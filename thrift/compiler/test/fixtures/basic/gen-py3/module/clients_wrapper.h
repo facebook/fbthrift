@@ -12,11 +12,9 @@
 #include <src/gen-cpp2/MyServicePrioParent.h>
 #include <src/gen-cpp2/MyServicePrioChild.h>
 
-#include <folly/Try.h>
+#include <folly/futures/Future.h>
+#include <folly/futures/Promise.h>
 #include <folly/Unit.h>
-#include <folly/io/async/EventBase.h>
-
-#include <Python.h>
 
 #include <cstdint>
 #include <functional>
@@ -30,102 +28,82 @@ namespace cpp2 {
 class MyServiceClientWrapper {
   protected:
     std::shared_ptr<cpp2::MyServiceAsyncClient> async_client;
-    std::shared_ptr<folly::EventBase> event_base;
   public:
     explicit MyServiceClientWrapper(
-      std::shared_ptr<cpp2::MyServiceAsyncClient> async_client,
-      std::shared_ptr<folly::EventBase> event_base);
+      std::shared_ptr<cpp2::MyServiceAsyncClient> async_client);
     virtual ~MyServiceClientWrapper();
-    void ping(
-      std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-      PyObject* py_future);
-    void getRandomData(
-      std::function<void(PyObject*, folly::Try<std::string>)> callback,
-      PyObject* py_future);
-    void hasDataById(
-      int64_t arg_id,
-      std::function<void(PyObject*, folly::Try<bool>)> callback,
-      PyObject* py_future);
-    void getDataById(
-      int64_t arg_id,
-      std::function<void(PyObject*, folly::Try<std::string>)> callback,
-      PyObject* py_future);
-    void putDataById(
-      int64_t arg_id,
-      std::string arg_data,
-      std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-      PyObject* py_future);
-    void lobDataById(
-      int64_t arg_id,
-      std::string arg_data,
-      std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-      PyObject* py_future);
+
+    folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
+
+    folly::Future<folly::Unit> ping();
+    folly::Future<std::string> getRandomData();
+    folly::Future<bool> hasDataById(
+      int64_t arg_id);
+    folly::Future<std::string> getDataById(
+      int64_t arg_id);
+    folly::Future<folly::Unit> putDataById(
+      int64_t arg_id, 
+      std::string arg_data);
+    folly::Future<folly::Unit> lobDataById(
+      int64_t arg_id, 
+      std::string arg_data);
 };
 
 
 class MyServiceFastClientWrapper {
   protected:
     std::shared_ptr<cpp2::MyServiceFastAsyncClient> async_client;
-    std::shared_ptr<folly::EventBase> event_base;
   public:
     explicit MyServiceFastClientWrapper(
-      std::shared_ptr<cpp2::MyServiceFastAsyncClient> async_client,
-      std::shared_ptr<folly::EventBase> event_base);
+      std::shared_ptr<cpp2::MyServiceFastAsyncClient> async_client);
     virtual ~MyServiceFastClientWrapper();
-    void ping(
-      std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-      PyObject* py_future);
-    void getRandomData(
-      std::function<void(PyObject*, folly::Try<std::string>)> callback,
-      PyObject* py_future);
-    void hasDataById(
-      int64_t arg_id,
-      std::function<void(PyObject*, folly::Try<bool>)> callback,
-      PyObject* py_future);
-    void getDataById(
-      int64_t arg_id,
-      std::function<void(PyObject*, folly::Try<std::string>)> callback,
-      PyObject* py_future);
-    void putDataById(
-      int64_t arg_id,
-      std::string arg_data,
-      std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-      PyObject* py_future);
-    void lobDataById(
-      int64_t arg_id,
-      std::string arg_data,
-      std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-      PyObject* py_future);
+
+    folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
+
+    folly::Future<folly::Unit> ping();
+    folly::Future<std::string> getRandomData();
+    folly::Future<bool> hasDataById(
+      int64_t arg_id);
+    folly::Future<std::string> getDataById(
+      int64_t arg_id);
+    folly::Future<folly::Unit> putDataById(
+      int64_t arg_id, 
+      std::string arg_data);
+    folly::Future<folly::Unit> lobDataById(
+      int64_t arg_id, 
+      std::string arg_data);
 };
 
 
 class MyServiceEmptyClientWrapper {
   protected:
     std::shared_ptr<cpp2::MyServiceEmptyAsyncClient> async_client;
-    std::shared_ptr<folly::EventBase> event_base;
   public:
     explicit MyServiceEmptyClientWrapper(
-      std::shared_ptr<cpp2::MyServiceEmptyAsyncClient> async_client,
-      std::shared_ptr<folly::EventBase> event_base);
+      std::shared_ptr<cpp2::MyServiceEmptyAsyncClient> async_client);
     virtual ~MyServiceEmptyClientWrapper();
+
+    folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
+
 };
 
 
 class MyServicePrioParentClientWrapper {
   protected:
     std::shared_ptr<cpp2::MyServicePrioParentAsyncClient> async_client;
-    std::shared_ptr<folly::EventBase> event_base;
   public:
     explicit MyServicePrioParentClientWrapper(
-      std::shared_ptr<cpp2::MyServicePrioParentAsyncClient> async_client,
-      std::shared_ptr<folly::EventBase> event_base);
+      std::shared_ptr<cpp2::MyServicePrioParentAsyncClient> async_client);
     virtual ~MyServicePrioParentClientWrapper();
-    void ping(
-      std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-      PyObject* py_future);
-    void pong(
-      std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-      PyObject* py_future);
+
+    folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
+
+    folly::Future<folly::Unit> ping();
+    folly::Future<folly::Unit> pong();
 };
 
 
@@ -134,11 +112,12 @@ class MyServicePrioChildClientWrapper : virtual public cpp2::MyServicePrioParent
     std::shared_ptr<cpp2::MyServicePrioChildAsyncClient> async_client;
   public:
     explicit MyServicePrioChildClientWrapper(
-      std::shared_ptr<cpp2::MyServicePrioChildAsyncClient> async_client,
-      std::shared_ptr<folly::EventBase> event_base);
-    void pang(
-      std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-      PyObject* py_future);
+      std::shared_ptr<cpp2::MyServicePrioChildAsyncClient> async_client);
+
+    folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
+
+    folly::Future<folly::Unit> pang();
 };
 
 

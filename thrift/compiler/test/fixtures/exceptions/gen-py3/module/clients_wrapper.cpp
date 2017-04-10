@@ -9,55 +9,44 @@
 
 namespace cpp2 {
 RaiserClientWrapper::RaiserClientWrapper(
-    std::shared_ptr<cpp2::RaiserAsyncClient> async_client,
-    std::shared_ptr<folly::EventBase> event_base) : 
-    async_client(async_client),
-    event_base(event_base) {}
+    std::shared_ptr<cpp2::RaiserAsyncClient> async_client) : 
+    async_client(async_client) {}
 
 RaiserClientWrapper::~RaiserClientWrapper() {}
 
-void RaiserClientWrapper::doBland(
-    std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-    PyObject* py_future) {
-  async_client->future_doBland(
-  ).via(event_base.get()).then(
-    [=] (folly::Try<folly::Unit>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<folly::Unit> RaiserClientWrapper::disconnect() {
+  return folly::via(
+    this->async_client->getChannel()->getEventBase(),
+    [this] { disconnectInLoop(); });
 }
 
-void RaiserClientWrapper::doRaise(
-    std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-    PyObject* py_future) {
-  async_client->future_doRaise(
-  ).via(event_base.get()).then(
-    [=] (folly::Try<folly::Unit>&& result) {
-      callback(py_future, result);
-    }
-  );
+void RaiserClientWrapper::disconnectInLoop() {
+    async_client.reset();
 }
 
-void RaiserClientWrapper::get200(
-    std::function<void(PyObject*, folly::Try<std::string>)> callback,
-    PyObject* py_future) {
-  async_client->future_get200(
-  ).via(event_base.get()).then(
-    [=] (folly::Try<std::string>&& result) {
-      callback(py_future, result);
-    }
-  );
+
+folly::Future<folly::Unit>
+RaiserClientWrapper::doBland() {
+ return async_client->future_doBland(
+ );
 }
 
-void RaiserClientWrapper::get500(
-    std::function<void(PyObject*, folly::Try<std::string>)> callback,
-    PyObject* py_future) {
-  async_client->future_get500(
-  ).via(event_base.get()).then(
-    [=] (folly::Try<std::string>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<folly::Unit>
+RaiserClientWrapper::doRaise() {
+ return async_client->future_doRaise(
+ );
+}
+
+folly::Future<std::string>
+RaiserClientWrapper::get200() {
+ return async_client->future_get200(
+ );
+}
+
+folly::Future<std::string>
+RaiserClientWrapper::get500() {
+ return async_client->future_get500(
+ );
 }
 
 

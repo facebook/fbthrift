@@ -12,11 +12,17 @@ from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.vector cimport vector as vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
-from cython.operator cimport dereference as deref
+from cython.operator cimport dereference as deref, typeid
 from cpython.ref cimport PyObject
-from thrift.py3.client cimport EventBase, make_py3_client, py3_get_exception
-from thrift.py3.client import get_event_base
-from thrift.py3.folly cimport cFollyEventBase, cFollyTry, cFollyUnit, c_unit
+from thrift.py3.client cimport py3_get_exception, cRequestChannel_ptr, makeClientWrapper
+from folly cimport cFollyTry, cFollyUnit, c_unit
+from libcpp.typeinfo cimport type_info
+import thrift.py3.types
+cimport thrift.py3.types
+import thrift.py3.client
+cimport thrift.py3.client
+from folly.futures cimport bridgeFutureWith
+from folly.executor cimport get_executor
 
 import asyncio
 import sys
@@ -25,183 +31,222 @@ import traceback
 cimport module.types
 import module.types
 
-from module.clients_wrapper cimport move
-
 from module.clients_wrapper cimport cNestedContainersAsyncClient, cNestedContainersClientWrapper
 
 
 cdef void NestedContainers_mapList_callback(
-        PyObject* future,
-        cFollyTry[cFollyUnit] result) with gil:
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef cFollyUnit citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = c_unit;
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, None)
+        pyfuture.set_result(None)
 
 cdef void NestedContainers_mapSet_callback(
-        PyObject* future,
-        cFollyTry[cFollyUnit] result) with gil:
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef cFollyUnit citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = c_unit;
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, None)
+        pyfuture.set_result(None)
 
 cdef void NestedContainers_listMap_callback(
-        PyObject* future,
-        cFollyTry[cFollyUnit] result) with gil:
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef cFollyUnit citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = c_unit;
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, None)
+        pyfuture.set_result(None)
 
 cdef void NestedContainers_listSet_callback(
-        PyObject* future,
-        cFollyTry[cFollyUnit] result) with gil:
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef cFollyUnit citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = c_unit;
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, None)
+        pyfuture.set_result(None)
 
 cdef void NestedContainers_turtles_callback(
-        PyObject* future,
-        cFollyTry[cFollyUnit] result) with gil:
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef cFollyUnit citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = c_unit;
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, None)
+        pyfuture.set_result(None)
 
 
-cdef class NestedContainers:
+cdef class NestedContainers(thrift.py3.client.Client):
 
-    def __init__(self, *args, **kwds):
-        raise TypeError('Use NestedContainers.connect() instead.')
+    def __cinit__(NestedContainers self):
+        loop = asyncio.get_event_loop()
+        self._connect_future = loop.create_future()
+        self._executor = get_executor()
 
-    def __cinit__(self, loop):
-        self.loop = loop
+    cdef const type_info* _typeid(NestedContainers self):
+        return &typeid(cNestedContainersAsyncClient)
 
     @staticmethod
     cdef _module_NestedContainers_set_client(NestedContainers inst, shared_ptr[cNestedContainersClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
         inst._module_NestedContainers_client = c_obj
 
-    @staticmethod
-    async def connect(str host, int port, loop=None):
-        loop = loop or asyncio.get_event_loop()
+    def __dealloc__(NestedContainers self):
+        if self._cRequestChannel or self._module_NestedContainers_client:
+            print('client was not cleaned up, use the context manager', file=sys.stderr)
+
+    async def __aenter__(NestedContainers self):
+        await self._connect_future
+        if self._cRequestChannel:
+            NestedContainers._module_NestedContainers_set_client(
+                self,
+                makeClientWrapper[cNestedContainersAsyncClient, cNestedContainersClientWrapper](
+                    self._cRequestChannel
+                ),
+            )
+            self._cRequestChannel.reset()
+        else:
+            raise asyncio.InvalidStateError('Client context has been used already')
+        return self
+
+    async def __aexit__(NestedContainers self, *exc):
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
         future = loop.create_future()
-        future.loop = loop
-        eb = await get_event_base(loop)
-        cdef string _host = host.encode('UTF-8')
-        make_py3_client[cNestedContainersAsyncClient, cNestedContainersClientWrapper](
-            (<EventBase> eb)._folly_event_base,
-            _host,
-            port,
-            0,
-            made_NestedContainers_py3_client_callback,
-            future)
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            deref(self._module_NestedContainers_client).disconnect(),
+            closed_NestedContainers_py3_client_callback,
+            <PyObject *>future
+        )
+        # To break any future usage of this client
+        badfuture = loop.create_future()
+        badfuture.set_exception(asyncio.InvalidStateError('Client Out of Context'))
+        badfuture.exception()
+        self._connect_future = badfuture
+        await future
+        self._module_NestedContainers_client.reset()
+
+    async def mapList(
+            NestedContainers self,
+            arg_foo):
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            deref(self._module_NestedContainers_client).mapList(
+                cmap[int32_t,vector[int32_t]](deref(module.types.Map__i32_List__i32(arg_foo)._map.get())),
+            ),
+            NestedContainers_mapList_callback,
+            <PyObject *> future
+        )
         return await future
 
-    def mapList(
-            self,
+    async def mapSet(
+            NestedContainers self,
             arg_foo):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_NestedContainers_client).mapList(
-            cmap[int32_t,vector[int32_t]](deref(module.types.Map__i32_List__i32(arg_foo)._map.get())),
-            NestedContainers_mapList_callback,
-            future)
-        return future
-
-    def mapSet(
-            self,
-            arg_foo):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_NestedContainers_client).mapSet(
-            cmap[int32_t,cset[int32_t]](deref(module.types.Map__i32_Set__i32(arg_foo)._map.get())),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            deref(self._module_NestedContainers_client).mapSet(
+                cmap[int32_t,cset[int32_t]](deref(module.types.Map__i32_Set__i32(arg_foo)._map.get())),
+            ),
             NestedContainers_mapSet_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def listMap(
-            self,
+    async def listMap(
+            NestedContainers self,
             arg_foo):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_NestedContainers_client).listMap(
-            deref(module.types.List__Map__i32_i32(arg_foo)._vector.get()),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            deref(self._module_NestedContainers_client).listMap(
+                deref(module.types.List__Map__i32_i32(arg_foo)._vector.get()),
+            ),
             NestedContainers_listMap_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def listSet(
-            self,
+    async def listSet(
+            NestedContainers self,
             arg_foo):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_NestedContainers_client).listSet(
-            deref(module.types.List__Set__i32(arg_foo)._vector.get()),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            deref(self._module_NestedContainers_client).listSet(
+                deref(module.types.List__Set__i32(arg_foo)._vector.get()),
+            ),
             NestedContainers_listSet_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def turtles(
-            self,
+    async def turtles(
+            NestedContainers self,
             arg_foo):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_NestedContainers_client).turtles(
-            deref(module.types.List__List__Map__i32_Map__i32_Set__i32(arg_foo)._vector.get()),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            deref(self._module_NestedContainers_client).turtles(
+                deref(module.types.List__List__Map__i32_Map__i32_Set__i32(arg_foo)._vector.get()),
+            ),
             NestedContainers_turtles_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
 
-cdef void made_NestedContainers_py3_client_callback(
-        PyObject* future,
-        cFollyTry[shared_ptr[cNestedContainersClientWrapper]] result) with gil:
-    cdef object pyfuture = <object> future
-    if result.hasException():
-        try:
-            result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
-    else:
-        pyclient = <NestedContainers> NestedContainers.__new__(NestedContainers, pyfuture.loop)
-        NestedContainers._module_NestedContainers_set_client(pyclient, result.value())
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, pyclient)
+
+cdef void closed_NestedContainers_py3_client_callback(
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* fut,
+):
+    cdef object pyfuture = <object> fut
+    pyfuture.set_result(None)
 

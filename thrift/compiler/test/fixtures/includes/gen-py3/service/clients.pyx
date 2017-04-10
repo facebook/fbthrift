@@ -12,11 +12,17 @@ from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.vector cimport vector as vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
-from cython.operator cimport dereference as deref
+from cython.operator cimport dereference as deref, typeid
 from cpython.ref cimport PyObject
-from thrift.py3.client cimport EventBase, make_py3_client, py3_get_exception
-from thrift.py3.client import get_event_base
-from thrift.py3.folly cimport cFollyEventBase, cFollyTry, cFollyUnit, c_unit
+from thrift.py3.client cimport py3_get_exception, cRequestChannel_ptr, makeClientWrapper
+from folly cimport cFollyTry, cFollyUnit, c_unit
+from libcpp.typeinfo cimport type_info
+import thrift.py3.types
+cimport thrift.py3.types
+import thrift.py3.client
+cimport thrift.py3.client
+from folly.futures cimport bridgeFutureWith
+from folly.executor cimport get_executor
 
 import asyncio
 import sys
@@ -24,8 +30,6 @@ import traceback
 
 cimport service.types
 import service.types
-
-from service.clients_wrapper cimport move
 cimport module.types
 import module.types
 cimport includes.types
@@ -35,75 +39,96 @@ from service.clients_wrapper cimport cMyServiceAsyncClient, cMyServiceClientWrap
 
 
 cdef void MyService_query_callback(
-        PyObject* future,
-        cFollyTry[cFollyUnit] result) with gil:
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef cFollyUnit citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = c_unit;
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, None)
+        pyfuture.set_result(None)
 
 
-cdef class MyService:
+cdef class MyService(thrift.py3.client.Client):
 
-    def __init__(self, *args, **kwds):
-        raise TypeError('Use MyService.connect() instead.')
+    def __cinit__(MyService self):
+        loop = asyncio.get_event_loop()
+        self._connect_future = loop.create_future()
+        self._executor = get_executor()
 
-    def __cinit__(self, loop):
-        self.loop = loop
+    cdef const type_info* _typeid(MyService self):
+        return &typeid(cMyServiceAsyncClient)
 
     @staticmethod
     cdef _service_MyService_set_client(MyService inst, shared_ptr[cMyServiceClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
         inst._service_MyService_client = c_obj
 
-    @staticmethod
-    async def connect(str host, int port, loop=None):
-        loop = loop or asyncio.get_event_loop()
-        future = loop.create_future()
-        future.loop = loop
-        eb = await get_event_base(loop)
-        cdef string _host = host.encode('UTF-8')
-        make_py3_client[cMyServiceAsyncClient, cMyServiceClientWrapper](
-            (<EventBase> eb)._folly_event_base,
-            _host,
-            port,
-            0,
-            made_MyService_py3_client_callback,
-            future)
-        return await future
+    def __dealloc__(MyService self):
+        if self._cRequestChannel or self._service_MyService_client:
+            print('client was not cleaned up, use the context manager', file=sys.stderr)
 
-    def query(
-            self,
+    async def __aenter__(MyService self):
+        await self._connect_future
+        if self._cRequestChannel:
+            MyService._service_MyService_set_client(
+                self,
+                makeClientWrapper[cMyServiceAsyncClient, cMyServiceClientWrapper](
+                    self._cRequestChannel
+                ),
+            )
+            self._cRequestChannel.reset()
+        else:
+            raise asyncio.InvalidStateError('Client context has been used already')
+        return self
+
+    async def __aexit__(MyService self, *exc):
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            deref(self._service_MyService_client).disconnect(),
+            closed_MyService_py3_client_callback,
+            <PyObject *>future
+        )
+        # To break any future usage of this client
+        badfuture = loop.create_future()
+        badfuture.set_exception(asyncio.InvalidStateError('Client Out of Context'))
+        badfuture.exception()
+        self._connect_future = badfuture
+        await future
+        self._service_MyService_client.reset()
+
+    async def query(
+            MyService self,
             arg_s,
             arg_i):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._service_MyService_client).query(
-            deref((<module.types.MyStruct>arg_s).c_MyStruct),
-            deref((<includes.types.Included>arg_i).c_Included),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            deref(self._service_MyService_client).query(
+                deref((<module.types.MyStruct>arg_s).c_MyStruct),
+                deref((<includes.types.Included>arg_i).c_Included),
+            ),
             MyService_query_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
 
-cdef void made_MyService_py3_client_callback(
-        PyObject* future,
-        cFollyTry[shared_ptr[cMyServiceClientWrapper]] result) with gil:
-    cdef object pyfuture = <object> future
-    if result.hasException():
-        try:
-            result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
-    else:
-        pyclient = <MyService> MyService.__new__(MyService, pyfuture.loop)
-        MyService._service_MyService_set_client(pyclient, result.value())
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, pyclient)
+
+cdef void closed_MyService_py3_client_callback(
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* fut,
+):
+    cdef object pyfuture = <object> fut
+    pyfuture.set_result(None)
 

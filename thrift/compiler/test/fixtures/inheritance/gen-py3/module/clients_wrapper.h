@@ -10,11 +10,9 @@
 #include <src/gen-cpp2/MyNode.h>
 #include <src/gen-cpp2/MyLeaf.h>
 
-#include <folly/Try.h>
+#include <folly/futures/Future.h>
+#include <folly/futures/Promise.h>
 #include <folly/Unit.h>
-#include <folly/io/async/EventBase.h>
-
-#include <Python.h>
 
 #include <cstdint>
 #include <functional>
@@ -28,15 +26,15 @@ namespace cpp2 {
 class MyRootClientWrapper {
   protected:
     std::shared_ptr<cpp2::MyRootAsyncClient> async_client;
-    std::shared_ptr<folly::EventBase> event_base;
   public:
     explicit MyRootClientWrapper(
-      std::shared_ptr<cpp2::MyRootAsyncClient> async_client,
-      std::shared_ptr<folly::EventBase> event_base);
+      std::shared_ptr<cpp2::MyRootAsyncClient> async_client);
     virtual ~MyRootClientWrapper();
-    void do_root(
-      std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-      PyObject* py_future);
+
+    folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
+
+    folly::Future<folly::Unit> do_root();
 };
 
 
@@ -45,11 +43,12 @@ class MyNodeClientWrapper : virtual public cpp2::MyRootClientWrapper,  {
     std::shared_ptr<cpp2::MyNodeAsyncClient> async_client;
   public:
     explicit MyNodeClientWrapper(
-      std::shared_ptr<cpp2::MyNodeAsyncClient> async_client,
-      std::shared_ptr<folly::EventBase> event_base);
-    void do_mid(
-      std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-      PyObject* py_future);
+      std::shared_ptr<cpp2::MyNodeAsyncClient> async_client);
+
+    folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
+
+    folly::Future<folly::Unit> do_mid();
 };
 
 
@@ -58,11 +57,12 @@ class MyLeafClientWrapper : virtual public cpp2::MyNodeClientWrapper {
     std::shared_ptr<cpp2::MyLeafAsyncClient> async_client;
   public:
     explicit MyLeafClientWrapper(
-      std::shared_ptr<cpp2::MyLeafAsyncClient> async_client,
-      std::shared_ptr<folly::EventBase> event_base);
-    void do_leaf(
-      std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-      PyObject* py_future);
+      std::shared_ptr<cpp2::MyLeafAsyncClient> async_client);
+
+    folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
+
+    folly::Future<folly::Unit> do_leaf();
 };
 
 

@@ -1,6 +1,4 @@
-from thrift.py3.exceptions import TException as Exception
-
-__all__ = ['Exception', 'Struct', 'BadEnum', 'NOTSET']
+__all__ = ['Struct', 'BadEnum', 'NOTSET']
 
 NOTSET = object()
 

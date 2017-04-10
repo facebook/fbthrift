@@ -29,34 +29,38 @@ thread that will pass data to the cython callback.
 {{/program:cppNamespaces}}
 {{#program:services}}
 {{service:name}}ClientWrapper::{{service:name}}ClientWrapper(
-    std::shared_ptr<{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}AsyncClient> async_client,
-    std::shared_ptr<folly::EventBase> event_base) : {{!
-      If we are a base class, we have the EventBase. If not, we need to pass the event base and a BaseAsyncClient pointer
-      to the base class. Storing the pointer of each type as a shadowing member variable for each ClientWrapper and doing
-      the dynamic cast at construction time to allow calling methods in the parent class trades a single pointer of memory
-      for cpu and code size / ugly template because it avoids doing the dynamic casting at every access.
+    std::shared_ptr<{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}AsyncClient> async_client) : {{!
     }}
-    {{#service:extends?}}{{#service:extends}}{{service:name}}ClientWrapper(std::dynamic_pointer_cast<{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}AsyncClient>(async_client), event_base),
-    async_client(async_client){{/service:extends}}{{/service:extends?}}{{!
-    }}{{^service:extends?}}async_client(async_client),
-    event_base(event_base){{/service:extends?}} {}
+    {{#service:extends?}}{{#service:extends}}{{service:name}}ClientWrapper(async_client),
+    {{/service:extends}}{{/service:extends?}}{{!
+    }}async_client(async_client) {}
 
 {{^service:extends?}}
 {{service:name}}ClientWrapper::~{{service:name}}ClientWrapper() {}
 {{/service:extends?}}
 
+{{! We need the destructor to run in the correct thread or assert happens }}
+folly::Future<folly::Unit> {{service:name}}ClientWrapper::disconnect() {
+  return folly::via(
+    this->async_client->getChannel()->getEventBase(),
+    [this] { disconnectInLoop(); });
+}
+
+void {{service:name}}ClientWrapper::disconnectInLoop() {
+    async_client.reset();
+    {{#service:extends}}
+    {{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}ClientWrapper::disconnectInLoop();
+    {{/service:extends}}
+}
+
+
 {{#service:functions}}
-void {{service:name}}ClientWrapper::{{function:name}}({{#function:args}}
-    {{#field:type}}{{> CppValueFieldType}}{{/field:type}} arg_{{field:name}},{{/function:args}}
-    std::function<void(PyObject*, folly::Try<{{#function:returnType}}{{> CppValueFieldType}}{{/function:returnType}}>)> callback,
-    PyObject* py_future) {
-  async_client->future_{{function:name}}({{#function:args}}
-    arg_{{field:name}}{{^last?}},{{/last?}}{{/function:args}}
-  ).via(event_base.get()).then(
-    [=] (folly::Try<{{#function:returnType}}{{> CppValueFieldType}}{{/function:returnType}}>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<{{#function:returnType}}{{> CppValueFieldType}}{{/function:returnType}}>
+{{service:name}}ClientWrapper::{{function:name}}({{#function:args}}
+    {{#field:type}}{{> CppValueFieldType}}{{/field:type}} arg_{{field:name}}{{^last?}}, {{/last?}}{{/function:args}}) {
+ return async_client->future_{{function:name}}({{#function:args}}
+   arg_{{field:name}}{{^last?}},{{/last?}}{{/function:args}}
+ );
 }
 
 {{/service:functions}}

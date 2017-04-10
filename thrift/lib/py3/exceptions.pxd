@@ -19,5 +19,11 @@ cdef extern from "Python.h":
     ctypedef extern class builtins.Exception[object PyBaseExceptionObject]:
         pass
 
-cdef class TException(Exception):
+cdef class Error(Exception):
+    pass
+
+cdef class ApplicationError(Error):
+    pass
+
+cdef class TransportError(Error):
     pass

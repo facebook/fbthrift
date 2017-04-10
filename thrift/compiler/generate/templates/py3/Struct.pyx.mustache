@@ -43,6 +43,7 @@ from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
+cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET
 cimport thrift.py3.std_libcpp as std_libcpp
 
@@ -72,7 +73,7 @@ cdef c{{enum:name}} {{enum:name}}_to_cpp(value):
 
 
 {{#program:structs}}
-cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.types.Exception){{/struct:exception?}}{{^struct:exception?}}(thrift.py3.types.Struct){{/struct:exception?}}:
+cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/struct:exception?}}{{^struct:exception?}}(thrift.py3.types.Struct){{/struct:exception?}}:
 
     def __init__(
         {{struct:name}} self{{#struct:fields}},

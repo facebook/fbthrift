@@ -8,11 +8,9 @@
 #pragma once
 #include <src/gen-cpp2/MyService.h>
 
-#include <folly/Try.h>
+#include <folly/futures/Future.h>
+#include <folly/futures/Promise.h>
 #include <folly/Unit.h>
-#include <folly/io/async/EventBase.h>
-
-#include <Python.h>
 
 #include <cstdint>
 #include <functional>
@@ -26,17 +24,17 @@ namespace cpp2 {
 class MyServiceClientWrapper {
   protected:
     std::shared_ptr<cpp2::MyServiceAsyncClient> async_client;
-    std::shared_ptr<folly::EventBase> event_base;
   public:
     explicit MyServiceClientWrapper(
-      std::shared_ptr<cpp2::MyServiceAsyncClient> async_client,
-      std::shared_ptr<folly::EventBase> event_base);
+      std::shared_ptr<cpp2::MyServiceAsyncClient> async_client);
     virtual ~MyServiceClientWrapper();
-    void query(
-      cpp2::MyStruct arg_s,
-      cpp2::Included arg_i,
-      std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-      PyObject* py_future);
+
+    folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
+
+    folly::Future<folly::Unit> query(
+      cpp2::MyStruct arg_s, 
+      cpp2::Included arg_i);
 };
 
 

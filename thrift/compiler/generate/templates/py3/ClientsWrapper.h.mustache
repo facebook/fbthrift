@@ -30,11 +30,9 @@ Header file for ClientsWrapper.cpp for cython to import in CythonClients.pxd.
 {{/service:extends}}
 {{/program:services}}
 
-#include <folly/Try.h>
+#include <folly/futures/Future.h>
+#include <folly/futures/Promise.h>
 #include <folly/Unit.h>
-#include <folly/io/async/EventBase.h>
-
-#include <Python.h>
 
 #include <cstdint>
 #include <functional>
@@ -52,22 +50,21 @@ class {{service:name}}ClientWrapper{{#service:extends?}} : {{/service:extends?}}
 }} {
   protected:
     std::shared_ptr<{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}AsyncClient> async_client;
-{{^service:extends?}}
-    std::shared_ptr<folly::EventBase> event_base;
-{{/service:extends?}}
   public:
     explicit {{service:name}}ClientWrapper(
-      std::shared_ptr<{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}AsyncClient> async_client,
-      std::shared_ptr<folly::EventBase> event_base);
+      std::shared_ptr<{{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}AsyncClient> async_client);
 {{^service:extends?}}
     virtual ~{{service:name}}ClientWrapper();
 {{/service:extends?}}
-    {{#service:functions}}
-    void {{function:name}}({{#function:args}}
-      {{#field:type}}{{> CppValueFieldType}}{{/field:type}} arg_{{field:name}},{{/function:args}}
-      std::function<void(PyObject*, folly::Try<{{#function:returnType}}{{> CppValueFieldType}}{{/function:returnType}}>)> callback,
-      PyObject* py_future);
-{{/service:functions}}};
+
+    folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
+
+{{#service:functions}}
+    folly::Future<{{#function:returnType}}{{> CppValueFieldType}}{{/function:returnType}}> {{function:name}}({{#function:args}}
+      {{#field:type}}{{> CppValueFieldType}}{{/field:type}} arg_{{field:name}}{{^last?}}, {{/last?}}{{/function:args}});
+{{/service:functions}}
+};
 
 
 {{/program:services}}{{!

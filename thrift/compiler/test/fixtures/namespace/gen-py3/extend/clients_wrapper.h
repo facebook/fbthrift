@@ -9,11 +9,9 @@
 #include <src/gen-cpp2/ExtendTestService.h>
 #include <gen-py3/hsmodule/clients_wrapper.h>
 
-#include <folly/Try.h>
+#include <folly/futures/Future.h>
+#include <folly/futures/Promise.h>
 #include <folly/Unit.h>
-#include <folly/io/async/EventBase.h>
-
-#include <Python.h>
 
 #include <cstdint>
 #include <functional>
@@ -29,12 +27,13 @@ class ExtendTestServiceClientWrapper : virtual public cpp2::HsTestServiceClientW
     std::shared_ptr<cpp2::ExtendTestServiceAsyncClient> async_client;
   public:
     explicit ExtendTestServiceClientWrapper(
-      std::shared_ptr<cpp2::ExtendTestServiceAsyncClient> async_client,
-      std::shared_ptr<folly::EventBase> event_base);
-    void check(
-      cpp2::HsFoo arg_struct1,
-      std::function<void(PyObject*, folly::Try<bool>)> callback,
-      PyObject* py_future);
+      std::shared_ptr<cpp2::ExtendTestServiceAsyncClient> async_client);
+
+    folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
+
+    folly::Future<bool> check(
+      cpp2::HsFoo arg_struct1);
 };
 
 

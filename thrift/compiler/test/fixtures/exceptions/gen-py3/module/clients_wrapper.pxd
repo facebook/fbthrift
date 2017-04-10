@@ -14,8 +14,7 @@ from libcpp.set cimport set as cset
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from thrift.py3.client cimport cTClientBase
-from thrift.py3.folly cimport cFollyEventBase, cFollyTry, cFollyUnit
+from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 
 cimport module.types
 
@@ -30,18 +29,10 @@ cdef extern from "<utility>" namespace "std":
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
   cdef cppclass cRaiserClientWrapper "cpp2::RaiserClientWrapper":
     cRaiserClientWrapper(
-      shared_ptr[cRaiserAsyncClient] async_client,
-      shared_ptr[cFollyEventBase] event_base)
-    void doBland(
-      void (*callback) (PyObject*, cFollyTry[cFollyUnit]),
-      object py_future)
-    void doRaise(
-      void (*callback) (PyObject*, cFollyTry[cFollyUnit]),
-      object py_future)
-    void get200(
-      void (*callback) (PyObject*, cFollyTry[string]),
-      object py_future)
-    void get500(
-      void (*callback) (PyObject*, cFollyTry[string]),
-      object py_future)
+      shared_ptr[cRaiserAsyncClient] async_client)
+    cFollyFuture[cFollyUnit] disconnect()
+    cFollyFuture[cFollyUnit] doBland()
+    cFollyFuture[cFollyUnit] doRaise()
+    cFollyFuture[string] get200()
+    cFollyFuture[string] get500()
 

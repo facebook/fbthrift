@@ -5,14 +5,13 @@
 #  @generated
 #
 from libcpp.memory cimport shared_ptr
+cimport thrift.py3.client
 
 
 from module.clients_wrapper cimport cRaiserClientWrapper
 
-cdef class Raiser:
+cdef class Raiser(thrift.py3.client.Client):
     cdef shared_ptr[cRaiserClientWrapper] _module_Raiser_client
-    cdef object loop
-    cdef object __weakref__
 
     @staticmethod
     cdef _module_Raiser_set_client(Raiser inst, shared_ptr[cRaiserClientWrapper] c_obj)

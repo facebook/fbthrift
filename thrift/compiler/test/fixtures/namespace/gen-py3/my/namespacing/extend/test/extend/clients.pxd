@@ -5,6 +5,7 @@
 #  @generated
 #
 from libcpp.memory cimport shared_ptr
+cimport thrift.py3.client
 
 cimport hsmodule.clients
 

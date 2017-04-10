@@ -28,8 +28,9 @@ executed in the asyncio loop.
 {{#program:services}}
 {{#service:functions}}
 cdef void {{service:name}}_{{function:name}}_callback(
-        PyObject* future,
-        cFollyTry[{{#function:returnType}}{{> CythonValueFieldType}}{{/function:returnType}}] result) with gil:
+    cFollyTry[{{#function:returnType}}{{> CythonValueFieldType}}{{/function:returnType}}]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef {{#function:returnType}}{{> CythonFieldType}}{{/function:returnType}} citem
     {{#function:exceptions}}
@@ -38,18 +39,18 @@ cdef void {{service:name}}_{{function:name}}_callback(
     if {{#function:exceptions}}{{!
     }}result.hasException[{{#field:type}}{{> ModulePath}}.c{{#type:struct}}{{struct:name}}{{/type:struct}}{{/field:type}}]():
         ex_{{field:name}} = py3_get_exception[{{#field:type}}{{#type:struct}}{{> ModulePath}}.c{{struct:name}}{{/type:struct}}{{/field:type}}](result.exception())
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, {{!
+        pyfuture.set_exception({{!
         }}{{#field:type}}{{> ModulePath}}{{#type:struct}}.{{type:name}}.create({{!
   }}{{> ModulePath}}.move(ex_{{field:name}})){{/type:struct}}{{/field:type}})
     elif {{/function:exceptions}}{{!
     }}result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = {{#function:returnType}}{{> CythonCppValueToReturnValue}}{{/function:returnType}};
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, {{#function:returnType}}{{> CythonCppItemToPython}}{{/function:returnType}})
+        pyfuture.set_result({{#function:returnType}}{{> CythonCppItemToPython}}{{/function:returnType}})
 
 {{/service:functions}}
 {{/program:services}}

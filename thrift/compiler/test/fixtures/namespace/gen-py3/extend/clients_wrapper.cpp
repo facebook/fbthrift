@@ -9,23 +9,29 @@
 
 namespace cpp2 {
 ExtendTestServiceClientWrapper::ExtendTestServiceClientWrapper(
-    std::shared_ptr<cpp2::ExtendTestServiceAsyncClient> async_client,
-    std::shared_ptr<folly::EventBase> event_base) : 
-    HsTestServiceClientWrapper(std::dynamic_pointer_cast<cpp2::HsTestServiceAsyncClient>(async_client), event_base),
+    std::shared_ptr<cpp2::ExtendTestServiceAsyncClient> async_client) : 
+    HsTestServiceClientWrapper(async_client),
     async_client(async_client) {}
 
 
-void ExtendTestServiceClientWrapper::check(
-    cpp2::HsFoo arg_struct1,
-    std::function<void(PyObject*, folly::Try<bool>)> callback,
-    PyObject* py_future) {
-  async_client->future_check(
-    arg_struct1
-  ).via(event_base.get()).then(
-    [=] (folly::Try<bool>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<folly::Unit> ExtendTestServiceClientWrapper::disconnect() {
+  return folly::via(
+    this->async_client->getChannel()->getEventBase(),
+    [this] { disconnectInLoop(); });
+}
+
+void ExtendTestServiceClientWrapper::disconnectInLoop() {
+    async_client.reset();
+    cpp2::HsTestServiceClientWrapper::disconnectInLoop();
+}
+
+
+folly::Future<bool>
+ExtendTestServiceClientWrapper::check(
+    cpp2::HsFoo arg_struct1) {
+ return async_client->future_check(
+   arg_struct1
+ );
 }
 
 

@@ -1,45 +1,46 @@
+from thrift.py3.client cimport (
+    Client, cRequestChannel_ptr, createThriftChannel,
+)
+from libcpp.string cimport string
 from cython.operator cimport dereference as deref
-from libcpp.memory cimport shared_ptr, make_shared
-from thrift.py3.folly cimport cFollyEventBase
-
-from concurrent.futures import ThreadPoolExecutor
-
+from folly.futures cimport bridgeFutureWith
+from folly cimport cFollyTry
+from cpython.ref cimport PyObject
+from libcpp cimport nullptr
 import asyncio
 
-cdef class EventBase:
-    def __cinit__(self, loop, executor):
-        self._folly_event_base = make_shared[cFollyEventBase]()
-        self.asyncio_loop = loop
-        self.executor = executor
-        loop.run_in_executor(executor, self._loop_forever)
+cdef class Client:
+    """
+    Base class for all thrift clients
+    """
+    cdef const type_info* _typeid(self):
+        return NULL
 
-    def _loop(self):
-        with nogil:
-            deref(self._folly_event_base).loop()
 
-    def _loop_forever(self):
-        with nogil:
-            deref(self._folly_event_base).loopForever()
+def get_client(clientKlass, *, str host='::1', int port, int timeout=60):
+    assert issubclass(clientKlass, Client), "Must by a py3 thrift client"
+    cdef string chost = <bytes> host.encode('idna')
+    client = clientKlass()
+    bridgeFutureWith[cRequestChannel_ptr](
+        (<Client>client)._executor,
+        createThriftChannel(chost, port, timeout),
+        requestchannel_callback,
+        <PyObject *> client
+    )
+    return client
 
-    def close(self):
-        with nogil:
-            deref(self._folly_event_base).terminateLoopSoon()
-        return self.asyncio_loop.run_in_executor(
-            self.executor, self._loop)
 
-def get_event_base(loop=None):
-    if loop is None:
-        loop = asyncio.get_event_loop()
-    if not hasattr(loop, '_event_base_thread'):
-        event_base_thread = ThreadPoolExecutor(max_workers=1)
-        event_base_thread._event_base = loop.run_in_executor(
-            event_base_thread,
-            EventBase,
-            loop,
-            event_base_thread)
-        loop._event_base_thread = event_base_thread
-    return loop._event_base_thread._event_base
-
-async def close_event_base(loop=None):
-    eb = await get_event_base(loop)
-    await eb.close()
+cdef void requestchannel_callback(
+    cFollyTry[cRequestChannel_ptr]&& result,
+    PyObject* userData,
+):
+    cdef Client client = <object> userData
+    future = client._connect_future
+    if result.hasException():
+        try:
+            result.exception().throwException()
+        except Exception as ex:
+            future.set_exception(ex)
+    else:
+        client._cRequestChannel = result.value()
+        future.set_result(None)

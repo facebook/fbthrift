@@ -12,11 +12,17 @@ from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.vector cimport vector as vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
-from cython.operator cimport dereference as deref
+from cython.operator cimport dereference as deref, typeid
 from cpython.ref cimport PyObject
-from thrift.py3.client cimport EventBase, make_py3_client, py3_get_exception
-from thrift.py3.client import get_event_base
-from thrift.py3.folly cimport cFollyEventBase, cFollyTry, cFollyUnit, c_unit
+from thrift.py3.client cimport py3_get_exception, cRequestChannel_ptr, makeClientWrapper
+from folly cimport cFollyTry, cFollyUnit, c_unit
+from libcpp.typeinfo cimport type_info
+import thrift.py3.types
+cimport thrift.py3.types
+import thrift.py3.client
+cimport thrift.py3.client
+from folly.futures cimport bridgeFutureWith
+from folly.executor cimport get_executor
 
 import asyncio
 import sys
@@ -25,1095 +31,1309 @@ import traceback
 cimport module.types
 import module.types
 
-from module.clients_wrapper cimport move
-
 from module.clients_wrapper cimport cSimpleServiceAsyncClient, cSimpleServiceClientWrapper
 
 
 cdef void SimpleService_get_five_callback(
-        PyObject* future,
-        cFollyTry[int32_t] result) with gil:
+    cFollyTry[int32_t]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef int32_t citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = result.value();
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, citem)
+        pyfuture.set_result(citem)
 
 cdef void SimpleService_add_five_callback(
-        PyObject* future,
-        cFollyTry[int32_t] result) with gil:
+    cFollyTry[int32_t]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef int32_t citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = result.value();
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, citem)
+        pyfuture.set_result(citem)
 
 cdef void SimpleService_do_nothing_callback(
-        PyObject* future,
-        cFollyTry[cFollyUnit] result) with gil:
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef cFollyUnit citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = c_unit;
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, None)
+        pyfuture.set_result(None)
 
 cdef void SimpleService_concat_callback(
-        PyObject* future,
-        cFollyTry[string] result) with gil:
+    cFollyTry[string]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef unique_ptr[string] citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = make_unique[string](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())).decode('UTF-8'))
+        pyfuture.set_result((deref(citem.get())).decode('UTF-8'))
 
 cdef void SimpleService_get_value_callback(
-        PyObject* future,
-        cFollyTry[int32_t] result) with gil:
+    cFollyTry[int32_t]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef int32_t citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = result.value();
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, citem)
+        pyfuture.set_result(citem)
 
 cdef void SimpleService_negate_callback(
-        PyObject* future,
-        cFollyTry[cbool] result) with gil:
+    cFollyTry[cbool]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef cbool citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = result.value();
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, citem)
+        pyfuture.set_result(citem)
 
 cdef void SimpleService_tiny_callback(
-        PyObject* future,
-        cFollyTry[int8_t] result) with gil:
+    cFollyTry[int8_t]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef int8_t citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = result.value();
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, citem)
+        pyfuture.set_result(citem)
 
 cdef void SimpleService_small_callback(
-        PyObject* future,
-        cFollyTry[int16_t] result) with gil:
+    cFollyTry[int16_t]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef int16_t citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = result.value();
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, citem)
+        pyfuture.set_result(citem)
 
 cdef void SimpleService_big_callback(
-        PyObject* future,
-        cFollyTry[int64_t] result) with gil:
+    cFollyTry[int64_t]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef int64_t citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = result.value();
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, citem)
+        pyfuture.set_result(citem)
 
 cdef void SimpleService_two_callback(
-        PyObject* future,
-        cFollyTry[double] result) with gil:
+    cFollyTry[double]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef double citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = result.value();
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, citem)
+        pyfuture.set_result(citem)
 
 cdef void SimpleService_expected_exception_callback(
-        PyObject* future,
-        cFollyTry[cFollyUnit] result) with gil:
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef cFollyUnit citem
     cdef unique_ptr[module.types.cSimpleException] ex_se
     if result.hasException[module.types.cSimpleException]():
         ex_se = py3_get_exception[module.types.cSimpleException](result.exception())
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, module.types.SimpleException.create(module.types.move(ex_se)))
+        pyfuture.set_exception(module.types.SimpleException.create(module.types.move(ex_se)))
     elif result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = c_unit;
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, None)
+        pyfuture.set_result(None)
 
 cdef void SimpleService_unexpected_exception_callback(
-        PyObject* future,
-        cFollyTry[int32_t] result) with gil:
+    cFollyTry[int32_t]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef int32_t citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = result.value();
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, citem)
+        pyfuture.set_result(citem)
 
 cdef void SimpleService_sum_i16_list_callback(
-        PyObject* future,
-        cFollyTry[int32_t] result) with gil:
+    cFollyTry[int32_t]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef int32_t citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = result.value();
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, citem)
+        pyfuture.set_result(citem)
 
 cdef void SimpleService_sum_i32_list_callback(
-        PyObject* future,
-        cFollyTry[int32_t] result) with gil:
+    cFollyTry[int32_t]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef int32_t citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = result.value();
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, citem)
+        pyfuture.set_result(citem)
 
 cdef void SimpleService_sum_i64_list_callback(
-        PyObject* future,
-        cFollyTry[int32_t] result) with gil:
+    cFollyTry[int32_t]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef int32_t citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = result.value();
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, citem)
+        pyfuture.set_result(citem)
 
 cdef void SimpleService_concat_many_callback(
-        PyObject* future,
-        cFollyTry[string] result) with gil:
+    cFollyTry[string]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef unique_ptr[string] citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = make_unique[string](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())).decode('UTF-8'))
+        pyfuture.set_result((deref(citem.get())).decode('UTF-8'))
 
 cdef void SimpleService_count_structs_callback(
-        PyObject* future,
-        cFollyTry[int32_t] result) with gil:
+    cFollyTry[int32_t]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef int32_t citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = result.value();
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, citem)
+        pyfuture.set_result(citem)
 
 cdef void SimpleService_sum_set_callback(
-        PyObject* future,
-        cFollyTry[int32_t] result) with gil:
+    cFollyTry[int32_t]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef int32_t citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = result.value();
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, citem)
+        pyfuture.set_result(citem)
 
 cdef void SimpleService_contains_word_callback(
-        PyObject* future,
-        cFollyTry[cbool] result) with gil:
+    cFollyTry[cbool]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef cbool citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = result.value();
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, citem)
+        pyfuture.set_result(citem)
 
 cdef void SimpleService_get_map_value_callback(
-        PyObject* future,
-        cFollyTry[string] result) with gil:
+    cFollyTry[string]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef unique_ptr[string] citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = make_unique[string](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())).decode('UTF-8'))
+        pyfuture.set_result((deref(citem.get())).decode('UTF-8'))
 
 cdef void SimpleService_map_length_callback(
-        PyObject* future,
-        cFollyTry[int16_t] result) with gil:
+    cFollyTry[int16_t]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef int16_t citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = result.value();
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, citem)
+        pyfuture.set_result(citem)
 
 cdef void SimpleService_sum_map_values_callback(
-        PyObject* future,
-        cFollyTry[int16_t] result) with gil:
+    cFollyTry[int16_t]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef int16_t citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = result.value();
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, citem)
+        pyfuture.set_result(citem)
 
 cdef void SimpleService_complex_sum_i32_callback(
-        PyObject* future,
-        cFollyTry[int32_t] result) with gil:
+    cFollyTry[int32_t]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef int32_t citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = result.value();
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, citem)
+        pyfuture.set_result(citem)
 
 cdef void SimpleService_repeat_name_callback(
-        PyObject* future,
-        cFollyTry[string] result) with gil:
+    cFollyTry[string]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef unique_ptr[string] citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = make_unique[string](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())).decode('UTF-8'))
+        pyfuture.set_result((deref(citem.get())).decode('UTF-8'))
 
 cdef void SimpleService_get_struct_callback(
-        PyObject* future,
-        cFollyTry[module.types.cSimpleStruct] result) with gil:
+    cFollyTry[module.types.cSimpleStruct]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef unique_ptr[module.types.cSimpleStruct] citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = make_unique[module.types.cSimpleStruct](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, module.types.SimpleStruct.create(module.types.move(citem)))
+        pyfuture.set_result(module.types.SimpleStruct.create(module.types.move(citem)))
 
 cdef void SimpleService_fib_callback(
-        PyObject* future,
-        cFollyTry[vector[int32_t]] result) with gil:
+    cFollyTry[vector[int32_t]]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef unique_ptr[vector[int32_t]] citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = make_unique[vector[int32_t]](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, module.types.List__i32.create(module.types.move(citem)))
+        pyfuture.set_result(module.types.List__i32.create(module.types.move(citem)))
 
 cdef void SimpleService_unique_words_callback(
-        PyObject* future,
-        cFollyTry[cset[string]] result) with gil:
+    cFollyTry[cset[string]]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef unique_ptr[cset[string]] citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = make_unique[cset[string]](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, module.types.Set__string.create(module.types.move(citem)))
+        pyfuture.set_result(module.types.Set__string.create(module.types.move(citem)))
 
 cdef void SimpleService_words_count_callback(
-        PyObject* future,
-        cFollyTry[cmap[string,int16_t]] result) with gil:
+    cFollyTry[cmap[string,int16_t]]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef unique_ptr[cmap[string,int16_t]] citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = make_unique[cmap[string,int16_t]](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, module.types.Map__string_i16.create(module.types.move(citem)))
+        pyfuture.set_result(module.types.Map__string_i16.create(module.types.move(citem)))
 
 cdef void SimpleService_set_enum_callback(
-        PyObject* future,
-        cFollyTry[module.types.cAnEnum] result) with gil:
+    cFollyTry[module.types.cAnEnum]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef module.types.cAnEnum citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = result.value();
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, module.types.AnEnum(<int> citem))
+        pyfuture.set_result(module.types.AnEnum(<int> citem))
 
 cdef void SimpleService_list_of_lists_callback(
-        PyObject* future,
-        cFollyTry[vector[vector[int32_t]]] result) with gil:
+    cFollyTry[vector[vector[int32_t]]]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef unique_ptr[vector[vector[int32_t]]] citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = make_unique[vector[vector[int32_t]]](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, module.types.List__List__i32.create(module.types.move(citem)))
+        pyfuture.set_result(module.types.List__List__i32.create(module.types.move(citem)))
 
 cdef void SimpleService_word_character_frequency_callback(
-        PyObject* future,
-        cFollyTry[cmap[string,cmap[string,int32_t]]] result) with gil:
+    cFollyTry[cmap[string,cmap[string,int32_t]]]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef unique_ptr[cmap[string,cmap[string,int32_t]]] citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = make_unique[cmap[string,cmap[string,int32_t]]](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, module.types.Map__string_Map__string_i32.create(module.types.move(citem)))
+        pyfuture.set_result(module.types.Map__string_Map__string_i32.create(module.types.move(citem)))
 
 cdef void SimpleService_list_of_sets_callback(
-        PyObject* future,
-        cFollyTry[vector[cset[string]]] result) with gil:
+    cFollyTry[vector[cset[string]]]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef unique_ptr[vector[cset[string]]] citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = make_unique[vector[cset[string]]](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, module.types.List__Set__string.create(module.types.move(citem)))
+        pyfuture.set_result(module.types.List__Set__string.create(module.types.move(citem)))
 
 cdef void SimpleService_nested_map_argument_callback(
-        PyObject* future,
-        cFollyTry[int32_t] result) with gil:
+    cFollyTry[int32_t]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef int32_t citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = result.value();
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, citem)
+        pyfuture.set_result(citem)
 
 cdef void SimpleService_make_sentence_callback(
-        PyObject* future,
-        cFollyTry[string] result) with gil:
+    cFollyTry[string]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef unique_ptr[string] citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = make_unique[string](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())).decode('UTF-8'))
+        pyfuture.set_result((deref(citem.get())).decode('UTF-8'))
 
 cdef void SimpleService_get_union_callback(
-        PyObject* future,
-        cFollyTry[cset[int32_t]] result) with gil:
+    cFollyTry[cset[int32_t]]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef unique_ptr[cset[int32_t]] citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = make_unique[cset[int32_t]](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, module.types.Set__i32.create(module.types.move(citem)))
+        pyfuture.set_result(module.types.Set__i32.create(module.types.move(citem)))
 
 cdef void SimpleService_get_keys_callback(
-        PyObject* future,
-        cFollyTry[cset[string]] result) with gil:
+    cFollyTry[cset[string]]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef unique_ptr[cset[string]] citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = make_unique[cset[string]](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, module.types.Set__string.create(module.types.move(citem)))
+        pyfuture.set_result(module.types.Set__string.create(module.types.move(citem)))
 
 cdef void SimpleService_lookup_double_callback(
-        PyObject* future,
-        cFollyTry[double] result) with gil:
+    cFollyTry[double]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef double citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = result.value();
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, citem)
+        pyfuture.set_result(citem)
 
 cdef void SimpleService_retrieve_binary_callback(
-        PyObject* future,
-        cFollyTry[string] result) with gil:
+    cFollyTry[string]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef unique_ptr[string] citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = make_unique[string](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, (deref(citem.get())))
+        pyfuture.set_result((deref(citem.get())))
 
 cdef void SimpleService_contain_binary_callback(
-        PyObject* future,
-        cFollyTry[cset[string]] result) with gil:
+    cFollyTry[cset[string]]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef unique_ptr[cset[string]] citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = make_unique[cset[string]](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, module.types.Set__binary.create(module.types.move(citem)))
+        pyfuture.set_result(module.types.Set__binary.create(module.types.move(citem)))
 
 cdef void SimpleService_contain_enum_callback(
-        PyObject* future,
-        cFollyTry[vector[module.types.cAnEnum]] result) with gil:
+    cFollyTry[vector[module.types.cAnEnum]]&& result,
+    PyObject* future
+):
     cdef object pyfuture = <object> future
     cdef unique_ptr[vector[module.types.cAnEnum]] citem
     if result.hasException():
         try:
             result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
+        except Exception as ex:
+            pyfuture.set_exception(ex)
     else:
         citem = make_unique[vector[module.types.cAnEnum]](result.value());
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, module.types.List__AnEnum.create(module.types.move(citem)))
+        pyfuture.set_result(module.types.List__AnEnum.create(module.types.move(citem)))
 
 
-cdef class SimpleService:
+cdef class SimpleService(thrift.py3.client.Client):
 
-    def __init__(self, *args, **kwds):
-        raise TypeError('Use SimpleService.connect() instead.')
+    def __cinit__(SimpleService self):
+        loop = asyncio.get_event_loop()
+        self._connect_future = loop.create_future()
+        self._executor = get_executor()
 
-    def __cinit__(self, loop):
-        self.loop = loop
+    cdef const type_info* _typeid(SimpleService self):
+        return &typeid(cSimpleServiceAsyncClient)
 
     @staticmethod
     cdef _module_SimpleService_set_client(SimpleService inst, shared_ptr[cSimpleServiceClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
         inst._module_SimpleService_client = c_obj
 
-    @staticmethod
-    async def connect(str host, int port, loop=None):
-        loop = loop or asyncio.get_event_loop()
+    def __dealloc__(SimpleService self):
+        if self._cRequestChannel or self._module_SimpleService_client:
+            print('client was not cleaned up, use the context manager', file=sys.stderr)
+
+    async def __aenter__(SimpleService self):
+        await self._connect_future
+        if self._cRequestChannel:
+            SimpleService._module_SimpleService_set_client(
+                self,
+                makeClientWrapper[cSimpleServiceAsyncClient, cSimpleServiceClientWrapper](
+                    self._cRequestChannel
+                ),
+            )
+            self._cRequestChannel.reset()
+        else:
+            raise asyncio.InvalidStateError('Client context has been used already')
+        return self
+
+    async def __aexit__(SimpleService self, *exc):
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
         future = loop.create_future()
-        future.loop = loop
-        eb = await get_event_base(loop)
-        cdef string _host = host.encode('UTF-8')
-        make_py3_client[cSimpleServiceAsyncClient, cSimpleServiceClientWrapper](
-            (<EventBase> eb)._folly_event_base,
-            _host,
-            port,
-            0,
-            made_SimpleService_py3_client_callback,
-            future)
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            deref(self._module_SimpleService_client).disconnect(),
+            closed_SimpleService_py3_client_callback,
+            <PyObject *>future
+        )
+        # To break any future usage of this client
+        badfuture = loop.create_future()
+        badfuture.set_exception(asyncio.InvalidStateError('Client Out of Context'))
+        badfuture.exception()
+        self._connect_future = badfuture
+        await future
+        self._module_SimpleService_client.reset()
+
+    async def get_five(
+            SimpleService self):
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[int32_t](
+            self._executor,
+            deref(self._module_SimpleService_client).get_five(
+            ),
+            SimpleService_get_five_callback,
+            <PyObject *> future
+        )
         return await future
 
-    def get_five(
-            self):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).get_five(
-            SimpleService_get_five_callback,
-            future)
-        return future
-
-    def add_five(
-            self,
+    async def add_five(
+            SimpleService self,
             arg_num):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).add_five(
-            arg_num,
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[int32_t](
+            self._executor,
+            deref(self._module_SimpleService_client).add_five(
+                arg_num,
+            ),
             SimpleService_add_five_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def do_nothing(
-            self):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).do_nothing(
+    async def do_nothing(
+            SimpleService self):
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            deref(self._module_SimpleService_client).do_nothing(
+            ),
             SimpleService_do_nothing_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def concat(
-            self,
+    async def concat(
+            SimpleService self,
             arg_first,
             arg_second):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).concat(
-            arg_first.encode('UTF-8'),
-            arg_second.encode('UTF-8'),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[string](
+            self._executor,
+            deref(self._module_SimpleService_client).concat(
+                arg_first.encode('UTF-8'),
+                arg_second.encode('UTF-8'),
+            ),
             SimpleService_concat_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def get_value(
-            self,
+    async def get_value(
+            SimpleService self,
             arg_simple_struct):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).get_value(
-            deref((<module.types.SimpleStruct>arg_simple_struct).c_SimpleStruct),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[int32_t](
+            self._executor,
+            deref(self._module_SimpleService_client).get_value(
+                deref((<module.types.SimpleStruct>arg_simple_struct).c_SimpleStruct),
+            ),
             SimpleService_get_value_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def negate(
-            self,
+    async def negate(
+            SimpleService self,
             arg_input):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).negate(
-            arg_input,
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[cbool](
+            self._executor,
+            deref(self._module_SimpleService_client).negate(
+                arg_input,
+            ),
             SimpleService_negate_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def tiny(
-            self,
+    async def tiny(
+            SimpleService self,
             arg_input):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).tiny(
-            arg_input,
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[int8_t](
+            self._executor,
+            deref(self._module_SimpleService_client).tiny(
+                arg_input,
+            ),
             SimpleService_tiny_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def small(
-            self,
+    async def small(
+            SimpleService self,
             arg_input):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).small(
-            arg_input,
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[int16_t](
+            self._executor,
+            deref(self._module_SimpleService_client).small(
+                arg_input,
+            ),
             SimpleService_small_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def big(
-            self,
+    async def big(
+            SimpleService self,
             arg_input):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).big(
-            arg_input,
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[int64_t](
+            self._executor,
+            deref(self._module_SimpleService_client).big(
+                arg_input,
+            ),
             SimpleService_big_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def two(
-            self,
+    async def two(
+            SimpleService self,
             arg_input):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).two(
-            arg_input,
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[double](
+            self._executor,
+            deref(self._module_SimpleService_client).two(
+                arg_input,
+            ),
             SimpleService_two_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def expected_exception(
-            self):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).expected_exception(
+    async def expected_exception(
+            SimpleService self):
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            deref(self._module_SimpleService_client).expected_exception(
+            ),
             SimpleService_expected_exception_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def unexpected_exception(
-            self):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).unexpected_exception(
+    async def unexpected_exception(
+            SimpleService self):
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[int32_t](
+            self._executor,
+            deref(self._module_SimpleService_client).unexpected_exception(
+            ),
             SimpleService_unexpected_exception_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def sum_i16_list(
-            self,
+    async def sum_i16_list(
+            SimpleService self,
             arg_numbers):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).sum_i16_list(
-            deref(module.types.List__i16(arg_numbers)._vector.get()),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[int32_t](
+            self._executor,
+            deref(self._module_SimpleService_client).sum_i16_list(
+                deref(module.types.List__i16(arg_numbers)._vector.get()),
+            ),
             SimpleService_sum_i16_list_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def sum_i32_list(
-            self,
+    async def sum_i32_list(
+            SimpleService self,
             arg_numbers):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).sum_i32_list(
-            deref(module.types.List__i32(arg_numbers)._vector.get()),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[int32_t](
+            self._executor,
+            deref(self._module_SimpleService_client).sum_i32_list(
+                deref(module.types.List__i32(arg_numbers)._vector.get()),
+            ),
             SimpleService_sum_i32_list_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def sum_i64_list(
-            self,
+    async def sum_i64_list(
+            SimpleService self,
             arg_numbers):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).sum_i64_list(
-            deref(module.types.List__i64(arg_numbers)._vector.get()),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[int32_t](
+            self._executor,
+            deref(self._module_SimpleService_client).sum_i64_list(
+                deref(module.types.List__i64(arg_numbers)._vector.get()),
+            ),
             SimpleService_sum_i64_list_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def concat_many(
-            self,
+    async def concat_many(
+            SimpleService self,
             arg_words):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).concat_many(
-            deref(module.types.List__string(arg_words)._vector.get()),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[string](
+            self._executor,
+            deref(self._module_SimpleService_client).concat_many(
+                deref(module.types.List__string(arg_words)._vector.get()),
+            ),
             SimpleService_concat_many_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def count_structs(
-            self,
+    async def count_structs(
+            SimpleService self,
             arg_items):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).count_structs(
-            deref(module.types.List__SimpleStruct(arg_items)._vector.get()),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[int32_t](
+            self._executor,
+            deref(self._module_SimpleService_client).count_structs(
+                deref(module.types.List__SimpleStruct(arg_items)._vector.get()),
+            ),
             SimpleService_count_structs_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def sum_set(
-            self,
+    async def sum_set(
+            SimpleService self,
             arg_numbers):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).sum_set(
-            cset[int32_t](deref(module.types.Set__i32(arg_numbers)._set.get())),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[int32_t](
+            self._executor,
+            deref(self._module_SimpleService_client).sum_set(
+                cset[int32_t](deref(module.types.Set__i32(arg_numbers)._set.get())),
+            ),
             SimpleService_sum_set_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def contains_word(
-            self,
+    async def contains_word(
+            SimpleService self,
             arg_words,
             arg_word):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).contains_word(
-            cset[string](deref(module.types.Set__string(arg_words)._set.get())),
-            arg_word.encode('UTF-8'),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[cbool](
+            self._executor,
+            deref(self._module_SimpleService_client).contains_word(
+                cset[string](deref(module.types.Set__string(arg_words)._set.get())),
+                arg_word.encode('UTF-8'),
+            ),
             SimpleService_contains_word_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def get_map_value(
-            self,
+    async def get_map_value(
+            SimpleService self,
             arg_words,
             arg_key):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).get_map_value(
-            cmap[string,string](deref(module.types.Map__string_string(arg_words)._map.get())),
-            arg_key.encode('UTF-8'),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[string](
+            self._executor,
+            deref(self._module_SimpleService_client).get_map_value(
+                cmap[string,string](deref(module.types.Map__string_string(arg_words)._map.get())),
+                arg_key.encode('UTF-8'),
+            ),
             SimpleService_get_map_value_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def map_length(
-            self,
+    async def map_length(
+            SimpleService self,
             arg_items):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).map_length(
-            cmap[string,module.types.cSimpleStruct](deref(module.types.Map__string_SimpleStruct(arg_items)._map.get())),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[int16_t](
+            self._executor,
+            deref(self._module_SimpleService_client).map_length(
+                cmap[string,module.types.cSimpleStruct](deref(module.types.Map__string_SimpleStruct(arg_items)._map.get())),
+            ),
             SimpleService_map_length_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def sum_map_values(
-            self,
+    async def sum_map_values(
+            SimpleService self,
             arg_items):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).sum_map_values(
-            cmap[string,int16_t](deref(module.types.Map__string_i16(arg_items)._map.get())),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[int16_t](
+            self._executor,
+            deref(self._module_SimpleService_client).sum_map_values(
+                cmap[string,int16_t](deref(module.types.Map__string_i16(arg_items)._map.get())),
+            ),
             SimpleService_sum_map_values_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def complex_sum_i32(
-            self,
+    async def complex_sum_i32(
+            SimpleService self,
             arg_counter):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).complex_sum_i32(
-            deref((<module.types.ComplexStruct>arg_counter).c_ComplexStruct),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[int32_t](
+            self._executor,
+            deref(self._module_SimpleService_client).complex_sum_i32(
+                deref((<module.types.ComplexStruct>arg_counter).c_ComplexStruct),
+            ),
             SimpleService_complex_sum_i32_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def repeat_name(
-            self,
+    async def repeat_name(
+            SimpleService self,
             arg_counter):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).repeat_name(
-            deref((<module.types.ComplexStruct>arg_counter).c_ComplexStruct),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[string](
+            self._executor,
+            deref(self._module_SimpleService_client).repeat_name(
+                deref((<module.types.ComplexStruct>arg_counter).c_ComplexStruct),
+            ),
             SimpleService_repeat_name_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def get_struct(
-            self):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).get_struct(
+    async def get_struct(
+            SimpleService self):
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[module.types.cSimpleStruct](
+            self._executor,
+            deref(self._module_SimpleService_client).get_struct(
+            ),
             SimpleService_get_struct_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def fib(
-            self,
+    async def fib(
+            SimpleService self,
             arg_n):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).fib(
-            arg_n,
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[vector[int32_t]](
+            self._executor,
+            deref(self._module_SimpleService_client).fib(
+                arg_n,
+            ),
             SimpleService_fib_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def unique_words(
-            self,
+    async def unique_words(
+            SimpleService self,
             arg_words):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).unique_words(
-            deref(module.types.List__string(arg_words)._vector.get()),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[cset[string]](
+            self._executor,
+            deref(self._module_SimpleService_client).unique_words(
+                deref(module.types.List__string(arg_words)._vector.get()),
+            ),
             SimpleService_unique_words_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def words_count(
-            self,
+    async def words_count(
+            SimpleService self,
             arg_words):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).words_count(
-            deref(module.types.List__string(arg_words)._vector.get()),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[cmap[string,int16_t]](
+            self._executor,
+            deref(self._module_SimpleService_client).words_count(
+                deref(module.types.List__string(arg_words)._vector.get()),
+            ),
             SimpleService_words_count_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def set_enum(
-            self,
+    async def set_enum(
+            SimpleService self,
             arg_in_enum):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).set_enum(
-            module.types.AnEnum_to_cpp(arg_in_enum),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[module.types.cAnEnum](
+            self._executor,
+            deref(self._module_SimpleService_client).set_enum(
+                module.types.AnEnum_to_cpp(arg_in_enum),
+            ),
             SimpleService_set_enum_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def list_of_lists(
-            self,
+    async def list_of_lists(
+            SimpleService self,
             arg_num_lists,
             arg_num_items):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).list_of_lists(
-            arg_num_lists,
-            arg_num_items,
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[vector[vector[int32_t]]](
+            self._executor,
+            deref(self._module_SimpleService_client).list_of_lists(
+                arg_num_lists,
+                arg_num_items,
+            ),
             SimpleService_list_of_lists_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def word_character_frequency(
-            self,
+    async def word_character_frequency(
+            SimpleService self,
             arg_sentence):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).word_character_frequency(
-            arg_sentence.encode('UTF-8'),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[cmap[string,cmap[string,int32_t]]](
+            self._executor,
+            deref(self._module_SimpleService_client).word_character_frequency(
+                arg_sentence.encode('UTF-8'),
+            ),
             SimpleService_word_character_frequency_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def list_of_sets(
-            self,
+    async def list_of_sets(
+            SimpleService self,
             arg_some_words):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).list_of_sets(
-            arg_some_words.encode('UTF-8'),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[vector[cset[string]]](
+            self._executor,
+            deref(self._module_SimpleService_client).list_of_sets(
+                arg_some_words.encode('UTF-8'),
+            ),
             SimpleService_list_of_sets_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def nested_map_argument(
-            self,
+    async def nested_map_argument(
+            SimpleService self,
             arg_struct_map):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).nested_map_argument(
-            cmap[string,vector[module.types.cSimpleStruct]](deref(module.types.Map__string_List__SimpleStruct(arg_struct_map)._map.get())),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[int32_t](
+            self._executor,
+            deref(self._module_SimpleService_client).nested_map_argument(
+                cmap[string,vector[module.types.cSimpleStruct]](deref(module.types.Map__string_List__SimpleStruct(arg_struct_map)._map.get())),
+            ),
             SimpleService_nested_map_argument_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def make_sentence(
-            self,
+    async def make_sentence(
+            SimpleService self,
             arg_word_chars):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).make_sentence(
-            deref(module.types.List__List__string(arg_word_chars)._vector.get()),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[string](
+            self._executor,
+            deref(self._module_SimpleService_client).make_sentence(
+                deref(module.types.List__List__string(arg_word_chars)._vector.get()),
+            ),
             SimpleService_make_sentence_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def get_union(
-            self,
+    async def get_union(
+            SimpleService self,
             arg_sets):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).get_union(
-            deref(module.types.List__Set__i32(arg_sets)._vector.get()),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[cset[int32_t]](
+            self._executor,
+            deref(self._module_SimpleService_client).get_union(
+                deref(module.types.List__Set__i32(arg_sets)._vector.get()),
+            ),
             SimpleService_get_union_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def get_keys(
-            self,
+    async def get_keys(
+            SimpleService self,
             arg_string_map):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).get_keys(
-            deref(module.types.List__Map__string_string(arg_string_map)._vector.get()),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[cset[string]](
+            self._executor,
+            deref(self._module_SimpleService_client).get_keys(
+                deref(module.types.List__Map__string_string(arg_string_map)._vector.get()),
+            ),
             SimpleService_get_keys_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def lookup_double(
-            self,
+    async def lookup_double(
+            SimpleService self,
             arg_key):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).lookup_double(
-            arg_key,
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[double](
+            self._executor,
+            deref(self._module_SimpleService_client).lookup_double(
+                arg_key,
+            ),
             SimpleService_lookup_double_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def retrieve_binary(
-            self,
+    async def retrieve_binary(
+            SimpleService self,
             arg_something):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).retrieve_binary(
-            arg_something,
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[string](
+            self._executor,
+            deref(self._module_SimpleService_client).retrieve_binary(
+                arg_something,
+            ),
             SimpleService_retrieve_binary_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def contain_binary(
-            self,
+    async def contain_binary(
+            SimpleService self,
             arg_binaries):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).contain_binary(
-            deref(module.types.List__binary(arg_binaries)._vector.get()),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[cset[string]](
+            self._executor,
+            deref(self._module_SimpleService_client).contain_binary(
+                deref(module.types.List__binary(arg_binaries)._vector.get()),
+            ),
             SimpleService_contain_binary_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
-    def contain_enum(
-            self,
+    async def contain_enum(
+            SimpleService self,
             arg_the_enum):
-        future = self.loop.create_future()
-        future.loop = self.loop
-
-        deref(self._module_SimpleService_client).contain_enum(
-            deref(module.types.List__AnEnum(arg_the_enum)._vector.get()),
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[vector[module.types.cAnEnum]](
+            self._executor,
+            deref(self._module_SimpleService_client).contain_enum(
+                deref(module.types.List__AnEnum(arg_the_enum)._vector.get()),
+            ),
             SimpleService_contain_enum_callback,
-            future)
-        return future
+            <PyObject *> future
+        )
+        return await future
 
 
-cdef void made_SimpleService_py3_client_callback(
-        PyObject* future,
-        cFollyTry[shared_ptr[cSimpleServiceClientWrapper]] result) with gil:
-    cdef object pyfuture = <object> future
-    if result.hasException():
-        try:
-            result.exception().throwException()
-        except:
-            pyfuture.loop.call_soon_threadsafe(pyfuture.set_exception, sys.exc_info()[1])
-    else:
-        pyclient = <SimpleService> SimpleService.__new__(SimpleService, pyfuture.loop)
-        SimpleService._module_SimpleService_set_client(pyclient, result.value())
-        pyfuture.loop.call_soon_threadsafe(pyfuture.set_result, pyclient)
+
+cdef void closed_SimpleService_py3_client_callback(
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* fut,
+):
+    cdef object pyfuture = <object> fut
+    pyfuture.set_result(None)
 

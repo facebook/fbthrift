@@ -9,235 +9,207 @@
 
 namespace cpp2 {
 MyServiceClientWrapper::MyServiceClientWrapper(
-    std::shared_ptr<cpp2::MyServiceAsyncClient> async_client,
-    std::shared_ptr<folly::EventBase> event_base) : 
-    async_client(async_client),
-    event_base(event_base) {}
+    std::shared_ptr<cpp2::MyServiceAsyncClient> async_client) : 
+    async_client(async_client) {}
 
 MyServiceClientWrapper::~MyServiceClientWrapper() {}
 
-void MyServiceClientWrapper::ping(
-    std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-    PyObject* py_future) {
-  async_client->future_ping(
-  ).via(event_base.get()).then(
-    [=] (folly::Try<folly::Unit>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<folly::Unit> MyServiceClientWrapper::disconnect() {
+  return folly::via(
+    this->async_client->getChannel()->getEventBase(),
+    [this] { disconnectInLoop(); });
 }
 
-void MyServiceClientWrapper::getRandomData(
-    std::function<void(PyObject*, folly::Try<std::string>)> callback,
-    PyObject* py_future) {
-  async_client->future_getRandomData(
-  ).via(event_base.get()).then(
-    [=] (folly::Try<std::string>&& result) {
-      callback(py_future, result);
-    }
-  );
+void MyServiceClientWrapper::disconnectInLoop() {
+    async_client.reset();
 }
 
-void MyServiceClientWrapper::hasDataById(
-    int64_t arg_id,
-    std::function<void(PyObject*, folly::Try<bool>)> callback,
-    PyObject* py_future) {
-  async_client->future_hasDataById(
-    arg_id
-  ).via(event_base.get()).then(
-    [=] (folly::Try<bool>&& result) {
-      callback(py_future, result);
-    }
-  );
+
+folly::Future<folly::Unit>
+MyServiceClientWrapper::ping() {
+ return async_client->future_ping(
+ );
 }
 
-void MyServiceClientWrapper::getDataById(
-    int64_t arg_id,
-    std::function<void(PyObject*, folly::Try<std::string>)> callback,
-    PyObject* py_future) {
-  async_client->future_getDataById(
-    arg_id
-  ).via(event_base.get()).then(
-    [=] (folly::Try<std::string>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<std::string>
+MyServiceClientWrapper::getRandomData() {
+ return async_client->future_getRandomData(
+ );
 }
 
-void MyServiceClientWrapper::putDataById(
-    int64_t arg_id,
-    std::string arg_data,
-    std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-    PyObject* py_future) {
-  async_client->future_putDataById(
-    arg_id,
-    arg_data
-  ).via(event_base.get()).then(
-    [=] (folly::Try<folly::Unit>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<bool>
+MyServiceClientWrapper::hasDataById(
+    int64_t arg_id) {
+ return async_client->future_hasDataById(
+   arg_id
+ );
 }
 
-void MyServiceClientWrapper::lobDataById(
-    int64_t arg_id,
-    std::string arg_data,
-    std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-    PyObject* py_future) {
-  async_client->future_lobDataById(
-    arg_id,
-    arg_data
-  ).via(event_base.get()).then(
-    [=] (folly::Try<folly::Unit>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<std::string>
+MyServiceClientWrapper::getDataById(
+    int64_t arg_id) {
+ return async_client->future_getDataById(
+   arg_id
+ );
+}
+
+folly::Future<folly::Unit>
+MyServiceClientWrapper::putDataById(
+    int64_t arg_id, 
+    std::string arg_data) {
+ return async_client->future_putDataById(
+   arg_id,
+   arg_data
+ );
+}
+
+folly::Future<folly::Unit>
+MyServiceClientWrapper::lobDataById(
+    int64_t arg_id, 
+    std::string arg_data) {
+ return async_client->future_lobDataById(
+   arg_id,
+   arg_data
+ );
 }
 
 
 MyServiceFastClientWrapper::MyServiceFastClientWrapper(
-    std::shared_ptr<cpp2::MyServiceFastAsyncClient> async_client,
-    std::shared_ptr<folly::EventBase> event_base) : 
-    async_client(async_client),
-    event_base(event_base) {}
+    std::shared_ptr<cpp2::MyServiceFastAsyncClient> async_client) : 
+    async_client(async_client) {}
 
 MyServiceFastClientWrapper::~MyServiceFastClientWrapper() {}
 
-void MyServiceFastClientWrapper::ping(
-    std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-    PyObject* py_future) {
-  async_client->future_ping(
-  ).via(event_base.get()).then(
-    [=] (folly::Try<folly::Unit>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<folly::Unit> MyServiceFastClientWrapper::disconnect() {
+  return folly::via(
+    this->async_client->getChannel()->getEventBase(),
+    [this] { disconnectInLoop(); });
 }
 
-void MyServiceFastClientWrapper::getRandomData(
-    std::function<void(PyObject*, folly::Try<std::string>)> callback,
-    PyObject* py_future) {
-  async_client->future_getRandomData(
-  ).via(event_base.get()).then(
-    [=] (folly::Try<std::string>&& result) {
-      callback(py_future, result);
-    }
-  );
+void MyServiceFastClientWrapper::disconnectInLoop() {
+    async_client.reset();
 }
 
-void MyServiceFastClientWrapper::hasDataById(
-    int64_t arg_id,
-    std::function<void(PyObject*, folly::Try<bool>)> callback,
-    PyObject* py_future) {
-  async_client->future_hasDataById(
-    arg_id
-  ).via(event_base.get()).then(
-    [=] (folly::Try<bool>&& result) {
-      callback(py_future, result);
-    }
-  );
+
+folly::Future<folly::Unit>
+MyServiceFastClientWrapper::ping() {
+ return async_client->future_ping(
+ );
 }
 
-void MyServiceFastClientWrapper::getDataById(
-    int64_t arg_id,
-    std::function<void(PyObject*, folly::Try<std::string>)> callback,
-    PyObject* py_future) {
-  async_client->future_getDataById(
-    arg_id
-  ).via(event_base.get()).then(
-    [=] (folly::Try<std::string>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<std::string>
+MyServiceFastClientWrapper::getRandomData() {
+ return async_client->future_getRandomData(
+ );
 }
 
-void MyServiceFastClientWrapper::putDataById(
-    int64_t arg_id,
-    std::string arg_data,
-    std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-    PyObject* py_future) {
-  async_client->future_putDataById(
-    arg_id,
-    arg_data
-  ).via(event_base.get()).then(
-    [=] (folly::Try<folly::Unit>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<bool>
+MyServiceFastClientWrapper::hasDataById(
+    int64_t arg_id) {
+ return async_client->future_hasDataById(
+   arg_id
+ );
 }
 
-void MyServiceFastClientWrapper::lobDataById(
-    int64_t arg_id,
-    std::string arg_data,
-    std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-    PyObject* py_future) {
-  async_client->future_lobDataById(
-    arg_id,
-    arg_data
-  ).via(event_base.get()).then(
-    [=] (folly::Try<folly::Unit>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<std::string>
+MyServiceFastClientWrapper::getDataById(
+    int64_t arg_id) {
+ return async_client->future_getDataById(
+   arg_id
+ );
+}
+
+folly::Future<folly::Unit>
+MyServiceFastClientWrapper::putDataById(
+    int64_t arg_id, 
+    std::string arg_data) {
+ return async_client->future_putDataById(
+   arg_id,
+   arg_data
+ );
+}
+
+folly::Future<folly::Unit>
+MyServiceFastClientWrapper::lobDataById(
+    int64_t arg_id, 
+    std::string arg_data) {
+ return async_client->future_lobDataById(
+   arg_id,
+   arg_data
+ );
 }
 
 
 MyServiceEmptyClientWrapper::MyServiceEmptyClientWrapper(
-    std::shared_ptr<cpp2::MyServiceEmptyAsyncClient> async_client,
-    std::shared_ptr<folly::EventBase> event_base) : 
-    async_client(async_client),
-    event_base(event_base) {}
+    std::shared_ptr<cpp2::MyServiceEmptyAsyncClient> async_client) : 
+    async_client(async_client) {}
 
 MyServiceEmptyClientWrapper::~MyServiceEmptyClientWrapper() {}
 
+folly::Future<folly::Unit> MyServiceEmptyClientWrapper::disconnect() {
+  return folly::via(
+    this->async_client->getChannel()->getEventBase(),
+    [this] { disconnectInLoop(); });
+}
+
+void MyServiceEmptyClientWrapper::disconnectInLoop() {
+    async_client.reset();
+}
+
+
 
 MyServicePrioParentClientWrapper::MyServicePrioParentClientWrapper(
-    std::shared_ptr<cpp2::MyServicePrioParentAsyncClient> async_client,
-    std::shared_ptr<folly::EventBase> event_base) : 
-    async_client(async_client),
-    event_base(event_base) {}
+    std::shared_ptr<cpp2::MyServicePrioParentAsyncClient> async_client) : 
+    async_client(async_client) {}
 
 MyServicePrioParentClientWrapper::~MyServicePrioParentClientWrapper() {}
 
-void MyServicePrioParentClientWrapper::ping(
-    std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-    PyObject* py_future) {
-  async_client->future_ping(
-  ).via(event_base.get()).then(
-    [=] (folly::Try<folly::Unit>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<folly::Unit> MyServicePrioParentClientWrapper::disconnect() {
+  return folly::via(
+    this->async_client->getChannel()->getEventBase(),
+    [this] { disconnectInLoop(); });
 }
 
-void MyServicePrioParentClientWrapper::pong(
-    std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-    PyObject* py_future) {
-  async_client->future_pong(
-  ).via(event_base.get()).then(
-    [=] (folly::Try<folly::Unit>&& result) {
-      callback(py_future, result);
-    }
-  );
+void MyServicePrioParentClientWrapper::disconnectInLoop() {
+    async_client.reset();
+}
+
+
+folly::Future<folly::Unit>
+MyServicePrioParentClientWrapper::ping() {
+ return async_client->future_ping(
+ );
+}
+
+folly::Future<folly::Unit>
+MyServicePrioParentClientWrapper::pong() {
+ return async_client->future_pong(
+ );
 }
 
 
 MyServicePrioChildClientWrapper::MyServicePrioChildClientWrapper(
-    std::shared_ptr<cpp2::MyServicePrioChildAsyncClient> async_client,
-    std::shared_ptr<folly::EventBase> event_base) : 
-    MyServicePrioParentClientWrapper(std::dynamic_pointer_cast<cpp2::MyServicePrioParentAsyncClient>(async_client), event_base),
+    std::shared_ptr<cpp2::MyServicePrioChildAsyncClient> async_client) : 
+    MyServicePrioParentClientWrapper(async_client),
     async_client(async_client) {}
 
 
-void MyServicePrioChildClientWrapper::pang(
-    std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-    PyObject* py_future) {
-  async_client->future_pang(
-  ).via(event_base.get()).then(
-    [=] (folly::Try<folly::Unit>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<folly::Unit> MyServicePrioChildClientWrapper::disconnect() {
+  return folly::via(
+    this->async_client->getChannel()->getEventBase(),
+    [this] { disconnectInLoop(); });
+}
+
+void MyServicePrioChildClientWrapper::disconnectInLoop() {
+    async_client.reset();
+    cpp2::MyServicePrioParentClientWrapper::disconnectInLoop();
+}
+
+
+folly::Future<folly::Unit>
+MyServicePrioChildClientWrapper::pang() {
+ return async_client->future_pang(
+ );
 }
 
 

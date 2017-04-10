@@ -12,11 +12,17 @@ from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from libcpp.vector cimport vector as vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
-from cython.operator cimport dereference as deref
+from cython.operator cimport dereference as deref, typeid
 from cpython.ref cimport PyObject
-from thrift.py3.client cimport EventBase, make_py3_client, py3_get_exception
-from thrift.py3.client import get_event_base
-from thrift.py3.folly cimport cFollyEventBase, cFollyTry, cFollyUnit, c_unit
+from thrift.py3.client cimport py3_get_exception, cRequestChannel_ptr, makeClientWrapper
+from folly cimport cFollyTry, cFollyUnit, c_unit
+from libcpp.typeinfo cimport type_info
+import thrift.py3.types
+cimport thrift.py3.types
+import thrift.py3.client
+cimport thrift.py3.client
+from folly.futures cimport bridgeFutureWith
+from folly.executor cimport get_executor
 
 import asyncio
 import sys
@@ -24,8 +30,6 @@ import traceback
 
 cimport module.types
 import module.types
-
-from module.clients_wrapper cimport move
 cimport includes.types
 import includes.types
 

@@ -14,6 +14,7 @@ from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
 from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
+cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET
 cimport thrift.py3.std_libcpp as std_libcpp
 
@@ -39,7 +40,7 @@ cdef cAnEnum AnEnum_to_cpp(value):
         return AnEnum__FOUR
 
 
-cdef class SimpleException(thrift.py3.types.Exception):
+cdef class SimpleException(thrift.py3.exceptions.Error):
 
     def __init__(
         SimpleException self,

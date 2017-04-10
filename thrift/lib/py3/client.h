@@ -18,46 +18,49 @@
 
 #include <folly/ExceptionWrapper.h>
 #include <folly/Try.h>
+#include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>
-#include <folly/io/async/EventBase.h>
+#include <wangle/concurrent/GlobalExecutor.h>
 #include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
-
-#include <Python.h>
+#include <thrift/lib/cpp2/async/RequestChannel.h>
 
 #include <cstdint>
 #include <exception>
 #include <functional>
 
-namespace apache {
 namespace thrift {
+namespace py3 {
+typedef std::shared_ptr<apache::thrift::RequestChannel> RequestChannel_ptr;
 
+/*
+ * T is the cpp2 async client class
+ * U is the py3 clientwraper class
+ */
 template <class T, class U>
-void make_py3_client(
-    std::shared_ptr<folly::EventBase> event_base,
+std::shared_ptr<U> makeClientWrapper(RequestChannel_ptr channel) {
+  auto client = std::make_shared<T>(channel);
+  return std::make_shared<U>(client);
+}
+
+folly::Future<RequestChannel_ptr> createThriftChannel(
     const std::string& host,
     const uint16_t port,
-    const uint32_t connect_timeout,
-    std::function<void(PyObject*, folly::Try<std::shared_ptr<U>>)> callback,
-    PyObject* py_future) {
-  folly::via(
-    event_base.get(),
+    const uint32_t connect_timeout) {
+  return folly::via(
+    wangle::getEventBase(),
     [=] {
-      callback(
-        py_future,
-        folly::makeTryWith(
-          [&] {
-            auto client = std::make_shared<T>(
-              HeaderClientChannel::newChannel(
-                async::TAsyncSocket::newSocket(
-                  event_base.get(),
-                  host,
-                  port,
-                  connect_timeout)));
-            return std::make_shared<U>(client, event_base);
-          }));
+      RequestChannel_ptr channel = std::move(
+        apache::thrift::HeaderClientChannel::newChannel(
+          apache::thrift::async::TAsyncSocket::newSocket(
+            wangle::getEventBase(),
+            host,
+            port,
+            connect_timeout)));
+      return channel;
     });
 }
+
 
 template <class T>
 std::unique_ptr<T> py3_get_exception(
@@ -69,5 +72,5 @@ std::unique_ptr<T> py3_get_exception(
   }
 }
 
-}
-} // namespace apache::thrift
+} // namespace py3
+} // namespace thrift

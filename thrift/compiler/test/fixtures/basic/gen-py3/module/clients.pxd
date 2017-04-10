@@ -5,6 +5,7 @@
 #  @generated
 #
 from libcpp.memory cimport shared_ptr
+cimport thrift.py3.client
 
 
 from module.clients_wrapper cimport cMyServiceClientWrapper
@@ -13,34 +14,26 @@ from module.clients_wrapper cimport cMyServiceEmptyClientWrapper
 from module.clients_wrapper cimport cMyServicePrioParentClientWrapper
 from module.clients_wrapper cimport cMyServicePrioChildClientWrapper
 
-cdef class MyService:
+cdef class MyService(thrift.py3.client.Client):
     cdef shared_ptr[cMyServiceClientWrapper] _module_MyService_client
-    cdef object loop
-    cdef object __weakref__
 
     @staticmethod
     cdef _module_MyService_set_client(MyService inst, shared_ptr[cMyServiceClientWrapper] c_obj)
 
-cdef class MyServiceFast:
+cdef class MyServiceFast(thrift.py3.client.Client):
     cdef shared_ptr[cMyServiceFastClientWrapper] _module_MyServiceFast_client
-    cdef object loop
-    cdef object __weakref__
 
     @staticmethod
     cdef _module_MyServiceFast_set_client(MyServiceFast inst, shared_ptr[cMyServiceFastClientWrapper] c_obj)
 
-cdef class MyServiceEmpty:
+cdef class MyServiceEmpty(thrift.py3.client.Client):
     cdef shared_ptr[cMyServiceEmptyClientWrapper] _module_MyServiceEmpty_client
-    cdef object loop
-    cdef object __weakref__
 
     @staticmethod
     cdef _module_MyServiceEmpty_set_client(MyServiceEmpty inst, shared_ptr[cMyServiceEmptyClientWrapper] c_obj)
 
-cdef class MyServicePrioParent:
+cdef class MyServicePrioParent(thrift.py3.client.Client):
     cdef shared_ptr[cMyServicePrioParentClientWrapper] _module_MyServicePrioParent_client
-    cdef object loop
-    cdef object __weakref__
 
     @staticmethod
     cdef _module_MyServicePrioParent_set_client(MyServicePrioParent inst, shared_ptr[cMyServicePrioParentClientWrapper] c_obj)

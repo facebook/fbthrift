@@ -32,7 +32,7 @@ from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
-from thrift.py3.exceptions cimport cTException
+from thrift.py3.exceptions cimport cTException, Error
 cimport thrift.py3.types
 {{#program:includeNamespaces}}
 cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}types
@@ -88,9 +88,9 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
 
 {{#program:structs}}
 # Forward Definition of the cython struct
-cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.types.Exception){{/struct:exception?}}{{^struct:exception?}}(thrift.py3.types.Struct){{/struct:exception?}}
+cdef class {{struct:name}}{{#struct:exception?}}(Error){{/struct:exception?}}{{^struct:exception?}}(thrift.py3.types.Struct){{/struct:exception?}}
 
-cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.types.Exception){{/struct:exception?}}{{^struct:exception?}}(thrift.py3.types.Struct){{/struct:exception?}}:
+cdef class {{struct:name}}{{#struct:exception?}}(Error){{/struct:exception?}}{{^struct:exception?}}(thrift.py3.types.Struct){{/struct:exception?}}:
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[c{{struct:name}}] c_{{struct:name}}

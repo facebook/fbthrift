@@ -14,8 +14,7 @@ from libcpp.set cimport set as cset
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from thrift.py3.client cimport cTClientBase
-from thrift.py3.folly cimport cFollyEventBase, cFollyTry, cFollyUnit
+from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 
 cimport module.types
 
@@ -30,26 +29,16 @@ cdef extern from "<utility>" namespace "std":
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
   cdef cppclass cNestedContainersClientWrapper "cpp2::NestedContainersClientWrapper":
     cNestedContainersClientWrapper(
-      shared_ptr[cNestedContainersAsyncClient] async_client,
-      shared_ptr[cFollyEventBase] event_base)
-    void mapList(
-      cmap[int32_t,vector[int32_t]] arg_foo,
-      void (*callback) (PyObject*, cFollyTry[cFollyUnit]),
-      object py_future)
-    void mapSet(
-      cmap[int32_t,cset[int32_t]] arg_foo,
-      void (*callback) (PyObject*, cFollyTry[cFollyUnit]),
-      object py_future)
-    void listMap(
-      vector[cmap[int32_t,int32_t]] arg_foo,
-      void (*callback) (PyObject*, cFollyTry[cFollyUnit]),
-      object py_future)
-    void listSet(
-      vector[cset[int32_t]] arg_foo,
-      void (*callback) (PyObject*, cFollyTry[cFollyUnit]),
-      object py_future)
-    void turtles(
-      vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]] arg_foo,
-      void (*callback) (PyObject*, cFollyTry[cFollyUnit]),
-      object py_future)
+      shared_ptr[cNestedContainersAsyncClient] async_client)
+    cFollyFuture[cFollyUnit] disconnect()
+    cFollyFuture[cFollyUnit] mapList(
+      cmap[int32_t,vector[int32_t]] arg_foo,)
+    cFollyFuture[cFollyUnit] mapSet(
+      cmap[int32_t,cset[int32_t]] arg_foo,)
+    cFollyFuture[cFollyUnit] listMap(
+      vector[cmap[int32_t,int32_t]] arg_foo,)
+    cFollyFuture[cFollyUnit] listSet(
+      vector[cset[int32_t]] arg_foo,)
+    cFollyFuture[cFollyUnit] turtles(
+      vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]] arg_foo,)
 

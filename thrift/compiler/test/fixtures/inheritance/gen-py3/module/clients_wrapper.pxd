@@ -14,8 +14,7 @@ from libcpp.set cimport set as cset
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from thrift.py3.client cimport cTClientBase
-from thrift.py3.folly cimport cFollyEventBase, cFollyTry, cFollyUnit
+from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 
 cimport module.types
 
@@ -44,27 +43,19 @@ cdef extern from "<utility>" namespace "std":
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
   cdef cppclass cMyRootClientWrapper "cpp2::MyRootClientWrapper":
     cMyRootClientWrapper(
-      shared_ptr[cMyRootAsyncClient] async_client,
-      shared_ptr[cFollyEventBase] event_base)
-    void do_root(
-      void (*callback) (PyObject*, cFollyTry[cFollyUnit]),
-      object py_future)
+      shared_ptr[cMyRootAsyncClient] async_client)
+    cFollyFuture[cFollyUnit] disconnect()
+    cFollyFuture[cFollyUnit] do_root()
 
 
   cdef cppclass cMyNodeClientWrapper "cpp2::MyNodeClientWrapper"(module.clients_wrapper.cMyRootClientWrapper):
     cMyNodeClientWrapper(
-      shared_ptr[cMyNodeAsyncClient] async_client,
-      shared_ptr[cFollyEventBase] event_base)
-    void do_mid(
-      void (*callback) (PyObject*, cFollyTry[cFollyUnit]),
-      object py_future)
+      shared_ptr[cMyNodeAsyncClient] async_client)
+    cFollyFuture[cFollyUnit] do_mid()
 
 
   cdef cppclass cMyLeafClientWrapper "cpp2::MyLeafClientWrapper"(module.clients_wrapper.cMyNodeClientWrapper):
     cMyLeafClientWrapper(
-      shared_ptr[cMyLeafAsyncClient] async_client,
-      shared_ptr[cFollyEventBase] event_base)
-    void do_leaf(
-      void (*callback) (PyObject*, cFollyTry[cFollyUnit]),
-      object py_future)
+      shared_ptr[cMyLeafAsyncClient] async_client)
+    cFollyFuture[cFollyUnit] do_leaf()
 

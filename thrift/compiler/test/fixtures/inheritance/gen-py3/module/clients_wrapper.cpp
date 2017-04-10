@@ -9,60 +9,76 @@
 
 namespace cpp2 {
 MyRootClientWrapper::MyRootClientWrapper(
-    std::shared_ptr<cpp2::MyRootAsyncClient> async_client,
-    std::shared_ptr<folly::EventBase> event_base) : 
-    async_client(async_client),
-    event_base(event_base) {}
+    std::shared_ptr<cpp2::MyRootAsyncClient> async_client) : 
+    async_client(async_client) {}
 
 MyRootClientWrapper::~MyRootClientWrapper() {}
 
-void MyRootClientWrapper::do_root(
-    std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-    PyObject* py_future) {
-  async_client->future_do_root(
-  ).via(event_base.get()).then(
-    [=] (folly::Try<folly::Unit>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<folly::Unit> MyRootClientWrapper::disconnect() {
+  return folly::via(
+    this->async_client->getChannel()->getEventBase(),
+    [this] { disconnectInLoop(); });
+}
+
+void MyRootClientWrapper::disconnectInLoop() {
+    async_client.reset();
+}
+
+
+folly::Future<folly::Unit>
+MyRootClientWrapper::do_root() {
+ return async_client->future_do_root(
+ );
 }
 
 
 MyNodeClientWrapper::MyNodeClientWrapper(
-    std::shared_ptr<cpp2::MyNodeAsyncClient> async_client,
-    std::shared_ptr<folly::EventBase> event_base) : 
-    MyRootClientWrapper(std::dynamic_pointer_cast<cpp2::MyRootAsyncClient>(async_client), event_base),
+    std::shared_ptr<cpp2::MyNodeAsyncClient> async_client) : 
+    MyRootClientWrapper(async_client),
     async_client(async_client) {}
 
 
-void MyNodeClientWrapper::do_mid(
-    std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-    PyObject* py_future) {
-  async_client->future_do_mid(
-  ).via(event_base.get()).then(
-    [=] (folly::Try<folly::Unit>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<folly::Unit> MyNodeClientWrapper::disconnect() {
+  return folly::via(
+    this->async_client->getChannel()->getEventBase(),
+    [this] { disconnectInLoop(); });
+}
+
+void MyNodeClientWrapper::disconnectInLoop() {
+    async_client.reset();
+    cpp2::MyRootClientWrapper::disconnectInLoop();
+}
+
+
+folly::Future<folly::Unit>
+MyNodeClientWrapper::do_mid() {
+ return async_client->future_do_mid(
+ );
 }
 
 
 MyLeafClientWrapper::MyLeafClientWrapper(
-    std::shared_ptr<cpp2::MyLeafAsyncClient> async_client,
-    std::shared_ptr<folly::EventBase> event_base) : 
-    MyNodeClientWrapper(std::dynamic_pointer_cast<cpp2::MyNodeAsyncClient>(async_client), event_base),
+    std::shared_ptr<cpp2::MyLeafAsyncClient> async_client) : 
+    MyNodeClientWrapper(async_client),
     async_client(async_client) {}
 
 
-void MyLeafClientWrapper::do_leaf(
-    std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-    PyObject* py_future) {
-  async_client->future_do_leaf(
-  ).via(event_base.get()).then(
-    [=] (folly::Try<folly::Unit>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<folly::Unit> MyLeafClientWrapper::disconnect() {
+  return folly::via(
+    this->async_client->getChannel()->getEventBase(),
+    [this] { disconnectInLoop(); });
+}
+
+void MyLeafClientWrapper::disconnectInLoop() {
+    async_client.reset();
+    cpp2::MyNodeClientWrapper::disconnectInLoop();
+}
+
+
+folly::Future<folly::Unit>
+MyLeafClientWrapper::do_leaf() {
+ return async_client->future_do_leaf(
+ );
 }
 
 

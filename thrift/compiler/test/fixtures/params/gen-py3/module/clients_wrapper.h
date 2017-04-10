@@ -8,11 +8,9 @@
 #pragma once
 #include <src/gen-cpp2/NestedContainers.h>
 
-#include <folly/Try.h>
+#include <folly/futures/Future.h>
+#include <folly/futures/Promise.h>
 #include <folly/Unit.h>
-#include <folly/io/async/EventBase.h>
-
-#include <Python.h>
 
 #include <cstdint>
 #include <functional>
@@ -26,32 +24,24 @@ namespace cpp2 {
 class NestedContainersClientWrapper {
   protected:
     std::shared_ptr<cpp2::NestedContainersAsyncClient> async_client;
-    std::shared_ptr<folly::EventBase> event_base;
   public:
     explicit NestedContainersClientWrapper(
-      std::shared_ptr<cpp2::NestedContainersAsyncClient> async_client,
-      std::shared_ptr<folly::EventBase> event_base);
+      std::shared_ptr<cpp2::NestedContainersAsyncClient> async_client);
     virtual ~NestedContainersClientWrapper();
-    void mapList(
-      std::map<int32_t,std::vector<int32_t>> arg_foo,
-      std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-      PyObject* py_future);
-    void mapSet(
-      std::map<int32_t,std::set<int32_t>> arg_foo,
-      std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-      PyObject* py_future);
-    void listMap(
-      std::vector<std::map<int32_t,int32_t>> arg_foo,
-      std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-      PyObject* py_future);
-    void listSet(
-      std::vector<std::set<int32_t>> arg_foo,
-      std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-      PyObject* py_future);
-    void turtles(
-      std::vector<std::vector<std::map<int32_t,std::map<int32_t,std::set<int32_t>>>>> arg_foo,
-      std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-      PyObject* py_future);
+
+    folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
+
+    folly::Future<folly::Unit> mapList(
+      std::map<int32_t,std::vector<int32_t>> arg_foo);
+    folly::Future<folly::Unit> mapSet(
+      std::map<int32_t,std::set<int32_t>> arg_foo);
+    folly::Future<folly::Unit> listMap(
+      std::vector<std::map<int32_t,int32_t>> arg_foo);
+    folly::Future<folly::Unit> listSet(
+      std::vector<std::set<int32_t>> arg_foo);
+    folly::Future<folly::Unit> turtles(
+      std::vector<std::vector<std::map<int32_t,std::map<int32_t,std::set<int32_t>>>>> arg_foo);
 };
 
 

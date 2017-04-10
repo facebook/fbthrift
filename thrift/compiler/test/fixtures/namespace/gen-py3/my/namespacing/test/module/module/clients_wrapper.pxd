@@ -14,8 +14,7 @@ from libcpp.set cimport set as cset
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from thrift.py3.client cimport cTClientBase
-from thrift.py3.folly cimport cFollyEventBase, cFollyTry, cFollyUnit
+from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 
 cimport my.namespacing.test.module.module.types
 
@@ -30,10 +29,8 @@ cdef extern from "<utility>" namespace "std":
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
   cdef cppclass cTestServiceClientWrapper "cpp2::TestServiceClientWrapper":
     cTestServiceClientWrapper(
-      shared_ptr[cTestServiceAsyncClient] async_client,
-      shared_ptr[cFollyEventBase] event_base)
-    void init(
-      int64_t arg_int1,
-      void (*callback) (PyObject*, cFollyTry[int64_t]),
-      object py_future)
+      shared_ptr[cTestServiceAsyncClient] async_client)
+    cFollyFuture[cFollyUnit] disconnect()
+    cFollyFuture[int64_t] init(
+      int64_t arg_int1,)
 

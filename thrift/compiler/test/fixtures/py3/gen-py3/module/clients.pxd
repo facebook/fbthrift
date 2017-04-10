@@ -5,14 +5,13 @@
 #  @generated
 #
 from libcpp.memory cimport shared_ptr
+cimport thrift.py3.client
 
 
 from module.clients_wrapper cimport cSimpleServiceClientWrapper
 
-cdef class SimpleService:
+cdef class SimpleService(thrift.py3.client.Client):
     cdef shared_ptr[cSimpleServiceClientWrapper] _module_SimpleService_client
-    cdef object loop
-    cdef object __weakref__
 
     @staticmethod
     cdef _module_SimpleService_set_client(SimpleService inst, shared_ptr[cSimpleServiceClientWrapper] c_obj)

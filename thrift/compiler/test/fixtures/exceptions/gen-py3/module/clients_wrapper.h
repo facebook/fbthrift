@@ -8,11 +8,9 @@
 #pragma once
 #include <src/gen-cpp2/Raiser.h>
 
-#include <folly/Try.h>
+#include <folly/futures/Future.h>
+#include <folly/futures/Promise.h>
 #include <folly/Unit.h>
-#include <folly/io/async/EventBase.h>
-
-#include <Python.h>
 
 #include <cstdint>
 #include <functional>
@@ -26,24 +24,18 @@ namespace cpp2 {
 class RaiserClientWrapper {
   protected:
     std::shared_ptr<cpp2::RaiserAsyncClient> async_client;
-    std::shared_ptr<folly::EventBase> event_base;
   public:
     explicit RaiserClientWrapper(
-      std::shared_ptr<cpp2::RaiserAsyncClient> async_client,
-      std::shared_ptr<folly::EventBase> event_base);
+      std::shared_ptr<cpp2::RaiserAsyncClient> async_client);
     virtual ~RaiserClientWrapper();
-    void doBland(
-      std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-      PyObject* py_future);
-    void doRaise(
-      std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-      PyObject* py_future);
-    void get200(
-      std::function<void(PyObject*, folly::Try<std::string>)> callback,
-      PyObject* py_future);
-    void get500(
-      std::function<void(PyObject*, folly::Try<std::string>)> callback,
-      PyObject* py_future);
+
+    folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
+
+    folly::Future<folly::Unit> doBland();
+    folly::Future<folly::Unit> doRaise();
+    folly::Future<std::string> get200();
+    folly::Future<std::string> get500();
 };
 
 

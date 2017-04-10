@@ -14,8 +14,7 @@ from libcpp.set cimport set as cset
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from thrift.py3.client cimport cTClientBase
-from thrift.py3.folly cimport cFollyEventBase, cFollyTry, cFollyUnit
+from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 
 cimport service.types
 
@@ -32,11 +31,9 @@ cdef extern from "<utility>" namespace "std":
 cdef extern from "src/gen-py3/service/clients_wrapper.h" namespace "cpp2":
   cdef cppclass cMyServiceClientWrapper "cpp2::MyServiceClientWrapper":
     cMyServiceClientWrapper(
-      shared_ptr[cMyServiceAsyncClient] async_client,
-      shared_ptr[cFollyEventBase] event_base)
-    void query(
+      shared_ptr[cMyServiceAsyncClient] async_client)
+    cFollyFuture[cFollyUnit] disconnect()
+    cFollyFuture[cFollyUnit] query(
       module.types.cMyStruct arg_s,
-      includes.types.cIncluded arg_i,
-      void (*callback) (PyObject*, cFollyTry[cFollyUnit]),
-      object py_future)
+      includes.types.cIncluded arg_i,)
 

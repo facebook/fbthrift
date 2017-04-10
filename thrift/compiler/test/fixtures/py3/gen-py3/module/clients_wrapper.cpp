@@ -10,529 +10,338 @@
 namespace py3 {
 namespace simple {
 SimpleServiceClientWrapper::SimpleServiceClientWrapper(
-    std::shared_ptr<py3::simple::SimpleServiceAsyncClient> async_client,
-    std::shared_ptr<folly::EventBase> event_base) : 
-    async_client(async_client),
-    event_base(event_base) {}
+    std::shared_ptr<py3::simple::SimpleServiceAsyncClient> async_client) : 
+    async_client(async_client) {}
 
 SimpleServiceClientWrapper::~SimpleServiceClientWrapper() {}
 
-void SimpleServiceClientWrapper::get_five(
-    std::function<void(PyObject*, folly::Try<int32_t>)> callback,
-    PyObject* py_future) {
-  async_client->future_get_five(
-  ).via(event_base.get()).then(
-    [=] (folly::Try<int32_t>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<folly::Unit> SimpleServiceClientWrapper::disconnect() {
+  return folly::via(
+    this->async_client->getChannel()->getEventBase(),
+    [this] { disconnectInLoop(); });
 }
 
-void SimpleServiceClientWrapper::add_five(
-    int32_t arg_num,
-    std::function<void(PyObject*, folly::Try<int32_t>)> callback,
-    PyObject* py_future) {
-  async_client->future_add_five(
-    arg_num
-  ).via(event_base.get()).then(
-    [=] (folly::Try<int32_t>&& result) {
-      callback(py_future, result);
-    }
-  );
+void SimpleServiceClientWrapper::disconnectInLoop() {
+    async_client.reset();
 }
 
-void SimpleServiceClientWrapper::do_nothing(
-    std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-    PyObject* py_future) {
-  async_client->future_do_nothing(
-  ).via(event_base.get()).then(
-    [=] (folly::Try<folly::Unit>&& result) {
-      callback(py_future, result);
-    }
-  );
+
+folly::Future<int32_t>
+SimpleServiceClientWrapper::get_five() {
+ return async_client->future_get_five(
+ );
 }
 
-void SimpleServiceClientWrapper::concat(
-    std::string arg_first,
-    std::string arg_second,
-    std::function<void(PyObject*, folly::Try<std::string>)> callback,
-    PyObject* py_future) {
-  async_client->future_concat(
-    arg_first,
-    arg_second
-  ).via(event_base.get()).then(
-    [=] (folly::Try<std::string>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<int32_t>
+SimpleServiceClientWrapper::add_five(
+    int32_t arg_num) {
+ return async_client->future_add_five(
+   arg_num
+ );
 }
 
-void SimpleServiceClientWrapper::get_value(
-    py3::simple::SimpleStruct arg_simple_struct,
-    std::function<void(PyObject*, folly::Try<int32_t>)> callback,
-    PyObject* py_future) {
-  async_client->future_get_value(
-    arg_simple_struct
-  ).via(event_base.get()).then(
-    [=] (folly::Try<int32_t>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<folly::Unit>
+SimpleServiceClientWrapper::do_nothing() {
+ return async_client->future_do_nothing(
+ );
 }
 
-void SimpleServiceClientWrapper::negate(
-    bool arg_input,
-    std::function<void(PyObject*, folly::Try<bool>)> callback,
-    PyObject* py_future) {
-  async_client->future_negate(
-    arg_input
-  ).via(event_base.get()).then(
-    [=] (folly::Try<bool>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<std::string>
+SimpleServiceClientWrapper::concat(
+    std::string arg_first, 
+    std::string arg_second) {
+ return async_client->future_concat(
+   arg_first,
+   arg_second
+ );
 }
 
-void SimpleServiceClientWrapper::tiny(
-    int8_t arg_input,
-    std::function<void(PyObject*, folly::Try<int8_t>)> callback,
-    PyObject* py_future) {
-  async_client->future_tiny(
-    arg_input
-  ).via(event_base.get()).then(
-    [=] (folly::Try<int8_t>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<int32_t>
+SimpleServiceClientWrapper::get_value(
+    py3::simple::SimpleStruct arg_simple_struct) {
+ return async_client->future_get_value(
+   arg_simple_struct
+ );
 }
 
-void SimpleServiceClientWrapper::small(
-    int16_t arg_input,
-    std::function<void(PyObject*, folly::Try<int16_t>)> callback,
-    PyObject* py_future) {
-  async_client->future_small(
-    arg_input
-  ).via(event_base.get()).then(
-    [=] (folly::Try<int16_t>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<bool>
+SimpleServiceClientWrapper::negate(
+    bool arg_input) {
+ return async_client->future_negate(
+   arg_input
+ );
 }
 
-void SimpleServiceClientWrapper::big(
-    int64_t arg_input,
-    std::function<void(PyObject*, folly::Try<int64_t>)> callback,
-    PyObject* py_future) {
-  async_client->future_big(
-    arg_input
-  ).via(event_base.get()).then(
-    [=] (folly::Try<int64_t>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<int8_t>
+SimpleServiceClientWrapper::tiny(
+    int8_t arg_input) {
+ return async_client->future_tiny(
+   arg_input
+ );
 }
 
-void SimpleServiceClientWrapper::two(
-    double arg_input,
-    std::function<void(PyObject*, folly::Try<double>)> callback,
-    PyObject* py_future) {
-  async_client->future_two(
-    arg_input
-  ).via(event_base.get()).then(
-    [=] (folly::Try<double>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<int16_t>
+SimpleServiceClientWrapper::small(
+    int16_t arg_input) {
+ return async_client->future_small(
+   arg_input
+ );
 }
 
-void SimpleServiceClientWrapper::expected_exception(
-    std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-    PyObject* py_future) {
-  async_client->future_expected_exception(
-  ).via(event_base.get()).then(
-    [=] (folly::Try<folly::Unit>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<int64_t>
+SimpleServiceClientWrapper::big(
+    int64_t arg_input) {
+ return async_client->future_big(
+   arg_input
+ );
 }
 
-void SimpleServiceClientWrapper::unexpected_exception(
-    std::function<void(PyObject*, folly::Try<int32_t>)> callback,
-    PyObject* py_future) {
-  async_client->future_unexpected_exception(
-  ).via(event_base.get()).then(
-    [=] (folly::Try<int32_t>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<double>
+SimpleServiceClientWrapper::two(
+    double arg_input) {
+ return async_client->future_two(
+   arg_input
+ );
 }
 
-void SimpleServiceClientWrapper::sum_i16_list(
-    std::vector<int16_t> arg_numbers,
-    std::function<void(PyObject*, folly::Try<int32_t>)> callback,
-    PyObject* py_future) {
-  async_client->future_sum_i16_list(
-    arg_numbers
-  ).via(event_base.get()).then(
-    [=] (folly::Try<int32_t>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<folly::Unit>
+SimpleServiceClientWrapper::expected_exception() {
+ return async_client->future_expected_exception(
+ );
 }
 
-void SimpleServiceClientWrapper::sum_i32_list(
-    std::vector<int32_t> arg_numbers,
-    std::function<void(PyObject*, folly::Try<int32_t>)> callback,
-    PyObject* py_future) {
-  async_client->future_sum_i32_list(
-    arg_numbers
-  ).via(event_base.get()).then(
-    [=] (folly::Try<int32_t>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<int32_t>
+SimpleServiceClientWrapper::unexpected_exception() {
+ return async_client->future_unexpected_exception(
+ );
 }
 
-void SimpleServiceClientWrapper::sum_i64_list(
-    std::vector<int64_t> arg_numbers,
-    std::function<void(PyObject*, folly::Try<int32_t>)> callback,
-    PyObject* py_future) {
-  async_client->future_sum_i64_list(
-    arg_numbers
-  ).via(event_base.get()).then(
-    [=] (folly::Try<int32_t>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<int32_t>
+SimpleServiceClientWrapper::sum_i16_list(
+    std::vector<int16_t> arg_numbers) {
+ return async_client->future_sum_i16_list(
+   arg_numbers
+ );
 }
 
-void SimpleServiceClientWrapper::concat_many(
-    std::vector<std::string> arg_words,
-    std::function<void(PyObject*, folly::Try<std::string>)> callback,
-    PyObject* py_future) {
-  async_client->future_concat_many(
-    arg_words
-  ).via(event_base.get()).then(
-    [=] (folly::Try<std::string>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<int32_t>
+SimpleServiceClientWrapper::sum_i32_list(
+    std::vector<int32_t> arg_numbers) {
+ return async_client->future_sum_i32_list(
+   arg_numbers
+ );
 }
 
-void SimpleServiceClientWrapper::count_structs(
-    std::vector<py3::simple::SimpleStruct> arg_items,
-    std::function<void(PyObject*, folly::Try<int32_t>)> callback,
-    PyObject* py_future) {
-  async_client->future_count_structs(
-    arg_items
-  ).via(event_base.get()).then(
-    [=] (folly::Try<int32_t>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<int32_t>
+SimpleServiceClientWrapper::sum_i64_list(
+    std::vector<int64_t> arg_numbers) {
+ return async_client->future_sum_i64_list(
+   arg_numbers
+ );
 }
 
-void SimpleServiceClientWrapper::sum_set(
-    std::set<int32_t> arg_numbers,
-    std::function<void(PyObject*, folly::Try<int32_t>)> callback,
-    PyObject* py_future) {
-  async_client->future_sum_set(
-    arg_numbers
-  ).via(event_base.get()).then(
-    [=] (folly::Try<int32_t>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<std::string>
+SimpleServiceClientWrapper::concat_many(
+    std::vector<std::string> arg_words) {
+ return async_client->future_concat_many(
+   arg_words
+ );
 }
 
-void SimpleServiceClientWrapper::contains_word(
-    std::set<std::string> arg_words,
-    std::string arg_word,
-    std::function<void(PyObject*, folly::Try<bool>)> callback,
-    PyObject* py_future) {
-  async_client->future_contains_word(
-    arg_words,
-    arg_word
-  ).via(event_base.get()).then(
-    [=] (folly::Try<bool>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<int32_t>
+SimpleServiceClientWrapper::count_structs(
+    std::vector<py3::simple::SimpleStruct> arg_items) {
+ return async_client->future_count_structs(
+   arg_items
+ );
 }
 
-void SimpleServiceClientWrapper::get_map_value(
-    std::map<std::string,std::string> arg_words,
-    std::string arg_key,
-    std::function<void(PyObject*, folly::Try<std::string>)> callback,
-    PyObject* py_future) {
-  async_client->future_get_map_value(
-    arg_words,
-    arg_key
-  ).via(event_base.get()).then(
-    [=] (folly::Try<std::string>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<int32_t>
+SimpleServiceClientWrapper::sum_set(
+    std::set<int32_t> arg_numbers) {
+ return async_client->future_sum_set(
+   arg_numbers
+ );
 }
 
-void SimpleServiceClientWrapper::map_length(
-    std::map<std::string,py3::simple::SimpleStruct> arg_items,
-    std::function<void(PyObject*, folly::Try<int16_t>)> callback,
-    PyObject* py_future) {
-  async_client->future_map_length(
-    arg_items
-  ).via(event_base.get()).then(
-    [=] (folly::Try<int16_t>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<bool>
+SimpleServiceClientWrapper::contains_word(
+    std::set<std::string> arg_words, 
+    std::string arg_word) {
+ return async_client->future_contains_word(
+   arg_words,
+   arg_word
+ );
 }
 
-void SimpleServiceClientWrapper::sum_map_values(
-    std::map<std::string,int16_t> arg_items,
-    std::function<void(PyObject*, folly::Try<int16_t>)> callback,
-    PyObject* py_future) {
-  async_client->future_sum_map_values(
-    arg_items
-  ).via(event_base.get()).then(
-    [=] (folly::Try<int16_t>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<std::string>
+SimpleServiceClientWrapper::get_map_value(
+    std::map<std::string,std::string> arg_words, 
+    std::string arg_key) {
+ return async_client->future_get_map_value(
+   arg_words,
+   arg_key
+ );
 }
 
-void SimpleServiceClientWrapper::complex_sum_i32(
-    py3::simple::ComplexStruct arg_counter,
-    std::function<void(PyObject*, folly::Try<int32_t>)> callback,
-    PyObject* py_future) {
-  async_client->future_complex_sum_i32(
-    arg_counter
-  ).via(event_base.get()).then(
-    [=] (folly::Try<int32_t>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<int16_t>
+SimpleServiceClientWrapper::map_length(
+    std::map<std::string,py3::simple::SimpleStruct> arg_items) {
+ return async_client->future_map_length(
+   arg_items
+ );
 }
 
-void SimpleServiceClientWrapper::repeat_name(
-    py3::simple::ComplexStruct arg_counter,
-    std::function<void(PyObject*, folly::Try<std::string>)> callback,
-    PyObject* py_future) {
-  async_client->future_repeat_name(
-    arg_counter
-  ).via(event_base.get()).then(
-    [=] (folly::Try<std::string>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<int16_t>
+SimpleServiceClientWrapper::sum_map_values(
+    std::map<std::string,int16_t> arg_items) {
+ return async_client->future_sum_map_values(
+   arg_items
+ );
 }
 
-void SimpleServiceClientWrapper::get_struct(
-    std::function<void(PyObject*, folly::Try<py3::simple::SimpleStruct>)> callback,
-    PyObject* py_future) {
-  async_client->future_get_struct(
-  ).via(event_base.get()).then(
-    [=] (folly::Try<py3::simple::SimpleStruct>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<int32_t>
+SimpleServiceClientWrapper::complex_sum_i32(
+    py3::simple::ComplexStruct arg_counter) {
+ return async_client->future_complex_sum_i32(
+   arg_counter
+ );
 }
 
-void SimpleServiceClientWrapper::fib(
-    int16_t arg_n,
-    std::function<void(PyObject*, folly::Try<std::vector<int32_t>>)> callback,
-    PyObject* py_future) {
-  async_client->future_fib(
-    arg_n
-  ).via(event_base.get()).then(
-    [=] (folly::Try<std::vector<int32_t>>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<std::string>
+SimpleServiceClientWrapper::repeat_name(
+    py3::simple::ComplexStruct arg_counter) {
+ return async_client->future_repeat_name(
+   arg_counter
+ );
 }
 
-void SimpleServiceClientWrapper::unique_words(
-    std::vector<std::string> arg_words,
-    std::function<void(PyObject*, folly::Try<std::set<std::string>>)> callback,
-    PyObject* py_future) {
-  async_client->future_unique_words(
-    arg_words
-  ).via(event_base.get()).then(
-    [=] (folly::Try<std::set<std::string>>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<py3::simple::SimpleStruct>
+SimpleServiceClientWrapper::get_struct() {
+ return async_client->future_get_struct(
+ );
 }
 
-void SimpleServiceClientWrapper::words_count(
-    std::vector<std::string> arg_words,
-    std::function<void(PyObject*, folly::Try<std::map<std::string,int16_t>>)> callback,
-    PyObject* py_future) {
-  async_client->future_words_count(
-    arg_words
-  ).via(event_base.get()).then(
-    [=] (folly::Try<std::map<std::string,int16_t>>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<std::vector<int32_t>>
+SimpleServiceClientWrapper::fib(
+    int16_t arg_n) {
+ return async_client->future_fib(
+   arg_n
+ );
 }
 
-void SimpleServiceClientWrapper::set_enum(
-    py3::simple::AnEnum arg_in_enum,
-    std::function<void(PyObject*, folly::Try<py3::simple::AnEnum>)> callback,
-    PyObject* py_future) {
-  async_client->future_set_enum(
-    arg_in_enum
-  ).via(event_base.get()).then(
-    [=] (folly::Try<py3::simple::AnEnum>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<std::set<std::string>>
+SimpleServiceClientWrapper::unique_words(
+    std::vector<std::string> arg_words) {
+ return async_client->future_unique_words(
+   arg_words
+ );
 }
 
-void SimpleServiceClientWrapper::list_of_lists(
-    int16_t arg_num_lists,
-    int16_t arg_num_items,
-    std::function<void(PyObject*, folly::Try<std::vector<std::vector<int32_t>>>)> callback,
-    PyObject* py_future) {
-  async_client->future_list_of_lists(
-    arg_num_lists,
-    arg_num_items
-  ).via(event_base.get()).then(
-    [=] (folly::Try<std::vector<std::vector<int32_t>>>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<std::map<std::string,int16_t>>
+SimpleServiceClientWrapper::words_count(
+    std::vector<std::string> arg_words) {
+ return async_client->future_words_count(
+   arg_words
+ );
 }
 
-void SimpleServiceClientWrapper::word_character_frequency(
-    std::string arg_sentence,
-    std::function<void(PyObject*, folly::Try<std::map<std::string,std::map<std::string,int32_t>>>)> callback,
-    PyObject* py_future) {
-  async_client->future_word_character_frequency(
-    arg_sentence
-  ).via(event_base.get()).then(
-    [=] (folly::Try<std::map<std::string,std::map<std::string,int32_t>>>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<py3::simple::AnEnum>
+SimpleServiceClientWrapper::set_enum(
+    py3::simple::AnEnum arg_in_enum) {
+ return async_client->future_set_enum(
+   arg_in_enum
+ );
 }
 
-void SimpleServiceClientWrapper::list_of_sets(
-    std::string arg_some_words,
-    std::function<void(PyObject*, folly::Try<std::vector<std::set<std::string>>>)> callback,
-    PyObject* py_future) {
-  async_client->future_list_of_sets(
-    arg_some_words
-  ).via(event_base.get()).then(
-    [=] (folly::Try<std::vector<std::set<std::string>>>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<std::vector<std::vector<int32_t>>>
+SimpleServiceClientWrapper::list_of_lists(
+    int16_t arg_num_lists, 
+    int16_t arg_num_items) {
+ return async_client->future_list_of_lists(
+   arg_num_lists,
+   arg_num_items
+ );
 }
 
-void SimpleServiceClientWrapper::nested_map_argument(
-    std::map<std::string,std::vector<py3::simple::SimpleStruct>> arg_struct_map,
-    std::function<void(PyObject*, folly::Try<int32_t>)> callback,
-    PyObject* py_future) {
-  async_client->future_nested_map_argument(
-    arg_struct_map
-  ).via(event_base.get()).then(
-    [=] (folly::Try<int32_t>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<std::map<std::string,std::map<std::string,int32_t>>>
+SimpleServiceClientWrapper::word_character_frequency(
+    std::string arg_sentence) {
+ return async_client->future_word_character_frequency(
+   arg_sentence
+ );
 }
 
-void SimpleServiceClientWrapper::make_sentence(
-    std::vector<std::vector<std::string>> arg_word_chars,
-    std::function<void(PyObject*, folly::Try<std::string>)> callback,
-    PyObject* py_future) {
-  async_client->future_make_sentence(
-    arg_word_chars
-  ).via(event_base.get()).then(
-    [=] (folly::Try<std::string>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<std::vector<std::set<std::string>>>
+SimpleServiceClientWrapper::list_of_sets(
+    std::string arg_some_words) {
+ return async_client->future_list_of_sets(
+   arg_some_words
+ );
 }
 
-void SimpleServiceClientWrapper::get_union(
-    std::vector<std::set<int32_t>> arg_sets,
-    std::function<void(PyObject*, folly::Try<std::set<int32_t>>)> callback,
-    PyObject* py_future) {
-  async_client->future_get_union(
-    arg_sets
-  ).via(event_base.get()).then(
-    [=] (folly::Try<std::set<int32_t>>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<int32_t>
+SimpleServiceClientWrapper::nested_map_argument(
+    std::map<std::string,std::vector<py3::simple::SimpleStruct>> arg_struct_map) {
+ return async_client->future_nested_map_argument(
+   arg_struct_map
+ );
 }
 
-void SimpleServiceClientWrapper::get_keys(
-    std::vector<std::map<std::string,std::string>> arg_string_map,
-    std::function<void(PyObject*, folly::Try<std::set<std::string>>)> callback,
-    PyObject* py_future) {
-  async_client->future_get_keys(
-    arg_string_map
-  ).via(event_base.get()).then(
-    [=] (folly::Try<std::set<std::string>>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<std::string>
+SimpleServiceClientWrapper::make_sentence(
+    std::vector<std::vector<std::string>> arg_word_chars) {
+ return async_client->future_make_sentence(
+   arg_word_chars
+ );
 }
 
-void SimpleServiceClientWrapper::lookup_double(
-    int32_t arg_key,
-    std::function<void(PyObject*, folly::Try<double>)> callback,
-    PyObject* py_future) {
-  async_client->future_lookup_double(
-    arg_key
-  ).via(event_base.get()).then(
-    [=] (folly::Try<double>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<std::set<int32_t>>
+SimpleServiceClientWrapper::get_union(
+    std::vector<std::set<int32_t>> arg_sets) {
+ return async_client->future_get_union(
+   arg_sets
+ );
 }
 
-void SimpleServiceClientWrapper::retrieve_binary(
-    std::string arg_something,
-    std::function<void(PyObject*, folly::Try<std::string>)> callback,
-    PyObject* py_future) {
-  async_client->future_retrieve_binary(
-    arg_something
-  ).via(event_base.get()).then(
-    [=] (folly::Try<std::string>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<std::set<std::string>>
+SimpleServiceClientWrapper::get_keys(
+    std::vector<std::map<std::string,std::string>> arg_string_map) {
+ return async_client->future_get_keys(
+   arg_string_map
+ );
 }
 
-void SimpleServiceClientWrapper::contain_binary(
-    std::vector<std::string> arg_binaries,
-    std::function<void(PyObject*, folly::Try<std::set<std::string>>)> callback,
-    PyObject* py_future) {
-  async_client->future_contain_binary(
-    arg_binaries
-  ).via(event_base.get()).then(
-    [=] (folly::Try<std::set<std::string>>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<double>
+SimpleServiceClientWrapper::lookup_double(
+    int32_t arg_key) {
+ return async_client->future_lookup_double(
+   arg_key
+ );
 }
 
-void SimpleServiceClientWrapper::contain_enum(
-    std::vector<py3::simple::AnEnum> arg_the_enum,
-    std::function<void(PyObject*, folly::Try<std::vector<py3::simple::AnEnum>>)> callback,
-    PyObject* py_future) {
-  async_client->future_contain_enum(
-    arg_the_enum
-  ).via(event_base.get()).then(
-    [=] (folly::Try<std::vector<py3::simple::AnEnum>>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<std::string>
+SimpleServiceClientWrapper::retrieve_binary(
+    std::string arg_something) {
+ return async_client->future_retrieve_binary(
+   arg_something
+ );
+}
+
+folly::Future<std::set<std::string>>
+SimpleServiceClientWrapper::contain_binary(
+    std::vector<std::string> arg_binaries) {
+ return async_client->future_contain_binary(
+   arg_binaries
+ );
+}
+
+folly::Future<std::vector<py3::simple::AnEnum>>
+SimpleServiceClientWrapper::contain_enum(
+    std::vector<py3::simple::AnEnum> arg_the_enum) {
+ return async_client->future_contain_enum(
+   arg_the_enum
+ );
 }
 
 

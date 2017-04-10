@@ -21,8 +21,8 @@ import asyncio
 from concurrent.futures import ProcessPoolExecutor
 import pickle
 import time
-from thrift.perf.if_.load_services import LoadTestInterface
-from thrift.perf.if_.load_types import LoadError
+from thrift.perf.load_services import LoadTestInterface
+from thrift.perf.load_types import LoadError
 
 
 def us_to_sec(microseconds):

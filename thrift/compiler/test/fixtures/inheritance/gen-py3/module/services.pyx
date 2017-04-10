@@ -17,7 +17,7 @@ from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
 from thrift.py3.exceptions cimport cTApplicationException
 from thrift.py3.server cimport ServiceInterface
-from thrift.py3.folly cimport (
+from folly cimport (
   cFollyPromise,
   cFollyUnit,
   c_unit

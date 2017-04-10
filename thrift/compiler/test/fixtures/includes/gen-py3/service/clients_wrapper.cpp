@@ -9,26 +9,30 @@
 
 namespace cpp2 {
 MyServiceClientWrapper::MyServiceClientWrapper(
-    std::shared_ptr<cpp2::MyServiceAsyncClient> async_client,
-    std::shared_ptr<folly::EventBase> event_base) : 
-    async_client(async_client),
-    event_base(event_base) {}
+    std::shared_ptr<cpp2::MyServiceAsyncClient> async_client) : 
+    async_client(async_client) {}
 
 MyServiceClientWrapper::~MyServiceClientWrapper() {}
 
-void MyServiceClientWrapper::query(
-    cpp2::MyStruct arg_s,
-    cpp2::Included arg_i,
-    std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-    PyObject* py_future) {
-  async_client->future_query(
-    arg_s,
-    arg_i
-  ).via(event_base.get()).then(
-    [=] (folly::Try<folly::Unit>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<folly::Unit> MyServiceClientWrapper::disconnect() {
+  return folly::via(
+    this->async_client->getChannel()->getEventBase(),
+    [this] { disconnectInLoop(); });
+}
+
+void MyServiceClientWrapper::disconnectInLoop() {
+    async_client.reset();
+}
+
+
+folly::Future<folly::Unit>
+MyServiceClientWrapper::query(
+    cpp2::MyStruct arg_s, 
+    cpp2::Included arg_i) {
+ return async_client->future_query(
+   arg_s,
+   arg_i
+ );
 }
 
 

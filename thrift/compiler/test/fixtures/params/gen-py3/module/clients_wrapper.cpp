@@ -9,76 +9,60 @@
 
 namespace cpp2 {
 NestedContainersClientWrapper::NestedContainersClientWrapper(
-    std::shared_ptr<cpp2::NestedContainersAsyncClient> async_client,
-    std::shared_ptr<folly::EventBase> event_base) : 
-    async_client(async_client),
-    event_base(event_base) {}
+    std::shared_ptr<cpp2::NestedContainersAsyncClient> async_client) : 
+    async_client(async_client) {}
 
 NestedContainersClientWrapper::~NestedContainersClientWrapper() {}
 
-void NestedContainersClientWrapper::mapList(
-    std::map<int32_t,std::vector<int32_t>> arg_foo,
-    std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-    PyObject* py_future) {
-  async_client->future_mapList(
-    arg_foo
-  ).via(event_base.get()).then(
-    [=] (folly::Try<folly::Unit>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<folly::Unit> NestedContainersClientWrapper::disconnect() {
+  return folly::via(
+    this->async_client->getChannel()->getEventBase(),
+    [this] { disconnectInLoop(); });
 }
 
-void NestedContainersClientWrapper::mapSet(
-    std::map<int32_t,std::set<int32_t>> arg_foo,
-    std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-    PyObject* py_future) {
-  async_client->future_mapSet(
-    arg_foo
-  ).via(event_base.get()).then(
-    [=] (folly::Try<folly::Unit>&& result) {
-      callback(py_future, result);
-    }
-  );
+void NestedContainersClientWrapper::disconnectInLoop() {
+    async_client.reset();
 }
 
-void NestedContainersClientWrapper::listMap(
-    std::vector<std::map<int32_t,int32_t>> arg_foo,
-    std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-    PyObject* py_future) {
-  async_client->future_listMap(
-    arg_foo
-  ).via(event_base.get()).then(
-    [=] (folly::Try<folly::Unit>&& result) {
-      callback(py_future, result);
-    }
-  );
+
+folly::Future<folly::Unit>
+NestedContainersClientWrapper::mapList(
+    std::map<int32_t,std::vector<int32_t>> arg_foo) {
+ return async_client->future_mapList(
+   arg_foo
+ );
 }
 
-void NestedContainersClientWrapper::listSet(
-    std::vector<std::set<int32_t>> arg_foo,
-    std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-    PyObject* py_future) {
-  async_client->future_listSet(
-    arg_foo
-  ).via(event_base.get()).then(
-    [=] (folly::Try<folly::Unit>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<folly::Unit>
+NestedContainersClientWrapper::mapSet(
+    std::map<int32_t,std::set<int32_t>> arg_foo) {
+ return async_client->future_mapSet(
+   arg_foo
+ );
 }
 
-void NestedContainersClientWrapper::turtles(
-    std::vector<std::vector<std::map<int32_t,std::map<int32_t,std::set<int32_t>>>>> arg_foo,
-    std::function<void(PyObject*, folly::Try<folly::Unit>)> callback,
-    PyObject* py_future) {
-  async_client->future_turtles(
-    arg_foo
-  ).via(event_base.get()).then(
-    [=] (folly::Try<folly::Unit>&& result) {
-      callback(py_future, result);
-    }
-  );
+folly::Future<folly::Unit>
+NestedContainersClientWrapper::listMap(
+    std::vector<std::map<int32_t,int32_t>> arg_foo) {
+ return async_client->future_listMap(
+   arg_foo
+ );
+}
+
+folly::Future<folly::Unit>
+NestedContainersClientWrapper::listSet(
+    std::vector<std::set<int32_t>> arg_foo) {
+ return async_client->future_listSet(
+   arg_foo
+ );
+}
+
+folly::Future<folly::Unit>
+NestedContainersClientWrapper::turtles(
+    std::vector<std::vector<std::map<int32_t,std::map<int32_t,std::set<int32_t>>>>> arg_foo) {
+ return async_client->future_turtles(
+   arg_foo
+ );
 }
 
 

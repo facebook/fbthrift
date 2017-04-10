@@ -1,6 +1,3 @@
-from thrift.py3.exceptions cimport TException as Exception
-
-
 cdef class Struct:
     pass
 

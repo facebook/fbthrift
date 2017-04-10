@@ -5,16 +5,15 @@
 #  @generated
 #
 from libcpp.memory cimport shared_ptr
+cimport thrift.py3.client
 
 
 from module.clients_wrapper cimport cMyRootClientWrapper
 from module.clients_wrapper cimport cMyNodeClientWrapper
 from module.clients_wrapper cimport cMyLeafClientWrapper
 
-cdef class MyRoot:
+cdef class MyRoot(thrift.py3.client.Client):
     cdef shared_ptr[cMyRootClientWrapper] _module_MyRoot_client
-    cdef object loop
-    cdef object __weakref__
 
     @staticmethod
     cdef _module_MyRoot_set_client(MyRoot inst, shared_ptr[cMyRootClientWrapper] c_obj)

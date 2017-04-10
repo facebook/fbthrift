@@ -5,14 +5,13 @@
 #  @generated
 #
 from libcpp.memory cimport shared_ptr
+cimport thrift.py3.client
 
 
 from hsmodule.clients_wrapper cimport cHsTestServiceClientWrapper
 
-cdef class HsTestService:
+cdef class HsTestService(thrift.py3.client.Client):
     cdef shared_ptr[cHsTestServiceClientWrapper] _hsmodule_HsTestService_client
-    cdef object loop
-    cdef object __weakref__
 
     @staticmethod
     cdef _hsmodule_HsTestService_set_client(HsTestService inst, shared_ptr[cHsTestServiceClientWrapper] c_obj)

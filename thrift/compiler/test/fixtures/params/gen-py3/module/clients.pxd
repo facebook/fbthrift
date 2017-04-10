@@ -5,14 +5,13 @@
 #  @generated
 #
 from libcpp.memory cimport shared_ptr
+cimport thrift.py3.client
 
 
 from module.clients_wrapper cimport cNestedContainersClientWrapper
 
-cdef class NestedContainers:
+cdef class NestedContainers(thrift.py3.client.Client):
     cdef shared_ptr[cNestedContainersClientWrapper] _module_NestedContainers_client
-    cdef object loop
-    cdef object __weakref__
 
     @staticmethod
     cdef _module_NestedContainers_set_client(NestedContainers inst, shared_ptr[cNestedContainersClientWrapper] c_obj)

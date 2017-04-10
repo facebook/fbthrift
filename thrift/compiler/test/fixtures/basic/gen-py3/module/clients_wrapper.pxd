@@ -14,8 +14,7 @@ from libcpp.set cimport set as cset
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from thrift.py3.client cimport cTClientBase
-from thrift.py3.folly cimport cFollyEventBase, cFollyTry, cFollyUnit
+from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 
 cimport module.types
 
@@ -58,87 +57,56 @@ cdef extern from "<utility>" namespace "std":
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
   cdef cppclass cMyServiceClientWrapper "cpp2::MyServiceClientWrapper":
     cMyServiceClientWrapper(
-      shared_ptr[cMyServiceAsyncClient] async_client,
-      shared_ptr[cFollyEventBase] event_base)
-    void ping(
-      void (*callback) (PyObject*, cFollyTry[cFollyUnit]),
-      object py_future)
-    void getRandomData(
-      void (*callback) (PyObject*, cFollyTry[string]),
-      object py_future)
-    void hasDataById(
+      shared_ptr[cMyServiceAsyncClient] async_client)
+    cFollyFuture[cFollyUnit] disconnect()
+    cFollyFuture[cFollyUnit] ping()
+    cFollyFuture[string] getRandomData()
+    cFollyFuture[cbool] hasDataById(
+      int64_t arg_id,)
+    cFollyFuture[string] getDataById(
+      int64_t arg_id,)
+    cFollyFuture[cFollyUnit] putDataById(
       int64_t arg_id,
-      void (*callback) (PyObject*, cFollyTry[cbool]),
-      object py_future)
-    void getDataById(
+      string arg_data,)
+    cFollyFuture[cFollyUnit] lobDataById(
       int64_t arg_id,
-      void (*callback) (PyObject*, cFollyTry[string]),
-      object py_future)
-    void putDataById(
-      int64_t arg_id,
-      string arg_data,
-      void (*callback) (PyObject*, cFollyTry[cFollyUnit]),
-      object py_future)
-    void lobDataById(
-      int64_t arg_id,
-      string arg_data,
-      void (*callback) (PyObject*, cFollyTry[cFollyUnit]),
-      object py_future)
+      string arg_data,)
 
 
   cdef cppclass cMyServiceFastClientWrapper "cpp2::MyServiceFastClientWrapper":
     cMyServiceFastClientWrapper(
-      shared_ptr[cMyServiceFastAsyncClient] async_client,
-      shared_ptr[cFollyEventBase] event_base)
-    void ping(
-      void (*callback) (PyObject*, cFollyTry[cFollyUnit]),
-      object py_future)
-    void getRandomData(
-      void (*callback) (PyObject*, cFollyTry[string]),
-      object py_future)
-    void hasDataById(
+      shared_ptr[cMyServiceFastAsyncClient] async_client)
+    cFollyFuture[cFollyUnit] disconnect()
+    cFollyFuture[cFollyUnit] ping()
+    cFollyFuture[string] getRandomData()
+    cFollyFuture[cbool] hasDataById(
+      int64_t arg_id,)
+    cFollyFuture[string] getDataById(
+      int64_t arg_id,)
+    cFollyFuture[cFollyUnit] putDataById(
       int64_t arg_id,
-      void (*callback) (PyObject*, cFollyTry[cbool]),
-      object py_future)
-    void getDataById(
+      string arg_data,)
+    cFollyFuture[cFollyUnit] lobDataById(
       int64_t arg_id,
-      void (*callback) (PyObject*, cFollyTry[string]),
-      object py_future)
-    void putDataById(
-      int64_t arg_id,
-      string arg_data,
-      void (*callback) (PyObject*, cFollyTry[cFollyUnit]),
-      object py_future)
-    void lobDataById(
-      int64_t arg_id,
-      string arg_data,
-      void (*callback) (PyObject*, cFollyTry[cFollyUnit]),
-      object py_future)
+      string arg_data,)
 
 
   cdef cppclass cMyServiceEmptyClientWrapper "cpp2::MyServiceEmptyClientWrapper":
     cMyServiceEmptyClientWrapper(
-      shared_ptr[cMyServiceEmptyAsyncClient] async_client,
-      shared_ptr[cFollyEventBase] event_base)
+      shared_ptr[cMyServiceEmptyAsyncClient] async_client)
+    cFollyFuture[cFollyUnit] disconnect()
 
 
   cdef cppclass cMyServicePrioParentClientWrapper "cpp2::MyServicePrioParentClientWrapper":
     cMyServicePrioParentClientWrapper(
-      shared_ptr[cMyServicePrioParentAsyncClient] async_client,
-      shared_ptr[cFollyEventBase] event_base)
-    void ping(
-      void (*callback) (PyObject*, cFollyTry[cFollyUnit]),
-      object py_future)
-    void pong(
-      void (*callback) (PyObject*, cFollyTry[cFollyUnit]),
-      object py_future)
+      shared_ptr[cMyServicePrioParentAsyncClient] async_client)
+    cFollyFuture[cFollyUnit] disconnect()
+    cFollyFuture[cFollyUnit] ping()
+    cFollyFuture[cFollyUnit] pong()
 
 
   cdef cppclass cMyServicePrioChildClientWrapper "cpp2::MyServicePrioChildClientWrapper"(module.clients_wrapper.cMyServicePrioParentClientWrapper):
     cMyServicePrioChildClientWrapper(
-      shared_ptr[cMyServicePrioChildAsyncClient] async_client,
-      shared_ptr[cFollyEventBase] event_base)
-    void pang(
-      void (*callback) (PyObject*, cFollyTry[cFollyUnit]),
-      object py_future)
+      shared_ptr[cMyServicePrioChildAsyncClient] async_client)
+    cFollyFuture[cFollyUnit] pang()
 
