@@ -18,7 +18,7 @@
 #define THRIFT_TRANSPORT_TBUFFERTRANSPORTS_H_ 1
 
 #include <cstring>
-#include "boost/scoped_array.hpp"
+#include <boost/scoped_array.hpp>
 #include <folly/Likely.h>
 #include <folly/io/IOBuf.h>
 
