@@ -430,13 +430,12 @@ void HTTPClientChannel::HTTPTransactionCallback::onTrailers(
 
 void HTTPClientChannel::HTTPTransactionCallback::onEOM() noexcept {
   if (!body_) {
-    requestError(
-        folly::make_exception_wrapper<transport::TTransportException>(
-            folly::format(
-                "Empty HTTP response, status code = {}",
-                (msg_ ? folly::to<std::string>(msg_->getStatusCode()) :
-                        "Empty Header"))
-                .str()));
+    requestError(folly::make_exception_wrapper<transport::TTransportException>(
+        folly::sformat(
+            "Empty HTTP response, {}",
+            (msg_ ? folly::to<std::string>(
+                        msg_->getStatusCode(), ", ", msg_->getStatusMessage())
+                  : "Empty Header"))));
     return;
   }
   if (cb_) {

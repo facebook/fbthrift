@@ -267,7 +267,7 @@ TEST(HTTPClientChannelTest, NoBodyResponse) {
   folly::exception_wrapper ex = std::move(result.exception());
   EXPECT_TRUE(ex.is_compatible_with<TTransportException>());
   ex.with_exception([&](TTransportException const& e) {
-    EXPECT_STREQ("Empty HTTP response, status code = 400", e.what());
+    EXPECT_STREQ("Empty HTTP response, 400, Bad Request", e.what());
   });
 }
 
