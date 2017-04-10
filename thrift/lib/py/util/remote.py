@@ -23,7 +23,6 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import itertools
 import os
 import pprint
 from six.moves.urllib.parse import urlparse
@@ -126,7 +125,7 @@ class RemoteClient(object):
                 continue
             try:
                 value = self._eval_arg(arg, thrift_types)
-            except:
+            except Exception:
                 traceback.print_exc(file=sys.stderr)
                 self._exit(error_message='error parsing argument "%s"' % (arg,),
                            status=os.EX_DATAERR)
@@ -165,6 +164,13 @@ class RemoteClient(object):
             print(ret)
         else:
             pprint.pprint(ret, indent=2)
+
+        transport = client._iprot.trans
+        if isinstance(transport, THeaderTransport):
+            response_headers = transport.get_headers()
+            if response_headers is not None and len(response_headers) > 0:
+                print("Response headers:")
+                pprint.pprint(transport.get_headers(), indent=2)
 
         self._close_client()
 
@@ -211,7 +217,15 @@ class RemoteTransportClient(RemoteClient):
                 'default': False,
                 'help': 'Use TCompactProtocol'
             }
-        )
+        ), (
+            ['H', 'headers'],
+            {
+                'action': 'store',
+                'metavar': 'HEADERS_DICT',
+                'help':
+                'Python code to eval() into a dict of write headers',
+            }
+        ),
     ]
 
     def _get_client_by_transport(self, options, transport, socket=None):
@@ -234,6 +248,19 @@ class RemoteTransportClient(RemoteClient):
                     socket, fuzz_fields=options.fuzz, verbose=True)
             else:
                 transport = THeaderTransport(socket)
+                if options.headers is not None:
+                    try:
+                        parsed_headers = eval(options.headers)
+                    except Exception:
+                        self._exit(
+                            error_message='Request headers (--headers) argument'
+                                          ' failed eval')
+                    if not isinstance(parsed_headers, dict):
+                        self._exit(
+                            error_message='Request headers (--headers) argument'
+                                          ' must evaluate to a dict')
+                    for header_name, header_value in parsed_headers.items():
+                        transport.set_header(header_name, header_value)
             protocol = THeaderProtocol.THeaderProtocol(transport)
         else:
             self._exit(error_message=('No valid protocol '
@@ -244,6 +271,7 @@ class RemoteTransportClient(RemoteClient):
         self._transport = transport
 
         client = self.service_class.Client(protocol)
+
         return client
 
     def close_client(self):
