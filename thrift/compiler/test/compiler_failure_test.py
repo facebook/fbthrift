@@ -116,3 +116,19 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             "[FAILURE:foo.thrift:3] Redefinition of value Bar in enum Foo\n"
         )
+
+    def test_duplicate_enum_value(self):
+        write_file("foo.thrift", textwrap.dedent("""\
+            enum Foo {
+                Bar = 1,
+                Baz = 1,
+            }
+        """))
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift:3] "
+            "Duplicate value Baz=1 with value Bar in enum Foo. "
+            "Add thrift.duplicate_values annotation to enum to suppress this "
+            "error\n"
+        )
