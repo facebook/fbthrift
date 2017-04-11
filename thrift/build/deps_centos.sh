@@ -12,6 +12,7 @@ sudo yum install -y \
     libtool \
     gcc-c++ \
     boost \
+    boost-devel \
     libevent-devel \
     libevent \
     flex \
@@ -22,6 +23,8 @@ sudo yum install -y \
     libgsasl-devel \
     numactl-devel \
     numactl-libs \
+    gflags-devel \
+    glogs-devel \
     cmake
 
 # no rpm for this?
