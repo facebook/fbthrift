@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2015-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <thrift/lib/cpp2/test/gen-cpp2/Raiser.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
@@ -175,7 +174,7 @@ TEST_F(ThriftServerExceptionTest, bland_with_exception_ptr) {
       EXPECT_EQ(AppExn::TApplicationExceptionType::UNKNOWN, e.getType());
       EXPECT_EQ(lulz_w, string(e.what()));
       EXPECT_EQ(lulz_s, ctx().ex_type);
-      EXPECT_EQ(message, ctx().ex_what);
+      EXPECT_EQ(lulz_w, ctx().ex_what);
       EXPECT_TRUE(ctx().ep);
       EXPECT_TRUE(ctx().ew.is_compatible_with<lulz>());
   }));
@@ -183,7 +182,7 @@ TEST_F(ThriftServerExceptionTest, bland_with_exception_ptr) {
       EXPECT_EQ(AppExn::TApplicationExceptionType::UNKNOWN, e.getType());
       EXPECT_EQ(lulz_w, string(e.what()));
       EXPECT_EQ(lulz_s, ctx().ex_type);
-      EXPECT_EQ(message, ctx().ex_what);
+      EXPECT_EQ(lulz_w, ctx().ex_what);
       EXPECT_TRUE(ctx().ep);
       EXPECT_TRUE(ctx().ew.is_compatible_with<lulz>());
   }));
@@ -191,7 +190,7 @@ TEST_F(ThriftServerExceptionTest, bland_with_exception_ptr) {
       EXPECT_EQ(AppExn::TApplicationExceptionType::UNKNOWN, e.getType());
       EXPECT_EQ(lulz_w, string(e.what()));
       EXPECT_EQ(lulz_s, ctx().ex_type);
-      EXPECT_EQ(message, ctx().ex_what);
+      EXPECT_EQ(lulz_w, ctx().ex_what);
       EXPECT_TRUE(ctx().ep);
       EXPECT_TRUE(ctx().ew.is_compatible_with<lulz>());
   }));
@@ -199,7 +198,7 @@ TEST_F(ThriftServerExceptionTest, bland_with_exception_ptr) {
       EXPECT_EQ(AppExn::TApplicationExceptionType::UNKNOWN, e.getType());
       EXPECT_EQ(lulz_w, string(e.what()));
       EXPECT_EQ(lulz_s, ctx().ex_type);
-      EXPECT_EQ(message, ctx().ex_what);
+      EXPECT_EQ(lulz_w, ctx().ex_what);
       EXPECT_TRUE(ctx().ep);
       EXPECT_TRUE(ctx().ew.is_compatible_with<lulz>());
   }));
@@ -220,7 +219,7 @@ TEST_F(ThriftServerExceptionTest, banal_with_exception_ptr) {
   EXPECT_TRUE(exn(client->future_doBland(), [&](const AppExn& e) {
       EXPECT_EQ(banal_w_guess, string(e.what()));
       EXPECT_EQ(banal_s, ctx().ex_type);
-      EXPECT_EQ(banal_w_known, ctx().ex_what);
+      EXPECT_EQ(banal_w_guess, ctx().ex_what);
       EXPECT_TRUE(ctx().ep);
       EXPECT_TRUE(ctx().ew.is_compatible_with<Banal>());
   }));
@@ -234,7 +233,7 @@ TEST_F(ThriftServerExceptionTest, banal_with_exception_ptr) {
   EXPECT_TRUE(exn(client->future_get200(), [&](const AppExn& e) {
       EXPECT_EQ(banal_w_guess, string(e.what()));
       EXPECT_EQ(banal_s, ctx().ex_type);
-      EXPECT_EQ(banal_w_known, ctx().ex_what);
+      EXPECT_EQ(banal_w_guess, ctx().ex_what);
       EXPECT_TRUE(ctx().ep);
       EXPECT_TRUE(ctx().ew.is_compatible_with<Banal>());
   }));
@@ -262,7 +261,7 @@ TEST_F(ThriftServerExceptionTest, fiery_with_exception_ptr) {
   EXPECT_TRUE(exn(client->future_doBland(), [&](const AppExn& e) {
       EXPECT_EQ(fiery_w_guess, string(e.what()));
       EXPECT_EQ(fiery_s, ctx().ex_type);
-      EXPECT_EQ(fiery_w_known, ctx().ex_what);
+      EXPECT_EQ(fiery_w_guess, ctx().ex_what);
       EXPECT_TRUE(ctx().ep);
       EXPECT_TRUE(ctx().ew.is_compatible_with<Fiery>());
   }));
@@ -277,7 +276,7 @@ TEST_F(ThriftServerExceptionTest, fiery_with_exception_ptr) {
   EXPECT_TRUE(exn(client->future_get200(), [&](const AppExn& e) {
       EXPECT_EQ(fiery_w_guess, string(e.what()));
       EXPECT_EQ(fiery_s, ctx().ex_type);
-      EXPECT_EQ(fiery_w_known, ctx().ex_what);
+      EXPECT_EQ(fiery_w_guess, ctx().ex_what);
       EXPECT_TRUE(ctx().ep);
       EXPECT_TRUE(ctx().ew.is_compatible_with<Fiery>());
   }));

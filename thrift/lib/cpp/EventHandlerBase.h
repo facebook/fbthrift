@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #ifndef THRIFT_EVENTHANDLERBASE_H_
 #define THRIFT_EVENTHANDLERBASE_H_ 1
 
@@ -160,31 +159,16 @@ class TProcessorEventHandler {
   virtual void userExceptionWrapped(void* ctx,
                                     const char* fn_name,
                                     bool declared,
-                                    const folly::exception_wrapper& ew) {
-    CHECK(bool(ew));
-    std::string type;
-    std::string what;
-    auto typefb = ew.class_name();
-    if (ew.getCopied()) {
-      auto* ex = ew.getCopied();
-      type = typefb.toStdString();
-      what = declared ? ex->what() : type + ": " + ex->what();
-    } else if (typefb.empty()) {
-      try {
-        ew.throwException();
-      } catch (const std::exception& ex) {
-        type = folly::demangle(typeid(ex).name()).toStdString();
-        what = ex.what();
-      }
-    } else {
-      type = typefb.toStdString();
-      auto whatfb = ew.what();
-      folly::StringPiece whatsp(whatfb);
-      CHECK(whatsp.removePrefix(type)) << "weird format: '" << whatfb << "'";
-      CHECK(whatsp.removePrefix(": ")) << "weird format: '" << whatfb << "'";
-      what = whatsp.str();
+                                    const folly::exception_wrapper& ew_) {
+    auto ew = ew_; // make a local, mutable copy
+    const auto type = ew.class_name();
+    const auto what = ew.what();
+    folly::StringPiece whatsp(what);
+    if (declared) {
+      CHECK(whatsp.removePrefix(type)) << "weird format: '" << what << "'";
+      CHECK(whatsp.removePrefix(": ")) << "weird format: '" << what << "'";
     }
-    userException(ctx, fn_name, type, what);
+    return userException(ctx, fn_name, type.toStdString(), whatsp.str());
   }
 
  protected:
