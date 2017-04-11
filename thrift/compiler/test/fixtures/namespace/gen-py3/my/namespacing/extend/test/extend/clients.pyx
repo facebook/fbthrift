@@ -71,6 +71,11 @@ cdef class ExtendTestService(hsmodule.clients.HsTestService):
         inst._extend_ExtendTestService_client = c_obj
         hsmodule.clients.HsTestService._hsmodule_HsTestService_set_client(inst, <shared_ptr[cHsTestServiceClientWrapper]>c_obj)
 
+    cdef _extend_ExtendTestService_reset_client(ExtendTestService self):
+        """So the class hierarchy resets the shared pointer up the chain"""
+        self._extend_ExtendTestService_client.reset()
+        hsmodule.clients.HsTestService._hsmodule_HsTestService_reset_client(self)
+
     def __dealloc__(ExtendTestService self):
         if self._cRequestChannel or self._extend_ExtendTestService_client:
             print('client was not cleaned up, use the context manager', file=sys.stderr)
@@ -105,7 +110,7 @@ cdef class ExtendTestService(hsmodule.clients.HsTestService):
         badfuture.exception()
         self._connect_future = badfuture
         await future
-        self._extend_ExtendTestService_client.reset()
+        self._extend_ExtendTestService_reset_client()
 
     async def check(
             ExtendTestService self,
@@ -131,4 +136,3 @@ cdef void closed_ExtendTestService_py3_client_callback(
 ):
     cdef object pyfuture = <object> fut
     pyfuture.set_result(None)
-

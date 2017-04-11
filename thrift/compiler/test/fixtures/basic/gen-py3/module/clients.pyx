@@ -279,6 +279,10 @@ cdef class MyService(thrift.py3.client.Client):
         """So the class hierarchy talks to the correct pointer type"""
         inst._module_MyService_client = c_obj
 
+    cdef _module_MyService_reset_client(MyService self):
+        """So the class hierarchy resets the shared pointer up the chain"""
+        self._module_MyService_client.reset()
+
     def __dealloc__(MyService self):
         if self._cRequestChannel or self._module_MyService_client:
             print('client was not cleaned up, use the context manager', file=sys.stderr)
@@ -313,7 +317,7 @@ cdef class MyService(thrift.py3.client.Client):
         badfuture.exception()
         self._connect_future = badfuture
         await future
-        self._module_MyService_client.reset()
+        self._module_MyService_reset_client()
 
     async def ping(
             MyService self):
@@ -419,7 +423,6 @@ cdef void closed_MyService_py3_client_callback(
 ):
     cdef object pyfuture = <object> fut
     pyfuture.set_result(None)
-
 cdef class MyServiceFast(thrift.py3.client.Client):
 
     def __cinit__(MyServiceFast self):
@@ -434,6 +437,10 @@ cdef class MyServiceFast(thrift.py3.client.Client):
     cdef _module_MyServiceFast_set_client(MyServiceFast inst, shared_ptr[cMyServiceFastClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
         inst._module_MyServiceFast_client = c_obj
+
+    cdef _module_MyServiceFast_reset_client(MyServiceFast self):
+        """So the class hierarchy resets the shared pointer up the chain"""
+        self._module_MyServiceFast_client.reset()
 
     def __dealloc__(MyServiceFast self):
         if self._cRequestChannel or self._module_MyServiceFast_client:
@@ -469,7 +476,7 @@ cdef class MyServiceFast(thrift.py3.client.Client):
         badfuture.exception()
         self._connect_future = badfuture
         await future
-        self._module_MyServiceFast_client.reset()
+        self._module_MyServiceFast_reset_client()
 
     async def ping(
             MyServiceFast self):
@@ -575,7 +582,6 @@ cdef void closed_MyServiceFast_py3_client_callback(
 ):
     cdef object pyfuture = <object> fut
     pyfuture.set_result(None)
-
 cdef class MyServiceEmpty(thrift.py3.client.Client):
 
     def __cinit__(MyServiceEmpty self):
@@ -590,6 +596,10 @@ cdef class MyServiceEmpty(thrift.py3.client.Client):
     cdef _module_MyServiceEmpty_set_client(MyServiceEmpty inst, shared_ptr[cMyServiceEmptyClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
         inst._module_MyServiceEmpty_client = c_obj
+
+    cdef _module_MyServiceEmpty_reset_client(MyServiceEmpty self):
+        """So the class hierarchy resets the shared pointer up the chain"""
+        self._module_MyServiceEmpty_client.reset()
 
     def __dealloc__(MyServiceEmpty self):
         if self._cRequestChannel or self._module_MyServiceEmpty_client:
@@ -625,7 +635,7 @@ cdef class MyServiceEmpty(thrift.py3.client.Client):
         badfuture.exception()
         self._connect_future = badfuture
         await future
-        self._module_MyServiceEmpty_client.reset()
+        self._module_MyServiceEmpty_reset_client()
 
 
 
@@ -635,7 +645,6 @@ cdef void closed_MyServiceEmpty_py3_client_callback(
 ):
     cdef object pyfuture = <object> fut
     pyfuture.set_result(None)
-
 cdef class MyServicePrioParent(thrift.py3.client.Client):
 
     def __cinit__(MyServicePrioParent self):
@@ -650,6 +659,10 @@ cdef class MyServicePrioParent(thrift.py3.client.Client):
     cdef _module_MyServicePrioParent_set_client(MyServicePrioParent inst, shared_ptr[cMyServicePrioParentClientWrapper] c_obj):
         """So the class hierarchy talks to the correct pointer type"""
         inst._module_MyServicePrioParent_client = c_obj
+
+    cdef _module_MyServicePrioParent_reset_client(MyServicePrioParent self):
+        """So the class hierarchy resets the shared pointer up the chain"""
+        self._module_MyServicePrioParent_client.reset()
 
     def __dealloc__(MyServicePrioParent self):
         if self._cRequestChannel or self._module_MyServicePrioParent_client:
@@ -685,7 +698,7 @@ cdef class MyServicePrioParent(thrift.py3.client.Client):
         badfuture.exception()
         self._connect_future = badfuture
         await future
-        self._module_MyServicePrioParent_client.reset()
+        self._module_MyServicePrioParent_reset_client()
 
     async def ping(
             MyServicePrioParent self):
@@ -723,7 +736,6 @@ cdef void closed_MyServicePrioParent_py3_client_callback(
 ):
     cdef object pyfuture = <object> fut
     pyfuture.set_result(None)
-
 cdef class MyServicePrioChild(MyServicePrioParent):
 
     def __cinit__(MyServicePrioChild self):
@@ -739,6 +751,11 @@ cdef class MyServicePrioChild(MyServicePrioParent):
         """So the class hierarchy talks to the correct pointer type"""
         inst._module_MyServicePrioChild_client = c_obj
         MyServicePrioParent._module_MyServicePrioParent_set_client(inst, <shared_ptr[cMyServicePrioParentClientWrapper]>c_obj)
+
+    cdef _module_MyServicePrioChild_reset_client(MyServicePrioChild self):
+        """So the class hierarchy resets the shared pointer up the chain"""
+        self._module_MyServicePrioChild_client.reset()
+        MyServicePrioParent._module_MyServicePrioParent_reset_client(self)
 
     def __dealloc__(MyServicePrioChild self):
         if self._cRequestChannel or self._module_MyServicePrioChild_client:
@@ -774,7 +791,7 @@ cdef class MyServicePrioChild(MyServicePrioParent):
         badfuture.exception()
         self._connect_future = badfuture
         await future
-        self._module_MyServicePrioChild_client.reset()
+        self._module_MyServicePrioChild_reset_client()
 
     async def pang(
             MyServicePrioChild self):
@@ -798,4 +815,3 @@ cdef void closed_MyServicePrioChild_py3_client_callback(
 ):
     cdef object pyfuture = <object> fut
     pyfuture.set_result(None)
-

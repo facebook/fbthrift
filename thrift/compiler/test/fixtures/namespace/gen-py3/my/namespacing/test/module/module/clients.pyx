@@ -65,6 +65,10 @@ cdef class TestService(thrift.py3.client.Client):
         """So the class hierarchy talks to the correct pointer type"""
         inst._module_TestService_client = c_obj
 
+    cdef _module_TestService_reset_client(TestService self):
+        """So the class hierarchy resets the shared pointer up the chain"""
+        self._module_TestService_client.reset()
+
     def __dealloc__(TestService self):
         if self._cRequestChannel or self._module_TestService_client:
             print('client was not cleaned up, use the context manager', file=sys.stderr)
@@ -99,7 +103,7 @@ cdef class TestService(thrift.py3.client.Client):
         badfuture.exception()
         self._connect_future = badfuture
         await future
-        self._module_TestService_client.reset()
+        self._module_TestService_reset_client()
 
     async def init(
             TestService self,
@@ -125,4 +129,3 @@ cdef void closed_TestService_py3_client_callback(
 ):
     cdef object pyfuture = <object> fut
     pyfuture.set_result(None)
-

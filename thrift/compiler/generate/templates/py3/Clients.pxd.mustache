@@ -49,4 +49,6 @@ cdef class {{service:name}}{{#service:extends}}({{#service:externalProgram?}}{{!
     @staticmethod
     cdef _{{program:name}}_{{service:name}}_set_client({{service:name}} inst, shared_ptr[c{{service:name}}ClientWrapper] c_obj)
 
+    cdef _{{program:name}}_{{service:name}}_reset_client({{service:name}} self)
+    
 {{/program:services}}

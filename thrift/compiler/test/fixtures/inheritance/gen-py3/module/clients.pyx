@@ -97,6 +97,10 @@ cdef class MyRoot(thrift.py3.client.Client):
         """So the class hierarchy talks to the correct pointer type"""
         inst._module_MyRoot_client = c_obj
 
+    cdef _module_MyRoot_reset_client(MyRoot self):
+        """So the class hierarchy resets the shared pointer up the chain"""
+        self._module_MyRoot_client.reset()
+
     def __dealloc__(MyRoot self):
         if self._cRequestChannel or self._module_MyRoot_client:
             print('client was not cleaned up, use the context manager', file=sys.stderr)
@@ -131,7 +135,7 @@ cdef class MyRoot(thrift.py3.client.Client):
         badfuture.exception()
         self._connect_future = badfuture
         await future
-        self._module_MyRoot_client.reset()
+        self._module_MyRoot_reset_client()
 
     async def do_root(
             MyRoot self):
@@ -155,7 +159,6 @@ cdef void closed_MyRoot_py3_client_callback(
 ):
     cdef object pyfuture = <object> fut
     pyfuture.set_result(None)
-
 cdef class MyNode(MyRoot):
 
     def __cinit__(MyNode self):
@@ -171,6 +174,11 @@ cdef class MyNode(MyRoot):
         """So the class hierarchy talks to the correct pointer type"""
         inst._module_MyNode_client = c_obj
         MyRoot._module_MyRoot_set_client(inst, <shared_ptr[cMyRootClientWrapper]>c_obj)
+
+    cdef _module_MyNode_reset_client(MyNode self):
+        """So the class hierarchy resets the shared pointer up the chain"""
+        self._module_MyNode_client.reset()
+        MyRoot._module_MyRoot_reset_client(self)
 
     def __dealloc__(MyNode self):
         if self._cRequestChannel or self._module_MyNode_client:
@@ -206,7 +214,7 @@ cdef class MyNode(MyRoot):
         badfuture.exception()
         self._connect_future = badfuture
         await future
-        self._module_MyNode_client.reset()
+        self._module_MyNode_reset_client()
 
     async def do_mid(
             MyNode self):
@@ -230,7 +238,6 @@ cdef void closed_MyNode_py3_client_callback(
 ):
     cdef object pyfuture = <object> fut
     pyfuture.set_result(None)
-
 cdef class MyLeaf(MyNode):
 
     def __cinit__(MyLeaf self):
@@ -246,6 +253,11 @@ cdef class MyLeaf(MyNode):
         """So the class hierarchy talks to the correct pointer type"""
         inst._module_MyLeaf_client = c_obj
         MyNode._module_MyNode_set_client(inst, <shared_ptr[cMyNodeClientWrapper]>c_obj)
+
+    cdef _module_MyLeaf_reset_client(MyLeaf self):
+        """So the class hierarchy resets the shared pointer up the chain"""
+        self._module_MyLeaf_client.reset()
+        MyNode._module_MyNode_reset_client(self)
 
     def __dealloc__(MyLeaf self):
         if self._cRequestChannel or self._module_MyLeaf_client:
@@ -281,7 +293,7 @@ cdef class MyLeaf(MyNode):
         badfuture.exception()
         self._connect_future = badfuture
         await future
-        self._module_MyLeaf_client.reset()
+        self._module_MyLeaf_reset_client()
 
     async def do_leaf(
             MyLeaf self):
@@ -305,4 +317,3 @@ cdef void closed_MyLeaf_py3_client_callback(
 ):
     cdef object pyfuture = <object> fut
     pyfuture.set_result(None)
-

@@ -16,3 +16,5 @@ cdef class TestService(thrift.py3.client.Client):
     @staticmethod
     cdef _module_TestService_set_client(TestService inst, shared_ptr[cTestServiceClientWrapper] c_obj)
 
+    cdef _module_TestService_reset_client(TestService self)
+    

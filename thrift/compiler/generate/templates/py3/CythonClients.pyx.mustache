@@ -93,6 +93,13 @@ cdef class {{service:name}}{{#service:extends}}({{#service:externalProgram?}}{{!
         {{#service:externalProgram?}}{{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{service:programName}}.clients.{{/service:externalProgram?}}{{service:name}}._{{service:programName}}_{{service:name}}_set_client(inst, <shared_ptr[c{{service:name}}ClientWrapper]>c_obj)
 {{/service:extends}}
 
+    cdef _{{program:name}}_{{service:name}}_reset_client({{service:name}} self):
+        """So the class hierarchy resets the shared pointer up the chain"""
+        self._{{program:name}}_{{service:name}}_client.reset()
+{{#service:extends}}
+        {{#service:externalProgram?}}{{#service:py3Namespaces}}{{value}}.{{/service:py3Namespaces}}{{service:programName}}.clients.{{/service:externalProgram?}}{{service:name}}._{{service:programName}}_{{service:name}}_reset_client(self)
+{{/service:extends}}
+
     def __dealloc__({{service:name}} self):
         if self._cRequestChannel or self._{{program:name}}_{{service:name}}_client:
             print('client was not cleaned up, use the context manager', file=sys.stderr)
@@ -129,7 +136,7 @@ cdef class {{service:name}}{{#service:extends}}({{#service:externalProgram?}}{{!
         {{! All calls to the client will now raise}}
         self._connect_future = badfuture
         await future
-        self._{{program:name}}_{{service:name}}_client.reset()
+        self._{{program:name}}_{{service:name}}_reset_client()
 
     {{#service:functions}}
     async def {{function:name}}(
@@ -157,5 +164,4 @@ cdef void closed_{{service:name}}_py3_client_callback(
 ):
     cdef object pyfuture = <object> fut
     pyfuture.set_result(None)
-
 {{/program:services}}

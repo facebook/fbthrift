@@ -17,3 +17,5 @@ cdef class ExtendTestService(hsmodule.clients.HsTestService):
     @staticmethod
     cdef _extend_ExtendTestService_set_client(ExtendTestService inst, shared_ptr[cExtendTestServiceClientWrapper] c_obj)
 
+    cdef _extend_ExtendTestService_reset_client(ExtendTestService self)
+    

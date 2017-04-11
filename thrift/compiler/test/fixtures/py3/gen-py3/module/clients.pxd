@@ -16,3 +16,5 @@ cdef class SimpleService(thrift.py3.client.Client):
     @staticmethod
     cdef _module_SimpleService_set_client(SimpleService inst, shared_ptr[cSimpleServiceClientWrapper] c_obj)
 
+    cdef _module_SimpleService_reset_client(SimpleService self)
+    
