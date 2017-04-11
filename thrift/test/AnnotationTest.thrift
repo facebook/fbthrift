@@ -19,6 +19,10 @@
 
 typedef list<i32> ( cpp.template = "std::list" ) int_linked_list
 
+struct bar {
+  1: int_linked_list zar;
+}
+
 struct foo {
   1: i32 bar;
   2: i32 baz;

@@ -85,9 +85,6 @@ struct is_smart_pointer<std::shared_ptr<T>> : std::true_type {};
 template <typename T>
 using enable_if_smart_pointer = std::enable_if_t<is_smart_pointer<T>::value>;
 
-template <typename T>
-using disable_if_smart_pointer = std::enable_if_t<!is_smart_pointer<T>::value>;
-
 /*
  * Primitive Types Specialization
  */
@@ -242,7 +239,7 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
     TType reported_type = protocol::T_STOP;
 
     xfer += protocol.readListBegin(reported_type, list_size);
-    if (detail::is_unknown_container_size(list_size)) {
+    if (is_unknown_container_size(list_size)) {
       // list size unknown, SimpleJSON protocol won't know type, either
       // so let's just hope that it spits out something that makes sense
       // (if it did set reported_type to something known)
@@ -298,6 +295,88 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
 };
 
 /*
+ * std::list Specialization
+ */
+template <typename ElemClass, typename Type>
+struct protocol_methods<type_class::list<ElemClass>, std::list<Type>> {
+  constexpr static protocol::TType ttype_value = protocol::T_LIST;
+
+  static_assert(
+      !std::is_same<ElemClass, type_class::unknown>(),
+      "Unable to serialize unknown list element");
+
+  using elem_methods = protocol_methods<ElemClass, Type>;
+
+ private:
+  template <typename Protocol>
+  static std::size_t consume_elem(Protocol& protocol, std::list<Type>& out) {
+    Type tmp;
+    std::size_t xfer = elem_methods::read(protocol, tmp);
+    out.push_back(std::move(tmp));
+    return xfer;
+  }
+
+ public:
+  template <typename Protocol>
+  static std::size_t read(Protocol& protocol, std::list<Type>& out) {
+    std::size_t xfer = 0;
+    std::uint32_t list_size = -1;
+    TType reported_type = protocol::T_STOP;
+
+    xfer += protocol.readListBegin(reported_type, list_size);
+    if (is_unknown_container_size(list_size)) {
+      // list size unknown, SimpleJSON protocol won't know type, either
+      // so let's just hope that it spits out something that makes sense
+      // (if it did set reported_type to something known)
+      if (reported_type != protocol::T_STOP) {
+        assert(reported_type == elem_methods::ttype_value);
+      }
+
+      while (protocol.peekList()) {
+        xfer += consume_elem(protocol, out);
+      }
+    } else {
+      assert(reported_type == elem_methods::ttype_value);
+      for (decltype(list_size) i = 0; i < list_size; ++i) {
+        xfer += consume_elem(protocol, out);
+      }
+    }
+
+    xfer += protocol.readListEnd();
+    return xfer;
+  }
+
+  template <typename Protocol>
+  static std::size_t write(Protocol& protocol, std::list<Type> const& out) {
+    std::size_t xfer = 0;
+    xfer += protocol.writeListBegin(elem_methods::ttype_value, out.size());
+
+    for (auto const& elem : out) {
+      xfer += elem_methods::write(protocol, elem);
+    }
+
+    xfer += protocol.writeListEnd();
+    return xfer;
+  }
+
+  template <bool ZeroCopy, typename Protocol>
+  static std::size_t serialized_size(
+      Protocol& protocol,
+      std::list<Type> const& out) {
+    std::size_t xfer = 0;
+    xfer +=
+        protocol.serializedSizeListBegin(elem_methods::ttype_value, out.size());
+
+    for (auto const& elem : out) {
+      xfer += elem_methods::template serialized_size<ZeroCopy>(protocol, elem);
+    }
+
+    xfer += protocol.serializedSizeListEnd();
+    return xfer;
+  }
+};
+
+/*
  * Set Specialization
  */
 template <typename ElemClass, typename Type>
@@ -332,7 +411,7 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
     TType reported_type = protocol::T_STOP;
 
     xfer += protocol.readSetBegin(reported_type, set_size);
-    if (detail::is_unknown_container_size(set_size)) {
+    if (is_unknown_container_size(set_size)) {
       while (protocol.peekSet()) {
         xfer += consume_elem(protocol, out);
       }
@@ -413,7 +492,7 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
 
     xfer += protocol.readMapBegin(rpt_key_type, rpt_mapped_type, map_size);
 
-    if (detail::is_unknown_container_size(map_size)) {
+    if (is_unknown_container_size(map_size)) {
       while (protocol.peekMap()) {
         xfer += consume_elem(protocol, out);
       }
@@ -498,10 +577,7 @@ struct protocol_methods<type_class::structure, Type> {
  * the appropriate method
  */
 template <typename TypeClass, typename PtrType>
-struct protocol_methods<
-    TypeClass,
-    PtrType,
-    typename detail::enable_if_smart_pointer<PtrType>> {
+struct protocol_methods<TypeClass, PtrType, enable_if_smart_pointer<PtrType>> {
   using value_type = typename PtrType::element_type;
   using type_methods = protocol_methods<TypeClass, value_type>;
 
