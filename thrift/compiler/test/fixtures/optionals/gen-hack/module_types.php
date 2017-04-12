@@ -182,24 +182,35 @@ class Vehicle implements \IThriftStruct {
       'var' => 'name',
       'type' => \TType::STRING,
       ),
+    5 => array(
+      'var' => 'hasAC',
+      'type' => \TType::BOOL,
+      ),
     );
   public static Map<string, int> $_TFIELDMAP = Map {
     'color' => 1,
     'licensePlate' => 2,
     'description' => 3,
     'name' => 4,
+    'hasAC' => 5,
   };
-  const int STRUCTURAL_ID = 3969275857372978790;
+  const int STRUCTURAL_ID = 2222890000100114781;
   public ?Color $color;
   public ?string $licensePlate;
   public ?string $description;
   public ?string $name;
+  public bool $hasAC;
 
-  public function __construct(?Color $color = null, ?string $licensePlate = null, ?string $description = null, ?string $name = null  ) {
+  public function __construct(?Color $color = null, ?string $licensePlate = null, ?string $description = null, ?string $name = null, ?bool $hasAC = null  ) {
     $this->color = $color;
     $this->licensePlate = $licensePlate;
     $this->description = $description;
     $this->name = $name;
+    if ($hasAC === null) {
+      $this->hasAC = false;
+    } else {
+      $this->hasAC = $hasAC;
+    }
   }
 
   public function getName(): string {
@@ -255,6 +266,13 @@ class Vehicle implements \IThriftStruct {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 5:
+          if ($ftype == \TType::BOOL) {
+            $xfer += $input->readBool($this->hasAC);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -293,6 +311,12 @@ class Vehicle implements \IThriftStruct {
       $_val3 = $this->name;
       $xfer += $output->writeFieldBegin('name', \TType::STRING, 4);
       $xfer += $output->writeString($_val3);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->hasAC !== null && $this->hasAC !== false) {
+      $_val4 = $this->hasAC;
+      $xfer += $output->writeFieldBegin('hasAC', \TType::BOOL, 5);
+      $xfer += $output->writeBool($_val4);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();

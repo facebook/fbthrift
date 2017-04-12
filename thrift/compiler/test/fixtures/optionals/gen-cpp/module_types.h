@@ -175,7 +175,7 @@ class Vehicle : public apache::thrift::TStructType<Vehicle> {
 
   static const uint64_t _reflection_id = 11029503283921871788U;
   static void _reflection_register(::apache::thrift::reflection::Schema&);
-  Vehicle() {
+  Vehicle() : hasAC(false) {
   }
   template <
     typename T__ThriftWrappedArgument__Ctor,
@@ -229,6 +229,19 @@ class Vehicle : public apache::thrift::TStructType<Vehicle> {
     name = arg.move();
     __isset.name = true;
   }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit Vehicle(
+    ::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    Vehicle(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    hasAC = arg.move();
+    __isset.hasAC = true;
+  }
 
   Vehicle(const Vehicle&) = default;
   Vehicle& operator=(const Vehicle& src)= default;
@@ -243,6 +256,7 @@ class Vehicle : public apache::thrift::TStructType<Vehicle> {
   std::string licensePlate;
   std::string description;
   std::string name;
+  bool hasAC;
 
   struct __isset {
     __isset() { __clear(); } 
@@ -251,11 +265,13 @@ class Vehicle : public apache::thrift::TStructType<Vehicle> {
       licensePlate = false;
       description = false;
       name = false;
+      hasAC = false;
     }
     bool color;
     bool licensePlate;
     bool description;
     bool name;
+    bool hasAC;
   } __isset;
 
   bool operator == (const Vehicle &) const;

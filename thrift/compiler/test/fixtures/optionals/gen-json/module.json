@@ -63,6 +63,12 @@
           "type_enum" : "STRING",
           "spec_args" : null,
           "required" : false
+        },
+        "hasAC" : {
+          "type_enum" : "BOOL",
+          "spec_args" : null,
+          "required" : false,
+          "default_value" : UNKNOWN
         }
       }
     },

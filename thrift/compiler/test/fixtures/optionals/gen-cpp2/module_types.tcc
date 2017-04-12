@@ -205,6 +205,10 @@ uint32_t Vehicle::read(Protocol_* iprot) {
         fid = 4;
         ftype = apache::thrift::protocol::T_STRING;
       }
+      else if (fname == "hasAC") {
+        fid = 5;
+        ftype = apache::thrift::protocol::T_BOOL;
+      }
     }
     switch (fid) {
       case 1:
@@ -246,6 +250,16 @@ uint32_t Vehicle::read(Protocol_* iprot) {
         }
         break;
       }
+      case 5:
+      {
+        if (ftype == apache::thrift::protocol::T_BOOL) {
+          this->hasAC = bool();
+          xfer += iprot->readBool(this->hasAC.value());
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
       default:
       {
         xfer += iprot->skip(ftype);
@@ -277,6 +291,10 @@ uint32_t Vehicle::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 4);
     xfer += prot_->serializedSizeString(this->name.value());
   }
+  if (this->hasAC.hasValue()) {
+    xfer += prot_->serializedFieldSize("hasAC", apache::thrift::protocol::T_BOOL, 5);
+    xfer += prot_->serializedSizeBool(this->hasAC.value());
+  }
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -298,6 +316,10 @@ uint32_t Vehicle::serializedSizeZC(Protocol_ const* prot_) const {
   if (this->name.hasValue()) {
     xfer += prot_->serializedFieldSize("name", apache::thrift::protocol::T_STRING, 4);
     xfer += prot_->serializedSizeString(this->name.value());
+  }
+  if (this->hasAC.hasValue()) {
+    xfer += prot_->serializedFieldSize("hasAC", apache::thrift::protocol::T_BOOL, 5);
+    xfer += prot_->serializedSizeBool(this->hasAC.value());
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -323,6 +345,11 @@ uint32_t Vehicle::write(Protocol_* prot_) const {
   if (this->name.hasValue()) {
     xfer += prot_->writeFieldBegin("name", apache::thrift::protocol::T_STRING, 4);
     xfer += prot_->writeString(this->name.value());
+    xfer += prot_->writeFieldEnd();
+  }
+  if (this->hasAC.hasValue()) {
+    xfer += prot_->writeFieldBegin("hasAC", apache::thrift::protocol::T_BOOL, 5);
+    xfer += prot_->writeBool(this->hasAC.value());
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();

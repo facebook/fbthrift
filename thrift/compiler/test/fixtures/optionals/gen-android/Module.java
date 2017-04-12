@@ -45,6 +45,9 @@ public class Module {
   @TOptional("Vehicle")
   public static final ThriftProperty<String> Vehicle_name =
       new ThriftProperty<String>("name", TType.STRING, (short) 4);
+  @TOptional("Vehicle")
+  public static final ThriftProperty<Boolean> Vehicle_hasAC =
+      new ThriftProperty<Boolean>("hasAC", TType.BOOL, (short) 5);
   @TOptional("Person")
   public static final ThriftProperty<Long> Person_id =
       new ThriftProperty<Long>("id", TType.I64, (short) 1);

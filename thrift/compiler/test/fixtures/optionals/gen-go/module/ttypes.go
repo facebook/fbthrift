@@ -227,11 +227,13 @@ func (p *Color) String() string {
 //  - LicensePlate
 //  - Description
 //  - Name
+//  - HasAC
 type Vehicle struct {
   Color *Color `thrift:"color,1" db:"color" json:"color"`
   LicensePlate *string `thrift:"licensePlate,2" db:"licensePlate" json:"licensePlate,omitempty"`
   Description *string `thrift:"description,3" db:"description" json:"description,omitempty"`
   Name *string `thrift:"name,4" db:"name" json:"name,omitempty"`
+  HasAC bool `thrift:"hasAC,5" db:"hasAC" json:"hasAC,omitempty"`
 }
 
 func NewVehicle() *Vehicle {
@@ -266,6 +268,11 @@ func (p *Vehicle) GetName() string {
   }
 return *p.Name
 }
+var Vehicle_HasAC_DEFAULT bool = false
+
+func (p *Vehicle) GetHasAC() bool {
+  return p.HasAC
+}
 func (p *Vehicle) IsSetColor() bool {
   return p.Color != nil
 }
@@ -280,6 +287,10 @@ func (p *Vehicle) IsSetDescription() bool {
 
 func (p *Vehicle) IsSetName() bool {
   return p.Name != nil
+}
+
+func (p *Vehicle) IsSetHasAC() bool {
+  return p.HasAC != Vehicle_HasAC_DEFAULT
 }
 
 func (p *Vehicle) Read(iprot thrift.TProtocol) error {
@@ -309,6 +320,10 @@ func (p *Vehicle) Read(iprot thrift.TProtocol) error {
       }
     case 4:
       if err := p.ReadField4(iprot); err != nil {
+        return err
+      }
+    case 5:
+      if err := p.ReadField5(iprot); err != nil {
         return err
       }
     default:
@@ -361,6 +376,15 @@ func (p *Vehicle)  ReadField4(iprot thrift.TProtocol) error {
   return nil
 }
 
+func (p *Vehicle)  ReadField5(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadBool(); err != nil {
+  return thrift.PrependError("error reading field 5: ", err)
+} else {
+  p.HasAC = v
+}
+  return nil
+}
+
 func (p *Vehicle) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("Vehicle"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -368,6 +392,7 @@ func (p *Vehicle) Write(oprot thrift.TProtocol) error {
   if err := p.writeField2(oprot); err != nil { return err }
   if err := p.writeField3(oprot); err != nil { return err }
   if err := p.writeField4(oprot); err != nil { return err }
+  if err := p.writeField5(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -418,6 +443,18 @@ func (p *Vehicle) writeField4(oprot thrift.TProtocol) (err error) {
     return thrift.PrependError(fmt.Sprintf("%T.name (4) field write error: ", p), err) }
     if err := oprot.WriteFieldEnd(); err != nil {
       return thrift.PrependError(fmt.Sprintf("%T write field end error 4:name: ", p), err) }
+  }
+  return err
+}
+
+func (p *Vehicle) writeField5(oprot thrift.TProtocol) (err error) {
+  if p.IsSetHasAC() {
+    if err := oprot.WriteFieldBegin("hasAC", thrift.BOOL, 5); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:hasAC: ", p), err) }
+    if err := oprot.WriteBool(bool(p.HasAC)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T.hasAC (5) field write error: ", p), err) }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 5:hasAC: ", p), err) }
   }
   return err
 }

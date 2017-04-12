@@ -18,6 +18,7 @@ struct Vehicle {
   2: optional string licensePlate;
   3: optional string description;
   4: optional string name;
+  5: optional bool hasAC = false;
 }
 
 typedef i64 PersonID

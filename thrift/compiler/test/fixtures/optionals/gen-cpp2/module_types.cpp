@@ -96,6 +96,7 @@ void Vehicle::__clear() {
   licensePlate.clear();
   description.clear();
   name.clear();
+  hasAC.clear();
 }
 
 bool Vehicle::operator==(const Vehicle& rhs) const {
@@ -111,6 +112,9 @@ bool Vehicle::operator==(const Vehicle& rhs) const {
   if (!((name == rhs.name))) {
     return false;
   }
+  if (!((hasAC == rhs.hasAC))) {
+    return false;
+  }
   return true;
 }
 
@@ -120,6 +124,7 @@ void swap(Vehicle& a, Vehicle& b) {
   swap(a.licensePlate, b.licensePlate);
   swap(a.description, b.description);
   swap(a.name, b.name);
+  swap(a.hasAC, b.hasAC);
 }
 
 template uint32_t Vehicle::read<>(apache::thrift::BinaryProtocolReader*);

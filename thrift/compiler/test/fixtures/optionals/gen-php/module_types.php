@@ -194,18 +194,24 @@ class Vehicle implements IThriftStruct {
       'var' => 'name',
       'type' => TType::STRING,
       ),
+    5 => array(
+      'var' => 'hasAC',
+      'type' => TType::BOOL,
+      ),
     );
   public static $_TFIELDMAP = array(
     'color' => 1,
     'licensePlate' => 2,
     'description' => 3,
     'name' => 4,
+    'hasAC' => 5,
   );
-  const STRUCTURAL_ID = 3969275857372978790;
+  const STRUCTURAL_ID = 2222890000100114781;
   public $color = null;
   public $licensePlate = null;
   public $description = null;
   public $name = null;
+  public $hasAC = false;
 
   public function __construct($vals=null) {
     if (is_array($vals)) {
@@ -220,6 +226,9 @@ class Vehicle implements IThriftStruct {
       }
       if (isset($vals['name'])) {
         $this->name = $vals['name'];
+      }
+      if (isset($vals['hasAC'])) {
+        $this->hasAC = $vals['hasAC'];
       }
     } else if ($vals) {
       throw new TProtocolException(
@@ -286,6 +295,13 @@ class Vehicle implements IThriftStruct {
             $xfer += $input->skip($ftype);
           }
           break;
+        case 5:
+          if ($ftype == TType::BOOL) {
+            $xfer += $input->readBool($this->hasAC);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
         default:
           $xfer += $input->skip($ftype);
           break;
@@ -320,6 +336,11 @@ class Vehicle implements IThriftStruct {
     if (isset($this->name) && $this->name !== null) {
       $xfer += $output->writeFieldBegin('name', TType::STRING, 4);
       $xfer += $output->writeString($this->name);
+      $xfer += $output->writeFieldEnd();
+    }
+    if (isset($this->hasAC) && $this->hasAC !== null) {
+      $xfer += $output->writeFieldBegin('hasAC', TType::BOOL, 5);
+      $xfer += $output->writeBool($this->hasAC);
       $xfer += $output->writeFieldEnd();
     }
     $xfer += $output->writeFieldStop();

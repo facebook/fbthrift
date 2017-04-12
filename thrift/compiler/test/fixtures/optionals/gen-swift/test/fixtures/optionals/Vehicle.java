@@ -22,12 +22,14 @@ public final class Vehicle
         @ThriftField(value=1, name="color", requiredness=Requiredness.NONE) final test.fixtures.optionals.Color color,
         @ThriftField(value=2, name="licensePlate", requiredness=Requiredness.OPTIONAL) final String licensePlate,
         @ThriftField(value=3, name="description", requiredness=Requiredness.OPTIONAL) final String description,
-        @ThriftField(value=4, name="name", requiredness=Requiredness.OPTIONAL) final String name
+        @ThriftField(value=4, name="name", requiredness=Requiredness.OPTIONAL) final String name,
+        @ThriftField(value=5, name="hasAC", requiredness=Requiredness.OPTIONAL) final Boolean hasAC
     ) {
         this.color = color;
         this.licensePlate = licensePlate;
         this.description = description;
         this.name = name;
+        this.hasAC = hasAC;
     }
 
     public static class Builder {
@@ -55,6 +57,12 @@ public final class Vehicle
             this.name = name;
             return this;
         }
+        private Boolean hasAC;
+
+        public Builder setHasAC(Boolean hasAC) {
+            this.hasAC = hasAC;
+            return this;
+        }
 
         public Builder() { }
         public Builder(Vehicle other) {
@@ -62,6 +70,7 @@ public final class Vehicle
             this.licensePlate = other.licensePlate;
             this.description = other.description;
             this.name = other.name;
+            this.hasAC = other.hasAC;
         }
 
         public Vehicle build() {
@@ -69,7 +78,8 @@ public final class Vehicle
                 this.color,
                 this.licensePlate,
                 this.description,
-                this.name
+                this.name,
+                this.hasAC
             );
         }
     }
@@ -94,6 +104,11 @@ public final class Vehicle
     @ThriftField(value=4, name="name", requiredness=Requiredness.OPTIONAL)
     public String getName() { return name; }
 
+    private final Boolean hasAC;
+
+    @ThriftField(value=5, name="hasAC", requiredness=Requiredness.OPTIONAL)
+    public Boolean isHasAC() { return hasAC; }
+
     @Override
     public String toString()
     {
@@ -102,6 +117,7 @@ public final class Vehicle
             .add("licensePlate", licensePlate)
             .add("description", description)
             .add("name", name)
+            .add("hasAC", hasAC)
             .toString();
     }
 
@@ -120,7 +136,8 @@ public final class Vehicle
             Objects.equals(color, other.color) &&
             Objects.equals(licensePlate, other.licensePlate) &&
             Objects.equals(description, other.description) &&
-            Objects.equals(name, other.name);
+            Objects.equals(name, other.name) &&
+            Objects.equals(hasAC, other.hasAC);
     }
 
     @Override
@@ -129,7 +146,8 @@ public final class Vehicle
             color,
             licensePlate,
             description,
-            name
+            name,
+            hasAC
         });
     }
 }

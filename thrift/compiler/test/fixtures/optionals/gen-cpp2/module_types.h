@@ -189,14 +189,16 @@ namespace cpp2 {
 class Vehicle : private apache::thrift::detail::st::ComparisonOperators<Vehicle> {
  public:
 
-  Vehicle() {}
+  Vehicle() :
+      hasAC(false) {}
   // FragileConstructor for use in initialization lists only
 
-  Vehicle(apache::thrift::FragileConstructor,  ::cpp2::Color color__arg, std::string licensePlate__arg, std::string description__arg, std::string name__arg) :
+  Vehicle(apache::thrift::FragileConstructor,  ::cpp2::Color color__arg, std::string licensePlate__arg, std::string description__arg, std::string name__arg, bool hasAC__arg) :
       color(std::move(color__arg)),
       licensePlate(std::move(licensePlate__arg)),
       description(std::move(description__arg)),
-      name(std::move(name__arg)) {}
+      name(std::move(name__arg)),
+      hasAC(std::move(hasAC__arg)) {}
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   Vehicle(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     Vehicle(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -221,6 +223,12 @@ class Vehicle : private apache::thrift::detail::st::ComparisonOperators<Vehicle>
   {
     name = arg.move();
   }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  Vehicle(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    Vehicle(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    hasAC = arg.move();
+  }
 
   Vehicle(Vehicle&&) = default;
 
@@ -237,6 +245,7 @@ class Vehicle : private apache::thrift::detail::st::ComparisonOperators<Vehicle>
   folly::Optional<std::string> licensePlate;
   folly::Optional<std::string> description;
   folly::Optional<std::string> name;
+  folly::Optional<bool> hasAC;
   bool operator==(const Vehicle& rhs) const;
   bool operator < (const Vehicle& rhs) const;
 

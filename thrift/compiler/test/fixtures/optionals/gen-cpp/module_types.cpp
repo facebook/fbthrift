@@ -209,6 +209,10 @@ bool Vehicle::operator == (const Vehicle & rhs) const {
     return false;
   else if (__isset.name && !(name == rhs.name))
     return false;
+  if (__isset.hasAC != rhs.__isset.hasAC)
+    return false;
+  else if (__isset.hasAC && !(hasAC == rhs.hasAC))
+    return false;
   return true;
 }
 
@@ -270,6 +274,14 @@ uint32_t Vehicle::read(apache::thrift::protocol::TProtocol* iprot) {
           xfer += iprot->skip(ftype);
         }
         break;
+      case 5:
+        if (ftype == apache::thrift::protocol::T_BOOL) {
+          xfer += iprot->readBool(this->hasAC);
+          this->__isset.hasAC = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
       default:
         xfer += iprot->skip(ftype);
         break;
@@ -287,6 +299,7 @@ void Vehicle::__clear() {
   licensePlate = "";
   description = "";
   name = "";
+  hasAC = false;
   __isset.__clear();
 }
 uint32_t Vehicle::write(apache::thrift::protocol::TProtocol* oprot) const {
@@ -310,6 +323,11 @@ uint32_t Vehicle::write(apache::thrift::protocol::TProtocol* oprot) const {
     xfer += oprot->writeString(this->name);
     xfer += oprot->writeFieldEnd();
   }
+  if (this->__isset.hasAC) {
+    xfer += oprot->writeFieldBegin("hasAC", apache::thrift::protocol::T_BOOL, 5);
+    xfer += oprot->writeBool(this->hasAC);
+    xfer += oprot->writeFieldEnd();
+  }
   xfer += oprot->writeFieldStop();
   xfer += oprot->writeStructEnd();
   return xfer;
@@ -323,6 +341,7 @@ void swap(Vehicle &a, Vehicle &b) {
   swap(a.licensePlate, b.licensePlate);
   swap(a.description, b.description);
   swap(a.name, b.name);
+  swap(a.hasAC, b.hasAC);
   swap(a.__isset, b.__isset);
 }
 
@@ -342,6 +361,10 @@ void merge(const Vehicle& from, Vehicle& to) {
     merge(from.name, to.name);
     to.__isset.name = true;
   }
+  if (from.__isset.hasAC) {
+    merge(from.hasAC, to.hasAC);
+    to.__isset.hasAC = true;
+  }
 }
 
 void merge(Vehicle&& from, Vehicle& to) {
@@ -359,6 +382,10 @@ void merge(Vehicle&& from, Vehicle& to) {
   if (from.__isset.name) {
     merge(std::move(from.name), to.name);
     to.__isset.name = true;
+  }
+  if (from.__isset.hasAC) {
+    merge(std::move(from.hasAC), to.hasAC);
+    to.__isset.hasAC = true;
   }
 }
 

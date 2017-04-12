@@ -84,6 +84,13 @@ void reflectionInitializer_11029503283921871788(::apache::thrift::reflection::Sc
     f.name = "name";
     f.order = 3;
   }
+  {
+    ::apache::thrift::reflection::StructField& f = dt.fields[5];
+    f.isRequired = false;
+    f.type = 2U;
+    f.name = "hasAC";
+    f.order = 4;
+  }
   reflectionInitializer_11194926431654439212(schema);  // struct module.Color
 }
 

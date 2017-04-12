@@ -30,18 +30,23 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
   private static final TField LICENSE_PLATE_FIELD_DESC = new TField("licensePlate", TType.STRING, (short)2);
   private static final TField DESCRIPTION_FIELD_DESC = new TField("description", TType.STRING, (short)3);
   private static final TField NAME_FIELD_DESC = new TField("name", TType.STRING, (short)4);
+  private static final TField HAS_AC_FIELD_DESC = new TField("hasAC", TType.BOOL, (short)5);
 
   public Color color;
   public String licensePlate;
   public String description;
   public String name;
+  public boolean hasAC;
   public static final int COLOR = 1;
   public static final int LICENSEPLATE = 2;
   public static final int DESCRIPTION = 3;
   public static final int NAME = 4;
+  public static final int HASAC = 5;
   public static boolean DEFAULT_PRETTY_PRINT = true;
 
   // isset id assignments
+  private static final int __HASAC_ISSET_ID = 0;
+  private BitSet __isset_bit_vector = new BitSet(1);
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
   static {
@@ -54,6 +59,8 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
         new FieldValueMetaData(TType.STRING)));
     tmpMetaDataMap.put(NAME, new FieldMetaData("name", TFieldRequirementType.OPTIONAL, 
         new FieldValueMetaData(TType.STRING)));
+    tmpMetaDataMap.put(HASAC, new FieldMetaData("hasAC", TFieldRequirementType.OPTIONAL, 
+        new FieldValueMetaData(TType.BOOL)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -62,6 +69,8 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
   }
 
   public Vehicle() {
+    this.hasAC = false;
+
   }
 
   public Vehicle(
@@ -75,19 +84,24 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
     Color color,
     String licensePlate,
     String description,
-    String name)
+    String name,
+    boolean hasAC)
   {
     this();
     this.color = color;
     this.licensePlate = licensePlate;
     this.description = description;
     this.name = name;
+    this.hasAC = hasAC;
+    setHasACIsSet(true);
   }
 
   /**
    * Performs a deep copy on <i>other</i>.
    */
   public Vehicle(Vehicle other) {
+    __isset_bit_vector.clear();
+    __isset_bit_vector.or(other.__isset_bit_vector);
     if (other.isSetColor()) {
       this.color = TBaseHelper.deepCopy(other.color);
     }
@@ -100,6 +114,7 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
     if (other.isSetName()) {
       this.name = TBaseHelper.deepCopy(other.name);
     }
+    this.hasAC = TBaseHelper.deepCopy(other.hasAC);
   }
 
   public Vehicle deepCopy() {
@@ -207,6 +222,29 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
     }
   }
 
+  public boolean  isHasAC() {
+    return this.hasAC;
+  }
+
+  public Vehicle setHasAC(boolean hasAC) {
+    this.hasAC = hasAC;
+    setHasACIsSet(true);
+    return this;
+  }
+
+  public void unsetHasAC() {
+    __isset_bit_vector.clear(__HASAC_ISSET_ID);
+  }
+
+  // Returns true if field hasAC is set (has been assigned a value) and false otherwise
+  public boolean isSetHasAC() {
+    return __isset_bit_vector.get(__HASAC_ISSET_ID);
+  }
+
+  public void setHasACIsSet(boolean value) {
+    __isset_bit_vector.set(__HASAC_ISSET_ID, value);
+  }
+
   public void setFieldValue(int fieldID, Object value) {
     switch (fieldID) {
     case COLOR:
@@ -241,6 +279,14 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
       }
       break;
 
+    case HASAC:
+      if (value == null) {
+        unsetHasAC();
+      } else {
+        setHasAC((Boolean)value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -260,6 +306,9 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
     case NAME:
       return getName();
 
+    case HASAC:
+      return new Boolean(isHasAC());
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -276,6 +325,8 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
       return isSetDescription();
     case NAME:
       return isSetName();
+    case HASAC:
+      return isSetHasAC();
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -332,6 +383,15 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
         return false;
     }
 
+    boolean this_present_hasAC = true && this.isSetHasAC();
+    boolean that_present_hasAC = true && that.isSetHasAC();
+    if (this_present_hasAC || that_present_hasAC) {
+      if (!(this_present_hasAC && that_present_hasAC))
+        return false;
+      if (!TBaseHelper.equalsNobinary(this.hasAC, that.hasAC))
+        return false;
+    }
+
     return true;
   }
 
@@ -384,6 +444,14 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
     if (lastComparison != 0) {
       return lastComparison;
     }
+    lastComparison = Boolean.valueOf(isSetHasAC()).compareTo(other.isSetHasAC());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(hasAC, other.hasAC);
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
     return 0;
   }
 
@@ -423,6 +491,14 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
         case NAME:
           if (field.type == TType.STRING) {
             this.name = iprot.readString();
+          } else { 
+            TProtocolUtil.skip(iprot, field.type);
+          }
+          break;
+        case HASAC:
+          if (field.type == TType.BOOL) {
+            this.hasAC = iprot.readBool();
+            setHasACIsSet(true);
           } else { 
             TProtocolUtil.skip(iprot, field.type);
           }
@@ -469,6 +545,11 @@ public class Vehicle implements TBase, java.io.Serializable, Cloneable, Comparab
         oprot.writeString(this.name);
         oprot.writeFieldEnd();
       }
+    }
+    if (isSetHasAC()) {
+      oprot.writeFieldBegin(HAS_AC_FIELD_DESC);
+      oprot.writeBool(this.hasAC);
+      oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();
     oprot.writeStructEnd();
@@ -545,6 +626,16 @@ String space = prettyPrint ? " " : "";
       } else {
         sb.append(TBaseHelper.toString(this. getName(), indent + 1, prettyPrint));
       }
+      first = false;
+    }
+    if (isSetHasAC())
+    {
+      if (!first) sb.append("," + newLine);
+      sb.append(indentStr);
+      sb.append("hasAC");
+      sb.append(space);
+      sb.append(":").append(space);
+      sb.append(TBaseHelper.toString(this. isHasAC(), indent + 1, prettyPrint));
       first = false;
     }
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));

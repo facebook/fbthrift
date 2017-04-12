@@ -96,6 +96,12 @@ public class ModuleLogger {
           oprot.writeFieldEnd();
         }
       
+        if (mMap.containsKey(Module.Vehicle_hasAC) && mMap.get(Module.Vehicle_hasAC) != null) {
+          writeFieldBegin(oprot, Module.Vehicle_hasAC);
+          oprot.writeBool((boolean) mMap.get(Module.Vehicle_hasAC));
+          oprot.writeFieldEnd();
+        }
+      
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         break;
