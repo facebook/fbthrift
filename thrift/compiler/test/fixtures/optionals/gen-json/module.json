@@ -1,0 +1,126 @@
+{
+  "thrift_module" : "module",
+  "enumerations" : {
+    "Animal" : {
+      "DOG" : 1,
+      "CAT" : 2,
+      "TARANTULA" : 3
+    }
+  },
+  "typedefs" : {
+    "PersonID" : {
+      "type_enum" : "I64",
+      "spec_args" : null
+    }
+  },
+  "structs" : {
+    "Color" : {
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "red" : {
+          "type_enum" : "DOUBLE",
+          "spec_args" : null,
+          "required" : true
+        },
+        "green" : {
+          "type_enum" : "DOUBLE",
+          "spec_args" : null,
+          "required" : true
+        },
+        "blue" : {
+          "type_enum" : "DOUBLE",
+          "spec_args" : null,
+          "required" : true
+        },
+        "alpha" : {
+          "type_enum" : "DOUBLE",
+          "spec_args" : null,
+          "required" : true
+        }
+      }
+    },
+    "Vehicle" : {
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "color" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "Color",
+          "required" : true
+        },
+        "licensePlate" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : false
+        },
+        "description" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : false
+        },
+        "name" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : false
+        }
+      }
+    },
+    "Person" : {
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "id" : {
+          "type_enum" : "I64",
+          "spec_args" : null,
+          "required" : true
+        },
+        "name" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true
+        },
+        "age" : {
+          "type_enum" : "I16",
+          "spec_args" : null,
+          "required" : false
+        },
+        "address" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : false
+        },
+        "favoriteColor" : {
+          "type_enum" : "STRUCT",
+          "spec_args" : "Color",
+          "required" : false
+        },
+        "friends" : {
+          "type_enum" : "SET",
+          "spec_args" : { "type_enum" : "I64", "spec_args" : null} ,
+          "required" : false
+        },
+        "bestFriend" : {
+          "type_enum" : "I64",
+          "spec_args" : null,
+          "required" : false
+        },
+        "petNames" : {
+          "type_enum" : "MAP",
+          "spec_args" : { "key_type" : { "type_enum" : "ENUM", "spec_args" : "Animal" }, "val_type" : { "type_enum" : "STRING", "spec_args" : null} } ,
+          "required" : false
+        },
+        "afraidOfAnimal" : {
+          "type_enum" : "ENUM",
+          "spec_args" : "Animal",
+          "required" : false
+        },
+        "vehicles" : {
+          "type_enum" : "LIST",
+          "spec_args" : { "type_enum" : "STRUCT", "spec_args" : "Vehicle"} ,
+          "required" : false
+        }
+      }
+    }
+  }
+}
