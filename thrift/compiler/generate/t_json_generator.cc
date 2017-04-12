@@ -1,4 +1,6 @@
 /*
+ * Copyright 2004-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #include <string>
 #include <fstream>
 #include <iostream>
@@ -323,6 +324,9 @@ void t_json_generator::print_const_value(const t_const_value* tvalue) {
     break;
   case t_const_value::CV_STRING:
     f_out_ << "\"" << tvalue->get_string() << "\"";
+    break;
+  case t_const_value::CV_BOOL:
+    f_out_ << (tvalue->get_bool() ? "true" : "false");
     break;
   case t_const_value::CV_MAP:
     {
