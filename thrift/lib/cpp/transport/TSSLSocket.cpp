@@ -16,6 +16,7 @@
 
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
 
+#include <folly/portability/OpenSSL.h>
 #include <folly/portability/Sockets.h>
 
 #include <boost/lexical_cast.hpp>
@@ -248,7 +249,7 @@ bool TSSLSocket::validatePeerName(SSL* ssl) {
         if (name == nullptr) {
           continue;
         }
-        char* data = (char*)ASN1_STRING_data(name->d.ia5);
+        char* data = (char*)ASN1_STRING_get0_data(name->d.ia5);
         int length = ASN1_STRING_length(name->d.ia5);
         switch (name->type) {
           case GEN_DNS:
