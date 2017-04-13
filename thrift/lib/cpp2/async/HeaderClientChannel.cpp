@@ -578,27 +578,18 @@ void HeaderClientChannel::messageReceiveErrorWrapped(
     folly::exception_wrapper&& ex) {
   DestructorGuard dg(this);
 
-  // Clear callbacks early.  The last callback can delete the client,
-  // which may cause the channel to be destroy()ed, which will call
-  // messageChannelEOF(), which will reenter messageReceiveError().
-
-  decltype(recvCallbacks_) callbacks;
-  decltype(afterSecurity_) otherCallbacks;
-  using std::swap;
-  swap(recvCallbacks_, callbacks);
-  swap(afterSecurity_, otherCallbacks);
-
-  if (!callbacks.empty()) {
-    for (auto& cb : callbacks) {
-      if (cb.second) {
-        cb.second->requestError(ex);
-      }
-    }
+  while (!recvCallbacks_.empty()) {
+    auto cb = recvCallbacks_.begin()->second;
+    recvCallbacks_.erase(recvCallbacks_.begin());
+    DestructorGuard dgcb(cb);
+    cb->requestError(ex);
   }
 
-  for (auto& funcarg : otherCallbacks) {
-    auto& cb = std::get<2>(funcarg);
-    auto& ctx = std::get<3>(funcarg);
+  while (!afterSecurity_.empty()) {
+    auto& funcarg = afterSecurity_.front();
+    auto cb = std::move(std::get<2>(funcarg));
+    auto ctx = std::move(std::get<3>(funcarg));
+    afterSecurity_.pop_front();
     if (cb) {
       folly::RequestContextScopeGuard rctx(cb->context_);
       cb->securityEnd_ = std::chrono::duration_cast<Us>(
@@ -607,6 +598,7 @@ void HeaderClientChannel::messageReceiveErrorWrapped(
           ClientReceiveState(ex, std::move(ctx), isSecurityActive()));
     }
   }
+
   setBaseReceivedCallback();
 }
 
