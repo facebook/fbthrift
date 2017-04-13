@@ -391,6 +391,8 @@ void t_json_generator::generate_typedef(t_typedef* ttypedef) {
 void t_json_generator::generate_enum(t_enum* tenum) {
   indent(f_out_) << "\"" << tenum->get_name() << "\" : {" << endl;
   indent_up();
+  indent(f_out_) << "\"constants\" : {" << endl;
+  indent_up();
   vector<t_enum_value*> values = tenum->get_constants();
   vector<t_enum_value*>::iterator val_iter;
   for (val_iter = values.begin(); val_iter != values.end(); ++val_iter) {
@@ -401,6 +403,8 @@ void t_json_generator::generate_enum(t_enum* tenum) {
       << (*val_iter)->get_value();
   }
   f_out_ << endl;
+  indent_down();
+  indent(f_out_) << "}" << endl;
   indent_down();
   indent(f_out_) << "}";
 }

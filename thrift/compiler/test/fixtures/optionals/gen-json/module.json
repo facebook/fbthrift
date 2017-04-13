@@ -2,9 +2,11 @@
   "thrift_module" : "module",
   "enumerations" : {
     "Animal" : {
-      "DOG" : 1,
-      "CAT" : 2,
-      "TARANTULA" : 3
+      "constants" : {
+        "DOG" : 1,
+        "CAT" : 2,
+        "TARANTULA" : 3
+      }
     }
   },
   "typedefs" : {
