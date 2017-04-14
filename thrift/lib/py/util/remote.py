@@ -29,6 +29,7 @@ from six.moves.urllib.parse import urlparse
 from six import string_types
 import sys
 import traceback
+import pickle
 
 from thrift import Thrift
 from thrift.transport import TTransport, TSocket, TSSLSocket, THttpClient
@@ -224,6 +225,13 @@ class RemoteTransportClient(RemoteClient):
                 'metavar': 'HEADERS_DICT',
                 'help':
                 'Python code to eval() into a dict of write headers',
+            }
+        ), (
+            ['I', 'stdin'],
+            {
+                'action': 'store_true',
+                'default': False,
+                'help': 'Take function arguments as pickled python list',
             }
         ),
     ]
@@ -523,6 +531,13 @@ class Remote(object):
         else:
             print_usage(sys.stderr, help=True)
             sys.exit(os.EX_USAGE)
+
+        if args.stdin:
+            if args.function_args:
+                print('error: cannot specify --stdin and arguments on the '
+                      'command line', file=sys.stderr)
+            args.function_args = pickle.load(sys.stdin)
+
 
         return args, print_usage
 
