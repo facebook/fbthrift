@@ -70,10 +70,11 @@ def parse_struct_spec(struct):
         yield StructField._make(field)
 
 
-def struct_to_dict(struct):
+def struct_to_dict(struct, defaults=False):
     """
     Given a Thrift Struct convert it into a dict
     :param struct: a thrift struct
+    :param defaults: return default values
     :return: OrderedDict
     """
     adict = OrderedDict()
@@ -89,18 +90,22 @@ def struct_to_dict(struct):
                 continue
         else:
             value = getattr(struct, field.name, field.default)
-        if value != field.default:
+        if value != field.default or defaults:
             if field.type == TType.STRUCT:
-                sub_dict = struct_to_dict(value)
-                if sub_dict:  # Do not include empty sub structs
+                sub_dict = struct_to_dict(value, defaults=defaults)
+                if sub_dict or defaults:  # Do not include empty sub structs
                     adict[field.name] = sub_dict
             elif field.type == TType.LIST or field.type == TType.SET:
-                sub_list = __list_to_dict(value, field.type_args)
-                if sub_list:
+                sub_list = __list_to_dict(value,
+                                          field.type_args,
+                                          defaults=defaults)
+                if sub_list or defaults:
                     adict[field.name] = sub_list
             elif field.type == TType.MAP:
-                sub_map = __map_to_dict(value, field.type_args)
-                if sub_map:
+                sub_map = __map_to_dict(value,
+                                        field.type_args,
+                                        defaults=defaults)
+                if sub_map or defaults:
                     adict[field.name] = sub_map
             else:
                 adict[field.name] = value
@@ -109,11 +114,12 @@ def struct_to_dict(struct):
     return adict
 
 
-def __list_to_dict(alist, type_args):
+def __list_to_dict(alist, type_args, defaults=False):
     """
     Given a python list-like collection, potentially containing Thrift Structs,
     convert it into a dict
     :param alist: a list or set
+    :param defaults: return default values
     :return: OrderedDict
     """
     if not alist:
@@ -121,26 +127,28 @@ def __list_to_dict(alist, type_args):
 
     element_type = type_args[0]
     if element_type == TType.STRUCT:
-        return [struct_to_dict(element) for element in alist]
+        return [struct_to_dict(element, defaults=defaults) for element in alist]
     if element_type == TType.LIST or element_type == TType.SET:
-        sub_list = [__list_to_dict(element, type_args[1]) for element in alist]
+        sub_list = [__list_to_dict(element, type_args[1], defaults=defaults)
+                    for element in alist]
         return set(sub_list) if element_type == TType.SET else sub_list
     else:
         return alist
 
 
-def __map_to_dict(amap, type_args):
+def __map_to_dict(amap, type_args, defaults=False):
     """
     Given a python dictionary, potentially containing Thrift Structs, convert it
     into a dict
     :param alist: a list or set
+    :param defaults: return default values
     :return: OrderedDict
     """
     if not amap:
         return amap
 
     keys, values = zip(*iteritems(amap))
-    keys = __list_to_dict(keys, type_args[:2])
-    values = __list_to_dict(values, type_args[2:4])
+    keys = __list_to_dict(keys, type_args[:2], defaults=defaults)
+    values = __list_to_dict(values, type_args[2:4], defaults=defaults)
 
     return dict(zip(keys, values))
