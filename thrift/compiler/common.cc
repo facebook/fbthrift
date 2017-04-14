@@ -591,7 +591,7 @@ void parse(t_program* program,
   string path = program->get_path();
 
   if (already_parsed_paths.count(path)) {
-    failure("Circular dependecy found: file %s is already parsed. ",
+    failure("Circular dependency found: file %s is already parsed. ",
             path.c_str());
   } else {
     already_parsed_paths.insert(path);
