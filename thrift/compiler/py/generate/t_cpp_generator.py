@@ -527,12 +527,21 @@ class CppGenerator(t_generator.Generator):
                     out('using U = std::underlying_type_t<E>;')
                     out('return static_cast<E>('
                         'static_cast<U>(a) {0} static_cast<U>(b));'.format(op))
+                out('#if __cplusplus >= 201402L')
                 with s.defn(
                         '{0}& {{name}}({0}& a, {0} b)'.format(tenum.name),
                         name='operator{0}='.format(op),
                         in_header=True,
                         modifiers='inline constexpr'):
                     out('return a = a {0} b;'.format(op))
+                out('#else')
+                with s.defn(
+                        '{0}& {{name}}({0}& a, {0} b)'.format(tenum.name),
+                        name='operator{0}='.format(op),
+                        in_header=True,
+                        modifiers='inline'):
+                    out('return a = a {0} b;'.format(op))
+                out('#endif')
             for op in ['~']:
                 with s.defn(
                         '{0} {{name}}({0} a)'.format(tenum.name),

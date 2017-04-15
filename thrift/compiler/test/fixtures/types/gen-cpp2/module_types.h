@@ -38,30 +38,51 @@ inline constexpr has_bitwise_ops operator&(has_bitwise_ops a, has_bitwise_ops b)
   using U = std::underlying_type_t<E>;
   return static_cast<E>(static_cast<U>(a) & static_cast<U>(b));
 }
+#if __cplusplus >= 201402L
 
 inline constexpr has_bitwise_ops& operator&=(has_bitwise_ops& a, has_bitwise_ops b) {
   return a = a & b;
 }
+#else
+
+inline has_bitwise_ops& operator&=(has_bitwise_ops& a, has_bitwise_ops b) {
+  return a = a & b;
+}
+#endif
 
 inline constexpr has_bitwise_ops operator|(has_bitwise_ops a, has_bitwise_ops b) {
   using E = has_bitwise_ops;
   using U = std::underlying_type_t<E>;
   return static_cast<E>(static_cast<U>(a) | static_cast<U>(b));
 }
+#if __cplusplus >= 201402L
 
 inline constexpr has_bitwise_ops& operator|=(has_bitwise_ops& a, has_bitwise_ops b) {
   return a = a | b;
 }
+#else
+
+inline has_bitwise_ops& operator|=(has_bitwise_ops& a, has_bitwise_ops b) {
+  return a = a | b;
+}
+#endif
 
 inline constexpr has_bitwise_ops operator^(has_bitwise_ops a, has_bitwise_ops b) {
   using E = has_bitwise_ops;
   using U = std::underlying_type_t<E>;
   return static_cast<E>(static_cast<U>(a) ^ static_cast<U>(b));
 }
+#if __cplusplus >= 201402L
 
 inline constexpr has_bitwise_ops& operator^=(has_bitwise_ops& a, has_bitwise_ops b) {
   return a = a ^ b;
 }
+#else
+
+inline has_bitwise_ops& operator^=(has_bitwise_ops& a, has_bitwise_ops b) {
+  return a = a ^ b;
+}
+#endif
 
 inline constexpr has_bitwise_ops operator~(has_bitwise_ops a) {
   using E = has_bitwise_ops;
