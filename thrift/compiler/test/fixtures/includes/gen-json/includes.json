@@ -1,0 +1,17 @@
+{
+  "thrift_module" : "includes",
+  "structs" : {
+    "Included" : {
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "MyIntField" : {
+          "type_enum" : "I64",
+          "spec_args" : null,
+          "required" : true,
+          "default_value" : 0
+        }
+      }
+    }
+  }
+}

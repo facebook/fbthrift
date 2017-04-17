@@ -1,3 +1,4 @@
+json src/service.thrift
 hs src/service.thrift
 py src/service.thrift
 android_lite src/module.thrift

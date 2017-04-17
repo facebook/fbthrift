@@ -1,0 +1,26 @@
+{
+  "thrift_module" : "service",
+  "services" : {
+    "MyService" : {
+      "functions" : {
+        "MyService.query" : {
+          "return_type" : {
+            "type_enum" : "VOID",
+            "spec_args" : null
+          },
+          "args" : [
+            {
+              "type_enum" : "STRUCT",
+              "spec_args" : "module.MyStruct"
+            },
+            {
+              "type_enum" : "STRUCT",
+              "spec_args" : "includes.Included"
+            }
+          ],
+          "throws" : []
+        }
+      }
+    }
+  }
+}
