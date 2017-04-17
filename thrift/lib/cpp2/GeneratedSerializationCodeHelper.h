@@ -572,6 +572,33 @@ struct protocol_methods<type_class::structure, Type> {
 };
 
 /*
+ * Struct with Indirection Specialization
+ */
+template <template <typename> class Impl, typename ElemClass, typename Type>
+struct protocol_methods<Impl<ElemClass>, Type> {
+  using indirection = Impl<ElemClass>;
+  using elem_type = std::remove_reference_t<decltype(
+      indirection::template get(std::declval<Type&>()))>;
+  using elem_methods = protocol_methods<ElemClass, elem_type>;
+
+  constexpr static protocol::TType ttype_value = elem_methods::ttype_value;
+
+  template <typename Protocol>
+  static std::size_t read(Protocol& protocol, Type& out) {
+    return elem_methods::read(protocol, indirection::template get<Type>(out));
+  }
+  template <typename Protocol>
+  static std::size_t write(Protocol& protocol, Type const& in) {
+    return elem_methods::write(protocol, indirection::template get<Type>(in));
+  }
+  template <bool ZeroCopy, typename Protocol>
+  static std::size_t serialized_size(Protocol& protocol, Type const& in) {
+    return elem_methods::serialized_size<ZeroCopy>(
+        protocol, indirection::template get<Type>(in));
+  }
+};
+
+/*
  * Smart Pointer Specialization
  * This resolves all calls that uses pointers and forwards them to
  * the appropriate method
