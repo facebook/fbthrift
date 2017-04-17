@@ -434,7 +434,11 @@ Include:
       if (g_parse_mode == INCLUDES) {
         std::string path = include_file(std::string($2));
         if (!path.empty()) {
-          g_program->add_include(path, std::string($2));
+          if (program_cache.find(path) == program_cache.end()) {
+            program_cache[path] = g_program->add_include(path, std::string($2));
+          } else {
+            g_program->add_include(program_cache[path]);
+          }
         }
       }
     }
@@ -465,10 +469,7 @@ Definition:
     {
       pdebug("Definition -> TypeDefinition");
       if (g_parse_mode == PROGRAM) {
-        g_scope->add_type($1->get_name(), $1);
-        if (g_parent_scope != NULL) {
-          g_parent_scope->add_type(g_parent_prefix + $1->get_name(), $1);
-        }
+        g_scope_cache->add_type(g_program->get_name() + "." + $1->get_name(), $1);
       }
       $$ = $1;
     }
@@ -476,10 +477,7 @@ Definition:
     {
       pdebug("Definition -> Service");
       if (g_parse_mode == PROGRAM) {
-        g_scope->add_service($1->get_name(), $1);
-        if (g_parent_scope != NULL) {
-          g_parent_scope->add_service(g_parent_prefix + $1->get_name(), $1);
-        }
+        g_scope_cache->add_service(g_program->get_name() + "." + $1->get_name(), $1);
         g_program->add_service($1);
       }
       $$ = $1;
@@ -533,7 +531,7 @@ Typedef:
   tok_typedef FieldType tok_identifier TypeAnnotations
     {
       pdebug("TypeDef -> tok_typedef FieldType tok_identifier");
-      t_typedef *td = new t_typedef(g_program, $2, $3);
+      t_typedef *td = new t_typedef(g_program, $2, $3, g_scope_cache);
       $$ = td;
       if ($4 != NULL) {
         $$->annotations_ = $4->annotations_;
@@ -597,14 +595,10 @@ EnumDef:
                                         new t_const_value($2->get_value()));
         assert(y_enum_name != nullptr);
         string type_prefix = string(y_enum_name) + ".";
-        g_scope->add_constant($2->get_name(), constant);
-        g_scope->add_constant(type_prefix + $2->get_name(), constant);
-        if (g_parent_scope != NULL) {
-          g_parent_scope->add_constant(g_parent_prefix + $2->get_name(),
-                                       constant);
-          g_parent_scope->add_constant(
-              g_parent_prefix + type_prefix + $2->get_name(), constant);
-        }
+        g_scope_cache->add_constant(
+            g_program->get_name() + "." + $2->get_name(), constant);
+        g_scope_cache->add_constant(
+            g_program->get_name() + "." + type_prefix + $2->get_name(), constant);
       }
       if ($3 != NULL) {
         $$->annotations_ = $3->annotations_;
@@ -645,7 +639,7 @@ Senum:
   tok_senum tok_identifier '{' SenumDefList '}'
     {
       pdebug("Senum -> tok_senum tok_identifier { SenumDefList }");
-      $$ = new t_typedef(g_program, $4, $2);
+      $$ = new t_typedef(g_program, $4, $2, g_scope_cache);
     }
 
 SenumDefList:
@@ -677,11 +671,7 @@ Const:
         $$ = new t_const(g_program, $2, $3, $5);
         validate_const_type($$);
 
-        g_scope->add_constant($3, $$);
-        if (g_parent_scope != NULL) {
-          g_parent_scope->add_constant(g_parent_prefix + $3, $$);
-        }
-
+        g_scope_cache->add_constant(g_program->get_name() + "." + $3, $$);
       } else {
         $$ = NULL;
       }
@@ -717,7 +707,10 @@ ConstValue:
 | tok_identifier
     {
       pdebug("ConstValue => tok_identifier");
-      t_const* constant = g_scope->get_constant($1);
+      t_const* constant = g_scope_cache->get_constant($1);
+      if (!constant) {
+        constant = g_scope_cache->get_constant(g_program->get_name() + "." + $1);
+      }
       if (constant != nullptr) {
         $$ = constant->get_value();
       } else {
@@ -814,7 +807,10 @@ View:
         $$->set_name($2);
       } else {
         // Lookup the identifier in the current scope
-        t_type* parent_type = g_scope->get_type($4);
+        t_type* parent_type = g_scope_cache->get_type($4);
+        if (!parent_type) {
+          parent_type = g_scope_cache->get_type(g_program->get_name() + "." + $4);
+        }
         if (parent_type == NULL || !parent_type->is_struct()) {
           yyerror("Struct \"%s\" has not been defined. %d", $4, g_parse_mode);
           exit(1);
@@ -990,7 +986,10 @@ Extends:
       pdebug("Extends -> tok_extends tok_identifier");
       $$ = NULL;
       if (g_parse_mode == PROGRAM) {
-        $$ = g_scope->get_service($2);
+        $$ = g_scope_cache->get_service($2);
+        if (!$$) {
+          $$ = g_scope_cache->get_service(g_program->get_name() + "." + $2);
+        }
         if ($$ == NULL) {
           yyerror("Service \"%s\" has not been defined.", $2);
           exit(1);
@@ -1285,14 +1284,17 @@ FieldType:
         $$ = NULL;
       } else {
         // Lookup the identifier in the current scope
-        $$ = g_scope->get_type($1);
+        $$ = g_scope_cache->get_type($1);
+        if (!$$) {
+          $$ = g_scope_cache->get_type(g_program->get_name() + "." + $1);
+        }
         if ($$ == NULL || $2 != NULL) {
           /*
            * Either this type isn't yet declared, or it's never
              declared.  Either way allow it and we'll figure it out
              during generation.
            */
-          $$ = new t_typedef(g_program, $1);
+          $$ = new t_typedef(g_program, $1, g_scope_cache);
           if ($2 != NULL) {
             $$->annotations_ = $2->annotations_;
             delete $2;

@@ -1,4 +1,6 @@
 /*
+ * Copyright 2017-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 /**
  * thrift - a lightweight cross-language rpc/serialization tool
  *
@@ -113,18 +114,27 @@ static void usage() {
 /**
  * Generate code
  */
-static bool generate(t_program* program,
-                     const vector<string>& generator_strings,
-                     char** argv) {
+static bool generate(
+    t_program* program,
+    const vector<string>& generator_strings,
+    std::set<std::string>& already_generated,
+    char** argv) {
   // Oooohh, recursive code generation, hot!!
   if (gen_recurse) {
     const vector<t_program*>& includes = program->get_includes();
-    for (size_t i = 0; i < includes.size(); ++i) {
-      // Propogate output path from parent to child programs
-      includes[i]->set_out_path(program->get_out_path(), program->is_out_path_absolute());
+    for (const auto& include : includes) {
+      if (already_generated.count(include->get_path())) {
+        continue;
+      }
 
-      if (!generate(includes[i], generator_strings, argv)) {
+      // Propogate output path from parent to child programs
+      include->set_out_path(
+          program->get_out_path(), program->is_out_path_absolute());
+
+      if (!generate(include, generator_strings, already_generated, argv)) {
         return false;
+      } else {
+        already_generated.insert(include->get_path());
       }
     }
   }
@@ -512,7 +522,9 @@ int main(int argc, char** argv) {
   g_type_float  = new t_base_type("float",  t_base_type::TYPE_FLOAT);
 
   // Parse it!
-  parse(program, nullptr);
+  g_scope_cache = program->scope();
+  std::set<std::string> already_parsed_paths;
+  parse(program, nullptr, already_parsed_paths);
 
   // Validate it!
   auto errors = apache::thrift::compiler::validator::validate(program);
@@ -533,7 +545,8 @@ int main(int argc, char** argv) {
   // Generate it!
   bool success;
   try {
-    success = generate(program, generator_strings, argv);
+    std::set<std::string> already_generated{program->get_path()};
+    success = generate(program, generator_strings, already_generated, argv);
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
     return 1;

@@ -32,6 +32,7 @@
  * Global program tree
  */
 t_program* g_program;
+std::map<std::string, t_program*> program_cache;
 
 /**
  * Global types
@@ -49,19 +50,9 @@ t_base_type* g_type_double;
 t_base_type* g_type_float;
 
 /**
- * Global scope
+ * Global scope cache for faster compilations
  */
-t_scope* g_scope;
-
-/**
- * Parent scope to also parse types
- */
-t_scope* g_parent_scope;
-
-/**
- * Prefix for putting types in parent scope
- */
-string g_parent_prefix;
+t_scope* g_scope_cache;
 
 /**
  * Parsing pass
@@ -585,15 +576,25 @@ void validate_const_rec(std::string name, t_type* type, t_const_value* value) {
   }
 }
 
-void parse(t_program* program,
-           t_program* parent_program,
-           set<string> already_parsed_paths) {
+void parse(
+    t_program* program,
+    t_program* parent_program,
+    std::set<std::string>& already_parsed_paths,
+    std::set<std::string> circular_deps) {
   // Get scope file path
   string path = program->get_path();
 
-  if (already_parsed_paths.count(path)) {
+  // Fail on circular dependencies
+  if (circular_deps.count(path)) {
     failure(
         "Circular dependency found: file %s is already parsed.", path.c_str());
+  } else {
+    circular_deps.insert(path);
+  }
+
+  // Skip on already parsed files
+  if (already_parsed_paths.count(path)) {
+    return;
   } else {
     already_parsed_paths.insert(path);
   }
@@ -612,7 +613,6 @@ void parse(t_program* program,
   pverbose("Scanning %s for includes\n", path.c_str());
   g_parse_mode = INCLUDES;
   g_program = program;
-  g_scope = program->scope();
   try {
     yylineno = 1;
     if (yyparse() != 0) {
@@ -633,7 +633,7 @@ void parse(t_program* program,
   g_allow_neg_enum_vals = true;
   g_allow_neg_field_keys = true;
   for (auto included_program : includes) {
-    parse(included_program, program, already_parsed_paths);
+    parse(included_program, program, already_parsed_paths, circular_deps);
   }
   g_allow_neg_enum_vals = main_allow_neg_enum_vals;
   g_allow_neg_field_keys = main_allow_neg_keys;
@@ -641,9 +641,6 @@ void parse(t_program* program,
   // Parse the program file
   g_parse_mode = PROGRAM;
   g_program = program;
-  g_scope = program->scope();
-  g_parent_scope = (parent_program != nullptr) ? parent_program->scope() : nullptr;
-  g_parent_prefix = program->get_name() + ".";
   g_curpath = path;
   yyin = fopen(path.c_str(), "r");
   if (yyin == 0) {

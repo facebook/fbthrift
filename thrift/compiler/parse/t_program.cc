@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <thrift/compiler/parse/t_program.h>
 
 #include <map>
@@ -38,7 +37,7 @@ void t_program::set_out_path(std::string out_path, bool out_path_is_absolute) {
   }
 }
 
-void t_program::add_include(std::string path, std::string include_site) {
+t_program* t_program::add_include(std::string path, std::string include_site) {
   t_program* program = new t_program(path);
 
   std::string include_prefix;
@@ -49,6 +48,7 @@ void t_program::add_include(std::string path, std::string include_site) {
 
   program->set_include_prefix(include_prefix);
   includes_.push_back(program);
+  return program;
 }
 
 void t_program::set_include_prefix(std::string include_prefix) {

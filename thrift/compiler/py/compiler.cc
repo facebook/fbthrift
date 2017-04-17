@@ -1,4 +1,6 @@
 /*
+ * Copyright 2017-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 /**
  * thrift - a lightweight cross-language rpc/serialization tool
  *
@@ -128,7 +129,9 @@ void process(const dict& params, const object& generate_callback) {
   g_type_float = type_float.get();
 
   // Parse it!
-  parse(program.get(), nullptr);
+  g_scope_cache = program->scope();
+  std::set<std::string> already_parsed_paths;
+  parse(program.get(), nullptr, already_parsed_paths);
 
   // The current path is not really relevant when we are doing generation.
   // Reset the variable to make warning messages clearer.

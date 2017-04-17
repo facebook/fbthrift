@@ -1,4 +1,6 @@
 /*
+ * Copyright 2017-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,10 +18,11 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #ifndef THRIFT_COMPILER_COMMON_
 #define THRIFT_COMPILER_COMMON_ 1
 
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <algorithm>
 #include <cassert>
 #include <cerrno>
@@ -27,8 +30,7 @@
 #include <cstdarg>
 #include <cstdio>
 #include <cstdlib>
-#include <sys/stat.h>
-#include <sys/types.h>
+#include <set>
 #include <string>
 
 // Careful: must include globals first for extern definitions
@@ -202,9 +204,11 @@ bool validate_throws(t_struct* throws);
  * Parses a program. already_parsed_paths is deliberately passed by value
  * because it should be the set of files in the direct inclusion tree.
  */
-void parse(t_program* program,
-           t_program* parent_program,
-           set<string> already_parsed_paths = set<string>());
+void parse(
+    t_program* program,
+    t_program* parent_program,
+    std::set<std::string>& already_parsed_paths,
+    std::set<std::string> circular_deps = std::set<std::string>());
 
 void override_annotations(std::map<std::string, std::string>& where,
                           const std::map<std::string, std::string>& from);

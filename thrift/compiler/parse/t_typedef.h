@@ -1,27 +1,24 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements. See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership. The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at
+ * Copyright 2017-present Facebook, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
  *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied. See the License for the
- * specific language governing permissions and limitations
- * under the License.
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
-#ifndef T_TYPEDEF_H
-#define T_TYPEDEF_H
+#pragma once
 
-#include <string>
+#include <thrift/compiler/parse/t_scope.h>
 #include <thrift/compiler/parse/t_type.h>
+#include <string>
 
 /**
  * A typedef is a mapping from a symbolic name to another type. In dymanically
@@ -32,20 +29,26 @@
  */
 class t_typedef : public t_type {
  public:
-  t_typedef(t_program* program, t_type* type, const std::string& symbolic) :
-    t_type(program, symbolic),
-    type_(type),
-    symbolic_(symbolic) {}
+  t_typedef(
+      t_program* program,
+      t_type* type,
+      const std::string& symbolic,
+      t_scope* scope)
+      : t_type(program, symbolic),
+        type_(type),
+        symbolic_(symbolic),
+        scope_(scope) {}
 
   /**
    * This constructor is used to refer to a type that is lazily
    * resolved at a later time, like for forward declarations or
    * recursive types.
    */
-  t_typedef(t_program* program, const std::string& symbolic) :
-    t_type(program, symbolic),
-    type_(nullptr),
-    symbolic_(symbolic) {}
+  t_typedef(t_program* program, const std::string& symbolic, t_scope* scope)
+      : t_type(program, symbolic),
+        type_(nullptr),
+        symbolic_(symbolic),
+        scope_(scope) {}
 
   ~t_typedef() override {}
 
@@ -74,6 +77,5 @@ class t_typedef : public t_type {
  private:
   mutable t_type* type_;
   std::string symbolic_;
+  t_scope* scope_;
 };
-
-#endif

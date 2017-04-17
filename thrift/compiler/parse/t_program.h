@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #pragma once
 
 #include <map>
@@ -156,7 +155,11 @@ class t_program : public t_doc {
    * @param path         - A full thrift file path
    * @param include_site - A full or relative thrift file path
    */
-  void add_include(std::string path, std::string include_site);
+  t_program* add_include(std::string path, std::string include_site);
+
+  void add_include(t_program* program) {
+    includes_.push_back(program);
+  }
 
   /**
    * This sets the directory path of the current thrift program,
