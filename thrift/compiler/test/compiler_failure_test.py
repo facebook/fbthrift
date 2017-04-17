@@ -132,3 +132,25 @@ class CompilerFailureTest(unittest.TestCase):
             "Add thrift.duplicate_values annotation to enum to suppress this "
             "error\n"
         )
+
+    def test_circular_include_dependencies(self):
+        # tests overriding a method of the parent and the grandparent services
+        write_file("foo.thrift", textwrap.dedent("""\
+            include "bar.thrift"
+            service MySBB {
+                void lol(),
+            }
+        """))
+        write_file("bar.thrift", textwrap.dedent("""\
+            include "foo.thrift"
+            service MySB extends foo.MySBB {
+                void meh(),
+            }
+        """))
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:bar.thrift:5] Circular dependency found: file "
+            "foo.thrift is already parsed.\n"
+        )

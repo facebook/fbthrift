@@ -1,4 +1,6 @@
 /*
+ * Copyright 2017-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #include <thrift/compiler/common.h>
 
 #ifdef _WIN32
@@ -591,8 +592,8 @@ void parse(t_program* program,
   string path = program->get_path();
 
   if (already_parsed_paths.count(path)) {
-    failure("Circular dependency found: file %s is already parsed. ",
-            path.c_str());
+    failure(
+        "Circular dependency found: file %s is already parsed.", path.c_str());
   } else {
     already_parsed_paths.insert(path);
   }
