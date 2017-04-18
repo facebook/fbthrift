@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,16 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #pragma once
 
 #include <thrift/compiler/parse/t_annotated.h>
 
 #include <string>
-
-// Internal variable maintained by `lex` representing
-// the current line number of the input.
-extern int yylineno;
 
 /**
  * class t_enum_value
@@ -72,13 +67,8 @@ class t_enum_value : public t_annotated {
 
   bool has_value() { return has_value_; }
 
-  int get_lineno() const {
-    return lineno_;
-  }
-
  private:
   std::string name_;
   int32_t value_{0};
   bool has_value_{false};
-  int lineno_{yylineno};
 };

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #pragma once
 
 #include <string>
@@ -21,10 +20,6 @@
 #include <thrift/compiler/parse/t_type.h>
 #include <thrift/compiler/parse/t_struct.h>
 #include <thrift/compiler/parse/t_doc.h>
-
-// Internal variable maintained by `lex` representing
-// the current line number of the input.
-extern int yylineno;
 
 /**
  * class t_function
@@ -117,8 +112,6 @@ class t_function : public t_doc {
 
   bool is_oneway() const { return oneway_; }
 
-  int get_lineno() const { return lineno_; }
-
  private:
   t_type* returntype_;
   std::string name_;
@@ -126,5 +119,4 @@ class t_function : public t_doc {
   t_struct* xceptions_;
   t_type* annotations_;
   bool oneway_;
-  int lineno_{yylineno};
 };

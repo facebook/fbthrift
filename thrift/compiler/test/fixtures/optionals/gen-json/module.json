@@ -2,6 +2,7 @@
   "thrift_module" : "module",
   "enumerations" : {
     "Animal" : {
+      "lineno" : 10,
       "constants" : {
         "DOG" : 1,
         "CAT" : 2,
@@ -11,12 +12,14 @@
   },
   "typedefs" : {
     "PersonID" : {
+      "lineno" : 24,
       "type_enum" : "I64",
       "spec_args" : null
     }
   },
   "structs" : {
     "Color" : {
+      "lineno" : 3,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -43,6 +46,7 @@
       }
     },
     "Vehicle" : {
+      "lineno" : 16,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -75,6 +79,7 @@
       }
     },
     "Person" : {
+      "lineno" : 26,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {

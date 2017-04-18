@@ -62,6 +62,7 @@ class t_json_generator : public t_concat_generator {
   void   print_type       (t_type* ttype);
   void   print_const_value(const t_const_value* tvalue);
   void   print_const_key  (t_const_value* tvalue);
+  void print_lineno(int lineno);
   string type_to_string   (t_type* type);
   string type_to_spec_args(t_type* ttype);
 
@@ -369,6 +370,10 @@ void t_json_generator::print_const_value(const t_const_value* tvalue) {
   }
 }
 
+void t_json_generator::print_lineno(int lineno) {
+  indent(f_out_) << "\"lineno\" : " << lineno << "," << endl;
+}
+
 /**
  * Generates a typedef.
  *
@@ -377,6 +382,7 @@ void t_json_generator::print_const_value(const t_const_value* tvalue) {
 void t_json_generator::generate_typedef(t_typedef* ttypedef) {
   indent(f_out_) << "\"" << ttypedef->get_name() << "\" : {" << endl;
   indent_up();
+  print_lineno(ttypedef->get_lineno());
   print_type(ttypedef->get_type());
   f_out_ << endl;
   indent_down();
@@ -391,6 +397,7 @@ void t_json_generator::generate_typedef(t_typedef* ttypedef) {
 void t_json_generator::generate_enum(t_enum* tenum) {
   indent(f_out_) << "\"" << tenum->get_name() << "\" : {" << endl;
   indent_up();
+  print_lineno(tenum->get_lineno());
   indent(f_out_) << "\"constants\" : {" << endl;
   indent_up();
   vector<t_enum_value*> values = tenum->get_constants();
@@ -430,6 +437,7 @@ void t_json_generator::generate_const(t_const* tconst) {
   string name = tconst->get_name();
   indent(f_out_) << "\"" << name << "\" : {" << endl;
   indent_up();
+  print_lineno(tconst->get_lineno());
   indent(f_out_) << "\"value\" : ";
   print_const_value(tconst->get_value());
   f_out_ << "," << endl;
@@ -448,6 +456,7 @@ void t_json_generator::generate_struct(t_struct* tstruct) {
   string name = tstruct->get_name();
   indent(f_out_) << "\"" << name << "\" : {" << endl;
   indent_up();
+  print_lineno(tstruct->get_lineno());
   indent(f_out_) << "\"is_exception\" : "
     << (tstruct->is_xception() ? "true" : "false") << "," << endl;
   indent(f_out_) << "\"is_union\" : "
@@ -517,6 +526,7 @@ void t_json_generator::generate_service(t_service* tservice) {
   if (!first) {
     f_out_ << "," << endl;
   }
+  print_lineno(tservice->get_lineno());
   f_out_ << indent() << "\"functions\" : {" << endl;
   indent_up();
   for ( ; fn_iter != functions.end(); fn_iter++) {

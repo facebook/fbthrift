@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #pragma once
 
 /**
@@ -47,7 +46,15 @@ class t_doc {
 
   bool has_doc() const { return has_doc_; }
 
+  void set_lineno(int lineno) {
+    lineno_ = lineno;
+  }
+  int get_lineno() const {
+    return lineno_;
+  }
+
  private:
   std::string doc_;
   bool has_doc_{false};
+  int lineno_{-1};
 };

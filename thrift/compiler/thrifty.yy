@@ -53,6 +53,9 @@ int g_arglist = 0;
 const int struct_is_struct = 0;
 const int struct_is_union = 1;
 char* y_enum_name = nullptr;
+// This global variable is used for keeping track of line number where
+// definition starts
+int y_definition_lineno = -1;
 
 %}
 
@@ -528,14 +531,19 @@ TypeDefinition:
     }
 
 Typedef:
-  tok_typedef FieldType tok_identifier TypeAnnotations
+  tok_typedef
+    {
+      y_definition_lineno = yylineno;
+    }
+  FieldType tok_identifier TypeAnnotations
     {
       pdebug("TypeDef -> tok_typedef FieldType tok_identifier");
-      t_typedef *td = new t_typedef(g_program, $2, $3, g_scope_cache);
+      t_typedef *td = new t_typedef(g_program, $3, $4, g_scope_cache);
       $$ = td;
-      if ($4 != NULL) {
-        $$->annotations_ = $4->annotations_;
-        delete $4;
+      $$->set_lineno(y_definition_lineno);
+      if ($5 != NULL) {
+        $$->annotations_ = $5->annotations_;
+        delete $5;
       }
     }
 
@@ -548,19 +556,24 @@ CommaOrSemicolonOptional:
     {}
 
 Enum:
-  tok_enum tok_identifier
+  tok_enum
+    {
+      y_definition_lineno = yylineno;
+    }
+  tok_identifier
     {
       assert(y_enum_name == nullptr);
-      y_enum_name = $2;
+      y_enum_name = $3;
     }
   '{' EnumDefList '}' TypeAnnotations
     {
       pdebug("Enum -> tok_enum tok_identifier { EnumDefList }");
-      $$ = $5;
-      $$->set_name($2);
-      if ($7 != NULL) {
-        $$->annotations_ = $7->annotations_;
-        delete $7;
+      $$ = $6;
+      $$->set_name($3);
+      $$->set_lineno(y_definition_lineno);
+      if ($8 != NULL) {
+        $$->annotations_ = $8->annotations_;
+        delete $8;
       }
       y_enum_name = nullptr;
     }
@@ -623,6 +636,7 @@ EnumValue:
       }
       y_enum_val = $3;
       $$ = new t_enum_value($1, y_enum_val);
+      $$->set_lineno(yylineno);
     }
 |
   tok_identifier
@@ -633,6 +647,7 @@ EnumValue:
       }
       ++y_enum_val;
       $$ = new t_enum_value($1, y_enum_val);
+      $$->set_lineno(yylineno);
     }
 
 Senum:
@@ -664,14 +679,18 @@ SenumDef:
     }
 
 Const:
-  tok_const FieldType tok_identifier '=' ConstValue CommaOrSemicolonOptional
+  tok_const
+    {
+      y_definition_lineno = yylineno;
+    }
+  FieldType tok_identifier '=' ConstValue CommaOrSemicolonOptional
     {
       pdebug("Const -> tok_const FieldType tok_identifier = ConstValue");
       if (g_parse_mode == PROGRAM) {
-        $$ = new t_const(g_program, $2, $3, $5);
+        $$ = new t_const(g_program, $3, $4, $6);
+        $$->set_lineno(y_definition_lineno);
         validate_const_type($$);
-
-        g_scope_cache->add_constant(g_program->get_name() + "." + $3, $$);
+        g_scope_cache->add_constant(g_program->get_name() + "." + $4, $$);
       } else {
         $$ = NULL;
       }
@@ -784,16 +803,21 @@ StructHead:
     }
 
 Struct:
-  StructHead tok_identifier XsdAll '{' FieldList '}' TypeAnnotations
+  StructHead
+    {
+        y_definition_lineno = yylineno;
+    }
+  tok_identifier XsdAll '{' FieldList '}' TypeAnnotations
     {
       pdebug("Struct -> tok_struct tok_identifier { FieldList }");
-      $5->set_xsd_all($3);
-      $5->set_union($1 == struct_is_union);
-      $$ = $5;
-      $$->set_name($2);
-      if ($7 != NULL) {
-        $$->annotations_ = $7->annotations_;
-        delete $7;
+      $6->set_xsd_all($4);
+      $6->set_union($1 == struct_is_union);
+      $$ = $6;
+      $$->set_name($3);
+      $$->set_lineno(y_definition_lineno);
+      if ($8 != NULL) {
+        $$->annotations_ = $8->annotations_;
+        delete $8;
       }
       y_field_val = -1;
     }
@@ -959,14 +983,19 @@ Xception:
     }
 
 Service:
-  tok_service tok_identifier Extends '{' FlagArgs FunctionList UnflagArgs '}' FunctionAnnotations
+  tok_service
+    {
+      y_definition_lineno = yylineno;
+    }
+  tok_identifier Extends '{' FlagArgs FunctionList UnflagArgs '}' FunctionAnnotations
     {
       pdebug("Service -> tok_service tok_identifier { FunctionList }");
-      $$ = $6;
-      $$->set_name($2);
-      $$->set_extends($3);
-      if ($9) {
-        $$->annotations_ = $9->annotations_;
+      $$ = $7;
+      $$->set_name($3);
+      $$->set_extends($4);
+      $$->set_lineno(y_definition_lineno);
+      if ($10) {
+        $$->annotations_ = $10->annotations_;
       }
     }
 
@@ -1022,6 +1051,7 @@ Function:
       if ($1 != NULL) {
         $$->set_doc($1);
       }
+      $$->set_lineno(yylineno);
       y_field_val = -1;
     }
 
