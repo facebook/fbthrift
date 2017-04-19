@@ -30,6 +30,7 @@
 
 #include <folly/String.h>
 #include <folly/ThreadId.h>
+#include <folly/ThreadName.h>
 #include <folly/portability/PThread.h>
 #include <folly/portability/SysResource.h>
 #include <glog/logging.h>
@@ -48,7 +49,7 @@ bool PthreadThread::updateName() {
   if (!pthread_ || name_.empty()) {
     return false;
   }
-  return setPosixThreadName(pthread_, name_);
+  return folly::setThreadName(pthread_, name_);
 }
 
 PthreadThread::PthreadThread(int policy, int priority, int stackSize,

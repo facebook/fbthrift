@@ -20,21 +20,12 @@
 #include <set>
 #include <string>
 
-#include <folly/ThreadName.h>
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 
 #include <memory>
 
 namespace apache { namespace thrift { namespace concurrency {
-
-/**
- * Wrapper around pthread_setname_np that handles older glibc versions
- * -> moved to folly.
- */
-inline bool setPosixThreadName(pthread_t id, const std::string& name) {
-  return folly::setThreadName(id, name);
-}
 
 class PthreadThread : public Thread {
  public:
