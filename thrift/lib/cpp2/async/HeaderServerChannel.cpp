@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -348,6 +348,9 @@ void HeaderServerChannel::HeaderRequest::sendReply(
     if (!buf) {
       // oneway calls are OK do this, but is a bug for twoway.
       DCHECK(isOneway());
+      if (cb) {
+        cb->messageSent();
+      }
       return;
     }
     try {
@@ -360,12 +363,16 @@ void HeaderServerChannel::HeaderRequest::sendReply(
 }
 
 void HeaderServerChannel::HeaderRequest::serializeAndSendError(
-  apache::thrift::transport::THeader& header,
-  TApplicationException& tae,
-  const std::string& methodName,
-  int32_t protoSeqId,
-  MessageChannel::SendCallback* cb
-) {
+    apache::thrift::transport::THeader& header,
+    TApplicationException& tae,
+    const std::string& methodName,
+    int32_t protoSeqId,
+    MessageChannel::SendCallback* cb) {
+  if (isOneway()) {
+    sendReply(std::unique_ptr<folly::IOBuf>(), cb);
+    return;
+  }
+
   std::unique_ptr<folly::IOBuf> exbuf;
   uint16_t proto = header.getProtocolId();
   try {
