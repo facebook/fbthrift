@@ -42,7 +42,7 @@ using apache::thrift::transport::TTransportException;
 using proxygen::WheelTimerInstance;
 
 namespace {
-const std::chrono::seconds kDefaultTransactionTimeout(60);
+const std::chrono::milliseconds kDefaultTransactionTimeout(500);
 }
 
 namespace apache {
@@ -102,8 +102,7 @@ bool HTTPClientChannel::good() {
 
 void HTTPClientChannel::closeNow() {
   if (httpSession_) {
-    httpSession_->setInfoCallback(nullptr);
-    httpSession_->shutdownTransport();
+    httpSession_->dropConnection();
     httpSession_ = nullptr;
     timer_ = WheelTimerInstance();
   }
@@ -231,8 +230,8 @@ uint32_t HTTPClientChannel::sendRequest_(
     return -1;
   }
 
-  if (timeout_.count()) {
-    txn->setIdleTimeout(timeout_);
+  if (timeout.count()) {
+    txn->setIdleTimeout(timeout);
   }
   auto streamId = txn->getID();
 
@@ -240,8 +239,6 @@ uint32_t HTTPClientChannel::sendRequest_(
   addRpcOptionHeaders(header.get(), rpcOptions);
 
   auto msg = buildHTTPMessage(header.get());
-
-  httpCallback->startTimer(*timer_.getWheelTimer(), timeout);
 
   txn->sendHeaders(msg);
   txn->sendBody(std::move(buf));
@@ -349,18 +346,9 @@ HTTPClientChannel::HTTPTransactionCallback::HTTPTransactionCallback(
 }
 
 HTTPClientChannel::HTTPTransactionCallback::~HTTPTransactionCallback() {
-  cancelTimeout();
   if (txn_) {
     txn_->setHandler(nullptr);
     txn_->setTransportCallback(nullptr);
-  }
-}
-
-void HTTPClientChannel::HTTPTransactionCallback::startTimer(
-    folly::HHWheelTimer& timer,
-    std::chrono::milliseconds timeout) {
-  if (timeout.count()) {
-    timer.scheduleTimeout(this, timeout);
   }
 }
 
@@ -406,7 +394,7 @@ void HTTPClientChannel::HTTPTransactionCallback::setTransaction(
 }
 
 void HTTPClientChannel::HTTPTransactionCallback::detachTransaction() noexcept {
-  cancelTimeout();
+  VLOG(5) << "HTTPTransaction on memory " << this << " is detached.";
   delete this;
 }
 
@@ -463,9 +451,16 @@ void HTTPClientChannel::HTTPTransactionCallback::onEOM() noexcept {
 void HTTPClientChannel::HTTPTransactionCallback::onError(
     const proxygen::HTTPException& error) noexcept {
   if (!oneway_) {
-    requestError(
-        folly::make_exception_wrapper<transport::TTransportException>(
-            error.what()));
+    if (error.getProxygenError() == proxygen::ProxygenError::kErrorTimeout) {
+      TTransportException ex(TTransportException::TIMED_OUT, "Timed Out");
+      ex.setOptions(TTransportException::CHANNEL_IS_VALID);
+      requestError(
+          folly::make_exception_wrapper<TTransportException>(std::move(ex)));
+    } else {
+      requestError(
+          folly::make_exception_wrapper<transport::TTransportException>(
+              error.what()));
+    }
   }
 }
 
@@ -481,19 +476,6 @@ void HTTPClientChannel::HTTPTransactionCallback::lastByteFlushed() noexcept {
 }
 
 // end proxygen::HTTPTransaction::TransportCallback methods
-
-// folly::HHWheelTimer::Callback methods
-
-void HTTPClientChannel::HTTPTransactionCallback::timeoutExpired() noexcept {
-  using apache::thrift::transport::TTransportException;
-  TTransportException ex(TTransportException::TIMED_OUT, "Timed Out");
-  ex.setOptions(TTransportException::CHANNEL_IS_VALID);
-  requestError(
-      folly::make_exception_wrapper<TTransportException>(std::move(ex)));
-  delete this;
-}
-
-// end folly::HHWheelTimer::Callback methods
 
 }
 } // apache::thrift

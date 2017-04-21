@@ -302,3 +302,22 @@ TEST(HTTPClientChannelTest, NoGoodChannel2) {
 
   EXPECT_FALSE(channel->good());
 }
+
+TEST(HTTPClientChannelTest, EarlyShutdown) {
+  std::unique_ptr<ScopedServerThread> serverThread = createHttpServer();
+
+  // send 2 requests on the channel, both will hang for a little while,
+  // then we destruct the client / channel object, we are expecting a
+  // smooth shutdown
+  {
+    folly::EventBase eb;
+    const folly::SocketAddress* addr = serverThread->getAddress();
+    TAsyncTransport::UniquePtr socket(new TAsyncSocket(&eb, *addr));
+    auto channel = HTTPClientChannel::newHTTP1xChannel(
+        std::move(socket), "127.0.0.1", "/foobar");
+    TestServiceAsyncClient client(std::move(channel));
+
+    auto f = client.future_noResponse(1000);
+    auto f2 = client.future_sendResponse(1000);
+  }
+}

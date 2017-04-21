@@ -145,8 +145,7 @@ class HTTPClientChannel : public ClientChannel,
   class HTTPTransactionCallback
       : public MessageChannel::SendCallback,
         public proxygen::HTTPTransactionHandler,
-        public proxygen::HTTPTransaction::TransportCallback,
-        public folly::HHWheelTimer::Callback {
+        public proxygen::HTTPTransaction::TransportCallback {
    public:
     HTTPTransactionCallback(
         bool oneway,
@@ -156,10 +155,6 @@ class HTTPClientChannel : public ClientChannel,
         uint16_t protoId);
 
     ~HTTPTransactionCallback();
-
-    void startTimer(
-        folly::HHWheelTimer& timer,
-        std::chrono::milliseconds timeout);
 
     // MessageChannel::SendCallback methods
 
@@ -240,12 +235,6 @@ class HTTPClientChannel : public ClientChannel,
     void bodyBytesReceived(size_t /*size*/) noexcept override {}
 
     // end proxygen::HTTPTransaction::TransportCallback methods
-
-    // folly::HHWheelTimer::Callback methods
-
-    void timeoutExpired() noexcept override;
-
-    // end folly::HHWheelTimer::Callback methods
 
     void requestError(folly::exception_wrapper ex);
 
