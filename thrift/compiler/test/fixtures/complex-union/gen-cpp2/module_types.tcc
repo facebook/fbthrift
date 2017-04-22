@@ -318,4 +318,147 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace cpp2 {
 
+template <class Protocol_>
+uint32_t FinalComplexUnion::read(Protocol_* iprot) {
+  uint32_t xfer = 0;
+  std::string fname;
+  apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using apache::thrift::TProtocolException;
+
+
+  xfer += iprot->readFieldBegin(fname, ftype, fid);
+  if (ftype == apache::thrift::protocol::T_STOP) {
+    this->__clear();
+  } else {
+    if (fid == std::numeric_limits<int16_t>::min()) {
+      if (fname == "thingOne") {
+        fid = 1;
+        ftype = apache::thrift::protocol::T_STRING;
+      }
+      else if (fname == "thingTwo") {
+        fid = 2;
+        ftype = apache::thrift::protocol::T_STRING;
+      }
+    }
+    switch (fid) {
+      case 1:
+      {
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          this->set_thingOne();
+          xfer += iprot->readString(this->mutable_thingOne());
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 2:
+      {
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          this->set_thingTwo();
+          xfer += iprot->readString(this->mutable_thingTwo());
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      default:
+      {
+        xfer += iprot->skip(ftype);
+        break;
+      }
+    }
+    xfer += iprot->readFieldEnd();
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (UNLIKELY(ftype != apache::thrift::protocol::T_STOP)) {
+      using apache::thrift::protocol::TProtocolException;
+      TProtocolException::throwUnionMissingStop();
+    }
+  }
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t FinalComplexUnion::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("FinalComplexUnion");
+  switch(this->getType()) {
+    case FinalComplexUnion::Type::thingOne:
+    {
+      xfer += prot_->serializedFieldSize("thingOne", apache::thrift::protocol::T_STRING, 1);
+      xfer += prot_->serializedSizeString(this->get_thingOne());
+      break;
+    }
+    case FinalComplexUnion::Type::thingTwo:
+    {
+      xfer += prot_->serializedFieldSize("thingTwo", apache::thrift::protocol::T_STRING, 2);
+      xfer += prot_->serializedSizeString(this->get_thingTwo());
+      break;
+    }
+    case FinalComplexUnion::Type::__EMPTY__:;
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t FinalComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("FinalComplexUnion");
+  switch(this->getType()) {
+    case FinalComplexUnion::Type::thingOne:
+    {
+      xfer += prot_->serializedFieldSize("thingOne", apache::thrift::protocol::T_STRING, 1);
+      xfer += prot_->serializedSizeString(this->get_thingOne());
+      break;
+    }
+    case FinalComplexUnion::Type::thingTwo:
+    {
+      xfer += prot_->serializedFieldSize("thingTwo", apache::thrift::protocol::T_STRING, 2);
+      xfer += prot_->serializedSizeString(this->get_thingTwo());
+      break;
+    }
+    case FinalComplexUnion::Type::__EMPTY__:;
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t FinalComplexUnion::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("FinalComplexUnion");
+  switch(this->getType()) {
+    case FinalComplexUnion::Type::thingOne:
+    {
+      xfer += prot_->writeFieldBegin("thingOne", apache::thrift::protocol::T_STRING, 1);
+      xfer += prot_->writeString(this->get_thingOne());
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case FinalComplexUnion::Type::thingTwo:
+    {
+      xfer += prot_->writeFieldBegin("thingTwo", apache::thrift::protocol::T_STRING, 2);
+      xfer += prot_->writeString(this->get_thingTwo());
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case FinalComplexUnion::Type::__EMPTY__:;
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
 } // cpp2

@@ -96,6 +96,34 @@ public class ModuleLogger {
         break;
       }
       
+      case FinalComplexUnion: {
+        if (this.mMap.size() < 1) {
+          throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Cannot write a union with no set value!");
+        } else if (this.mMap.size() > 1) {
+          throw new TProtocolException(TProtocolException.INVALID_DATA, "Cannot write a union with more than one set value!");
+        }
+        oprot.writeStructBegin(new TStruct("FinalComplexUnion"));
+        switch (mMap.keySet().iterator().next().id) {
+        case 1: {
+          writeFieldBegin(oprot, Module.FinalComplexUnion_thingOne);
+          oprot.writeString((String) mMap.get(Module.FinalComplexUnion_thingOne));
+          oprot.writeFieldEnd();
+          break;
+        }
+      
+        case 2: {
+          writeFieldBegin(oprot, Module.FinalComplexUnion_thingTwo);
+          oprot.writeString((String) mMap.get(Module.FinalComplexUnion_thingTwo));
+          oprot.writeFieldEnd();
+          break;
+        }
+      
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        break;
+      }
+      
       
     }
   }

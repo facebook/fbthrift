@@ -340,3 +340,150 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
 
 }
 
+enum FinalComplexUnionEnum: int {
+  _EMPTY_ = 0;
+  thingOne = 1;
+  thingTwo = 2;
+}
+
+class FinalComplexUnion implements \IThriftStruct, \IThriftUnion<FinalComplexUnionEnum> {
+  public static array $_TSPEC = array(
+    1 => array(
+      'var' => 'thingOne',
+      'union' => true,
+      'type' => \TType::STRING,
+      ),
+    2 => array(
+      'var' => 'thingTwo',
+      'union' => true,
+      'type' => \TType::STRING,
+      ),
+    );
+  public static Map<string, int> $_TFIELDMAP = Map {
+    'thingOne' => 1,
+    'thingTwo' => 2,
+  };
+  const int STRUCTURAL_ID = 8657642278595798833;
+  public ?string $thingOne;
+  public ?string $thingTwo;
+  protected FinalComplexUnionEnum $_type = FinalComplexUnionEnum::_EMPTY_;
+
+  public function __construct(?string $thingOne = null, ?string $thingTwo = null  ) {
+    $this->_type = FinalComplexUnionEnum::_EMPTY_;
+    if ($thingOne !== null) {
+      $this->thingOne = $thingOne;
+      $this->_type = FinalComplexUnionEnum::thingOne;
+    }
+    if ($thingTwo !== null) {
+      $this->thingTwo = $thingTwo;
+      $this->_type = FinalComplexUnionEnum::thingTwo;
+    }
+  }
+
+  public function getName(): string {
+    return 'FinalComplexUnion';
+  }
+
+  public function getType(): FinalComplexUnionEnum {
+    return $this->_type;
+  }
+
+  public function set_thingOne(string $thingOne): this {
+    $this->_type = FinalComplexUnionEnum::thingOne;
+    $this->thingOne = $thingOne;
+    return $this;
+  }
+
+  public function get_thingOne(): string {
+    invariant(
+      $this->_type === FinalComplexUnionEnum::thingOne,
+      'get_thingOne called on an instance of FinalComplexUnion whose current type is %s',
+      $this->_type,
+    );
+    return nullthrows($this->thingOne);
+  }
+
+  public function set_thingTwo(string $thingTwo): this {
+    $this->_type = FinalComplexUnionEnum::thingTwo;
+    $this->thingTwo = $thingTwo;
+    return $this;
+  }
+
+  public function get_thingTwo(): string {
+    invariant(
+      $this->_type === FinalComplexUnionEnum::thingTwo,
+      'get_thingTwo called on an instance of FinalComplexUnion whose current type is %s',
+      $this->_type,
+    );
+    return nullthrows($this->thingTwo);
+  }
+
+  public function read(\TProtocol $input): int {
+    $xfer = 0;
+    $fname = '';
+    $ftype = 0;
+    $fid = 0;
+    $this->_type = FinalComplexUnionEnum::_EMPTY_;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == \TType::STOP) {
+        break;
+      }
+      if (!$fid && $fname !== null) {
+        $fid = (int) self::$_TFIELDMAP->get($fname);
+        if ($fid !== 0) {
+          $ftype = self::$_TSPEC[$fid]['type'];
+        }
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == \TType::STRING) {
+            $xfer += $input->readString($this->thingOne);
+            $this->_type = FinalComplexUnionEnum::thingOne;
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == \TType::STRING) {
+            $xfer += $input->readString($this->thingTwo);
+            $this->_type = FinalComplexUnionEnum::thingTwo;
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write(\TProtocol $output): int {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('FinalComplexUnion');
+    if ($this->thingOne !== null) {
+      $_val0 = $this->thingOne;
+      $xfer += $output->writeFieldBegin('thingOne', \TType::STRING, 1);
+      $xfer += $output->writeString($_val0);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->thingTwo !== null) {
+      $_val1 = $this->thingTwo;
+      $xfer += $output->writeFieldBegin('thingTwo', \TType::STRING, 2);
+      $xfer += $output->writeString($_val1);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+

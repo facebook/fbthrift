@@ -7,3 +7,8 @@ union ComplexUnion {
   4: list<string> stringListValue;
   5: string stringRef (cpp2.ref = "true");
 }
+
+union FinalComplexUnion {
+  1: string thingOne;
+  2: string thingTwo;
+} (final)

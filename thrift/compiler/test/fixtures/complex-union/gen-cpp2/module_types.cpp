@@ -113,4 +113,69 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace cpp2 {
 
+void FinalComplexUnion::__clear() {
+  // clear all fields
+  if (type_ == Type::__EMPTY__) { return; }
+  switch(type_) {
+    case Type::thingOne:
+    {
+      destruct(value_.thingOne);
+      break;
+    }
+    case Type::thingTwo:
+    {
+      destruct(value_.thingTwo);
+      break;
+    }
+    default:
+    {
+      assert(false);
+      break;
+    }
+  }
+  type_ = Type::__EMPTY__;
+}
+
+bool FinalComplexUnion::operator==(const FinalComplexUnion& rhs) const {
+  if (type_ != rhs.type_) { return false; }
+  switch(type_) {
+    case Type::thingOne:
+    {
+      return value_.thingOne == rhs.value_.thingOne;
+      break;
+    }
+    case Type::thingTwo:
+    {
+      return value_.thingTwo == rhs.value_.thingTwo;
+      break;
+    }
+    default:
+    {
+      return true;
+      break;
+    }
+  }
+}
+
+void swap(FinalComplexUnion& a, FinalComplexUnion& b) {
+  FinalComplexUnion temp(std::move(a));
+  a = std::move(b);
+  b = std::move(temp);
+}
+
+template uint32_t FinalComplexUnion::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t FinalComplexUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t FinalComplexUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t FinalComplexUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t FinalComplexUnion::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t FinalComplexUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t FinalComplexUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t FinalComplexUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
 } // cpp2

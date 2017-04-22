@@ -187,4 +187,70 @@ uint32_t ComplexUnion::write(apache::thrift::protocol::TProtocol* oprot) const {
   return xfer;
 }
 
+uint32_t FinalComplexUnion::read(apache::thrift::protocol::TProtocol* iprot) {
+  uint32_t xfer = 0;
+  std::string fname;
+  apache::thrift::protocol::TType ftype;
+  int16_t fid;
+  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readFieldBegin(fname, ftype, fid);
+  if (ftype == apache::thrift::protocol::T_STOP) {
+    __clear();
+  } else {
+    switch (fid) {
+      case 1: {
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          set_thingOne();
+          xfer += iprot->readString(this->value_.thingOne);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 2: {
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          set_thingTwo();
+          xfer += iprot->readString(this->value_.thingTwo);
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      default: xfer += iprot->skip(ftype); break;
+    }
+    xfer += iprot->readFieldEnd();
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (UNLIKELY(ftype != apache::thrift::protocol::T_STOP)) {
+      using apache::thrift::protocol::TProtocolException;
+      TProtocolException::throwUnionMissingStop();
+    }
+  }
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t FinalComplexUnion::write(apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("FinalComplexUnion");
+  switch (type_) {
+    case Type::thingOne: {
+      xfer += oprot->writeFieldBegin("thingOne", apache::thrift::protocol::T_STRING, 1);
+      xfer += oprot->writeString(this->value_.thingOne);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::thingTwo: {
+      xfer += oprot->writeFieldBegin("thingTwo", apache::thrift::protocol::T_STRING, 2);
+      xfer += oprot->writeString(this->value_.thingTwo);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::__EMPTY__:;
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
 
