@@ -189,11 +189,8 @@ template <typename Type>
 struct protocol_methods<type_class::enumeration, Type> {
   constexpr static protocol::TType ttype_value = protocol::T_I32;
 
-  // Enums have an underlying type of int, unless otherwise specified.
-  // Thrift permits customization of the C++ underlying types of enums.
-  // So we cannot simply assume that the underlying type is always int.
-  // Thus, we should always get the underlying type and convert to signed.
-  using enum_type = std::make_signed_t<std::underlying_type_t<Type>>;
+  // Thrift enums are always read as int32_t
+  using enum_type = std::int32_t;
   using int_methods = protocol_methods<type_class::integral, enum_type>;
 
   template <typename Protocol>
