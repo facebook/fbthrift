@@ -619,6 +619,10 @@ class FinalComplexUnion : private apache::thrift::detail::st::ComparisonOperator
     set_thingTwo(arg.move());
   }
   void __clear();
+
+  ~FinalComplexUnion() throw() {
+    __clear();
+  }
   union storage_type {
     std::string thingOne;
     std::string thingTwo;

@@ -2878,6 +2878,10 @@ class CppGenerator(t_generator.Generator):
                 if obj.is_union:
                     out('__clear();')
             struct()
+        elif obj.is_union:
+            with struct.defn('~{name}() throw()', name=obj.name,
+                             in_header=True):
+                out('__clear();')
 
         s1 = struct
         if obj.is_union:

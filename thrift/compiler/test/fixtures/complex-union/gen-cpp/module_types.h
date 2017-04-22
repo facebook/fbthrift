@@ -528,6 +528,10 @@ class FinalComplexUnion : public apache::thrift::TStructType<FinalComplexUnion> 
     }
     type_ = Type::__EMPTY__;
   }
+  ~FinalComplexUnion() throw() {
+    __clear();
+  }
+
   union storage_type {
     std::string thingOne;
     std::string thingTwo;
