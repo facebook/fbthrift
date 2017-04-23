@@ -19,6 +19,11 @@
 namespace cpp2 {
 
 class containerStruct;
+typedef Foo IndirectionA;
+
+typedef Bar IndirectionB;
+
+typedef Baz IndirectionC;
 
 class containerStruct : private apache::thrift::detail::st::ComparisonOperators<containerStruct> {
  public:
@@ -41,7 +46,7 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   13}}}) {}
   // FragileConstructor for use in initialization lists only
 
-  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, std::map<std::string, bool> fieldB__arg, std::set<int32_t> fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::vector<std::vector<std::vector<int32_t>>> fieldF__arg, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG__arg, std::vector<std::set<int32_t>> fieldH__arg, bool fieldI__arg, std::map<std::string, std::vector<int32_t>> fieldJ__arg, std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK__arg, std::set<std::set<std::set<bool>>> fieldL__arg, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM__arg) :
+  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, std::map<std::string, bool> fieldB__arg, std::set<int32_t> fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::vector<std::vector<std::vector<int32_t>>> fieldF__arg, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG__arg, std::vector<std::set<int32_t>> fieldH__arg, bool fieldI__arg, std::map<std::string, std::vector<int32_t>> fieldJ__arg, std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK__arg, std::set<std::set<std::set<bool>>> fieldL__arg, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM__arg, std::vector< ::cpp2::IndirectionA> fieldN__arg, std::vector< ::cpp2::IndirectionB> fieldO__arg, std::vector< ::cpp2::IndirectionC> fieldP__arg) :
       fieldA(std::move(fieldA__arg)),
       fieldB(std::move(fieldB__arg)),
       fieldC(std::move(fieldC__arg)),
@@ -54,7 +59,10 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
       fieldJ(std::move(fieldJ__arg)),
       fieldK(std::move(fieldK__arg)),
       fieldL(std::move(fieldL__arg)),
-      fieldM(std::move(fieldM__arg)) {
+      fieldM(std::move(fieldM__arg)),
+      fieldN(std::move(fieldN__arg)),
+      fieldO(std::move(fieldO__arg)),
+      fieldP(std::move(fieldP__arg)) {
     __isset.fieldA = true;
     __isset.fieldB = true;
     __isset.fieldC = true;
@@ -68,6 +76,9 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     __isset.fieldK = true;
     __isset.fieldL = true;
     __isset.fieldM = true;
+    __isset.fieldN = true;
+    __isset.fieldO = true;
+    __isset.fieldP = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   containerStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -160,6 +171,27 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     fieldM = arg.move();
     __isset.fieldM = true;
   }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct(::apache::thrift::detail::argument_wrapper<14, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldN = arg.move();
+    __isset.fieldN = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct(::apache::thrift::detail::argument_wrapper<15, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldO = arg.move();
+    __isset.fieldO = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct(::apache::thrift::detail::argument_wrapper<16, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldP = arg.move();
+    __isset.fieldP = true;
+  }
 
   containerStruct(containerStruct&&) = default;
 
@@ -185,6 +217,9 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK;
   std::set<std::set<std::set<bool>>> fieldL;
   std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM;
+  std::vector< ::cpp2::IndirectionA> fieldN;
+  std::vector< ::cpp2::IndirectionB> fieldO;
+  std::vector< ::cpp2::IndirectionC> fieldP;
 
   struct __isset {
     void __clear() {
@@ -201,6 +236,9 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
       fieldK = false;
       fieldL = false;
       fieldM = false;
+      fieldN = false;
+      fieldO = false;
+      fieldP = false;
     }
 
     bool fieldA = false;
@@ -216,52 +254,12 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     bool fieldK = false;
     bool fieldL = false;
     bool fieldM = false;
+    bool fieldN = false;
+    bool fieldO = false;
+    bool fieldP = false;
   } __isset;
   bool operator==(const containerStruct& rhs) const;
-
-  bool operator < (const containerStruct& rhs) const {
-    if (!(fieldA == rhs.fieldA)) {
-      return fieldA < rhs.fieldA;
-    }
-    if (!(fieldB == rhs.fieldB)) {
-      return fieldB < rhs.fieldB;
-    }
-    if (!(fieldC == rhs.fieldC)) {
-      return fieldC < rhs.fieldC;
-    }
-    if (!(fieldD == rhs.fieldD)) {
-      return fieldD < rhs.fieldD;
-    }
-    if (!(fieldE == rhs.fieldE)) {
-      return fieldE < rhs.fieldE;
-    }
-    if (!(fieldF == rhs.fieldF)) {
-      return fieldF < rhs.fieldF;
-    }
-    if (!(fieldG == rhs.fieldG)) {
-      return fieldG < rhs.fieldG;
-    }
-    if (!(fieldH == rhs.fieldH)) {
-      return fieldH < rhs.fieldH;
-    }
-    if (!(fieldI == rhs.fieldI)) {
-      return fieldI < rhs.fieldI;
-    }
-    if (!(fieldJ == rhs.fieldJ)) {
-      return fieldJ < rhs.fieldJ;
-    }
-    if (!(fieldK == rhs.fieldK)) {
-      return fieldK < rhs.fieldK;
-    }
-    if (!(fieldL == rhs.fieldL)) {
-      return fieldL < rhs.fieldL;
-    }
-    if (!(fieldM == rhs.fieldM)) {
-      return fieldM < rhs.fieldM;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator < (const containerStruct& rhs) const;
 
   bool get_fieldA() const {
     return fieldA;
@@ -348,6 +346,18 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> get_fieldM() &&;
   template <typename T_containerStruct_fieldM_struct_setter>
   std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>>& set_fieldM(T_containerStruct_fieldM_struct_setter&& fieldM_);
+  const std::vector< ::cpp2::IndirectionA>& get_fieldN() const&;
+  std::vector< ::cpp2::IndirectionA> get_fieldN() &&;
+  template <typename T_containerStruct_fieldN_struct_setter>
+  std::vector< ::cpp2::IndirectionA>& set_fieldN(T_containerStruct_fieldN_struct_setter&& fieldN_);
+  const std::vector< ::cpp2::IndirectionB>& get_fieldO() const&;
+  std::vector< ::cpp2::IndirectionB> get_fieldO() &&;
+  template <typename T_containerStruct_fieldO_struct_setter>
+  std::vector< ::cpp2::IndirectionB>& set_fieldO(T_containerStruct_fieldO_struct_setter&& fieldO_);
+  const std::vector< ::cpp2::IndirectionC>& get_fieldP() const&;
+  std::vector< ::cpp2::IndirectionC> get_fieldP() &&;
+  template <typename T_containerStruct_fieldP_struct_setter>
+  std::vector< ::cpp2::IndirectionC>& set_fieldP(T_containerStruct_fieldP_struct_setter&& fieldP_);
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

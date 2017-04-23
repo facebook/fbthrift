@@ -1,3 +1,7 @@
+typedef i64 (cpp.type = "Foo", cpp.indirection=".value") IndirectionA
+typedef double (cpp.type = "Bar", cpp.indirection=".value") IndirectionB
+typedef i32 (cpp.type = "Baz", cpp.indirection=".__value()") IndirectionC
+
 struct containerStruct {
   1: bool fieldA
   2: map<string, bool> fieldB
@@ -15,4 +19,7 @@ struct containerStruct {
   11: list<list<list<list<i32>>>> fieldK
   12: set<set<set<bool>>> fieldL
   13: map<set<list<i32>>, map<list<set<string>>, string>> fieldM
+  14: list<IndirectionA> fieldN
+  15: list<IndirectionB> fieldO
+  16: list<IndirectionC> fieldP
 }

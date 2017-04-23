@@ -33,6 +33,9 @@ void containerStruct::__clear() {
   fieldK.clear();
   fieldL.clear();
   fieldM.clear();
+  fieldN.clear();
+  fieldO.clear();
+  fieldP.clear();
   __isset.__clear();
 }
 
@@ -74,6 +77,15 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
     return false;
   }
   if (!((fieldM == rhs.fieldM))) {
+    return false;
+  }
+  if (!((fieldN == rhs.fieldN))) {
+    return false;
+  }
+  if (!((fieldO == rhs.fieldO))) {
+    return false;
+  }
+  if (!((fieldP == rhs.fieldP))) {
     return false;
   }
   return true;
@@ -151,6 +163,30 @@ std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::stri
   return std::move(fieldM);
 }
 
+const std::vector< ::cpp2::IndirectionA>& containerStruct::get_fieldN() const& {
+  return fieldN;
+}
+
+std::vector< ::cpp2::IndirectionA> containerStruct::get_fieldN() && {
+  return std::move(fieldN);
+}
+
+const std::vector< ::cpp2::IndirectionB>& containerStruct::get_fieldO() const& {
+  return fieldO;
+}
+
+std::vector< ::cpp2::IndirectionB> containerStruct::get_fieldO() && {
+  return std::move(fieldO);
+}
+
+const std::vector< ::cpp2::IndirectionC>& containerStruct::get_fieldP() const& {
+  return fieldP;
+}
+
+std::vector< ::cpp2::IndirectionC> containerStruct::get_fieldP() && {
+  return std::move(fieldP);
+}
+
 void swap(containerStruct& a, containerStruct& b) {
   using ::std::swap;
   swap(a.fieldA, b.fieldA);
@@ -166,6 +202,9 @@ void swap(containerStruct& a, containerStruct& b) {
   swap(a.fieldK, b.fieldK);
   swap(a.fieldL, b.fieldL);
   swap(a.fieldM, b.fieldM);
+  swap(a.fieldN, b.fieldN);
+  swap(a.fieldO, b.fieldO);
+  swap(a.fieldP, b.fieldP);
   swap(a.__isset, b.__isset);
 }
 
