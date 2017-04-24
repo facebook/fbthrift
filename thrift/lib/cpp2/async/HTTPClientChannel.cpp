@@ -74,19 +74,18 @@ HTTPClientChannel::HTTPClientChannel(
     std::unique_ptr<proxygen::HTTPCodec> codec)
     : evb_(transport->getEventBase()),
       timeout_(kDefaultTransactionTimeout),
-      timer_(timeout_, evb_),
       closeCallback_(nullptr) {
   auto localAddress = transport->getLocalAddress();
   auto peerAddress = transport->getPeerAddress();
 
   httpSession_ = new proxygen::HTTPUpstreamSession(
-    WheelTimerInstance(timer_),
-    std::move(transport),
-    localAddress,
-    peerAddress,
-    std::move(codec),
-    wangle::TransportInfo(),
-    this);
+      WheelTimerInstance(timeout_, evb_),
+      std::move(transport),
+      localAddress,
+      peerAddress,
+      std::move(codec),
+      wangle::TransportInfo(),
+      this);
 }
 
 HTTPClientChannel::~HTTPClientChannel() {
@@ -104,39 +103,28 @@ void HTTPClientChannel::closeNow() {
   if (httpSession_) {
     httpSession_->dropConnection();
     httpSession_ = nullptr;
-    timer_ = WheelTimerInstance();
   }
 }
 
 void HTTPClientChannel::attachEventBase(EventBase* eventBase) {
-  timer_ = WheelTimerInstance(kDefaultTransactionTimeout, eventBase);
+  assert(eventBase->isInEventBaseThread());
   if (httpSession_) {
-    auto trans = httpSession_->getTransport();
-    if (trans) {
-      trans->attachEventBase(eventBase);
-    }
+    httpSession_->attachEventBase(eventBase, kDefaultTransactionTimeout);
   }
   evb_ = eventBase;
 }
 
 void HTTPClientChannel::detachEventBase() {
-  // The two way callback must not exist right now.  It schedules a
-  // timeout, which is cancelled in the destructor, and the old call
-  // to timer_->detachEventBase would have FATAL'd.
-  timer_ = WheelTimerInstance();
+  assert(evb_->isInEventBaseThread());
+  assert(isDetachable());
   if (httpSession_) {
-    auto trans = httpSession_->getTransport();
-    if (trans) {
-      trans->detachEventBase();
-    }
+    httpSession_->detachEventBase();
   }
   evb_ = nullptr;
 }
 
 bool HTTPClientChannel::isDetachable() {
-  auto timer = timer_.getWheelTimer();
-  return timer && timer->isDetachable() &&
-         (!httpSession_ || httpSession_->getTransport()->isDetachable());
+  return !httpSession_ || httpSession_->isDetachable();
 }
 
 // end apache::thrift::ClientChannel methods

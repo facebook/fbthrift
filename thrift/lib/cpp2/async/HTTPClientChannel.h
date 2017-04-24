@@ -22,7 +22,6 @@
 
 #include <folly/io/async/DelayedDestruction.h>
 #include <folly/io/async/EventBase.h>
-#include <folly/io/async/HHWheelTimer.h>
 #include <folly/io/async/Request.h>
 #include <proxygen/lib/http/HTTPConnector.h>
 #include <proxygen/lib/http/session/HTTPTransaction.h>
@@ -294,7 +293,6 @@ class HTTPClientChannel : public ClientChannel,
   std::string httpHost_;
   std::string httpUrl_;
   std::chrono::milliseconds timeout_;
-  proxygen::WheelTimerInstance timer_;
   uint16_t protocolId_;
   CloseCallback* closeCallback_;
 
