@@ -68,23 +68,6 @@ inline bool is_unknown_container_size(uint32_t const size) {
   return size == std::numeric_limits<decltype(size)>::max();
 }
 
-// is_smart_pointer is a helper for determining if a type is a supported
-// pointer type for cpp2.ref fields, while discrimiminating against the
-// pointer corner case in Thrift (e.g., a unqiue_pointer<folly::IOBuf>)
-template <typename>
-struct is_smart_pointer : std::false_type {};
-template <typename D>
-struct is_smart_pointer<std::unique_ptr<folly::IOBuf, D>> : std::false_type {};
-
-// supported smart pointer types for cpp2.ref_type fields
-template <typename T, typename D>
-struct is_smart_pointer<std::unique_ptr<T, D>> : std::true_type {};
-template <typename T>
-struct is_smart_pointer<std::shared_ptr<T>> : std::true_type {};
-
-template <typename T>
-using enable_if_smart_pointer = std::enable_if_t<is_smart_pointer<T>::value>;
-
 /*
  * Primitive Types Specialization
  */
@@ -592,34 +575,6 @@ struct protocol_methods<Impl<ElemClass>, Type> {
   static std::size_t serialized_size(Protocol& protocol, Type const& in) {
     return elem_methods::serialized_size<ZeroCopy>(
         protocol, indirection::template get<Type>(in));
-  }
-};
-
-/*
- * Smart Pointer Specialization
- * This resolves all calls that uses pointers and forwards them to
- * the appropriate method
- */
-template <typename TypeClass, typename PtrType>
-struct protocol_methods<TypeClass, PtrType, enable_if_smart_pointer<PtrType>> {
-  using value_type = typename PtrType::element_type;
-  using type_methods = protocol_methods<TypeClass, value_type>;
-
-  constexpr static protocol::TType ttype_value = type_methods::ttype_value;
-
-  template <typename Protocol>
-  static std::size_t read(Protocol& protocol, PtrType& out) {
-    return type_methods::read(protocol, *out);
-  }
-
-  template <typename Protocol>
-  static std::size_t write(Protocol& protocol, PtrType const& in) {
-    return type_methods::write(protocol, *in);
-  }
-
-  template <bool ZeroCopy, typename Protocol>
-  static std::size_t serialized_size(Protocol& protocol, PtrType const& in) {
-    return type_methods::template serialized_size<ZeroCopy>(protocol, *in);
   }
 };
 }
