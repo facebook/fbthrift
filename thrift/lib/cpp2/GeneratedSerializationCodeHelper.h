@@ -565,16 +565,16 @@ struct protocol_methods<Impl<ElemClass>, Type> {
 
   template <typename Protocol>
   static std::size_t read(Protocol& protocol, Type& out) {
-    return elem_methods::read(protocol, indirection::template get<Type>(out));
+    return elem_methods::read(protocol, indirection::template get<Type&>(out));
   }
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, Type const& in) {
-    return elem_methods::write(protocol, indirection::template get<Type>(in));
+    return elem_methods::write(protocol, indirection::template get<Type&>(in));
   }
   template <bool ZeroCopy, typename Protocol>
   static std::size_t serialized_size(Protocol& protocol, Type const& in) {
     return elem_methods::serialized_size<ZeroCopy>(
-        protocol, indirection::template get<Type>(in));
+        protocol, indirection::template get<Type&>(in));
   }
 };
 }

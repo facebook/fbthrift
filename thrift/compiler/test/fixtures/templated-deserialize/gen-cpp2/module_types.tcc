@@ -18,6 +18,30 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 namespace cpp2 {
 
+template <typename ElemClass>
+struct indirection_module_IndirectionA {
+  template <typename T>
+  static auto &&get(T&& x) {
+    return std::forward<T>(x).value;
+  }
+};
+
+template <typename ElemClass>
+struct indirection_module_IndirectionC {
+  template <typename T>
+  static auto &&get(T&& x) {
+    return std::forward<T>(x).__value();
+  }
+};
+
+template <typename ElemClass>
+struct indirection_module_IndirectionB {
+  template <typename T>
+  static auto &&get(T&& x) {
+    return std::forward<T>(x).value;
+  }
+};
+
 template <typename T_containerStruct_fieldB_struct_setter>
 std::map<std::string, bool>& containerStruct::set_fieldB(T_containerStruct_fieldB_struct_setter&& fieldB_) {
   fieldB = std::forward<T_containerStruct_fieldB_struct_setter>(fieldB_);
@@ -319,7 +343,7 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       case 14:
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector< ::cpp2::IndirectionA>>::read(*iprot, this->fieldN);
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<indirection_module_IndirectionA<::apache::thrift::type_class::integral>>, std::vector< ::cpp2::IndirectionA>>::read(*iprot, this->fieldN);
           this->__isset.fieldN = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -329,7 +353,7 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       case 15:
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>, std::vector< ::cpp2::IndirectionB>>::read(*iprot, this->fieldO);
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<indirection_module_IndirectionB<::apache::thrift::type_class::floating_point>>, std::vector< ::cpp2::IndirectionB>>::read(*iprot, this->fieldO);
           this->__isset.fieldO = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -339,7 +363,7 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       case 16:
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector< ::cpp2::IndirectionC>>::read(*iprot, this->fieldP);
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<indirection_module_IndirectionC<::apache::thrift::type_class::integral>>, std::vector< ::cpp2::IndirectionC>>::read(*iprot, this->fieldP);
           this->__isset.fieldP = true;
         } else {
           xfer += iprot->skip(ftype);

@@ -18,6 +18,30 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 namespace test_cpp2 { namespace cpp_reflection {
 
+template <typename ElemClass>
+struct indirection_module_HasANumber {
+  template <typename T>
+  static auto &&get(T&& x) {
+    return std::forward<T>(x).number;
+  }
+};
+
+template <typename ElemClass>
+struct indirection_module_HasAPhrase {
+  template <typename T>
+  static auto &&get(T&& x) {
+    return std::forward<T>(x).phrase;
+  }
+};
+
+template <typename ElemClass>
+struct indirection_module_HasAResult {
+  template <typename T>
+  static auto &&get(T&& x) {
+    return std::forward<T>(x).foo().result();
+  }
+};
+
 }} // test_cpp2::cpp_reflection
 namespace std {
 

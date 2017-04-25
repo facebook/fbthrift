@@ -3578,12 +3578,66 @@ class CppGenerator(t_generator.Generator):
                   'iprot, &{1});'.format(
                       self._type_name(otype), prefix))
 
-    def _render_type_class(self, ttype):
+    def _render_indirection_struct_name(self, program_name, typedef_name):
+        return 'indirection_{0}_{1}'.format(
+            program_name, re.sub('[\W]+', '', typedef_name))
+
+    def _print_indirection_set(self, indirection_set):
+        for program_name, typedef_name, indirection in indirection_set:
+            print >>self._out_tcc, 'template <typename ElemClass>'
+            print >>self._out_tcc, 'struct {0} {{'.format(
+                self._render_indirection_struct_name(
+                    program_name, typedef_name))
+            print >>self._out_tcc, '  template <typename T>'
+            print >>self._out_tcc, '  static auto &&get(T&& x) {'
+            print >>self._out_tcc, '    return std::forward<T>(x){0};'.format(
+                indirection)
+            print >>self._out_tcc, '  }'
+            print >>self._out_tcc, '};'
+            print >>self._out_tcc, ''
+
+    def _render_indirection_struct(self, ttype):
+        typedef_name = ttype
+        while ttype.is_typedef:
+            ttype = ttype.type
+
+        if self._has_cpp_annotation(ttype, 'indirection'):
+            return set([(
+                self._program.name,
+                typedef_name.symbolic,
+                self._cpp_annotation(ttype, 'indirection'))])
+        if ttype.is_map:
+            return set(
+                self._render_indirection_struct(ttype.as_map.key_type) |
+                self._render_indirection_struct(ttype.as_map.value_type))
+        elif ttype.is_set:
+            return self._render_indirection_struct(ttype.as_set.elem_type)
+        elif ttype.is_list:
+            return self._render_indirection_struct(ttype.as_list.elem_type)
+
+        return set()
+
+    def _generate_indirection(self, program):
+        indirections = set()
+        for obj in program.objects:
+            for field in obj.members:
+                indirections |= self._render_indirection_struct(field.type)
+        self._print_indirection_set(indirections)
+
+    def _render_type_class(self, ttype, annotation=False):
+        typedef_name = ttype
         while ttype.is_typedef:
             ttype = ttype.type
 
         if ttype.is_void:
             return '::apache::thrift::type_class::nothing'
+        elif self._has_cpp_annotation(ttype, 'indirection') and not annotation:
+            return (
+                '{0}<{1}>'.format(
+                    self._render_indirection_struct_name(
+                        self._program.name,
+                        typedef_name.symbolic),
+                    self._render_type_class(ttype, True)))
         elif ttype.is_base_type and ttype.as_base_type.is_binary:
             return '::apache::thrift::type_class::binary'
         elif ttype.is_string:
@@ -5801,6 +5855,7 @@ class CppGenerator(t_generator.Generator):
         s = self._types_scope = \
                 s.namespace(self._get_namespace()).scope
         s.acquire()
+        self._generate_indirection(self._program)
 
     def close_generator(self):
         # make sure that the main types namespace is closed
