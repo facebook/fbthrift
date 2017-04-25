@@ -19,9 +19,11 @@ public final class MyStruct
 {
     @ThriftConstructor
     public MyStruct(
-        @ThriftField(value=1, name="MyIncludedField", requiredness=Requiredness.NONE) final test.fixtures.includes.includes.Included myIncludedField
+        @ThriftField(value=1, name="MyIncludedField", requiredness=Requiredness.NONE) final test.fixtures.includes.includes.Included myIncludedField,
+        @ThriftField(value=2, name="MyIncludedInt", requiredness=Requiredness.NONE) final long myIncludedInt
     ) {
         this.myIncludedField = myIncludedField;
+        this.myIncludedInt = myIncludedInt;
     }
 
     public static class Builder {
@@ -31,15 +33,23 @@ public final class MyStruct
             this.myIncludedField = myIncludedField;
             return this;
         }
+        private long myIncludedInt;
+
+        public Builder setMyIncludedInt(long myIncludedInt) {
+            this.myIncludedInt = myIncludedInt;
+            return this;
+        }
 
         public Builder() { }
         public Builder(MyStruct other) {
             this.myIncludedField = other.myIncludedField;
+            this.myIncludedInt = other.myIncludedInt;
         }
 
         public MyStruct build() {
             return new MyStruct (
-                this.myIncludedField
+                this.myIncludedField,
+                this.myIncludedInt
             );
         }
     }
@@ -49,11 +59,17 @@ public final class MyStruct
     @ThriftField(value=1, name="MyIncludedField", requiredness=Requiredness.NONE)
     public test.fixtures.includes.includes.Included getMyIncludedField() { return myIncludedField; }
 
+    private final long myIncludedInt;
+
+    @ThriftField(value=2, name="MyIncludedInt", requiredness=Requiredness.NONE)
+    public long getMyIncludedInt() { return myIncludedInt; }
+
     @Override
     public String toString()
     {
         return toStringHelper(this)
             .add("myIncludedField", myIncludedField)
+            .add("myIncludedInt", myIncludedInt)
             .toString();
     }
 
@@ -69,13 +85,15 @@ public final class MyStruct
         MyStruct other = (MyStruct)o;
 
         return
-            Objects.equals(myIncludedField, other.myIncludedField);
+            Objects.equals(myIncludedField, other.myIncludedField) &&
+            Objects.equals(myIncludedInt, other.myIncludedInt);
     }
 
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
-            myIncludedField
+            myIncludedField,
+            myIncludedInt
         });
     }
 }

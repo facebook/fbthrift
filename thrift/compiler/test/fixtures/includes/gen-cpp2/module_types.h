@@ -25,12 +25,15 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
  public:
 
   MyStruct() :
-      MyIncludedField( ::cpp2::Included(::apache::thrift::detail::wrap_argument<1>(5LL))) {}
+      MyIncludedField( ::cpp2::Included(::apache::thrift::detail::wrap_argument<1>(5LL))),
+      MyIncludedInt(42LL) {}
   // FragileConstructor for use in initialization lists only
 
-  MyStruct(apache::thrift::FragileConstructor,  ::cpp2::Included MyIncludedField__arg) :
-      MyIncludedField(std::move(MyIncludedField__arg)) {
+  MyStruct(apache::thrift::FragileConstructor,  ::cpp2::Included MyIncludedField__arg,  ::cpp2::IncludedInt64 MyIncludedInt__arg) :
+      MyIncludedField(std::move(MyIncludedField__arg)),
+      MyIncludedInt(std::move(MyIncludedInt__arg)) {
     __isset.MyIncludedField = true;
+    __isset.MyIncludedInt = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   MyStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -38,6 +41,13 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
   {
     MyIncludedField = arg.move();
     __isset.MyIncludedField = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  MyStruct(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    MyIncludedInt = arg.move();
+    __isset.MyIncludedInt = true;
   }
 
   MyStruct(MyStruct&&) = default;
@@ -52,27 +62,33 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
   virtual ~MyStruct() throw() {}
 
    ::cpp2::Included MyIncludedField;
+   ::cpp2::IncludedInt64 MyIncludedInt;
 
   struct __isset {
     void __clear() {
       MyIncludedField = false;
+      MyIncludedInt = false;
     }
 
     bool MyIncludedField = false;
+    bool MyIncludedInt = false;
   } __isset;
   bool operator==(const MyStruct& rhs) const;
-
-  bool operator < (const MyStruct& rhs) const {
-    if (!(MyIncludedField == rhs.MyIncludedField)) {
-      return MyIncludedField < rhs.MyIncludedField;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator < (const MyStruct& rhs) const;
   const  ::cpp2::Included& get_MyIncludedField() const&;
    ::cpp2::Included get_MyIncludedField() &&;
   template <typename T_MyStruct_MyIncludedField_struct_setter>
    ::cpp2::Included& set_MyIncludedField(T_MyStruct_MyIncludedField_struct_setter&& MyIncludedField_);
+
+   ::cpp2::IncludedInt64 get_MyIncludedInt() const {
+    return MyIncludedInt;
+  }
+
+   ::cpp2::IncludedInt64& set_MyIncludedInt( ::cpp2::IncludedInt64 MyIncludedInt_) {
+    MyIncludedInt = MyIncludedInt_;
+    __isset.MyIncludedInt = true;
+    return MyIncludedInt;
+  }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

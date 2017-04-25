@@ -23,19 +23,23 @@
 
 @interface MyStruct : TBaseStruct <TBase, NSCoding> {
   Included * __thrift_MyIncludedField;
+  IncludedInt64 __thrift_MyIncludedInt;
 
   BOOL __thrift_MyIncludedField_set;
+  BOOL __thrift_MyIncludedInt_set;
 }
 
 @property (nonatomic, retain) Included * MyIncludedField;
+@property (nonatomic) IncludedInt64 MyIncludedInt;
 
 - (id) init;
-- (id) initWithMyIncludedField: (Included *) MyIncludedField;
+- (id) initWithMyIncludedField: (Included *) MyIncludedField MyIncludedInt: (IncludedInt64) MyIncludedInt;
 - (void) read: (id <TProtocol>) inProtocol;
 - (void) write: (id <TProtocol>) outProtocol;
 - (void) validate;
 
 - (BOOL) MyIncludedFieldIsSet;
+- (BOOL) MyIncludedIntIsSet;
 @end
 
 @interface moduleConstants : TBaseStruct {

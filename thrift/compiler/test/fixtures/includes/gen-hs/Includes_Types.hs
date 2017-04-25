@@ -48,6 +48,8 @@ import qualified Thrift.Serializable as Serializable
 import qualified Thrift.Arbitraries as Arbitraries
 
 
+type IncludedInt64 = Int.Int64
+
 data Included = Included
   { included_MyIntField :: Int.Int64
   } deriving (Show,Eq,Typeable.Typeable)

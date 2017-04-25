@@ -119,3 +119,4 @@ Included_defaults = Included()
 
 
 
+IncludedConstant = 42

@@ -37,14 +37,18 @@
   self.MyIncludedField = [[[Included alloc] init] autorelease_stub];
   [self.MyIncludedField setMyIntField:5];
 
+  self.MyIncludedInt = 42;
+
   return self;
 }
 
-- (id) initWithMyIncludedField: (Included *) MyIncludedField
+- (id) initWithMyIncludedField: (Included *) MyIncludedField MyIncludedInt: (IncludedInt64) MyIncludedInt
 {
   self = [super init];
   __thrift_MyIncludedField = MyIncludedField;
   __thrift_MyIncludedField_set = YES;
+  __thrift_MyIncludedInt = MyIncludedInt;
+  __thrift_MyIncludedInt_set = YES;
   return self;
 }
 
@@ -56,6 +60,11 @@
     __thrift_MyIncludedField = [[decoder decodeObjectForKey: @"MyIncludedField"] retain_stub];
     __thrift_MyIncludedField_set = YES;
   }
+  if ([decoder containsValueForKey: @"MyIncludedInt"])
+  {
+    __thrift_MyIncludedInt = [decoder decodeInt64ForKey: @"MyIncludedInt"];
+    __thrift_MyIncludedInt_set = YES;
+  }
   return self;
 }
 
@@ -64,6 +73,10 @@
   if (__thrift_MyIncludedField_set)
   {
     [encoder encodeObject: __thrift_MyIncludedField forKey: @"MyIncludedField"];
+  }
+  if (__thrift_MyIncludedInt_set)
+  {
+    [encoder encodeInt64: __thrift_MyIncludedInt forKey: @"MyIncludedInt"];
   }
 }
 
@@ -84,6 +97,24 @@
 - (void) unsetMyIncludedField {
   __thrift_MyIncludedField = nil;
   __thrift_MyIncludedField_set = NO;
+}
+
+- (int64_t) MyIncludedInt {
+  return __thrift_MyIncludedInt;
+}
+
+- (void) setMyIncludedInt: (int64_t) MyIncludedInt {
+  [self throwExceptionIfImmutable];
+  __thrift_MyIncludedInt = MyIncludedInt;
+  __thrift_MyIncludedInt_set = YES;
+}
+
+- (BOOL) MyIncludedIntIsSet {
+  return __thrift_MyIncludedInt_set;
+}
+
+- (void) unsetMyIncludedInt {
+  __thrift_MyIncludedInt_set = NO;
 }
 
 - (void) read: (id <TProtocol>) inProtocol
@@ -111,6 +142,14 @@
           [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         }
         break;
+      case 2:
+        if (fieldType == TType_I64) {
+          int64_t fieldValue = [inProtocol readI64];
+          [self setMyIncludedInt: fieldValue];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
       default:
         [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
         break;
@@ -128,6 +167,11 @@
       [__thrift_MyIncludedField write: outProtocol];
       [outProtocol writeFieldEnd];
     }
+  }
+  if (__thrift_MyIncludedInt_set) {
+    [outProtocol writeFieldBeginWithName: @"MyIncludedInt" type: TType_I64 fieldID: 2];
+    [outProtocol writeI64: __thrift_MyIncludedInt];
+    [outProtocol writeFieldEnd];
   }
   [outProtocol writeFieldStop];
   [outProtocol writeStructEnd];
@@ -147,6 +191,7 @@
   if (__thrift_MyIncludedField) {
     ret[@"MyIncludedField"] = [__thrift_MyIncludedField toDict];
   }
+  ret[@"MyIncludedInt"] = @(__thrift_MyIncludedInt);
   return [ret copy];
 }
 
@@ -167,6 +212,8 @@
     newCopy->__thrift_MyIncludedField = [self->__thrift_MyIncludedField mutableCopyWithZone:zone];
   }
   newCopy->__thrift_MyIncludedField_set = self->__thrift_MyIncludedField_set;
+  newCopy->__thrift_MyIncludedInt = self->__thrift_MyIncludedInt;
+  newCopy->__thrift_MyIncludedInt_set = self->__thrift_MyIncludedInt_set;
   return newCopy;
 }
 

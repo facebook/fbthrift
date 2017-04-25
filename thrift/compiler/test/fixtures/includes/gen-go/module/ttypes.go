@@ -22,12 +22,16 @@ var GoUnusedProtection__ int;
 
 // Attributes:
 //  - MyIncludedField
+//  - MyIncludedInt
 type MyStruct struct {
   MyIncludedField *includes.Included `thrift:"MyIncludedField,1" db:"MyIncludedField" json:"MyIncludedField"`
+  MyIncludedInt includes.IncludedInt64 `thrift:"MyIncludedInt,2" db:"MyIncludedInt" json:"MyIncludedInt"`
 }
 
 func NewMyStruct() *MyStruct {
-  return &MyStruct{}
+  return &MyStruct{
+MyIncludedInt: 42,
+}
 }
 
 var MyStruct_MyIncludedField_DEFAULT *includes.Included = &includes.Included{
@@ -37,6 +41,10 @@ func (p *MyStruct) GetMyIncludedField() *includes.Included {
     return MyStruct_MyIncludedField_DEFAULT
   }
 return p.MyIncludedField
+}
+
+func (p *MyStruct) GetMyIncludedInt() includes.IncludedInt64 {
+  return p.MyIncludedInt
 }
 func (p *MyStruct) IsSetMyIncludedField() bool {
   return p.MyIncludedField != nil
@@ -57,6 +65,10 @@ func (p *MyStruct) Read(iprot thrift.TProtocol) error {
     switch fieldId {
     case 1:
       if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
         return err
       }
     default:
@@ -82,10 +94,21 @@ func (p *MyStruct)  ReadField1(iprot thrift.TProtocol) error {
   return nil
 }
 
+func (p *MyStruct)  ReadField2(iprot thrift.TProtocol) error {
+  if v, err := iprot.ReadI64(); err != nil {
+  return thrift.PrependError("error reading field 2: ", err)
+} else {
+  temp := includes.IncludedInt64(v)
+  p.MyIncludedInt = temp
+}
+  return nil
+}
+
 func (p *MyStruct) Write(oprot thrift.TProtocol) error {
   if err := oprot.WriteStructBegin("MyStruct"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -101,6 +124,16 @@ func (p *MyStruct) writeField1(oprot thrift.TProtocol) (err error) {
   }
   if err := oprot.WriteFieldEnd(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field end error 1:MyIncludedField: ", p), err) }
+  return err
+}
+
+func (p *MyStruct) writeField2(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("MyIncludedInt", thrift.I64, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:MyIncludedInt: ", p), err) }
+  if err := oprot.WriteI64(int64(p.MyIncludedInt)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.MyIncludedInt (2) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:MyIncludedInt: ", p), err) }
   return err
 }
 

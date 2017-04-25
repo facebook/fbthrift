@@ -19,6 +19,7 @@
 namespace cpp2 {
 
 class Included;
+typedef int64_t IncludedInt64;
 
 class Included : private apache::thrift::detail::st::ComparisonOperators<Included> {
  public:

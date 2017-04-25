@@ -21,11 +21,15 @@ namespace cpp2 {
 void MyStruct::__clear() {
   // clear all fields
   ::apache::thrift::Cpp2Ops<  ::cpp2::Included>::clear(&MyIncludedField);
+  MyIncludedInt = 42LL;
   __isset.__clear();
 }
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
   if (!((MyIncludedField == rhs.MyIncludedField))) {
+    return false;
+  }
+  if (!((MyIncludedInt == rhs.MyIncludedInt))) {
     return false;
   }
   return true;
@@ -42,6 +46,7 @@ const  ::cpp2::Included& MyStruct::get_MyIncludedField() const& {
 void swap(MyStruct& a, MyStruct& b) {
   using ::std::swap;
   swap(a.MyIncludedField, b.MyIncludedField);
+  swap(a.MyIncludedInt, b.MyIncludedInt);
   swap(a.__isset, b.__isset);
 }
 

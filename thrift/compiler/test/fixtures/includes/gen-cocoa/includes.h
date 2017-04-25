@@ -20,6 +20,8 @@
 #import <thrift/TBase.h>
 #import <thrift/TBaseStruct.h>
 
+typedef int64_t IncludedInt64;
+
 @interface Included : TBaseStruct <TBase, NSCoding> {
   int64_t __thrift_MyIntField;
 
@@ -39,4 +41,5 @@
 
 @interface includesConstants : TBaseStruct {
 }
++ (int64_t) IncludedConstant;
 @end

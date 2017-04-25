@@ -22,9 +22,13 @@
 
 #import "includes.h"
 
+static int64_t IncludedConstant = 42;
 
 @implementation includesConstants
 + (void) initialize {
+}
++ (int64_t) IncludedConstant{
+  return IncludedConstant;
 }
 @end
 

@@ -23,6 +23,7 @@ cimport includes.types
 cdef extern from "gen-cpp2/module_types.h" namespace "cpp2":
     cdef cppclass cMyStruct__isset "cpp2::MyStruct::__isset":
         bint MyIncludedField
+        bint MyIncludedInt
 
     # Forward Declaration
     cdef cppclass cMyStruct "cpp2::MyStruct"
@@ -32,6 +33,7 @@ cdef extern from "gen-cpp2/module_types.h" namespace "cpp2":
         cMyStruct(const cMyStruct&) except +
         bint operator==(cMyStruct&)
         includes.types.cIncluded MyIncludedField
+         MyIncludedInt
         cMyStruct__isset __isset
 
 

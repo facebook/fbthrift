@@ -12,6 +12,12 @@ namespace cpp2 {
 
 struct includes_constants {
 
+  static constexpr int64_t const IncludedConstant_ = 42LL;
+
+  static constexpr int64_t IncludedConstant() {
+    return IncludedConstant_;
+  }
+
 };
 
 } // cpp2

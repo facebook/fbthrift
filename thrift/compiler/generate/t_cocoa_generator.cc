@@ -1314,7 +1314,9 @@ void t_cocoa_generator::generate_cocoa_struct_makeImmutable(std::ofstream& out, 
      t_field* field = (*f_iter);
      t_type* ttype = field->get_type();
      string field_name = kFieldPrefix + field->get_name();
-
+     if (ttype->is_typedef()) {
+       ttype = get_true_type(ttype);
+     }
      if (ttype->is_struct()) {
        out << indent() << "if (" << field_name << " && " << "![" << field_name << " isImmutable]" << ") {" << endl;
        indent_up();
@@ -1393,6 +1395,9 @@ void t_cocoa_generator::generate_cocoa_struct_toDict(ofstream& out,
      t_type* ttype = field->get_type();
      string field_name = kFieldPrefix + field->get_name();
      string ret_equals = "ret[@\"" + field->get_name() + "\"] = ";
+     if (ttype->is_typedef()) {
+       ttype = get_true_type(ttype);
+     }
 
      const bool check_for_null = ttype->is_struct() || ttype->is_string() || ttype->is_container();
 
@@ -1468,6 +1473,9 @@ void t_cocoa_generator::generate_cocoa_struct_mutableCopyWithZone(ofstream& out,
      t_field* field = (*f_iter);
      t_type* ttype = field->get_type();
      string field_name = kFieldPrefix + field->get_name();
+     if (ttype->is_typedef()) {
+       ttype = get_true_type(ttype);
+     }
 
      const bool check_for_null = ttype->is_struct() || ttype->is_string() || ttype->is_container();
 
@@ -3055,4 +3063,3 @@ THRIFT_REGISTER_GENERATOR(cocoa, "Cocoa",
 "    validate_required:\n"
 "                     Throws exception if any required field is not set.\n"
 )
-

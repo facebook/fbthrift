@@ -10,4 +10,6 @@
 
 namespace cpp2 {
 
+constexpr int64_t const includes_constants::IncludedConstant_;
+
 } // cpp2

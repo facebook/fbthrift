@@ -31,7 +31,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     def __init__(
         MyStruct self,
-        MyIncludedField=None
+        MyIncludedField=None,
+        MyIncludedInt=None
     ):
         self.c_MyStruct = make_shared[cMyStruct]()
 
@@ -43,13 +44,19 @@ cdef class MyStruct(thrift.py3.types.Struct):
             deref(inst.c_MyStruct).MyIncludedField = deref(__MyIncludedField.get())
             deref(inst.c_MyStruct).__isset.MyIncludedField = True
 
+        
+            deref(inst.c_MyStruct).__isset.MyIncludedInt = True
+
 
     def __call__(
         MyStruct self,
-        MyIncludedField=NOTSET
+        MyIncludedField=NOTSET,
+        MyIncludedInt=NOTSET
     ):
         changes = any((
             MyIncludedField is not NOTSET,
+
+            MyIncludedInt is not NOTSET,
         ))
 
         if not changes:
@@ -65,6 +72,11 @@ cdef class MyStruct(thrift.py3.types.Struct):
             deref(inst.c_MyStruct).__isset.MyIncludedField = False
         if MyIncludedField is NOTSET:
             MyIncludedField = None
+        if MyIncludedInt is None:
+            deref(inst.c_MyStruct).MyIncludedInt = deref(defaults.c_MyStruct).MyIncludedInt
+            deref(inst.c_MyStruct).__isset.MyIncludedInt = False
+        if MyIncludedInt is NOTSET:
+            MyIncludedInt = None
 
         cdef shared_ptr[includes.types.cIncluded] __MyIncludedField
         if MyIncludedField is not None:
@@ -73,13 +85,17 @@ cdef class MyStruct(thrift.py3.types.Struct):
             deref(inst.c_MyStruct).MyIncludedField = deref(__MyIncludedField.get())
             deref(inst.c_MyStruct).__isset.MyIncludedField = True
 
+        
+            deref(inst.c_MyStruct).__isset.MyIncludedInt = True
+
         return inst
 
     def __iter__(self):
         yield 'MyIncludedField', self.MyIncludedField
+        yield 'MyIncludedInt', self.MyIncludedInt
 
     def __bool__(self):
-        return deref(self.c_MyStruct).__isset.MyIncludedField
+        return deref(self.c_MyStruct).__isset.MyIncludedField or deref(self.c_MyStruct).__isset.MyIncludedInt
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] c_MyStruct):
@@ -96,6 +112,11 @@ cdef class MyStruct(thrift.py3.types.Struct):
                 deref(self.c_MyStruct).MyIncludedField)
             self.__MyIncludedField = includes.types.Included.create(item)
         return self.__MyIncludedField
+        
+
+    @property
+    def MyIncludedInt(self):
+
         
 
 
@@ -122,11 +143,12 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if not self.__hash:
             self.__hash = hash((
             self.MyIncludedField,
+            self.MyIncludedInt,
             ))
         return self.__hash
 
     def __repr__(MyStruct self):
-        return f'MyStruct(MyIncludedField={repr(self.MyIncludedField)})'
+        return f'MyStruct(MyIncludedField={repr(self.MyIncludedField)}, MyIncludedInt={repr(self.MyIncludedInt)})'
 
 
 MyStruct_defaults = MyStruct()

@@ -49,3 +49,6 @@ import qualified Thrift.Arbitraries as Arbitraries
 
 
 import qualified Includes_Types
+includedConstant :: Int.Int64
+includedConstant = 42
+

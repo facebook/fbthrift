@@ -15,6 +15,7 @@ var _ = thrift.ZERO
 var _ = fmt.Printf
 var _ = bytes.Equal
 
+const IncludedConstant = 42
 
 func init() {
 }

@@ -35,6 +35,7 @@ class MyStruct:
   """
   Attributes:
    - MyIncludedField
+   - MyIncludedInt
   """
 
   thrift_spec = None
@@ -65,6 +66,11 @@ class MyStruct:
           self.MyIncludedField.read(iprot)
         else:
           iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.I64:
+          self.MyIncludedInt = iprot.readI64()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -86,6 +92,10 @@ class MyStruct:
       oprot.writeFieldBegin('MyIncludedField', TType.STRUCT, 1)
       self.MyIncludedField.write(oprot)
       oprot.writeFieldEnd()
+    if self.MyIncludedInt != None:
+      oprot.writeFieldBegin('MyIncludedInt', TType.I64, 2)
+      oprot.writeI64(self.MyIncludedInt)
+      oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
 
@@ -95,6 +105,9 @@ class MyStruct:
     value = pprint.pformat(self.MyIncludedField, indent=0)
     value = padding.join(value.splitlines(True))
     L.append('    MyIncludedField=%s' % (value))
+    value = pprint.pformat(self.MyIncludedInt, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    MyIncludedInt=%s' % (value))
     return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
 
   def __eq__(self, other):
@@ -116,6 +129,7 @@ MyStruct.thrift_spec = (
   (1, TType.STRUCT, 'MyIncludedField', [includes.ttypes.Included, includes.ttypes.Included.thrift_spec, False], includes.ttypes.Included(**{
     "MyIntField" : 5,
   }), 2, ), # 1
+  (2, TType.I64, 'MyIncludedInt', None, 42, 2, ), # 2
 )
 
 MyStruct.thrift_struct_annotations = {
@@ -123,12 +137,15 @@ MyStruct.thrift_struct_annotations = {
 MyStruct.thrift_field_annotations = {
 }
 
-def MyStruct__init__(self, MyIncludedField=MyStruct.thrift_spec[1][4],):
+def MyStruct__init__(self, MyIncludedField=MyStruct.thrift_spec[1][4], MyIncludedInt=MyStruct.thrift_spec[2][4],):
   if MyIncludedField is self.thrift_spec[1][4]:
     MyIncludedField = includes.ttypes.Included(**{
     "MyIntField" : 5,
   })
   self.MyIncludedField = MyIncludedField
+  if MyIncludedInt is self.thrift_spec[2][4]:
+    MyIncludedInt = 42
+  self.MyIncludedInt = MyIncludedInt
 
 MyStruct.__init__ = MyStruct__init__
 

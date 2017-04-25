@@ -51,3 +51,5 @@ cdef class Included(thrift.py3.types.Struct):
 
 
 
+cdef extern from "gen-cpp2/includes_constants.h" namespace "cpp2":
+    cdef int64_t cIncludedConstant "cpp2::includes_constants::IncludedConstant"

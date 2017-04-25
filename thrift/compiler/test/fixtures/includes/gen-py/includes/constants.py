@@ -15,3 +15,5 @@ from thrift.protocol.TProtocol import TProtocolException
 
 from .ttypes import *
 
+IncludedConstant = 42
+
