@@ -3578,6 +3578,39 @@ class CppGenerator(t_generator.Generator):
                   'iprot, &{1});'.format(
                       self._type_name(otype), prefix))
 
+    def _render_type_class(self, ttype):
+        while ttype.is_typedef:
+            ttype = ttype.type
+
+        if ttype.is_void:
+            return '::apache::thrift::type_class::nothing'
+        elif ttype.is_base_type and ttype.as_base_type.is_binary:
+            return '::apache::thrift::type_class::binary'
+        elif ttype.is_string:
+            return '::apache::thrift::type_class::string'
+        elif ttype.is_floating_point:
+            return '::apache::thrift::type_class::floating_point'
+        elif ttype.is_base_type:
+            return '::apache::thrift::type_class::integral'
+        elif ttype.is_enum:
+            return '::apache::thrift::type_class::enumeration'
+        elif ttype.is_list:
+            return '::apache::thrift::type_class::list<{0}>'.format(
+                self._render_type_class(ttype.as_list.elem_type))
+        elif ttype.is_map:
+            return '::apache::thrift::type_class::map<{0}, {1}>'.format(
+                self._render_type_class(ttype.as_map.key_type),
+                self._render_type_class(ttype.as_map.value_type))
+        elif ttype.is_set:
+            return '::apache::thrift::type_class::set<{0}>'.format(
+                self._render_type_class(ttype.as_set.elem_type))
+        elif ttype.is_xception:
+            return '::apache::thrift::type_class::structure'
+        elif ttype.is_struct:
+            return '::apache::thrift::type_class::structure'
+
+        return '::apache::thrift::type_class::unknown'
+
     def _generate_templated_deserialize_container(self, scope, otype, struct,
                                                   prefix, ttype, pointer=False,
                                                   optional_wrapped=False):
@@ -3589,19 +3622,25 @@ class CppGenerator(t_generator.Generator):
                     '::type;'.format(prefix))
             s('std::unique_ptr<element_type> {0}(new element_type());'
                     .format(ptrtype))
-            s('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
-                'iprot, {1}.get());'.format(self._type_name(otype), ptrtype))
+            s('xfer += ::apache::thrift::detail::pm::protocol_methods'
+                    '< {0}, {1}>::read(*iprot, *{2});'.format(
+                        self._render_type_class(otype),
+                        self._type_name(otype),
+                        ptrtype))
             s('{0} = std::move({1});'.format(prefix, ptrtype))
         elif optional_wrapped:
-            scope("{0} = {1}();".format(
-                prefix, self._type_name(otype)))
-            scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
-                  'iprot, &{1}.value());'.format(
-                      self._type_name(otype), prefix))
+            scope("{0} = {1}();".format(prefix, self._type_name(otype)))
+            s('xfer += ::apache::thrift::detail::pm::protocol_methods'
+                    '< {0}, {1}>::read(*iprot, {2}.value());'.format(
+                        self._render_type_class(otype),
+                        self._type_name(otype),
+                        prefix))
         else:
-            scope('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
-                  'iprot, &{1});'.format(
-                      self._type_name(otype), prefix))
+            s('xfer += ::apache::thrift::detail::pm::protocol_methods'
+                    '< {0}, {1}>::read(*iprot, {2});'.format(
+                        self._render_type_class(otype),
+                        self._type_name(otype),
+                        prefix))
 
     def _generate_deserialize_container(self, scope, cont, prefix,
                                         otype, pointer, optional_wrapped):
