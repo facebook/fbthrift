@@ -91,6 +91,7 @@ void enableSecurity(HeaderClientChannel* channel,
       make_shared<krb5::Krb5CredentialsCacheManager>());
   saslClient->setSecurityMech(mech);
   channel->setSaslClient(std::move(saslClient));
+  channel->setSaslTimeout(5000);
 }
 
 HeaderClientChannel::Ptr getClientChannel(EventBase* eb,
