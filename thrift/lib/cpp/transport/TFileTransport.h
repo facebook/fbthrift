@@ -26,8 +26,8 @@
 #include <string>
 #include <stdio.h>
 
-#include <pthread.h>
 #include <boost/scoped_ptr.hpp>
+#include <folly/portability/PThread.h>
 #include <memory>
 
 namespace apache { namespace thrift {

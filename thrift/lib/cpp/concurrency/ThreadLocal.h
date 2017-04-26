@@ -20,8 +20,8 @@
 #define THRIFT_CONCURRENCY_THREADLOCAL_H_ 1
 
 #include <folly/Portability.h>
+#include <folly/portability/PThread.h>
 #include <thrift/lib/cpp/Thrift.h>
-#include <pthread.h>
 
 namespace apache { namespace thrift { namespace concurrency {
 

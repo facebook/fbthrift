@@ -23,10 +23,9 @@
 #include <thrift/lib/cpp/transport/TNullTransport.h>
 #include <thrift/lib/cpp/TProcessor.h>
 
-#include <pthread.h>
-#include <time.h>
-#include <fcntl.h>
 #include <errno.h>
+#include <fcntl.h>
+#include <time.h>
 #ifdef THRIFT_HAVE_STRINGS_H
 #include <strings.h>
 #endif

@@ -16,7 +16,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #include <thrift/lib/cpp/concurrency/Monitor.h>
 #include <thrift/lib/cpp/concurrency/Exception.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
@@ -29,7 +28,7 @@
 
 #include <iostream>
 
-#include <pthread.h>
+#include <folly/portability/PThread.h>
 
 namespace apache { namespace thrift { namespace concurrency {
 
