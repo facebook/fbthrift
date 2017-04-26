@@ -37,6 +37,9 @@ class MapWithNoInsert {
     using self = const_iterator;
    public:
     explicit const_iterator(irep r) : rep_(r) {}
+    const value_type& operator*() const {
+      return *rep_;
+    }
     const value_type* operator->() const { return &*rep_; }
     self& operator++() { ++rep_; return *this; }
     bool operator!=(const self& that) const { return rep_ != that.rep_; }
