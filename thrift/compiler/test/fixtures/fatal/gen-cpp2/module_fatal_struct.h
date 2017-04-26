@@ -6,8 +6,8 @@
  */
 #pragma once
 
-#include  "reflection_dep_C_fatal_types.h"
 #include  "reflection_dep_B_fatal_types.h"
+#include  "reflection_dep_C_fatal_types.h"
 
 #include "thrift/compiler/test/fixtures/fatal/gen-cpp2/module_types.h"
 

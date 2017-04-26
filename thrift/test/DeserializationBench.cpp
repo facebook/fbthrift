@@ -73,7 +73,24 @@ void buildRandomStructA(cpp2::StructA& obj) {
   }
 }
 
-BENCHMARK(Deserialization, iters) {
+BENCHMARK(CompactSerialization, iters) {
+  using serializer = apache::thrift::CompactSerializer;
+
+  folly::BenchmarkSuspender braces; // stop the clock by default
+
+  for (size_t i = 0; i < iters; ++i) {
+    // Prep, untimed:
+    cpp2::StructA obj;
+    buildRandomStructA(obj);
+
+    // Serialize, timed:
+    braces.dismissing([&] {
+      auto buf = serializer::serialize<folly::IOBufQueue>(obj).move();
+    });
+  }
+}
+
+BENCHMARK(CompactDeserialization, iters) {
   using serializer = apache::thrift::CompactSerializer;
 
   folly::BenchmarkSuspender braces; // stop the clock by default
@@ -95,6 +112,43 @@ BENCHMARK(Deserialization, iters) {
   }
 }
 
+BENCHMARK(JsonSerialization, iters) {
+  using serializer = apache::thrift::SimpleJSONSerializer;
+
+  folly::BenchmarkSuspender braces; // stop the clock by default
+
+  for (size_t i = 0; i < iters; ++i) {
+    // Prep, untimed:
+    cpp2::StructA obj;
+    buildRandomStructA(obj);
+
+    // Serialize, timed:
+    braces.dismissing([&] {
+      auto buf = serializer::serialize<folly::IOBufQueue>(obj).move();
+    });
+  }
+}
+
+BENCHMARK(JsonDeserialization, iters) {
+  using serializer = apache::thrift::SimpleJSONSerializer;
+
+  folly::BenchmarkSuspender braces; // stop the clock by default
+
+  for (size_t i = 0; i < iters; ++i) {
+    // Prep, untimed:
+    cpp2::StructA obj;
+    buildRandomStructA(obj);
+
+    // Serialize, untimed:
+    auto buf = serializer::serialize<folly::IOBufQueue>(obj).move();
+    buf->coalesce(); // so we can ignore serialization artifacts later
+
+    // Deserialize, timed:
+    cpp2::StructA obj2;
+    braces.dismissing([&] { serializer::deserialize(buf.get(), obj2); });
+  }
+}
+
 int main(int argc, char** argv) {
   folly::init(&argc, &argv);
   folly::runBenchmarks();
@@ -105,6 +159,9 @@ int main(int argc, char** argv) {
 ============================================================================
 thrift/test/DeserializationBench.cpp            relative  time/iter  iters/s
 ============================================================================
-Deserialization                                               1.36s  734.51m
+CompactSerialization                                          3.01s  332.61m
+CompactDeserialization                                     857.53ms     1.17
+JsonSerialization                                             6.32s  158.28m
+JsonDeserialization                                          12.61s   79.31m
 ============================================================================
 */
