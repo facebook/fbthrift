@@ -276,7 +276,21 @@ class ThriftHeaderClientProtocolBase(FramedProtocol):
         self.pending_tasks = {}
         self.transport = None  # TTransport wrapping an asyncio.Transport
 
-    # message_received still left to be implemented in a subclass
+    @asyncio.coroutine
+    def message_received(self, frame):
+        self._handle_message(frame, clear_timeout=True)
+
+    @asyncio.coroutine
+    def timeout_task(self, fname, delay):
+        # timeout_task must to be implemented in a subclass
+        raise NotImplementedError
+
+    def _handle_timeout(self, fname, seqid):
+        exc = TApplicationException(
+            TApplicationException.TIMEOUT, "Call to {} timed out".format(fname)
+        )
+        serialized_exc = self.serialize_texception(fname, seqid, exc)
+        self._handle_message(serialized_exc, clear_timeout=False)
 
     def wrapAsyncioTransport(self, asyncio_transport):
         raise NotImplementedError
@@ -296,12 +310,46 @@ class ThriftHeaderClientProtocolBase(FramedProtocol):
 
     def connection_lost(self, exc):
         """Implements asyncio.Protocol.connection_lost."""
+        te = TTransportException(
+            type=TTransportException.END_OF_FILE,
+            message="Connection closed")
+        self.fail_all_futures(te)
+
+    def fail_all_futures(self, exc):
         for fut in self.client._futures.values():
+            if not fut.done():
+                fut.set_exception(exc)
+
+    def _handle_message(self, frame, clear_timeout):
+        try:
+            tmi = TReadOnlyBuffer(frame)
+            iprot = self.THEADER_PROTOCOL_FACTORY(
+                client_type=self.client_type,
+            ).getProtocol(tmi)
+            (fname, mtype, seqid) = iprot.readMessageBegin()
+        except TTransportException as ex:
+            self.fail_all_futures(ex)
+            self.transport.close()
+            return
+        except Exception as ex:
             te = TTransportException(
                 type=TTransportException.END_OF_FILE,
-                message="Connection closed")
-            if not fut.done():
-                fut.set_exception(te)
+                message=str(ex))
+            self.fail_all_futures(te)
+            self.transport.close()
+            return
+
+        if clear_timeout:
+            try:
+                timeout_task = self.pending_tasks.pop(seqid)
+            except KeyError:
+                # Task doesn't have a timeout or has already been cancelled
+                # and pruned from `pending_tasks`.
+                pass
+            else:
+                timeout_task.cancel()
+
+        self._handle_message_received(iprot, fname, mtype, seqid)
 
     def _handle_message_received(self, iprot, fname, mtype, seqid):
         method = getattr(self.client, "recv_" + fname.decode(), None)
@@ -335,12 +383,8 @@ class ThriftHeaderClientProtocolBase(FramedProtocol):
         if not timeout:
             return
 
-        exc = TApplicationException(
-            TApplicationException.TIMEOUT, "Call to {} timed out".format(fname)
-        )
-        serialized_exc = self.serialize_texception(fname, seqid, exc)
         timeout_task = asyncio.Task(
-            self.message_received(serialized_exc, delay=timeout),
+            self.timeout_task(fname, seqid, delay=timeout),
             loop=self.loop,
         )
         self.update_pending_tasks(seqid, timeout_task)

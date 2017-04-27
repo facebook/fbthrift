@@ -1,5 +1,4 @@
-# @lint-avoid-pyflakes2
-# @lint-avoid-python-3-compatibility-imports
+#!/usr/bin/env python3
 
 import asyncio
 import functools
@@ -21,6 +20,8 @@ from thrift.server.test.handler import (
     AsyncCalculatorHandler,
     AsyncSleepHandler,
 )
+from thrift.transport.TTransport import TTransportException
+from thrift.Thrift import TApplicationException
 
 
 def server_loop_runner(loop, sock, handler):
@@ -45,6 +46,27 @@ def test_server_with_client(sock, loop, factory=ThriftClientProtocolFactory):
     transport.close()
     protocol.close()
     return add_result
+
+
+@asyncio.coroutine
+def test_echo_timeout(sock, loop, factory=ThriftClientProtocolFactory):
+    port = sock.getsockname()[1]
+    (transport, protocol) = yield from loop.create_connection(
+        factory(Sleep.Client, loop=loop, timeouts={'echo': 1}),
+        host='localhost',
+        port=port,
+    )
+    client = protocol.client
+    # Ask the server to delay for 30 seconds.
+    # However, we told the client factory above to use a 1 second timeout
+    # for the echo() function.
+    yield from asyncio.wait_for(
+        client.echo('test', 30),
+        timeout=None,
+        loop=loop,
+    )
+    transport.close()
+    protocol.close()
 
 
 class TestTHeaderProtocol(THeaderProtocol):
@@ -120,6 +142,45 @@ class TAsyncioServerTest(unittest.TestCase):
         )
         self.assertTrue(probe.touched)
         self.assertEqual(42, add_result)
+
+    def test_read_error(self):
+        '''Test the behavior if readMessageBegin() throws an exception'''
+        loop = asyncio.get_event_loop()
+        loop.set_debug(True)
+        sock = socket.socket()
+        server_loop_runner(loop, sock, AsyncCalculatorHandler())
+
+        # A helper Probe class that will raise an exception when
+        # it is invoked by readMessageBegin()
+        class Probe(object):
+            def touch(self):
+                raise TTransportException(
+                    TTransportException.INVALID_TRANSFORM,
+                    'oh noes')
+
+        probe = Probe()
+
+        def factory(*args, **kwargs):
+            return functools.partial(
+                TestThriftClientProtocol,
+                probe,
+                *args,
+                **kwargs,
+            )
+
+        try:
+            add_result = loop.run_until_complete(
+                test_server_with_client(
+                    sock,
+                    loop,
+                    factory=factory,
+                )
+            )
+            self.fail('expected client method to throw; instead returned %r' %
+                      (add_result,))
+        except TTransportException as ex:
+            self.assertEqual(str(ex), 'oh noes')
+            self.assertEqual(ex.type, TTransportException.INVALID_TRANSFORM)
 
     def _test_using_event_loop(self, loop):
         sock = socket.socket()
@@ -219,7 +280,7 @@ class TAsyncioServerTest(unittest.TestCase):
         try:
             with client_manager as client:
                 raise Exception('expected exception from test')
-        except:
+        except Exception:
             self.assertFalse(client._oprot.trans.isOpen())
 
     def test_close_client_on_error(self):
@@ -230,3 +291,13 @@ class TAsyncioServerTest(unittest.TestCase):
             loop.run_until_complete(
                 self._assert_transport_is_closed_on_error(sock, loop),
             )
+
+    def test_timeout(self):
+        loop = asyncio.get_event_loop()
+        loop.set_debug(True)
+        sock = socket.socket()
+        server_loop_runner(loop, sock, AsyncSleepHandler(loop))
+        with self.assertRaisesRegex(
+            TApplicationException, 'Call to echo timed out'
+        ):
+            loop.run_until_complete(test_echo_timeout(sock, loop))

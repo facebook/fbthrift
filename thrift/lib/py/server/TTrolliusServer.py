@@ -25,7 +25,6 @@ from thrift.util.async_common import (
     FramedProtocol,
     THeaderProtocol,
     ThriftHeaderClientProtocolBase,
-    TReadOnlyBuffer,
     TReadWriteBuffer,
     WrappedTransport,
 )
@@ -165,28 +164,10 @@ class SenderTransport(WrappedTransport):
 
 
 class ThriftHeaderClientProtocol(ThriftHeaderClientProtocolBase):
-
     @asyncio.coroutine
-    def message_received(self, frame, delay=0):
-        tmi = TReadOnlyBuffer(frame)
-        iprot = self.THEADER_PROTOCOL_FACTORY(
-            client_type=self.client_type,
-        ).getProtocol(tmi)
-        (fname, mtype, seqid) = iprot.readMessageBegin()
-
-        if delay:
-            yield From(asyncio.sleep(delay))
-        else:
-            try:
-                timeout_task = self.pending_tasks.pop(seqid)
-            except KeyError:
-                # Task doesn't have a timeout or has already been cancelled
-                # and pruned from `pending_tasks`.
-                pass
-            else:
-                timeout_task.cancel()
-
-        self._handle_message_received(iprot, fname, mtype, seqid)
+    def timeout_task(self, fname, seqid, delay=0):
+        yield From(asyncio.sleep(delay))
+        self._handle_timeout(fname, seqid)
 
     def wrapAsyncioTransport(self, asyncio_transport):
         return SenderTransport(asyncio_transport, self, self.loop)
