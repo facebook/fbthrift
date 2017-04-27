@@ -200,7 +200,7 @@ template <typename Protocol_>
 void MyServiceAsyncClient::recv_queryT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_queryT(prot, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 

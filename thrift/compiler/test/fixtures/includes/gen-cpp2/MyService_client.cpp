@@ -118,7 +118,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_query(::apache::thri
 void MyServiceAsyncClient::recv_query(::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_query(state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 

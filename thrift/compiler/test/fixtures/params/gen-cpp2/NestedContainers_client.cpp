@@ -118,7 +118,7 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_mapList(::apa
 void NestedContainersAsyncClient::recv_mapList(::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_mapList(state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -232,7 +232,7 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_mapSet(::apac
 void NestedContainersAsyncClient::recv_mapSet(::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_mapSet(state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -346,7 +346,7 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_listMap(::apa
 void NestedContainersAsyncClient::recv_listMap(::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_listMap(state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -460,7 +460,7 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_listSet(::apa
 void NestedContainersAsyncClient::recv_listSet(::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_listSet(state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -574,7 +574,7 @@ folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_turtles(::apa
 void NestedContainersAsyncClient::recv_turtles(::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_turtles(state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 

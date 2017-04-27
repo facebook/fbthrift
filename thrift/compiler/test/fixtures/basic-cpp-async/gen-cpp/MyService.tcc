@@ -992,7 +992,7 @@ void MyServiceClientT<Protocol_>::recv_ping()
 {
   auto ew = recv_wrapped_ping();
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -1104,7 +1104,7 @@ void MyServiceClientT<Protocol_>::recv_getRandomData(std::string& _return)
 {
   auto ew = recv_wrapped_getRandomData(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -1217,7 +1217,7 @@ bool MyServiceClientT<Protocol_>::recv_hasDataById()
   bool _return;
   auto ew = recv_wrapped_hasDataById(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -1331,7 +1331,7 @@ void MyServiceClientT<Protocol_>::recv_getDataById(std::string& _return)
 {
   auto ew = recv_wrapped_getDataById(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -1439,7 +1439,7 @@ void MyServiceClientT<Protocol_>::recv_putDataById()
 {
   auto ew = recv_wrapped_putDataById();
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -1591,7 +1591,7 @@ void MyServiceClientT<Protocol_>::recv_putStructById()
 {
   auto ew = recv_wrapped_putStructById();
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -2464,7 +2464,7 @@ void MyServiceCobClientT<Protocol_>::recv_ping()
 {
   auto ew = recv_wrapped_ping();
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -2589,7 +2589,7 @@ void MyServiceCobClientT<Protocol_>::recv_getRandomData(std::string& _return)
 {
   auto ew = recv_wrapped_getRandomData(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -2715,7 +2715,7 @@ bool MyServiceCobClientT<Protocol_>::recv_hasDataById()
   bool _return;
   auto ew = recv_wrapped_hasDataById(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -2842,7 +2842,7 @@ void MyServiceCobClientT<Protocol_>::recv_getDataById(std::string& _return)
 {
   auto ew = recv_wrapped_getDataById(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -2962,7 +2962,7 @@ void MyServiceCobClientT<Protocol_>::recv_putDataById()
 {
   auto ew = recv_wrapped_putDataById();
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -3127,7 +3127,7 @@ void MyServiceCobClientT<Protocol_>::recv_putStructById()
 {
   auto ew = recv_wrapped_putStructById();
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 

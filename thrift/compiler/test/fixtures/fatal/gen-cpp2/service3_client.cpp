@@ -118,7 +118,7 @@ folly::exception_wrapper service3AsyncClient::recv_wrapped_methodA(::apache::thr
 void service3AsyncClient::recv_methodA(::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_methodA(state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -232,7 +232,7 @@ folly::exception_wrapper service3AsyncClient::recv_wrapped_methodB(::apache::thr
 void service3AsyncClient::recv_methodB(::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_methodB(state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -347,7 +347,7 @@ int32_t service3AsyncClient::recv_methodC(::apache::thrift::ClientReceiveState& 
   int32_t _return;
   auto ew = recv_wrapped_methodC(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -463,7 +463,7 @@ int32_t service3AsyncClient::recv_methodD(::apache::thrift::ClientReceiveState& 
   int32_t _return;
   auto ew = recv_wrapped_methodD(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -578,7 +578,7 @@ folly::exception_wrapper service3AsyncClient::recv_wrapped_methodE( ::test_cpp2:
 void service3AsyncClient::recv_methodE( ::test_cpp2::cpp_reflection::struct2& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_methodE(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -692,7 +692,7 @@ folly::exception_wrapper service3AsyncClient::recv_wrapped_methodF( ::test_cpp2:
 void service3AsyncClient::recv_methodF( ::test_cpp2::cpp_reflection::struct3& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_methodF(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 

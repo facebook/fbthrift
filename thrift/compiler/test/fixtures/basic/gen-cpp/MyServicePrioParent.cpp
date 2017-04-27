@@ -360,7 +360,7 @@ void MyServicePrioParentClient::recv_ping()
 {
   auto ew = recv_wrapped_ping();
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -462,7 +462,7 @@ void MyServicePrioParentClient::recv_pong()
 {
   auto ew = recv_wrapped_pong();
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 

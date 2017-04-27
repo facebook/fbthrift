@@ -649,7 +649,7 @@ template <typename Protocol_>
 void NestedContainersAsyncClient::recv_mapListT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_mapListT(prot, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -721,7 +721,7 @@ template <typename Protocol_>
 void NestedContainersAsyncClient::recv_mapSetT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_mapSetT(prot, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -793,7 +793,7 @@ template <typename Protocol_>
 void NestedContainersAsyncClient::recv_listMapT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_listMapT(prot, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -865,7 +865,7 @@ template <typename Protocol_>
 void NestedContainersAsyncClient::recv_listSetT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_listSetT(prot, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -937,7 +937,7 @@ template <typename Protocol_>
 void NestedContainersAsyncClient::recv_turtlesT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_turtlesT(prot, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 

@@ -2173,7 +2173,7 @@ class CppGenerator(t_generator.Generator):
                 func_name = func_name + 'T'
             out('auto ew = {0}({1});'.format(func_name, ', '.join(params)))
             with out('if (ew)'):
-                out('ew.throwException();')
+                out('ew.throw_exception();')
             if simple_return:
                 out('return _return;')
 

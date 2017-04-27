@@ -118,7 +118,7 @@ folly::exception_wrapper MyServicePrioChildAsyncClient::recv_wrapped_pang(::apac
 void MyServicePrioChildAsyncClient::recv_pang(::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_pang(state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 

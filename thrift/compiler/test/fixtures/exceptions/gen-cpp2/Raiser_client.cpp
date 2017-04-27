@@ -118,7 +118,7 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_doBland(::apache::thrif
 void RaiserAsyncClient::recv_doBland(::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_doBland(state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -232,7 +232,7 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_doRaise(::apache::thrif
 void RaiserAsyncClient::recv_doRaise(::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_doRaise(state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -346,7 +346,7 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_get200(std::string& _re
 void RaiserAsyncClient::recv_get200(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_get200(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -460,7 +460,7 @@ folly::exception_wrapper RaiserAsyncClient::recv_wrapped_get500(std::string& _re
 void RaiserAsyncClient::recv_get500(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_get500(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 

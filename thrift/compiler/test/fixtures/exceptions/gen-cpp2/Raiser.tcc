@@ -591,7 +591,7 @@ template <typename Protocol_>
 void RaiserAsyncClient::recv_doBlandT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_doBlandT(prot, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -670,7 +670,7 @@ template <typename Protocol_>
 void RaiserAsyncClient::recv_doRaiseT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_doRaiseT(prot, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -750,7 +750,7 @@ template <typename Protocol_>
 void RaiserAsyncClient::recv_get200T(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_get200T(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -838,7 +838,7 @@ template <typename Protocol_>
 void RaiserAsyncClient::recv_get500T(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_get500T(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 

@@ -42,7 +42,7 @@ cdef void SimpleService_get_five_callback(
     cdef int32_t citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -57,7 +57,7 @@ cdef void SimpleService_add_five_callback(
     cdef int32_t citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -72,7 +72,7 @@ cdef void SimpleService_do_nothing_callback(
     cdef cFollyUnit citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -87,7 +87,7 @@ cdef void SimpleService_concat_callback(
     cdef unique_ptr[string] citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -102,7 +102,7 @@ cdef void SimpleService_get_value_callback(
     cdef int32_t citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -117,7 +117,7 @@ cdef void SimpleService_negate_callback(
     cdef cbool citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -132,7 +132,7 @@ cdef void SimpleService_tiny_callback(
     cdef int8_t citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -147,7 +147,7 @@ cdef void SimpleService_small_callback(
     cdef int16_t citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -162,7 +162,7 @@ cdef void SimpleService_big_callback(
     cdef int64_t citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -177,7 +177,7 @@ cdef void SimpleService_two_callback(
     cdef double citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -196,7 +196,7 @@ cdef void SimpleService_expected_exception_callback(
         pyfuture.set_exception(module.types.SimpleException.create(module.types.move(ex_se)))
     elif result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -211,7 +211,7 @@ cdef void SimpleService_unexpected_exception_callback(
     cdef int32_t citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -226,7 +226,7 @@ cdef void SimpleService_sum_i16_list_callback(
     cdef int32_t citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -241,7 +241,7 @@ cdef void SimpleService_sum_i32_list_callback(
     cdef int32_t citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -256,7 +256,7 @@ cdef void SimpleService_sum_i64_list_callback(
     cdef int32_t citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -271,7 +271,7 @@ cdef void SimpleService_concat_many_callback(
     cdef unique_ptr[string] citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -286,7 +286,7 @@ cdef void SimpleService_count_structs_callback(
     cdef int32_t citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -301,7 +301,7 @@ cdef void SimpleService_sum_set_callback(
     cdef int32_t citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -316,7 +316,7 @@ cdef void SimpleService_contains_word_callback(
     cdef cbool citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -331,7 +331,7 @@ cdef void SimpleService_get_map_value_callback(
     cdef unique_ptr[string] citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -346,7 +346,7 @@ cdef void SimpleService_map_length_callback(
     cdef int16_t citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -361,7 +361,7 @@ cdef void SimpleService_sum_map_values_callback(
     cdef int16_t citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -376,7 +376,7 @@ cdef void SimpleService_complex_sum_i32_callback(
     cdef int32_t citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -391,7 +391,7 @@ cdef void SimpleService_repeat_name_callback(
     cdef unique_ptr[string] citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -406,7 +406,7 @@ cdef void SimpleService_get_struct_callback(
     cdef unique_ptr[module.types.cSimpleStruct] citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -421,7 +421,7 @@ cdef void SimpleService_fib_callback(
     cdef unique_ptr[vector[int32_t]] citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -436,7 +436,7 @@ cdef void SimpleService_unique_words_callback(
     cdef unique_ptr[cset[string]] citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -451,7 +451,7 @@ cdef void SimpleService_words_count_callback(
     cdef unique_ptr[cmap[string,int16_t]] citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -466,7 +466,7 @@ cdef void SimpleService_set_enum_callback(
     cdef module.types.cAnEnum citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -481,7 +481,7 @@ cdef void SimpleService_list_of_lists_callback(
     cdef unique_ptr[vector[vector[int32_t]]] citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -496,7 +496,7 @@ cdef void SimpleService_word_character_frequency_callback(
     cdef unique_ptr[cmap[string,cmap[string,int32_t]]] citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -511,7 +511,7 @@ cdef void SimpleService_list_of_sets_callback(
     cdef unique_ptr[vector[cset[string]]] citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -526,7 +526,7 @@ cdef void SimpleService_nested_map_argument_callback(
     cdef int32_t citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -541,7 +541,7 @@ cdef void SimpleService_make_sentence_callback(
     cdef unique_ptr[string] citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -556,7 +556,7 @@ cdef void SimpleService_get_union_callback(
     cdef unique_ptr[cset[int32_t]] citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -571,7 +571,7 @@ cdef void SimpleService_get_keys_callback(
     cdef unique_ptr[cset[string]] citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -586,7 +586,7 @@ cdef void SimpleService_lookup_double_callback(
     cdef double citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -601,7 +601,7 @@ cdef void SimpleService_retrieve_binary_callback(
     cdef unique_ptr[string] citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -616,7 +616,7 @@ cdef void SimpleService_contain_binary_callback(
     cdef unique_ptr[cset[string]] citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -631,7 +631,7 @@ cdef void SimpleService_contain_enum_callback(
     cdef unique_ptr[vector[module.types.cAnEnum]] citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:

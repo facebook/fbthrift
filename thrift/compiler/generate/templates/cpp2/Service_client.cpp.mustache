@@ -218,7 +218,7 @@ folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%!
           %><%^type:void?%>_return, <%/type:void?%><%!
       %><%/function:returnType%>state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   <%^function:complexReturnType?%>
   <%#function:returnType%>

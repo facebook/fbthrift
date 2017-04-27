@@ -47,7 +47,7 @@ cdef void ExtendTestService_check_callback(
     cdef cbool citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:

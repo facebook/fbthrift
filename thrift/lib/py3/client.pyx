@@ -38,7 +38,7 @@ cdef void requestchannel_callback(
     future = client._connect_future
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             future.set_exception(ex)
     else:

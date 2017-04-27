@@ -46,7 +46,7 @@ cdef void MyService_query_callback(
     cdef cFollyUnit citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:

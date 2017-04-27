@@ -3257,7 +3257,7 @@ int32_t service_with_special_namesAsyncClient::recv_getT(Protocol_* prot, ::apac
   int32_t _return;
   auto ew = recv_wrapped_getT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -3339,7 +3339,7 @@ int32_t service_with_special_namesAsyncClient::recv_getterT(Protocol_* prot, ::a
   int32_t _return;
   auto ew = recv_wrapped_getterT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -3421,7 +3421,7 @@ int32_t service_with_special_namesAsyncClient::recv_listsT(Protocol_* prot, ::ap
   int32_t _return;
   auto ew = recv_wrapped_listsT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -3503,7 +3503,7 @@ int32_t service_with_special_namesAsyncClient::recv_mapsT(Protocol_* prot, ::apa
   int32_t _return;
   auto ew = recv_wrapped_mapsT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -3585,7 +3585,7 @@ int32_t service_with_special_namesAsyncClient::recv_nameT(Protocol_* prot, ::apa
   int32_t _return;
   auto ew = recv_wrapped_nameT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -3667,7 +3667,7 @@ int32_t service_with_special_namesAsyncClient::recv_name_to_valueT(Protocol_* pr
   int32_t _return;
   auto ew = recv_wrapped_name_to_valueT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -3749,7 +3749,7 @@ int32_t service_with_special_namesAsyncClient::recv_namesT(Protocol_* prot, ::ap
   int32_t _return;
   auto ew = recv_wrapped_namesT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -3831,7 +3831,7 @@ int32_t service_with_special_namesAsyncClient::recv_prefix_treeT(Protocol_* prot
   int32_t _return;
   auto ew = recv_wrapped_prefix_treeT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -3913,7 +3913,7 @@ int32_t service_with_special_namesAsyncClient::recv_setsT(Protocol_* prot, ::apa
   int32_t _return;
   auto ew = recv_wrapped_setsT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -3995,7 +3995,7 @@ int32_t service_with_special_namesAsyncClient::recv_setterT(Protocol_* prot, ::a
   int32_t _return;
   auto ew = recv_wrapped_setterT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -4077,7 +4077,7 @@ int32_t service_with_special_namesAsyncClient::recv_strT(Protocol_* prot, ::apac
   int32_t _return;
   auto ew = recv_wrapped_strT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -4159,7 +4159,7 @@ int32_t service_with_special_namesAsyncClient::recv_stringsT(Protocol_* prot, ::
   int32_t _return;
   auto ew = recv_wrapped_stringsT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -4241,7 +4241,7 @@ int32_t service_with_special_namesAsyncClient::recv_typeT(Protocol_* prot, ::apa
   int32_t _return;
   auto ew = recv_wrapped_typeT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -4323,7 +4323,7 @@ int32_t service_with_special_namesAsyncClient::recv_valueT(Protocol_* prot, ::ap
   int32_t _return;
   auto ew = recv_wrapped_valueT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -4405,7 +4405,7 @@ int32_t service_with_special_namesAsyncClient::recv_value_to_nameT(Protocol_* pr
   int32_t _return;
   auto ew = recv_wrapped_value_to_nameT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -4487,7 +4487,7 @@ int32_t service_with_special_namesAsyncClient::recv_valuesT(Protocol_* prot, ::a
   int32_t _return;
   auto ew = recv_wrapped_valuesT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -4569,7 +4569,7 @@ int32_t service_with_special_namesAsyncClient::recv_idT(Protocol_* prot, ::apach
   int32_t _return;
   auto ew = recv_wrapped_idT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -4651,7 +4651,7 @@ int32_t service_with_special_namesAsyncClient::recv_idsT(Protocol_* prot, ::apac
   int32_t _return;
   auto ew = recv_wrapped_idsT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -4733,7 +4733,7 @@ int32_t service_with_special_namesAsyncClient::recv_descriptorT(Protocol_* prot,
   int32_t _return;
   auto ew = recv_wrapped_descriptorT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -4815,7 +4815,7 @@ int32_t service_with_special_namesAsyncClient::recv_descriptorsT(Protocol_* prot
   int32_t _return;
   auto ew = recv_wrapped_descriptorsT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -4897,7 +4897,7 @@ int32_t service_with_special_namesAsyncClient::recv_keyT(Protocol_* prot, ::apac
   int32_t _return;
   auto ew = recv_wrapped_keyT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -4979,7 +4979,7 @@ int32_t service_with_special_namesAsyncClient::recv_keysT(Protocol_* prot, ::apa
   int32_t _return;
   auto ew = recv_wrapped_keysT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -5061,7 +5061,7 @@ int32_t service_with_special_namesAsyncClient::recv_annotationT(Protocol_* prot,
   int32_t _return;
   auto ew = recv_wrapped_annotationT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -5143,7 +5143,7 @@ int32_t service_with_special_namesAsyncClient::recv_annotationsT(Protocol_* prot
   int32_t _return;
   auto ew = recv_wrapped_annotationsT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -5225,7 +5225,7 @@ int32_t service_with_special_namesAsyncClient::recv_memberT(Protocol_* prot, ::a
   int32_t _return;
   auto ew = recv_wrapped_memberT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -5307,7 +5307,7 @@ int32_t service_with_special_namesAsyncClient::recv_membersT(Protocol_* prot, ::
   int32_t _return;
   auto ew = recv_wrapped_membersT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -5389,7 +5389,7 @@ int32_t service_with_special_namesAsyncClient::recv_fieldT(Protocol_* prot, ::ap
   int32_t _return;
   auto ew = recv_wrapped_fieldT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -5471,7 +5471,7 @@ int32_t service_with_special_namesAsyncClient::recv_fieldsT(Protocol_* prot, ::a
   int32_t _return;
   auto ew = recv_wrapped_fieldsT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }

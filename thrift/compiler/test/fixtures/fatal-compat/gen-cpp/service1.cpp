@@ -1065,7 +1065,7 @@ void service1Client::recv_method1()
 {
   auto ew = recv_wrapped_method1();
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -1170,7 +1170,7 @@ void service1Client::recv_method2()
 {
   auto ew = recv_wrapped_method2();
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -1278,7 +1278,7 @@ int32_t service1Client::recv_method3()
   int32_t _return;
   auto ew = recv_wrapped_method3(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -1390,7 +1390,7 @@ int32_t service1Client::recv_method4()
   int32_t _return;
   auto ew = recv_wrapped_method4(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -1499,7 +1499,7 @@ void service1Client::recv_method5(struct2& _return)
 {
   auto ew = recv_wrapped_method5(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -1610,7 +1610,7 @@ void service1Client::recv_method6(struct2& _return)
 {
   auto ew = recv_wrapped_method6(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 

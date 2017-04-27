@@ -194,7 +194,7 @@ template <typename Protocol_>
 void MyLeafAsyncClient::recv_do_leafT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_do_leafT(prot, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 

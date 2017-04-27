@@ -118,7 +118,7 @@ folly::exception_wrapper MyServicePrioParentAsyncClient::recv_wrapped_ping(::apa
 void MyServicePrioParentAsyncClient::recv_ping(::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_ping(state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -232,7 +232,7 @@ folly::exception_wrapper MyServicePrioParentAsyncClient::recv_wrapped_pong(::apa
 void MyServicePrioParentAsyncClient::recv_pong(::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_pong(state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 

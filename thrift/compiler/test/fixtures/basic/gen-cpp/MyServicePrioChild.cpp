@@ -232,7 +232,7 @@ void MyServicePrioChildClient::recv_pang()
 {
   auto ew = recv_wrapped_pang();
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 

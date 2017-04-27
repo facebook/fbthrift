@@ -305,7 +305,7 @@ template <typename Protocol_>
 void MyServicePrioParentAsyncClient::recv_pingT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_pingT(prot, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -376,7 +376,7 @@ template <typename Protocol_>
 void MyServicePrioParentAsyncClient::recv_pongT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_pongT(prot, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 

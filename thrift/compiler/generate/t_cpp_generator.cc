@@ -5451,7 +5451,7 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
         out << ");" << endl;
         out <<
           indent() << "if (ew) {" << endl <<
-          indent() << "  ew.throwException();" << endl <<
+          indent() << "  ew.throw_exception();" << endl <<
           indent() << "}" << endl;
         if (!is_complex_type(return_type) && !return_type->is_void()) {
           out << indent() << "return _return;" << endl;

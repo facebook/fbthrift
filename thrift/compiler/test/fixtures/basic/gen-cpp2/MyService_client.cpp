@@ -118,7 +118,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_ping(::apache::thrif
 void MyServiceAsyncClient::recv_ping(::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_ping(state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -232,7 +232,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_getRandomData(std::s
 void MyServiceAsyncClient::recv_getRandomData(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_getRandomData(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -347,7 +347,7 @@ bool MyServiceAsyncClient::recv_hasDataById(::apache::thrift::ClientReceiveState
   bool _return;
   auto ew = recv_wrapped_hasDataById(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -462,7 +462,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_getDataById(std::str
 void MyServiceAsyncClient::recv_getDataById(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_getDataById(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -576,7 +576,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_putDataById(::apache
 void MyServiceAsyncClient::recv_putDataById(::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_putDataById(state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 

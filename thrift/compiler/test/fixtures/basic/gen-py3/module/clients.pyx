@@ -46,7 +46,7 @@ cdef void MyService_ping_callback(
     cdef cFollyUnit citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -61,7 +61,7 @@ cdef void MyService_getRandomData_callback(
     cdef unique_ptr[string] citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -76,7 +76,7 @@ cdef void MyService_hasDataById_callback(
     cdef cbool citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -91,7 +91,7 @@ cdef void MyService_getDataById_callback(
     cdef unique_ptr[string] citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -106,7 +106,7 @@ cdef void MyService_putDataById_callback(
     cdef cFollyUnit citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -121,7 +121,7 @@ cdef void MyService_lobDataById_callback(
     cdef cFollyUnit citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -136,7 +136,7 @@ cdef void MyServiceFast_ping_callback(
     cdef cFollyUnit citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -151,7 +151,7 @@ cdef void MyServiceFast_getRandomData_callback(
     cdef unique_ptr[string] citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -166,7 +166,7 @@ cdef void MyServiceFast_hasDataById_callback(
     cdef cbool citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -181,7 +181,7 @@ cdef void MyServiceFast_getDataById_callback(
     cdef unique_ptr[string] citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -196,7 +196,7 @@ cdef void MyServiceFast_putDataById_callback(
     cdef cFollyUnit citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -211,7 +211,7 @@ cdef void MyServiceFast_lobDataById_callback(
     cdef cFollyUnit citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -226,7 +226,7 @@ cdef void MyServicePrioParent_ping_callback(
     cdef cFollyUnit citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -241,7 +241,7 @@ cdef void MyServicePrioParent_pong_callback(
     cdef cFollyUnit citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -256,7 +256,7 @@ cdef void MyServicePrioChild_pang_callback(
     cdef cFollyUnit citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:

@@ -118,7 +118,7 @@ folly::exception_wrapper MyNodeAsyncClient::recv_wrapped_do_mid(::apache::thrift
 void MyNodeAsyncClient::recv_do_mid(::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_do_mid(state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 

@@ -118,7 +118,7 @@ folly::exception_wrapper MyLeafAsyncClient::recv_wrapped_do_leaf(::apache::thrif
 void MyLeafAsyncClient::recv_do_leaf(::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_do_leaf(state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 

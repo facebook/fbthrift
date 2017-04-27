@@ -3536,7 +3536,7 @@ int32_t service_with_special_namesClient::recv_get()
   int32_t _return;
   auto ew = recv_wrapped_get(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -3645,7 +3645,7 @@ int32_t service_with_special_namesClient::recv_getter()
   int32_t _return;
   auto ew = recv_wrapped_getter(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -3754,7 +3754,7 @@ int32_t service_with_special_namesClient::recv_lists()
   int32_t _return;
   auto ew = recv_wrapped_lists(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -3863,7 +3863,7 @@ int32_t service_with_special_namesClient::recv_maps()
   int32_t _return;
   auto ew = recv_wrapped_maps(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -3972,7 +3972,7 @@ int32_t service_with_special_namesClient::recv_name()
   int32_t _return;
   auto ew = recv_wrapped_name(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -4081,7 +4081,7 @@ int32_t service_with_special_namesClient::recv_name_to_value()
   int32_t _return;
   auto ew = recv_wrapped_name_to_value(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -4190,7 +4190,7 @@ int32_t service_with_special_namesClient::recv_names()
   int32_t _return;
   auto ew = recv_wrapped_names(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -4299,7 +4299,7 @@ int32_t service_with_special_namesClient::recv_prefix_tree()
   int32_t _return;
   auto ew = recv_wrapped_prefix_tree(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -4408,7 +4408,7 @@ int32_t service_with_special_namesClient::recv_sets()
   int32_t _return;
   auto ew = recv_wrapped_sets(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -4517,7 +4517,7 @@ int32_t service_with_special_namesClient::recv_setter()
   int32_t _return;
   auto ew = recv_wrapped_setter(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -4626,7 +4626,7 @@ int32_t service_with_special_namesClient::recv_str()
   int32_t _return;
   auto ew = recv_wrapped_str(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -4735,7 +4735,7 @@ int32_t service_with_special_namesClient::recv_strings()
   int32_t _return;
   auto ew = recv_wrapped_strings(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -4844,7 +4844,7 @@ int32_t service_with_special_namesClient::recv_type()
   int32_t _return;
   auto ew = recv_wrapped_type(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -4953,7 +4953,7 @@ int32_t service_with_special_namesClient::recv_value()
   int32_t _return;
   auto ew = recv_wrapped_value(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -5062,7 +5062,7 @@ int32_t service_with_special_namesClient::recv_value_to_name()
   int32_t _return;
   auto ew = recv_wrapped_value_to_name(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -5171,7 +5171,7 @@ int32_t service_with_special_namesClient::recv_values()
   int32_t _return;
   auto ew = recv_wrapped_values(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -5280,7 +5280,7 @@ int32_t service_with_special_namesClient::recv_id()
   int32_t _return;
   auto ew = recv_wrapped_id(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -5389,7 +5389,7 @@ int32_t service_with_special_namesClient::recv_ids()
   int32_t _return;
   auto ew = recv_wrapped_ids(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -5498,7 +5498,7 @@ int32_t service_with_special_namesClient::recv_descriptor()
   int32_t _return;
   auto ew = recv_wrapped_descriptor(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -5607,7 +5607,7 @@ int32_t service_with_special_namesClient::recv_descriptors()
   int32_t _return;
   auto ew = recv_wrapped_descriptors(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -5716,7 +5716,7 @@ int32_t service_with_special_namesClient::recv_key()
   int32_t _return;
   auto ew = recv_wrapped_key(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -5825,7 +5825,7 @@ int32_t service_with_special_namesClient::recv_keys()
   int32_t _return;
   auto ew = recv_wrapped_keys(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -5934,7 +5934,7 @@ int32_t service_with_special_namesClient::recv_annotation()
   int32_t _return;
   auto ew = recv_wrapped_annotation(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -6043,7 +6043,7 @@ int32_t service_with_special_namesClient::recv_annotations()
   int32_t _return;
   auto ew = recv_wrapped_annotations(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -6152,7 +6152,7 @@ int32_t service_with_special_namesClient::recv_member()
   int32_t _return;
   auto ew = recv_wrapped_member(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -6261,7 +6261,7 @@ int32_t service_with_special_namesClient::recv_members()
   int32_t _return;
   auto ew = recv_wrapped_members(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }

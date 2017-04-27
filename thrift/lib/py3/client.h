@@ -66,7 +66,7 @@ template <class T>
 std::unique_ptr<T> py3_get_exception(
     const folly::exception_wrapper& exception) {
   try {
-    exception.throwException();
+    exception.throw_exception();
   } catch (const T& typed_exception) {
     return std::make_unique<T>(typed_exception);
   }

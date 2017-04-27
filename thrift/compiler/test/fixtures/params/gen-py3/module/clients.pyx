@@ -42,7 +42,7 @@ cdef void NestedContainers_mapList_callback(
     cdef cFollyUnit citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -57,7 +57,7 @@ cdef void NestedContainers_mapSet_callback(
     cdef cFollyUnit citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -72,7 +72,7 @@ cdef void NestedContainers_listMap_callback(
     cdef cFollyUnit citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -87,7 +87,7 @@ cdef void NestedContainers_listSet_callback(
     cdef cFollyUnit citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -102,7 +102,7 @@ cdef void NestedContainers_turtles_callback(
     cdef cFollyUnit citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:

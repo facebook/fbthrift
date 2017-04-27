@@ -44,7 +44,7 @@ cdef void MyRoot_do_root_callback(
     cdef cFollyUnit citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -59,7 +59,7 @@ cdef void MyNode_do_mid_callback(
     cdef cFollyUnit citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -74,7 +74,7 @@ cdef void MyLeaf_do_leaf_callback(
     cdef cFollyUnit citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:

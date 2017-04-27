@@ -901,7 +901,7 @@ void MyServiceClient::recv_ping()
 {
   auto ew = recv_wrapped_ping();
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -1009,7 +1009,7 @@ void MyServiceClient::recv_getRandomData(std::string& _return)
 {
   auto ew = recv_wrapped_getRandomData(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -1118,7 +1118,7 @@ bool MyServiceClient::recv_hasDataById()
   bool _return;
   auto ew = recv_wrapped_hasDataById(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -1228,7 +1228,7 @@ void MyServiceClient::recv_getDataById(std::string& _return)
 {
   auto ew = recv_wrapped_getDataById(_return);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -1332,7 +1332,7 @@ void MyServiceClient::recv_putDataById()
 {
   auto ew = recv_wrapped_putDataById();
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 

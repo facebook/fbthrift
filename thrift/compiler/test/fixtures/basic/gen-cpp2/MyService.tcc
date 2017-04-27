@@ -682,7 +682,7 @@ template <typename Protocol_>
 void MyServiceAsyncClient::recv_pingT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_pingT(prot, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -762,7 +762,7 @@ template <typename Protocol_>
 void MyServiceAsyncClient::recv_getRandomDataT(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_getRandomDataT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -844,7 +844,7 @@ bool MyServiceAsyncClient::recv_hasDataByIdT(Protocol_* prot, ::apache::thrift::
   bool _return;
   auto ew = recv_wrapped_hasDataByIdT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -926,7 +926,7 @@ template <typename Protocol_>
 void MyServiceAsyncClient::recv_getDataByIdT(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_getDataByIdT(prot, _return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
@@ -999,7 +999,7 @@ template <typename Protocol_>
 void MyServiceAsyncClient::recv_putDataByIdT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_putDataByIdT(prot, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 

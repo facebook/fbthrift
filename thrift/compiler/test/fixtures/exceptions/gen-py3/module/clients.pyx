@@ -42,7 +42,7 @@ cdef void Raiser_doBland_callback(
     cdef cFollyUnit citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -65,7 +65,7 @@ cdef void Raiser_doRaise_callback(
         pyfuture.set_exception(module.types.Fiery.create(module.types.move(ex_f)))
     elif result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -80,7 +80,7 @@ cdef void Raiser_get200_callback(
     cdef unique_ptr[string] citem
     if result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
@@ -103,7 +103,7 @@ cdef void Raiser_get500_callback(
         pyfuture.set_exception(module.types.Banal.create(module.types.move(ex_b)))
     elif result.hasException():
         try:
-            result.exception().throwException()
+            result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:

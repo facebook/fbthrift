@@ -194,7 +194,7 @@ template <typename Protocol_>
 void MyServicePrioChildAsyncClient::recv_pangT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_pangT(prot, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 

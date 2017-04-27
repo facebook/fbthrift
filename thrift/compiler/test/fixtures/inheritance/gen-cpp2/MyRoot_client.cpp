@@ -118,7 +118,7 @@ folly::exception_wrapper MyRootAsyncClient::recv_wrapped_do_root(::apache::thrif
 void MyRootAsyncClient::recv_do_root(::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_do_root(state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 

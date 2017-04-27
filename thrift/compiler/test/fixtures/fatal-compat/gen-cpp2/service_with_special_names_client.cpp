@@ -535,7 +535,7 @@ int32_t service_with_special_namesAsyncClient::recv_get(::apache::thrift::Client
   int32_t _return;
   auto ew = recv_wrapped_get(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -651,7 +651,7 @@ int32_t service_with_special_namesAsyncClient::recv_getter(::apache::thrift::Cli
   int32_t _return;
   auto ew = recv_wrapped_getter(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -767,7 +767,7 @@ int32_t service_with_special_namesAsyncClient::recv_lists(::apache::thrift::Clie
   int32_t _return;
   auto ew = recv_wrapped_lists(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -883,7 +883,7 @@ int32_t service_with_special_namesAsyncClient::recv_maps(::apache::thrift::Clien
   int32_t _return;
   auto ew = recv_wrapped_maps(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -999,7 +999,7 @@ int32_t service_with_special_namesAsyncClient::recv_name(::apache::thrift::Clien
   int32_t _return;
   auto ew = recv_wrapped_name(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -1115,7 +1115,7 @@ int32_t service_with_special_namesAsyncClient::recv_name_to_value(::apache::thri
   int32_t _return;
   auto ew = recv_wrapped_name_to_value(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -1231,7 +1231,7 @@ int32_t service_with_special_namesAsyncClient::recv_names(::apache::thrift::Clie
   int32_t _return;
   auto ew = recv_wrapped_names(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -1347,7 +1347,7 @@ int32_t service_with_special_namesAsyncClient::recv_prefix_tree(::apache::thrift
   int32_t _return;
   auto ew = recv_wrapped_prefix_tree(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -1463,7 +1463,7 @@ int32_t service_with_special_namesAsyncClient::recv_sets(::apache::thrift::Clien
   int32_t _return;
   auto ew = recv_wrapped_sets(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -1579,7 +1579,7 @@ int32_t service_with_special_namesAsyncClient::recv_setter(::apache::thrift::Cli
   int32_t _return;
   auto ew = recv_wrapped_setter(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -1695,7 +1695,7 @@ int32_t service_with_special_namesAsyncClient::recv_str(::apache::thrift::Client
   int32_t _return;
   auto ew = recv_wrapped_str(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -1811,7 +1811,7 @@ int32_t service_with_special_namesAsyncClient::recv_strings(::apache::thrift::Cl
   int32_t _return;
   auto ew = recv_wrapped_strings(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -1927,7 +1927,7 @@ int32_t service_with_special_namesAsyncClient::recv_type(::apache::thrift::Clien
   int32_t _return;
   auto ew = recv_wrapped_type(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -2043,7 +2043,7 @@ int32_t service_with_special_namesAsyncClient::recv_value(::apache::thrift::Clie
   int32_t _return;
   auto ew = recv_wrapped_value(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -2159,7 +2159,7 @@ int32_t service_with_special_namesAsyncClient::recv_value_to_name(::apache::thri
   int32_t _return;
   auto ew = recv_wrapped_value_to_name(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -2275,7 +2275,7 @@ int32_t service_with_special_namesAsyncClient::recv_values(::apache::thrift::Cli
   int32_t _return;
   auto ew = recv_wrapped_values(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -2391,7 +2391,7 @@ int32_t service_with_special_namesAsyncClient::recv_id(::apache::thrift::ClientR
   int32_t _return;
   auto ew = recv_wrapped_id(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -2507,7 +2507,7 @@ int32_t service_with_special_namesAsyncClient::recv_ids(::apache::thrift::Client
   int32_t _return;
   auto ew = recv_wrapped_ids(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -2623,7 +2623,7 @@ int32_t service_with_special_namesAsyncClient::recv_descriptor(::apache::thrift:
   int32_t _return;
   auto ew = recv_wrapped_descriptor(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -2739,7 +2739,7 @@ int32_t service_with_special_namesAsyncClient::recv_descriptors(::apache::thrift
   int32_t _return;
   auto ew = recv_wrapped_descriptors(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -2855,7 +2855,7 @@ int32_t service_with_special_namesAsyncClient::recv_key(::apache::thrift::Client
   int32_t _return;
   auto ew = recv_wrapped_key(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -2971,7 +2971,7 @@ int32_t service_with_special_namesAsyncClient::recv_keys(::apache::thrift::Clien
   int32_t _return;
   auto ew = recv_wrapped_keys(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -3087,7 +3087,7 @@ int32_t service_with_special_namesAsyncClient::recv_annotation(::apache::thrift:
   int32_t _return;
   auto ew = recv_wrapped_annotation(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -3203,7 +3203,7 @@ int32_t service_with_special_namesAsyncClient::recv_annotations(::apache::thrift
   int32_t _return;
   auto ew = recv_wrapped_annotations(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -3319,7 +3319,7 @@ int32_t service_with_special_namesAsyncClient::recv_member(::apache::thrift::Cli
   int32_t _return;
   auto ew = recv_wrapped_member(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }
@@ -3435,7 +3435,7 @@ int32_t service_with_special_namesAsyncClient::recv_members(::apache::thrift::Cl
   int32_t _return;
   auto ew = recv_wrapped_members(_return, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
   return _return;
 }

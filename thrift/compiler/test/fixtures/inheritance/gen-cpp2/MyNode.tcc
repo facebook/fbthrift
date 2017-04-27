@@ -194,7 +194,7 @@ template <typename Protocol_>
 void MyNodeAsyncClient::recv_do_midT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   auto ew = recv_wrapped_do_midT(prot, state);
   if (ew) {
-    ew.throwException();
+    ew.throw_exception();
   }
 }
 
