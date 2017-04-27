@@ -23,13 +23,13 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
+import json
 import os
 import pprint
 from six.moves.urllib.parse import urlparse
 from six import string_types
 import sys
 import traceback
-import pickle
 
 from thrift import Thrift
 from thrift.transport import TTransport, TSocket, TSSLSocket, THttpClient
@@ -103,10 +103,16 @@ class RemoteClient(object):
 
     def _eval_arg(self, arg, thrift_types):
         """Evaluate a commandline argument within the scope of the IF types"""
-        locals().update(thrift_types)
-        return eval(arg)
+        code_globals = {}
+        code_globals.update(thrift_types)
+        # Explicitly compile the code so that it does not inherit our
+        # __future__ directives imported above.  In particular this ensures
+        # that string literals are not treated as unicode unless explicitly
+        # qualified as such.
+        code = compile(arg, '<command_line>', 'eval', 0, 1)
+        return eval(code, code_globals)
 
-    def _process_fn_args(self, fn, args):
+    def _process_fn_args(self, fn, args, eval_all=False):
         """Proccess positional commandline args as function arguments"""
         if len(args) != len(fn.args):
             self._exit(error_message=('"%s" expects %d arguments '
@@ -119,7 +125,7 @@ class RemoteClient(object):
 
         fn_args = []
         for arg, arg_info in zip(args, fn.args):
-            if arg_info[2] == 'string':
+            if arg_info[2] == 'string' and not eval_all:
                 # For ease-of-use, we don't eval string arguments, simply so
                 # users don't have to wrap the arguments in quotes
                 fn_args.append(arg)
@@ -143,7 +149,8 @@ class RemoteClient(object):
         else:
             function = self.functions[fn_name]
 
-        function_args = self._process_fn_args(function, args.function_args)
+        function_args = self._process_fn_args(function, args.function_args,
+                                              args.evalargs)
 
         self._validate_options(args)
         return function.fn_name, function_args
@@ -231,7 +238,15 @@ class RemoteTransportClient(RemoteClient):
             {
                 'action': 'store_true',
                 'default': False,
-                'help': 'Take function arguments as pickled python list',
+                'help': 'Take function arguments as a json list of strings '
+                'on stdin.  Implies --evalargs.',
+            }
+        ), (
+            ['e', 'evalargs'],
+            {
+                'action': 'store_true',
+                'default': False,
+                'help': 'Call eval() on all arguments, including strings',
             }
         ),
     ]
@@ -536,8 +551,8 @@ class Remote(object):
             if args.function_args:
                 print('error: cannot specify --stdin and arguments on the '
                       'command line', file=sys.stderr)
-            args.function_args = pickle.load(sys.stdin)
-
+            args.function_args = json.load(sys.stdin)
+            args.evalargs = True
 
         return args, print_usage
 
