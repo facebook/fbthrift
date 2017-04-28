@@ -20,13 +20,17 @@ var _ = bytes.Equal
 
 var _ = module.GoUnusedProtection__
 var _ = includes.GoUnusedProtection__
-type MyService interface {
+type MyService interface {  //This is a service-level docblock
+
+  // This is a function-level docblock
+  // 
   // Parameters:
   //  - S
   //  - I
   Query(s *module.MyStruct, i *includes.Included) (err error)
 }
 
+//This is a service-level docblock
 type MyServiceClient struct {
   Transport thrift.TTransport
   ProtocolFactory thrift.TProtocolFactory
@@ -53,6 +57,8 @@ func NewMyServiceClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, opr
   }
 }
 
+// This is a function-level docblock
+// 
 // Parameters:
 //  - S
 //  - I

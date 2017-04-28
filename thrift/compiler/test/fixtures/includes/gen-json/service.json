@@ -2,7 +2,7 @@
   "thrift_module" : "service",
   "services" : {
     "MyService" : {
-      "lineno" : 5,
+      "lineno" : 6,
       "functions" : {
         "MyService.query" : {
           "return_type" : {

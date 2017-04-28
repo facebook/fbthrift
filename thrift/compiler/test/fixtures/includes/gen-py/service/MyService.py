@@ -35,8 +35,13 @@ UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 from thrift.util.Decorators import *
 
 class Iface:
+  """
+  This is a service-level docblock
+  """
   def query(self, s=None, i=None):
     """
+    This is a function-level docblock
+    
     Parameters:
      - s
      - i
@@ -45,8 +50,13 @@ class Iface:
 
 
 class ContextIface:
+  """
+  This is a service-level docblock
+  """
   def query(self, handler_ctx, s=None, i=None):
     """
+    This is a function-level docblock
+    
     Parameters:
      - s
      - i
@@ -238,6 +248,9 @@ query_result.thrift_field_annotations = {
 }
 
 class Client(Iface):
+  """
+  This is a service-level docblock
+  """
   def __enter__(self):
     return self
 
@@ -254,6 +267,8 @@ class Client(Iface):
 
   def query(self, s=None, i=None):
     """
+    This is a function-level docblock
+    
     Parameters:
      - s
      - i
