@@ -483,9 +483,13 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
         assert(key_methods::ttype_value == rpt_key_type);
         assert(mapped_methods::ttype_value == rpt_mapped_type);
       }
-      for (decltype(map_size) i = 0; i < map_size; ++i) {
-        xfer += consume_elem(protocol, out);
-      }
+      auto const kreader = [&xfer, &protocol](auto& key) {
+        xfer += key_methods::read(protocol, key);
+      };
+      auto const vreader = [&xfer, &protocol](auto& value) {
+        xfer += mapped_methods::read(protocol, value);
+      };
+      deserialize_known_length_map(out, map_size, kreader, vreader);
     }
 
     xfer += protocol.readMapEnd();
