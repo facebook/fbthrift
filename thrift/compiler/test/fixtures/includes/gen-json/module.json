@@ -13,8 +13,8 @@
           "default_value" : { "MyIntField" : 5 }
         },
         "MyIncludedInt" : {
-          "type_enum" : "I64",
-          "spec_args" : null,
+          "type_enum" : "TYPEDEF",
+          "spec_args" : "includes.IncludedInt64",
           "required" : true,
           "default_value" : 42
         }
