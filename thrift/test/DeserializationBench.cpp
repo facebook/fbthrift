@@ -47,6 +47,22 @@ std::map<int32_t, std::string> getRandomMap() {
   return m;
 }
 
+folly::sorted_vector_set<int32_t> getRandomFollySet() {
+  folly::sorted_vector_set<int32_t> s;
+  for (int i = 0; i < kNumOfInserts; ++i) {
+    s.insert(i);
+  }
+  return s;
+}
+
+folly::sorted_vector_map<int32_t, std::string> getRandomFollyMap() {
+  folly::sorted_vector_map<int32_t, std::string> m;
+  for (int i = 0; i < kNumOfInserts; ++i) {
+    m[std::move(i)] = std::to_string(i);
+  }
+  return m;
+}
+
 void buildRandomStructA(cpp2::StructA& obj) {
   obj.fieldA = folly::Random::rand32(rng_) % 2;
   obj.fieldB = folly::Random::rand32(rng_);
@@ -73,6 +89,67 @@ void buildRandomStructA(cpp2::StructA& obj) {
   }
 }
 
+void buildRandomStructB(cpp2::StructB& obj) {
+  obj.fieldA = folly::Random::rand32(rng_) % 2;
+  obj.fieldB = folly::Random::rand32(rng_);
+  obj.fieldC = std::to_string(folly::Random::rand32(rng_));
+  obj.fieldD = getRandomVector();
+  obj.fieldE = getRandomFollySet();
+  obj.fieldF = getRandomFollyMap();
+
+  for (int32_t i = 0; i < kNumOfInserts; ++i) {
+    std::vector<std::vector<int32_t>> g1;
+    folly::sorted_vector_set<folly::sorted_vector_set<int32_t>> h1;
+    std::vector<folly::sorted_vector_set<int32_t>> j1;
+    folly::sorted_vector_set<std::vector<int32_t>> j2;
+    for (int32_t j = 0; j < kNumOfInserts; ++j) {
+      g1.push_back(getRandomVector());
+      h1.insert(getRandomFollySet());
+      j1.push_back(getRandomFollySet());
+      j2.insert(getRandomVector());
+    }
+    obj.fieldG.push_back(g1);
+    obj.fieldH.insert(h1);
+    obj.fieldI[std::move(getRandomFollyMap())] = getRandomFollyMap();
+    obj.fieldJ[std::move(j1)] = j2;
+  }
+}
+
+BENCHMARK(CompactSerialization_custom_container, iters) {
+  using serializer = apache::thrift::CompactSerializer;
+
+  folly::BenchmarkSuspender braces; // stop the clock by default
+
+  for (size_t i = 0; i < iters; ++i) {
+    // Prep, untimed:
+    cpp2::StructB obj;
+    buildRandomStructB(obj);
+
+    // Serialize, timed:
+    braces.dismissing([&] { serializer::serialize<folly::IOBufQueue>(obj); });
+  }
+}
+
+BENCHMARK(CompactDeserialization_custom_container, iters) {
+  using serializer = apache::thrift::CompactSerializer;
+
+  folly::BenchmarkSuspender braces; // stop the clock by default
+
+  for (size_t i = 0; i < iters; ++i) {
+    // Prep, untimed:
+    cpp2::StructB obj;
+    buildRandomStructB(obj);
+
+    // Serialize, untimed:
+    auto buf = serializer::serialize<folly::IOBufQueue>(obj).move();
+    buf->coalesce(); // so we can ignore serialization artifacts later
+
+    // Deserialize, timed:
+    cpp2::StructB obj2;
+    braces.dismissing([&] { serializer::deserialize(buf.get(), obj2); });
+  }
+}
+
 BENCHMARK(CompactSerialization, iters) {
   using serializer = apache::thrift::CompactSerializer;
 
@@ -84,9 +161,7 @@ BENCHMARK(CompactSerialization, iters) {
     buildRandomStructA(obj);
 
     // Serialize, timed:
-    braces.dismissing([&] {
-      auto buf = serializer::serialize<folly::IOBufQueue>(obj).move();
-    });
+    braces.dismissing([&] { serializer::serialize<folly::IOBufQueue>(obj); });
   }
 }
 
@@ -123,9 +198,7 @@ BENCHMARK(JsonSerialization, iters) {
     buildRandomStructA(obj);
 
     // Serialize, timed:
-    braces.dismissing([&] {
-      auto buf = serializer::serialize<folly::IOBufQueue>(obj).move();
-    });
+    braces.dismissing([&] { serializer::serialize<folly::IOBufQueue>(obj); });
   }
 }
 
@@ -156,12 +229,13 @@ int main(int argc, char** argv) {
 }
 
 /*
-============================================================================
 thrift/test/DeserializationBench.cpp            relative  time/iter  iters/s
 ============================================================================
-CompactSerialization                                          3.01s  332.61m
-CompactDeserialization                                     857.53ms     1.17
-JsonSerialization                                             6.32s  158.28m
-JsonDeserialization                                          12.61s   79.31m
+CompactSerialization_custom_container                         2.84s  351.85m
+CompactDeserialization_custom_container                    780.27ms     1.28
+CompactSerialization                                          2.76s  362.55m
+CompactDeserialization                                     803.10ms     1.25
+JsonSerialization                                             6.05s  165.35m
+JsonDeserialization                                          11.47s   87.21m
 ============================================================================
 */
