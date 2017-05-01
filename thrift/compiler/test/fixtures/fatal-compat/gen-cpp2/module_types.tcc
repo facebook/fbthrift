@@ -24,12 +24,20 @@ struct indirection_module_HasANumber {
   static auto &&get(T&& x) {
     return std::forward<T>(x).number;
   }
+  template <typename T>
+  static auto &&get(T const&& x) {
+    return std::forward<T>(x).number;
+  }
 };
 
 template <typename ElemClass>
 struct indirection_module_HasAResult {
   template <typename T>
   static auto &&get(T&& x) {
+    return std::forward<T>(x).foo().result();
+  }
+  template <typename T>
+  static auto &&get(T const&& x) {
     return std::forward<T>(x).foo().result();
   }
 };

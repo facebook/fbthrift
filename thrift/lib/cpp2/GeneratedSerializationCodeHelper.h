@@ -85,10 +85,10 @@ struct protocol_methods;
     return protocol.write##Method(in);                                 \
   }
 
-#define REGISTER_SS_COMMON(Class, Type, Method, TTypeValue)                \
-  template <bool, typename Protocol>                                       \
-  static std::size_t serialized_size(Protocol& protocol, Type const& in) { \
-    return protocol.serializedSize##Method(in);                            \
+#define REGISTER_SS_COMMON(Class, Type, Method, TTypeValue)               \
+  template <bool, typename Protocol>                                      \
+  static std::size_t serializedSize(Protocol& protocol, Type const& in) { \
+    return protocol.serializedSize##Method(in);                           \
   }
 
 // stamp out specializations for primitive types
@@ -145,12 +145,12 @@ REGISTER_OVERLOAD(string, folly::fbstring, String, T_STRING);
     REGISTER_RW_COMMON(Class, Type, Method, TTypeValue)          \
     template <bool ZeroCopy, typename Protocol>                  \
     static typename std::enable_if<ZeroCopy, std::size_t>::type  \
-    serialized_size(Protocol& protocol, Type const& in) {        \
+    serializedSize(Protocol& protocol, Type const& in) {         \
       return protocol.serializedSizeZC##Method(in);              \
     }                                                            \
     template <bool ZeroCopy, typename Protocol>                  \
     static typename std::enable_if<!ZeroCopy, std::size_t>::type \
-    serialized_size(Protocol& protocol, Type const& in) {        \
+    serializedSize(Protocol& protocol, Type const& in) {         \
       return protocol.serializedSize##Method(in);                \
     }                                                            \
   };
@@ -191,9 +191,9 @@ struct protocol_methods<type_class::enumeration, Type> {
   }
 
   template <bool ZeroCopy, typename Protocol>
-  static std::size_t serialized_size(Protocol& protocol, Type const& in) {
+  static std::size_t serializedSize(Protocol& protocol, Type const& in) {
     enum_type tmp = static_cast<enum_type>(in);
-    return int_methods::template serialized_size<ZeroCopy>(protocol, tmp);
+    return int_methods::template serializedSize<ZeroCopy>(protocol, tmp);
   }
 };
 
@@ -260,13 +260,13 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
   }
 
   template <bool ZeroCopy, typename Protocol>
-  static std::size_t serialized_size(Protocol& protocol, Type const& out) {
+  static std::size_t serializedSize(Protocol& protocol, Type const& out) {
     std::size_t xfer = 0;
     xfer +=
         protocol.serializedSizeListBegin(elem_methods::ttype_value, out.size());
 
     for (auto const& elem : out) {
-      xfer += elem_methods::template serialized_size<ZeroCopy>(protocol, elem);
+      xfer += elem_methods::template serializedSize<ZeroCopy>(protocol, elem);
     }
 
     xfer += protocol.serializedSizeListEnd();
@@ -340,7 +340,7 @@ struct protocol_methods<type_class::list<ElemClass>, std::list<Type>> {
   }
 
   template <bool ZeroCopy, typename Protocol>
-  static std::size_t serialized_size(
+  static std::size_t serializedSize(
       Protocol& protocol,
       std::list<Type> const& out) {
     std::size_t xfer = 0;
@@ -348,7 +348,7 @@ struct protocol_methods<type_class::list<ElemClass>, std::list<Type>> {
         protocol.serializedSizeListBegin(elem_methods::ttype_value, out.size());
 
     for (auto const& elem : out) {
-      xfer += elem_methods::template serialized_size<ZeroCopy>(protocol, elem);
+      xfer += elem_methods::template serializedSize<ZeroCopy>(protocol, elem);
     }
 
     xfer += protocol.serializedSizeListEnd();
@@ -418,13 +418,13 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
   }
 
   template <bool ZeroCopy, typename Protocol>
-  static std::size_t serialized_size(Protocol& protocol, Type const& out) {
+  static std::size_t serializedSize(Protocol& protocol, Type const& out) {
     std::size_t xfer = 0;
     xfer +=
         protocol.serializedSizeSetBegin(elem_methods::ttype_value, out.size());
 
     for (auto const& elem : out) {
-      xfer += elem_methods::template serialized_size<ZeroCopy>(protocol, elem);
+      xfer += elem_methods::template serializedSize<ZeroCopy>(protocol, elem);
     }
 
     xfer += protocol.serializedSizeSetEnd();
@@ -512,15 +512,15 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
   }
 
   template <bool ZeroCopy, typename Protocol>
-  static std::size_t serialized_size(Protocol& protocol, Type const& out) {
+  static std::size_t serializedSize(Protocol& protocol, Type const& out) {
     std::size_t xfer = 0;
     xfer += protocol.serializedSizeMapBegin(
         key_methods::ttype_value, mapped_methods::ttype_value, out.size());
 
     for (auto const& elem_pair : out) {
-      xfer += key_methods::template serialized_size<ZeroCopy>(
+      xfer += key_methods::template serializedSize<ZeroCopy>(
           protocol, elem_pair.first);
-      xfer += mapped_methods::template serialized_size<ZeroCopy>(
+      xfer += mapped_methods::template serializedSize<ZeroCopy>(
           protocol, elem_pair.second);
     }
 
@@ -546,7 +546,7 @@ struct protocol_methods<type_class::structure, Type> {
     return Cpp2Ops<Type>::write(&protocol, &in);
   }
   template <bool ZeroCopy, typename Protocol>
-  static std::size_t serialized_size(Protocol& protocol, Type const& in) {
+  static std::size_t serializedSize(Protocol& protocol, Type const& in) {
     if (ZeroCopy) {
       return Cpp2Ops<Type>::serializedSizeZC(&protocol, &in);
     } else {
@@ -573,12 +573,13 @@ struct protocol_methods<Impl<ElemClass>, Type> {
   }
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, Type const& in) {
-    return elem_methods::write(protocol, indirection::template get<Type&>(in));
+    return elem_methods::write(
+        protocol, indirection::template get<Type const&>(in));
   }
   template <bool ZeroCopy, typename Protocol>
-  static std::size_t serialized_size(Protocol& protocol, Type const& in) {
-    return elem_methods::serialized_size<ZeroCopy>(
-        protocol, indirection::template get<Type&>(in));
+  static std::size_t serializedSize(Protocol& protocol, Type const& in) {
+    return elem_methods::template serializedSize<ZeroCopy>(
+        protocol, indirection::template get<Type const&>(in));
   }
 };
 }

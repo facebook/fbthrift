@@ -3593,6 +3593,11 @@ class CppGenerator(t_generator.Generator):
             print >>self._out_tcc, '    return std::forward<T>(x){0};'.format(
                 indirection)
             print >>self._out_tcc, '  }'
+            print >>self._out_tcc, '  template <typename T>'
+            print >>self._out_tcc, '  static auto &&get(T const&& x) {'
+            print >>self._out_tcc, '    return std::forward<T>(x){0};'.format(
+                indirection)
+            print >>self._out_tcc, '  }'
             print >>self._out_tcc, '};'
             print >>self._out_tcc, ''
 
@@ -4175,7 +4180,7 @@ class CppGenerator(t_generator.Generator):
                                             val_expr,
                                             struct_method, pointer)
         elif ttype.is_container:
-            self._generate_serialize_container(scope, ttype.as_container,
+            self._generate_serialize_container(scope, ttype.as_container, otype,
                                                pointer,
                                                val_expr,
                                                method,
@@ -4248,6 +4253,23 @@ class CppGenerator(t_generator.Generator):
                       method,
                       prefix))
 
+    def _generate_templated_serialize_container_internal(self, scope, otype,
+                                                         pointer, prefix,
+                                                         method, **kwargs):
+        templated_resolution = ""
+        if method == "serializedSize":
+            templated_resolution = "<false>"
+        elif method == "serializedSizeZC":
+            templated_resolution = "<true>"
+
+        scope('xfer += ::apache::thrift::detail::pm::protocol_methods'
+                '< {0}, {1}>::{2}{3}(*prot_, {4});'.format(
+                    self._render_type_class(otype),
+                    self._type_name(otype),
+                    method,
+                    templated_resolution,
+                    prefix))
+
     def _generate_serialize_container_internal(self, scope, ttype, pointer,
                                                prefix, method, **kwargs):
         tte = self._type_to_enum
@@ -4287,8 +4309,9 @@ class CppGenerator(t_generator.Generator):
         elif ttype.is_list:
             s('xfer += prot_->{0}ListEnd();'.format(method))
 
-    def _generate_serialize_container(self, scope, ttype, pointer, prefix='',
-                                      method='write', **kwargs):
+    def _generate_serialize_container(self, scope, ttype, otype,
+                                      pointer, prefix='', method='write',
+                                      **kwargs):
         tte = self._type_to_enum
 
         if pointer:
@@ -4296,10 +4319,16 @@ class CppGenerator(t_generator.Generator):
                 reftype = self.tmp('_rtype')
                 out('const auto& {0} = *{1};'.format(reftype, prefix))
                 prefix = reftype
-                self._generate_serialize_container_internal(scope, ttype,
-                                                            pointer, prefix,
-                                                            method, **kwargs)
-
+                if self.flag_tmp_templated_deserialize:
+                    self._generate_templated_serialize_container_internal(
+                        scope, otype,
+                        pointer, prefix,
+                        method, **kwargs)
+                else:
+                    self._generate_serialize_container_internal(
+                        scope, ttype,
+                        pointer, prefix,
+                        method, **kwargs)
             with scope('else'):
                 if ttype.is_map:
                     out('xfer += prot_->{0}MapBegin({1}, {2}, 0);'.format(
@@ -4318,9 +4347,16 @@ class CppGenerator(t_generator.Generator):
                             tte(ttype.as_list.elem_type)))
                     out('xfer += prot_->{0}ListEnd();'.format(method))
         else:
-            self._generate_serialize_container_internal(scope, ttype, pointer,
-                                                        prefix, method,
-                                                        **kwargs)
+            if self.flag_tmp_templated_deserialize:
+                self._generate_templated_serialize_container_internal(
+                    scope, otype,
+                    pointer, prefix,
+                    method, **kwargs)
+            else:
+                self._generate_serialize_container_internal(
+                    scope, ttype,
+                    pointer, prefix,
+                    method, **kwargs)
 
     def _generate_serialize_map_element(self, scope, tmap, iter_,
                                         method='write', **kwargs):
