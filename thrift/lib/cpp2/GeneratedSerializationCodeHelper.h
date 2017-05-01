@@ -76,7 +76,6 @@ static auto reserve_if_possible(T* t, std::uint32_t size)
   t->reserve(size + 1);
 }
 
-static void reserve_if_possible(...) __unused__;
 static void reserve_if_possible(...){};
 
 /*
