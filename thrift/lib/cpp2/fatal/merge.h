@@ -20,6 +20,7 @@
 #include <utility>
 
 #include <fatal/type/call_traits.h>
+#include <fatal/type/conditional.h>
 #include <fatal/type/transform.h>
 
 #include <folly/Memory.h>

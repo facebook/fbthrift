@@ -81,7 +81,7 @@ struct merge_impl<type_class::structure> {
   template <bool Move>
   struct visitor {
     template <typename T>
-    using Src = typename std::conditional<Move, T, const T>::type;
+    using Src = fatal::conditional<Move, T, const T>;
     template <typename MemberInfo, std::size_t Index, typename T>
     void operator()(
         fatal::indexed<MemberInfo, Index>,
@@ -90,7 +90,7 @@ struct merge_impl<type_class::structure> {
       using mgetter = typename MemberInfo::getter;
       using mtype = typename std::decay<decltype(mgetter::ref(src))>::type;
       using merge_field = merge<typename deref<mtype>::type>;
-      using mref = typename std::conditional<Move, mtype&&, const mtype&>::type;
+      using mref = fatal::conditional<Move, mtype&&, const mtype&>;
       if (MemberInfo::optional::value == optionality::optional &&
           !MemberInfo::is_set(src)) {
         return;
@@ -176,7 +176,7 @@ void merge_into(T&& src, merge_into_detail::remove_const_reference<T>& dst) {
   constexpr auto c = std::is_const<T>::value;
   constexpr auto r = std::is_rvalue_reference<T&&>::value;
   using D = typename merge_into_detail::remove_const_reference<T>;
-  using W = typename std::conditional<!c && r, T&&, const D&>::type;
+  using W = fatal::conditional<!c && r, T&&, const D&>;
   merge_into_detail::merge<D>::go(static_cast<W>(src), dst);
 }
 

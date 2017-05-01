@@ -22,6 +22,7 @@
 
 #include <thrift/lib/cpp2/fatal/internal/reflection-inl-pre.h>
 
+#include <fatal/type/conditional.h>
 #include <fatal/type/convert.h>
 #include <fatal/type/data_member_getter.h>
 #include <fatal/type/enum.h>

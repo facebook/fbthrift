@@ -20,6 +20,7 @@
 #include <thrift/lib/cpp2/fatal/reflection.h>
 
 #include <fatal/type/accumulate.h>
+#include <fatal/type/conditional.h>
 #include <fatal/type/list.h>
 #include <fatal/type/push.h>
 #include <fatal/type/sort.h>
@@ -237,7 +238,7 @@ struct A {
     fatal::push_back_if<!IsBool || !BitIndex, PhysicalLayout, PhysicalType>,
     FrozenLayout...,
     typename Member::template pod<
-      typename std::conditional<
+      fatal::conditional<
         std::is_same<bool, typename Member::type>::value,
         layout_bit<ActualOffset, AlignedOffset, BitIndex>,
         layout_raw<
@@ -247,7 +248,7 @@ struct A {
             typename Member::type
           >::FrozenType
         >
-      >::type
+      >
     >
   >;
 

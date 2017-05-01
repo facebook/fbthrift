@@ -123,35 +123,35 @@ struct reflect_container_type_class_impl<T, false, false, true> {
 
 template <typename T>
 struct reflect_type_class_impl {
-  using type = typename std::conditional<
+  using type = fatal::conditional<
     is_reflectable_enum<T>::value,
     type_class::enumeration,
-    typename std::conditional<
+    fatal::conditional<
       is_reflectable_union<T>::value,
       type_class::variant,
-      typename std::conditional<
+      fatal::conditional<
         is_reflectable_struct<T>::value,
         type_class::structure,
-        typename std::conditional<
+        fatal::conditional<
           std::is_floating_point<T>::value,
           type_class::floating_point,
-          typename std::conditional<
+          fatal::conditional<
             std::is_integral<T>::value,
             type_class::integral,
-            typename std::conditional<
+            fatal::conditional<
               std::is_same<void, T>::value,
               type_class::nothing,
-              typename std::conditional<
+              fatal::conditional<
                 fatal::is_complete<thrift_string_traits<T>>::value,
                 type_class::string,
                 typename reflect_container_type_class_impl<T>::type
-              >::type
-            >::type
-          >::type
-        >::type
-      >::type
-    >::type
-  >::type;
+              >
+            >
+          >
+        >
+      >
+    >
+  >;
 };
 
 template <typename T, bool IsTry>
