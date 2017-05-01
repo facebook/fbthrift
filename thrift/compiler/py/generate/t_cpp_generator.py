@@ -3683,13 +3683,14 @@ class CppGenerator(t_generator.Generator):
                         ptrtype))
             s('{0} = std::move({1});'.format(prefix, ptrtype))
         elif optional_wrapped:
-            scope("{0} = {1}();".format(prefix, self._type_name(otype)))
+            s("{0} = {1}();".format(prefix, self._type_name(otype)))
             s('xfer += ::apache::thrift::detail::pm::protocol_methods'
                     '< {0}, {1}>::read(*iprot, {2}.value());'.format(
                         self._render_type_class(otype),
                         self._type_name(otype),
                         prefix))
         else:
+            s("{0} = {1}();".format(prefix, self._type_name(otype)))
             s('xfer += ::apache::thrift::detail::pm::protocol_methods'
                     '< {0}, {1}>::read(*iprot, {2});'.format(
                         self._render_type_class(otype),

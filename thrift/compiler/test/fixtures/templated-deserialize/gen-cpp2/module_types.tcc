@@ -223,6 +223,7 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       case 2:
       {
         if (ftype == apache::thrift::protocol::T_MAP) {
+          this->fieldB = std::map<std::string, bool>();
           xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::read(*iprot, this->fieldB);
           this->__isset.fieldB = true;
         } else {
@@ -233,6 +234,7 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       case 3:
       {
         if (ftype == apache::thrift::protocol::T_SET) {
+          this->fieldC = std::set<int32_t>();
           xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set<int32_t>>::read(*iprot, this->fieldC);
           this->__isset.fieldC = true;
         } else {
@@ -263,6 +265,7 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       case 6:
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
+          this->fieldF = std::vector<std::vector<std::vector<int32_t>>>();
           xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>>, std::vector<std::vector<std::vector<int32_t>>>>::read(*iprot, this->fieldF);
           this->__isset.fieldF = true;
         } else {
@@ -273,6 +276,7 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       case 7:
       {
         if (ftype == apache::thrift::protocol::T_MAP) {
+          this->fieldG = std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>>();
           xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>>>, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>>>::read(*iprot, this->fieldG);
           this->__isset.fieldG = true;
         } else {
@@ -283,6 +287,7 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       case 8:
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
+          this->fieldH = std::vector<std::set<int32_t>>();
           xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>, std::vector<std::set<int32_t>>>::read(*iprot, this->fieldH);
           this->__isset.fieldH = true;
         } else {
@@ -303,6 +308,7 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       case 10:
       {
         if (ftype == apache::thrift::protocol::T_MAP) {
+          this->fieldJ = std::map<std::string, std::vector<int32_t>>();
           xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>, std::map<std::string, std::vector<int32_t>>>::read(*iprot, this->fieldJ);
           this->__isset.fieldJ = true;
         } else {
@@ -313,6 +319,7 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       case 11:
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
+          this->fieldK = std::vector<std::vector<std::vector<std::vector<int32_t>>>>();
           xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>>>, std::vector<std::vector<std::vector<std::vector<int32_t>>>>>::read(*iprot, this->fieldK);
           this->__isset.fieldK = true;
         } else {
@@ -323,6 +330,7 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       case 12:
       {
         if (ftype == apache::thrift::protocol::T_SET) {
+          this->fieldL = std::set<std::set<std::set<bool>>>();
           xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::set<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>>>, std::set<std::set<std::set<bool>>>>::read(*iprot, this->fieldL);
           this->__isset.fieldL = true;
         } else {
@@ -333,6 +341,7 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       case 13:
       {
         if (ftype == apache::thrift::protocol::T_MAP) {
+          this->fieldM = std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>>();
           xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::set<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>, ::apache::thrift::type_class::map<::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::string>>, ::apache::thrift::type_class::string>>, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>>>::read(*iprot, this->fieldM);
           this->__isset.fieldM = true;
         } else {
@@ -343,6 +352,7 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       case 14:
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
+          this->fieldN = std::vector< ::cpp2::IndirectionA>();
           xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<indirection_module_IndirectionA<::apache::thrift::type_class::integral>>, std::vector< ::cpp2::IndirectionA>>::read(*iprot, this->fieldN);
           this->__isset.fieldN = true;
         } else {
@@ -353,6 +363,7 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       case 15:
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
+          this->fieldO = std::vector< ::cpp2::IndirectionB>();
           xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<indirection_module_IndirectionB<::apache::thrift::type_class::floating_point>>, std::vector< ::cpp2::IndirectionB>>::read(*iprot, this->fieldO);
           this->__isset.fieldO = true;
         } else {
@@ -363,6 +374,7 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       case 16:
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
+          this->fieldP = std::vector< ::cpp2::IndirectionC>();
           xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<indirection_module_IndirectionC<::apache::thrift::type_class::integral>>, std::vector< ::cpp2::IndirectionC>>::read(*iprot, this->fieldP);
           this->__isset.fieldP = true;
         } else {
