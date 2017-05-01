@@ -173,12 +173,12 @@ struct protocol_methods<type_class::enumeration, Type> {
   constexpr static protocol::TType ttype_value = protocol::T_I32;
 
   // Thrift enums are always read as int32_t
-  using enum_type = std::int32_t;
-  using int_methods = protocol_methods<type_class::integral, enum_type>;
+  using int_type = std::int32_t;
+  using int_methods = protocol_methods<type_class::integral, int_type>;
 
   template <typename Protocol>
   static std::size_t read(Protocol& protocol, Type& out) {
-    enum_type tmp;
+    int_type tmp;
     std::size_t xfer = int_methods::read(protocol, tmp);
     out = static_cast<Type>(tmp);
     return xfer;
@@ -186,13 +186,13 @@ struct protocol_methods<type_class::enumeration, Type> {
 
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, Type const& in) {
-    enum_type tmp = static_cast<enum_type>(in);
+    int_type tmp = static_cast<int_type>(in);
     return int_methods::template write<Protocol>(protocol, tmp);
   }
 
   template <bool ZeroCopy, typename Protocol>
   static std::size_t serializedSize(Protocol& protocol, Type const& in) {
-    enum_type tmp = static_cast<enum_type>(in);
+    int_type tmp = static_cast<int_type>(in);
     return int_methods::template serializedSize<ZeroCopy>(protocol, tmp);
   }
 };
@@ -202,14 +202,13 @@ struct protocol_methods<type_class::enumeration, Type> {
  */
 template <typename ElemClass, typename Type>
 struct protocol_methods<type_class::list<ElemClass>, Type> {
-  constexpr static protocol::TType ttype_value = protocol::T_LIST;
-
-  using elem_type = typename Type::value_type;
-
   static_assert(
       !std::is_same<ElemClass, type_class::unknown>(),
       "Unable to serialize unknown list element");
 
+  constexpr static protocol::TType ttype_value = protocol::T_LIST;
+
+  using elem_type = typename Type::value_type;
   using elem_methods = protocol_methods<ElemClass, elem_type>;
 
   template <typename Protocol>
@@ -226,22 +225,18 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
       if (reported_type != protocol::T_STOP) {
         assert(reported_type == elem_methods::ttype_value);
       }
-
-      for (decltype(list_size) i = 0; protocol.peekList(); ++i) {
-        // TODO: this should grow better (e.g., 1.5x each time)
-        // For now, we just bump the container size by 1 each time
-        // because that's what the currently generated Thrift code does.
+      for (std::uint32_t i = 0; protocol.peekList(); ++i) {
+        // TODO: Grow this better (e.g. 1.5x each time)
         out.resize(i + 1);
         xfer += elem_methods::read(protocol, out[i]);
       }
     } else {
       assert(reported_type == elem_methods::ttype_value);
       out.resize(list_size);
-      for (decltype(list_size) i = 0; i < list_size; ++i) {
+      for (std::uint32_t i = 0; i < list_size; ++i) {
         xfer += elem_methods::read(protocol, out[i]);
       }
     }
-
     xfer += protocol.readListEnd();
     return xfer;
   }
@@ -249,12 +244,11 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, Type const& out) {
     std::size_t xfer = 0;
-    xfer += protocol.writeListBegin(elem_methods::ttype_value, out.size());
 
+    xfer += protocol.writeListBegin(elem_methods::ttype_value, out.size());
     for (auto const& elem : out) {
       xfer += elem_methods::write(protocol, elem);
     }
-
     xfer += protocol.writeListEnd();
     return xfer;
   }
@@ -262,13 +256,12 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
   template <bool ZeroCopy, typename Protocol>
   static std::size_t serializedSize(Protocol& protocol, Type const& out) {
     std::size_t xfer = 0;
+
     xfer +=
         protocol.serializedSizeListBegin(elem_methods::ttype_value, out.size());
-
     for (auto const& elem : out) {
       xfer += elem_methods::template serializedSize<ZeroCopy>(protocol, elem);
     }
-
     xfer += protocol.serializedSizeListEnd();
     return xfer;
   }
@@ -279,11 +272,11 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
  */
 template <typename ElemClass, typename Type>
 struct protocol_methods<type_class::list<ElemClass>, std::list<Type>> {
-  constexpr static protocol::TType ttype_value = protocol::T_LIST;
-
   static_assert(
       !std::is_same<ElemClass, type_class::unknown>(),
       "Unable to serialize unknown list element");
+
+  constexpr static protocol::TType ttype_value = protocol::T_LIST;
 
   using elem_methods = protocol_methods<ElemClass, Type>;
 
@@ -311,17 +304,15 @@ struct protocol_methods<type_class::list<ElemClass>, std::list<Type>> {
       if (reported_type != protocol::T_STOP) {
         assert(reported_type == elem_methods::ttype_value);
       }
-
       while (protocol.peekList()) {
         xfer += consume_elem(protocol, out);
       }
     } else {
       assert(reported_type == elem_methods::ttype_value);
-      for (decltype(list_size) i = 0; i < list_size; ++i) {
+      while (list_size--) {
         xfer += consume_elem(protocol, out);
       }
     }
-
     xfer += protocol.readListEnd();
     return xfer;
   }
@@ -329,12 +320,11 @@ struct protocol_methods<type_class::list<ElemClass>, std::list<Type>> {
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, std::list<Type> const& out) {
     std::size_t xfer = 0;
-    xfer += protocol.writeListBegin(elem_methods::ttype_value, out.size());
 
+    xfer += protocol.writeListBegin(elem_methods::ttype_value, out.size());
     for (auto const& elem : out) {
       xfer += elem_methods::write(protocol, elem);
     }
-
     xfer += protocol.writeListEnd();
     return xfer;
   }
@@ -344,13 +334,12 @@ struct protocol_methods<type_class::list<ElemClass>, std::list<Type>> {
       Protocol& protocol,
       std::list<Type> const& out) {
     std::size_t xfer = 0;
+
     xfer +=
         protocol.serializedSizeListBegin(elem_methods::ttype_value, out.size());
-
     for (auto const& elem : out) {
       xfer += elem_methods::template serializedSize<ZeroCopy>(protocol, elem);
     }
-
     xfer += protocol.serializedSizeListEnd();
     return xfer;
   }
@@ -361,15 +350,13 @@ struct protocol_methods<type_class::list<ElemClass>, std::list<Type>> {
  */
 template <typename ElemClass, typename Type>
 struct protocol_methods<type_class::set<ElemClass>, Type> {
-  constexpr static protocol::TType ttype_value = protocol::T_SET;
-
-  // TODO: fair amount of shared code bewteen this and specialization for
-  // type_class::list
-  using elem_type = typename Type::value_type;
-
   static_assert(
       !std::is_same<ElemClass, type_class::unknown>(),
       "Unable to serialize unknown type");
+
+  constexpr static protocol::TType ttype_value = protocol::T_SET;
+
+  using elem_type = typename Type::value_type;
   using elem_methods = protocol_methods<ElemClass, elem_type>;
 
  private:
@@ -385,8 +372,6 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
   template <typename Protocol>
   static std::size_t read(Protocol& protocol, Type& out) {
     std::size_t xfer = 0;
-    // TODO: readSetBegin takes (TType, std::uint32_t)
-    // instead of a (TType, std::size_t)
     std::uint32_t set_size = -1;
     TType reported_type = protocol::T_STOP;
 
@@ -397,11 +382,10 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
       }
     } else {
       assert(reported_type == elem_methods::ttype_value);
-      for (decltype(set_size) i = 0; i < set_size; ++i) {
+      while (set_size--) {
         xfer += consume_elem(protocol, out);
       }
     }
-
     xfer += protocol.readSetEnd();
     return xfer;
   }
@@ -409,6 +393,7 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, Type const& in) {
     std::size_t xfer = 0;
+
     xfer += protocol.writeSetBegin(elem_methods::ttype_value, in.size());
     for (auto const& elem : in) {
       xfer += elem_methods::write(protocol, elem);
@@ -420,13 +405,12 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
   template <bool ZeroCopy, typename Protocol>
   static std::size_t serializedSize(Protocol& protocol, Type const& out) {
     std::size_t xfer = 0;
+
     xfer +=
         protocol.serializedSizeSetBegin(elem_methods::ttype_value, out.size());
-
     for (auto const& elem : out) {
       xfer += elem_methods::template serializedSize<ZeroCopy>(protocol, elem);
     }
-
     xfer += protocol.serializedSizeSetEnd();
     return xfer;
   }
@@ -437,11 +421,6 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
  */
 template <typename KeyClass, typename MappedClass, typename Type>
 struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
-  constexpr static protocol::TType ttype_value = protocol::T_MAP;
-
-  using key_type = typename Type::key_type;
-  using mapped_type = typename Type::mapped_type;
-
   static_assert(
       !std::is_same<KeyClass, type_class::unknown>(),
       "Unable to serialize unknown key type in map");
@@ -449,6 +428,10 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
       !std::is_same<MappedClass, type_class::unknown>(),
       "Unable to serialize unknown mapped type in map");
 
+  constexpr static protocol::TType ttype_value = protocol::T_MAP;
+
+  using key_type = typename Type::key_type;
+  using mapped_type = typename Type::mapped_type;
   using key_methods = protocol_methods<KeyClass, key_type>;
   using mapped_methods = protocol_methods<MappedClass, mapped_type>;
 
@@ -466,12 +449,10 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
   template <typename Protocol>
   static std::size_t read(Protocol& protocol, Type& out) {
     std::size_t xfer = 0;
-    // TODO: see above re: readMapBegin taking a uint32_t size param
     std::uint32_t map_size = -1;
     TType rpt_key_type = protocol::T_STOP, rpt_mapped_type = protocol::T_STOP;
 
     xfer += protocol.readMapBegin(rpt_key_type, rpt_mapped_type, map_size);
-
     if (is_unknown_container_size(map_size)) {
       while (protocol.peekMap()) {
         xfer += consume_elem(protocol, out);
@@ -491,7 +472,6 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
       };
       deserialize_known_length_map(out, map_size, kreader, vreader);
     }
-
     xfer += protocol.readMapEnd();
     return xfer;
   }
@@ -499,14 +479,13 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, Type const& out) {
     std::size_t xfer = 0;
+
     xfer += protocol.writeMapBegin(
         key_methods::ttype_value, mapped_methods::ttype_value, out.size());
-
     for (auto const& elem_pair : out) {
       xfer += key_methods::write(protocol, elem_pair.first);
       xfer += mapped_methods::write(protocol, elem_pair.second);
     }
-
     xfer += protocol.writeMapEnd();
     return xfer;
   }
@@ -514,18 +493,45 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
   template <bool ZeroCopy, typename Protocol>
   static std::size_t serializedSize(Protocol& protocol, Type const& out) {
     std::size_t xfer = 0;
+
     xfer += protocol.serializedSizeMapBegin(
         key_methods::ttype_value, mapped_methods::ttype_value, out.size());
-
     for (auto const& elem_pair : out) {
       xfer += key_methods::template serializedSize<ZeroCopy>(
           protocol, elem_pair.first);
       xfer += mapped_methods::template serializedSize<ZeroCopy>(
           protocol, elem_pair.second);
     }
-
     xfer += protocol.serializedSizeMapEnd();
     return xfer;
+  }
+};
+
+/*
+ * Struct with Indirection Specialization
+ */
+template <template <typename> class Impl, typename ElemClass, typename Type>
+struct protocol_methods<Impl<ElemClass>, Type> {
+  using indirection = Impl<ElemClass>;
+  using elem_type = std::remove_reference_t<decltype(
+      indirection::template get(std::declval<Type&>()))>;
+  using elem_methods = protocol_methods<ElemClass, elem_type>;
+
+  // Forward the ttype_value from the internal element
+  constexpr static protocol::TType ttype_value = elem_methods::ttype_value;
+
+  template <typename Protocol>
+  static std::size_t read(Protocol& protocol, Type& out) {
+    return elem_methods::read(protocol, indirection::template get<Type&>(out));
+  }
+  template <typename Protocol>
+  static std::size_t write(Protocol& protocol, Type const& in) {
+    return elem_methods::write(protocol, indirection::template get<Type&>(in));
+  }
+  template <bool ZeroCopy, typename Protocol>
+  static std::size_t serializedSize(Protocol& protocol, Type const& in) {
+    return elem_methods::serializedSize<ZeroCopy>(
+        protocol, indirection::template get<Type&>(in));
   }
 };
 
@@ -552,34 +558,6 @@ struct protocol_methods<type_class::structure, Type> {
     } else {
       return Cpp2Ops<Type>::serializedSize(&protocol, &in);
     }
-  }
-};
-
-/*
- * Struct with Indirection Specialization
- */
-template <template <typename> class Impl, typename ElemClass, typename Type>
-struct protocol_methods<Impl<ElemClass>, Type> {
-  using indirection = Impl<ElemClass>;
-  using elem_type = std::remove_reference_t<decltype(
-      indirection::template get(std::declval<Type&>()))>;
-  using elem_methods = protocol_methods<ElemClass, elem_type>;
-
-  constexpr static protocol::TType ttype_value = elem_methods::ttype_value;
-
-  template <typename Protocol>
-  static std::size_t read(Protocol& protocol, Type& out) {
-    return elem_methods::read(protocol, indirection::template get<Type&>(out));
-  }
-  template <typename Protocol>
-  static std::size_t write(Protocol& protocol, Type const& in) {
-    return elem_methods::write(
-        protocol, indirection::template get<Type const&>(in));
-  }
-  template <bool ZeroCopy, typename Protocol>
-  static std::size_t serializedSize(Protocol& protocol, Type const& in) {
-    return elem_methods::template serializedSize<ZeroCopy>(
-        protocol, indirection::template get<Type const&>(in));
   }
 };
 }
