@@ -68,6 +68,17 @@ inline bool is_unknown_container_size(uint32_t const size) {
   return size == std::numeric_limits<decltype(size)>::max();
 }
 
+template <typename T>
+static auto reserve_if_possible(T* t, std::uint32_t size)
+    -> decltype(t->reserve(size), void()) {
+  // Resize to `size + 1` to avoid an extra rehash:
+  // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=71181.
+  t->reserve(size + 1);
+}
+
+static void reserve_if_possible(...) __unused__;
+static void reserve_if_possible(...){};
+
 /*
  * Primitive Types Specialization
  */
@@ -382,6 +393,7 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
       }
     } else {
       assert(reported_type == elem_methods::ttype_value);
+      reserve_if_possible(&out, set_size);
       while (set_size--) {
         xfer += consume_elem(protocol, out);
       }
@@ -470,6 +482,7 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
       auto const vreader = [&xfer, &protocol](auto& value) {
         xfer += mapped_methods::read(protocol, value);
       };
+      reserve_if_possible(&out, map_size);
       deserialize_known_length_map(out, map_size, kreader, vreader);
     }
     xfer += protocol.readMapEnd();
