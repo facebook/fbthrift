@@ -69,14 +69,14 @@ inline bool is_unknown_container_size(uint32_t const size) {
 }
 
 template <typename T>
-static auto reserve_if_possible(T* t, std::uint32_t size)
+inline auto reserve_if_possible(T* t, std::uint32_t size)
     -> decltype(t->reserve(size), void()) {
   // Resize to `size + 1` to avoid an extra rehash:
   // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=71181.
   t->reserve(size + 1);
 }
 
-static void reserve_if_possible(...){};
+inline void reserve_if_possible(...){};
 
 /*
  * Primitive Types Specialization
@@ -538,12 +538,13 @@ struct protocol_methods<Impl<ElemClass>, Type> {
   }
   template <typename Protocol>
   static std::size_t write(Protocol& protocol, Type const& in) {
-    return elem_methods::write(protocol, indirection::template get<Type&>(in));
+    return elem_methods::write(
+        protocol, indirection::template get<const Type&>(in));
   }
   template <bool ZeroCopy, typename Protocol>
   static std::size_t serializedSize(Protocol& protocol, Type const& in) {
-    return elem_methods::serializedSize<ZeroCopy>(
-        protocol, indirection::template get<Type&>(in));
+    return elem_methods::template serializedSize<ZeroCopy>(
+        protocol, indirection::template get<const Type&>(in));
   }
 };
 
