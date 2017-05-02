@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -112,6 +112,8 @@ struct SortedTableLayout : public ArrayLayout<T, Item> {
         : Base::View(layout, position) {}
 
     typedef typename Base::View::iterator iterator;
+
+    void operator[](size_t) = delete;
 
     iterator lower_bound(const KeyView& key) const {
       return std::lower_bound(

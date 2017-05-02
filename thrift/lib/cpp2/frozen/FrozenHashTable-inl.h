@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -220,6 +220,8 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
               self(layout->sparseTableField.pos))) {}
 
     typedef typename Base::View::iterator iterator;
+
+    void operator[](size_t) = delete;
 
     std::pair<iterator, iterator> equal_range(const KeyView& key) const {
       auto found = find(key);

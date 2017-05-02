@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 namespace apache { namespace thrift { namespace frozen {
 
 namespace detail {
@@ -193,6 +192,10 @@ struct ArrayLayout : public LayoutBase {
 
     const_iterator end() const {
       return const_iterator(data_, count_, itemLayout_);
+    }
+
+    size_t count() const {
+      return count_;
     }
 
     bool empty() const { return !count_; }

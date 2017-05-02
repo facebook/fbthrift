@@ -38,8 +38,7 @@ TEST(FrozenVectorTypes, VectorAsMap) {
   dm.insert(dm.end(), {1, 1});
   // ensure it gets sorted
   auto fdm = freeze(dm);
-  EXPECT_EQ(1, fdm[0].first());
-  EXPECT_EQ(1, fdm[0].second());
+  EXPECT_EQ(1, fdm.at(1));
   EXPECT_EQ(81, fdm.at(9));
   EXPECT_EQ(25, fdm.at(5));
   {
