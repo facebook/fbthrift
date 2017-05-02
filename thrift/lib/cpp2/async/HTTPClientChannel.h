@@ -57,6 +57,11 @@ class HTTPClientChannel : public ClientChannel,
   void setHTTPHost(const std::string& host) { httpHost_ = host; }
   void setHTTPUrl(const std::string& url) { httpUrl_ = url; }
 
+  // Sets the maximum pending outgoing requests allowed on this channel.
+  // Subject to negotiation with the server, which may dictate a smaller
+  // maximum.
+  void setMaxPendingRequests(uint32_t num);
+
   void setProtocolId(uint16_t protocolId) { protocolId_ = protocolId; }
 
   // apache::thrift::ClientChannel methods

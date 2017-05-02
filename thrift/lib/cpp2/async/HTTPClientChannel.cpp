@@ -92,6 +92,12 @@ HTTPClientChannel::~HTTPClientChannel() {
   closeNow();
 }
 
+void HTTPClientChannel::setMaxPendingRequests(uint32_t num) {
+  if (httpSession_) {
+    httpSession_->setMaxConcurrentOutgoingStreams(num);
+  }
+}
+
 // apache::thrift::ClientChannel methods
 
 bool HTTPClientChannel::good() {
