@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <thrift/lib/cpp/protocol/TProtocolException.h>
 
 namespace apache { namespace thrift { namespace protocol {
@@ -24,4 +23,9 @@ namespace apache { namespace thrift { namespace protocol {
       "missing stop marker to terminate a union");
 }
 
+[[noreturn]] void TProtocolException::throwReportedTypeMismatch() {
+  throw TProtocolException(
+      TProtocolException::INVALID_DATA,
+      "The reported type of thrift element does not match the serialized type");
+}
 }}}

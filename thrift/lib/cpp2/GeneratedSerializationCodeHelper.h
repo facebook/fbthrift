@@ -232,8 +232,9 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
       // list size unknown, SimpleJSON protocol won't know type, either
       // so let's just hope that it spits out something that makes sense
       // (if it did set reported_type to something known)
-      if (reported_type != protocol::T_STOP) {
-        assert(reported_type == elem_methods::ttype_value);
+      if (reported_type != protocol::T_STOP &&
+          reported_type != elem_methods::ttype_value) {
+        TProtocolException::throwReportedTypeMismatch();
       }
       for (std::uint32_t i = 0; protocol.peekList(); ++i) {
         // TODO: Grow this better (e.g. 1.5x each time)
@@ -241,7 +242,9 @@ struct protocol_methods<type_class::list<ElemClass>, Type> {
         xfer += elem_methods::read(protocol, out[i]);
       }
     } else {
-      assert(reported_type == elem_methods::ttype_value);
+      if (reported_type != elem_methods::ttype_value) {
+        TProtocolException::throwReportedTypeMismatch();
+      }
       out.resize(list_size);
       for (std::uint32_t i = 0; i < list_size; ++i) {
         xfer += elem_methods::read(protocol, out[i]);
@@ -311,14 +314,17 @@ struct protocol_methods<type_class::list<ElemClass>, std::list<Type>> {
       // list size unknown, SimpleJSON protocol won't know type, either
       // so let's just hope that it spits out something that makes sense
       // (if it did set reported_type to something known)
-      if (reported_type != protocol::T_STOP) {
-        assert(reported_type == elem_methods::ttype_value);
+      if (reported_type != protocol::T_STOP &&
+          reported_type != elem_methods::ttype_value) {
+        TProtocolException::throwReportedTypeMismatch();
       }
       while (protocol.peekList()) {
         xfer += consume_elem(protocol, out);
       }
     } else {
-      assert(reported_type == elem_methods::ttype_value);
+      if (reported_type != elem_methods::ttype_value) {
+        TProtocolException::throwReportedTypeMismatch();
+      }
       while (list_size--) {
         xfer += consume_elem(protocol, out);
       }
@@ -391,7 +397,9 @@ struct protocol_methods<type_class::set<ElemClass>, Type> {
         xfer += consume_elem(protocol, out);
       }
     } else {
-      assert(reported_type == elem_methods::ttype_value);
+      if (reported_type != elem_methods::ttype_value) {
+        TProtocolException::throwReportedTypeMismatch();
+      }
       reserve_if_possible(&out, set_size);
       while (set_size--) {
         xfer += consume_elem(protocol, out);
@@ -471,9 +479,9 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
     } else {
       // CompactProtocol does not transmit key/mapped types if
       // the map is empty
-      if (map_size > 0) {
-        assert(key_methods::ttype_value == rpt_key_type);
-        assert(mapped_methods::ttype_value == rpt_mapped_type);
+      if (map_size > 0 && (key_methods::ttype_value != rpt_key_type ||
+                           mapped_methods::ttype_value != rpt_mapped_type)) {
+        TProtocolException::throwReportedTypeMismatch();
       }
       auto const kreader = [&xfer, &protocol](auto& key) {
         xfer += key_methods::read(protocol, key);
