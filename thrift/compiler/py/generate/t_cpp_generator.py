@@ -4982,7 +4982,8 @@ class CppGenerator(t_generator.Generator):
                         for t in traverse(member.type)
                         if t.program is not None and t.program != self._program
                     )
-            self._fatal_type_dependencies = list(sorted(dependencies))
+            self._fatal_type_dependencies = (
+                list(sorted(dependencies, key=lambda d: d.path)))
         return self._fatal_type_dependencies
 
     def _render_fatal_type_class(self, ttype):
