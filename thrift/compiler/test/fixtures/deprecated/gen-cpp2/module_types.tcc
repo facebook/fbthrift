@@ -13,6 +13,7 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
+#include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
@@ -72,25 +73,7 @@ uint32_t House::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_SET) {
           this->houseColors = std::set< ::cpp2::ColorID>();
-          uint32_t _size_r;
-          apache::thrift::protocol::TType _etype_r;
-          xfer += iprot->readSetBegin(_etype_r, _size_r);
-          uint32_t _i_r;
-          if (_size_r == std::numeric_limits<uint32_t>::max()) {
-            for (_i_r = 0; iprot->peekSet(); ++_i_r) {
-               ::cpp2::ColorID _elem;
-              xfer += iprot->readI64(_elem);
-              this->houseColors.value().insert(std::move(_elem));
-            }
-          }
-          else {
-            for (_i_r = 0; _i_r < _size_r; ++_i_r) {
-               ::cpp2::ColorID _elem;
-              xfer += iprot->readI64(_elem);
-              this->houseColors.value().insert(std::move(_elem));
-            }
-          }
-          xfer += iprot->readSetEnd();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set< ::cpp2::ColorID>>::read(*iprot, this->houseColors.value());
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -119,11 +102,7 @@ uint32_t House::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedSizeString(this->houseName);
   if (this->houseColors.hasValue()) {
     xfer += prot_->serializedFieldSize("houseColors", apache::thrift::protocol::T_SET, 3);
-    xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I64, this->houseColors.value().size());
-    for (auto _iter_r = this->houseColors.value().begin(); _iter_r != this->houseColors.value().end(); ++_iter_r) {
-      xfer += prot_->serializedSizeI64((*_iter_r));
-    }
-    xfer += prot_->serializedSizeSetEnd();
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set< ::cpp2::ColorID>>::serializedSize<false>(*prot_, this->houseColors.value());
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -139,11 +118,7 @@ uint32_t House::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedSizeString(this->houseName);
   if (this->houseColors.hasValue()) {
     xfer += prot_->serializedFieldSize("houseColors", apache::thrift::protocol::T_SET, 3);
-    xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I64, this->houseColors.value().size());
-    for (auto _iter_r = this->houseColors.value().begin(); _iter_r != this->houseColors.value().end(); ++_iter_r) {
-      xfer += prot_->serializedSizeI64((*_iter_r));
-    }
-    xfer += prot_->serializedSizeSetEnd();
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set< ::cpp2::ColorID>>::serializedSize<false>(*prot_, this->houseColors.value());
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -161,11 +136,7 @@ uint32_t House::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   if (this->houseColors.hasValue()) {
     xfer += prot_->writeFieldBegin("houseColors", apache::thrift::protocol::T_SET, 3);
-    xfer += prot_->writeSetBegin(apache::thrift::protocol::T_I64, this->houseColors.value().size());
-    for (auto _iter_r = this->houseColors.value().begin(); _iter_r != this->houseColors.value().end(); ++_iter_r) {
-      xfer += prot_->writeI64((*_iter_r));
-    }
-    xfer += prot_->writeSetEnd();
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set< ::cpp2::ColorID>>::write(*prot_, this->houseColors.value());
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();

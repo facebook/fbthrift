@@ -229,13 +229,14 @@ int main(int argc, char** argv) {
 }
 
 /*
+============================================================================
 thrift/test/DeserializationBench.cpp            relative  time/iter  iters/s
 ============================================================================
-CompactSerialization_custom_container                         2.84s  351.85m
-CompactDeserialization_custom_container                    780.27ms     1.28
-CompactSerialization                                          2.76s  362.55m
-CompactDeserialization                                     803.10ms     1.25
-JsonSerialization                                             6.05s  165.35m
-JsonDeserialization                                          11.47s   87.21m
+CompactSerialization_custom_container                         2.76s  362.93m
+CompactDeserialization_custom_container                    728.59ms     1.37
+CompactSerialization                                          2.71s  368.92m
+CompactDeserialization                                     760.46ms     1.31
+JsonSerialization                                             6.02s  166.06m
+JsonDeserialization                                          11.17s   89.49m
 ============================================================================
 */

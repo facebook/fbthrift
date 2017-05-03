@@ -13,6 +13,7 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
+#include <thrift/lib/cpp2/GeneratedSerializationCodeHelper.h>
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
@@ -222,23 +223,7 @@ uint32_t ContainerStruct::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
           this->fieldA = std::vector<int32_t>();
-          uint32_t _size_r;
-          apache::thrift::protocol::TType _etype_r;
-          xfer += iprot->readListBegin(_etype_r, _size_r);
-          uint32_t _i_r;
-          if (_size_r == std::numeric_limits<uint32_t>::max()) {
-            for (_i_r = 0; iprot->peekList(); ++_i_r) {
-              this->fieldA.resize(_i_r + 1);
-              xfer += iprot->readI32(this->fieldA[_i_r]);
-            }
-          }
-          else {
-            this->fieldA.resize(_size_r);
-            for (_i_r = 0; _i_r < _size_r; ++_i_r) {
-              xfer += iprot->readI32(this->fieldA[_i_r]);
-            }
-          }
-          xfer += iprot->readListEnd();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::read(*iprot, this->fieldA);
           this->__isset.fieldA = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -249,25 +234,7 @@ uint32_t ContainerStruct::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
           this->fieldB = std::list<int32_t>();
-          uint32_t _size_r;
-          apache::thrift::protocol::TType _etype_r;
-          xfer += iprot->readListBegin(_etype_r, _size_r);
-          uint32_t _i_r;
-          if (_size_r == std::numeric_limits<uint32_t>::max()) {
-            for (_i_r = 0; iprot->peekList(); ++_i_r) {
-              int32_t _elem_r;
-              xfer += iprot->readI32(_elem_r);
-              this->fieldB.push_back(std::move(_elem_r));
-            }
-          }
-          else {
-            for (_i_r = 0; _i_r < _size_r; ++_i_r) {
-              int32_t _elem_r;
-              xfer += iprot->readI32(_elem_r);
-              this->fieldB.push_back(std::move(_elem_r));
-            }
-          }
-          xfer += iprot->readListEnd();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>>::read(*iprot, this->fieldB);
           this->__isset.fieldB = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -278,23 +245,7 @@ uint32_t ContainerStruct::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
           this->fieldC = std::deque<int32_t>();
-          uint32_t _size_r;
-          apache::thrift::protocol::TType _etype_r;
-          xfer += iprot->readListBegin(_etype_r, _size_r);
-          uint32_t _i_r;
-          if (_size_r == std::numeric_limits<uint32_t>::max()) {
-            for (_i_r = 0; iprot->peekList(); ++_i_r) {
-              this->fieldC.resize(_i_r + 1);
-              xfer += iprot->readI32(this->fieldC[_i_r]);
-            }
-          }
-          else {
-            this->fieldC.resize(_size_r);
-            for (_i_r = 0; _i_r < _size_r; ++_i_r) {
-              xfer += iprot->readI32(this->fieldC[_i_r]);
-            }
-          }
-          xfer += iprot->readListEnd();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::deque<int32_t>>::read(*iprot, this->fieldC);
           this->__isset.fieldC = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -305,23 +256,7 @@ uint32_t ContainerStruct::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
           this->fieldD = folly::fbvector<int32_t>();
-          uint32_t _size_r;
-          apache::thrift::protocol::TType _etype_r;
-          xfer += iprot->readListBegin(_etype_r, _size_r);
-          uint32_t _i_r;
-          if (_size_r == std::numeric_limits<uint32_t>::max()) {
-            for (_i_r = 0; iprot->peekList(); ++_i_r) {
-              this->fieldD.resize(_i_r + 1);
-              xfer += iprot->readI32(this->fieldD[_i_r]);
-            }
-          }
-          else {
-            this->fieldD.resize(_size_r);
-            for (_i_r = 0; _i_r < _size_r; ++_i_r) {
-              xfer += iprot->readI32(this->fieldD[_i_r]);
-            }
-          }
-          xfer += iprot->readListEnd();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, folly::fbvector<int32_t>>::read(*iprot, this->fieldD);
           this->__isset.fieldD = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -332,23 +267,7 @@ uint32_t ContainerStruct::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
           this->fieldE = folly::small_vector<int32_t>();
-          uint32_t _size_r;
-          apache::thrift::protocol::TType _etype_r;
-          xfer += iprot->readListBegin(_etype_r, _size_r);
-          uint32_t _i_r;
-          if (_size_r == std::numeric_limits<uint32_t>::max()) {
-            for (_i_r = 0; iprot->peekList(); ++_i_r) {
-              this->fieldE.resize(_i_r + 1);
-              xfer += iprot->readI32(this->fieldE[_i_r]);
-            }
-          }
-          else {
-            this->fieldE.resize(_size_r);
-            for (_i_r = 0; _i_r < _size_r; ++_i_r) {
-              xfer += iprot->readI32(this->fieldE[_i_r]);
-            }
-          }
-          xfer += iprot->readListEnd();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, folly::small_vector<int32_t>>::read(*iprot, this->fieldE);
           this->__isset.fieldE = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -359,25 +278,7 @@ uint32_t ContainerStruct::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_SET) {
           this->fieldF = folly::sorted_vector_set<int32_t>();
-          uint32_t _size_r;
-          apache::thrift::protocol::TType _etype_r;
-          xfer += iprot->readSetBegin(_etype_r, _size_r);
-          uint32_t _i_r;
-          if (_size_r == std::numeric_limits<uint32_t>::max()) {
-            for (_i_r = 0; iprot->peekSet(); ++_i_r) {
-              int32_t _elem;
-              xfer += iprot->readI32(_elem);
-              this->fieldF.insert(std::move(_elem));
-            }
-          }
-          else {
-            for (_i_r = 0; _i_r < _size_r; ++_i_r) {
-              int32_t _elem;
-              xfer += iprot->readI32(_elem);
-              this->fieldF.insert(std::move(_elem));
-            }
-          }
-          xfer += iprot->readSetEnd();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, folly::sorted_vector_set<int32_t>>::read(*iprot, this->fieldF);
           this->__isset.fieldF = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -388,35 +289,7 @@ uint32_t ContainerStruct::read(Protocol_* iprot) {
       {
         if (ftype == apache::thrift::protocol::T_MAP) {
           this->fieldG = folly::sorted_vector_map<int32_t, std::string>();
-          uint32_t _size_rk_rv;
-          apache::thrift::protocol::TType _ktype_rk_rv;
-          apache::thrift::protocol::TType _vtype_rk_rv;
-          xfer += iprot->readMapBegin(_ktype_rk_rv, _vtype_rk_rv, _size_rk_rv);
-          uint32_t _i_rk_rv;
-          if (_size_rk_rv == std::numeric_limits<uint32_t>::max()) {
-            for (_i_rk_rv = 0; iprot->peekMap(); ++_i_rk_rv) {
-              auto const _key_index_rk_rv = [&] {
-                int32_t _key;
-                xfer += iprot->readI32(_key);
-                return _key;
-              }
-              ();
-              std::string& _val = this->fieldG[std::move(_key_index_rk_rv)];
-              xfer += iprot->readString(_val);
-            }
-          }
-          else {
-            auto const _kreader_rk_rv = [&xfer, &iprot](auto& _key) {
-              xfer += iprot->readI32(_key);
-            }
-            ;
-            auto const _vreader_rk_rv = [&xfer, &iprot](auto& _val) {
-              xfer += iprot->readString(_val);
-            }
-            ;
-            ::apache::thrift::deserialize_known_length_map(this->fieldG, _size_rk_rv, _kreader_rk_rv, _vreader_rk_rv);
-          }
-          xfer += iprot->readMapEnd();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>, folly::sorted_vector_map<int32_t, std::string>>::read(*iprot, this->fieldG);
           this->__isset.fieldG = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -441,48 +314,19 @@ uint32_t ContainerStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ContainerStruct");
   xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_LIST, 12);
-  xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, this->fieldA.size());
-  for (auto _iter_r = this->fieldA.begin(); _iter_r != this->fieldA.end(); ++_iter_r) {
-    xfer += prot_->serializedSizeI32((*_iter_r));
-  }
-  xfer += prot_->serializedSizeListEnd();
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::serializedSize<false>(*prot_, this->fieldA);
   xfer += prot_->serializedFieldSize("fieldB", apache::thrift::protocol::T_LIST, 2);
-  xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, this->fieldB.size());
-  for (auto _iter_r = this->fieldB.begin(); _iter_r != this->fieldB.end(); ++_iter_r) {
-    xfer += prot_->serializedSizeI32((*_iter_r));
-  }
-  xfer += prot_->serializedSizeListEnd();
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>>::serializedSize<false>(*prot_, this->fieldB);
   xfer += prot_->serializedFieldSize("fieldC", apache::thrift::protocol::T_LIST, 3);
-  xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, this->fieldC.size());
-  for (auto _iter_r = this->fieldC.begin(); _iter_r != this->fieldC.end(); ++_iter_r) {
-    xfer += prot_->serializedSizeI32((*_iter_r));
-  }
-  xfer += prot_->serializedSizeListEnd();
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::deque<int32_t>>::serializedSize<false>(*prot_, this->fieldC);
   xfer += prot_->serializedFieldSize("fieldD", apache::thrift::protocol::T_LIST, 4);
-  xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, this->fieldD.size());
-  for (auto _iter_r = this->fieldD.begin(); _iter_r != this->fieldD.end(); ++_iter_r) {
-    xfer += prot_->serializedSizeI32((*_iter_r));
-  }
-  xfer += prot_->serializedSizeListEnd();
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, folly::fbvector<int32_t>>::serializedSize<false>(*prot_, this->fieldD);
   xfer += prot_->serializedFieldSize("fieldE", apache::thrift::protocol::T_LIST, 5);
-  xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, this->fieldE.size());
-  for (auto _iter_r = this->fieldE.begin(); _iter_r != this->fieldE.end(); ++_iter_r) {
-    xfer += prot_->serializedSizeI32((*_iter_r));
-  }
-  xfer += prot_->serializedSizeListEnd();
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, folly::small_vector<int32_t>>::serializedSize<false>(*prot_, this->fieldE);
   xfer += prot_->serializedFieldSize("fieldF", apache::thrift::protocol::T_SET, 6);
-  xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I32, this->fieldF.size());
-  for (auto _iter_r = this->fieldF.begin(); _iter_r != this->fieldF.end(); ++_iter_r) {
-    xfer += prot_->serializedSizeI32((*_iter_r));
-  }
-  xfer += prot_->serializedSizeSetEnd();
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, folly::sorted_vector_set<int32_t>>::serializedSize<false>(*prot_, this->fieldF);
   xfer += prot_->serializedFieldSize("fieldG", apache::thrift::protocol::T_MAP, 7);
-  xfer += prot_->serializedSizeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_STRING, this->fieldG.size());
-  for (auto _iter_rk_rv = this->fieldG.begin(); _iter_rk_rv != this->fieldG.end(); ++_iter_rk_rv) {
-    xfer += prot_->serializedSizeI32(_iter_rk_rv->first);
-    xfer += prot_->serializedSizeString(_iter_rk_rv->second);
-  }
-  xfer += prot_->serializedSizeMapEnd();
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>, folly::sorted_vector_map<int32_t, std::string>>::serializedSize<false>(*prot_, this->fieldG);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -492,48 +336,19 @@ uint32_t ContainerStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ContainerStruct");
   xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_LIST, 12);
-  xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, this->fieldA.size());
-  for (auto _iter_r = this->fieldA.begin(); _iter_r != this->fieldA.end(); ++_iter_r) {
-    xfer += prot_->serializedSizeI32((*_iter_r));
-  }
-  xfer += prot_->serializedSizeListEnd();
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::serializedSize<false>(*prot_, this->fieldA);
   xfer += prot_->serializedFieldSize("fieldB", apache::thrift::protocol::T_LIST, 2);
-  xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, this->fieldB.size());
-  for (auto _iter_r = this->fieldB.begin(); _iter_r != this->fieldB.end(); ++_iter_r) {
-    xfer += prot_->serializedSizeI32((*_iter_r));
-  }
-  xfer += prot_->serializedSizeListEnd();
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>>::serializedSize<false>(*prot_, this->fieldB);
   xfer += prot_->serializedFieldSize("fieldC", apache::thrift::protocol::T_LIST, 3);
-  xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, this->fieldC.size());
-  for (auto _iter_r = this->fieldC.begin(); _iter_r != this->fieldC.end(); ++_iter_r) {
-    xfer += prot_->serializedSizeI32((*_iter_r));
-  }
-  xfer += prot_->serializedSizeListEnd();
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::deque<int32_t>>::serializedSize<false>(*prot_, this->fieldC);
   xfer += prot_->serializedFieldSize("fieldD", apache::thrift::protocol::T_LIST, 4);
-  xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, this->fieldD.size());
-  for (auto _iter_r = this->fieldD.begin(); _iter_r != this->fieldD.end(); ++_iter_r) {
-    xfer += prot_->serializedSizeI32((*_iter_r));
-  }
-  xfer += prot_->serializedSizeListEnd();
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, folly::fbvector<int32_t>>::serializedSize<false>(*prot_, this->fieldD);
   xfer += prot_->serializedFieldSize("fieldE", apache::thrift::protocol::T_LIST, 5);
-  xfer += prot_->serializedSizeListBegin(apache::thrift::protocol::T_I32, this->fieldE.size());
-  for (auto _iter_r = this->fieldE.begin(); _iter_r != this->fieldE.end(); ++_iter_r) {
-    xfer += prot_->serializedSizeI32((*_iter_r));
-  }
-  xfer += prot_->serializedSizeListEnd();
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, folly::small_vector<int32_t>>::serializedSize<false>(*prot_, this->fieldE);
   xfer += prot_->serializedFieldSize("fieldF", apache::thrift::protocol::T_SET, 6);
-  xfer += prot_->serializedSizeSetBegin(apache::thrift::protocol::T_I32, this->fieldF.size());
-  for (auto _iter_r = this->fieldF.begin(); _iter_r != this->fieldF.end(); ++_iter_r) {
-    xfer += prot_->serializedSizeI32((*_iter_r));
-  }
-  xfer += prot_->serializedSizeSetEnd();
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, folly::sorted_vector_set<int32_t>>::serializedSize<false>(*prot_, this->fieldF);
   xfer += prot_->serializedFieldSize("fieldG", apache::thrift::protocol::T_MAP, 7);
-  xfer += prot_->serializedSizeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_STRING, this->fieldG.size());
-  for (auto _iter_rk_rv = this->fieldG.begin(); _iter_rk_rv != this->fieldG.end(); ++_iter_rk_rv) {
-    xfer += prot_->serializedSizeI32(_iter_rk_rv->first);
-    xfer += prot_->serializedSizeString(_iter_rk_rv->second);
-  }
-  xfer += prot_->serializedSizeMapEnd();
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>, folly::sorted_vector_map<int32_t, std::string>>::serializedSize<false>(*prot_, this->fieldG);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -543,54 +358,25 @@ uint32_t ContainerStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("ContainerStruct");
   xfer += prot_->writeFieldBegin("fieldA", apache::thrift::protocol::T_LIST, 12);
-  xfer += prot_->writeListBegin(apache::thrift::protocol::T_I32, this->fieldA.size());
-  for (auto _iter_r = this->fieldA.begin(); _iter_r != this->fieldA.end(); ++_iter_r) {
-    xfer += prot_->writeI32((*_iter_r));
-  }
-  xfer += prot_->writeListEnd();
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int32_t>>::write(*prot_, this->fieldA);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldB", apache::thrift::protocol::T_LIST, 2);
-  xfer += prot_->writeListBegin(apache::thrift::protocol::T_I32, this->fieldB.size());
-  for (auto _iter_r = this->fieldB.begin(); _iter_r != this->fieldB.end(); ++_iter_r) {
-    xfer += prot_->writeI32((*_iter_r));
-  }
-  xfer += prot_->writeListEnd();
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>>::write(*prot_, this->fieldB);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldC", apache::thrift::protocol::T_LIST, 3);
-  xfer += prot_->writeListBegin(apache::thrift::protocol::T_I32, this->fieldC.size());
-  for (auto _iter_r = this->fieldC.begin(); _iter_r != this->fieldC.end(); ++_iter_r) {
-    xfer += prot_->writeI32((*_iter_r));
-  }
-  xfer += prot_->writeListEnd();
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::deque<int32_t>>::write(*prot_, this->fieldC);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldD", apache::thrift::protocol::T_LIST, 4);
-  xfer += prot_->writeListBegin(apache::thrift::protocol::T_I32, this->fieldD.size());
-  for (auto _iter_r = this->fieldD.begin(); _iter_r != this->fieldD.end(); ++_iter_r) {
-    xfer += prot_->writeI32((*_iter_r));
-  }
-  xfer += prot_->writeListEnd();
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, folly::fbvector<int32_t>>::write(*prot_, this->fieldD);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldE", apache::thrift::protocol::T_LIST, 5);
-  xfer += prot_->writeListBegin(apache::thrift::protocol::T_I32, this->fieldE.size());
-  for (auto _iter_r = this->fieldE.begin(); _iter_r != this->fieldE.end(); ++_iter_r) {
-    xfer += prot_->writeI32((*_iter_r));
-  }
-  xfer += prot_->writeListEnd();
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, folly::small_vector<int32_t>>::write(*prot_, this->fieldE);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldF", apache::thrift::protocol::T_SET, 6);
-  xfer += prot_->writeSetBegin(apache::thrift::protocol::T_I32, this->fieldF.size());
-  for (auto _iter_r = this->fieldF.begin(); _iter_r != this->fieldF.end(); ++_iter_r) {
-    xfer += prot_->writeI32((*_iter_r));
-  }
-  xfer += prot_->writeSetEnd();
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, folly::sorted_vector_set<int32_t>>::write(*prot_, this->fieldF);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldG", apache::thrift::protocol::T_MAP, 7);
-  xfer += prot_->writeMapBegin(apache::thrift::protocol::T_I32, apache::thrift::protocol::T_STRING, this->fieldG.size());
-  for (auto _iter_rk_rv = this->fieldG.begin(); _iter_rk_rv != this->fieldG.end(); ++_iter_rk_rv) {
-    xfer += prot_->writeI32(_iter_rk_rv->first);
-    xfer += prot_->writeString(_iter_rk_rv->second);
-  }
-  xfer += prot_->writeMapEnd();
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>, folly::sorted_vector_map<int32_t, std::string>>::write(*prot_, this->fieldG);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

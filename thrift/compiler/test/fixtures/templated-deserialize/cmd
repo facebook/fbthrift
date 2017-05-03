@@ -1,1 +1,1 @@
-cpp2:tmp_templated_deserialize src/module.thrift
+cpp2 src/module.thrift

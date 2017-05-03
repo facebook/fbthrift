@@ -106,7 +106,6 @@ class CppGenerator(t_generator.Generator):
         'fatal': '(deprecated) use `reflection` instead',
         'reflection': 'generate static reflection metadata',
         'lean_mean_meta_machine': 'use templated Fatal metadata based codegen',
-        'tmp_templated_deserialize': 'Deserialize using a templated approach',
     }
     _out_dir_base = 'gen-cpp2'
     _compatibility_dir_base = 'gen-cpp'
@@ -3497,16 +3496,11 @@ class CppGenerator(t_generator.Generator):
             self._generate_deserialize_struct(
                 scope, otype, ttype.as_struct, name, pointer, optional_wrapped)
         elif ttype.is_container:
-            if self.flag_tmp_templated_deserialize:
-                self._generate_templated_deserialize_container(
-                    scope, otype,
-                    ttype.as_container,
-                    name, ttype, pointer,
-                    optional_wrapped)
-            else:
-                self._generate_deserialize_container(scope, ttype.as_container,
-                                                     name, otype, pointer,
-                                                     optional_wrapped)
+            self._generate_templated_deserialize_container(
+                scope, otype,
+                ttype.as_container,
+                name, ttype, pointer,
+                optional_wrapped)
         elif ttype.is_base_type:
             if optional_wrapped:
                 # assign a new default-constructed value into the Optional
@@ -4319,16 +4313,10 @@ class CppGenerator(t_generator.Generator):
                 reftype = self.tmp('_rtype')
                 out('const auto& {0} = *{1};'.format(reftype, prefix))
                 prefix = reftype
-                if self.flag_tmp_templated_deserialize:
-                    self._generate_templated_serialize_container_internal(
-                        scope, otype,
-                        pointer, prefix,
-                        method, **kwargs)
-                else:
-                    self._generate_serialize_container_internal(
-                        scope, ttype,
-                        pointer, prefix,
-                        method, **kwargs)
+                self._generate_templated_serialize_container_internal(
+                    scope, otype,
+                    pointer, prefix,
+                    method, **kwargs)
             with scope('else'):
                 if ttype.is_map:
                     out('xfer += prot_->{0}MapBegin({1}, {2}, 0);'.format(
@@ -4347,16 +4335,10 @@ class CppGenerator(t_generator.Generator):
                             tte(ttype.as_list.elem_type)))
                     out('xfer += prot_->{0}ListEnd();'.format(method))
         else:
-            if self.flag_tmp_templated_deserialize:
-                self._generate_templated_serialize_container_internal(
-                    scope, otype,
-                    pointer, prefix,
-                    method, **kwargs)
-            else:
-                self._generate_serialize_container_internal(
-                    scope, ttype,
-                    pointer, prefix,
-                    method, **kwargs)
+            self._generate_templated_serialize_container_internal(
+                scope, otype,
+                pointer, prefix,
+                method, **kwargs)
 
     def _generate_serialize_map_element(self, scope, tmap, iter_,
                                         method='write', **kwargs):
