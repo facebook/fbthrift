@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 __all__ = [
     'get_client', 'Client', 'ThriftServer', 'Struct', 'BadEnum', 'Error',
-    'ApplicationError', 'TransportError'
+    'ApplicationError', 'TransportError', 'SSLPolicy',
 ]
 
 try:
@@ -11,9 +11,10 @@ except ImportError:
     __all__.remove('get_client')
 
 try:
-    from thrift.py3.server import ThriftServer
+    from thrift.py3.server import ThriftServer, SSLPolicy
 except ImportError:
     __all__.remove('ThriftServer')
+    __all__.remove('SSLPolicy')
 
 try:
     from thrift.py3.types import Struct, BadEnum

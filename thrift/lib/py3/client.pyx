@@ -17,13 +17,14 @@ cdef class Client:
         return NULL
 
 
-def get_client(clientKlass, *, str host='::1', int port, int timeout=60):
+def get_client(clientKlass, *, str host='::1', int port, float timeout=1):
     assert issubclass(clientKlass, Client), "Must by a py3 thrift client"
     cdef string chost = <bytes> host.encode('idna')
+    cdef int _timeout = int(timeout * 1000)
     client = clientKlass()
     bridgeFutureWith[cRequestChannel_ptr](
         (<Client>client)._executor,
-        createThriftChannel(chost, port, timeout),
+        createThriftChannel(chost, port, _timeout),
         requestchannel_callback,
         <PyObject *> client
     )

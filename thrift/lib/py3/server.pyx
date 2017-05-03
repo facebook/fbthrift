@@ -1,19 +1,22 @@
-from libcpp.memory cimport unique_ptr, make_unique
+from libcpp.memory cimport make_unique
+from thrift.py3.server cimport (
+    cSSLPolicy, SSLPolicy__DISABLED, SSLPolicy__PERMITTED, SSLPolicy__REQUIRED
+)
 
 import asyncio
+from enum import Enum
 
+class SSLPolicy(Enum):
+    DISABLED = <int> (SSLPolicy__DISABLED)
+    PERMITTED = <int> (SSLPolicy__PERMITTED)
+    REQUIRED = <int> (SSLPolicy__REQUIRED)
 
 cdef class ServiceInterface:
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.loop = asyncio.get_event_loop()
 
-
 cdef class ThriftServer:
-    cdef unique_ptr[cThriftServer] server
-    cdef ServiceInterface handler
-    cdef object loop
-
     def __cinit__(self):
         self.server = make_unique[cThriftServer]()
 
@@ -33,6 +36,16 @@ cdef class ThriftServer:
             print("Exception In Server")
             self.server.get().stop()
             raise
+
+    def set_ssl_policy(self, policy):
+        cdef cSSLPolicy cPolicy
+        if policy == SSLPolicy.DISABLED:
+            cPolicy = SSLPolicy__DISABLED
+        elif policy == SSLPolicy.PERMITTED:
+            cPolicy = SSLPolicy__PERMITTED
+        elif policy == SSLPolicy.REQUIRED:
+            cPolicy = SSLPolicy__REQUIRED
+        self.server.get().setSSLPolicy(cPolicy)
 
     def stop(self):
         self.server.get().stop()
