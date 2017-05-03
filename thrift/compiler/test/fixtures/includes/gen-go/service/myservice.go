@@ -28,6 +28,10 @@ type MyService interface {  //This is a service-level docblock
   //  - S
   //  - I
   Query(s *module.MyStruct, i *includes.Included) (err error)
+  // Parameters:
+  //  - S
+  //  - I: arg doc
+  HasArgDocs(s *module.MyStruct, i *includes.Included) (err error)
 }
 
 //This is a service-level docblock
@@ -136,6 +140,83 @@ func (p *MyServiceClient) recvQuery() (err error) {
   return
 }
 
+// Parameters:
+//  - S
+//  - I: arg doc
+func (p *MyServiceClient) HasArgDocs(s *module.MyStruct, i *includes.Included) (err error) {
+  if err = p.sendHasArgDocs(s, i); err != nil { return }
+  return p.recvHasArgDocs()
+}
+
+func (p *MyServiceClient) sendHasArgDocs(s *module.MyStruct, i *includes.Included)(err error) {
+  oprot := p.OutputProtocol
+  if oprot == nil {
+    oprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.OutputProtocol = oprot
+  }
+  p.SeqId++
+  if err = oprot.WriteMessageBegin("has_arg_docs", thrift.CALL, p.SeqId); err != nil {
+      return
+  }
+  args := MyServiceHasArgDocsArgs{
+  S : s,
+  I : i,
+  }
+  if err = args.Write(oprot); err != nil {
+      return
+  }
+  if err = oprot.WriteMessageEnd(); err != nil {
+      return
+  }
+  return oprot.Flush()
+}
+
+
+func (p *MyServiceClient) recvHasArgDocs() (err error) {
+  iprot := p.InputProtocol
+  if iprot == nil {
+    iprot = p.ProtocolFactory.GetProtocol(p.Transport)
+    p.InputProtocol = iprot
+  }
+  method, mTypeId, seqId, err := iprot.ReadMessageBegin()
+  if err != nil {
+    return
+  }
+  if method != "has_arg_docs" {
+    err = thrift.NewTApplicationException(thrift.WRONG_METHOD_NAME, "has_arg_docs failed: wrong method name")
+    return
+  }
+  if p.SeqId != seqId {
+    err = thrift.NewTApplicationException(thrift.BAD_SEQUENCE_ID, "has_arg_docs failed: out of sequence response")
+    return
+  }
+  if mTypeId == thrift.EXCEPTION {
+    error2 := thrift.NewTApplicationException(thrift.UNKNOWN_APPLICATION_EXCEPTION, "Unknown Exception")
+    var error3 error
+    error3, err = error2.Read(iprot)
+    if err != nil {
+      return
+    }
+    if err = iprot.ReadMessageEnd(); err != nil {
+      return
+    }
+    err = error3
+    return
+  }
+  if mTypeId != thrift.REPLY {
+    err = thrift.NewTApplicationException(thrift.INVALID_MESSAGE_TYPE_EXCEPTION, "has_arg_docs failed: invalid message type")
+    return
+  }
+  result := MyServiceHasArgDocsResult{}
+  if err = result.Read(iprot); err != nil {
+    return
+  }
+  if err = iprot.ReadMessageEnd(); err != nil {
+    return
+  }
+  return
+}
+
 
 type MyServiceProcessor struct {
   processorMap map[string]thrift.TProcessorFunction
@@ -157,9 +238,10 @@ func (p *MyServiceProcessor) ProcessorMap() map[string]thrift.TProcessorFunction
 
 func NewMyServiceProcessor(handler MyService) *MyServiceProcessor {
 
-  self2 := &MyServiceProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
-  self2.processorMap["query"] = &myServiceProcessorQuery{handler:handler}
-return self2
+  self4 := &MyServiceProcessor{handler:handler, processorMap:make(map[string]thrift.TProcessorFunction)}
+  self4.processorMap["query"] = &myServiceProcessorQuery{handler:handler}
+  self4.processorMap["has_arg_docs"] = &myServiceProcessorHasArgDocs{handler:handler}
+return self4
 }
 
 func (p *MyServiceProcessor) Process(iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
@@ -170,12 +252,12 @@ func (p *MyServiceProcessor) Process(iprot, oprot thrift.TProtocol) (success boo
   }
   iprot.Skip(thrift.STRUCT)
   iprot.ReadMessageEnd()
-  x3 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
+  x5 := thrift.NewTApplicationException(thrift.UNKNOWN_METHOD, "Unknown function " + name)
   oprot.WriteMessageBegin(name, thrift.EXCEPTION, seqId)
-  x3.Write(oprot)
+  x5.Write(oprot)
   oprot.WriteMessageEnd()
   oprot.Flush()
-  return false, x3
+  return false, x5
 
 }
 
@@ -207,6 +289,51 @@ func (p *myServiceProcessorQuery) Process(seqId int32, iprot, oprot thrift.TProt
     return true, err2
   }
   if err2 = oprot.WriteMessageBegin("query", thrift.REPLY, seqId); err2 != nil {
+    err = err2
+  }
+  if err2 = result.Write(oprot); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.WriteMessageEnd(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err2 = oprot.Flush(); err == nil && err2 != nil {
+    err = err2
+  }
+  if err != nil {
+    return
+  }
+  return true, err
+}
+
+type myServiceProcessorHasArgDocs struct {
+  handler MyService
+}
+
+func (p *myServiceProcessorHasArgDocs) Process(seqId int32, iprot, oprot thrift.TProtocol) (success bool, err thrift.TException) {
+  args := MyServiceHasArgDocsArgs{}
+  if err = args.Read(iprot); err != nil {
+    iprot.ReadMessageEnd()
+    x := thrift.NewTApplicationException(thrift.PROTOCOL_ERROR, err.Error())
+    oprot.WriteMessageBegin("has_arg_docs", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush()
+    return false, err
+  }
+
+  iprot.ReadMessageEnd()
+  result := MyServiceHasArgDocsResult{}
+  var err2 error
+  if err2 = p.handler.HasArgDocs(args.S, args.I); err2 != nil {
+    x := thrift.NewTApplicationException(thrift.INTERNAL_ERROR, "Internal error processing has_arg_docs: " + err2.Error())
+    oprot.WriteMessageBegin("has_arg_docs", thrift.EXCEPTION, seqId)
+    x.Write(oprot)
+    oprot.WriteMessageEnd()
+    oprot.Flush()
+    return true, err2
+  }
+  if err2 = oprot.WriteMessageBegin("has_arg_docs", thrift.REPLY, seqId); err2 != nil {
     err = err2
   }
   if err2 = result.Write(oprot); err == nil && err2 != nil {
@@ -403,6 +530,184 @@ func (p *MyServiceQueryResult) String() string {
     return "<nil>"
   }
   return fmt.Sprintf("MyServiceQueryResult(%+v)", *p)
+}
+
+// Attributes:
+//  - S
+//  - I: arg doc
+type MyServiceHasArgDocsArgs struct {
+  S *module.MyStruct `thrift:"s,1" db:"s" json:"s"`
+  I *includes.Included `thrift:"i,2" db:"i" json:"i"`
+}
+
+func NewMyServiceHasArgDocsArgs() *MyServiceHasArgDocsArgs {
+  return &MyServiceHasArgDocsArgs{}
+}
+
+var MyServiceHasArgDocsArgs_S_DEFAULT *module.MyStruct
+func (p *MyServiceHasArgDocsArgs) GetS() *module.MyStruct {
+  if !p.IsSetS() {
+    return MyServiceHasArgDocsArgs_S_DEFAULT
+  }
+return p.S
+}
+var MyServiceHasArgDocsArgs_I_DEFAULT *includes.Included
+func (p *MyServiceHasArgDocsArgs) GetI() *includes.Included {
+  if !p.IsSetI() {
+    return MyServiceHasArgDocsArgs_I_DEFAULT
+  }
+return p.I
+}
+func (p *MyServiceHasArgDocsArgs) IsSetS() bool {
+  return p.S != nil
+}
+
+func (p *MyServiceHasArgDocsArgs) IsSetI() bool {
+  return p.I != nil
+}
+
+func (p *MyServiceHasArgDocsArgs) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 2:
+      if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *MyServiceHasArgDocsArgs)  ReadField1(iprot thrift.TProtocol) error {
+  p.S = &module.MyStruct{
+  MyIncludedInt: 42,
+}
+  if err := p.S.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.S), err)
+  }
+  return nil
+}
+
+func (p *MyServiceHasArgDocsArgs)  ReadField2(iprot thrift.TProtocol) error {
+  p.I = &includes.Included{}
+  if err := p.I.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.I), err)
+  }
+  return nil
+}
+
+func (p *MyServiceHasArgDocsArgs) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("has_arg_docs_args"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField2(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *MyServiceHasArgDocsArgs) writeField1(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("s", thrift.STRUCT, 1); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:s: ", p), err) }
+  if err := p.S.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.S), err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:s: ", p), err) }
+  return err
+}
+
+func (p *MyServiceHasArgDocsArgs) writeField2(oprot thrift.TProtocol) (err error) {
+  if err := oprot.WriteFieldBegin("i", thrift.STRUCT, 2); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:i: ", p), err) }
+  if err := p.I.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.I), err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:i: ", p), err) }
+  return err
+}
+
+func (p *MyServiceHasArgDocsArgs) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("MyServiceHasArgDocsArgs(%+v)", *p)
+}
+
+type MyServiceHasArgDocsResult struct {
+}
+
+func NewMyServiceHasArgDocsResult() *MyServiceHasArgDocsResult {
+  return &MyServiceHasArgDocsResult{}
+}
+
+func (p *MyServiceHasArgDocsResult) Read(iprot thrift.TProtocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    if err := iprot.Skip(fieldTypeId); err != nil {
+      return err
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *MyServiceHasArgDocsResult) Write(oprot thrift.TProtocol) error {
+  if err := oprot.WriteStructBegin("has_arg_docs_result"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *MyServiceHasArgDocsResult) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+  return fmt.Sprintf("MyServiceHasArgDocsResult(%+v)", *p)
 }
 
 

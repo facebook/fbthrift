@@ -44,6 +44,28 @@ i = std::move(i)    ]() mutable {
   return future;
 }
 
+folly::Future<folly::Unit> MyServiceWrapper::future_has_arg_docs(
+  std::unique_ptr<cpp2::MyStruct> s,
+  std::unique_ptr<cpp2::Included> i
+) {
+  folly::Promise<folly::Unit> promise;
+  auto future = promise.getFuture();
+  folly::via(
+    this->executor,
+    [this,
+     promise = std::move(promise),
+s = std::move(s),
+i = std::move(i)    ]() mutable {
+        call_cy_MyService_has_arg_docs(
+            this->if_object,
+            std::move(promise),
+    std::move(s),
+    std::move(i)        );
+    });
+
+  return future;
+}
+
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<MyServiceWrapper>(if_object, exc);
 }

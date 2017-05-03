@@ -35,6 +35,9 @@ class MyServiceClientWrapper {
     folly::Future<folly::Unit> query(
       cpp2::MyStruct arg_s, 
       cpp2::Included arg_i);
+    folly::Future<folly::Unit> has_arg_docs(
+      cpp2::MyStruct arg_s, 
+      cpp2::Included arg_i);
 };
 
 

@@ -336,6 +336,312 @@
 
 @end
 
+@interface has_arg_docs_args : TBaseStruct <TBase, NSCoding> {
+  MyStruct * __thrift_s;
+  Included * __thrift_i;
+
+  BOOL __thrift_s_set;
+  BOOL __thrift_i_set;
+}
+
+@property (nonatomic, retain) MyStruct * s;
+@property (nonatomic, retain) Included * i;
+
+- (id) init;
+- (id) initWithS: (MyStruct *) s i: (Included *) i;
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+- (void) validate;
+
+- (BOOL) sIsSet;
+- (BOOL) iIsSet;
+@end
+
+@implementation has_arg_docs_args
+
+- (instancetype) init
+{
+  self = [super init];
+  return self;
+}
+
+- (id) initWithS: (MyStruct *) s i: (Included *) i
+{
+  self = [super init];
+  __thrift_s = s;
+  __thrift_s_set = YES;
+  __thrift_i = i;
+  __thrift_i_set = YES;
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  if ([decoder containsValueForKey: @"s"])
+  {
+    __thrift_s = [[decoder decodeObjectForKey: @"s"] retain_stub];
+    __thrift_s_set = YES;
+  }
+  if ([decoder containsValueForKey: @"i"])
+  {
+    __thrift_i = [[decoder decodeObjectForKey: @"i"] retain_stub];
+    __thrift_i_set = YES;
+  }
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+  if (__thrift_s_set)
+  {
+    [encoder encodeObject: __thrift_s forKey: @"s"];
+  }
+  if (__thrift_i_set)
+  {
+    [encoder encodeObject: __thrift_i forKey: @"i"];
+  }
+}
+
+- (MyStruct *) s {
+  return __thrift_s;
+}
+
+- (void) setS: (MyStruct *) s {
+  [self throwExceptionIfImmutable];
+  __thrift_s = s;
+  __thrift_s_set = YES;
+}
+
+- (BOOL) sIsSet {
+  return __thrift_s_set;
+}
+
+- (void) unsetS {
+  __thrift_s = nil;
+  __thrift_s_set = NO;
+}
+
+- (Included *) i {
+  return __thrift_i;
+}
+
+- (void) setI: (Included *) i {
+  [self throwExceptionIfImmutable];
+  __thrift_i = i;
+  __thrift_i_set = YES;
+}
+
+- (BOOL) iIsSet {
+  return __thrift_i_set;
+}
+
+- (void) unsetI {
+  __thrift_i = nil;
+  __thrift_i_set = NO;
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      case 1:
+        if (fieldType == TType_STRUCT) {
+          MyStruct *fieldValue = [[MyStruct alloc] init];
+          [fieldValue read: inProtocol];
+          [self setS: fieldValue];
+          [fieldValue release_stub];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      case 2:
+        if (fieldType == TType_STRUCT) {
+          Included *fieldValue = [[Included alloc] init];
+          [fieldValue read: inProtocol];
+          [self setI: fieldValue];
+          [fieldValue release_stub];
+        } else { 
+          [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        }
+        break;
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"has_arg_docs_args"];
+  if (__thrift_s_set) {
+    if (__thrift_s != nil) {
+      [outProtocol writeFieldBeginWithName: @"s" type: TType_STRUCT fieldID: 1];
+      [__thrift_s write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  if (__thrift_i_set) {
+    if (__thrift_i != nil) {
+      [outProtocol writeFieldBeginWithName: @"i" type: TType_STRUCT fieldID: 2];
+      [__thrift_i write: outProtocol];
+      [outProtocol writeFieldEnd];
+    }
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (void) validate {
+  // check for required fields
+}
+
+- (NSString *) description {
+  return [[self toDict] description];
+}
+
+- (NSDictionary *) toDict {
+  NSMutableDictionary *ret = [NSMutableDictionary dictionary];
+  ret[@"__thrift_struct_name"] = @"has_arg_docs_args";
+  if (__thrift_s) {
+    ret[@"s"] = [__thrift_s toDict];
+  }
+  if (__thrift_i) {
+    ret[@"i"] = [__thrift_i toDict];
+  }
+  return [ret copy];
+}
+
+- (BOOL) makeImmutable {
+  const BOOL wasImmutable = [self isImmutable];
+  if (!wasImmutable) {
+    if (__thrift_s && ![__thrift_s isImmutable]) {
+      [__thrift_s makeImmutable];
+    }
+    if (__thrift_i && ![__thrift_i isImmutable]) {
+      [__thrift_i makeImmutable];
+    }
+    [super makeImmutable];
+  }
+  return YES;
+}
+
+- (id) mutableCopyWithZone:(NSZone *)zone {
+  has_arg_docs_args *newCopy = [[[self class] alloc] init];;
+  if (__thrift_s) {
+    newCopy->__thrift_s = [self->__thrift_s mutableCopyWithZone:zone];
+  }
+  newCopy->__thrift_s_set = self->__thrift_s_set;
+  if (__thrift_i) {
+    newCopy->__thrift_i = [self->__thrift_i mutableCopyWithZone:zone];
+  }
+  newCopy->__thrift_i_set = self->__thrift_i_set;
+  return newCopy;
+}
+
+@end
+
+@interface Has_arg_docs_result : TBaseStruct <TBase, NSCoding> {
+}
+
+- (id) init;
+- (void) read: (id <TProtocol>) inProtocol;
+- (void) write: (id <TProtocol>) outProtocol;
+- (void) validate;
+
+@end
+
+@implementation Has_arg_docs_result
+
+- (instancetype) init
+{
+  self = [super init];
+  return self;
+}
+
+- (id) initWithCoder: (NSCoder *) decoder
+{
+  self = [super init];
+  return self;
+}
+
+- (void) encodeWithCoder: (NSCoder *) encoder
+{
+}
+
+- (void) read: (id <TProtocol>) inProtocol
+{
+  NSString * fieldName;
+  int fieldType;
+  int fieldID;
+
+  [inProtocol readStructBeginReturningName: NULL];
+  while (true)
+  {
+    [inProtocol readFieldBeginReturningName: &fieldName type: &fieldType fieldID: &fieldID];
+    if (fieldType == TType_STOP) { 
+      break;
+    }
+    switch (fieldID)
+    {
+      default:
+        [TProtocolUtil skipType: fieldType onProtocol: inProtocol];
+        break;
+    }
+    [inProtocol readFieldEnd];
+  }
+  [inProtocol readStructEnd];
+}
+
+- (void) write: (id <TProtocol>) outProtocol {
+  [outProtocol writeStructBeginWithName: @"Has_arg_docs_result"];
+
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+}
+
+- (void) validate {
+  // check for required fields
+}
+
+- (NSString *) description {
+  return [[self toDict] description];
+}
+
+- (NSDictionary *) toDict {
+  NSMutableDictionary *ret = [NSMutableDictionary dictionary];
+  ret[@"__thrift_struct_name"] = @"Has_arg_docs_result";
+  return [ret copy];
+}
+
+- (BOOL) makeImmutable {
+  const BOOL wasImmutable = [self isImmutable];
+  if (!wasImmutable) {
+    [super makeImmutable];
+  }
+  return YES;
+}
+
+- (id) mutableCopyWithZone:(NSZone *)zone {
+  Has_arg_docs_result *newCopy = [[[self class] alloc] init];;
+  return newCopy;
+}
+
+@end
+
 @implementation MyServiceClient
 - (id) initWithProtocol: (id <TProtocol>) protocol
 {
@@ -398,6 +704,47 @@
   [self recv_query];
 }
 
+- (void) send_has_arg_docs: (MyStruct *) s i: (Included *) i
+{
+  [outProtocol writeMessageBeginWithName: @"has_arg_docs" type: TMessageType_CALL sequenceID: 0];
+  [outProtocol writeStructBeginWithName: @"has_arg_docs_args"];
+  if (s != nil)  {
+    [outProtocol writeFieldBeginWithName: @"s" type: TType_STRUCT fieldID: 1];
+    [s write: outProtocol];
+    [outProtocol writeFieldEnd];
+  }
+  if (i != nil)  {
+    [outProtocol writeFieldBeginWithName: @"i" type: TType_STRUCT fieldID: 2];
+    [i write: outProtocol];
+    [outProtocol writeFieldEnd];
+  }
+  [outProtocol writeFieldStop];
+  [outProtocol writeStructEnd];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+}
+
+- (void) recv_has_arg_docs
+{
+  int msgType = 0;
+  [inProtocol readMessageBeginReturningName: nil type: &msgType sequenceID: NULL];
+  if (msgType == TMessageType_EXCEPTION) {
+    TApplicationException * x = [TApplicationException read: inProtocol];
+    [inProtocol readMessageEnd];
+    @throw x;
+  }
+  Has_arg_docs_result * result = [[[Has_arg_docs_result alloc] init] autorelease_stub];
+  [result read: inProtocol];
+  [inProtocol readMessageEnd];
+  return;
+}
+
+- (void) has_arg_docs: (MyStruct *) s i: (Included *) i
+{
+  [self send_has_arg_docs : s i: i];
+  [self recv_has_arg_docs];
+}
+
 @end
 
 @implementation MyServiceProcessor
@@ -415,6 +762,14 @@
     [invocation setSelector: s];
     [invocation retainArguments];
     [mMethodMap setValue: invocation forKey: @"query"];
+  }
+  {
+    SEL s = @selector(process_has_arg_docs_withSequenceID:inProtocol:outProtocol:);
+    NSMethodSignature * sig = [self methodSignatureForSelector: s];
+    NSInvocation * invocation = [NSInvocation invocationWithMethodSignature: sig];
+    [invocation setSelector: s];
+    [invocation retainArguments];
+    [mMethodMap setValue: invocation forKey: @"has_arg_docs"];
   }
   return self;
 }
@@ -465,6 +820,23 @@
   Query_result * result = [[Query_result alloc] init];
   [mService query: [args s] i: [args i]];
   [outProtocol writeMessageBeginWithName: @"query"
+                                    type: TMessageType_REPLY
+                              sequenceID: seqID];
+  [result write: outProtocol];
+  [outProtocol writeMessageEnd];
+  [[outProtocol transport] flush];
+  [result release_stub];
+  [args release_stub];
+}
+
+- (void) process_has_arg_docs_withSequenceID: (int32_t) seqID inProtocol: (id<TProtocol>) inProtocol outProtocol: (id<TProtocol>) outProtocol
+{
+  has_arg_docs_args * args = [[has_arg_docs_args alloc] init];
+  [args read: inProtocol];
+  [inProtocol readMessageEnd];
+  Has_arg_docs_result * result = [[Has_arg_docs_result alloc] init];
+  [mService has_arg_docs: [args s] i: [args i]];
+  [outProtocol writeMessageBeginWithName: @"has_arg_docs"
                                     type: TMessageType_REPLY
                               sequenceID: seqID];
   [result write: outProtocol];

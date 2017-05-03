@@ -24,6 +24,7 @@
 
 @protocol MyService <NSObject>
 - (void) query: (MyStruct *) s i: (Included *) i;  // throws TException
+- (void) has_arg_docs: (MyStruct *) s i: (Included *) i;  // throws TException
 @end
 
 @interface MyServiceClient : NSObject <MyService> {

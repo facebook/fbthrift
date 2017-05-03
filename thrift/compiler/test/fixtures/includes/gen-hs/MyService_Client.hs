@@ -13,7 +13,7 @@
 --  @generated
 -----------------------------------------------------------------
 
-module MyService_Client(query) where
+module MyService_Client(query,has_arg_docs) where
 import Data.IORef
 import Prelude ( Bool(..), Enum, Float, IO, Double, String, Maybe(..),
                  Eq, Show, Ord,
@@ -68,4 +68,18 @@ recv_query ip =
   Thrift.readMessage ip $ \(fname,mtype,rseqid) -> do
     Monad.when (mtype == Types.M_EXCEPTION) $ Thrift.readAppExn ip >>= Exception.throw
     res <- MyService.read_Query_result ip
+    return ()
+has_arg_docs (ip,op) arg_s arg_i = do
+  send_has_arg_docs op arg_s arg_i
+  recv_has_arg_docs ip
+send_has_arg_docs op arg_s arg_i = do
+  seq <- seqid
+  seqn <- readIORef seq
+  Thrift.writeMessage op ("has_arg_docs", Types.M_CALL, seqn) $
+    MyService.write_Has_arg_docs_args op (MyService.Has_arg_docs_args{MyService.has_arg_docs_args_s=arg_s,MyService.has_arg_docs_args_i=arg_i})
+  Thrift.tFlush (Thrift.getTransport op)
+recv_has_arg_docs ip =
+  Thrift.readMessage ip $ \(fname,mtype,rseqid) -> do
+    Monad.when (mtype == Types.M_EXCEPTION) $ Thrift.readAppExn ip >>= Exception.throw
+    res <- MyService.read_Has_arg_docs_result ip
     return ()

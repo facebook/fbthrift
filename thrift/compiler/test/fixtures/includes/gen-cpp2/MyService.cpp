@@ -29,7 +29,21 @@ void MyServiceSvIf::async_tm_query(std::unique_ptr<apache::thrift::HandlerCallba
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_query(std::move(s), std::move(i)); });
 }
 
+void MyServiceSvIf::has_arg_docs(std::unique_ptr< ::cpp2::MyStruct> /*s*/, std::unique_ptr< ::cpp2::Included> /*i*/) {
+  throw apache::thrift::TApplicationException("Function has_arg_docs is unimplemented");
+}
+
+folly::Future<folly::Unit> MyServiceSvIf::future_has_arg_docs(std::unique_ptr< ::cpp2::MyStruct> s, std::unique_ptr< ::cpp2::Included> i) {
+  return apache::thrift::detail::si::future([&] { return has_arg_docs(std::move(s), std::move(i)); });
+}
+
+void MyServiceSvIf::async_tm_has_arg_docs(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::cpp2::MyStruct> s, std::unique_ptr< ::cpp2::Included> i) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_has_arg_docs(std::move(s), std::move(i)); });
+}
+
 void MyServiceSvNull::query(std::unique_ptr< ::cpp2::MyStruct> /*s*/, std::unique_ptr< ::cpp2::Included> /*i*/) {}
+
+void MyServiceSvNull::has_arg_docs(std::unique_ptr< ::cpp2::MyStruct> /*s*/, std::unique_ptr< ::cpp2::Included> /*i*/) {}
 
 const char* MyServiceAsyncProcessor::getServiceName() {
   return "MyService";
@@ -55,6 +69,7 @@ const MyServiceAsyncProcessor::BinaryProtocolProcessMap& MyServiceAsyncProcessor
 
 const MyServiceAsyncProcessor::BinaryProtocolProcessMap MyServiceAsyncProcessor::binaryProcessMap_ {
   {"query", &MyServiceAsyncProcessor::_processInThread_query<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"has_arg_docs", &MyServiceAsyncProcessor::_processInThread_has_arg_docs<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const MyServiceAsyncProcessor::CompactProtocolProcessMap& MyServiceAsyncProcessor::getCompactProtocolProcessMap() {
@@ -63,6 +78,7 @@ const MyServiceAsyncProcessor::CompactProtocolProcessMap& MyServiceAsyncProcesso
 
 const MyServiceAsyncProcessor::CompactProtocolProcessMap MyServiceAsyncProcessor::compactProcessMap_ {
   {"query", &MyServiceAsyncProcessor::_processInThread_query<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"has_arg_docs", &MyServiceAsyncProcessor::_processInThread_has_arg_docs<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 } // cpp2

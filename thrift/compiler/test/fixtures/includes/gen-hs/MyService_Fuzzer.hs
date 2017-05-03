@@ -96,10 +96,10 @@ fuzz config = (selectFuzzer config) config
 -- Configuration via command-line parsing
 
 serviceNames :: [String]
-serviceNames = ["query"]
+serviceNames = ["query", "has_arg_docs"]
 
 fuzzerFunctions :: [(String, (Options -> IO ()))]
-fuzzerFunctions = [("query", query_fuzzer)]
+fuzzerFunctions = [("query", query_fuzzer), ("has_arg_docs", has_arg_docs_fuzzer)]
 
 -- Random data generation
 inf_Includes_Types_Included :: IO [Includes_Types.Included]
@@ -126,4 +126,22 @@ query_exceptionHandler (a1, a2) = do
   P.putStrLn $ "Got exception on data:"
   P.putStrLn $ "(" ++ show a1 ++ show a2 ++ ")"
 query_fuzzOnce (a1, a2) client = Client.query client a1 a2 >> return ()
+
+has_arg_docs_fuzzer :: Options -> IO ()
+has_arg_docs_fuzzer opts = do
+  a1 <- Applicative.ZipList <$> inf_Module_Types_MyStruct
+  a2 <- Applicative.ZipList <$> inf_Includes_Types_Included
+  _ <- P.sequence . Applicative.getZipList $ has_arg_docs_fuzzFunc <$> a1 <*> a2
+  return ()
+  where
+  has_arg_docs_fuzzFunc a1 a2 = let param = (a1, a2) in
+    if opt_framed opts
+    then withThriftDo opts (withFramedTransport opts) (has_arg_docs_fuzzOnce param) (has_arg_docs_exceptionHandler param)
+    else withThriftDo opts (withHandle opts) (has_arg_docs_fuzzOnce param) (has_arg_docs_exceptionHandler param)
+
+has_arg_docs_exceptionHandler :: (Show a1, Show a2) => (a1, a2) -> IO ()
+has_arg_docs_exceptionHandler (a1, a2) = do
+  P.putStrLn $ "Got exception on data:"
+  P.putStrLn $ "(" ++ show a1 ++ show a2 ++ ")"
+has_arg_docs_fuzzOnce (a1, a2) client = Client.has_arg_docs client a1 a2 >> return ()
 

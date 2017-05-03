@@ -22,6 +22,7 @@ func Usage() {
   flag.PrintDefaults()
   fmt.Fprintln(os.Stderr, "\nFunctions:")
   fmt.Fprintln(os.Stderr, "  void query(MyStruct s, Included i)")
+  fmt.Fprintln(os.Stderr, "  void has_arg_docs(MyStruct s, Included i)")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
 }
@@ -121,41 +122,83 @@ func main() {
       fmt.Fprintln(os.Stderr, "Query requires 2 args")
       flag.Usage()
     }
-    arg4 := flag.Arg(1)
-    mbTrans5 := thrift.NewTMemoryBufferLen(len(arg4))
-    defer mbTrans5.Close()
-    _, err6 := mbTrans5.WriteString(arg4)
-    if err6 != nil {
+    arg6 := flag.Arg(1)
+    mbTrans7 := thrift.NewTMemoryBufferLen(len(arg6))
+    defer mbTrans7.Close()
+    _, err8 := mbTrans7.WriteString(arg6)
+    if err8 != nil {
       Usage()
       return
     }
-    factory7 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt8 := factory7.GetProtocol(mbTrans5)
+    factory9 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt10 := factory9.GetProtocol(mbTrans7)
     argvalue0 := service.NewMyStruct()
-    err9 := argvalue0.Read(jsProt8)
-    if err9 != nil {
+    err11 := argvalue0.Read(jsProt10)
+    if err11 != nil {
       Usage()
       return
     }
     value0 := argvalue0
-    arg10 := flag.Arg(2)
-    mbTrans11 := thrift.NewTMemoryBufferLen(len(arg10))
-    defer mbTrans11.Close()
-    _, err12 := mbTrans11.WriteString(arg10)
-    if err12 != nil {
+    arg12 := flag.Arg(2)
+    mbTrans13 := thrift.NewTMemoryBufferLen(len(arg12))
+    defer mbTrans13.Close()
+    _, err14 := mbTrans13.WriteString(arg12)
+    if err14 != nil {
       Usage()
       return
     }
-    factory13 := thrift.NewTSimpleJSONProtocolFactory()
-    jsProt14 := factory13.GetProtocol(mbTrans11)
+    factory15 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt16 := factory15.GetProtocol(mbTrans13)
     argvalue1 := service.NewIncluded()
-    err15 := argvalue1.Read(jsProt14)
-    if err15 != nil {
+    err17 := argvalue1.Read(jsProt16)
+    if err17 != nil {
       Usage()
       return
     }
     value1 := argvalue1
     fmt.Print(client.Query(value0, value1))
+    fmt.Print("\n")
+    break
+  case "has_arg_docs":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "HasArgDocs requires 2 args")
+      flag.Usage()
+    }
+    arg18 := flag.Arg(1)
+    mbTrans19 := thrift.NewTMemoryBufferLen(len(arg18))
+    defer mbTrans19.Close()
+    _, err20 := mbTrans19.WriteString(arg18)
+    if err20 != nil {
+      Usage()
+      return
+    }
+    factory21 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt22 := factory21.GetProtocol(mbTrans19)
+    argvalue0 := service.NewMyStruct()
+    err23 := argvalue0.Read(jsProt22)
+    if err23 != nil {
+      Usage()
+      return
+    }
+    value0 := argvalue0
+    arg24 := flag.Arg(2)
+    mbTrans25 := thrift.NewTMemoryBufferLen(len(arg24))
+    defer mbTrans25.Close()
+    _, err26 := mbTrans25.WriteString(arg24)
+    if err26 != nil {
+      Usage()
+      return
+    }
+    factory27 := thrift.NewTSimpleJSONProtocolFactory()
+    jsProt28 := factory27.GetProtocol(mbTrans25)
+    argvalue1 := service.NewIncluded()
+    err29 := argvalue1.Read(jsProt28)
+    if err29 != nil {
+      Usage()
+      return
+    }
+    value1 := argvalue1
+    fmt.Print(client.HasArgDocs(value0, value1))
     fmt.Print("\n")
     break
   case "":

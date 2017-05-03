@@ -53,6 +53,21 @@ cdef void MyService_query_callback(
         citem = c_unit;
         pyfuture.set_result(None)
 
+cdef void MyService_has_arg_docs_callback(
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* future
+):
+    cdef object pyfuture = <object> future
+    cdef cFollyUnit citem
+    if result.hasException():
+        try:
+            result.exception().throw_exception()
+        except Exception as ex:
+            pyfuture.set_exception(ex)
+    else:
+        citem = c_unit;
+        pyfuture.set_result(None)
+
 
 cdef class MyService(thrift.py3.client.Client):
 
@@ -123,6 +138,24 @@ cdef class MyService(thrift.py3.client.Client):
                 deref((<includes.types.Included>arg_i).c_Included),
             ),
             MyService_query_callback,
+            <PyObject *> future
+        )
+        return await future
+
+    async def has_arg_docs(
+            MyService self,
+            arg_s,
+            arg_i):
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            deref(self._service_MyService_client).has_arg_docs(
+                deref((<module.types.MyStruct>arg_s).c_MyStruct),
+                deref((<includes.types.Included>arg_i).c_Included),
+            ),
+            MyService_has_arg_docs_callback,
             <PyObject *> future
         )
         return await future

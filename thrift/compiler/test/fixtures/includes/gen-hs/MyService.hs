@@ -135,6 +135,86 @@ typemap_Query_result = Map.fromList []
 default_Query_result :: Query_result
 default_Query_result = Query_result{
 }
+data Has_arg_docs_args = Has_arg_docs_args
+  { has_arg_docs_args_s :: Module_Types.MyStruct
+  , has_arg_docs_args_i :: Includes_Types.Included
+  } deriving (Show,Eq,Typeable.Typeable)
+instance Serializable.ThriftSerializable Has_arg_docs_args where
+  encode = encode_Has_arg_docs_args
+  decode = decode_Has_arg_docs_args
+instance Hashable.Hashable Has_arg_docs_args where
+  hashWithSalt salt record = salt   `Hashable.hashWithSalt` has_arg_docs_args_s record   `Hashable.hashWithSalt` has_arg_docs_args_i record  
+instance DeepSeq.NFData Has_arg_docs_args where
+  rnf _record14 =
+    DeepSeq.rnf (has_arg_docs_args_s _record14) `seq`
+    DeepSeq.rnf (has_arg_docs_args_i _record14) `seq`
+    ()
+instance Arbitrary.Arbitrary Has_arg_docs_args where 
+  arbitrary = Monad.liftM Has_arg_docs_args (Arbitrary.arbitrary)
+          `Monad.ap`(Arbitrary.arbitrary)
+  shrink obj | obj == default_Has_arg_docs_args = []
+             | otherwise = Maybe.catMaybes
+    [ if obj == default_Has_arg_docs_args{has_arg_docs_args_s = has_arg_docs_args_s obj} then Nothing else Just $ default_Has_arg_docs_args{has_arg_docs_args_s = has_arg_docs_args_s obj}
+    , if obj == default_Has_arg_docs_args{has_arg_docs_args_i = has_arg_docs_args_i obj} then Nothing else Just $ default_Has_arg_docs_args{has_arg_docs_args_i = has_arg_docs_args_i obj}
+    ]
+from_Has_arg_docs_args :: Has_arg_docs_args -> Types.ThriftVal
+from_Has_arg_docs_args record = Types.TStruct $ Map.fromList $ Maybe.catMaybes
+  [ (\_v17 -> Just (1, ("s",Module_Types.from_MyStruct _v17))) $ has_arg_docs_args_s record
+  , (\_v17 -> Just (2, ("i",Includes_Types.from_Included _v17))) $ has_arg_docs_args_i record
+  ]
+write_Has_arg_docs_args :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Has_arg_docs_args -> IO ()
+write_Has_arg_docs_args oprot record = Thrift.writeVal oprot $ from_Has_arg_docs_args record
+encode_Has_arg_docs_args :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Has_arg_docs_args -> BS.ByteString
+encode_Has_arg_docs_args oprot record = Thrift.serializeVal oprot $ from_Has_arg_docs_args record
+to_Has_arg_docs_args :: Types.ThriftVal -> Has_arg_docs_args
+to_Has_arg_docs_args (Types.TStruct fields) = Has_arg_docs_args{
+  has_arg_docs_args_s = maybe (has_arg_docs_args_s default_Has_arg_docs_args) (\(_,_val19) -> (case _val19 of {Types.TStruct _val20 -> (Module_Types.to_MyStruct (Types.TStruct _val20)); _ -> error "wrong type"})) (Map.lookup (1) fields),
+  has_arg_docs_args_i = maybe (has_arg_docs_args_i default_Has_arg_docs_args) (\(_,_val19) -> (case _val19 of {Types.TStruct _val21 -> (Includes_Types.to_Included (Types.TStruct _val21)); _ -> error "wrong type"})) (Map.lookup (2) fields)
+  }
+to_Has_arg_docs_args _ = error "not a struct"
+read_Has_arg_docs_args :: (Thrift.Transport t, Thrift.Protocol p) => p t -> IO Has_arg_docs_args
+read_Has_arg_docs_args iprot = to_Has_arg_docs_args <$> Thrift.readVal iprot (Types.T_STRUCT typemap_Has_arg_docs_args)
+decode_Has_arg_docs_args :: (Thrift.Protocol p, Thrift.Transport t) => p t -> BS.ByteString -> Has_arg_docs_args
+decode_Has_arg_docs_args iprot bs = to_Has_arg_docs_args $ Thrift.deserializeVal iprot (Types.T_STRUCT typemap_Has_arg_docs_args) bs
+typemap_Has_arg_docs_args :: Types.TypeMap
+typemap_Has_arg_docs_args = Map.fromList [("s",(1,(Types.T_STRUCT Module_Types.typemap_MyStruct))),("i",(2,(Types.T_STRUCT Includes_Types.typemap_Included)))]
+default_Has_arg_docs_args :: Has_arg_docs_args
+default_Has_arg_docs_args = Has_arg_docs_args{
+  has_arg_docs_args_s = Module_Types.default_MyStruct,
+  has_arg_docs_args_i = Includes_Types.default_Included}
+data Has_arg_docs_result = Has_arg_docs_result
+ deriving (Show,Eq,Typeable.Typeable)
+instance Serializable.ThriftSerializable Has_arg_docs_result where
+  encode = encode_Has_arg_docs_result
+  decode = decode_Has_arg_docs_result
+instance Hashable.Hashable Has_arg_docs_result where
+  hashWithSalt salt record = salt  
+instance DeepSeq.NFData Has_arg_docs_result where
+  rnf _record22 =
+    ()
+instance Arbitrary.Arbitrary Has_arg_docs_result where 
+  arbitrary = QuickCheck.elements [Has_arg_docs_result]
+from_Has_arg_docs_result :: Has_arg_docs_result -> Types.ThriftVal
+from_Has_arg_docs_result record = Types.TStruct $ Map.fromList $ Maybe.catMaybes
+  []
+write_Has_arg_docs_result :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Has_arg_docs_result -> IO ()
+write_Has_arg_docs_result oprot record = Thrift.writeVal oprot $ from_Has_arg_docs_result record
+encode_Has_arg_docs_result :: (Thrift.Protocol p, Thrift.Transport t) => p t -> Has_arg_docs_result -> BS.ByteString
+encode_Has_arg_docs_result oprot record = Thrift.serializeVal oprot $ from_Has_arg_docs_result record
+to_Has_arg_docs_result :: Types.ThriftVal -> Has_arg_docs_result
+to_Has_arg_docs_result (Types.TStruct fields) = Has_arg_docs_result{
+
+  }
+to_Has_arg_docs_result _ = error "not a struct"
+read_Has_arg_docs_result :: (Thrift.Transport t, Thrift.Protocol p) => p t -> IO Has_arg_docs_result
+read_Has_arg_docs_result iprot = to_Has_arg_docs_result <$> Thrift.readVal iprot (Types.T_STRUCT typemap_Has_arg_docs_result)
+decode_Has_arg_docs_result :: (Thrift.Protocol p, Thrift.Transport t) => p t -> BS.ByteString -> Has_arg_docs_result
+decode_Has_arg_docs_result iprot bs = to_Has_arg_docs_result $ Thrift.deserializeVal iprot (Types.T_STRUCT typemap_Has_arg_docs_result) bs
+typemap_Has_arg_docs_result :: Types.TypeMap
+typemap_Has_arg_docs_result = Map.fromList []
+default_Has_arg_docs_result :: Has_arg_docs_result
+default_Has_arg_docs_result = Has_arg_docs_result{
+}
 process_query (seqid, iprot, oprot, handler) = do
   args <- MyService.read_Query_args iprot
   (Exception.catch
@@ -148,8 +228,22 @@ process_query (seqid, iprot, oprot, handler) = do
       Thrift.writeMessage oprot ("query", Types.M_EXCEPTION, seqid) $
         Thrift.writeAppExn oprot (Thrift.AppExn Thrift.AE_UNKNOWN "")
       Thrift.tFlush (Thrift.getTransport oprot)) :: Exception.SomeException -> IO ()))
+process_has_arg_docs (seqid, iprot, oprot, handler) = do
+  args <- MyService.read_Has_arg_docs_args iprot
+  (Exception.catch
+    (do
+      Iface.has_arg_docs handler (has_arg_docs_args_s args) (has_arg_docs_args_i args)
+      let res = default_Has_arg_docs_result
+      Thrift.writeMessage oprot ("has_arg_docs", Types.M_REPLY, seqid) $
+        write_Has_arg_docs_result oprot res
+      Thrift.tFlush (Thrift.getTransport oprot))
+    ((\_ -> do
+      Thrift.writeMessage oprot ("has_arg_docs", Types.M_EXCEPTION, seqid) $
+        Thrift.writeAppExn oprot (Thrift.AppExn Thrift.AE_UNKNOWN "")
+      Thrift.tFlush (Thrift.getTransport oprot)) :: Exception.SomeException -> IO ()))
 proc_ handler (iprot,oprot) (name,typ,seqid) = case name of
   "query" -> process_query (seqid,iprot,oprot,handler)
+  "has_arg_docs" -> process_has_arg_docs (seqid,iprot,oprot,handler)
   _ -> do
     _ <- Thrift.readVal iprot (Types.T_STRUCT Map.empty)
     Thrift.writeMessage oprot (name,Types.M_EXCEPTION,seqid) $

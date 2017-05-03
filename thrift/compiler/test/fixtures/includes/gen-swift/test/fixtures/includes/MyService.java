@@ -25,9 +25,22 @@ public interface MyService
             @ThriftField(value=1, name="s", requiredness=Requiredness.NONE) final test.fixtures.includes.MyStruct s,
             @ThriftField(value=2, name="i", requiredness=Requiredness.NONE) final test.fixtures.includes.includes.Included i
         );
+
+        @ThriftMethod(value = "has_arg_docs")
+        ListenableFuture<Void> hasArgDocs(
+            @ThriftField(value=1, name="s", requiredness=Requiredness.NONE) final test.fixtures.includes.MyStruct s,
+            @ThriftField(value=2, name="i", requiredness=Requiredness.NONE) final test.fixtures.includes.includes.Included i
+        );
     }
     @ThriftMethod(value = "query")
     void query(
+        @ThriftField(value=1, name="s", requiredness=Requiredness.NONE) final test.fixtures.includes.MyStruct s,
+        @ThriftField(value=2, name="i", requiredness=Requiredness.NONE) final test.fixtures.includes.includes.Included i
+    );
+
+
+    @ThriftMethod(value = "has_arg_docs")
+    void hasArgDocs(
         @ThriftField(value=1, name="s", requiredness=Requiredness.NONE) final test.fixtures.includes.MyStruct s,
         @ThriftField(value=2, name="i", requiredness=Requiredness.NONE) final test.fixtures.includes.includes.Included i
     );

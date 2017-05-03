@@ -35,5 +35,15 @@ MyServiceClientWrapper::query(
  );
 }
 
+folly::Future<folly::Unit>
+MyServiceClientWrapper::has_arg_docs(
+    cpp2::MyStruct arg_s, 
+    cpp2::Included arg_i) {
+ return async_client->future_has_arg_docs(
+   arg_s,
+   arg_i
+ );
+}
+
 
 } // namespace cpp2

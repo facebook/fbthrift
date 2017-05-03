@@ -55,3 +55,4 @@ import qualified Service_Types
 
 class MyService_Iface a where
   query :: a -> Module_Types.MyStruct -> Includes_Types.Included -> IO ()
+  has_arg_docs :: a -> Module_Types.MyStruct -> Includes_Types.Included -> IO ()

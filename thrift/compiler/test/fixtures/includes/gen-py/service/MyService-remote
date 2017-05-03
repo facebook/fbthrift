@@ -43,6 +43,7 @@ from thrift.remote import Remote
 
 FUNCTIONS = {
     'query': Function('query', 'MyService', 'void', [('module.MyStruct', 's', 'module.MyStruct'), ('includes.Included', 'i', 'includes.Included')]),
+    'has_arg_docs': Function('has_arg_docs', 'MyService', 'void', [('module.MyStruct', 's', 'module.MyStruct'), ('includes.Included', 'i', 'includes.Included')]),
 }
 
 SERVICE_NAMES = ['MyService', ]

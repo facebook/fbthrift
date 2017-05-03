@@ -94,6 +94,45 @@ async def MyService_query_coro(
     else:
         promise.cPromise.setValue(c_unit)
 
+cdef api void call_cy_MyService_has_arg_docs(
+    object self,
+    cFollyPromise[cFollyUnit] cPromise,
+    unique_ptr[module.types.cMyStruct] s,
+    unique_ptr[includes.types.cIncluded] i
+):  
+    promise = Promise_void.create(move(cPromise))
+    arg_s = module.types.MyStruct.create(module.types.move(s))
+    arg_i = includes.types.Included.create(includes.types.move(i))
+    asyncio.get_event_loop().create_task(
+        MyService_has_arg_docs_coro(
+            self,
+            promise,
+            arg_s,
+            arg_i
+        )
+    )
+
+async def MyService_has_arg_docs_coro(
+    object self,
+    Promise_void promise,
+    s,
+    i
+):
+    try:
+      result = await self.has_arg_docs(
+          s,
+          i)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler has_arg_docs:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
 
 cdef class MyServiceInterface(
     ServiceInterface
@@ -109,5 +148,12 @@ cdef class MyServiceInterface(
             s,
             i):
         raise NotImplementedError("async def query is not implemented")
+
+
+    async def has_arg_docs(
+            self,
+            s,
+            i):
+        raise NotImplementedError("async def has_arg_docs is not implemented")
 
 
