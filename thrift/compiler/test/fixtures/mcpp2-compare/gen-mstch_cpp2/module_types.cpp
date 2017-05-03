@@ -96,4 +96,170 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
+void containerStruct::__clear() {
+  // clear all fields
+  fieldA = 0;
+  fieldB.clear();
+  fieldC.clear();
+  fieldD = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  fieldE = apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring");
+  fieldF.clear();
+  fieldG.clear();
+  fieldH.clear();
+  fieldI = true;
+  fieldJ.clear();
+  fieldK.clear();
+  fieldL.clear();
+  fieldM.clear();
+  __isset.__clear();
+}
+
+bool containerStruct::operator==(const containerStruct& rhs) const {
+  if (!((fieldA == rhs.fieldA))) {
+    return false;
+  }
+  if (!((fieldB == rhs.fieldB))) {
+    return false;
+  }
+  if (!((fieldC == rhs.fieldC))) {
+    return false;
+  }
+  if (!((fieldD == rhs.fieldD))) {
+    return false;
+  }
+  if (!((fieldE == rhs.fieldE))) {
+    return false;
+  }
+  if (!((fieldF == rhs.fieldF))) {
+    return false;
+  }
+  if (!((fieldG == rhs.fieldG))) {
+    return false;
+  }
+  if (!((fieldH == rhs.fieldH))) {
+    return false;
+  }
+  if (!((fieldI == rhs.fieldI))) {
+    return false;
+  }
+  if (!((fieldJ == rhs.fieldJ))) {
+    return false;
+  }
+  if (!((fieldK == rhs.fieldK))) {
+    return false;
+  }
+  if (!((fieldL == rhs.fieldL))) {
+    return false;
+  }
+  if (!((fieldM == rhs.fieldM))) {
+    return false;
+  }
+  return true;
+}
+
+const std::map<std::string, bool>& containerStruct::get_fieldB() const& {
+  return fieldB;
+}
+
+std::map<std::string, bool> containerStruct::get_fieldB() && {
+  return std::move(fieldB);
+}
+
+const std::set<int32_t>& containerStruct::get_fieldC() const& {
+  return fieldC;
+}
+
+std::set<int32_t> containerStruct::get_fieldC() && {
+  return std::move(fieldC);
+}
+
+const std::vector<std::vector<int32_t>>& containerStruct::get_fieldF() const& {
+  return fieldF;
+}
+
+std::vector<std::vector<int32_t>> containerStruct::get_fieldF() && {
+  return std::move(fieldF);
+}
+
+const std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>>& containerStruct::get_fieldG() const& {
+  return fieldG;
+}
+
+std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> containerStruct::get_fieldG() && {
+  return std::move(fieldG);
+}
+
+const std::vector<std::set<int32_t>>& containerStruct::get_fieldH() const& {
+  return fieldH;
+}
+
+std::vector<std::set<int32_t>> containerStruct::get_fieldH() && {
+  return std::move(fieldH);
+}
+
+const std::map<std::string, std::vector<int32_t>>& containerStruct::get_fieldJ() const& {
+  return fieldJ;
+}
+
+std::map<std::string, std::vector<int32_t>> containerStruct::get_fieldJ() && {
+  return std::move(fieldJ);
+}
+
+const std::vector<std::vector<std::vector<std::vector<int32_t>>>>& containerStruct::get_fieldK() const& {
+  return fieldK;
+}
+
+std::vector<std::vector<std::vector<std::vector<int32_t>>>> containerStruct::get_fieldK() && {
+  return std::move(fieldK);
+}
+
+const std::set<std::set<std::set<bool>>>& containerStruct::get_fieldL() const& {
+  return fieldL;
+}
+
+std::set<std::set<std::set<bool>>> containerStruct::get_fieldL() && {
+  return std::move(fieldL);
+}
+
+const std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>>& containerStruct::get_fieldM() const& {
+  return fieldM;
+}
+
+std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> containerStruct::get_fieldM() && {
+  return std::move(fieldM);
+}
+
+void swap(containerStruct& a, containerStruct& b) {
+  using ::std::swap;
+  swap(a.fieldA, b.fieldA);
+  swap(a.fieldB, b.fieldB);
+  swap(a.fieldC, b.fieldC);
+  swap(a.fieldD, b.fieldD);
+  swap(a.fieldE, b.fieldE);
+  swap(a.fieldF, b.fieldF);
+  swap(a.fieldG, b.fieldG);
+  swap(a.fieldH, b.fieldH);
+  swap(a.fieldI, b.fieldI);
+  swap(a.fieldJ, b.fieldJ);
+  swap(a.fieldK, b.fieldK);
+  swap(a.fieldL, b.fieldL);
+  swap(a.fieldM, b.fieldM);
+  swap(a.__isset, b.__isset);
+}
+
+template uint32_t containerStruct::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t containerStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t containerStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t containerStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t containerStruct::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t containerStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t containerStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t containerStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
 }}} // some::valid::ns

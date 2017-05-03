@@ -24,7 +24,8 @@ void Struct::__clear() {
 }
 %>void <%struct:name%>::__clear() {
   // clear all fields
-<%#struct:base_fields%><%#field:type%><%!
+<%#struct:fields%><%#field:type%><%!
+  %><%#type:base?%><%!
   %>  <%field:name%> = <%!
   %><%#field:value%><%!
     %><%type:cxx_value_prefix%><% > common/iterate_const_values%><%type:cxx_value_suffix%><%!
@@ -38,10 +39,11 @@ void Struct::__clear() {
     %><%/type:string?%><%!
   %><%/field:value%><%!
   %><% > common/semicolon_newline%><%!
-%><%/field:type%><%/struct:base_fields%><%!
-%><%#struct:container_fields%><%#field:type%><%!
+%><%/type:base?%><%!
+%><%#type:container?%><%!
   %>  <%field:name%>.clear();
-<%/field:type%><%/struct:container_fields%><%!
+<%/type:container?%><%!
+%><%/field:type%><%/struct:fields%><%!
 %><%#struct:fields?%><%!
 %>  __isset.__clear();
 <%/struct:fields?%><%!

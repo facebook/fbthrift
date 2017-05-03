@@ -31,9 +31,9 @@ Containers:
 List
 Form:`std::initializer_list<Type>{Values}`
 E.g.:`std::initializer_list<bool>{true, false, false, true}`
-%><%#value:list?%><%!
+%><%#value:list?%><%#type:listElemType%><%!
   %>std::initializer_list<<%!
-    %><% > common/const_type_recursive%><%!
+    %><% > Type%><%!
   %>>{<%!
   %><%#value:listElements%><%!
     %><% > common/iterate_const_values%><%!
@@ -41,24 +41,39 @@ E.g.:`std::initializer_list<bool>{true, false, false, true}`
   <%/last?%><%!
   %><%/value:listElements%><%!
   %>}<%!
-%><%/value:list?%><%!
+%><%/type:listElemType%><%/value:list?%><%!
+
+Set
+Form:`std::initializer_list<Type>{Values}`
+%><%#value:list?%><%#type:setElemType%><%!
+  %>std::initializer_list<<%!
+    %><% > Type%><%!
+  %>>{<%!
+  %><%#value:listElements%><%!
+    %><% > common/iterate_const_values%><%!
+    %><%^last?%>,
+  <%/last?%><%!
+  %><%/value:listElements%><%!
+  %>}<%!
+%><%/type:setElemType%><%/value:list?%><%!
 
 Map:
 Form:`std::initializer_list<Type>{{Key, Value}}`
 E.g.:`std::initializer_list<std::pair<int64_t, bool>>{{11, false},{453, false}}`
 %><%#value:map?%><%!
-  %>std::initializer_list<<%!
-    %><% > common/const_type_recursive%><%!
-  %>>{<%!
+  %>std::initializer_list<std::pair<<%!
+    %><%#type:keyType%>const <% > Type%><%/type:keyType%>, <%!
+    %><%#type:valueType%><% > Type%><%/type:valueType%><%!
+  %>>>{<%!
   %><%#value:mapElements%><%!
     %>{<%!
-      %><%#element:key%><%!
+      %><%#element:key%><%#type:keyType%><%!
         %><% > common/iterate_const_values%><%!
-      %><%/element:key%><%!
+      %><%/type:keyType%><%/element:key%><%!
       %>, <%!
-      %><%#element:value%><%!
+      %><%#element:value%><%#type:valueType%><%!
         %><% > common/iterate_const_values%><%!
-      %><%/element:value%><%!
+      %><%/type:valueType%><%/element:value%><%!
     %>}<%!
     %><%^last?%>,
   <%/last?%><%!
