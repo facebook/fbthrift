@@ -51,27 +51,50 @@ struct SortedTableLayout : public ArrayLayout<T, Item> {
     });
   }
 
-  FieldPosition layoutItems(LayoutRoot& root,
+  static void ensureDistinctKeys(
+      const typename KeyExtractor::KeyType& key1,
+      const typename KeyExtractor::KeyType& key2) {
+    if (!(key1 < key2)) {
+      throw std::domain_error("Input collection is not distinct");
+    }
+  }
+
+  FieldPosition layoutItems(
+      LayoutRoot& root,
       const T& coll,
-                            LayoutPosition self,
-                            FieldPosition pos,
+      LayoutPosition self,
+      FieldPosition pos,
       LayoutPosition write,
       FieldPosition writeStep) final {
     std::vector<const Item*> index;
     maybeIndex(coll, index);
 
     FieldPosition noField; // not really used
+    bool distinct = true;
+    const typename KeyExtractor::KeyType* lastKey = nullptr;
     if (index.empty()) {
       // either the collection was already sorted or it's empty
       for (auto& item : coll) {
         root.layoutField(write, noField, this->itemField, item);
         write = write(writeStep);
+        const typename KeyExtractor::KeyType* itemKey =
+            &KeyExtractor::getKey(item);
+        if (lastKey) {
+          ensureDistinctKeys(*lastKey, *itemKey);
+        }
+        lastKey = itemKey;
       }
     } else {
       // collection was non-empty and non-sorted, needs indirection table.
       for (auto ptr : index) {
-          root.layoutField(write, noField, this->itemField, *ptr);
-          write = write(writeStep);
+        root.layoutField(write, noField, this->itemField, *ptr);
+        write = write(writeStep);
+        const typename KeyExtractor::KeyType* itemKey =
+            &KeyExtractor::getKey(*ptr);
+        if (lastKey) {
+          ensureDistinctKeys(*lastKey, *itemKey);
+        }
+        lastKey = itemKey;
       }
     }
 

@@ -114,6 +114,17 @@ TEST(FrozenVectorTypes, VectorAsHashSet) {
   EXPECT_EQ(0, fdm.count(4));
 }
 
+TEST(FrozenVectorTypes, DistinctChecking) {
+  VectorAsHashMap<int, int> hm{{1, 2}, {1, 3}};
+  VectorAsHashSet<int> hs{4, 4};
+  VectorAsMap<int, int> om{{5, 6}, {5, 7}};
+  VectorAsSet<int> os{8, 8};
+  EXPECT_THROW(freeze(hm), std::domain_error);
+  EXPECT_THROW(freeze(hs), std::domain_error);
+  EXPECT_THROW(freeze(om), std::domain_error);
+  EXPECT_THROW(freeze(os), std::domain_error);
+}
+
 template<class TestType>
 void populate(TestType& x) {
   x.aList.push_back(1);

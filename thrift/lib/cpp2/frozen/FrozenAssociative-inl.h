@@ -19,6 +19,7 @@ namespace detail {
 
 template <class K, class V>
 struct KeyExtractor {
+  using KeyType = K;
   static const K& getKey(const std::pair<const K, V>& pair) {
     return pair.first;
   }
@@ -41,6 +42,7 @@ struct KeyExtractor {
 
 template <class K>
 struct SelfKey {
+  using KeyType = K;
   static const K& getKey(const K& item) {
     return item;
   }

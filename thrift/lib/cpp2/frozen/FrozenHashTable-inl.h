@@ -101,6 +101,14 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
     return size_t(size * 2.5 + Block::bits - 1) / Block::bits;
   }
 
+  static void ensureDistinctKeys(
+      const typename KeyExtractor::KeyType& key1,
+      const typename KeyExtractor::KeyType& key2) {
+    if (key1 == key2) {
+      throw std::domain_error("Input collection is not distinct");
+    }
+  }
+
   static void buildIndex(const T& coll,
                          std::vector<const Item*>& index,
                          std::vector<Block>& sparseTable) {
@@ -109,7 +117,9 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
     sparseTable.resize(blocks);
     index.resize(buckets);
     for (auto& item : coll) {
-      size_t h = KeyLayout::hash(KeyExtractor::getKey(item));
+      const typename KeyExtractor::KeyType* itemKey =
+          &KeyExtractor::getKey(item);
+      size_t h = KeyLayout::hash(*itemKey);
       h *= 5; // spread out clumped hash values
       for (size_t p = 0; ; h += ++p) { // quadratic probing
         size_t bucket = h % buckets;
@@ -117,6 +127,9 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
         if (*slot) {
           if (p == buckets) {
             throw std::out_of_range("All buckets full!");
+          }
+          if (*itemKey == KeyExtractor::getKey(**slot)) {
+            throw std::domain_error("Input collection is not distinct");
           }
           continue;
         } else {
@@ -212,6 +225,7 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
     typedef typename Layout<std::vector<Block>>::View TableView;
 
     TableView table_;
+
    public:
     View() {}
     View(const LayoutSelf* layout, ViewPosition self)
