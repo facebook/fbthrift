@@ -125,6 +125,21 @@ TEST(FrozenVectorTypes, DistinctChecking) {
   EXPECT_THROW(freeze(os), std::domain_error);
 }
 
+TEST(FrozenVectorTypes, DistinctCheckingShouldPass) {
+  VectorAsHashMap<int, int> hm{{1, 2}, {2, 3}};
+  VectorAsHashSet<int> hs{4, 5};
+  VectorAsMap<int, int> om{{5, 6}, {6, 7}};
+  VectorAsSet<int> os{8, 9};
+  auto fhm = freeze(hm);
+  auto fhs = freeze(hs);
+  auto fom = freeze(om);
+  auto fos = freeze(os);
+  EXPECT_EQ(2, fhm.size());
+  EXPECT_EQ(2, fhs.size());
+  EXPECT_EQ(2, fom.size());
+  EXPECT_EQ(2, fos.size());
+}
+
 template<class TestType>
 void populate(TestType& x) {
   x.aList.push_back(1);

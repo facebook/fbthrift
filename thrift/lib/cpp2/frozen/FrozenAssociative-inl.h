@@ -24,6 +24,11 @@ struct KeyExtractor {
     return pair.first;
   }
 
+  // To support VectorAsHashMap
+  static const K& getKey(const std::pair<K, V>& pair) {
+    return pair.first;
+  }
+
   static const std::pair<const K, V>* getPointer(
       const std::pair<const K, V>& pair) {
     return &pair;
