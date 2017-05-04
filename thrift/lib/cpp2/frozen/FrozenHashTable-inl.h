@@ -240,9 +240,10 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
     std::pair<iterator, iterator> equal_range(const KeyView& key) const {
       auto found = find(key);
       if (found != this->end()) {
-        return make_pair(found, found + 1);
+        auto next = found;
+        return std::make_pair(found, ++next);
       } else {
-        return make_pair(found, found);
+        return std::make_pair(found, found);
       }
     }
 

@@ -284,13 +284,6 @@ TEST(Frozen, VectorString) {
   std::vector<std::string> check;
 }
 
-TEST(Frozen, VectorVectorInt) {
-  std::vector<std::vector<int>> vvi{{2, 3, 5, 7}, {11, 13, 17, 19}};
-  auto fvvi = freeze(vvi);
-  auto tvvi = fvvi.thaw();
-  EXPECT_EQ(tvvi, vvi);
-}
-
 TEST(Frozen, BigMap) {
   example2::PlaceTest t;
   for (int i = 0; i < 1000; ++i) {
@@ -304,7 +297,7 @@ TEST(Frozen, BigMap) {
   CompactSerializer::serialize(t, &bq);
   auto compactSize = bq.chainLength();
   auto frozenSize = ::frozenSize(t);
-  EXPECT_EQ(t, freeze(t)->thaw());
+  EXPECT_EQ(t, freeze(t).thaw());
   EXPECT_LT(frozenSize, compactSize * 0.7);
 }
 example2::Tiny tiny1 = [] {
