@@ -29,12 +29,12 @@ to be converted from unicode to binary representation.
 }}{{#type:double?}}{{field:name}}{{/type:double?}}{{!
 }}{{#type:string?}}(deref({{field:name}}.get())).decode('UTF-8'){{/type:string?}}{{!
 }}{{#type:binary?}}(deref({{field:name}}.get())){{/type:binary?}}{{!
-}}{{#type:struct}}{{> ModulePath}}.{{type:name}}.create({{!
-  }}{{> ModulePath}}.move({{field:name}})){{/type:struct}}{{!
-}}{{#type:list?}}{{> ModulePath}}.{{type:flat_name}}.create({{!
-  }}{{> ModulePath}}.move({{field:name}})){{/type:list?}}{{!
-}}{{#type:set?}}{{> ModulePath}}.{{type:flat_name}}.create({{!
-  }}{{> ModulePath}}.move({{field:name}})){{/type:set?}}{{!
-}}{{#type:map?}}{{> ModulePath}}.{{type:flat_name}}.create({{!
-  }}{{> ModulePath}}.move({{field:name}})){{/type:map?}}{{!
-}}{{#type:enum}}{{> ModulePath}}.{{enum:name}}(<int> {{field:name}}){{/type:enum}}
+}}{{#type:struct}}{{> common/ModulePath}}.{{type:name}}.create({{!
+  }}{{> common/ModulePath}}.move({{field:name}})){{/type:struct}}{{!
+}}{{#type:list?}}{{> common/ModulePath}}.{{type:flat_name}}.create({{!
+  }}{{> common/ModulePath}}.move({{field:name}})){{/type:list?}}{{!
+}}{{#type:set?}}{{> common/ModulePath}}.{{type:flat_name}}.create({{!
+  }}{{> common/ModulePath}}.move({{field:name}})){{/type:set?}}{{!
+}}{{#type:map?}}{{> common/ModulePath}}.{{type:flat_name}}.create({{!
+  }}{{> common/ModulePath}}.move({{field:name}})){{/type:map?}}{{!
+}}{{#type:enum}}{{> common/ModulePath}}.{{enum:name}}(<int> {{field:name}}){{/type:enum}}

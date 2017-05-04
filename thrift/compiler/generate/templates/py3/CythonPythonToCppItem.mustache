@@ -34,7 +34,7 @@ key, include the parallel CythonPythonToCppKey file instead.
 }}{{#type:string?}}item.encode('UTF-8'){{/type:string?}}{{!
 }}{{#type:binary?}}item{{/type:binary?}}{{!
 }}{{#type:struct}}deref((<{{!
-  }}{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}{{!
+  }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
   }}{{struct:name}}> item).c_{{struct:name}}){{!
 }}{{/type:struct}}{{!
 }}{{#type:list?}}deref({{type:flat_name}}(item)._vector.get()){{/type:list?}}{{!
@@ -46,7 +46,7 @@ key, include the parallel CythonPythonToCppKey file instead.
   }}{{#type:valueType}}{{> ContainerCythonFieldTypeConditionally}}{{/type:valueType}}{{!
   }}](deref({{type:flat_name}}(item)._map.get())){{/type:map?}}{{!
 }}{{#type:enum}}{{!
-  }}<{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}{{!
+  }}<{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
   }}c{{enum:name}}> {{!
-  }}{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}{{!
+  }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
   }}{{enum:name}}_to_cpp(item){{/type:enum}}

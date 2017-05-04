@@ -31,9 +31,9 @@ This file is included from pyx.
 }}{{#type:double?}}double{{/type:double?}}{{!
 }}{{#type:string?}}string{{/type:string?}}{{!
 }}{{#type:binary?}}string{{/type:binary?}}{{!
-}}{{#type:struct}}{{> ModulePath}}.c{{struct:name}}{{/type:struct}}{{!
+}}{{#type:struct}}{{> common/ModulePath}}.c{{struct:name}}{{/type:struct}}{{!
 }}{{#type:list?}}vector[{{#type:listElemType}}{{> ContainerCythonFieldType}}{{/type:listElemType}}]{{/type:list?}}{{!
 }}{{#type:set?}}cset[{{#type:setElemType}}{{> ContainerCythonFieldType}}{{/type:setElemType}}]{{/type:set?}}{{!
 }}{{#type:map?}}cmap[{{#type:keyType}}{{> ContainerCythonFieldType}}{{/type:keyType}},{{!
   }}{{#type:valueType}}{{> ContainerCythonFieldType}}{{/type:valueType}}]{{/type:map?}}{{!
-}}{{#type:enum}}{{> ModulePath}}.c{{enum:name}}{{/type:enum}}
+}}{{#type:enum}}{{> common/ModulePath}}.c{{enum:name}}{{/type:enum}}

@@ -54,11 +54,11 @@ on a struct from an existing struct passed in by the user.
 }}{{#type:struct?}}{{!
   }}cdef shared_ptr[{{!
   }}{{#type:struct}}{{!
-    }}{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}{{!
+    }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
     }}c{{struct:name}}{{/type:struct}}] __{{field:name}}
 if {{field:name}} is not None:
     __{{field:name}} = (
-    <{{#type:struct}}{{#type:externalProgram?}}{{> ModulePath}}.{{!
+    <{{#type:struct}}{{#type:externalProgram?}}{{> common/ModulePath}}.{{!
         }}{{/type:externalProgram?}}{{struct:name}}{{/type:struct}}?> {{!
     }}{{field:name}}).c_{{#field:type}}{{type:name}}{{/field:type}}
     deref(inst.c_{{struct:name}}).{{field:name}} = deref(__{{field:name}}.get()){{!
@@ -84,6 +84,6 @@ if {{field:name}} is not None:
 }}{{#type:enum?}}{{!
 }}if {{field:name}} is not None:
     deref(inst.c_{{struct:name}}).{{field:name}} = {{#type:enum}}{{!
-}}{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}{{!
+}}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
 }}{{enum:name}}{{/type:enum}}_to_cpp({{field:name}})
 {{/type:enum?}}

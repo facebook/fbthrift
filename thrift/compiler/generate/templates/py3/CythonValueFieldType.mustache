@@ -29,11 +29,11 @@ Cython code.
 }}{{#type:double?}}double{{/type:double?}}{{!
 }}{{#type:string?}}string{{/type:string?}}{{!
 }}{{#type:binary?}}string{{/type:binary?}}{{!
-}}{{#type:struct}}{{> ModulePath}}.c{{struct:name}}{{/type:struct}}{{!
+}}{{#type:struct}}{{> common/ModulePath}}.c{{struct:name}}{{/type:struct}}{{!
 }}{{#type:listElemType}}vector[{{> ContainerCythonFieldType}}]{{/type:listElemType}}{{!
 }}{{#type:setElemType}}cset[{{> ContainerCythonFieldType}}]{{/type:setElemType}}{{!
 }}{{#type:map?}}cmap[{{!
   }}{{#type:keyType}}{{> ContainerCythonFieldType}}{{/type:keyType}},{{!
   }}{{#type:valueType}}{{>ContainerCythonFieldType}}{{/type:valueType}}]{{/type:map?}}{{!
 }}{{#type:void?}}cFollyUnit{{/type:void?}}{{!
-}}{{#type:enum}}{{> ModulePath}}.c{{enum:name}}{{/type:enum}}
+}}{{#type:enum}}{{> common/ModulePath}}.c{{enum:name}}{{/type:enum}}

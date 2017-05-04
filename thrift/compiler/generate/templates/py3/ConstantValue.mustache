@@ -54,8 +54,8 @@ file.
 {{/type:binary?}}
 {{#type:struct}}
 {{constant:name}} = {{#type:externalProgram?}}{{!
-    }}{{> ModulePath}}.{{/type:externalProgram?}}{{type:name}}.create(
-    make_shared[{{#type:externalProgram?}}{{> ModulePath}}.{{!
+    }}{{> common/ModulePath}}.{{/type:externalProgram?}}{{type:name}}.create(
+    make_shared[{{#type:externalProgram?}}{{> common/ModulePath}}.{{!
       }}{{/type:externalProgram?}}c{{type:name}}](c{{constant:name}}()))
 {{/type:struct}}
 {{#type:list?}}
@@ -74,7 +74,7 @@ file.
     }}]](c{{constant:name}}()))
 {{/type:map?}}
 {{#type:enum}}
-{{constant:name}} = {{#type:externalProgram?}}{{> ModulePath}}.{{!
+{{constant:name}} = {{#type:externalProgram?}}{{> common/ModulePath}}.{{!
     }}{{/type:externalProgram?}}{{enum:name}}(<int> (c{{constant:name}}()))
 {{/type:enum}}
 {{/constant:type}}

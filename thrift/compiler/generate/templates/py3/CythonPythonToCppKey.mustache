@@ -33,7 +33,7 @@ keys (conventionally used for sets, lists, and map values).
 }}{{#type:double?}}key{{/type:double?}}{{!
 }}{{#type:string?}}key.encode('UTF-8'){{/type:string?}}{{!
 }}{{#type:binary?}}key{{/type:binary?}}{{!
-}}{{#type:struct}}deref((<{{> ModulePath}}.{{struct:name}}> key{{!
+}}{{#type:struct}}deref((<{{> common/ModulePath}}.{{struct:name}}> key{{!
   }}).c_{{struct:name}}){{/type:struct}}{{!
 }}{{#type:list?}}deref({{type:flat_name}}(key)._vector.get()){{/type:list?}}{{!
 }}{{#type:set?}}cset[{{!
@@ -43,4 +43,4 @@ keys (conventionally used for sets, lists, and map values).
   }}{{#type:keyType}}{{> ContainerCythonFieldType}}{{/type:keyType}},{{!
   }}{{#type:valueType}}{{> ContainerCythonFieldType}}{{/type:valueType}}{{!
   }}](deref({{type:flat_name}}(key)._map.get())){{/type:map?}}{{!
-}}{{#type:enum}}{{> ModulePath}}.{{enum:name}}_to_cpp(key){{/type:enum}}
+}}{{#type:enum}}{{> common/ModulePath}}.{{enum:name}}_to_cpp(key){{/type:enum}}

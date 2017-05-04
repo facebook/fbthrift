@@ -28,13 +28,13 @@ to the client.
 }}{{#type:double?}}<double> result{{/type:double?}}{{!
 }}{{#type:string?}}make_unique[string](<string?> result.encode('UTF-8')){{/type:string?}}{{!
 }}{{#type:binary?}}make_unique[string](<string?> result){{/type:binary?}}{{!
-}}{{#type:struct}}make_unique[{{> ModulePath}}.c{{struct:name}}]({{!
-  }}deref((<{{> ModulePath}}.{{struct:name}}?> result).c_{{struct:name}})){{/type:struct}}{{!
+}}{{#type:struct}}make_unique[{{> common/ModulePath}}.c{{struct:name}}]({{!
+  }}deref((<{{> common/ModulePath}}.{{struct:name}}?> result).c_{{struct:name}})){{/type:struct}}{{!
 }}{{#type:list?}}make_unique[vector[{{#type:listElemType}}{{>ContainerCythonFieldType}}{{/type:listElemType}}]]({{!
-  }}deref((<{{> ModulePath}}.{{type:flat_name}}?> result)._vector)){{/type:list?}}{{!
+  }}deref((<{{> common/ModulePath}}.{{type:flat_name}}?> result)._vector)){{/type:list?}}{{!
 }}{{#type:set?}}make_unique[cset[{{#type:setElemType}}{{>ContainerCythonFieldType}}{{/type:setElemType}}]]({{!
-  }}deref((<{{> ModulePath}}.{{type:flat_name}}?> result)._set)){{/type:set?}}{{!
+  }}deref((<{{> common/ModulePath}}.{{type:flat_name}}?> result)._set)){{/type:set?}}{{!
 }}{{#type:map?}}make_unique[cmap[{{> CythonMapKeyValue}}]]({{!
-  }}deref((<{{> ModulePath}}.{{type:flat_name}}?> result)._map)){{/type:map?}}{{!
+  }}deref((<{{> common/ModulePath}}.{{type:flat_name}}?> result)._map)){{/type:map?}}{{!
 }}{{#type:void?}}c_unit{{/type:void?}}{{!
-}}{{#type:enum}}{{> ModulePath}}.{{enum:name}}_to_cpp(result){{/type:enum}}
+}}{{#type:enum}}{{> common/ModulePath}}.{{enum:name}}_to_cpp(result){{/type:enum}}

@@ -33,14 +33,14 @@ keys (conventionally used for sets, lists, and map values).
 }}{{#type:double?}}arg_{{field:name}}{{/type:double?}}{{!
 }}{{#type:string?}}arg_{{field:name}}.encode('UTF-8'){{/type:string?}}{{!
 }}{{#type:binary?}}arg_{{field:name}}{{/type:binary?}}{{!
-}}{{#type:struct}}deref((<{{> ModulePath}}.{{struct:name}}>arg_{{field:name}}{{!
+}}{{#type:struct}}deref((<{{> common/ModulePath}}.{{struct:name}}>arg_{{field:name}}{{!
   }}).c_{{struct:name}}){{/type:struct}}{{!
-}}{{#type:list?}}deref({{> ModulePath}}.{{type:flat_name}}(arg_{{field:name}})._vector.get()){{/type:list?}}{{!
+}}{{#type:list?}}deref({{> common/ModulePath}}.{{type:flat_name}}(arg_{{field:name}})._vector.get()){{/type:list?}}{{!
 }}{{#type:set?}}cset[{{!
   }}{{#type:setElemType}}{{> ContainerCythonFieldType}}{{/type:setElemType}}{{!
-  }}](deref({{> ModulePath}}.{{type:flat_name}}(arg_{{field:name}})._set.get())){{/type:set?}}{{!
+  }}](deref({{> common/ModulePath}}.{{type:flat_name}}(arg_{{field:name}})._set.get())){{/type:set?}}{{!
 }}{{#type:map?}}cmap[{{!
   }}{{#type:keyType}}{{> ContainerCythonFieldType}}{{/type:keyType}},{{!
   }}{{#type:valueType}}{{> ContainerCythonFieldType}}{{/type:valueType}}{{!
-  }}](deref({{> ModulePath}}.{{type:flat_name}}(arg_{{field:name}})._map.get())){{/type:map?}}{{!
-}}{{#type:enum}}{{> ModulePath}}.{{enum:name}}_to_cpp(arg_{{field:name}}){{/type:enum}}
+  }}](deref({{> common/ModulePath}}.{{type:flat_name}}(arg_{{field:name}})._map.get())){{/type:map?}}{{!
+}}{{#type:enum}}{{> common/ModulePath}}.{{enum:name}}_to_cpp(arg_{{field:name}}){{/type:enum}}

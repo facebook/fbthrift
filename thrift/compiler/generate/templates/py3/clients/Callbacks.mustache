@@ -34,14 +34,14 @@ cdef void {{service:name}}_{{function:name}}_callback(
     cdef object pyfuture = <object> future
     cdef {{#function:returnType}}{{> CythonFieldType}}{{/function:returnType}} citem
     {{#function:exceptions}}
-    cdef unique_ptr[{{#field:type}}{{> ModulePath}}.c{{#type:struct}}{{struct:name}}{{/type:struct}}{{/field:type}}] ex_{{field:name}}
+    cdef unique_ptr[{{#field:type}}{{> common/ModulePath}}.c{{#type:struct}}{{struct:name}}{{/type:struct}}{{/field:type}}] ex_{{field:name}}
     {{/function:exceptions}}
     if {{#function:exceptions}}{{!
-    }}result.hasException[{{#field:type}}{{> ModulePath}}.c{{#type:struct}}{{struct:name}}{{/type:struct}}{{/field:type}}]():
-        ex_{{field:name}} = py3_get_exception[{{#field:type}}{{#type:struct}}{{> ModulePath}}.c{{struct:name}}{{/type:struct}}{{/field:type}}](result.exception())
+    }}result.hasException[{{#field:type}}{{> common/ModulePath}}.c{{#type:struct}}{{struct:name}}{{/type:struct}}{{/field:type}}]():
+        ex_{{field:name}} = py3_get_exception[{{#field:type}}{{#type:struct}}{{> common/ModulePath}}.c{{struct:name}}{{/type:struct}}{{/field:type}}](result.exception())
         pyfuture.set_exception({{!
-        }}{{#field:type}}{{> ModulePath}}{{#type:struct}}.{{type:name}}.create({{!
-  }}{{> ModulePath}}.move(ex_{{field:name}})){{/type:struct}}{{/field:type}})
+        }}{{#field:type}}{{> common/ModulePath}}{{#type:struct}}.{{type:name}}.create({{!
+  }}{{> common/ModulePath}}.move(ex_{{field:name}})){{/type:struct}}{{/field:type}})
     elif {{/function:exceptions}}{{!
     }}result.hasException():
         try:

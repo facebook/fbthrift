@@ -61,13 +61,13 @@ async def {{service:name}}_{{function:name}}_coro(
           {{field:name}}{{^last?}},{{/last?}}{{/function:args}})
       {{#function:returnType}}
       {{#type:container?}}
-      result = {{> ModulePath}}.{{type:flat_name}}(result)
+      result = {{> common/ModulePath}}.{{type:flat_name}}(result)
       {{/type:container?}}
       {{/function:returnType}}
     {{#function:exceptions}}
     {{#field:type}}
-    except {{> ModulePath}}.{{type:name}} as ex:
-        promise.cPromise.setException(deref((<{{> ModulePath}}.{{type:name}}> ex).c_{{type:name}}.get()))
+    except {{> common/ModulePath}}.{{type:name}} as ex:
+        promise.cPromise.setException(deref((<{{> common/ModulePath}}.{{type:name}}> ex).c_{{type:name}}.get()))
     {{/field:type}}
     {{/function:exceptions}}
     except Exception as ex:

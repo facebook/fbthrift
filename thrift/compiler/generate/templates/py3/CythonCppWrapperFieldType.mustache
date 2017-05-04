@@ -32,9 +32,9 @@ This file is included from Struct.pxd to define the move functions.
 }}{{#type:double?}}double{{/type:double?}}{{!
 }}{{#type:string?}}string{{/type:string?}}{{!
 }}{{#type:binary?}}string{{/type:binary?}}{{!
-}}{{#type:struct}}{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}c{{struct:name}}{{/type:struct}}{{!
+}}{{#type:struct}}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}c{{struct:name}}{{/type:struct}}{{!
 }}{{#type:list?}}vector[{{#type:listElemType}}{{> CythonCppWrapperFieldType}}{{/type:listElemType}}]{{/type:list?}}{{!
 }}{{#type:set?}}cset[{{#type:setElemType}}{{> CythonCppWrapperFieldType}}{{/type:setElemType}}]{{/type:set?}}{{!
 }}{{#type:map?}}cmap[{{#type:keyType}}{{> CythonCppWrapperFieldType}}{{/type:keyType}},{{!
   }}{{#type:valueType}}{{> CythonCppWrapperFieldType}}{{/type:valueType}}]{{/type:map?}}{{!
-}}{{#type:enum}}{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}c{{enum:name}}{{/type:enum}}
+}}{{#type:enum}}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}c{{enum:name}}{{/type:enum}}

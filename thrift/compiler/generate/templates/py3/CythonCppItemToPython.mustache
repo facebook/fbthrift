@@ -29,13 +29,13 @@ to be converted from unicode to binary representation.
 }}{{#type:double?}}citem{{/type:double?}}{{!
 }}{{#type:string?}}(deref(citem.get())).decode('UTF-8'){{/type:string?}}{{!
 }}{{#type:binary?}}(deref(citem.get())){{/type:binary?}}{{!
-}}{{#type:struct}}{{> ModulePath}}.{{type:name}}.create({{!
-  }}{{> ModulePath}}.move(citem)){{/type:struct}}{{!
-}}{{#type:list?}}{{> ModulePath}}.{{type:flat_name}}.create({{!
-  }}{{> ModulePath}}.move(citem)){{/type:list?}}{{!
-}}{{#type:set?}}{{> ModulePath}}.{{type:flat_name}}.create({{!
-  }}{{> ModulePath}}.move(citem)){{/type:set?}}{{!
-}}{{#type:map?}}{{> ModulePath}}.{{type:flat_name}}.create({{!
-  }}{{> ModulePath}}.move(citem)){{/type:map?}}{{!
-}}{{#type:enum}}{{> ModulePath}}.{{enum:name}}(<int> citem){{/type:enum}}{{!
+}}{{#type:struct}}{{> common/ModulePath}}.{{type:name}}.create({{!
+  }}{{> common/ModulePath}}.move(citem)){{/type:struct}}{{!
+}}{{#type:list?}}{{> common/ModulePath}}.{{type:flat_name}}.create({{!
+  }}{{> common/ModulePath}}.move(citem)){{/type:list?}}{{!
+}}{{#type:set?}}{{> common/ModulePath}}.{{type:flat_name}}.create({{!
+  }}{{> common/ModulePath}}.move(citem)){{/type:set?}}{{!
+}}{{#type:map?}}{{> common/ModulePath}}.{{type:flat_name}}.create({{!
+  }}{{> common/ModulePath}}.move(citem)){{/type:map?}}{{!
+}}{{#type:enum}}{{> common/ModulePath}}.{{enum:name}}(<int> citem){{/type:enum}}{{!
 }}{{#type:void?}}None{{/type:void?}}

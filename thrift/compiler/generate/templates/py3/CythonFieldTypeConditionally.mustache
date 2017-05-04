@@ -30,7 +30,7 @@ return types in Cython code.
 }}{{#type:string?}}unique_ptr[string]{{/type:string?}}{{!
 }}{{#type:binary?}}unique_ptr[string]{{/type:binary?}}{{!
 }}{{#type:struct}}unique_ptr[{{!
-    }}{{#type:externalProgram?}}{{> ModulePath}}.{{/type:externalProgram?}}{{!
+    }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
     }}c{{struct:name}}]{{/type:struct}}{{!
 }}{{#type:listElemType}}unique_ptr[vector[{{!
     }}{{> ContainerCythonFieldTypeConditionally}}]]{{/type:listElemType}}{{!
@@ -41,4 +41,4 @@ return types in Cython code.
     }}{{#type:valueType}}{{>ContainerCythonFieldTypeConditionally}}{{/type:valueType}}{{!
     }}]]{{/type:map?}}{{!
 }}{{#type:void?}}cFollyUnit{{/type:void?}}{{!
-}}{{#type:enum}}{{> ModulePath}}.c{{enum:name}}{{/type:enum}}
+}}{{#type:enum}}{{> common/ModulePath}}.c{{enum:name}}{{/type:enum}}
