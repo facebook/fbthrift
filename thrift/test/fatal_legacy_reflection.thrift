@@ -34,4 +34,5 @@ struct SampleStruct {
   18: list<double> list_double_field,
   19: list<float> list_float_field,
   20: list<binary> list_binary_field,
+  21: string annotated_string_field (ann_key = 'ann_value')
 }
