@@ -7657,10 +7657,29 @@ std::string t_cpp_generator::generate_reflection_datatype(t_type* ttype) {
         "    f.order = " << order << ";" << endl;
       ++order;
 
-      if (!p.annotations.empty()) {
+      static const auto black_list = std::unordered_set<std::string>{
+          "cpp.methods",
+          "cpp.ref",
+          "cpp.ref_type",
+          "cpp.template",
+          "cpp.type",
+          "cpp2.methods",
+          "cpp2.ref",
+          "cpp2.ref_type",
+          "cpp2.template",
+          "cpp2.type",
+      };
+      std::map<std::string, std::string> filtered_annotations;
+      for (auto const& ann : p.annotations) {
+        if (!black_list.count(ann.first)) {
+          filtered_annotations.insert(ann);
+        }
+      }
+
+      if (!filtered_annotations.empty()) {
         f_reflection_impl_ <<
           "    f.__isset.annotations = true;" << endl;
-        for (auto& ann : p.annotations) {
+        for (auto& ann : filtered_annotations) {
           escape_quotes_cpp(ann.second);
           f_reflection_impl_ <<
             "    f.annotations[\"" << ann.first << "\"] = \"" <<

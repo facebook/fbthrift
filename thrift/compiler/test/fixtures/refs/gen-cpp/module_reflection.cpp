@@ -55,9 +55,6 @@ void reflectionInitializer_7958971832214294220(::apache::thrift::reflection::Sch
     f.type = 16778989117799402412U;
     f.name = "opt_ref";
     f.order = 0;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref"] = "true";
-    f.annotations["cpp2.ref"] = "true";
   }
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[2];
@@ -65,9 +62,6 @@ void reflectionInitializer_7958971832214294220(::apache::thrift::reflection::Sch
     f.type = 16778989117799402412U;
     f.name = "ref";
     f.order = 1;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref"] = "true";
-    f.annotations["cpp2.ref"] = "true";
   }
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[3];
@@ -75,9 +69,6 @@ void reflectionInitializer_7958971832214294220(::apache::thrift::reflection::Sch
     f.type = 16778989117799402412U;
     f.name = "req_ref";
     f.order = 2;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref"] = "true";
-    f.annotations["cpp2.ref"] = "true";
   }
   reflectionInitializer_16778989117799402412(schema);  // struct module.MyField
 }
@@ -122,8 +113,6 @@ void reflectionInitializer_11295191354176986988(::apache::thrift::reflection::Sc
     f.type = 15877789207728179884U;
     f.name = "u";
     f.order = 0;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref"] = "true";
   }
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[2];
@@ -227,9 +216,6 @@ void reflectionInitializer_18101585657679500556(::apache::thrift::reflection::Sc
     f.type = 12058391220869880681U;
     f.name = "list_ref";
     f.order = 0;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref"] = "true";
-    f.annotations["cpp2.ref"] = "true";
   }
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[2];
@@ -237,9 +223,6 @@ void reflectionInitializer_18101585657679500556(::apache::thrift::reflection::Sc
     f.type = 10941653322204590122U;
     f.name = "set_ref";
     f.order = 1;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref"] = "true";
-    f.annotations["cpp2.ref"] = "true";
   }
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[3];
@@ -247,9 +230,6 @@ void reflectionInitializer_18101585657679500556(::apache::thrift::reflection::Sc
     f.type = 7009713166249494859U;
     f.name = "map_ref";
     f.order = 2;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref"] = "true";
-    f.annotations["cpp2.ref"] = "true";
   }
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[4];
@@ -257,9 +237,6 @@ void reflectionInitializer_18101585657679500556(::apache::thrift::reflection::Sc
     f.type = 12058391220869880681U;
     f.name = "list_ref_unique";
     f.order = 3;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref_type"] = "unique";
-    f.annotations["cpp2.ref_type"] = "unique";
   }
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[5];
@@ -267,9 +244,6 @@ void reflectionInitializer_18101585657679500556(::apache::thrift::reflection::Sc
     f.type = 10941653322204590122U;
     f.name = "set_ref_shared";
     f.order = 4;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref_type"] = "shared";
-    f.annotations["cpp2.ref_type"] = "shared";
   }
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[6];
@@ -277,9 +251,6 @@ void reflectionInitializer_18101585657679500556(::apache::thrift::reflection::Sc
     f.type = 12058391220869880681U;
     f.name = "list_ref_shared_const";
     f.order = 5;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref_type"] = "shared_const";
-    f.annotations["cpp2.ref_type"] = "shared_const";
   }
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[7];
@@ -287,9 +258,6 @@ void reflectionInitializer_18101585657679500556(::apache::thrift::reflection::Sc
     f.type = 10941653322204590122U;
     f.name = "set_custom_ref";
     f.order = 6;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref_type"] = "std::unique_ptr";
-    f.annotations["cpp2.ref_type"] = "std::unique_ptr";
   }
   reflectionInitializer_10941653322204590122(schema);  // set<i32>
   reflectionInitializer_12058391220869880681(schema);  // list<i32>
@@ -311,9 +279,6 @@ void reflectionInitializer_17232433652683371404(::apache::thrift::reflection::Sc
     f.type = 16778989117799402412U;
     f.name = "opt_shared_const";
     f.order = 0;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref_type"] = "shared_const";
-    f.annotations["cpp2.ref_type"] = "shared_const";
   }
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[2];
@@ -321,9 +286,6 @@ void reflectionInitializer_17232433652683371404(::apache::thrift::reflection::Sc
     f.type = 16778989117799402412U;
     f.name = "shared_const";
     f.order = 1;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref_type"] = "shared_const";
-    f.annotations["cpp2.ref_type"] = "shared_const";
   }
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[3];
@@ -331,9 +293,6 @@ void reflectionInitializer_17232433652683371404(::apache::thrift::reflection::Sc
     f.type = 16778989117799402412U;
     f.name = "req_shared_const";
     f.order = 2;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref_type"] = "shared_const";
-    f.annotations["cpp2.ref_type"] = "shared_const";
   }
   reflectionInitializer_16778989117799402412(schema);  // struct module.MyField
 }
@@ -363,8 +322,6 @@ void reflectionInitializer_11749517231251122252(::apache::thrift::reflection::Sc
     f.type = 14313748354111837868U;
     f.name = "def_field";
     f.order = 0;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref"] = "1";
   }
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[2];
@@ -372,8 +329,6 @@ void reflectionInitializer_11749517231251122252(::apache::thrift::reflection::Sc
     f.type = 14313748354111837868U;
     f.name = "opt_field";
     f.order = 1;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref"] = "1";
   }
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[3];
@@ -381,8 +336,6 @@ void reflectionInitializer_11749517231251122252(::apache::thrift::reflection::Sc
     f.type = 14313748354111837868U;
     f.name = "req_field";
     f.order = 2;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref"] = "1";
   }
   reflectionInitializer_14313748354111837868(schema);  // struct module.Empty
 }
@@ -402,8 +355,6 @@ void reflectionInitializer_215755688094406540(::apache::thrift::reflection::Sche
     f.type = 14313748354111837868U;
     f.name = "def_field";
     f.order = 0;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref_type"] = "unique";
   }
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[2];
@@ -411,8 +362,6 @@ void reflectionInitializer_215755688094406540(::apache::thrift::reflection::Sche
     f.type = 14313748354111837868U;
     f.name = "opt_field";
     f.order = 1;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref_type"] = "unique";
   }
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[3];
@@ -420,8 +369,6 @@ void reflectionInitializer_215755688094406540(::apache::thrift::reflection::Sche
     f.type = 14313748354111837868U;
     f.name = "req_field";
     f.order = 2;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref_type"] = "unique";
   }
   reflectionInitializer_14313748354111837868(schema);  // struct module.Empty
 }
@@ -441,8 +388,6 @@ void reflectionInitializer_12352376109981065772(::apache::thrift::reflection::Sc
     f.type = 14313748354111837868U;
     f.name = "def_field";
     f.order = 0;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref_type"] = "shared";
   }
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[2];
@@ -450,8 +395,6 @@ void reflectionInitializer_12352376109981065772(::apache::thrift::reflection::Sc
     f.type = 14313748354111837868U;
     f.name = "opt_field";
     f.order = 1;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref_type"] = "shared";
   }
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[3];
@@ -459,8 +402,6 @@ void reflectionInitializer_12352376109981065772(::apache::thrift::reflection::Sc
     f.type = 14313748354111837868U;
     f.name = "req_field";
     f.order = 2;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref_type"] = "shared";
   }
   reflectionInitializer_14313748354111837868(schema);  // struct module.Empty
 }
@@ -480,8 +421,6 @@ void reflectionInitializer_11678635121852876428(::apache::thrift::reflection::Sc
     f.type = 14313748354111837868U;
     f.name = "def_field";
     f.order = 0;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref_type"] = "shared_const";
   }
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[2];
@@ -489,8 +428,6 @@ void reflectionInitializer_11678635121852876428(::apache::thrift::reflection::Sc
     f.type = 14313748354111837868U;
     f.name = "opt_field";
     f.order = 1;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref_type"] = "shared_const";
   }
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[3];
@@ -498,8 +435,6 @@ void reflectionInitializer_11678635121852876428(::apache::thrift::reflection::Sc
     f.type = 14313748354111837868U;
     f.name = "req_field";
     f.order = 2;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref_type"] = "shared_const";
   }
   reflectionInitializer_14313748354111837868(schema);  // struct module.Empty
 }
@@ -519,8 +454,6 @@ void reflectionInitializer_10045417637546770700(::apache::thrift::reflection::Sc
     f.type = 14313748354111837868U;
     f.name = "def_field";
     f.order = 0;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref_type"] = "std::unique_ptr";
   }
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[2];
@@ -528,8 +461,6 @@ void reflectionInitializer_10045417637546770700(::apache::thrift::reflection::Sc
     f.type = 14313748354111837868U;
     f.name = "opt_field";
     f.order = 1;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref_type"] = "std::unique_ptr";
   }
   {
     ::apache::thrift::reflection::StructField& f = dt.fields[3];
@@ -537,8 +468,6 @@ void reflectionInitializer_10045417637546770700(::apache::thrift::reflection::Sc
     f.type = 14313748354111837868U;
     f.name = "req_field";
     f.order = 2;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref_type"] = "std::unique_ptr";
   }
   reflectionInitializer_14313748354111837868(schema);  // struct module.Empty
 }

@@ -41,9 +41,6 @@ void reflectionInitializer_8285996275179549516(::apache::thrift::reflection::Sch
     f.type = 16202005076139393548U;
     f.name = "other";
     f.order = 0;
-    f.__isset.annotations = true;
-    f.annotations["cpp.ref"] = "true";
-    f.annotations["cpp2.ref"] = "true";
   }
   reflectionInitializer_16202005076139393548(schema);  // struct includes.Included
 }
