@@ -63,11 +63,10 @@ struct ArrayLayout : public LayoutBase {
     return layoutItems(root, coll, self, pos, write, writeStep);
   }
 
-  virtual FieldPosition layoutItems(
-      LayoutRoot& root,
+  virtual FieldPosition layoutItems(LayoutRoot& root,
       const T& coll,
-      LayoutPosition self,
-      FieldPosition pos,
+                                    LayoutPosition self,
+                                    FieldPosition pos,
       LayoutPosition write,
       FieldPosition writeStep) {
     FieldPosition noField; // not really used
@@ -151,17 +150,16 @@ struct ArrayLayout : public LayoutBase {
     typedef typename Layout<Item>::View ItemView;
     class Iterator;
 
-    static ViewPosition
-    indexPosition(const byte* start, size_t i, const LayoutBase& itemLayout) {
-      if (itemLayout.size) {
-        return ViewPosition{start + itemLayout.size * i, 0};
+    static ViewPosition indexPosition(const byte* start,
+                                      size_t i,
+                                      const LayoutBase* itemLayout) {
+      if (!itemLayout) {
+        return {start, 0};
+      } else if (itemLayout->size) {
+        return ViewPosition{start + itemLayout->size * i, 0};
       } else {
-        return ViewPosition{start, itemLayout.bits * i};
+        return ViewPosition{start, itemLayout->bits * i};
       }
-    }
-
-    const Layout<Item>& itemLayout() const {
-      return this->layout_->itemField.layout;
     }
 
    public:
@@ -170,27 +168,30 @@ struct ArrayLayout : public LayoutBase {
     typedef Iterator iterator;
     typedef Iterator const_iterator;
 
-    View() {}
+    View() : data_(nullptr), count_(0), itemLayout_(nullptr) {}
     View(const LayoutSelf* layout, ViewPosition self)
-        : ViewBase<View, ArrayLayout, T>(layout, self) {
+        : ViewBase<View, ArrayLayout, T>(layout, self),
+          data_(nullptr),
+          count_(0),
+          itemLayout_(&layout->itemField.layout) {
+      size_t dist;
       thawField(self, layout->countField, count_);
       if (count_) {
-        size_t dist;
         thawField(self, layout->distanceField, dist);
         data_ = self.start + dist;
       }
     }
 
     ItemView operator[](ptrdiff_t index) const {
-      return itemLayout().view(indexPosition(data_, index, itemLayout()));
+      return itemLayout_->view(indexPosition(data_, index, itemLayout_));
     }
 
     const_iterator begin() const {
-      return const_iterator(*this, 0);
+      return const_iterator(data_, 0, itemLayout_);
     }
 
     const_iterator end() const {
-      return const_iterator(*this);
+      return const_iterator(data_, count_, itemLayout_);
     }
 
     size_t count() const {
@@ -211,33 +212,27 @@ struct ArrayLayout : public LayoutBase {
      * Simple iterator on a range, with additional '.thaw()' member for thawing
      * a single member.
      */
-    class Iterator {
+    class Iterator : public std::iterator<std::random_access_iterator_tag,
+                                          ItemView,
+                                          std::ptrdiff_t,
+                                          ItemView,
+                                          ItemView> {
      public:
-      using difference_type = ptrdiff_t;
-      using value_type = const ItemView;
-      using pointer = value_type*;
-      using reference = value_type&;
-      using iterator_category = std::random_access_iterator_tag;
+      Iterator(const byte* data, size_t index, const Layout<Item>* itemLayout)
+          : index_(index),
+            data_(data),
+            itemLayout_(itemLayout) {}
 
-      Iterator() {}
-
-      Iterator(const View& outer, size_t index) : outer_(outer), index_(index) {
-        updateItemView();
+      ViewPosition position() const {
+        return indexPosition(data_, index_, itemLayout_);
       }
 
-      explicit Iterator(const View& outer)
-          : outer_(outer), index_(outer.count_) {}
-
-      const ItemView& operator*() const {
-        return item_;
-      }
-      const ItemView* operator->() const {
-        return &item_;
-      }
+      ItemView operator*() const { return itemLayout_->view(position()); }
+      ItemView operator->() const { return operator*(); }
 
       Item thaw() const {
         Item item;
-        outer_.itemLayout().thaw(position(), item);
+        itemLayout_->thaw(position(), item);
         return item;
       }
 
@@ -247,32 +242,28 @@ struct ArrayLayout : public LayoutBase {
 
       Iterator& operator++() {
         ++index_;
-        updateItemView();
         return *this;
       }
       Iterator& operator+=(ptrdiff_t delta) {
         index_ += delta;
-        updateItemView();
         return *this;
       }
       Iterator& operator--() {
         --index_;
-        updateItemView();
         return *this;
       }
       Iterator& operator-=(ptrdiff_t delta) {
         index_ -= delta;
-        updateItemView();
         return *this;
       }
       Iterator operator++(int) {
         Iterator ret(*this);
-        ++*this;
+        ++ret;
         return ret;
       }
       Iterator operator--(int) {
         Iterator ret(*this);
-        --*this;
+        --ret;
         return ret;
       }
       Iterator operator+(ptrdiff_t delta) const {
@@ -287,32 +278,22 @@ struct ArrayLayout : public LayoutBase {
       }
 
       bool operator==(const Iterator& other) const {
-        return index_ == other.index_;
+        return index_ == other.index_ && data_ == other.data_;
       }
 
       bool operator!=(const Iterator& other) const {
-        return !(*this == other);
+        return !this->operator==(other);
       }
 
      private:
-      ViewPosition position() const {
-        return indexPosition(outer_.data_, index_, outer_.itemLayout());
-      }
-
-      View outer_;
-      // NB: Begin/End addresses won't work with Frozen because of the
-      // possibility of zero-byte items.
-      size_t index_{0};
-      ItemView item_;
-      void updateItemView() {
-        if (index_ < outer_.count_) {
-          item_ = outer_.itemLayout().view(position());
-        }
-      }
+      size_t index_;
+      const byte* data_;
+      const Layout<Item>* itemLayout_;
     };
 
-    const byte* data_{nullptr};
-    size_t count_{0};
+    const byte* data_;
+    size_t count_;
+    const Layout<Item>* itemLayout_;
   };
 
   View view(ViewPosition self) const { return View(this, self); }

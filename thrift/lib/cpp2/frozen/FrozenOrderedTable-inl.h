@@ -153,12 +153,11 @@ struct SortedTableLayout : public ArrayLayout<T, Item> {
     }
 
     std::pair<iterator, iterator> equal_range(const KeyView& key) const {
-      auto found = lower_bound(key);
-      if (found != this->end() && KeyExtractor::getViewKey(*found) == key) {
-        auto next = found;
-        return std::make_pair(found, ++next);
+      auto begin = lower_bound(key);
+      if (begin != this->end() && KeyExtractor::getViewKey(*begin) == key) {
+        return make_pair(begin, begin + 1);
       } else {
-        return std::make_pair(found, found);
+        return make_pair(begin, begin);
       }
     }
 
