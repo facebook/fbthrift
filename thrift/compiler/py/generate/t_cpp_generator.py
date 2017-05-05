@@ -5050,10 +5050,12 @@ class CppGenerator(t_generator.Generator):
         black_list = [
             'cpp.methods',
             'cpp.ref',
+            'cpp.ref_type',
             'cpp.template',
             'cpp.type',
             'cpp2.methods',
             'cpp2.ref',
+            'cpp2.ref_type',
             'cpp2.template',
             'cpp2.type',
         ]
