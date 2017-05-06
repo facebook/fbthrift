@@ -142,81 +142,49 @@ class union1_variant_traits {
 
   struct union1__struct_unique_getters_list {
     struct ui {
-      auto operator ()(union1 const &variant) const
-        -> decltype(std::declval<union1 const &>().get_ui())
-      {
+      decltype(auto) operator ()(union1 const &variant) const {
         return variant.get_ui();
       }
-
-      auto operator ()(union1 &variant) const
-        -> decltype(std::declval<union1 &>().mutable_ui())
-      {
+      decltype(auto) operator ()(union1 &variant) const {
         return variant.mutable_ui();
       }
-
-      auto operator ()(union1 &&variant) const
-        -> decltype(std::declval<union1 &&>().move_ui())
-      {
+      decltype(auto) operator ()(union1 &&variant) const {
         return std::move(variant).move_ui();
       }
     };
 
     struct ud {
-      auto operator ()(union1 const &variant) const
-        -> decltype(std::declval<union1 const &>().get_ud())
-      {
+      decltype(auto) operator ()(union1 const &variant) const {
         return variant.get_ud();
       }
-
-      auto operator ()(union1 &variant) const
-        -> decltype(std::declval<union1 &>().mutable_ud())
-      {
+      decltype(auto) operator ()(union1 &variant) const {
         return variant.mutable_ud();
       }
-
-      auto operator ()(union1 &&variant) const
-        -> decltype(std::declval<union1 &&>().move_ud())
-      {
+      decltype(auto) operator ()(union1 &&variant) const {
         return std::move(variant).move_ud();
       }
     };
 
     struct us {
-      auto operator ()(union1 const &variant) const
-        -> decltype(std::declval<union1 const &>().get_us())
-      {
+      decltype(auto) operator ()(union1 const &variant) const {
         return variant.get_us();
       }
-
-      auto operator ()(union1 &variant) const
-        -> decltype(std::declval<union1 &>().mutable_us())
-      {
+      decltype(auto) operator ()(union1 &variant) const {
         return variant.mutable_us();
       }
-
-      auto operator ()(union1 &&variant) const
-        -> decltype(std::declval<union1 &&>().move_us())
-      {
+      decltype(auto) operator ()(union1 &&variant) const {
         return std::move(variant).move_us();
       }
     };
 
     struct ue {
-      auto operator ()(union1 const &variant) const
-        -> decltype(std::declval<union1 const &>().get_ue())
-      {
+      decltype(auto) operator ()(union1 const &variant) const {
         return variant.get_ue();
       }
-
-      auto operator ()(union1 &variant) const
-        -> decltype(std::declval<union1 &>().mutable_ue())
-      {
+      decltype(auto) operator ()(union1 &variant) const {
         return variant.mutable_ue();
       }
-
-      auto operator ()(union1 &&variant) const
-        -> decltype(std::declval<union1 &&>().move_ue())
-      {
+      decltype(auto) operator ()(union1 &&variant) const {
         return std::move(variant).move_ue();
       }
     };
@@ -225,44 +193,28 @@ class union1_variant_traits {
   struct union1__struct_unique_setters_list {
     struct ui {
       template <typename... Args>
-      auto operator ()(union1 &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union1 &>().set_ui(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union1 &variant, Args &&...args) const {
         return variant.set_ui(std::forward<Args>(args)...);
       }
     };
 
     struct ud {
       template <typename... Args>
-      auto operator ()(union1 &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union1 &>().set_ud(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union1 &variant, Args &&...args) const {
         return variant.set_ud(std::forward<Args>(args)...);
       }
     };
 
     struct us {
       template <typename... Args>
-      auto operator ()(union1 &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union1 &>().set_us(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union1 &variant, Args &&...args) const {
         return variant.set_us(std::forward<Args>(args)...);
       }
     };
 
     struct ue {
       template <typename... Args>
-      auto operator ()(union1 &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union1 &>().set_ue(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union1 &variant, Args &&...args) const {
         return variant.set_ue(std::forward<Args>(args)...);
       }
     };
@@ -465,81 +417,49 @@ class union2_variant_traits {
 
   struct union2__struct_unique_getters_list {
     struct ui_2 {
-      auto operator ()(union2 const &variant) const
-        -> decltype(std::declval<union2 const &>().get_ui_2())
-      {
+      decltype(auto) operator ()(union2 const &variant) const {
         return variant.get_ui_2();
       }
-
-      auto operator ()(union2 &variant) const
-        -> decltype(std::declval<union2 &>().mutable_ui_2())
-      {
+      decltype(auto) operator ()(union2 &variant) const {
         return variant.mutable_ui_2();
       }
-
-      auto operator ()(union2 &&variant) const
-        -> decltype(std::declval<union2 &&>().move_ui_2())
-      {
+      decltype(auto) operator ()(union2 &&variant) const {
         return std::move(variant).move_ui_2();
       }
     };
 
     struct ud_2 {
-      auto operator ()(union2 const &variant) const
-        -> decltype(std::declval<union2 const &>().get_ud_2())
-      {
+      decltype(auto) operator ()(union2 const &variant) const {
         return variant.get_ud_2();
       }
-
-      auto operator ()(union2 &variant) const
-        -> decltype(std::declval<union2 &>().mutable_ud_2())
-      {
+      decltype(auto) operator ()(union2 &variant) const {
         return variant.mutable_ud_2();
       }
-
-      auto operator ()(union2 &&variant) const
-        -> decltype(std::declval<union2 &&>().move_ud_2())
-      {
+      decltype(auto) operator ()(union2 &&variant) const {
         return std::move(variant).move_ud_2();
       }
     };
 
     struct us_2 {
-      auto operator ()(union2 const &variant) const
-        -> decltype(std::declval<union2 const &>().get_us_2())
-      {
+      decltype(auto) operator ()(union2 const &variant) const {
         return variant.get_us_2();
       }
-
-      auto operator ()(union2 &variant) const
-        -> decltype(std::declval<union2 &>().mutable_us_2())
-      {
+      decltype(auto) operator ()(union2 &variant) const {
         return variant.mutable_us_2();
       }
-
-      auto operator ()(union2 &&variant) const
-        -> decltype(std::declval<union2 &&>().move_us_2())
-      {
+      decltype(auto) operator ()(union2 &&variant) const {
         return std::move(variant).move_us_2();
       }
     };
 
     struct ue_2 {
-      auto operator ()(union2 const &variant) const
-        -> decltype(std::declval<union2 const &>().get_ue_2())
-      {
+      decltype(auto) operator ()(union2 const &variant) const {
         return variant.get_ue_2();
       }
-
-      auto operator ()(union2 &variant) const
-        -> decltype(std::declval<union2 &>().mutable_ue_2())
-      {
+      decltype(auto) operator ()(union2 &variant) const {
         return variant.mutable_ue_2();
       }
-
-      auto operator ()(union2 &&variant) const
-        -> decltype(std::declval<union2 &&>().move_ue_2())
-      {
+      decltype(auto) operator ()(union2 &&variant) const {
         return std::move(variant).move_ue_2();
       }
     };
@@ -548,44 +468,28 @@ class union2_variant_traits {
   struct union2__struct_unique_setters_list {
     struct ui_2 {
       template <typename... Args>
-      auto operator ()(union2 &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union2 &>().set_ui_2(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union2 &variant, Args &&...args) const {
         return variant.set_ui_2(std::forward<Args>(args)...);
       }
     };
 
     struct ud_2 {
       template <typename... Args>
-      auto operator ()(union2 &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union2 &>().set_ud_2(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union2 &variant, Args &&...args) const {
         return variant.set_ud_2(std::forward<Args>(args)...);
       }
     };
 
     struct us_2 {
       template <typename... Args>
-      auto operator ()(union2 &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union2 &>().set_us_2(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union2 &variant, Args &&...args) const {
         return variant.set_us_2(std::forward<Args>(args)...);
       }
     };
 
     struct ue_2 {
       template <typename... Args>
-      auto operator ()(union2 &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union2 &>().set_ue_2(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union2 &variant, Args &&...args) const {
         return variant.set_ue_2(std::forward<Args>(args)...);
       }
     };
@@ -788,81 +692,49 @@ class union3_variant_traits {
 
   struct union3__struct_unique_getters_list {
     struct ui_3 {
-      auto operator ()(union3 const &variant) const
-        -> decltype(std::declval<union3 const &>().get_ui_3())
-      {
+      decltype(auto) operator ()(union3 const &variant) const {
         return variant.get_ui_3();
       }
-
-      auto operator ()(union3 &variant) const
-        -> decltype(std::declval<union3 &>().mutable_ui_3())
-      {
+      decltype(auto) operator ()(union3 &variant) const {
         return variant.mutable_ui_3();
       }
-
-      auto operator ()(union3 &&variant) const
-        -> decltype(std::declval<union3 &&>().move_ui_3())
-      {
+      decltype(auto) operator ()(union3 &&variant) const {
         return std::move(variant).move_ui_3();
       }
     };
 
     struct ud_3 {
-      auto operator ()(union3 const &variant) const
-        -> decltype(std::declval<union3 const &>().get_ud_3())
-      {
+      decltype(auto) operator ()(union3 const &variant) const {
         return variant.get_ud_3();
       }
-
-      auto operator ()(union3 &variant) const
-        -> decltype(std::declval<union3 &>().mutable_ud_3())
-      {
+      decltype(auto) operator ()(union3 &variant) const {
         return variant.mutable_ud_3();
       }
-
-      auto operator ()(union3 &&variant) const
-        -> decltype(std::declval<union3 &&>().move_ud_3())
-      {
+      decltype(auto) operator ()(union3 &&variant) const {
         return std::move(variant).move_ud_3();
       }
     };
 
     struct us_3 {
-      auto operator ()(union3 const &variant) const
-        -> decltype(std::declval<union3 const &>().get_us_3())
-      {
+      decltype(auto) operator ()(union3 const &variant) const {
         return variant.get_us_3();
       }
-
-      auto operator ()(union3 &variant) const
-        -> decltype(std::declval<union3 &>().mutable_us_3())
-      {
+      decltype(auto) operator ()(union3 &variant) const {
         return variant.mutable_us_3();
       }
-
-      auto operator ()(union3 &&variant) const
-        -> decltype(std::declval<union3 &&>().move_us_3())
-      {
+      decltype(auto) operator ()(union3 &&variant) const {
         return std::move(variant).move_us_3();
       }
     };
 
     struct ue_3 {
-      auto operator ()(union3 const &variant) const
-        -> decltype(std::declval<union3 const &>().get_ue_3())
-      {
+      decltype(auto) operator ()(union3 const &variant) const {
         return variant.get_ue_3();
       }
-
-      auto operator ()(union3 &variant) const
-        -> decltype(std::declval<union3 &>().mutable_ue_3())
-      {
+      decltype(auto) operator ()(union3 &variant) const {
         return variant.mutable_ue_3();
       }
-
-      auto operator ()(union3 &&variant) const
-        -> decltype(std::declval<union3 &&>().move_ue_3())
-      {
+      decltype(auto) operator ()(union3 &&variant) const {
         return std::move(variant).move_ue_3();
       }
     };
@@ -871,44 +743,28 @@ class union3_variant_traits {
   struct union3__struct_unique_setters_list {
     struct ui_3 {
       template <typename... Args>
-      auto operator ()(union3 &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union3 &>().set_ui_3(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union3 &variant, Args &&...args) const {
         return variant.set_ui_3(std::forward<Args>(args)...);
       }
     };
 
     struct ud_3 {
       template <typename... Args>
-      auto operator ()(union3 &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union3 &>().set_ud_3(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union3 &variant, Args &&...args) const {
         return variant.set_ud_3(std::forward<Args>(args)...);
       }
     };
 
     struct us_3 {
       template <typename... Args>
-      auto operator ()(union3 &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union3 &>().set_us_3(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union3 &variant, Args &&...args) const {
         return variant.set_us_3(std::forward<Args>(args)...);
       }
     };
 
     struct ue_3 {
       template <typename... Args>
-      auto operator ()(union3 &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union3 &>().set_ue_3(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union3 &variant, Args &&...args) const {
         return variant.set_ue_3(std::forward<Args>(args)...);
       }
     };
@@ -1129,101 +985,61 @@ class unionA_variant_traits {
 
   struct unionA__struct_unique_getters_list {
     struct i {
-      auto operator ()(unionA const &variant) const
-        -> decltype(std::declval<unionA const &>().get_i())
-      {
+      decltype(auto) operator ()(unionA const &variant) const {
         return variant.get_i();
       }
-
-      auto operator ()(unionA &variant) const
-        -> decltype(std::declval<unionA &>().mutable_i())
-      {
+      decltype(auto) operator ()(unionA &variant) const {
         return variant.mutable_i();
       }
-
-      auto operator ()(unionA &&variant) const
-        -> decltype(std::declval<unionA &&>().move_i())
-      {
+      decltype(auto) operator ()(unionA &&variant) const {
         return std::move(variant).move_i();
       }
     };
 
     struct d {
-      auto operator ()(unionA const &variant) const
-        -> decltype(std::declval<unionA const &>().get_d())
-      {
+      decltype(auto) operator ()(unionA const &variant) const {
         return variant.get_d();
       }
-
-      auto operator ()(unionA &variant) const
-        -> decltype(std::declval<unionA &>().mutable_d())
-      {
+      decltype(auto) operator ()(unionA &variant) const {
         return variant.mutable_d();
       }
-
-      auto operator ()(unionA &&variant) const
-        -> decltype(std::declval<unionA &&>().move_d())
-      {
+      decltype(auto) operator ()(unionA &&variant) const {
         return std::move(variant).move_d();
       }
     };
 
     struct s {
-      auto operator ()(unionA const &variant) const
-        -> decltype(std::declval<unionA const &>().get_s())
-      {
+      decltype(auto) operator ()(unionA const &variant) const {
         return variant.get_s();
       }
-
-      auto operator ()(unionA &variant) const
-        -> decltype(std::declval<unionA &>().mutable_s())
-      {
+      decltype(auto) operator ()(unionA &variant) const {
         return variant.mutable_s();
       }
-
-      auto operator ()(unionA &&variant) const
-        -> decltype(std::declval<unionA &&>().move_s())
-      {
+      decltype(auto) operator ()(unionA &&variant) const {
         return std::move(variant).move_s();
       }
     };
 
     struct e {
-      auto operator ()(unionA const &variant) const
-        -> decltype(std::declval<unionA const &>().get_e())
-      {
+      decltype(auto) operator ()(unionA const &variant) const {
         return variant.get_e();
       }
-
-      auto operator ()(unionA &variant) const
-        -> decltype(std::declval<unionA &>().mutable_e())
-      {
+      decltype(auto) operator ()(unionA &variant) const {
         return variant.mutable_e();
       }
-
-      auto operator ()(unionA &&variant) const
-        -> decltype(std::declval<unionA &&>().move_e())
-      {
+      decltype(auto) operator ()(unionA &&variant) const {
         return std::move(variant).move_e();
       }
     };
 
     struct a {
-      auto operator ()(unionA const &variant) const
-        -> decltype(std::declval<unionA const &>().get_a())
-      {
+      decltype(auto) operator ()(unionA const &variant) const {
         return variant.get_a();
       }
-
-      auto operator ()(unionA &variant) const
-        -> decltype(std::declval<unionA &>().mutable_a())
-      {
+      decltype(auto) operator ()(unionA &variant) const {
         return variant.mutable_a();
       }
-
-      auto operator ()(unionA &&variant) const
-        -> decltype(std::declval<unionA &&>().move_a())
-      {
+      decltype(auto) operator ()(unionA &&variant) const {
         return std::move(variant).move_a();
       }
     };
@@ -1232,55 +1048,35 @@ class unionA_variant_traits {
   struct unionA__struct_unique_setters_list {
     struct i {
       template <typename... Args>
-      auto operator ()(unionA &variant, Args &&...args) const
-        -> decltype(
-          std::declval<unionA &>().set_i(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(unionA &variant, Args &&...args) const {
         return variant.set_i(std::forward<Args>(args)...);
       }
     };
 
     struct d {
       template <typename... Args>
-      auto operator ()(unionA &variant, Args &&...args) const
-        -> decltype(
-          std::declval<unionA &>().set_d(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(unionA &variant, Args &&...args) const {
         return variant.set_d(std::forward<Args>(args)...);
       }
     };
 
     struct s {
       template <typename... Args>
-      auto operator ()(unionA &variant, Args &&...args) const
-        -> decltype(
-          std::declval<unionA &>().set_s(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(unionA &variant, Args &&...args) const {
         return variant.set_s(std::forward<Args>(args)...);
       }
     };
 
     struct e {
       template <typename... Args>
-      auto operator ()(unionA &variant, Args &&...args) const
-        -> decltype(
-          std::declval<unionA &>().set_e(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(unionA &variant, Args &&...args) const {
         return variant.set_e(std::forward<Args>(args)...);
       }
     };
 
     struct a {
       template <typename... Args>
-      auto operator ()(unionA &variant, Args &&...args) const
-        -> decltype(
-          std::declval<unionA &>().set_a(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(unionA &variant, Args &&...args) const {
         return variant.set_a(std::forward<Args>(args)...);
       }
     };
@@ -1944,561 +1740,337 @@ class union_with_special_names_variant_traits {
 
   struct union_with_special_names__struct_unique_getters_list {
     struct get {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_get())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_get();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_get())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_get();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_get())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_get();
       }
     };
 
     struct getter {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_getter())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_getter();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_getter())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_getter();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_getter())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_getter();
       }
     };
 
     struct lists {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_lists())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_lists();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_lists())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_lists();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_lists())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_lists();
       }
     };
 
     struct maps {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_maps())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_maps();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_maps())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_maps();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_maps())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_maps();
       }
     };
 
     struct name {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_name())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_name();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_name())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_name();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_name())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_name();
       }
     };
 
     struct name_to_value {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_name_to_value())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_name_to_value();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_name_to_value())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_name_to_value();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_name_to_value())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_name_to_value();
       }
     };
 
     struct names {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_names())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_names();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_names())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_names();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_names())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_names();
       }
     };
 
     struct prefix_tree {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_prefix_tree())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_prefix_tree();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_prefix_tree())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_prefix_tree();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_prefix_tree())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_prefix_tree();
       }
     };
 
     struct sets {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_sets())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_sets();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_sets())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_sets();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_sets())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_sets();
       }
     };
 
     struct setter {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_setter())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_setter();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_setter())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_setter();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_setter())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_setter();
       }
     };
 
     struct str {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_str())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_str();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_str())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_str();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_str())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_str();
       }
     };
 
     struct strings {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_strings())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_strings();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_strings())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_strings();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_strings())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_strings();
       }
     };
 
     struct type {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_type())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_type();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_type())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_type();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_type())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_type();
       }
     };
 
     struct value {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_value())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_value();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_value())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_value();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_value())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_value();
       }
     };
 
     struct value_to_name {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_value_to_name())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_value_to_name();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_value_to_name())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_value_to_name();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_value_to_name())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_value_to_name();
       }
     };
 
     struct values {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_values())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_values();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_values())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_values();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_values())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_values();
       }
     };
 
     struct id {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_id())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_id();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_id())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_id();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_id())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_id();
       }
     };
 
     struct ids {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_ids())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_ids();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_ids())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_ids();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_ids())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_ids();
       }
     };
 
     struct descriptor {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_descriptor())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_descriptor();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_descriptor())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_descriptor();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_descriptor())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_descriptor();
       }
     };
 
     struct descriptors {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_descriptors())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_descriptors();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_descriptors())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_descriptors();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_descriptors())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_descriptors();
       }
     };
 
     struct key {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_key())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_key();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_key())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_key();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_key())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_key();
       }
     };
 
     struct keys {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_keys())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_keys();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_keys())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_keys();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_keys())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_keys();
       }
     };
 
     struct annotation {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_annotation())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_annotation();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_annotation())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_annotation();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_annotation())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_annotation();
       }
     };
 
     struct annotations {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_annotations())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_annotations();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_annotations())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_annotations();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_annotations())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_annotations();
       }
     };
 
     struct member {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_member())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_member();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_member())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_member();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_member())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_member();
       }
     };
 
     struct members {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_members())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_members();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_members())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_members();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_members())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_members();
       }
     };
 
     struct field {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_field())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_field();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_field())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_field();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_field())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_field();
       }
     };
 
     struct fields {
-      auto operator ()(union_with_special_names const &variant) const
-        -> decltype(std::declval<union_with_special_names const &>().get_fields())
-      {
+      decltype(auto) operator ()(union_with_special_names const &variant) const {
         return variant.get_fields();
       }
-
-      auto operator ()(union_with_special_names &variant) const
-        -> decltype(std::declval<union_with_special_names &>().mutable_fields())
-      {
+      decltype(auto) operator ()(union_with_special_names &variant) const {
         return variant.mutable_fields();
       }
-
-      auto operator ()(union_with_special_names &&variant) const
-        -> decltype(std::declval<union_with_special_names &&>().move_fields())
-      {
+      decltype(auto) operator ()(union_with_special_names &&variant) const {
         return std::move(variant).move_fields();
       }
     };
@@ -2507,308 +2079,196 @@ class union_with_special_names_variant_traits {
   struct union_with_special_names__struct_unique_setters_list {
     struct get {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_get(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_get(std::forward<Args>(args)...);
       }
     };
 
     struct getter {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_getter(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_getter(std::forward<Args>(args)...);
       }
     };
 
     struct lists {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_lists(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_lists(std::forward<Args>(args)...);
       }
     };
 
     struct maps {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_maps(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_maps(std::forward<Args>(args)...);
       }
     };
 
     struct name {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_name(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_name(std::forward<Args>(args)...);
       }
     };
 
     struct name_to_value {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_name_to_value(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_name_to_value(std::forward<Args>(args)...);
       }
     };
 
     struct names {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_names(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_names(std::forward<Args>(args)...);
       }
     };
 
     struct prefix_tree {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_prefix_tree(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_prefix_tree(std::forward<Args>(args)...);
       }
     };
 
     struct sets {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_sets(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_sets(std::forward<Args>(args)...);
       }
     };
 
     struct setter {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_setter(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_setter(std::forward<Args>(args)...);
       }
     };
 
     struct str {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_str(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_str(std::forward<Args>(args)...);
       }
     };
 
     struct strings {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_strings(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_strings(std::forward<Args>(args)...);
       }
     };
 
     struct type {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_type(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_type(std::forward<Args>(args)...);
       }
     };
 
     struct value {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_value(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_value(std::forward<Args>(args)...);
       }
     };
 
     struct value_to_name {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_value_to_name(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_value_to_name(std::forward<Args>(args)...);
       }
     };
 
     struct values {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_values(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_values(std::forward<Args>(args)...);
       }
     };
 
     struct id {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_id(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_id(std::forward<Args>(args)...);
       }
     };
 
     struct ids {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_ids(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_ids(std::forward<Args>(args)...);
       }
     };
 
     struct descriptor {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_descriptor(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_descriptor(std::forward<Args>(args)...);
       }
     };
 
     struct descriptors {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_descriptors(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_descriptors(std::forward<Args>(args)...);
       }
     };
 
     struct key {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_key(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_key(std::forward<Args>(args)...);
       }
     };
 
     struct keys {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_keys(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_keys(std::forward<Args>(args)...);
       }
     };
 
     struct annotation {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_annotation(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_annotation(std::forward<Args>(args)...);
       }
     };
 
     struct annotations {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_annotations(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_annotations(std::forward<Args>(args)...);
       }
     };
 
     struct member {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_member(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_member(std::forward<Args>(args)...);
       }
     };
 
     struct members {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_members(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_members(std::forward<Args>(args)...);
       }
     };
 
     struct field {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_field(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_field(std::forward<Args>(args)...);
       }
     };
 
     struct fields {
       template <typename... Args>
-      auto operator ()(union_with_special_names &variant, Args &&...args) const
-        -> decltype(
-          std::declval<union_with_special_names &>().set_fields(std::forward<Args>(args)...)
-        )
-      {
+      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
         return variant.set_fields(std::forward<Args>(args)...);
       }
     };

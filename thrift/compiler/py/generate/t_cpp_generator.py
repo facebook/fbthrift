@@ -5344,40 +5344,24 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_fatal_union_traits_getter(self, union, field, scope):
         with scope.cls('struct {0}'.format(field.name)):
-            scope('auto operator ()({0} const &variant) const'
+            scope('decltype(auto) operator ()({0} const &variant) const {{'
                 .format(union.name))
-            scope('  -> decltype(std::declval<{0} const &>().get_{1}())'
-                .format(union.name, field.name))
-            scope('{')
             scope('  return variant.get_{0}();'.format(field.name))
             scope('}')
-            scope()
-            scope('auto operator ()({0} &variant) const'
+            scope('decltype(auto) operator ()({0} &variant) const {{'
                 .format(union.name))
-            scope('  -> decltype(std::declval<{0} &>().mutable_{1}())'
-                .format(union.name, field.name))
-            scope('{')
             scope('  return variant.mutable_{0}();'.format(field.name))
             scope('}')
-            scope()
-            scope('auto operator ()({0} &&variant) const'
+            scope('decltype(auto) operator ()({0} &&variant) const {{'
                 .format(union.name))
-            scope('  -> decltype(std::declval<{0} &&>().move_{1}())'
-                .format(union.name, field.name))
-            scope('{')
             scope('  return std::move(variant).move_{0}();'.format(field.name))
             scope('}')
 
     def _generate_fatal_union_traits_setter(self, union, field, scope):
         with scope.cls('struct {0}'.format(field.name)):
             scope('template <typename... Args>')
-            scope('auto operator ()({0} &variant, Args &&...args) const'
+            scope('decltype(auto) operator ()({0} &variant, Args &&...args) const {{'
                 .format(union.name))
-            scope('  -> decltype(')
-            scope('    std::declval<{0} &>()'.format(union.name)
-                + '.set_{0}(std::forward<Args>(args)...)'.format(field.name))
-            scope('  )')
-            scope('{')
             scope('  return variant.set_{0}(std::forward<Args>(args)...);'
                 .format(field.name))
             scope('}')
