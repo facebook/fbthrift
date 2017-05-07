@@ -31,7 +31,6 @@
 #include <thrift/lib/cpp/protocol/TCompactProtocol.h>  // for serialization
 #include <thrift/lib/cpp/protocol/TJSONProtocol.h>    // for serialization
 #include <thrift/lib/cpp/protocol/TSimpleJSONProtocol.h>    // for serialization
-#include <thrift/lib/cpp/transport/TTransportUtils.h> // for serialization
 
 namespace apache { namespace thrift { namespace util {
 

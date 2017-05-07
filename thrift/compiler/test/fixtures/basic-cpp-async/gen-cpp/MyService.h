@@ -8,7 +8,7 @@
 #define  _MyService_H
 
 #include <functional>
-#include <thrift/lib/cpp/transport/TTransportUtils.h>
+#include <thrift/lib/cpp/transport/TBufferTransports.h>
 namespace apache { namespace thrift { namespace async {
 class TAsyncChannel;
 }}}

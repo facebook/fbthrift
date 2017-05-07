@@ -3963,7 +3963,7 @@ void t_cpp_generator::generate_service(t_service* tservice) {
     f_header_ <<
       "#include <functional>" << endl <<
       // TODO(dreiss): Libify the base client so we don't have to include this.
-      "#include <thrift/lib/cpp/transport/TTransportUtils.h>" << endl <<
+      "#include <thrift/lib/cpp/transport/TBufferTransports.h>" << endl <<
       "namespace apache { namespace thrift { namespace async {" << endl <<
       "class TAsyncChannel;" << endl <<
       "}}}" << endl;

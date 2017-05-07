@@ -20,7 +20,6 @@
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/server/TServer.h>
 #include <thrift/lib/cpp/async/TAsyncProcessor.h>
-#include <thrift/lib/cpp/transport/TTransportUtils.h>
 #include <thrift/lib/cpp/transport/TSSLSocket.h>
 #include <thrift/lib/cpp/protocol/THeaderProtocol.h>
 #include <thrift/lib/cpp/concurrency/Mutex.h>
