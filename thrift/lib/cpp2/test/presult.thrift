@@ -23,7 +23,8 @@ exception Exception2 {
 }
 
 enum Enum {
-  Value1, Value2
+  Value1 = 0,
+  Value2 = 1,
 }
 
 service PresultService {

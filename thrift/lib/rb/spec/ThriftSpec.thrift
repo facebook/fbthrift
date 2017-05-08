@@ -129,4 +129,3 @@ struct Struct_with_union {
 
 struct StructWithEnumMap {
   1: map<SomeEnum, list<SomeEnum>> my_map;
-}
