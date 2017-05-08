@@ -23,28 +23,28 @@
 using namespace apache::thrift::util;
 
 TEST(EnumStrict, ShortEnumName) {
-  EXPECT_EQ(strcmp(shortEnumName((EnumStrict)0), "UNKNOWN"), 0);
-  EXPECT_EQ(strcmp(shortEnumName((EnumStrict)1), "VALUE"), 0);
-  EXPECT_EQ(strcmp(shortEnumName((EnumStrict)2), "FOO"), 0);
-  EXPECT_EQ(strcmp(shortEnumName((EnumStrict)3), "BAR"), 0);
-  EXPECT_EQ(strcmp(shortEnumName((EnumStrict)3, "NOTBAR"), "BAR"), 0);
-  EXPECT_EQ(strcmp(shortEnumName((EnumStrict)42, "Universe"), "Universe"), 0);
-  EXPECT_EQ(shortEnumName((EnumStrict)42), nullptr);
-  EXPECT_EQ(shortEnumName((EnumStrict)-1), nullptr);
+  EXPECT_EQ(strcmp(enumName((EnumStrict)0), "UNKNOWN"), 0);
+  EXPECT_EQ(strcmp(enumName((EnumStrict)1), "VALUE"), 0);
+  EXPECT_EQ(strcmp(enumName((EnumStrict)2), "FOO"), 0);
+  EXPECT_EQ(strcmp(enumName((EnumStrict)3), "BAR"), 0);
+  EXPECT_EQ(strcmp(enumName((EnumStrict)3, "NOTBAR"), "BAR"), 0);
+  EXPECT_EQ(strcmp(enumName((EnumStrict)42, "Universe"), "Universe"), 0);
+  EXPECT_EQ(enumName((EnumStrict)42), nullptr);
+  EXPECT_EQ(enumName((EnumStrict)-1), nullptr);
 }
 
 TEST(EnumNonStrict, ShortEnumName) {
-  EXPECT_EQ(strcmp(shortEnumName((EnumNonStrict)0), "UNKNOWN"), 0);
-  EXPECT_EQ(strcmp(shortEnumName((EnumNonStrict)1), "VALUE"), 0);
-  EXPECT_EQ(strcmp(shortEnumName((EnumNonStrict)2), "FOO"), 0);
-  EXPECT_EQ(strcmp(shortEnumName((EnumNonStrict)3), "BAR"), 0);
-  EXPECT_EQ(strcmp(shortEnumName((EnumNonStrict)6), "NEW_VALUE"), 0);
-  EXPECT_EQ(strcmp(shortEnumName((EnumStrict)3, "NOTBAR"), "BAR"), 0);
-  EXPECT_EQ(strcmp(shortEnumName((EnumStrict)42, "Universe"), "Universe"), 0);
-  EXPECT_EQ(shortEnumName((EnumNonStrict)4), nullptr);
-  EXPECT_EQ(shortEnumName((EnumNonStrict)5), nullptr);
-  EXPECT_EQ(shortEnumName((EnumNonStrict)42), nullptr);
-  EXPECT_EQ(shortEnumName((EnumNonStrict)-1), nullptr);
+  EXPECT_EQ(strcmp(enumName((EnumNonStrict)0), "UNKNOWN"), 0);
+  EXPECT_EQ(strcmp(enumName((EnumNonStrict)1), "VALUE"), 0);
+  EXPECT_EQ(strcmp(enumName((EnumNonStrict)2), "FOO"), 0);
+  EXPECT_EQ(strcmp(enumName((EnumNonStrict)3), "BAR"), 0);
+  EXPECT_EQ(strcmp(enumName((EnumNonStrict)6), "NEW_VALUE"), 0);
+  EXPECT_EQ(strcmp(enumName((EnumStrict)3, "NOTBAR"), "BAR"), 0);
+  EXPECT_EQ(strcmp(enumName((EnumStrict)42, "Universe"), "Universe"), 0);
+  EXPECT_EQ(enumName((EnumNonStrict)4), nullptr);
+  EXPECT_EQ(enumName((EnumNonStrict)5), nullptr);
+  EXPECT_EQ(enumName((EnumNonStrict)42), nullptr);
+  EXPECT_EQ(enumName((EnumNonStrict)-1), nullptr);
 }
 
 TEST(EnumStrict, ShortEnumNameSafe) {
