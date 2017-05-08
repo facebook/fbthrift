@@ -1,4 +1,8 @@
+cpp_include "thrift/test/fatal_legacy_reflection_types.h"
+
 namespace cpp apache.thrift.test
+
+typedef i32 (cpp.type = 'CppHasANumber', cpp.indirection = '.number') HasANumber
 
 enum SampleEnum {
   kSampleEnumFoo = 0,
@@ -35,4 +39,9 @@ struct SampleStruct {
   19: list<float> list_float_field,
   20: list<binary> list_binary_field,
   21: string annotated_string_field (ann_key = 'ann_value')
+  22: HasANumber i32_indirection_field,
+  23: SampleSubStruct struct_ref_field (cpp.ref),
+  24: SampleSubStruct struct_unique_field (cpp.ref_type = 'unique'),
+  25: SampleSubStruct struct_shared_field (cpp.ref_type = 'shared'),
+  26: SampleSubStruct struct_shared_const_field (cpp.ref_type = 'shared_const'),
 }

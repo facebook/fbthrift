@@ -77,6 +77,21 @@ void registering_datatype(
   f(dt);
 }
 
+template <typename T>
+struct deref {
+  using type = T;
+};
+template <typename T, typename D>
+struct deref<std::unique_ptr<T, D>> : deref<T> {};
+template <typename T>
+struct deref<std::shared_ptr<T>> : deref<T> {};
+template <typename T>
+struct deref<std::shared_ptr<T const>> : deref<T> {};
+template <typename T>
+using deref_t = folly::_t<deref<T>>;
+template <typename T>
+using deref_decay_t = deref_t<std::decay_t<T>>;
+
 // helper
 //
 // The impl::go functions may recurse to other impl::go functions, but only
@@ -196,7 +211,8 @@ struct impl<T, type_class::structure> {
         fatal::indexed<MemberInfo, Index>,
         schema_t& schema,
         datatype_t& dt) {
-      using type = typename MemberInfo::type;
+      using getter = typename MemberInfo::getter;
+      using type = deref_decay_t<decltype(getter::ref(std::declval<T&>()))>;
       using type_class = typename MemberInfo::type_class;
       using type_helper = helper<type, type_class>;
       using member_name = typename MemberInfo::name;
@@ -242,7 +258,8 @@ struct impl<T, type_class::variant> {
         fatal::indexed<MemberInfo, Index>,
         schema_t& schema,
         datatype_t& dt) {
-      using type = typename MemberInfo::type;
+      typename MemberInfo::getter getter;
+      using type = deref_decay_t<decltype(getter(std::declval<T&>()))>;
       using type_class = typename MemberInfo::metadata::type_class;
       using type_helper = helper<type, type_class>;
       using member_name = typename MemberInfo::metadata::name;
