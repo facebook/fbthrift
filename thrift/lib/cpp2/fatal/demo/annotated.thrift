@@ -1,9 +1,9 @@
 namespace cpp2 static_reflection.demo
 
 enum annotated_enum {
-  field0,
-  field1,
-  field2,
+  field0 = 0,
+  field1 = 1,
+  field2 = 2,
 } (
   description = "example of an annotated enum",
   purpose = "toy example of enum annotations"

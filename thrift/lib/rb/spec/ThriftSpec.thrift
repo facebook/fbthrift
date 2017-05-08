@@ -43,8 +43,8 @@ struct Hello {
 }
 
 enum SomeEnum {
-  ONE
-  TWO
+  ONE = 0,
+  TWO = 1,
 }
 
 struct StructWithSomeEnum {

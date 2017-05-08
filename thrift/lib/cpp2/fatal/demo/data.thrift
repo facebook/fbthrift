@@ -3,9 +3,9 @@ namespace java org.apache.thrift.static_reflection.demo
 namespace py static_reflection.demo
 
 enum some_enum {
-  field0,
-  field1,
-  field2,
+  field0 = 0,
+  field1 = 1,
+  field2 = 2,
 }
 
 struct simple_struct {

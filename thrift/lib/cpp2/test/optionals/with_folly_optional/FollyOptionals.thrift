@@ -1,6 +1,6 @@
 enum HasOptionalsTestEnum {
   FOO = 1,
-  BAR
+  BAR = 2,
 }
 
 struct HasOptionalsExtra {
