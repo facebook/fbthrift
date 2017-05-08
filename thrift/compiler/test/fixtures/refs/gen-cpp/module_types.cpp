@@ -22,18 +22,18 @@ const typename _TypedEnum_EnumMapFactory::NamesToValuesMapType _TypedEnum_NAMES_
 
 
 namespace apache { namespace thrift {
-template <>const std::size_t TEnumTraitsBase< ::TypedEnum>::size = 2;
-template <>const folly::Range<const  ::TypedEnum*> TEnumTraitsBase< ::TypedEnum>::values = folly::range( ::_TypedEnumEnumDataStorage::values);
-template <>const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::TypedEnum>::names = folly::range( ::_TypedEnumEnumDataStorage::names);
+template <>const std::size_t TEnumTraits< ::TypedEnum>::size = 2;
+template <>const folly::Range<const  ::TypedEnum*> TEnumTraits< ::TypedEnum>::values = folly::range( ::_TypedEnumEnumDataStorage::values);
+template <>const folly::Range<const folly::StringPiece*> TEnumTraits< ::TypedEnum>::names = folly::range( ::_TypedEnumEnumDataStorage::names);
 
 template<>
-const char* TEnumTraitsBase< ::TypedEnum>::findName( ::TypedEnum value) {
+const char* TEnumTraits< ::TypedEnum>::findName( ::TypedEnum value) {
   static const auto map = folly::Indestructible< ::_TypedEnum_EnumMapFactory::ValuesToNamesMapType>{ ::_TypedEnum_EnumMapFactory::makeValuesToNamesMap()};
   return findName(*map, value);
 }
 
 template<>
-bool TEnumTraitsBase< ::TypedEnum>::findValue(const char* name,  ::TypedEnum* out) {
+bool TEnumTraits< ::TypedEnum>::findValue(const char* name,  ::TypedEnum* out) {
   static const auto map = folly::Indestructible< ::_TypedEnum_EnumMapFactory::NamesToValuesMapType>{ ::_TypedEnum_EnumMapFactory::makeNamesToValuesMap()};
   return findValue(*map, name, out);
 }

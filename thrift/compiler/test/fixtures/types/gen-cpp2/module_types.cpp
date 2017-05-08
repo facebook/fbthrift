@@ -27,15 +27,15 @@ namespace std {
 } // std
 namespace apache { namespace thrift {
 
-template <> const std::size_t TEnumTraitsBase< ::apache::thrift::fixtures::types::has_bitwise_ops>::size = 5;
-template <> const folly::Range<const  ::apache::thrift::fixtures::types::has_bitwise_ops*> TEnumTraitsBase< ::apache::thrift::fixtures::types::has_bitwise_ops>::values = folly::range( ::apache::thrift::fixtures::types::_has_bitwise_opsEnumDataStorage::values);
-template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::apache::thrift::fixtures::types::has_bitwise_ops>::names = folly::range( ::apache::thrift::fixtures::types::_has_bitwise_opsEnumDataStorage::names);
-template <> const char* TEnumTraitsBase< ::apache::thrift::fixtures::types::has_bitwise_ops>::findName( ::apache::thrift::fixtures::types::has_bitwise_ops value) {
+template <> const std::size_t TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::size = 5;
+template <> const folly::Range<const  ::apache::thrift::fixtures::types::has_bitwise_ops*> TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::values = folly::range( ::apache::thrift::fixtures::types::_has_bitwise_opsEnumDataStorage::values);
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::names = folly::range( ::apache::thrift::fixtures::types::_has_bitwise_opsEnumDataStorage::names);
+template <> const char* TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::findName( ::apache::thrift::fixtures::types::has_bitwise_ops value) {
   static auto const map = folly::Indestructible< ::apache::thrift::fixtures::types::_has_bitwise_ops_EnumMapFactory::ValuesToNamesMapType>{ ::apache::thrift::fixtures::types::_has_bitwise_ops_EnumMapFactory::makeValuesToNamesMap()};
   return findName(*map, value);
 }
 
-template <> bool TEnumTraitsBase< ::apache::thrift::fixtures::types::has_bitwise_ops>::findValue(const char* name,  ::apache::thrift::fixtures::types::has_bitwise_ops* outValue) {
+template <> bool TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::findValue(const char* name,  ::apache::thrift::fixtures::types::has_bitwise_ops* outValue) {
   static auto const map = folly::Indestructible< ::apache::thrift::fixtures::types::_has_bitwise_ops_EnumMapFactory::NamesToValuesMapType>{ ::apache::thrift::fixtures::types::_has_bitwise_ops_EnumMapFactory::makeNamesToValuesMap()};
   return findValue(*map, name, outValue);
 }

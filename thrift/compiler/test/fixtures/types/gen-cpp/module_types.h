@@ -35,28 +35,19 @@ extern const _has_bitwise_ops_EnumMapFactory::NamesToValuesMapType _has_bitwise_
 }}}} // namespace
 namespace apache { namespace thrift {
 template <> struct TEnumDataStorage< ::apache::thrift::fixtures::types::has_bitwise_ops>;
-template <> const std::size_t TEnumTraitsBase< ::apache::thrift::fixtures::types::has_bitwise_ops>::size;
-template <> const folly::Range<const  ::apache::thrift::fixtures::types::has_bitwise_ops*> TEnumTraitsBase< ::apache::thrift::fixtures::types::has_bitwise_ops>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::apache::thrift::fixtures::types::has_bitwise_ops>::names;
+template <> const std::size_t TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::size;
+template <> const folly::Range<const  ::apache::thrift::fixtures::types::has_bitwise_ops*> TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::names;
+template <> inline constexpr  ::apache::thrift::fixtures::types::has_bitwise_ops TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::min() {
+return  ::apache::thrift::fixtures::types::has_bitwise_ops::none;
+}
+template <> inline constexpr  ::apache::thrift::fixtures::types::has_bitwise_ops TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops>::max() {
+return  ::apache::thrift::fixtures::types::has_bitwise_ops::three;
+}
 }} // apache::thrift
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
-}}}} // namespace
-namespace apache { namespace thrift {
-template<>
-struct TEnumTraits< ::apache::thrift::fixtures::types::has_bitwise_ops> : public TEnumTraitsBase< ::apache::thrift::fixtures::types::has_bitwise_ops>
-{
-inline static constexpr  ::apache::thrift::fixtures::types::has_bitwise_ops min() {
-return  ::apache::thrift::fixtures::types::has_bitwise_ops::none;
-}
-inline static constexpr  ::apache::thrift::fixtures::types::has_bitwise_ops max() {
-return  ::apache::thrift::fixtures::types::has_bitwise_ops::three;
-}
-};
-}} // apache:thrift
-
-namespace apache { namespace thrift { namespace fixtures { namespace types {
 class decorated_struct;
 
 class ContainerStruct;

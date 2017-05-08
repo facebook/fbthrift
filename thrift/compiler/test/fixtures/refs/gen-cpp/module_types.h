@@ -32,26 +32,17 @@ extern const _TypedEnum_EnumMapFactory::NamesToValuesMapType _TypedEnum_NAMES_TO
 
 namespace apache { namespace thrift {
 template <> struct TEnumDataStorage< ::TypedEnum>;
-template <> const std::size_t TEnumTraitsBase< ::TypedEnum>::size;
-template <> const folly::Range<const  ::TypedEnum*> TEnumTraitsBase< ::TypedEnum>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::TypedEnum>::names;
-}} // apache::thrift
-
-
-
-
-namespace apache { namespace thrift {
-template<>
-struct TEnumTraits< ::TypedEnum> : public TEnumTraitsBase< ::TypedEnum>
-{
-inline static constexpr  ::TypedEnum min() {
+template <> const std::size_t TEnumTraits< ::TypedEnum>::size;
+template <> const folly::Range<const  ::TypedEnum*> TEnumTraits< ::TypedEnum>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::TypedEnum>::names;
+template <> inline constexpr  ::TypedEnum TEnumTraits< ::TypedEnum>::min() {
 return  ::TypedEnum::VAL1;
 }
-inline static constexpr  ::TypedEnum max() {
+template <> inline constexpr  ::TypedEnum TEnumTraits< ::TypedEnum>::max() {
 return  ::TypedEnum::VAL2;
 }
-};
-}} // apache:thrift
+}} // apache::thrift
+
 
 
 class MyUnion;

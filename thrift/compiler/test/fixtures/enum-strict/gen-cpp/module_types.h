@@ -30,9 +30,9 @@ extern const _EmptyEnum_EnumMapFactory::NamesToValuesMapType _EmptyEnum_NAMES_TO
 
 namespace apache { namespace thrift {
 template <> struct TEnumDataStorage< ::EmptyEnum>;
-template <> const std::size_t TEnumTraitsBase< ::EmptyEnum>::size;
-template <> const folly::Range<const  ::EmptyEnum*> TEnumTraitsBase< ::EmptyEnum>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::EmptyEnum>::names;
+template <> const std::size_t TEnumTraits< ::EmptyEnum>::size;
+template <> const folly::Range<const  ::EmptyEnum*> TEnumTraits< ::EmptyEnum>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::EmptyEnum>::names;
 }} // apache::thrift
 
 
@@ -51,26 +51,17 @@ extern const _MyEnum_EnumMapFactory::NamesToValuesMapType _MyEnum_NAMES_TO_VALUE
 
 namespace apache { namespace thrift {
 template <> struct TEnumDataStorage< ::MyEnum>;
-template <> const std::size_t TEnumTraitsBase< ::MyEnum>::size;
-template <> const folly::Range<const  ::MyEnum*> TEnumTraitsBase< ::MyEnum>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::MyEnum>::names;
-}} // apache::thrift
-
-
-
-
-namespace apache { namespace thrift {
-template<>
-struct TEnumTraits< ::MyEnum> : public TEnumTraitsBase< ::MyEnum>
-{
-inline static constexpr  ::MyEnum min() {
+template <> const std::size_t TEnumTraits< ::MyEnum>::size;
+template <> const folly::Range<const  ::MyEnum*> TEnumTraits< ::MyEnum>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::MyEnum>::names;
+template <> inline constexpr  ::MyEnum TEnumTraits< ::MyEnum>::min() {
 return  ::MyEnum::kMyFoo;
 }
-inline static constexpr  ::MyEnum max() {
+template <> inline constexpr  ::MyEnum TEnumTraits< ::MyEnum>::max() {
 return  ::MyEnum::kMyBar;
 }
-};
-}} // apache:thrift
+}} // apache::thrift
+
 
 
 class MyStruct;

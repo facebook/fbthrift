@@ -39,17 +39,17 @@ template<> struct equal_to<typename  ::cpp2::MyEnum> : public apache::thrift::de
 namespace apache { namespace thrift {
 
 template <> struct TEnumDataStorage< ::cpp2::MyEnum>;
-template <> const std::size_t TEnumTraitsBase< ::cpp2::MyEnum>::size;
-template <> const folly::Range<const  ::cpp2::MyEnum*> TEnumTraitsBase< ::cpp2::MyEnum>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::cpp2::MyEnum>::names;
-template <> const char* TEnumTraitsBase< ::cpp2::MyEnum>::findName( ::cpp2::MyEnum value);
-template <> bool TEnumTraitsBase< ::cpp2::MyEnum>::findValue(const char* name,  ::cpp2::MyEnum* outValue);
+template <> const std::size_t TEnumTraits< ::cpp2::MyEnum>::size;
+template <> const folly::Range<const  ::cpp2::MyEnum*> TEnumTraits< ::cpp2::MyEnum>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::cpp2::MyEnum>::names;
+template <> const char* TEnumTraits< ::cpp2::MyEnum>::findName( ::cpp2::MyEnum value);
+template <> bool TEnumTraits< ::cpp2::MyEnum>::findValue(const char* name,  ::cpp2::MyEnum* outValue);
 
-template <> constexpr  ::cpp2::MyEnum TEnumTraits< ::cpp2::MyEnum>::min() {
+template <> inline constexpr  ::cpp2::MyEnum TEnumTraits< ::cpp2::MyEnum>::min() {
   return  ::cpp2::MyEnum::MyValue1;
 }
 
-template <> constexpr  ::cpp2::MyEnum TEnumTraits< ::cpp2::MyEnum>::max() {
+template <> inline constexpr  ::cpp2::MyEnum TEnumTraits< ::cpp2::MyEnum>::max() {
   return  ::cpp2::MyEnum::MyValue2;
 }
 

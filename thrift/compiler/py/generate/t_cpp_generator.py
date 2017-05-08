@@ -551,7 +551,7 @@ class CppGenerator(t_generator.Generator):
                     out('using U = std::underlying_type_t<E>;')
                     out('return static_cast<E>({0}static_cast<U>(a));'.format(op))
 
-        # specialize TEnumTraitsBase
+        # specialize TEnumTraits
         s.release()
 
         ns = self._namespace_prefix(self._get_namespace())
@@ -570,7 +570,7 @@ class CppGenerator(t_generator.Generator):
             out(
                 'template <> struct TEnumDataStorage<{fullName}>;'
                 .format(**locals()))
-            # TEnumTraitsBase<T> class member specializations
+            # TEnumTraits<T> class member specializations
             storage_fullname = (
                 '{ns}_{name}EnumDataStorage'.format(ns=ns, name=tenum.name))
 
@@ -580,43 +580,43 @@ class CppGenerator(t_generator.Generator):
                 else:
                     return 'folly::range({}::{})'.format(
                         storage_fullname, field)
-            # TEnumTraitsBase<T>::size
+            # TEnumTraits<T>::size
             out(
                 'template <> const std::size_t '
-                'TEnumTraitsBase<{fullName}>::size;'
+                'TEnumTraits<{fullName}>::size;'
                 .format(**locals()))
             out().impl(
                 'template <> const std::size_t '
-                'TEnumTraitsBase<{fullName}>::size = {size};'
+                'TEnumTraits<{fullName}>::size = {size};'
                 .format(size=len(constants), **locals()))
-            # TEnumTraitsBase<T>::values
+            # TEnumTraits<T>::values
             out(
                 'template <> const folly::Range<const {fullName}*> '
-                'TEnumTraitsBase<{fullName}>::values;'
+                'TEnumTraits<{fullName}>::values;'
                 .format(**locals()))
             out().impl(
                 'template <> const folly::Range<const {fullName}*> '
-                'TEnumTraitsBase<{fullName}>::values = {range};'
+                'TEnumTraits<{fullName}>::values = {range};'
                 .format(range=storage_range_of('values'), **locals()))
-            # TEnumTraitsBase<T>::names
+            # TEnumTraits<T>::names
             out(
                 'template <> const folly::Range<const folly::StringPiece*> '
-                'TEnumTraitsBase<{fullName}>::names;'
+                'TEnumTraits<{fullName}>::names;'
                 .format(**locals()))
             out().impl(
                 'template <> const folly::Range<const folly::StringPiece*> '
-                'TEnumTraitsBase<{fullName}>::names = {range};'
+                'TEnumTraits<{fullName}>::names = {range};'
                 .format(range=storage_range_of('names'), **locals()))
-            # TEnumTraitsBase<T>::findName()
-            with out().defn('template <> const char* TEnumTraitsBase<{fullName}>::'
+            # TEnumTraits<T>::findName()
+            with out().defn('template <> const char* TEnumTraits<{fullName}>::'
                         'findName({fullName} value)'.format(**locals()),
                         name='findName'):
                 out('static auto const map = folly::Indestructible<{0}{1}'
                     '::ValuesToNamesMapType>{{{0}{1}::makeValuesToNamesMap()}};'
                     .format(ns, map_factory))
                 out('return findName(*map, value);')
-            # TEnumTraitsBase<T>::findValue()
-            with out().defn('template <> bool TEnumTraitsBase<{fullName}>::'
+            # TEnumTraits<T>::findValue()
+            with out().defn('template <> bool TEnumTraits<{fullName}>::'
                         'findValue(const char* name, {fullName}* outValue)'.
                         format(**locals()), name='findName'):
                 out('static auto const map = folly::Indestructible<{0}{1}'
@@ -625,11 +625,11 @@ class CppGenerator(t_generator.Generator):
                 out('return findValue(*map, name, outValue);')
             # TEnumTraits<T> class member specializations
             if minName is not None and maxName is not None:
-                with out().defn('template <> constexpr {fullName} '
+                with out().defn('template <> inline constexpr {fullName} '
                             'TEnumTraits<{fullName}>::min()'
                             .format(**locals()), name='min', in_header=True):
                     out('return {fullName}::{minName};'.format(**locals()))
-                with out().defn('template <> constexpr {fullName} '
+                with out().defn('template <> inline constexpr {fullName} '
                             'TEnumTraits<{fullName}>::max()'
                             .format(**locals()), name='max', in_header=True):
                     out('return {fullName}::{maxName};'.format(**locals()))

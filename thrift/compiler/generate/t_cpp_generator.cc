@@ -939,32 +939,27 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
     "namespace apache { namespace thrift {" << endl <<
     "template <> struct TEnumDataStorage<" << fullname << ">;" << endl <<
     "template <> const std::size_t " <<
-    "TEnumTraitsBase<" << fullname << ">::size;" << endl <<
+    "TEnumTraits<" << fullname << ">::size;" << endl <<
     "template <> const folly::Range<const " << fullname << "*> " <<
-    "TEnumTraitsBase<" << fullname << ">::values;" << endl <<
+    "TEnumTraits<" << fullname << ">::values;" << endl <<
     "template <> const folly::Range<const folly::StringPiece*> " <<
-    "TEnumTraitsBase<" << fullname << ">::names;" << endl <<
-    "}} // apache::thrift" << endl << endl <<
-    ns_open_ << endl << endl;
+    "TEnumTraits<" << fullname << ">::names;" << endl;
 
   if (!minName.empty()) {
     f_types_ <<
-      ns_close_ << endl <<
-      "namespace apache { namespace thrift {" << endl <<
-      "template<>" << endl <<
-      "struct TEnumTraits<" << fullname <<
-      "> : public TEnumTraitsBase<" << fullname << ">" << endl <<
-      "{" << endl <<
-      "inline static constexpr " << fullname << " min() {" << endl <<
+      "template <> inline constexpr " << fullname << " " <<
+      "TEnumTraits<" << fullname << ">::min() {" << endl <<
       indent() << "return " << fullname << "::" << minName << ";" << endl <<
       "}" << endl <<
-      "inline static constexpr " << fullname << " max() {" << endl <<
+      "template <> inline constexpr " << fullname << " " <<
+      "TEnumTraits<" << fullname << ">::max() {" << endl <<
       indent() << "return " << fullname << "::" << maxName << ";" << endl <<
-      "}" << endl <<
-      "};" << endl <<
-      "}} // apache:thrift" << endl << endl <<
-      ns_open_ << endl;
+      "}" << endl;
   }
+
+  f_types_ <<
+    "}} // apache::thrift" << endl << endl <<
+    ns_open_ << endl << endl;
 
   f_types_impl_ <<
     indent() << "const typename " << map_factory << "::ValuesToNamesMapType " <<
@@ -987,32 +982,32 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
   const auto map_factory_ns = "apache::thrift::detail::TEnumMapFactory<" +
     fullname + ", " + value_type + ">";
 
-  // TEnumTraitsBase<T> class member specializations
+  // TEnumTraits<T> class member specializations
   f_types_impl_ <<
     ns_close_ << endl <<
     "namespace apache { namespace thrift {" << endl;
-  // TEnumTraitsBase<T>::size
+  // TEnumTraits<T>::size
   f_types_impl_ <<
     "template <>" <<
-    "const std::size_t TEnumTraitsBase<" << fullname << ">::size = " <<
+    "const std::size_t TEnumTraits<" << fullname << ">::size = " <<
     constants.size() << ";" << endl;
-  // TEnumTraitsBase<T>::values
+  // TEnumTraits<T>::values
   f_types_impl_ <<
     "template <>" <<
     "const folly::Range<const " << fullname << "*> " <<
-    "TEnumTraitsBase<" << fullname << ">::values = " <<
+    "TEnumTraits<" << fullname << ">::values = " <<
     storage_range_of("values") << ";" << endl;
-  // TEnumTraitsBase<T>::names
+  // TEnumTraits<T>::names
   f_types_impl_ <<
     "template <>" <<
     "const folly::Range<const folly::StringPiece*> " <<
-    "TEnumTraitsBase<" << fullname << ">::names = " <<
+    "TEnumTraits<" << fullname << ">::names = " <<
     storage_range_of("names") << ";" << endl;
   f_types_impl_ << endl;
-  // TEnumTraitsBase<T>::findName()
+  // TEnumTraits<T>::findName()
   f_types_impl_ <<
     indent() << "template<>" << endl <<
-    "const char* TEnumTraitsBase<" << fullname <<
+    "const char* TEnumTraits<" << fullname <<
       ">::findName(" << fullname << " value) {" << endl;
   indent_up();
   f_types_impl_ <<
@@ -1024,10 +1019,10 @@ void t_cpp_generator::generate_enum(t_enum* tenum) {
   indent_down();
   f_types_impl_ <<
     indent() << "}" << endl << endl;
-  // TEnumTraitsBase<T>::findValue()
+  // TEnumTraits<T>::findValue()
   f_types_impl_ <<
     indent() << "template<>" << endl <<
-      "bool TEnumTraitsBase<" << fullname <<
+      "bool TEnumTraits<" << fullname <<
       ">::findValue(const char* name, " << fullname << "* out) {" << endl;
   indent_up();
   f_types_impl_ <<

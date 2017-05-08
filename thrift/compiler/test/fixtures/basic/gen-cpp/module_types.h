@@ -34,26 +34,17 @@ extern const _MyEnum_EnumMapFactory::NamesToValuesMapType _MyEnum_NAMES_TO_VALUE
 
 namespace apache { namespace thrift {
 template <> struct TEnumDataStorage< ::MyEnum>;
-template <> const std::size_t TEnumTraitsBase< ::MyEnum>::size;
-template <> const folly::Range<const  ::MyEnum*> TEnumTraitsBase< ::MyEnum>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraitsBase< ::MyEnum>::names;
-}} // apache::thrift
-
-
-
-
-namespace apache { namespace thrift {
-template<>
-struct TEnumTraits< ::MyEnum> : public TEnumTraitsBase< ::MyEnum>
-{
-inline static constexpr  ::MyEnum min() {
+template <> const std::size_t TEnumTraits< ::MyEnum>::size;
+template <> const folly::Range<const  ::MyEnum*> TEnumTraits< ::MyEnum>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::MyEnum>::names;
+template <> inline constexpr  ::MyEnum TEnumTraits< ::MyEnum>::min() {
 return  ::MyEnum::MyValue1;
 }
-inline static constexpr  ::MyEnum max() {
+template <> inline constexpr  ::MyEnum TEnumTraits< ::MyEnum>::max() {
 return  ::MyEnum::MyValue2;
 }
-};
-}} // apache:thrift
+}} // apache::thrift
+
 
 
 class MyStruct;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -87,13 +87,23 @@ struct TEnumDataStorage;
 /**
  * Helper template class for enum<->string conversion.
  */
-template<typename T>
-struct TEnumTraitsBase {
+template <typename T>
+struct TEnumTraits {
   static const std::size_t size;
   static const folly::Range<const T*> values;
   static const folly::Range<const folly::StringPiece*> names;
   // only has data when generated with cpp:enum_struct:
   static const folly::Range<const folly::StringPiece*> prefixed_names;
+
+  /**
+   * Return the minimum value.
+   */
+  static constexpr T min();
+
+  /**
+   * Return the maximum value.
+   */
+  static constexpr T max();
 
   /**
    * Finds the name of a given enum value, returning it or nullptr on failure.
@@ -153,19 +163,6 @@ struct TEnumTraitsBase {
       return true;
     }
   }
-};
-
-template<typename T>
-struct TEnumTraits : public TEnumTraitsBase<T> {
-  /**
-   * Return the minimum value.
-   */
-  static constexpr T min();
-
-  /**
-   * Return the maximum value.
-   */
-  static constexpr T max();
 };
 
 namespace detail {
