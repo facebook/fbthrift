@@ -21,6 +21,36 @@
 
 namespace test_cpp2 { namespace cpp_reflection {
 
+struct apache_thrift_indirection_module_HasANumber {
+  template <typename T> static auto&& get(T&& x) {
+    return std::forward<T>(x).number;
+  }
+
+  template <typename T> static auto&& get(T const&& x) {
+    return std::forward<T>(x).number;
+  }
+};
+
+struct apache_thrift_indirection_module_HasAPhrase {
+  template <typename T> static auto&& get(T&& x) {
+    return std::forward<T>(x).phrase;
+  }
+
+  template <typename T> static auto&& get(T const&& x) {
+    return std::forward<T>(x).phrase;
+  }
+};
+
+struct apache_thrift_indirection_module_HasAResult {
+  template <typename T> static auto&& get(T&& x) {
+    return std::forward<T>(x).foo().result();
+  }
+
+  template <typename T> static auto&& get(T const&& x) {
+    return std::forward<T>(x).foo().result();
+  }
+};
+
 class union1;
 class union2;
 class union3;

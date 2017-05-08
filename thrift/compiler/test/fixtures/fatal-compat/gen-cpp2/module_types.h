@@ -20,6 +20,26 @@
 
 namespace test_cpp2 { namespace cpp_reflection {
 
+struct apache_thrift_indirection_module_HasANumber {
+  template <typename T> static auto&& get(T&& x) {
+    return std::forward<T>(x).number;
+  }
+
+  template <typename T> static auto&& get(T const&& x) {
+    return std::forward<T>(x).number;
+  }
+};
+
+struct apache_thrift_indirection_module_HasAResult {
+  template <typename T> static auto&& get(T&& x) {
+    return std::forward<T>(x).foo().result();
+  }
+
+  template <typename T> static auto&& get(T const&& x) {
+    return std::forward<T>(x).foo().result();
+  }
+};
+
 typedef  ::test_cpp1::cpp_reflection::enum1 enum1;
 typedef  ::test_cpp1::cpp_reflection::enum2 enum2;
 typedef  ::test_cpp1::cpp_reflection::enum3 enum3;

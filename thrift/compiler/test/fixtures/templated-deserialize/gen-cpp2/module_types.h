@@ -18,6 +18,36 @@
 
 namespace cpp2 {
 
+struct apache_thrift_indirection_module_IndirectionA {
+  template <typename T> static auto&& get(T&& x) {
+    return std::forward<T>(x).value;
+  }
+
+  template <typename T> static auto&& get(T const&& x) {
+    return std::forward<T>(x).value;
+  }
+};
+
+struct apache_thrift_indirection_module_IndirectionC {
+  template <typename T> static auto&& get(T&& x) {
+    return std::forward<T>(x).__value();
+  }
+
+  template <typename T> static auto&& get(T const&& x) {
+    return std::forward<T>(x).__value();
+  }
+};
+
+struct apache_thrift_indirection_module_IndirectionB {
+  template <typename T> static auto&& get(T&& x) {
+    return std::forward<T>(x).value;
+  }
+
+  template <typename T> static auto&& get(T const&& x) {
+    return std::forward<T>(x).value;
+  }
+};
+
 class containerStruct;
 typedef Foo IndirectionA;
 

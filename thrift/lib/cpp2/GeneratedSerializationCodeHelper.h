@@ -78,6 +78,9 @@ inline auto reserve_if_possible(T* t, std::uint32_t size)
 
 inline void reserve_if_possible(...){};
 
+template <typename Indirection, typename TypeClass>
+struct IndirectionTag;
+
 /*
  * Primitive Types Specialization
  */
@@ -530,9 +533,9 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
 /*
  * Struct with Indirection Specialization
  */
-template <template <typename> class Impl, typename ElemClass, typename Type>
-struct protocol_methods<Impl<ElemClass>, Type> {
-  using indirection = Impl<ElemClass>;
+template <typename Indirection, typename ElemClass, typename Type>
+struct protocol_methods<IndirectionTag<Indirection, ElemClass>, Type> {
+  using indirection = Indirection;
   using elem_type = std::remove_reference_t<decltype(
       indirection::template get(std::declval<Type&>()))>;
   using elem_methods = protocol_methods<ElemClass, elem_type>;

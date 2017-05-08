@@ -19,30 +19,6 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 namespace test_cpp2 { namespace cpp_reflection {
 
-template <typename ElemClass>
-struct indirection_module_HasANumber {
-  template <typename T>
-  static auto &&get(T&& x) {
-    return std::forward<T>(x).number;
-  }
-  template <typename T>
-  static auto &&get(T const&& x) {
-    return std::forward<T>(x).number;
-  }
-};
-
-template <typename ElemClass>
-struct indirection_module_HasAResult {
-  template <typename T>
-  static auto &&get(T&& x) {
-    return std::forward<T>(x).foo().result();
-  }
-  template <typename T>
-  static auto &&get(T const&& x) {
-    return std::forward<T>(x).foo().result();
-  }
-};
-
 template <class Protocol_>
 uint32_t union1_read(Protocol_* iprot, union1* obj) {
   (void)obj;

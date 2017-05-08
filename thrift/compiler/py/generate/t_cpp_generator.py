@@ -3573,27 +3573,24 @@ class CppGenerator(t_generator.Generator):
                       self._type_name(otype), prefix))
 
     def _render_indirection_struct_name(self, program_name, typedef_name):
-        return 'indirection_{0}_{1}'.format(
-            program_name, re.sub('[\W]+', '', typedef_name))
+        return 'apache_thrift_indirection_{0}_{1}'.format(
+            program_name, re.sub('[\W]+', '_', typedef_name))
 
     def _print_indirection_set(self, indirection_set):
         for program_name, typedef_name, indirection in indirection_set:
-            print >>self._out_tcc, 'template <typename ElemClass>'
-            print >>self._out_tcc, 'struct {0} {{'.format(
-                self._render_indirection_struct_name(
-                    program_name, typedef_name))
-            print >>self._out_tcc, '  template <typename T>'
-            print >>self._out_tcc, '  static auto &&get(T&& x) {'
-            print >>self._out_tcc, '    return std::forward<T>(x){0};'.format(
-                indirection)
-            print >>self._out_tcc, '  }'
-            print >>self._out_tcc, '  template <typename T>'
-            print >>self._out_tcc, '  static auto &&get(T const&& x) {'
-            print >>self._out_tcc, '    return std::forward<T>(x){0};'.format(
-                indirection)
-            print >>self._out_tcc, '  }'
-            print >>self._out_tcc, '};'
-            print >>self._out_tcc, ''
+            indirection_struct_name = self._render_indirection_struct_name(
+                program_name, typedef_name)
+            with self._types_scope.cls('struct {0}'.format(indirection_struct_name)) as s:
+                with s.defn(
+                        'template <typename T> static auto&& {name}(T&& x)',
+                        name='get',
+                        in_header=True):
+                    out('return std::forward<T>(x){0};'.format(indirection))
+                with s.defn(
+                        'template <typename T> static auto&& {name}(T const&& x)',
+                        name='get',
+                        in_header=True):
+                    out('return std::forward<T>(x){0};'.format(indirection))
 
     def _render_indirection_struct(self, ttype):
         typedef_name = ttype
@@ -3623,7 +3620,7 @@ class CppGenerator(t_generator.Generator):
                 indirections |= self._render_indirection_struct(field.type)
         self._print_indirection_set(indirections)
 
-    def _render_type_class(self, ttype, annotation=False):
+    def _render_type_class_for_serialization(self, ttype, annotation=False):
         typedef_name = ttype
         while ttype.is_typedef:
             ttype = ttype.type
@@ -3632,11 +3629,11 @@ class CppGenerator(t_generator.Generator):
             return '::apache::thrift::type_class::nothing'
         elif self._has_cpp_annotation(ttype, 'indirection') and not annotation:
             return (
-                '{0}<{1}>'.format(
+                    '::apache::thrift::detail::pm::IndirectionTag<{0}, {1}>'.format(
                     self._render_indirection_struct_name(
                         self._program.name,
                         typedef_name.symbolic),
-                    self._render_type_class(ttype, True)))
+                    self._render_type_class_for_serialization(ttype, True)))
         elif ttype.is_base_type and ttype.as_base_type.is_binary:
             return '::apache::thrift::type_class::binary'
         elif ttype.is_string:
@@ -3649,14 +3646,14 @@ class CppGenerator(t_generator.Generator):
             return '::apache::thrift::type_class::enumeration'
         elif ttype.is_list:
             return '::apache::thrift::type_class::list<{0}>'.format(
-                self._render_type_class(ttype.as_list.elem_type))
+                self._render_type_class_for_serialization(ttype.as_list.elem_type))
         elif ttype.is_map:
             return '::apache::thrift::type_class::map<{0}, {1}>'.format(
-                self._render_type_class(ttype.as_map.key_type),
-                self._render_type_class(ttype.as_map.value_type))
+                self._render_type_class_for_serialization(ttype.as_map.key_type),
+                self._render_type_class_for_serialization(ttype.as_map.value_type))
         elif ttype.is_set:
             return '::apache::thrift::type_class::set<{0}>'.format(
-                self._render_type_class(ttype.as_set.elem_type))
+                self._render_type_class_for_serialization(ttype.as_set.elem_type))
         elif ttype.is_xception:
             return '::apache::thrift::type_class::structure'
         elif ttype.is_struct:
@@ -3677,7 +3674,7 @@ class CppGenerator(t_generator.Generator):
                     .format(ptrtype))
             s('xfer += ::apache::thrift::detail::pm::protocol_methods'
                     '< {0}, {1}>::read(*iprot, *{2});'.format(
-                        self._render_type_class(otype),
+                        self._render_type_class_for_serialization(otype),
                         self._type_name(otype),
                         ptrtype))
             s('{0} = std::move({1});'.format(prefix, ptrtype))
@@ -3685,14 +3682,14 @@ class CppGenerator(t_generator.Generator):
             s("{0} = {1}();".format(prefix, self._type_name(otype)))
             s('xfer += ::apache::thrift::detail::pm::protocol_methods'
                     '< {0}, {1}>::read(*iprot, {2}.value());'.format(
-                        self._render_type_class(otype),
+                        self._render_type_class_for_serialization(otype),
                         self._type_name(otype),
                         prefix))
         else:
             s("{0} = {1}();".format(prefix, self._type_name(otype)))
             s('xfer += ::apache::thrift::detail::pm::protocol_methods'
                     '< {0}, {1}>::read(*iprot, {2});'.format(
-                        self._render_type_class(otype),
+                        self._render_type_class_for_serialization(otype),
                         self._type_name(otype),
                         prefix))
 
@@ -4258,7 +4255,7 @@ class CppGenerator(t_generator.Generator):
 
         scope('xfer += ::apache::thrift::detail::pm::protocol_methods'
                 '< {0}, {1}>::{2}{3}(*prot_, {4});'.format(
-                    self._render_type_class(otype),
+                    self._render_type_class_for_serialization(otype),
                     self._type_name(otype),
                     method,
                     templated_resolution,
