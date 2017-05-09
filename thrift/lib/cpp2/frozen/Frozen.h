@@ -419,8 +419,6 @@ class ViewBase {
     layout_->thaw(position_, ret);
     return ret;
   }
-
-  const Self* operator->() const { return static_cast<const Self*>(this); }
 };
 
 /*

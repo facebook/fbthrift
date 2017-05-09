@@ -35,9 +35,9 @@ TEST(FrozenPair, Basic) {
   auto fip = freeze(ip);
   auto fsp = freeze(sp);
   auto fvip = freeze(vip);
-  EXPECT_EQ(ip, fip->thaw());
-  EXPECT_EQ(sp, fsp->thaw());
-  EXPECT_EQ(vip, fvip->thaw());
+  EXPECT_EQ(ip, fip.thaw());
+  EXPECT_EQ(sp, fsp.thaw());
+  EXPECT_EQ(vip, fvip.thaw());
 
   EXPECT_EQ(sp.first, fsp.first());
   EXPECT_EQ(sp.second, fsp.second());
