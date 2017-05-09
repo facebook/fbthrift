@@ -36,3 +36,4 @@ constexpr const std::array<folly::StringPiece, 4> _CompanyEnumDataStorage::names
 namespace apache { namespace thrift {
 
 }} // apache::thrift
+

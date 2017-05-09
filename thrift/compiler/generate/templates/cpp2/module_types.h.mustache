@@ -28,13 +28,15 @@
 
 
 
+<% > module_types_h/declare_enums%>
 <%#program:structs%><%!
 %><% > common/namespace_cpp2_begin%>
 
-<% > module_types_h/struct_forward_declare%><%!
-%><% > module_types_h/typedef_initialize%><%!
-%>
+<%^program:enums?%>
+<% > module_types_h/struct_forward_declare%>
+<%/program:enums?%>
 
+<% > module_types_h/typedef_initialize%>
 class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<<%struct:name%>> {
  public:
 

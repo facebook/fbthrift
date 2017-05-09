@@ -18,6 +18,31 @@
 
 namespace some { namespace valid { namespace ns {
 
+const _Foo_EnumMapFactory::ValuesToNamesMapType _Foo_VALUES_TO_NAMES = _Foo_EnumMapFactory::makeValuesToNamesMap();
+const _Foo_EnumMapFactory::NamesToValuesMapType _Foo_NAMES_TO_VALUES = _Foo_EnumMapFactory::makeNamesToValuesMap();
+
+}}} // some::valid::ns
+namespace std {
+
+} // std
+namespace apache { namespace thrift {
+
+template <> const std::size_t TEnumTraits< ::some::valid::ns::Foo>::size = 3;
+template <> const folly::Range<const  ::some::valid::ns::Foo*> TEnumTraits< ::some::valid::ns::Foo>::values = folly::range( ::some::valid::ns::_FooEnumDataStorage::values);
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::valid::ns::Foo>::names = folly::range( ::some::valid::ns::_FooEnumDataStorage::names);
+template <> const char* TEnumTraits< ::some::valid::ns::Foo>::findName( ::some::valid::ns::Foo value) {
+  static auto const map = folly::Indestructible< ::some::valid::ns::_Foo_EnumMapFactory::ValuesToNamesMapType>{ ::some::valid::ns::_Foo_EnumMapFactory::makeValuesToNamesMap()};
+  return findName(*map, value);
+}
+
+template <> bool TEnumTraits< ::some::valid::ns::Foo>::findValue(const char* name,  ::some::valid::ns::Foo* outValue) {
+  static auto const map = folly::Indestructible< ::some::valid::ns::_Foo_EnumMapFactory::NamesToValuesMapType>{ ::some::valid::ns::_Foo_EnumMapFactory::makeNamesToValuesMap()};
+  return findValue(*map, name, outValue);
+}
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
 void Empty::__clear() {
   // clear all fields
 }

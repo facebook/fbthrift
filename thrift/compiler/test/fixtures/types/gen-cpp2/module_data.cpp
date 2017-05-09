@@ -16,3 +16,4 @@ constexpr const std::array<folly::StringPiece, 5> _has_bitwise_opsEnumDataStorag
 namespace apache { namespace thrift {
 
 }} // apache::thrift
+

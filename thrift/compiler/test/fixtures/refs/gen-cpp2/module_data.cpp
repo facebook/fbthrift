@@ -16,3 +16,4 @@ constexpr const std::array<folly::StringPiece, 2> _TypedEnumEnumDataStorage::nam
 namespace apache { namespace thrift {
 
 }} // apache::thrift
+

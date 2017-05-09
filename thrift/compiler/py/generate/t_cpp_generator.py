@@ -772,6 +772,7 @@ class CppGenerator(t_generator.Generator):
                     .format(ns, storage_name))
                 out('};')
         sg()
+        sg.impl('\n')
 
     # =====================================================================
     # SERVICE INTERFACE

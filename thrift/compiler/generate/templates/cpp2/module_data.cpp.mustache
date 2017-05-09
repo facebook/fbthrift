@@ -18,4 +18,19 @@
 <% > Autogen%>
 #include "<%program:normalizedIncludePrefix%><%program:name%>_data.h"
 
+<%#program:enums%>
+<% > common/namespace_cpp2_begin%>
+
+
+constexpr const std::size_t _<%enum:name%>EnumDataStorage::size;
+constexpr const std::array<<%enum:name%>, <%enum:size%>> _<%enum:name%>EnumDataStorage::values;
+constexpr const std::array<folly::StringPiece, <%enum:size%>> _<%enum:name%>EnumDataStorage::names;
+
+<% > common/namespace_cpp2_end%>
+
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+<%/program:enums%>
+
 

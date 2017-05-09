@@ -14,13 +14,16 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%!
-Form:
-typedef type name;
+%><%#program:enums%>
+<% > common/namespace_cpp2_begin%>
 
-%>
-<%#first?%><%#program:typedefs%><%#typedef:type%>
-<% > module_types_h/typedef_recursive_forward_declare%>
-typedef <% > Type%> <%typedef:symbolic%>;
 
-<%/typedef:type%><%/program:typedefs%><%/first?%>
+<% > common/namespace_cpp2_end%>
+
+namespace std {
+
+} // std
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+<%/program:enums%>

@@ -46,3 +46,4 @@ constexpr const std::array<folly::StringPiece, 26> _enum_with_special_namesEnumD
 namespace apache { namespace thrift {
 
 }} // apache::thrift
+

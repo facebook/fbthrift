@@ -6,3 +6,4 @@
  */
 #include "thrift/compiler/test/fixtures/complex-union/gen-cpp2/module_data.h"
 
+

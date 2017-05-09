@@ -24,6 +24,12 @@ const list<map<string, i32>> states = [
   {"New York": 8406000, "Albany": 98400}
 ]
 
+enum Foo {
+  FooA = 1
+  FooB = 2
+  FooC = 4
+}
+
 struct Empty {
 }
 

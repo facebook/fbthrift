@@ -1,0 +1,63 @@
+<%!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+%><%#program:enums%>
+<% > common/namespace_cpp2_begin%>
+
+<%#first?%>
+<% > module_types_h/struct_forward_declare%>
+<%/first?%>
+
+enum class <%enum:name%> {<%!
+  %><%#enum:values%><%#first?%>
+<%/first?%><%!
+    %>  <%enumValue:name%> = <%enumValue:value%><% > common/comma_newline%><%#last?%>
+<%/last?%><%!
+  %><%/enum:values%><%!
+%>}<% > common/semicolon_newline%>
+using _<%enum:name%>_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<<%enum:name%>, <%enum:name%>>;
+extern const _<%enum:name%>_EnumMapFactory::ValuesToNamesMapType _<%enum:name%>_VALUES_TO_NAMES;
+extern const _<%enum:name%>_EnumMapFactory::NamesToValuesMapType _<%enum:name%>_NAMES_TO_VALUES;
+
+<% > common/namespace_cpp2_end%>
+
+namespace std {
+
+template<> struct hash<typename <% > common/namespace_cpp2%><%enum:name%>> : public apache::thrift::detail::enum_hash<typename <% > common/namespace_cpp2%><%enum:name%>> {};
+template<> struct equal_to<typename <% > common/namespace_cpp2%><%enum:name%>> : public apache::thrift::detail::enum_equal_to<typename <% > common/namespace_cpp2%><%enum:name%>> {};
+
+} // std
+namespace apache { namespace thrift {
+
+template <> struct TEnumDataStorage<<% > common/namespace_cpp2%><%enum:name%>>;
+template <> const std::size_t TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::size;
+template <> const folly::Range<const <% > common/namespace_cpp2%><%enum:name%>*> TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::names;
+template <> const char* TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::findName(<% > common/namespace_cpp2%><%enum:name%> value);
+template <> bool TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::findValue(const char* name, <% > common/namespace_cpp2%><%enum:name%>* outValue);
+<%^enum:empty?%>
+
+template <> inline constexpr <% > common/namespace_cpp2%><%enum:name%> TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::min() {
+  return <% > common/namespace_cpp2%><%enum:name%>::<%enum:min%>;
+}
+
+template <> inline constexpr <% > common/namespace_cpp2%><%enum:name%> TEnumTraits<<% > common/namespace_cpp2%><%enum:name%>>::max() {
+  return <% > common/namespace_cpp2%><%enum:name%>::<%enum:max%>;
+}
+<%/enum:empty?%>
+
+}} // apache::thrift
+<%/program:enums%>

@@ -6,3 +6,4 @@
  */
 #include "thrift/compiler/test/fixtures/templated-deserialize/gen-cpp2/module_data.h"
 
+

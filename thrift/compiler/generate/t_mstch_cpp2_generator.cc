@@ -37,6 +37,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   mstch::map extend_service(const t_service&) const override;
   mstch::map extend_struct(const t_struct&) const override;
   mstch::map extend_type(const t_type& t) const override;
+  mstch::map extend_enum(const t_enum&) const override;
 
  private:
   bool get_is_eb(const t_function& fn) const;
@@ -91,6 +92,7 @@ mstch::map t_mstch_cpp2_generator::extend_program(
   mstch::map m;
   m.emplace("namespace_cpp2", this->get_namespace(program)),
   m.emplace("normalizedIncludePrefix", this->get_include_prefix(program));
+  m.emplace("enums?", !program.get_enums().empty());
   return m;
 }
 
@@ -204,6 +206,27 @@ mstch::map t_mstch_cpp2_generator::extend_type(const t_type& t) const {
   m.emplace("resolves_to_base?", resolve_typedef(&t)->is_base_type());
   m.emplace("resolves_to_container?", resolve_typedef(&t)->is_container());
 
+  return m;
+}
+
+mstch::map t_mstch_cpp2_generator::extend_enum(const t_enum& e) const {
+  mstch::map m;
+
+  m.emplace("empty?", e.get_constants().empty());
+  m.emplace("size", std::to_string(e.get_constants().size()));
+
+  // Obtain the name of the minimum and maximum enum
+  const std::vector<t_enum_value*> e_members = e.get_constants();
+  if (!e_members.empty()) {
+    auto e_minmax = std::minmax_element(
+        e_members.begin(),
+        e_members.end(),
+        [](t_enum_value* a, t_enum_value* b) {
+          return a->get_value() < b->get_value();
+        });
+    m.emplace("min", std::string((*e_minmax.first)->get_name()));
+    m.emplace("max", std::string((*e_minmax.second)->get_name()));
+  }
   return m;
 }
 
