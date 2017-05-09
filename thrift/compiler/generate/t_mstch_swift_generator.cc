@@ -145,9 +145,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
    * a primitive representation. We need this because these types are treated
    * differently when they are arguments to type constructors in Java.
    */
-  mstch::map extend_type(
-      const t_type& type,
-      const int32_t depth) const override {
+  mstch::map extend_type(const t_type& type) const override {
     return mstch::map{
         {"primitive?",
          type.is_void() || type.is_bool() || type.is_byte() || type.is_i16() ||

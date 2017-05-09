@@ -28,15 +28,10 @@ void Struct::__clear() {
   %><%#type:resolves_to_base?%><%!
   %>  <%field:name%> = <%!
   %><%#field:value%><%!
-    %><%type:cxx_value_prefix%><% > common/iterate_const_values%><%type:cxx_value_suffix%><%!
+    %><% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%><%!
   %><%/field:value%><%!
   %><%^field:value%><%!
-    %><%#type:string?%><%!
-      %>apache::thrift::StringTraits< std::string>::fromStringLiteral("")<%!
-    %><%/type:string?%><%!
-    %><%^type:string?%><%!
-      %>0<%!
-    %><%/type:string?%><%!
+    %><% > module_types_cpp/unset_values%><%!
   %><%/field:value%><%!
   %><% > common/semicolon_newline%><%!
 %><%/type:resolves_to_base?%><%!
@@ -44,6 +39,7 @@ void Struct::__clear() {
   %>  <%field:name%>.clear();
 <%/type:resolves_to_container?%><%!
 %><%/field:type%><%/struct:fields%><%!
+
 %><%#struct:fields?%><%!
 %>  __isset.__clear();
 <%/struct:fields?%><%!

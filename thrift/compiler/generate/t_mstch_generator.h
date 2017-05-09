@@ -109,7 +109,7 @@ class t_mstch_generator : public t_generator {
   mstch::map dump(const t_program&) const;
   mstch::map dump(const t_struct&, bool shallow = false) const;
   mstch::map dump(const t_field&) const;
-  mstch::map dump(const t_type&, const int32_t depth = 0) const;
+  mstch::map dump(const t_type&) const;
   mstch::map dump(const t_enum&) const;
   mstch::map dump(const t_enum_value&) const;
   mstch::map dump(const t_service&) const;
@@ -132,7 +132,7 @@ class t_mstch_generator : public t_generator {
   virtual mstch::map extend_program(const t_program&) const;
   virtual mstch::map extend_struct(const t_struct&) const;
   virtual mstch::map extend_field(const t_field&) const;
-  virtual mstch::map extend_type(const t_type&, const int32_t depth = 0) const;
+  virtual mstch::map extend_type(const t_type&) const;
   virtual mstch::map extend_enum(const t_enum&) const;
   virtual mstch::map extend_enum_value(const t_enum_value&) const;
   virtual mstch::map extend_service(const t_service&) const;

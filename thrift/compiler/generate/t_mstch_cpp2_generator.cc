@@ -36,7 +36,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   mstch::map extend_program(const t_program&) const override;
   mstch::map extend_service(const t_service&) const override;
   mstch::map extend_struct(const t_struct&) const override;
-  mstch::map extend_type(const t_type& t, const int32_t depth) const override;
+  mstch::map extend_type(const t_type& t) const override;
 
  private:
   bool get_is_eb(const t_function& fn) const;
@@ -137,26 +137,16 @@ mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) const {
 
   std::vector<t_field*> s_members = s.get_members();
 
-  // obtain base types
-  std::vector<t_field*> base_members;
-  std::copy_if(
-    s_members.begin(),
-    s_members.end(),
-    std::back_inserter(base_members),
-    [](t_field* f){ return f->get_type()->is_base_type(); }
-  );
-  m.emplace("base_fields?", !base_members.empty());
-  m.emplace("base_fields", this->dump_elems(base_members));
-
- // obtain container types
-  std::vector<t_field*> container_members;
-  std::copy_if(
-    s_members.begin(),
-    s_members.end(),
-    std::back_inserter(container_members),
-    [](t_field* f){ return f->get_type()->is_container(); }
-  );
-  m.emplace("container_fields", this->dump_elems(container_members));
+  // Check if the struct contains any base field
+  auto const has_base_field = [&] {
+    for (auto const& field : s.get_members()) {
+      if (field->get_type()->is_base_type()) {
+        return std::to_string(0);
+      }
+    }
+    return std::string();
+  }();
+  m.emplace("base_fields?", has_base_field);
 
   // Filter fields according to the following criteria:
   // Get all base_types but strings (empty and non-empty)
@@ -171,11 +161,13 @@ mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) const {
         const t_type* t = resolve_typedef(f->get_type());
         return (t->is_base_type() && !t->is_string()) ||
             (t->is_string() && f->get_value() != nullptr) ||
-            (t->is_container() && f->get_value() != nullptr) ||
             (t->is_container() && f->get_value() != nullptr);
       });
   m.emplace("filtered_fields", this->dump_elems(filtered_fields));
 
+  // Check if all the struct elements:
+  // Are only containers (list, map, set) that recursively end up in
+  // base types or enums
   std::function<bool(t_type const*)> is_orderable = [&](t_type const* type) {
     if (type->is_base_type()) {
       return true;
@@ -206,40 +198,8 @@ mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) const {
   return m;
 }
 
-mstch::map t_mstch_cpp2_generator::extend_type(
-    const t_type& t,
-    const int32_t depth) const {
+mstch::map t_mstch_cpp2_generator::extend_type(const t_type& t) const {
   mstch::map m;
-
-  // Indent recursive code generation
-  m.emplace("indent2", std::string(depth * 2, ' '));
-  m.emplace("indent4", std::string(depth * 4, ' '));
-
-  // Determine if you are inside a container
-  if (depth > 0) {
-    m.emplace("inner_container?", std::to_string(depth));
-  }
-
-  auto const cxx_value_prefix = [&] {
-    using TypeValue = t_types::TypeValue;
-    switch (t.get_type_value()) {
-      case TypeValue::TYPE_BYTE: return std::string("static_cast<int8_t>(");
-      case TypeValue::TYPE_I16: return std::string("static_cast<int16_t>(");
-      default: return std::string();
-    }
-  }();
-  m.emplace("cxx_value_prefix", cxx_value_prefix);
-
-  auto const cxx_value_suffix = [&] {
-    using TypeValue = t_types::TypeValue;
-    switch (t.get_type_value()) {
-      case TypeValue::TYPE_BYTE: return std::string(")");
-      case TypeValue::TYPE_I16: return std::string(")");
-      case TypeValue::TYPE_I64: return std::string("LL");
-      default: return std::string();
-    }
-  }();
-  m.emplace("cxx_value_suffix", cxx_value_suffix);
 
   m.emplace("resolves_to_base?", resolve_typedef(&t)->is_base_type());
   m.emplace("resolves_to_container?", resolve_typedef(&t)->is_container());

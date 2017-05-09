@@ -34,7 +34,7 @@ Struct() :
     %><%#field:type%><%!
       %>      <%field:name%>(<%!
       %><%#field:value%><%!
-        %><%type:cxx_value_prefix%><% > common/iterate_const_values%><%type:cxx_value_suffix%><%!
+        %><% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%><%!
       %><%/field:value%><%!
       %><%^field:value%><%!
         %>0<%!
