@@ -48,6 +48,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
 
   mstch::array get_namespace(const t_program& program) const;
   std::string get_include_prefix(const t_program& program) const;
+  const t_type* resolve_typedef(const t_type* type) const;
 
   std::unique_ptr<std::string> include_prefix_;
   std::vector<std::array<std::string, 3>> protocols_;
@@ -163,15 +164,44 @@ mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) const {
   // Get all non empty containers
   std::vector<t_field*> filtered_fields;
   std::copy_if(
-    s_members.begin(),
-    s_members.end(),
-    std::back_inserter(filtered_fields),
-    [](t_field* f){
-      return (f->get_type()->is_base_type() && !f->get_type()->is_string()) ||
-      (f->get_type()->is_string() && f->get_value() != nullptr) ||
-      (f->get_type()->is_container() && f->get_value() != nullptr);
-  });
+      s_members.begin(),
+      s_members.end(),
+      std::back_inserter(filtered_fields),
+      [&](t_field* f) {
+        const t_type* t = resolve_typedef(f->get_type());
+        return (t->is_base_type() && !t->is_string()) ||
+            (t->is_string() && f->get_value() != nullptr) ||
+            (t->is_container() && f->get_value() != nullptr) ||
+            (t->is_container() && f->get_value() != nullptr);
+      });
   m.emplace("filtered_fields", this->dump_elems(filtered_fields));
+
+  std::function<bool(t_type const*)> is_orderable = [&](t_type const* type) {
+    if (type->is_base_type()) {
+      return true;
+    }
+    if (type->is_enum()) {
+      return true;
+    }
+    if (type->is_list()) {
+      return is_orderable(dynamic_cast<t_list const*>(type)->get_elem_type());
+    }
+    if (type->is_set()) {
+      return is_orderable(dynamic_cast<t_set const*>(type)->get_elem_type());
+    }
+    if (type->is_map()) {
+      return is_orderable(dynamic_cast<t_map const*>(type)->get_key_type()) &&
+          is_orderable(dynamic_cast<t_map const*>(type)->get_val_type());
+    }
+    return false;
+  };
+  auto const is_struct_orderable =
+      std::all_of(s.get_members().begin(), s.get_members().end(), [&](auto m) {
+        return is_orderable(m->get_type());
+      });
+  if (is_struct_orderable) {
+    m.emplace("is_struct_orderable?", std::to_string(0));
+  }
 
   return m;
 }
@@ -210,6 +240,9 @@ mstch::map t_mstch_cpp2_generator::extend_type(
     }
   }();
   m.emplace("cxx_value_suffix", cxx_value_suffix);
+
+  m.emplace("resolves_to_base?", resolve_typedef(&t)->is_base_type());
+  m.emplace("resolves_to_container?", resolve_typedef(&t)->is_container());
 
   return m;
 }
@@ -326,6 +359,12 @@ std::string t_mstch_cpp2_generator::get_include_prefix(
   return (path / "gen-cpp2").string() + "/";
 }
 
+const t_type* t_mstch_cpp2_generator::resolve_typedef(const t_type* t) const {
+  while (t->is_typedef()) {
+    t = dynamic_cast<const t_typedef*>(t)->get_type();
+  }
+  return t;
+}
 }
 
 THRIFT_REGISTER_GENERATOR(mstch_cpp2, "cpp2", "");

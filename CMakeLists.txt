@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.1.3 FATAL_ERROR)
 # Package information
 set(PACKAGE_NAME "thrift")
 project(${PACKAGE_NAME} C CXX)
-set(CMAKE_CXX_STANDARD 11) #Requires CMake 3.1.3
+set(CMAKE_CXX_STANDARD 14) #Requires CMake 3.1.3
 
 # Name the top level directories
 set(THRIFT_HOME ${CMAKE_CURRENT_SOURCE_DIR})

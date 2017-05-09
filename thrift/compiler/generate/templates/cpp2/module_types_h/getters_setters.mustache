@@ -16,7 +16,7 @@
 
 %><%!
 %><%#struct:fields%><%#field:type%>
-  <%#type:base?%>
+  <%#type:resolves_to_base?%>
 
     <%^type:string?%>
   <% > Type%> get_<%field:name%>() const {
@@ -45,11 +45,11 @@
     return <%field:name%>;
   }
     <%/type:string?%>
-  <%/type:base?%>
-  <%#type:container?%>
+  <%/type:resolves_to_base?%>
+  <%#type:resolves_to_container?%>
   const <% > Type%>& get_<%field:name%>() const&;
   <% > Type%> get_<%field:name%>() &&;
   template <typename T_containerStruct_<%field:name%>_struct_setter>
   <% > Type%>& set_<%field:name%>(T_containerStruct_<%field:name%>_struct_setter&& <%field:name%>_);
-  <%/type:container?%>
+  <%/type:resolves_to_container?%>
 <%/field:type%><%/struct:fields%>

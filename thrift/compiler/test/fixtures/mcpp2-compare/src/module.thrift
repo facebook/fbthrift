@@ -58,4 +58,7 @@ struct containerStruct {
   11: list<list<list<list<i32>>>> fieldK
   12: set<set<set<bool>>> fieldL
   13: map<set<list<i32>>, map<list<set<string>>, string>> fieldM
+  14: simpleTypeDef fieldN
+  15: complexStructTypeDef fieldO
+  16: list<mostComplexTypeDef> fieldP
 }

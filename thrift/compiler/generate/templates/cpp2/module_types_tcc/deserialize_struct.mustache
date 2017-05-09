@@ -44,13 +44,13 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
       case <%field:key%>:
       {
         if (ftype == apache::thrift::protocol::<% > module_types_tcc/struct_type%>) {
-<%#type:base?%>
+<%#type:resolves_to_base?%>
           xfer += iprot->read<% > module_types_tcc/struct_field_type%>(this-><%field:name%>);
-<%/type:base?%>
-<%#type:container?%>
+<%/type:resolves_to_base?%>
+<%#type:resolves_to_container?%>
           this-><%field:name%> = <% > Type%>();
           xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > Type%>>::read(*iprot, this-><%field:name%>);
-<%/type:container?%>
+<%/type:resolves_to_container?%>
           this->__isset.<%field:name%> = true;
         } else {
           xfer += iprot->skip(ftype);
