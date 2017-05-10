@@ -32,6 +32,8 @@ cimport module.types
 import module.types
 
 from module.clients_wrapper cimport cSimpleServiceAsyncClient, cSimpleServiceClientWrapper
+from module.clients_wrapper cimport cDerivedServiceAsyncClient, cDerivedServiceClientWrapper
+from module.clients_wrapper cimport cRederivedServiceAsyncClient, cRederivedServiceClientWrapper
 
 
 cdef void SimpleService_get_five_callback(
@@ -637,6 +639,36 @@ cdef void SimpleService_contain_enum_callback(
     else:
         citem = make_unique[vector[module.types.cAnEnum]](result.value());
         pyfuture.set_result(module.types.List__AnEnum.create(module.types.move(citem)))
+
+cdef void DerivedService_get_six_callback(
+    cFollyTry[int32_t]&& result,
+    PyObject* future
+):
+    cdef object pyfuture = <object> future
+    cdef int32_t citem
+    if result.hasException():
+        try:
+            result.exception().throw_exception()
+        except Exception as ex:
+            pyfuture.set_exception(ex)
+    else:
+        citem = result.value();
+        pyfuture.set_result(citem)
+
+cdef void RederivedService_get_seven_callback(
+    cFollyTry[int32_t]&& result,
+    PyObject* future
+):
+    cdef object pyfuture = <object> future
+    cdef int32_t citem
+    if result.hasException():
+        try:
+            result.exception().throw_exception()
+        except Exception as ex:
+            pyfuture.set_exception(ex)
+    else:
+        citem = result.value();
+        pyfuture.set_result(citem)
 
 
 cdef class SimpleService(thrift.py3.client.Client):
@@ -1335,6 +1367,164 @@ cdef class SimpleService(thrift.py3.client.Client):
 
 
 cdef void closed_SimpleService_py3_client_callback(
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* fut,
+):
+    cdef object pyfuture = <object> fut
+    pyfuture.set_result(None)
+cdef class DerivedService(SimpleService):
+
+    def __cinit__(DerivedService self):
+        loop = asyncio.get_event_loop()
+        self._connect_future = loop.create_future()
+        self._executor = get_executor()
+
+    cdef const type_info* _typeid(DerivedService self):
+        return &typeid(cDerivedServiceAsyncClient)
+
+    @staticmethod
+    cdef _module_DerivedService_set_client(DerivedService inst, shared_ptr[cDerivedServiceClientWrapper] c_obj):
+        """So the class hierarchy talks to the correct pointer type"""
+        inst._module_DerivedService_client = c_obj
+        SimpleService._module_SimpleService_set_client(inst, <shared_ptr[cSimpleServiceClientWrapper]>c_obj)
+
+    cdef _module_DerivedService_reset_client(DerivedService self):
+        """So the class hierarchy resets the shared pointer up the chain"""
+        self._module_DerivedService_client.reset()
+        SimpleService._module_SimpleService_reset_client(self)
+
+    def __dealloc__(DerivedService self):
+        if self._cRequestChannel or self._module_DerivedService_client:
+            print('client was not cleaned up, use the context manager', file=sys.stderr)
+
+    async def __aenter__(DerivedService self):
+        await self._connect_future
+        if self._cRequestChannel:
+            DerivedService._module_DerivedService_set_client(
+                self,
+                makeClientWrapper[cDerivedServiceAsyncClient, cDerivedServiceClientWrapper](
+                    self._cRequestChannel
+                ),
+            )
+            self._cRequestChannel.reset()
+        else:
+            raise asyncio.InvalidStateError('Client context has been used already')
+        return self
+
+    async def __aexit__(DerivedService self, *exc):
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            deref(self._module_DerivedService_client).disconnect(),
+            closed_DerivedService_py3_client_callback,
+            <PyObject *>future
+        )
+        # To break any future usage of this client
+        badfuture = loop.create_future()
+        badfuture.set_exception(asyncio.InvalidStateError('Client Out of Context'))
+        badfuture.exception()
+        self._connect_future = badfuture
+        await future
+        self._module_DerivedService_reset_client()
+
+    async def get_six(
+            DerivedService self):
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[int32_t](
+            self._executor,
+            deref(self._module_DerivedService_client).get_six(
+            ),
+            DerivedService_get_six_callback,
+            <PyObject *> future
+        )
+        return await future
+
+
+
+cdef void closed_DerivedService_py3_client_callback(
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* fut,
+):
+    cdef object pyfuture = <object> fut
+    pyfuture.set_result(None)
+cdef class RederivedService(DerivedService):
+
+    def __cinit__(RederivedService self):
+        loop = asyncio.get_event_loop()
+        self._connect_future = loop.create_future()
+        self._executor = get_executor()
+
+    cdef const type_info* _typeid(RederivedService self):
+        return &typeid(cRederivedServiceAsyncClient)
+
+    @staticmethod
+    cdef _module_RederivedService_set_client(RederivedService inst, shared_ptr[cRederivedServiceClientWrapper] c_obj):
+        """So the class hierarchy talks to the correct pointer type"""
+        inst._module_RederivedService_client = c_obj
+        DerivedService._module_DerivedService_set_client(inst, <shared_ptr[cDerivedServiceClientWrapper]>c_obj)
+
+    cdef _module_RederivedService_reset_client(RederivedService self):
+        """So the class hierarchy resets the shared pointer up the chain"""
+        self._module_RederivedService_client.reset()
+        DerivedService._module_DerivedService_reset_client(self)
+
+    def __dealloc__(RederivedService self):
+        if self._cRequestChannel or self._module_RederivedService_client:
+            print('client was not cleaned up, use the context manager', file=sys.stderr)
+
+    async def __aenter__(RederivedService self):
+        await self._connect_future
+        if self._cRequestChannel:
+            RederivedService._module_RederivedService_set_client(
+                self,
+                makeClientWrapper[cRederivedServiceAsyncClient, cRederivedServiceClientWrapper](
+                    self._cRequestChannel
+                ),
+            )
+            self._cRequestChannel.reset()
+        else:
+            raise asyncio.InvalidStateError('Client context has been used already')
+        return self
+
+    async def __aexit__(RederivedService self, *exc):
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            deref(self._module_RederivedService_client).disconnect(),
+            closed_RederivedService_py3_client_callback,
+            <PyObject *>future
+        )
+        # To break any future usage of this client
+        badfuture = loop.create_future()
+        badfuture.set_exception(asyncio.InvalidStateError('Client Out of Context'))
+        badfuture.exception()
+        self._connect_future = badfuture
+        await future
+        self._module_RederivedService_reset_client()
+
+    async def get_seven(
+            RederivedService self):
+        self._check_connect_future()
+        loop = asyncio.get_event_loop()
+        future = loop.create_future()
+        bridgeFutureWith[int32_t](
+            self._executor,
+            deref(self._module_RederivedService_client).get_seven(
+            ),
+            RederivedService_get_seven_callback,
+            <PyObject *> future
+        )
+        return await future
+
+
+
+cdef void closed_RederivedService_py3_client_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* fut,
 ):

@@ -40,7 +40,7 @@ created by the thrift compiler for generated cpp2 code.
 
 {{#program:services}}
 class {{service:name}}Wrapper : {{!
-  }}{{#service:extends}}virtual public {{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}Wrapper, {{/service:extends}}{{!
+  }}{{#service:extends}}public {{#service:cppNamespaces}}{{value}}::{{/service:cppNamespaces}}{{service:name}}Wrapper, {{/service:extends}}{{!
   }}virtual public {{service:name}}SvIf{{!
 }} {
 {{^service:extends?}}

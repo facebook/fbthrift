@@ -345,5 +345,55 @@ SimpleServiceClientWrapper::contain_enum(
 }
 
 
+DerivedServiceClientWrapper::DerivedServiceClientWrapper(
+    std::shared_ptr<py3::simple::DerivedServiceAsyncClient> async_client) : 
+    SimpleServiceClientWrapper(async_client),
+    async_client(async_client) {}
+
+
+folly::Future<folly::Unit> DerivedServiceClientWrapper::disconnect() {
+  return folly::via(
+    this->async_client->getChannel()->getEventBase(),
+    [this] { disconnectInLoop(); });
+}
+
+void DerivedServiceClientWrapper::disconnectInLoop() {
+    async_client.reset();
+    py3::simple::SimpleServiceClientWrapper::disconnectInLoop();
+}
+
+
+folly::Future<int32_t>
+DerivedServiceClientWrapper::get_six() {
+ return async_client->future_get_six(
+ );
+}
+
+
+RederivedServiceClientWrapper::RederivedServiceClientWrapper(
+    std::shared_ptr<py3::simple::RederivedServiceAsyncClient> async_client) : 
+    DerivedServiceClientWrapper(async_client),
+    async_client(async_client) {}
+
+
+folly::Future<folly::Unit> RederivedServiceClientWrapper::disconnect() {
+  return folly::via(
+    this->async_client->getChannel()->getEventBase(),
+    [this] { disconnectInLoop(); });
+}
+
+void RederivedServiceClientWrapper::disconnectInLoop() {
+    async_client.reset();
+    py3::simple::DerivedServiceClientWrapper::disconnectInLoop();
+}
+
+
+folly::Future<int32_t>
+RederivedServiceClientWrapper::get_seven() {
+ return async_client->future_get_seven(
+ );
+}
+
+
 } // namespace py3
 } // namespace simple

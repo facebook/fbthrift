@@ -15,7 +15,7 @@
 
 namespace cpp2 {
 
-class ExtendTestServiceWrapper : virtual public cpp2::HsTestServiceWrapper, virtual public ExtendTestServiceSvIf {
+class ExtendTestServiceWrapper : public cpp2::HsTestServiceWrapper, virtual public ExtendTestServiceSvIf {
   public:
     explicit ExtendTestServiceWrapper(PyObject *if_object, folly::Executor *exc);
     folly::Future<bool> future_check(

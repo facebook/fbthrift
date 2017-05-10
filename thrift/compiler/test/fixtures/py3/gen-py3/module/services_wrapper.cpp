@@ -778,5 +778,57 @@ the_enum = std::move(the_enum)    ]() mutable {
 std::shared_ptr<apache::thrift::ServerInterface> SimpleServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<SimpleServiceWrapper>(if_object, exc);
 }
+
+
+DerivedServiceWrapper::DerivedServiceWrapper(PyObject *obj, folly::Executor* exc)
+  : py3::simple::SimpleServiceWrapper(obj, exc)
+  {
+    import_module__services();
+  }
+
+folly::Future<int32_t> DerivedServiceWrapper::future_get_six() {
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  folly::via(
+    this->executor,
+    [this,
+     promise = std::move(promise)    ]() mutable {
+        call_cy_DerivedService_get_six(
+            this->if_object,
+            std::move(promise)        );
+    });
+
+  return future;
+}
+
+std::shared_ptr<apache::thrift::ServerInterface> DerivedServiceInterface(PyObject *if_object, folly::Executor *exc) {
+  return std::make_shared<DerivedServiceWrapper>(if_object, exc);
+}
+
+
+RederivedServiceWrapper::RederivedServiceWrapper(PyObject *obj, folly::Executor* exc)
+  : py3::simple::DerivedServiceWrapper(obj, exc)
+  {
+    import_module__services();
+  }
+
+folly::Future<int32_t> RederivedServiceWrapper::future_get_seven() {
+  folly::Promise<int32_t> promise;
+  auto future = promise.getFuture();
+  folly::via(
+    this->executor,
+    [this,
+     promise = std::move(promise)    ]() mutable {
+        call_cy_RederivedService_get_seven(
+            this->if_object,
+            std::move(promise)        );
+    });
+
+  return future;
+}
+
+std::shared_ptr<apache::thrift::ServerInterface> RederivedServiceInterface(PyObject *if_object, folly::Executor *exc) {
+  return std::make_shared<RederivedServiceWrapper>(if_object, exc);
+}
 } // namespace py3
 } // namespace simple

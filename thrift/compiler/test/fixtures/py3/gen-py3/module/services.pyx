@@ -35,6 +35,8 @@ import sys
 import traceback
 
 from module.services_wrapper cimport cSimpleServiceInterface
+from module.services_wrapper cimport cDerivedServiceInterface
+from module.services_wrapper cimport cRederivedServiceInterface
 
 
 cdef extern from "<utility>" namespace "std":
@@ -1623,6 +1625,64 @@ async def SimpleService_contain_enum_coro(
     else:
         promise.cPromise.setValue(make_unique[vector[module.types.cAnEnum]](deref((<module.types.List__AnEnum?> result)._vector)))
 
+cdef api void call_cy_DerivedService_get_six(
+    object self,
+    cFollyPromise[int32_t] cPromise
+):  
+    promise = Promise_i32.create(move(cPromise))
+    asyncio.get_event_loop().create_task(
+        DerivedService_get_six_coro(
+            self,
+            promise
+        )
+    )
+
+async def DerivedService_get_six_coro(
+    object self,
+    Promise_i32 promise
+):
+    try:
+      result = await self.get_six()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler get_six:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<int32_t> result)
+
+cdef api void call_cy_RederivedService_get_seven(
+    object self,
+    cFollyPromise[int32_t] cPromise
+):  
+    promise = Promise_i32.create(move(cPromise))
+    asyncio.get_event_loop().create_task(
+        RederivedService_get_seven_coro(
+            self,
+            promise
+        )
+    )
+
+async def RederivedService_get_seven_coro(
+    object self,
+    Promise_i32 promise
+):
+    try:
+      result = await self.get_seven()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler get_seven:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<int32_t> result)
+
 
 cdef class SimpleServiceInterface(
     ServiceInterface
@@ -1870,5 +1930,33 @@ cdef class SimpleServiceInterface(
             self,
             the_enum):
         raise NotImplementedError("async def contain_enum is not implemented")
+
+
+cdef class DerivedServiceInterface(
+    module.services.SimpleServiceInterface
+):
+    def __cinit__(self):
+        self.interface_wrapper = cDerivedServiceInterface(
+            <PyObject *> self,
+            get_executor()
+        )
+
+    async def get_six(
+            self):
+        raise NotImplementedError("async def get_six is not implemented")
+
+
+cdef class RederivedServiceInterface(
+    module.services.DerivedServiceInterface
+):
+    def __cinit__(self):
+        self.interface_wrapper = cRederivedServiceInterface(
+            <PyObject *> self,
+            get_executor()
+        )
+
+    async def get_seven(
+            self):
+        raise NotImplementedError("async def get_seven is not implemented")
 
 

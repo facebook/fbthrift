@@ -38,7 +38,7 @@ class MyRootClientWrapper {
 };
 
 
-class MyNodeClientWrapper : virtual public cpp2::MyRootClientWrapper,  {
+class MyNodeClientWrapper : public cpp2::MyRootClientWrapper {
   protected:
     std::shared_ptr<cpp2::MyNodeAsyncClient> async_client;
   public:
@@ -52,7 +52,7 @@ class MyNodeClientWrapper : virtual public cpp2::MyRootClientWrapper,  {
 };
 
 
-class MyLeafClientWrapper : virtual public cpp2::MyNodeClientWrapper {
+class MyLeafClientWrapper : public cpp2::MyNodeClientWrapper {
   protected:
     std::shared_ptr<cpp2::MyLeafAsyncClient> async_client;
   public:

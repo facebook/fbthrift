@@ -26,6 +26,20 @@ cdef extern from "src/gen-cpp2/SimpleService.h" namespace "py3::simple":
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cSimpleServiceClientWrapper] move(unique_ptr[cSimpleServiceClientWrapper])
 
+cdef extern from "src/gen-cpp2/DerivedService.h" namespace "py3::simple":
+  cdef cppclass cDerivedServiceAsyncClient "py3::simple::DerivedServiceAsyncClient":
+      pass
+
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[cDerivedServiceClientWrapper] move(unique_ptr[cDerivedServiceClientWrapper])
+
+cdef extern from "src/gen-cpp2/RederivedService.h" namespace "py3::simple":
+  cdef cppclass cRederivedServiceAsyncClient "py3::simple::RederivedServiceAsyncClient":
+      pass
+
+cdef extern from "<utility>" namespace "std":
+  cdef unique_ptr[cRederivedServiceClientWrapper] move(unique_ptr[cRederivedServiceClientWrapper])
+
 cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "py3::simple":
   cdef cppclass cSimpleServiceClientWrapper "py3::simple::SimpleServiceClientWrapper":
     cSimpleServiceClientWrapper(
@@ -110,4 +124,16 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "py3::simple":
       vector[string] arg_binaries,)
     cFollyFuture[vector[module.types.cAnEnum]] contain_enum(
       vector[module.types.cAnEnum] arg_the_enum,)
+
+
+  cdef cppclass cDerivedServiceClientWrapper "py3::simple::DerivedServiceClientWrapper"(module.clients_wrapper.cSimpleServiceClientWrapper):
+    cDerivedServiceClientWrapper(
+      shared_ptr[cDerivedServiceAsyncClient] async_client)
+    cFollyFuture[int32_t] get_six()
+
+
+  cdef cppclass cRederivedServiceClientWrapper "py3::simple::RederivedServiceClientWrapper"(module.clients_wrapper.cDerivedServiceClientWrapper):
+    cRederivedServiceClientWrapper(
+      shared_ptr[cRederivedServiceAsyncClient] async_client)
+    cFollyFuture[int32_t] get_seven()
 

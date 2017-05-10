@@ -107,7 +107,7 @@ class MyServicePrioParentClientWrapper {
 };
 
 
-class MyServicePrioChildClientWrapper : virtual public cpp2::MyServicePrioParentClientWrapper {
+class MyServicePrioChildClientWrapper : public cpp2::MyServicePrioParentClientWrapper {
   protected:
     std::shared_ptr<cpp2::MyServicePrioChildAsyncClient> async_client;
   public:

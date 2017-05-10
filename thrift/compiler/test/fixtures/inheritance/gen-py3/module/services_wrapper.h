@@ -29,7 +29,7 @@ class MyRootWrapper : virtual public MyRootSvIf {
 std::shared_ptr<apache::thrift::ServerInterface> MyRootInterface(PyObject *if_object, folly::Executor *exc);
 
 
-class MyNodeWrapper : virtual public cpp2::MyRootWrapper, virtual public MyNodeSvIf {
+class MyNodeWrapper : public cpp2::MyRootWrapper, virtual public MyNodeSvIf {
   public:
     explicit MyNodeWrapper(PyObject *if_object, folly::Executor *exc);
     folly::Future<folly::Unit> future_do_mid() override;
@@ -38,7 +38,7 @@ class MyNodeWrapper : virtual public cpp2::MyRootWrapper, virtual public MyNodeS
 std::shared_ptr<apache::thrift::ServerInterface> MyNodeInterface(PyObject *if_object, folly::Executor *exc);
 
 
-class MyLeafWrapper : virtual public cpp2::MyNodeWrapper, virtual public MyLeafSvIf {
+class MyLeafWrapper : public cpp2::MyNodeWrapper, virtual public MyLeafSvIf {
   public:
     explicit MyLeafWrapper(PyObject *if_object, folly::Executor *exc);
     folly::Future<folly::Unit> future_do_leaf() override;

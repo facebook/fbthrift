@@ -11,3 +11,9 @@ from thrift.py3.server cimport ServiceInterface
 cdef class SimpleServiceInterface(ServiceInterface):
     pass
 
+cdef class DerivedServiceInterface(module.services.SimpleServiceInterface):
+    pass
+
+cdef class RederivedServiceInterface(module.services.DerivedServiceInterface):
+    pass
+

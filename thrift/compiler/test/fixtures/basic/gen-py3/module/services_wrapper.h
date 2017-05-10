@@ -100,7 +100,7 @@ class MyServicePrioParentWrapper : virtual public MyServicePrioParentSvIf {
 std::shared_ptr<apache::thrift::ServerInterface> MyServicePrioParentInterface(PyObject *if_object, folly::Executor *exc);
 
 
-class MyServicePrioChildWrapper : virtual public cpp2::MyServicePrioParentWrapper, virtual public MyServicePrioChildSvIf {
+class MyServicePrioChildWrapper : public cpp2::MyServicePrioParentWrapper, virtual public MyServicePrioChildSvIf {
   public:
     explicit MyServicePrioChildWrapper(PyObject *if_object, folly::Executor *exc);
     folly::Future<folly::Unit> future_pang() override;

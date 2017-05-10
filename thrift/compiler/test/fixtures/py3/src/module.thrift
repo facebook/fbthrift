@@ -107,3 +107,11 @@ service SimpleService {
   set<binary> contain_binary(1: list<binary> binaries)
   list<AnEnum> contain_enum(1:list<AnEnum> the_enum)
 }
+
+service DerivedService extends SimpleService {
+  i32 get_six()
+}
+
+service RederivedService extends DerivedService {
+  i32 get_seven()
+}

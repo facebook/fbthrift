@@ -7,6 +7,8 @@
 
 #pragma once
 #include <src/gen-cpp2/SimpleService.h>
+#include <src/gen-cpp2/DerivedService.h>
+#include <src/gen-cpp2/RederivedService.h>
 
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>
@@ -112,6 +114,34 @@ class SimpleServiceClientWrapper {
       std::vector<std::string> arg_binaries);
     folly::Future<std::vector<py3::simple::AnEnum>> contain_enum(
       std::vector<py3::simple::AnEnum> arg_the_enum);
+};
+
+
+class DerivedServiceClientWrapper : public py3::simple::SimpleServiceClientWrapper {
+  protected:
+    std::shared_ptr<py3::simple::DerivedServiceAsyncClient> async_client;
+  public:
+    explicit DerivedServiceClientWrapper(
+      std::shared_ptr<py3::simple::DerivedServiceAsyncClient> async_client);
+
+    folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
+
+    folly::Future<int32_t> get_six();
+};
+
+
+class RederivedServiceClientWrapper : public py3::simple::DerivedServiceClientWrapper {
+  protected:
+    std::shared_ptr<py3::simple::RederivedServiceAsyncClient> async_client;
+  public:
+    explicit RederivedServiceClientWrapper(
+      std::shared_ptr<py3::simple::RederivedServiceAsyncClient> async_client);
+
+    folly::Future<folly::Unit> disconnect();
+    void disconnectInLoop();
+
+    folly::Future<int32_t> get_seven();
 };
 
 

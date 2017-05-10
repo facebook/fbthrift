@@ -22,7 +22,7 @@
 
 namespace cpp2 {
 
-class ExtendTestServiceClientWrapper : virtual public cpp2::HsTestServiceClientWrapper {
+class ExtendTestServiceClientWrapper : public cpp2::HsTestServiceClientWrapper {
   protected:
     std::shared_ptr<cpp2::ExtendTestServiceAsyncClient> async_client;
   public:
