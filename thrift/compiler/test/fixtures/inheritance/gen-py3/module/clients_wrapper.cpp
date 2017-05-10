@@ -24,6 +24,13 @@ void MyRootClientWrapper::disconnectInLoop() {
     async_client.reset();
 }
 
+void MyRootClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
+    auto headerChannel = async_client->getHeaderChannel();
+    if (headerChannel != nullptr) {
+        headerChannel->setPersistentHeader(key, value);
+    }
+}
+
 
 folly::Future<folly::Unit>
 MyRootClientWrapper::do_root() {
@@ -50,6 +57,7 @@ void MyNodeClientWrapper::disconnectInLoop() {
 }
 
 
+
 folly::Future<folly::Unit>
 MyNodeClientWrapper::do_mid() {
  return async_client->future_do_mid(
@@ -73,6 +81,7 @@ void MyLeafClientWrapper::disconnectInLoop() {
     async_client.reset();
     cpp2::MyNodeClientWrapper::disconnectInLoop();
 }
+
 
 
 folly::Future<folly::Unit>

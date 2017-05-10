@@ -137,6 +137,11 @@ cdef class MyRoot(thrift.py3.client.Client):
         await future
         self._module_MyRoot_reset_client()
 
+    def set_persistent_header(MyRoot self, str key, str value):
+        cdef string ckey = <bytes> key.encode('utf-8')
+        cdef string cvalue = <bytes> value.encode('utf-8')
+        deref(self._module_MyRoot_client).setPersistentHeader(ckey, cvalue)
+
     async def do_root(
             MyRoot self):
         self._check_connect_future()
@@ -216,6 +221,11 @@ cdef class MyNode(MyRoot):
         await future
         self._module_MyNode_reset_client()
 
+    def set_persistent_header(MyNode self, str key, str value):
+        cdef string ckey = <bytes> key.encode('utf-8')
+        cdef string cvalue = <bytes> value.encode('utf-8')
+        deref(self._module_MyNode_client).setPersistentHeader(ckey, cvalue)
+
     async def do_mid(
             MyNode self):
         self._check_connect_future()
@@ -294,6 +304,11 @@ cdef class MyLeaf(MyNode):
         self._connect_future = badfuture
         await future
         self._module_MyLeaf_reset_client()
+
+    def set_persistent_header(MyLeaf self, str key, str value):
+        cdef string ckey = <bytes> key.encode('utf-8')
+        cdef string cvalue = <bytes> value.encode('utf-8')
+        deref(self._module_MyLeaf_client).setPersistentHeader(ckey, cvalue)
 
     async def do_leaf(
             MyLeaf self):

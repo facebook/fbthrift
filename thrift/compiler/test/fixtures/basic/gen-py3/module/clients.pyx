@@ -319,6 +319,11 @@ cdef class MyService(thrift.py3.client.Client):
         await future
         self._module_MyService_reset_client()
 
+    def set_persistent_header(MyService self, str key, str value):
+        cdef string ckey = <bytes> key.encode('utf-8')
+        cdef string cvalue = <bytes> value.encode('utf-8')
+        deref(self._module_MyService_client).setPersistentHeader(ckey, cvalue)
+
     async def ping(
             MyService self):
         self._check_connect_future()
@@ -477,6 +482,11 @@ cdef class MyServiceFast(thrift.py3.client.Client):
         self._connect_future = badfuture
         await future
         self._module_MyServiceFast_reset_client()
+
+    def set_persistent_header(MyServiceFast self, str key, str value):
+        cdef string ckey = <bytes> key.encode('utf-8')
+        cdef string cvalue = <bytes> value.encode('utf-8')
+        deref(self._module_MyServiceFast_client).setPersistentHeader(ckey, cvalue)
 
     async def ping(
             MyServiceFast self):
@@ -637,6 +647,11 @@ cdef class MyServiceEmpty(thrift.py3.client.Client):
         await future
         self._module_MyServiceEmpty_reset_client()
 
+    def set_persistent_header(MyServiceEmpty self, str key, str value):
+        cdef string ckey = <bytes> key.encode('utf-8')
+        cdef string cvalue = <bytes> value.encode('utf-8')
+        deref(self._module_MyServiceEmpty_client).setPersistentHeader(ckey, cvalue)
+
 
 
 cdef void closed_MyServiceEmpty_py3_client_callback(
@@ -699,6 +714,11 @@ cdef class MyServicePrioParent(thrift.py3.client.Client):
         self._connect_future = badfuture
         await future
         self._module_MyServicePrioParent_reset_client()
+
+    def set_persistent_header(MyServicePrioParent self, str key, str value):
+        cdef string ckey = <bytes> key.encode('utf-8')
+        cdef string cvalue = <bytes> value.encode('utf-8')
+        deref(self._module_MyServicePrioParent_client).setPersistentHeader(ckey, cvalue)
 
     async def ping(
             MyServicePrioParent self):
@@ -792,6 +812,11 @@ cdef class MyServicePrioChild(MyServicePrioParent):
         self._connect_future = badfuture
         await future
         self._module_MyServicePrioChild_reset_client()
+
+    def set_persistent_header(MyServicePrioChild self, str key, str value):
+        cdef string ckey = <bytes> key.encode('utf-8')
+        cdef string cvalue = <bytes> value.encode('utf-8')
+        deref(self._module_MyServicePrioChild_client).setPersistentHeader(ckey, cvalue)
 
     async def pang(
             MyServicePrioChild self):

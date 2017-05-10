@@ -24,6 +24,13 @@ void HsTestServiceClientWrapper::disconnectInLoop() {
     async_client.reset();
 }
 
+void HsTestServiceClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
+    auto headerChannel = async_client->getHeaderChannel();
+    if (headerChannel != nullptr) {
+        headerChannel->setPersistentHeader(key, value);
+    }
+}
+
 
 folly::Future<int64_t>
 HsTestServiceClientWrapper::init(

@@ -31,6 +31,8 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
     cRaiserClientWrapper(
       shared_ptr[cRaiserAsyncClient] async_client)
     cFollyFuture[cFollyUnit] disconnect()
+    void setPersistentHeader(const string& key, const string& value)
+
     cFollyFuture[cFollyUnit] doBland()
     cFollyFuture[cFollyUnit] doRaise()
     cFollyFuture[string] get200()

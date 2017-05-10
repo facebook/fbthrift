@@ -45,17 +45,21 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
     cMyRootClientWrapper(
       shared_ptr[cMyRootAsyncClient] async_client)
     cFollyFuture[cFollyUnit] disconnect()
+    void setPersistentHeader(const string& key, const string& value)
+
     cFollyFuture[cFollyUnit] do_root()
 
 
   cdef cppclass cMyNodeClientWrapper "cpp2::MyNodeClientWrapper"(module.clients_wrapper.cMyRootClientWrapper):
     cMyNodeClientWrapper(
       shared_ptr[cMyNodeAsyncClient] async_client)
+
     cFollyFuture[cFollyUnit] do_mid()
 
 
   cdef cppclass cMyLeafClientWrapper "cpp2::MyLeafClientWrapper"(module.clients_wrapper.cMyNodeClientWrapper):
     cMyLeafClientWrapper(
       shared_ptr[cMyLeafAsyncClient] async_client)
+
     cFollyFuture[cFollyUnit] do_leaf()
 

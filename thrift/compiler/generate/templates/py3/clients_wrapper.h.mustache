@@ -59,6 +59,9 @@ class {{service:name}}ClientWrapper{{#service:extends?}} : {{/service:extends?}}
 
     folly::Future<folly::Unit> disconnect();
     void disconnectInLoop();
+{{^service:extends?}}
+    void setPersistentHeader(const std::string& key, const std::string& value);
+{{/service:extends?}}
 
 {{#service:functions}}
     folly::Future<{{#function:returnType}}{{> CppValueFieldType}}{{/function:returnType}}> {{function:name}}({{#function:args}}

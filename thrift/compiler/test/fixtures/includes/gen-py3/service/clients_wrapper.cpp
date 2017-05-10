@@ -24,6 +24,13 @@ void MyServiceClientWrapper::disconnectInLoop() {
     async_client.reset();
 }
 
+void MyServiceClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
+    auto headerChannel = async_client->getHeaderChannel();
+    if (headerChannel != nullptr) {
+        headerChannel->setPersistentHeader(key, value);
+    }
+}
+
 
 folly::Future<folly::Unit>
 MyServiceClientWrapper::query(

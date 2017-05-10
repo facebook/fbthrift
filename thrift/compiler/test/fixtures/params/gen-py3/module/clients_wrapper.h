@@ -31,6 +31,7 @@ class NestedContainersClientWrapper {
 
     folly::Future<folly::Unit> disconnect();
     void disconnectInLoop();
+    void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<folly::Unit> mapList(
       std::map<int32_t,std::vector<int32_t>> arg_foo);

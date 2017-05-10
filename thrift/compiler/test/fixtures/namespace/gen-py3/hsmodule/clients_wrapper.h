@@ -31,6 +31,7 @@ class HsTestServiceClientWrapper {
 
     folly::Future<folly::Unit> disconnect();
     void disconnectInLoop();
+    void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<int64_t> init(
       int64_t arg_int1);

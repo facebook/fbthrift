@@ -35,6 +35,7 @@ class MyServiceClientWrapper {
 
     folly::Future<folly::Unit> disconnect();
     void disconnectInLoop();
+    void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<folly::Unit> ping();
     folly::Future<std::string> getRandomData();
@@ -61,6 +62,7 @@ class MyServiceFastClientWrapper {
 
     folly::Future<folly::Unit> disconnect();
     void disconnectInLoop();
+    void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<folly::Unit> ping();
     folly::Future<std::string> getRandomData();
@@ -87,6 +89,7 @@ class MyServiceEmptyClientWrapper {
 
     folly::Future<folly::Unit> disconnect();
     void disconnectInLoop();
+    void setPersistentHeader(const std::string& key, const std::string& value);
 
 };
 
@@ -101,6 +104,7 @@ class MyServicePrioParentClientWrapper {
 
     folly::Future<folly::Unit> disconnect();
     void disconnectInLoop();
+    void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<folly::Unit> ping();
     folly::Future<folly::Unit> pong();

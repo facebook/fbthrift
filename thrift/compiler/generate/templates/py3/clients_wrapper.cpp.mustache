@@ -53,6 +53,15 @@ void {{service:name}}ClientWrapper::disconnectInLoop() {
     {{/service:extends}}
 }
 
+{{^service:extends?}}
+void {{service:name}}ClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
+    auto headerChannel = async_client->getHeaderChannel();
+    if (headerChannel != nullptr) {
+        headerChannel->setPersistentHeader(key, value);
+    }
+}
+{{/service:extends?}}
+
 
 {{#service:functions}}
 folly::Future<{{#function:returnType}}{{> CppValueFieldType}}{{/function:returnType}}>

@@ -31,6 +31,8 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
     cTestServiceClientWrapper(
       shared_ptr[cTestServiceAsyncClient] async_client)
     cFollyFuture[cFollyUnit] disconnect()
+    void setPersistentHeader(const string& key, const string& value)
+
     cFollyFuture[int64_t] init(
       int64_t arg_int1,)
 

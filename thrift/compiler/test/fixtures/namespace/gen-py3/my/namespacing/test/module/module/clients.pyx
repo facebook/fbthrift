@@ -105,6 +105,11 @@ cdef class TestService(thrift.py3.client.Client):
         await future
         self._module_TestService_reset_client()
 
+    def set_persistent_header(TestService self, str key, str value):
+        cdef string ckey = <bytes> key.encode('utf-8')
+        cdef string cvalue = <bytes> value.encode('utf-8')
+        deref(self._module_TestService_client).setPersistentHeader(ckey, cvalue)
+
     async def init(
             TestService self,
             arg_int1):

@@ -59,6 +59,8 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
     cMyServiceClientWrapper(
       shared_ptr[cMyServiceAsyncClient] async_client)
     cFollyFuture[cFollyUnit] disconnect()
+    void setPersistentHeader(const string& key, const string& value)
+
     cFollyFuture[cFollyUnit] ping()
     cFollyFuture[string] getRandomData()
     cFollyFuture[cbool] hasDataById(
@@ -77,6 +79,8 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
     cMyServiceFastClientWrapper(
       shared_ptr[cMyServiceFastAsyncClient] async_client)
     cFollyFuture[cFollyUnit] disconnect()
+    void setPersistentHeader(const string& key, const string& value)
+
     cFollyFuture[cFollyUnit] ping()
     cFollyFuture[string] getRandomData()
     cFollyFuture[cbool] hasDataById(
@@ -95,12 +99,16 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
     cMyServiceEmptyClientWrapper(
       shared_ptr[cMyServiceEmptyAsyncClient] async_client)
     cFollyFuture[cFollyUnit] disconnect()
+    void setPersistentHeader(const string& key, const string& value)
+
 
 
   cdef cppclass cMyServicePrioParentClientWrapper "cpp2::MyServicePrioParentClientWrapper":
     cMyServicePrioParentClientWrapper(
       shared_ptr[cMyServicePrioParentAsyncClient] async_client)
     cFollyFuture[cFollyUnit] disconnect()
+    void setPersistentHeader(const string& key, const string& value)
+
     cFollyFuture[cFollyUnit] ping()
     cFollyFuture[cFollyUnit] pong()
 
@@ -108,5 +116,6 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
   cdef cppclass cMyServicePrioChildClientWrapper "cpp2::MyServicePrioChildClientWrapper"(module.clients_wrapper.cMyServicePrioParentClientWrapper):
     cMyServicePrioChildClientWrapper(
       shared_ptr[cMyServicePrioChildAsyncClient] async_client)
+
     cFollyFuture[cFollyUnit] pang()
 

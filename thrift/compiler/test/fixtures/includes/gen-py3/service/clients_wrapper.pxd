@@ -33,6 +33,8 @@ cdef extern from "src/gen-py3/service/clients_wrapper.h" namespace "cpp2":
     cMyServiceClientWrapper(
       shared_ptr[cMyServiceAsyncClient] async_client)
     cFollyFuture[cFollyUnit] disconnect()
+    void setPersistentHeader(const string& key, const string& value)
+
     cFollyFuture[cFollyUnit] query(
       module.types.cMyStruct arg_s,
       includes.types.cIncluded arg_i,)

@@ -165,6 +165,11 @@ cdef class NestedContainers(thrift.py3.client.Client):
         await future
         self._module_NestedContainers_reset_client()
 
+    def set_persistent_header(NestedContainers self, str key, str value):
+        cdef string ckey = <bytes> key.encode('utf-8')
+        cdef string cvalue = <bytes> value.encode('utf-8')
+        deref(self._module_NestedContainers_client).setPersistentHeader(ckey, cvalue)
+
     async def mapList(
             NestedContainers self,
             arg_foo):

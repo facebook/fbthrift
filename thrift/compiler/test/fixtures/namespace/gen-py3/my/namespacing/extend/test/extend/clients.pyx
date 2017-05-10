@@ -112,6 +112,11 @@ cdef class ExtendTestService(hsmodule.clients.HsTestService):
         await future
         self._extend_ExtendTestService_reset_client()
 
+    def set_persistent_header(ExtendTestService self, str key, str value):
+        cdef string ckey = <bytes> key.encode('utf-8')
+        cdef string cvalue = <bytes> value.encode('utf-8')
+        deref(self._extend_ExtendTestService_client).setPersistentHeader(ckey, cvalue)
+
     async def check(
             ExtendTestService self,
             arg_struct1):

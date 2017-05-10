@@ -24,6 +24,13 @@ void MyServiceClientWrapper::disconnectInLoop() {
     async_client.reset();
 }
 
+void MyServiceClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
+    auto headerChannel = async_client->getHeaderChannel();
+    if (headerChannel != nullptr) {
+        headerChannel->setPersistentHeader(key, value);
+    }
+}
+
 
 folly::Future<folly::Unit>
 MyServiceClientWrapper::ping() {
@@ -88,6 +95,13 @@ folly::Future<folly::Unit> MyServiceFastClientWrapper::disconnect() {
 
 void MyServiceFastClientWrapper::disconnectInLoop() {
     async_client.reset();
+}
+
+void MyServiceFastClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
+    auto headerChannel = async_client->getHeaderChannel();
+    if (headerChannel != nullptr) {
+        headerChannel->setPersistentHeader(key, value);
+    }
 }
 
 
@@ -156,6 +170,13 @@ void MyServiceEmptyClientWrapper::disconnectInLoop() {
     async_client.reset();
 }
 
+void MyServiceEmptyClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
+    auto headerChannel = async_client->getHeaderChannel();
+    if (headerChannel != nullptr) {
+        headerChannel->setPersistentHeader(key, value);
+    }
+}
+
 
 
 MyServicePrioParentClientWrapper::MyServicePrioParentClientWrapper(
@@ -172,6 +193,13 @@ folly::Future<folly::Unit> MyServicePrioParentClientWrapper::disconnect() {
 
 void MyServicePrioParentClientWrapper::disconnectInLoop() {
     async_client.reset();
+}
+
+void MyServicePrioParentClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
+    auto headerChannel = async_client->getHeaderChannel();
+    if (headerChannel != nullptr) {
+        headerChannel->setPersistentHeader(key, value);
+    }
 }
 
 
@@ -204,6 +232,7 @@ void MyServicePrioChildClientWrapper::disconnectInLoop() {
     async_client.reset();
     cpp2::MyServicePrioParentClientWrapper::disconnectInLoop();
 }
+
 
 
 folly::Future<folly::Unit>

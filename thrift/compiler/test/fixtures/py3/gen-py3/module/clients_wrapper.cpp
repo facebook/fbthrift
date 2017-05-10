@@ -25,6 +25,13 @@ void SimpleServiceClientWrapper::disconnectInLoop() {
     async_client.reset();
 }
 
+void SimpleServiceClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
+    auto headerChannel = async_client->getHeaderChannel();
+    if (headerChannel != nullptr) {
+        headerChannel->setPersistentHeader(key, value);
+    }
+}
+
 
 folly::Future<int32_t>
 SimpleServiceClientWrapper::get_five() {
@@ -363,6 +370,7 @@ void DerivedServiceClientWrapper::disconnectInLoop() {
 }
 
 
+
 folly::Future<int32_t>
 DerivedServiceClientWrapper::get_six() {
  return async_client->future_get_six(
@@ -386,6 +394,7 @@ void RederivedServiceClientWrapper::disconnectInLoop() {
     async_client.reset();
     py3::simple::DerivedServiceClientWrapper::disconnectInLoop();
 }
+
 
 
 folly::Future<int32_t>

@@ -34,6 +34,7 @@ class SimpleServiceClientWrapper {
 
     folly::Future<folly::Unit> disconnect();
     void disconnectInLoop();
+    void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<int32_t> get_five();
     folly::Future<int32_t> add_five(

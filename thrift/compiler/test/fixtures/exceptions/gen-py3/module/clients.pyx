@@ -166,6 +166,11 @@ cdef class Raiser(thrift.py3.client.Client):
         await future
         self._module_Raiser_reset_client()
 
+    def set_persistent_header(Raiser self, str key, str value):
+        cdef string ckey = <bytes> key.encode('utf-8')
+        cdef string cvalue = <bytes> value.encode('utf-8')
+        deref(self._module_Raiser_client).setPersistentHeader(ckey, cvalue)
+
     async def doBland(
             Raiser self):
         self._check_connect_future()

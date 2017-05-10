@@ -726,6 +726,11 @@ cdef class SimpleService(thrift.py3.client.Client):
         await future
         self._module_SimpleService_reset_client()
 
+    def set_persistent_header(SimpleService self, str key, str value):
+        cdef string ckey = <bytes> key.encode('utf-8')
+        cdef string cvalue = <bytes> value.encode('utf-8')
+        deref(self._module_SimpleService_client).setPersistentHeader(ckey, cvalue)
+
     async def get_five(
             SimpleService self):
         self._check_connect_future()
@@ -1429,6 +1434,11 @@ cdef class DerivedService(SimpleService):
         await future
         self._module_DerivedService_reset_client()
 
+    def set_persistent_header(DerivedService self, str key, str value):
+        cdef string ckey = <bytes> key.encode('utf-8')
+        cdef string cvalue = <bytes> value.encode('utf-8')
+        deref(self._module_DerivedService_client).setPersistentHeader(ckey, cvalue)
+
     async def get_six(
             DerivedService self):
         self._check_connect_future()
@@ -1507,6 +1517,11 @@ cdef class RederivedService(DerivedService):
         self._connect_future = badfuture
         await future
         self._module_RederivedService_reset_client()
+
+    def set_persistent_header(RederivedService self, str key, str value):
+        cdef string ckey = <bytes> key.encode('utf-8')
+        cdef string cvalue = <bytes> value.encode('utf-8')
+        deref(self._module_RederivedService_client).setPersistentHeader(ckey, cvalue)
 
     async def get_seven(
             RederivedService self):

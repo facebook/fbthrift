@@ -26,6 +26,7 @@ void ExtendTestServiceClientWrapper::disconnectInLoop() {
 }
 
 
+
 folly::Future<bool>
 ExtendTestServiceClientWrapper::check(
     cpp2::HsFoo arg_struct1) {

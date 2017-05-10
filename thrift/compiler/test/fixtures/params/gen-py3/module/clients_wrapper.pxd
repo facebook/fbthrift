@@ -31,6 +31,8 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "cpp2":
     cNestedContainersClientWrapper(
       shared_ptr[cNestedContainersAsyncClient] async_client)
     cFollyFuture[cFollyUnit] disconnect()
+    void setPersistentHeader(const string& key, const string& value)
+
     cFollyFuture[cFollyUnit] mapList(
       cmap[int32_t,vector[int32_t]] arg_foo,)
     cFollyFuture[cFollyUnit] mapSet(

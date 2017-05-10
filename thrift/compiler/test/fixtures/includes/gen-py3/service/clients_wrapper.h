@@ -31,6 +31,7 @@ class MyServiceClientWrapper {
 
     folly::Future<folly::Unit> disconnect();
     void disconnectInLoop();
+    void setPersistentHeader(const std::string& key, const std::string& value);
 
     folly::Future<folly::Unit> query(
       cpp2::MyStruct arg_s, 

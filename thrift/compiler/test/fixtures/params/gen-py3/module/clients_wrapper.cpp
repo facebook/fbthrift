@@ -24,6 +24,13 @@ void NestedContainersClientWrapper::disconnectInLoop() {
     async_client.reset();
 }
 
+void NestedContainersClientWrapper::setPersistentHeader(const std::string& key, const std::string& value) {
+    auto headerChannel = async_client->getHeaderChannel();
+    if (headerChannel != nullptr) {
+        headerChannel->setPersistentHeader(key, value);
+    }
+}
+
 
 folly::Future<folly::Unit>
 NestedContainersClientWrapper::mapList(

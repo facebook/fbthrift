@@ -32,6 +32,7 @@ cdef extern from "src/gen-py3/extend/clients_wrapper.h" namespace "cpp2":
   cdef cppclass cExtendTestServiceClientWrapper "cpp2::ExtendTestServiceClientWrapper"(hsmodule.clients_wrapper.cHsTestServiceClientWrapper):
     cExtendTestServiceClientWrapper(
       shared_ptr[cExtendTestServiceAsyncClient] async_client)
+
     cFollyFuture[cbool] check(
       hsmodule.types.cHsFoo arg_struct1,)
 

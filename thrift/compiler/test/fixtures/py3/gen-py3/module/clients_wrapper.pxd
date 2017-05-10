@@ -45,6 +45,8 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "py3::simple":
     cSimpleServiceClientWrapper(
       shared_ptr[cSimpleServiceAsyncClient] async_client)
     cFollyFuture[cFollyUnit] disconnect()
+    void setPersistentHeader(const string& key, const string& value)
+
     cFollyFuture[int32_t] get_five()
     cFollyFuture[int32_t] add_five(
       int32_t arg_num,)
@@ -129,11 +131,13 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "py3::simple":
   cdef cppclass cDerivedServiceClientWrapper "py3::simple::DerivedServiceClientWrapper"(module.clients_wrapper.cSimpleServiceClientWrapper):
     cDerivedServiceClientWrapper(
       shared_ptr[cDerivedServiceAsyncClient] async_client)
+
     cFollyFuture[int32_t] get_six()
 
 
   cdef cppclass cRederivedServiceClientWrapper "py3::simple::RederivedServiceClientWrapper"(module.clients_wrapper.cDerivedServiceClientWrapper):
     cRederivedServiceClientWrapper(
       shared_ptr[cRederivedServiceAsyncClient] async_client)
+
     cFollyFuture[int32_t] get_seven()
 
