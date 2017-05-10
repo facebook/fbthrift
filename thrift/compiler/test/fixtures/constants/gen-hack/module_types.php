@@ -6,10 +6,18 @@
  *  @generated
  */
 
+/**
+ * Original thrift enum:-
+ * EmptyEnum
+ */
 enum EmptyEnum: int {
 }
 type EmptyEnumType = EmptyEnum;
 
+/**
+ * Original thrift enum:-
+ * City
+ */
 enum City: int {
   NYC = 0;
   MPK = 1;
@@ -18,6 +26,10 @@ enum City: int {
 }
 type CityType = City;
 
+/**
+ * Original thrift enum:-
+ * Company
+ */
 enum Company: int {
   FACEBOOK = 0;
   WHATSAPP = 1;
@@ -26,6 +38,10 @@ enum Company: int {
 }
 type CompanyType = Company;
 
+/**
+ * Original thrift struct:-
+ * Internship
+ */
 class Internship implements \IThriftStruct {
   public static array $_TSPEC = array(
     1 => array(
@@ -48,8 +64,20 @@ class Internship implements \IThriftStruct {
     'employer' => 3,
   };
   const int STRUCTURAL_ID = 749038867953722654;
+  /**
+   * Original thrift field:-
+   * 1: i32 weeks
+   */
   public int $weeks;
+  /**
+   * Original thrift field:-
+   * 2: string title
+   */
   public string $title;
+  /**
+   * Original thrift field:-
+   * 3: enum module.Company employer
+   */
   public ?Company $employer;
 
   public function __construct(?int $weeks = null, ?string $title = null, ?Company $employer = null  ) {
@@ -157,6 +185,10 @@ class Internship implements \IThriftStruct {
 
 }
 
+/**
+ * Original thrift struct:-
+ * UnEnumStruct
+ */
 class UnEnumStruct implements \IThriftStruct {
   public static array $_TSPEC = array(
     1 => array(
@@ -169,6 +201,10 @@ class UnEnumStruct implements \IThriftStruct {
     'city' => 1,
   };
   const int STRUCTURAL_ID = 8709689501091584749;
+  /**
+   * Original thrift field:-
+   * 1: enum module.City city
+   */
   public ?City $city;
 
   public function __construct(?City $city = null  ) {
@@ -239,6 +275,10 @@ class UnEnumStruct implements \IThriftStruct {
 
 }
 
+/**
+ * Original thrift struct:-
+ * Range
+ */
 class Range implements \IThriftStruct {
   public static array $_TSPEC = array(
     1 => array(
@@ -255,7 +295,15 @@ class Range implements \IThriftStruct {
     'max' => 2,
   };
   const int STRUCTURAL_ID = 6850388386457434767;
+  /**
+   * Original thrift field:-
+   * 1: i32 min
+   */
   public int $min;
+  /**
+   * Original thrift field:-
+   * 2: i32 max
+   */
   public int $max;
 
   public function __construct(?int $min = null, ?int $max = null  ) {

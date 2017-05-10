@@ -6,12 +6,24 @@
  *  @generated
  */
 
+/**
+ * Original thrift service:-
+ * MyServiceEmpty
+ */
 interface MyServiceEmptyAsyncIf extends \IThriftAsyncIf {
 }
 
+/**
+ * Original thrift service:-
+ * MyServiceEmpty
+ */
 interface MyServiceEmptyIf extends \IThriftSyncIf {
 }
 
+/**
+ * Original thrift service:-
+ * MyServiceEmpty
+ */
 trait MyServiceEmptyClientBase {
   require extends ThriftClientBase;
 

@@ -6,6 +6,10 @@
  *  @generated
  */
 
+/**
+ * Original thrift enum:-
+ * Animal
+ */
 enum Animal: int {
   DOG = 1;
   CAT = 2;
@@ -13,6 +17,10 @@ enum Animal: int {
 }
 type AnimalType = Animal;
 
+/**
+ * Original thrift struct:-
+ * Color
+ */
 class Color implements \IThriftStruct {
   public static array $_TSPEC = array(
     1 => array(
@@ -39,9 +47,25 @@ class Color implements \IThriftStruct {
     'alpha' => 4,
   };
   const int STRUCTURAL_ID = 5495510740722957663;
+  /**
+   * Original thrift field:-
+   * 1: double red
+   */
   public float $red;
+  /**
+   * Original thrift field:-
+   * 2: double green
+   */
   public float $green;
+  /**
+   * Original thrift field:-
+   * 3: double blue
+   */
   public float $blue;
+  /**
+   * Original thrift field:-
+   * 4: double alpha
+   */
   public float $alpha;
 
   public function __construct(?float $red = null, ?float $green = null, ?float $blue = null, ?float $alpha = null  ) {
@@ -163,6 +187,10 @@ class Color implements \IThriftStruct {
 
 }
 
+/**
+ * Original thrift struct:-
+ * Vehicle
+ */
 class Vehicle implements \IThriftStruct {
   public static array $_TSPEC = array(
     1 => array(
@@ -195,10 +223,30 @@ class Vehicle implements \IThriftStruct {
     'hasAC' => 5,
   };
   const int STRUCTURAL_ID = 2222890000100114781;
+  /**
+   * Original thrift field:-
+   * 1: struct module.Color color
+   */
   public ?Color $color;
+  /**
+   * Original thrift field:-
+   * 2: string licensePlate
+   */
   public ?string $licensePlate;
+  /**
+   * Original thrift field:-
+   * 3: string description
+   */
   public ?string $description;
+  /**
+   * Original thrift field:-
+   * 4: string name
+   */
   public ?string $name;
+  /**
+   * Original thrift field:-
+   * 5: bool hasAC
+   */
   public bool $hasAC;
 
   public function __construct(?Color $color = null, ?string $licensePlate = null, ?string $description = null, ?string $name = null, ?bool $hasAC = null  ) {
@@ -326,6 +374,10 @@ class Vehicle implements \IThriftStruct {
 
 }
 
+/**
+ * Original thrift struct:-
+ * Person
+ */
 class Person implements \IThriftStruct {
   public static array $_TSPEC = array(
     1 => array(
@@ -405,15 +457,55 @@ class Person implements \IThriftStruct {
     'vehicles' => 10,
   };
   const int STRUCTURAL_ID = 5615342512964403351;
+  /**
+   * Original thrift field:-
+   * 1: i64 id
+   */
   public int $id;
+  /**
+   * Original thrift field:-
+   * 2: string name
+   */
   public string $name;
+  /**
+   * Original thrift field:-
+   * 3: i16 age
+   */
   public ?int $age;
+  /**
+   * Original thrift field:-
+   * 4: string address
+   */
   public ?string $address;
+  /**
+   * Original thrift field:-
+   * 5: struct module.Color favoriteColor
+   */
   public ?Color $favoriteColor;
+  /**
+   * Original thrift field:-
+   * 6: set<i64> friends
+   */
   public ?Set<int> $friends;
+  /**
+   * Original thrift field:-
+   * 7: i64 bestFriend
+   */
   public ?int $bestFriend;
+  /**
+   * Original thrift field:-
+   * 8: map<enum module.Animal, string> petNames
+   */
   public ?Map<Animal, string> $petNames;
+  /**
+   * Original thrift field:-
+   * 9: enum module.Animal afraidOfAnimal
+   */
   public ?Animal $afraidOfAnimal;
+  /**
+   * Original thrift field:-
+   * 10: list<struct module.Vehicle> vehicles
+   */
   public ?Vector<Vehicle> $vehicles;
 
   public function __construct(?int $id = null, ?string $name = null, ?int $age = null, ?string $address = null, ?Color $favoriteColor = null, ?Set<int> $friends = null, ?int $bestFriend = null, ?Map<Animal, string> $petNames = null, ?Animal $afraidOfAnimal = null, ?Vector<Vehicle> $vehicles = null  ) {

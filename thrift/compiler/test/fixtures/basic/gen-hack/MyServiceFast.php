@@ -6,6 +6,10 @@
  *  @generated
  */
 
+/**
+ * Original thrift service:-
+ * MyServiceFast
+ */
 interface MyServiceFastAsyncIf extends \IThriftAsyncIf {
   /**
    * Original thrift definition:-
@@ -52,6 +56,10 @@ interface MyServiceFastAsyncIf extends \IThriftAsyncIf {
   public function lobDataById(int $id, string $data): Awaitable<void>;
 }
 
+/**
+ * Original thrift service:-
+ * MyServiceFast
+ */
 interface MyServiceFastIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
@@ -98,6 +106,10 @@ interface MyServiceFastIf extends \IThriftSyncIf {
   public function lobDataById(int $id, string $data): void;
 }
 
+/**
+ * Original thrift service:-
+ * MyServiceFast
+ */
 trait MyServiceFastClientBase {
   require extends ThriftClientBase;
 

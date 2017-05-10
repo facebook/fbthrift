@@ -15,6 +15,10 @@ enum ComplexUnionEnum: int {
   stringRef = 5;
 }
 
+/**
+ * Original thrift struct:-
+ * ComplexUnion
+ */
 class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   public static array $_TSPEC = array(
     1 => array(
@@ -61,10 +65,30 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     'stringRef' => 5,
   };
   const int STRUCTURAL_ID = 6550502502248501709;
+  /**
+   * Original thrift field:-
+   * 1: i64 intValue
+   */
   public ?int $intValue;
+  /**
+   * Original thrift field:-
+   * 2: string stringValue
+   */
   public ?string $stringValue;
+  /**
+   * Original thrift field:-
+   * 3: list<i64> intListValue
+   */
   public ?Vector<int> $intListValue;
+  /**
+   * Original thrift field:-
+   * 4: list<string> stringListValue
+   */
   public ?Vector<string> $stringListValue;
+  /**
+   * Original thrift field:-
+   * 5: string stringRef
+   */
   public ?string $stringRef;
   protected ComplexUnionEnum $_type = ComplexUnionEnum::_EMPTY_;
 
@@ -346,6 +370,10 @@ enum FinalComplexUnionEnum: int {
   thingTwo = 2;
 }
 
+/**
+ * Original thrift struct:-
+ * FinalComplexUnion
+ */
 class FinalComplexUnion implements \IThriftStruct, \IThriftUnion<FinalComplexUnionEnum> {
   public static array $_TSPEC = array(
     1 => array(
@@ -364,7 +392,15 @@ class FinalComplexUnion implements \IThriftStruct, \IThriftUnion<FinalComplexUni
     'thingTwo' => 2,
   };
   const int STRUCTURAL_ID = 8657642278595798833;
+  /**
+   * Original thrift field:-
+   * 1: string thingOne
+   */
   public ?string $thingOne;
+  /**
+   * Original thrift field:-
+   * 2: string thingTwo
+   */
   public ?string $thingTwo;
   protected FinalComplexUnionEnum $_type = FinalComplexUnionEnum::_EMPTY_;
 

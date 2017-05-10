@@ -8,11 +8,19 @@
 
 namespace test\fixtures;
 
+/**
+ * Original thrift enum:-
+ * Enum
+ */
 enum \test\fixtures\Enum: int {
   ENUM = 1;
 }
 type \test\fixtures\EnumType = \test\fixtures\Enum;
 
+/**
+ * Original thrift struct:-
+ * A
+ */
 class A implements \IThriftStruct, \IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
@@ -27,6 +35,10 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     'a' => string,
   );
   const int STRUCTURAL_ID = 7939807933046472325;
+  /**
+   * Original thrift field:-
+   * 1: string a
+   */
   public string $a;
 
   public function __construct(?string $a = null  ) {
@@ -120,6 +132,10 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
 
 }
 
+/**
+ * Original thrift struct:-
+ * B
+ */
 class B implements \IThriftStruct, \IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
@@ -635,41 +651,185 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     'map_of_string_to_list_of_i32_with_default_value' => array<string, array<int>>,
   );
   const int STRUCTURAL_ID = 221533363524252799;
+  /**
+   * Original thrift field:-
+   * 1: struct module.A just_an_A
+   */
   public ?\test\fixtures\A $just_an_A;
+  /**
+   * Original thrift field:-
+   * 2: set<i32> set_of_i32
+   */
   public Set<int> $set_of_i32;
+  /**
+   * Original thrift field:-
+   * 3: list<i32> list_of_i32
+   */
   public Vector<int> $list_of_i32;
+  /**
+   * Original thrift field:-
+   * 4: list<string> list_of_string
+   */
   public Vector<string> $list_of_string;
+  /**
+   * Original thrift field:-
+   * 5: map<string, i32> map_of_string_to_i32
+   */
   public Map<string, int> $map_of_string_to_i32;
+  /**
+   * Original thrift field:-
+   * 6: map<string, struct module.A> map_of_string_to_A
+   */
   public Map<string, \test\fixtures\A> $map_of_string_to_A;
+  /**
+   * Original thrift field:-
+   * 7: map<string, list<i32>> map_of_string_to_list_of_i32
+   */
   public Map<string, Vector<int>> $map_of_string_to_list_of_i32;
+  /**
+   * Original thrift field:-
+   * 8: map<string, list<struct module.A>> map_of_string_to_list_of_A
+   */
   public Map<string, Vector<\test\fixtures\A>> $map_of_string_to_list_of_A;
+  /**
+   * Original thrift field:-
+   * 9: map<string, set<i32>> map_of_string_to_set_of_i32
+   */
   public Map<string, Set<int>> $map_of_string_to_set_of_i32;
+  /**
+   * Original thrift field:-
+   * 10: map<string, map<string, i32>> map_of_string_to_map_of_string_to_i32
+   */
   public Map<string, Map<string, int>> $map_of_string_to_map_of_string_to_i32;
+  /**
+   * Original thrift field:-
+   * 11: map<string, map<string, struct module.A>> map_of_string_to_map_of_string_to_A
+   */
   public Map<string, Map<string, \test\fixtures\A>> $map_of_string_to_map_of_string_to_A;
+  /**
+   * Original thrift field:-
+   * 12: list<set<i32>> list_of_set_of_i32
+   */
   public Vector<Set<int>> $list_of_set_of_i32;
+  /**
+   * Original thrift field:-
+   * 13: list<map<string, list<struct module.A>>> list_of_map_of_string_to_list_of_A
+   */
   public Vector<Map<string, Vector<\test\fixtures\A>>> $list_of_map_of_string_to_list_of_A;
+  /**
+   * Original thrift field:-
+   * 14: list<map<string, struct module.A>> list_of_map_of_string_to_A
+   */
   public Vector<Map<string, \test\fixtures\A>> $list_of_map_of_string_to_A;
+  /**
+   * Original thrift field:-
+   * 15: list<struct module.B> list_of_self
+   */
   public Vector<\test\fixtures\B> $list_of_self;
+  /**
+   * Original thrift field:-
+   * 16: map<string, struct module.B> map_of_string_to_self
+   */
   public Map<string, \test\fixtures\B> $map_of_string_to_self;
+  /**
+   * Original thrift field:-
+   * 17: enum module.Enum just_an_enum
+   */
   public ?\test\fixtures\Enum $just_an_enum;
+  /**
+   * Original thrift field:-
+   * 51: struct module.A optional_just_an_A
+   */
   public ?\test\fixtures\A $optional_just_an_A;
+  /**
+   * Original thrift field:-
+   * 52: set<i32> optional_set_of_i32
+   */
   public ?Set<int> $optional_set_of_i32;
+  /**
+   * Original thrift field:-
+   * 53: list<i32> optional_list_of_i32
+   */
   public ?Vector<int> $optional_list_of_i32;
+  /**
+   * Original thrift field:-
+   * 54: list<string> optional_list_of_string
+   */
   public ?Vector<string> $optional_list_of_string;
+  /**
+   * Original thrift field:-
+   * 55: map<string, i32> optional_map_of_string_to_i32
+   */
   public ?Map<string, int> $optional_map_of_string_to_i32;
+  /**
+   * Original thrift field:-
+   * 56: map<string, struct module.A> optional_map_of_string_to_A
+   */
   public ?Map<string, \test\fixtures\A> $optional_map_of_string_to_A;
+  /**
+   * Original thrift field:-
+   * 57: map<string, list<i32>> optional_map_of_string_to_list_of_i32
+   */
   public ?Map<string, Vector<int>> $optional_map_of_string_to_list_of_i32;
+  /**
+   * Original thrift field:-
+   * 58: map<string, list<struct module.A>> optional_map_of_string_to_list_of_A
+   */
   public ?Map<string, Vector<\test\fixtures\A>> $optional_map_of_string_to_list_of_A;
+  /**
+   * Original thrift field:-
+   * 59: map<string, set<i32>> optional_map_of_string_to_set_of_i32
+   */
   public ?Map<string, Set<int>> $optional_map_of_string_to_set_of_i32;
+  /**
+   * Original thrift field:-
+   * 60: enum module.Enum optional_enum
+   */
   public ?\test\fixtures\Enum $optional_enum;
+  /**
+   * Original thrift field:-
+   * 80: string string_with_default_value
+   */
   public string $string_with_default_value;
+  /**
+   * Original thrift field:-
+   * 81: i32 i32_with_default_value
+   */
   public int $i32_with_default_value;
+  /**
+   * Original thrift field:-
+   * 82: double double_with_default_value
+   */
   public float $double_with_default_value;
+  /**
+   * Original thrift field:-
+   * 83: enum module.Enum enum_with_default_value
+   */
   public ?\test\fixtures\Enum $enum_with_default_value;
+  /**
+   * Original thrift field:-
+   * 84: struct module.A A_with_default_value
+   */
   public ?\test\fixtures\A $A_with_default_value;
+  /**
+   * Original thrift field:-
+   * 85: set<i32> set_of_i32_with_default_value
+   */
   public Set<int> $set_of_i32_with_default_value;
+  /**
+   * Original thrift field:-
+   * 86: map<i32, string> map_of_i32_to_string_with_default_value
+   */
   public Map<int, string> $map_of_i32_to_string_with_default_value;
+  /**
+   * Original thrift field:-
+   * 87: list<string> list_of_string_with_default_value
+   */
   public Vector<string> $list_of_string_with_default_value;
+  /**
+   * Original thrift field:-
+   * 88: map<string, list<i32>> map_of_string_to_list_of_i32_with_default_value
+   */
   public Map<string, Vector<int>> $map_of_string_to_list_of_i32_with_default_value;
 
   public function __construct(?\test\fixtures\A $just_an_A = null, ?Set<int> $set_of_i32 = null, ?Vector<int> $list_of_i32 = null, ?Vector<string> $list_of_string = null, ?Map<string, int> $map_of_string_to_i32 = null, ?Map<string, \test\fixtures\A> $map_of_string_to_A = null, ?Map<string, Vector<int>> $map_of_string_to_list_of_i32 = null, ?Map<string, Vector<\test\fixtures\A>> $map_of_string_to_list_of_A = null, ?Map<string, Set<int>> $map_of_string_to_set_of_i32 = null, ?Map<string, Map<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?Map<string, Map<string, \test\fixtures\A>> $map_of_string_to_map_of_string_to_A = null, ?Vector<Set<int>> $list_of_set_of_i32 = null, ?Vector<Map<string, Vector<\test\fixtures\A>>> $list_of_map_of_string_to_list_of_A = null, ?Vector<Map<string, \test\fixtures\A>> $list_of_map_of_string_to_A = null, ?Vector<\test\fixtures\B> $list_of_self = null, ?Map<string, \test\fixtures\B> $map_of_string_to_self = null, ?\test\fixtures\Enum $just_an_enum = null, ?\test\fixtures\A $optional_just_an_A = null, ?Set<int> $optional_set_of_i32 = null, ?Vector<int> $optional_list_of_i32 = null, ?Vector<string> $optional_list_of_string = null, ?Map<string, int> $optional_map_of_string_to_i32 = null, ?Map<string, \test\fixtures\A> $optional_map_of_string_to_A = null, ?Map<string, Vector<int>> $optional_map_of_string_to_list_of_i32 = null, ?Map<string, Vector<\test\fixtures\A>> $optional_map_of_string_to_list_of_A = null, ?Map<string, Set<int>> $optional_map_of_string_to_set_of_i32 = null, ?\test\fixtures\Enum $optional_enum = null, ?string $string_with_default_value = null, ?int $i32_with_default_value = null, ?float $double_with_default_value = null, ?\test\fixtures\Enum $enum_with_default_value = null, ?\test\fixtures\A $A_with_default_value = null, ?Set<int> $set_of_i32_with_default_value = null, ?Map<int, string> $map_of_i32_to_string_with_default_value = null, ?Vector<string> $list_of_string_with_default_value = null, ?Map<string, Vector<int>> $map_of_string_to_list_of_i32_with_default_value = null  ) {

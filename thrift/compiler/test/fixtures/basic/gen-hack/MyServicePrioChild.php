@@ -6,6 +6,10 @@
  *  @generated
  */
 
+/**
+ * Original thrift service:-
+ * MyServicePrioChild
+ */
 interface MyServicePrioChildAsyncIf extends MyServicePrioParentAsyncIf {
   /**
    * Original thrift definition:-
@@ -15,6 +19,10 @@ interface MyServicePrioChildAsyncIf extends MyServicePrioParentAsyncIf {
   public function pang(): Awaitable<void>;
 }
 
+/**
+ * Original thrift service:-
+ * MyServicePrioChild
+ */
 interface MyServicePrioChildIf extends MyServicePrioParentIf {
   /**
    * Original thrift definition:-
@@ -24,6 +32,10 @@ interface MyServicePrioChildIf extends MyServicePrioParentIf {
   public function pang(): void;
 }
 
+/**
+ * Original thrift service:-
+ * MyServicePrioChild
+ */
 trait MyServicePrioChildClientBase {
   require extends ThriftClientBase;
 

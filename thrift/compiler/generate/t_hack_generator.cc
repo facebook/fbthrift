@@ -37,8 +37,7 @@ class t_hack_generator : public t_oop_generator {
       t_program* program,
       const std::map<std::string, std::string>& parsed_options,
       const std::string& /*option_string*/)
-    : t_oop_generator(program)
-  {
+      : t_oop_generator(program) {
     std::map<std::string, std::string>::const_iterator iter;
 
     json_ = option_is_specified(parsed_options, "json");
@@ -88,12 +87,18 @@ class t_hack_generator : public t_oop_generator {
    */
 
   void generate_php_struct(t_struct* tstruct, bool is_exception);
-  void generate_php_struct_definition(std::ofstream& out, t_struct* tstruct,
-                                        bool is_xception=false,
-                                        bool is_result = false);
-  void _generate_php_struct_definition(std::ofstream& out, t_struct* tstruct,
-                                        bool is_xception=false,
-                                        bool is_result = false);
+  void generate_php_struct_definition(
+      std::ofstream& out,
+      t_struct* tstruct,
+      bool is_xception = false,
+      bool is_result = false,
+      bool is_args = false);
+  void _generate_php_struct_definition(
+      std::ofstream& out,
+      t_struct* tstruct,
+      bool is_xception = false,
+      bool is_result = false,
+      bool is_args = false);
   void generate_php_struct_reader(std::ofstream& out, t_struct* tstruct);
   void generate_php_struct_writer(std::ofstream& out, t_struct* tstruct);
   void generate_php_function_helpers(t_function* tfunction);
@@ -277,7 +282,15 @@ class t_hack_generator : public t_oop_generator {
   std::string type_to_cast(t_type* ttype);
   std::string type_to_enum(t_type* ttype);
   void generate_php_docstring(ofstream& out, t_doc* tdoc);
+  void generate_php_docstring(ofstream& out, t_enum* tenum);
+  void generate_php_docstring(ofstream& out, t_service* tservice);
+  void generate_php_docstring(ofstream& out, t_const* tconst);
   void generate_php_docstring(ofstream& out, t_function* tfunction);
+  void generate_php_docstring(ofstream& out, t_field* tfield);
+  void generate_php_docstring(
+      ofstream& out,
+      t_struct* tstruct,
+      bool is_exception = false);
   void generate_php_docstring_args(ofstream& out,
                                    int start_pos,
                                    t_struct* arg_list);
@@ -928,7 +941,8 @@ void t_hack_generator::generate_const(t_const* tconst) {
   if (!lazy_constants_) {
     // for base php types, use const (guarantees optimization in hphp)
     if (type->is_base_type()) {
-      indent(f_consts_) << "const " << name << " = ";
+      indent(f_consts_) << "const " << type_to_typehint(type) << " " << name
+                        << " = ";
       // cannot use const for objects (incl arrays). use static
     } else {
       indent(f_consts_) << "public static " << type_to_typehint(type) << " $"
@@ -2062,15 +2076,18 @@ void t_hack_generator::generate_php_structural_id(ofstream& out,
   }
 }
 
-void t_hack_generator::generate_php_struct_definition(ofstream& out,
-                                                     t_struct* tstruct,
-                                                     bool is_exception,
-                                                     bool is_result) {
+void t_hack_generator::generate_php_struct_definition(
+    ofstream& out,
+    t_struct* tstruct,
+    bool is_exception,
+    bool is_result,
+    bool is_args) {
   if (tstruct->is_union()) {
     // Generate enum for union before the actual class
     generate_php_union_enum(out, tstruct);
   }
-  _generate_php_struct_definition(out, tstruct, is_exception, is_result);
+  _generate_php_struct_definition(
+      out, tstruct, is_exception, is_result, is_args);
 }
 
 void t_hack_generator::generate_php_union_methods(ofstream& out,
@@ -2148,17 +2165,21 @@ void t_hack_generator::generate_php_union_enum(ofstream& out,
  *
  * @param tstruct The struct definition
  */
-void t_hack_generator::_generate_php_struct_definition(ofstream& out,
-                                                     t_struct* tstruct,
-                                                     bool is_exception,
-                                                     bool is_result) {
+void t_hack_generator::_generate_php_struct_definition(
+    ofstream& out,
+    t_struct* tstruct,
+    bool is_exception,
+    bool is_result,
+    bool is_args) {
   const vector<t_field*>& members = tstruct->get_members();
   vector<t_field*>::const_iterator m_iter;
 
   bool generateAsTrait =
     tstruct->annotations_.find("php.trait") != tstruct->annotations_.end();
 
-  generate_php_docstring(out, tstruct);
+  if (!is_result && !is_args && (is_exception || !generateAsTrait)) {
+    generate_php_docstring(out, tstruct, is_exception);
+  }
   out << (generateAsTrait ? "trait " : "class ")
       << hack_name(tstruct, true);
   if (generateAsTrait) {
@@ -2224,9 +2245,11 @@ void t_hack_generator::_generate_php_struct_definition(ofstream& out,
     string typehint = nullable ? "?" : "";
 
     typehint += type_to_typehint(t);
-
-    indent(out) <<
-        "public " << typehint << " $" << (*m_iter)->get_name() << ";" << endl;
+    if (!is_result && !is_args) {
+      generate_php_docstring(out, *m_iter);
+    }
+    indent(out) << "public " << typehint << " $" << (*m_iter)->get_name() << ";"
+                << endl;
   }
 
   if (tstruct->is_union()) {
@@ -2992,7 +3015,7 @@ void t_hack_generator::generate_service_helpers(t_service* tservice) {
     t_struct* ts = (*f_iter)->get_arglist();
     string name = ts->get_name();
     ts->set_name(service_name_ + "_" + name);
-    generate_php_struct_definition(f_service_, ts, false);
+    generate_php_struct_definition(f_service_, ts, false, false, true);
     generate_php_function_helpers(*f_iter);
     ts->set_name(name);
   }
@@ -3062,7 +3085,7 @@ void t_hack_generator::generate_php_docstring(ofstream& out,
                                "");                   // comment_end
   }
 
-  // Also write the original thrift function defintion.
+  // Also write the original thrift function definition.
   if (tfunction->has_doc()) {
     indent(out) << " * " << endl;
   }
@@ -3095,6 +3118,156 @@ void t_hack_generator::generate_php_docstring(ofstream& out,
     out << ")";
   }
   out << ";" << endl;
+  indent(out) << " */" << endl;
+}
+
+/**
+ * Generates the docstring for a field.
+ *
+ * This is how the generated docstring looks like:-
+ *
+ * <Original docstring goes here>
+ *
+ * Original thrift field:-
+ * argNumber: argType argName
+ */
+void t_hack_generator::generate_php_docstring(ofstream& out, t_field* tfield) {
+  indent(out) << "/**" << endl;
+  // Copy the doc.
+  if (tfield->has_doc()) {
+    generate_docstring_comment(
+        out, // out
+        "", // comment_start
+        " * ", // line_prefix
+        tfield->get_doc(), // contents
+        ""); // comment_end
+    indent(out) << " * " << endl;
+  }
+  indent(out) << " * "
+              << "Original thrift field:-" << endl;
+  indent(out) << " * " << tfield->get_key() << ": "
+              << tfield->get_type()->get_full_name() << " "
+              << tfield->get_name() << endl;
+  indent(out) << " */" << endl;
+}
+
+/**
+ * Generates the docstring for a struct.
+ *
+ * This is how the generated docstring looks like:-
+ *
+ * <Original docstring goes here>
+ *
+ * Original thrift struct/exception:-
+ * Name
+ */
+void t_hack_generator::generate_php_docstring(
+    ofstream& out,
+    t_struct* tstruct,
+    bool is_exception) {
+  indent(out) << "/**" << endl;
+  // Copy the doc.
+  if (tstruct->has_doc()) {
+    generate_docstring_comment(
+        out, // out
+        "", // comment_start
+        " * ", // line_prefix
+        tstruct->get_doc(), // contents
+        ""); // comment_end
+    indent(out) << " * " << endl;
+  }
+  indent(out) << " * "
+              << "Original thrift " << (is_exception ? "exception" : "struct")
+              << ":-" << endl;
+  indent(out) << " * " << tstruct->get_name() << endl;
+  indent(out) << " */" << endl;
+}
+
+/**
+ * Generates the docstring for an enum.
+ *
+ * This is how the generated docstring looks like:-
+ *
+ * <Original docstring goes here>
+ *
+ * Original thrift enum:-
+ * Name
+ */
+void t_hack_generator::generate_php_docstring(ofstream& out, t_enum* tenum) {
+  indent(out) << "/**" << endl;
+  // Copy the doc.
+  if (tenum->has_doc()) {
+    generate_docstring_comment(
+        out, // out
+        "", // comment_start
+        " * ", // line_prefix
+        tenum->get_doc(), // contents
+        ""); // comment_end
+    indent(out) << " * " << endl;
+  }
+  indent(out) << " * "
+              << "Original thrift enum:-" << endl;
+  indent(out) << " * " << tenum->get_name() << endl;
+  indent(out) << " */" << endl;
+}
+
+/**
+ * Generates the docstring for a service.
+ *
+ * This is how the generated docstring looks like:-
+ *
+ * <Original docstring goes here>
+ *
+ * Original thrift service:-
+ * Name
+ */
+void t_hack_generator::generate_php_docstring(
+    ofstream& out,
+    t_service* tservice) {
+  indent(out) << "/**" << endl;
+  // Copy the doc.
+  if (tservice->has_doc()) {
+    generate_docstring_comment(
+        out, // out
+        "", // comment_start
+        " * ", // line_prefix
+        tservice->get_doc(), // contents
+        ""); // comment_end
+    indent(out) << " * " << endl;
+  }
+  indent(out) << " * "
+              << "Original thrift service:-" << endl;
+  indent(out) << " * " << tservice->get_name() << endl;
+  indent(out) << " */" << endl;
+}
+
+/**
+ * Generates the docstring for a constant.
+ *
+ * This is how the generated docstring looks like:-
+ *
+ * <Original docstring goes here>
+ *
+ * Original thrift constant:-
+ * TYPE NAME
+ */
+void t_hack_generator::generate_php_docstring(ofstream& out, t_const* tconst) {
+  indent(out) << "/**" << endl;
+  // Copy the doc.
+  if (tconst->has_doc()) {
+    generate_docstring_comment(
+        out, // out
+        "", // comment_start
+        " * ", // line_prefix
+        tconst->get_doc(), // contents
+        ""); // comment_end
+    indent(out) << " * " << endl;
+  }
+  indent(out) << " * "
+              << "Original thrift constant:-" << endl;
+  indent(out) << " * " << tconst->get_type()->get_full_name() << " "
+              << tconst->get_name() << endl;
+  // no value because it could have characters that mess up the comment
   indent(out) << " */" << endl;
 }
 

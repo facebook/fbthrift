@@ -6,6 +6,10 @@
  *  @generated
  */
 
+/**
+ * Original thrift service:-
+ * MyServicePrioParent
+ */
 interface MyServicePrioParentAsyncIf extends \IThriftAsyncIf {
   /**
    * Original thrift definition:-
@@ -22,6 +26,10 @@ interface MyServicePrioParentAsyncIf extends \IThriftAsyncIf {
   public function pong(): Awaitable<void>;
 }
 
+/**
+ * Original thrift service:-
+ * MyServicePrioParent
+ */
 interface MyServicePrioParentIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
@@ -38,6 +46,10 @@ interface MyServicePrioParentIf extends \IThriftSyncIf {
   public function pong(): void;
 }
 
+/**
+ * Original thrift service:-
+ * MyServicePrioParent
+ */
 trait MyServicePrioParentClientBase {
   require extends ThriftClientBase;
 

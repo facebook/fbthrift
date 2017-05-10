@@ -6,6 +6,10 @@
  *  @generated
  */
 
+/**
+ * Original thrift struct:-
+ * A
+ */
 class A implements \IThriftStruct, \IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
@@ -20,6 +24,10 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     'a' => string,
   );
   const int STRUCTURAL_ID = 7939807933046472325;
+  /**
+   * Original thrift field:-
+   * 1: string a
+   */
   public string $a;
 
   public function __construct(?string $a = null  ) {
@@ -107,6 +115,10 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
 
 }
 
+/**
+ * Original thrift struct:-
+ * B
+ */
 class B implements \IThriftStruct, \IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
@@ -519,30 +531,130 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     'optional_map_of_string_to_set_of_i32' => ?array<string, array<int, bool>>,
   );
   const int STRUCTURAL_ID = 5337530759322918209;
+  /**
+   * Original thrift field:-
+   * 1: struct module.A just_an_A
+   */
   public ?A $just_an_A;
+  /**
+   * Original thrift field:-
+   * 2: set<i32> set_of_i32
+   */
   public Set<int> $set_of_i32;
+  /**
+   * Original thrift field:-
+   * 3: list<i32> list_of_i32
+   */
   public Vector<int> $list_of_i32;
+  /**
+   * Original thrift field:-
+   * 4: list<string> list_of_string
+   */
   public Vector<string> $list_of_string;
+  /**
+   * Original thrift field:-
+   * 5: map<string, i32> map_of_string_to_i32
+   */
   public Map<string, int> $map_of_string_to_i32;
+  /**
+   * Original thrift field:-
+   * 6: map<string, struct module.A> map_of_string_to_A
+   */
   public Map<string, A> $map_of_string_to_A;
+  /**
+   * Original thrift field:-
+   * 7: map<string, list<i32>> map_of_string_to_list_of_i32
+   */
   public Map<string, Vector<int>> $map_of_string_to_list_of_i32;
+  /**
+   * Original thrift field:-
+   * 8: map<string, list<struct module.A>> map_of_string_to_list_of_A
+   */
   public Map<string, Vector<A>> $map_of_string_to_list_of_A;
+  /**
+   * Original thrift field:-
+   * 9: map<string, set<i32>> map_of_string_to_set_of_i32
+   */
   public Map<string, Set<int>> $map_of_string_to_set_of_i32;
+  /**
+   * Original thrift field:-
+   * 10: map<string, map<string, i32>> map_of_string_to_map_of_string_to_i32
+   */
   public Map<string, Map<string, int>> $map_of_string_to_map_of_string_to_i32;
+  /**
+   * Original thrift field:-
+   * 11: map<string, map<string, struct module.A>> map_of_string_to_map_of_string_to_A
+   */
   public Map<string, Map<string, A>> $map_of_string_to_map_of_string_to_A;
+  /**
+   * Original thrift field:-
+   * 12: list<set<i32>> list_of_set_of_i32
+   */
   public Vector<Set<int>> $list_of_set_of_i32;
+  /**
+   * Original thrift field:-
+   * 13: list<map<string, list<struct module.A>>> list_of_map_of_string_to_list_of_A
+   */
   public Vector<Map<string, Vector<A>>> $list_of_map_of_string_to_list_of_A;
+  /**
+   * Original thrift field:-
+   * 14: list<map<string, struct module.A>> list_of_map_of_string_to_A
+   */
   public Vector<Map<string, A>> $list_of_map_of_string_to_A;
+  /**
+   * Original thrift field:-
+   * 15: list<struct module.B> list_of_self
+   */
   public Vector<B> $list_of_self;
+  /**
+   * Original thrift field:-
+   * 16: map<string, struct module.B> map_of_string_to_self
+   */
   public Map<string, B> $map_of_string_to_self;
+  /**
+   * Original thrift field:-
+   * 51: struct module.A optional_just_an_A
+   */
   public ?A $optional_just_an_A;
+  /**
+   * Original thrift field:-
+   * 52: set<i32> optional_set_of_i32
+   */
   public ?Set<int> $optional_set_of_i32;
+  /**
+   * Original thrift field:-
+   * 53: list<i32> optional_list_of_i32
+   */
   public ?Vector<int> $optional_list_of_i32;
+  /**
+   * Original thrift field:-
+   * 54: list<string> optional_list_of_string
+   */
   public ?Vector<string> $optional_list_of_string;
+  /**
+   * Original thrift field:-
+   * 55: map<string, i32> optional_map_of_string_to_i32
+   */
   public ?Map<string, int> $optional_map_of_string_to_i32;
+  /**
+   * Original thrift field:-
+   * 56: map<string, struct module.A> optional_map_of_string_to_A
+   */
   public ?Map<string, A> $optional_map_of_string_to_A;
+  /**
+   * Original thrift field:-
+   * 57: map<string, list<i32>> optional_map_of_string_to_list_of_i32
+   */
   public ?Map<string, Vector<int>> $optional_map_of_string_to_list_of_i32;
+  /**
+   * Original thrift field:-
+   * 58: map<string, list<struct module.A>> optional_map_of_string_to_list_of_A
+   */
   public ?Map<string, Vector<A>> $optional_map_of_string_to_list_of_A;
+  /**
+   * Original thrift field:-
+   * 59: map<string, set<i32>> optional_map_of_string_to_set_of_i32
+   */
   public ?Map<string, Set<int>> $optional_map_of_string_to_set_of_i32;
 
   public function __construct(?A $just_an_A = null, ?Set<int> $set_of_i32 = null, ?Vector<int> $list_of_i32 = null, ?Vector<string> $list_of_string = null, ?Map<string, int> $map_of_string_to_i32 = null, ?Map<string, A> $map_of_string_to_A = null, ?Map<string, Vector<int>> $map_of_string_to_list_of_i32 = null, ?Map<string, Vector<A>> $map_of_string_to_list_of_A = null, ?Map<string, Set<int>> $map_of_string_to_set_of_i32 = null, ?Map<string, Map<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?Map<string, Map<string, A>> $map_of_string_to_map_of_string_to_A = null, ?Vector<Set<int>> $list_of_set_of_i32 = null, ?Vector<Map<string, Vector<A>>> $list_of_map_of_string_to_list_of_A = null, ?Vector<Map<string, A>> $list_of_map_of_string_to_A = null, ?Vector<B> $list_of_self = null, ?Map<string, B> $map_of_string_to_self = null, ?A $optional_just_an_A = null, ?Set<int> $optional_set_of_i32 = null, ?Vector<int> $optional_list_of_i32 = null, ?Vector<string> $optional_list_of_string = null, ?Map<string, int> $optional_map_of_string_to_i32 = null, ?Map<string, A> $optional_map_of_string_to_A = null, ?Map<string, Vector<int>> $optional_map_of_string_to_list_of_i32 = null, ?Map<string, Vector<A>> $optional_map_of_string_to_list_of_A = null, ?Map<string, Set<int>> $optional_map_of_string_to_set_of_i32 = null  ) {

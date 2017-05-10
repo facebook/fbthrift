@@ -6,12 +6,20 @@
  *  @generated
  */
 
+/**
+ * Original thrift enum:-
+ * MyEnum
+ */
 enum MyEnum: int {
   MyValue1 = 0;
   MyValue2 = 1;
 }
 type MyEnumType = MyEnum;
 
+/**
+ * Original thrift struct:-
+ * MyStruct
+ */
 class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
   public static array $_TSPEC = array(
     1 => array(
@@ -32,7 +40,15 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     'MyStringField' => string,
   );
   const int STRUCTURAL_ID = 4929291502389600438;
+  /**
+   * Original thrift field:-
+   * 1: i64 MyIntField
+   */
   public int $MyIntField;
+  /**
+   * Original thrift field:-
+   * 2: string MyStringField
+   */
   public string $MyStringField;
 
   public function __construct(?int $MyIntField = null, ?string $MyStringField = null  ) {

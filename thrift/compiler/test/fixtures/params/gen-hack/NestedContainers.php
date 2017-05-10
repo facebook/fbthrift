@@ -6,6 +6,10 @@
  *  @generated
  */
 
+/**
+ * Original thrift service:-
+ * NestedContainers
+ */
 interface NestedContainersAsyncIf extends \IThriftAsyncIf {
   /**
    * Original thrift definition:-
@@ -43,6 +47,10 @@ interface NestedContainersAsyncIf extends \IThriftAsyncIf {
   public function turtles(\Indexish<int, \Indexish<int, \Indexish<int, \Indexish<int, Set<int>>>>> $foo): Awaitable<void>;
 }
 
+/**
+ * Original thrift service:-
+ * NestedContainers
+ */
 interface NestedContainersIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
@@ -80,6 +88,10 @@ interface NestedContainersIf extends \IThriftSyncIf {
   public function turtles(\Indexish<int, \Indexish<int, \Indexish<int, \Indexish<int, Set<int>>>>> $foo): void;
 }
 
+/**
+ * Original thrift service:-
+ * NestedContainers
+ */
 trait NestedContainersClientBase {
   require extends ThriftClientBase;
 

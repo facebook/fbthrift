@@ -6,6 +6,10 @@
  *  @generated
  */
 
+/**
+ * Original thrift service:-
+ * MyService
+ */
 interface MyServiceAsyncIf extends \IThriftAsyncIf {
   /**
    * Original thrift definition:-
@@ -52,6 +56,10 @@ interface MyServiceAsyncIf extends \IThriftAsyncIf {
   public function lobDataById(int $id, string $data): Awaitable<void>;
 }
 
+/**
+ * Original thrift service:-
+ * MyService
+ */
 interface MyServiceIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
@@ -98,6 +106,10 @@ interface MyServiceIf extends \IThriftSyncIf {
   public function lobDataById(int $id, string $data): void;
 }
 
+/**
+ * Original thrift service:-
+ * MyService
+ */
 trait MyServiceClientBase {
   require extends ThriftClientBase;
 

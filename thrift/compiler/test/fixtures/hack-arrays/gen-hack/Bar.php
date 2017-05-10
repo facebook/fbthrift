@@ -6,6 +6,10 @@
  *  @generated
  */
 
+/**
+ * Original thrift service:-
+ * Bar
+ */
 interface BarAsyncIf extends \IThriftAsyncIf {
   /**
    * Original thrift definition:-
@@ -16,6 +20,10 @@ interface BarAsyncIf extends \IThriftAsyncIf {
   public function baz(keyset<int> $a, \Indexish<int, \Indexish<int, keyset<string>>> $b): Awaitable<string>;
 }
 
+/**
+ * Original thrift service:-
+ * Bar
+ */
 interface BarIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
@@ -26,6 +34,10 @@ interface BarIf extends \IThriftSyncIf {
   public function baz(keyset<int> $a, \Indexish<int, \Indexish<int, keyset<string>>> $b): string;
 }
 
+/**
+ * Original thrift service:-
+ * Bar
+ */
 trait BarClientBase {
   require extends ThriftClientBase;
 

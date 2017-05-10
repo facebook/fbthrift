@@ -6,8 +6,20 @@
  *  @generated
  */
 class module_CONSTANTS {
-  const myInt = 1337;
-  const name = "Mark Zuckerberg";
+  /**
+   * Original thrift constant:-
+   * i32 myInt
+   */
+  const int myInt = 1337;
+  /**
+   * Original thrift constant:-
+   * string name
+   */
+  const string name = "Mark Zuckerberg";
+  /**
+   * Original thrift constant:-
+   * list<map<string, i32>> states
+   */
   public static Vector<Map<string, int>> $states = Vector {
       Map {
         "San Diego" => 3211000,
@@ -19,14 +31,34 @@ class module_CONSTANTS {
         "Albany" => 98400,
       },
     };
-  const x = 1.0;
-  const y = 1000000.0;
-  const z = 1e+09;
+  /**
+   * Original thrift constant:-
+   * double x
+   */
+  const float x = 1.0;
+  /**
+   * Original thrift constant:-
+   * double y
+   */
+  const float y = 1000000.0;
+  /**
+   * Original thrift constant:-
+   * double z
+   */
+  const float z = 1e+09;
+  /**
+   * Original thrift constant:-
+   * struct module.Internship instagram
+   */
   public static Internship $instagram = new Internship(
       12,
       "Software Engineer",
       Company::INSTAGRAM,
     );
+  /**
+   * Original thrift constant:-
+   * list<struct module.Range> kRanges
+   */
   public static Vector<Range> $kRanges = Vector {
       new Range(
         1,
@@ -37,6 +69,10 @@ class module_CONSTANTS {
         6,
       ),
     };
+  /**
+   * Original thrift constant:-
+   * list<struct module.Internship> internList
+   */
   public static Vector<Internship> $internList = Vector {
       new Internship(
         12,
@@ -49,17 +85,45 @@ class module_CONSTANTS {
         Company::FACEBOOK,
       ),
     };
-  const apostrophe = "'";
-  const tripleApostrophe = "'''";
-  const quotationMark = "\"";
-  const backslash = "\\";
-  const escaped_a = "\x61";
+  /**
+   * Original thrift constant:-
+   * string apostrophe
+   */
+  const string apostrophe = "'";
+  /**
+   * Original thrift constant:-
+   * string tripleApostrophe
+   */
+  const string tripleApostrophe = "'''";
+  /**
+   * Original thrift constant:-
+   * string quotationMark
+   */
+  const string quotationMark = "\"";
+  /**
+   * Original thrift constant:-
+   * string backslash
+   */
+  const string backslash = "\\";
+  /**
+   * Original thrift constant:-
+   * string escaped_a
+   */
+  const string escaped_a = "\x61";
+  /**
+   * Original thrift constant:-
+   * map<string, i32> char2ascii
+   */
   public static Map<string, int> $char2ascii = Map {
       "'" => 39,
       "\"" => 34,
       "\\" => 92,
       "\x61" => 97,
     };
+  /**
+   * Original thrift constant:-
+   * list<string> escaped_strings
+   */
   public static Vector<string> $escaped_strings = Vector {
       "\x61",
       "\xab",
@@ -78,28 +142,92 @@ class module_CONSTANTS {
       "zzz\x6ayyy",
       "zzz\xa6yyy",
     };
-  const false_c = false;
-  const true_c = true;
-  const zero_byte = 0;
-  const zero16 = 0;
-  const zero32 = 0;
-  const zero64 = 0;
-  const zero_dot_zero = 0.0;
-  const empty_string = "";
+  /**
+   * Original thrift constant:-
+   * bool false_c
+   */
+  const bool false_c = false;
+  /**
+   * Original thrift constant:-
+   * bool true_c
+   */
+  const bool true_c = true;
+  /**
+   * Original thrift constant:-
+   * byte zero_byte
+   */
+  const int zero_byte = 0;
+  /**
+   * Original thrift constant:-
+   * i16 zero16
+   */
+  const int zero16 = 0;
+  /**
+   * Original thrift constant:-
+   * i32 zero32
+   */
+  const int zero32 = 0;
+  /**
+   * Original thrift constant:-
+   * i64 zero64
+   */
+  const int zero64 = 0;
+  /**
+   * Original thrift constant:-
+   * double zero_dot_zero
+   */
+  const float zero_dot_zero = 0.0;
+  /**
+   * Original thrift constant:-
+   * string empty_string
+   */
+  const string empty_string = "";
+  /**
+   * Original thrift constant:-
+   * list<i32> empty_int_list
+   */
   public static Vector<int> $empty_int_list = Vector {
     };
+  /**
+   * Original thrift constant:-
+   * list<string> empty_string_list
+   */
   public static Vector<string> $empty_string_list = Vector {
     };
+  /**
+   * Original thrift constant:-
+   * set<i32> empty_int_set
+   */
   public static Set<int> $empty_int_set = Set {
     };
+  /**
+   * Original thrift constant:-
+   * set<string> empty_string_set
+   */
   public static Set<string> $empty_string_set = Set {
     };
+  /**
+   * Original thrift constant:-
+   * map<i32, i32> empty_int_int_map
+   */
   public static Map<int, int> $empty_int_int_map = Map {
     };
+  /**
+   * Original thrift constant:-
+   * map<i32, string> empty_int_string_map
+   */
   public static Map<int, string> $empty_int_string_map = Map {
     };
+  /**
+   * Original thrift constant:-
+   * map<string, i32> empty_string_int_map
+   */
   public static Map<string, int> $empty_string_int_map = Map {
     };
+  /**
+   * Original thrift constant:-
+   * map<string, string> empty_string_string_map
+   */
   public static Map<string, string> $empty_string_string_map = Map {
     };
 

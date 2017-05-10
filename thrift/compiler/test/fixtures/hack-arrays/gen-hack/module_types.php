@@ -6,6 +6,10 @@
  *  @generated
  */
 
+/**
+ * Original thrift struct:-
+ * Foo
+ */
 class Foo implements \IThriftStruct {
   public static array $_TSPEC = array(
     1 => array(
@@ -46,7 +50,15 @@ class Foo implements \IThriftStruct {
     'b' => 2,
   };
   const int STRUCTURAL_ID = 5283012534631553068;
+  /**
+   * Original thrift field:-
+   * 1: list<string> a
+   */
   public vec<string> $a;
+  /**
+   * Original thrift field:-
+   * 2: map<string, list<set<i32>>> b
+   */
   public dict<string, vec<keyset<int>>> $b;
 
   public function __construct(?vec<string> $a = null, ?dict<string, vec<keyset<int>>> $b = null  ) {
