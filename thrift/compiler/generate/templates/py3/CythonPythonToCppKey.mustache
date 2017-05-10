@@ -43,4 +43,6 @@ keys (conventionally used for sets, lists, and map values).
   }}{{#type:keyType}}{{> ContainerCythonFieldType}}{{/type:keyType}},{{!
   }}{{#type:valueType}}{{> ContainerCythonFieldType}}{{/type:valueType}}{{!
   }}](deref({{type:flat_name}}(key)._map.get())){{/type:map?}}{{!
-}}{{#type:enum}}{{> common/ModulePath}}.{{enum:name}}_to_cpp(key){{/type:enum}}
+}}{{#type:enum}}{{!
+  }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
+  }}{{enum:name}}_to_cpp(key){{/type:enum}}

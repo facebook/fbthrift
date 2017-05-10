@@ -36,4 +36,6 @@ ckey.
 }}{{#type:list?}}{{type:flat_name}}.create(make_shared[{{> ContainerCythonFieldType}}](ckey)){{/type:list?}}{{!
 }}{{#type:set?}}{{type:flat_name}}.create(make_shared[{{> ContainerCythonFieldType}}](ckey)){{/type:set?}}{{!
 }}{{#type:map?}}{{type:flat_name}}.create(make_shared[{{> ContainerCythonFieldType}}](ckey)){{/type:map?}}{{!
-}}{{#type:enum}}{{> common/ModulePath}}.{{enum:name}}(<int> ckey){{/type:enum}}
+}}{{#type:enum}}{{!
+}}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
+    }}{{enum:name}}(<int> ckey){{/type:enum}}

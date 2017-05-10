@@ -3006,7 +3006,7 @@ cdef class List__AnEnum:
             index = size - index
         cdef cAnEnum citem = (
             deref(self._vector.get())[index])
-        return module.types.AnEnum(<int> citem)
+        return AnEnum(<int> citem)
 
     def __len__(self):
         return deref(self._vector).size()
@@ -3044,7 +3044,7 @@ cdef class List__AnEnum:
             raise StopIteration
         cdef cAnEnum citem
         for citem in deref(self._vector):
-            yield module.types.AnEnum(<int> citem)
+            yield AnEnum(<int> citem)
 
     def __repr__(self):
         if not self:
@@ -3060,7 +3060,7 @@ cdef class List__AnEnum:
         cdef vector[cAnEnum].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
-            yield module.types.AnEnum(<int> citem)
+            yield AnEnum(<int> citem)
             inc(loc)
 
     def index(self, item):
