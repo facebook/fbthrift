@@ -387,7 +387,10 @@ def _integer_randomizer_factory(name, ttype, n_bits):
             else:
                 raise TypeError("Invalid %s seed: %s" % (_name, seed))
 
-    NBitIntegerRandomizer.__name__ = six.binary_type("%sRandomizer" % _name)
+    if six.PY2:
+        NBitIntegerRandomizer.__name__ = str("%sRandomizer" % _name)
+    else:
+        NBitIntegerRandomizer.__name__ = "%sRandomizer" % _name
 
     return NBitIntegerRandomizer
 
