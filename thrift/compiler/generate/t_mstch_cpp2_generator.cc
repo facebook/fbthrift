@@ -38,6 +38,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   mstch::map extend_struct(const t_struct&) const override;
   mstch::map extend_type(const t_type& t) const override;
   mstch::map extend_enum(const t_enum&) const override;
+  mstch::map extend_const(const t_const&) const override;
 
  private:
   bool get_is_eb(const t_function& fn) const;
@@ -227,6 +228,22 @@ mstch::map t_mstch_cpp2_generator::extend_enum(const t_enum& e) const {
     m.emplace("min", std::string((*e_minmax.first)->get_name()));
     m.emplace("max", std::string((*e_minmax.second)->get_name()));
   }
+  return m;
+}
+
+mstch::map t_mstch_cpp2_generator::extend_const(const t_const& c) const {
+  mstch::map m;
+
+  if (c.get_type()->is_enum()) {
+    auto e = static_cast<const t_enum&>(*c.get_type());
+    auto e_val = e.find_value(c.get_value()->get_integer());
+    m.emplace("enum_value?", e_val != nullptr);
+    m.emplace(
+        "enum_value",
+        e_val != nullptr ? std::string(e_val->get_name())
+                         : std::to_string(c.get_value()->get_integer()));
+  }
+
   return m;
 }
 

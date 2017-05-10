@@ -15,26 +15,26 @@
 
 namespace some { namespace valid { namespace ns {
 
-struct _FooEnumDataStorage {
-  using type = Foo;
+struct _MyEnumAEnumDataStorage {
+  using type = MyEnumA;
   static constexpr const std::size_t size = 3;
-  static constexpr const std::array<Foo, 3> values = {{
-    Foo::FooA,
-    Foo::FooB,
-    Foo::FooC,
+  static constexpr const std::array<MyEnumA, 3> values = {{
+    MyEnumA::fieldA,
+    MyEnumA::fieldB,
+    MyEnumA::fieldC,
   }};
   static constexpr const std::array<folly::StringPiece, 3> names = {{
-    "FooA",
-    "FooB",
-    "FooC",
+    "fieldA",
+    "fieldB",
+    "fieldC",
   }};
 };
 
 }}} // some::valid::ns
 namespace apache { namespace thrift {
 
-template <> struct TEnumDataStorage< ::some::valid::ns::Foo> {
-  using storage_type =  ::some::valid::ns::_FooEnumDataStorage;
+template <> struct TEnumDataStorage< ::some::valid::ns::MyEnumA> {
+  using storage_type =  ::some::valid::ns::_MyEnumAEnumDataStorage;
 };
 
 }} // apache::thrift

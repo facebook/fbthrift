@@ -8,9 +8,9 @@
 
 namespace some { namespace valid { namespace ns {
 
-constexpr const std::size_t _FooEnumDataStorage::size;
-constexpr const std::array<Foo, 3> _FooEnumDataStorage::values;
-constexpr const std::array<folly::StringPiece, 3> _FooEnumDataStorage::names;
+constexpr const std::size_t _MyEnumAEnumDataStorage::size;
+constexpr const std::array<MyEnumA, 3> _MyEnumAEnumDataStorage::values;
+constexpr const std::array<folly::StringPiece, 3> _MyEnumAEnumDataStorage::names;
 
 }}} // some::valid::ns
 namespace apache { namespace thrift {

@@ -24,11 +24,15 @@ const list<map<string, i32>> states = [
   {"New York": 8406000, "Albany": 98400}
 ]
 
-enum Foo {
-  FooA = 1
-  FooB = 2
-  FooC = 4
+enum MyEnumA {
+  fieldA = 1
+  fieldB = 2
+  fieldC = 4
 }
+
+const MyEnumA constEnumA = MyEnumA.fieldB
+
+const MyEnumA constEnumB = 3
 
 struct Empty {
 }

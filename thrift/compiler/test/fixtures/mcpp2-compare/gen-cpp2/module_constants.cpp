@@ -67,4 +67,8 @@ std::vector<std::map<std::string, int32_t>> const& module_constants::states() {
   return *instance;
 }
 
+constexpr  ::some::valid::ns::MyEnumA const module_constants::constEnumA_;
+
+constexpr  ::some::valid::ns::MyEnumA const module_constants::constEnumB_;
+
 }}} // some::valid::ns

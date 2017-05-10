@@ -22,38 +22,38 @@ class Empty;
 class MyStruct;
 class containerStruct;
 
-enum class Foo {
-  FooA = 1,
-  FooB = 2,
-  FooC = 4
+enum class MyEnumA {
+  fieldA = 1,
+  fieldB = 2,
+  fieldC = 4
 };
 
-using _Foo_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<Foo, Foo>;
-extern const _Foo_EnumMapFactory::ValuesToNamesMapType _Foo_VALUES_TO_NAMES;
-extern const _Foo_EnumMapFactory::NamesToValuesMapType _Foo_NAMES_TO_VALUES;
+using _MyEnumA_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnumA, MyEnumA>;
+extern const _MyEnumA_EnumMapFactory::ValuesToNamesMapType _MyEnumA_VALUES_TO_NAMES;
+extern const _MyEnumA_EnumMapFactory::NamesToValuesMapType _MyEnumA_NAMES_TO_VALUES;
 
 }}} // some::valid::ns
 namespace std {
 
-template<> struct hash<typename  ::some::valid::ns::Foo> : public apache::thrift::detail::enum_hash<typename  ::some::valid::ns::Foo> {};
-template<> struct equal_to<typename  ::some::valid::ns::Foo> : public apache::thrift::detail::enum_equal_to<typename  ::some::valid::ns::Foo> {};
+template<> struct hash<typename  ::some::valid::ns::MyEnumA> : public apache::thrift::detail::enum_hash<typename  ::some::valid::ns::MyEnumA> {};
+template<> struct equal_to<typename  ::some::valid::ns::MyEnumA> : public apache::thrift::detail::enum_equal_to<typename  ::some::valid::ns::MyEnumA> {};
 
 } // std
 namespace apache { namespace thrift {
 
-template <> struct TEnumDataStorage< ::some::valid::ns::Foo>;
-template <> const std::size_t TEnumTraits< ::some::valid::ns::Foo>::size;
-template <> const folly::Range<const  ::some::valid::ns::Foo*> TEnumTraits< ::some::valid::ns::Foo>::values;
-template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::valid::ns::Foo>::names;
-template <> const char* TEnumTraits< ::some::valid::ns::Foo>::findName( ::some::valid::ns::Foo value);
-template <> bool TEnumTraits< ::some::valid::ns::Foo>::findValue(const char* name,  ::some::valid::ns::Foo* outValue);
+template <> struct TEnumDataStorage< ::some::valid::ns::MyEnumA>;
+template <> const std::size_t TEnumTraits< ::some::valid::ns::MyEnumA>::size;
+template <> const folly::Range<const  ::some::valid::ns::MyEnumA*> TEnumTraits< ::some::valid::ns::MyEnumA>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::valid::ns::MyEnumA>::names;
+template <> const char* TEnumTraits< ::some::valid::ns::MyEnumA>::findName( ::some::valid::ns::MyEnumA value);
+template <> bool TEnumTraits< ::some::valid::ns::MyEnumA>::findValue(const char* name,  ::some::valid::ns::MyEnumA* outValue);
 
-template <> inline constexpr  ::some::valid::ns::Foo TEnumTraits< ::some::valid::ns::Foo>::min() {
-  return  ::some::valid::ns::Foo::FooA;
+template <> inline constexpr  ::some::valid::ns::MyEnumA TEnumTraits< ::some::valid::ns::MyEnumA>::min() {
+  return  ::some::valid::ns::MyEnumA::fieldA;
 }
 
-template <> inline constexpr  ::some::valid::ns::Foo TEnumTraits< ::some::valid::ns::Foo>::max() {
-  return  ::some::valid::ns::Foo::FooC;
+template <> inline constexpr  ::some::valid::ns::MyEnumA TEnumTraits< ::some::valid::ns::MyEnumA>::max() {
+  return  ::some::valid::ns::MyEnumA::fieldC;
 }
 
 }} // apache::thrift
