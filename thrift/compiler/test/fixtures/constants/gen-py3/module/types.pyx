@@ -69,10 +69,6 @@ cdef class Internship(thrift.py3.types.Struct):
         self.c_Internship = make_shared[cInternship]()
 
         inst = self
-        if weeks is not None:
-            deref(inst.c_Internship).weeks = weeks
-            deref(inst.c_Internship).__isset.weeks = True
-
         if title is not None:
             deref(inst.c_Internship).title = title.encode('UTF-8')
             deref(inst.c_Internship).__isset.title = True
@@ -105,11 +101,6 @@ cdef class Internship(thrift.py3.types.Struct):
         cdef Internship defaults = Internship_defaults
 
         # Convert None's to default value.
-        if weeks is None:
-            deref(inst.c_Internship).weeks = deref(defaults.c_Internship).weeks
-            deref(inst.c_Internship).__isset.weeks = False
-        if weeks is NOTSET:
-            weeks = None
         if title is None:
             deref(inst.c_Internship).title = deref(defaults.c_Internship).title
             deref(inst.c_Internship).__isset.title = False
@@ -120,10 +111,6 @@ cdef class Internship(thrift.py3.types.Struct):
             deref(inst.c_Internship).__isset.employer = False
         if employer is NOTSET:
             employer = None
-
-        if weeks is not None:
-            deref(inst.c_Internship).weeks = weeks
-            deref(inst.c_Internship).__isset.weeks = True
 
         if title is not None:
             deref(inst.c_Internship).title = title.encode('UTF-8')
@@ -142,7 +129,7 @@ cdef class Internship(thrift.py3.types.Struct):
         yield 'employer', self.employer
 
     def __bool__(self):
-        return deref(self.c_Internship).__isset.weeks or deref(self.c_Internship).__isset.title or deref(self.c_Internship).__isset.employer
+        return True or deref(self.c_Internship).__isset.title or deref(self.c_Internship).__isset.employer
 
     @staticmethod
     cdef create(shared_ptr[cInternship] c_Internship):
@@ -152,8 +139,6 @@ cdef class Internship(thrift.py3.types.Struct):
 
     @property
     def weeks(self):
-        if not deref(self.c_Internship).__isset.weeks:
-            return None
 
         return self.c_Internship.get().weeks
 
@@ -322,14 +307,6 @@ cdef class Range(thrift.py3.types.Struct):
         self.c_Range = make_shared[cRange]()
 
         inst = self
-        if min is not None:
-            deref(inst.c_Range).min = min
-            deref(inst.c_Range).__isset.min = True
-
-        if max is not None:
-            deref(inst.c_Range).max = max
-            deref(inst.c_Range).__isset.max = True
-
 
     def __call__(
         Range self,
@@ -350,24 +327,6 @@ cdef class Range(thrift.py3.types.Struct):
         cdef Range defaults = Range_defaults
 
         # Convert None's to default value.
-        if min is None:
-            deref(inst.c_Range).min = deref(defaults.c_Range).min
-            deref(inst.c_Range).__isset.min = False
-        if min is NOTSET:
-            min = None
-        if max is None:
-            deref(inst.c_Range).max = deref(defaults.c_Range).max
-            deref(inst.c_Range).__isset.max = False
-        if max is NOTSET:
-            max = None
-
-        if min is not None:
-            deref(inst.c_Range).min = min
-            deref(inst.c_Range).__isset.min = True
-
-        if max is not None:
-            deref(inst.c_Range).max = max
-            deref(inst.c_Range).__isset.max = True
 
         return inst
 
@@ -376,7 +335,7 @@ cdef class Range(thrift.py3.types.Struct):
         yield 'max', self.max
 
     def __bool__(self):
-        return deref(self.c_Range).__isset.min or deref(self.c_Range).__isset.max
+        return True or True
 
     @staticmethod
     cdef create(shared_ptr[cRange] c_Range):
@@ -386,15 +345,11 @@ cdef class Range(thrift.py3.types.Struct):
 
     @property
     def min(self):
-        if not deref(self.c_Range).__isset.min:
-            return None
 
         return self.c_Range.get().min
 
     @property
     def max(self):
-        if not deref(self.c_Range).__isset.max:
-            return None
 
         return self.c_Range.get().max
 

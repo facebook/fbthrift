@@ -83,12 +83,14 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
 
         inst = self
         {{#struct:fields}}
+        {{^field:required?}}
         {{#field:type}}
         {{> CythonAssignField}}
 
             deref(inst.c_{{struct:name}}).__isset.{{field:name}} = True
 
         {{/field:type}}
+        {{/field:required?}}
         {{/struct:fields}}
 
     {{^struct:exception?}}
@@ -110,20 +112,24 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
 
         # Convert None's to default value.
         {{#struct:fields}}
+        {{^field:required?}}
         if {{field:name}} is None:
             deref(inst.c_{{struct:name}}).{{field:name}} = deref(defaults.c_{{struct:name}}).{{field:name}}
             deref(inst.c_{{struct:name}}).__isset.{{field:name}} = False
         if {{field:name}} is NOTSET:
             {{field:name}} = None
+        {{/field:required?}}
         {{/struct:fields}}
 
         {{#struct:fields}}
+        {{^field:required?}}
         {{#field:type}}
         {{> CythonAssignField}}
 
             deref(inst.c_{{struct:name}}).__isset.{{field:name}} = True
 
         {{/field:type}}
+        {{/field:required?}}
         {{/struct:fields}}
         return inst
     {{/struct:exception?}}
@@ -138,7 +144,10 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
 
     def __bool__(self):
         return {{#struct:fields}}{{!
+            }}{{#field:required?}}True{{/field:required?}}{{!
+            }}{{^field:required?}}{{!
             }}deref(self.c_{{struct:name}}).__isset.{{field:name}}{{!
+            }}{{/field:required?}}{{!
             }}{{^last?}} or {{/last?}}{{/struct:fields}}{{!
             }}{{^struct:fields}}True{{/struct:fields}}
 
@@ -153,9 +162,11 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
     def {{field:name}}(self):
         {{#field:type}}
         {{^field:value}}
+        {{^field:required?}}
         {{! If there is no value and not ___isset we can say its None}}
         if not deref(self.c_{{struct:name}}).__isset.{{field:name}}:
             return None
+        {{/field:required?}}
         {{/field:value}}
 
         {{> CythonStructGetter}}
