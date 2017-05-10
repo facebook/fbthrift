@@ -61,12 +61,10 @@ libthrift_la_SOURCES = EventHandlerBase.cpp \
                        protocol/TDebugProtocol.cpp \
                        protocol/TJSONProtocol.cpp \
                        protocol/TBase64Utils.cpp \
-                       protocol/TMultiplexedProtocol.cpp \
                        protocol/TProtocolException.cpp \
                        protocol/TSimpleJSONProtocol.cpp \
                        transport/TTransportException.cpp \
                        transport/TFDTransport.cpp \
-                       transport/TFileTransport.cpp \
                        transport/TSimpleFileTransport.cpp \
                        transport/THeaderTransport.cpp \
                        transport/THttpTransport.cpp \
@@ -78,11 +76,9 @@ libthrift_la_SOURCES = EventHandlerBase.cpp \
                        transport/TSocketPool.cpp \
                        transport/TServerSocket.cpp \
                        transport/TSSLServerSocket.cpp \
-                       transport/TTransportUtils.cpp \
                        transport/TBufferTransports.cpp \
                        transport/THeader.cpp \
                        server/TServer.cpp \
-                       processor/PeekProcessor.cpp \
                        util/FdUtils.cpp \
                        util/THttpParser.cpp \
                        util/SocketRetriever.cpp \
@@ -141,8 +137,6 @@ include_protocol_HEADERS = \
                          protocol/TCompactProtocol.tcc \
                          protocol/TDebugProtocol.h \
                          protocol/TBase64Utils.h \
-                         protocol/TMultiplexedProtocol.h \
-                         protocol/TProtocolDecorator.h \
                          protocol/TJSONProtocol.h \
                          protocol/TSimpleJSONProtocol.h \
                          protocol/TProtocolTap.h \
@@ -156,7 +150,6 @@ include_transportdir = $(include_thriftdir)/transport
 include_transport_HEADERS = \
                          transport/THeader.h \
                          transport/TFDTransport.h \
-                         transport/TFileTransport.h \
                          transport/TSimpleFileTransport.h \
                          transport/TServerSocket.h \
                          transport/TSSLServerSocket.h \
@@ -172,7 +165,6 @@ include_transport_HEADERS = \
                          transport/TVirtualTransport.h \
                          transport/TTransport.h \
                          transport/TTransportException.h \
-                         transport/TTransportUtils.h \
                          transport/TNullTransport.h \
                          transport/TBufferTransports.h \
                          transport/TShortReadTransport.h \
@@ -183,12 +175,6 @@ include_server_HEADERS = \
                          server/TServer.h \
                          server/TConnectionContext.h \
                          server/TServerObserver.h
-
-include_processordir = $(include_thriftdir)/processor
-include_processor_HEADERS = \
-                         processor/PeekProcessor.h \
-                         processor/StatsProcessor.h \
-                         processor/TMultiplexedProcessor.h
 
 include_asyncdir = $(include_thriftdir)/async
 include_async_HEADERS = \
