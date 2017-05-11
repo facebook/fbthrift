@@ -185,7 +185,7 @@ class JsonCompilerTest(unittest.TestCase):
                     "fields": {
                         "item": {
                             "required": True,
-                            "type_enum": "TYPEDEF",
+                            "type_enum": "STRUCT",
                             "spec_args": "DataItem",
                         },
                     },

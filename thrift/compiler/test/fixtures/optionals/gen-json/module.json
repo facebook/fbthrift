@@ -84,8 +84,8 @@
       "is_union" : false,
       "fields" : {
         "id" : {
-          "type_enum" : "TYPEDEF",
-          "spec_args" : "PersonID",
+          "type_enum" : "I64",
+          "spec_args" : null,
           "required" : true
         },
         "name" : {
@@ -110,12 +110,12 @@
         },
         "friends" : {
           "type_enum" : "SET",
-          "spec_args" : { "type_enum" : "TYPEDEF", "spec_args" : "PersonID"} ,
+          "spec_args" : { "type_enum" : "I64", "spec_args" : null} ,
           "required" : false
         },
         "bestFriend" : {
-          "type_enum" : "TYPEDEF",
-          "spec_args" : "PersonID",
+          "type_enum" : "I64",
+          "spec_args" : null,
           "required" : false
         },
         "petNames" : {

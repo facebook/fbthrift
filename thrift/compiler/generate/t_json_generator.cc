@@ -193,6 +193,7 @@ void t_json_generator::generate_program() {
  * Converts the parse type to a string
  */
 string t_json_generator::type_to_string(t_type* type) {
+  type = get_true_type(type);
   if (type->is_base_type()) {
     t_base_type::t_base tbase = ((t_base_type*)type)->get_base();
     switch (tbase) {
@@ -227,8 +228,6 @@ string t_json_generator::type_to_string(t_type* type) {
     return "LIST";
   } else if (type->is_service()) {
     return "SERVICE";
-  } else if (type->is_typedef()) {
-    return "TYPEDEF";
   }
 
   throw "INVALID TYPE IN type_to_string: " + type->get_name();
@@ -244,11 +243,12 @@ string t_json_generator::type_to_string(t_type* type) {
  *              | { "key_type" : tuple_spec, "val_type" : tuple_spec}  // (maps)
  */
 string t_json_generator::type_to_spec_args(t_type* ttype) {
+  ttype = get_true_type(ttype);
+
   if (ttype->is_base_type()) {
     return "null";
-  } else if (
-      ttype->is_struct() || ttype->is_xception() || ttype->is_service() ||
-      ttype->is_enum() || ttype->is_typedef()) {
+  } else if (ttype->is_struct() || ttype->is_xception() ||
+             ttype->is_service() || ttype->is_enum()) {
     string module = "";
     if (ttype->get_program() != program_) {
       module = ttype->get_program()->get_name() + ".";
