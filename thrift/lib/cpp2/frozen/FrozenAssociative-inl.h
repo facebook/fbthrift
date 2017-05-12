@@ -20,20 +20,27 @@ namespace detail {
 template <class K, class V>
 struct KeyExtractor {
   using KeyType = K;
+  // deleted functions used to avoid returning references to temporary values
+  static const K& getKey(const std::pair<const K, V>&&) = delete;
   static const K& getKey(const std::pair<const K, V>& pair) {
     return pair.first;
   }
 
   // To support VectorAsHashMap
+  static const K& getKey(const std::pair<K, V>&& pair) = delete;
   static const K& getKey(const std::pair<K, V>& pair) {
     return pair.first;
   }
 
   static const std::pair<const K, V>* getPointer(
+      const std::pair<const K, V>&&) = delete;
+  static const std::pair<const K, V>* getPointer(
       const std::pair<const K, V>& pair) {
     return &pair;
   }
 
+  static const std::pair<const K, V>* getPointer(const std::pair<K, V>&&) =
+      delete;
   static const std::pair<const K, V>* getPointer(const std::pair<K, V>& pair) {
     // To allow freezing from VectorAsHashMap
     return reinterpret_cast<const std::pair<const K, V>*>(&pair);
