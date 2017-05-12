@@ -1,8 +1,8 @@
 namespace java.swift test.fixtures.basic
 
 enum MyEnum {
-  MyValue1,
-  MyValue2,
+  MyValue1 = 0,
+  MyValue2 = 1,
 }
 
 struct MyStruct {

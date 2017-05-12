@@ -31,4 +31,8 @@ struct MyStruct {
   1: optional MyEnum enumvalue;
 }
 
-enum MyEnum { Apple, Banana, Carrot }
+enum MyEnum {
+  Apple = 0,
+  Banana = 1,
+  Carrot = 2,
+}

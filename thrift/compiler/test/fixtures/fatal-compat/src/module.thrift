@@ -9,26 +9,26 @@ namespace python test_py.cpp_reflection
 cpp_include "thrift/test/fatal_custom_types.h"
 
 enum enum1 {
-  field0,
-  field1,
-  field2
+  field0 = 0,
+  field1 = 1,
+  field2 = 2,
 }
 
 enum enum2 {
-  field0_2,
-  field1_2,
-  field2_2
+  field0_2 = 0,
+  field1_2 = 1,
+  field2_2 = 2,
 }
 
 enum enum3 {
-  field0_3,
-  field1_3 (
-    field_annotation = "field annotated"
+  field0_3 = 0,
+  field1_3 = 1 (
+    field_annotation = "field annotated",
   ),
-  field2_3 (
+  field2_3 = 2 (
     field_structured_annotation = '{"a": "foo", "b": 567, "c": true}',
     field_annotation = "some other text",
-  )
+  ),
 } (
   one.here = "with some value associated",
   another.there = ".",
@@ -242,32 +242,32 @@ const string constant2 = "hello";
 const enum1 constant3 = enum1.field0;
 
 enum enum_with_special_names {
-  get,
-  getter,
-  lists,
-  maps,
-  name,
-  name_to_value,
-  names,
-  prefix_tree,
-  sets,
-  setter,
-  str,
-  strings,
-  type,
-  value,
-  value_to_name,
-  values,
-  id,
-  ids,
-  descriptor,
-  descriptors,
-  key,
-  keys,
-  annotation,
-  annotations,
-  member,
-  members,
+  get = 0,
+  getter = 1,
+  lists = 2,
+  maps = 3,
+  name = 4,
+  name_to_value = 5,
+  names = 6,
+  prefix_tree = 7,
+  sets = 8,
+  setter = 9,
+  str = 10,
+  strings = 11,
+  type = 12,
+  value = 13,
+  value_to_name = 14,
+  values = 15,
+  id = 16,
+  ids = 17,
+  descriptor = 18,
+  descriptors = 19,
+  key = 20,
+  keys = 21,
+  annotation = 22,
+  annotations = 23,
+  member = 24,
+  members = 25,
 }
 
 union union_with_special_names {

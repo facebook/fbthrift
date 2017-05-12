@@ -8,8 +8,8 @@ cpp_include "thrift/test/fatal_merge_types.h"
 namespace cpp apache.thrift.test
 
 enum FooBar {
-  kFoo,
-  kBar,
+  kFoo = 0,
+  kBar = 1,
 }
 
 struct EnumExample {

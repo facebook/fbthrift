@@ -1,10 +1,10 @@
 namespace java thrift.test
 
 enum ENUM {
-  ENUM_A,
-  ENUM_B,
-  ENUM_C,
-  ENUM_D,
+  ENUM_A = 0,
+  ENUM_B = 1,
+  ENUM_C = 2,
+  ENUM_D = 3,
 }
 
 struct SmallStruct {

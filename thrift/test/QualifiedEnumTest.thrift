@@ -1,6 +1,9 @@
 include "thrift/test/EnumTest.thrift"
 
-enum MyQualifiedEnum { FOO, BAR }
+enum MyQualifiedEnum {
+  FOO = 0,
+  BAR = 1,
+}
 const MyQualifiedEnum FOO = BAR
 
 struct MyQualifiedStruct {

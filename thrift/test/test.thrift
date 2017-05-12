@@ -2,9 +2,9 @@ namespace cpp test_cpp
 namespace cpp2 test_cpp2
 
 enum enum1 {
-  field0,
-  field1,
-  field2
+  field0 = 0,
+  field1 = 1,
+  field2 = 2,
 }
 
 const enum1 e_1 = field0

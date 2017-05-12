@@ -8,9 +8,9 @@ enum enum1 {
 }
 
 enum enum2 {
-  e2field1
-  e2field2
-  e2field3
+  e2field1 = 0,
+  e2field2 = 1,
+  e2field3 = 2,
 }
 
 struct struct1 {

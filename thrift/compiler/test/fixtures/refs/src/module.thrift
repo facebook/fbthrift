@@ -48,8 +48,8 @@ struct StructWithSharedConst {
 }
 
 enum TypedEnum {
-  VAL1,
-  VAL2,
+  VAL1 = 0,
+  VAL2 = 1,
 } (cpp.enum_type = "short")
 
 struct Empty {}

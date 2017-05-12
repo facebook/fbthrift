@@ -6,9 +6,9 @@ typedef binary (cpp2.type = "folly::IOBuf") IOBuf
 typedef binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") IOBufPtr
 
 enum enum1 {
-  field0,
-  field1,
-  field2
+  field0 = 0,
+  field1 = 1,
+  field2 = 2,
 }
 
 struct nested1 {

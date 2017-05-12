@@ -33,10 +33,10 @@ struct template_arguments_union {
 }
 
 enum template_arguments_enum {
-  T,
-  U,
-  V,
-  Args,
-  UArgs,
-  VArgs
+  T = 0,
+  U = 1,
+  V = 2,
+  Args = 3,
+  UArgs = 4,
+  VArgs = 5,
 }

@@ -9,21 +9,21 @@ namespace python test_py.cpp_compat
 cpp_include "thrift/test/fatal_custom_types.h"
 
 enum compat_enum1 {
-  field0,
-  field1,
-  field2
+  field0 = 0,
+  field1 = 1,
+  field2 = 2,
 }
 
 enum compat_enum2 {
-  field0_2,
-  field1_2,
-  field2_2
+  field0_2 = 0,
+  field1_2 = 1,
+  field2_2 = 2,
 }
 
 enum compat_enum3 {
-  field0_3,
-  field1_3,
-  field2_3
+  field0_3 = 0,
+  field1_3 = 1,
+  field2_3 = 2,
 } (
   one.here = "with some value associated",
   another.there = ".",

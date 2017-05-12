@@ -1,27 +1,27 @@
 enum MyEnum1 {
   ME1_0 = 0,
   ME1_1 = 1,
-  ME1_2,
-  ME1_3,
+  ME1_2 = 2,
+  ME1_3 = 3,
   ME1_5 = 5,
-  ME1_6,
+  ME1_6 = 6,
 }
 
 enum MyEnum2 {
-  ME2_0,
-  ME2_1,
-  ME2_2,
+  ME2_0 = 0,
+  ME2_1 = 1,
+  ME2_2 = 2,
 }
 
 enum MyEnum3 {
-  ME3_0,
-  ME3_1,
+  ME3_0 = 0,
+  ME3_1 = 1,
   ME3_N2 = -2,
-  ME3_N1,
-  ME3_D0,
-  ME3_D1,
+  ME3_N1 = -1,
+  ME3_D0 = 0,
+  ME3_D1 = 1,
   ME3_9 = 9,
-  ME3_10,
+  ME3_10 = 10,
 } (thrift.duplicate_values)
 
 enum MyEnum4 {

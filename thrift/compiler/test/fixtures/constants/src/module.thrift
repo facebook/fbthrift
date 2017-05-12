@@ -12,8 +12,18 @@ const double z = 1000000000.0;
 
 enum EmptyEnum {}
 
-enum City { NYC, MPK, SEA, LON }
-enum Company { FACEBOOK, WHATSAPP, OCULUS, INSTAGRAM }
+enum City {
+  NYC = 0,
+  MPK = 1,
+  SEA = 2,
+  LON = 3,
+}
+enum Company {
+  FACEBOOK = 0,
+  WHATSAPP = 1,
+  OCULUS = 2,
+  INSTAGRAM = 3,
+}
 
 struct Internship {
   1: required i32 weeks;
