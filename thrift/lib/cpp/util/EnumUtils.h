@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
- // Note: Below methods don't work for class scoped enums
+// Note: Below methods don't work for class scoped enums
 
 #ifndef THRIFT_UTIL_ENUMUTILS_H_
 #define THRIFT_UTIL_ENUMUTILS_H_ 1
@@ -57,7 +57,7 @@ const char* enumName(EnumType value,
  * if it is not in enum, to avoid returning nullptr.
  */
 template <typename EnumType>
-std::string shortEnumNameSafe(EnumType value) {
+std::string enumNameSafe(EnumType value) {
   const char* name = enumName(value);
   return name ? name : std::to_string(static_cast<int32_t>(value));
 }

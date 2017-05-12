@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,22 +48,22 @@ TEST(EnumNonStrict, ShortEnumName) {
 }
 
 TEST(EnumStrict, ShortEnumNameSafe) {
-  EXPECT_EQ(shortEnumNameSafe((EnumStrict)0), "UNKNOWN");
-  EXPECT_EQ(shortEnumNameSafe((EnumStrict)1), "VALUE");
-  EXPECT_EQ(shortEnumNameSafe((EnumStrict)2), "FOO");
-  EXPECT_EQ(shortEnumNameSafe((EnumStrict)3), "BAR");
-  EXPECT_EQ(shortEnumNameSafe((EnumStrict)42), "42");
-  EXPECT_EQ(shortEnumNameSafe((EnumStrict)-1), "-1");
+  EXPECT_EQ(enumNameSafe((EnumStrict)0), "UNKNOWN");
+  EXPECT_EQ(enumNameSafe((EnumStrict)1), "VALUE");
+  EXPECT_EQ(enumNameSafe((EnumStrict)2), "FOO");
+  EXPECT_EQ(enumNameSafe((EnumStrict)3), "BAR");
+  EXPECT_EQ(enumNameSafe((EnumStrict)42), "42");
+  EXPECT_EQ(enumNameSafe((EnumStrict)-1), "-1");
 }
 
 TEST(EnumNonStrict, ShortEnumNameSafe) {
-  EXPECT_EQ(shortEnumNameSafe((EnumNonStrict)0), "UNKNOWN");
-  EXPECT_EQ(shortEnumNameSafe((EnumNonStrict)1), "VALUE");
-  EXPECT_EQ(shortEnumNameSafe((EnumNonStrict)2), "FOO");
-  EXPECT_EQ(shortEnumNameSafe((EnumNonStrict)3), "BAR");
-  EXPECT_EQ(shortEnumNameSafe((EnumNonStrict)6), "NEW_VALUE");
-  EXPECT_EQ(shortEnumNameSafe((EnumNonStrict)4), "4");
-  EXPECT_EQ(shortEnumNameSafe((EnumNonStrict)5), "5");
-  EXPECT_EQ(shortEnumNameSafe((EnumNonStrict)42), "42");
-  EXPECT_EQ(shortEnumNameSafe((EnumNonStrict)-1), "-1");
+  EXPECT_EQ(enumNameSafe((EnumNonStrict)0), "UNKNOWN");
+  EXPECT_EQ(enumNameSafe((EnumNonStrict)1), "VALUE");
+  EXPECT_EQ(enumNameSafe((EnumNonStrict)2), "FOO");
+  EXPECT_EQ(enumNameSafe((EnumNonStrict)3), "BAR");
+  EXPECT_EQ(enumNameSafe((EnumNonStrict)6), "NEW_VALUE");
+  EXPECT_EQ(enumNameSafe((EnumNonStrict)4), "4");
+  EXPECT_EQ(enumNameSafe((EnumNonStrict)5), "5");
+  EXPECT_EQ(enumNameSafe((EnumNonStrict)42), "42");
+  EXPECT_EQ(enumNameSafe((EnumNonStrict)-1), "-1");
 }
