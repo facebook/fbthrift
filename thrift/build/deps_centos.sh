@@ -24,7 +24,7 @@ sudo yum install -y \
     numactl-devel \
     numactl-libs \
     gflags-devel \
-    glogs-devel \
+    glog-devel \
     cmake
 
 # no rpm for this?
