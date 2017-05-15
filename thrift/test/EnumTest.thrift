@@ -25,9 +25,9 @@ enum MyEnum3 {
 } (thrift.duplicate_values)
 
 enum MyEnum4 {
-  ME4_A = 0x7ffffffd
-  ME4_B
-  ME4_C
+  ME4_A = 0x7ffffffd,
+  ME4_B = 0x7ffffffe,
+  ME4_C = 0x7fffffff,
   // attempting to define another enum value here fails
   // with an overflow error, as we overflow values that can be
   // represented with an i32.

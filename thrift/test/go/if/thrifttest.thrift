@@ -22,10 +22,10 @@ namespace go thrift.test.go.if.thrifttest
 enum Numberz
 {
   ONE = 1,
-  TWO,
-  THREE,
+  TWO = 2,
+  THREE = 3,
   FIVE = 5,
-  SIX,
+  SIX = 6,
   EIGHT = 8
 }
 

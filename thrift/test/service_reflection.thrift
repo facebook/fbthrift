@@ -2,8 +2,8 @@ namespace cpp service_reflection.cpp
 namespace cpp2 service_reflection.cpp2
 
 enum enum1 {
-  e1field1,
-  e1field2,
+  e1field1 = 0,
+  e1field2 = 1,
   e1field3 = -4
 }
 

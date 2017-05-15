@@ -40,11 +40,11 @@ enum Numberz
   ONE = 1,
 
   /** And this is a doc for a parameter that has no specific value assigned */
-  TWO,
+  TWO = 2,
 
-  THREE,
+  THREE = 3,
   FIVE = 5,
-  SIX,
+  SIX = 6,
   EIGHT = 8
 }
 
