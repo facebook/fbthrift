@@ -70,7 +70,7 @@ namespace apache { namespace thrift {
 template<class T>
 class NoopPtrDestructor {
  public:
-  void operator()(T* /*obj*/) {};
+  void operator()(T* /*obj*/) {}
 };
 
 }} // apache::thrift

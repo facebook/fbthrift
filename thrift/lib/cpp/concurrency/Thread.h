@@ -32,7 +32,7 @@ class Thread;
 class Runnable {
 
  public:
-  virtual ~Runnable() {};
+  virtual ~Runnable() {}
   virtual void run() = 0;
 
   /**
@@ -80,7 +80,7 @@ class Thread {
 
   typedef uint64_t id_t;
 
-  virtual ~Thread() {};
+  virtual ~Thread() {}
 
   /**
    * Starts the thread. Does platform specific thread creation and
