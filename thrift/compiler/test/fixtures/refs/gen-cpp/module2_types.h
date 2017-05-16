@@ -20,8 +20,6 @@
 #include <math.h>
 
 #include <thrift/lib/cpp/Thrift.h>
-
-using namespace folly::json;
 namespace apache { namespace thrift { namespace reflection {
 class Schema;
 }}}

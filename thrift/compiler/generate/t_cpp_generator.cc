@@ -635,8 +635,7 @@ void t_cpp_generator::init_generator() {
       endl << "#include <folly/Range.h>" << endl <<
       endl << "#include <folly/Conv.h>" << endl <<
       endl << "#include <math.h>" << endl <<
-      endl << "#include <thrift/lib/cpp/Thrift.h>" << endl <<
-      endl << "using namespace folly::json;" << endl;
+      endl << "#include <thrift/lib/cpp/Thrift.h>" << endl;
   }
 
   if (!bootstrap_) {
