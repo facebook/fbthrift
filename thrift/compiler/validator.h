@@ -117,4 +117,19 @@ class enum_values_uniqueness_validator : virtual public validator {
       std::string const& enum_name);
 };
 
+class enum_values_set_validator : virtual public validator {
+ public:
+  using validator::visit;
+
+  // Enforces that every enum value has an explicit value
+  bool visit(t_enum const* tenum) override;
+
+ private:
+  void validate(t_enum const* tenum);
+
+  void add_validation_error(
+      int const lineno,
+      std::string const& enum_value,
+      std::string const& enum_name);
+};
 }}}

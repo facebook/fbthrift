@@ -151,6 +151,7 @@ static void fill_validators(validator_list& vs) {
   vs.add<service_method_name_uniqueness_validator>();
   vs.add<enum_value_names_uniqueness_validator>();
   vs.add<enum_values_uniqueness_validator>();
+  vs.add<enum_values_set_validator>();
 
   // add more validators here ...
 
@@ -214,6 +215,29 @@ void enum_values_uniqueness_validator::validate(t_enum const* const tenum) {
           v->get_lineno(), *v, it->second->get_name(), tenum->get_name());
     } else {
       enum_values[v->get_value()] = v;
+    }
+  }
+}
+
+void enum_values_set_validator::add_validation_error(
+    int const lineno,
+    std::string const& enum_value_name,
+    std::string const& enum_name) {
+  std::ostringstream err;
+  err << "Unset enum value " << enum_value_name << " in enum " << enum_name
+      << ". Add an explicit value to suppress this error";
+  add_error(lineno, err.str());
+}
+
+bool enum_values_set_validator::visit(t_enum const* const tenum) {
+  validate(tenum);
+  return true;
+}
+
+void enum_values_set_validator::validate(t_enum const* const tenum) {
+  for (auto v : tenum->get_constants()) {
+    if (!v->has_value()) {
+      add_validation_error(v->get_lineno(), v->get_name(), tenum->get_name());
     }
   }
 }

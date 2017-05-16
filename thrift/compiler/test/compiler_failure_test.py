@@ -133,6 +133,22 @@ class CompilerFailureTest(unittest.TestCase):
             "error\n"
         )
 
+    def test_unset_enum_value(self):
+        write_file("foo.thrift", textwrap.dedent("""\
+            enum Foo {
+                Bar,
+                Baz,
+            }
+        """))
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift:2] Unset enum value Bar in enum Foo. "
+            "Add an explicit value to suppress this error\n"
+            "[FAILURE:foo.thrift:3] Unset enum value Baz in enum Foo. "
+            "Add an explicit value to suppress this error\n"
+        )
+
     def test_circular_include_dependencies(self):
         # tests overriding a method of the parent and the grandparent services
         write_file("foo.thrift", textwrap.dedent("""\

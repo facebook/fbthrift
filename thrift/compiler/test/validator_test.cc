@@ -182,3 +182,27 @@ TEST_F(ValidatorTest, DuplicatedEnumValues) {
   errors = run_validator<enum_values_uniqueness_validator>(&program);
   EXPECT_TRUE(errors.empty());
 }
+
+TEST_F(ValidatorTest, UnsetEnumValues) {
+  auto tenum = create_fake_enum("Foo");
+
+  t_program program("/path/to/file.thrift");
+  program.add_enum(tenum.get());
+
+  t_enum_value enum_value_1("Bar");
+  t_enum_value enum_value_2("Baz");
+  enum_value_1.set_lineno(2);
+  enum_value_2.set_lineno(3);
+  tenum->append(&enum_value_1);
+  tenum->append(&enum_value_2);
+
+  // An error will be found
+  auto errors = run_validator<enum_values_set_validator>(&program);
+  EXPECT_THAT(
+      errors,
+      testing::ElementsAre(
+          "[FAILURE:/path/to/file.thrift:2] Unset enum value Bar in enum Foo. "
+          "Add an explicit value to suppress this error",
+          "[FAILURE:/path/to/file.thrift:3] Unset enum value Baz in enum Foo. "
+          "Add an explicit value to suppress this error"));
+}

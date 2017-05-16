@@ -645,8 +645,10 @@ EnumValue:
       if (y_enum_val == INT32_MAX) {
         failure("enum value overflow at enum %s", $1);
       }
+      $$ = new t_enum_value($1);
+
       ++y_enum_val;
-      $$ = new t_enum_value($1, y_enum_val);
+      $$->set_value(y_enum_val);
       $$->set_lineno(yylineno);
     }
 

@@ -55,7 +55,6 @@ class t_enum_value : public t_annotated {
    */
   void set_value(int32_t value) {
     value_ = value;
-    has_value_ = true;
   }
 
   /**
