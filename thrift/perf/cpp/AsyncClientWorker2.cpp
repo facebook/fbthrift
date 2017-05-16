@@ -168,8 +168,8 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
           ->getSelection(config->srTier());
 
         options["single_host"] = {
-          selection.hosts->at(0)->getIp(),
-          folly::to<std::string>(selection.hosts->at(0)->port)};
+            selection.hosts.at(0)->getIp(),
+            folly::to<std::string>(selection.hosts.at(0)->port)};
       } else {
         // hit the specified server/port
         auto socketAddr = config->getAddress();
