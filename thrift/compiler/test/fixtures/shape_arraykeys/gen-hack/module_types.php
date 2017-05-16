@@ -1393,7 +1393,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
 
   public static function __fromShape(self::TShape $shape): this {
     $me = /* HH_IGNORE_ERROR[4060] */ new static();
-    $me->just_an_A = $shape['just_an_A'] === null ? null : A::__fromShape(nullthrows($shape['just_an_A']));
+    $me->just_an_A = Shapes::idx($shape, 'just_an_A') === null ? null : A::__fromShape(nullthrows(Shapes::idx($shape, 'just_an_A')));
     $me->set_of_i32 = new Set(array_keys($shape['set_of_i32']));
     $me->list_of_i32 = (new Vector($shape['list_of_i32']));
     $me->list_of_string = (new Vector($shape['list_of_string']));
@@ -1441,34 +1441,34 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     $me->map_of_string_to_self = self::__stringifyMapKeys(new Map($shape['map_of_string_to_self']))->map(
       $val90 ==> B::__fromShape($val90),
     );
-    $me->just_an_enum = $shape['just_an_enum'];
-    $me->optional_just_an_A = $shape['optional_just_an_A'] === null ? null : A::__fromShape(nullthrows($shape['optional_just_an_A']));
-    $me->optional_set_of_i32 = $shape['optional_set_of_i32'] === null ? null : new Set(array_keys(nullthrows($shape['optional_set_of_i32'])));
-    $me->optional_list_of_i32 = $shape['optional_list_of_i32'] === null ? null : 
-      (new Vector($shape['optional_list_of_i32']));
-    $me->optional_list_of_string = $shape['optional_list_of_string'] === null ? null : 
-      (new Vector($shape['optional_list_of_string']));
-    $me->optional_map_of_string_to_i32 = $shape['optional_map_of_string_to_i32'] === null ? null : 
-      self::__stringifyMapKeys(new Map($shape['optional_map_of_string_to_i32']));
-    $me->optional_map_of_string_to_A = $shape['optional_map_of_string_to_A'] === null ? null : 
-      self::__stringifyMapKeys(new Map($shape['optional_map_of_string_to_A']))->map(
+    $me->just_an_enum = Shapes::idx($shape, 'just_an_enum');
+    $me->optional_just_an_A = Shapes::idx($shape, 'optional_just_an_A') === null ? null : A::__fromShape(nullthrows(Shapes::idx($shape, 'optional_just_an_A')));
+    $me->optional_set_of_i32 = Shapes::idx($shape, 'optional_set_of_i32') === null ? null : new Set(array_keys(nullthrows(Shapes::idx($shape, 'optional_set_of_i32'))));
+    $me->optional_list_of_i32 = Shapes::idx($shape, 'optional_list_of_i32') === null ? null : 
+      (new Vector(Shapes::idx($shape, 'optional_list_of_i32')));
+    $me->optional_list_of_string = Shapes::idx($shape, 'optional_list_of_string') === null ? null : 
+      (new Vector(Shapes::idx($shape, 'optional_list_of_string')));
+    $me->optional_map_of_string_to_i32 = Shapes::idx($shape, 'optional_map_of_string_to_i32') === null ? null : 
+      self::__stringifyMapKeys(new Map(Shapes::idx($shape, 'optional_map_of_string_to_i32')));
+    $me->optional_map_of_string_to_A = Shapes::idx($shape, 'optional_map_of_string_to_A') === null ? null : 
+      self::__stringifyMapKeys(new Map(Shapes::idx($shape, 'optional_map_of_string_to_A')))->map(
         $val91 ==> A::__fromShape($val91),
       );
-    $me->optional_map_of_string_to_list_of_i32 = $shape['optional_map_of_string_to_list_of_i32'] === null ? null : 
-      self::__stringifyMapKeys(new Map($shape['optional_map_of_string_to_list_of_i32']))->map(
+    $me->optional_map_of_string_to_list_of_i32 = Shapes::idx($shape, 'optional_map_of_string_to_list_of_i32') === null ? null : 
+      self::__stringifyMapKeys(new Map(Shapes::idx($shape, 'optional_map_of_string_to_list_of_i32')))->map(
         $val92 ==> (new Vector($val92)),
       );
-    $me->optional_map_of_string_to_list_of_A = $shape['optional_map_of_string_to_list_of_A'] === null ? null : 
-      self::__stringifyMapKeys(new Map($shape['optional_map_of_string_to_list_of_A']))->map(
+    $me->optional_map_of_string_to_list_of_A = Shapes::idx($shape, 'optional_map_of_string_to_list_of_A') === null ? null : 
+      self::__stringifyMapKeys(new Map(Shapes::idx($shape, 'optional_map_of_string_to_list_of_A')))->map(
         $val93 ==> (new Vector($val93))->map(
           $val94 ==> A::__fromShape($val94),
         ),
       );
-    $me->optional_map_of_string_to_set_of_i32 = $shape['optional_map_of_string_to_set_of_i32'] === null ? null : 
-      self::__stringifyMapKeys(new Map($shape['optional_map_of_string_to_set_of_i32']))->map(
+    $me->optional_map_of_string_to_set_of_i32 = Shapes::idx($shape, 'optional_map_of_string_to_set_of_i32') === null ? null : 
+      self::__stringifyMapKeys(new Map(Shapes::idx($shape, 'optional_map_of_string_to_set_of_i32')))->map(
         $val95 ==> new Set(array_keys($val95)),
       );
-    $me->optional_enum = $shape['optional_enum'];
+    $me->optional_enum = Shapes::idx($shape, 'optional_enum');
     return $me;
   }
 

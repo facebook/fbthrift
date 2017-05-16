@@ -1849,7 +1849,11 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
     bool nullable = field_is_nullable(tstruct, *m_iter, render_default_value(t));
 
     stringstream source;
-    source << "$shape['" << (*m_iter)->get_name() << "']";
+    if (nullable) {
+      source << "Shapes::idx($shape, '" << (*m_iter)->get_name() << "')";
+    } else {
+      source << "$shape['" << (*m_iter)->get_name() << "']";
+    }
 
     stringstream val;
 
