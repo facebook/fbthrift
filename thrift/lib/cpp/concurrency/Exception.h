@@ -39,14 +39,14 @@ public:
 
 class TimedOutException : public apache::thrift::TLibraryException {
 public:
-  TimedOutException():TLibraryException("TimedOutException"){};
+  TimedOutException():TLibraryException("TimedOutException"){}
   TimedOutException(const std::string& message ) :
     TLibraryException(message) {}
 };
 
 class TooManyPendingTasksException : public apache::thrift::TLibraryException {
 public:
-  TooManyPendingTasksException():TLibraryException("TooManyPendingTasksException"){};
+  TooManyPendingTasksException():TLibraryException("TooManyPendingTasksException"){}
   TooManyPendingTasksException(const std::string& message ) :
     TLibraryException(message) {}
 };

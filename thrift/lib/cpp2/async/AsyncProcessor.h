@@ -804,12 +804,12 @@ public:
 class AsyncProcessorFactory {
   public:
     virtual std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() = 0;
-    virtual ~AsyncProcessorFactory() {};
+    virtual ~AsyncProcessorFactory() {}
 };
 
 class ServerInterface : public AsyncProcessorFactory {
  public:
-  ~ServerInterface() override{};
+  ~ServerInterface() override{}
 
   Cpp2RequestContext* getConnectionContext() {
     return reqCtx_;

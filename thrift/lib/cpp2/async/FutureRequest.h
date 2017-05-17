@@ -30,7 +30,7 @@ class FutureCallbackBase : public RequestCallback {
           : promise_(std::move(promise)),
             channel_(std::move(channel)) {}
 
-    void requestSent() override{};
+    void requestSent() override{}
 
     void requestError(ClientReceiveState&& state) override {
       CHECK(state.isException());
@@ -152,7 +152,7 @@ class OneWayFutureCallback : public FutureCallbackBase<folly::Unit> {
 
     void requestSent() override {
       promise_.setValue();
-    };
+    }
 
     void replyReceived(ClientReceiveState&& /*state*/) override {
       CHECK(false);
