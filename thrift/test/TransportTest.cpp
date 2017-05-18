@@ -838,15 +838,11 @@ class TransportTest : public testing::Test {
   TEST_BLOCKING_BEHAVIOR_A(CoupledTransports, borrow_none_available) \
 
 static GenericSizeGenerator rand4k(1, 4096);
-static constexpr size_t kConst2K = 1024*2;
 static constexpr size_t kConst16K = 1024*16;
-static constexpr size_t kConst64K = 1024*64;
-static constexpr size_t kConst128K = 1024*128;
 static constexpr size_t kConst256K = 1024*256;
 static constexpr size_t kConst1024K = 1024*1024;
 static constexpr uint32_t kFdMaxOutstanding = 4096;
 static constexpr uint32_t kSocketMaxOutstanding = 4096;
-static constexpr uint32_t kMaxWriteAtOnce = 1024*1024*16 - 4;
 
 // TMemoryBuffer tests
 TEST_RW_4(CoupledMemoryBuffers, kConst1024K, 0, 0);
