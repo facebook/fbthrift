@@ -102,7 +102,7 @@ TEST_F(StreamingTest, Observable) {
         EXPECT_EQ(x, n);
         n++;
       },
-      [&n](Error e) {
+      [](Error e) {
         // onError
         FAIL();
       },
@@ -134,7 +134,7 @@ TEST_F(StreamingTest, Exception) {
         EXPECT_TRUE(e.is_compatible_with<StreamingException>());
         error = true;
       },
-      [&n]() {
+      []() {
         // onCompleted
         FAIL();
       }
@@ -167,7 +167,7 @@ TEST_F(StreamingTest, GlobalTimeout) {
         }));
         error = true;
       },
-      [&n]() {
+      []() {
         // onCompleted
         FAIL();
       }
@@ -200,7 +200,7 @@ TEST_F(StreamingTest, ChunkTimeout) {
         }));
         error = true;
       },
-      [&n]() {
+      []() {
         // onCompleted
         FAIL();
       }

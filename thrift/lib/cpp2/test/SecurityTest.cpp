@@ -137,7 +137,7 @@ void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
   rpcOptions.setWriteHeader("security_test",
                             sp == THRIFT_SECURITY_REQUIRED ? "1" : "0");
   client.sendResponse(rpcOptions, std::make_unique<FunctionReplyCallback>(
-                      [&base,&client,&c,&sp](ClientReceiveState&& state) {
+                      [&c,&sp](ClientReceiveState&& state) {
     EXPECT_FALSE(state.isException());
     if (sp == THRIFT_SECURITY_REQUIRED) {
       EXPECT_TRUE(state.isSecurityActive());
@@ -158,12 +158,12 @@ void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
   // fail on time out
   base.tryRunAfterDelay([] {EXPECT_TRUE(false);}, 5000);
 
-  base.tryRunAfterDelay([&client,&base,&c,&sp] {
+  base.tryRunAfterDelay([&client,&c,&sp] {
     RpcOptions rpcOptions1;
     rpcOptions1.setWriteHeader("security_test",
                               sp == THRIFT_SECURITY_REQUIRED ? "1" : "0");
     client.sendResponse(rpcOptions1, std::make_unique<FunctionReplyCallback>(
-          [&base,&c,&sp](ClientReceiveState&& state) {
+          [&c,&sp](ClientReceiveState&& state) {
       EXPECT_FALSE(state.isException());
       if (sp == THRIFT_SECURITY_REQUIRED) {
         EXPECT_TRUE(state.isSecurityActive());
@@ -184,7 +184,7 @@ void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
     rpcOptions2.setWriteHeader("security_test",
                               sp == THRIFT_SECURITY_REQUIRED ? "1" : "0");
     client.sendResponse(rpcOptions2, std::make_unique<FunctionReplyCallback>(
-          [&base,&c,&sp](ClientReceiveState&& state) {
+          [&c,&sp](ClientReceiveState&& state) {
       EXPECT_FALSE(state.isException());
       if (sp == THRIFT_SECURITY_REQUIRED) {
         EXPECT_TRUE(state.isSecurityActive());
@@ -436,7 +436,7 @@ void runRequestContextTest(bool failSecurity) {
     // security. Rest of the request would queue behind it.
     folly::RequestContextScopeGuard rctx;
     folly::RequestContext::get()->setContextData("first", nullptr);
-    client.sendResponse([&base,&client,&c](ClientReceiveState&& state) {
+    client.sendResponse([&c](ClientReceiveState&& state) {
       EXPECT_TRUE(folly::RequestContext::get()->hasContextData("first"));
       c.down();
     }, 10);
@@ -447,7 +447,7 @@ void runRequestContextTest(bool failSecurity) {
     // queue behind the first one inside HeaderClientChannel.
     folly::RequestContextScopeGuard rctx;
     folly::RequestContext::get()->setContextData("second", nullptr);
-    client.sendResponse([&base,&client,&c](ClientReceiveState&& state) {
+    client.sendResponse([&c](ClientReceiveState&& state) {
       EXPECT_FALSE(folly::RequestContext::get()->hasContextData("first"));
       EXPECT_TRUE(folly::RequestContext::get()->hasContextData("second"));
       c.down();
