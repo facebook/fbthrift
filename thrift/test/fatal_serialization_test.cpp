@@ -33,6 +33,8 @@
 
 #include <iomanip>
 
+using namespace apache::thrift;
+using namespace apache::thrift::test;
 
 TYPED_TEST_CASE(MultiProtocolTest, protocol_type_pairs);
 TYPED_TEST_CASE(CompareProtocolTest, protocol_type_pairs);

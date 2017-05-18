@@ -28,6 +28,7 @@
 
 using namespace test_cpp2::simple_cpp_reflection;
 using namespace apache::thrift;
+using namespace apache::thrift::test;
 
 using BinaryPair = RWPair<BinaryProtocolReader, BinaryProtocolWriter, false>;
 using CompactPair = RWPair<CompactProtocolReader, CompactProtocolWriter, false>;

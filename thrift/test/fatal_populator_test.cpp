@@ -30,6 +30,7 @@ namespace test_cpp2 {
 namespace simple_cpp_reflection {
 
 using namespace apache::thrift;
+using namespace apache::thrift::test;
 using apache::thrift::populator::populator_opts;
 
 TYPED_TEST_CASE(MultiProtocolTest, protocol_type_pairs);

@@ -23,8 +23,9 @@
 
 #include <gtest/gtest.h>
 
-/* using override */
-using namespace apache::thrift;
+namespace apache {
+namespace thrift {
+namespace test {
 
 template <typename Reader, typename Writer, bool Printable>
 struct RWPair {
@@ -101,3 +102,7 @@ struct CompareProtocolTest : public ::testing::Test {
     st2.debug_buffer();
   }
 };
+
+}
+}
+}

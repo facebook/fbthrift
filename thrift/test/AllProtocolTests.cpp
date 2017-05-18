@@ -29,8 +29,8 @@
 #include "AllProtocolTests.tcc"
 
 using namespace apache::thrift;
+using namespace apache::thrift::test;
 using namespace apache::thrift::protocol;
-using namespace apache::thrift::transport;
 
 char errorMessage[ERR_LEN];
 

@@ -28,19 +28,17 @@
 
 #include "GenericHelpers.h"
 
-using std::shared_ptr;
-using namespace apache::thrift;
-using namespace apache::thrift::protocol;
-using namespace apache::thrift::transport;
-
 #define ERR_LEN 512
 extern char errorMessage[ERR_LEN];
 
+namespace apache {
+namespace thrift {
+namespace test {
+
 template <typename TProto, typename Val>
 void testNaked(Val val) {
-  shared_ptr<TTransport> transport(new TMemoryBuffer());
-  shared_ptr<TProtocol> protocol(new TProto(transport));
-
+  auto protocol = std::make_shared<TProto>(
+      std::make_shared<transport::TMemoryBuffer>());
 
   GenericIO::write(protocol, val);
   protocol->getTransport()->flush();
@@ -52,10 +50,10 @@ void testNaked(Val val) {
   }
 }
 
-template <typename TProto, TType type, typename Val>
+template <typename TProto, protocol::TType type, typename Val>
 void testField(const Val val) {
-  shared_ptr<TTransport> transport(new TMemoryBuffer());
-  shared_ptr<TProtocol> protocol(new TProto(transport));
+  auto protocol = std::make_shared<TProto>(
+      std::make_shared<transport::TMemoryBuffer>());
 
   protocol->writeStructBegin("test_struct");
   protocol->writeFieldBegin("test_field", type, (int16_t)15);
@@ -67,7 +65,7 @@ void testField(const Val val) {
   protocol->getTransport()->flush();
 
   std::string name;
-  TType fieldType;
+  protocol::TType fieldType;
   int16_t fieldId;
 
   protocol->readStructBegin(name);
@@ -98,18 +96,18 @@ template <typename TProto>
 void testMessage() {
   struct TMessage {
     const char* name;
-    TMessageType type;
+    protocol::TMessageType type;
     int32_t seqid;
   } messages[4] = {
-    {"short message name", T_CALL, 0},
-    {"1", T_REPLY, 12345},
-    {"loooooooooooooooooooooooooooooooooong", T_EXCEPTION, 1 << 16},
-    {"Janky", T_CALL, 0}
+    {"short message name", protocol::T_CALL, 0},
+    {"1", protocol::T_REPLY, 12345},
+    {"loooooooooooooooooooooooooooooooooong", protocol::T_EXCEPTION, 1 << 16},
+    {"Janky", protocol::T_CALL, 0}
   };
 
   for (int i = 0; i < 4; i++) {
-    shared_ptr<TTransport> transport(new TMemoryBuffer());
-    shared_ptr<TProtocol> protocol(new TProto(transport));
+    auto protocol = std::make_shared<TProto>(
+        std::make_shared<transport::TMemoryBuffer>());
 
     protocol->writeMessageBegin(messages[i].name,
                                 messages[i].type,
@@ -118,7 +116,7 @@ void testMessage() {
     protocol->getTransport()->flush();
 
     std::string name;
-    TMessageType type;
+    protocol::TMessageType type;
     int32_t seqid;
 
     protocol->readMessageBegin(name, type, seqid);
@@ -132,6 +130,7 @@ void testMessage() {
 
 template <typename TProto>
 void testProtocol(const char* protoname) {
+  using namespace protocol;
   try {
     testNaked<TProto, int8_t>((int8_t)123);
 
@@ -226,6 +225,9 @@ void testProtocol(const char* protoname) {
     snprintf(errorMessage, ERR_LEN, "%s => Test FAILED: %s", protoname, e.what());
     throw TLibraryException(errorMessage);
   }
+}
+}
+}
 }
 
 #endif
