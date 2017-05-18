@@ -41,7 +41,7 @@ class AuthHandler : virtual public AuthenticatedServiceSvIf {
   }
 
  protected:
-  void throwLoginError(const std::string& message) const;
+  [[noreturn]] void throwLoginError(const std::string& message) const;
 
   std::string computeClientInfoString() const;
 

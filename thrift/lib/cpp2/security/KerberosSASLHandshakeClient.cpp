@@ -174,7 +174,7 @@ void KerberosSASLHandshakeClient::cleanUpState(
   logger->logEnd("clean_up_state");
 }
 
-void KerberosSASLHandshakeClient::throwKrb5Exception(
+[[noreturn]] void KerberosSASLHandshakeClient::throwKrb5Exception(
     const std::string& custom,
     krb5_context ctx,
     krb5_error_code code) {

@@ -215,7 +215,7 @@ ShellHandler::validateState() {
   }
 }
 
-void
+[[noreturn]] void
 ShellHandler::throwErrno(const char* msg) {
   OSError error;
   error.code = errno;

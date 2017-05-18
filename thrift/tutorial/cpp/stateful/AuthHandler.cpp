@@ -61,7 +61,7 @@ AuthHandler::listSessions(vector<SessionInfo> &_return) {
   });
 }
 
-void
+[[noreturn]] void
 AuthHandler::throwLoginError(const string& message) const {
   LoginError err;
   err.message = message;

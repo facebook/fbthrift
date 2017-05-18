@@ -39,7 +39,7 @@ class ThrowCtorType : public std::string {
   ThrowCtorType() {}
 
   // the move ctor is not annotated with "noexcept"
-  ThrowCtorType(ThrowCtorType&& other)
+  [[noreturn]] ThrowCtorType(ThrowCtorType&& other)
     : std::string(std::move(other)) {
     throw (1);
   }

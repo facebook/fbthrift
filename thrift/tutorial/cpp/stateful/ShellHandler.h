@@ -42,7 +42,7 @@ class ShellHandler : virtual public ShellServiceSvIf, public AuthHandler {
 
  protected:
   void validateState();
-  void throwErrno(const char* msg);
+  [[noreturn]] void throwErrno(const char* msg);
 
   std::mutex mutex_;
   int cwd_;

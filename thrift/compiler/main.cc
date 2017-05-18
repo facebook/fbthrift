@@ -69,7 +69,7 @@ bool record_genfiles = false;
 /**
  * Diplays the usage message and then exits with an error code.
  */
-static void usage() {
+[[noreturn]] static void usage() {
   fprintf(stderr, "Usage: thrift [options] file\n");
   fprintf(stderr, "Options:\n");
   fprintf(stderr, "  -o dir      Set the output directory for gen-* packages\n");

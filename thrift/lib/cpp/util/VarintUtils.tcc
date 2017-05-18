@@ -54,7 +54,7 @@ uint8_t readVarintSlow(CursorT& c, T& value) {
 // This is a simple function that just throws an exception. It is defined out
 // line to make the caller (readVarint) smaller and simpler (assembly-wise),
 // which gives us 5% perf win (even when the exception is not actually thrown).
-void throwInvalidVarint();
+[[noreturn]] void throwInvalidVarint();
 
 template <class T, class CursorT,
           typename std::enable_if<

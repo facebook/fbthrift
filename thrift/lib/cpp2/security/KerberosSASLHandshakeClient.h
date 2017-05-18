@@ -154,7 +154,7 @@ class KerberosSASLHandshakeClient {
     OM_uint32 requiredFlags_;
 
     void initSecurityContext();
-    void throwKrb5Exception(
+    [[noreturn]] void throwKrb5Exception(
       const std::string& str,
       krb5_context ctx,
       krb5_error_code code);
