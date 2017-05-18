@@ -2054,7 +2054,6 @@ void t_cocoa_generator::generate_deserialize_field(ofstream& out,
       case t_base_type::TYPE_VOID:
         throw "compiler error: cannot serialize void field in a struct: " +
           tfield->get_name();
-        break;
       case t_base_type::TYPE_STRING:
         if (((t_base_type*)type)->is_binary()) {
           out << "readBinary];";
@@ -2320,7 +2319,6 @@ void t_cocoa_generator::generate_serialize_field(ofstream& out,
       case t_base_type::TYPE_VOID:
         throw
           "compiler error: cannot serialize void field in a struct: " + fieldName;
-        break;
       case t_base_type::TYPE_STRING:
         if (((t_base_type*)type)->is_binary()) {
           out << "writeBinary: " << fieldName << "];";

@@ -1211,7 +1211,6 @@ void t_ocaml_generator::generate_deserialize_type(ofstream &out,
     switch (tbase) {
     case t_base_type::TYPE_VOID:
       throw "compiler error: cannot serialize void field in a struct";
-      break;
     case t_base_type::TYPE_STRING:
       out << "readString";
       break;
@@ -1363,7 +1362,6 @@ void t_ocaml_generator::generate_serialize_field(ofstream &out,
       case t_base_type::TYPE_VOID:
         throw
           "compiler error: cannot serialize void field in a struct: " + name;
-        break;
       case t_base_type::TYPE_STRING:
         out << "writeString(" << name << ")";
         break;

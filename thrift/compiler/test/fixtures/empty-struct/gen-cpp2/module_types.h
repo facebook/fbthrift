@@ -180,7 +180,6 @@ class Nada : private apache::thrift::detail::st::ComparisonOperators<Nada> {
       default:
       {
         return false;
-        break;
       }
     }
   }

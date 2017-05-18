@@ -1257,7 +1257,6 @@ void t_js_generator::generate_deserialize_field(ofstream &out,
       case t_base_type::TYPE_VOID:
         throw "compiler error: cannot serialize void field in a struct: " +
           name;
-        break;
       case t_base_type::TYPE_STRING:
         out << "readString()";
         break;
@@ -1496,7 +1495,6 @@ void t_js_generator::generate_serialize_field(ofstream &out,
       case t_base_type::TYPE_VOID:
         throw
           "compiler error: cannot serialize void field in a struct: " + name;
-        break;
       case t_base_type::TYPE_STRING:
         out << "writeString(" << name << ")";
         break;

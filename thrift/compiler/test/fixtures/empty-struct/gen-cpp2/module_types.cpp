@@ -66,7 +66,6 @@ bool Nada::operator==(const Nada& /* rhs */) const {
     default:
     {
       return true;
-      break;
     }
   }
 }

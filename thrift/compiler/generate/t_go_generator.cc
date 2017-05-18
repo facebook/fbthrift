@@ -2766,7 +2766,6 @@ void t_go_generator::generate_deserialize_field(ofstream& out,
       switch (tbase) {
       case t_base_type::TYPE_VOID:
         throw "compiler error: cannot serialize void field in a struct: " + name;
-        break;
 
       case t_base_type::TYPE_STRING:
         if (((t_base_type*)type)->is_binary() && !inkey) {
@@ -3022,7 +3021,6 @@ void t_go_generator::generate_serialize_field(ofstream& out,
       switch (tbase) {
       case t_base_type::TYPE_VOID:
         throw "compiler error: cannot serialize void field in a struct: " + name;
-        break;
 
       case t_base_type::TYPE_STRING:
         if (((t_base_type*)type)->is_binary() && !inkey) {

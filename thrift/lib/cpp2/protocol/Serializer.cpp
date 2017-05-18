@@ -28,13 +28,11 @@ std::unique_ptr<folly::IOBuf> serializeError(
     {
       return serializeErrorProtocol<BinaryProtocolReader,
         BinaryProtocolWriter>(obj, std::move(buf));
-      break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       return serializeErrorProtocol<CompactProtocolReader,
         CompactProtocolWriter>(obj, std::move(buf));
-      break;
     }
     default:
     {
@@ -54,13 +52,11 @@ std::unique_ptr<folly::IOBuf> serializeError(int protId,
     {
       return serializeErrorProtocol<BinaryProtocolWriter>(obj, fname,
           protoSeqId);
-      break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       return serializeErrorProtocol<CompactProtocolWriter>(obj, fname,
           protoSeqId);
-      break;
     }
     default:
     {

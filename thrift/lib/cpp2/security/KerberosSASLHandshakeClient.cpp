@@ -391,7 +391,6 @@ std::unique_ptr<std::string> KerberosSASLHandshakeClient::getTokenToSend() {
       }
       return unique_ptr<string>(
         new string((const char*) outputToken_->value, outputToken_->length));
-      break;
     }
     case SELECT_SECURITY_LAYER:
     {
@@ -406,7 +405,6 @@ std::unique_ptr<std::string> KerberosSASLHandshakeClient::getTokenToSend() {
       ));
       logger_->logEnd("prepare_third_request");
       return ptr;
-      break;
     }
     default:
       break;

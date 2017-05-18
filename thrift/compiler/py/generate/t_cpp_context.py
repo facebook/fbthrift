@@ -263,7 +263,7 @@ class Case(Primitive):
 
     def exit_scope_callback(self, context, scope):
         context.output.line_feed()
-        if 'nobreak' not in self:
+        if 'nobreak' not in self or not self.nobreak:
             print >>context.output, 'break;'
         context.output.unindent(2)
         print >>context.output, '}',

@@ -637,7 +637,6 @@ TEST(ThriftServer, FailureInjection) {
         break;
       case END:
         LOG(FATAL) << "unreached";
-        break;
     }
 
     server->setFailureInjection(std::move(fi));

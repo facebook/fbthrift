@@ -1247,7 +1247,6 @@ void t_csharp_generator::generate_deserialize_field(ofstream& out, t_field* tfie
       switch (tbase) {
         case t_base_type::TYPE_VOID:
           throw "compiler error: cannot serialize void field in a struct: " + name;
-          break;
         case t_base_type::TYPE_STRING:
           if (((t_base_type*)type)->is_binary()) {
              out << "ReadBinary();";
@@ -1414,7 +1413,6 @@ void t_csharp_generator::generate_serialize_field(ofstream& out, t_field* tfield
       switch(tbase) {
         case t_base_type::TYPE_VOID:
           throw "compiler error: cannot serialize void field in a struct: " + name;
-          break;
         case t_base_type::TYPE_STRING:
           if (((t_base_type*)type)->is_binary()) {
             out << "WriteBinary(";

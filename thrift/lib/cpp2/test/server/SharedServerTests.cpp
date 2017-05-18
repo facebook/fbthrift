@@ -96,7 +96,6 @@ class SharedServerTests
       }
       default:
         FAIL();
-        break;
     }
 
     switch (std::get<1>(GetParam())) {
@@ -116,7 +115,6 @@ class SharedServerTests
       }
       default:
         FAIL();
-        break;
     }
   }
 

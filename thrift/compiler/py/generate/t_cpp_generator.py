@@ -2514,15 +2514,15 @@ class CppGenerator(t_generator.Generator):
                 out('return *this;')
 
     def _gen_union_switch(self, members, stmt, stmt_ref,
-                          val='type_', default='assert(false);'):
+                          val='type_', default='assert(false);', nobreak=False):
         with out('switch({0})'.format(val)):
             for member in members:
-                with out().case('Type::' + member.name):
+                with out().case('Type::' + member.name, nobreak=nobreak):
                     if self._is_reference(member):
                         out(stmt_ref.format(field=member.name))
                     else:
                         out(stmt.format(field=member.name))
-            with out().case('default'):
+            with out().case('default', nobreak=nobreak):
                 out(default)
 
     def _generate_struct_complete(self, s, obj, is_exception,
@@ -2939,7 +2939,7 @@ class CppGenerator(t_generator.Generator):
                     self._gen_union_switch(members,
                         'return value_.{field} == rhs.value_.{field};',
                         'return *value_.{field} == *rhs.value_.{field};',
-                        default='return true;')
+                        default='return true;', nobreak=True)
                 else:
                     for m in members:
                         # Most existing Thrift code does not use isset or
@@ -2984,7 +2984,7 @@ class CppGenerator(t_generator.Generator):
                         self._gen_union_switch(members,
                             'return value_.{field} < rhs.value_.{field};',
                             'return *value_.{field} < *rhs.value_.{field};',
-                            default='return false;')
+                            default='return false;', nobreak=True)
                     else:
                         for m in members:
                             with out('if (!({0} == rhs.{0}))'

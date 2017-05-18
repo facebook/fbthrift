@@ -244,32 +244,26 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
       case Type::intValue:
       {
         return value_.intValue < rhs.value_.intValue;
-        break;
       }
       case Type::stringValue:
       {
         return value_.stringValue < rhs.value_.stringValue;
-        break;
       }
       case Type::intListValue:
       {
         return value_.intListValue < rhs.value_.intListValue;
-        break;
       }
       case Type::stringListValue:
       {
         return value_.stringListValue < rhs.value_.stringListValue;
-        break;
       }
       case Type::stringRef:
       {
         return *value_.stringRef < *rhs.value_.stringRef;
-        break;
       }
       default:
       {
         return false;
-        break;
       }
     }
   }
@@ -638,17 +632,14 @@ class FinalComplexUnion : private apache::thrift::detail::st::ComparisonOperator
       case Type::thingOne:
       {
         return value_.thingOne < rhs.value_.thingOne;
-        break;
       }
       case Type::thingTwo:
       {
         return value_.thingTwo < rhs.value_.thingTwo;
-        break;
       }
       default:
       {
         return false;
-        break;
       }
     }
   }

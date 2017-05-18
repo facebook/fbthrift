@@ -2020,16 +2020,16 @@ std::string t_java_generator::get_java_type_string(t_type* type) {
     return get_java_type_string(((t_typedef*)type)->get_type());
   } else if (type->is_base_type()) {
     switch (((t_base_type*)type)->get_base()) {
-      case t_base_type::TYPE_VOID   : return      "TType.VOID"; break;
-      case t_base_type::TYPE_STRING : return    "TType.STRING"; break;
-      case t_base_type::TYPE_BOOL   : return      "TType.BOOL"; break;
-      case t_base_type::TYPE_BYTE   : return      "TType.BYTE"; break;
-      case t_base_type::TYPE_I16    : return       "TType.I16"; break;
-      case t_base_type::TYPE_I32    : return       "TType.I32"; break;
-      case t_base_type::TYPE_I64    : return       "TType.I64"; break;
-      case t_base_type::TYPE_DOUBLE : return    "TType.DOUBLE"; break;
-      case t_base_type::TYPE_FLOAT  : return     "TType.FLOAT"; break;
-      default : throw std::runtime_error("Unknown thrift type \"" + type->get_name() + "\" passed to t_java_generator::get_java_type_string!"); break; // This should never happen!
+      case t_base_type::TYPE_VOID   : return      "TType.VOID";
+      case t_base_type::TYPE_STRING : return    "TType.STRING";
+      case t_base_type::TYPE_BOOL   : return      "TType.BOOL";
+      case t_base_type::TYPE_BYTE   : return      "TType.BYTE";
+      case t_base_type::TYPE_I16    : return       "TType.I16";
+      case t_base_type::TYPE_I32    : return       "TType.I32";
+      case t_base_type::TYPE_I64    : return       "TType.I64";
+      case t_base_type::TYPE_DOUBLE : return    "TType.DOUBLE";
+      case t_base_type::TYPE_FLOAT  : return     "TType.FLOAT";
+      default : throw std::runtime_error("Unknown thrift type \"" + type->get_name() + "\" passed to t_java_generator::get_java_type_string!"); // This should never happen!
     }
   } else {
     throw std::runtime_error("Unknown thrift type \"" + type->get_name() + "\" passed to t_java_generator::get_java_type_string!"); // This should never happen!
@@ -2883,7 +2883,6 @@ void t_java_generator::generate_deserialize_field(ofstream& out,
       case t_base_type::TYPE_VOID:
         throw "compiler error: cannot serialize void field in a struct: " +
           name;
-        break;
       case t_base_type::TYPE_STRING:
         if (((t_base_type*)type)->is_binary()) {
           out << "readBinary();";
@@ -3120,7 +3119,6 @@ void t_java_generator::generate_serialize_field(ofstream& out,
       case t_base_type::TYPE_VOID:
         throw
           "compiler error: cannot serialize void field in a struct: " + name;
-        break;
       case t_base_type::TYPE_STRING:
         if (((t_base_type*)type)->is_binary()) {
           out << "writeBinary(" << name << ");";

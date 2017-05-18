@@ -207,17 +207,14 @@ class MyUnion : private apache::thrift::detail::st::ComparisonOperators<MyUnion>
       case Type::anInteger:
       {
         return value_.anInteger < rhs.value_.anInteger;
-        break;
       }
       case Type::aString:
       {
         return value_.aString < rhs.value_.aString;
-        break;
       }
       default:
       {
         return false;
-        break;
       }
     }
   }

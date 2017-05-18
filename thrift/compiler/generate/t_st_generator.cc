@@ -779,7 +779,6 @@ string t_st_generator::write_val(t_type *t, string fname) {
     switch(tbase) {
     case t_base_type::TYPE_DOUBLE:
       return "iprot writeDouble: " + fname + " asFloat";
-      break;
     case t_base_type::TYPE_BYTE:
     case t_base_type::TYPE_I16:
     case t_base_type::TYPE_I32:

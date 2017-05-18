@@ -2745,7 +2745,6 @@ void t_php_generator::generate_deserialize_field(ofstream& out,
           case t_base_type::TYPE_VOID:
             throw "compiler error: cannot serialize void field in a struct: " +
               name;
-            break;
           case t_base_type::TYPE_STRING:
             out <<
               indent() << "$len = unpack('N', " << itrans << "->readAll(4));" << endl <<
@@ -2827,7 +2826,6 @@ void t_php_generator::generate_deserialize_field(ofstream& out,
           case t_base_type::TYPE_VOID:
             throw "compiler error: cannot serialize void field in a struct: " +
               name;
-            break;
           case t_base_type::TYPE_STRING:
             out << "readString($" << name << ");";
             break;
@@ -3086,7 +3084,6 @@ void t_php_generator::generate_serialize_field(ofstream& out,
         case t_base_type::TYPE_VOID:
           throw
             "compiler error: cannot serialize void field in a struct: " + name;
-          break;
         case t_base_type::TYPE_STRING:
           out <<
             indent() << "$output .= pack('N', strlen($" << name << "));" << endl <<
@@ -3138,7 +3135,6 @@ void t_php_generator::generate_serialize_field(ofstream& out,
         case t_base_type::TYPE_VOID:
           throw
             "compiler error: cannot serialize void field in a struct: " + name;
-          break;
         case t_base_type::TYPE_STRING:
           out << "writeString($" << name << ");";
           break;

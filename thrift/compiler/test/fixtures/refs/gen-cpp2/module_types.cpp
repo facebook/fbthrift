@@ -72,17 +72,14 @@ bool MyUnion::operator==(const MyUnion& rhs) const {
     case Type::anInteger:
     {
       return value_.anInteger == rhs.value_.anInteger;
-      break;
     }
     case Type::aString:
     {
       return value_.aString == rhs.value_.aString;
-      break;
     }
     default:
     {
       return true;
-      break;
     }
   }
 }
