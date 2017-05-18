@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <node.h>
 #include <node_buffer.h>
 #include <v8.h>
 
-#include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <folly/CallOnce.h>
+#include <folly/Singleton.h>
 #include <thrift/lib/cpp/concurrency/FunctionRunner.h>
+#include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
 
 using namespace v8;
 std::unique_ptr<folly::EventBase> integrated_uv_event_base;
@@ -278,6 +279,9 @@ class CppThriftServer : public node::ObjectWrap {
 Persistent<Function> CppThriftServer::constructor;
 
 void init(Handle<Object> exports) {
+  static folly::once_flag flag;
+  folly::call_once(
+      flag, [] { folly::SingletonVault::singleton()->registrationComplete(); });
   integrated_uv_event_base.reset(new folly::EventBase());
   CppThriftServer::Init(exports);
   ThriftServerCallback::Init(exports);
