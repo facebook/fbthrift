@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,13 +31,13 @@ class visitor {
   /***
    *  The entry point for traversal. Call-sites should call this method.
    */
-  void traverse(t_program const* program);
+  void traverse(t_program* program);
 
   /***
    *  Derived visitor types will generally override these virtual methods.
    *
    *  Return whether or not to visit children AST nodes afterward. For example,
-   *  if `visit(t_program const*)` returns `true`, then the visitor will
+   *  if `visit(t_program*)` returns `true`, then the visitor will
    *  continue visiting the program's members.
    *
    *  The default implementations of these virtual methods is simply to return
@@ -46,9 +46,9 @@ class visitor {
    *
    *  Note: These are extension points, not entry points for traversal.
    */
-  virtual bool visit(t_program const* program);
-  virtual bool visit(t_service const* service);
-  virtual bool visit(t_enum const* tenum);
+  virtual bool visit(t_program* program);
+  virtual bool visit(t_service* service);
+  virtual bool visit(t_enum* tenum);
 
  protected:
   visitor() = default;
@@ -58,13 +58,13 @@ class visitor {
    *
    *  General derived visitors should not need to.
    */
-  virtual void visit_and_recurse(t_program const* program);
-  virtual void visit_and_recurse(t_service const* service);
-  virtual void visit_and_recurse(t_enum const* tenum);
+  virtual void visit_and_recurse(t_program* program);
+  virtual void visit_and_recurse(t_service* service);
+  virtual void visit_and_recurse(t_enum* tenum);
 
-  void recurse(t_program const* program);
-  void recurse(t_service const* service);
-  void recurse(t_enum const* tenum);
+  void recurse(t_program* program);
+  void recurse(t_service* service);
+  void recurse(t_enum* tenum);
 };
 
 /***
@@ -83,13 +83,13 @@ class interleaved_visitor : public visitor {
   explicit interleaved_visitor(std::vector<visitor*> visitors);
 
  protected:
-  void visit_and_recurse(t_program const* program) override;
-  void visit_and_recurse(t_service const* service) override;
-  void visit_and_recurse(t_enum const* tenum) override;
+  void visit_and_recurse(t_program* program) override;
+  void visit_and_recurse(t_service* service) override;
+  void visit_and_recurse(t_enum* tenum) override;
 
  private:
   template <typename Visitee>
-  void visit_and_recurse_gen(Visitee const* visitee);
+  void visit_and_recurse_gen(Visitee* visitee);
 
   std::vector<visitor*> visitors_;
   std::vector<bool> rec_mask_{std::vector<bool>(visitors_.size(), true)};

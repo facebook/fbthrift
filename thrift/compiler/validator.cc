@@ -51,7 +51,7 @@ class validator_list {
 
 static void fill_validators(validator_list& vs);
 
-validator::errors_t validator::validate(t_program const* const program) {
+validator::errors_t validator::validate(t_program* const program) {
   auto errors = validator::errors_t{};
 
   auto validators = validator_list(errors);
@@ -70,7 +70,7 @@ void validator::add_error(int const lineno, std::string const& message) {
   errors_->push_back(err.str());
 }
 
-bool validator::visit(t_program const* const program) {
+bool validator::visit(t_program* const program) {
   program_ = program;
   return true;
 }
@@ -83,8 +83,7 @@ void validator::set_ref_errors(errors_t& errors) {
  * service_method_name_uniqueness_validator
  */
 
-bool service_method_name_uniqueness_validator::visit(
-    t_service const* const service) {
+bool service_method_name_uniqueness_validator::visit(t_service* const service) {
   validate_service_method_names_unique(service);
   return true;
 }
@@ -167,7 +166,7 @@ void enum_value_names_uniqueness_validator::add_validation_error(
   add_error(lineno, err.str());
 }
 
-bool enum_value_names_uniqueness_validator::visit(t_enum const* const tenum) {
+bool enum_value_names_uniqueness_validator::visit(t_enum* const tenum) {
   validate(tenum);
   return true;
 }
@@ -197,7 +196,7 @@ void enum_values_uniqueness_validator::add_validation_error(
   add_error(lineno, err.str());
 }
 
-bool enum_values_uniqueness_validator::visit(t_enum const* const tenum) {
+bool enum_values_uniqueness_validator::visit(t_enum* const tenum) {
   validate(tenum);
   return true;
 }
@@ -229,7 +228,7 @@ void enum_values_set_validator::add_validation_error(
   add_error(lineno, err.str());
 }
 
-bool enum_values_set_validator::visit(t_enum const* const tenum) {
+bool enum_values_set_validator::visit(t_enum* const tenum) {
   validate(tenum);
   return true;
 }

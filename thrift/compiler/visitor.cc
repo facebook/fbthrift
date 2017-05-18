@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,74 +18,74 @@
 
 namespace apache { namespace thrift { namespace compiler {
 
-void visitor::traverse(t_program const* const program) {
+void visitor::traverse(t_program* const program) {
   visit_and_recurse(program);
 }
 
-bool visitor::visit(t_program const* const program) {
+bool visitor::visit(t_program* const /* program */) {
   return true;
 }
 
-bool visitor::visit(t_service const* const service) {
+bool visitor::visit(t_service* const /* service */) {
   return true;
 }
 
-bool visitor::visit(t_enum const* const tenum) {
+bool visitor::visit(t_enum* const /* tenum */) {
   return true;
 }
 
-void visitor::visit_and_recurse(t_program const* const program) {
+void visitor::visit_and_recurse(t_program* const program) {
   if (visit(program)) {
     recurse(program);
   }
 }
 
-void visitor::visit_and_recurse(t_service const* const service) {
+void visitor::visit_and_recurse(t_service* const service) {
   if (visit(service)) {
     recurse(service);
   }
 }
 
-void visitor::visit_and_recurse(t_enum const* const tenum) {
+void visitor::visit_and_recurse(t_enum* const tenum) {
   if (visit(tenum)) {
     recurse(tenum);
   }
 }
 
-void visitor::recurse(t_program const* const program) {
-  for (auto const* const service : program->get_services()) {
+void visitor::recurse(t_program* const program) {
+  for (auto* const service : program->get_services()) {
     visit_and_recurse(service);
   }
-  for (auto const* const tenum : program->get_enums()) {
+  for (auto* const tenum : program->get_enums()) {
     visit_and_recurse(tenum);
   }
 }
 
-void visitor::recurse(t_service const* const service) {
+void visitor::recurse(t_service* const /* service */) {
   // partial implementation - that's the end of the line for now
 }
 
-void visitor::recurse(t_enum const* const tenum) {
+void visitor::recurse(t_enum* const /* tenum */) {
   // partial implementation - that's the end of the line for now
 }
 
 interleaved_visitor::interleaved_visitor(std::vector<visitor*> visitors)
     : visitor(), visitors_(std::move(visitors)) {}
 
-void interleaved_visitor::visit_and_recurse(t_program const* const program) {
+void interleaved_visitor::visit_and_recurse(t_program* const program) {
   visit_and_recurse_gen(program);
 }
 
-void interleaved_visitor::visit_and_recurse(t_service const* const service) {
+void interleaved_visitor::visit_and_recurse(t_service* const service) {
   visit_and_recurse_gen(service);
 }
 
-void interleaved_visitor::visit_and_recurse(t_enum const* const tenum) {
+void interleaved_visitor::visit_and_recurse(t_enum* const tenum) {
   visit_and_recurse_gen(tenum);
 }
 
 template <typename Visitee>
-void interleaved_visitor::visit_and_recurse_gen(Visitee const* const visitee) {
+void interleaved_visitor::visit_and_recurse_gen(Visitee* const visitee) {
   // track the set of visitors which return true from visit()
   auto rec_mask = std::vector<bool>(visitors_.size());
   auto any = false;

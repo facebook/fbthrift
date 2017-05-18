@@ -26,11 +26,11 @@ namespace apache { namespace thrift { namespace compiler {
 class validator : virtual public visitor {
  public:
   using errors_t = std::vector<std::string>;
-  static errors_t validate(t_program const* program);
+  static errors_t validate(t_program* program);
 
   using visitor::visit;
 
-  bool visit(t_program const* program) override;
+  bool visit(t_program* program) override;
 
  protected:
   void add_error(int lineno, std::string const& message);
@@ -54,8 +54,7 @@ std::unique_ptr<T> make_validator(
 }
 
 template <typename T, typename... Args>
-validator::errors_t run_validator(
-    t_program const* const program, Args&&... args) {
+validator::errors_t run_validator(t_program* const program, Args&&... args) {
   validator::errors_t errors;
   make_validator<T>(errors, std::forward<Args>(args)...)->traverse(program);
   return errors;
@@ -69,7 +68,7 @@ class service_method_name_uniqueness_validator : virtual public validator {
    * Enforces that there are no duplicate method names either within this
    * service or between this service and any of its ancestors.
    */
-  bool visit(t_service const* service) override;
+  bool visit(t_service* service) override;
 
  private:
   /**
@@ -89,7 +88,7 @@ class enum_value_names_uniqueness_validator : virtual public validator {
   using validator::visit;
 
   // Enforces that there are not duplicated enum value names
-  bool visit(t_enum const* tenum) override;
+  bool visit(t_enum* tenum) override;
 
  private:
   void validate(t_enum const* tenum);
@@ -105,7 +104,7 @@ class enum_values_uniqueness_validator : virtual public validator {
   using validator::visit;
 
   // Enforces that there are not duplicated enum values
-  bool visit(t_enum const* tenum) override;
+  bool visit(t_enum* tenum) override;
 
  private:
   void validate(t_enum const* tenum);
@@ -122,7 +121,7 @@ class enum_values_set_validator : virtual public validator {
   using validator::visit;
 
   // Enforces that every enum value has an explicit value
-  bool visit(t_enum const* tenum) override;
+  bool visit(t_enum* tenum) override;
 
  private:
   void validate(t_enum const* tenum);

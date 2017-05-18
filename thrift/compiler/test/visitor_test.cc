@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,10 @@ class InterleavedVisitorTest : public testing::Test {};
 TEST_F(InterleavedVisitorTest, mixed) {
   struct tracking_visitor : visitor {
     tracking_visitor(bool ret) : ret_(ret) {}
-    bool visit(t_program const*) override { return ret_; }
-    bool visit(t_service const* const service) override {
+    bool visit(t_program*) override {
+      return ret_;
+    }
+    bool visit(t_service* const service) override {
       visited_services.push_back(service);
       return true;
     }

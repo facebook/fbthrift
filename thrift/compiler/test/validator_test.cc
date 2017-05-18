@@ -39,7 +39,7 @@ TEST_F(ValidatorTest, run_validator) {
   class fake_validator : public validator {
    public:
     using visitor::visit;
-    bool visit(t_program const* const program) final {
+    bool visit(t_program* const program) final {
       EXPECT_TRUE(validator::visit(program));
       add_error(50, "sadface");
       return true;
