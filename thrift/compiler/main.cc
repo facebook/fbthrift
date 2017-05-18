@@ -33,8 +33,9 @@
 #endif
 #include <ctime>
 
-#include <thrift/compiler/platform.h>
 #include <thrift/compiler/generate/t_generator.h>
+#include <thrift/compiler/mutator.h>
+#include <thrift/compiler/platform.h>
 #include <thrift/compiler/validator.h>
 
 /**
@@ -525,6 +526,9 @@ int main(int argc, char** argv) {
   g_scope_cache = program->scope();
   std::set<std::string> already_parsed_paths;
   parse(program, nullptr, already_parsed_paths);
+
+  // Mutate it!
+  apache::thrift::compiler::mutator::mutate(program);
 
   // Validate it!
   auto errors = apache::thrift::compiler::validator::validate(program);

@@ -33,6 +33,7 @@ noinst_LTLIBRARIES = libparse.la libthriftcompilerbase.la
 
 libthriftcompilerbase_la_SOURCES = \
         common.cc \
+        mutator.cc \
         parse/t_type.cc \
         parse/t_typedef.cc \
         parse/t_program.cc \
@@ -51,6 +52,7 @@ thrift1_SOURCES = main.cc \
                  generate/t_concat_generator.cc \
                  generate/t_mstch_generator.cc \
                  globals.h \
+                 mutator.h \
                  platform.h \
                  parse/endianness.h \
                  parse/t_doc.h \

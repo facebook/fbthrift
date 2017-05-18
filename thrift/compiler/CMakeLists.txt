@@ -15,11 +15,13 @@ add_library(
 
   common.h
   globals.h
+  mutator.h
   platform.h
   validator.h
   visitor.h
 
   common.cc
+  mutator.cc
   platform.cc
   validator.cc
   visitor.cc
