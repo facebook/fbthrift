@@ -318,7 +318,7 @@ class ChunkSender : private TAsyncTransport::WriteCallback,
       len = info.bytes;
       if (len + bufOffset_ > message_->getLength()) {
         // bug in the test code: ChunkSchedule lists more data than available
-        FAIL() << "bad ChunkSchedule";
+        ADD_FAILURE() << "bad ChunkSchedule";
 
         len = message_->getLength() - bufOffset_;
         if (len == 0) {
@@ -526,7 +526,7 @@ class EventBaseAborter : public AsyncTimeout {
   }
 
   void timeoutExpired() noexcept override {
-    FAIL() << "test timed out";
+    ADD_FAILURE() << "test timed out";
     eventBase_->terminateLoopSoon();
   }
 

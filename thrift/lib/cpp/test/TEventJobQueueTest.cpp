@@ -64,7 +64,7 @@ class EventBaseAborter : public folly::AsyncTimeout {
   }
 
   void timeoutExpired() noexcept override {
-    FAIL() << "test timed out";
+    ADD_FAILURE() << "test timed out";
     eventBase_->terminateLoopSoon();
   }
 
