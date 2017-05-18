@@ -605,9 +605,9 @@ Krb5Credentials Krb5Keytab::getInitCreds(
 }
 
 std::unique_ptr<Krb5Principal> Krb5Keytab::getFirstPrincipalInKeytab() {
-  for (auto& ktentry : *this) {
-    return std::make_unique<Krb5Principal>(
-       context_, std::move(ktentry.principal));
+  auto it = begin();
+  if (it != end()) {
+    return std::make_unique<Krb5Principal>(context_, std::move(it->principal));
   }
   return nullptr;
 }
