@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <map>
 
 #include <glog/logging.h>
@@ -39,7 +38,6 @@
 #include <folly/Memory.h>
 #include <folly/ScopeGuard.h>
 #include <wangle/ssl/SSLContextConfig.h>
-#include <wangle/ssl/TLSCredProcessor.h>
 
 using namespace apache::thrift;
 using apache::thrift::concurrency::PosixThreadFactory;
@@ -51,7 +49,6 @@ using apache::thrift::server::TConnectionContext;
 using folly::SSLContext;
 using wangle::SSLContextConfig;
 using wangle::SSLCacheOptions;
-using wangle::TLSCredProcessor;
 using namespace boost::python;
 
 namespace {
@@ -484,19 +481,8 @@ public:
     setSSLPolicy(extract<SSLPolicy>(sslConfig.attr("ssl_policy")));
 
     auto ticketFilePath = getStringAttrSafe(sslConfig, "ticket_file_path");
-    tlsCredProcessor_.reset(); // stops the existing poller if any
-    tlsCredProcessor_.reset(new TLSCredProcessor(ticketFilePath, certPath));
-    tlsCredProcessor_->addTicketCallback(
-        [this](wangle::TLSTicketKeySeeds seeds) {
-      updateTicketSeeds(std::move(seeds));
-    });
-    auto seeds = TLSCredProcessor::processTLSTickets(ticketFilePath);
-    if (seeds) {
-      setTicketSeeds(std::move(*seeds));
-    }
-    tlsCredProcessor_->addCertCallback([this]() {
-      updateTLSCert();
-    });
+    ThriftServer::watchCertForChanges(certPath);
+    ThriftServer::watchTicketPathForChanges(ticketFilePath, true);
   }
 
   void setCppFastOpenOptions(object enabledObj, object tfoMaxQueueObj) {
@@ -541,7 +527,6 @@ public:
 
     PyThreadState* save_state = PyEval_SaveThread();
     SCOPE_EXIT { PyEval_RestoreThread(save_state); };
-    tlsCredProcessor_.reset();
     ThriftServer::cleanUp();
   }
 
@@ -582,9 +567,6 @@ public:
     auto ptr = this->getThreadManager();
     return boost::shared_ptr<ThreadManager>(ptr.get(), [ptr](void*) {});
   }
-
- private:
-  std::unique_ptr<TLSCredProcessor> tlsCredProcessor_;
 
 };
 
