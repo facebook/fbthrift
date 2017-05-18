@@ -18,7 +18,7 @@
 #include <string>
 #include <vector>
 
-template <typename> struct func_signature_helper;
+template <typename> class func_signature_helper;
 
 template <typename ArgType>
 class func_signature_helper {
@@ -46,7 +46,7 @@ class func_signature_helper {
   }
 };
 
-template <typename ...> struct func_signature;
+template <typename ...> class func_signature;
 
 template <>
 class func_signature<> {
