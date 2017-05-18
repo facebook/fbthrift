@@ -67,7 +67,6 @@ bool THeaderACProtocolTraits::getMessageLength(uint8_t* buffer,
   } else {
     return tryReadUnframed(buffer, bufferLength, messageLength, strictRead_);
   }
-  return false;
 }
 
 }}}} // apache::thrift::async::detail

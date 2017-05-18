@@ -61,7 +61,6 @@ FramingHandler& DuplexChannel::DuplexFramingHandler::getHandler(
     return duplex_.serverFramingHandler_;
   default:
     CHECK(false);
-    return *static_cast<FramingHandler*>(nullptr);
   }
 }
 
