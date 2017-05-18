@@ -230,7 +230,7 @@ void THttpTransport::readHeaders() {
     if (strlen(line) == 0) {
       if (finished) {
         readHeaders_ = false;
-        return;
+        break;
       } else {
         // Must have been an HTTP 100, keep going for another status line
         statusLine = true;
