@@ -96,7 +96,7 @@ class SaslClient : public SaslEndpoint {
   virtual void setErrorString(const std::string& str) = 0;
 
   virtual void setSaslThreadManager(
-    const std::shared_ptr<SaslThreadManager>& /*thread_manager*/) {};
+    const std::shared_ptr<SaslThreadManager>& /*thread_manager*/) {}
 
   virtual void setCredentialsCacheManager(
     const std::shared_ptr<krb5::Krb5CredentialsCacheManager>& /*cc_manager*/) {}

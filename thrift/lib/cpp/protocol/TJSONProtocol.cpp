@@ -300,23 +300,23 @@ class TJSONContext {
 
  public:
 
-  TJSONContext() {};
+  TJSONContext() {}
 
-  virtual ~TJSONContext() {};
+  virtual ~TJSONContext() {}
 
   /**
    * Write context data to the transport. Default is to do nothing.
    */
   virtual uint32_t write(TTransport& /*trans*/) {
     return 0;
-  };
+  }
 
   /**
    * Read context data from the transport. Default is to do nothing.
    */
   virtual uint32_t read(TJSONProtocol::LookaheadReader& /*reader*/) {
     return 0;
-  };
+  }
 
   /**
    * Return true if numbers need to be escaped as strings in this context.

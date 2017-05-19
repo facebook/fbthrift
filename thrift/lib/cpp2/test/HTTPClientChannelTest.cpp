@@ -105,7 +105,7 @@ class ScopedPresetResponseServer {
 
     void read(Context* ctx, folly::IOBufQueue& msg) override {
       write(ctx, resp_->clone()).then([=] { close(ctx); });
-    };
+    }
 
    private:
     folly::IOBuf* resp_;

@@ -65,7 +65,7 @@ struct PairLayout : public LayoutBase {
   }
 
   FROZEN_VIEW(FROZEN_VIEW_FIELD(first, FirstDecayed)
-              FROZEN_VIEW_FIELD(second, SecondDecayed));
+              FROZEN_VIEW_FIELD(second, SecondDecayed))
 
   void print(std::ostream& os, int level) const final {
     LayoutBase::print(os, level);

@@ -718,7 +718,7 @@ class ByteRangeFreezer final : public FreezeRoot {
 };
 
 struct Holder {
-  virtual ~Holder() {};
+  virtual ~Holder() {}
 };
 
 template <class T>

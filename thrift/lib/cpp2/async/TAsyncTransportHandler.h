@@ -91,7 +91,7 @@ class TAsyncTransportHandler
     auto future = cb->promise_.getFuture();
     transport_->writeChain(cb, std::move(buf), ctx->getWriteFlags());
     return future;
-  };
+  }
 
   folly::Future<folly::Unit> writeException(Context*,
                                             folly::exception_wrapper) override {
