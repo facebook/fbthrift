@@ -1846,7 +1846,15 @@ void t_hack_generator::generate_php_struct_shape_methods(std::ofstream& out,
   for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
     t_type* t = get_true_type((*m_iter)->get_type());
 
-    bool nullable = field_is_nullable(tstruct, *m_iter, render_default_value(t));
+    string dval = "";
+    if ((*m_iter)->get_value() != nullptr &&
+        !(t->is_struct() || t->is_xception())) {
+      dval = render_const_value(t, (*m_iter)->get_value());
+    } else {
+      dval = render_default_value(t);
+    }
+
+    bool nullable = field_is_nullable(tstruct, *m_iter, dval);
 
     stringstream source;
     if (nullable) {

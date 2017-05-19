@@ -1775,7 +1775,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
         $val106 ==> new Set(array_keys($val106)),
       );
     $me->optional_enum = Shapes::idx($shape, 'optional_enum');
-    $me->required_enum_with_default = Shapes::idx($shape, 'required_enum_with_default');
+    $me->required_enum_with_default = $shape['required_enum_with_default'];
     $me->string_with_default_value = $shape['string_with_default_value'];
     $me->i32_with_default_value = $shape['i32_with_default_value'];
     $me->double_with_default_value = $shape['double_with_default_value'];
