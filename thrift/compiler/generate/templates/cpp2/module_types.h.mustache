@@ -24,6 +24,7 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
 
+<% > module_types_h/includes%>
 #include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 
 
@@ -119,5 +120,9 @@ template <> template <class Protocol> uint32_t Cpp2Ops<<% > common/namespace_cpp
 <%/program:structs%>
 <% > common/namespace_cpp2_begin%>
 
+<%^program:structs%><%#program:typedefs%><%#typedef:type%>
+
+typedef <% > Type%> <%typedef:symbolic%>;
+<%/typedef:type%><%/program:typedefs%><%/program:structs%>
 
 <% > common/namespace_cpp2_end%>

@@ -1,2 +1,3 @@
 cpp2 src/module.thrift
+cpp2 src/includes.thrift
 mstch_cpp2 src/module.thrift

@@ -318,4 +318,38 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
+void MyIncludedStruct::__clear() {
+  // clear all fields
+  MyIncludedInt = 42LL;
+  __isset.__clear();
+}
+
+bool MyIncludedStruct::operator==(const MyIncludedStruct& rhs) const {
+  if (!((MyIncludedInt == rhs.MyIncludedInt))) {
+    return false;
+  }
+  return true;
+}
+
+void swap(MyIncludedStruct& a, MyIncludedStruct& b) {
+  using ::std::swap;
+  swap(a.MyIncludedInt, b.MyIncludedInt);
+  swap(a.__isset, b.__isset);
+}
+
+template uint32_t MyIncludedStruct::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t MyIncludedStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t MyIncludedStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t MyIncludedStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t MyIncludedStruct::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t MyIncludedStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t MyIncludedStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t MyIncludedStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
 }}} // some::valid::ns

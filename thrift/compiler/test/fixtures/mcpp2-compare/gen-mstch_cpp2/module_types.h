@@ -12,6 +12,7 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
 
+#include "includes_types.h"
 #include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 
 
@@ -21,6 +22,7 @@ namespace some { namespace valid { namespace ns {
 class Empty;
 class MyStruct;
 class containerStruct;
+class MyIncludedStruct;
 
 enum class MyEnumA {
   fieldA = 1,
@@ -741,6 +743,108 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::conta
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::containerStruct>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::containerStruct const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
+class MyIncludedStruct : private apache::thrift::detail::st::ComparisonOperators<MyIncludedStruct> {
+ public:
+
+  MyIncludedStruct() :
+      MyIncludedInt(42LL) {}
+  // FragileConstructor for use in initialization lists only
+
+  MyIncludedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::IncludedInt64 MyIncludedInt__arg) :
+      MyIncludedInt(std::move(MyIncludedInt__arg)) {
+    __isset.MyIncludedInt = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  MyIncludedStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    MyIncludedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    MyIncludedInt = arg.move();
+    __isset.MyIncludedInt = true;
+  }
+
+  MyIncludedStruct(MyIncludedStruct&&) = default;
+
+  MyIncludedStruct(const MyIncludedStruct&) = default;
+
+  MyIncludedStruct& operator=(MyIncludedStruct&&) = default;
+
+  MyIncludedStruct& operator=(const MyIncludedStruct&) = default;
+  void __clear();
+
+  virtual ~MyIncludedStruct() throw() {}
+
+   ::some::valid::ns::IncludedInt64 MyIncludedInt;
+
+  struct __isset {
+    void __clear() {
+      MyIncludedInt = false;
+    }
+
+    bool MyIncludedInt = false;
+  } __isset;
+  bool operator==(const MyIncludedStruct& rhs) const;
+  bool operator < (const MyIncludedStruct& rhs) const;
+
+   ::some::valid::ns::IncludedInt64 get_MyIncludedInt() const {
+    return MyIncludedInt;
+  }
+
+   ::some::valid::ns::IncludedInt64& set_MyIncludedInt( ::some::valid::ns::IncludedInt64 MyIncludedInt_) {
+    MyIncludedInt = MyIncludedInt_;
+    __isset.MyIncludedInt = true;
+    return MyIncludedInt;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+};
+
+void swap(MyIncludedStruct& a, MyIncludedStruct& b);
+extern template uint32_t MyIncludedStruct::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t MyIncludedStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t MyIncludedStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t MyIncludedStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t MyIncludedStruct::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t MyIncludedStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t MyIncludedStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t MyIncludedStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::some::valid::ns::MyIncludedStruct>::clear( ::some::valid::ns::MyIncludedStruct* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::MyIncludedStruct>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::MyIncludedStruct>::write(Protocol* proto,  ::some::valid::ns::MyIncludedStruct const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::MyIncludedStruct>::read(Protocol* proto,  ::some::valid::ns::MyIncludedStruct* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::MyIncludedStruct>::serializedSize(Protocol const* proto,  ::some::valid::ns::MyIncludedStruct const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::MyIncludedStruct>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::MyIncludedStruct const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

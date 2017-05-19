@@ -94,6 +94,7 @@ mstch::map t_mstch_cpp2_generator::extend_program(
   m.emplace("namespace_cpp2", this->get_namespace(program)),
   m.emplace("normalizedIncludePrefix", this->get_include_prefix(program));
   m.emplace("enums?", !program.get_enums().empty());
+  m.emplace("thrift_includes", this->dump_elems(program.get_includes()));
   return m;
 }
 
@@ -143,7 +144,7 @@ mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) const {
   // Check if the struct contains any base field
   auto const has_base_field = [&] {
     for (auto const& field : s.get_members()) {
-      if (field->get_type()->is_base_type()) {
+      if (resolve_typedef(field->get_type())->is_base_type()) {
         return std::to_string(0);
       }
     }

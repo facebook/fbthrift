@@ -1,3 +1,4 @@
+include "includes.thrift"
 namespace cpp2 some.valid.ns
 
 // Generate base consts
@@ -71,4 +72,8 @@ struct containerStruct {
   14: simpleTypeDef fieldN
   15: complexStructTypeDef fieldO
   16: list<mostComplexTypeDef> fieldP
+}
+
+struct MyIncludedStruct {
+  1: includes.IncludedInt64 MyIncludedInt = includes.IncludedConstant
 }

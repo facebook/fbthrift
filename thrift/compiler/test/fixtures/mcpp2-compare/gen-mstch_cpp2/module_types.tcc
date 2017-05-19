@@ -727,4 +727,89 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
+template <class Protocol_>
+uint32_t MyIncludedStruct::read(Protocol_* iprot) {
+  uint32_t xfer = 0;
+  std::string fname;
+  apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using apache::thrift::TProtocolException;
+
+
+  while (true) {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    if (fid == std::numeric_limits<int16_t>::min()) {
+      if (fname == "MyIncludedInt") {
+        fid = 1;
+        ftype = apache::thrift::protocol::T_I64;
+      }
+    }
+    switch (fid) {
+      case 1:
+      {
+        if (ftype == apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->MyIncludedInt);
+          this->__isset.MyIncludedInt = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      default:
+      {
+        xfer += iprot->skip(ftype);
+        break;
+      }
+    }
+    xfer += iprot->readFieldEnd();
+  }
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t MyIncludedStruct::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("MyIncludedStruct");
+  xfer += prot_->serializedFieldSize("MyIncludedInt", apache::thrift::protocol::T_I64, 1);
+  xfer += prot_->serializedSizeI64(this->MyIncludedInt);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t MyIncludedStruct::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("MyIncludedStruct");
+  xfer += prot_->serializedFieldSize("MyIncludedInt", apache::thrift::protocol::T_I64, 1);
+  xfer += prot_->serializedSizeI64(this->MyIncludedInt);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t MyIncludedStruct::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("MyIncludedStruct");
+  xfer += prot_->writeFieldBegin("MyIncludedInt", apache::thrift::protocol::T_I64, 1);
+  xfer += prot_->writeI64(this->MyIncludedInt);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
 }}} // some::valid::ns
