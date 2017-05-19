@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #ifndef THRIFT_TEST_MOCKTASYNCSOCKET_H_
 #define THRIFT_TEST_MOCKTASYNCSOCKET_H_ 1
 
@@ -67,6 +66,13 @@ class MockTAsyncSocket : public apache::thrift::async::TAsyncSocket {
   MOCK_CONST_METHOD0(good, bool());
   MOCK_CONST_METHOD0(readable, bool());
   MOCK_CONST_METHOD0(hangup, bool());
+  MOCK_METHOD1(setReadCB, void(AsyncTransportWrapper::ReadCallback*));
+  MOCK_METHOD3(
+      writeChain,
+      void(
+          AsyncTransportWrapper::WriteCallback*,
+          std::unique_ptr<folly::IOBuf>&& buf,
+          apache::thrift::async::WriteFlags));
 };
 
 }}}
