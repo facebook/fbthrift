@@ -206,44 +206,16 @@ void test_to_from(T const &pod, folly::dynamic const &json) {
 }
 
 template <typename T>
-void test_compat(T const &pod, folly::dynamic const &json) {
+void test_compat(T const &pod) {
   std::ostringstream log;
   try {
     log.str("to_dynamic(JSON_1)/readFromJson:\n");
-    T decoded;
     auto const prettyJson = folly::toPrettyJson(
       apache::thrift::to_dynamic(
         pod, apache::thrift::dynamic_format::JSON_1
       )
     );
-    decoded.readFromJson(prettyJson.data(), prettyJson.size());
-    if (pod != decoded) {
-      log << "to: " << prettyJson << std::endl;
-      apache::thrift::pretty_print(log << "readFromJson: ", decoded);
-      log << std::endl;
-      apache::thrift::pretty_print(log << "expected: ", pod);
-      log << std::endl;
-      LOG(ERROR) << log.str();
-    }
-    EXPECT_TRUE(
-      debug_equals(
-        pod,
-        decoded,
-        apache::thrift::make_debug_output_callback(LOG(ERROR))
-      )
-    );
-  } catch (std::exception const &e) {
-    LOG(ERROR) << log.str();
-    throw;
-  }
-  try {
-    log.str("to_dynamic(JSON_1,LENIENT)/readFromJson:\n");
     T decoded;
-    auto const prettyJson = folly::toPrettyJson(
-      apache::thrift::to_dynamic(
-        pod, apache::thrift::dynamic_format::JSON_1
-      )
-    );
     decoded.readFromJson(prettyJson.data(), prettyJson.size());
     if (pod != decoded) {
       log << "to: " << prettyJson << std::endl;
@@ -475,7 +447,7 @@ TEST(fatal_folly_dynamic, to_from_dynamic_compat) {
   auto const json = folly::parseJson(data.second);
 
   test_to_from(pod, json);
-  test_compat(pod, json);
+  test_compat(pod);
 }
 
 TEST(fatal_folly_dynamic, to_from_dynamic_global) {
@@ -490,7 +462,7 @@ TEST(fatal_folly_dynamic, to_from_dynamic_global) {
   auto const json = folly::parseJson(data.second);
 
   test_to_from(pod, json);
-  test_compat(pod, json);
+  test_compat(pod);
 }
 
 TEST(fatal_folly_dynamic, to_from_dynamic_binary) {
