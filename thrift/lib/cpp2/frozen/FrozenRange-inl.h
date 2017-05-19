@@ -185,6 +185,16 @@ struct ArrayLayout : public LayoutBase {
       return itemLayout().view(indexPosition(data_, index, itemLayout()));
     }
 
+    ItemView front() const {
+      assert(!empty());
+      return (*this)[0];
+    }
+
+    ItemView back() const {
+      assert(!empty());
+      return (*this)[size() - 1];
+    }
+
     const_iterator begin() const {
       return const_iterator(*this, 0);
     }

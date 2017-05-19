@@ -71,5 +71,14 @@ TEST(FrozenRange, VectorVectorInt) {
   auto tvvi = fvvi.thaw();
   EXPECT_EQ(tvvi, vvi);
 }
+
+TEST(FrozenRange, FrontBack) {
+  std::vector<std::vector<int>> vvi{{2, 3, 5, 7}, {11}};
+  auto fvvi = freeze(vvi);
+  EXPECT_EQ(2, fvvi.front().front());
+  EXPECT_EQ(7, fvvi.front().back());
+  EXPECT_EQ(11, fvvi.back().front());
+  EXPECT_EQ(11, fvvi.back().back());
+}
 }
 }
