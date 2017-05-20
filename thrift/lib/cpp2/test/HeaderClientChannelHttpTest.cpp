@@ -48,7 +48,7 @@ class TestServiceHandler : public TestServiceIf {
     _return = req + "ccccccccccccccccccccccccccccccccccccccccccccc";
   }
 
-  void serializationTest(string& _return, bool inEventBase) override {
+  void serializationTest(string& _return, bool /* inEventBase */) override {
     _return = string(4096, 'a');
   }
 

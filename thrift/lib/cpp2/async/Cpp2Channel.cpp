@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -123,9 +123,9 @@ EventBase* Cpp2Channel::getEventBase() {
 }
 
 void Cpp2Channel::read(
-    Context* ctx,
-    std::pair<std::unique_ptr<folly::IOBuf>,
-              std::unique_ptr<THeader>> bufAndHeader) {
+    Context*,
+    std::pair<std::unique_ptr<folly::IOBuf>, std::unique_ptr<THeader>>
+        bufAndHeader) {
   DestructorGuard dg(this);
 
   if (recvCallback_ && recvCallback_->shouldSample() && !sample_) {
@@ -147,11 +147,11 @@ void Cpp2Channel::read(
                                  std::move(sample_));
 }
 
-void Cpp2Channel::readEOF(Context* ctx) {
+void Cpp2Channel::readEOF(Context*) {
   processReadEOF();
 }
 
-void Cpp2Channel::readException(Context* ctx, folly::exception_wrapper e)  {
+void Cpp2Channel::readException(Context*, folly::exception_wrapper e) {
   DestructorGuard dg(this);
   VLOG(5) << "Got a read error: " << folly::exceptionStr(e);
   if (recvCallback_) {
@@ -171,8 +171,9 @@ void Cpp2Channel::writeSuccess() noexcept {
   sendCallbacks_.pop_front();
 }
 
-void Cpp2Channel::writeError(size_t bytesWritten,
-                               const TTransportException& ex) noexcept {
+void Cpp2Channel::writeError(
+    size_t /* bytesWritten */,
+    const TTransportException& ex) noexcept {
   assert(sendCallbacks_.size() > 0);
 
   // Pop last write request, call error callback

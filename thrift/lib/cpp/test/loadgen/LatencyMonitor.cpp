@@ -1,4 +1,6 @@
 /*
+ * Copyright 2004-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,6 +18,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 #define __STDC_FORMAT_MACROS
 
 #include <thrift/lib/cpp/test/loadgen/LatencyMonitor.h>
@@ -60,7 +63,7 @@ void LatencyMonitor::setTotalFields(const FieldInfoVector* fields) {
   totalFields_ = *fields;
 }
 
-shared_ptr<ScoreBoard> LatencyMonitor::newScoreBoard(int id) {
+shared_ptr<ScoreBoard> LatencyMonitor::newScoreBoard(int /* id */) {
   shared_ptr<LatencyScoreBoard> scoreboard(new LatencyScoreBoard(numOpTypes_));
   scoreboards_.push_back(scoreboard);
   return scoreboard;

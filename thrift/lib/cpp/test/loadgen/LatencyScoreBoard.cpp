@@ -1,4 +1,6 @@
 /*
+ * Copyright 2004-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,6 +18,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 #include <thrift/lib/cpp/test/loadgen/LatencyScoreBoard.h>
 
 #include <thrift/lib/cpp/concurrency/Util.h>
@@ -134,7 +137,7 @@ double LatencyScoreBoard::OpData::getLatencyStdDevSince(
  * LatencyScoreBoard methods
  */
 
-void LatencyScoreBoard::opStarted(uint32_t opType) {
+void LatencyScoreBoard::opStarted(uint32_t /* opType */) {
   startTime_ = concurrency::Util::currentTimeUsec();
 }
 
@@ -145,8 +148,7 @@ void LatencyScoreBoard::opSucceeded(uint32_t opType) {
   data->addDataPoint(latency);
 }
 
-void LatencyScoreBoard::opFailed(uint32_t opType) {
-}
+void LatencyScoreBoard::opFailed(uint32_t /* opType */) {}
 
 const LatencyScoreBoard::OpData* LatencyScoreBoard::getOpData(uint32_t opType) {
   return opData_.getOpData(opType);

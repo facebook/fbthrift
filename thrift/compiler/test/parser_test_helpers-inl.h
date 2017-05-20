@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,13 +50,13 @@ template <typename ...> class func_signature;
 
 template <>
 class func_signature<> {
-public:
-  static void get_arg_type(std::vector<std::unique_ptr<t_type>>& vec) {}
+ public:
+  static void get_arg_type(std::vector<std::unique_ptr<t_type>>&) {}
 };
 
 template <typename ArgType, typename... Tail>
 class func_signature<ArgType, Tail...> {
-public:
+ public:
   static void get_arg_type(std::vector<std::unique_ptr<t_type>>& vec) {
     vec.push_back(func_signature_helper<ArgType>::get_type());
     func_signature<Tail...>::get_arg_type(vec);
@@ -65,7 +65,7 @@ public:
 
 template <typename ReturnType, typename... ArgsType>
 class func_signature<ReturnType(ArgsType...)> {
-public:
+ public:
   static std::unique_ptr<t_type> return_type() {
     return func_signature_helper<ReturnType>::get_type();
   }

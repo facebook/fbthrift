@@ -1,4 +1,6 @@
 /*
+ * Copyright 2004-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -15,13 +17,15 @@
  * KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations
  * under the License.
- *
- *
+ */
+
+/*
  * This is simple program to test how fast the loadgen infrastructure can run.
  * It provides a really simple Worker class that does nothing at all; therefore
  * the performance of the program should be limited only by the speed of the
  * loadgen library code.
  */
+
 #include <thrift/lib/cpp/concurrency/Util.h>
 
 #include <thrift/lib/cpp/test/loadgen/loadgen.h>
@@ -49,7 +53,9 @@ class PerfLoadConfig : public loadgen::LoadConfig {
 
   uint32_t getNumWorkerThreads() const override { return FLAGS_num_threads; }
 
-  std::string getOpName(uint32_t opType) override { return "noop"; }
+  std::string getOpName(uint32_t /* opType */) override {
+    return "noop";
+  }
 };
 
 
@@ -57,7 +63,8 @@ class PerfWorker : public loadgen::Worker<void, PerfLoadConfig> {
  public:
   shared_ptr<void> createConnection() override { return shared_ptr<void>(); }
 
-  void performOperation(const shared_ptr<void>& client, uint32_t op) override {
+  void performOperation(const shared_ptr<void>& /* client */, uint32_t /* op */)
+      override {
     return;
   }
 };

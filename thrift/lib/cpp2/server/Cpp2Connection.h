@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -85,7 +85,7 @@ class Cpp2Connection
   bool pending();
 
   // Managed Connection callbacks
-  void describe(std::ostream& os) const override{}
+  void describe(std::ostream&) const override {}
   bool isBusy() const override {
     return activeRequests_.empty();
   }
@@ -96,7 +96,7 @@ class Cpp2Connection
   void dropConnection() override {
     stop();
   }
-  void dumpConnectionState(uint8_t loglevel) override {}
+  void dumpConnectionState(uint8_t /* loglevel */) override {}
   void addConnection(std::shared_ptr<Cpp2Connection> conn) {
     this_ = conn;
   }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,8 +25,8 @@ using namespace apache::thrift;
 using namespace apache::thrift::test;
 
 class ServiceStackHandler : public TestServiceStackSvIf {
-public:
-  void noResponse(int64_t size) override {}
+ public:
+  void noResponse(int64_t /* size */) override {}
 };
 
 TEST(ServiceStackTest, example) {

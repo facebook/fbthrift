@@ -57,7 +57,7 @@ class TestServiceHandler : public TestServiceIf {
     _return = req + "ccccccccccccccccccccccccccccccccccccccccccccc";
   }
 
-  void serializationTest(string& _return, bool inEventBase) override {
+  void serializationTest(string& _return, bool /* inEventBase */) override {
     _return = string(4096, 'a');
   }
 
@@ -103,7 +103,7 @@ class ScopedPresetResponseServer {
     explicit Handler(folly::IOBuf* resp)
         : wangle::BytesToBytesHandler(), resp_(resp) {}
 
-    void read(Context* ctx, folly::IOBufQueue& msg) override {
+    void read(Context* ctx, folly::IOBufQueue& /* msg */) override {
       write(ctx, resp_->clone()).then([=] { close(ctx); });
     }
 

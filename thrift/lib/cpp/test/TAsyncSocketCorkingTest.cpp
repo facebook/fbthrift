@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,8 +44,9 @@ class AcceptCallback : public AsyncServerSocket::AcceptCallback {
  public:
   explicit AcceptCallback(const std::function<void(int)>& fn) : fn_(fn) {}
 
-  void connectionAccepted(int fd,
-                          const folly::SocketAddress& addr) noexcept override {
+  void connectionAccepted(
+      int fd,
+      const folly::SocketAddress&) noexcept override {
     fn_(fd);
   }
   void acceptError(const std::exception& ex) noexcept override {
@@ -73,9 +74,12 @@ class HandshakeCallback : public TAsyncSSLSocket::HandshakeCallback {
  public:
   explicit HandshakeCallback(const std::function<void()>& fn) : fn_(fn) {}
 
-  void handshakeSuccess(TAsyncSSLSocket* sock) noexcept override { fn_(); }
-  void handshakeError(TAsyncSSLSocket* sock,
-                      const TTransportException& ex) noexcept override {
+  void handshakeSuccess(TAsyncSSLSocket*) noexcept override {
+    fn_();
+  }
+  void handshakeError(
+      TAsyncSSLSocket*,
+      const TTransportException& ex) noexcept override {
     LOG(FATAL) << "handshakeError(): " << ex.what();
   }
 
@@ -320,10 +324,11 @@ class Capturer {
   pcap_t* pcap_;
 };
 
-void ensureNPackets(const shared_ptr<TAsyncSocket>& sender,
-                    const shared_ptr<TAsyncSocket>& receiver,
-                    size_t expectedNumPackets,
-                    const std::function<void()>& fn) {
+void ensureNPackets(
+    const shared_ptr<TAsyncSocket>& sender,
+    const shared_ptr<TAsyncSocket>& /* receiver */,
+    size_t expectedNumPackets,
+    const std::function<void()>& fn) {
   folly::SocketAddress senderAddr;
   folly::SocketAddress receiverAddr;
   sender->getLocalAddress(&senderAddr);

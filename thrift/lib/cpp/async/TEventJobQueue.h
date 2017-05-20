@@ -88,12 +88,13 @@ class TEventJobQueue {
   class JobThread:
       public apache::thrift::concurrency::Runnable,
       public folly::NotificationQueue<TEventRunnable*>::Consumer {
-
-  public:
-    explicit JobThread(TEventJobQueue *parent) {}
+   public:
+    explicit JobThread(TEventJobQueue* /* parent */) {}
     ~JobThread() override {}
 
-    folly::EventBase *getEventBase() { return &eventBase_; }
+    folly::EventBase* getEventBase() {
+      return &eventBase_;
+    }
 
     void join() {
       thread_->join();

@@ -1,4 +1,6 @@
 /*
+ * Copyright 2004-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -325,7 +327,7 @@ unsigned int numTriggersFired;
 
 void set_alarm();
 
-void alarm_handler(int signum) {
+void alarm_handler(int /* signum */) {
   // The alarm timed out, which almost certainly means we're stuck
   // on a transport that is incorrectly blocked.
   ++numTriggersFired;

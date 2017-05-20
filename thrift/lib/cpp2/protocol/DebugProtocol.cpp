@@ -1,4 +1,6 @@
 /*
+ * Copyright 2004-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 
 #include <thrift/lib/cpp2/protocol/DebugProtocol.h>
 
@@ -278,23 +279,26 @@ uint32_t DebugProtocolWriter::writeBinary(
   return 0;
 }
 
-uint32_t DebugProtocolWriter::serializedMessageSize(const std::string& name) {
+uint32_t DebugProtocolWriter::serializedMessageSize(
+    const std::string& /*name*/) {
   return 0;
 }
 
-uint32_t DebugProtocolWriter::serializedFieldSize(const char* name,
-                                                  TType fieldName,
-                                                  int16_t fieldId) {
+uint32_t DebugProtocolWriter::serializedFieldSize(
+    const char* /*name*/,
+    TType /*fieldName*/,
+    int16_t /*fieldId*/) {
   return 0;
 }
 
-uint32_t DebugProtocolWriter::serializedStructSize(const char* name) {
+uint32_t DebugProtocolWriter::serializedStructSize(const char* /*name*/) {
   return 0;
 }
 
-uint32_t DebugProtocolWriter::serializedSizeMapBegin(TType keyType,
-                                                     TType valType,
-                                                     uint32_t size) {
+uint32_t DebugProtocolWriter::serializedSizeMapBegin(
+    TType /*keyType*/,
+    TType /*valType*/,
+    uint32_t /*size*/) {
   return 0;
 }
 
@@ -302,8 +306,9 @@ uint32_t DebugProtocolWriter::serializedSizeMapEnd() {
   return 0;
 }
 
-uint32_t DebugProtocolWriter::serializedSizeListBegin(TType elemType,
-                                                      uint32_t size) {
+uint32_t DebugProtocolWriter::serializedSizeListBegin(
+    TType /*elemType*/,
+    uint32_t /*size*/) {
   return 0;
 }
 
@@ -311,8 +316,9 @@ uint32_t DebugProtocolWriter::serializedSizeListEnd() {
   return 0;
 }
 
-uint32_t DebugProtocolWriter::serializedSizeSetBegin(TType elemType,
-                                                     uint32_t size) {
+uint32_t DebugProtocolWriter::serializedSizeSetBegin(
+    TType /*elemType*/,
+    uint32_t /*size*/) {
   return 0;
 }
 
@@ -324,31 +330,31 @@ uint32_t DebugProtocolWriter::serializedSizeStop() {
   return 0;
 }
 
-uint32_t DebugProtocolWriter::serializedSizeBool(bool value) {
+uint32_t DebugProtocolWriter::serializedSizeBool(bool /*value*/) {
   return 0;
 }
 
-uint32_t DebugProtocolWriter::serializedSizeByte(int8_t byte) {
+uint32_t DebugProtocolWriter::serializedSizeByte(int8_t /*byte*/) {
   return 0;
 }
 
-uint32_t DebugProtocolWriter::serializedSizeI16(int16_t i16) {
+uint32_t DebugProtocolWriter::serializedSizeI16(int16_t /*i16*/) {
   return 0;
 }
 
-uint32_t DebugProtocolWriter::serializedSizeI32(int32_t i32) {
+uint32_t DebugProtocolWriter::serializedSizeI32(int32_t /*i32*/) {
   return 0;
 }
 
-uint32_t DebugProtocolWriter::serializedSizeI64(int64_t i64) {
+uint32_t DebugProtocolWriter::serializedSizeI64(int64_t /*i64*/) {
   return 0;
 }
 
-uint32_t DebugProtocolWriter::serializedSizeDouble(double dub) {
+uint32_t DebugProtocolWriter::serializedSizeDouble(double /*dub*/) {
   return 0;
 }
 
-uint32_t DebugProtocolWriter::serializedSizeFloat(float flt) {
+uint32_t DebugProtocolWriter::serializedSizeFloat(float /*flt*/) {
   return 0;
 }
 

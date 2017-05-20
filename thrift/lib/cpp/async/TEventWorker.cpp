@@ -88,8 +88,9 @@ void TEventWorker::returnConnection(TEventConnection* connection) {
   }
 }
 
-void TEventWorker::connectionAccepted(int fd, const folly::SocketAddress& clientAddr)
-  noexcept {
+void TEventWorker::connectionAccepted(
+    int fd,
+    const folly::SocketAddress& /* clientAddr */) noexcept {
   TAsyncSocket *asyncSock = nullptr;
   TAsyncSSLSocket *sslSock = nullptr;
   if (server_->getSSLContext()) {

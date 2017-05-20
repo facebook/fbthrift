@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -163,9 +163,9 @@ TEST_F(FunctionSendCallbackTest, with_throwing_server_passes) {
   auto si = make_shared<TestServiceServerMock>();
   ScopedServerInterfaceThread ssit(si);
   Baton<> done;
-  EXPECT_CALL(*si, noResponse(_)).WillOnce(DoAll(
-        Invoke([&](int64_t _) { done.post(); }),
-        Throw(runtime_error("hi"))));
+  EXPECT_CALL(*si, noResponse(_))
+      .WillOnce(DoAll(
+          Invoke([&](int64_t) { done.post(); }), Throw(runtime_error("hi"))));
   exception_wrapper exn = make_exception_wrapper<runtime_error>("lo");
   sendOnewayMessage(ssit.getAddress(), [&](CSR&& state) {
       exn = state.exceptionWrapper();

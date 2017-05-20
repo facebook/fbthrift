@@ -1,4 +1,6 @@
 /*
+ * Copyright 2004-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,6 +18,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 #define __STDC_FORMAT_MACROS
 
 #include <thrift/lib/cpp/test/loadgen/QpsMonitor.h>
@@ -45,7 +48,7 @@ QpsMonitor::QpsMonitor(const std::shared_ptr<LoadConfig>& config)
   , currentQps_(0) {
 }
 
-std::shared_ptr<ScoreBoard> QpsMonitor::newScoreBoard(int id) {
+std::shared_ptr<ScoreBoard> QpsMonitor::newScoreBoard(int /* id */) {
   std::shared_ptr<QpsScoreBoard> scoreboard(
       new QpsScoreBoard(config_->getNumOpTypes()));
   scoreboards_.push_back(scoreboard);

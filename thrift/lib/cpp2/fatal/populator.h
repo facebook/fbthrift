@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -95,7 +95,7 @@ struct populator_methods;
 template <typename Int>
 struct populator_methods<type_class::integral, Int> {
   template <typename Rng>
-  static void populate(Rng& rng, populator_opts const& opts, Int& out) {
+  static void populate(Rng& rng, populator_opts const&, Int& out) {
     using limits = std::numeric_limits<Int>;
     out = detail::rand_in_range(
       rng, populator_opts::range<Int>(limits::min(), limits::max())
@@ -107,7 +107,7 @@ struct populator_methods<type_class::integral, Int> {
 template <typename Fp>
 struct populator_methods<type_class::floating_point, Fp> {
   template <typename Rng>
-  static void populate(Rng& rng, populator_opts const& opts, Fp& out) {
+  static void populate(Rng& rng, populator_opts const&, Fp& out) {
     std::uniform_real_distribution<Fp> gen;
     out = gen(rng);
     DVLOG(4) << "generated real: " << out;
@@ -145,7 +145,7 @@ struct populator_methods<type_class::string, std::string> {
 template <typename Rng, typename Binary, typename WriteFunc>
 void generate_bytes(
   Rng& rng,
-  Binary& bin,
+  Binary&,
   const std::size_t length,
   WriteFunc const& write_func)
 {

@@ -578,7 +578,6 @@ void validate_const_rec(std::string name, t_type* type, t_const_value* value) {
 
 void parse(
     t_program* program,
-    t_program* parent_program,
     std::set<std::string>& already_parsed_paths,
     std::set<std::string> circular_deps) {
   // Get scope file path
@@ -633,7 +632,7 @@ void parse(
   g_allow_neg_enum_vals = true;
   g_allow_neg_field_keys = true;
   for (auto included_program : includes) {
-    parse(included_program, program, already_parsed_paths, circular_deps);
+    parse(included_program, already_parsed_paths, circular_deps);
   }
   g_allow_neg_enum_vals = main_allow_neg_enum_vals;
   g_allow_neg_field_keys = main_allow_neg_keys;

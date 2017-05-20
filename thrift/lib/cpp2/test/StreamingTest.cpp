@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -102,15 +102,14 @@ TEST_F(StreamingTest, Observable) {
         EXPECT_EQ(x, n);
         n++;
       },
-      [](Error e) {
+      [](Error) {
         // onError
         FAIL();
       },
       [&n]() {
         // onCompleted
         EXPECT_EQ(n, kCount);
-      }
-  ));
+      }));
 
   eb.loop();
   EXPECT_EQ(n, kCount);

@@ -131,7 +131,7 @@ void process(const dict& params, const object& generate_callback) {
   // Parse it!
   g_scope_cache = program->scope();
   std::set<std::string> already_parsed_paths;
-  parse(program.get(), nullptr, already_parsed_paths);
+  parse(program.get(), already_parsed_paths);
 
   // The current path is not really relevant when we are doing generation.
   // Reset the variable to make warning messages clearer.

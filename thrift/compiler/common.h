@@ -206,7 +206,6 @@ bool validate_throws(t_struct* throws);
  */
 void parse(
     t_program* program,
-    t_program* parent_program,
     std::set<std::string>& already_parsed_paths,
     std::set<std::string> circular_deps = std::set<std::string>());
 

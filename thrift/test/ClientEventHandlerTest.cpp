@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,36 +72,38 @@ class ClientEventHandler : public TProcessorEventHandler {
  public:
   ClientEventHandler() : contextCalls(0) {}
 
-  void preRead(void* ctx, const char* fn_name) override {
+  void preRead(void* /* ctx */, const char* fn_name) override {
     contextCalls++;
     EXPECT_STREQ(fn_name, "Service.echoVoid");
     EXPECT_EQ(contextCalls, 3);
   }
 
-  void postRead(void* ctx,
-                const char* fn_name,
-                apache::thrift::transport::THeader* header,
-                uint32_t bytes) override {
+  void postRead(
+      void* /* ctx */,
+      const char* fn_name,
+      apache::thrift::transport::THeader* /* header */,
+      uint32_t bytes) override {
     contextCalls++;
     EXPECT_STREQ(fn_name, "Service.echoVoid");
     EXPECT_GT(bytes, 20); // check we read something
     EXPECT_EQ(contextCalls, 4);
-   }
+  }
 
-   void preWrite(void* ctx, const char* fn_name) override {
+  void preWrite(void* /* ctx */, const char* fn_name) override {
     contextCalls++;
     EXPECT_STREQ(fn_name, "Service.echoVoid");
     EXPECT_EQ(contextCalls, 1);
   }
 
-  void postWrite(void* ctx, const char* fn_name, uint32_t bytes) override {
+  void postWrite(void* /* ctx */, const char* fn_name, uint32_t bytes)
+      override {
     contextCalls++;
     EXPECT_STREQ(fn_name, "Service.echoVoid");
     EXPECT_GT(bytes, 20); // check we wrote something
     EXPECT_EQ(contextCalls, 2);
   }
 
-  void handlerError(void* ctx, const char* fn_name) override {
+  void handlerError(void* /* ctx */, const char* fn_name) override {
     contextCalls++;
     EXPECT_STREQ(fn_name, "Service.echoVoid");
   }
@@ -117,36 +119,38 @@ class ServerEventHandler : public TProcessorEventHandler {
  public:
   ServerEventHandler() : contextCalls(0) {}
 
-  void preRead(void* ctx, const char* fn_name) override {
+  void preRead(void* /* ctx */, const char* fn_name) override {
     contextCalls++;
     EXPECT_STREQ(fn_name, "Service.echoVoid");
     EXPECT_EQ(contextCalls, 1);
   }
 
-  void postRead(void* ctx,
-                const char* fn_name,
-                apache::thrift::transport::THeader* header,
-                uint32_t bytes) override {
+  void postRead(
+      void* /* ctx */,
+      const char* fn_name,
+      apache::thrift::transport::THeader* /* header */,
+      uint32_t bytes) override {
     contextCalls++;
     EXPECT_STREQ(fn_name, "Service.echoVoid");
     EXPECT_GT(bytes, 20); // check we read something
     EXPECT_EQ(contextCalls, 2);
-   }
+  }
 
-   void preWrite(void* ctx, const char* fn_name) override {
+  void preWrite(void* /* ctx */, const char* fn_name) override {
     contextCalls++;
     EXPECT_STREQ(fn_name, "Service.echoVoid");
     EXPECT_EQ(contextCalls, 3);
   }
 
-  void postWrite(void* ctx, const char* fn_name, uint32_t bytes) override {
+  void postWrite(void* /* ctx */, const char* fn_name, uint32_t bytes)
+      override {
     contextCalls++;
     EXPECT_STREQ(fn_name, "Service.echoVoid");
     EXPECT_GT(bytes, 20); // check we wrote something
     EXPECT_EQ(contextCalls, 4);
   }
 
-  void handlerError(void* ctx, const char* fn_name) override {
+  void handlerError(void* /* ctx */, const char* fn_name) override {
     contextCalls++;
     EXPECT_STREQ(fn_name, "Service.echoVoid");
   }

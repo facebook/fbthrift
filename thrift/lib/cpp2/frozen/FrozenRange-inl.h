@@ -66,7 +66,7 @@ struct ArrayLayout : public LayoutBase {
   virtual FieldPosition layoutItems(
       LayoutRoot& root,
       const T& coll,
-      LayoutPosition self,
+      LayoutPosition /* self */,
       FieldPosition pos,
       LayoutPosition write,
       FieldPosition writeStep) {
@@ -98,11 +98,12 @@ struct ArrayLayout : public LayoutBase {
     freezeItems(root, coll, self, write, writeStep);
   }
 
-  virtual void freezeItems(FreezeRoot& root,
-                           const T& coll,
-                           FreezePosition self,
-                           FreezePosition write,
-                           FieldPosition writeStep) const {
+  virtual void freezeItems(
+      FreezeRoot& root,
+      const T& coll,
+      FreezePosition /* self */,
+      FreezePosition write,
+      FieldPosition writeStep) const {
     for (const auto& it : coll) {
       root.freezeField(write, itemField, it);
       write = write(writeStep);

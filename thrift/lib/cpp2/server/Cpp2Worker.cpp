@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,12 +44,11 @@ using std::shared_ptr;
 using apache::thrift::concurrency::Util;
 
 void Cpp2Worker::onNewConnection(
-  folly::AsyncTransportWrapper::UniquePtr sock,
-  const folly::SocketAddress* addr,
-  const std::string& nextProtocolName,
-  wangle::SecureTransportType secureProtocolType,
-  const wangle::TransportInfo& tinfo) {
-
+    folly::AsyncTransportWrapper::UniquePtr sock,
+    const folly::SocketAddress* addr,
+    const std::string& /* nextProtocolName */,
+    wangle::SecureTransportType,
+    const wangle::TransportInfo&) {
   auto observer = server_->getObserver();
   if (server_->maxConnections_ > 0 &&
       (getConnectionManager()->getNumConnections() >=
@@ -155,10 +154,10 @@ int Cpp2Worker::getPendingCount() const {
 }
 
 void Cpp2Worker::updateSSLStats(
-  const folly::AsyncTransportWrapper* sock,
-  std::chrono::milliseconds acceptLatency,
-  wangle::SSLErrorEnum error,
-  wangle::SecureTransportType type) noexcept {
+    const folly::AsyncTransportWrapper* sock,
+    std::chrono::milliseconds /* acceptLatency */,
+    wangle::SSLErrorEnum error,
+    wangle::SecureTransportType) noexcept {
   auto socket = sock->getUnderlyingTransport<folly::AsyncSSLSocket>();
   if (!socket) {
     return;
@@ -179,10 +178,10 @@ void Cpp2Worker::updateSSLStats(
 
 wangle::AcceptorHandshakeHelper::UniquePtr Cpp2Worker::getHelper(
     const std::vector<uint8_t>& bytes,
-    wangle::Acceptor* acceptor,
-    const folly::SocketAddress& clientAddr,
-    std::chrono::steady_clock::time_point acceptTime,
-    wangle::TransportInfo& tinfo) {
+    wangle::Acceptor*,
+    const folly::SocketAddress& /* clientAddr */,
+    std::chrono::steady_clock::time_point /* acceptTime */,
+    wangle::TransportInfo&) {
   switch (getSSLPolicy()) {
   case SSLPolicy::DISABLED:
     return wangle::AcceptorHandshakeHelper::UniquePtr(

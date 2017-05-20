@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 namespace apache { namespace thrift { namespace frozen { namespace detail {
 
 /**
@@ -31,7 +32,7 @@ struct BoolLayout : public LayoutBase {
     return pos;
   }
 
-  FieldPosition layout(LayoutRoot& root, const T& o, LayoutPosition self) {
+  FieldPosition layout(LayoutRoot&, const T& o, LayoutPosition /* self */) {
     FieldPosition pos = startFieldPosition();
     if (o) {
       ++pos.bitOffset;
@@ -39,7 +40,7 @@ struct BoolLayout : public LayoutBase {
     return pos;
   }
 
-  void freeze(FreezeRoot& root, const T& o, FreezePosition self) const {
+  void freeze(FreezeRoot&, const T& o, FreezePosition self) const {
     if (bits) {
       if (o) {
         folly::Bits<uint8_t>::set(self.start, self.bitOffset);

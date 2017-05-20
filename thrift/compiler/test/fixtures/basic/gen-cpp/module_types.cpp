@@ -45,6 +45,7 @@ namespace apache { namespace thrift {
 template<>
 size_t Freezer< ::MyStruct, void>::extraSizeImpl(
     const Freezer< ::MyStruct, void>::ThawedType& src) {
+  (void)src;
   return 0
     + extraSize(src.MyIntField)
     + extraSize(src.MyStringField);
@@ -55,6 +56,7 @@ void Freezer< ::MyStruct, void>::freezeImpl(
     const Freezer< ::MyStruct, void>::ThawedType& src,
     Freezer< ::MyStruct, void>::FrozenType& dst,
     byte*& buffer) {
+  (void)buffer;
   freeze(src.MyIntField, dst.MyIntField, buffer);
   dst.__isset.MyIntField = src.__isset.MyIntField;
   freeze(src.MyStringField, dst.MyStringField, buffer);

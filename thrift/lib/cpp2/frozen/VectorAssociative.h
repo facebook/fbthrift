@@ -52,16 +52,16 @@ class VectorAsSet : public std::vector<V> {
    * Insert value into the set with a specified hint location.
    * Note: Hint is ignored, insertion always adds to the end.
    */
-  void insert(typename Base::iterator hint, const V& value) {
+  void insert(typename Base::iterator /* hint */, const V& value) {
     this->emplace_back(value);
   }
 
-  void insert(typename Base::iterator hint, V&& value) {
+  void insert(typename Base::iterator /* hint */, V&& value) {
     this->emplace_back(std::move(value));
   }
 
   template <class T>
-  void emplace(typename Base::iterator hint, T&& value) {
+  void emplace(typename Base::iterator /* hint */, T&& value) {
     this->emplace_back(std::forward<T>(value));
   }
 };

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #pragma once
 
 #include <thrift/lib/cpp2/async/ProtectionHandler.h>
@@ -52,8 +53,8 @@ class DummySaslNegotiationHandler : public SaslNegotiationHandler {
   }
 
   bool handleSecurityMessage(
-      std::unique_ptr<folly::IOBuf>&& buf,
-      std::unique_ptr<apache::thrift::transport::THeader>&& header) override {
+      std::unique_ptr<folly::IOBuf>&&,
+      std::unique_ptr<apache::thrift::transport::THeader>&&) override {
     return false;
   }
 };

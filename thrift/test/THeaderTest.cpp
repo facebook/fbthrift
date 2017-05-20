@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -93,8 +93,9 @@ public:
     : iprot_(),
       oprot_() {}
 
-  void* getContext(const char* fn_name,
-                   TConnectionContext* connectionContext) override {
+  void* getContext(
+      const char* /* fn_name */,
+      TConnectionContext* connectionContext) override {
     iprot_ = dynamic_pointer_cast<THeaderProtocol>
       (connectionContext->getInputProtocol());
     oprot_ = dynamic_pointer_cast<THeaderProtocol>
@@ -107,7 +108,7 @@ public:
    * Before writing, get the input headers and replay them to the output
    * headers
    */
-  void preWrite(void* ctx, const char* fn_name) override {
+  void preWrite(void* /* ctx */, const char* /* fn_name */) override {
     if (iprot_.get() != nullptr && oprot_.get() != nullptr) {
       auto headers = iprot_->getHeaders();
       oprot_->setHeaders(headers);
@@ -135,7 +136,7 @@ enum ServerType {
   SERVER_TYPE_EVENT = 5,
 };
 
-void runClient(ClientType clientType, ServerType sType, int port) {
+void runClient(ClientType clientType, ServerType, int port) {
   auto socket = make_shared<TSocket>("localhost", port);
   shared_ptr<TTransport> transport;
   shared_ptr<TProtocol> protocol;

@@ -525,7 +525,7 @@ int main(int argc, char** argv) {
   // Parse it!
   g_scope_cache = program->scope();
   std::set<std::string> already_parsed_paths;
-  parse(program, nullptr, already_parsed_paths);
+  parse(program, already_parsed_paths);
 
   // Mutate it!
   apache::thrift::compiler::mutator::mutate(program);

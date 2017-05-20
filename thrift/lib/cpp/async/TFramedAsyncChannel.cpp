@@ -1,4 +1,6 @@
 /*
+ * Copyright 2004-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,6 +18,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 #include <thrift/lib/cpp/async/TFramedAsyncChannel.h>
 
 #include <thrift/lib/cpp/async/TStreamAsyncChannel.tcc>
@@ -32,12 +35,12 @@ template class TStreamAsyncChannel<detail::TFramedACWriteRequest,
 
 namespace detail {
 
-TFramedACWriteRequest::TFramedACWriteRequest(const VoidCallback& callback,
-                                             const VoidCallback& errorCallback,
-                                             TMemoryBuffer* message,
-                                             TAsyncEventChannel* channel)
-  : TAsyncChannelWriteRequestBase(callback, errorCallback, message) {
-}
+TFramedACWriteRequest::TFramedACWriteRequest(
+    const VoidCallback& callback,
+    const VoidCallback& errorCallback,
+    TMemoryBuffer* message,
+    TAsyncEventChannel*)
+    : TAsyncChannelWriteRequestBase(callback, errorCallback, message) {}
 
 void TFramedACWriteRequest::write(
     TAsyncTransport* transport,

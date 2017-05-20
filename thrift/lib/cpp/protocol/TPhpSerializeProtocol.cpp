@@ -1,4 +1,6 @@
 /*
+ * Copyright 2004-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -51,11 +53,10 @@ uint32_t TPhpSerializeProtocol::write3(
   return ret;
 }
 
-
 uint32_t TPhpSerializeProtocol::writeMessageBegin(
-    const std::string& name,
-    const TMessageType messageType,
-    const int32_t seqid) {
+    const std::string& /*name*/,
+    const TMessageType /*messageType*/,
+    const int32_t /*seqid*/) {
   throw TProtocolException(TProtocolException::NOT_IMPLEMENTED);
 }
 
@@ -91,7 +92,9 @@ uint32_t TPhpSerializeProtocol::writeStructEnd() {
 }
 
 uint32_t TPhpSerializeProtocol::writeFieldBegin(
-    const char* name, const TType fieldType, const int16_t fieldId) {
+    const char* name,
+    const TType /*fieldType*/,
+    const int16_t /*fieldId*/) {
   structSizeStack_.top() += 1;
   return doWriteString(name, false);
 }
@@ -134,7 +137,8 @@ uint32_t TPhpSerializeProtocol::doWriteListBegin(uint32_t size, bool is_map) {
 }
 
 uint32_t TPhpSerializeProtocol::writeListBegin(
-    const TType elemType, const uint32_t size) {
+    const TType /*elemType*/,
+    const uint32_t size) {
   return doWriteListBegin(size, false);
 }
 
@@ -144,7 +148,9 @@ uint32_t TPhpSerializeProtocol::writeListEnd() {
 }
 
 uint32_t TPhpSerializeProtocol::writeMapBegin(
-    const TType keyType, const TType valType, const uint32_t size) {
+    const TType /*keyType*/,
+    const TType /*valType*/,
+    const uint32_t size) {
   // TODO: Check key type for safety?
   return doWriteListBegin(size, true);
 }
@@ -154,7 +160,8 @@ uint32_t TPhpSerializeProtocol::writeMapEnd() {
 }
 
 uint32_t TPhpSerializeProtocol::writeSetBegin(
-    const TType elemType, const uint32_t size) {
+    const TType /*elemType*/,
+    const uint32_t /*size*/) {
   throw TProtocolException(TProtocolException::NOT_IMPLEMENTED);
 }
 

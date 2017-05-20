@@ -481,7 +481,9 @@ TEST(ThriftServer, Thrift1OnewayRequestTest) {
 namespace {
 class Callback : public RequestCallback {
   void requestSent() override { ADD_FAILURE(); }
-  void replyReceived(ClientReceiveState&& state) override { ADD_FAILURE(); }
+  void replyReceived(ClientReceiveState&&) override {
+    ADD_FAILURE();
+  }
   void requestError(ClientReceiveState&& state) override {
     try {
       std::rethrow_exception(state.exception());

@@ -207,7 +207,7 @@ void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
 
 
 TEST(Security, Basic) {
-  runTest([](HeaderClientChannel* channel) {});
+  runTest([](HeaderClientChannel*) {});
 }
 
 TEST(Security, CompressionZlib) {
@@ -436,10 +436,12 @@ void runRequestContextTest(bool failSecurity) {
     // security. Rest of the request would queue behind it.
     folly::RequestContextScopeGuard rctx;
     folly::RequestContext::get()->setContextData("first", nullptr);
-    client.sendResponse([&c](ClientReceiveState&& state) {
-      EXPECT_TRUE(folly::RequestContext::get()->hasContextData("first"));
-      c.down();
-    }, 10);
+    client.sendResponse(
+        [&c](ClientReceiveState&&) {
+          EXPECT_TRUE(folly::RequestContext::get()->hasContextData("first"));
+          c.down();
+        },
+        10);
   }
 
   {
@@ -447,11 +449,13 @@ void runRequestContextTest(bool failSecurity) {
     // queue behind the first one inside HeaderClientChannel.
     folly::RequestContextScopeGuard rctx;
     folly::RequestContext::get()->setContextData("second", nullptr);
-    client.sendResponse([&c](ClientReceiveState&& state) {
-      EXPECT_FALSE(folly::RequestContext::get()->hasContextData("first"));
-      EXPECT_TRUE(folly::RequestContext::get()->hasContextData("second"));
-      c.down();
-    }, 10);
+    client.sendResponse(
+        [&c](ClientReceiveState&&) {
+          EXPECT_FALSE(folly::RequestContext::get()->hasContextData("first"));
+          EXPECT_TRUE(folly::RequestContext::get()->hasContextData("second"));
+          c.down();
+        },
+        10);
   }
 
   // Now start looping the eventbase to guarantee that all the above requests

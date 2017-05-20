@@ -1,4 +1,6 @@
 /*
+ * Copyright 2004-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,6 +18,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 #ifndef THRIFT_ASYNC_TSTREAMASYNCCHANNEL_TCC_
 #define THRIFT_ASYNC_TSTREAMASYNCCHANNEL_TCC_ 1
 
@@ -278,9 +281,9 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::readEOF() noexcept {
   }
 }
 
-template<typename WriteRequest_, typename ReadState_>
+template <typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::readError(
-    const transport::TTransportException& ex) noexcept {
+    const transport::TTransportException&) noexcept {
   // readCallback_ may be nullptr if readEOF() is invoked while the read
   // callback is already running inside invokeReadDataAvailable(), since
   // invokeReadDataAvailable() leaves the transport read callback installed

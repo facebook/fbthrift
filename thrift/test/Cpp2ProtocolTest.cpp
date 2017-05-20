@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ using namespace std;
 
 namespace thrift { namespace test { namespace debug {
 
-bool Empty::operator<(Empty const& other) const {
+bool Empty::operator<(Empty const& /* other */) const {
   // It is empty, so all are equal.
   return false;
 }

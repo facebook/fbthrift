@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -150,8 +150,9 @@ class ServerEventHandler : public TProcessorEventHandler {
    * @returns current IP_address for this connection,
    *          folly::SocketAddress* casted into a void*.
    */
-  void* getContext(const char* fn_name,
-                   TConnectionContext* serverContext = nullptr) override {
+  void* getContext(
+      const char* /* fn_name */,
+      TConnectionContext* serverContext = nullptr) override {
     if (serverContext != nullptr) {
       return (void *)serverContext->getPeerAddress();
     }

@@ -99,8 +99,7 @@ public:
     return make_tuple(queue_.split(msgLen), 0, nullptr);
   }
 
-  unique_ptr<IOBuf> addFrame(unique_ptr<IOBuf> buf,
-                             THeader* header) override {
+  unique_ptr<IOBuf> addFrame(unique_ptr<IOBuf> buf, THeader*) override {
     assert(buf);
     unique_ptr<IOBuf> framing;
 
@@ -206,18 +205,19 @@ class MessageCallback
   void sendQueued() override {}
 
   void messageSent() override { sent_++; }
-  void messageSendError(folly::exception_wrapper&& ex) override {
+  void messageSendError(folly::exception_wrapper&&) override {
     sendError_++;
   }
 
-  void messageReceived(unique_ptr<IOBuf>&& buf,
-                       unique_ptr<THeader>&& header,
-                       unique_ptr<sample>) override {
+  void messageReceived(
+      unique_ptr<IOBuf>&& buf,
+      unique_ptr<THeader>&&,
+      unique_ptr<sample>) override {
     recv_++;
     recvBytes_ += buf->computeChainDataLength();
   }
   void messageChannelEOF() override { recvEOF_++; }
-  void messageReceiveErrorWrapped(folly::exception_wrapper&& ex) override {
+  void messageReceiveErrorWrapped(folly::exception_wrapper&&) override {
     sendError_++;
   }
 
@@ -300,7 +300,7 @@ class ResponseCallback
     }
   }
 
-  void channelClosed(folly::exception_wrapper&& ew) override {
+  void channelClosed(folly::exception_wrapper&&) override {
     serverClosed_ = true;
   }
 
@@ -500,7 +500,7 @@ class HeaderChannelClosedTest
       c_->callbackDtor_ = true;
     }
 
-    void replyReceived(ClientReceiveState&& state) override {
+    void replyReceived(ClientReceiveState&&) override {
       FAIL() << "should not recv reply from closed channel";
     }
 
@@ -1281,7 +1281,7 @@ class InvalidResponseCallback : public ResponseChannel::Callback {
   }
 
   void requestReceived(unique_ptr<ResponseChannel::Request>&& req) override;
-  void channelClosed(folly::exception_wrapper&& ew) override {}
+  void channelClosed(folly::exception_wrapper&&) override {}
 
  protected:
   ClientCloseOnErrorTest* self_;
@@ -1422,19 +1422,19 @@ class DestroyAsyncTransport : public apache::thrift::async::TAsyncTransport {
   bool readable() const override { return false; }
   bool connecting() const override { return false; }
   bool error() const override { return false; }
-  void attachEventBase(folly::EventBase* e) override {}
+  void attachEventBase(folly::EventBase*) override {}
   void detachEventBase() override {}
   bool isDetachable() const override { return true; }
   folly::EventBase* getEventBase() const override { return nullptr; }
-  void setSendTimeout(uint32_t ms) override {}
+  void setSendTimeout(uint32_t /* ms */) override {}
   uint32_t getSendTimeout() const override { return 0; }
-  void getLocalAddress(folly::SocketAddress* a) const override {}
-  void getPeerAddress(folly::SocketAddress* a) const override {}
+  void getLocalAddress(folly::SocketAddress*) const override {}
+  void getPeerAddress(folly::SocketAddress*) const override {}
   size_t getAppBytesWritten() const override { return 0; }
   size_t getRawBytesWritten() const override { return 0; }
   size_t getAppBytesReceived() const override { return 0; }
   size_t getRawBytesReceived() const override { return 0; }
-  void setEorTracking(bool track) override {}
+  void setEorTracking(bool /* track */) override {}
   bool isEorTrackingEnabled() const override { return false; }
 
   void invokeEOF() {
@@ -1454,9 +1454,9 @@ class DestroyRecvCallback : public MessageChannel::RecvCallback {
     channel_->setReceiveCallback(this);
   }
   void messageReceived(
-    std::unique_ptr<folly::IOBuf>&&,
-    std::unique_ptr<apache::thrift::transport::THeader>&&,
-    std::unique_ptr<MessageChannel::RecvCallback::sample> sample) override {}
+      std::unique_ptr<folly::IOBuf>&&,
+      std::unique_ptr<apache::thrift::transport::THeader>&&,
+      std::unique_ptr<MessageChannel::RecvCallback::sample>) override {}
   void messageChannelEOF() override {
     EXPECT_EQ(invocations_, 0);
     invocations_++;

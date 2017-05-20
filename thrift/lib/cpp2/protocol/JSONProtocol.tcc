@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -124,7 +124,7 @@ static uint32_t clampSize(int64_t size) {
  * Public writing methods
  */
 
-uint32_t JSONProtocolWriter::writeStructBegin(const char* name) {
+uint32_t JSONProtocolWriter::writeStructBegin(const char* /*name*/) {
   auto ret = writeContext();
   ret += beginContext(ContextType::MAP);
   return ret;
@@ -214,9 +214,10 @@ uint32_t JSONProtocolWriter::serializedMessageSize(
     + serializedSizeString(name);
 }
 
-uint32_t JSONProtocolWriter::serializedFieldSize(const char* name,
-                                                 TType /*fieldType*/,
-                                                 int16_t /*fieldId*/) const {
+uint32_t JSONProtocolWriter::serializedFieldSize(
+    const char* /*name*/,
+    TType /*fieldType*/,
+    int16_t /*fieldId*/) const {
   // string plus ":"
   return folly::constexpr_strlen(R"(,"32767":{"typ":})");
 }
@@ -269,7 +270,7 @@ uint32_t JSONProtocolWriter::serializedSizeBool(bool /*val*/) const {
  * Public reading functions
  */
 
-uint32_t JSONProtocolReader::readStructBegin(std::string& name) {
+uint32_t JSONProtocolReader::readStructBegin(std::string& /*name*/) {
   uint32_t ret = 0;
   ret += ensureAndBeginContext(ContextType::MAP);
   return ret;
@@ -281,9 +282,10 @@ uint32_t JSONProtocolReader::readStructEnd() {
   return ret;
 }
 
-uint32_t JSONProtocolReader::readFieldBegin(std::string& name,
-                                            TType& fieldType,
-                                            int16_t& fieldId) {
+uint32_t JSONProtocolReader::readFieldBegin(
+    std::string& /*name*/,
+    TType& fieldType,
+    int16_t& fieldId) {
   skipWhitespace();
   auto peek = *in_.peek().first;
   if (peek == TJSONProtocol::kJSONObjectEnd) {

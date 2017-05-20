@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -156,7 +156,7 @@ class BaseThriftServer : public apache::thrift::server::TServer {
   bool useClientTimeout_ = true;
 
   folly::Function<bool(const transport::THeader*)> isOverloaded_ =
-      [](const transport::THeader* header) { return false; };
+      [](const transport::THeader*) { return false; };
   std::function<int64_t(const std::string&)> getLoad_;
 
   enum class InjectedFailure { NONE, ERROR, DROP, DISCONNECT };

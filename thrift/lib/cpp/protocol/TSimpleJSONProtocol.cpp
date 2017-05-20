@@ -1,4 +1,6 @@
 /*
+ * Copyright 2004-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -49,9 +51,10 @@ Schema * TSimpleJSONProtocol::getSchema() {
   return &schema_;
 }
 
-uint32_t TSimpleJSONProtocol::writeFieldBegin(const char* name,
-                                        const TType fieldType,
-                                        const int16_t fieldId) {
+uint32_t TSimpleJSONProtocol::writeFieldBegin(
+    const char* name,
+    const TType /*fieldType*/,
+    const int16_t /*fieldId*/) {
   return writeJSONString(name);
 }
 
@@ -60,10 +63,10 @@ uint32_t TSimpleJSONProtocol::writeFieldEnd() {
   return 0;
 }
 
-
-uint32_t TSimpleJSONProtocol::writeMapBegin(const TType keyType,
-                                      const TType valType,
-                                      const uint32_t size) {
+uint32_t TSimpleJSONProtocol::writeMapBegin(
+    const TType /*keyType*/,
+    const TType /*valType*/,
+    const uint32_t /*size*/) {
   return writeJSONObjectStart();
 }
 
@@ -72,15 +75,15 @@ uint32_t TSimpleJSONProtocol::writeMapEnd() {
   return writeJSONObjectEnd();
 }
 
-
-uint32_t TSimpleJSONProtocol::writeListBegin(const TType elemType,
-                                       const uint32_t size) {
+uint32_t TSimpleJSONProtocol::writeListBegin(
+    const TType /*elemType*/,
+    const uint32_t /*size*/) {
   return writeJSONArrayStart();
 }
 
-
-uint32_t TSimpleJSONProtocol::writeSetBegin(const TType elemType,
-                                      const uint32_t size) {
+uint32_t TSimpleJSONProtocol::writeSetBegin(
+    const TType /*elemType*/,
+    const uint32_t /*size*/) {
   return writeJSONArrayStart();
 }
 
@@ -113,10 +116,10 @@ uint32_t TSimpleJSONProtocol::readStructEnd() {
   return result;
 }
 
-
-uint32_t TSimpleJSONProtocol::readFieldBegin(std::string& name,
-                                    TType& fieldType,
-                                    int16_t& fieldId) {
+uint32_t TSimpleJSONProtocol::readFieldBegin(
+    std::string& /*name*/,
+    TType& fieldType,
+    int16_t& fieldId) {
   uint32_t result = 0;
 
   auto currentType = getCurrentDataType();

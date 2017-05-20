@@ -1,4 +1,6 @@
 /*
+ * Copyright 2004-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -146,9 +148,10 @@ uint32_t TDebugProtocol::writeItem(const std::string& str) {
   return size;
 }
 
-uint32_t TDebugProtocol::writeMessageBegin(const std::string& name,
-                                           const TMessageType messageType,
-                                           const int32_t seqid) {
+uint32_t TDebugProtocol::writeMessageBegin(
+    const std::string& name,
+    const TMessageType messageType,
+    const int32_t /*seqid*/) {
   string mtype;
   switch (messageType) {
     case T_CALL      : mtype = "call"  ; break;

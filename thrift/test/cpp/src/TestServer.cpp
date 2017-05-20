@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -182,8 +182,9 @@ class TestHandler : public ThriftTestIf {
 
   }
 
-  void testInsanity(map<UserId, map<Numberz, Insanity>>& insane,
-                    const Insanity& argument) override {
+  void testInsanity(
+      map<UserId, map<Numberz, Insanity>>& insane,
+      const Insanity& /* argument */) override {
     printf("testInsanity()\n");
 
     Xtruct hello;
@@ -253,13 +254,14 @@ class TestHandler : public ThriftTestIf {
 
   }
 
-  void testMulti(Xtruct& hello,
-                 const int8_t arg0,
-                 const int32_t arg1,
-                 const int64_t arg2,
-                 const std::map<int16_t, std::string>& arg3,
-                 const Numberz arg4,
-                 const UserId arg5) override {
+  void testMulti(
+      Xtruct& hello,
+      const int8_t arg0,
+      const int32_t arg1,
+      const int64_t arg2,
+      const std::map<int16_t, std::string>& /* arg3 */,
+      const Numberz /* arg4 */,
+      const UserId /* arg5 */) override {
     printf("testMulti()\n");
 
     hello.string_thing = "Hello2";
@@ -316,26 +318,28 @@ class TestHandler : public ThriftTestIf {
 
 
 class TestProcessorEventHandler : public TProcessorEventHandler {
-  void* getContext(const char* fn_name,
-                   TConnectionContext* serverContext) override {
+  void* getContext(const char* fn_name, TConnectionContext* /* serverContext */)
+      override {
     return new std::string(fn_name);
   }
-  void freeContext(void* ctx, const char* fn_name) override {
+  void freeContext(void* ctx, const char* /* fn_name */) override {
     delete static_cast<std::string*>(ctx);
   }
   void preRead(void* ctx, const char* fn_name) override {
     communicate("preRead", ctx, fn_name);
   }
-  void postRead(void* ctx,
-                const char* fn_name,
-                apache::thrift::transport::THeader* header,
-                uint32_t bytes) override {
+  void postRead(
+      void* ctx,
+      const char* fn_name,
+      apache::thrift::transport::THeader*,
+      uint32_t /* bytes */) override {
     communicate("postRead", ctx, fn_name);
   }
   void preWrite(void* ctx, const char* fn_name) override {
     communicate("preWrite", ctx, fn_name);
   }
-  void postWrite(void* ctx, const char* fn_name, uint32_t bytes) override {
+  void postWrite(void* ctx, const char* fn_name, uint32_t /* bytes */)
+      override {
     communicate("postWrite", ctx, fn_name);
   }
   void asyncComplete(void* ctx, const char* fn_name) override {

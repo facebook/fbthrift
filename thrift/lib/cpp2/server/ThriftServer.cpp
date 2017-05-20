@@ -336,15 +336,15 @@ void ThriftServer::setup() {
           task->expired();
         }
     });
-    threadManager_->setCodelCallback([&](std::shared_ptr<Runnable> r) {
-        auto observer = getObserver();
-        if (observer) {
-          if (getEnableCodel()) {
-            observer->queueTimeout();
-          } else {
-            observer->shadowQueueTimeout();
-          }
+    threadManager_->setCodelCallback([&](std::shared_ptr<Runnable>) {
+      auto observer = getObserver();
+      if (observer) {
+        if (getEnableCodel()) {
+          observer->queueTimeout();
+        } else {
+          observer->shadowQueueTimeout();
         }
+      }
     });
 
     if (!serverChannel_) {

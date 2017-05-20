@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -120,16 +120,15 @@ struct TrivialFreezer {
   // Compute the amount of out-of-struct space needed to represent the given
   // object. Specializations of this class will recurse down to children,
   // summing up their extraSize results recursively.
-  static constexpr size_t extraSizeImpl(const ThawedType& src) {
+  static constexpr size_t extraSizeImpl(const ThawedType& /* src */) {
     return 0;
   }
 
   // Freeze 'src' into 'dst' recursively, using 'buffer' for additional storage.
   // 'buffer' must be advanced by specializations of this class if the spare
   // space is used.
-  static void freezeImpl(const ThawedType& src,
-                         FrozenType& dst,
-                         byte*& buffer) {
+  static void
+  freezeImpl(const ThawedType& src, FrozenType& dst, byte*& /* buffer */) {
     dst = src;
   }
 

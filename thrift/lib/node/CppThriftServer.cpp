@@ -26,7 +26,7 @@
 using namespace v8;
 std::unique_ptr<folly::EventBase> integrated_uv_event_base;
 
-void run_loop(uv_async_t *handle, int status) {
+void run_loop(uv_async_t* /* handle */, int /* status */) {
   integrated_uv_event_base->loop();
 }
 
@@ -114,13 +114,13 @@ class NodeProcessor : public apache::thrift::AsyncProcessor {
       : server_(server)
       , iface_(iface) {}
 
-  void process(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,
-               std::unique_ptr<folly::IOBuf> buf,
-               apache::thrift::protocol::PROTOCOL_TYPES protType,
-               apache::thrift::Cpp2RequestContext* context,
-               folly::EventBase* eb,
-               apache::thrift::concurrency::ThreadManager* tm) override {
-
+  void process(
+      std::unique_ptr<apache::thrift::ResponseChannel::Request> req,
+      std::unique_ptr<folly::IOBuf> buf,
+      apache::thrift::protocol::PROTOCOL_TYPES,
+      apache::thrift::Cpp2RequestContext* context,
+      folly::EventBase* eb,
+      apache::thrift::concurrency::ThreadManager*) override {
     integrated_uv_event_base->runInEventBaseThread(
       [=, req = std::move(req), buf = std::move(buf)]() mutable {
         HandleScope scope;
@@ -167,8 +167,8 @@ class NodeProcessor : public apache::thrift::AsyncProcessor {
   }
 
   bool isOnewayMethod(
-      const folly::IOBuf* buf,
-      const apache::thrift::transport::THeader* header) override {
+      const folly::IOBuf*,
+      const apache::thrift::transport::THeader*) override {
     return false;
   }
  private:

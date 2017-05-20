@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,6 +47,7 @@ struct print_audit_id_visitor {
 
   template <typename T>
   void impl(std::false_type, T const &member, char const *name) const {
+    (void)member;
     print("no audit id available for ", name);
   }
 
@@ -71,6 +72,7 @@ void print_audit_id(T const &variant) {
 }
 
 int main(int argc, char **argv) {
+  (void)argc, (void)argv;
   print_audit_id(operations_constants::create_entity());
   print_audit_id(operations_constants::query_entity());
   print_audit_id(operations_constants::delete_entity());

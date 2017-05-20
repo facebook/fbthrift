@@ -1,4 +1,6 @@
 /*
+ * Copyright 2004-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,6 +18,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 #ifndef _THRIFT_TQUEUINGASYNCPROCESSOR_H_
 #define _THRIFT_TQUEUINGASYNCPROCESSOR_H_ 1
 
@@ -50,11 +53,11 @@ class TQueuingAsyncProcessor : public TAsyncProcessor {
     , connection_(connection)
   {}
 
-  void process(std::function<void(bool success)> cob,
-               std::shared_ptr<apache::thrift::protocol::TProtocol> in,
-               std::shared_ptr<apache::thrift::protocol::TProtocol> out,
-               TConnectionContext* context) override {
-
+  void process(
+      std::function<void(bool success)> cob,
+      std::shared_ptr<apache::thrift::protocol::TProtocol> /* in */,
+      std::shared_ptr<apache::thrift::protocol::TProtocol> /* out */,
+      TConnectionContext*) override {
     std::shared_ptr<apache::thrift::concurrency::Runnable> task =
       std::shared_ptr<apache::thrift::concurrency::Runnable>(
                                                  new TEventTask(connection_));

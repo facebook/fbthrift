@@ -2721,6 +2721,7 @@ void t_cpp_generator::generate_frozen_struct_definition(t_struct* tstruct) {
   indent(f_types_impl_) << "const " << freezerName << "::ThawedType& src) {" <<
     endl;
   indent_down();
+  f_types_impl_ << indent() << "(void)src;" << endl;
   f_types_impl_ << indent() << "return 0";
   indent_up();
   for (t_field* field : members) {
@@ -2746,6 +2747,7 @@ void t_cpp_generator::generate_frozen_struct_definition(t_struct* tstruct) {
     indent() << freezerName << "::FrozenType& dst," << endl <<
     indent() << "byte*& buffer) {" << endl;
   indent_down();
+  f_types_impl_ << indent() << "(void)buffer;" << endl;
   for (t_field* field : members) {
     const string& fname = field->get_name();
 

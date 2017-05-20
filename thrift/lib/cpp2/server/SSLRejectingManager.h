@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -97,7 +97,7 @@ class SSLRejectingManager
     socket_->writeChain(nullptr, std::move(alert));
   }
 
-  void peekError(const folly::AsyncSocketException& ex) noexcept override {
+  void peekError(const folly::AsyncSocketException&) noexcept override {
     dropConnection();
   }
 
@@ -124,7 +124,7 @@ class SSLRejectingManager
 
   void closeWhenIdle() override {}
 
-  void dumpConnectionState(uint8_t loglevel) override {}
+  void dumpConnectionState(uint8_t /* loglevel */) override {}
 
  private:
   folly::AsyncTransportWrapper::UniquePtr socket_;

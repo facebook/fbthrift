@@ -62,7 +62,7 @@ struct SortedTableLayout : public ArrayLayout<T, Item> {
   FieldPosition layoutItems(
       LayoutRoot& root,
       const T& coll,
-      LayoutPosition self,
+      LayoutPosition /* self */,
       FieldPosition pos,
       LayoutPosition write,
       FieldPosition writeStep) final {
@@ -101,11 +101,12 @@ struct SortedTableLayout : public ArrayLayout<T, Item> {
     return pos;
   }
 
-  void freezeItems(FreezeRoot& root,
-                   const T& coll,
-                   FreezePosition self,
-                   FreezePosition write,
-                   FieldPosition writeStep) const final {
+  void freezeItems(
+      FreezeRoot& root,
+      const T& coll,
+      FreezePosition /* self */,
+      FreezePosition write,
+      FieldPosition writeStep) const final {
     std::vector<const Item*> index;
     maybeIndex(coll, index);
 

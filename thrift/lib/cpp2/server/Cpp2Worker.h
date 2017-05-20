@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -124,9 +124,10 @@ class Cpp2Worker
     pendingTime_(std::chrono::steady_clock::now()) {
   }
 
-  void construct(ThriftServer* server,
-                 const std::shared_ptr<HeaderServerChannel>& serverChannel,
-                 folly::EventBase* eventBase) {
+  void construct(
+      ThriftServer*,
+      const std::shared_ptr<HeaderServerChannel>& serverChannel,
+      folly::EventBase* eventBase) {
     auto observer =
       std::dynamic_pointer_cast<folly::EventBaseObserver>(
         server_->getObserver());

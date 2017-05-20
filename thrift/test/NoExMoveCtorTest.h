@@ -1,4 +1,6 @@
 /*
+ * Copyright 2004-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,6 +18,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 #pragma once
 
 #include <string>
@@ -49,7 +52,9 @@ class ThrowCtorType : public std::string {
   }
 
   ThrowCtorType& operator=(const ThrowCtorType& other) = default;
-  ThrowCtorType& operator=(const std::string& other) { return *this; }
+  ThrowCtorType& operator=(const std::string& /* other */) {
+    return *this;
+  }
 };
 
 }}} // namespaces

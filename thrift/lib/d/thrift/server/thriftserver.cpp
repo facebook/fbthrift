@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,12 +37,13 @@ class DProcessor : public AsyncProcessor {
  public:
   explicit DProcessor(ThriftServerInterface* iface) : iface_(iface) {}
 
-  void process(std::unique_ptr<ResponseChannel::Request> req,
-               std::unique_ptr<folly::IOBuf> buf,
-               protocol::PROTOCOL_TYPES protType,
-               Cpp2RequestContext* context,
-               folly::EventBase* eb,
-               concurrency::ThreadManager* tm) override {
+  void process(
+      std::unique_ptr<ResponseChannel::Request> req,
+      std::unique_ptr<folly::IOBuf> buf,
+      protocol::PROTOCOL_TYPES protType,
+      Cpp2RequestContext*,
+      folly::EventBase* eb,
+      concurrency::ThreadManager* tm) override {
     assert(iface_);
     tm->add(FunctionRunner::create([
       this, eb, protType, req = std::move(req), buf=std::move(buf)
@@ -56,7 +57,7 @@ class DProcessor : public AsyncProcessor {
     }));
   }
 
-  bool isOnewayMethod(const folly::IOBuf* buf, const THeader* header) override {
+  bool isOnewayMethod(const folly::IOBuf*, const THeader*) override {
     return false;
   }
  private:

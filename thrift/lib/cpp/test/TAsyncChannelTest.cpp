@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -345,8 +345,9 @@ class ChunkSender : private TAsyncTransport::WriteCallback,
     }
   }
 
-  void writeError(size_t bytesWritten,
-                  const TTransportException& ex) noexcept override {
+  void writeError(
+      size_t /* bytesWritten */,
+      const TTransportException&) noexcept override {
     error_ = true;
   }
 
@@ -477,8 +478,9 @@ class MultiMessageSenderReceiver : private TAsyncTransport::WriteCallback,
       }
     }
 
-    void writeError(size_t bytesWritten,
-                    const TTransportException& ex) noexcept override {
+    void writeError(
+        size_t /* bytesWritten */,
+        const TTransportException&) noexcept override {
       writeError_ = true;
     }
 

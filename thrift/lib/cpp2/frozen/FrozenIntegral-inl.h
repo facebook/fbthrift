@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ struct PackedIntegerLayout : public LayoutBase {
     return pos;
   }
 
-  FieldPosition layout(LayoutRoot& root, const T& x, LayoutPosition self) {
+  FieldPosition layout(LayoutRoot&, const T& x, LayoutPosition /* self */) {
     FieldPosition pos = startFieldPosition();
     if (x) {
       pos.bitOffset += bitsNeeded(x);
@@ -52,7 +52,7 @@ struct PackedIntegerLayout : public LayoutBase {
     return pos;
   }
 
-  void freeze(FreezeRoot& root, const T& x, FreezePosition self) const {
+  void freeze(FreezeRoot&, const T& x, FreezePosition self) const {
     if (bitsNeeded(x) > bits) {
       throw LayoutException();
     }

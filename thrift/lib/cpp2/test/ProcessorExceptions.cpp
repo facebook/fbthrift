@@ -51,7 +51,9 @@ using apache::thrift::TApplicationException;
 
 class SampleServiceHandler : public SampleServiceSvIf {
 public:
- int32_t return42(const MyArgs& unused, int32_t i) override { return 42; }
+ int32_t return42(const MyArgs&, int32_t) override {
+   return 42;
+ }
 };
 
 bool Inner::operator <(const Inner& r) const {
@@ -108,7 +110,7 @@ int32_t call_return42(std::function<void(MyArgs2&)> isset_cb) {
 }
 
 TEST(ProcessorExceptionTest, ok_if_required_set) {
-  EXPECT_EQ(42, call_return42([] (MyArgs2& a) {}));
+  EXPECT_EQ(42, call_return42([](MyArgs2&) {}));
 }
 
 TEST(ProcessorExceptionTest, throw_if_scalar_required_missing) {

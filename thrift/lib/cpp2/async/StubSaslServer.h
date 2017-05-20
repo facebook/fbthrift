@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,7 +36,7 @@ public:
   virtual std::unique_ptr<folly::IOBuf> wrap(std::unique_ptr<folly::IOBuf>&&);
   virtual std::unique_ptr<folly::IOBuf> unwrap(
       folly::IOBufQueue* q, size_t* remaining);
-  void setServiceIdentity(const std::string& identity) override {}
+  void setServiceIdentity(const std::string& /* identity */) override {}
   std::string getClientIdentity() const override;
   std::string getServerIdentity() const override;
   std::unique_ptr<folly::IOBuf> encrypt(

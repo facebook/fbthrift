@@ -226,9 +226,9 @@ struct LayoutBase {
    * 'schema'. Child classes must implement.
    */
   template <typename SchemaInfo>
-  void save(typename SchemaInfo::Schema& schema,
+  void save(typename SchemaInfo::Schema&,
             typename SchemaInfo::Layout& layout,
-            typename SchemaInfo::Helper& helper) const {
+            typename SchemaInfo::Helper&) const {
     layout.setSize(size);
     layout.setBits(bits);
   }
@@ -238,7 +238,7 @@ struct LayoutBase {
    * context of 'schema'. Child classes must implement.
    */
   template <typename SchemaInfo>
-  void load(const typename SchemaInfo::Schema& schema,
+  void load(const typename SchemaInfo::Schema&,
             const typename SchemaInfo::Layout& layout) {
     size = layout.getSize();
     bits = layout.getBits();

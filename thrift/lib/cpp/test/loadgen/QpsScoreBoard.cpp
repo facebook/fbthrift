@@ -1,4 +1,6 @@
 /*
+ * Copyright 2004-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,20 +18,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 #include <thrift/lib/cpp/test/loadgen/QpsScoreBoard.h>
 
 namespace apache { namespace thrift { namespace loadgen {
 
-void QpsScoreBoard::opStarted(uint32_t opType) {
-}
+void QpsScoreBoard::opStarted(uint32_t /* opType */) {}
 
 void QpsScoreBoard::opSucceeded(uint32_t opType) {
   OpData* data = opData_.getOpData(opType);
   ++data->count;
 }
 
-void QpsScoreBoard::opFailed(uint32_t opType) {
-}
+void QpsScoreBoard::opFailed(uint32_t /* opType */) {}
 
 uint64_t QpsScoreBoard::getCount(uint32_t opType) const {
   const OpData* data = opData_.getOpDataOrNull(opType);
