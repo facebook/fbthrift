@@ -271,6 +271,6 @@ void TimerManager::remove(shared_ptr<Runnable> /*task*/) {
   }
 }
 
-const TimerManager::STATE TimerManager::state() const { return state_; }
+TimerManager::STATE TimerManager::state() const { return state_; }
 
 }}} // apache::thrift::concurrency
