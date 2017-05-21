@@ -31,8 +31,8 @@ PausableTimer::PausableTimer(int timeLimit) {
 
 void PausableTimer::reset() {
   if (isTimeLimitFinite_) {
-    totalTimed_ = timeval{ 0 };
-    lastRunningTime_ = timeval{ 0 };
+    totalTimed_ = timeval{};
+    lastRunningTime_ = timeval{};
     paused_ = true;
   }
 }
