@@ -38,7 +38,7 @@
 
 #include <thrift/lib/cpp/concurrency/Mutex.h>
 
-#include <ext/hash_map>
+#include <unordered_map>
 #include <execinfo.h>
 #include <stdio.h>
 
@@ -264,7 +264,7 @@ class CountGreater {
   }
 };
 
-typedef __gnu_cxx::hash_map<Key, size_t, Key::Hash> BacktraceMap;
+typedef std::unordered_map<Key, size_t, Key::Hash> BacktraceMap;
 
 /**
  * A map describing how many times T_VIRTUAL_CALL() has been invoked.
