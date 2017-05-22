@@ -28,16 +28,16 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
   public static boolean DEFAULT_PRETTY_PRINT = true;
   private static final TStruct STRUCT_DESC = new TStruct("ComplexUnion");
   private static final TField INT_VALUE_FIELD_DESC = new TField("intValue", TType.I64, (short)1);
-  private static final TField STRING_VALUE_FIELD_DESC = new TField("stringValue", TType.STRING, (short)2);
-  private static final TField INT_LIST_VALUE_FIELD_DESC = new TField("intListValue", TType.LIST, (short)3);
-  private static final TField STRING_LIST_VALUE_FIELD_DESC = new TField("stringListValue", TType.LIST, (short)4);
-  private static final TField STRING_REF_FIELD_DESC = new TField("stringRef", TType.STRING, (short)5);
+  private static final TField STRING_VALUE_FIELD_DESC = new TField("stringValue", TType.STRING, (short)5);
+  private static final TField INT_LIST_VALUE_FIELD_DESC = new TField("intListValue", TType.LIST, (short)2);
+  private static final TField STRING_LIST_VALUE_FIELD_DESC = new TField("stringListValue", TType.LIST, (short)3);
+  private static final TField STRING_REF_FIELD_DESC = new TField("stringRef", TType.STRING, (short)14);
 
   public static final int INTVALUE = 1;
-  public static final int STRINGVALUE = 2;
-  public static final int INTLISTVALUE = 3;
-  public static final int STRINGLISTVALUE = 4;
-  public static final int STRINGREF = 5;
+  public static final int STRINGVALUE = 5;
+  public static final int INTLISTVALUE = 2;
+  public static final int STRINGLISTVALUE = 3;
+  public static final int STRINGREF = 14;
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
   static {

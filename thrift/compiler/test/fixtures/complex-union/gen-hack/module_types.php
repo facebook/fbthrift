@@ -9,10 +9,10 @@
 enum ComplexUnionEnum: int {
   _EMPTY_ = 0;
   intValue = 1;
-  stringValue = 2;
-  intListValue = 3;
-  stringListValue = 4;
-  stringRef = 5;
+  stringValue = 5;
+  intListValue = 2;
+  stringListValue = 3;
+  stringRef = 14;
 }
 
 /**
@@ -26,12 +26,12 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
       'union' => true,
       'type' => \TType::I64,
       ),
-    2 => array(
+    5 => array(
       'var' => 'stringValue',
       'union' => true,
       'type' => \TType::STRING,
       ),
-    3 => array(
+    2 => array(
       'var' => 'intListValue',
       'union' => true,
       'type' => \TType::LST,
@@ -41,7 +41,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
         ),
         'format' => 'collection',
       ),
-    4 => array(
+    3 => array(
       'var' => 'stringListValue',
       'union' => true,
       'type' => \TType::LST,
@@ -51,7 +51,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
         ),
         'format' => 'collection',
       ),
-    5 => array(
+    14 => array(
       'var' => 'stringRef',
       'union' => true,
       'type' => \TType::STRING,
@@ -59,12 +59,12 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     );
   public static Map<string, int> $_TFIELDMAP = Map {
     'intValue' => 1,
-    'stringValue' => 2,
-    'intListValue' => 3,
-    'stringListValue' => 4,
-    'stringRef' => 5,
+    'stringValue' => 5,
+    'intListValue' => 2,
+    'stringListValue' => 3,
+    'stringRef' => 14,
   };
-  const int STRUCTURAL_ID = 6550502502248501709;
+  const int STRUCTURAL_ID = 7595671086838564963;
   /**
    * Original thrift field:-
    * 1: i64 intValue
@@ -72,22 +72,22 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   public ?int $intValue;
   /**
    * Original thrift field:-
-   * 2: string stringValue
+   * 5: string stringValue
    */
   public ?string $stringValue;
   /**
    * Original thrift field:-
-   * 3: list<i64> intListValue
+   * 2: list<i64> intListValue
    */
   public ?Vector<int> $intListValue;
   /**
    * Original thrift field:-
-   * 4: list<string> stringListValue
+   * 3: list<string> stringListValue
    */
   public ?Vector<string> $stringListValue;
   /**
    * Original thrift field:-
-   * 5: string stringRef
+   * 14: string stringRef
    */
   public ?string $stringRef;
   protected ComplexUnionEnum $_type = ComplexUnionEnum::_EMPTY_;
@@ -228,7 +228,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 2:
+        case 5:
           if ($ftype == \TType::STRING) {
             $xfer += $input->readString($this->stringValue);
             $this->_type = ComplexUnionEnum::stringValue;
@@ -236,7 +236,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 3:
+        case 2:
           if ($ftype == \TType::LST) {
             $_size1 = 0;
             $_val0 = Vector {};
@@ -260,7 +260,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 4:
+        case 3:
           if ($ftype == \TType::LST) {
             $_size8 = 0;
             $_val7 = Vector {};
@@ -284,7 +284,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
             $xfer += $input->skip($ftype);
           }
           break;
-        case 5:
+        case 14:
           if ($ftype == \TType::STRING) {
             $xfer += $input->readString($this->stringRef);
             $this->_type = ComplexUnionEnum::stringRef;
@@ -311,49 +311,49 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
       $xfer += $output->writeI64($_val0);
       $xfer += $output->writeFieldEnd();
     }
-    if ($this->stringValue !== null) {
-      $_val1 = $this->stringValue;
-      $xfer += $output->writeFieldBegin('stringValue', \TType::STRING, 2);
-      $xfer += $output->writeString($_val1);
-      $xfer += $output->writeFieldEnd();
-    }
     if ($this->intListValue !== null) {
-      $_val2 = $this->intListValue;
-      if (!($_val2 instanceof \Indexish) && !(($_val2 instanceof \Iterator || $_val2 instanceof \IteratorAggregate) && $_val2 instanceof \Countable)) {
+      $_val1 = $this->intListValue;
+      if (!($_val1 instanceof \Indexish) && !(($_val1 instanceof \Iterator || $_val1 instanceof \IteratorAggregate) && $_val1 instanceof \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('intListValue', \TType::LST, 3);
-      $output->writeListBegin(\TType::I64, count($_val2));
-      if ($_val2 !== null)
+      $xfer += $output->writeFieldBegin('intListValue', \TType::LST, 2);
+      $output->writeListBegin(\TType::I64, count($_val1));
+      if ($_val1 !== null)
       {
-        foreach ($_val2 as $iter3)
+        foreach ($_val1 as $iter2)
         {
-          $xfer += $output->writeI64($iter3);
+          $xfer += $output->writeI64($iter2);
         }
       }
       $output->writeListEnd();
       $xfer += $output->writeFieldEnd();
     }
     if ($this->stringListValue !== null) {
-      $_val4 = $this->stringListValue;
-      if (!($_val4 instanceof \Indexish) && !(($_val4 instanceof \Iterator || $_val4 instanceof \IteratorAggregate) && $_val4 instanceof \Countable)) {
+      $_val3 = $this->stringListValue;
+      if (!($_val3 instanceof \Indexish) && !(($_val3 instanceof \Iterator || $_val3 instanceof \IteratorAggregate) && $_val3 instanceof \Countable)) {
         throw new \TProtocolException('Bad type in structure.', \TProtocolException::INVALID_DATA);
       }
-      $xfer += $output->writeFieldBegin('stringListValue', \TType::LST, 4);
-      $output->writeListBegin(\TType::STRING, count($_val4));
-      if ($_val4 !== null)
+      $xfer += $output->writeFieldBegin('stringListValue', \TType::LST, 3);
+      $output->writeListBegin(\TType::STRING, count($_val3));
+      if ($_val3 !== null)
       {
-        foreach ($_val4 as $iter5)
+        foreach ($_val3 as $iter4)
         {
-          $xfer += $output->writeString($iter5);
+          $xfer += $output->writeString($iter4);
         }
       }
       $output->writeListEnd();
       $xfer += $output->writeFieldEnd();
     }
+    if ($this->stringValue !== null) {
+      $_val5 = $this->stringValue;
+      $xfer += $output->writeFieldBegin('stringValue', \TType::STRING, 5);
+      $xfer += $output->writeString($_val5);
+      $xfer += $output->writeFieldEnd();
+    }
     if ($this->stringRef !== null) {
       $_val6 = $this->stringRef;
-      $xfer += $output->writeFieldBegin('stringRef', \TType::STRING, 5);
+      $xfer += $output->writeFieldBegin('stringRef', \TType::STRING, 14);
       $xfer += $output->writeString($_val6);
       $xfer += $output->writeFieldEnd();
     }

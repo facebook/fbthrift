@@ -41,19 +41,19 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
         ftype = apache::thrift::protocol::T_I64;
       }
       else if (fname == "stringValue") {
-        fid = 2;
+        fid = 5;
         ftype = apache::thrift::protocol::T_STRING;
       }
       else if (fname == "intListValue") {
-        fid = 3;
+        fid = 2;
         ftype = apache::thrift::protocol::T_LIST;
       }
       else if (fname == "stringListValue") {
-        fid = 4;
+        fid = 3;
         ftype = apache::thrift::protocol::T_LIST;
       }
       else if (fname == "stringRef") {
-        fid = 5;
+        fid = 14;
         ftype = apache::thrift::protocol::T_STRING;
       }
     }
@@ -68,7 +68,7 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
         }
         break;
       }
-      case 2:
+      case 5:
       {
         if (ftype == apache::thrift::protocol::T_STRING) {
           this->set_stringValue();
@@ -78,7 +78,7 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
         }
         break;
       }
-      case 3:
+      case 2:
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
           this->set_intListValue();
@@ -89,7 +89,7 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
         }
         break;
       }
-      case 4:
+      case 3:
       {
         if (ftype == apache::thrift::protocol::T_LIST) {
           this->set_stringListValue();
@@ -100,7 +100,7 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
         }
         break;
       }
-      case 5:
+      case 14:
       {
         if (ftype == apache::thrift::protocol::T_STRING) {
           this->set_stringRef();
@@ -141,25 +141,25 @@ uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
     }
     case ComplexUnion::Type::stringValue:
     {
-      xfer += prot_->serializedFieldSize("stringValue", apache::thrift::protocol::T_STRING, 2);
+      xfer += prot_->serializedFieldSize("stringValue", apache::thrift::protocol::T_STRING, 5);
       xfer += prot_->serializedSizeString(this->get_stringValue());
       break;
     }
     case ComplexUnion::Type::intListValue:
     {
-      xfer += prot_->serializedFieldSize("intListValue", apache::thrift::protocol::T_LIST, 3);
+      xfer += prot_->serializedFieldSize("intListValue", apache::thrift::protocol::T_LIST, 2);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int64_t>>::serializedSize<false>(*prot_, this->get_intListValue());
       break;
     }
     case ComplexUnion::Type::stringListValue:
     {
-      xfer += prot_->serializedFieldSize("stringListValue", apache::thrift::protocol::T_LIST, 4);
+      xfer += prot_->serializedFieldSize("stringListValue", apache::thrift::protocol::T_LIST, 3);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::vector<std::string>>::serializedSize<false>(*prot_, this->get_stringListValue());
       break;
     }
     case ComplexUnion::Type::stringRef:
     {
-      xfer += prot_->serializedFieldSize("stringRef", apache::thrift::protocol::T_STRING, 5);
+      xfer += prot_->serializedFieldSize("stringRef", apache::thrift::protocol::T_STRING, 14);
       xfer += prot_->serializedSizeString((*this->get_stringRef()));
       break;
     }
@@ -182,25 +182,25 @@ uint32_t ComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
     }
     case ComplexUnion::Type::stringValue:
     {
-      xfer += prot_->serializedFieldSize("stringValue", apache::thrift::protocol::T_STRING, 2);
+      xfer += prot_->serializedFieldSize("stringValue", apache::thrift::protocol::T_STRING, 5);
       xfer += prot_->serializedSizeString(this->get_stringValue());
       break;
     }
     case ComplexUnion::Type::intListValue:
     {
-      xfer += prot_->serializedFieldSize("intListValue", apache::thrift::protocol::T_LIST, 3);
+      xfer += prot_->serializedFieldSize("intListValue", apache::thrift::protocol::T_LIST, 2);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int64_t>>::serializedSize<false>(*prot_, this->get_intListValue());
       break;
     }
     case ComplexUnion::Type::stringListValue:
     {
-      xfer += prot_->serializedFieldSize("stringListValue", apache::thrift::protocol::T_LIST, 4);
+      xfer += prot_->serializedFieldSize("stringListValue", apache::thrift::protocol::T_LIST, 3);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::vector<std::string>>::serializedSize<false>(*prot_, this->get_stringListValue());
       break;
     }
     case ComplexUnion::Type::stringRef:
     {
-      xfer += prot_->serializedFieldSize("stringRef", apache::thrift::protocol::T_STRING, 5);
+      xfer += prot_->serializedFieldSize("stringRef", apache::thrift::protocol::T_STRING, 14);
       xfer += prot_->serializedSizeString((*this->get_stringRef()));
       break;
     }
@@ -224,28 +224,28 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
     }
     case ComplexUnion::Type::stringValue:
     {
-      xfer += prot_->writeFieldBegin("stringValue", apache::thrift::protocol::T_STRING, 2);
+      xfer += prot_->writeFieldBegin("stringValue", apache::thrift::protocol::T_STRING, 5);
       xfer += prot_->writeString(this->get_stringValue());
       xfer += prot_->writeFieldEnd();
       break;
     }
     case ComplexUnion::Type::intListValue:
     {
-      xfer += prot_->writeFieldBegin("intListValue", apache::thrift::protocol::T_LIST, 3);
+      xfer += prot_->writeFieldBegin("intListValue", apache::thrift::protocol::T_LIST, 2);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::vector<int64_t>>::write(*prot_, this->get_intListValue());
       xfer += prot_->writeFieldEnd();
       break;
     }
     case ComplexUnion::Type::stringListValue:
     {
-      xfer += prot_->writeFieldBegin("stringListValue", apache::thrift::protocol::T_LIST, 4);
+      xfer += prot_->writeFieldBegin("stringListValue", apache::thrift::protocol::T_LIST, 3);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::vector<std::string>>::write(*prot_, this->get_stringListValue());
       xfer += prot_->writeFieldEnd();
       break;
     }
     case ComplexUnion::Type::stringRef:
     {
-      xfer += prot_->writeFieldBegin("stringRef", apache::thrift::protocol::T_STRING, 5);
+      xfer += prot_->writeFieldBegin("stringRef", apache::thrift::protocol::T_STRING, 14);
       xfer += prot_->writeString((*this->get_stringRef()));
       xfer += prot_->writeFieldEnd();
       break;

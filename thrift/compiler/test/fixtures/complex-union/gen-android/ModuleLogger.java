@@ -52,14 +52,14 @@ public class ModuleLogger {
           break;
         }
       
-        case 2: {
+        case 5: {
           writeFieldBegin(oprot, Module.ComplexUnion_stringValue);
           oprot.writeString((String) mMap.get(Module.ComplexUnion_stringValue));
           oprot.writeFieldEnd();
           break;
         }
       
-        case 3: {
+        case 2: {
           writeFieldBegin(oprot, Module.ComplexUnion_intListValue);
           List<Long> var0 = (List<Long>) mMap.get(Module.ComplexUnion_intListValue);
           oprot.writeListBegin(new TList(TType.I64, var0.size()));
@@ -71,7 +71,7 @@ public class ModuleLogger {
           break;
         }
       
-        case 4: {
+        case 3: {
           writeFieldBegin(oprot, Module.ComplexUnion_stringListValue);
           List<String> var0 = (List<String>) mMap.get(Module.ComplexUnion_stringListValue);
           oprot.writeListBegin(new TList(TType.STRING, var0.size()));
@@ -83,7 +83,7 @@ public class ModuleLogger {
           break;
         }
       
-        case 5: {
+        case 14: {
           writeFieldBegin(oprot, Module.ComplexUnion_stringRef);
           oprot.writeString((String) mMap.get(Module.ComplexUnion_stringRef));
           oprot.writeFieldEnd();

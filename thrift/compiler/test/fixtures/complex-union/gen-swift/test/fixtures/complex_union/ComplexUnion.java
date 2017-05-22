@@ -32,28 +32,28 @@ public final class ComplexUnion
     @ThriftConstructor
     public ComplexUnion(final String stringValue) {
         this.value = stringValue;
-        this.id = 2;
+        this.id = 5;
         this.name = "stringValue";
     }
 
     @ThriftConstructor
     public ComplexUnion(final List<Long> intListValue) {
         this.value = intListValue;
-        this.id = 3;
+        this.id = 2;
         this.name = "intListValue";
     }
 
     @ThriftConstructor
     public ComplexUnion(final List<String> stringListValue) {
         this.value = stringListValue;
-        this.id = 4;
+        this.id = 3;
         this.name = "stringListValue";
     }
 
     @ThriftConstructor
     public ComplexUnion(final String stringRef) {
         this.value = stringRef;
-        this.id = 5;
+        this.id = 14;
         this.name = "stringRef";
     }
 
@@ -69,52 +69,52 @@ public final class ComplexUnion
         return this.id == 1;
     }
 
-    @ThriftField(value=2, name="stringValue", requiredness=Requiredness.NONE)
+    @ThriftField(value=5, name="stringValue", requiredness=Requiredness.NONE)
     public String getStringValue() {
-        if (this.id != 2) {
+        if (this.id != 5) {
             throw new IllegalStateException("Not a stringValue element!");
         }
         return (String) value;
     }
 
     public boolean isSetStringValue() {
-        return this.id == 2;
+        return this.id == 5;
     }
 
-    @ThriftField(value=3, name="intListValue", requiredness=Requiredness.NONE)
+    @ThriftField(value=2, name="intListValue", requiredness=Requiredness.NONE)
     public List<Long> getIntListValue() {
-        if (this.id != 3) {
+        if (this.id != 2) {
             throw new IllegalStateException("Not a intListValue element!");
         }
         return (List<Long>) value;
     }
 
     public boolean isSetIntListValue() {
-        return this.id == 3;
+        return this.id == 2;
     }
 
-    @ThriftField(value=4, name="stringListValue", requiredness=Requiredness.NONE)
+    @ThriftField(value=3, name="stringListValue", requiredness=Requiredness.NONE)
     public List<String> getStringListValue() {
-        if (this.id != 4) {
+        if (this.id != 3) {
             throw new IllegalStateException("Not a stringListValue element!");
         }
         return (List<String>) value;
     }
 
     public boolean isSetStringListValue() {
-        return this.id == 4;
+        return this.id == 3;
     }
 
-    @ThriftField(value=5, name="stringRef", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp2.ref", value = "true") })
+    @ThriftField(value=14, name="stringRef", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp2.ref", value = "true") })
     public String getStringRef() {
-        if (this.id != 5) {
+        if (this.id != 14) {
             throw new IllegalStateException("Not a stringRef element!");
         }
         return (String) value;
     }
 
     public boolean isSetStringRef() {
-        return this.id == 5;
+        return this.id == 14;
     }
 
     @ThriftUnionId

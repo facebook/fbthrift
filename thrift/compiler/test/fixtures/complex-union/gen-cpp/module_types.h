@@ -27,10 +27,10 @@ class ComplexUnion : public apache::thrift::TStructType<ComplexUnion> {
   enum class Type {
     __EMPTY__ = 0,
     intValue = 1,
-    stringValue = 2,
-    intListValue = 3,
-    stringListValue = 4,
-    stringRef = 5,
+    stringValue = 5,
+    intListValue = 2,
+    stringListValue = 3,
+    stringRef = 14,
   };
 
   ComplexUnion() : type_(Type::__EMPTY__) {}
@@ -43,28 +43,28 @@ class ComplexUnion : public apache::thrift::TStructType<ComplexUnion> {
   }
   template <typename T__ThriftWrappedArgument__Ctor>
   explicit ComplexUnion(
-    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
+    ::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
     set_stringValue(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor>
   explicit ComplexUnion(
-    ::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg):
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
     set_intListValue(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor>
   explicit ComplexUnion(
-    ::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg):
+    ::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
     set_stringListValue(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor>
   explicit ComplexUnion(
-    ::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg):
+    ::apache::thrift::detail::argument_wrapper<14, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
     set_stringRef(arg.move());
