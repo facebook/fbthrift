@@ -65,7 +65,7 @@ class AsyncClientWorker2 : public Worker<
   // from Worker::run
   void performOperation(
       const std::shared_ptr<Client>& /* client */,
-      uint32_t /* opType */) override{};
+      uint32_t /* opType */) override{}
   void run() override;
 
  private:
