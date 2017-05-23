@@ -26,10 +26,10 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
   enum Type {
     __EMPTY__ = 0,
     intValue = 1,
-    stringValue = 2,
-    intListValue = 3,
-    stringListValue = 4,
-    stringRef = 5,
+    stringValue = 5,
+    intListValue = 2,
+    stringListValue = 3,
+    stringRef = 14,
   } ;
 
   ComplexUnion() :

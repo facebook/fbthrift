@@ -2641,10 +2641,8 @@ class CppGenerator(t_generator.Generator):
         if obj.is_union:
             with struct('enum Type'):
                 out('__EMPTY__ = 0,')
-                i = 0
                 for member in members:
-                    i += 1
-                    out('{0} = {1},'.format(member.name, i))
+                    out('{0} = {1},'.format(member.name, member.key))
             struct.sameLine(';')
 
         if not pointers:
