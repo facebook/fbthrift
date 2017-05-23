@@ -14,6 +14,7 @@
 
 #include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 
+#include "folly/sorted_vector_types.h"
 
 
 namespace some { namespace valid { namespace ns {

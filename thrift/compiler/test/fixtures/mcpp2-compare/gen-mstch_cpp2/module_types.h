@@ -15,6 +15,7 @@
 #include "includes_types.h"
 #include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 
+#include <folly/small_vector.h>
 
 
 namespace some { namespace valid { namespace ns {

@@ -91,10 +91,20 @@ void t_mstch_cpp2_generator::generate_program() {
 mstch::map t_mstch_cpp2_generator::extend_program(
     const t_program& program) const {
   mstch::map m;
+
+  mstch::array cpp_includes{};
+  for (auto const& s : program.get_cpp_includes()) {
+    mstch::map cpp_include;
+    cpp_include.emplace("system?", s.at(0) == '<' ? std::to_string(0) : "");
+    cpp_include.emplace("path", std::string(s));
+    cpp_includes.push_back(cpp_include);
+  }
+
   m.emplace("namespace_cpp2", this->get_namespace(program)),
   m.emplace("normalizedIncludePrefix", this->get_include_prefix(program));
   m.emplace("enums?", !program.get_enums().empty());
   m.emplace("thrift_includes", this->dump_elems(program.get_includes()));
+  m.emplace("cpp_includes", cpp_includes);
   return m;
 }
 

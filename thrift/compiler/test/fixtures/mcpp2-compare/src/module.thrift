@@ -1,4 +1,6 @@
 include "includes.thrift"
+cpp_include "<folly/small_vector.h>"
+
 namespace cpp2 some.valid.ns
 
 // Generate base consts
