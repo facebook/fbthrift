@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,19 +37,17 @@ class t_struct : public t_type {
  public:
   typedef std::vector<t_field*> members_type;
 
-  explicit t_struct(t_program* program) :
-    t_type(program),
-    is_xception_(false),
-    is_union_(false),
-    view_parent_(nullptr),
-    xsd_all_(false) {}
+  explicit t_struct(t_program* program)
+      : t_type(program),
+        is_xception_(false),
+        is_union_(false),
+        view_parent_(nullptr) {}
 
-  t_struct(t_program* program, const std::string& name) :
-    t_type(program, name),
-    is_xception_(false),
-    is_union_(false),
-    view_parent_(nullptr),
-    xsd_all_(false) {}
+  t_struct(t_program* program, const std::string& name)
+      : t_type(program, name),
+        is_xception_(false),
+        is_union_(false),
+        view_parent_(nullptr) {}
 
   void set_name(const std::string& name) override { name_ = name; }
 
@@ -59,14 +57,6 @@ class t_struct : public t_type {
 
   void set_union(bool is_union) {
     is_union_ = is_union;
-  }
-
-  void set_xsd_all(bool xsd_all) {
-    xsd_all_ = xsd_all;
-  }
-
-  bool get_xsd_all() const {
-    return xsd_all_;
   }
 
   bool append(t_field* elem) {
@@ -181,6 +171,4 @@ class t_struct : public t_type {
   bool is_union_;
 
   const t_struct* view_parent_;
-
-  bool xsd_all_;
 };

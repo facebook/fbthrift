@@ -136,11 +136,6 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "ruby_namespace"     { return tok_ruby_namespace;       }
 "smalltalk_category" { return tok_smalltalk_category;   }
 "smalltalk_prefix"   { return tok_smalltalk_prefix;     }
-"xsd_all"            { return tok_xsd_all;              }
-"xsd_optional"       { return tok_xsd_optional;         }
-"xsd_nillable"       { return tok_xsd_nillable;         }
-"xsd_namespace"      { return tok_xsd_namespace;        }
-"xsd_attrs"          { return tok_xsd_attrs;            }
 "include"            { return tok_include;              }
 "void"               { return tok_void;                 }
 "bool"               { return tok_bool;                 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -76,12 +76,6 @@ class t_field : public t_doc {
 
   void set_req(e_req req) { req_ = req; }
 
-  void set_xsd_optional(bool xsd_optional) { xsd_optional_ = xsd_optional; }
-
-  void set_xsd_nillable(bool xsd_nillable) { xsd_nillable_ = xsd_nillable; }
-
-  void set_xsd_attrs(t_struct* xsd_attrs) { xsd_attrs_ = xsd_attrs; }
-
   /**
    * t_field getters
    */
@@ -95,12 +89,6 @@ class t_field : public t_doc {
 
   e_req get_req() const { return req_; }
 
-  bool get_xsd_optional() const { return xsd_optional_; }
-
-  bool get_xsd_nillable() const { return xsd_nillable_; }
-
-  t_struct* get_xsd_attrs() const { return xsd_attrs_; }
-
   std::map<std::string, std::string> annotations_;
 
  private:
@@ -110,10 +98,6 @@ class t_field : public t_doc {
   t_const_value* value_{nullptr};
 
   e_req req_{T_OPT_IN_REQ_OUT};
-
-  bool xsd_optional_{false};
-  bool xsd_nillable_{false};
-  t_struct* xsd_attrs_{nullptr};
 };
 
 /**

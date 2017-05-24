@@ -104,8 +104,7 @@ thrift1_SOURCES += generate/t_android_lite_generator.cc \
                   generate/t_php_generator.cc \
                   generate/t_py_generator.cc \
                   generate/t_rb_generator.cc \
-                  generate/t_st_generator.cc \
-                  generate/t_xsd_generator.cc
+                  generate/t_st_generator.cc
 
 thrift1_LDFLAGS = -lcrypto -lglog -lmstch $(BOOST_FILESYSTEM_LIB) $(BOOST_SYSTEM_LIB)
 thrift1_LDADD = @LEXLIB@ libparse.la libthriftcompilerbase.la

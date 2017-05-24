@@ -48,7 +48,6 @@ bool gen_javabean = false;
 bool gen_rb = false;
 bool gen_py = false;
 bool gen_py_newstyle = false;
-bool gen_xsd = false;
 bool gen_php = false;
 bool gen_phpi = false;
 bool gen_phps = true;
@@ -314,8 +313,6 @@ int main(int argc, char** argv) {
         gen_py_newstyle = true;
       } else if (strcmp(arg, "-rb") == 0) {
         gen_rb = true;
-      } else if (strcmp(arg, "-xsd") == 0) {
-        gen_xsd = true;
       } else if (strcmp(arg, "-perl") == 0) {
         gen_perl = true;
       } else if (strcmp(arg, "-erl") == 0) {
@@ -469,10 +466,6 @@ int main(int argc, char** argv) {
   if (gen_hs) {
     pwarning(1, "-hs is deprecated.  Use --gen hs");
     generator_strings.push_back("hs");
-  }
-  if (gen_xsd) {
-    pwarning(1, "-xsd is deprecated.  Use --gen xsd");
-    generator_strings.push_back("xsd");
   }
 
   // You gotta generate something!

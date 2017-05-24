@@ -113,11 +113,6 @@ int y_definition_lineno = -1;
 %token tok_py_module
 %token tok_perl_package
 %token tok_java_package
-%token tok_xsd_all
-%token tok_xsd_optional
-%token tok_xsd_nillable
-%token tok_xsd_namespace
-%token tok_xsd_attrs
 %token tok_ruby_namespace
 %token tok_smalltalk_category
 %token tok_smalltalk_prefix
@@ -239,10 +234,6 @@ int y_definition_lineno = -1;
 %type<tstruct>   Throws
 %type<tservice>  Extends
 %type<tbool>     Oneway
-%type<tbool>     XsdAll
-%type<tbool>     XsdOptional
-%type<tbool>     XsdNillable
-%type<tstruct>   XsdAttributes
 
 %type<dtext>     CaptureDocText
 %type<id>        IntOrLiteral
@@ -407,15 +398,6 @@ Header:
     {
       pwarning(1, "'cocoa_prefix' is deprecated. Use 'namespace cocoa' instead");
       pdebug("Header -> tok_cocoa_prefix tok_identifier");
-      if (g_parse_mode == PROGRAM) {
-        g_program->set_namespace("cocoa", $2);
-      }
-    }
-/* TODO(dreiss): Get rid of this once everyone is using the new hotness. */
-| tok_xsd_namespace tok_literal
-    {
-      pwarning(1, "'xsd_namespace' is deprecated. Use 'namespace xsd' instead");
-      pdebug("Header -> tok_xsd_namespace tok_literal");
       if (g_parse_mode == PROGRAM) {
         g_program->set_namespace("cocoa", $2);
       }
@@ -809,17 +791,16 @@ Struct:
     {
         y_definition_lineno = yylineno;
     }
-  tok_identifier XsdAll '{' FieldList '}' TypeAnnotations
+  tok_identifier '{' FieldList '}' TypeAnnotations
     {
       pdebug("Struct -> tok_struct tok_identifier { FieldList }");
-      $6->set_xsd_all($4);
-      $6->set_union($1 == struct_is_union);
-      $$ = $6;
+      $5->set_union($1 == struct_is_union);
+      $$ = $5;
       $$->set_name($3);
       $$->set_lineno(y_definition_lineno);
-      if ($8 != NULL) {
-        $$->annotations_ = $8->annotations_;
-        delete $8;
+      if ($7 != NULL) {
+        $$->annotations_ = $7->annotations_;
+        delete $7;
       }
       y_field_val = -1;
     }
@@ -897,46 +878,6 @@ View:
         delete $6;
       }
       y_field_val = -1;
-    }
-
-XsdAll:
-  tok_xsd_all
-    {
-      $$ = true;
-    }
-|
-    {
-      $$ = false;
-    }
-
-XsdOptional:
-  tok_xsd_optional
-    {
-      $$ = true;
-    }
-|
-    {
-      $$ = false;
-    }
-
-XsdNillable:
-  tok_xsd_nillable
-    {
-      $$ = true;
-    }
-|
-    {
-      $$ = false;
-    }
-
-XsdAttributes:
-  tok_xsd_attrs '{' FieldList '}'
-    {
-      $$ = $3;
-    }
-|
-    {
-      $$ = NULL;
     }
 
 Xception:
@@ -1127,7 +1068,7 @@ FieldList:
     }
 
 Field:
-  CaptureDocText FieldIdentifier FieldRequiredness FieldType tok_identifier FieldValue XsdOptional XsdNillable XsdAttributes TypeAnnotations CommaOrSemicolonOptional
+  CaptureDocText FieldIdentifier FieldRequiredness FieldType tok_identifier FieldValue TypeAnnotations CommaOrSemicolonOptional
     {
       pdebug("tok_int_constant : Field -> FieldType tok_identifier");
       if ($2.auto_assigned) {
@@ -1144,16 +1085,11 @@ Field:
         validate_field_value($$, $6);
         $$->set_value($6);
       }
-      $$->set_xsd_optional($7);
-      $$->set_xsd_nillable($8);
       if ($1 != NULL) {
         $$->set_doc($1);
       }
-      if ($9 != NULL) {
-        $$->set_xsd_attrs($9);
-      }
-      if ($10 != NULL) {
-        for (const auto& it : $10->annotations_) {
+      if ($7 != NULL) {
+        for (const auto& it : $7->annotations_) {
           if (it.first == "cpp.ref" || it.first == "cpp2.ref") {
             if ($3 != t_field::T_OPTIONAL) {
               pwarning(1, "cpp.ref field must be optional if it is recursive");
@@ -1161,8 +1097,8 @@ Field:
             break;
           }
         }
-        $$->annotations_ = $10->annotations_;
-        delete $10;
+        $$->annotations_ = $7->annotations_;
+        delete $7;
       }
     }
 
