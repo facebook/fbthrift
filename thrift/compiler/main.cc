@@ -239,8 +239,9 @@ int main(int argc, char** argv) {
   // Hacky parameter handling... I didn't feel like using a library sorry!
   for (i = 1; i < argc-1; i++) {
     char* arg;
+    char* saveptr;
+    arg = strtok_r(argv[i], " ", &saveptr);
 
-    arg = strtok(argv[i], " ");
     while (arg != nullptr) {
       // Treat double dashes as single dashes
       if (arg[0] == '-' && arg[1] == '-') {
@@ -391,7 +392,7 @@ int main(int argc, char** argv) {
       }
 
       // Tokenize more
-      arg = strtok(nullptr, " ");
+      arg = strtok_r(nullptr, " ", &saveptr);
     }
   }
 
