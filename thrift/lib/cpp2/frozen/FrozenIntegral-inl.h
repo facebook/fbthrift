@@ -79,7 +79,8 @@ struct PackedIntegerLayout : public LayoutBase {
 
   void print(std::ostream& os, int level) const override {
     LayoutBase::print(os, level);
-    os << "packed " << folly::demangle(type.name());
+    os << "packed " << (std::is_signed<T>::value ? "signed" : "unsigned") << " "
+       << folly::demangle(type.name());
   }
 
   typedef T View;

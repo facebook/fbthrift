@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,8 +45,8 @@ struct EnumLayout : public PackedIntegerLayout<Underlying> {
   }
 
   void print(std::ostream& os, int level) const override {
-    LayoutBase::print(os, level);
-    os << "packed " << folly::demangle(this->type.name()) << " (enum)";
+    Base::print(os, level);
+    os << " as enum " << folly::demangle(this->type.name());
   }
 
   typedef T View;
