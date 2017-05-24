@@ -128,7 +128,6 @@ int y_definition_lineno = -1;
 %token tok_string
 %token tok_binary
 %token tok_slist
-%token tok_senum
 %token tok_i16
 %token tok_i32
 %token tok_i64
@@ -207,10 +206,6 @@ int y_definition_lineno = -1;
 %type<tenum>     EnumDefList
 %type<tenumv>    EnumDef
 %type<tenumv>    EnumValue
-
-%type<ttypedef>  Senum
-%type<tbase>     SenumDefList
-%type<id>        SenumDef
 
 %type<tconst>    Const
 %type<tconstv>   ConstValue
@@ -483,13 +478,6 @@ TypeDefinition:
         g_program->add_enum($1);
       }
     }
-| Senum
-    {
-      pdebug("TypeDefinition -> Senum");
-      if (g_parse_mode == PROGRAM) {
-        g_program->add_typedef($1);
-      }
-    }
 | Struct
     {
       pdebug("TypeDefinition -> Struct");
@@ -632,34 +620,6 @@ EnumValue:
       ++y_enum_val;
       $$->set_value(y_enum_val);
       $$->set_lineno(yylineno);
-    }
-
-Senum:
-  tok_senum tok_identifier '{' SenumDefList '}'
-    {
-      pdebug("Senum -> tok_senum tok_identifier { SenumDefList }");
-      $$ = new t_typedef(g_program, $4, $2, g_scope_cache);
-    }
-
-SenumDefList:
-  SenumDefList SenumDef
-    {
-      pdebug("SenumDefList -> SenumDefList SenumDef");
-      $$ = $1;
-      $$->add_string_enum_val($2);
-    }
-|
-    {
-      pdebug("SenumDefList -> ");
-      $$ = new t_base_type("string", t_base_type::TYPE_STRING);
-      $$->set_string_enum(true);
-    }
-
-SenumDef:
-  tok_literal CommaOrSemicolonOptional
-    {
-      pdebug("SenumDef -> tok_literal");
-      $$ = $1;
     }
 
 Const:

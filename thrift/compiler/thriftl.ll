@@ -148,7 +148,6 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "string"             { return tok_string;               }
 "binary"             { return tok_binary;               }
 "slist"              { return tok_slist;                }
-"senum"              { return tok_senum;                }
 "map"                { return tok_map;                  }
 "hash_map"           { return tok_hash_map;             }
 "list"               { return tok_list;                 }
