@@ -158,13 +158,6 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 "typedef"            { return tok_typedef;              }
 "struct"             { return tok_struct;               }
 "union"              { return tok_union;                }
-"view"               {
-  if (g_scope_level != 0) {
-    yylval.id = strdup(yytext);
-    return tok_identifier;
-  }
-  return tok_view;
-}
 "exception"          { return tok_xception;             }
 "extends"            { return tok_extends;              }
 "throws"             { return tok_throws;               }

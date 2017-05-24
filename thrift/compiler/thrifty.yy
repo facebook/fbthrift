@@ -163,7 +163,6 @@ int y_definition_lineno = -1;
 %token tok_required
 %token tok_optional
 %token tok_union
-%token tok_view
 
 /**
  * Grammar nodes
@@ -197,10 +196,6 @@ int y_definition_lineno = -1;
 %type<ttype>     FieldType
 %type<tconstv>   FieldValue
 %type<tstruct>   FieldList
-
-%type<tfield>    ViewField
-%type<tstruct>   ViewFieldList
-%type<tstruct>   View
 
 %type<tenum>     Enum
 %type<tenum>     EnumDefList
@@ -485,13 +480,6 @@ TypeDefinition:
         g_program->add_struct($1);
       }
     }
-| View
-    {
-      pdebug("TypeDefinition -> View");
-      if (g_parse_mode == PROGRAM) {
-        g_program->add_struct($1);
-      }
-    }
 | Xception
     {
       pdebug("TypeDefinition -> Xception");
@@ -765,81 +753,6 @@ Struct:
       y_field_val = -1;
     }
 
-View:
-  tok_view tok_identifier ':' tok_identifier '{' ViewFieldList '}' TypeAnnotations
-    {
-      pdebug("View -> tok_view tok_identifier { ViewFieldList }");
-      if (g_parse_mode == INCLUDES) {
-        $$ = $6;
-        $$->set_name($2);
-      } else {
-        // Lookup the identifier in the current scope
-        t_type* parent_type = g_scope_cache->get_type($4);
-        if (!parent_type) {
-          parent_type = g_scope_cache->get_type(g_program->get_name() + "." + $4);
-        }
-        if (parent_type == NULL || !parent_type->is_struct()) {
-          yyerror("Struct \"%s\" has not been defined. %d", $4, g_parse_mode);
-          exit(1);
-        }
-        t_struct* parent_struct = dynamic_cast<t_struct*>(parent_type);
-        $$ = new t_struct(g_program);
-        $$->set_name($2);
-        $$->set_view_parent(parent_struct->get_view_parent());
-        $$->annotations_ = parent_struct->annotations_;
-        for (const auto& it : $6->get_members()) {
-          if (!parent_struct->has_field_named(it->get_name().c_str())) {
-            failure("view field '%s.%s' is not found in parent struct '%s'",
-                    $2, it->get_name().c_str(), $4);
-          }
-          const t_field* f = parent_struct->get_field_named(it->get_name().c_str());
-          t_field* nf;
-          if (it->get_type() != NULL) {
-            // Field is fully described, verify that definitions are compatible
-            nf = it;
-            if (nf->get_key() != f->get_key()) {
-              failure("view field '%s.%s' has a different key from parent struct '%s':"
-                      " %d vs %d",
-                      $2, it->get_name().c_str(), $4, f->get_key(), nf->get_key());
-            }
-            if (nf->get_req() != f->get_req()) {
-              failure("view field '%s.%s' has a different requirement specifier "
-                      "from parent struct '%s'",
-                      $2, it->get_name().c_str(), $4);
-            }
-            if (nf->get_type()->get_impl_full_name() != f->get_type()->get_impl_full_name()) {
-              failure("view field '%s.%s' has a different type from parent struct '%s':"
-                      " '%s' vs '%s'",
-                      $2, it->get_name().c_str(), $4,
-                      f->get_type()->get_impl_full_name().c_str(),
-                      nf->get_type()->get_impl_full_name().c_str());
-            }
-            if (f->get_value()) {
-              nf->set_value(new t_const_value(*f->get_value()));
-            }
-          } else {
-            // It's just a reference to the field, copy the definition from the
-            // parent struct
-            nf = new t_field(*f);
-            override_annotations(nf->annotations_, it->annotations_);
-          }
-          if (!$$->append(nf)) {
-            yyerror("Field identifier %d for \"%s\" has already been used", nf->get_key(), nf->get_name().c_str());
-            exit(1);
-          }
-          if (nf != it) {
-            delete it;
-          }
-        }
-        if ($8 != NULL) {
-          override_annotations($$->annotations_, $8->annotations_);
-          delete $8;
-        }
-        delete $6;
-      }
-      y_field_val = -1;
-    }
-
 Xception:
   tok_xception tok_identifier '{' FieldList '}' TypeAnnotations
     {
@@ -1057,51 +970,6 @@ Field:
             break;
           }
         }
-        $$->annotations_ = $7->annotations_;
-        delete $7;
-      }
-    }
-
-ViewFieldList:
-  ViewFieldList ViewField
-    {
-      pdebug("ViewFieldList -> ViewFieldList , ViewField");
-      $$ = $1;
-      // do not bother about field identifiers
-      if ($$->has_field_named($2->get_name().c_str())) {
-        yyerror("Field name %s has already been listed", $2->get_name().c_str());
-        exit(1);
-      }
-      $$->append($2);
-    }
-|
-    {
-      pdebug("ViewFieldList -> ");
-      $$ = new t_struct(g_program);
-    }
-
-ViewField:
-  tok_identifier TypeAnnotations CommaOrSemicolonOptional
-    {
-      pdebug("tok_int_constant : FieldTypeOptional tok_identifier");
-      // used only for tracking names, we'll reuse structs from original struct
-      $$ = new t_field(NULL, $1);
-      if ($2 != NULL) {
-        $$->annotations_ = $2->annotations_;
-        delete $2;
-      }
-    }
-| CaptureDocText tok_int_constant ':' FieldRequiredness FieldType tok_identifier TypeAnnotations CommaOrSemicolonOptional
-    {
-      // In order to make grammar parsable we have to make id specifier required
-      // if type is provided.
-      pdebug("ViewField -> tok_int_constant : FieldType tok_identifier");
-      $$ = new t_field($5, $6, $2);
-      $$->set_req($4);
-      if ($1 != NULL) {
-        $$->set_doc($1);
-      }
-      if ($7 != NULL) {
         $$->annotations_ = $7->annotations_;
         delete $7;
       }
