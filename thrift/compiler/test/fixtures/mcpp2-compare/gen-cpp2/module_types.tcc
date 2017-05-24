@@ -29,6 +29,281 @@ namespace apache { namespace thrift {
 namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
+uint32_t SimpleUnion::read(Protocol_* iprot) {
+  uint32_t xfer = 0;
+  std::string fname;
+  apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using apache::thrift::TProtocolException;
+
+
+  xfer += iprot->readFieldBegin(fname, ftype, fid);
+  if (ftype == apache::thrift::protocol::T_STOP) {
+    this->__clear();
+  } else {
+    if (fid == std::numeric_limits<int16_t>::min()) {
+      if (fname == "intValue") {
+        fid = 1;
+        ftype = apache::thrift::protocol::T_I64;
+      }
+      else if (fname == "stringValue") {
+        fid = 3;
+        ftype = apache::thrift::protocol::T_STRING;
+      }
+      else if (fname == "intValue2") {
+        fid = 4;
+        ftype = apache::thrift::protocol::T_I16;
+      }
+      else if (fname == "intValue3") {
+        fid = 6;
+        ftype = apache::thrift::protocol::T_I32;
+      }
+      else if (fname == "doubelValue") {
+        fid = 7;
+        ftype = apache::thrift::protocol::T_DOUBLE;
+      }
+      else if (fname == "boolValue") {
+        fid = 8;
+        ftype = apache::thrift::protocol::T_BOOL;
+      }
+    }
+    switch (fid) {
+      case 1:
+      {
+        if (ftype == apache::thrift::protocol::T_I64) {
+          this->set_intValue();
+          xfer += iprot->readI64(this->mutable_intValue());
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 3:
+      {
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          this->set_stringValue();
+          xfer += iprot->readString(this->mutable_stringValue());
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 4:
+      {
+        if (ftype == apache::thrift::protocol::T_I16) {
+          this->set_intValue2();
+          xfer += iprot->readI16(this->mutable_intValue2());
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 6:
+      {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          this->set_intValue3();
+          xfer += iprot->readI32(this->mutable_intValue3());
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 7:
+      {
+        if (ftype == apache::thrift::protocol::T_DOUBLE) {
+          this->set_doubelValue();
+          xfer += iprot->readDouble(this->mutable_doubelValue());
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 8:
+      {
+        if (ftype == apache::thrift::protocol::T_BOOL) {
+          this->set_boolValue();
+          xfer += iprot->readBool(this->mutable_boolValue());
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      default:
+      {
+        xfer += iprot->skip(ftype);
+        break;
+      }
+    }
+    xfer += iprot->readFieldEnd();
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (UNLIKELY(ftype != apache::thrift::protocol::T_STOP)) {
+      using apache::thrift::protocol::TProtocolException;
+      TProtocolException::throwUnionMissingStop();
+    }
+  }
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t SimpleUnion::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("SimpleUnion");
+  switch(this->getType()) {
+    case SimpleUnion::Type::intValue:
+    {
+      xfer += prot_->serializedFieldSize("intValue", apache::thrift::protocol::T_I64, 1);
+      xfer += prot_->serializedSizeI64(this->get_intValue());
+      break;
+    }
+    case SimpleUnion::Type::stringValue:
+    {
+      xfer += prot_->serializedFieldSize("stringValue", apache::thrift::protocol::T_STRING, 3);
+      xfer += prot_->serializedSizeString(this->get_stringValue());
+      break;
+    }
+    case SimpleUnion::Type::intValue2:
+    {
+      xfer += prot_->serializedFieldSize("intValue2", apache::thrift::protocol::T_I16, 4);
+      xfer += prot_->serializedSizeI16(this->get_intValue2());
+      break;
+    }
+    case SimpleUnion::Type::intValue3:
+    {
+      xfer += prot_->serializedFieldSize("intValue3", apache::thrift::protocol::T_I32, 6);
+      xfer += prot_->serializedSizeI32(this->get_intValue3());
+      break;
+    }
+    case SimpleUnion::Type::doubelValue:
+    {
+      xfer += prot_->serializedFieldSize("doubelValue", apache::thrift::protocol::T_DOUBLE, 7);
+      xfer += prot_->serializedSizeDouble(this->get_doubelValue());
+      break;
+    }
+    case SimpleUnion::Type::boolValue:
+    {
+      xfer += prot_->serializedFieldSize("boolValue", apache::thrift::protocol::T_BOOL, 8);
+      xfer += prot_->serializedSizeBool(this->get_boolValue());
+      break;
+    }
+    case SimpleUnion::Type::__EMPTY__:;
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t SimpleUnion::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("SimpleUnion");
+  switch(this->getType()) {
+    case SimpleUnion::Type::intValue:
+    {
+      xfer += prot_->serializedFieldSize("intValue", apache::thrift::protocol::T_I64, 1);
+      xfer += prot_->serializedSizeI64(this->get_intValue());
+      break;
+    }
+    case SimpleUnion::Type::stringValue:
+    {
+      xfer += prot_->serializedFieldSize("stringValue", apache::thrift::protocol::T_STRING, 3);
+      xfer += prot_->serializedSizeString(this->get_stringValue());
+      break;
+    }
+    case SimpleUnion::Type::intValue2:
+    {
+      xfer += prot_->serializedFieldSize("intValue2", apache::thrift::protocol::T_I16, 4);
+      xfer += prot_->serializedSizeI16(this->get_intValue2());
+      break;
+    }
+    case SimpleUnion::Type::intValue3:
+    {
+      xfer += prot_->serializedFieldSize("intValue3", apache::thrift::protocol::T_I32, 6);
+      xfer += prot_->serializedSizeI32(this->get_intValue3());
+      break;
+    }
+    case SimpleUnion::Type::doubelValue:
+    {
+      xfer += prot_->serializedFieldSize("doubelValue", apache::thrift::protocol::T_DOUBLE, 7);
+      xfer += prot_->serializedSizeDouble(this->get_doubelValue());
+      break;
+    }
+    case SimpleUnion::Type::boolValue:
+    {
+      xfer += prot_->serializedFieldSize("boolValue", apache::thrift::protocol::T_BOOL, 8);
+      xfer += prot_->serializedSizeBool(this->get_boolValue());
+      break;
+    }
+    case SimpleUnion::Type::__EMPTY__:;
+  }
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t SimpleUnion::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("SimpleUnion");
+  switch(this->getType()) {
+    case SimpleUnion::Type::intValue:
+    {
+      xfer += prot_->writeFieldBegin("intValue", apache::thrift::protocol::T_I64, 1);
+      xfer += prot_->writeI64(this->get_intValue());
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case SimpleUnion::Type::stringValue:
+    {
+      xfer += prot_->writeFieldBegin("stringValue", apache::thrift::protocol::T_STRING, 3);
+      xfer += prot_->writeString(this->get_stringValue());
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case SimpleUnion::Type::intValue2:
+    {
+      xfer += prot_->writeFieldBegin("intValue2", apache::thrift::protocol::T_I16, 4);
+      xfer += prot_->writeI16(this->get_intValue2());
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case SimpleUnion::Type::intValue3:
+    {
+      xfer += prot_->writeFieldBegin("intValue3", apache::thrift::protocol::T_I32, 6);
+      xfer += prot_->writeI32(this->get_intValue3());
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case SimpleUnion::Type::doubelValue:
+    {
+      xfer += prot_->writeFieldBegin("doubelValue", apache::thrift::protocol::T_DOUBLE, 7);
+      xfer += prot_->writeDouble(this->get_doubelValue());
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case SimpleUnion::Type::boolValue:
+    {
+      xfer += prot_->writeFieldBegin("boolValue", apache::thrift::protocol::T_BOOL, 8);
+      xfer += prot_->writeBool(this->get_boolValue());
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case SimpleUnion::Type::__EMPTY__:;
+  }
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
+template <class Protocol_>
 uint32_t Empty::read(Protocol_* iprot) {
   uint32_t xfer = 0;
   std::string fname;

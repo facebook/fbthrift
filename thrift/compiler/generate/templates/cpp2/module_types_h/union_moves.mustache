@@ -14,13 +14,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#struct:fields?%><%#struct:fields%><%#field:type%><%#type:resolves_to_container?%>
-const <% > Type%>& containerStruct::get_<%field:name%>() const& {
-  return <%field:name%>;
-}
+%><%#struct:fields%><%#field:type%>
+  <% > Type%> move_<%field:name%>() {
+    assert(type_ == Type::<%field:name%>);
+    return std::move(value_.<%field:name%>);
+  }
 
-<% > Type%> containerStruct::get_<%field:name%>() && {
-  return std::move(<%field:name%>);
-}
-
-<%/type:resolves_to_container?%><%/field:type%><%/struct:fields%><%/struct:fields?%>
+<%/field:type%><%/struct:fields%>

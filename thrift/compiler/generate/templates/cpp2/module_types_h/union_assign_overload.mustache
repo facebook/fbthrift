@@ -1,0 +1,58 @@
+<%!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+%>  <%struct:name%>& operator=(<%struct:name%>&& rhs) {
+    if (this == &rhs) {return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch(rhs.type_) {
+<%#struct:fields%>
+      case Type::<%field:name%>:
+      {
+        set_<%field:name%>(std::move(rhs.value_.<%field:name%>));
+        break;
+      }
+<%/struct:fields%>
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+    return *this;
+  }
+
+  <%struct:name%>& operator=(const <%struct:name%>& rhs) {
+    if (this == &rhs) {return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch(rhs.type_) {
+<%#struct:fields%>
+      case Type::<%field:name%>:
+      {
+        set_<%field:name%>(rhs.value_.<%field:name%>);
+        break;
+      }
+<%/struct:fields%>
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    return *this;
+  }

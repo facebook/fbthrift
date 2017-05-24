@@ -37,6 +37,15 @@ const MyEnumA constEnumA = MyEnumA.fieldB
 
 const MyEnumA constEnumB = 3
 
+union SimpleUnion {
+  1: i64 intValue;
+  3: string stringValue;
+  4: i16 intValue2;
+  6: i32 intValue3;
+  7: double doubelValue;
+  8: bool boolValue;
+}
+
 struct Empty {
 }
 

@@ -33,14 +33,22 @@
 %><% > common/namespace_cpp2_begin%>
 
 
+<%^struct:union?%>
 <% > module_types_cpp/declare_members%>
 
 <% > module_types_cpp/eq_overload%>
 
-<%#struct:fields?%>
 <% > module_types_cpp/getters_setters%>
-<%/struct:fields?%>
 <% > module_types_cpp/swap%>
+<%/struct:union?%>
+<%#struct:union?%>
+<% > module_types_cpp/union_declare_members%>
+
+<% > module_types_cpp/union_eq_overload%>
+
+<% > module_types_cpp/getters_setters%>
+<% > module_types_cpp/union_swap%>
+<%/struct:union?%>
 
 template uint32_t <%struct:name%>::read<>(apache::thrift::BinaryProtocolReader*);
 template uint32_t <%struct:name%>::write<>(apache::thrift::BinaryProtocolWriter*) const;

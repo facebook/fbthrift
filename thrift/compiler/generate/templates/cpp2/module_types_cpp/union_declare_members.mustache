@@ -14,13 +14,22 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#struct:fields?%><%#struct:fields%><%#field:type%><%#type:resolves_to_container?%>
-const <% > Type%>& containerStruct::get_<%field:name%>() const& {
-  return <%field:name%>;
+%>void <%struct:name%>::__clear() {
+  // clear all fields
+  if (type_ == Type::__EMPTY__) { return; }
+  switch(type_) {
+<%#struct:fields%>
+    case Type::<%field:name%>:
+    {
+      destruct(value_.<%field:name%>);
+      break;
+    }
+<%/struct:fields%>
+    default:
+    {
+      assert(false);
+      break;
+    }
+  }
+  type_ = Type::__EMPTY__;
 }
-
-<% > Type%> containerStruct::get_<%field:name%>() && {
-  return std::move(<%field:name%>);
-}
-
-<%/type:resolves_to_container?%><%/field:type%><%/struct:fields%><%/struct:fields?%>

@@ -35,9 +35,16 @@
 
 
 <% > module_types_tcc/container_setters%>
+<%^struct:union?%>
 <% > module_types_tcc/deserialize_struct%>
 
 <% > module_types_tcc/serialize_struct%>
+<%/struct:union?%>
+<%#struct:union?%>
+<% > module_types_tcc/deserialize_union%>
+
+<% > module_types_tcc/serialize_union%>
+<%/struct:union?%>
 
 <% > common/namespace_cpp2_end%>
 

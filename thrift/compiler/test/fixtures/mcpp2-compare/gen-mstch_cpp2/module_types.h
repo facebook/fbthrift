@@ -20,6 +20,7 @@
 
 namespace some { namespace valid { namespace ns {
 
+class SimpleUnion;
 class Empty;
 class MyStruct;
 class containerStruct;
@@ -76,6 +77,491 @@ class MyStruct;
 typedef std::vector<std::map< ::some::valid::ns::Empty,  ::some::valid::ns::MyStruct>> complexStructTypeDef;
 
 typedef std::vector< ::some::valid::ns::complexStructTypeDef> mostComplexTypeDef;
+
+class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<SimpleUnion> {
+ public:
+  enum Type {
+    __EMPTY__ = 0,
+    intValue = 1,
+    stringValue = 3,
+    intValue2 = 4,
+    intValue3 = 6,
+    doubelValue = 7,
+    boolValue = 8,
+  } ;
+
+  SimpleUnion() :
+      type_(Type::__EMPTY__) {}
+
+  SimpleUnion(SimpleUnion&& rhs) :
+      type_(Type::__EMPTY__) {
+    if (this == &rhs) {return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch(rhs.type_) {
+      case Type::intValue:
+      {
+        set_intValue(std::move(rhs.value_.intValue));
+        break;
+      }
+      case Type::stringValue:
+      {
+        set_stringValue(std::move(rhs.value_.stringValue));
+        break;
+      }
+      case Type::intValue2:
+      {
+        set_intValue2(std::move(rhs.value_.intValue2));
+        break;
+      }
+      case Type::intValue3:
+      {
+        set_intValue3(std::move(rhs.value_.intValue3));
+        break;
+      }
+      case Type::doubelValue:
+      {
+        set_doubelValue(std::move(rhs.value_.doubelValue));
+        break;
+      }
+      case Type::boolValue:
+      {
+        set_boolValue(std::move(rhs.value_.boolValue));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+  }
+
+  SimpleUnion(const SimpleUnion& rhs) :
+      type_(Type::__EMPTY__) {
+    if (this == &rhs) {return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch(rhs.type_) {
+      case Type::intValue:
+      {
+        set_intValue(rhs.value_.intValue);
+        break;
+      }
+      case Type::stringValue:
+      {
+        set_stringValue(rhs.value_.stringValue);
+        break;
+      }
+      case Type::intValue2:
+      {
+        set_intValue2(rhs.value_.intValue2);
+        break;
+      }
+      case Type::intValue3:
+      {
+        set_intValue3(rhs.value_.intValue3);
+        break;
+      }
+      case Type::doubelValue:
+      {
+        set_doubelValue(rhs.value_.doubelValue);
+        break;
+      }
+      case Type::boolValue:
+      {
+        set_boolValue(rhs.value_.boolValue);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+  }
+
+  SimpleUnion& operator=(SimpleUnion&& rhs) {
+    if (this == &rhs) {return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch(rhs.type_) {
+      case Type::intValue:
+      {
+        set_intValue(std::move(rhs.value_.intValue));
+        break;
+      }
+      case Type::stringValue:
+      {
+        set_stringValue(std::move(rhs.value_.stringValue));
+        break;
+      }
+      case Type::intValue2:
+      {
+        set_intValue2(std::move(rhs.value_.intValue2));
+        break;
+      }
+      case Type::intValue3:
+      {
+        set_intValue3(std::move(rhs.value_.intValue3));
+        break;
+      }
+      case Type::doubelValue:
+      {
+        set_doubelValue(std::move(rhs.value_.doubelValue));
+        break;
+      }
+      case Type::boolValue:
+      {
+        set_boolValue(std::move(rhs.value_.boolValue));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+    return *this;
+  }
+
+  SimpleUnion& operator=(const SimpleUnion& rhs) {
+    if (this == &rhs) {return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch(rhs.type_) {
+      case Type::intValue:
+      {
+        set_intValue(rhs.value_.intValue);
+        break;
+      }
+      case Type::stringValue:
+      {
+        set_stringValue(rhs.value_.stringValue);
+        break;
+      }
+      case Type::intValue2:
+      {
+        set_intValue2(rhs.value_.intValue2);
+        break;
+      }
+      case Type::intValue3:
+      {
+        set_intValue3(rhs.value_.intValue3);
+        break;
+      }
+      case Type::doubelValue:
+      {
+        set_doubelValue(rhs.value_.doubelValue);
+        break;
+      }
+      case Type::boolValue:
+      {
+        set_boolValue(rhs.value_.boolValue);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    return *this;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_intValue(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_stringValue(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_intValue2(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_intValue3(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_doubelValue(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<8, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_boolValue(arg.move());
+  }
+  void __clear();
+
+  virtual ~SimpleUnion() throw() {
+    __clear();
+  }
+
+  union storage_type {
+    int64_t intValue;
+    std::string stringValue;
+    int16_t intValue2;
+    int32_t intValue3;
+    double doubelValue;
+    bool boolValue;
+
+    storage_type() {}
+    ~storage_type() {}
+  } ;
+  bool operator==(const SimpleUnion& rhs) const;
+
+  bool operator < (const SimpleUnion& rhs) const {
+    if (type_ != rhs.type_) { return type_ < rhs.type_; }
+    switch(type_) {
+      case Type::intValue:
+      {
+        return value_.intValue < rhs.value_.intValue;
+      }
+      case Type::stringValue:
+      {
+        return value_.stringValue < rhs.value_.stringValue;
+      }
+      case Type::intValue2:
+      {
+        return value_.intValue2 < rhs.value_.intValue2;
+      }
+      case Type::intValue3:
+      {
+        return value_.intValue3 < rhs.value_.intValue3;
+      }
+      case Type::doubelValue:
+      {
+        return value_.doubelValue < rhs.value_.doubelValue;
+      }
+      case Type::boolValue:
+      {
+        return value_.boolValue < rhs.value_.boolValue;
+      }
+      default:
+      {
+        return false;
+      }
+    }
+  }
+
+  int64_t& set_intValue(int64_t t = int64_t()) {
+    __clear();
+    type_ = Type::intValue;
+    ::new (std::addressof(value_.intValue)) int64_t(t);
+    return value_.intValue;
+  }
+
+  std::string& set_stringValue(std::string const &t) {
+    __clear();
+    type_ = Type::stringValue;
+    ::new (std::addressof(value_.stringValue)) std::string(t);
+    return value_.stringValue;
+  }
+
+  std::string& set_stringValue(std::string&& t) {
+    __clear();
+    type_ = Type::stringValue;
+    ::new (std::addressof(value_.stringValue)) std::string(std::move(t));
+    return value_.stringValue;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::string, T...>> std::string& set_stringValue(T&&... t) {
+    __clear();
+    type_ = Type::stringValue;
+    ::new (std::addressof(value_.stringValue)) std::string(std::forward<T>(t)...);
+    return value_.stringValue;
+  }
+
+  int16_t& set_intValue2(int16_t t = int16_t()) {
+    __clear();
+    type_ = Type::intValue2;
+    ::new (std::addressof(value_.intValue2)) int16_t(t);
+    return value_.intValue2;
+  }
+
+  int32_t& set_intValue3(int32_t t = int32_t()) {
+    __clear();
+    type_ = Type::intValue3;
+    ::new (std::addressof(value_.intValue3)) int32_t(t);
+    return value_.intValue3;
+  }
+
+  double& set_doubelValue(double t = double()) {
+    __clear();
+    type_ = Type::doubelValue;
+    ::new (std::addressof(value_.doubelValue)) double(t);
+    return value_.doubelValue;
+  }
+
+  bool& set_boolValue(bool t = bool()) {
+    __clear();
+    type_ = Type::boolValue;
+    ::new (std::addressof(value_.boolValue)) bool(t);
+    return value_.boolValue;
+  }
+
+  int64_t const & get_intValue() const {
+    assert(type_ == Type::intValue);
+    return value_.intValue;
+  }
+
+  std::string const & get_stringValue() const {
+    assert(type_ == Type::stringValue);
+    return value_.stringValue;
+  }
+
+  int16_t const & get_intValue2() const {
+    assert(type_ == Type::intValue2);
+    return value_.intValue2;
+  }
+
+  int32_t const & get_intValue3() const {
+    assert(type_ == Type::intValue3);
+    return value_.intValue3;
+  }
+
+  double const & get_doubelValue() const {
+    assert(type_ == Type::doubelValue);
+    return value_.doubelValue;
+  }
+
+  bool const & get_boolValue() const {
+    assert(type_ == Type::boolValue);
+    return value_.boolValue;
+  }
+
+  int64_t & mutable_intValue() {
+    assert(type_ == Type::intValue);
+    return value_.intValue;
+  }
+
+  std::string & mutable_stringValue() {
+    assert(type_ == Type::stringValue);
+    return value_.stringValue;
+  }
+
+  int16_t & mutable_intValue2() {
+    assert(type_ == Type::intValue2);
+    return value_.intValue2;
+  }
+
+  int32_t & mutable_intValue3() {
+    assert(type_ == Type::intValue3);
+    return value_.intValue3;
+  }
+
+  double & mutable_doubelValue() {
+    assert(type_ == Type::doubelValue);
+    return value_.doubelValue;
+  }
+
+  bool & mutable_boolValue() {
+    assert(type_ == Type::boolValue);
+    return value_.boolValue;
+  }
+
+  int64_t move_intValue() {
+    assert(type_ == Type::intValue);
+    return std::move(value_.intValue);
+  }
+
+  std::string move_stringValue() {
+    assert(type_ == Type::stringValue);
+    return std::move(value_.stringValue);
+  }
+
+  int16_t move_intValue2() {
+    assert(type_ == Type::intValue2);
+    return std::move(value_.intValue2);
+  }
+
+  int32_t move_intValue3() {
+    assert(type_ == Type::intValue3);
+    return std::move(value_.intValue3);
+  }
+
+  double move_doubelValue() {
+    assert(type_ == Type::doubelValue);
+    return std::move(value_.doubelValue);
+  }
+
+  bool move_boolValue() {
+    assert(type_ == Type::boolValue);
+    return std::move(value_.boolValue);
+  }
+
+  Type getType() const { return type_; }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+ protected:
+  template <class T>
+  void destruct(T &val) {
+    (&val)->~T();
+  }
+
+  Type type_;
+  storage_type value_;
+};
+
+void swap(SimpleUnion& a, SimpleUnion& b);
+extern template uint32_t SimpleUnion::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t SimpleUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t SimpleUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t SimpleUnion::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t SimpleUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t SimpleUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::some::valid::ns::SimpleUnion>::clear( ::some::valid::ns::SimpleUnion* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::SimpleUnion>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::SimpleUnion>::write(Protocol* proto,  ::some::valid::ns::SimpleUnion const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::SimpleUnion>::read(Protocol* proto,  ::some::valid::ns::SimpleUnion* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::SimpleUnion>::serializedSize(Protocol const* proto,  ::some::valid::ns::SimpleUnion const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::SimpleUnion>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::SimpleUnion const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
 
 class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
  public:

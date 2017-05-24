@@ -41,6 +41,56 @@
 <% > module_types_h/typedef_initialize%>
 class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<<%struct:name%>> {
  public:
+<%#struct:union?%>
+<% > module_types_h/union_enum%>
+
+
+  <%struct:name%>() :
+      type_(Type::__EMPTY__) {}
+
+<% > module_types_h/union_copy_ctor%>
+
+
+<% > module_types_h/union_assign_overload%>
+
+<% > module_types_h/union_template_ctor%>
+  void __clear();
+
+  virtual ~<%struct:name%>() throw() {
+    __clear();
+  }
+
+<% > module_types_h/union_storage%>
+
+  bool operator==(const <%struct:name%>& rhs) const;
+
+<% > module_types_h/union_lt_overload%>
+
+
+<% > module_types_h/union_setters%>
+<% > module_types_h/union_getters%>
+<% > module_types_h/union_mutables%>
+<% > module_types_h/union_moves%>
+  Type getType() const { return type_; }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+ protected:
+  template <class T>
+  void destruct(T &val) {
+    (&val)->~T();
+  }
+
+  Type type_;
+  storage_type value_;
+<%/struct:union?%>
+<%^struct:union?%>
 
 <% > module_types_h/base_ctor%>
 
@@ -77,6 +127,7 @@ class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+<%/struct:union?%>
 };
 
 void swap(<%struct:name%>& a, <%struct:name%>& b);

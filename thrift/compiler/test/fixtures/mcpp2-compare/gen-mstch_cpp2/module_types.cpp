@@ -43,6 +43,104 @@ template <> bool TEnumTraits< ::some::valid::ns::MyEnumA>::findValue(const char*
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
+void SimpleUnion::__clear() {
+  // clear all fields
+  if (type_ == Type::__EMPTY__) { return; }
+  switch(type_) {
+    case Type::intValue:
+    {
+      destruct(value_.intValue);
+      break;
+    }
+    case Type::stringValue:
+    {
+      destruct(value_.stringValue);
+      break;
+    }
+    case Type::intValue2:
+    {
+      destruct(value_.intValue2);
+      break;
+    }
+    case Type::intValue3:
+    {
+      destruct(value_.intValue3);
+      break;
+    }
+    case Type::doubelValue:
+    {
+      destruct(value_.doubelValue);
+      break;
+    }
+    case Type::boolValue:
+    {
+      destruct(value_.boolValue);
+      break;
+    }
+    default:
+    {
+      assert(false);
+      break;
+    }
+  }
+  type_ = Type::__EMPTY__;
+}
+
+bool SimpleUnion::operator==(const SimpleUnion& rhs) const {
+  if (type_ != rhs.type_) { return false; }
+  switch(type_) {
+    case Type::intValue:
+    {
+      return value_.intValue == rhs.value_.intValue;
+    }
+    case Type::stringValue:
+    {
+      return value_.stringValue == rhs.value_.stringValue;
+    }
+    case Type::intValue2:
+    {
+      return value_.intValue2 == rhs.value_.intValue2;
+    }
+    case Type::intValue3:
+    {
+      return value_.intValue3 == rhs.value_.intValue3;
+    }
+    case Type::doubelValue:
+    {
+      return value_.doubelValue == rhs.value_.doubelValue;
+    }
+    case Type::boolValue:
+    {
+      return value_.boolValue == rhs.value_.boolValue;
+    }
+    default:
+    {
+      return true;
+    }
+  }
+}
+
+void swap(SimpleUnion& a, SimpleUnion& b) {
+  SimpleUnion temp(std::move(a));
+  a = std::move(b);
+  b = std::move(temp);
+}
+
+template uint32_t SimpleUnion::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t SimpleUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t SimpleUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t SimpleUnion::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t SimpleUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t SimpleUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
 void Empty::__clear() {
   // clear all fields
 }
