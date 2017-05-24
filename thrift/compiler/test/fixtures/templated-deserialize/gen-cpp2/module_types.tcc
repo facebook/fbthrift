@@ -19,6 +19,15 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 namespace cpp2 {
 
+} // cpp2
+namespace std {
+
+} // std
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
 template <typename T_containerStruct_fieldB_struct_setter>
 std::map<std::string, bool>& containerStruct::set_fieldB(T_containerStruct_fieldB_struct_setter&& fieldB_) {
   fieldB = std::forward<T_containerStruct_fieldB_struct_setter>(fieldB_);
@@ -184,6 +193,10 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       else if (fname == "fieldP") {
         fid = 16;
         ftype = apache::thrift::protocol::T_LIST;
+      }
+      else if (fname == "fieldQ") {
+        fid = 17;
+        ftype = apache::thrift::protocol::T_I32;
       }
     }
     switch (fid) {
@@ -359,6 +372,18 @@ uint32_t containerStruct::read(Protocol_* iprot) {
         }
         break;
       }
+      case 17:
+      {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          int32_t ecast0;
+          xfer += iprot->readI32(ecast0);
+          this->fieldQ = ( ::cpp2::MyEnumA)ecast0;
+          this->__isset.fieldQ = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
       default:
       {
         xfer += iprot->skip(ftype);
@@ -408,6 +433,8 @@ uint32_t containerStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionB, ::apache::thrift::type_class::floating_point>>, std::vector< ::cpp2::IndirectionB>>::serializedSize<false>(*prot_, this->fieldO);
   xfer += prot_->serializedFieldSize("fieldP", apache::thrift::protocol::T_LIST, 16);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionC, ::apache::thrift::type_class::integral>>, std::vector< ::cpp2::IndirectionC>>::serializedSize<false>(*prot_, this->fieldP);
+  xfer += prot_->serializedFieldSize("fieldQ", apache::thrift::protocol::T_I32, 17);
+  xfer += prot_->serializedSizeI32((int32_t)this->fieldQ);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -448,6 +475,8 @@ uint32_t containerStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionB, ::apache::thrift::type_class::floating_point>>, std::vector< ::cpp2::IndirectionB>>::serializedSize<false>(*prot_, this->fieldO);
   xfer += prot_->serializedFieldSize("fieldP", apache::thrift::protocol::T_LIST, 16);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionC, ::apache::thrift::type_class::integral>>, std::vector< ::cpp2::IndirectionC>>::serializedSize<false>(*prot_, this->fieldP);
+  xfer += prot_->serializedFieldSize("fieldQ", apache::thrift::protocol::T_I32, 17);
+  xfer += prot_->serializedSizeI32((int32_t)this->fieldQ);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -503,6 +532,9 @@ uint32_t containerStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldP", apache::thrift::protocol::T_LIST, 16);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionC, ::apache::thrift::type_class::integral>>, std::vector< ::cpp2::IndirectionC>>::write(*prot_, this->fieldP);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("fieldQ", apache::thrift::protocol::T_I32, 17);
+  xfer += prot_->writeI32((int32_t)this->fieldQ);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

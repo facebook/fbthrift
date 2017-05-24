@@ -49,6 +49,44 @@ struct apache_thrift_indirection_module_IndirectionB {
 };
 
 class containerStruct;
+
+enum class MyEnumA {
+  fieldA = 1,
+  fieldB = 2,
+  fieldC = 4
+};
+
+using _MyEnumA_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<MyEnumA, MyEnumA>;
+extern const _MyEnumA_EnumMapFactory::ValuesToNamesMapType _MyEnumA_VALUES_TO_NAMES;
+extern const _MyEnumA_EnumMapFactory::NamesToValuesMapType _MyEnumA_NAMES_TO_VALUES;
+
+} // cpp2
+namespace std {
+
+template<> struct hash<typename  ::cpp2::MyEnumA> : public apache::thrift::detail::enum_hash<typename  ::cpp2::MyEnumA> {};
+template<> struct equal_to<typename  ::cpp2::MyEnumA> : public apache::thrift::detail::enum_equal_to<typename  ::cpp2::MyEnumA> {};
+
+} // std
+namespace apache { namespace thrift {
+
+template <> struct TEnumDataStorage< ::cpp2::MyEnumA>;
+template <> const std::size_t TEnumTraits< ::cpp2::MyEnumA>::size;
+template <> const folly::Range<const  ::cpp2::MyEnumA*> TEnumTraits< ::cpp2::MyEnumA>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::cpp2::MyEnumA>::names;
+template <> const char* TEnumTraits< ::cpp2::MyEnumA>::findName( ::cpp2::MyEnumA value);
+template <> bool TEnumTraits< ::cpp2::MyEnumA>::findValue(const char* name,  ::cpp2::MyEnumA* outValue);
+
+template <> inline constexpr  ::cpp2::MyEnumA TEnumTraits< ::cpp2::MyEnumA>::min() {
+  return  ::cpp2::MyEnumA::fieldA;
+}
+
+template <> inline constexpr  ::cpp2::MyEnumA TEnumTraits< ::cpp2::MyEnumA>::max() {
+  return  ::cpp2::MyEnumA::fieldC;
+}
+
+}} // apache::thrift
+namespace cpp2 {
+
 typedef Foo IndirectionA;
 
 typedef Bar IndirectionB;
@@ -73,10 +111,11 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   {apache::thrift::StringTraits< std::string>::fromStringLiteral("subfieldB"), std::initializer_list<int32_t>{2,
   5,
   9,
-  13}}}) {}
+  13}}}),
+      fieldQ(static_cast< ::cpp2::MyEnumA>(0)) {}
   // FragileConstructor for use in initialization lists only
 
-  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, std::map<std::string, bool> fieldB__arg, std::set<int32_t> fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::vector<std::vector<std::vector<int32_t>>> fieldF__arg, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG__arg, std::vector<std::set<int32_t>> fieldH__arg, bool fieldI__arg, std::map<std::string, std::vector<int32_t>> fieldJ__arg, std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK__arg, std::set<std::set<std::set<bool>>> fieldL__arg, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM__arg, std::vector< ::cpp2::IndirectionA> fieldN__arg, std::vector< ::cpp2::IndirectionB> fieldO__arg, std::vector< ::cpp2::IndirectionC> fieldP__arg) :
+  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, std::map<std::string, bool> fieldB__arg, std::set<int32_t> fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::vector<std::vector<std::vector<int32_t>>> fieldF__arg, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG__arg, std::vector<std::set<int32_t>> fieldH__arg, bool fieldI__arg, std::map<std::string, std::vector<int32_t>> fieldJ__arg, std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK__arg, std::set<std::set<std::set<bool>>> fieldL__arg, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM__arg, std::vector< ::cpp2::IndirectionA> fieldN__arg, std::vector< ::cpp2::IndirectionB> fieldO__arg, std::vector< ::cpp2::IndirectionC> fieldP__arg,  ::cpp2::MyEnumA fieldQ__arg) :
       fieldA(std::move(fieldA__arg)),
       fieldB(std::move(fieldB__arg)),
       fieldC(std::move(fieldC__arg)),
@@ -92,7 +131,8 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
       fieldM(std::move(fieldM__arg)),
       fieldN(std::move(fieldN__arg)),
       fieldO(std::move(fieldO__arg)),
-      fieldP(std::move(fieldP__arg)) {
+      fieldP(std::move(fieldP__arg)),
+      fieldQ(std::move(fieldQ__arg)) {
     __isset.fieldA = true;
     __isset.fieldB = true;
     __isset.fieldC = true;
@@ -109,6 +149,7 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     __isset.fieldN = true;
     __isset.fieldO = true;
     __isset.fieldP = true;
+    __isset.fieldQ = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   containerStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -222,6 +263,13 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     fieldP = arg.move();
     __isset.fieldP = true;
   }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct(::apache::thrift::detail::argument_wrapper<17, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldQ = arg.move();
+    __isset.fieldQ = true;
+  }
 
   containerStruct(containerStruct&&) = default;
 
@@ -250,6 +298,7 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   std::vector< ::cpp2::IndirectionA> fieldN;
   std::vector< ::cpp2::IndirectionB> fieldO;
   std::vector< ::cpp2::IndirectionC> fieldP;
+   ::cpp2::MyEnumA fieldQ;
 
   struct __isset {
     void __clear() {
@@ -269,6 +318,7 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
       fieldN = false;
       fieldO = false;
       fieldP = false;
+      fieldQ = false;
     }
 
     bool fieldA = false;
@@ -287,6 +337,7 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     bool fieldN = false;
     bool fieldO = false;
     bool fieldP = false;
+    bool fieldQ = false;
   } __isset;
   bool operator==(const containerStruct& rhs) const;
   bool operator < (const containerStruct& rhs) const;
@@ -388,6 +439,16 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   std::vector< ::cpp2::IndirectionC> get_fieldP() &&;
   template <typename T_containerStruct_fieldP_struct_setter>
   std::vector< ::cpp2::IndirectionC>& set_fieldP(T_containerStruct_fieldP_struct_setter&& fieldP_);
+
+   ::cpp2::MyEnumA get_fieldQ() const {
+    return fieldQ;
+  }
+
+   ::cpp2::MyEnumA& set_fieldQ( ::cpp2::MyEnumA fieldQ_) {
+    fieldQ = fieldQ_;
+    __isset.fieldQ = true;
+    return fieldQ;
+  }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

@@ -18,6 +18,31 @@
 
 namespace cpp2 {
 
+const _MyEnumA_EnumMapFactory::ValuesToNamesMapType _MyEnumA_VALUES_TO_NAMES = _MyEnumA_EnumMapFactory::makeValuesToNamesMap();
+const _MyEnumA_EnumMapFactory::NamesToValuesMapType _MyEnumA_NAMES_TO_VALUES = _MyEnumA_EnumMapFactory::makeNamesToValuesMap();
+
+} // cpp2
+namespace std {
+
+} // std
+namespace apache { namespace thrift {
+
+template <> const std::size_t TEnumTraits< ::cpp2::MyEnumA>::size = 3;
+template <> const folly::Range<const  ::cpp2::MyEnumA*> TEnumTraits< ::cpp2::MyEnumA>::values = folly::range( ::cpp2::_MyEnumAEnumDataStorage::values);
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::cpp2::MyEnumA>::names = folly::range( ::cpp2::_MyEnumAEnumDataStorage::names);
+template <> const char* TEnumTraits< ::cpp2::MyEnumA>::findName( ::cpp2::MyEnumA value) {
+  static auto const map = folly::Indestructible< ::cpp2::_MyEnumA_EnumMapFactory::ValuesToNamesMapType>{ ::cpp2::_MyEnumA_EnumMapFactory::makeValuesToNamesMap()};
+  return findName(*map, value);
+}
+
+template <> bool TEnumTraits< ::cpp2::MyEnumA>::findValue(const char* name,  ::cpp2::MyEnumA* outValue) {
+  static auto const map = folly::Indestructible< ::cpp2::_MyEnumA_EnumMapFactory::NamesToValuesMapType>{ ::cpp2::_MyEnumA_EnumMapFactory::makeNamesToValuesMap()};
+  return findValue(*map, name, outValue);
+}
+
+}} // apache::thrift
+namespace cpp2 {
+
 void containerStruct::__clear() {
   // clear all fields
   fieldA = 0;
@@ -36,6 +61,7 @@ void containerStruct::__clear() {
   fieldN.clear();
   fieldO.clear();
   fieldP.clear();
+  fieldQ = static_cast< ::cpp2::MyEnumA>(0);
   __isset.__clear();
 }
 
@@ -86,6 +112,9 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
     return false;
   }
   if (!((fieldP == rhs.fieldP))) {
+    return false;
+  }
+  if (!((fieldQ == rhs.fieldQ))) {
     return false;
   }
   return true;
@@ -205,6 +234,7 @@ void swap(containerStruct& a, containerStruct& b) {
   swap(a.fieldN, b.fieldN);
   swap(a.fieldO, b.fieldO);
   swap(a.fieldP, b.fieldP);
+  swap(a.fieldQ, b.fieldQ);
   swap(a.__isset, b.__isset);
 }
 
