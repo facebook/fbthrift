@@ -141,6 +141,45 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
+void AnException::__clear() {
+  // clear all fields
+  code = 0;
+  message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  __isset.__clear();
+}
+
+bool AnException::operator==(const AnException& rhs) const {
+  if (!((code == rhs.code))) {
+    return false;
+  }
+  if (!((message == rhs.message))) {
+    return false;
+  }
+  return true;
+}
+
+void swap(AnException& a, AnException& b) {
+  using ::std::swap;
+  swap(a.code, b.code);
+  swap(a.message, b.message);
+  swap(a.__isset, b.__isset);
+}
+
+template uint32_t AnException::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t AnException::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t AnException::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t AnException::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t AnException::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t AnException::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t AnException::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t AnException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
 void Empty::__clear() {
   // clear all fields
 }

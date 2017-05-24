@@ -21,6 +21,7 @@
 namespace some { namespace valid { namespace ns {
 
 class SimpleUnion;
+class AnException;
 class Empty;
 class MyStruct;
 class containerStruct;
@@ -557,6 +558,149 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::Simpl
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::SimpleUnion>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::SimpleUnion const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
+class AnException : private apache::thrift::detail::st::ComparisonOperators<AnException>, public apache::thrift::TException {
+ public:
+
+  AnException() :
+      code(0) {}
+  // FragileConstructor for use in initialization lists only
+
+  AnException(apache::thrift::FragileConstructor, int32_t code__arg, std::string message__arg) :
+      code(std::move(code__arg)),
+      message(std::move(message__arg)) {
+    __isset.code = true;
+    __isset.message = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnException(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    code = arg.move();
+    __isset.code = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnException(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    message = arg.move();
+    __isset.message = true;
+  }
+
+  AnException(AnException&&) = default;
+
+  AnException(const AnException&) = default;
+
+  AnException& operator=(AnException&&) = default;
+
+  AnException& operator=(const AnException&) = default;
+  void __clear();
+
+  virtual ~AnException() throw() {}
+
+  int32_t code;
+  std::string message;
+
+  struct __isset {
+    void __clear() {
+      code = false;
+      message = false;
+    }
+
+    bool code = false;
+    bool message = false;
+  } __isset;
+  bool operator==(const AnException& rhs) const;
+
+  bool operator < (const AnException& rhs) const {
+    if (!(code == rhs.code)) {
+      return code < rhs.code;
+    }
+    if (!(message == rhs.message)) {
+      return message < rhs.message;
+    }
+    (void)rhs;
+    return false;
+  }
+
+  int32_t get_code() const {
+    return code;
+  }
+
+  int32_t& set_code(int32_t code_) {
+    code = code_;
+    __isset.code = true;
+    return code;
+  }
+
+  const std::string& get_message() const& {
+    return message;
+  }
+
+  std::string get_message() && {
+    return std::move(message);
+  }
+
+  template <typename T_AnException_message_struct_setter>
+  std::string& set_message(T_AnException_message_struct_setter&& message_) {
+    message = std::forward<T_AnException_message_struct_setter>(message_);
+    __isset.message = true;
+    return message;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+  virtual const char* what() const throw() {
+    return " ::some::valid::ns::AnException";
+  }
+};
+
+void swap(AnException& a, AnException& b);
+extern template uint32_t AnException::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t AnException::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t AnException::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t AnException::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t AnException::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t AnException::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t AnException::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t AnException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::some::valid::ns::AnException>::clear( ::some::valid::ns::AnException* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::AnException>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnException>::write(Protocol* proto,  ::some::valid::ns::AnException const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnException>::read(Protocol* proto,  ::some::valid::ns::AnException* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnException>::serializedSize(Protocol const* proto,  ::some::valid::ns::AnException const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnException>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::AnException const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

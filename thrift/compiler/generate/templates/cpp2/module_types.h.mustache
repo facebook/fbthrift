@@ -39,7 +39,7 @@
 <%/program:enums?%>
 
 <% > module_types_h/typedef_initialize%>
-class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<<%struct:name%>> {
+class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<<%struct:name%>><%#struct:exception?%>, public apache::thrift::TException<%/struct:exception?%> {
  public:
 <%#struct:union?%>
 <% > module_types_h/union_enum%>
@@ -127,6 +127,12 @@ class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+<%#struct:exception?%>
+
+  virtual const char* what() const throw() {
+    return "<% > common/namespace_cpp2%><%struct:name%>";
+  }
+<%/struct:exception?%>
 <%/struct:union?%>
 };
 

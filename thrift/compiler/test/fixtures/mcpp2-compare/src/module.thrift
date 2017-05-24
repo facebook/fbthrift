@@ -46,6 +46,11 @@ union SimpleUnion {
   8: bool boolValue;
 }
 
+exception AnException {
+  1: i32 code
+  2: string message
+}
+
 struct Empty {
 }
 

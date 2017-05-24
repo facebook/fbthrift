@@ -304,6 +304,112 @@ namespace apache { namespace thrift {
 namespace some { namespace valid { namespace ns {
 
 template <class Protocol_>
+uint32_t AnException::read(Protocol_* iprot) {
+  uint32_t xfer = 0;
+  std::string fname;
+  apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using apache::thrift::TProtocolException;
+
+
+  while (true) {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    if (fid == std::numeric_limits<int16_t>::min()) {
+      if (fname == "code") {
+        fid = 1;
+        ftype = apache::thrift::protocol::T_I32;
+      }
+      else if (fname == "message") {
+        fid = 2;
+        ftype = apache::thrift::protocol::T_STRING;
+      }
+    }
+    switch (fid) {
+      case 1:
+      {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->code);
+          this->__isset.code = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 2:
+      {
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->message);
+          this->__isset.message = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      default:
+      {
+        xfer += iprot->skip(ftype);
+        break;
+      }
+    }
+    xfer += iprot->readFieldEnd();
+  }
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t AnException::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("AnException");
+  xfer += prot_->serializedFieldSize("code", apache::thrift::protocol::T_I32, 1);
+  xfer += prot_->serializedSizeI32(this->code);
+  xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 2);
+  xfer += prot_->serializedSizeString(this->message);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t AnException::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("AnException");
+  xfer += prot_->serializedFieldSize("code", apache::thrift::protocol::T_I32, 1);
+  xfer += prot_->serializedSizeI32(this->code);
+  xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 2);
+  xfer += prot_->serializedSizeString(this->message);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t AnException::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("AnException");
+  xfer += prot_->writeFieldBegin("code", apache::thrift::protocol::T_I32, 1);
+  xfer += prot_->writeI32(this->code);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("message", apache::thrift::protocol::T_STRING, 2);
+  xfer += prot_->writeString(this->message);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
+template <class Protocol_>
 uint32_t Empty::read(Protocol_* iprot) {
   uint32_t xfer = 0;
   std::string fname;
