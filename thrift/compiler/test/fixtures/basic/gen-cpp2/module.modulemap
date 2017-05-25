@@ -1,0 +1,9 @@
+module thrift_compiler_test_fixtures_basic_gen_cpp2_module {
+    header "module_types.tcc"
+    header "module_types.h"
+    header "module_constants.h"
+    header "module_data.h"
+    header "module_types_custom_protocol.h"
+    export *
+}
+

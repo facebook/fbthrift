@@ -95,6 +95,8 @@ class Generator(object):
             self._generate_layouts(program.objects)
         if self.flag_fatal or self.flag_reflection:
             self._generate_fatal(program)
+        if self._flag('modulemap'):
+            self._generate_modulemap()
         self.close_generator()
 
     def init_generator(self):
@@ -114,6 +116,9 @@ class Generator(object):
         raise NotImplementedError
 
     def _generate_layouts(self):
+        raise NotImplementedError
+
+    def _generate_modulemap(self):
         raise NotImplementedError
 
     def _generate_fatal(self, program):

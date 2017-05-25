@@ -106,6 +106,7 @@ class CppGenerator(t_generator.Generator):
         'fatal': '(deprecated) use `reflection` instead',
         'reflection': 'generate static reflection metadata',
         'lean_mean_meta_machine': 'use templated Fatal metadata based codegen',
+        'modulemap': 'Generate clang modulemap',
     }
     _out_dir_base = 'gen-cpp2'
     _compatibility_dir_base = 'gen-cpp'
@@ -4658,6 +4659,25 @@ class CppGenerator(t_generator.Generator):
             with s.namespace('apache.thrift.frozen').scope:
                 for obj in objects:
                     self._generate_frozen_layout(obj, out())
+
+    def _generate_modulemap(self):
+        name = self._program.name
+        module_name = self._with_include_prefix(
+            self._program, name
+        )
+        # Mangle module name as specification doesn't allow '/', '.' and '-'
+        mangled_symbols = ['/', '.', '-']
+        for symbol in mangled_symbols:
+            module_name = module_name.replace(symbol, '_')
+        output = self._write_to('{0}.modulemap'.format(name))
+        output._write('module {0} {{\n'.format(module_name))
+        output._write('    header "{0}_types.tcc"\n'.format(name))
+        output._write('    header "{0}_types.h"\n'.format(name))
+        output._write('    header "{0}_constants.h"\n'.format(name))
+        output._write('    header "{0}_data.h"\n'.format(name))
+        output._write('    header "{0}_types_custom_protocol.h"\n'.format(name))
+        output._write('    export *\n')
+        output._write('}\n\n')
 
     def _generate_consts(self, constants):
         name = self._program.name
