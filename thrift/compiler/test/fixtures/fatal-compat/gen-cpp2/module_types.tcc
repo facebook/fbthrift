@@ -89,9 +89,7 @@ uint32_t union1_read(Protocol_* iprot, union1* obj) {
       {
         if (ftype == apache::thrift::protocol::T_I32) {
           obj->set_ue();
-          int32_t ecast0;
-          xfer += iprot->readI32(ecast0);
-          obj->mutable_ue() = ( ::test_cpp2::cpp_reflection::enum1)ecast0;
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::read(*iprot, obj->mutable_ue());
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -142,7 +140,7 @@ uint32_t union1_serializedSize(Protocol_ const* prot_, const union1* obj) {
     case union1::Type::ue:
     {
       xfer += prot_->serializedFieldSize("ue", apache::thrift::protocol::T_I32, 4);
-      xfer += prot_->serializedSizeI32((int32_t)obj->get_ue());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::serializedSize<false>(*prot_, obj->get_ue());
       break;
     }
     case union1::Type::__EMPTY__:;
@@ -178,7 +176,7 @@ uint32_t union1_serializedSizeZC(Protocol_ const* prot_, const union1* obj) {
     case union1::Type::ue:
     {
       xfer += prot_->serializedFieldSize("ue", apache::thrift::protocol::T_I32, 4);
-      xfer += prot_->serializedSizeI32((int32_t)obj->get_ue());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::serializedSize<false>(*prot_, obj->get_ue());
       break;
     }
     case union1::Type::__EMPTY__:;
@@ -217,7 +215,7 @@ uint32_t union1_write(Protocol_* prot_, const union1* obj) {
     case union1::Type::ue:
     {
       xfer += prot_->writeFieldBegin("ue", apache::thrift::protocol::T_I32, 4);
-      xfer += prot_->writeI32((int32_t)obj->get_ue());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::write(*prot_, obj->get_ue());
       xfer += prot_->writeFieldEnd();
       break;
     }
@@ -304,9 +302,7 @@ uint32_t union2_read(Protocol_* iprot, union2* obj) {
       {
         if (ftype == apache::thrift::protocol::T_I32) {
           obj->set_ue_2();
-          int32_t ecast1;
-          xfer += iprot->readI32(ecast1);
-          obj->mutable_ue_2() = ( ::test_cpp2::cpp_reflection::enum1)ecast1;
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::read(*iprot, obj->mutable_ue_2());
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -357,7 +353,7 @@ uint32_t union2_serializedSize(Protocol_ const* prot_, const union2* obj) {
     case union2::Type::ue_2:
     {
       xfer += prot_->serializedFieldSize("ue_2", apache::thrift::protocol::T_I32, 4);
-      xfer += prot_->serializedSizeI32((int32_t)obj->get_ue_2());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::serializedSize<false>(*prot_, obj->get_ue_2());
       break;
     }
     case union2::Type::__EMPTY__:;
@@ -393,7 +389,7 @@ uint32_t union2_serializedSizeZC(Protocol_ const* prot_, const union2* obj) {
     case union2::Type::ue_2:
     {
       xfer += prot_->serializedFieldSize("ue_2", apache::thrift::protocol::T_I32, 4);
-      xfer += prot_->serializedSizeI32((int32_t)obj->get_ue_2());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::serializedSize<false>(*prot_, obj->get_ue_2());
       break;
     }
     case union2::Type::__EMPTY__:;
@@ -432,7 +428,7 @@ uint32_t union2_write(Protocol_* prot_, const union2* obj) {
     case union2::Type::ue_2:
     {
       xfer += prot_->writeFieldBegin("ue_2", apache::thrift::protocol::T_I32, 4);
-      xfer += prot_->writeI32((int32_t)obj->get_ue_2());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::write(*prot_, obj->get_ue_2());
       xfer += prot_->writeFieldEnd();
       break;
     }
@@ -519,9 +515,7 @@ uint32_t union3_read(Protocol_* iprot, union3* obj) {
       {
         if (ftype == apache::thrift::protocol::T_I32) {
           obj->set_ue_3();
-          int32_t ecast2;
-          xfer += iprot->readI32(ecast2);
-          obj->mutable_ue_3() = ( ::test_cpp2::cpp_reflection::enum1)ecast2;
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::read(*iprot, obj->mutable_ue_3());
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -572,7 +566,7 @@ uint32_t union3_serializedSize(Protocol_ const* prot_, const union3* obj) {
     case union3::Type::ue_3:
     {
       xfer += prot_->serializedFieldSize("ue_3", apache::thrift::protocol::T_I32, 4);
-      xfer += prot_->serializedSizeI32((int32_t)obj->get_ue_3());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::serializedSize<false>(*prot_, obj->get_ue_3());
       break;
     }
     case union3::Type::__EMPTY__:;
@@ -608,7 +602,7 @@ uint32_t union3_serializedSizeZC(Protocol_ const* prot_, const union3* obj) {
     case union3::Type::ue_3:
     {
       xfer += prot_->serializedFieldSize("ue_3", apache::thrift::protocol::T_I32, 4);
-      xfer += prot_->serializedSizeI32((int32_t)obj->get_ue_3());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::serializedSize<false>(*prot_, obj->get_ue_3());
       break;
     }
     case union3::Type::__EMPTY__:;
@@ -647,7 +641,7 @@ uint32_t union3_write(Protocol_* prot_, const union3* obj) {
     case union3::Type::ue_3:
     {
       xfer += prot_->writeFieldBegin("ue_3", apache::thrift::protocol::T_I32, 4);
-      xfer += prot_->writeI32((int32_t)obj->get_ue_3());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::write(*prot_, obj->get_ue_3());
       xfer += prot_->writeFieldEnd();
       break;
     }
@@ -848,9 +842,7 @@ uint32_t unionA_read(Protocol_* iprot, unionA* obj) {
       {
         if (ftype == apache::thrift::protocol::T_I32) {
           obj->set_e();
-          int32_t ecast3;
-          xfer += iprot->readI32(ecast3);
-          obj->mutable_e() = ( ::test_cpp2::cpp_reflection::enum1)ecast3;
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::read(*iprot, obj->mutable_e());
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -911,7 +903,7 @@ uint32_t unionA_serializedSize(Protocol_ const* prot_, const unionA* obj) {
     case unionA::Type::e:
     {
       xfer += prot_->serializedFieldSize("e", apache::thrift::protocol::T_I32, 4);
-      xfer += prot_->serializedSizeI32((int32_t)obj->get_e());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::serializedSize<false>(*prot_, obj->get_e());
       break;
     }
     case unionA::Type::a:
@@ -953,7 +945,7 @@ uint32_t unionA_serializedSizeZC(Protocol_ const* prot_, const unionA* obj) {
     case unionA::Type::e:
     {
       xfer += prot_->serializedFieldSize("e", apache::thrift::protocol::T_I32, 4);
-      xfer += prot_->serializedSizeI32((int32_t)obj->get_e());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::serializedSize<false>(*prot_, obj->get_e());
       break;
     }
     case unionA::Type::a:
@@ -998,7 +990,7 @@ uint32_t unionA_write(Protocol_* prot_, const unionA* obj) {
     case unionA::Type::e:
     {
       xfer += prot_->writeFieldBegin("e", apache::thrift::protocol::T_I32, 4);
-      xfer += prot_->writeI32((int32_t)obj->get_e());
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::write(*prot_, obj->get_e());
       xfer += prot_->writeFieldEnd();
       break;
     }
@@ -1316,9 +1308,7 @@ uint32_t structC_read(Protocol_* iprot, structC* obj) {
       case 5:
       {
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast4;
-          xfer += iprot->readI32(ecast4);
-          obj->e = ( ::test_cpp2::cpp_reflection::enum1)ecast4;
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::read(*iprot, obj->e);
           obj->__isset.e = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -1328,9 +1318,7 @@ uint32_t structC_read(Protocol_* iprot, structC* obj) {
       case 6:
       {
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast5;
-          xfer += iprot->readI32(ecast5);
-          obj->f = ( ::test_cpp2::cpp_reflection::enum2)ecast5;
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum2>::read(*iprot, obj->f);
           obj->__isset.f = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -1625,9 +1613,9 @@ uint32_t structC_serializedSize(Protocol_ const* prot_, const structC* obj) {
   xfer += prot_->serializedFieldSize("d", apache::thrift::protocol::T_BOOL, 4);
   xfer += prot_->serializedSizeBool(obj->d);
   xfer += prot_->serializedFieldSize("e", apache::thrift::protocol::T_I32, 5);
-  xfer += prot_->serializedSizeI32((int32_t)obj->e);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::serializedSize<false>(*prot_, obj->e);
   xfer += prot_->serializedFieldSize("f", apache::thrift::protocol::T_I32, 6);
-  xfer += prot_->serializedSizeI32((int32_t)obj->f);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum2>::serializedSize<false>(*prot_, obj->f);
   xfer += prot_->serializedFieldSize("g", apache::thrift::protocol::T_STRUCT, 7);
   xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::serializedSize(prot_, &obj->g);
   xfer += prot_->serializedFieldSize("h", apache::thrift::protocol::T_STRUCT, 8);
@@ -1694,9 +1682,9 @@ uint32_t structC_serializedSizeZC(Protocol_ const* prot_, const structC* obj) {
   xfer += prot_->serializedFieldSize("d", apache::thrift::protocol::T_BOOL, 4);
   xfer += prot_->serializedSizeBool(obj->d);
   xfer += prot_->serializedFieldSize("e", apache::thrift::protocol::T_I32, 5);
-  xfer += prot_->serializedSizeI32((int32_t)obj->e);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::serializedSize<false>(*prot_, obj->e);
   xfer += prot_->serializedFieldSize("f", apache::thrift::protocol::T_I32, 6);
-  xfer += prot_->serializedSizeI32((int32_t)obj->f);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum2>::serializedSize<false>(*prot_, obj->f);
   xfer += prot_->serializedFieldSize("g", apache::thrift::protocol::T_STRUCT, 7);
   xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::serializedSizeZC(prot_, &obj->g);
   xfer += prot_->serializedFieldSize("h", apache::thrift::protocol::T_STRUCT, 8);
@@ -1767,10 +1755,10 @@ uint32_t structC_write(Protocol_* prot_, const structC* obj) {
   xfer += prot_->writeBool(obj->d);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("e", apache::thrift::protocol::T_I32, 5);
-  xfer += prot_->writeI32((int32_t)obj->e);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::write(*prot_, obj->e);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("f", apache::thrift::protocol::T_I32, 6);
-  xfer += prot_->writeI32((int32_t)obj->f);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum2>::write(*prot_, obj->f);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("g", apache::thrift::protocol::T_STRUCT, 7);
   xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::write(prot_, &obj->g);
@@ -1925,9 +1913,7 @@ uint32_t struct1_read(Protocol_* iprot, struct1* obj) {
       case 3:
       {
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast6;
-          xfer += iprot->readI32(ecast6);
-          obj->field2 = ( ::test_cpp2::cpp_reflection::enum1)ecast6;
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::read(*iprot, obj->field2);
           obj->__isset.field2 = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -1937,9 +1923,7 @@ uint32_t struct1_read(Protocol_* iprot, struct1* obj) {
       case 4:
       {
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast7;
-          xfer += iprot->readI32(ecast7);
-          obj->field3 = ( ::test_cpp2::cpp_reflection::enum2)ecast7;
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum2>::read(*iprot, obj->field3);
           isset_field3 = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -1997,9 +1981,9 @@ uint32_t struct1_serializedSize(Protocol_ const* prot_, const struct1* obj) {
     xfer += prot_->serializedSizeString(obj->field1);
   }
   xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_I32, 3);
-  xfer += prot_->serializedSizeI32((int32_t)obj->field2);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::serializedSize<false>(*prot_, obj->field2);
   xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_I32, 4);
-  xfer += prot_->serializedSizeI32((int32_t)obj->field3);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum2>::serializedSize<false>(*prot_, obj->field3);
   if (obj->__isset.field4) {
     xfer += prot_->serializedFieldSize("field4", apache::thrift::protocol::T_STRUCT, 5);
     xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::serializedSize(prot_, &obj->field4);
@@ -2022,9 +2006,9 @@ uint32_t struct1_serializedSizeZC(Protocol_ const* prot_, const struct1* obj) {
     xfer += prot_->serializedSizeString(obj->field1);
   }
   xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_I32, 3);
-  xfer += prot_->serializedSizeI32((int32_t)obj->field2);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::serializedSize<false>(*prot_, obj->field2);
   xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_I32, 4);
-  xfer += prot_->serializedSizeI32((int32_t)obj->field3);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum2>::serializedSize<false>(*prot_, obj->field3);
   if (obj->__isset.field4) {
     xfer += prot_->serializedFieldSize("field4", apache::thrift::protocol::T_STRUCT, 5);
     xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::serializedSizeZC(prot_, &obj->field4);
@@ -2049,10 +2033,10 @@ uint32_t struct1_write(Protocol_* prot_, const struct1* obj) {
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldBegin("field2", apache::thrift::protocol::T_I32, 3);
-  xfer += prot_->writeI32((int32_t)obj->field2);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::write(*prot_, obj->field2);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("field3", apache::thrift::protocol::T_I32, 4);
-  xfer += prot_->writeI32((int32_t)obj->field3);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum2>::write(*prot_, obj->field3);
   xfer += prot_->writeFieldEnd();
   if (obj->__isset.field4) {
     xfer += prot_->writeFieldBegin("field4", apache::thrift::protocol::T_STRUCT, 5);
@@ -2145,9 +2129,7 @@ uint32_t struct2_read(Protocol_* iprot, struct2* obj) {
       case 3:
       {
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast8;
-          xfer += iprot->readI32(ecast8);
-          obj->fieldC = ( ::test_cpp2::cpp_reflection::enum1)ecast8;
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::read(*iprot, obj->fieldC);
           obj->__isset.fieldC = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -2157,9 +2139,7 @@ uint32_t struct2_read(Protocol_* iprot, struct2* obj) {
       case 4:
       {
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast9;
-          xfer += iprot->readI32(ecast9);
-          obj->fieldD = ( ::test_cpp2::cpp_reflection::enum2)ecast9;
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum2>::read(*iprot, obj->fieldD);
           obj->__isset.fieldD = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -2219,9 +2199,9 @@ uint32_t struct2_serializedSize(Protocol_ const* prot_, const struct2* obj) {
   xfer += prot_->serializedFieldSize("fieldB", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->serializedSizeString(obj->fieldB);
   xfer += prot_->serializedFieldSize("fieldC", apache::thrift::protocol::T_I32, 3);
-  xfer += prot_->serializedSizeI32((int32_t)obj->fieldC);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::serializedSize<false>(*prot_, obj->fieldC);
   xfer += prot_->serializedFieldSize("fieldD", apache::thrift::protocol::T_I32, 4);
-  xfer += prot_->serializedSizeI32((int32_t)obj->fieldD);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum2>::serializedSize<false>(*prot_, obj->fieldD);
   xfer += prot_->serializedFieldSize("fieldE", apache::thrift::protocol::T_STRUCT, 5);
   xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::serializedSize(prot_, &obj->fieldE);
   xfer += prot_->serializedFieldSize("fieldF", apache::thrift::protocol::T_STRUCT, 6);
@@ -2242,9 +2222,9 @@ uint32_t struct2_serializedSizeZC(Protocol_ const* prot_, const struct2* obj) {
   xfer += prot_->serializedFieldSize("fieldB", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->serializedSizeString(obj->fieldB);
   xfer += prot_->serializedFieldSize("fieldC", apache::thrift::protocol::T_I32, 3);
-  xfer += prot_->serializedSizeI32((int32_t)obj->fieldC);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::serializedSize<false>(*prot_, obj->fieldC);
   xfer += prot_->serializedFieldSize("fieldD", apache::thrift::protocol::T_I32, 4);
-  xfer += prot_->serializedSizeI32((int32_t)obj->fieldD);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum2>::serializedSize<false>(*prot_, obj->fieldD);
   xfer += prot_->serializedFieldSize("fieldE", apache::thrift::protocol::T_STRUCT, 5);
   xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::serializedSizeZC(prot_, &obj->fieldE);
   xfer += prot_->serializedFieldSize("fieldF", apache::thrift::protocol::T_STRUCT, 6);
@@ -2267,10 +2247,10 @@ uint32_t struct2_write(Protocol_* prot_, const struct2* obj) {
   xfer += prot_->writeString(obj->fieldB);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldC", apache::thrift::protocol::T_I32, 3);
-  xfer += prot_->writeI32((int32_t)obj->fieldC);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::write(*prot_, obj->fieldC);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldD", apache::thrift::protocol::T_I32, 4);
-  xfer += prot_->writeI32((int32_t)obj->fieldD);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum2>::write(*prot_, obj->fieldD);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldE", apache::thrift::protocol::T_STRUCT, 5);
   xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::write(prot_, &obj->fieldE);
@@ -2408,9 +2388,7 @@ uint32_t struct3_read(Protocol_* iprot, struct3* obj) {
       case 3:
       {
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast10;
-          xfer += iprot->readI32(ecast10);
-          obj->fieldC = ( ::test_cpp2::cpp_reflection::enum1)ecast10;
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::read(*iprot, obj->fieldC);
           obj->__isset.fieldC = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -2420,9 +2398,7 @@ uint32_t struct3_read(Protocol_* iprot, struct3* obj) {
       case 4:
       {
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast11;
-          xfer += iprot->readI32(ecast11);
-          obj->fieldD = ( ::test_cpp2::cpp_reflection::enum2)ecast11;
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum2>::read(*iprot, obj->fieldD);
           obj->__isset.fieldD = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -2602,9 +2578,9 @@ uint32_t struct3_serializedSize(Protocol_ const* prot_, const struct3* obj) {
   xfer += prot_->serializedFieldSize("fieldB", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->serializedSizeString(obj->fieldB);
   xfer += prot_->serializedFieldSize("fieldC", apache::thrift::protocol::T_I32, 3);
-  xfer += prot_->serializedSizeI32((int32_t)obj->fieldC);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::serializedSize<false>(*prot_, obj->fieldC);
   xfer += prot_->serializedFieldSize("fieldD", apache::thrift::protocol::T_I32, 4);
-  xfer += prot_->serializedSizeI32((int32_t)obj->fieldD);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum2>::serializedSize<false>(*prot_, obj->fieldD);
   xfer += prot_->serializedFieldSize("fieldE", apache::thrift::protocol::T_STRUCT, 5);
   xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::serializedSize(prot_, &obj->fieldE);
   xfer += prot_->serializedFieldSize("fieldF", apache::thrift::protocol::T_STRUCT, 6);
@@ -2647,9 +2623,9 @@ uint32_t struct3_serializedSizeZC(Protocol_ const* prot_, const struct3* obj) {
   xfer += prot_->serializedFieldSize("fieldB", apache::thrift::protocol::T_STRING, 2);
   xfer += prot_->serializedSizeString(obj->fieldB);
   xfer += prot_->serializedFieldSize("fieldC", apache::thrift::protocol::T_I32, 3);
-  xfer += prot_->serializedSizeI32((int32_t)obj->fieldC);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::serializedSize<false>(*prot_, obj->fieldC);
   xfer += prot_->serializedFieldSize("fieldD", apache::thrift::protocol::T_I32, 4);
-  xfer += prot_->serializedSizeI32((int32_t)obj->fieldD);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum2>::serializedSize<false>(*prot_, obj->fieldD);
   xfer += prot_->serializedFieldSize("fieldE", apache::thrift::protocol::T_STRUCT, 5);
   xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::serializedSizeZC(prot_, &obj->fieldE);
   xfer += prot_->serializedFieldSize("fieldF", apache::thrift::protocol::T_STRUCT, 6);
@@ -2694,10 +2670,10 @@ uint32_t struct3_write(Protocol_* prot_, const struct3* obj) {
   xfer += prot_->writeString(obj->fieldB);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldC", apache::thrift::protocol::T_I32, 3);
-  xfer += prot_->writeI32((int32_t)obj->fieldC);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::write(*prot_, obj->fieldC);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldD", apache::thrift::protocol::T_I32, 4);
-  xfer += prot_->writeI32((int32_t)obj->fieldD);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum2>::write(*prot_, obj->fieldD);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldE", apache::thrift::protocol::T_STRUCT, 5);
   xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::union1>::write(prot_, &obj->fieldE);
@@ -2813,9 +2789,7 @@ uint32_t struct4_read(Protocol_* iprot, struct4* obj) {
       case 3:
       {
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast12;
-          xfer += iprot->readI32(ecast12);
-          obj->field2 = ( ::test_cpp2::cpp_reflection::enum1)ecast12;
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::read(*iprot, obj->field2);
           obj->__isset.field2 = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -2860,7 +2834,7 @@ uint32_t struct4_serializedSize(Protocol_ const* prot_, const struct4* obj) {
     xfer += prot_->serializedSizeString(obj->field1);
   }
   xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_I32, 3);
-  xfer += prot_->serializedSizeI32((int32_t)obj->field2);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::serializedSize<false>(*prot_, obj->field2);
   xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_STRUCT, 6);
   xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::serializedSize(prot_, &obj->field3);
   xfer += prot_->serializedSizeStop();
@@ -2879,7 +2853,7 @@ uint32_t struct4_serializedSizeZC(Protocol_ const* prot_, const struct4* obj) {
     xfer += prot_->serializedSizeString(obj->field1);
   }
   xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_I32, 3);
-  xfer += prot_->serializedSizeI32((int32_t)obj->field2);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::serializedSize<false>(*prot_, obj->field2);
   xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_STRUCT, 6);
   xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::serializedSizeZC(prot_, &obj->field3);
   xfer += prot_->serializedSizeStop();
@@ -2900,7 +2874,7 @@ uint32_t struct4_write(Protocol_* prot_, const struct4* obj) {
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldBegin("field2", apache::thrift::protocol::T_I32, 3);
-  xfer += prot_->writeI32((int32_t)obj->field2);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::write(*prot_, obj->field2);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("field3", apache::thrift::protocol::T_STRUCT, 6);
   xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::write(prot_, &obj->field3);
@@ -2981,9 +2955,7 @@ uint32_t struct5_read(Protocol_* iprot, struct5* obj) {
       case 3:
       {
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast13;
-          xfer += iprot->readI32(ecast13);
-          obj->field2 = ( ::test_cpp2::cpp_reflection::enum1)ecast13;
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::read(*iprot, obj->field2);
           obj->__isset.field2 = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -3038,7 +3010,7 @@ uint32_t struct5_serializedSize(Protocol_ const* prot_, const struct5* obj) {
     xfer += prot_->serializedSizeString(obj->field1);
   }
   xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_I32, 3);
-  xfer += prot_->serializedSizeI32((int32_t)obj->field2);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::serializedSize<false>(*prot_, obj->field2);
   xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_STRUCT, 4);
   xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::serializedSize(prot_, &obj->field3);
   xfer += prot_->serializedFieldSize("field4", apache::thrift::protocol::T_STRUCT, 5);
@@ -3059,7 +3031,7 @@ uint32_t struct5_serializedSizeZC(Protocol_ const* prot_, const struct5* obj) {
     xfer += prot_->serializedSizeString(obj->field1);
   }
   xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_I32, 3);
-  xfer += prot_->serializedSizeI32((int32_t)obj->field2);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::serializedSize<false>(*prot_, obj->field2);
   xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_STRUCT, 4);
   xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::serializedSizeZC(prot_, &obj->field3);
   xfer += prot_->serializedFieldSize("field4", apache::thrift::protocol::T_STRUCT, 5);
@@ -3082,7 +3054,7 @@ uint32_t struct5_write(Protocol_* prot_, const struct5* obj) {
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldBegin("field2", apache::thrift::protocol::T_I32, 3);
-  xfer += prot_->writeI32((int32_t)obj->field2);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::test_cpp2::cpp_reflection::enum1>::write(*prot_, obj->field2);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("field3", apache::thrift::protocol::T_STRUCT, 4);
   xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::write(prot_, &obj->field3);

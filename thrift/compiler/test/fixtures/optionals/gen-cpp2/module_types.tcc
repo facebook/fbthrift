@@ -505,9 +505,8 @@ uint32_t Person::read(Protocol_* iprot) {
       case 9:
       {
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast0;
-          xfer += iprot->readI32(ecast0);
-          this->afraidOfAnimal = ( ::cpp2::Animal)ecast0;
+          this->afraidOfAnimal =  ::cpp2::Animal();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::Animal>::read(*iprot, this->afraidOfAnimal.value());
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -570,7 +569,7 @@ uint32_t Person::serializedSize(Protocol_ const* prot_) const {
   }
   if (this->afraidOfAnimal.hasValue()) {
     xfer += prot_->serializedFieldSize("afraidOfAnimal", apache::thrift::protocol::T_I32, 9);
-    xfer += prot_->serializedSizeI32((int32_t)this->afraidOfAnimal.value());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::Animal>::serializedSize<false>(*prot_, this->afraidOfAnimal.value());
   }
   if (this->vehicles.hasValue()) {
     xfer += prot_->serializedFieldSize("vehicles", apache::thrift::protocol::T_LIST, 10);
@@ -614,7 +613,7 @@ uint32_t Person::serializedSizeZC(Protocol_ const* prot_) const {
   }
   if (this->afraidOfAnimal.hasValue()) {
     xfer += prot_->serializedFieldSize("afraidOfAnimal", apache::thrift::protocol::T_I32, 9);
-    xfer += prot_->serializedSizeI32((int32_t)this->afraidOfAnimal.value());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::Animal>::serializedSize<false>(*prot_, this->afraidOfAnimal.value());
   }
   if (this->vehicles.hasValue()) {
     xfer += prot_->serializedFieldSize("vehicles", apache::thrift::protocol::T_LIST, 10);
@@ -666,7 +665,7 @@ uint32_t Person::write(Protocol_* prot_) const {
   }
   if (this->afraidOfAnimal.hasValue()) {
     xfer += prot_->writeFieldBegin("afraidOfAnimal", apache::thrift::protocol::T_I32, 9);
-    xfer += prot_->writeI32((int32_t)this->afraidOfAnimal.value());
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::Animal>::write(*prot_, this->afraidOfAnimal.value());
     xfer += prot_->writeFieldEnd();
   }
   if (this->vehicles.hasValue()) {

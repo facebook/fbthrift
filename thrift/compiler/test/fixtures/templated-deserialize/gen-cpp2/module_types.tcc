@@ -375,9 +375,7 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       case 17:
       {
         if (ftype == apache::thrift::protocol::T_I32) {
-          int32_t ecast0;
-          xfer += iprot->readI32(ecast0);
-          this->fieldQ = ( ::cpp2::MyEnumA)ecast0;
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnumA>::read(*iprot, this->fieldQ);
           this->__isset.fieldQ = true;
         } else {
           xfer += iprot->skip(ftype);
@@ -434,7 +432,7 @@ uint32_t containerStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedFieldSize("fieldP", apache::thrift::protocol::T_LIST, 16);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionC, ::apache::thrift::type_class::integral>>, std::vector< ::cpp2::IndirectionC>>::serializedSize<false>(*prot_, this->fieldP);
   xfer += prot_->serializedFieldSize("fieldQ", apache::thrift::protocol::T_I32, 17);
-  xfer += prot_->serializedSizeI32((int32_t)this->fieldQ);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnumA>::serializedSize<false>(*prot_, this->fieldQ);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -476,7 +474,7 @@ uint32_t containerStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedFieldSize("fieldP", apache::thrift::protocol::T_LIST, 16);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionC, ::apache::thrift::type_class::integral>>, std::vector< ::cpp2::IndirectionC>>::serializedSize<false>(*prot_, this->fieldP);
   xfer += prot_->serializedFieldSize("fieldQ", apache::thrift::protocol::T_I32, 17);
-  xfer += prot_->serializedSizeI32((int32_t)this->fieldQ);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnumA>::serializedSize<false>(*prot_, this->fieldQ);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -534,7 +532,7 @@ uint32_t containerStruct::write(Protocol_* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionC, ::apache::thrift::type_class::integral>>, std::vector< ::cpp2::IndirectionC>>::write(*prot_, this->fieldP);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldQ", apache::thrift::protocol::T_I32, 17);
-  xfer += prot_->writeI32((int32_t)this->fieldQ);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnumA>::write(*prot_, this->fieldQ);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

@@ -3495,7 +3495,7 @@ class CppGenerator(t_generator.Generator):
         if ttype.is_struct or ttype.is_xception:
             self._generate_deserialize_struct(
                 scope, otype, ttype.as_struct, name, pointer, optional_wrapped)
-        elif ttype.is_container:
+        elif ttype.is_container or ttype.is_enum:
             self._generate_templated_deserialize_container(
                 scope, otype,
                 ttype.as_container,
@@ -3539,11 +3539,6 @@ class CppGenerator(t_generator.Generator):
                 dest += ".value()"
             txt = 'xfer += iprot->{0};'.format(txt.format(dest))
             s(txt)
-        elif ttype.is_enum:
-            t = self.tmp('ecast')
-            s('int32_t {0};'.format(t))
-            s('xfer += iprot->readI32({0});'.format(t))
-            s('{0} = ({1}){2};'.format(name, self._type_name(ttype), t))
         else:
             raise TypeError(("DO NOT KNOW HOW TO DESERIALIZE '{0}' "
                              "TYPE {1}").format(name, self._type_name(ttype)))
@@ -3686,7 +3681,8 @@ class CppGenerator(t_generator.Generator):
                         self._type_name(otype),
                         prefix))
         else:
-            s("{0} = {1}();".format(prefix, self._type_name(otype)))
+            if not ttype.is_enum:
+                s("{0} = {1}();".format(prefix, self._type_name(otype)))
             s('xfer += ::apache::thrift::detail::pm::protocol_methods'
                     '< {0}, {1}>::read(*iprot, {2});'.format(
                         self._render_type_class_for_serialization(otype),
@@ -4170,7 +4166,7 @@ class CppGenerator(t_generator.Generator):
             self._generate_serialize_struct(scope, otype, ttype.as_struct,
                                             val_expr,
                                             struct_method, pointer)
-        elif ttype.is_container:
+        elif ttype.is_container or ttype.is_enum:
             self._generate_serialize_container(scope, ttype.as_container, otype,
                                                pointer,
                                                val_expr,
@@ -4209,9 +4205,6 @@ class CppGenerator(t_generator.Generator):
                 val_expr = '(*{0})'.format(name)
             txt = 'xfer += prot_->' + txt.format(name, **locals())
             scope(txt)
-        elif ttype.is_enum:
-            scope('xfer += prot_->{0}I32((int32_t){1});'
-                  .format(method, val_expr))
         else:
             raise TypeError(("DO NOT KNOW HOW TO SERIALIZE '{0}' "
                              "TYPE {1}").format(name, self._type_name(ttype)))
