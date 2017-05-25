@@ -37,6 +37,10 @@ else:
 from struct import pack, unpack
 import zlib
 
+import zstandard as zstd
+zstd_compressor = zstd.ZstdCompressor(write_content_size=True, level=1)
+zstd_decompressor = zstd.ZstdDecompressor()
+
 from thrift.Thrift import TApplicationException
 from thrift.protocol.TBinaryProtocol import TBinaryProtocol
 from .TTransport import TTransportException, TTransportBase, CReadableTransport
@@ -341,11 +345,13 @@ class THeaderTransport(TTransportBase, CReadableTransport):
                                       "Trying to recv JSON encoding over binary")
 
         # Read the headers.  Data for each header varies.
-        for h in range(0, num_headers):
+        for _h in range(0, num_headers):
             trans_id = readVarint(data)
             if trans_id == TRANSFORM.ZLIB:
                 self.__read_transforms.insert(0, trans_id)
             elif trans_id == TRANSFORM.SNAPPY:
+                self.__read_transforms.insert(0, trans_id)
+            elif trans_id == TRANSFORM.ZSTD:
                 self.__read_transforms.insert(0, trans_id)
             elif trans_id == TRANSFORM.HMAC:
                 raise TApplicationException(
@@ -392,9 +398,12 @@ class THeaderTransport(TTransportBase, CReadableTransport):
                 buf = zlib.compress(buf)
             elif trans_id == TRANSFORM.SNAPPY:
                 buf = snappy.compress(buf)
+            elif trans_id == TRANSFORM.ZSTD:
+                buf = zstd_compressor.compress(buf)
             else:
-                raise TTransportException(TTransportException.INVALID_TRANSFORM,
-                                          "Unknown transform during send")
+                raise TTransportException(
+                    TTransportException.INVALID_TRANSFORM,
+                    "Unknown transform during send: %s" % trans_id)
         return buf
 
     def untransform(self, buf):
@@ -403,6 +412,8 @@ class THeaderTransport(TTransportBase, CReadableTransport):
                 buf = zlib.decompress(buf)
             elif trans_id == TRANSFORM.SNAPPY:
                 buf = snappy.decompress(buf)
+            elif trans_id == TRANSFORM.ZSTD:
+                buf = zstd_decompressor.decompress(buf)
             if trans_id not in self.__write_transforms:
                 self.__write_transforms.append(trans_id)
         return buf
@@ -469,7 +480,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         buf.write(info_data.getvalue())
 
         # Pad out the header with 0x00
-        for x in range(0, padding_size, 1):
+        for _x in range(0, padding_size, 1):
             buf.write(pack("!c", b'\0'))
 
         # Send data section
@@ -506,7 +517,7 @@ class THeaderTransport(TTransportBase, CReadableTransport):
             self.__client_type == CLIENT_TYPE.HEADER
         elif self.__client_type == CLIENT_TYPE.UNKNOWN:
             raise TTransportException(TTransportException.INVALID_CLIENT_TYPE,
-                                      "Unknown client type")
+                                      "Unknown client type: %s" % self.__client_type)
 
         # We don't include the framing bytes as part of the frame size check
         frame_size = buf.tell() - (4 if wsz < MAX_FRAME_SIZE else 12)
@@ -561,8 +572,9 @@ def _flush_info_headers(info_data, write_headers, type):
 def _read_string(bufio, buflimit):
     str_sz = readVarint(bufio)
     if str_sz + bufio.tell() > buflimit:
-        raise TTransportException(TTransportException.INVALID_FRAME_SIZE,
-                                  "String read too big")
+        raise TTransportException(
+            TTransportException.INVALID_FRAME_SIZE,
+            "String read too big. Size: %d. Limit: %d" % (str_sz, buflimit))
     return bufio.read(str_sz)
 
 
