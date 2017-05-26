@@ -89,6 +89,9 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
     intValue3 = 6,
     doubelValue = 7,
     boolValue = 8,
+    union_list = 9,
+    union_set = 10,
+    union_map = 11,
   } ;
 
   SimpleUnion() :
@@ -127,6 +130,21 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
       case Type::boolValue:
       {
         set_boolValue(std::move(rhs.value_.boolValue));
+        break;
+      }
+      case Type::union_list:
+      {
+        set_union_list(std::move(rhs.value_.union_list));
+        break;
+      }
+      case Type::union_set:
+      {
+        set_union_set(std::move(rhs.value_.union_set));
+        break;
+      }
+      case Type::union_map:
+      {
+        set_union_map(std::move(rhs.value_.union_map));
         break;
       }
       default:
@@ -173,6 +191,21 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
         set_boolValue(rhs.value_.boolValue);
         break;
       }
+      case Type::union_list:
+      {
+        set_union_list(rhs.value_.union_list);
+        break;
+      }
+      case Type::union_set:
+      {
+        set_union_set(rhs.value_.union_set);
+        break;
+      }
+      case Type::union_map:
+      {
+        set_union_map(rhs.value_.union_map);
+        break;
+      }
       default:
       {
         assert(false);
@@ -214,6 +247,21 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
       case Type::boolValue:
       {
         set_boolValue(std::move(rhs.value_.boolValue));
+        break;
+      }
+      case Type::union_list:
+      {
+        set_union_list(std::move(rhs.value_.union_list));
+        break;
+      }
+      case Type::union_set:
+      {
+        set_union_set(std::move(rhs.value_.union_set));
+        break;
+      }
+      case Type::union_map:
+      {
+        set_union_map(std::move(rhs.value_.union_map));
         break;
       }
       default:
@@ -261,6 +309,21 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
         set_boolValue(rhs.value_.boolValue);
         break;
       }
+      case Type::union_list:
+      {
+        set_union_list(rhs.value_.union_list);
+        break;
+      }
+      case Type::union_set:
+      {
+        set_union_set(rhs.value_.union_set);
+        break;
+      }
+      case Type::union_map:
+      {
+        set_union_map(rhs.value_.union_map);
+        break;
+      }
       default:
       {
         assert(false);
@@ -305,6 +368,24 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
   {
     set_boolValue(arg.move());
   }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<9, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_union_list(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<10, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_union_set(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<11, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_union_map(arg.move());
+  }
   void __clear();
 
   virtual ~SimpleUnion() throw() {
@@ -318,6 +399,9 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
     int32_t intValue3;
     double doubelValue;
     bool boolValue;
+    std::vector<int32_t> union_list;
+    std::set<int64_t> union_set;
+    std::map<std::string, int32_t> union_map;
 
     storage_type() {}
     ~storage_type() {}
@@ -350,6 +434,18 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
       case Type::boolValue:
       {
         return value_.boolValue < rhs.value_.boolValue;
+      }
+      case Type::union_list:
+      {
+        return value_.union_list < rhs.value_.union_list;
+      }
+      case Type::union_set:
+      {
+        return value_.union_set < rhs.value_.union_set;
+      }
+      case Type::union_map:
+      {
+        return value_.union_map < rhs.value_.union_map;
       }
       default:
       {
@@ -414,6 +510,69 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
     return value_.boolValue;
   }
 
+  std::vector<int32_t>& set_union_list(std::vector<int32_t> const &t) {
+    __clear();
+    type_ = Type::union_list;
+    ::new (std::addressof(value_.union_list)) std::vector<int32_t>(t);
+    return value_.union_list;
+  }
+
+  std::vector<int32_t>& set_union_list(std::vector<int32_t>&& t) {
+    __clear();
+    type_ = Type::union_list;
+    ::new (std::addressof(value_.union_list)) std::vector<int32_t>(std::move(t));
+    return value_.union_list;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::vector<int32_t>, T...>> std::vector<int32_t>& set_union_list(T&&... t) {
+    __clear();
+    type_ = Type::union_list;
+    ::new (std::addressof(value_.union_list)) std::vector<int32_t>(std::forward<T>(t)...);
+    return value_.union_list;
+  }
+
+  std::set<int64_t>& set_union_set(std::set<int64_t> const &t) {
+    __clear();
+    type_ = Type::union_set;
+    ::new (std::addressof(value_.union_set)) std::set<int64_t>(t);
+    return value_.union_set;
+  }
+
+  std::set<int64_t>& set_union_set(std::set<int64_t>&& t) {
+    __clear();
+    type_ = Type::union_set;
+    ::new (std::addressof(value_.union_set)) std::set<int64_t>(std::move(t));
+    return value_.union_set;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::set<int64_t>, T...>> std::set<int64_t>& set_union_set(T&&... t) {
+    __clear();
+    type_ = Type::union_set;
+    ::new (std::addressof(value_.union_set)) std::set<int64_t>(std::forward<T>(t)...);
+    return value_.union_set;
+  }
+
+  std::map<std::string, int32_t>& set_union_map(std::map<std::string, int32_t> const &t) {
+    __clear();
+    type_ = Type::union_map;
+    ::new (std::addressof(value_.union_map)) std::map<std::string, int32_t>(t);
+    return value_.union_map;
+  }
+
+  std::map<std::string, int32_t>& set_union_map(std::map<std::string, int32_t>&& t) {
+    __clear();
+    type_ = Type::union_map;
+    ::new (std::addressof(value_.union_map)) std::map<std::string, int32_t>(std::move(t));
+    return value_.union_map;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::map<std::string, int32_t>, T...>> std::map<std::string, int32_t>& set_union_map(T&&... t) {
+    __clear();
+    type_ = Type::union_map;
+    ::new (std::addressof(value_.union_map)) std::map<std::string, int32_t>(std::forward<T>(t)...);
+    return value_.union_map;
+  }
+
   int64_t const & get_intValue() const {
     assert(type_ == Type::intValue);
     return value_.intValue;
@@ -442,6 +601,21 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
   bool const & get_boolValue() const {
     assert(type_ == Type::boolValue);
     return value_.boolValue;
+  }
+
+  std::vector<int32_t> const & get_union_list() const {
+    assert(type_ == Type::union_list);
+    return value_.union_list;
+  }
+
+  std::set<int64_t> const & get_union_set() const {
+    assert(type_ == Type::union_set);
+    return value_.union_set;
+  }
+
+  std::map<std::string, int32_t> const & get_union_map() const {
+    assert(type_ == Type::union_map);
+    return value_.union_map;
   }
 
   int64_t & mutable_intValue() {
@@ -474,6 +648,21 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
     return value_.boolValue;
   }
 
+  std::vector<int32_t> & mutable_union_list() {
+    assert(type_ == Type::union_list);
+    return value_.union_list;
+  }
+
+  std::set<int64_t> & mutable_union_set() {
+    assert(type_ == Type::union_set);
+    return value_.union_set;
+  }
+
+  std::map<std::string, int32_t> & mutable_union_map() {
+    assert(type_ == Type::union_map);
+    return value_.union_map;
+  }
+
   int64_t move_intValue() {
     assert(type_ == Type::intValue);
     return std::move(value_.intValue);
@@ -502,6 +691,21 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
   bool move_boolValue() {
     assert(type_ == Type::boolValue);
     return std::move(value_.boolValue);
+  }
+
+  std::vector<int32_t> move_union_list() {
+    assert(type_ == Type::union_list);
+    return std::move(value_.union_list);
+  }
+
+  std::set<int64_t> move_union_set() {
+    assert(type_ == Type::union_set);
+    return std::move(value_.union_set);
+  }
+
+  std::map<std::string, int32_t> move_union_map() {
+    assert(type_ == Type::union_map);
+    return std::move(value_.union_map);
   }
 
   Type getType() const { return type_; }
@@ -568,14 +772,23 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
  public:
 
   AnException() :
-      code(0) {}
+      code(0),
+      exception_list(std::initializer_list<int32_t>{1,
+  2,
+  3}) {}
   // FragileConstructor for use in initialization lists only
 
-  AnException(apache::thrift::FragileConstructor, int32_t code__arg, std::string message__arg) :
+  AnException(apache::thrift::FragileConstructor, int32_t code__arg, std::string message__arg, std::vector<int32_t> exception_list__arg, std::set<int64_t> exception_set__arg, std::map<std::string, int32_t> exception_map__arg) :
       code(std::move(code__arg)),
-      message(std::move(message__arg)) {
+      message(std::move(message__arg)),
+      exception_list(std::move(exception_list__arg)),
+      exception_set(std::move(exception_set__arg)),
+      exception_map(std::move(exception_map__arg)) {
     __isset.code = true;
     __isset.message = true;
+    __isset.exception_list = true;
+    __isset.exception_set = true;
+    __isset.exception_map = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   AnException(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -591,6 +804,27 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
     message = arg.move();
     __isset.message = true;
   }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnException(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    exception_list = arg.move();
+    __isset.exception_list = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnException(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    exception_set = arg.move();
+    __isset.exception_set = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnException(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    exception_map = arg.move();
+    __isset.exception_map = true;
+  }
 
   AnException(AnException&&) = default;
 
@@ -605,15 +839,24 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
 
   int32_t code;
   std::string message;
+  std::vector<int32_t> exception_list;
+  std::set<int64_t> exception_set;
+  std::map<std::string, int32_t> exception_map;
 
   struct __isset {
     void __clear() {
       code = false;
       message = false;
+      exception_list = false;
+      exception_set = false;
+      exception_map = false;
     }
 
     bool code = false;
     bool message = false;
+    bool exception_list = false;
+    bool exception_set = false;
+    bool exception_map = false;
   } __isset;
   bool operator==(const AnException& rhs) const;
 
@@ -623,6 +866,15 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
     }
     if (!(message == rhs.message)) {
       return message < rhs.message;
+    }
+    if (!(exception_list == rhs.exception_list)) {
+      return exception_list < rhs.exception_list;
+    }
+    if (!(exception_set == rhs.exception_set)) {
+      return exception_set < rhs.exception_set;
+    }
+    if (!(exception_map == rhs.exception_map)) {
+      return exception_map < rhs.exception_map;
     }
     (void)rhs;
     return false;
@@ -652,6 +904,18 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
     __isset.message = true;
     return message;
   }
+  const std::vector<int32_t>& get_exception_list() const&;
+  std::vector<int32_t> get_exception_list() &&;
+  template <typename T_AnException_exception_list_struct_setter>
+  std::vector<int32_t>& set_exception_list(T_AnException_exception_list_struct_setter&& exception_list_);
+  const std::set<int64_t>& get_exception_set() const&;
+  std::set<int64_t> get_exception_set() &&;
+  template <typename T_AnException_exception_set_struct_setter>
+  std::set<int64_t>& set_exception_set(T_AnException_exception_set_struct_setter&& exception_set_);
+  const std::map<std::string, int32_t>& get_exception_map() const&;
+  std::map<std::string, int32_t> get_exception_map() &&;
+  template <typename T_AnException_exception_map_struct_setter>
+  std::map<std::string, int32_t>& set_exception_map(T_AnException_exception_map_struct_setter&& exception_map_);
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

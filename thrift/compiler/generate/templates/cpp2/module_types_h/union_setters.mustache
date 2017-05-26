@@ -15,6 +15,7 @@
   limitations under the License.
 
 %><%#struct:fields%><%#field:type%>
+  <%#type:resolves_to_base?%>
   <%^type:string?%>
   <% > Type%>& set_<%field:name%>(<% > Type%> t = <% > Type%>()) {
     __clear();
@@ -47,4 +48,28 @@
   }
 
   <%/type:string?%>
+  <%/type:resolves_to_base?%>
+  <%#type:resolves_to_container?%>
+  <% > Type%>& set_<%field:name%>(<% > Type%> const &t) {
+    __clear();
+    type_ = Type::<%field:name%>;
+    ::new (std::addressof(value_.<%field:name%>)) <% > Type%>(t);
+    return value_.<%field:name%>;
+  }
+
+  <% > Type%>& set_<%field:name%>(<% > Type%>&& t) {
+    __clear();
+    type_ = Type::<%field:name%>;
+    ::new (std::addressof(value_.<%field:name%>)) <% > Type%>(std::move(t));
+    return value_.<%field:name%>;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<<% > Type%>, T...>> <% > Type%>& set_<%field:name%>(T&&... t) {
+    __clear();
+    type_ = Type::<%field:name%>;
+    ::new (std::addressof(value_.<%field:name%>)) <% > Type%>(std::forward<T>(t)...);
+    return value_.<%field:name%>;
+  }
+
+  <%/type:resolves_to_container?%>
 <%/field:type%><%/struct:fields%>

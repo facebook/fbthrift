@@ -50,7 +50,7 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
 <%#type:resolves_to_container?%>
           this->set_<%field:name%>();
           this->mutable_<%field:name%>() = <% > Type%>();
-          xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > Type%>>::read(*iprot, this-><%field:name%>);
+          xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > Type%>>::read(*iprot, this->mutable_<%field:name%>());
 <%/type:resolves_to_container?%>
         } else {
           xfer += iprot->skip(ftype);

@@ -15,9 +15,9 @@
   limitations under the License.
 
 %><%#struct:fields%><%#field:type%><%#type:resolves_to_container?%>
-template <typename T_containerStruct_<%field:name%>_struct_setter>
-<% > Type%>& containerStruct::set_<%field:name%>(T_containerStruct_<%field:name%>_struct_setter&& <%field:name%>_) {
-  <%field:name%> = std::forward<T_containerStruct_<%field:name%>_struct_setter>(<%field:name%>_);
+template <typename T_<%struct:name%>_<%field:name%>_struct_setter>
+<% > Type%>& <%struct:name%>::set_<%field:name%>(T_<%struct:name%>_<%field:name%>_struct_setter&& <%field:name%>_) {
+  <%field:name%> = std::forward<T_<%struct:name%>_<%field:name%>_struct_setter>(<%field:name%>_);
   __isset.<%field:name%> = true;
   return <%field:name%>;
 }

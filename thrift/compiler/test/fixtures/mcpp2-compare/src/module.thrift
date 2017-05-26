@@ -44,11 +44,17 @@ union SimpleUnion {
   6: i32 intValue3;
   7: double doubelValue;
   8: bool boolValue;
+  9: list<i32> union_list
+  10: set<i64> union_set
+  11: map<string, i32> union_map
 }
 
 exception AnException {
   1: i32 code
   2: string message
+  3: list<i32> exception_list = [1, 2, 3]
+  4: set<i64> exception_set
+  5: map<string, i32> exception_map
 }
 
 struct Empty {

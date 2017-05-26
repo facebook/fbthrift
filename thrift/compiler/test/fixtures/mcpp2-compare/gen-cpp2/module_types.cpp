@@ -77,6 +77,21 @@ void SimpleUnion::__clear() {
       destruct(value_.boolValue);
       break;
     }
+    case Type::union_list:
+    {
+      destruct(value_.union_list);
+      break;
+    }
+    case Type::union_set:
+    {
+      destruct(value_.union_set);
+      break;
+    }
+    case Type::union_map:
+    {
+      destruct(value_.union_map);
+      break;
+    }
     default:
     {
       assert(false);
@@ -113,6 +128,18 @@ bool SimpleUnion::operator==(const SimpleUnion& rhs) const {
     {
       return value_.boolValue == rhs.value_.boolValue;
     }
+    case Type::union_list:
+    {
+      return value_.union_list == rhs.value_.union_list;
+    }
+    case Type::union_set:
+    {
+      return value_.union_set == rhs.value_.union_set;
+    }
+    case Type::union_map:
+    {
+      return value_.union_map == rhs.value_.union_map;
+    }
     default:
     {
       return true;
@@ -145,6 +172,9 @@ void AnException::__clear() {
   // clear all fields
   code = 0;
   message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  exception_list.clear();
+  exception_set.clear();
+  exception_map.clear();
   __isset.__clear();
 }
 
@@ -155,13 +185,49 @@ bool AnException::operator==(const AnException& rhs) const {
   if (!((message == rhs.message))) {
     return false;
   }
+  if (!((exception_list == rhs.exception_list))) {
+    return false;
+  }
+  if (!((exception_set == rhs.exception_set))) {
+    return false;
+  }
+  if (!((exception_map == rhs.exception_map))) {
+    return false;
+  }
   return true;
+}
+
+const std::vector<int32_t>& AnException::get_exception_list() const& {
+  return exception_list;
+}
+
+std::vector<int32_t> AnException::get_exception_list() && {
+  return std::move(exception_list);
+}
+
+const std::set<int64_t>& AnException::get_exception_set() const& {
+  return exception_set;
+}
+
+std::set<int64_t> AnException::get_exception_set() && {
+  return std::move(exception_set);
+}
+
+const std::map<std::string, int32_t>& AnException::get_exception_map() const& {
+  return exception_map;
+}
+
+std::map<std::string, int32_t> AnException::get_exception_map() && {
+  return std::move(exception_map);
 }
 
 void swap(AnException& a, AnException& b) {
   using ::std::swap;
   swap(a.code, b.code);
   swap(a.message, b.message);
+  swap(a.exception_list, b.exception_list);
+  swap(a.exception_set, b.exception_set);
+  swap(a.exception_map, b.exception_map);
   swap(a.__isset, b.__isset);
 }
 

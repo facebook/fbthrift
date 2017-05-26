@@ -28,7 +28,7 @@ uint32_t <%struct:name%>::serializedSize(Protocol_ const* prot_) const {
 <%/type:resolves_to_base?%>
 <%#type:resolves_to_container?%>
       xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
-      xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > Type%>>::serializedSize<false>(*prot_, this-><%field:name%>);
+      xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > Type%>>::serializedSize<false>(*prot_, this->get_<%field:name%>());
 <%/type:resolves_to_container?%>
       break;
     }
@@ -53,7 +53,7 @@ uint32_t <%struct:name%>::serializedSizeZC(Protocol_ const* prot_) const {
 <%/type:resolves_to_base?%>
 <%#type:resolves_to_container?%>
       xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
-      xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > Type%>>::serializedSize<false>(*prot_, this-><%field:name%>);
+      xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > Type%>>::serializedSize<false>(*prot_, this->get_<%field:name%>());
 <%/type:resolves_to_container?%>
       break;
     }
@@ -79,7 +79,7 @@ uint32_t <%struct:name%>::write(Protocol_* prot_) const {
 <%/type:resolves_to_base?%>
 <%#type:resolves_to_container?%>
       xfer += prot_->writeFieldBegin("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
-      xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > Type%>>::write(*prot_, this-><%field:name%>);
+      xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > Type%>>::write(*prot_, this->get_<%field:name%>());
       xfer += prot_->writeFieldEnd();
 <%/type:resolves_to_container?%>
       break;
