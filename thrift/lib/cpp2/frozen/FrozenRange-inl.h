@@ -26,14 +26,14 @@ struct ArrayLayout : public LayoutBase {
   typedef LayoutBase Base;
   typedef ArrayLayout LayoutSelf;
 
-  Field<size_t> distanceField;
   Field<size_t> countField;
+  Field<size_t> distanceField;
   Field<Item> itemField;
 
   ArrayLayout()
       : LayoutBase(typeid(T)),
-        distanceField(1, "distance"),
         countField(2, "count"),
+        distanceField(1, "distance"),
         itemField(3, "item") {}
 
   FieldPosition maximize() {
@@ -47,16 +47,18 @@ struct ArrayLayout : public LayoutBase {
   FieldPosition layout(LayoutRoot& root, const T& coll, LayoutPosition self) {
     FieldPosition pos = startFieldPosition();
     size_t n = coll.size();
+    pos = root.layoutField(self, pos, countField, n);
     if (!n) {
+      pos = root.layoutField(self, pos, distanceField, 0);
       return pos;
     }
     size_t itemBytes = itemField.layout.size;
     size_t itemBits = itemBytes ? 0 : itemField.layout.bits;
+    size_t align = IsBlitType<Item>::value ? alignof(Item) : 1;
     size_t dist = root.layoutBytesDistance(
-        self.start, itemBits ? (n * itemBits + 7) / 8 : n * itemBytes);
+        self.start, itemBits ? (n * itemBits + 7) / 8 : n * itemBytes, align);
 
     pos = root.layoutField(self, pos, distanceField, dist);
-    pos = root.layoutField(self, pos, countField, n);
 
     LayoutPosition write{self.start + dist, 0};
     FieldPosition writeStep(itemBytes, itemBits);
@@ -81,17 +83,24 @@ struct ArrayLayout : public LayoutBase {
 
   void freeze(FreezeRoot& root, const T& coll, FreezePosition self) const {
     size_t n = coll.size();
+    root.freezeField(self, countField, n);
+    if (!n) {
+      root.freezeField(self, distanceField, 0);
+      return;
+    }
     size_t itemBytes = itemField.layout.size;
     size_t itemBits = itemBytes ? 0 : itemField.layout.bits;
     folly::MutableByteRange range;
     size_t dist;
-    root.appendBytes(self.start,
-                     itemBits ? (n * itemBits + 7) / 8 : n * itemBytes,
-                     range,
-                     dist);
+    size_t align = IsBlitType<Item>::value ? alignof(Item) : 1;
+    root.appendBytes(
+        self.start,
+        itemBits ? (n * itemBits + 7) / 8 : n * itemBytes,
+        range,
+        dist,
+        align);
 
     root.freezeField(self, distanceField, dist);
-    root.freezeField(self, countField, n);
 
     FreezePosition write{self.start + dist, 0};
     FieldPosition writeStep(itemBytes, itemBits);

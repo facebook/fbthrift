@@ -98,6 +98,54 @@ TEST(FrozenUtil, FreezeToString) {
   EXPECT_EQ(frozen.at(3).at(5), 15);
 }
 
+TEST(FrozenUtil, FreezeToStringAlignment) {
+  using Data = std::pair<std::string, double>;
+  for (size_t s = 0; s < 16; ++s) {
+    std::string str;
+    freezeToString(Data(std::string('x', s), s / 3.0), str);
+    EXPECT_EQ(str.size() % kMaxAlignment, 0);
+  }
+}
+
+TEST(Frozen, WorstCasePadding) {
+  using Doubles = std::vector<double>;
+  using Entry = std::pair<Doubles, std::string>;
+  using Table = std::vector<Entry>;
+  Table table;
+  for (int i = 0; i < 10; ++i) {
+    table.emplace_back();
+    auto& e = table.back();
+    e.first = {1.1, 2.2};
+    e.second.resize(1, 'a' + i);
+  }
+  std::string str;
+  freezeToString(table, str);
+}
+
+TEST(Frozen, ConstLayout) {
+  using Table = std::vector<std::string>;
+  Layout<Table> layout;
+  LayoutRoot::layout(Table{"x"}, layout);
+  EXPECT_EQ(10, frozenSize(Table{"y"}, layout));
+  EXPECT_THROW(frozenSize(Table{"hello", "world"}, layout), LayoutException);
+  LayoutRoot::layout(Table{"hello", "world"}, layout);
+  EXPECT_EQ(20, frozenSize(Table{"hello", "world"}, layout));
+}
+
+TEST(Frozen, FreezeDataToString) {
+  using Table = std::vector<std::string>;
+  Layout<Table> layout;
+  LayoutRoot::layout(Table{"x"}, layout);
+  const Layout<Table> fixedLayout = layout;
+  EXPECT_THROW(
+      freezeDataToString(Table{"hello", "world"}, fixedLayout),
+      LayoutException);
+  auto str = freezeDataToString(Table{"y"}, fixedLayout);
+  auto view = fixedLayout.view({reinterpret_cast<byte*>(&str[0]), 0});
+  EXPECT_EQ(view.size(), 1);
+  EXPECT_EQ(view[0], "y");
+}
+
 int main(int argc, char** argv) {
   testing::InitGoogleTest(&argc, argv);
   google::InitGoogleLogging(argv[0]);

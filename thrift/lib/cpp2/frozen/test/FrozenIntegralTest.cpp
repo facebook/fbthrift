@@ -68,8 +68,8 @@ TEST(FrozenIntegral, IntBounds) {
 TEST(FrozenIntegral, UIntPacking) {
   class DummyFreezer : public FreezeRoot {
    private:
-    void doAppendBytes(byte*, size_t, folly::MutableByteRange&,
-                       size_t&) override {}
+    void doAppendBytes(byte*, size_t, folly::MutableByteRange&, size_t&, size_t)
+        override {}
   };
   DummyFreezer fr;
   size_t value = 5;
