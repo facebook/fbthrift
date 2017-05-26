@@ -542,6 +542,22 @@ EnumDefList:
       pdebug("EnumDefList -> EnumDefList EnumDef");
       $$ = $1;
       $$->append($2);
+
+      if (g_parse_mode == PROGRAM) {
+        t_const_value* const_val = new t_const_value($2->get_value());
+        const_val->set_is_enum();
+        const_val->set_enum($$);
+        const_val->set_enum_value($2);
+        t_const* tconst = new t_const(
+            g_program, g_type_i32, $2->get_name(), const_val);
+
+        assert(y_enum_name != nullptr);
+        string type_prefix = string(y_enum_name) + ".";
+        g_scope_cache->add_constant(
+            g_program->get_name() + "." + $2->get_name(), tconst);
+        g_scope_cache->add_constant(
+            g_program->get_name() + "." + type_prefix + $2->get_name(), tconst);
+      }
     }
 |
     {
@@ -557,19 +573,6 @@ EnumDef:
       $$ = $2;
       if ($1 != NULL) {
         $$->set_doc($1);
-      }
-      if (g_parse_mode == PROGRAM) {
-        // The scope constants never get deleted, so it's okay for us
-        // to share a single t_const object between our scope and the parent
-        // scope
-        t_const* constant = new t_const(g_program, g_type_i32, $2->get_name(),
-                                        new t_const_value($2->get_value()));
-        assert(y_enum_name != nullptr);
-        string type_prefix = string(y_enum_name) + ".";
-        g_scope_cache->add_constant(
-            g_program->get_name() + "." + $2->get_name(), constant);
-        g_scope_cache->add_constant(
-            g_program->get_name() + "." + type_prefix + $2->get_name(), constant);
       }
       if ($3 != NULL) {
         $$->annotations_ = $3->annotations_;
