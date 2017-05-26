@@ -641,7 +641,7 @@ struct BlockIndex {
   uint64_t offset;
   uint64_t mask;
 
-  static constexpr int kSize = sizeof(uint64_t) * 8;
+  static constexpr size_t kSize = sizeof(uint64_t) * 8;
 };
 
 // Do NOT use this hash function anywhere else (hint use folly::Hash instead).
@@ -796,11 +796,11 @@ struct HashMapFreezer {
       return;
     }
 
-    int chunks = chunkCount(size);
+    size_t chunks = chunkCount(size);
     auto bits = detail::BlockIndex::kSize;
-    int buckets = chunks * bits;
+    size_t buckets = chunks * bits;
     std::unique_ptr<const ThawedItem*[]> index(new const ThawedItem*[buckets]);
-    for (int b = 0; b < buckets; ++b) {
+    for (size_t b = 0; b < buckets; ++b) {
       index[b] = nullptr;
     }
 
@@ -829,12 +829,12 @@ struct HashMapFreezer {
     dst.blockIndex.reset(indexBegin, indexEnd);
     buffer = unaligned_ptr_cast<byte*>(indexEnd);
 
-    int count = 0;
-    int b = 0;
-    for (int c = 0; c < chunks; ++c) {
+    size_t count = 0;
+    size_t b = 0;
+    for (size_t c = 0; c < chunks; ++c) {
       detail::BlockIndex chunk;
       chunk.offset = count;
-      for (int offset = 0; offset < bits; ++offset) {
+      for (size_t offset = 0; offset < bits; ++offset) {
         if (const ThawedItem* bucket = index[b++]) {
           chunk.mask |= uint64_t(1) << offset;
           freeze(*bucket, *itemsBegin++, buffer);

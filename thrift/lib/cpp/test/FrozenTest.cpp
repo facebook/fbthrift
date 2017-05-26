@@ -87,11 +87,16 @@ TEST(Frozen, Basic) {
     auto& frozen = *(Frozen<Team>*)copyBuffer;
 
     auto thawedTeam = thaw(frozen);
-    EXPECT_EQ(frozen.peopleById.at(hasher(3)).name.range(), "Person 3");
-    EXPECT_EQ(frozen.peopleById.at(hasher(4)).name, "Person 4");
-    EXPECT_EQ(frozen.peopleById.at(hasher(5)).name, "Person 5");
-    EXPECT_EQ(frozen.peopleById.at(hasher(3)).dob,
-                      team.peopleById.at(hasher(3)).dob);
+    EXPECT_EQ(
+        frozen.peopleById.at(static_cast<int64_t>(hasher(3))).name.range(),
+        "Person 3");
+    EXPECT_EQ(
+        frozen.peopleById.at(static_cast<int64_t>(hasher(4))).name, "Person 4");
+    EXPECT_EQ(
+        frozen.peopleById.at(static_cast<int64_t>(hasher(5))).name, "Person 5");
+    EXPECT_EQ(
+        frozen.peopleById.at(static_cast<int64_t>(hasher(3))).dob,
+        team.peopleById.at(hasher(3)).dob);
     EXPECT_EQ(frozen.peopleByName.at("Person 3").id, 3);
     EXPECT_EQ(frozen.peopleByName.at(string("Person 4")).id, 4);
     EXPECT_EQ(frozen.peopleByName.at(fbstring("Person 5")).id, 5);
@@ -100,7 +105,9 @@ TEST(Frozen, Basic) {
     EXPECT_EQ(frozen.projects.count("alpha"), 1);
     EXPECT_EQ(frozen.projects.count("beta"), 1);
 
-    EXPECT_THROW(frozen.peopleById.at(hasher(50)), std::out_of_range);
+    EXPECT_THROW(
+        frozen.peopleById.at(static_cast<int64_t>(hasher(50))),
+        std::out_of_range);
   }
 }
 

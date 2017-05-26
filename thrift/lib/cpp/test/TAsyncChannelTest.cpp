@@ -674,7 +674,7 @@ class MultiSendRecvTest : public SocketPairTest<ChannelT> {
     vector<Message>& writeMessages
                       = multiMessageSenderReceiver_.getWriteMessages();
     CHECK_EQ(readBuffers.size(), writeMessages.size());
-    for (int i = 0; i < writeMessages.size(); i++) {
+    for (size_t i = 0; i < writeMessages.size(); i++) {
       writeMessages[i].checkEqual(readBuffers[i].get());
     }
   }
@@ -831,7 +831,7 @@ template<typename ChannelT>
 class TimeoutQueuedTest : public SocketPairTest<ChannelT> {
  public:
 
-  explicit TimeoutQueuedTest(int n_msgs = 3)
+  explicit TimeoutQueuedTest(uint32_t n_msgs = 3)
       : n_msgs_(n_msgs)
       , start_(false)
       , msg_(911) {
@@ -841,7 +841,7 @@ class TimeoutQueuedTest : public SocketPairTest<ChannelT> {
 
     this->channel1_->setRecvTimeout(kRecvDelay * n_msgs_ + kTimeout);
 
-    for (int i = 0; i < n_msgs_; i++ ) {
+    for (size_t i = 0; i < n_msgs_; i++) {
       // queue some reads 200ms apart
       this->eventBase_.tryRunAfterDelay(
         std::bind(&TimeoutQueuedTest<ChannelT>::recvMe, this),

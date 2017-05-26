@@ -643,7 +643,8 @@ class LoggingThread {
       dumpPacket(key, connData, packet);
     } else {
       if (numMessagesConnEnd_ > 0) {
-        if (connData.packets.size() >= numMessagesConnEnd_) {
+        if (connData.packets.size() >=
+            static_cast<size_t>(numMessagesConnEnd_)) {
           connData.packets.pop_front();
         }
         connData.packets.push_back(std::move(packet));
@@ -728,7 +729,7 @@ folly::Future<folly::Unit> PcapLoggingHandler::write(
     folly::IOBufQueue q(folly::IOBufQueue::cacheChainLength());
     q.append(buf->clone());
     size_t origLength = q.chainLength();
-    if (origLength > snaplen_) {
+    if (origLength > static_cast<size_t>(snaplen_)) {
       q.trimEnd(origLength - snaplen_);
     }
     Message msg(clock::now(), Direction::WRITE, local_, remote_, peer_,
@@ -747,7 +748,7 @@ void PcapLoggingHandler::read(Context* ctx, folly::IOBufQueue& q) {
     folly::IOBufQueue copy(folly::IOBufQueue::cacheChainLength());
     copy.append(q.front()->clone());
     size_t origLength = copy.chainLength();
-    if (origLength > snaplen_) {
+    if (origLength > static_cast<size_t>(snaplen_)) {
       copy.trimEnd(origLength - snaplen_);
     }
     Message msg(clock::now(), Direction::READ, local_, remote_, peer_,

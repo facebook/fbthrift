@@ -142,7 +142,7 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
     for (size_t blockIndex = 0; blockIndex < blocks; ++blockIndex) {
       Block& block = sparseTable[blockIndex];
       block.offset = count;
-      for (int offset = 0; offset < Block::bits; ++offset) {
+      for (size_t offset = 0; offset < Block::bits; ++offset) {
         if (index[blockIndex * Block::bits + offset]) {
           block.mask |= uint64_t(1) << offset;
           ++count;

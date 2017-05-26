@@ -84,10 +84,10 @@ class TZlibTransport : public TVirtualTransport<TZlibTransport> {
    * TODO(dreiss): Write a constructor that isn't a pain.
    */
   explicit TZlibTransport(std::shared_ptr<TTransport> transport,
-                          int urbuf_size = DEFAULT_URBUF_SIZE,
-                          int crbuf_size = DEFAULT_CRBUF_SIZE,
-                          int uwbuf_size = DEFAULT_UWBUF_SIZE,
-                          int cwbuf_size = DEFAULT_CWBUF_SIZE) :
+                          size_t urbuf_size = DEFAULT_URBUF_SIZE,
+                          size_t crbuf_size = DEFAULT_CRBUF_SIZE,
+                          size_t uwbuf_size = DEFAULT_UWBUF_SIZE,
+                          size_t cwbuf_size = DEFAULT_CWBUF_SIZE) :
     transport_(transport),
     urpos_(0),
     uwpos_(0),
@@ -180,65 +180,39 @@ class TZlibTransport : public TVirtualTransport<TZlibTransport> {
    /**
     * TODO(someone_smart): Choose smart defaults.
     */
-  static const int DEFAULT_URBUF_SIZE = 128;
-  static const int DEFAULT_CRBUF_SIZE = 1024;
-  static const int DEFAULT_UWBUF_SIZE = 128;
-  static const int DEFAULT_CWBUF_SIZE = 1024;
+  static const size_t DEFAULT_URBUF_SIZE = 128;
+  static const size_t DEFAULT_CRBUF_SIZE = 1024;
+  static const size_t DEFAULT_UWBUF_SIZE = 128;
+  static const size_t DEFAULT_CWBUF_SIZE = 1024;
 
  protected:
 
   inline void checkZlibRv(int status, const char* msg);
   inline void checkZlibRvNothrow(int status, const char* msg);
-  inline int readAvail();
+  inline size_t readAvail();
   void flushToTransport(int flush);
   void flushToZlib(const uint8_t* buf, int len, int flush);
   bool readFromZlib();
 
- private:
-  // Deprecated constructor signature.
-  //
-  // This used to be the constructor signature.  If you are getting a compile
-  // error because you are trying to use this constructor, you need to update
-  // your code as follows:
-  // - Remove the use_for_rpc argument in the constructur.
-  //   There is no longer any distinction between RPC and standalone zlib
-  //   transports.  (Previously, only standalone was allowed, anyway.)
-  // - Replace TZlibTransport::flush() calls with TZlibTransport::finish()
-  //   in your code.  Previously, flush() used to finish the zlib stream.
-  //   Now flush() only flushes out pending data, so more writes can be
-  //   performed after a flush().  The finish() method can be used to finalize
-  //   the zlib stream.
-  //
-  // If we don't declare this constructor, old code written as
-  // TZlibTransport(trans, false) still compiles but behaves incorrectly.
-  // The second bool argument is converted to an integer and used as the
-  // urbuf_size.
-  TZlibTransport(std::shared_ptr<TTransport> transport,
-                 bool use_for_rpc,
-                 int urbuf_size = DEFAULT_URBUF_SIZE,
-                 int crbuf_size = DEFAULT_CRBUF_SIZE,
-                 int uwbuf_size = DEFAULT_UWBUF_SIZE,
-                 int cwbuf_size = DEFAULT_CWBUF_SIZE);
-
  protected:
   // Writes smaller than this are buffered up.
   // Larger (or equal) writes are dumped straight to zlib.
-  static const int MIN_DIRECT_DEFLATE_SIZE = 32;
+  static const size_t MIN_DIRECT_DEFLATE_SIZE = 32;
 
   std::shared_ptr<TTransport> transport_;
 
-  int urpos_;
-  int uwpos_;
+  size_t urpos_;
+  size_t uwpos_;
 
   /// True iff zlib has reached the end of the input stream.
   bool input_ended_;
   /// True iff we have finished the output stream.
   bool output_finished_;
 
-  int urbuf_size_;
-  int crbuf_size_;
-  int uwbuf_size_;
-  int cwbuf_size_;
+  size_t urbuf_size_;
+  size_t crbuf_size_;
+  size_t uwbuf_size_;
+  size_t cwbuf_size_;
 
   uint8_t* urbuf_;
   uint8_t* crbuf_;

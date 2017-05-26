@@ -50,7 +50,7 @@ void print_underlying(folly::IOBuf const& buffer, int vlog_level = 5) {
         << std::string((const char*)range.data(), range.size());
     } else {
       std::ostringstream out;
-      for(int i = 0; i < range.size(); i++) {
+      for(size_t i = 0; i < range.size(); i++) {
         out << std::setw(2) << std::setfill('0')
                 << std::hex << (int)range.data()[i] << " ";
       }

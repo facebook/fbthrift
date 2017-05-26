@@ -69,7 +69,7 @@ class StreamingTest : public testing::Test {
 TEST_F(StreamingTest, Callback) {
   auto client = newClient();
 
-  int n = 0;
+  size_t n = 0;
   client->streamingMethod([&n](ClientReceiveState&& state) mutable {
       if (n < kCount) {
         EXPECT_FALSE(state.isStreamEnd());

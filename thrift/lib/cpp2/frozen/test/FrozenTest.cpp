@@ -109,7 +109,7 @@ TEST(Frozen, EndToEnd) {
   auto& pets = tom1.pets;
   auto fpets = view.pets();
   ASSERT_EQ(pets.size(), fpets.size());
-  for (int i = 0; i < tom1.pets.size(); ++i) {
+  for (size_t i = 0; i < tom1.pets.size(); ++i) {
     EXPECT_EQ(pets[i].name, fpets[i].name());
   }
   Layout<example2::Person1> layout;

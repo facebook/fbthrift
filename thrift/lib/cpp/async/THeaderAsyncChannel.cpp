@@ -59,7 +59,7 @@ bool THeaderACProtocolTraits::getMessageLength(uint8_t* buffer,
       }
       return foundCompleteMessage;
     }
-    if (frameSize > maxMessageSize_) {
+    if (static_cast<uint32_t>(frameSize) > maxMessageSize_) {
       throw TTransportException("Frame size exceeded maximum");
     }
     *messageLength = frameSize + sizeof(frameSize); // frame size incl

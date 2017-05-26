@@ -37,7 +37,7 @@ void TerminalMonitor::initializeInfo() {
 
 void TerminalMonitor::redisplay(uint64_t intervalUsec) {
   // When the headers run off the top of the screen, reprint them
-  if (screenHeight_ > 0 && linesPrinted_ > screenHeight_) {
+  if (screenHeight_ > 0 && linesPrinted_ > static_cast<size_t>(screenHeight_)) {
     linesPrinted_ = printHeader();
   }
 

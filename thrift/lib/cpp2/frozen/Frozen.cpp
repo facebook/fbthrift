@@ -37,12 +37,12 @@ bool LayoutBase::resize(FieldPosition after, bool inlined) {
   bool resized = false;
   this->inlined = (this->size == 0 && inlined);
   if (!this->inlined) {
-    if (after.offset > this->size) {
+    if (static_cast<size_t>(after.offset) > this->size) {
       this->size = after.offset;
       resized = true;
     }
   }
-  if (after.bitOffset > this->bits) {
+  if (static_cast<size_t>(after.bitOffset) > this->bits) {
     this->bits = after.bitOffset;
     resized = true;
   }

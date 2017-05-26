@@ -159,7 +159,7 @@ class MemorySchema {
   }
 
   inline void setRootLayoutId(int16_t rootId) {
-    DCHECK(rootId < layouts.size());
+    DCHECK(rootId < static_cast<int16_t>(layouts.size()));
     rootLayout = rootId;
   }
 

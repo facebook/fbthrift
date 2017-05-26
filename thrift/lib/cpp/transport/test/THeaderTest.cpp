@@ -40,7 +40,7 @@ TEST(THeaderTest, largetransform) {
   size_t buf_size = 10000000;
   std::unique_ptr<IOBuf> buf(IOBuf::create(buf_size));
   // Make the data compressible, but not totally random
-  for (int i = 0; i < buf_size/4; i++) {
+  for (size_t i = 0; i < buf_size / 4; i++) {
     buf->writableData()[i] = (int8_t)folly::Random::rand32(256);
     buf->writableData()[i+1] = buf->writableData()[i];
     buf->writableData()[i+2] = buf->writableData()[i];

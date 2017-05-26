@@ -384,8 +384,8 @@ static void expireTestCallback(std::shared_ptr<Runnable>,
   }
 }
 
-static void expireTest(int64_t numWorkers, int64_t expirationTimeMs) {
-  int64_t maxPendingTasks = numWorkers;
+static void expireTest(size_t numWorkers, int64_t expirationTimeMs) {
+  size_t maxPendingTasks = numWorkers;
   size_t activeTasks = numWorkers + maxPendingTasks;
   Monitor monitor;
 
@@ -404,7 +404,7 @@ static void expireTest(int64_t numWorkers, int64_t expirationTimeMs) {
 
   Monitor bmonitor;
   bool blocked = true;
-  for (int64_t n = 0; n < numWorkers + maxPendingTasks; ++n) {
+  for (size_t n = 0; n < numWorkers + maxPendingTasks; ++n) {
     auto task = std::make_shared<BlockTask>(
         &monitor, &bmonitor, &blocked, &activeTasks);
     tasks.push_back(task);
@@ -442,7 +442,7 @@ static void expireTest(int64_t numWorkers, int64_t expirationTimeMs) {
 }
 
 TEST_F(ThreadManagerTest, ExpireTest) {
-  int64_t numWorkers = 100;
+  size_t numWorkers = 100;
   int64_t expireTimeMs = 50;
   expireTest(numWorkers, expireTimeMs);
 }

@@ -180,7 +180,7 @@ std::unique_ptr<IOBuf> StubSaslServer::wrap(std::unique_ptr<IOBuf>&& buf) {
   c.writeBE(inlen);
   // "encrypt" the data
   c.ensure(inlen);
-  for (int i = 0; i < inlen; i++) {
+  for (uint32_t i = 0; i < inlen; i++) {
     c.writableData()[i] = buf->data()[i] ^ i ^ 0xa5;
   }
   c.append(inlen);
@@ -210,7 +210,7 @@ std::unique_ptr<IOBuf> StubSaslServer::unwrap(IOBufQueue* q,
   std::unique_ptr<IOBuf> input = q->split(outlen);
   input->coalesce();
   std::unique_ptr<IOBuf> output = IOBuf::create(outlen);
-  for (int i = 0; i < outlen; i++) {
+  for (uint32_t i = 0; i < outlen; i++) {
     output->writableData()[i] = input->data()[i] ^ i ^ 0x5a;
   }
   output->append(outlen);

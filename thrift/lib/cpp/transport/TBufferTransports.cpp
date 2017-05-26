@@ -239,7 +239,7 @@ bool TFramedTransport::readFrame(uint32_t /*minFrameSize*/) {
   }
 
   // Read the frame payload, and reset markers.
-  if (sz > static_cast<int32_t>(rBufSize_)) {
+  if (sz > rBufSize_) {
     rBuf_.reset(new uint8_t[sz]);
     rBufSize_ = sz;
   }

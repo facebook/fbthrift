@@ -133,19 +133,19 @@ bool TZlibTransport::peek() {
 // In standalone objects, we set input_ended_ to true when inflate returns
 // Z_STREAM_END.  This allows to make sure that a checksum was verified.
 
-inline int TZlibTransport::readAvail() {
+inline size_t TZlibTransport::readAvail() {
   return urbuf_size_ - rstream_->avail_out - urpos_;
 }
 
 uint32_t TZlibTransport::read(uint8_t* buf, uint32_t len) {
-  int need = len;
+  size_t need = len;
 
   // TODO(dreiss): Skip urbuf on big reads.
 
   while (true) {
     // Copy out whatever we have available, then give them the min of
     // what we have and what they want, then advance indices.
-    int give = std::min(readAvail(), need);
+    size_t give = std::min(readAvail(), need);
     memcpy(buf, urbuf_ + urpos_, give);
     need -= give;
     buf += give;
@@ -240,12 +240,12 @@ void TZlibTransport::write(const uint8_t* buf, uint32_t len) {
 
   // zlib's "deflate" function has enough logic in it that I think
   // we're better off (performance-wise) buffering up small writes.
-  if ((int)len > MIN_DIRECT_DEFLATE_SIZE) {
+  if (len > MIN_DIRECT_DEFLATE_SIZE) {
     flushToZlib(uwbuf_, uwpos_, Z_NO_FLUSH);
     uwpos_ = 0;
     flushToZlib(buf, len, Z_NO_FLUSH);
   } else if (len > 0) {
-    if (uwbuf_size_ - uwpos_ < (int)len) {
+    if (uwbuf_size_ - uwpos_ < len) {
       flushToZlib(uwbuf_, uwpos_, Z_NO_FLUSH);
       uwpos_ = 0;
     }
@@ -323,7 +323,7 @@ const uint8_t* TZlibTransport::borrow(uint8_t* /*buf*/, uint32_t* len) {
   // Don't try to be clever with shifting buffers.
   // If we have enough data, give a pointer to it,
   // otherwise let the protocol use its slow path.
-  if (readAvail() >= (int)*len) {
+  if (readAvail() >= *len) {
     *len = (uint32_t)readAvail();
     return urbuf_ + urpos_;
   }
@@ -331,7 +331,7 @@ const uint8_t* TZlibTransport::borrow(uint8_t* /*buf*/, uint32_t* len) {
 }
 
 void TZlibTransport::consume(uint32_t len) {
-  if (readAvail() >= (int)len) {
+  if (readAvail() >= len) {
     urpos_ += len;
   } else {
     throw TTransportException(TTransportException::BAD_ARGS,

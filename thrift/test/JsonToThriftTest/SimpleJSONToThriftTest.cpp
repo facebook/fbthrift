@@ -206,7 +206,7 @@ TEST(SimpleJSONToThriftTest, SimpleJSON_BasicSerializationNan) {
   deserializeJSON(parsedStruct, jsonString);
 
   EXPECT_EQ(obj.l.size(), parsedStruct.l.size());
-  for (int i = 0; i < obj.l.size(); ++i) {
+  for (size_t i = 0; i < obj.l.size(); ++i) {
     if (std::isnan(obj.l[i]) == std::isnan(parsedStruct.l[i])) {
       continue;
     }

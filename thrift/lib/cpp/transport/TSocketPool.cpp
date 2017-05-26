@@ -215,7 +215,7 @@ void TSocketPool::open() {
   unsigned int numServersToTry = min(maxServersToTry_,
                                  numServers);
 
-  for (int i = 0; i < numServersToTry; ++i) {
+  for (auto i = 0u; i < numServersToTry; ++i) {
     shared_ptr<TSocketPoolServer>& server = servers_[i];
     // Impersonate the server socket
     setCurrentServer(server);

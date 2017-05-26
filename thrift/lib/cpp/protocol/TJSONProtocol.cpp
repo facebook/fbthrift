@@ -888,13 +888,13 @@ uint32_t TJSONProtocol::readJSONBool(bool &value) {
   ++result;
 
   if (ch == kJSONTrue.at(0)) {
-    for (int i = 1; i < kJSONTrue.length(); ++i) {
+    for (size_t i = 1; i < kJSONTrue.length(); ++i) {
       result += readJSONSyntaxChar(kJSONTrue.at(i));
     }
     value = true;
 
   } else if (ch == kJSONFalse.at(0)) {
-    for (int i = 1; i < kJSONFalse.length(); ++i) {
+    for (size_t i = 1; i < kJSONFalse.length(); ++i) {
       result += readJSONSyntaxChar(kJSONFalse.at(i));
     }
     value = false;

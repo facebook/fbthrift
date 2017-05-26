@@ -171,7 +171,8 @@ unique_ptr<IOBuf> THeader::removeFramed(uint32_t sz, IOBufQueue* queue) {
 }
 
 folly::Optional<CLIENT_TYPE> THeader::analyzeFirst32bit(uint32_t w) {
-  if ((w & TBinaryProtocol::VERSION_MASK) == TBinaryProtocol::VERSION_1) {
+  if ((w & TBinaryProtocol::VERSION_MASK) ==
+      static_cast<uint32_t>(TBinaryProtocol::VERSION_1)) {
     return THRIFT_UNFRAMED_DEPRECATED;
   } else if (compactFramed(w)) {
     return THRIFT_UNFRAMED_COMPACT_DEPRECATED;
@@ -186,7 +187,8 @@ folly::Optional<CLIENT_TYPE> THeader::analyzeFirst32bit(uint32_t w) {
 }
 
 CLIENT_TYPE THeader::analyzeSecond32bit(uint32_t w) {
-  if ((w & TBinaryProtocol::VERSION_MASK) == TBinaryProtocol::VERSION_1) {
+  if ((w & TBinaryProtocol::VERSION_MASK) ==
+      static_cast<uint32_t>(TBinaryProtocol::VERSION_1)) {
     return THRIFT_FRAMED_DEPRECATED;
   }
   if (compactFramed(w)) {
@@ -1020,7 +1022,7 @@ unique_ptr<IOBuf> THeader::addHeader(unique_ptr<IOBuf> buf,
     for (int i = 0; i < padding; i++) {
       *(pkt++) = 0x00;
     }
-    assert(pkt - pktStart <= header->capacity());
+    assert(pkt - pktStart <= static_cast<ptrdiff_t>(header->capacity()));
 
     // Pkt size
     szHbo = headerSize + chainSize           // thrift header + payload

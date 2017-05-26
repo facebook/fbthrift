@@ -822,7 +822,7 @@ decode_val(Reader *reader, TType type, PyObject *typeargs, int utf8strings) {
         return nullptr;
       }
 
-      for (int i = 0; i < len; i++) {
+      for (auto i = 0u; i < len; i++) {
         PyObject *item = decode_val(reader, parsedargs.element_type,
             parsedargs.typeargs, utf8strings);
         if (!item) {
@@ -866,7 +866,7 @@ decode_val(Reader *reader, TType type, PyObject *typeargs, int utf8strings) {
         return nullptr;
       }
 
-      for (int i = 0; i < len; i++) {
+      for (auto i = 0u; i < len; i++) {
         PyObject *k = nullptr;
         PyObject *v = nullptr;
         k = decode_val(reader, parsedargs.ktype, parsedargs.ktypeargs,

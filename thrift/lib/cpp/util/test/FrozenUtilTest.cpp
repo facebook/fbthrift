@@ -72,7 +72,7 @@ TEST(FrozenUtilTest, Shrink ) {
   File f = File::temporary();
 
   size_t count = 1 << 16;
-  for (int i = 0; i < count; ++i) {
+  for (size_t i = 0; i < count; ++i) {
     people.emplace_back();
     people.back().id = i + count;
   }
@@ -95,7 +95,7 @@ TEST(FrozenUtilTest, Sparse ) {
   std::vector<Person> people;
 
   size_t count = 1 << 20;
-  for (int i = 0; i < count; ++i) {
+  for (size_t i = 0; i < count; ++i) {
     people.emplace_back();
     people.back().id = i + count;
   }

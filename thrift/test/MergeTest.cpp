@@ -138,7 +138,7 @@ TEST(MergeTest, Container) {
   ASSERT_TRUE(mergeTo.__isset.str2str);
 
   ASSERT_EQ(1 + 2, mergeTo.xtructs.size());
-  for (int i = 0; i < mergeTo.xtructs.size(); i++) {
+  for (size_t i = 0; i < mergeTo.xtructs.size(); i++) {
     int8_t insanity = i == 0 ? 1 : 2;
     string string_thing = folly::format("insanity.xtruct.{}",  insanity).str();
     EXPECT_EQ(string_thing, mergeTo.xtructs[i].string_thing);

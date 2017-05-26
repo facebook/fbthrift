@@ -146,7 +146,8 @@ std::shared_ptr<Krb5CCacheStore::ServiceData>
   auto found = serviceDataMap_.find(service_name);
   if (found == serviceDataMap_.end()) {
     // If we reached the limit, then we need to free some room
-    if (maxCacheSize_ > 0 && cacheItemQueue_.size() >= maxCacheSize_) {
+    if (maxCacheSize_ > 0 &&
+        cacheItemQueue_.size() >= static_cast<size_t>(maxCacheSize_)) {
       serviceDataMap_.erase(cacheItemQueue_.front());
       cacheItemQueue_.pop();
     }
@@ -259,7 +260,7 @@ void Krb5CCacheStore::importCache(
   logger_->logStart("import_service_creds");
   count = 0;
   for (auto& service : services) {
-    if (maxCacheSize_ >= 0 && count >= maxCacheSize_) {
+    if (maxCacheSize_ >= 0 && count >= static_cast<size_t>(maxCacheSize_)) {
       break;
     }
     Krb5Principal princ = Krb5Principal::copyPrincipal(
@@ -373,7 +374,7 @@ std::set<std::string> Krb5CCacheStore::getTopServices(size_t limit) {
   sort(count_vector.begin(), count_vector.end(), serviceCountCompare);
 
   std::set<std::string> top_services;
-  int count = 0;
+  size_t count = 0;
   for (auto& element : count_vector) {
     if (count >= limit) {
       break;

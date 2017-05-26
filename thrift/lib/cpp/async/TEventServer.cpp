@@ -84,7 +84,7 @@ void TEventServer::setupWorkers() {
 
     // Create the worker threads.
     workers_.reserve(nWorkers_);
-    for (uint32_t n = 0; n < nWorkers_; ++n) {
+    for (int n = 0; n < nWorkers_; ++n) {
       addWorker();
       workers_[n].worker->getEventBase()->runInLoop([b](){
         b->wait();

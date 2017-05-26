@@ -80,7 +80,7 @@ double LatencyScoreBoard::OpData::getLatencyPct(double pct) const {
     return 0;
   }
   uint64_t pct_lat = latDistHist_.getPercentileEstimate(pct);
-  if (pct_lat > FLAGS_thriftLatencyBucketMax * 1000) {
+  if (pct_lat > size_t(FLAGS_thriftLatencyBucketMax) * 1000) {
     LOG(WARNING) << "Estimated percentile latency " << pct_lat / 1000
                  << " ms is greater than the maximum bucket value "
                  << FLAGS_thriftLatencyBucketMax << " ms.";
@@ -96,7 +96,7 @@ double LatencyScoreBoard::OpData::getLatencyPctSince(
   folly::Histogram<uint64_t> tmp = latDistHist_;
   tmp.subtract(other->latDistHist_);
   uint64_t pct_lat = tmp.getPercentileEstimate(pct);
-  if (pct_lat > FLAGS_thriftLatencyBucketMax * 1000) {
+  if (pct_lat > size_t(FLAGS_thriftLatencyBucketMax) * 1000) {
     LOG(WARNING) << "Estimated percentile latency " << pct_lat / 1000
                  << " ms is greater than the maximum bucket value "
                  << FLAGS_thriftLatencyBucketMax << " ms.";

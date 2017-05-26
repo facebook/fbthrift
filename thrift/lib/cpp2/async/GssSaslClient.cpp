@@ -91,7 +91,7 @@ void GssSaslClient::start(Callback *cb) {
   auto seqId = seqId_;
   auto threadManager = saslThreadManager_;
   auto inProgress = inProgress_;
-  auto threadManagerTimeout = FLAGS_sasl_thread_manager_timeout_ms;
+  auto threadManagerTimeout = size_t(FLAGS_sasl_thread_manager_timeout_ms);
   auto securityMech = securityMech_;
   logger->logValue("security_mech", (int64_t)*securityMech);
 
@@ -236,7 +236,7 @@ void GssSaslClient::consumeFromServer(
   auto seqId = seqId_;
   auto threadManager = saslThreadManager_;
   auto inProgress = inProgress_;
-  auto threadManagerTimeout = FLAGS_sasl_thread_manager_timeout_ms;
+  auto threadManagerTimeout = size_t(FLAGS_sasl_thread_manager_timeout_ms);
   auto securityMech = securityMech_;
 
   folly::exception_wrapper ew_tm;

@@ -178,7 +178,7 @@ void TEventConnection::readNextRequest() {
     return;
   }
 
-  if (readersActive_ >= kMaxReadsPerLoop) {
+  if (readersActive_ >= static_cast<int32_t>(kMaxReadsPerLoop)) {
     worker_->getEventBase()->runInLoop(this);
     return;
   }
@@ -298,7 +298,7 @@ void TEventConnection::handleAsyncTaskComplete(bool success) {
     readNextRequest();
     return;
   }
-  if (responseBytes > largestWriteBufferSize_) {
+  if (static_cast<size_t>(responseBytes) > largestWriteBufferSize_) {
     largestWriteBufferSize_ = responseBytes;
   }
 

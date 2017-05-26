@@ -102,7 +102,8 @@ void TEventWorker::connectionAccepted(
   }
 
   if (maxNumActiveConnections_ > 0 &&
-      maxNumActiveConnections_ <= activeConnectionList_.size()) {
+      static_cast<uint32_t>(maxNumActiveConnections_) <=
+          activeConnectionList_.size()) {
     T_ERROR("Too many active connections (%ld), max allowed is (%d)",
             activeConnectionList_.size(), maxNumActiveConnections_);
     asyncSock->destroy();

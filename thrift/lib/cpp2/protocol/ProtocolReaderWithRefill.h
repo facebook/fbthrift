@@ -191,7 +191,7 @@ class CompactProtocolReaderWithRefill : public VirtualCompactReader {
      * should not cause any performance problem. After the new buffer is ready,
      * start all over again.
      **/
-    void ensureInteger(int idx = 0) {
+    void ensureInteger(size_t idx = 0) {
       while (protocol_.in_.length() - idx < 10) {
         if (protocol_.in_.length() <= idx) {
           ensureBuffer(idx + 1);
@@ -243,7 +243,7 @@ class CompactProtocolReaderWithRefill : public VirtualCompactReader {
 
       auto avail = protocol_.in_.peekBytes();
       const uint8_t *b = avail.data();
-      int bytes = 1;
+      size_t bytes = 1;
       while (bytes <= avail.size()) {
         if (!(*b++ & 0x80))
           break;

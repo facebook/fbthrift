@@ -434,12 +434,12 @@ BENCHMARK(BM_ThriftSerializerBinary, count) {
 
   ThriftSerializerBinary<> izer;
   string serialized;
-  for (int i = 0; i < count; ++i) {
+  for (size_t i = 0; i < count; ++i) {
     izer.serialize(original, &serialized);
   }
 
   TestValue result;
-  for (int i = 0; i < count; ++i) {
+  for (size_t i = 0; i < count; ++i) {
     izer.deserialize(serialized, &result);
   }
 }
@@ -453,11 +453,11 @@ BENCHMARK(ThriftSerializerBinary_NoReuse, count) {
 
   makeTestValue(&original);
 
-  for (int i = 0; i < count; ++i) {
+  for (size_t i = 0; i < count; ++i) {
     ThriftSerializerBinary<> izer;
     izer.serialize(original, &serialized);
   }
-  for (int i = 0; i < count; ++i) {
+  for (size_t i = 0; i < count; ++i) {
     ThriftSerializerBinary<> izer;
     izer.deserialize(serialized, &result);
   }
