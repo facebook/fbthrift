@@ -110,6 +110,9 @@ class MyNodeAsyncClient : public  ::cpp2::MyRootAsyncClient {
        ::cpp2::MyRootAsyncClient(channel) {}
   virtual void do_mid(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void do_mid(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ private:
+  virtual void do_midImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ public:
   virtual void sync_do_mid();
   virtual void sync_do_mid(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<folly::Unit> future_do_mid();
@@ -122,7 +125,7 @@ class MyNodeAsyncClient : public  ::cpp2::MyRootAsyncClient {
   virtual void recv_instance_do_mid(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_do_mid(::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
-  void do_midT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  void do_midT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_do_midT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>

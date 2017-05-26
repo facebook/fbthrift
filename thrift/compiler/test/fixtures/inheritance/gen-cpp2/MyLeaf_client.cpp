@@ -18,21 +18,25 @@ const char* MyLeafAsyncClient::getServiceName() {
 
 void MyLeafAsyncClient::do_leaf(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
-  do_leaf(rpcOptions, std::move(callback));
+  do_leafImpl(false, rpcOptions, std::move(callback));
 }
 
 void MyLeafAsyncClient::do_leaf(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  do_leafImpl(false, rpcOptions, std::move(callback));
+}
+
+void MyLeafAsyncClient::do_leafImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      do_leafT(&writer, rpcOptions, std::move(callback));
+      do_leafT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      do_leafT(&writer, rpcOptions, std::move(callback));
+      do_leafT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     default:
@@ -49,9 +53,8 @@ void MyLeafAsyncClient::sync_do_leaf() {
 
 void MyLeafAsyncClient::sync_do_leaf(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  do_leaf(rpcOptions, std::move(callback));
-  getChannel()->getEventBase()->loopForever();
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  do_leafImpl(true, rpcOptions, std::move(callback));
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());

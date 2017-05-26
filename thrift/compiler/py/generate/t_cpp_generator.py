@@ -1056,12 +1056,14 @@ class CppGenerator(t_generator.Generator):
                     out("return dynamic_cast<apache::thrift::HeaderChannel*>"
                             "(this->channel_.get());")
 
-
             # Write out all the functions
             for function in service.functions:
                 self._generate_client_async_function(service, function)
                 self._generate_client_async_function(service, function,
                                                      uses_rpc_options=True)
+                self._generate_client_async_function(service, function,
+                                                     uses_rpc_options=True,
+                                                     uses_sync=True)
 
                 if not self._is_stream_type(function.returntype):
                     self._generate_client_sync_function(service, function)
@@ -1801,18 +1803,15 @@ class CppGenerator(t_generator.Generator):
 
                 out("auto callback = "
                     "std::make_unique<apache::thrift::ClientSyncCallback>("
-                    "&_returnState, getChannel()->getEventBase(), {isOneWay});"
+                    "&_returnState, {isOneWay});"
                   .format(isOneWay=str(function.oneway).lower()))
 
-                args = ["rpcOptions",
-                        "std::move(callback)"]
+                args = ["true", "rpcOptions", "std::move(callback)"]
                 args.extend(common_args)
                 args_list = ", ".join(args)
 
-                out("{name}({args_list});".format(name=function.name,
-                                                args_list=args_list))
-
-                out("getChannel()->getEventBase()->loopForever();")
+                out("{name}Impl({args_list});".format(name=function.name,
+                                                      args_list=args_list))
 
                 if not function.oneway:
                     out("SCOPE_EXIT {")
@@ -1910,8 +1909,6 @@ class CppGenerator(t_generator.Generator):
                         "std::make_unique<apache::thrift::OneWayFutureCallback>("
                         "std::move(_promise), channel_);")
 
-                    args.append("std::move(callback)")
-
                 else:
                     if header:
                         future_cb_name = "HeaderFutureCallback"
@@ -1924,8 +1921,7 @@ class CppGenerator(t_generator.Generator):
                                 type=return_type,
                                 name=function.name))
 
-                    args.append("std::move(callback)")
-
+                args.append("std::move(callback)")
                 args.extend(common_args)
                 args.extend(end_args)
                 args_list = ", ".join(args)
@@ -1998,38 +1994,52 @@ class CppGenerator(t_generator.Generator):
 
     def _generate_client_async_function(self, service, function,
                                         uses_rpc_options=False,
-                                        name_prefix=""):
+                                        uses_sync=False):
         if not uses_rpc_options:
-            signature = self._get_async_function_signature(function,
-                                                           uses_rpc_options)
+            signature = self._get_async_function_signature(
+                    function, uses_rpc_options=False, uses_sync=False)
             with out().defn(signature,
-                    name=name_prefix + function.name,
+                    name=function.name,
                     modifiers='virtual',
                     output=self._additional_outputs[-1]):
                 out('::apache::thrift::RpcOptions rpcOptions;')
-                args = ["rpcOptions"]
-
-                args.append("std::move(callback)")
+                args = ["false", "rpcOptions", "std::move(callback)"]
 
                 args.extend([arg.name for arg in function.arglist.members])
                 args_list = ", ".join(args)
 
-                out("{name}({args});".format(name=function.name, args=args_list))
+                out("{name}Impl({args});".format(
+                        name=function.name, args=args_list))
+
+        elif not uses_sync:
+            signature = self._get_async_function_signature(
+                    function, uses_rpc_options=True, uses_sync=False)
+            with out().defn(signature,
+                    name=function.name,
+                    modifiers='virtual',
+                    output=self._additional_outputs[-1]):
+                args = ["false", "rpcOptions", "std::move(callback)"]
+
+                args.extend([arg.name for arg in function.arglist.members])
+                args_list = ", ".join(args)
+
+                out("{name}Impl({args});".format(
+                        name=function.name, args=args_list))
 
         else:
             signature = self._get_async_function_signature(
-                    function, uses_rpc_options=True, uses_callback_ptr=True)
+                    function, uses_rpc_options=True, uses_sync=True,
+                    uses_callback_ptr=True)
 
+            out().label('private:')
             with out().defn(signature,
-                    name=name_prefix + function.name,
+                    name=function.name + "Impl",
                     modifiers='virtual',
                     output=self._additional_outputs[-1]):
-                args = ["&writer", "rpcOptions"]
+                args = ["&writer", "useSync", "rpcOptions"]
                 args.append("std::move(callback)")
 
-                for arg in function.arglist.members:
-                    args.append(arg.name)
-
+                args.extend([arg.name for arg in function.arglist.members])
                 args_list = ", ".join(args)
 
                 with out("switch(getChannel()->getProtocolId())"):
@@ -2044,10 +2054,12 @@ class CppGenerator(t_generator.Generator):
                     with out().case("default", nobreak=True):
                         out("throw apache::thrift::TApplicationException("
                           '"Could not find Protocol");')
+            out().label('public:')
 
     def _generate_templated_client_function(self, service, function):
         signature = self._get_async_function_signature(function,
                                                        uses_rpc_options=True,
+                                                       uses_sync=True,
                                                        uses_template=True,
                                                        uses_callback_ptr=True)
 
@@ -2080,30 +2092,32 @@ class CppGenerator(t_generator.Generator):
                         field.name))
 
             if self.flag_compatibility:
-                sizer = '[](Protocol_* p, {0}& a) ' \
-                        '{{ return {0}_serializedSizeZC(p, &a); }}'
-                writer = '[](Protocol_* p, {0}& a) ' \
-                         '{{ {0}_write(p, &a); }}'
+                sizer = 'auto sizer = [&](Protocol_* p) ' \
+                        '{{ return {0}_serializedSizeZC(p, &args); }};'
+                writer = 'auto writer = [&](Protocol_* p) ' \
+                         '{{ {0}_write(p, &args); }};'
             else:
-                sizer = '[](Protocol_* p, {0}& a) ' \
-                        '{{ return a.serializedSizeZC(p); }}'
-                writer = '[](Protocol_* p, {0}& a) ' \
-                         '{{ a.write(p); }}'
-            sizer = sizer.format(pargs_class)
-            writer = writer.format(pargs_class)
+                sizer = 'auto sizer = [&](Protocol_* p) ' \
+                        '{{ return args.serializedSizeZC(p); }};'
+                writer = 'auto writer = [&](Protocol_* p) ' \
+                         '{{ args.write(p); }};'
+            out(sizer.format(pargs_class))
+            out(writer.format(pargs_class))
 
-            out('apache::thrift::clientSendT<{}>(prot, rpcOptions, '
+            out('apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, '
                 'std::move(callback), std::move(ctx), header, '
-                'channel_.get(), args, '
-                '"{}", {}, {});'.format(["false", "true"][function.oneway],
-                                      function.name, writer, sizer))
+                'channel_.get(), "{1}", writer, sizer, {2}, '
+                'useSync);'.format(pargs_class,
+                                     function.name,
+                                     ["false", "true"][function.oneway]))
             out("connectionContext_->setRequestHeader(nullptr);")
 
     def _get_async_function_signature(self,
                                       function,
                                       uses_rpc_options,
                                       uses_template=False,
-                                      uses_callback_ptr=False):
+                                      uses_callback_ptr=False,
+                                      uses_sync=True):
         signature_prefix = ""
         if uses_template:
             signature_prefix = "template <typename Protocol_>\n"
@@ -2111,6 +2125,9 @@ class CppGenerator(t_generator.Generator):
         params = []
         if uses_template:
             params.append("Protocol_* prot")
+
+        if uses_sync:
+            params.append("bool useSync")
 
         if uses_rpc_options:
             params.append("apache::thrift::RpcOptions& rpcOptions")
@@ -2123,7 +2140,6 @@ class CppGenerator(t_generator.Generator):
         param_list += self._argument_list(function.arglist,
                                           add_comma=bool(params),
                                           unique=False)
-
         return signature_prefix + "void {name}(" + param_list + ")"
 
     def _generate_client_folly_function(self, function, name_prefix=""):

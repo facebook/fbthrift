@@ -110,6 +110,9 @@ class MyServicePrioChildAsyncClient : public  ::cpp2::MyServicePrioParentAsyncCl
        ::cpp2::MyServicePrioParentAsyncClient(channel) {}
   virtual void pang(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void pang(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ private:
+  virtual void pangImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ public:
   virtual void sync_pang();
   virtual void sync_pang(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<folly::Unit> future_pang();
@@ -122,7 +125,7 @@ class MyServicePrioChildAsyncClient : public  ::cpp2::MyServicePrioParentAsyncCl
   virtual void recv_instance_pang(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_pang(::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
-  void pangT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  void pangT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_pangT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>

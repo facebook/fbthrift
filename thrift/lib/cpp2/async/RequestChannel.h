@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #ifndef THRIFT_ASYNC_REQUESTCHANNEL_H_
 #define THRIFT_ASYNC_REQUESTCHANNEL_H_ 1
 
@@ -369,6 +368,21 @@ class RequestChannel : virtual public folly::DelayedDestruction {
    *
    * cb must not be null.
    */
+  virtual uint32_t sendRequestSync(
+      RpcOptions&,
+      std::unique_ptr<RequestCallback>,
+      std::unique_ptr<apache::thrift::ContextStack>,
+      std::unique_ptr<folly::IOBuf>,
+      std::shared_ptr<apache::thrift::transport::THeader>);
+
+  /**
+   * ReplyCallback will be invoked when the reply to this request is
+   * received.  TRequestChannel is responsible for associating requests with
+   * responses, and invoking the correct ReplyCallback when a response
+   * message is received.
+   *
+   * cb must not be null.
+   */
   virtual uint32_t sendRequest(
       RpcOptions&,
       std::unique_ptr<RequestCallback>,
@@ -422,35 +436,24 @@ class RequestChannel : virtual public folly::DelayedDestruction {
 
 class ClientSyncCallback : public RequestCallback {
  public:
-  ClientSyncCallback(ClientReceiveState* rs,
-                     folly::EventBase* eb,
-                     bool oneway = false)
-      : rs_(rs)
-      , eb_(eb)
-      , oneway_(oneway) {}
+  explicit ClientSyncCallback(ClientReceiveState* rs, bool oneway = false)
+      : rs_(rs), oneway_(oneway) {}
 
-  void requestSent() override {
-    if (oneway_) {
-      assert(eb_);
-      eb_->terminateLoopSoon();
-    }
-  }
+  void requestSent() override {}
   void replyReceived(ClientReceiveState&& rs) override {
     assert(rs.buf());
-    assert(eb_);
     assert(!oneway_);
     *rs_ = std::move(rs);
-    eb_->terminateLoopSoon();
   }
   void requestError(ClientReceiveState&& rs) override {
     assert(rs.exception());
-    assert(eb_);
     *rs_ = std::move(rs);
-    eb_->terminateLoopSoon();
+  }
+  bool isOneway() const {
+    return oneway_;
   }
  private:
   ClientReceiveState* rs_;
-  folly::EventBase* eb_;
   bool oneway_;
 };
 
@@ -474,19 +477,20 @@ void clientCallbackToObservable(ClientReceiveState& state,
   subj->onNext(value);
 }
 
-template <bool oneway, class Protocol, class Pargs, class WriteFunc, class SizeFunc>
-static void clientSendT(
+template <class Protocol>
+void clientSendT(
     Protocol* prot,
     apache::thrift::RpcOptions& rpcOptions,
     std::unique_ptr<apache::thrift::RequestCallback> callback,
     std::unique_ptr<apache::thrift::ContextStack> ctx,
     std::shared_ptr<apache::thrift::transport::THeader> header,
     RequestChannel* channel,
-    Pargs& pargs,
     const char* methodName,
-    WriteFunc&& writefunc,
-    SizeFunc&& sizefunc) {
-  size_t bufSize = sizefunc(prot, pargs);
+    folly::FunctionRef<void(Protocol*)> writefunc,
+    folly::FunctionRef<size_t(Protocol*)> sizefunc,
+    bool oneway,
+    bool sync) {
+  size_t bufSize = sizefunc(prot);
   bufSize += prot->serializedMessageSize(methodName);
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
   prot->setOutput(&queue, bufSize);
@@ -494,7 +498,7 @@ static void clientSendT(
   try {
     ctx->preWrite();
     prot->writeMessageBegin(methodName, apache::thrift::T_CALL, 0);
-    writefunc(prot, pargs);
+    writefunc(prot);
     prot->writeMessageEnd();
     ::apache::thrift::SerializedMessage smsg;
     smsg.protocolType = prot->protocolType();
@@ -510,18 +514,32 @@ static void clientSendT(
 
   auto eb = channel->getEventBase();
   if(!eb || eb->isInEventBaseThread()) {
-    if (oneway) {
+    if (sync) {
+      channel->sendRequestSync(
+          rpcOptions,
+          std::move(callback),
+          std::move(ctx),
+          queue.move(),
+          header);
+    } else if (oneway) {
       // Calling asyncComplete before sending because
       // sendOnewayRequest moves from ctx and clears it.
       ctx->asyncComplete();
-      channel->sendOnewayRequest(rpcOptions, std::move(callback),
-          std::move(ctx), queue.move(), header);
+      channel->sendOnewayRequest(
+          rpcOptions,
+          std::move(callback),
+          std::move(ctx),
+          queue.move(),
+          header);
     } else {
-      channel->sendRequest(rpcOptions, std::move(callback),
-          std::move(ctx), queue.move(), header);
+      channel->sendRequest(
+          rpcOptions,
+          std::move(callback),
+          std::move(ctx),
+          queue.move(),
+          header);
     }
-  }
-  else {
+  } else if (oneway) {
     eb->runInEventBaseThread([
       channel,
       rpcOptions,
@@ -530,24 +548,31 @@ static void clientSendT(
       queue = queue.move(),
       header
     ]() mutable {
-      if (oneway) {
-        // Calling asyncComplete before sending because
-        // sendOnewayRequest moves from ctx and clears it.
-        ctx->asyncComplete();
-        channel->sendOnewayRequest(
-            rpcOptions,
-            std::move(callback),
-            std::move(ctx),
-            std::move(queue),
-            header);
-      } else {
-        channel->sendRequest(
-            rpcOptions,
-            std::move(callback),
-            std::move(ctx),
-            std::move(queue),
-            header);
-      }
+      // Calling asyncComplete before sending because
+      // sendOnewayRequest moves from ctx and clears it.
+      ctx->asyncComplete();
+      channel->sendOnewayRequest(
+          rpcOptions,
+          std::move(callback),
+          std::move(ctx),
+          std::move(queue),
+          header);
+    });
+  } else {
+    eb->runInEventBaseThread([
+      channel,
+      rpcOptions,
+      callback = std::move(callback),
+      ctx = std::move(ctx),
+      queue = queue.move(),
+      header
+    ]() mutable {
+      channel->sendRequest(
+          rpcOptions,
+          std::move(callback),
+          std::move(ctx),
+          std::move(queue),
+          header);
     });
   }
 }

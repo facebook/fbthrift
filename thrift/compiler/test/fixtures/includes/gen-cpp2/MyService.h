@@ -137,6 +137,9 @@ class MyServiceAsyncClient : public apache::thrift::TClientBase {
   }
   virtual void query(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual void query(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
+ private:
+  virtual void queryImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
+ public:
   virtual void sync_query(const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual void sync_query(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual folly::Future<folly::Unit> future_query(const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
@@ -149,13 +152,16 @@ class MyServiceAsyncClient : public apache::thrift::TClientBase {
   virtual void recv_instance_query(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_query(::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
-  void queryT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
+  void queryT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_queryT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_queryT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   virtual void has_arg_docs(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual void has_arg_docs(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
+ private:
+  virtual void has_arg_docsImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
+ public:
   virtual void sync_has_arg_docs(const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual void sync_has_arg_docs(apache::thrift::RpcOptions& rpcOptions, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   virtual folly::Future<folly::Unit> future_has_arg_docs(const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
@@ -168,7 +174,7 @@ class MyServiceAsyncClient : public apache::thrift::TClientBase {
   virtual void recv_instance_has_arg_docs(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_has_arg_docs(::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
-  void has_arg_docsT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
+  void has_arg_docsT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::cpp2::MyStruct& s, const  ::cpp2::Included& i);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_has_arg_docsT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>

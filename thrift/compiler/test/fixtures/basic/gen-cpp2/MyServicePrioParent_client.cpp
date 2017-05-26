@@ -18,21 +18,25 @@ const char* MyServicePrioParentAsyncClient::getServiceName() {
 
 void MyServicePrioParentAsyncClient::ping(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
-  ping(rpcOptions, std::move(callback));
+  pingImpl(false, rpcOptions, std::move(callback));
 }
 
 void MyServicePrioParentAsyncClient::ping(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  pingImpl(false, rpcOptions, std::move(callback));
+}
+
+void MyServicePrioParentAsyncClient::pingImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      pingT(&writer, rpcOptions, std::move(callback));
+      pingT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      pingT(&writer, rpcOptions, std::move(callback));
+      pingT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     default:
@@ -49,9 +53,8 @@ void MyServicePrioParentAsyncClient::sync_ping() {
 
 void MyServicePrioParentAsyncClient::sync_ping(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  ping(rpcOptions, std::move(callback));
-  getChannel()->getEventBase()->loopForever();
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  pingImpl(true, rpcOptions, std::move(callback));
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -132,21 +135,25 @@ folly::exception_wrapper MyServicePrioParentAsyncClient::recv_instance_wrapped_p
 
 void MyServicePrioParentAsyncClient::pong(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
-  pong(rpcOptions, std::move(callback));
+  pongImpl(false, rpcOptions, std::move(callback));
 }
 
 void MyServicePrioParentAsyncClient::pong(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  pongImpl(false, rpcOptions, std::move(callback));
+}
+
+void MyServicePrioParentAsyncClient::pongImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      pongT(&writer, rpcOptions, std::move(callback));
+      pongT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      pongT(&writer, rpcOptions, std::move(callback));
+      pongT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     default:
@@ -163,9 +170,8 @@ void MyServicePrioParentAsyncClient::sync_pong() {
 
 void MyServicePrioParentAsyncClient::sync_pong(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  pong(rpcOptions, std::move(callback));
-  getChannel()->getEventBase()->loopForever();
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  pongImpl(true, rpcOptions, std::move(callback));
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());

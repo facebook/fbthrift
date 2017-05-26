@@ -129,14 +129,16 @@ void MyLeafAsyncProcessor::throw_wrapped_do_leaf(std::unique_ptr<apache::thrift:
 }
 
 template <typename Protocol_>
-void MyLeafAsyncClient::do_leafT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void MyLeafAsyncClient::do_leafT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "MyLeaf.do_leaf", connectionContext_.get());
   MyLeaf_do_leaf_pargs args;
-  apache::thrift::clientSendT<false>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), args, "do_leaf", [](Protocol_* p, MyLeaf_do_leaf_pargs& a) { a.write(p); }, [](Protocol_* p, MyLeaf_do_leaf_pargs& a) { return a.serializedSizeZC(p); });
+  auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
+  auto writer = [&](Protocol_* p) { args.write(p); };
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "do_leaf", writer, sizer, false, useSync);
   connectionContext_->setRequestHeader(nullptr);
 }
 

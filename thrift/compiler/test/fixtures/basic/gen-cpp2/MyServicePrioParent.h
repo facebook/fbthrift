@@ -135,6 +135,9 @@ class MyServicePrioParentAsyncClient : public apache::thrift::TClientBase {
   }
   virtual void ping(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void ping(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ private:
+  virtual void pingImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ public:
   virtual void sync_ping();
   virtual void sync_ping(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<folly::Unit> future_ping();
@@ -147,13 +150,16 @@ class MyServicePrioParentAsyncClient : public apache::thrift::TClientBase {
   virtual void recv_instance_ping(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_ping(::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
-  void pingT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  void pingT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_pingT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_pingT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   virtual void pong(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void pong(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ private:
+  virtual void pongImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ public:
   virtual void sync_pong();
   virtual void sync_pong(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<folly::Unit> future_pong();
@@ -166,7 +172,7 @@ class MyServicePrioParentAsyncClient : public apache::thrift::TClientBase {
   virtual void recv_instance_pong(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_pong(::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
-  void pongT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  void pongT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_pongT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>

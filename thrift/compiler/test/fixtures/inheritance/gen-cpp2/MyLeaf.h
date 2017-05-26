@@ -110,6 +110,9 @@ class MyLeafAsyncClient : public  ::cpp2::MyNodeAsyncClient {
        ::cpp2::MyNodeAsyncClient(channel) {}
   virtual void do_leaf(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void do_leaf(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ private:
+  virtual void do_leafImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ public:
   virtual void sync_do_leaf();
   virtual void sync_do_leaf(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<folly::Unit> future_do_leaf();
@@ -122,7 +125,7 @@ class MyLeafAsyncClient : public  ::cpp2::MyNodeAsyncClient {
   virtual void recv_instance_do_leaf(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_do_leaf(::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
-  void do_leafT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  void do_leafT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_do_leafT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>

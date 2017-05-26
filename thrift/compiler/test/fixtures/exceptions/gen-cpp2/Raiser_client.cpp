@@ -18,21 +18,25 @@ const char* RaiserAsyncClient::getServiceName() {
 
 void RaiserAsyncClient::doBland(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
-  doBland(rpcOptions, std::move(callback));
+  doBlandImpl(false, rpcOptions, std::move(callback));
 }
 
 void RaiserAsyncClient::doBland(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  doBlandImpl(false, rpcOptions, std::move(callback));
+}
+
+void RaiserAsyncClient::doBlandImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      doBlandT(&writer, rpcOptions, std::move(callback));
+      doBlandT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      doBlandT(&writer, rpcOptions, std::move(callback));
+      doBlandT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     default:
@@ -49,9 +53,8 @@ void RaiserAsyncClient::sync_doBland() {
 
 void RaiserAsyncClient::sync_doBland(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  doBland(rpcOptions, std::move(callback));
-  getChannel()->getEventBase()->loopForever();
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  doBlandImpl(true, rpcOptions, std::move(callback));
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -132,21 +135,25 @@ folly::exception_wrapper RaiserAsyncClient::recv_instance_wrapped_doBland(::apac
 
 void RaiserAsyncClient::doRaise(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
-  doRaise(rpcOptions, std::move(callback));
+  doRaiseImpl(false, rpcOptions, std::move(callback));
 }
 
 void RaiserAsyncClient::doRaise(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  doRaiseImpl(false, rpcOptions, std::move(callback));
+}
+
+void RaiserAsyncClient::doRaiseImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      doRaiseT(&writer, rpcOptions, std::move(callback));
+      doRaiseT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      doRaiseT(&writer, rpcOptions, std::move(callback));
+      doRaiseT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     default:
@@ -163,9 +170,8 @@ void RaiserAsyncClient::sync_doRaise() {
 
 void RaiserAsyncClient::sync_doRaise(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  doRaise(rpcOptions, std::move(callback));
-  getChannel()->getEventBase()->loopForever();
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  doRaiseImpl(true, rpcOptions, std::move(callback));
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -246,21 +252,25 @@ folly::exception_wrapper RaiserAsyncClient::recv_instance_wrapped_doRaise(::apac
 
 void RaiserAsyncClient::get200(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
-  get200(rpcOptions, std::move(callback));
+  get200Impl(false, rpcOptions, std::move(callback));
 }
 
 void RaiserAsyncClient::get200(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  get200Impl(false, rpcOptions, std::move(callback));
+}
+
+void RaiserAsyncClient::get200Impl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      get200T(&writer, rpcOptions, std::move(callback));
+      get200T(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      get200T(&writer, rpcOptions, std::move(callback));
+      get200T(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     default:
@@ -277,9 +287,8 @@ void RaiserAsyncClient::sync_get200(std::string& _return) {
 
 void RaiserAsyncClient::sync_get200(apache::thrift::RpcOptions& rpcOptions, std::string& _return) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  get200(rpcOptions, std::move(callback));
-  getChannel()->getEventBase()->loopForever();
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  get200Impl(true, rpcOptions, std::move(callback));
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -360,21 +369,25 @@ folly::exception_wrapper RaiserAsyncClient::recv_instance_wrapped_get200(std::st
 
 void RaiserAsyncClient::get500(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
-  get500(rpcOptions, std::move(callback));
+  get500Impl(false, rpcOptions, std::move(callback));
 }
 
 void RaiserAsyncClient::get500(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  get500Impl(false, rpcOptions, std::move(callback));
+}
+
+void RaiserAsyncClient::get500Impl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      get500T(&writer, rpcOptions, std::move(callback));
+      get500T(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      get500T(&writer, rpcOptions, std::move(callback));
+      get500T(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     default:
@@ -391,9 +404,8 @@ void RaiserAsyncClient::sync_get500(std::string& _return) {
 
 void RaiserAsyncClient::sync_get500(apache::thrift::RpcOptions& rpcOptions, std::string& _return) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  get500(rpcOptions, std::move(callback));
-  getChannel()->getEventBase()->loopForever();
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  get500Impl(true, rpcOptions, std::move(callback));
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());

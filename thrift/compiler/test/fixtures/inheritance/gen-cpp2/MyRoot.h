@@ -118,6 +118,9 @@ class MyRootAsyncClient : public apache::thrift::TClientBase {
   }
   virtual void do_root(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void do_root(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ private:
+  virtual void do_rootImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ public:
   virtual void sync_do_root();
   virtual void sync_do_root(apache::thrift::RpcOptions& rpcOptions);
   virtual folly::Future<folly::Unit> future_do_root();
@@ -130,7 +133,7 @@ class MyRootAsyncClient : public apache::thrift::TClientBase {
   virtual void recv_instance_do_root(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_do_root(::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
-  void do_rootT(Protocol_* prot, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  void do_rootT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_do_rootT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>

@@ -18,21 +18,25 @@ const char* MyServiceFastAsyncClient::getServiceName() {
 
 void MyServiceFastAsyncClient::ping(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
-  ping(rpcOptions, std::move(callback));
+  pingImpl(false, rpcOptions, std::move(callback));
 }
 
 void MyServiceFastAsyncClient::ping(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  pingImpl(false, rpcOptions, std::move(callback));
+}
+
+void MyServiceFastAsyncClient::pingImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      pingT(&writer, rpcOptions, std::move(callback));
+      pingT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      pingT(&writer, rpcOptions, std::move(callback));
+      pingT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     default:
@@ -49,9 +53,8 @@ void MyServiceFastAsyncClient::sync_ping() {
 
 void MyServiceFastAsyncClient::sync_ping(apache::thrift::RpcOptions& rpcOptions) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  ping(rpcOptions, std::move(callback));
-  getChannel()->getEventBase()->loopForever();
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  pingImpl(true, rpcOptions, std::move(callback));
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -132,21 +135,25 @@ folly::exception_wrapper MyServiceFastAsyncClient::recv_instance_wrapped_ping(::
 
 void MyServiceFastAsyncClient::getRandomData(std::unique_ptr<apache::thrift::RequestCallback> callback) {
   ::apache::thrift::RpcOptions rpcOptions;
-  getRandomData(rpcOptions, std::move(callback));
+  getRandomDataImpl(false, rpcOptions, std::move(callback));
 }
 
 void MyServiceFastAsyncClient::getRandomData(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  getRandomDataImpl(false, rpcOptions, std::move(callback));
+}
+
+void MyServiceFastAsyncClient::getRandomDataImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      getRandomDataT(&writer, rpcOptions, std::move(callback));
+      getRandomDataT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      getRandomDataT(&writer, rpcOptions, std::move(callback));
+      getRandomDataT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
     default:
@@ -163,9 +170,8 @@ void MyServiceFastAsyncClient::sync_getRandomData(std::string& _return) {
 
 void MyServiceFastAsyncClient::sync_getRandomData(apache::thrift::RpcOptions& rpcOptions, std::string& _return) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  getRandomData(rpcOptions, std::move(callback));
-  getChannel()->getEventBase()->loopForever();
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  getRandomDataImpl(true, rpcOptions, std::move(callback));
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -246,21 +252,25 @@ folly::exception_wrapper MyServiceFastAsyncClient::recv_instance_wrapped_getRand
 
 void MyServiceFastAsyncClient::hasDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id) {
   ::apache::thrift::RpcOptions rpcOptions;
-  hasDataById(rpcOptions, std::move(callback), id);
+  hasDataByIdImpl(false, rpcOptions, std::move(callback), id);
 }
 
 void MyServiceFastAsyncClient::hasDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id) {
+  hasDataByIdImpl(false, rpcOptions, std::move(callback), id);
+}
+
+void MyServiceFastAsyncClient::hasDataByIdImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      hasDataByIdT(&writer, rpcOptions, std::move(callback), id);
+      hasDataByIdT(&writer, useSync, rpcOptions, std::move(callback), id);
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      hasDataByIdT(&writer, rpcOptions, std::move(callback), id);
+      hasDataByIdT(&writer, useSync, rpcOptions, std::move(callback), id);
       break;
     }
     default:
@@ -277,9 +287,8 @@ bool MyServiceFastAsyncClient::sync_hasDataById(int64_t id) {
 
 bool MyServiceFastAsyncClient::sync_hasDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  hasDataById(rpcOptions, std::move(callback), id);
-  getChannel()->getEventBase()->loopForever();
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  hasDataByIdImpl(true, rpcOptions, std::move(callback), id);
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -362,21 +371,25 @@ folly::exception_wrapper MyServiceFastAsyncClient::recv_instance_wrapped_hasData
 
 void MyServiceFastAsyncClient::getDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id) {
   ::apache::thrift::RpcOptions rpcOptions;
-  getDataById(rpcOptions, std::move(callback), id);
+  getDataByIdImpl(false, rpcOptions, std::move(callback), id);
 }
 
 void MyServiceFastAsyncClient::getDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id) {
+  getDataByIdImpl(false, rpcOptions, std::move(callback), id);
+}
+
+void MyServiceFastAsyncClient::getDataByIdImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      getDataByIdT(&writer, rpcOptions, std::move(callback), id);
+      getDataByIdT(&writer, useSync, rpcOptions, std::move(callback), id);
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      getDataByIdT(&writer, rpcOptions, std::move(callback), id);
+      getDataByIdT(&writer, useSync, rpcOptions, std::move(callback), id);
       break;
     }
     default:
@@ -393,9 +406,8 @@ void MyServiceFastAsyncClient::sync_getDataById(std::string& _return, int64_t id
 
 void MyServiceFastAsyncClient::sync_getDataById(apache::thrift::RpcOptions& rpcOptions, std::string& _return, int64_t id) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  getDataById(rpcOptions, std::move(callback), id);
-  getChannel()->getEventBase()->loopForever();
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  getDataByIdImpl(true, rpcOptions, std::move(callback), id);
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -476,21 +488,25 @@ folly::exception_wrapper MyServiceFastAsyncClient::recv_instance_wrapped_getData
 
 void MyServiceFastAsyncClient::putDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const std::string& data) {
   ::apache::thrift::RpcOptions rpcOptions;
-  putDataById(rpcOptions, std::move(callback), id, data);
+  putDataByIdImpl(false, rpcOptions, std::move(callback), id, data);
 }
 
 void MyServiceFastAsyncClient::putDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const std::string& data) {
+  putDataByIdImpl(false, rpcOptions, std::move(callback), id, data);
+}
+
+void MyServiceFastAsyncClient::putDataByIdImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const std::string& data) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      putDataByIdT(&writer, rpcOptions, std::move(callback), id, data);
+      putDataByIdT(&writer, useSync, rpcOptions, std::move(callback), id, data);
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      putDataByIdT(&writer, rpcOptions, std::move(callback), id, data);
+      putDataByIdT(&writer, useSync, rpcOptions, std::move(callback), id, data);
       break;
     }
     default:
@@ -507,9 +523,8 @@ void MyServiceFastAsyncClient::sync_putDataById(int64_t id, const std::string& d
 
 void MyServiceFastAsyncClient::sync_putDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), false);
-  putDataById(rpcOptions, std::move(callback), id, data);
-  getChannel()->getEventBase()->loopForever();
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  putDataByIdImpl(true, rpcOptions, std::move(callback), id, data);
   SCOPE_EXIT {
     if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
@@ -590,21 +605,25 @@ folly::exception_wrapper MyServiceFastAsyncClient::recv_instance_wrapped_putData
 
 void MyServiceFastAsyncClient::lobDataById(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const std::string& data) {
   ::apache::thrift::RpcOptions rpcOptions;
-  lobDataById(rpcOptions, std::move(callback), id, data);
+  lobDataByIdImpl(false, rpcOptions, std::move(callback), id, data);
 }
 
 void MyServiceFastAsyncClient::lobDataById(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const std::string& data) {
+  lobDataByIdImpl(false, rpcOptions, std::move(callback), id, data);
+}
+
+void MyServiceFastAsyncClient::lobDataByIdImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t id, const std::string& data) {
   switch(getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      lobDataByIdT(&writer, rpcOptions, std::move(callback), id, data);
+      lobDataByIdT(&writer, useSync, rpcOptions, std::move(callback), id, data);
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      lobDataByIdT(&writer, rpcOptions, std::move(callback), id, data);
+      lobDataByIdT(&writer, useSync, rpcOptions, std::move(callback), id, data);
       break;
     }
     default:
@@ -621,9 +640,8 @@ void MyServiceFastAsyncClient::sync_lobDataById(int64_t id, const std::string& d
 
 void MyServiceFastAsyncClient::sync_lobDataById(apache::thrift::RpcOptions& rpcOptions, int64_t id, const std::string& data) {
   apache::thrift::ClientReceiveState _returnState;
-  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, getChannel()->getEventBase(), true);
-  lobDataById(rpcOptions, std::move(callback), id, data);
-  getChannel()->getEventBase()->loopForever();
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, true);
+  lobDataByIdImpl(true, rpcOptions, std::move(callback), id, data);
 }
 
 folly::Future<folly::Unit> MyServiceFastAsyncClient::future_lobDataById(int64_t id, const std::string& data) {
