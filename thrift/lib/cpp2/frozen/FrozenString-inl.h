@@ -24,6 +24,9 @@ namespace detail {
 template <class T>
 struct BufferHelpers {
   typedef typename T::value_type Item;
+  static_assert(
+      std::is_arithmetic<Item>::value || std::is_enum<Item>::value,
+      "String storage requires simple item types");
   static size_t size(const T& src) { return src.size(); }
   static void copyTo(const T& src, folly::Range<Item*> dst) {
     std::copy(src.begin(), src.end(), reinterpret_cast<Item*>(dst.begin()));
