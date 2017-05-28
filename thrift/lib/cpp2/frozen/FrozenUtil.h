@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-present Facebook, Inc.
+ * Copyright 2014 Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,31 +42,13 @@ class FrozenFileForwardIncompatible : public std::runtime_error {
 };
 
 /**
- * Returns an upper bound estimate of the number of bytes required to freeze
- * this object with a minimal layout. Actual bytes required will depend on the
- * alignment of the freeze buffer.
+ * Returns the number of bytes needed to freeze the given object, not including
+ * padding bytes
  */
 template <class T>
 size_t frozenSize(const T& v) {
   Layout<T> layout;
-  return LayoutRoot::layout(v, layout) - kPaddingBytes;
-}
-
-/**
- * Returns an upper bound estimate of the number of bytes required to freeze
- * this object with a given layout. Actual bytes required will depend on on
- * the alignment of the freeze buffer.
- */
-template <class T>
-size_t frozenSize(const T& v, const Layout<T>& fixedLayout) {
-  Layout<T> layout = fixedLayout;
-  size_t size;
-  bool changed;
-  LayoutRoot::layout(v, layout, changed, size);
-  if (changed) {
-    throw LayoutException();
-  }
-  return size;
+  return LayoutRoot::layout(v, layout) - LayoutRoot::kPaddingBytes;
 }
 
 template <class T>
@@ -105,16 +87,14 @@ void freezeToFile(const T& x, folly::File file) {
 
   serializeRootLayout(*layout, schemaStr);
 
-  size_t initialBufferSize = contentSize + schemaStr.size();
-  folly::MemoryMapping mapping(
-      file.dup(), 0, initialBufferSize, folly::MemoryMapping::writable());
-  auto mappingRange = mapping.writableRange();
+  folly::MemoryMapping mapping(std::move(file),
+                               0,
+                               contentSize + schemaStr.size(),
+                               folly::MemoryMapping::writable());
   auto writeRange = mapping.writableRange();
   std::copy(schemaStr.begin(), schemaStr.end(), writeRange.begin());
   writeRange.advance(schemaStr.size());
   ByteRangeFreezer::freeze(*layout, x, writeRange);
-  size_t finalBufferSize = writeRange.begin() - mappingRange.begin();
-  ftruncate(file.fd(), finalBufferSize);
 }
 
 template <class T>
@@ -125,23 +105,10 @@ void freezeToString(const T& x, std::string& out) {
   serializeRootLayout(*layout, out);
 
   size_t schemaSize = out.size();
-  size_t bufferSize = schemaSize + contentSize;
-  out.resize(bufferSize);
-  folly::MutableByteRange writeRange(
-      reinterpret_cast<byte*>(&out[schemaSize]), contentSize);
+  out.resize(schemaSize + contentSize);
+  folly::MutableByteRange writeRange(reinterpret_cast<byte*>(&out[schemaSize]),
+                                     contentSize);
   ByteRangeFreezer::freeze(*layout, x, writeRange);
-  out.resize(out.size() - writeRange.size());
-}
-
-template <class T>
-std::string freezeDataToString(const T& x, const Layout<T>& layout) {
-  std::string out;
-  out.resize(frozenSize(x, layout));
-  folly::MutableByteRange writeRange(
-      reinterpret_cast<byte*>(&out[0]), out.size());
-  ByteRangeFreezer::freeze(layout, x, writeRange);
-  out.resize(out.size() - writeRange.size());
-  return out;
 }
 
 /**
