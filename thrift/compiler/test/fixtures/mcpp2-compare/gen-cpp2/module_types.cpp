@@ -342,6 +342,11 @@ void containerStruct::__clear() {
   fieldN = 0;
   fieldO.clear();
   fieldP.clear();
+  fieldQ = static_cast< ::some::valid::ns::MyEnumA>(0);
+  fieldR =  ::some::valid::ns::MyEnumA::fieldB;
+  fieldS =  ::some::valid::ns::MyEnumA::fieldB;
+  fieldT.clear();
+  fieldU.clear();
   __isset.__clear();
 }
 
@@ -392,6 +397,21 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
     return false;
   }
   if (!((fieldP == rhs.fieldP))) {
+    return false;
+  }
+  if (!((fieldQ == rhs.fieldQ))) {
+    return false;
+  }
+  if (!((fieldR == rhs.fieldR))) {
+    return false;
+  }
+  if (!((fieldS == rhs.fieldS))) {
+    return false;
+  }
+  if (!((fieldT == rhs.fieldT))) {
+    return false;
+  }
+  if (!((fieldU == rhs.fieldU))) {
     return false;
   }
   return true;
@@ -485,6 +505,22 @@ std::vector< ::some::valid::ns::mostComplexTypeDef> containerStruct::get_fieldP(
   return std::move(fieldP);
 }
 
+const std::vector< ::some::valid::ns::MyEnumA>& containerStruct::get_fieldT() const& {
+  return fieldT;
+}
+
+std::vector< ::some::valid::ns::MyEnumA> containerStruct::get_fieldT() && {
+  return std::move(fieldT);
+}
+
+const std::vector< ::some::valid::ns::MyEnumA>& containerStruct::get_fieldU() const& {
+  return fieldU;
+}
+
+std::vector< ::some::valid::ns::MyEnumA> containerStruct::get_fieldU() && {
+  return std::move(fieldU);
+}
+
 void swap(containerStruct& a, containerStruct& b) {
   using ::std::swap;
   swap(a.fieldA, b.fieldA);
@@ -503,6 +539,11 @@ void swap(containerStruct& a, containerStruct& b) {
   swap(a.fieldN, b.fieldN);
   swap(a.fieldO, b.fieldO);
   swap(a.fieldP, b.fieldP);
+  swap(a.fieldQ, b.fieldQ);
+  swap(a.fieldR, b.fieldR);
+  swap(a.fieldS, b.fieldS);
+  swap(a.fieldT, b.fieldT);
+  swap(a.fieldU, b.fieldU);
   swap(a.__isset, b.__isset);
 }
 

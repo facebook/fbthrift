@@ -886,6 +886,20 @@ std::vector< ::some::valid::ns::mostComplexTypeDef>& containerStruct::set_fieldP
   return fieldP;
 }
 
+template <typename T_containerStruct_fieldT_struct_setter>
+std::vector< ::some::valid::ns::MyEnumA>& containerStruct::set_fieldT(T_containerStruct_fieldT_struct_setter&& fieldT_) {
+  fieldT = std::forward<T_containerStruct_fieldT_struct_setter>(fieldT_);
+  __isset.fieldT = true;
+  return fieldT;
+}
+
+template <typename T_containerStruct_fieldU_struct_setter>
+std::vector< ::some::valid::ns::MyEnumA>& containerStruct::set_fieldU(T_containerStruct_fieldU_struct_setter&& fieldU_) {
+  fieldU = std::forward<T_containerStruct_fieldU_struct_setter>(fieldU_);
+  __isset.fieldU = true;
+  return fieldU;
+}
+
 template <class Protocol_>
 uint32_t containerStruct::read(Protocol_* iprot) {
   uint32_t xfer = 0;
@@ -966,6 +980,26 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       }
       else if (fname == "fieldP") {
         fid = 16;
+        ftype = apache::thrift::protocol::T_LIST;
+      }
+      else if (fname == "fieldQ") {
+        fid = 17;
+        ftype = apache::thrift::protocol::T_I32;
+      }
+      else if (fname == "fieldR") {
+        fid = 18;
+        ftype = apache::thrift::protocol::T_I32;
+      }
+      else if (fname == "fieldS") {
+        fid = 19;
+        ftype = apache::thrift::protocol::T_I32;
+      }
+      else if (fname == "fieldT") {
+        fid = 21;
+        ftype = apache::thrift::protocol::T_LIST;
+      }
+      else if (fname == "fieldU") {
+        fid = 22;
         ftype = apache::thrift::protocol::T_LIST;
       }
     }
@@ -1141,6 +1175,58 @@ uint32_t containerStruct::read(Protocol_* iprot) {
         }
         break;
       }
+      case 17:
+      {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::read(*iprot, this->fieldQ);
+          this->__isset.fieldQ = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 18:
+      {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::read(*iprot, this->fieldR);
+          this->__isset.fieldR = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 19:
+      {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::read(*iprot, this->fieldS);
+          this->__isset.fieldS = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 21:
+      {
+        if (ftype == apache::thrift::protocol::T_LIST) {
+          this->fieldT = std::vector< ::some::valid::ns::MyEnumA>();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::enumeration>, std::vector< ::some::valid::ns::MyEnumA>>::read(*iprot, this->fieldT);
+          this->__isset.fieldT = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 22:
+      {
+        if (ftype == apache::thrift::protocol::T_LIST) {
+          this->fieldU = std::vector< ::some::valid::ns::MyEnumA>();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::enumeration>, std::vector< ::some::valid::ns::MyEnumA>>::read(*iprot, this->fieldU);
+          this->__isset.fieldU = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
       default:
       {
         xfer += iprot->skip(ftype);
@@ -1190,6 +1276,16 @@ uint32_t containerStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>>,  ::some::valid::ns::complexStructTypeDef>::serializedSize<false>(*prot_, this->fieldO);
   xfer += prot_->serializedFieldSize("fieldP", apache::thrift::protocol::T_LIST, 16);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>>>>, std::vector< ::some::valid::ns::mostComplexTypeDef>>::serializedSize<false>(*prot_, this->fieldP);
+  xfer += prot_->serializedFieldSize("fieldQ", apache::thrift::protocol::T_I32, 17);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::serializedSize<false>(*prot_, this->fieldQ);
+  xfer += prot_->serializedFieldSize("fieldR", apache::thrift::protocol::T_I32, 18);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::serializedSize<false>(*prot_, this->fieldR);
+  xfer += prot_->serializedFieldSize("fieldS", apache::thrift::protocol::T_I32, 19);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::serializedSize<false>(*prot_, this->fieldS);
+  xfer += prot_->serializedFieldSize("fieldT", apache::thrift::protocol::T_LIST, 21);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::enumeration>, std::vector< ::some::valid::ns::MyEnumA>>::serializedSize<false>(*prot_, this->fieldT);
+  xfer += prot_->serializedFieldSize("fieldU", apache::thrift::protocol::T_LIST, 22);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::enumeration>, std::vector< ::some::valid::ns::MyEnumA>>::serializedSize<false>(*prot_, this->fieldU);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -1230,6 +1326,16 @@ uint32_t containerStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>>,  ::some::valid::ns::complexStructTypeDef>::serializedSize<false>(*prot_, this->fieldO);
   xfer += prot_->serializedFieldSize("fieldP", apache::thrift::protocol::T_LIST, 16);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>>>>, std::vector< ::some::valid::ns::mostComplexTypeDef>>::serializedSize<false>(*prot_, this->fieldP);
+  xfer += prot_->serializedFieldSize("fieldQ", apache::thrift::protocol::T_I32, 17);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::serializedSize<false>(*prot_, this->fieldQ);
+  xfer += prot_->serializedFieldSize("fieldR", apache::thrift::protocol::T_I32, 18);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::serializedSize<false>(*prot_, this->fieldR);
+  xfer += prot_->serializedFieldSize("fieldS", apache::thrift::protocol::T_I32, 19);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::serializedSize<false>(*prot_, this->fieldS);
+  xfer += prot_->serializedFieldSize("fieldT", apache::thrift::protocol::T_LIST, 21);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::enumeration>, std::vector< ::some::valid::ns::MyEnumA>>::serializedSize<false>(*prot_, this->fieldT);
+  xfer += prot_->serializedFieldSize("fieldU", apache::thrift::protocol::T_LIST, 22);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::enumeration>, std::vector< ::some::valid::ns::MyEnumA>>::serializedSize<false>(*prot_, this->fieldU);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -1285,6 +1391,21 @@ uint32_t containerStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldP", apache::thrift::protocol::T_LIST, 16);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>>>>, std::vector< ::some::valid::ns::mostComplexTypeDef>>::write(*prot_, this->fieldP);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("fieldQ", apache::thrift::protocol::T_I32, 17);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::write(*prot_, this->fieldQ);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("fieldR", apache::thrift::protocol::T_I32, 18);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::write(*prot_, this->fieldR);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("fieldS", apache::thrift::protocol::T_I32, 19);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumA>::write(*prot_, this->fieldS);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("fieldT", apache::thrift::protocol::T_LIST, 21);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::enumeration>, std::vector< ::some::valid::ns::MyEnumA>>::write(*prot_, this->fieldT);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("fieldU", apache::thrift::protocol::T_LIST, 22);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::enumeration>, std::vector< ::some::valid::ns::MyEnumA>>::write(*prot_, this->fieldU);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

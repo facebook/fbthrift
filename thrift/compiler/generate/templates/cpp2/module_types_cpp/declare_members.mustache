@@ -25,7 +25,7 @@ void Struct::__clear() {
 %>void <%struct:name%>::__clear() {
   // clear all fields
 <%#struct:fields%><%#field:type%><%!
-  %><%#type:resolves_to_base?%><%!
+  %><%#type:resolves_to_base_or_enum?%><%!
   %>  <%field:name%> = <%!
   %><%#field:value%><%!
     %><% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%><%!
@@ -34,7 +34,7 @@ void Struct::__clear() {
     %><% > module_types_cpp/unset_values%><%!
   %><%/field:value%><%!
   %><% > common/semicolon_newline%><%!
-%><%/type:resolves_to_base?%><%!
+%><%/type:resolves_to_base_or_enum?%><%!
 %><%#type:resolves_to_container?%><%!
   %>  <%field:name%>.clear();
 <%/type:resolves_to_container?%><%!

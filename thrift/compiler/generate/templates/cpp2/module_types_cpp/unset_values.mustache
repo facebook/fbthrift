@@ -18,4 +18,6 @@
 %>apache::thrift::StringTraits< std::string>::fromStringLiteral("")<%!
 %><%/type:string?%><%!
 
-%><%^type:string?%>0<%/type:string?%>
+%><%#type:enum?%>static_cast<<% > common/namespace_cpp2%><%type:name%>>(0)<%/type:enum?%><%!
+
+%><%^type:string?%><%^type:enum?%>0<%/type:enum?%><%/type:string?%>

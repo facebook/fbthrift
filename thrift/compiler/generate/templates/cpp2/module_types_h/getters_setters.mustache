@@ -16,7 +16,7 @@
 
 %><%!
 %><%#struct:fields%><%#field:type%>
-  <%#type:resolves_to_base?%>
+  <%#type:resolves_to_base_or_enum?%>
 
     <%^type:string?%>
   <% > Type%> get_<%field:name%>() const {
@@ -45,7 +45,7 @@
     return <%field:name%>;
   }
     <%/type:string?%>
-  <%/type:resolves_to_base?%>
+  <%/type:resolves_to_base_or_enum?%>
   <%#type:resolves_to_container?%>
   const <% > Type%>& get_<%field:name%>() const&;
   <% > Type%> get_<%field:name%>() &&;

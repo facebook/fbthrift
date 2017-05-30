@@ -15,7 +15,7 @@
   limitations under the License.
 
 %><%#struct:fields%><%#field:type%>
-  <%#type:resolves_to_base?%>
+  <%#type:resolves_to_base_or_enum?%>
   <%^type:string?%>
   <% > Type%>& set_<%field:name%>(<% > Type%> t = <% > Type%>()) {
     __clear();
@@ -48,7 +48,7 @@
   }
 
   <%/type:string?%>
-  <%/type:resolves_to_base?%>
+  <%/type:resolves_to_base_or_enum?%>
   <%#type:resolves_to_container?%>
   <% > Type%>& set_<%field:name%>(<% > Type%> const &t) {
     __clear();

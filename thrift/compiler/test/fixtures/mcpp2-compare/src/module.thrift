@@ -94,6 +94,11 @@ struct containerStruct {
   14: simpleTypeDef fieldN
   15: complexStructTypeDef fieldO
   16: list<mostComplexTypeDef> fieldP
+  17: MyEnumA fieldQ
+  18: MyEnumA fieldR = MyEnumA.fieldB
+  19: MyEnumA fieldS = constEnumA
+  21: list<MyEnumA> fieldT
+  22: list<MyEnumA> fieldU = [MyEnumA.fieldC, MyEnumA.fieldB, MyEnumA.fieldA]
 }
 
 struct MyIncludedStruct {

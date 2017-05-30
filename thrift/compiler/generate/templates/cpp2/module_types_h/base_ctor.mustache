@@ -37,7 +37,8 @@ Struct() :
         %><% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%><%!
       %><%/field:value%><%!
       %><%^field:value%><%!
-        %>0<%!
+        %><%#type:enum?%>static_cast<<% > common/namespace_cpp2%><%type:name%>>(0)<%/type:enum?%><%!
+        %><%^type:enum?%>0<%/type:enum?%><%!
       %><%/field:value%><%!
       %>)<% > common/comma_newline%><%!
     %><%/field:type%><%!

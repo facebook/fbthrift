@@ -253,16 +253,15 @@ mstch::map t_mstch_generator::dump(const t_const_value& value) const {
   mstch::map result{
       {"bool?", type == cv::CV_BOOL},
       {"double?", type == cv::CV_DOUBLE},
-      {"integer?", type == cv::CV_INTEGER},
+      {"integer?", type == cv::CV_INTEGER && !value.is_enum()},
+      {"enum?", type == cv::CV_INTEGER && value.is_enum()},
       {"string?", type == cv::CV_STRING},
-      {"base?", type == cv::CV_BOOL ||
-                type == cv::CV_DOUBLE ||
-                type == cv::CV_INTEGER ||
-                type == cv::CV_STRING},
+      {"base?",
+       type == cv::CV_BOOL || type == cv::CV_DOUBLE || type == cv::CV_INTEGER ||
+           type == cv::CV_STRING},
       {"map?", type == cv::CV_MAP},
       {"list?", type == cv::CV_LIST},
-      {"container?", type == cv::CV_MAP ||
-                     type == cv::CV_LIST},
+      {"container?", type == cv::CV_MAP || type == cv::CV_LIST},
   };
 
   auto const format_double_string = [](const double d) {
@@ -284,6 +283,10 @@ mstch::map t_mstch_generator::dump(const t_const_value& value) const {
       result.emplace("nonzero?", value.get_bool() == true);
       break;
     case cv::CV_INTEGER:
+      if (value.is_enum()) {
+        result.emplace("enum_name", value.get_enum()->get_name());
+        result.emplace("enum_value_name", value.get_enum_value()->get_name());
+      }
       result.emplace("value", std::to_string(value.get_integer()));
       result.emplace("integerValue", std::to_string(value.get_integer()));
       result.emplace("nonzero?", value.get_integer() != 0);

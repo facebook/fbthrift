@@ -43,10 +43,10 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
       case <%field:key%>:
       {
         if (ftype == apache::thrift::protocol::<% > module_types_tcc/struct_type%>) {
-<%#type:resolves_to_base?%>
+<%#type:resolves_to_base_or_enum?%>
           this->set_<%field:name%>();
           xfer += iprot->read<% > module_types_tcc/struct_field_type%>(this->mutable_<%field:name%>());
-<%/type:resolves_to_base?%>
+<%/type:resolves_to_base_or_enum?%>
 <%#type:resolves_to_container?%>
           this->set_<%field:name%>();
           this->mutable_<%field:name%>() = <% > Type%>();

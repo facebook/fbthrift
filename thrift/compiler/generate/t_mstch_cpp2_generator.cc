@@ -166,6 +166,7 @@ mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) const {
   // Get all base_types but strings (empty and non-empty)
   // Get all non empty strings
   // Get all non empty containers
+  // Get all enums
   std::vector<t_field*> filtered_fields;
   std::copy_if(
       s_members.begin(),
@@ -175,7 +176,7 @@ mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) const {
         const t_type* t = resolve_typedef(f->get_type());
         return (t->is_base_type() && !t->is_string()) ||
             (t->is_string() && f->get_value() != nullptr) ||
-            (t->is_container() && f->get_value() != nullptr);
+            (t->is_container() && f->get_value() != nullptr) || t->is_enum();
       });
   m.emplace("filtered_fields", this->dump_elems(filtered_fields));
 
@@ -216,7 +217,13 @@ mstch::map t_mstch_cpp2_generator::extend_type(const t_type& t) const {
   mstch::map m;
 
   m.emplace("resolves_to_base?", resolve_typedef(&t)->is_base_type());
+  m.emplace(
+      "resolves_to_base_or_enum?",
+      resolve_typedef(&t)->is_base_type() || resolve_typedef(&t)->is_enum());
   m.emplace("resolves_to_container?", resolve_typedef(&t)->is_container());
+  m.emplace(
+      "resolves_to_container_or_enum?",
+      resolve_typedef(&t)->is_container() || resolve_typedef(&t)->is_enum());
 
   return m;
 }
