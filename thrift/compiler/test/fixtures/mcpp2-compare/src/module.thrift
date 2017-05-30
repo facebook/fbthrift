@@ -47,6 +47,8 @@ union SimpleUnion {
   9: list<i32> union_list
   10: set<i64> union_set
   11: map<string, i32> union_map
+  12: MyEnumA enum_field
+  13: list<MyEnumA> enum_container
 }
 
 exception AnException {
@@ -55,6 +57,8 @@ exception AnException {
   3: list<i32> exception_list = [1, 2, 3]
   4: set<i64> exception_set
   5: map<string, i32> exception_map
+  6: MyEnumA enum_field
+  7: list<MyEnumA> enum_container
 }
 
 struct Empty {

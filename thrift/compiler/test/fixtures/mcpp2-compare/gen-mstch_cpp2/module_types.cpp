@@ -92,6 +92,16 @@ void SimpleUnion::__clear() {
       destruct(value_.union_map);
       break;
     }
+    case Type::enum_field:
+    {
+      destruct(value_.enum_field);
+      break;
+    }
+    case Type::enum_container:
+    {
+      destruct(value_.enum_container);
+      break;
+    }
     default:
     {
       assert(false);
@@ -140,6 +150,14 @@ bool SimpleUnion::operator==(const SimpleUnion& rhs) const {
     {
       return value_.union_map == rhs.value_.union_map;
     }
+    case Type::enum_field:
+    {
+      return value_.enum_field == rhs.value_.enum_field;
+    }
+    case Type::enum_container:
+    {
+      return value_.enum_container == rhs.value_.enum_container;
+    }
     default:
     {
       return true;
@@ -175,6 +193,8 @@ void AnException::__clear() {
   exception_list.clear();
   exception_set.clear();
   exception_map.clear();
+  enum_field = static_cast< ::some::valid::ns::MyEnumA>(0);
+  enum_container.clear();
   __isset.__clear();
 }
 
@@ -192,6 +212,12 @@ bool AnException::operator==(const AnException& rhs) const {
     return false;
   }
   if (!((exception_map == rhs.exception_map))) {
+    return false;
+  }
+  if (!((enum_field == rhs.enum_field))) {
+    return false;
+  }
+  if (!((enum_container == rhs.enum_container))) {
     return false;
   }
   return true;
@@ -221,6 +247,14 @@ std::map<std::string, int32_t> AnException::get_exception_map() && {
   return std::move(exception_map);
 }
 
+const std::vector< ::some::valid::ns::MyEnumA>& AnException::get_enum_container() const& {
+  return enum_container;
+}
+
+std::vector< ::some::valid::ns::MyEnumA> AnException::get_enum_container() && {
+  return std::move(enum_container);
+}
+
 void swap(AnException& a, AnException& b) {
   using ::std::swap;
   swap(a.code, b.code);
@@ -228,6 +262,8 @@ void swap(AnException& a, AnException& b) {
   swap(a.exception_list, b.exception_list);
   swap(a.exception_set, b.exception_set);
   swap(a.exception_map, b.exception_map);
+  swap(a.enum_field, b.enum_field);
+  swap(a.enum_container, b.enum_container);
   swap(a.__isset, b.__isset);
 }
 

@@ -92,6 +92,8 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
     union_list = 9,
     union_set = 10,
     union_map = 11,
+    enum_field = 12,
+    enum_container = 13,
   } ;
 
   SimpleUnion() :
@@ -145,6 +147,16 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
       case Type::union_map:
       {
         set_union_map(std::move(rhs.value_.union_map));
+        break;
+      }
+      case Type::enum_field:
+      {
+        set_enum_field(std::move(rhs.value_.enum_field));
+        break;
+      }
+      case Type::enum_container:
+      {
+        set_enum_container(std::move(rhs.value_.enum_container));
         break;
       }
       default:
@@ -206,6 +218,16 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
         set_union_map(rhs.value_.union_map);
         break;
       }
+      case Type::enum_field:
+      {
+        set_enum_field(rhs.value_.enum_field);
+        break;
+      }
+      case Type::enum_container:
+      {
+        set_enum_container(rhs.value_.enum_container);
+        break;
+      }
       default:
       {
         assert(false);
@@ -262,6 +284,16 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
       case Type::union_map:
       {
         set_union_map(std::move(rhs.value_.union_map));
+        break;
+      }
+      case Type::enum_field:
+      {
+        set_enum_field(std::move(rhs.value_.enum_field));
+        break;
+      }
+      case Type::enum_container:
+      {
+        set_enum_container(std::move(rhs.value_.enum_container));
         break;
       }
       default:
@@ -322,6 +354,16 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
       case Type::union_map:
       {
         set_union_map(rhs.value_.union_map);
+        break;
+      }
+      case Type::enum_field:
+      {
+        set_enum_field(rhs.value_.enum_field);
+        break;
+      }
+      case Type::enum_container:
+      {
+        set_enum_container(rhs.value_.enum_container);
         break;
       }
       default:
@@ -386,6 +428,18 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
   {
     set_union_map(arg.move());
   }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<12, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_enum_field(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<13, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_enum_container(arg.move());
+  }
   void __clear();
 
   virtual ~SimpleUnion() throw() {
@@ -402,6 +456,8 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
     std::vector<int32_t> union_list;
     std::set<int64_t> union_set;
     std::map<std::string, int32_t> union_map;
+     ::some::valid::ns::MyEnumA enum_field;
+    std::vector< ::some::valid::ns::MyEnumA> enum_container;
 
     storage_type() {}
     ~storage_type() {}
@@ -446,6 +502,14 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
       case Type::union_map:
       {
         return value_.union_map < rhs.value_.union_map;
+      }
+      case Type::enum_field:
+      {
+        return value_.enum_field < rhs.value_.enum_field;
+      }
+      case Type::enum_container:
+      {
+        return value_.enum_container < rhs.value_.enum_container;
       }
       default:
       {
@@ -573,6 +637,34 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
     return value_.union_map;
   }
 
+   ::some::valid::ns::MyEnumA& set_enum_field( ::some::valid::ns::MyEnumA t =  ::some::valid::ns::MyEnumA()) {
+    __clear();
+    type_ = Type::enum_field;
+    ::new (std::addressof(value_.enum_field))  ::some::valid::ns::MyEnumA(t);
+    return value_.enum_field;
+  }
+
+  std::vector< ::some::valid::ns::MyEnumA>& set_enum_container(std::vector< ::some::valid::ns::MyEnumA> const &t) {
+    __clear();
+    type_ = Type::enum_container;
+    ::new (std::addressof(value_.enum_container)) std::vector< ::some::valid::ns::MyEnumA>(t);
+    return value_.enum_container;
+  }
+
+  std::vector< ::some::valid::ns::MyEnumA>& set_enum_container(std::vector< ::some::valid::ns::MyEnumA>&& t) {
+    __clear();
+    type_ = Type::enum_container;
+    ::new (std::addressof(value_.enum_container)) std::vector< ::some::valid::ns::MyEnumA>(std::move(t));
+    return value_.enum_container;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::vector< ::some::valid::ns::MyEnumA>, T...>> std::vector< ::some::valid::ns::MyEnumA>& set_enum_container(T&&... t) {
+    __clear();
+    type_ = Type::enum_container;
+    ::new (std::addressof(value_.enum_container)) std::vector< ::some::valid::ns::MyEnumA>(std::forward<T>(t)...);
+    return value_.enum_container;
+  }
+
   int64_t const & get_intValue() const {
     assert(type_ == Type::intValue);
     return value_.intValue;
@@ -616,6 +708,16 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
   std::map<std::string, int32_t> const & get_union_map() const {
     assert(type_ == Type::union_map);
     return value_.union_map;
+  }
+
+   ::some::valid::ns::MyEnumA const & get_enum_field() const {
+    assert(type_ == Type::enum_field);
+    return value_.enum_field;
+  }
+
+  std::vector< ::some::valid::ns::MyEnumA> const & get_enum_container() const {
+    assert(type_ == Type::enum_container);
+    return value_.enum_container;
   }
 
   int64_t & mutable_intValue() {
@@ -663,6 +765,16 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
     return value_.union_map;
   }
 
+   ::some::valid::ns::MyEnumA & mutable_enum_field() {
+    assert(type_ == Type::enum_field);
+    return value_.enum_field;
+  }
+
+  std::vector< ::some::valid::ns::MyEnumA> & mutable_enum_container() {
+    assert(type_ == Type::enum_container);
+    return value_.enum_container;
+  }
+
   int64_t move_intValue() {
     assert(type_ == Type::intValue);
     return std::move(value_.intValue);
@@ -706,6 +818,16 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
   std::map<std::string, int32_t> move_union_map() {
     assert(type_ == Type::union_map);
     return std::move(value_.union_map);
+  }
+
+   ::some::valid::ns::MyEnumA move_enum_field() {
+    assert(type_ == Type::enum_field);
+    return std::move(value_.enum_field);
+  }
+
+  std::vector< ::some::valid::ns::MyEnumA> move_enum_container() {
+    assert(type_ == Type::enum_container);
+    return std::move(value_.enum_container);
   }
 
   Type getType() const { return type_; }
@@ -775,20 +897,25 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
       code(0),
       exception_list(std::initializer_list<int32_t>{1,
   2,
-  3}) {}
+  3}),
+      enum_field(static_cast< ::some::valid::ns::MyEnumA>(0)) {}
   // FragileConstructor for use in initialization lists only
 
-  AnException(apache::thrift::FragileConstructor, int32_t code__arg, std::string message__arg, std::vector<int32_t> exception_list__arg, std::set<int64_t> exception_set__arg, std::map<std::string, int32_t> exception_map__arg) :
+  AnException(apache::thrift::FragileConstructor, int32_t code__arg, std::string message__arg, std::vector<int32_t> exception_list__arg, std::set<int64_t> exception_set__arg, std::map<std::string, int32_t> exception_map__arg,  ::some::valid::ns::MyEnumA enum_field__arg, std::vector< ::some::valid::ns::MyEnumA> enum_container__arg) :
       code(std::move(code__arg)),
       message(std::move(message__arg)),
       exception_list(std::move(exception_list__arg)),
       exception_set(std::move(exception_set__arg)),
-      exception_map(std::move(exception_map__arg)) {
+      exception_map(std::move(exception_map__arg)),
+      enum_field(std::move(enum_field__arg)),
+      enum_container(std::move(enum_container__arg)) {
     __isset.code = true;
     __isset.message = true;
     __isset.exception_list = true;
     __isset.exception_set = true;
     __isset.exception_map = true;
+    __isset.enum_field = true;
+    __isset.enum_container = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   AnException(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -825,6 +952,20 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
     exception_map = arg.move();
     __isset.exception_map = true;
   }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnException(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    enum_field = arg.move();
+    __isset.enum_field = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnException(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    enum_container = arg.move();
+    __isset.enum_container = true;
+  }
 
   AnException(AnException&&) = default;
 
@@ -842,6 +983,8 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
   std::vector<int32_t> exception_list;
   std::set<int64_t> exception_set;
   std::map<std::string, int32_t> exception_map;
+   ::some::valid::ns::MyEnumA enum_field;
+  std::vector< ::some::valid::ns::MyEnumA> enum_container;
 
   struct __isset {
     void __clear() {
@@ -850,6 +993,8 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
       exception_list = false;
       exception_set = false;
       exception_map = false;
+      enum_field = false;
+      enum_container = false;
     }
 
     bool code = false;
@@ -857,6 +1002,8 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
     bool exception_list = false;
     bool exception_set = false;
     bool exception_map = false;
+    bool enum_field = false;
+    bool enum_container = false;
   } __isset;
   bool operator==(const AnException& rhs) const;
 
@@ -875,6 +1022,12 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
     }
     if (!(exception_map == rhs.exception_map)) {
       return exception_map < rhs.exception_map;
+    }
+    if (!(enum_field == rhs.enum_field)) {
+      return enum_field < rhs.enum_field;
+    }
+    if (!(enum_container == rhs.enum_container)) {
+      return enum_container < rhs.enum_container;
     }
     (void)rhs;
     return false;
@@ -916,6 +1069,20 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
   std::map<std::string, int32_t> get_exception_map() &&;
   template <typename T_AnException_exception_map_struct_setter>
   std::map<std::string, int32_t>& set_exception_map(T_AnException_exception_map_struct_setter&& exception_map_);
+
+   ::some::valid::ns::MyEnumA get_enum_field() const {
+    return enum_field;
+  }
+
+   ::some::valid::ns::MyEnumA& set_enum_field( ::some::valid::ns::MyEnumA enum_field_) {
+    enum_field = enum_field_;
+    __isset.enum_field = true;
+    return enum_field;
+  }
+  const std::vector< ::some::valid::ns::MyEnumA>& get_enum_container() const&;
+  std::vector< ::some::valid::ns::MyEnumA> get_enum_container() &&;
+  template <typename T_AnException_enum_container_struct_setter>
+  std::vector< ::some::valid::ns::MyEnumA>& set_enum_container(T_AnException_enum_container_struct_setter&& enum_container_);
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
