@@ -38,6 +38,9 @@ void Struct::__clear() {
 %><%#type:resolves_to_container?%><%!
   %>  <%field:name%>.clear();
 <%/type:resolves_to_container?%><%!
+%><%#type:struct?%>
+  ::apache::thrift::Cpp2Ops< <% > Type%>>::clear(&<%field:name%>);
+<%/type:struct?%><%!
 %><%/field:type%><%/struct:fields%><%!
 
 %><%#struct:fields?%><%!

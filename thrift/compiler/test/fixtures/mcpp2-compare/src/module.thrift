@@ -37,6 +37,16 @@ const MyEnumA constEnumA = MyEnumA.fieldB
 
 const MyEnumA constEnumB = 3
 
+struct Empty {
+}
+
+struct MyStruct {
+  1: bool MyBoolField,
+  2: i64 MyIntField = 12,
+  3: string MyStringField = "test"
+  4: string MyStringField2
+}
+
 union SimpleUnion {
   1: i64 intValue;
   3: string stringValue;
@@ -49,6 +59,8 @@ union SimpleUnion {
   11: map<string, i32> union_map
   12: MyEnumA enum_field
   13: list<MyEnumA> enum_container
+  14: MyStruct a_struct
+  15: set<MyStruct> a_set_struct
 }
 
 exception AnException {
@@ -59,16 +71,8 @@ exception AnException {
   5: map<string, i32> exception_map
   6: MyEnumA enum_field
   7: list<MyEnumA> enum_container
-}
-
-struct Empty {
-}
-
-struct MyStruct {
-  1: bool MyBoolField,
-  2: i64 MyIntField = 12,
-  3: string MyStringField = "test"
-  4: string MyStringField2
+  8: MyStruct a_struct
+  9: set<MyStruct> a_set_struct
 }
 
 typedef i32 simpleTypeDef
@@ -103,6 +107,8 @@ struct containerStruct {
   19: MyEnumA fieldS = constEnumA
   21: list<MyEnumA> fieldT
   22: list<MyEnumA> fieldU = [MyEnumA.fieldC, MyEnumA.fieldB, MyEnumA.fieldA]
+  23: MyStruct fieldV
+  24: set<MyStruct> fieldW
 }
 
 struct MyIncludedStruct {

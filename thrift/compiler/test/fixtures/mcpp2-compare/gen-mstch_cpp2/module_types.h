@@ -20,10 +20,10 @@
 
 namespace some { namespace valid { namespace ns {
 
-class SimpleUnion;
-class AnException;
 class Empty;
 class MyStruct;
+class SimpleUnion;
+class AnException;
 class containerStruct;
 class MyIncludedStruct;
 
@@ -78,1065 +78,6 @@ class MyStruct;
 typedef std::vector<std::map< ::some::valid::ns::Empty,  ::some::valid::ns::MyStruct>> complexStructTypeDef;
 
 typedef std::vector< ::some::valid::ns::complexStructTypeDef> mostComplexTypeDef;
-
-class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<SimpleUnion> {
- public:
-  enum Type {
-    __EMPTY__ = 0,
-    intValue = 1,
-    stringValue = 3,
-    intValue2 = 4,
-    intValue3 = 6,
-    doubelValue = 7,
-    boolValue = 8,
-    union_list = 9,
-    union_set = 10,
-    union_map = 11,
-    enum_field = 12,
-    enum_container = 13,
-  } ;
-
-  SimpleUnion() :
-      type_(Type::__EMPTY__) {}
-
-  SimpleUnion(SimpleUnion&& rhs) :
-      type_(Type::__EMPTY__) {
-    if (this == &rhs) {return; }
-    if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch(rhs.type_) {
-      case Type::intValue:
-      {
-        set_intValue(std::move(rhs.value_.intValue));
-        break;
-      }
-      case Type::stringValue:
-      {
-        set_stringValue(std::move(rhs.value_.stringValue));
-        break;
-      }
-      case Type::intValue2:
-      {
-        set_intValue2(std::move(rhs.value_.intValue2));
-        break;
-      }
-      case Type::intValue3:
-      {
-        set_intValue3(std::move(rhs.value_.intValue3));
-        break;
-      }
-      case Type::doubelValue:
-      {
-        set_doubelValue(std::move(rhs.value_.doubelValue));
-        break;
-      }
-      case Type::boolValue:
-      {
-        set_boolValue(std::move(rhs.value_.boolValue));
-        break;
-      }
-      case Type::union_list:
-      {
-        set_union_list(std::move(rhs.value_.union_list));
-        break;
-      }
-      case Type::union_set:
-      {
-        set_union_set(std::move(rhs.value_.union_set));
-        break;
-      }
-      case Type::union_map:
-      {
-        set_union_map(std::move(rhs.value_.union_map));
-        break;
-      }
-      case Type::enum_field:
-      {
-        set_enum_field(std::move(rhs.value_.enum_field));
-        break;
-      }
-      case Type::enum_container:
-      {
-        set_enum_container(std::move(rhs.value_.enum_container));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    rhs.__clear();
-  }
-
-  SimpleUnion(const SimpleUnion& rhs) :
-      type_(Type::__EMPTY__) {
-    if (this == &rhs) {return; }
-    if (rhs.type_ == Type::__EMPTY__) { return; }
-    switch(rhs.type_) {
-      case Type::intValue:
-      {
-        set_intValue(rhs.value_.intValue);
-        break;
-      }
-      case Type::stringValue:
-      {
-        set_stringValue(rhs.value_.stringValue);
-        break;
-      }
-      case Type::intValue2:
-      {
-        set_intValue2(rhs.value_.intValue2);
-        break;
-      }
-      case Type::intValue3:
-      {
-        set_intValue3(rhs.value_.intValue3);
-        break;
-      }
-      case Type::doubelValue:
-      {
-        set_doubelValue(rhs.value_.doubelValue);
-        break;
-      }
-      case Type::boolValue:
-      {
-        set_boolValue(rhs.value_.boolValue);
-        break;
-      }
-      case Type::union_list:
-      {
-        set_union_list(rhs.value_.union_list);
-        break;
-      }
-      case Type::union_set:
-      {
-        set_union_set(rhs.value_.union_set);
-        break;
-      }
-      case Type::union_map:
-      {
-        set_union_map(rhs.value_.union_map);
-        break;
-      }
-      case Type::enum_field:
-      {
-        set_enum_field(rhs.value_.enum_field);
-        break;
-      }
-      case Type::enum_container:
-      {
-        set_enum_container(rhs.value_.enum_container);
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-  }
-
-  SimpleUnion& operator=(SimpleUnion&& rhs) {
-    if (this == &rhs) {return *this; }
-    __clear();
-    if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch(rhs.type_) {
-      case Type::intValue:
-      {
-        set_intValue(std::move(rhs.value_.intValue));
-        break;
-      }
-      case Type::stringValue:
-      {
-        set_stringValue(std::move(rhs.value_.stringValue));
-        break;
-      }
-      case Type::intValue2:
-      {
-        set_intValue2(std::move(rhs.value_.intValue2));
-        break;
-      }
-      case Type::intValue3:
-      {
-        set_intValue3(std::move(rhs.value_.intValue3));
-        break;
-      }
-      case Type::doubelValue:
-      {
-        set_doubelValue(std::move(rhs.value_.doubelValue));
-        break;
-      }
-      case Type::boolValue:
-      {
-        set_boolValue(std::move(rhs.value_.boolValue));
-        break;
-      }
-      case Type::union_list:
-      {
-        set_union_list(std::move(rhs.value_.union_list));
-        break;
-      }
-      case Type::union_set:
-      {
-        set_union_set(std::move(rhs.value_.union_set));
-        break;
-      }
-      case Type::union_map:
-      {
-        set_union_map(std::move(rhs.value_.union_map));
-        break;
-      }
-      case Type::enum_field:
-      {
-        set_enum_field(std::move(rhs.value_.enum_field));
-        break;
-      }
-      case Type::enum_container:
-      {
-        set_enum_container(std::move(rhs.value_.enum_container));
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    rhs.__clear();
-    return *this;
-  }
-
-  SimpleUnion& operator=(const SimpleUnion& rhs) {
-    if (this == &rhs) {return *this; }
-    __clear();
-    if (rhs.type_ == Type::__EMPTY__) { return *this; }
-    switch(rhs.type_) {
-      case Type::intValue:
-      {
-        set_intValue(rhs.value_.intValue);
-        break;
-      }
-      case Type::stringValue:
-      {
-        set_stringValue(rhs.value_.stringValue);
-        break;
-      }
-      case Type::intValue2:
-      {
-        set_intValue2(rhs.value_.intValue2);
-        break;
-      }
-      case Type::intValue3:
-      {
-        set_intValue3(rhs.value_.intValue3);
-        break;
-      }
-      case Type::doubelValue:
-      {
-        set_doubelValue(rhs.value_.doubelValue);
-        break;
-      }
-      case Type::boolValue:
-      {
-        set_boolValue(rhs.value_.boolValue);
-        break;
-      }
-      case Type::union_list:
-      {
-        set_union_list(rhs.value_.union_list);
-        break;
-      }
-      case Type::union_set:
-      {
-        set_union_set(rhs.value_.union_set);
-        break;
-      }
-      case Type::union_map:
-      {
-        set_union_map(rhs.value_.union_map);
-        break;
-      }
-      case Type::enum_field:
-      {
-        set_enum_field(rhs.value_.enum_field);
-        break;
-      }
-      case Type::enum_container:
-      {
-        set_enum_container(rhs.value_.enum_container);
-        break;
-      }
-      default:
-      {
-        assert(false);
-        break;
-      }
-    }
-    return *this;
-  }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  SimpleUnion(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
-    set_intValue(arg.move());
-  }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  SimpleUnion(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
-    set_stringValue(arg.move());
-  }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  SimpleUnion(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
-    set_intValue2(arg.move());
-  }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  SimpleUnion(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
-    set_intValue3(arg.move());
-  }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  SimpleUnion(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
-    set_doubelValue(arg.move());
-  }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  SimpleUnion(::apache::thrift::detail::argument_wrapper<8, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
-    set_boolValue(arg.move());
-  }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  SimpleUnion(::apache::thrift::detail::argument_wrapper<9, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
-    set_union_list(arg.move());
-  }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  SimpleUnion(::apache::thrift::detail::argument_wrapper<10, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
-    set_union_set(arg.move());
-  }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  SimpleUnion(::apache::thrift::detail::argument_wrapper<11, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
-    set_union_map(arg.move());
-  }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  SimpleUnion(::apache::thrift::detail::argument_wrapper<12, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
-    set_enum_field(arg.move());
-  }
-  template <typename T__ThriftWrappedArgument__Ctor>
-  SimpleUnion(::apache::thrift::detail::argument_wrapper<13, T__ThriftWrappedArgument__Ctor> arg):
-    type_(Type::__EMPTY__)
-  {
-    set_enum_container(arg.move());
-  }
-  void __clear();
-
-  virtual ~SimpleUnion() throw() {
-    __clear();
-  }
-
-  union storage_type {
-    int64_t intValue;
-    std::string stringValue;
-    int16_t intValue2;
-    int32_t intValue3;
-    double doubelValue;
-    bool boolValue;
-    std::vector<int32_t> union_list;
-    std::set<int64_t> union_set;
-    std::map<std::string, int32_t> union_map;
-     ::some::valid::ns::MyEnumA enum_field;
-    std::vector< ::some::valid::ns::MyEnumA> enum_container;
-
-    storage_type() {}
-    ~storage_type() {}
-  } ;
-  bool operator==(const SimpleUnion& rhs) const;
-
-  bool operator < (const SimpleUnion& rhs) const {
-    if (type_ != rhs.type_) { return type_ < rhs.type_; }
-    switch(type_) {
-      case Type::intValue:
-      {
-        return value_.intValue < rhs.value_.intValue;
-      }
-      case Type::stringValue:
-      {
-        return value_.stringValue < rhs.value_.stringValue;
-      }
-      case Type::intValue2:
-      {
-        return value_.intValue2 < rhs.value_.intValue2;
-      }
-      case Type::intValue3:
-      {
-        return value_.intValue3 < rhs.value_.intValue3;
-      }
-      case Type::doubelValue:
-      {
-        return value_.doubelValue < rhs.value_.doubelValue;
-      }
-      case Type::boolValue:
-      {
-        return value_.boolValue < rhs.value_.boolValue;
-      }
-      case Type::union_list:
-      {
-        return value_.union_list < rhs.value_.union_list;
-      }
-      case Type::union_set:
-      {
-        return value_.union_set < rhs.value_.union_set;
-      }
-      case Type::union_map:
-      {
-        return value_.union_map < rhs.value_.union_map;
-      }
-      case Type::enum_field:
-      {
-        return value_.enum_field < rhs.value_.enum_field;
-      }
-      case Type::enum_container:
-      {
-        return value_.enum_container < rhs.value_.enum_container;
-      }
-      default:
-      {
-        return false;
-      }
-    }
-  }
-
-  int64_t& set_intValue(int64_t t = int64_t()) {
-    __clear();
-    type_ = Type::intValue;
-    ::new (std::addressof(value_.intValue)) int64_t(t);
-    return value_.intValue;
-  }
-
-  std::string& set_stringValue(std::string const &t) {
-    __clear();
-    type_ = Type::stringValue;
-    ::new (std::addressof(value_.stringValue)) std::string(t);
-    return value_.stringValue;
-  }
-
-  std::string& set_stringValue(std::string&& t) {
-    __clear();
-    type_ = Type::stringValue;
-    ::new (std::addressof(value_.stringValue)) std::string(std::move(t));
-    return value_.stringValue;
-  }
-
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::string, T...>> std::string& set_stringValue(T&&... t) {
-    __clear();
-    type_ = Type::stringValue;
-    ::new (std::addressof(value_.stringValue)) std::string(std::forward<T>(t)...);
-    return value_.stringValue;
-  }
-
-  int16_t& set_intValue2(int16_t t = int16_t()) {
-    __clear();
-    type_ = Type::intValue2;
-    ::new (std::addressof(value_.intValue2)) int16_t(t);
-    return value_.intValue2;
-  }
-
-  int32_t& set_intValue3(int32_t t = int32_t()) {
-    __clear();
-    type_ = Type::intValue3;
-    ::new (std::addressof(value_.intValue3)) int32_t(t);
-    return value_.intValue3;
-  }
-
-  double& set_doubelValue(double t = double()) {
-    __clear();
-    type_ = Type::doubelValue;
-    ::new (std::addressof(value_.doubelValue)) double(t);
-    return value_.doubelValue;
-  }
-
-  bool& set_boolValue(bool t = bool()) {
-    __clear();
-    type_ = Type::boolValue;
-    ::new (std::addressof(value_.boolValue)) bool(t);
-    return value_.boolValue;
-  }
-
-  std::vector<int32_t>& set_union_list(std::vector<int32_t> const &t) {
-    __clear();
-    type_ = Type::union_list;
-    ::new (std::addressof(value_.union_list)) std::vector<int32_t>(t);
-    return value_.union_list;
-  }
-
-  std::vector<int32_t>& set_union_list(std::vector<int32_t>&& t) {
-    __clear();
-    type_ = Type::union_list;
-    ::new (std::addressof(value_.union_list)) std::vector<int32_t>(std::move(t));
-    return value_.union_list;
-  }
-
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::vector<int32_t>, T...>> std::vector<int32_t>& set_union_list(T&&... t) {
-    __clear();
-    type_ = Type::union_list;
-    ::new (std::addressof(value_.union_list)) std::vector<int32_t>(std::forward<T>(t)...);
-    return value_.union_list;
-  }
-
-  std::set<int64_t>& set_union_set(std::set<int64_t> const &t) {
-    __clear();
-    type_ = Type::union_set;
-    ::new (std::addressof(value_.union_set)) std::set<int64_t>(t);
-    return value_.union_set;
-  }
-
-  std::set<int64_t>& set_union_set(std::set<int64_t>&& t) {
-    __clear();
-    type_ = Type::union_set;
-    ::new (std::addressof(value_.union_set)) std::set<int64_t>(std::move(t));
-    return value_.union_set;
-  }
-
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::set<int64_t>, T...>> std::set<int64_t>& set_union_set(T&&... t) {
-    __clear();
-    type_ = Type::union_set;
-    ::new (std::addressof(value_.union_set)) std::set<int64_t>(std::forward<T>(t)...);
-    return value_.union_set;
-  }
-
-  std::map<std::string, int32_t>& set_union_map(std::map<std::string, int32_t> const &t) {
-    __clear();
-    type_ = Type::union_map;
-    ::new (std::addressof(value_.union_map)) std::map<std::string, int32_t>(t);
-    return value_.union_map;
-  }
-
-  std::map<std::string, int32_t>& set_union_map(std::map<std::string, int32_t>&& t) {
-    __clear();
-    type_ = Type::union_map;
-    ::new (std::addressof(value_.union_map)) std::map<std::string, int32_t>(std::move(t));
-    return value_.union_map;
-  }
-
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::map<std::string, int32_t>, T...>> std::map<std::string, int32_t>& set_union_map(T&&... t) {
-    __clear();
-    type_ = Type::union_map;
-    ::new (std::addressof(value_.union_map)) std::map<std::string, int32_t>(std::forward<T>(t)...);
-    return value_.union_map;
-  }
-
-   ::some::valid::ns::MyEnumA& set_enum_field( ::some::valid::ns::MyEnumA t =  ::some::valid::ns::MyEnumA()) {
-    __clear();
-    type_ = Type::enum_field;
-    ::new (std::addressof(value_.enum_field))  ::some::valid::ns::MyEnumA(t);
-    return value_.enum_field;
-  }
-
-  std::vector< ::some::valid::ns::MyEnumA>& set_enum_container(std::vector< ::some::valid::ns::MyEnumA> const &t) {
-    __clear();
-    type_ = Type::enum_container;
-    ::new (std::addressof(value_.enum_container)) std::vector< ::some::valid::ns::MyEnumA>(t);
-    return value_.enum_container;
-  }
-
-  std::vector< ::some::valid::ns::MyEnumA>& set_enum_container(std::vector< ::some::valid::ns::MyEnumA>&& t) {
-    __clear();
-    type_ = Type::enum_container;
-    ::new (std::addressof(value_.enum_container)) std::vector< ::some::valid::ns::MyEnumA>(std::move(t));
-    return value_.enum_container;
-  }
-
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::vector< ::some::valid::ns::MyEnumA>, T...>> std::vector< ::some::valid::ns::MyEnumA>& set_enum_container(T&&... t) {
-    __clear();
-    type_ = Type::enum_container;
-    ::new (std::addressof(value_.enum_container)) std::vector< ::some::valid::ns::MyEnumA>(std::forward<T>(t)...);
-    return value_.enum_container;
-  }
-
-  int64_t const & get_intValue() const {
-    assert(type_ == Type::intValue);
-    return value_.intValue;
-  }
-
-  std::string const & get_stringValue() const {
-    assert(type_ == Type::stringValue);
-    return value_.stringValue;
-  }
-
-  int16_t const & get_intValue2() const {
-    assert(type_ == Type::intValue2);
-    return value_.intValue2;
-  }
-
-  int32_t const & get_intValue3() const {
-    assert(type_ == Type::intValue3);
-    return value_.intValue3;
-  }
-
-  double const & get_doubelValue() const {
-    assert(type_ == Type::doubelValue);
-    return value_.doubelValue;
-  }
-
-  bool const & get_boolValue() const {
-    assert(type_ == Type::boolValue);
-    return value_.boolValue;
-  }
-
-  std::vector<int32_t> const & get_union_list() const {
-    assert(type_ == Type::union_list);
-    return value_.union_list;
-  }
-
-  std::set<int64_t> const & get_union_set() const {
-    assert(type_ == Type::union_set);
-    return value_.union_set;
-  }
-
-  std::map<std::string, int32_t> const & get_union_map() const {
-    assert(type_ == Type::union_map);
-    return value_.union_map;
-  }
-
-   ::some::valid::ns::MyEnumA const & get_enum_field() const {
-    assert(type_ == Type::enum_field);
-    return value_.enum_field;
-  }
-
-  std::vector< ::some::valid::ns::MyEnumA> const & get_enum_container() const {
-    assert(type_ == Type::enum_container);
-    return value_.enum_container;
-  }
-
-  int64_t & mutable_intValue() {
-    assert(type_ == Type::intValue);
-    return value_.intValue;
-  }
-
-  std::string & mutable_stringValue() {
-    assert(type_ == Type::stringValue);
-    return value_.stringValue;
-  }
-
-  int16_t & mutable_intValue2() {
-    assert(type_ == Type::intValue2);
-    return value_.intValue2;
-  }
-
-  int32_t & mutable_intValue3() {
-    assert(type_ == Type::intValue3);
-    return value_.intValue3;
-  }
-
-  double & mutable_doubelValue() {
-    assert(type_ == Type::doubelValue);
-    return value_.doubelValue;
-  }
-
-  bool & mutable_boolValue() {
-    assert(type_ == Type::boolValue);
-    return value_.boolValue;
-  }
-
-  std::vector<int32_t> & mutable_union_list() {
-    assert(type_ == Type::union_list);
-    return value_.union_list;
-  }
-
-  std::set<int64_t> & mutable_union_set() {
-    assert(type_ == Type::union_set);
-    return value_.union_set;
-  }
-
-  std::map<std::string, int32_t> & mutable_union_map() {
-    assert(type_ == Type::union_map);
-    return value_.union_map;
-  }
-
-   ::some::valid::ns::MyEnumA & mutable_enum_field() {
-    assert(type_ == Type::enum_field);
-    return value_.enum_field;
-  }
-
-  std::vector< ::some::valid::ns::MyEnumA> & mutable_enum_container() {
-    assert(type_ == Type::enum_container);
-    return value_.enum_container;
-  }
-
-  int64_t move_intValue() {
-    assert(type_ == Type::intValue);
-    return std::move(value_.intValue);
-  }
-
-  std::string move_stringValue() {
-    assert(type_ == Type::stringValue);
-    return std::move(value_.stringValue);
-  }
-
-  int16_t move_intValue2() {
-    assert(type_ == Type::intValue2);
-    return std::move(value_.intValue2);
-  }
-
-  int32_t move_intValue3() {
-    assert(type_ == Type::intValue3);
-    return std::move(value_.intValue3);
-  }
-
-  double move_doubelValue() {
-    assert(type_ == Type::doubelValue);
-    return std::move(value_.doubelValue);
-  }
-
-  bool move_boolValue() {
-    assert(type_ == Type::boolValue);
-    return std::move(value_.boolValue);
-  }
-
-  std::vector<int32_t> move_union_list() {
-    assert(type_ == Type::union_list);
-    return std::move(value_.union_list);
-  }
-
-  std::set<int64_t> move_union_set() {
-    assert(type_ == Type::union_set);
-    return std::move(value_.union_set);
-  }
-
-  std::map<std::string, int32_t> move_union_map() {
-    assert(type_ == Type::union_map);
-    return std::move(value_.union_map);
-  }
-
-   ::some::valid::ns::MyEnumA move_enum_field() {
-    assert(type_ == Type::enum_field);
-    return std::move(value_.enum_field);
-  }
-
-  std::vector< ::some::valid::ns::MyEnumA> move_enum_container() {
-    assert(type_ == Type::enum_container);
-    return std::move(value_.enum_container);
-  }
-
-  Type getType() const { return type_; }
-
-  template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
-  template <class Protocol_>
-  uint32_t serializedSize(Protocol_ const* prot_) const;
-  template <class Protocol_>
-  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
-  template <class Protocol_>
-  uint32_t write(Protocol_* prot_) const;
- protected:
-  template <class T>
-  void destruct(T &val) {
-    (&val)->~T();
-  }
-
-  Type type_;
-  storage_type value_;
-};
-
-void swap(SimpleUnion& a, SimpleUnion& b);
-extern template uint32_t SimpleUnion::read<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t SimpleUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t SimpleUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t SimpleUnion::read<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t SimpleUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t SimpleUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-}}} // some::valid::ns
-namespace apache { namespace thrift {
-
-template <> inline void Cpp2Ops< ::some::valid::ns::SimpleUnion>::clear( ::some::valid::ns::SimpleUnion* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::SimpleUnion>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::SimpleUnion>::write(Protocol* proto,  ::some::valid::ns::SimpleUnion const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::SimpleUnion>::read(Protocol* proto,  ::some::valid::ns::SimpleUnion* obj) {
-  return obj->read(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::SimpleUnion>::serializedSize(Protocol const* proto,  ::some::valid::ns::SimpleUnion const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::SimpleUnion>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::SimpleUnion const* obj) {
-  return obj->serializedSizeZC(proto);
-}
-
-}} // apache::thrift
-namespace some { namespace valid { namespace ns {
-
-class AnException : private apache::thrift::detail::st::ComparisonOperators<AnException>, public apache::thrift::TException {
- public:
-
-  AnException() :
-      code(0),
-      exception_list(std::initializer_list<int32_t>{1,
-  2,
-  3}),
-      enum_field(static_cast< ::some::valid::ns::MyEnumA>(0)) {}
-  // FragileConstructor for use in initialization lists only
-
-  AnException(apache::thrift::FragileConstructor, int32_t code__arg, std::string message__arg, std::vector<int32_t> exception_list__arg, std::set<int64_t> exception_set__arg, std::map<std::string, int32_t> exception_map__arg,  ::some::valid::ns::MyEnumA enum_field__arg, std::vector< ::some::valid::ns::MyEnumA> enum_container__arg) :
-      code(std::move(code__arg)),
-      message(std::move(message__arg)),
-      exception_list(std::move(exception_list__arg)),
-      exception_set(std::move(exception_set__arg)),
-      exception_map(std::move(exception_map__arg)),
-      enum_field(std::move(enum_field__arg)),
-      enum_container(std::move(enum_container__arg)) {
-    __isset.code = true;
-    __isset.message = true;
-    __isset.exception_list = true;
-    __isset.exception_set = true;
-    __isset.exception_map = true;
-    __isset.enum_field = true;
-    __isset.enum_container = true;
-  }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnException(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    code = arg.move();
-    __isset.code = true;
-  }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnException(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    message = arg.move();
-    __isset.message = true;
-  }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnException(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    exception_list = arg.move();
-    __isset.exception_list = true;
-  }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnException(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    exception_set = arg.move();
-    __isset.exception_set = true;
-  }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnException(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    exception_map = arg.move();
-    __isset.exception_map = true;
-  }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnException(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    enum_field = arg.move();
-    __isset.enum_field = true;
-  }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnException(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    enum_container = arg.move();
-    __isset.enum_container = true;
-  }
-
-  AnException(AnException&&) = default;
-
-  AnException(const AnException&) = default;
-
-  AnException& operator=(AnException&&) = default;
-
-  AnException& operator=(const AnException&) = default;
-  void __clear();
-
-  virtual ~AnException() throw() {}
-
-  int32_t code;
-  std::string message;
-  std::vector<int32_t> exception_list;
-  std::set<int64_t> exception_set;
-  std::map<std::string, int32_t> exception_map;
-   ::some::valid::ns::MyEnumA enum_field;
-  std::vector< ::some::valid::ns::MyEnumA> enum_container;
-
-  struct __isset {
-    void __clear() {
-      code = false;
-      message = false;
-      exception_list = false;
-      exception_set = false;
-      exception_map = false;
-      enum_field = false;
-      enum_container = false;
-    }
-
-    bool code = false;
-    bool message = false;
-    bool exception_list = false;
-    bool exception_set = false;
-    bool exception_map = false;
-    bool enum_field = false;
-    bool enum_container = false;
-  } __isset;
-  bool operator==(const AnException& rhs) const;
-
-  bool operator < (const AnException& rhs) const {
-    if (!(code == rhs.code)) {
-      return code < rhs.code;
-    }
-    if (!(message == rhs.message)) {
-      return message < rhs.message;
-    }
-    if (!(exception_list == rhs.exception_list)) {
-      return exception_list < rhs.exception_list;
-    }
-    if (!(exception_set == rhs.exception_set)) {
-      return exception_set < rhs.exception_set;
-    }
-    if (!(exception_map == rhs.exception_map)) {
-      return exception_map < rhs.exception_map;
-    }
-    if (!(enum_field == rhs.enum_field)) {
-      return enum_field < rhs.enum_field;
-    }
-    if (!(enum_container == rhs.enum_container)) {
-      return enum_container < rhs.enum_container;
-    }
-    (void)rhs;
-    return false;
-  }
-
-  int32_t get_code() const {
-    return code;
-  }
-
-  int32_t& set_code(int32_t code_) {
-    code = code_;
-    __isset.code = true;
-    return code;
-  }
-
-  const std::string& get_message() const& {
-    return message;
-  }
-
-  std::string get_message() && {
-    return std::move(message);
-  }
-
-  template <typename T_AnException_message_struct_setter>
-  std::string& set_message(T_AnException_message_struct_setter&& message_) {
-    message = std::forward<T_AnException_message_struct_setter>(message_);
-    __isset.message = true;
-    return message;
-  }
-  const std::vector<int32_t>& get_exception_list() const&;
-  std::vector<int32_t> get_exception_list() &&;
-  template <typename T_AnException_exception_list_struct_setter>
-  std::vector<int32_t>& set_exception_list(T_AnException_exception_list_struct_setter&& exception_list_);
-  const std::set<int64_t>& get_exception_set() const&;
-  std::set<int64_t> get_exception_set() &&;
-  template <typename T_AnException_exception_set_struct_setter>
-  std::set<int64_t>& set_exception_set(T_AnException_exception_set_struct_setter&& exception_set_);
-  const std::map<std::string, int32_t>& get_exception_map() const&;
-  std::map<std::string, int32_t> get_exception_map() &&;
-  template <typename T_AnException_exception_map_struct_setter>
-  std::map<std::string, int32_t>& set_exception_map(T_AnException_exception_map_struct_setter&& exception_map_);
-
-   ::some::valid::ns::MyEnumA get_enum_field() const {
-    return enum_field;
-  }
-
-   ::some::valid::ns::MyEnumA& set_enum_field( ::some::valid::ns::MyEnumA enum_field_) {
-    enum_field = enum_field_;
-    __isset.enum_field = true;
-    return enum_field;
-  }
-  const std::vector< ::some::valid::ns::MyEnumA>& get_enum_container() const&;
-  std::vector< ::some::valid::ns::MyEnumA> get_enum_container() &&;
-  template <typename T_AnException_enum_container_struct_setter>
-  std::vector< ::some::valid::ns::MyEnumA>& set_enum_container(T_AnException_enum_container_struct_setter&& enum_container_);
-
-  template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
-  template <class Protocol_>
-  uint32_t serializedSize(Protocol_ const* prot_) const;
-  template <class Protocol_>
-  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
-  template <class Protocol_>
-  uint32_t write(Protocol_* prot_) const;
-
-  virtual const char* what() const throw() {
-    return " ::some::valid::ns::AnException";
-  }
-};
-
-void swap(AnException& a, AnException& b);
-extern template uint32_t AnException::read<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t AnException::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t AnException::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t AnException::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t AnException::read<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t AnException::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t AnException::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t AnException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-}}} // some::valid::ns
-namespace apache { namespace thrift {
-
-template <> inline void Cpp2Ops< ::some::valid::ns::AnException>::clear( ::some::valid::ns::AnException* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::AnException>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnException>::write(Protocol* proto,  ::some::valid::ns::AnException const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnException>::read(Protocol* proto,  ::some::valid::ns::AnException* obj) {
-  return obj->read(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnException>::serializedSize(Protocol const* proto,  ::some::valid::ns::AnException const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnException>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::AnException const* obj) {
-  return obj->serializedSizeZC(proto);
-}
-
-}} // apache::thrift
-namespace some { namespace valid { namespace ns {
 
 class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
  public:
@@ -1410,6 +351,1239 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::MyStr
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
+class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<SimpleUnion> {
+ public:
+  enum Type {
+    __EMPTY__ = 0,
+    intValue = 1,
+    stringValue = 3,
+    intValue2 = 4,
+    intValue3 = 6,
+    doubelValue = 7,
+    boolValue = 8,
+    union_list = 9,
+    union_set = 10,
+    union_map = 11,
+    enum_field = 12,
+    enum_container = 13,
+    a_struct = 14,
+    a_set_struct = 15,
+  } ;
+
+  SimpleUnion() :
+      type_(Type::__EMPTY__) {}
+
+  SimpleUnion(SimpleUnion&& rhs) :
+      type_(Type::__EMPTY__) {
+    if (this == &rhs) {return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch(rhs.type_) {
+      case Type::intValue:
+      {
+        set_intValue(std::move(rhs.value_.intValue));
+        break;
+      }
+      case Type::stringValue:
+      {
+        set_stringValue(std::move(rhs.value_.stringValue));
+        break;
+      }
+      case Type::intValue2:
+      {
+        set_intValue2(std::move(rhs.value_.intValue2));
+        break;
+      }
+      case Type::intValue3:
+      {
+        set_intValue3(std::move(rhs.value_.intValue3));
+        break;
+      }
+      case Type::doubelValue:
+      {
+        set_doubelValue(std::move(rhs.value_.doubelValue));
+        break;
+      }
+      case Type::boolValue:
+      {
+        set_boolValue(std::move(rhs.value_.boolValue));
+        break;
+      }
+      case Type::union_list:
+      {
+        set_union_list(std::move(rhs.value_.union_list));
+        break;
+      }
+      case Type::union_set:
+      {
+        set_union_set(std::move(rhs.value_.union_set));
+        break;
+      }
+      case Type::union_map:
+      {
+        set_union_map(std::move(rhs.value_.union_map));
+        break;
+      }
+      case Type::enum_field:
+      {
+        set_enum_field(std::move(rhs.value_.enum_field));
+        break;
+      }
+      case Type::enum_container:
+      {
+        set_enum_container(std::move(rhs.value_.enum_container));
+        break;
+      }
+      case Type::a_struct:
+      {
+        set_a_struct(std::move(rhs.value_.a_struct));
+        break;
+      }
+      case Type::a_set_struct:
+      {
+        set_a_set_struct(std::move(rhs.value_.a_set_struct));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+  }
+
+  SimpleUnion(const SimpleUnion& rhs) :
+      type_(Type::__EMPTY__) {
+    if (this == &rhs) {return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch(rhs.type_) {
+      case Type::intValue:
+      {
+        set_intValue(rhs.value_.intValue);
+        break;
+      }
+      case Type::stringValue:
+      {
+        set_stringValue(rhs.value_.stringValue);
+        break;
+      }
+      case Type::intValue2:
+      {
+        set_intValue2(rhs.value_.intValue2);
+        break;
+      }
+      case Type::intValue3:
+      {
+        set_intValue3(rhs.value_.intValue3);
+        break;
+      }
+      case Type::doubelValue:
+      {
+        set_doubelValue(rhs.value_.doubelValue);
+        break;
+      }
+      case Type::boolValue:
+      {
+        set_boolValue(rhs.value_.boolValue);
+        break;
+      }
+      case Type::union_list:
+      {
+        set_union_list(rhs.value_.union_list);
+        break;
+      }
+      case Type::union_set:
+      {
+        set_union_set(rhs.value_.union_set);
+        break;
+      }
+      case Type::union_map:
+      {
+        set_union_map(rhs.value_.union_map);
+        break;
+      }
+      case Type::enum_field:
+      {
+        set_enum_field(rhs.value_.enum_field);
+        break;
+      }
+      case Type::enum_container:
+      {
+        set_enum_container(rhs.value_.enum_container);
+        break;
+      }
+      case Type::a_struct:
+      {
+        set_a_struct(rhs.value_.a_struct);
+        break;
+      }
+      case Type::a_set_struct:
+      {
+        set_a_set_struct(rhs.value_.a_set_struct);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+  }
+
+  SimpleUnion& operator=(SimpleUnion&& rhs) {
+    if (this == &rhs) {return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch(rhs.type_) {
+      case Type::intValue:
+      {
+        set_intValue(std::move(rhs.value_.intValue));
+        break;
+      }
+      case Type::stringValue:
+      {
+        set_stringValue(std::move(rhs.value_.stringValue));
+        break;
+      }
+      case Type::intValue2:
+      {
+        set_intValue2(std::move(rhs.value_.intValue2));
+        break;
+      }
+      case Type::intValue3:
+      {
+        set_intValue3(std::move(rhs.value_.intValue3));
+        break;
+      }
+      case Type::doubelValue:
+      {
+        set_doubelValue(std::move(rhs.value_.doubelValue));
+        break;
+      }
+      case Type::boolValue:
+      {
+        set_boolValue(std::move(rhs.value_.boolValue));
+        break;
+      }
+      case Type::union_list:
+      {
+        set_union_list(std::move(rhs.value_.union_list));
+        break;
+      }
+      case Type::union_set:
+      {
+        set_union_set(std::move(rhs.value_.union_set));
+        break;
+      }
+      case Type::union_map:
+      {
+        set_union_map(std::move(rhs.value_.union_map));
+        break;
+      }
+      case Type::enum_field:
+      {
+        set_enum_field(std::move(rhs.value_.enum_field));
+        break;
+      }
+      case Type::enum_container:
+      {
+        set_enum_container(std::move(rhs.value_.enum_container));
+        break;
+      }
+      case Type::a_struct:
+      {
+        set_a_struct(std::move(rhs.value_.a_struct));
+        break;
+      }
+      case Type::a_set_struct:
+      {
+        set_a_set_struct(std::move(rhs.value_.a_set_struct));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+    return *this;
+  }
+
+  SimpleUnion& operator=(const SimpleUnion& rhs) {
+    if (this == &rhs) {return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch(rhs.type_) {
+      case Type::intValue:
+      {
+        set_intValue(rhs.value_.intValue);
+        break;
+      }
+      case Type::stringValue:
+      {
+        set_stringValue(rhs.value_.stringValue);
+        break;
+      }
+      case Type::intValue2:
+      {
+        set_intValue2(rhs.value_.intValue2);
+        break;
+      }
+      case Type::intValue3:
+      {
+        set_intValue3(rhs.value_.intValue3);
+        break;
+      }
+      case Type::doubelValue:
+      {
+        set_doubelValue(rhs.value_.doubelValue);
+        break;
+      }
+      case Type::boolValue:
+      {
+        set_boolValue(rhs.value_.boolValue);
+        break;
+      }
+      case Type::union_list:
+      {
+        set_union_list(rhs.value_.union_list);
+        break;
+      }
+      case Type::union_set:
+      {
+        set_union_set(rhs.value_.union_set);
+        break;
+      }
+      case Type::union_map:
+      {
+        set_union_map(rhs.value_.union_map);
+        break;
+      }
+      case Type::enum_field:
+      {
+        set_enum_field(rhs.value_.enum_field);
+        break;
+      }
+      case Type::enum_container:
+      {
+        set_enum_container(rhs.value_.enum_container);
+        break;
+      }
+      case Type::a_struct:
+      {
+        set_a_struct(rhs.value_.a_struct);
+        break;
+      }
+      case Type::a_set_struct:
+      {
+        set_a_set_struct(rhs.value_.a_set_struct);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    return *this;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_intValue(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_stringValue(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_intValue2(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_intValue3(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_doubelValue(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<8, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_boolValue(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<9, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_union_list(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<10, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_union_set(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<11, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_union_map(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<12, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_enum_field(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<13, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_enum_container(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<14, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_a_struct(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<15, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_a_set_struct(arg.move());
+  }
+  void __clear();
+
+  virtual ~SimpleUnion() throw() {
+    __clear();
+  }
+
+  union storage_type {
+    int64_t intValue;
+    std::string stringValue;
+    int16_t intValue2;
+    int32_t intValue3;
+    double doubelValue;
+    bool boolValue;
+    std::vector<int32_t> union_list;
+    std::set<int64_t> union_set;
+    std::map<std::string, int32_t> union_map;
+     ::some::valid::ns::MyEnumA enum_field;
+    std::vector< ::some::valid::ns::MyEnumA> enum_container;
+     ::some::valid::ns::MyStruct a_struct;
+    std::set< ::some::valid::ns::MyStruct> a_set_struct;
+
+    storage_type() {}
+    ~storage_type() {}
+  } ;
+  bool operator==(const SimpleUnion& rhs) const;
+
+  bool operator < (const SimpleUnion& rhs) const {
+    if (type_ != rhs.type_) { return type_ < rhs.type_; }
+    switch(type_) {
+      case Type::intValue:
+      {
+        return value_.intValue < rhs.value_.intValue;
+      }
+      case Type::stringValue:
+      {
+        return value_.stringValue < rhs.value_.stringValue;
+      }
+      case Type::intValue2:
+      {
+        return value_.intValue2 < rhs.value_.intValue2;
+      }
+      case Type::intValue3:
+      {
+        return value_.intValue3 < rhs.value_.intValue3;
+      }
+      case Type::doubelValue:
+      {
+        return value_.doubelValue < rhs.value_.doubelValue;
+      }
+      case Type::boolValue:
+      {
+        return value_.boolValue < rhs.value_.boolValue;
+      }
+      case Type::union_list:
+      {
+        return value_.union_list < rhs.value_.union_list;
+      }
+      case Type::union_set:
+      {
+        return value_.union_set < rhs.value_.union_set;
+      }
+      case Type::union_map:
+      {
+        return value_.union_map < rhs.value_.union_map;
+      }
+      case Type::enum_field:
+      {
+        return value_.enum_field < rhs.value_.enum_field;
+      }
+      case Type::enum_container:
+      {
+        return value_.enum_container < rhs.value_.enum_container;
+      }
+      case Type::a_struct:
+      {
+        return value_.a_struct < rhs.value_.a_struct;
+      }
+      case Type::a_set_struct:
+      {
+        return value_.a_set_struct < rhs.value_.a_set_struct;
+      }
+      default:
+      {
+        return false;
+      }
+    }
+  }
+
+  int64_t& set_intValue(int64_t t = int64_t()) {
+    __clear();
+    type_ = Type::intValue;
+    ::new (std::addressof(value_.intValue)) int64_t(t);
+    return value_.intValue;
+  }
+
+  std::string& set_stringValue(std::string const &t) {
+    __clear();
+    type_ = Type::stringValue;
+    ::new (std::addressof(value_.stringValue)) std::string(t);
+    return value_.stringValue;
+  }
+
+  std::string& set_stringValue(std::string&& t) {
+    __clear();
+    type_ = Type::stringValue;
+    ::new (std::addressof(value_.stringValue)) std::string(std::move(t));
+    return value_.stringValue;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::string, T...>> std::string& set_stringValue(T&&... t) {
+    __clear();
+    type_ = Type::stringValue;
+    ::new (std::addressof(value_.stringValue)) std::string(std::forward<T>(t)...);
+    return value_.stringValue;
+  }
+
+  int16_t& set_intValue2(int16_t t = int16_t()) {
+    __clear();
+    type_ = Type::intValue2;
+    ::new (std::addressof(value_.intValue2)) int16_t(t);
+    return value_.intValue2;
+  }
+
+  int32_t& set_intValue3(int32_t t = int32_t()) {
+    __clear();
+    type_ = Type::intValue3;
+    ::new (std::addressof(value_.intValue3)) int32_t(t);
+    return value_.intValue3;
+  }
+
+  double& set_doubelValue(double t = double()) {
+    __clear();
+    type_ = Type::doubelValue;
+    ::new (std::addressof(value_.doubelValue)) double(t);
+    return value_.doubelValue;
+  }
+
+  bool& set_boolValue(bool t = bool()) {
+    __clear();
+    type_ = Type::boolValue;
+    ::new (std::addressof(value_.boolValue)) bool(t);
+    return value_.boolValue;
+  }
+
+  std::vector<int32_t>& set_union_list(std::vector<int32_t> const &t) {
+    __clear();
+    type_ = Type::union_list;
+    ::new (std::addressof(value_.union_list)) std::vector<int32_t>(t);
+    return value_.union_list;
+  }
+
+  std::vector<int32_t>& set_union_list(std::vector<int32_t>&& t) {
+    __clear();
+    type_ = Type::union_list;
+    ::new (std::addressof(value_.union_list)) std::vector<int32_t>(std::move(t));
+    return value_.union_list;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::vector<int32_t>, T...>> std::vector<int32_t>& set_union_list(T&&... t) {
+    __clear();
+    type_ = Type::union_list;
+    ::new (std::addressof(value_.union_list)) std::vector<int32_t>(std::forward<T>(t)...);
+    return value_.union_list;
+  }
+
+  std::set<int64_t>& set_union_set(std::set<int64_t> const &t) {
+    __clear();
+    type_ = Type::union_set;
+    ::new (std::addressof(value_.union_set)) std::set<int64_t>(t);
+    return value_.union_set;
+  }
+
+  std::set<int64_t>& set_union_set(std::set<int64_t>&& t) {
+    __clear();
+    type_ = Type::union_set;
+    ::new (std::addressof(value_.union_set)) std::set<int64_t>(std::move(t));
+    return value_.union_set;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::set<int64_t>, T...>> std::set<int64_t>& set_union_set(T&&... t) {
+    __clear();
+    type_ = Type::union_set;
+    ::new (std::addressof(value_.union_set)) std::set<int64_t>(std::forward<T>(t)...);
+    return value_.union_set;
+  }
+
+  std::map<std::string, int32_t>& set_union_map(std::map<std::string, int32_t> const &t) {
+    __clear();
+    type_ = Type::union_map;
+    ::new (std::addressof(value_.union_map)) std::map<std::string, int32_t>(t);
+    return value_.union_map;
+  }
+
+  std::map<std::string, int32_t>& set_union_map(std::map<std::string, int32_t>&& t) {
+    __clear();
+    type_ = Type::union_map;
+    ::new (std::addressof(value_.union_map)) std::map<std::string, int32_t>(std::move(t));
+    return value_.union_map;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::map<std::string, int32_t>, T...>> std::map<std::string, int32_t>& set_union_map(T&&... t) {
+    __clear();
+    type_ = Type::union_map;
+    ::new (std::addressof(value_.union_map)) std::map<std::string, int32_t>(std::forward<T>(t)...);
+    return value_.union_map;
+  }
+
+   ::some::valid::ns::MyEnumA& set_enum_field( ::some::valid::ns::MyEnumA t =  ::some::valid::ns::MyEnumA()) {
+    __clear();
+    type_ = Type::enum_field;
+    ::new (std::addressof(value_.enum_field))  ::some::valid::ns::MyEnumA(t);
+    return value_.enum_field;
+  }
+
+  std::vector< ::some::valid::ns::MyEnumA>& set_enum_container(std::vector< ::some::valid::ns::MyEnumA> const &t) {
+    __clear();
+    type_ = Type::enum_container;
+    ::new (std::addressof(value_.enum_container)) std::vector< ::some::valid::ns::MyEnumA>(t);
+    return value_.enum_container;
+  }
+
+  std::vector< ::some::valid::ns::MyEnumA>& set_enum_container(std::vector< ::some::valid::ns::MyEnumA>&& t) {
+    __clear();
+    type_ = Type::enum_container;
+    ::new (std::addressof(value_.enum_container)) std::vector< ::some::valid::ns::MyEnumA>(std::move(t));
+    return value_.enum_container;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::vector< ::some::valid::ns::MyEnumA>, T...>> std::vector< ::some::valid::ns::MyEnumA>& set_enum_container(T&&... t) {
+    __clear();
+    type_ = Type::enum_container;
+    ::new (std::addressof(value_.enum_container)) std::vector< ::some::valid::ns::MyEnumA>(std::forward<T>(t)...);
+    return value_.enum_container;
+  }
+
+   ::some::valid::ns::MyStruct& set_a_struct( ::some::valid::ns::MyStruct const &t) {
+    __clear();
+    type_ = Type::a_struct;
+    ::new (std::addressof(value_.a_struct))  ::some::valid::ns::MyStruct(t);
+    return value_.a_struct;
+  }
+
+   ::some::valid::ns::MyStruct& set_a_struct( ::some::valid::ns::MyStruct&& t) {
+    __clear();
+    type_ = Type::a_struct;
+    ::new (std::addressof(value_.a_struct))  ::some::valid::ns::MyStruct(std::move(t));
+    return value_.a_struct;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::some::valid::ns::MyStruct, T...>>  ::some::valid::ns::MyStruct& set_a_struct(T&&... t) {
+    __clear();
+    type_ = Type::a_struct;
+    ::new (std::addressof(value_.a_struct))  ::some::valid::ns::MyStruct(std::forward<T>(t)...);
+    return value_.a_struct;
+  }
+
+  std::set< ::some::valid::ns::MyStruct>& set_a_set_struct(std::set< ::some::valid::ns::MyStruct> const &t) {
+    __clear();
+    type_ = Type::a_set_struct;
+    ::new (std::addressof(value_.a_set_struct)) std::set< ::some::valid::ns::MyStruct>(t);
+    return value_.a_set_struct;
+  }
+
+  std::set< ::some::valid::ns::MyStruct>& set_a_set_struct(std::set< ::some::valid::ns::MyStruct>&& t) {
+    __clear();
+    type_ = Type::a_set_struct;
+    ::new (std::addressof(value_.a_set_struct)) std::set< ::some::valid::ns::MyStruct>(std::move(t));
+    return value_.a_set_struct;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::set< ::some::valid::ns::MyStruct>, T...>> std::set< ::some::valid::ns::MyStruct>& set_a_set_struct(T&&... t) {
+    __clear();
+    type_ = Type::a_set_struct;
+    ::new (std::addressof(value_.a_set_struct)) std::set< ::some::valid::ns::MyStruct>(std::forward<T>(t)...);
+    return value_.a_set_struct;
+  }
+
+  int64_t const & get_intValue() const {
+    assert(type_ == Type::intValue);
+    return value_.intValue;
+  }
+
+  std::string const & get_stringValue() const {
+    assert(type_ == Type::stringValue);
+    return value_.stringValue;
+  }
+
+  int16_t const & get_intValue2() const {
+    assert(type_ == Type::intValue2);
+    return value_.intValue2;
+  }
+
+  int32_t const & get_intValue3() const {
+    assert(type_ == Type::intValue3);
+    return value_.intValue3;
+  }
+
+  double const & get_doubelValue() const {
+    assert(type_ == Type::doubelValue);
+    return value_.doubelValue;
+  }
+
+  bool const & get_boolValue() const {
+    assert(type_ == Type::boolValue);
+    return value_.boolValue;
+  }
+
+  std::vector<int32_t> const & get_union_list() const {
+    assert(type_ == Type::union_list);
+    return value_.union_list;
+  }
+
+  std::set<int64_t> const & get_union_set() const {
+    assert(type_ == Type::union_set);
+    return value_.union_set;
+  }
+
+  std::map<std::string, int32_t> const & get_union_map() const {
+    assert(type_ == Type::union_map);
+    return value_.union_map;
+  }
+
+   ::some::valid::ns::MyEnumA const & get_enum_field() const {
+    assert(type_ == Type::enum_field);
+    return value_.enum_field;
+  }
+
+  std::vector< ::some::valid::ns::MyEnumA> const & get_enum_container() const {
+    assert(type_ == Type::enum_container);
+    return value_.enum_container;
+  }
+
+   ::some::valid::ns::MyStruct const & get_a_struct() const {
+    assert(type_ == Type::a_struct);
+    return value_.a_struct;
+  }
+
+  std::set< ::some::valid::ns::MyStruct> const & get_a_set_struct() const {
+    assert(type_ == Type::a_set_struct);
+    return value_.a_set_struct;
+  }
+
+  int64_t & mutable_intValue() {
+    assert(type_ == Type::intValue);
+    return value_.intValue;
+  }
+
+  std::string & mutable_stringValue() {
+    assert(type_ == Type::stringValue);
+    return value_.stringValue;
+  }
+
+  int16_t & mutable_intValue2() {
+    assert(type_ == Type::intValue2);
+    return value_.intValue2;
+  }
+
+  int32_t & mutable_intValue3() {
+    assert(type_ == Type::intValue3);
+    return value_.intValue3;
+  }
+
+  double & mutable_doubelValue() {
+    assert(type_ == Type::doubelValue);
+    return value_.doubelValue;
+  }
+
+  bool & mutable_boolValue() {
+    assert(type_ == Type::boolValue);
+    return value_.boolValue;
+  }
+
+  std::vector<int32_t> & mutable_union_list() {
+    assert(type_ == Type::union_list);
+    return value_.union_list;
+  }
+
+  std::set<int64_t> & mutable_union_set() {
+    assert(type_ == Type::union_set);
+    return value_.union_set;
+  }
+
+  std::map<std::string, int32_t> & mutable_union_map() {
+    assert(type_ == Type::union_map);
+    return value_.union_map;
+  }
+
+   ::some::valid::ns::MyEnumA & mutable_enum_field() {
+    assert(type_ == Type::enum_field);
+    return value_.enum_field;
+  }
+
+  std::vector< ::some::valid::ns::MyEnumA> & mutable_enum_container() {
+    assert(type_ == Type::enum_container);
+    return value_.enum_container;
+  }
+
+   ::some::valid::ns::MyStruct & mutable_a_struct() {
+    assert(type_ == Type::a_struct);
+    return value_.a_struct;
+  }
+
+  std::set< ::some::valid::ns::MyStruct> & mutable_a_set_struct() {
+    assert(type_ == Type::a_set_struct);
+    return value_.a_set_struct;
+  }
+
+  int64_t move_intValue() {
+    assert(type_ == Type::intValue);
+    return std::move(value_.intValue);
+  }
+
+  std::string move_stringValue() {
+    assert(type_ == Type::stringValue);
+    return std::move(value_.stringValue);
+  }
+
+  int16_t move_intValue2() {
+    assert(type_ == Type::intValue2);
+    return std::move(value_.intValue2);
+  }
+
+  int32_t move_intValue3() {
+    assert(type_ == Type::intValue3);
+    return std::move(value_.intValue3);
+  }
+
+  double move_doubelValue() {
+    assert(type_ == Type::doubelValue);
+    return std::move(value_.doubelValue);
+  }
+
+  bool move_boolValue() {
+    assert(type_ == Type::boolValue);
+    return std::move(value_.boolValue);
+  }
+
+  std::vector<int32_t> move_union_list() {
+    assert(type_ == Type::union_list);
+    return std::move(value_.union_list);
+  }
+
+  std::set<int64_t> move_union_set() {
+    assert(type_ == Type::union_set);
+    return std::move(value_.union_set);
+  }
+
+  std::map<std::string, int32_t> move_union_map() {
+    assert(type_ == Type::union_map);
+    return std::move(value_.union_map);
+  }
+
+   ::some::valid::ns::MyEnumA move_enum_field() {
+    assert(type_ == Type::enum_field);
+    return std::move(value_.enum_field);
+  }
+
+  std::vector< ::some::valid::ns::MyEnumA> move_enum_container() {
+    assert(type_ == Type::enum_container);
+    return std::move(value_.enum_container);
+  }
+
+   ::some::valid::ns::MyStruct move_a_struct() {
+    assert(type_ == Type::a_struct);
+    return std::move(value_.a_struct);
+  }
+
+  std::set< ::some::valid::ns::MyStruct> move_a_set_struct() {
+    assert(type_ == Type::a_set_struct);
+    return std::move(value_.a_set_struct);
+  }
+
+  Type getType() const { return type_; }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+ protected:
+  template <class T>
+  void destruct(T &val) {
+    (&val)->~T();
+  }
+
+  Type type_;
+  storage_type value_;
+};
+
+void swap(SimpleUnion& a, SimpleUnion& b);
+extern template uint32_t SimpleUnion::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t SimpleUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t SimpleUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t SimpleUnion::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t SimpleUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t SimpleUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::some::valid::ns::SimpleUnion>::clear( ::some::valid::ns::SimpleUnion* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::SimpleUnion>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::SimpleUnion>::write(Protocol* proto,  ::some::valid::ns::SimpleUnion const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::SimpleUnion>::read(Protocol* proto,  ::some::valid::ns::SimpleUnion* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::SimpleUnion>::serializedSize(Protocol const* proto,  ::some::valid::ns::SimpleUnion const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::SimpleUnion>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::SimpleUnion const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
+class AnException : private apache::thrift::detail::st::ComparisonOperators<AnException>, public apache::thrift::TException {
+ public:
+
+  AnException() :
+      code(0),
+      exception_list(std::initializer_list<int32_t>{1,
+  2,
+  3}),
+      enum_field(static_cast< ::some::valid::ns::MyEnumA>(0)) {}
+  // FragileConstructor for use in initialization lists only
+
+  AnException(apache::thrift::FragileConstructor, int32_t code__arg, std::string message__arg, std::vector<int32_t> exception_list__arg, std::set<int64_t> exception_set__arg, std::map<std::string, int32_t> exception_map__arg,  ::some::valid::ns::MyEnumA enum_field__arg, std::vector< ::some::valid::ns::MyEnumA> enum_container__arg,  ::some::valid::ns::MyStruct a_struct__arg, std::set< ::some::valid::ns::MyStruct> a_set_struct__arg) :
+      code(std::move(code__arg)),
+      message(std::move(message__arg)),
+      exception_list(std::move(exception_list__arg)),
+      exception_set(std::move(exception_set__arg)),
+      exception_map(std::move(exception_map__arg)),
+      enum_field(std::move(enum_field__arg)),
+      enum_container(std::move(enum_container__arg)),
+      a_struct(std::move(a_struct__arg)),
+      a_set_struct(std::move(a_set_struct__arg)) {
+    __isset.code = true;
+    __isset.message = true;
+    __isset.exception_list = true;
+    __isset.exception_set = true;
+    __isset.exception_map = true;
+    __isset.enum_field = true;
+    __isset.enum_container = true;
+    __isset.a_struct = true;
+    __isset.a_set_struct = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnException(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    code = arg.move();
+    __isset.code = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnException(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    message = arg.move();
+    __isset.message = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnException(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    exception_list = arg.move();
+    __isset.exception_list = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnException(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    exception_set = arg.move();
+    __isset.exception_set = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnException(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    exception_map = arg.move();
+    __isset.exception_map = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnException(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    enum_field = arg.move();
+    __isset.enum_field = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnException(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    enum_container = arg.move();
+    __isset.enum_container = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnException(::apache::thrift::detail::argument_wrapper<8, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    a_struct = arg.move();
+    __isset.a_struct = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnException(::apache::thrift::detail::argument_wrapper<9, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    a_set_struct = arg.move();
+    __isset.a_set_struct = true;
+  }
+
+  AnException(AnException&&) = default;
+
+  AnException(const AnException&) = default;
+
+  AnException& operator=(AnException&&) = default;
+
+  AnException& operator=(const AnException&) = default;
+  void __clear();
+
+  virtual ~AnException() throw() {}
+
+  int32_t code;
+  std::string message;
+  std::vector<int32_t> exception_list;
+  std::set<int64_t> exception_set;
+  std::map<std::string, int32_t> exception_map;
+   ::some::valid::ns::MyEnumA enum_field;
+  std::vector< ::some::valid::ns::MyEnumA> enum_container;
+   ::some::valid::ns::MyStruct a_struct;
+  std::set< ::some::valid::ns::MyStruct> a_set_struct;
+
+  struct __isset {
+    void __clear() {
+      code = false;
+      message = false;
+      exception_list = false;
+      exception_set = false;
+      exception_map = false;
+      enum_field = false;
+      enum_container = false;
+      a_struct = false;
+      a_set_struct = false;
+    }
+
+    bool code = false;
+    bool message = false;
+    bool exception_list = false;
+    bool exception_set = false;
+    bool exception_map = false;
+    bool enum_field = false;
+    bool enum_container = false;
+    bool a_struct = false;
+    bool a_set_struct = false;
+  } __isset;
+  bool operator==(const AnException& rhs) const;
+
+  bool operator < (const AnException& rhs) const {
+    if (!(code == rhs.code)) {
+      return code < rhs.code;
+    }
+    if (!(message == rhs.message)) {
+      return message < rhs.message;
+    }
+    if (!(exception_list == rhs.exception_list)) {
+      return exception_list < rhs.exception_list;
+    }
+    if (!(exception_set == rhs.exception_set)) {
+      return exception_set < rhs.exception_set;
+    }
+    if (!(exception_map == rhs.exception_map)) {
+      return exception_map < rhs.exception_map;
+    }
+    if (!(enum_field == rhs.enum_field)) {
+      return enum_field < rhs.enum_field;
+    }
+    if (!(enum_container == rhs.enum_container)) {
+      return enum_container < rhs.enum_container;
+    }
+    if (!(a_struct == rhs.a_struct)) {
+      return a_struct < rhs.a_struct;
+    }
+    if (!(a_set_struct == rhs.a_set_struct)) {
+      return a_set_struct < rhs.a_set_struct;
+    }
+    (void)rhs;
+    return false;
+  }
+
+  int32_t get_code() const {
+    return code;
+  }
+
+  int32_t& set_code(int32_t code_) {
+    code = code_;
+    __isset.code = true;
+    return code;
+  }
+
+  const std::string& get_message() const& {
+    return message;
+  }
+
+  std::string get_message() && {
+    return std::move(message);
+  }
+
+  template <typename T_AnException_message_struct_setter>
+  std::string& set_message(T_AnException_message_struct_setter&& message_) {
+    message = std::forward<T_AnException_message_struct_setter>(message_);
+    __isset.message = true;
+    return message;
+  }
+  const std::vector<int32_t>& get_exception_list() const&;
+  std::vector<int32_t> get_exception_list() &&;
+  template <typename T_AnException_exception_list_struct_setter>
+  std::vector<int32_t>& set_exception_list(T_AnException_exception_list_struct_setter&& exception_list_);
+  const std::set<int64_t>& get_exception_set() const&;
+  std::set<int64_t> get_exception_set() &&;
+  template <typename T_AnException_exception_set_struct_setter>
+  std::set<int64_t>& set_exception_set(T_AnException_exception_set_struct_setter&& exception_set_);
+  const std::map<std::string, int32_t>& get_exception_map() const&;
+  std::map<std::string, int32_t> get_exception_map() &&;
+  template <typename T_AnException_exception_map_struct_setter>
+  std::map<std::string, int32_t>& set_exception_map(T_AnException_exception_map_struct_setter&& exception_map_);
+
+   ::some::valid::ns::MyEnumA get_enum_field() const {
+    return enum_field;
+  }
+
+   ::some::valid::ns::MyEnumA& set_enum_field( ::some::valid::ns::MyEnumA enum_field_) {
+    enum_field = enum_field_;
+    __isset.enum_field = true;
+    return enum_field;
+  }
+  const std::vector< ::some::valid::ns::MyEnumA>& get_enum_container() const&;
+  std::vector< ::some::valid::ns::MyEnumA> get_enum_container() &&;
+  template <typename T_AnException_enum_container_struct_setter>
+  std::vector< ::some::valid::ns::MyEnumA>& set_enum_container(T_AnException_enum_container_struct_setter&& enum_container_);
+  const  ::some::valid::ns::MyStruct& get_a_struct() const&;
+   ::some::valid::ns::MyStruct get_a_struct() &&;
+  template <typename T_AnException_a_struct_struct_setter>
+   ::some::valid::ns::MyStruct& set_a_struct(T_AnException_a_struct_struct_setter&& a_struct_);
+  const std::set< ::some::valid::ns::MyStruct>& get_a_set_struct() const&;
+  std::set< ::some::valid::ns::MyStruct> get_a_set_struct() &&;
+  template <typename T_AnException_a_set_struct_struct_setter>
+  std::set< ::some::valid::ns::MyStruct>& set_a_set_struct(T_AnException_a_set_struct_struct_setter&& a_set_struct_);
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+  virtual const char* what() const throw() {
+    return " ::some::valid::ns::AnException";
+  }
+};
+
+void swap(AnException& a, AnException& b);
+extern template uint32_t AnException::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t AnException::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t AnException::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t AnException::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t AnException::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t AnException::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t AnException::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t AnException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::some::valid::ns::AnException>::clear( ::some::valid::ns::AnException* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::AnException>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnException>::write(Protocol* proto,  ::some::valid::ns::AnException const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnException>::read(Protocol* proto,  ::some::valid::ns::AnException* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnException>::serializedSize(Protocol const* proto,  ::some::valid::ns::AnException const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnException>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::AnException const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
 class containerStruct : private apache::thrift::detail::st::ComparisonOperators<containerStruct> {
  public:
 
@@ -1448,7 +1622,7 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
    ::some::valid::ns::MyEnumA::fieldA}) {}
   // FragileConstructor for use in initialization lists only
 
-  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, std::map<std::string, bool> fieldB__arg, std::set<int32_t> fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::vector<std::vector<int32_t>> fieldF__arg, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG__arg, std::vector<std::set<int32_t>> fieldH__arg, bool fieldI__arg, std::map<std::string, std::vector<int32_t>> fieldJ__arg, std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK__arg, std::set<std::set<std::set<bool>>> fieldL__arg, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM__arg,  ::some::valid::ns::simpleTypeDef fieldN__arg,  ::some::valid::ns::complexStructTypeDef fieldO__arg, std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP__arg,  ::some::valid::ns::MyEnumA fieldQ__arg,  ::some::valid::ns::MyEnumA fieldR__arg,  ::some::valid::ns::MyEnumA fieldS__arg, std::vector< ::some::valid::ns::MyEnumA> fieldT__arg, std::vector< ::some::valid::ns::MyEnumA> fieldU__arg) :
+  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, std::map<std::string, bool> fieldB__arg, std::set<int32_t> fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::vector<std::vector<int32_t>> fieldF__arg, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG__arg, std::vector<std::set<int32_t>> fieldH__arg, bool fieldI__arg, std::map<std::string, std::vector<int32_t>> fieldJ__arg, std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK__arg, std::set<std::set<std::set<bool>>> fieldL__arg, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM__arg,  ::some::valid::ns::simpleTypeDef fieldN__arg,  ::some::valid::ns::complexStructTypeDef fieldO__arg, std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP__arg,  ::some::valid::ns::MyEnumA fieldQ__arg,  ::some::valid::ns::MyEnumA fieldR__arg,  ::some::valid::ns::MyEnumA fieldS__arg, std::vector< ::some::valid::ns::MyEnumA> fieldT__arg, std::vector< ::some::valid::ns::MyEnumA> fieldU__arg,  ::some::valid::ns::MyStruct fieldV__arg, std::set< ::some::valid::ns::MyStruct> fieldW__arg) :
       fieldA(std::move(fieldA__arg)),
       fieldB(std::move(fieldB__arg)),
       fieldC(std::move(fieldC__arg)),
@@ -1469,7 +1643,9 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
       fieldR(std::move(fieldR__arg)),
       fieldS(std::move(fieldS__arg)),
       fieldT(std::move(fieldT__arg)),
-      fieldU(std::move(fieldU__arg)) {
+      fieldU(std::move(fieldU__arg)),
+      fieldV(std::move(fieldV__arg)),
+      fieldW(std::move(fieldW__arg)) {
     __isset.fieldA = true;
     __isset.fieldB = true;
     __isset.fieldC = true;
@@ -1491,6 +1667,8 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     __isset.fieldS = true;
     __isset.fieldT = true;
     __isset.fieldU = true;
+    __isset.fieldV = true;
+    __isset.fieldW = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   containerStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -1639,6 +1817,20 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     fieldU = arg.move();
     __isset.fieldU = true;
   }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct(::apache::thrift::detail::argument_wrapper<23, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldV = arg.move();
+    __isset.fieldV = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct(::apache::thrift::detail::argument_wrapper<24, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldW = arg.move();
+    __isset.fieldW = true;
+  }
 
   containerStruct(containerStruct&&) = default;
 
@@ -1672,6 +1864,8 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
    ::some::valid::ns::MyEnumA fieldS;
   std::vector< ::some::valid::ns::MyEnumA> fieldT;
   std::vector< ::some::valid::ns::MyEnumA> fieldU;
+   ::some::valid::ns::MyStruct fieldV;
+  std::set< ::some::valid::ns::MyStruct> fieldW;
 
   struct __isset {
     void __clear() {
@@ -1696,6 +1890,8 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
       fieldS = false;
       fieldT = false;
       fieldU = false;
+      fieldV = false;
+      fieldW = false;
     }
 
     bool fieldA = false;
@@ -1719,6 +1915,8 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     bool fieldS = false;
     bool fieldT = false;
     bool fieldU = false;
+    bool fieldV = false;
+    bool fieldW = false;
   } __isset;
   bool operator==(const containerStruct& rhs) const;
   bool operator < (const containerStruct& rhs) const;
@@ -1864,6 +2062,14 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   std::vector< ::some::valid::ns::MyEnumA> get_fieldU() &&;
   template <typename T_containerStruct_fieldU_struct_setter>
   std::vector< ::some::valid::ns::MyEnumA>& set_fieldU(T_containerStruct_fieldU_struct_setter&& fieldU_);
+  const  ::some::valid::ns::MyStruct& get_fieldV() const&;
+   ::some::valid::ns::MyStruct get_fieldV() &&;
+  template <typename T_containerStruct_fieldV_struct_setter>
+   ::some::valid::ns::MyStruct& set_fieldV(T_containerStruct_fieldV_struct_setter&& fieldV_);
+  const std::set< ::some::valid::ns::MyStruct>& get_fieldW() const&;
+  std::set< ::some::valid::ns::MyStruct> get_fieldW() &&;
+  template <typename T_containerStruct_fieldW_struct_setter>
+  std::set< ::some::valid::ns::MyStruct>& set_fieldW(T_containerStruct_fieldW_struct_setter&& fieldW_);
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

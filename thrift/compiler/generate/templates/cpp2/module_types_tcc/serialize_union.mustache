@@ -22,14 +22,16 @@ uint32_t <%struct:name%>::serializedSize(Protocol_ const* prot_) const {
 <%#struct:fields%><%#field:type%>
     case <%struct:name%>::Type::<%field:name%>:
     {
-<%#type:resolves_to_base?%>
       xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
+<%#type:resolves_to_base?%>
       xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>(this->get_<%field:name%>());
 <%/type:resolves_to_base?%>
 <%#type:resolves_to_container_or_enum?%>
-      xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
       xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > Type%>>::serializedSize<false>(*prot_, this->get_<%field:name%>());
 <%/type:resolves_to_container_or_enum?%>
+<%#type:struct?%>
+      xfer += ::apache::thrift::Cpp2Ops< <% > Type%>>::serializedSize(prot_, &this->get_<%field:name%>());
+<%/type:struct?%>
       break;
     }
 <%/field:type%><%/struct:fields%>
@@ -47,14 +49,16 @@ uint32_t <%struct:name%>::serializedSizeZC(Protocol_ const* prot_) const {
 <%#struct:fields%><%#field:type%>
     case <%struct:name%>::Type::<%field:name%>:
     {
-<%#type:resolves_to_base?%>
       xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
+<%#type:resolves_to_base?%>
       xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>(this->get_<%field:name%>());
 <%/type:resolves_to_base?%>
 <%#type:resolves_to_container_or_enum?%>
-      xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
       xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > Type%>>::serializedSize<false>(*prot_, this->get_<%field:name%>());
 <%/type:resolves_to_container_or_enum?%>
+<%#type:struct?%>
+      xfer += ::apache::thrift::Cpp2Ops< <% > Type%>>::serializedSizeZC(prot_, &this->get_<%field:name%>());
+<%/type:struct?%>
       break;
     }
 <%/field:type%><%/struct:fields%>
@@ -72,16 +76,17 @@ uint32_t <%struct:name%>::write(Protocol_* prot_) const {
 <%#struct:fields%><%#field:type%>
     case <%struct:name%>::Type::<%field:name%>:
     {
-<%#type:resolves_to_base?%>
       xfer += prot_->writeFieldBegin("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
+<%#type:resolves_to_base?%>
       xfer += prot_->write<% > module_types_tcc/struct_field_type%>(this->get_<%field:name%>());
-      xfer += prot_->writeFieldEnd();
 <%/type:resolves_to_base?%>
 <%#type:resolves_to_container_or_enum?%>
-      xfer += prot_->writeFieldBegin("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
       xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > Type%>>::write(*prot_, this->get_<%field:name%>());
-      xfer += prot_->writeFieldEnd();
 <%/type:resolves_to_container_or_enum?%>
+<%#type:struct?%>
+      xfer += ::apache::thrift::Cpp2Ops< <% > Type%>>::write(prot_, &this->get_<%field:name%>());
+<%/type:struct?%>
+      xfer += prot_->writeFieldEnd();
       break;
     }
 <%/field:type%><%/struct:fields%>

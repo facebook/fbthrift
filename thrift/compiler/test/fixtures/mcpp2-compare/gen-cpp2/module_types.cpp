@@ -43,245 +43,6 @@ template <> bool TEnumTraits< ::some::valid::ns::MyEnumA>::findValue(const char*
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
-void SimpleUnion::__clear() {
-  // clear all fields
-  if (type_ == Type::__EMPTY__) { return; }
-  switch(type_) {
-    case Type::intValue:
-    {
-      destruct(value_.intValue);
-      break;
-    }
-    case Type::stringValue:
-    {
-      destruct(value_.stringValue);
-      break;
-    }
-    case Type::intValue2:
-    {
-      destruct(value_.intValue2);
-      break;
-    }
-    case Type::intValue3:
-    {
-      destruct(value_.intValue3);
-      break;
-    }
-    case Type::doubelValue:
-    {
-      destruct(value_.doubelValue);
-      break;
-    }
-    case Type::boolValue:
-    {
-      destruct(value_.boolValue);
-      break;
-    }
-    case Type::union_list:
-    {
-      destruct(value_.union_list);
-      break;
-    }
-    case Type::union_set:
-    {
-      destruct(value_.union_set);
-      break;
-    }
-    case Type::union_map:
-    {
-      destruct(value_.union_map);
-      break;
-    }
-    case Type::enum_field:
-    {
-      destruct(value_.enum_field);
-      break;
-    }
-    case Type::enum_container:
-    {
-      destruct(value_.enum_container);
-      break;
-    }
-    default:
-    {
-      assert(false);
-      break;
-    }
-  }
-  type_ = Type::__EMPTY__;
-}
-
-bool SimpleUnion::operator==(const SimpleUnion& rhs) const {
-  if (type_ != rhs.type_) { return false; }
-  switch(type_) {
-    case Type::intValue:
-    {
-      return value_.intValue == rhs.value_.intValue;
-    }
-    case Type::stringValue:
-    {
-      return value_.stringValue == rhs.value_.stringValue;
-    }
-    case Type::intValue2:
-    {
-      return value_.intValue2 == rhs.value_.intValue2;
-    }
-    case Type::intValue3:
-    {
-      return value_.intValue3 == rhs.value_.intValue3;
-    }
-    case Type::doubelValue:
-    {
-      return value_.doubelValue == rhs.value_.doubelValue;
-    }
-    case Type::boolValue:
-    {
-      return value_.boolValue == rhs.value_.boolValue;
-    }
-    case Type::union_list:
-    {
-      return value_.union_list == rhs.value_.union_list;
-    }
-    case Type::union_set:
-    {
-      return value_.union_set == rhs.value_.union_set;
-    }
-    case Type::union_map:
-    {
-      return value_.union_map == rhs.value_.union_map;
-    }
-    case Type::enum_field:
-    {
-      return value_.enum_field == rhs.value_.enum_field;
-    }
-    case Type::enum_container:
-    {
-      return value_.enum_container == rhs.value_.enum_container;
-    }
-    default:
-    {
-      return true;
-    }
-  }
-}
-
-void swap(SimpleUnion& a, SimpleUnion& b) {
-  SimpleUnion temp(std::move(a));
-  a = std::move(b);
-  b = std::move(temp);
-}
-
-template uint32_t SimpleUnion::read<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t SimpleUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t SimpleUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t SimpleUnion::read<>(apache::thrift::CompactProtocolReader*);
-template uint32_t SimpleUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t SimpleUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-}}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace some { namespace valid { namespace ns {
-
-void AnException::__clear() {
-  // clear all fields
-  code = 0;
-  message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  exception_list.clear();
-  exception_set.clear();
-  exception_map.clear();
-  enum_field = static_cast< ::some::valid::ns::MyEnumA>(0);
-  enum_container.clear();
-  __isset.__clear();
-}
-
-bool AnException::operator==(const AnException& rhs) const {
-  if (!((code == rhs.code))) {
-    return false;
-  }
-  if (!((message == rhs.message))) {
-    return false;
-  }
-  if (!((exception_list == rhs.exception_list))) {
-    return false;
-  }
-  if (!((exception_set == rhs.exception_set))) {
-    return false;
-  }
-  if (!((exception_map == rhs.exception_map))) {
-    return false;
-  }
-  if (!((enum_field == rhs.enum_field))) {
-    return false;
-  }
-  if (!((enum_container == rhs.enum_container))) {
-    return false;
-  }
-  return true;
-}
-
-const std::vector<int32_t>& AnException::get_exception_list() const& {
-  return exception_list;
-}
-
-std::vector<int32_t> AnException::get_exception_list() && {
-  return std::move(exception_list);
-}
-
-const std::set<int64_t>& AnException::get_exception_set() const& {
-  return exception_set;
-}
-
-std::set<int64_t> AnException::get_exception_set() && {
-  return std::move(exception_set);
-}
-
-const std::map<std::string, int32_t>& AnException::get_exception_map() const& {
-  return exception_map;
-}
-
-std::map<std::string, int32_t> AnException::get_exception_map() && {
-  return std::move(exception_map);
-}
-
-const std::vector< ::some::valid::ns::MyEnumA>& AnException::get_enum_container() const& {
-  return enum_container;
-}
-
-std::vector< ::some::valid::ns::MyEnumA> AnException::get_enum_container() && {
-  return std::move(enum_container);
-}
-
-void swap(AnException& a, AnException& b) {
-  using ::std::swap;
-  swap(a.code, b.code);
-  swap(a.message, b.message);
-  swap(a.exception_list, b.exception_list);
-  swap(a.exception_set, b.exception_set);
-  swap(a.exception_map, b.exception_map);
-  swap(a.enum_field, b.enum_field);
-  swap(a.enum_container, b.enum_container);
-  swap(a.__isset, b.__isset);
-}
-
-template uint32_t AnException::read<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t AnException::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t AnException::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t AnException::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t AnException::read<>(apache::thrift::CompactProtocolReader*);
-template uint32_t AnException::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t AnException::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t AnException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-}}} // some::valid::ns
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace some { namespace valid { namespace ns {
-
 void Empty::__clear() {
   // clear all fields
 }
@@ -360,6 +121,289 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
+void SimpleUnion::__clear() {
+  // clear all fields
+  if (type_ == Type::__EMPTY__) { return; }
+  switch(type_) {
+    case Type::intValue:
+    {
+      destruct(value_.intValue);
+      break;
+    }
+    case Type::stringValue:
+    {
+      destruct(value_.stringValue);
+      break;
+    }
+    case Type::intValue2:
+    {
+      destruct(value_.intValue2);
+      break;
+    }
+    case Type::intValue3:
+    {
+      destruct(value_.intValue3);
+      break;
+    }
+    case Type::doubelValue:
+    {
+      destruct(value_.doubelValue);
+      break;
+    }
+    case Type::boolValue:
+    {
+      destruct(value_.boolValue);
+      break;
+    }
+    case Type::union_list:
+    {
+      destruct(value_.union_list);
+      break;
+    }
+    case Type::union_set:
+    {
+      destruct(value_.union_set);
+      break;
+    }
+    case Type::union_map:
+    {
+      destruct(value_.union_map);
+      break;
+    }
+    case Type::enum_field:
+    {
+      destruct(value_.enum_field);
+      break;
+    }
+    case Type::enum_container:
+    {
+      destruct(value_.enum_container);
+      break;
+    }
+    case Type::a_struct:
+    {
+      destruct(value_.a_struct);
+      break;
+    }
+    case Type::a_set_struct:
+    {
+      destruct(value_.a_set_struct);
+      break;
+    }
+    default:
+    {
+      assert(false);
+      break;
+    }
+  }
+  type_ = Type::__EMPTY__;
+}
+
+bool SimpleUnion::operator==(const SimpleUnion& rhs) const {
+  if (type_ != rhs.type_) { return false; }
+  switch(type_) {
+    case Type::intValue:
+    {
+      return value_.intValue == rhs.value_.intValue;
+    }
+    case Type::stringValue:
+    {
+      return value_.stringValue == rhs.value_.stringValue;
+    }
+    case Type::intValue2:
+    {
+      return value_.intValue2 == rhs.value_.intValue2;
+    }
+    case Type::intValue3:
+    {
+      return value_.intValue3 == rhs.value_.intValue3;
+    }
+    case Type::doubelValue:
+    {
+      return value_.doubelValue == rhs.value_.doubelValue;
+    }
+    case Type::boolValue:
+    {
+      return value_.boolValue == rhs.value_.boolValue;
+    }
+    case Type::union_list:
+    {
+      return value_.union_list == rhs.value_.union_list;
+    }
+    case Type::union_set:
+    {
+      return value_.union_set == rhs.value_.union_set;
+    }
+    case Type::union_map:
+    {
+      return value_.union_map == rhs.value_.union_map;
+    }
+    case Type::enum_field:
+    {
+      return value_.enum_field == rhs.value_.enum_field;
+    }
+    case Type::enum_container:
+    {
+      return value_.enum_container == rhs.value_.enum_container;
+    }
+    case Type::a_struct:
+    {
+      return value_.a_struct == rhs.value_.a_struct;
+    }
+    case Type::a_set_struct:
+    {
+      return value_.a_set_struct == rhs.value_.a_set_struct;
+    }
+    default:
+    {
+      return true;
+    }
+  }
+}
+
+void swap(SimpleUnion& a, SimpleUnion& b) {
+  SimpleUnion temp(std::move(a));
+  a = std::move(b);
+  b = std::move(temp);
+}
+
+template uint32_t SimpleUnion::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t SimpleUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t SimpleUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t SimpleUnion::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t SimpleUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t SimpleUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
+void AnException::__clear() {
+  // clear all fields
+  code = 0;
+  message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  exception_list.clear();
+  exception_set.clear();
+  exception_map.clear();
+  enum_field = static_cast< ::some::valid::ns::MyEnumA>(0);
+  enum_container.clear();
+  ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::clear(&a_struct);
+  a_set_struct.clear();
+  __isset.__clear();
+}
+
+bool AnException::operator==(const AnException& rhs) const {
+  if (!((code == rhs.code))) {
+    return false;
+  }
+  if (!((message == rhs.message))) {
+    return false;
+  }
+  if (!((exception_list == rhs.exception_list))) {
+    return false;
+  }
+  if (!((exception_set == rhs.exception_set))) {
+    return false;
+  }
+  if (!((exception_map == rhs.exception_map))) {
+    return false;
+  }
+  if (!((enum_field == rhs.enum_field))) {
+    return false;
+  }
+  if (!((enum_container == rhs.enum_container))) {
+    return false;
+  }
+  if (!((a_struct == rhs.a_struct))) {
+    return false;
+  }
+  if (!((a_set_struct == rhs.a_set_struct))) {
+    return false;
+  }
+  return true;
+}
+
+const std::vector<int32_t>& AnException::get_exception_list() const& {
+  return exception_list;
+}
+
+std::vector<int32_t> AnException::get_exception_list() && {
+  return std::move(exception_list);
+}
+
+const std::set<int64_t>& AnException::get_exception_set() const& {
+  return exception_set;
+}
+
+std::set<int64_t> AnException::get_exception_set() && {
+  return std::move(exception_set);
+}
+
+const std::map<std::string, int32_t>& AnException::get_exception_map() const& {
+  return exception_map;
+}
+
+std::map<std::string, int32_t> AnException::get_exception_map() && {
+  return std::move(exception_map);
+}
+
+const std::vector< ::some::valid::ns::MyEnumA>& AnException::get_enum_container() const& {
+  return enum_container;
+}
+
+std::vector< ::some::valid::ns::MyEnumA> AnException::get_enum_container() && {
+  return std::move(enum_container);
+}
+
+const  ::some::valid::ns::MyStruct& AnException::get_a_struct() const& {
+  return a_struct;
+}
+
+ ::some::valid::ns::MyStruct AnException::get_a_struct() && {
+  return std::move(a_struct);
+}
+
+const std::set< ::some::valid::ns::MyStruct>& AnException::get_a_set_struct() const& {
+  return a_set_struct;
+}
+
+std::set< ::some::valid::ns::MyStruct> AnException::get_a_set_struct() && {
+  return std::move(a_set_struct);
+}
+
+void swap(AnException& a, AnException& b) {
+  using ::std::swap;
+  swap(a.code, b.code);
+  swap(a.message, b.message);
+  swap(a.exception_list, b.exception_list);
+  swap(a.exception_set, b.exception_set);
+  swap(a.exception_map, b.exception_map);
+  swap(a.enum_field, b.enum_field);
+  swap(a.enum_container, b.enum_container);
+  swap(a.a_struct, b.a_struct);
+  swap(a.a_set_struct, b.a_set_struct);
+  swap(a.__isset, b.__isset);
+}
+
+template uint32_t AnException::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t AnException::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t AnException::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t AnException::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t AnException::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t AnException::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t AnException::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t AnException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
 void containerStruct::__clear() {
   // clear all fields
   fieldA = 0;
@@ -383,6 +427,8 @@ void containerStruct::__clear() {
   fieldS =  ::some::valid::ns::MyEnumA::fieldB;
   fieldT.clear();
   fieldU.clear();
+  ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::clear(&fieldV);
+  fieldW.clear();
   __isset.__clear();
 }
 
@@ -448,6 +494,12 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
     return false;
   }
   if (!((fieldU == rhs.fieldU))) {
+    return false;
+  }
+  if (!((fieldV == rhs.fieldV))) {
+    return false;
+  }
+  if (!((fieldW == rhs.fieldW))) {
     return false;
   }
   return true;
@@ -557,6 +609,22 @@ std::vector< ::some::valid::ns::MyEnumA> containerStruct::get_fieldU() && {
   return std::move(fieldU);
 }
 
+const  ::some::valid::ns::MyStruct& containerStruct::get_fieldV() const& {
+  return fieldV;
+}
+
+ ::some::valid::ns::MyStruct containerStruct::get_fieldV() && {
+  return std::move(fieldV);
+}
+
+const std::set< ::some::valid::ns::MyStruct>& containerStruct::get_fieldW() const& {
+  return fieldW;
+}
+
+std::set< ::some::valid::ns::MyStruct> containerStruct::get_fieldW() && {
+  return std::move(fieldW);
+}
+
 void swap(containerStruct& a, containerStruct& b) {
   using ::std::swap;
   swap(a.fieldA, b.fieldA);
@@ -580,6 +648,8 @@ void swap(containerStruct& a, containerStruct& b) {
   swap(a.fieldS, b.fieldS);
   swap(a.fieldT, b.fieldT);
   swap(a.fieldU, b.fieldU);
+  swap(a.fieldV, b.fieldV);
+  swap(a.fieldW, b.fieldW);
   swap(a.__isset, b.__isset);
 }
 

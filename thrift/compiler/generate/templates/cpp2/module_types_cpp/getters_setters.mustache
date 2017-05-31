@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#struct:fields?%><%#struct:fields%><%#field:type%><%#type:resolves_to_container?%>
+%><%#struct:fields?%><%#struct:fields%><%#field:type%><%#type:resolves_to_container_or_struct?%>
 const <% > Type%>& <%struct:name%>::get_<%field:name%>() const& {
   return <%field:name%>;
 }
@@ -23,4 +23,4 @@ const <% > Type%>& <%struct:name%>::get_<%field:name%>() const& {
   return std::move(<%field:name%>);
 }
 
-<%/type:resolves_to_container?%><%/field:type%><%/struct:fields%><%/struct:fields?%>
+<%/type:resolves_to_container_or_struct?%><%/field:type%><%/struct:fields%><%/struct:fields?%>

@@ -190,6 +190,9 @@ mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) const {
     if (type->is_enum()) {
       return true;
     }
+    if (type->is_struct()) {
+      return true;
+    }
     if (type->is_list()) {
       return is_orderable(dynamic_cast<t_list const*>(type)->get_elem_type());
     }
@@ -221,6 +224,9 @@ mstch::map t_mstch_cpp2_generator::extend_type(const t_type& t) const {
       "resolves_to_base_or_enum?",
       resolve_typedef(&t)->is_base_type() || resolve_typedef(&t)->is_enum());
   m.emplace("resolves_to_container?", resolve_typedef(&t)->is_container());
+  m.emplace(
+      "resolves_to_container_or_struct?",
+      resolve_typedef(&t)->is_container() || resolve_typedef(&t)->is_struct());
   m.emplace(
       "resolves_to_container_or_enum?",
       resolve_typedef(&t)->is_container() || resolve_typedef(&t)->is_enum());

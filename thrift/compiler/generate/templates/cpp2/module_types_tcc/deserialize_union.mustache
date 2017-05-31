@@ -53,6 +53,9 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
 <%/type:enum?%>
           xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > Type%>>::read(*iprot, this->mutable_<%field:name%>());
 <%/type:resolves_to_container_or_enum?%>
+<%#type:struct?%>
+          xfer += ::apache::thrift::Cpp2Ops< <% > Type%>>::read(iprot, &this->mutable_<%field:name%>());
+<%/type:struct?%>
         } else {
           xfer += iprot->skip(ftype);
         }
