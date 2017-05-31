@@ -27,17 +27,18 @@ struct __isset {
 
 ######################################################
 
-%><%#struct:fields%><%#field:type%><%!
-    %>  <% > Type%> <%field:name%><% > common/semicolon_newline%><%!
-%><%/field:type%><%/struct:fields%>
+%><%#struct:fields%><%#field:type%>
+  <% > Type%> <%field:name%>;
+<%/field:type%><%/struct:fields%>
+
   struct __isset {
     void __clear() {
-<%#struct:fields%><%!
-  %>      <%field:name%> = false<% > common/semicolon_newline%><%!
-%><%/struct:fields%><%!
-%>    }
+<%#struct:fields%><%^field:required?%>
+      <%field:name%> = false;
+<%/field:required?%><%/struct:fields%>
+    }
 
-<%#struct:fields%><%!
-  %>    bool <%field:name%> = false<% > common/semicolon_newline%><%!
-%><%/struct:fields%><%!
-%>  } __isset;
+<%#struct:fields%><%^field:required?%>
+    bool <%field:name%> = false;
+<%/field:required?%><%/struct:fields%>
+  } __isset;

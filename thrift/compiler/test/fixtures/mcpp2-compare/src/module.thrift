@@ -62,7 +62,9 @@ typedef list<complexStructTypeDef> mostComplexTypeDef
 
 union ComplexUnion {
   1: i64 intValue;
+  101: required i64 req_intValue;
   3: string stringValue;
+  103: required string req_stringValue;
   4: i16 intValue2;
   6: i32 intValue3;
   7: double doubelValue;
@@ -70,11 +72,13 @@ union ComplexUnion {
   9: list<i32> union_list
   10: set<i64> union_set
   11: map<string, i32> union_map
+  111: required map<string, i32> req_union_map
   12: MyEnumA enum_field
   13: list<MyEnumA> enum_container
   14: MyStruct a_struct
   15: set<MyStruct> a_set_struct
   16: SimpleUnion a_union
+  116: required SimpleUnion req_a_union
   17: list<SimpleUnion> a_union_list
   18: unionTypeDef a_union_typedef
   19: list<unionTypeDef> a_union_typedef_list
@@ -82,10 +86,13 @@ union ComplexUnion {
 
 exception AnException {
   1: i32 code
+  101: required i32 req_code
   2: string message
+  102: required string req_message
   3: list<i32> exception_list = [1, 2, 3]
   4: set<i64> exception_set
   5: map<string, i32> exception_map
+  105: required map<string, i32> req_exception_map
   6: MyEnumA enum_field
   7: list<MyEnumA> enum_container
   8: MyStruct a_struct
@@ -97,10 +104,14 @@ exception AnException {
 
 struct containerStruct {
   1: bool fieldA
+  101: required bool req_fieldA
   2: map<string, bool> fieldB
+  102: required map<string, bool> req_fieldB
   3: set<i32> fieldC = [1, 2, 3, 4]
+  103: required set<i32> req_fieldC = [1, 2, 3, 4]
   4: string fieldD
   5: string fieldE = "somestring"
+  105: required string req_fieldE = "somestring"
   6: list<list<i32>> fieldF = aListOfLists
   7: map<string, map<string, map<string, i32>>> fieldG
   8: list<set<i32>> fieldH
@@ -117,12 +128,15 @@ struct containerStruct {
   16: list<mostComplexTypeDef> fieldP
   17: MyEnumA fieldQ
   18: MyEnumA fieldR = MyEnumA.fieldB
+  118: required MyEnumA req_fieldR = MyEnumA.fieldB
   19: MyEnumA fieldS = constEnumA
   21: list<MyEnumA> fieldT
   22: list<MyEnumA> fieldU = [MyEnumA.fieldC, MyEnumA.fieldB, MyEnumA.fieldA]
   23: MyStruct fieldV
+  123: required MyStruct req_fieldV
   24: set<MyStruct> fieldW
   25: ComplexUnion fieldX
+  125: required ComplexUnion req_fieldX
   26: list<ComplexUnion> fieldY
   27: unionTypeDef fieldZ
   28: list<unionTypeDef> fieldAA

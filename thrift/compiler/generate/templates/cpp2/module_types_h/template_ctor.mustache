@@ -20,6 +20,8 @@
     <%struct:name%>(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     <%field:name%> = arg.move();
+<%^field:required?%>
     __isset.<%field:name%> = true;
+<%/field:required?%>
   }
 <%/struct:fields%>

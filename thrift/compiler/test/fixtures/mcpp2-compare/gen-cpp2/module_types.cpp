@@ -192,9 +192,19 @@ void ComplexUnion::__clear() {
       destruct(value_.intValue);
       break;
     }
+    case Type::req_intValue:
+    {
+      destruct(value_.req_intValue);
+      break;
+    }
     case Type::stringValue:
     {
       destruct(value_.stringValue);
+      break;
+    }
+    case Type::req_stringValue:
+    {
+      destruct(value_.req_stringValue);
       break;
     }
     case Type::intValue2:
@@ -232,6 +242,11 @@ void ComplexUnion::__clear() {
       destruct(value_.union_map);
       break;
     }
+    case Type::req_union_map:
+    {
+      destruct(value_.req_union_map);
+      break;
+    }
     case Type::enum_field:
     {
       destruct(value_.enum_field);
@@ -255,6 +270,11 @@ void ComplexUnion::__clear() {
     case Type::a_union:
     {
       destruct(value_.a_union);
+      break;
+    }
+    case Type::req_a_union:
+    {
+      destruct(value_.req_a_union);
       break;
     }
     case Type::a_union_list:
@@ -288,9 +308,17 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
     {
       return value_.intValue == rhs.value_.intValue;
     }
+    case Type::req_intValue:
+    {
+      return value_.req_intValue == rhs.value_.req_intValue;
+    }
     case Type::stringValue:
     {
       return value_.stringValue == rhs.value_.stringValue;
+    }
+    case Type::req_stringValue:
+    {
+      return value_.req_stringValue == rhs.value_.req_stringValue;
     }
     case Type::intValue2:
     {
@@ -320,6 +348,10 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
     {
       return value_.union_map == rhs.value_.union_map;
     }
+    case Type::req_union_map:
+    {
+      return value_.req_union_map == rhs.value_.req_union_map;
+    }
     case Type::enum_field:
     {
       return value_.enum_field == rhs.value_.enum_field;
@@ -339,6 +371,10 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
     case Type::a_union:
     {
       return value_.a_union == rhs.value_.a_union;
+    }
+    case Type::req_a_union:
+    {
+      return value_.req_a_union == rhs.value_.req_a_union;
     }
     case Type::a_union_list:
     {
@@ -383,10 +419,13 @@ namespace some { namespace valid { namespace ns {
 void AnException::__clear() {
   // clear all fields
   code = 0;
+  req_code = 0;
   message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  req_message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   exception_list.clear();
   exception_set.clear();
   exception_map.clear();
+  req_exception_map.clear();
   enum_field = static_cast< ::some::valid::ns::MyEnumA>(0);
   enum_container.clear();
   ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::clear(&a_struct);
@@ -401,7 +440,13 @@ bool AnException::operator==(const AnException& rhs) const {
   if (!((code == rhs.code))) {
     return false;
   }
+  if (!((req_code == rhs.req_code))) {
+    return false;
+  }
   if (!((message == rhs.message))) {
+    return false;
+  }
+  if (!((req_message == rhs.req_message))) {
     return false;
   }
   if (!((exception_list == rhs.exception_list))) {
@@ -411,6 +456,9 @@ bool AnException::operator==(const AnException& rhs) const {
     return false;
   }
   if (!((exception_map == rhs.exception_map))) {
+    return false;
+  }
+  if (!((req_exception_map == rhs.req_exception_map))) {
     return false;
   }
   if (!((enum_field == rhs.enum_field))) {
@@ -459,6 +507,14 @@ const std::map<std::string, int32_t>& AnException::get_exception_map() const& {
 
 std::map<std::string, int32_t> AnException::get_exception_map() && {
   return std::move(exception_map);
+}
+
+const std::map<std::string, int32_t>& AnException::get_req_exception_map() const& {
+  return req_exception_map;
+}
+
+std::map<std::string, int32_t> AnException::get_req_exception_map() && {
+  return std::move(req_exception_map);
 }
 
 const std::vector< ::some::valid::ns::MyEnumA>& AnException::get_enum_container() const& {
@@ -512,10 +568,13 @@ std::vector< ::some::valid::ns::unionTypeDef> AnException::get_a_union_typedef_l
 void swap(AnException& a, AnException& b) {
   using ::std::swap;
   swap(a.code, b.code);
+  swap(a.req_code, b.req_code);
   swap(a.message, b.message);
+  swap(a.req_message, b.req_message);
   swap(a.exception_list, b.exception_list);
   swap(a.exception_set, b.exception_set);
   swap(a.exception_map, b.exception_map);
+  swap(a.req_exception_map, b.req_exception_map);
   swap(a.enum_field, b.enum_field);
   swap(a.enum_container, b.enum_container);
   swap(a.a_struct, b.a_struct);
@@ -544,10 +603,14 @@ namespace some { namespace valid { namespace ns {
 void containerStruct::__clear() {
   // clear all fields
   fieldA = 0;
+  req_fieldA = 0;
   fieldB.clear();
+  req_fieldB.clear();
   fieldC.clear();
+  req_fieldC.clear();
   fieldD = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   fieldE = apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring");
+  req_fieldE = apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring");
   fieldF.clear();
   fieldG.clear();
   fieldH.clear();
@@ -561,12 +624,15 @@ void containerStruct::__clear() {
   fieldP.clear();
   fieldQ = static_cast< ::some::valid::ns::MyEnumA>(0);
   fieldR =  ::some::valid::ns::MyEnumA::fieldB;
+  req_fieldR =  ::some::valid::ns::MyEnumA::fieldB;
   fieldS =  ::some::valid::ns::MyEnumA::fieldB;
   fieldT.clear();
   fieldU.clear();
   ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::clear(&fieldV);
+  ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::clear(&req_fieldV);
   fieldW.clear();
   ::apache::thrift::Cpp2Ops<  ::some::valid::ns::ComplexUnion>::clear(&fieldX);
+  ::apache::thrift::Cpp2Ops<  ::some::valid::ns::ComplexUnion>::clear(&req_fieldX);
   fieldY.clear();
   fieldZ.clear();
   fieldAA.clear();
@@ -577,16 +643,28 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
   if (!((fieldA == rhs.fieldA))) {
     return false;
   }
+  if (!((req_fieldA == rhs.req_fieldA))) {
+    return false;
+  }
   if (!((fieldB == rhs.fieldB))) {
     return false;
   }
+  if (!((req_fieldB == rhs.req_fieldB))) {
+    return false;
+  }
   if (!((fieldC == rhs.fieldC))) {
+    return false;
+  }
+  if (!((req_fieldC == rhs.req_fieldC))) {
     return false;
   }
   if (!((fieldD == rhs.fieldD))) {
     return false;
   }
   if (!((fieldE == rhs.fieldE))) {
+    return false;
+  }
+  if (!((req_fieldE == rhs.req_fieldE))) {
     return false;
   }
   if (!((fieldF == rhs.fieldF))) {
@@ -628,6 +706,9 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
   if (!((fieldR == rhs.fieldR))) {
     return false;
   }
+  if (!((req_fieldR == rhs.req_fieldR))) {
+    return false;
+  }
   if (!((fieldS == rhs.fieldS))) {
     return false;
   }
@@ -640,10 +721,16 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
   if (!((fieldV == rhs.fieldV))) {
     return false;
   }
+  if (!((req_fieldV == rhs.req_fieldV))) {
+    return false;
+  }
   if (!((fieldW == rhs.fieldW))) {
     return false;
   }
   if (!((fieldX == rhs.fieldX))) {
+    return false;
+  }
+  if (!((req_fieldX == rhs.req_fieldX))) {
     return false;
   }
   if (!((fieldY == rhs.fieldY))) {
@@ -666,12 +753,28 @@ std::map<std::string, bool> containerStruct::get_fieldB() && {
   return std::move(fieldB);
 }
 
+const std::map<std::string, bool>& containerStruct::get_req_fieldB() const& {
+  return req_fieldB;
+}
+
+std::map<std::string, bool> containerStruct::get_req_fieldB() && {
+  return std::move(req_fieldB);
+}
+
 const std::set<int32_t>& containerStruct::get_fieldC() const& {
   return fieldC;
 }
 
 std::set<int32_t> containerStruct::get_fieldC() && {
   return std::move(fieldC);
+}
+
+const std::set<int32_t>& containerStruct::get_req_fieldC() const& {
+  return req_fieldC;
+}
+
+std::set<int32_t> containerStruct::get_req_fieldC() && {
+  return std::move(req_fieldC);
 }
 
 const std::vector<std::vector<int32_t>>& containerStruct::get_fieldF() const& {
@@ -770,6 +873,14 @@ const  ::some::valid::ns::MyStruct& containerStruct::get_fieldV() const& {
   return std::move(fieldV);
 }
 
+const  ::some::valid::ns::MyStruct& containerStruct::get_req_fieldV() const& {
+  return req_fieldV;
+}
+
+ ::some::valid::ns::MyStruct containerStruct::get_req_fieldV() && {
+  return std::move(req_fieldV);
+}
+
 const std::set< ::some::valid::ns::MyStruct>& containerStruct::get_fieldW() const& {
   return fieldW;
 }
@@ -784,6 +895,14 @@ const  ::some::valid::ns::ComplexUnion& containerStruct::get_fieldX() const& {
 
  ::some::valid::ns::ComplexUnion containerStruct::get_fieldX() && {
   return std::move(fieldX);
+}
+
+const  ::some::valid::ns::ComplexUnion& containerStruct::get_req_fieldX() const& {
+  return req_fieldX;
+}
+
+ ::some::valid::ns::ComplexUnion containerStruct::get_req_fieldX() && {
+  return std::move(req_fieldX);
 }
 
 const std::vector< ::some::valid::ns::ComplexUnion>& containerStruct::get_fieldY() const& {
@@ -813,10 +932,14 @@ std::vector< ::some::valid::ns::unionTypeDef> containerStruct::get_fieldAA() && 
 void swap(containerStruct& a, containerStruct& b) {
   using ::std::swap;
   swap(a.fieldA, b.fieldA);
+  swap(a.req_fieldA, b.req_fieldA);
   swap(a.fieldB, b.fieldB);
+  swap(a.req_fieldB, b.req_fieldB);
   swap(a.fieldC, b.fieldC);
+  swap(a.req_fieldC, b.req_fieldC);
   swap(a.fieldD, b.fieldD);
   swap(a.fieldE, b.fieldE);
+  swap(a.req_fieldE, b.req_fieldE);
   swap(a.fieldF, b.fieldF);
   swap(a.fieldG, b.fieldG);
   swap(a.fieldH, b.fieldH);
@@ -830,12 +953,15 @@ void swap(containerStruct& a, containerStruct& b) {
   swap(a.fieldP, b.fieldP);
   swap(a.fieldQ, b.fieldQ);
   swap(a.fieldR, b.fieldR);
+  swap(a.req_fieldR, b.req_fieldR);
   swap(a.fieldS, b.fieldS);
   swap(a.fieldT, b.fieldT);
   swap(a.fieldU, b.fieldU);
   swap(a.fieldV, b.fieldV);
+  swap(a.req_fieldV, b.req_fieldV);
   swap(a.fieldW, b.fieldW);
   swap(a.fieldX, b.fieldX);
+  swap(a.req_fieldX, b.req_fieldX);
   swap(a.fieldY, b.fieldY);
   swap(a.fieldZ, b.fieldZ);
   swap(a.fieldAA, b.fieldAA);

@@ -25,6 +25,9 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
+<%#struct:fields%><%#field:required?%>
+  bool isset_<%field:name%> = false;
+<%/field:required?%><%/struct:fields%>
 
   while (true) {
     xfer += iprot->readFieldBegin(fname, ftype, fid);
@@ -56,7 +59,12 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
 <%#type:struct?%>
           xfer += ::apache::thrift::Cpp2Ops< <% > Type%>>::read(iprot, &this-><%field:name%>);
 <%/type:struct?%>
+<%#field:required?%>
+          isset_<%field:name%> = true;
+<%/field:required?%>
+<%^field:required?%>
           this->__isset.<%field:name%> = true;
+<%/field:required?%>
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -73,6 +81,11 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
   }
   xfer += iprot->readStructEnd();
 
+<%#struct:fields%><%#field:required?%>
+  if (!isset_<%field:name%>) {
+    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field '<%field:name%>' was not found in serialized data! Struct: <%struct:name%>");
+  }
+<%/field:required?%><%/struct:fields%>
   return xfer;
 }
 <%!

@@ -58,9 +58,9 @@ Fields
 
 __isset
 
-%> {<%#struct:fields%>
-    __isset.<%field:name%> = true;<%!
-%><%#last?%>
-  <%/last?%><%!
-%><%/struct:fields%><%!
-%>}
+%><%^struct:fields?%> {}<%/struct:fields?%><%!
+%><%#struct:fields?%> {
+  <%#struct:fields%><%^field:required?%>
+    __isset.<%field:name%> = true;
+  <%/field:required?%><%/struct:fields%>
+  }<%/struct:fields?%>
