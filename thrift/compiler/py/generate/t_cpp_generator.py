@@ -3108,16 +3108,19 @@ class CppGenerator(t_generator.Generator):
         if obj.is_union:
             for member in members:
                 mtype = member.type
+                t = self._type_name(mtype)
                 true_type = self._get_true_type(mtype)
                 is_reference = self._is_reference(member)
                 field_type_name = self._field_type_name(member, true_type)
-                t = self._type_name(true_type)
                 setter_result = field_type_name
+                if not is_reference:
+                    field_type_name = t
+                    setter_result = t
+                setter_result += '&'
                 # generate definition on the tcc file if layout information
                 # is incomplete (say, recursive types)
                 outofline = is_reference and not mtype.is_base_type \
                     and not mtype in self._generated_types
-                setter_result += '&'
                 is_primitive = (mtype.is_base_type and not mtype.is_string) \
                                or mtype.is_enum
                 if is_primitive:
@@ -3197,8 +3200,10 @@ class CppGenerator(t_generator.Generator):
                         out('return value_.{0};'.format(member.name))
 
             for member in members:
-                true_type = self._get_true_type(member.type)
-                t = self._field_type_name(member, true_type)
+                t = self._type_name(member.type)
+                if self._is_reference(member):
+                    true_type = self._get_true_type(member.type)
+                    t = self._field_type_name(member, true_type)
                 with struct.defn('{result_type} {symbol_scope}'
                                + 'get_{symbol_name}() const',
                                name=member.name,
@@ -3209,8 +3214,10 @@ class CppGenerator(t_generator.Generator):
                     out('return value_.{0};'.format(member.name))
 
             for member in members:
-                true_type = self._get_true_type(member.type)
-                t = self._field_type_name(member, true_type)
+                t = self._type_name(member.type)
+                if self._is_reference(member):
+                    true_type = self._get_true_type(member.type)
+                    t = self._field_type_name(member, true_type)
                 with struct.defn('{result_type} {symbol_scope}'
                                + 'mutable_{symbol_name}()',
                                name=member.name,
@@ -3221,8 +3228,10 @@ class CppGenerator(t_generator.Generator):
                     out('return value_.{0};'.format(member.name))
 
             for member in members:
-                true_type = self._get_true_type(member.type)
-                t = self._field_type_name(member, true_type)
+                t = self._type_name(member.type)
+                if self._is_reference(member):
+                    true_type = self._get_true_type(member.type)
+                    t = self._field_type_name(member, true_type)
                 with struct.defn('{result_type} {symbol_scope}'
                                + 'move_{symbol_name}()',
                                name=member.name,

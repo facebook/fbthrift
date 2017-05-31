@@ -338,24 +338,24 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     return value_.stringListValue;
   }
 
-  std::map<int16_t, std::string>& set_typedefValue(std::map<int16_t, std::string> const &t) {
+   ::cpp2::containerTypedef& set_typedefValue( ::cpp2::containerTypedef const &t) {
     __clear();
     type_ = Type::typedefValue;
-    ::new (std::addressof(value_.typedefValue)) std::map<int16_t, std::string>(t);
+    ::new (std::addressof(value_.typedefValue))  ::cpp2::containerTypedef(t);
     return value_.typedefValue;
   }
 
-  std::map<int16_t, std::string>& set_typedefValue(std::map<int16_t, std::string>&& t) {
+   ::cpp2::containerTypedef& set_typedefValue( ::cpp2::containerTypedef&& t) {
     __clear();
     type_ = Type::typedefValue;
-    ::new (std::addressof(value_.typedefValue)) std::map<int16_t, std::string>(std::move(t));
+    ::new (std::addressof(value_.typedefValue))  ::cpp2::containerTypedef(std::move(t));
     return value_.typedefValue;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::map<int16_t, std::string>, T...>> std::map<int16_t, std::string>& set_typedefValue(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::cpp2::containerTypedef, T...>>  ::cpp2::containerTypedef& set_typedefValue(T&&... t) {
     __clear();
     type_ = Type::typedefValue;
-    ::new (std::addressof(value_.typedefValue)) std::map<int16_t, std::string>(std::forward<T>(t)...);
+    ::new (std::addressof(value_.typedefValue))  ::cpp2::containerTypedef(std::forward<T>(t)...);
     return value_.typedefValue;
   }
 
@@ -400,7 +400,7 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     return value_.stringListValue;
   }
 
-  std::map<int16_t, std::string> const & get_typedefValue() const {
+   ::cpp2::containerTypedef const & get_typedefValue() const {
     assert(type_ == Type::typedefValue);
     return value_.typedefValue;
   }
@@ -430,7 +430,7 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     return value_.stringListValue;
   }
 
-  std::map<int16_t, std::string> & mutable_typedefValue() {
+   ::cpp2::containerTypedef & mutable_typedefValue() {
     assert(type_ == Type::typedefValue);
     return value_.typedefValue;
   }
@@ -460,7 +460,7 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     return std::move(value_.stringListValue);
   }
 
-  std::map<int16_t, std::string> move_typedefValue() {
+   ::cpp2::containerTypedef move_typedefValue() {
     assert(type_ == Type::typedefValue);
     return std::move(value_.typedefValue);
   }
