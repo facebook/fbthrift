@@ -135,6 +135,68 @@ void SimpleUnion::__clear() {
       destruct(value_.stringValue);
       break;
     }
+    default:
+    {
+      assert(false);
+      break;
+    }
+  }
+  type_ = Type::__EMPTY__;
+}
+
+bool SimpleUnion::operator==(const SimpleUnion& rhs) const {
+  if (type_ != rhs.type_) { return false; }
+  switch(type_) {
+    case Type::intValue:
+    {
+      return value_.intValue == rhs.value_.intValue;
+    }
+    case Type::stringValue:
+    {
+      return value_.stringValue == rhs.value_.stringValue;
+    }
+    default:
+    {
+      return true;
+    }
+  }
+}
+
+void swap(SimpleUnion& a, SimpleUnion& b) {
+  SimpleUnion temp(std::move(a));
+  a = std::move(b);
+  b = std::move(temp);
+}
+
+template uint32_t SimpleUnion::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t SimpleUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t SimpleUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t SimpleUnion::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t SimpleUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t SimpleUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
+void ComplexUnion::__clear() {
+  // clear all fields
+  if (type_ == Type::__EMPTY__) { return; }
+  switch(type_) {
+    case Type::intValue:
+    {
+      destruct(value_.intValue);
+      break;
+    }
+    case Type::stringValue:
+    {
+      destruct(value_.stringValue);
+      break;
+    }
     case Type::intValue2:
     {
       destruct(value_.intValue2);
@@ -190,6 +252,26 @@ void SimpleUnion::__clear() {
       destruct(value_.a_set_struct);
       break;
     }
+    case Type::a_union:
+    {
+      destruct(value_.a_union);
+      break;
+    }
+    case Type::a_union_list:
+    {
+      destruct(value_.a_union_list);
+      break;
+    }
+    case Type::a_union_typedef:
+    {
+      destruct(value_.a_union_typedef);
+      break;
+    }
+    case Type::a_union_typedef_list:
+    {
+      destruct(value_.a_union_typedef_list);
+      break;
+    }
     default:
     {
       assert(false);
@@ -199,7 +281,7 @@ void SimpleUnion::__clear() {
   type_ = Type::__EMPTY__;
 }
 
-bool SimpleUnion::operator==(const SimpleUnion& rhs) const {
+bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
   if (type_ != rhs.type_) { return false; }
   switch(type_) {
     case Type::intValue:
@@ -254,6 +336,22 @@ bool SimpleUnion::operator==(const SimpleUnion& rhs) const {
     {
       return value_.a_set_struct == rhs.value_.a_set_struct;
     }
+    case Type::a_union:
+    {
+      return value_.a_union == rhs.value_.a_union;
+    }
+    case Type::a_union_list:
+    {
+      return value_.a_union_list == rhs.value_.a_union_list;
+    }
+    case Type::a_union_typedef:
+    {
+      return value_.a_union_typedef == rhs.value_.a_union_typedef;
+    }
+    case Type::a_union_typedef_list:
+    {
+      return value_.a_union_typedef_list == rhs.value_.a_union_typedef_list;
+    }
     default:
     {
       return true;
@@ -261,20 +359,20 @@ bool SimpleUnion::operator==(const SimpleUnion& rhs) const {
   }
 }
 
-void swap(SimpleUnion& a, SimpleUnion& b) {
-  SimpleUnion temp(std::move(a));
+void swap(ComplexUnion& a, ComplexUnion& b) {
+  ComplexUnion temp(std::move(a));
   a = std::move(b);
   b = std::move(temp);
 }
 
-template uint32_t SimpleUnion::read<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t SimpleUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t SimpleUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t SimpleUnion::read<>(apache::thrift::CompactProtocolReader*);
-template uint32_t SimpleUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t SimpleUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t ComplexUnion::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t ComplexUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t ComplexUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t ComplexUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t ComplexUnion::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t ComplexUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t ComplexUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t ComplexUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }}} // some::valid::ns
 namespace apache { namespace thrift {
@@ -293,6 +391,9 @@ void AnException::__clear() {
   enum_container.clear();
   ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::clear(&a_struct);
   a_set_struct.clear();
+  a_union_list.clear();
+  union_typedef.clear();
+  a_union_typedef_list.clear();
   __isset.__clear();
 }
 
@@ -322,6 +423,15 @@ bool AnException::operator==(const AnException& rhs) const {
     return false;
   }
   if (!((a_set_struct == rhs.a_set_struct))) {
+    return false;
+  }
+  if (!((a_union_list == rhs.a_union_list))) {
+    return false;
+  }
+  if (!((union_typedef == rhs.union_typedef))) {
+    return false;
+  }
+  if (!((a_union_typedef_list == rhs.a_union_typedef_list))) {
     return false;
   }
   return true;
@@ -375,6 +485,30 @@ std::set< ::some::valid::ns::MyStruct> AnException::get_a_set_struct() && {
   return std::move(a_set_struct);
 }
 
+const std::vector< ::some::valid::ns::SimpleUnion>& AnException::get_a_union_list() const& {
+  return a_union_list;
+}
+
+std::vector< ::some::valid::ns::SimpleUnion> AnException::get_a_union_list() && {
+  return std::move(a_union_list);
+}
+
+const  ::some::valid::ns::unionTypeDef& AnException::get_union_typedef() const& {
+  return union_typedef;
+}
+
+ ::some::valid::ns::unionTypeDef AnException::get_union_typedef() && {
+  return std::move(union_typedef);
+}
+
+const std::vector< ::some::valid::ns::unionTypeDef>& AnException::get_a_union_typedef_list() const& {
+  return a_union_typedef_list;
+}
+
+std::vector< ::some::valid::ns::unionTypeDef> AnException::get_a_union_typedef_list() && {
+  return std::move(a_union_typedef_list);
+}
+
 void swap(AnException& a, AnException& b) {
   using ::std::swap;
   swap(a.code, b.code);
@@ -386,6 +520,9 @@ void swap(AnException& a, AnException& b) {
   swap(a.enum_container, b.enum_container);
   swap(a.a_struct, b.a_struct);
   swap(a.a_set_struct, b.a_set_struct);
+  swap(a.a_union_list, b.a_union_list);
+  swap(a.union_typedef, b.union_typedef);
+  swap(a.a_union_typedef_list, b.a_union_typedef_list);
   swap(a.__isset, b.__isset);
 }
 
@@ -429,6 +566,10 @@ void containerStruct::__clear() {
   fieldU.clear();
   ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::clear(&fieldV);
   fieldW.clear();
+  ::apache::thrift::Cpp2Ops<  ::some::valid::ns::ComplexUnion>::clear(&fieldX);
+  fieldY.clear();
+  fieldZ.clear();
+  fieldAA.clear();
   __isset.__clear();
 }
 
@@ -500,6 +641,18 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
     return false;
   }
   if (!((fieldW == rhs.fieldW))) {
+    return false;
+  }
+  if (!((fieldX == rhs.fieldX))) {
+    return false;
+  }
+  if (!((fieldY == rhs.fieldY))) {
+    return false;
+  }
+  if (!((fieldZ == rhs.fieldZ))) {
+    return false;
+  }
+  if (!((fieldAA == rhs.fieldAA))) {
     return false;
   }
   return true;
@@ -625,6 +778,38 @@ std::set< ::some::valid::ns::MyStruct> containerStruct::get_fieldW() && {
   return std::move(fieldW);
 }
 
+const  ::some::valid::ns::ComplexUnion& containerStruct::get_fieldX() const& {
+  return fieldX;
+}
+
+ ::some::valid::ns::ComplexUnion containerStruct::get_fieldX() && {
+  return std::move(fieldX);
+}
+
+const std::vector< ::some::valid::ns::ComplexUnion>& containerStruct::get_fieldY() const& {
+  return fieldY;
+}
+
+std::vector< ::some::valid::ns::ComplexUnion> containerStruct::get_fieldY() && {
+  return std::move(fieldY);
+}
+
+const  ::some::valid::ns::unionTypeDef& containerStruct::get_fieldZ() const& {
+  return fieldZ;
+}
+
+ ::some::valid::ns::unionTypeDef containerStruct::get_fieldZ() && {
+  return std::move(fieldZ);
+}
+
+const std::vector< ::some::valid::ns::unionTypeDef>& containerStruct::get_fieldAA() const& {
+  return fieldAA;
+}
+
+std::vector< ::some::valid::ns::unionTypeDef> containerStruct::get_fieldAA() && {
+  return std::move(fieldAA);
+}
+
 void swap(containerStruct& a, containerStruct& b) {
   using ::std::swap;
   swap(a.fieldA, b.fieldA);
@@ -650,6 +835,10 @@ void swap(containerStruct& a, containerStruct& b) {
   swap(a.fieldU, b.fieldU);
   swap(a.fieldV, b.fieldV);
   swap(a.fieldW, b.fieldW);
+  swap(a.fieldX, b.fieldX);
+  swap(a.fieldY, b.fieldY);
+  swap(a.fieldZ, b.fieldZ);
+  swap(a.fieldAA, b.fieldAA);
   swap(a.__isset, b.__isset);
 }
 

@@ -14,7 +14,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>  bool operator < (const <%struct:name%>& rhs) const {
+%><%#struct:is_struct_orderable?%>
+
+  bool operator < (const <%struct:name%>& rhs) const {
     if (type_ != rhs.type_) { return type_ < rhs.type_; }
     switch(type_) {
 <%#struct:fields%>
@@ -29,3 +31,7 @@
       }
     }
   }
+<%/struct:is_struct_orderable?%>
+<%^struct:is_struct_orderable?%>
+  bool operator < (const <%struct:name%>& rhs) const;
+<%/struct:is_struct_orderable?%>

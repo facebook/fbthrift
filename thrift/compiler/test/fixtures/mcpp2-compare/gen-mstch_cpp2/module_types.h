@@ -23,6 +23,7 @@ namespace some { namespace valid { namespace ns {
 class Empty;
 class MyStruct;
 class SimpleUnion;
+class ComplexUnion;
 class AnException;
 class containerStruct;
 class MyIncludedStruct;
@@ -69,6 +70,9 @@ typedef int32_t simpleTypeDef;
 typedef std::map<int16_t, std::string> containerTypeDef;
 
 typedef std::vector<std::map<int16_t, std::string>> complexContainerTypeDef;
+
+class SimpleUnion;
+typedef std::set< ::some::valid::ns::SimpleUnion> unionTypeDef;
 
 class MyStruct;
 typedef std::vector< ::some::valid::ns::MyStruct> structTypeDef;
@@ -355,19 +359,8 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
  public:
   enum Type {
     __EMPTY__ = 0,
-    intValue = 1,
-    stringValue = 3,
-    intValue2 = 4,
-    intValue3 = 6,
-    doubelValue = 7,
-    boolValue = 8,
-    union_list = 9,
-    union_set = 10,
-    union_map = 11,
-    enum_field = 12,
-    enum_container = 13,
-    a_struct = 14,
-    a_set_struct = 15,
+    intValue = 7,
+    stringValue = 2,
   } ;
 
   SimpleUnion() :
@@ -386,61 +379,6 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
       case Type::stringValue:
       {
         set_stringValue(std::move(rhs.value_.stringValue));
-        break;
-      }
-      case Type::intValue2:
-      {
-        set_intValue2(std::move(rhs.value_.intValue2));
-        break;
-      }
-      case Type::intValue3:
-      {
-        set_intValue3(std::move(rhs.value_.intValue3));
-        break;
-      }
-      case Type::doubelValue:
-      {
-        set_doubelValue(std::move(rhs.value_.doubelValue));
-        break;
-      }
-      case Type::boolValue:
-      {
-        set_boolValue(std::move(rhs.value_.boolValue));
-        break;
-      }
-      case Type::union_list:
-      {
-        set_union_list(std::move(rhs.value_.union_list));
-        break;
-      }
-      case Type::union_set:
-      {
-        set_union_set(std::move(rhs.value_.union_set));
-        break;
-      }
-      case Type::union_map:
-      {
-        set_union_map(std::move(rhs.value_.union_map));
-        break;
-      }
-      case Type::enum_field:
-      {
-        set_enum_field(std::move(rhs.value_.enum_field));
-        break;
-      }
-      case Type::enum_container:
-      {
-        set_enum_container(std::move(rhs.value_.enum_container));
-        break;
-      }
-      case Type::a_struct:
-      {
-        set_a_struct(std::move(rhs.value_.a_struct));
-        break;
-      }
-      case Type::a_set_struct:
-      {
-        set_a_set_struct(std::move(rhs.value_.a_set_struct));
         break;
       }
       default:
@@ -467,61 +405,6 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
         set_stringValue(rhs.value_.stringValue);
         break;
       }
-      case Type::intValue2:
-      {
-        set_intValue2(rhs.value_.intValue2);
-        break;
-      }
-      case Type::intValue3:
-      {
-        set_intValue3(rhs.value_.intValue3);
-        break;
-      }
-      case Type::doubelValue:
-      {
-        set_doubelValue(rhs.value_.doubelValue);
-        break;
-      }
-      case Type::boolValue:
-      {
-        set_boolValue(rhs.value_.boolValue);
-        break;
-      }
-      case Type::union_list:
-      {
-        set_union_list(rhs.value_.union_list);
-        break;
-      }
-      case Type::union_set:
-      {
-        set_union_set(rhs.value_.union_set);
-        break;
-      }
-      case Type::union_map:
-      {
-        set_union_map(rhs.value_.union_map);
-        break;
-      }
-      case Type::enum_field:
-      {
-        set_enum_field(rhs.value_.enum_field);
-        break;
-      }
-      case Type::enum_container:
-      {
-        set_enum_container(rhs.value_.enum_container);
-        break;
-      }
-      case Type::a_struct:
-      {
-        set_a_struct(rhs.value_.a_struct);
-        break;
-      }
-      case Type::a_set_struct:
-      {
-        set_a_set_struct(rhs.value_.a_set_struct);
-        break;
-      }
       default:
       {
         assert(false);
@@ -543,61 +426,6 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
       case Type::stringValue:
       {
         set_stringValue(std::move(rhs.value_.stringValue));
-        break;
-      }
-      case Type::intValue2:
-      {
-        set_intValue2(std::move(rhs.value_.intValue2));
-        break;
-      }
-      case Type::intValue3:
-      {
-        set_intValue3(std::move(rhs.value_.intValue3));
-        break;
-      }
-      case Type::doubelValue:
-      {
-        set_doubelValue(std::move(rhs.value_.doubelValue));
-        break;
-      }
-      case Type::boolValue:
-      {
-        set_boolValue(std::move(rhs.value_.boolValue));
-        break;
-      }
-      case Type::union_list:
-      {
-        set_union_list(std::move(rhs.value_.union_list));
-        break;
-      }
-      case Type::union_set:
-      {
-        set_union_set(std::move(rhs.value_.union_set));
-        break;
-      }
-      case Type::union_map:
-      {
-        set_union_map(std::move(rhs.value_.union_map));
-        break;
-      }
-      case Type::enum_field:
-      {
-        set_enum_field(std::move(rhs.value_.enum_field));
-        break;
-      }
-      case Type::enum_container:
-      {
-        set_enum_container(std::move(rhs.value_.enum_container));
-        break;
-      }
-      case Type::a_struct:
-      {
-        set_a_struct(std::move(rhs.value_.a_struct));
-        break;
-      }
-      case Type::a_set_struct:
-      {
-        set_a_set_struct(std::move(rhs.value_.a_set_struct));
         break;
       }
       default:
@@ -625,6 +453,317 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
         set_stringValue(rhs.value_.stringValue);
         break;
       }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    return *this;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_intValue(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  SimpleUnion(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_stringValue(arg.move());
+  }
+  void __clear();
+
+  virtual ~SimpleUnion() throw() {
+    __clear();
+  }
+
+  union storage_type {
+    int64_t intValue;
+    std::string stringValue;
+
+    storage_type() {}
+    ~storage_type() {}
+  } ;
+  bool operator==(const SimpleUnion& rhs) const;
+
+  bool operator < (const SimpleUnion& rhs) const {
+    if (type_ != rhs.type_) { return type_ < rhs.type_; }
+    switch(type_) {
+      case Type::intValue:
+      {
+        return value_.intValue < rhs.value_.intValue;
+      }
+      case Type::stringValue:
+      {
+        return value_.stringValue < rhs.value_.stringValue;
+      }
+      default:
+      {
+        return false;
+      }
+    }
+  }
+
+  int64_t& set_intValue(int64_t t = int64_t()) {
+    __clear();
+    type_ = Type::intValue;
+    ::new (std::addressof(value_.intValue)) int64_t(t);
+    return value_.intValue;
+  }
+
+  std::string& set_stringValue(std::string const &t) {
+    __clear();
+    type_ = Type::stringValue;
+    ::new (std::addressof(value_.stringValue)) std::string(t);
+    return value_.stringValue;
+  }
+
+  std::string& set_stringValue(std::string&& t) {
+    __clear();
+    type_ = Type::stringValue;
+    ::new (std::addressof(value_.stringValue)) std::string(std::move(t));
+    return value_.stringValue;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::string, T...>> std::string& set_stringValue(T&&... t) {
+    __clear();
+    type_ = Type::stringValue;
+    ::new (std::addressof(value_.stringValue)) std::string(std::forward<T>(t)...);
+    return value_.stringValue;
+  }
+
+  int64_t const & get_intValue() const {
+    assert(type_ == Type::intValue);
+    return value_.intValue;
+  }
+
+  std::string const & get_stringValue() const {
+    assert(type_ == Type::stringValue);
+    return value_.stringValue;
+  }
+
+  int64_t & mutable_intValue() {
+    assert(type_ == Type::intValue);
+    return value_.intValue;
+  }
+
+  std::string & mutable_stringValue() {
+    assert(type_ == Type::stringValue);
+    return value_.stringValue;
+  }
+
+  int64_t move_intValue() {
+    assert(type_ == Type::intValue);
+    return std::move(value_.intValue);
+  }
+
+  std::string move_stringValue() {
+    assert(type_ == Type::stringValue);
+    return std::move(value_.stringValue);
+  }
+
+  Type getType() const { return type_; }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+ protected:
+  template <class T>
+  void destruct(T &val) {
+    (&val)->~T();
+  }
+
+  Type type_;
+  storage_type value_;
+};
+
+void swap(SimpleUnion& a, SimpleUnion& b);
+extern template uint32_t SimpleUnion::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t SimpleUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t SimpleUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t SimpleUnion::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t SimpleUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t SimpleUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::some::valid::ns::SimpleUnion>::clear( ::some::valid::ns::SimpleUnion* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::SimpleUnion>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::SimpleUnion>::write(Protocol* proto,  ::some::valid::ns::SimpleUnion const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::SimpleUnion>::read(Protocol* proto,  ::some::valid::ns::SimpleUnion* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::SimpleUnion>::serializedSize(Protocol const* proto,  ::some::valid::ns::SimpleUnion const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::SimpleUnion>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::SimpleUnion const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
+class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<ComplexUnion> {
+ public:
+  enum Type {
+    __EMPTY__ = 0,
+    intValue = 1,
+    stringValue = 3,
+    intValue2 = 4,
+    intValue3 = 6,
+    doubelValue = 7,
+    boolValue = 8,
+    union_list = 9,
+    union_set = 10,
+    union_map = 11,
+    enum_field = 12,
+    enum_container = 13,
+    a_struct = 14,
+    a_set_struct = 15,
+    a_union = 16,
+    a_union_list = 17,
+    a_union_typedef = 18,
+    a_union_typedef_list = 19,
+  } ;
+
+  ComplexUnion() :
+      type_(Type::__EMPTY__) {}
+
+  ComplexUnion(ComplexUnion&& rhs) :
+      type_(Type::__EMPTY__) {
+    if (this == &rhs) {return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch(rhs.type_) {
+      case Type::intValue:
+      {
+        set_intValue(std::move(rhs.value_.intValue));
+        break;
+      }
+      case Type::stringValue:
+      {
+        set_stringValue(std::move(rhs.value_.stringValue));
+        break;
+      }
+      case Type::intValue2:
+      {
+        set_intValue2(std::move(rhs.value_.intValue2));
+        break;
+      }
+      case Type::intValue3:
+      {
+        set_intValue3(std::move(rhs.value_.intValue3));
+        break;
+      }
+      case Type::doubelValue:
+      {
+        set_doubelValue(std::move(rhs.value_.doubelValue));
+        break;
+      }
+      case Type::boolValue:
+      {
+        set_boolValue(std::move(rhs.value_.boolValue));
+        break;
+      }
+      case Type::union_list:
+      {
+        set_union_list(std::move(rhs.value_.union_list));
+        break;
+      }
+      case Type::union_set:
+      {
+        set_union_set(std::move(rhs.value_.union_set));
+        break;
+      }
+      case Type::union_map:
+      {
+        set_union_map(std::move(rhs.value_.union_map));
+        break;
+      }
+      case Type::enum_field:
+      {
+        set_enum_field(std::move(rhs.value_.enum_field));
+        break;
+      }
+      case Type::enum_container:
+      {
+        set_enum_container(std::move(rhs.value_.enum_container));
+        break;
+      }
+      case Type::a_struct:
+      {
+        set_a_struct(std::move(rhs.value_.a_struct));
+        break;
+      }
+      case Type::a_set_struct:
+      {
+        set_a_set_struct(std::move(rhs.value_.a_set_struct));
+        break;
+      }
+      case Type::a_union:
+      {
+        set_a_union(std::move(rhs.value_.a_union));
+        break;
+      }
+      case Type::a_union_list:
+      {
+        set_a_union_list(std::move(rhs.value_.a_union_list));
+        break;
+      }
+      case Type::a_union_typedef:
+      {
+        set_a_union_typedef(std::move(rhs.value_.a_union_typedef));
+        break;
+      }
+      case Type::a_union_typedef_list:
+      {
+        set_a_union_typedef_list(std::move(rhs.value_.a_union_typedef_list));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+  }
+
+  ComplexUnion(const ComplexUnion& rhs) :
+      type_(Type::__EMPTY__) {
+    if (this == &rhs) {return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch(rhs.type_) {
+      case Type::intValue:
+      {
+        set_intValue(rhs.value_.intValue);
+        break;
+      }
+      case Type::stringValue:
+      {
+        set_stringValue(rhs.value_.stringValue);
+        break;
+      }
       case Type::intValue2:
       {
         set_intValue2(rhs.value_.intValue2);
@@ -680,6 +819,224 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
         set_a_set_struct(rhs.value_.a_set_struct);
         break;
       }
+      case Type::a_union:
+      {
+        set_a_union(rhs.value_.a_union);
+        break;
+      }
+      case Type::a_union_list:
+      {
+        set_a_union_list(rhs.value_.a_union_list);
+        break;
+      }
+      case Type::a_union_typedef:
+      {
+        set_a_union_typedef(rhs.value_.a_union_typedef);
+        break;
+      }
+      case Type::a_union_typedef_list:
+      {
+        set_a_union_typedef_list(rhs.value_.a_union_typedef_list);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+  }
+
+  ComplexUnion& operator=(ComplexUnion&& rhs) {
+    if (this == &rhs) {return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch(rhs.type_) {
+      case Type::intValue:
+      {
+        set_intValue(std::move(rhs.value_.intValue));
+        break;
+      }
+      case Type::stringValue:
+      {
+        set_stringValue(std::move(rhs.value_.stringValue));
+        break;
+      }
+      case Type::intValue2:
+      {
+        set_intValue2(std::move(rhs.value_.intValue2));
+        break;
+      }
+      case Type::intValue3:
+      {
+        set_intValue3(std::move(rhs.value_.intValue3));
+        break;
+      }
+      case Type::doubelValue:
+      {
+        set_doubelValue(std::move(rhs.value_.doubelValue));
+        break;
+      }
+      case Type::boolValue:
+      {
+        set_boolValue(std::move(rhs.value_.boolValue));
+        break;
+      }
+      case Type::union_list:
+      {
+        set_union_list(std::move(rhs.value_.union_list));
+        break;
+      }
+      case Type::union_set:
+      {
+        set_union_set(std::move(rhs.value_.union_set));
+        break;
+      }
+      case Type::union_map:
+      {
+        set_union_map(std::move(rhs.value_.union_map));
+        break;
+      }
+      case Type::enum_field:
+      {
+        set_enum_field(std::move(rhs.value_.enum_field));
+        break;
+      }
+      case Type::enum_container:
+      {
+        set_enum_container(std::move(rhs.value_.enum_container));
+        break;
+      }
+      case Type::a_struct:
+      {
+        set_a_struct(std::move(rhs.value_.a_struct));
+        break;
+      }
+      case Type::a_set_struct:
+      {
+        set_a_set_struct(std::move(rhs.value_.a_set_struct));
+        break;
+      }
+      case Type::a_union:
+      {
+        set_a_union(std::move(rhs.value_.a_union));
+        break;
+      }
+      case Type::a_union_list:
+      {
+        set_a_union_list(std::move(rhs.value_.a_union_list));
+        break;
+      }
+      case Type::a_union_typedef:
+      {
+        set_a_union_typedef(std::move(rhs.value_.a_union_typedef));
+        break;
+      }
+      case Type::a_union_typedef_list:
+      {
+        set_a_union_typedef_list(std::move(rhs.value_.a_union_typedef_list));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+    return *this;
+  }
+
+  ComplexUnion& operator=(const ComplexUnion& rhs) {
+    if (this == &rhs) {return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch(rhs.type_) {
+      case Type::intValue:
+      {
+        set_intValue(rhs.value_.intValue);
+        break;
+      }
+      case Type::stringValue:
+      {
+        set_stringValue(rhs.value_.stringValue);
+        break;
+      }
+      case Type::intValue2:
+      {
+        set_intValue2(rhs.value_.intValue2);
+        break;
+      }
+      case Type::intValue3:
+      {
+        set_intValue3(rhs.value_.intValue3);
+        break;
+      }
+      case Type::doubelValue:
+      {
+        set_doubelValue(rhs.value_.doubelValue);
+        break;
+      }
+      case Type::boolValue:
+      {
+        set_boolValue(rhs.value_.boolValue);
+        break;
+      }
+      case Type::union_list:
+      {
+        set_union_list(rhs.value_.union_list);
+        break;
+      }
+      case Type::union_set:
+      {
+        set_union_set(rhs.value_.union_set);
+        break;
+      }
+      case Type::union_map:
+      {
+        set_union_map(rhs.value_.union_map);
+        break;
+      }
+      case Type::enum_field:
+      {
+        set_enum_field(rhs.value_.enum_field);
+        break;
+      }
+      case Type::enum_container:
+      {
+        set_enum_container(rhs.value_.enum_container);
+        break;
+      }
+      case Type::a_struct:
+      {
+        set_a_struct(rhs.value_.a_struct);
+        break;
+      }
+      case Type::a_set_struct:
+      {
+        set_a_set_struct(rhs.value_.a_set_struct);
+        break;
+      }
+      case Type::a_union:
+      {
+        set_a_union(rhs.value_.a_union);
+        break;
+      }
+      case Type::a_union_list:
+      {
+        set_a_union_list(rhs.value_.a_union_list);
+        break;
+      }
+      case Type::a_union_typedef:
+      {
+        set_a_union_typedef(rhs.value_.a_union_typedef);
+        break;
+      }
+      case Type::a_union_typedef_list:
+      {
+        set_a_union_typedef_list(rhs.value_.a_union_typedef_list);
+        break;
+      }
       default:
       {
         assert(false);
@@ -689,86 +1046,110 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
     return *this;
   }
   template <typename T__ThriftWrappedArgument__Ctor>
-  SimpleUnion(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
     set_intValue(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor>
-  SimpleUnion(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg):
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
     set_stringValue(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor>
-  SimpleUnion(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg):
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
     set_intValue2(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor>
-  SimpleUnion(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg):
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
     set_intValue3(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor>
-  SimpleUnion(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg):
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
     set_doubelValue(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor>
-  SimpleUnion(::apache::thrift::detail::argument_wrapper<8, T__ThriftWrappedArgument__Ctor> arg):
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<8, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
     set_boolValue(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor>
-  SimpleUnion(::apache::thrift::detail::argument_wrapper<9, T__ThriftWrappedArgument__Ctor> arg):
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<9, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
     set_union_list(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor>
-  SimpleUnion(::apache::thrift::detail::argument_wrapper<10, T__ThriftWrappedArgument__Ctor> arg):
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<10, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
     set_union_set(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor>
-  SimpleUnion(::apache::thrift::detail::argument_wrapper<11, T__ThriftWrappedArgument__Ctor> arg):
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<11, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
     set_union_map(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor>
-  SimpleUnion(::apache::thrift::detail::argument_wrapper<12, T__ThriftWrappedArgument__Ctor> arg):
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<12, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
     set_enum_field(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor>
-  SimpleUnion(::apache::thrift::detail::argument_wrapper<13, T__ThriftWrappedArgument__Ctor> arg):
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<13, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
     set_enum_container(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor>
-  SimpleUnion(::apache::thrift::detail::argument_wrapper<14, T__ThriftWrappedArgument__Ctor> arg):
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<14, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
     set_a_struct(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor>
-  SimpleUnion(::apache::thrift::detail::argument_wrapper<15, T__ThriftWrappedArgument__Ctor> arg):
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<15, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
     set_a_set_struct(arg.move());
   }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<16, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_a_union(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<17, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_a_union_list(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<18, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_a_union_typedef(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<19, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_a_union_typedef_list(arg.move());
+  }
   void __clear();
 
-  virtual ~SimpleUnion() throw() {
+  virtual ~ComplexUnion() throw() {
     __clear();
   }
 
@@ -786,73 +1167,16 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
     std::vector< ::some::valid::ns::MyEnumA> enum_container;
      ::some::valid::ns::MyStruct a_struct;
     std::set< ::some::valid::ns::MyStruct> a_set_struct;
+     ::some::valid::ns::SimpleUnion a_union;
+    std::vector< ::some::valid::ns::SimpleUnion> a_union_list;
+     ::some::valid::ns::unionTypeDef a_union_typedef;
+    std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list;
 
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const SimpleUnion& rhs) const;
-
-  bool operator < (const SimpleUnion& rhs) const {
-    if (type_ != rhs.type_) { return type_ < rhs.type_; }
-    switch(type_) {
-      case Type::intValue:
-      {
-        return value_.intValue < rhs.value_.intValue;
-      }
-      case Type::stringValue:
-      {
-        return value_.stringValue < rhs.value_.stringValue;
-      }
-      case Type::intValue2:
-      {
-        return value_.intValue2 < rhs.value_.intValue2;
-      }
-      case Type::intValue3:
-      {
-        return value_.intValue3 < rhs.value_.intValue3;
-      }
-      case Type::doubelValue:
-      {
-        return value_.doubelValue < rhs.value_.doubelValue;
-      }
-      case Type::boolValue:
-      {
-        return value_.boolValue < rhs.value_.boolValue;
-      }
-      case Type::union_list:
-      {
-        return value_.union_list < rhs.value_.union_list;
-      }
-      case Type::union_set:
-      {
-        return value_.union_set < rhs.value_.union_set;
-      }
-      case Type::union_map:
-      {
-        return value_.union_map < rhs.value_.union_map;
-      }
-      case Type::enum_field:
-      {
-        return value_.enum_field < rhs.value_.enum_field;
-      }
-      case Type::enum_container:
-      {
-        return value_.enum_container < rhs.value_.enum_container;
-      }
-      case Type::a_struct:
-      {
-        return value_.a_struct < rhs.value_.a_struct;
-      }
-      case Type::a_set_struct:
-      {
-        return value_.a_set_struct < rhs.value_.a_set_struct;
-      }
-      default:
-      {
-        return false;
-      }
-    }
-  }
+  bool operator==(const ComplexUnion& rhs) const;
+  bool operator < (const ComplexUnion& rhs) const;
 
   int64_t& set_intValue(int64_t t = int64_t()) {
     __clear();
@@ -1043,6 +1367,90 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
     return value_.a_set_struct;
   }
 
+   ::some::valid::ns::SimpleUnion& set_a_union( ::some::valid::ns::SimpleUnion const &t) {
+    __clear();
+    type_ = Type::a_union;
+    ::new (std::addressof(value_.a_union))  ::some::valid::ns::SimpleUnion(t);
+    return value_.a_union;
+  }
+
+   ::some::valid::ns::SimpleUnion& set_a_union( ::some::valid::ns::SimpleUnion&& t) {
+    __clear();
+    type_ = Type::a_union;
+    ::new (std::addressof(value_.a_union))  ::some::valid::ns::SimpleUnion(std::move(t));
+    return value_.a_union;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::some::valid::ns::SimpleUnion, T...>>  ::some::valid::ns::SimpleUnion& set_a_union(T&&... t) {
+    __clear();
+    type_ = Type::a_union;
+    ::new (std::addressof(value_.a_union))  ::some::valid::ns::SimpleUnion(std::forward<T>(t)...);
+    return value_.a_union;
+  }
+
+  std::vector< ::some::valid::ns::SimpleUnion>& set_a_union_list(std::vector< ::some::valid::ns::SimpleUnion> const &t) {
+    __clear();
+    type_ = Type::a_union_list;
+    ::new (std::addressof(value_.a_union_list)) std::vector< ::some::valid::ns::SimpleUnion>(t);
+    return value_.a_union_list;
+  }
+
+  std::vector< ::some::valid::ns::SimpleUnion>& set_a_union_list(std::vector< ::some::valid::ns::SimpleUnion>&& t) {
+    __clear();
+    type_ = Type::a_union_list;
+    ::new (std::addressof(value_.a_union_list)) std::vector< ::some::valid::ns::SimpleUnion>(std::move(t));
+    return value_.a_union_list;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::vector< ::some::valid::ns::SimpleUnion>, T...>> std::vector< ::some::valid::ns::SimpleUnion>& set_a_union_list(T&&... t) {
+    __clear();
+    type_ = Type::a_union_list;
+    ::new (std::addressof(value_.a_union_list)) std::vector< ::some::valid::ns::SimpleUnion>(std::forward<T>(t)...);
+    return value_.a_union_list;
+  }
+
+   ::some::valid::ns::unionTypeDef& set_a_union_typedef( ::some::valid::ns::unionTypeDef const &t) {
+    __clear();
+    type_ = Type::a_union_typedef;
+    ::new (std::addressof(value_.a_union_typedef))  ::some::valid::ns::unionTypeDef(t);
+    return value_.a_union_typedef;
+  }
+
+   ::some::valid::ns::unionTypeDef& set_a_union_typedef( ::some::valid::ns::unionTypeDef&& t) {
+    __clear();
+    type_ = Type::a_union_typedef;
+    ::new (std::addressof(value_.a_union_typedef))  ::some::valid::ns::unionTypeDef(std::move(t));
+    return value_.a_union_typedef;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::some::valid::ns::unionTypeDef, T...>>  ::some::valid::ns::unionTypeDef& set_a_union_typedef(T&&... t) {
+    __clear();
+    type_ = Type::a_union_typedef;
+    ::new (std::addressof(value_.a_union_typedef))  ::some::valid::ns::unionTypeDef(std::forward<T>(t)...);
+    return value_.a_union_typedef;
+  }
+
+  std::vector< ::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(std::vector< ::some::valid::ns::unionTypeDef> const &t) {
+    __clear();
+    type_ = Type::a_union_typedef_list;
+    ::new (std::addressof(value_.a_union_typedef_list)) std::vector< ::some::valid::ns::unionTypeDef>(t);
+    return value_.a_union_typedef_list;
+  }
+
+  std::vector< ::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(std::vector< ::some::valid::ns::unionTypeDef>&& t) {
+    __clear();
+    type_ = Type::a_union_typedef_list;
+    ::new (std::addressof(value_.a_union_typedef_list)) std::vector< ::some::valid::ns::unionTypeDef>(std::move(t));
+    return value_.a_union_typedef_list;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::vector< ::some::valid::ns::unionTypeDef>, T...>> std::vector< ::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(T&&... t) {
+    __clear();
+    type_ = Type::a_union_typedef_list;
+    ::new (std::addressof(value_.a_union_typedef_list)) std::vector< ::some::valid::ns::unionTypeDef>(std::forward<T>(t)...);
+    return value_.a_union_typedef_list;
+  }
+
   int64_t const & get_intValue() const {
     assert(type_ == Type::intValue);
     return value_.intValue;
@@ -1106,6 +1514,26 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
   std::set< ::some::valid::ns::MyStruct> const & get_a_set_struct() const {
     assert(type_ == Type::a_set_struct);
     return value_.a_set_struct;
+  }
+
+   ::some::valid::ns::SimpleUnion const & get_a_union() const {
+    assert(type_ == Type::a_union);
+    return value_.a_union;
+  }
+
+  std::vector< ::some::valid::ns::SimpleUnion> const & get_a_union_list() const {
+    assert(type_ == Type::a_union_list);
+    return value_.a_union_list;
+  }
+
+   ::some::valid::ns::unionTypeDef const & get_a_union_typedef() const {
+    assert(type_ == Type::a_union_typedef);
+    return value_.a_union_typedef;
+  }
+
+  std::vector< ::some::valid::ns::unionTypeDef> const & get_a_union_typedef_list() const {
+    assert(type_ == Type::a_union_typedef_list);
+    return value_.a_union_typedef_list;
   }
 
   int64_t & mutable_intValue() {
@@ -1173,6 +1601,26 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
     return value_.a_set_struct;
   }
 
+   ::some::valid::ns::SimpleUnion & mutable_a_union() {
+    assert(type_ == Type::a_union);
+    return value_.a_union;
+  }
+
+  std::vector< ::some::valid::ns::SimpleUnion> & mutable_a_union_list() {
+    assert(type_ == Type::a_union_list);
+    return value_.a_union_list;
+  }
+
+   ::some::valid::ns::unionTypeDef & mutable_a_union_typedef() {
+    assert(type_ == Type::a_union_typedef);
+    return value_.a_union_typedef;
+  }
+
+  std::vector< ::some::valid::ns::unionTypeDef> & mutable_a_union_typedef_list() {
+    assert(type_ == Type::a_union_typedef_list);
+    return value_.a_union_typedef_list;
+  }
+
   int64_t move_intValue() {
     assert(type_ == Type::intValue);
     return std::move(value_.intValue);
@@ -1238,6 +1686,26 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
     return std::move(value_.a_set_struct);
   }
 
+   ::some::valid::ns::SimpleUnion move_a_union() {
+    assert(type_ == Type::a_union);
+    return std::move(value_.a_union);
+  }
+
+  std::vector< ::some::valid::ns::SimpleUnion> move_a_union_list() {
+    assert(type_ == Type::a_union_list);
+    return std::move(value_.a_union_list);
+  }
+
+   ::some::valid::ns::unionTypeDef move_a_union_typedef() {
+    assert(type_ == Type::a_union_typedef);
+    return std::move(value_.a_union_typedef);
+  }
+
+  std::vector< ::some::valid::ns::unionTypeDef> move_a_union_typedef_list() {
+    assert(type_ == Type::a_union_typedef_list);
+    return std::move(value_.a_union_typedef_list);
+  }
+
   Type getType() const { return type_; }
 
   template <class Protocol_>
@@ -1258,40 +1726,40 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
   storage_type value_;
 };
 
-void swap(SimpleUnion& a, SimpleUnion& b);
-extern template uint32_t SimpleUnion::read<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t SimpleUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t SimpleUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t SimpleUnion::read<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t SimpleUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t SimpleUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t SimpleUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+void swap(ComplexUnion& a, ComplexUnion& b);
+extern template uint32_t ComplexUnion::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t ComplexUnion::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t ComplexUnion::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t ComplexUnion::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t ComplexUnion::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t ComplexUnion::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t ComplexUnion::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t ComplexUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }}} // some::valid::ns
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::some::valid::ns::SimpleUnion>::clear( ::some::valid::ns::SimpleUnion* obj) {
+template <> inline void Cpp2Ops< ::some::valid::ns::ComplexUnion>::clear( ::some::valid::ns::ComplexUnion* obj) {
   return obj->__clear();
 }
 
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::SimpleUnion>::thriftType() {
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::ComplexUnion>::thriftType() {
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::SimpleUnion>::write(Protocol* proto,  ::some::valid::ns::SimpleUnion const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ComplexUnion>::write(Protocol* proto,  ::some::valid::ns::ComplexUnion const* obj) {
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::SimpleUnion>::read(Protocol* proto,  ::some::valid::ns::SimpleUnion* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ComplexUnion>::read(Protocol* proto,  ::some::valid::ns::ComplexUnion* obj) {
   return obj->read(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::SimpleUnion>::serializedSize(Protocol const* proto,  ::some::valid::ns::SimpleUnion const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ComplexUnion>::serializedSize(Protocol const* proto,  ::some::valid::ns::ComplexUnion const* obj) {
   return obj->serializedSize(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::SimpleUnion>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::SimpleUnion const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ComplexUnion>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::ComplexUnion const* obj) {
   return obj->serializedSizeZC(proto);
 }
 
@@ -1309,7 +1777,7 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
       enum_field(static_cast< ::some::valid::ns::MyEnumA>(0)) {}
   // FragileConstructor for use in initialization lists only
 
-  AnException(apache::thrift::FragileConstructor, int32_t code__arg, std::string message__arg, std::vector<int32_t> exception_list__arg, std::set<int64_t> exception_set__arg, std::map<std::string, int32_t> exception_map__arg,  ::some::valid::ns::MyEnumA enum_field__arg, std::vector< ::some::valid::ns::MyEnumA> enum_container__arg,  ::some::valid::ns::MyStruct a_struct__arg, std::set< ::some::valid::ns::MyStruct> a_set_struct__arg) :
+  AnException(apache::thrift::FragileConstructor, int32_t code__arg, std::string message__arg, std::vector<int32_t> exception_list__arg, std::set<int64_t> exception_set__arg, std::map<std::string, int32_t> exception_map__arg,  ::some::valid::ns::MyEnumA enum_field__arg, std::vector< ::some::valid::ns::MyEnumA> enum_container__arg,  ::some::valid::ns::MyStruct a_struct__arg, std::set< ::some::valid::ns::MyStruct> a_set_struct__arg, std::vector< ::some::valid::ns::SimpleUnion> a_union_list__arg,  ::some::valid::ns::unionTypeDef union_typedef__arg, std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list__arg) :
       code(std::move(code__arg)),
       message(std::move(message__arg)),
       exception_list(std::move(exception_list__arg)),
@@ -1318,7 +1786,10 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
       enum_field(std::move(enum_field__arg)),
       enum_container(std::move(enum_container__arg)),
       a_struct(std::move(a_struct__arg)),
-      a_set_struct(std::move(a_set_struct__arg)) {
+      a_set_struct(std::move(a_set_struct__arg)),
+      a_union_list(std::move(a_union_list__arg)),
+      union_typedef(std::move(union_typedef__arg)),
+      a_union_typedef_list(std::move(a_union_typedef_list__arg)) {
     __isset.code = true;
     __isset.message = true;
     __isset.exception_list = true;
@@ -1328,6 +1799,9 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
     __isset.enum_container = true;
     __isset.a_struct = true;
     __isset.a_set_struct = true;
+    __isset.a_union_list = true;
+    __isset.union_typedef = true;
+    __isset.a_union_typedef_list = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   AnException(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -1392,6 +1866,27 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
     a_set_struct = arg.move();
     __isset.a_set_struct = true;
   }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnException(::apache::thrift::detail::argument_wrapper<10, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    a_union_list = arg.move();
+    __isset.a_union_list = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnException(::apache::thrift::detail::argument_wrapper<11, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    union_typedef = arg.move();
+    __isset.union_typedef = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnException(::apache::thrift::detail::argument_wrapper<19, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    a_union_typedef_list = arg.move();
+    __isset.a_union_typedef_list = true;
+  }
 
   AnException(AnException&&) = default;
 
@@ -1413,6 +1908,9 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
   std::vector< ::some::valid::ns::MyEnumA> enum_container;
    ::some::valid::ns::MyStruct a_struct;
   std::set< ::some::valid::ns::MyStruct> a_set_struct;
+  std::vector< ::some::valid::ns::SimpleUnion> a_union_list;
+   ::some::valid::ns::unionTypeDef union_typedef;
+  std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list;
 
   struct __isset {
     void __clear() {
@@ -1425,6 +1923,9 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
       enum_container = false;
       a_struct = false;
       a_set_struct = false;
+      a_union_list = false;
+      union_typedef = false;
+      a_union_typedef_list = false;
     }
 
     bool code = false;
@@ -1436,40 +1937,12 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
     bool enum_container = false;
     bool a_struct = false;
     bool a_set_struct = false;
+    bool a_union_list = false;
+    bool union_typedef = false;
+    bool a_union_typedef_list = false;
   } __isset;
   bool operator==(const AnException& rhs) const;
-
-  bool operator < (const AnException& rhs) const {
-    if (!(code == rhs.code)) {
-      return code < rhs.code;
-    }
-    if (!(message == rhs.message)) {
-      return message < rhs.message;
-    }
-    if (!(exception_list == rhs.exception_list)) {
-      return exception_list < rhs.exception_list;
-    }
-    if (!(exception_set == rhs.exception_set)) {
-      return exception_set < rhs.exception_set;
-    }
-    if (!(exception_map == rhs.exception_map)) {
-      return exception_map < rhs.exception_map;
-    }
-    if (!(enum_field == rhs.enum_field)) {
-      return enum_field < rhs.enum_field;
-    }
-    if (!(enum_container == rhs.enum_container)) {
-      return enum_container < rhs.enum_container;
-    }
-    if (!(a_struct == rhs.a_struct)) {
-      return a_struct < rhs.a_struct;
-    }
-    if (!(a_set_struct == rhs.a_set_struct)) {
-      return a_set_struct < rhs.a_set_struct;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator < (const AnException& rhs) const;
 
   int32_t get_code() const {
     return code;
@@ -1529,6 +2002,18 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
   std::set< ::some::valid::ns::MyStruct> get_a_set_struct() &&;
   template <typename T_AnException_a_set_struct_struct_setter>
   std::set< ::some::valid::ns::MyStruct>& set_a_set_struct(T_AnException_a_set_struct_struct_setter&& a_set_struct_);
+  const std::vector< ::some::valid::ns::SimpleUnion>& get_a_union_list() const&;
+  std::vector< ::some::valid::ns::SimpleUnion> get_a_union_list() &&;
+  template <typename T_AnException_a_union_list_struct_setter>
+  std::vector< ::some::valid::ns::SimpleUnion>& set_a_union_list(T_AnException_a_union_list_struct_setter&& a_union_list_);
+  const  ::some::valid::ns::unionTypeDef& get_union_typedef() const&;
+   ::some::valid::ns::unionTypeDef get_union_typedef() &&;
+  template <typename T_AnException_union_typedef_struct_setter>
+   ::some::valid::ns::unionTypeDef& set_union_typedef(T_AnException_union_typedef_struct_setter&& union_typedef_);
+  const std::vector< ::some::valid::ns::unionTypeDef>& get_a_union_typedef_list() const&;
+  std::vector< ::some::valid::ns::unionTypeDef> get_a_union_typedef_list() &&;
+  template <typename T_AnException_a_union_typedef_list_struct_setter>
+  std::vector< ::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(T_AnException_a_union_typedef_list_struct_setter&& a_union_typedef_list_);
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -1622,7 +2107,7 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
    ::some::valid::ns::MyEnumA::fieldA}) {}
   // FragileConstructor for use in initialization lists only
 
-  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, std::map<std::string, bool> fieldB__arg, std::set<int32_t> fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::vector<std::vector<int32_t>> fieldF__arg, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG__arg, std::vector<std::set<int32_t>> fieldH__arg, bool fieldI__arg, std::map<std::string, std::vector<int32_t>> fieldJ__arg, std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK__arg, std::set<std::set<std::set<bool>>> fieldL__arg, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM__arg,  ::some::valid::ns::simpleTypeDef fieldN__arg,  ::some::valid::ns::complexStructTypeDef fieldO__arg, std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP__arg,  ::some::valid::ns::MyEnumA fieldQ__arg,  ::some::valid::ns::MyEnumA fieldR__arg,  ::some::valid::ns::MyEnumA fieldS__arg, std::vector< ::some::valid::ns::MyEnumA> fieldT__arg, std::vector< ::some::valid::ns::MyEnumA> fieldU__arg,  ::some::valid::ns::MyStruct fieldV__arg, std::set< ::some::valid::ns::MyStruct> fieldW__arg) :
+  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, std::map<std::string, bool> fieldB__arg, std::set<int32_t> fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::vector<std::vector<int32_t>> fieldF__arg, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG__arg, std::vector<std::set<int32_t>> fieldH__arg, bool fieldI__arg, std::map<std::string, std::vector<int32_t>> fieldJ__arg, std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK__arg, std::set<std::set<std::set<bool>>> fieldL__arg, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM__arg,  ::some::valid::ns::simpleTypeDef fieldN__arg,  ::some::valid::ns::complexStructTypeDef fieldO__arg, std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP__arg,  ::some::valid::ns::MyEnumA fieldQ__arg,  ::some::valid::ns::MyEnumA fieldR__arg,  ::some::valid::ns::MyEnumA fieldS__arg, std::vector< ::some::valid::ns::MyEnumA> fieldT__arg, std::vector< ::some::valid::ns::MyEnumA> fieldU__arg,  ::some::valid::ns::MyStruct fieldV__arg, std::set< ::some::valid::ns::MyStruct> fieldW__arg,  ::some::valid::ns::ComplexUnion fieldX__arg, std::vector< ::some::valid::ns::ComplexUnion> fieldY__arg,  ::some::valid::ns::unionTypeDef fieldZ__arg, std::vector< ::some::valid::ns::unionTypeDef> fieldAA__arg) :
       fieldA(std::move(fieldA__arg)),
       fieldB(std::move(fieldB__arg)),
       fieldC(std::move(fieldC__arg)),
@@ -1645,7 +2130,11 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
       fieldT(std::move(fieldT__arg)),
       fieldU(std::move(fieldU__arg)),
       fieldV(std::move(fieldV__arg)),
-      fieldW(std::move(fieldW__arg)) {
+      fieldW(std::move(fieldW__arg)),
+      fieldX(std::move(fieldX__arg)),
+      fieldY(std::move(fieldY__arg)),
+      fieldZ(std::move(fieldZ__arg)),
+      fieldAA(std::move(fieldAA__arg)) {
     __isset.fieldA = true;
     __isset.fieldB = true;
     __isset.fieldC = true;
@@ -1669,6 +2158,10 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     __isset.fieldU = true;
     __isset.fieldV = true;
     __isset.fieldW = true;
+    __isset.fieldX = true;
+    __isset.fieldY = true;
+    __isset.fieldZ = true;
+    __isset.fieldAA = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   containerStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -1831,6 +2324,34 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     fieldW = arg.move();
     __isset.fieldW = true;
   }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct(::apache::thrift::detail::argument_wrapper<25, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldX = arg.move();
+    __isset.fieldX = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct(::apache::thrift::detail::argument_wrapper<26, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldY = arg.move();
+    __isset.fieldY = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct(::apache::thrift::detail::argument_wrapper<27, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldZ = arg.move();
+    __isset.fieldZ = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct(::apache::thrift::detail::argument_wrapper<28, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldAA = arg.move();
+    __isset.fieldAA = true;
+  }
 
   containerStruct(containerStruct&&) = default;
 
@@ -1866,6 +2387,10 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   std::vector< ::some::valid::ns::MyEnumA> fieldU;
    ::some::valid::ns::MyStruct fieldV;
   std::set< ::some::valid::ns::MyStruct> fieldW;
+   ::some::valid::ns::ComplexUnion fieldX;
+  std::vector< ::some::valid::ns::ComplexUnion> fieldY;
+   ::some::valid::ns::unionTypeDef fieldZ;
+  std::vector< ::some::valid::ns::unionTypeDef> fieldAA;
 
   struct __isset {
     void __clear() {
@@ -1892,6 +2417,10 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
       fieldU = false;
       fieldV = false;
       fieldW = false;
+      fieldX = false;
+      fieldY = false;
+      fieldZ = false;
+      fieldAA = false;
     }
 
     bool fieldA = false;
@@ -1917,6 +2446,10 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     bool fieldU = false;
     bool fieldV = false;
     bool fieldW = false;
+    bool fieldX = false;
+    bool fieldY = false;
+    bool fieldZ = false;
+    bool fieldAA = false;
   } __isset;
   bool operator==(const containerStruct& rhs) const;
   bool operator < (const containerStruct& rhs) const;
@@ -2070,6 +2603,22 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   std::set< ::some::valid::ns::MyStruct> get_fieldW() &&;
   template <typename T_containerStruct_fieldW_struct_setter>
   std::set< ::some::valid::ns::MyStruct>& set_fieldW(T_containerStruct_fieldW_struct_setter&& fieldW_);
+  const  ::some::valid::ns::ComplexUnion& get_fieldX() const&;
+   ::some::valid::ns::ComplexUnion get_fieldX() &&;
+  template <typename T_containerStruct_fieldX_struct_setter>
+   ::some::valid::ns::ComplexUnion& set_fieldX(T_containerStruct_fieldX_struct_setter&& fieldX_);
+  const std::vector< ::some::valid::ns::ComplexUnion>& get_fieldY() const&;
+  std::vector< ::some::valid::ns::ComplexUnion> get_fieldY() &&;
+  template <typename T_containerStruct_fieldY_struct_setter>
+  std::vector< ::some::valid::ns::ComplexUnion>& set_fieldY(T_containerStruct_fieldY_struct_setter&& fieldY_);
+  const  ::some::valid::ns::unionTypeDef& get_fieldZ() const&;
+   ::some::valid::ns::unionTypeDef get_fieldZ() &&;
+  template <typename T_containerStruct_fieldZ_struct_setter>
+   ::some::valid::ns::unionTypeDef& set_fieldZ(T_containerStruct_fieldZ_struct_setter&& fieldZ_);
+  const std::vector< ::some::valid::ns::unionTypeDef>& get_fieldAA() const&;
+  std::vector< ::some::valid::ns::unionTypeDef> get_fieldAA() &&;
+  template <typename T_containerStruct_fieldAA_struct_setter>
+  std::vector< ::some::valid::ns::unionTypeDef>& set_fieldAA(T_containerStruct_fieldAA_struct_setter&& fieldAA_);
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

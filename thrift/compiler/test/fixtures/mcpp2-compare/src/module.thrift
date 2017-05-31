@@ -48,6 +48,19 @@ struct MyStruct {
 }
 
 union SimpleUnion {
+  7: i64 intValue;
+  2: string stringValue;
+}
+
+typedef i32 simpleTypeDef
+typedef map<i16, string> containerTypeDef
+typedef list<map<i16, string>> complexContainerTypeDef
+typedef set<SimpleUnion> unionTypeDef
+typedef list<MyStruct> structTypeDef
+typedef list<map<Empty, MyStruct>> complexStructTypeDef
+typedef list<complexStructTypeDef> mostComplexTypeDef
+
+union ComplexUnion {
   1: i64 intValue;
   3: string stringValue;
   4: i16 intValue2;
@@ -61,6 +74,10 @@ union SimpleUnion {
   13: list<MyEnumA> enum_container
   14: MyStruct a_struct
   15: set<MyStruct> a_set_struct
+  16: SimpleUnion a_union
+  17: list<SimpleUnion> a_union_list
+  18: unionTypeDef a_union_typedef
+  19: list<unionTypeDef> a_union_typedef_list
 }
 
 exception AnException {
@@ -73,14 +90,10 @@ exception AnException {
   7: list<MyEnumA> enum_container
   8: MyStruct a_struct
   9: set<MyStruct> a_set_struct
+  10: list<SimpleUnion> a_union_list
+  11: unionTypeDef union_typedef
+  19: list<unionTypeDef> a_union_typedef_list
 }
-
-typedef i32 simpleTypeDef
-typedef map<i16, string> containerTypeDef
-typedef list<map<i16, string>> complexContainerTypeDef
-typedef list<MyStruct> structTypeDef
-typedef list<map<Empty, MyStruct>> complexStructTypeDef
-typedef list<complexStructTypeDef> mostComplexTypeDef
 
 struct containerStruct {
   1: bool fieldA
@@ -109,6 +122,10 @@ struct containerStruct {
   22: list<MyEnumA> fieldU = [MyEnumA.fieldC, MyEnumA.fieldB, MyEnumA.fieldA]
   23: MyStruct fieldV
   24: set<MyStruct> fieldW
+  25: ComplexUnion fieldX
+  26: list<ComplexUnion> fieldY
+  27: unionTypeDef fieldZ
+  28: list<unionTypeDef> fieldAA
 }
 
 struct MyIncludedStruct {
