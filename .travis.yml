@@ -13,4 +13,8 @@ script:
   - ./thrift/build/travis/install.sh
 
 notifications:
-  email: false
+  email:
+    recipients:
+      - thrift_oncall@fb.com
+    on_success: never
+    on_failure: always
