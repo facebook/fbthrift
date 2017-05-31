@@ -26,6 +26,8 @@ public class Module {
       new ThriftProperty<List<Long>>("intListValue", TType.LIST, (short) 2);
   public static final ThriftProperty<List<String>> ComplexUnion_stringListValue =
       new ThriftProperty<List<String>>("stringListValue", TType.LIST, (short) 3);
+  public static final ThriftProperty<Map<Short,String>> ComplexUnion_typedefValue =
+      new ThriftProperty<Map<Short,String>>("typedefValue", TType.MAP, (short) 9);
   public static final ThriftProperty<String> ComplexUnion_stringRef =
       new ThriftProperty<String>("stringRef", TType.STRING, (short) 14);
   public static final ThriftProperty<String> FinalComplexUnion_thingOne =

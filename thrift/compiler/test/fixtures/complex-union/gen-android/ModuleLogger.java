@@ -83,6 +83,19 @@ public class ModuleLogger {
           break;
         }
       
+        case 9: {
+          writeFieldBegin(oprot, Module.ComplexUnion_typedefValue);
+          Map<Short,String> var0 = (Map<Short,String>) mMap.get(Module.ComplexUnion_typedefValue);
+          oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, var0.size()));
+          for (Map.Entry<Short, String> iter0 : var0.entrySet()) {
+            oprot.writeI16(iter0.getKey());
+            oprot.writeString(iter0.getValue());
+          }
+          oprot.writeMapEnd();
+          oprot.writeFieldEnd();
+          break;
+        }
+      
         case 14: {
           writeFieldBegin(oprot, Module.ComplexUnion_stringRef);
           oprot.writeString((String) mMap.get(Module.ComplexUnion_stringRef));

@@ -107,6 +107,41 @@ uint32_t ComplexUnion::read(apache::thrift::protocol::TProtocol* iprot) {
         }
         break;
       }
+      case 9: {
+        if (ftype == apache::thrift::protocol::T_MAP) {
+          set_typedefValue();
+          {
+            this->value_.typedefValue.clear();
+            uint32_t _size16;
+            bool _sizeUnknown17;
+            apache::thrift::protocol::TType _ktype18;
+            apache::thrift::protocol::TType _vtype19;
+            xfer += iprot->readMapBegin(_ktype18, _vtype19, _size16, _sizeUnknown17);
+            if (!_sizeUnknown17) {
+              uint32_t _i22;
+              for (_i22 = 0; _i22 < _size16; ++_i22)
+              {
+                int16_t _key23;
+                xfer += iprot->readI16(_key23);
+                std::string& _val24 = this->value_.typedefValue[_key23];
+                xfer += iprot->readString(_val24);
+              }
+            } else {
+              while (iprot->peekMap())
+              {
+                int16_t _key25;
+                xfer += iprot->readI16(_key25);
+                std::string& _val26 = this->value_.typedefValue[_key25];
+                xfer += iprot->readString(_val26);
+              }
+            }
+            xfer += iprot->readMapEnd();
+          }
+        } else {
+        xfer += iprot->skip(ftype);
+        }
+        break;
+      }
       case 14: {
         if (ftype == apache::thrift::protocol::T_STRING) {
           set_stringRef();
@@ -150,10 +185,10 @@ uint32_t ComplexUnion::write(apache::thrift::protocol::TProtocol* oprot) const {
       xfer += oprot->writeFieldBegin("intListValue", apache::thrift::protocol::T_LIST, 2);
       {
         xfer += oprot->writeListBegin(apache::thrift::protocol::T_I64, this->value_.intListValue.size());
-        std::vector<int64_t> ::const_iterator _iter16;
-        for (_iter16 = this->value_.intListValue.begin(); _iter16 != this->value_.intListValue.end(); ++_iter16)
+        std::vector<int64_t> ::const_iterator _iter27;
+        for (_iter27 = this->value_.intListValue.begin(); _iter27 != this->value_.intListValue.end(); ++_iter27)
         {
-          xfer += oprot->writeI64((*_iter16));
+          xfer += oprot->writeI64((*_iter27));
         }
         xfer += oprot->writeListEnd();
       }
@@ -164,12 +199,27 @@ uint32_t ComplexUnion::write(apache::thrift::protocol::TProtocol* oprot) const {
       xfer += oprot->writeFieldBegin("stringListValue", apache::thrift::protocol::T_LIST, 3);
       {
         xfer += oprot->writeListBegin(apache::thrift::protocol::T_STRING, this->value_.stringListValue.size());
-        std::vector<std::string> ::const_iterator _iter17;
-        for (_iter17 = this->value_.stringListValue.begin(); _iter17 != this->value_.stringListValue.end(); ++_iter17)
+        std::vector<std::string> ::const_iterator _iter28;
+        for (_iter28 = this->value_.stringListValue.begin(); _iter28 != this->value_.stringListValue.end(); ++_iter28)
         {
-          xfer += oprot->writeString((*_iter17));
+          xfer += oprot->writeString((*_iter28));
         }
         xfer += oprot->writeListEnd();
+      }
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::typedefValue: {
+      xfer += oprot->writeFieldBegin("typedefValue", apache::thrift::protocol::T_MAP, 9);
+      {
+        xfer += oprot->writeMapBegin(apache::thrift::protocol::T_I16, apache::thrift::protocol::T_STRING, this->value_.typedefValue.size());
+        std::map<int16_t, std::string> ::const_iterator _iter29;
+        for (_iter29 = this->value_.typedefValue.begin(); _iter29 != this->value_.typedefValue.end(); ++_iter29)
+        {
+          xfer += oprot->writeI16(_iter29->first);
+          xfer += oprot->writeString(_iter29->second);
+        }
+        xfer += oprot->writeMapEnd();
       }
       xfer += oprot->writeFieldEnd();
       break;

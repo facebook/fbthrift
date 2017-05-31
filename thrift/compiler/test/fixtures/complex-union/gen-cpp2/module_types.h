@@ -20,6 +20,7 @@ namespace cpp2 {
 
 class ComplexUnion;
 class FinalComplexUnion;
+typedef std::map<int16_t, std::string> containerTypedef;
 
 class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<ComplexUnion> {
  public:
@@ -29,6 +30,7 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     stringValue = 5,
     intListValue = 2,
     stringListValue = 3,
+    typedefValue = 9,
     stringRef = 14,
   } ;
 
@@ -58,6 +60,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
       case Type::stringListValue:
       {
         set_stringListValue(std::move(rhs.value_.stringListValue));
+        break;
+      }
+      case Type::typedefValue:
+      {
+        set_typedefValue(std::move(rhs.value_.typedefValue));
         break;
       }
       case Type::stringRef:
@@ -99,6 +106,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
         set_stringListValue(rhs.value_.stringListValue);
         break;
       }
+      case Type::typedefValue:
+      {
+        set_typedefValue(rhs.value_.typedefValue);
+        break;
+      }
       case Type::stringRef:
       {
         set_stringRef(*rhs.value_.stringRef);
@@ -135,6 +147,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
       case Type::stringListValue:
       {
         set_stringListValue(std::move(rhs.value_.stringListValue));
+        break;
+      }
+      case Type::typedefValue:
+      {
+        set_typedefValue(std::move(rhs.value_.typedefValue));
         break;
       }
       case Type::stringRef:
@@ -177,6 +194,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
         set_stringListValue(rhs.value_.stringListValue);
         break;
       }
+      case Type::typedefValue:
+      {
+        set_typedefValue(rhs.value_.typedefValue);
+        break;
+      }
       case Type::stringRef:
       {
         set_stringRef(*rhs.value_.stringRef);
@@ -215,6 +237,12 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     set_stringListValue(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor>
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<9, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_typedefValue(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
   ComplexUnion(::apache::thrift::detail::argument_wrapper<14, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
@@ -231,42 +259,14 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     std::string stringValue;
     std::vector<int64_t> intListValue;
     std::vector<std::string> stringListValue;
+     ::cpp2::containerTypedef typedefValue;
     std::unique_ptr<std::string> stringRef;
 
     storage_type() {}
     ~storage_type() {}
   } ;
   bool operator==(const ComplexUnion& rhs) const;
-
-  bool operator < (const ComplexUnion& rhs) const {
-    if (type_ != rhs.type_) { return type_ < rhs.type_; }
-    switch(type_) {
-      case Type::intValue:
-      {
-        return value_.intValue < rhs.value_.intValue;
-      }
-      case Type::stringValue:
-      {
-        return value_.stringValue < rhs.value_.stringValue;
-      }
-      case Type::intListValue:
-      {
-        return value_.intListValue < rhs.value_.intListValue;
-      }
-      case Type::stringListValue:
-      {
-        return value_.stringListValue < rhs.value_.stringListValue;
-      }
-      case Type::stringRef:
-      {
-        return *value_.stringRef < *rhs.value_.stringRef;
-      }
-      default:
-      {
-        return false;
-      }
-    }
-  }
+  bool operator < (const ComplexUnion& rhs) const;
 
   int64_t& set_intValue(int64_t t = int64_t()) {
     __clear();
@@ -338,6 +338,27 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     return value_.stringListValue;
   }
 
+  std::map<int16_t, std::string>& set_typedefValue(std::map<int16_t, std::string> const &t) {
+    __clear();
+    type_ = Type::typedefValue;
+    ::new (std::addressof(value_.typedefValue)) std::map<int16_t, std::string>(t);
+    return value_.typedefValue;
+  }
+
+  std::map<int16_t, std::string>& set_typedefValue(std::map<int16_t, std::string>&& t) {
+    __clear();
+    type_ = Type::typedefValue;
+    ::new (std::addressof(value_.typedefValue)) std::map<int16_t, std::string>(std::move(t));
+    return value_.typedefValue;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::map<int16_t, std::string>, T...>> std::map<int16_t, std::string>& set_typedefValue(T&&... t) {
+    __clear();
+    type_ = Type::typedefValue;
+    ::new (std::addressof(value_.typedefValue)) std::map<int16_t, std::string>(std::forward<T>(t)...);
+    return value_.typedefValue;
+  }
+
   std::unique_ptr<std::string>& set_stringRef(std::string const &t) {
     __clear();
     type_ = Type::stringRef;
@@ -379,6 +400,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     return value_.stringListValue;
   }
 
+  std::map<int16_t, std::string> const & get_typedefValue() const {
+    assert(type_ == Type::typedefValue);
+    return value_.typedefValue;
+  }
+
   std::unique_ptr<std::string> const & get_stringRef() const {
     assert(type_ == Type::stringRef);
     return value_.stringRef;
@@ -404,6 +430,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     return value_.stringListValue;
   }
 
+  std::map<int16_t, std::string> & mutable_typedefValue() {
+    assert(type_ == Type::typedefValue);
+    return value_.typedefValue;
+  }
+
   std::unique_ptr<std::string> & mutable_stringRef() {
     assert(type_ == Type::stringRef);
     return value_.stringRef;
@@ -427,6 +458,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
   std::vector<std::string> move_stringListValue() {
     assert(type_ == Type::stringListValue);
     return std::move(value_.stringListValue);
+  }
+
+  std::map<int16_t, std::string> move_typedefValue() {
+    assert(type_ == Type::typedefValue);
+    return std::move(value_.typedefValue);
   }
 
   std::unique_ptr<std::string> move_stringRef() {

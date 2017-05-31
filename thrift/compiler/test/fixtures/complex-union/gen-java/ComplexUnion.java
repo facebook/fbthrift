@@ -31,12 +31,14 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
   private static final TField STRING_VALUE_FIELD_DESC = new TField("stringValue", TType.STRING, (short)5);
   private static final TField INT_LIST_VALUE_FIELD_DESC = new TField("intListValue", TType.LIST, (short)2);
   private static final TField STRING_LIST_VALUE_FIELD_DESC = new TField("stringListValue", TType.LIST, (short)3);
+  private static final TField TYPEDEF_VALUE_FIELD_DESC = new TField("typedefValue", TType.MAP, (short)9);
   private static final TField STRING_REF_FIELD_DESC = new TField("stringRef", TType.STRING, (short)14);
 
   public static final int INTVALUE = 1;
   public static final int STRINGVALUE = 5;
   public static final int INTLISTVALUE = 2;
   public static final int STRINGLISTVALUE = 3;
+  public static final int TYPEDEFVALUE = 9;
   public static final int STRINGREF = 14;
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
@@ -51,6 +53,10 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
             new FieldValueMetaData(TType.I64))));
     tmpMetaDataMap.put(STRINGLISTVALUE, new FieldMetaData("stringListValue", TFieldRequirementType.DEFAULT, 
         new ListMetaData(TType.LIST, 
+            new FieldValueMetaData(TType.STRING))));
+    tmpMetaDataMap.put(TYPEDEFVALUE, new FieldMetaData("typedefValue", TFieldRequirementType.DEFAULT, 
+        new MapMetaData(TType.MAP, 
+            new FieldValueMetaData(TType.I16), 
             new FieldValueMetaData(TType.STRING))));
     tmpMetaDataMap.put(STRINGREF, new FieldMetaData("stringRef", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.STRING)));
@@ -96,6 +102,12 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
     return x;
   }
 
+  public static ComplexUnion typedefValue(Map<Short,String> value) {
+    ComplexUnion x = new ComplexUnion();
+    x.setTypedefValue(value);
+    return x;
+  }
+
   public static ComplexUnion stringRef(String value) {
     ComplexUnion x = new ComplexUnion();
     x.setStringRef(value);
@@ -126,6 +138,11 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
           break;
         }
         throw new ClassCastException("Was expecting value of type List<String> for field 'stringListValue', but got " + value.getClass().getSimpleName());
+      case TYPEDEFVALUE:
+        if (value instanceof Map) {
+          break;
+        }
+        throw new ClassCastException("Was expecting value of type Map<Short,String> for field 'typedefValue', but got " + value.getClass().getSimpleName());
       case STRINGREF:
         if (value instanceof String) {
           break;
@@ -165,6 +182,11 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
             break;
           case STRINGLISTVALUE:
             if (field.type == STRING_LIST_VALUE_FIELD_DESC.type) {
+              setField_ = field.id;
+            }
+            break;
+          case TYPEDEFVALUE:
+            if (field.type == TYPEDEF_VALUE_FIELD_DESC.type) {
               setField_ = field.id;
             }
             break;
@@ -245,6 +267,29 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
           TProtocolUtil.skip(iprot, field.type);
           return null;
         }
+      case TYPEDEFVALUE:
+        if (field.type == TYPEDEF_VALUE_FIELD_DESC.type) {
+          Map<Short,String> typedefValue;
+          {
+            TMap _map6 = iprot.readMapBegin();
+            typedefValue = new HashMap<Short,String>(Math.max(0, 2*_map6.size));
+            for (int _i7 = 0; 
+                 (_map6.size < 0) ? iprot.peekMap() : (_i7 < _map6.size); 
+                 ++_i7)
+            {
+              short _key8;
+              String _val9;
+              _key8 = iprot.readI16();
+              _val9 = iprot.readString();
+              typedefValue.put(_key8, _val9);
+            }
+            iprot.readMapEnd();
+          }
+          return typedefValue;
+        } else {
+          TProtocolUtil.skip(iprot, field.type);
+          return null;
+        }
       case STRINGREF:
         if (field.type == STRING_REF_FIELD_DESC.type) {
           String stringRef;
@@ -275,8 +320,8 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
         List<Long> intListValue = (List<Long>)getFieldValue();
         {
           oprot.writeListBegin(new TList(TType.I64, intListValue.size()));
-          for (long _iter6 : intListValue)          {
-            oprot.writeI64(_iter6);
+          for (long _iter10 : intListValue)          {
+            oprot.writeI64(_iter10);
           }
           oprot.writeListEnd();
         }
@@ -285,10 +330,21 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
         List<String> stringListValue = (List<String>)getFieldValue();
         {
           oprot.writeListBegin(new TList(TType.STRING, stringListValue.size()));
-          for (String _iter7 : stringListValue)          {
-            oprot.writeString(_iter7);
+          for (String _iter11 : stringListValue)          {
+            oprot.writeString(_iter11);
           }
           oprot.writeListEnd();
+        }
+        return;
+      case TYPEDEFVALUE:
+        Map<Short,String> typedefValue = (Map<Short,String>)getFieldValue();
+        {
+          oprot.writeMapBegin(new TMap(TType.I16, TType.STRING, typedefValue.size()));
+          for (Map.Entry<Short, String> _iter12 : typedefValue.entrySet())          {
+            oprot.writeI16(_iter12.getKey());
+            oprot.writeString(_iter12.getValue());
+          }
+          oprot.writeMapEnd();
         }
         return;
       case STRINGREF:
@@ -311,6 +367,8 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
         return INT_LIST_VALUE_FIELD_DESC;
       case STRINGLISTVALUE:
         return STRING_LIST_VALUE_FIELD_DESC;
+      case TYPEDEFVALUE:
+        return TYPEDEF_VALUE_FIELD_DESC;
       case STRINGREF:
         return STRING_REF_FIELD_DESC;
       default:
@@ -375,6 +433,20 @@ public class ComplexUnion extends TUnion<ComplexUnion> implements Comparable<Com
   public void setStringListValue(List<String> value) {
     if (value == null) throw new NullPointerException();
     setField_ = STRINGLISTVALUE;
+    value_ = value;
+  }
+
+  public Map<Short,String>  getTypedefValue() {
+    if (getSetField() == TYPEDEFVALUE) {
+      return (Map<Short,String>)getFieldValue();
+    } else {
+      throw new RuntimeException("Cannot get field 'typedefValue' because union is currently set to " + getFieldDesc(getSetField()).name);
+    }
+  }
+
+  public void setTypedefValue(Map<Short,String> value) {
+    if (value == null) throw new NullPointerException();
+    setField_ = TYPEDEFVALUE;
     value_ = value;
   }
 
@@ -491,6 +563,21 @@ String space = prettyPrint ? " " : "";
         sb.append("null");
       } else {
         sb.append(TBaseHelper.toString(this. getStringListValue(), indent + 1, prettyPrint));
+      }
+      first = false;
+    }
+    // Only print this field if it is the set field
+    if (getSetField() == TYPEDEFVALUE)
+    {
+      if (!first) sb.append("," + newLine);
+      sb.append(indentStr);
+      sb.append("typedefValue");
+      sb.append(space);
+      sb.append(":").append(space);
+      if (this. getTypedefValue() == null) {
+        sb.append("null");
+      } else {
+        sb.append(TBaseHelper.toString(this. getTypedefValue(), indent + 1, prettyPrint));
       }
       first = false;
     }

@@ -51,6 +51,13 @@ public final class ComplexUnion
     }
 
     @ThriftConstructor
+    public ComplexUnion(final Map<Short, String> typedefValue) {
+        this.value = typedefValue;
+        this.id = 9;
+        this.name = "typedefValue";
+    }
+
+    @ThriftConstructor
     public ComplexUnion(final String stringRef) {
         this.value = stringRef;
         this.id = 14;
@@ -103,6 +110,18 @@ public final class ComplexUnion
 
     public boolean isSetStringListValue() {
         return this.id == 3;
+    }
+
+    @ThriftField(value=9, name="typedefValue", requiredness=Requiredness.NONE)
+    public Map<Short, String> getTypedefValue() {
+        if (this.id != 9) {
+            throw new IllegalStateException("Not a typedefValue element!");
+        }
+        return (Map<Short, String>) value;
+    }
+
+    public boolean isSetTypedefValue() {
+        return this.id == 9;
     }
 
     @ThriftField(value=14, name="stringRef", requiredness=Requiredness.NONE, idlAnnotations = { @ThriftIdlAnnotation(key = "cpp2.ref", value = "true") })
