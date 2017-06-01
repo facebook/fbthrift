@@ -1,5 +1,5 @@
 /*
- * Copyright 2014-present Facebook, Inc.
+ * Copyright 2014 Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,8 +72,7 @@ struct StringLayout : public LayoutBase {
     if (!n) {
       return pos;
     }
-    size_t dist =
-        root.layoutBytesDistance(self.start, n * sizeof(Item), alignof(Item));
+    size_t dist = root.layoutBytesDistance(self.start, n * sizeof(Item));
     pos = root.layoutField(self, pos, distanceField, dist);
     pos = root.layoutField(self, pos, countField, n);
     return pos;
@@ -83,7 +82,7 @@ struct StringLayout : public LayoutBase {
     size_t n = Helper::size(o);
     folly::MutableByteRange range;
     size_t dist;
-    root.appendBytes(self.start, n * sizeof(Item), range, dist, alignof(Item));
+    root.appendBytes(self.start, n * sizeof(Item), range, dist);
     root.freezeField(self, distanceField, dist);
     root.freezeField(self, countField, n);
     folly::Range<Item*> target(reinterpret_cast<Item*>(range.begin()),n);

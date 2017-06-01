@@ -70,13 +70,6 @@ Layout<T>&& layout(const T& x, Layout<T>&& layout = Layout<T>()) {
   return std::move(layout);
 }
 
-template <class T>
-Layout<T> layout(const T& x, size_t& size) {
-  Layout<T> layout;
-  size = LayoutRoot::layout(x, layout);
-  return std::move(layout);
-}
-
 auto tom1 = [] {
   example2::Pet1 max;
   max.name = "max";
@@ -155,17 +148,15 @@ TEST(Frozen, Compatibility) {
 
   std::string storage(size, 'X');
   folly::MutableStringPiece charRange(&storage.front(), size);
-  const folly::MutableByteRange bytes(charRange);
-  folly::MutableByteRange freezeRange = bytes;
+  folly::MutableByteRange bytes(charRange);
 
-  ByteRangeFreezer::freeze(person1cpp2, tom1, freezeRange);
+  ByteRangeFreezer::freeze(person1cpp2, tom1, bytes);
   auto view12 = person1cpp2.view({bytes.begin(), 0});
   auto view21 = person2cpp1.view({bytes.begin(), 0});
   EXPECT_EQ(view12.name(), view21.name());
   EXPECT_EQ(view12.age(), view21.age());
   EXPECT_TRUE(view12.height());
   EXPECT_FALSE(view21.weight());
-  ASSERT_GE(view12.pets().size(), 2);
   EXPECT_EQ(view12.pets()[0].name(), view21.pets()[0].name());
   EXPECT_EQ(view12.pets()[1].name(), view21.pets()[1].name());
 }
@@ -430,28 +421,6 @@ TEST(Frozen, RangeTrivialRange) {
   auto view = freeze(data);
   auto r = folly::Range<const float*>(view.range());
   EXPECT_EQ(data, std::vector<float>(r.begin(), r.end()));
-}
-
-TEST(Frozen, PaddingLayout) {
-  using std::vector;
-  using std::pair;
-  // The 'distance' field of the vector<double> is small and sensitive to
-  // padding adjustments. If actual distances are returned in
-  // layoutBytesDistance instead of worst-case distances, the below structure
-  // will successfully freeze at offset zero but fail at later offsets.
-  vector<vector<vector<double>>> test(10);
-  test.push_back({{1.0}});
-  size_t size;
-  auto testLayout = layout(test, size);
-  for (size_t offset = 0; offset < 8; ++offset) {
-    std::unique_ptr<byte[]> store(new byte[size + offset + 16]);
-    folly::MutableByteRange bytes(store.get() + offset, size + 16);
-
-    auto view = ByteRangeFreezer::freeze(testLayout, test, bytes);
-    auto range = view[10][0].range();
-    EXPECT_EQ(range[0], 1.0);
-    EXPECT_EQ(reinterpret_cast<intptr_t>(range.begin()) % alignof(double), 0);
-  }
 }
 
 int main(int argc, char** argv) {
