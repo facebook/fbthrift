@@ -80,6 +80,7 @@ libthrift_la_SOURCES = EventHandlerBase.cpp \
                        transport/THeader.cpp \
                        server/TServer.cpp \
                        util/FdUtils.cpp \
+                       util/PausableTimer.cpp \
                        util/THttpParser.cpp \
                        util/SocketRetriever.cpp \
                        util/VarintUtils.cpp
