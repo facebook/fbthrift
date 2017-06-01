@@ -374,7 +374,7 @@ struct Field final : public FieldBase {
 
     typename SchemaInfo::Layout myLayout;
     this->layout.template save<SchemaInfo>(schema, myLayout, helper);
-    field.setLayoutId(std::move(helper.add(std::move(myLayout))));
+    field.setLayoutId(helper.add(std::move(myLayout)));
     parent.addField(std::move(field));
   }
 };
@@ -496,13 +496,14 @@ class LayoutRoot {
    * fixed point is reached.
    */
   template <class T>
-  size_t doLayout(const T& root, Layout<T>& layout) {
-    for (int t = 0; t < 1000; ++t) {
+  size_t doLayout(const T& root, Layout<T>& layout, size_t& resizes) {
+    for (resizes = 0; resizes < 1000; ++resizes) {
       resized_ = false;
       cursor_ = layout.size;
       auto after = layout.layout(*this, root, {0, 0});
-      if (!layout.resize(after, false) && !resized_) {
-        return cursor_;
+      resized_ = layout.resize(after, false) || resized_;
+      if (!resized_) {
+        return cursor_ + kPaddingBytes;
       }
     }
     assert(false); // layout should always reach a fixed point.
@@ -516,7 +517,8 @@ class LayoutRoot {
    * the last bit of an integer at the end of the layout would read up to 7
    * additional bytes if the field was declared as an int64_t.
    */
-  static constexpr size_t kPaddingBytes = 7;
+  static constexpr size_t kMaxAlignment = 8;
+  static constexpr size_t kPaddingBytes = kMaxAlignment - 1;
 
   /**
    * Adjust 'layout' so it is sufficient for freezing root, and return the total
@@ -524,7 +526,21 @@ class LayoutRoot {
    */
   template <class T>
   static size_t layout(const T& root, Layout<T>& layout) {
-    return LayoutRoot().doLayout(root, layout) + kPaddingBytes;
+    size_t resizes;
+    return LayoutRoot().doLayout(root, layout, resizes);
+  }
+
+  /**
+   * Adjust 'layout' so it is sufficient for freezing root, providing upper
+   * bound storage size estimate and indication of whether the layout changed.
+   */
+  template <class T>
+  static void
+  layout(const T& root, Layout<T>& layout, bool& layoutChanged, size_t& size) {
+    LayoutRoot layoutRoot;
+    size_t resizes;
+    size = layoutRoot.doLayout(root, layout, resizes);
+    layoutChanged = resizes > 0;
   }
 
   /**
@@ -551,16 +567,20 @@ class LayoutRoot {
       } else {
         // only consumed bits, layout at bit offset
         resized_ = layout.resize(after, true) || resized_;
-        field.pos = inlinedField;
-        nextPos.bitOffset += layout.bits;
+        if (!layout.empty()) {
+          field.pos = inlinedField;
+          nextPos.bitOffset += layout.bits;
+        }
       }
     }
     if (!inlineBits) {
       FieldPosition normalField(fieldPos.offset, 0);
       FieldPosition after = layout.layout(*this, value, self(normalField));
       resized_ = layout.resize(after, false) || resized_;
-      field.pos = normalField;
-      nextPos.offset += layout.size;
+      if (!layout.empty()) {
+        field.pos = normalField;
+        nextPos.offset += layout.size;
+      }
     }
     return nextPos;
   }
@@ -582,16 +602,19 @@ class LayoutRoot {
    * Simulates appending count bytes, returning their offset (in bytes) from
    * origin.
    */
-  size_t layoutBytesDistance(size_t origin, size_t count) {
+  size_t layoutBytesDistance(size_t origin, size_t count, size_t align) {
+    assert(0 == (align & (align - 1)));
     if (count == 0) {
       return 0;
     }
     if (cursor_ < origin) {
       cursor_ = origin;
     }
-    size_t start = cursor_;
+    // assume worst case alignment is hit when we're actually freezing
+    cursor_ += align - 1;
+    auto worstCaseDistance = cursor_ - origin;
     cursor_ += count;
-    return start - origin;
+    return worstCaseDistance;
   }
 
  protected:
@@ -632,7 +655,7 @@ class FreezeRoot {
   typename Layout<T>::View doFreeze(const Layout<T>& layout, const T& root) {
     folly::MutableByteRange range;
     size_t dist;
-    appendBytes(0, layout.size, range, dist);
+    appendBytes(0, layout.size, range, dist, 1);
     layout.freeze(*this, root, {range.begin(), 0});
     return layout.view({range.begin(), 0});
   }
@@ -668,53 +691,81 @@ class FreezeRoot {
    * Appends bytes to the store, setting an output range and a distance from a
    * given origin.
    */
-  void appendBytes(byte* origin,
-                   size_t n,
-                   folly::MutableByteRange& range,
-                   size_t& distance) {
-    doAppendBytes(origin, n, range, distance);
+  void appendBytes(
+      byte* origin,
+      size_t n,
+      folly::MutableByteRange& range,
+      size_t& distance,
+      size_t align) {
+    doAppendBytes(origin, n, range, distance, align);
   }
 
  private:
-  virtual void doAppendBytes(byte* origin,
-                             size_t n,
-                             folly::MutableByteRange& range,
-                             size_t& distance) = 0;
+  virtual void doAppendBytes(
+      byte* origin,
+      size_t n,
+      folly::MutableByteRange& range,
+      size_t& distance,
+      size_t align) = 0;
 };
+
+inline size_t alignBy(size_t start, size_t alignment) {
+  return ((start - 1) | (alignment - 1)) + 1;
+}
 
 /**
  * A FreezeRoot that writes to a given ByteRange
  */
 class ByteRangeFreezer final : public FreezeRoot {
  protected:
-  explicit ByteRangeFreezer(folly::MutableByteRange write) : write_(write) {}
+  explicit ByteRangeFreezer(folly::MutableByteRange& write) : write_(write) {}
 
  public:
   template <class T>
-  static typename Layout<T>::View freeze(const Layout<T>& layout,
-                                         const T& root,
-                                         folly::MutableByteRange write) {
-    return ByteRangeFreezer(write).doFreeze(layout, root);
+  static typename Layout<T>::View freeze(
+      const Layout<T>& layout,
+      const T& root,
+      folly::MutableByteRange& write) {
+    ByteRangeFreezer freezer(write);
+    auto view = freezer.doFreeze(layout, root);
+    freezer.align(8);
+    return view;
   }
 
  private:
-  void doAppendBytes(byte* origin,
-                     size_t n,
-                     folly::MutableByteRange& range,
-                     size_t& distance) override {
-    range.reset(write_.begin(), n);
-    if (n) {
-      if (n > write_.size() || origin > write_.begin()) {
-        throw std::length_error("Insufficient buffer allocated");
-      }
-      distance = write_.begin() - origin;
-      write_.advance(n);
-    } else {
-      distance = 0;
+  void align(size_t alignment) {
+    assert(0 == (alignment & (alignment - 1)));
+    auto start = reinterpret_cast<intptr_t>(write_.begin());
+    auto aligned = alignBy(start, alignment);
+    auto padding = aligned - start;
+    if (padding > write_.size()) {
+      throw std::length_error("Insufficient buffer allocated");
     }
+    write_.advance(padding);
   }
 
-  folly::MutableByteRange write_;
+  void doAppendBytes(
+      byte* origin,
+      size_t n,
+      folly::MutableByteRange& range,
+      size_t& distance,
+      size_t alignment) override {
+    CHECK_LE(origin, write_.begin());
+    if (!n) {
+      distance = 0;
+      range.reset(nullptr, 0);
+      return;
+    }
+    align(alignment);
+    if (n > write_.size()) {
+      throw std::length_error("Insufficient buffer allocated");
+    }
+    range.reset(write_.begin(), n);
+    distance = write_.begin() - origin;
+    write_.advance(n);
+  }
+
+  folly::MutableByteRange& write_;
 };
 
 struct Holder {
