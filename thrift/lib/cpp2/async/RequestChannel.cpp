@@ -61,7 +61,7 @@ uint32_t RequestChannel::sendRequestSync(
   DCHECK(typeid(ClientSyncCallback) == typeid(*cb));
   bool oneway = static_cast<ClientSyncCallback&>(*cb).isOneway();
   auto eb = getEventBase();
-  auto scb = folly::make_unique<ClientSyncEventBaseCallback>(std::move(cb), eb);
+  auto scb = std::make_unique<ClientSyncEventBaseCallback>(std::move(cb), eb);
   if (oneway) {
     auto x = sendOnewayRequest(
         options,
