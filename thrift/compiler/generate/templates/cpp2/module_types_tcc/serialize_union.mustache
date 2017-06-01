@@ -20,8 +20,13 @@ uint32_t <%struct:name%>::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("<%struct:name%>");
   switch(this->getType()) {
 <%#struct:fields%><%#field:type%>
+<%#field:optional?%>
+    if (this->__isset.<%field:name%>) {
+<%/field:optional?%>
+<%^field:optional?%>
     case <%struct:name%>::Type::<%field:name%>:
     {
+<%/field:optional?%>
       xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
 <%#type:resolves_to_base?%>
       xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>(this->get_<%field:name%>());
@@ -32,7 +37,9 @@ uint32_t <%struct:name%>::serializedSize(Protocol_ const* prot_) const {
 <%#type:struct?%>
       xfer += ::apache::thrift::Cpp2Ops< <% > Type%>>::serializedSize(prot_, &this->get_<%field:name%>());
 <%/type:struct?%>
+<%^field:optional?%>
       break;
+<%/field:optional?%>
     }
 <%/field:type%><%/struct:fields%>
     case <%struct:name%>::Type::__EMPTY__:;
@@ -47,8 +54,13 @@ uint32_t <%struct:name%>::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("<%struct:name%>");
   switch(this->getType()) {
 <%#struct:fields%><%#field:type%>
+<%#field:optional?%>
+    if (this->__isset.<%field:name%>) {
+<%/field:optional?%>
+<%^field:optional?%>
     case <%struct:name%>::Type::<%field:name%>:
     {
+<%/field:optional?%>
       xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
 <%#type:resolves_to_base?%>
       xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>(this->get_<%field:name%>());
@@ -59,7 +71,9 @@ uint32_t <%struct:name%>::serializedSizeZC(Protocol_ const* prot_) const {
 <%#type:struct?%>
       xfer += ::apache::thrift::Cpp2Ops< <% > Type%>>::serializedSizeZC(prot_, &this->get_<%field:name%>());
 <%/type:struct?%>
+<%^field:optional?%>
       break;
+<%/field:optional?%>
     }
 <%/field:type%><%/struct:fields%>
     case <%struct:name%>::Type::__EMPTY__:;
@@ -74,8 +88,13 @@ uint32_t <%struct:name%>::write(Protocol_* prot_) const {
   xfer += prot_->writeStructBegin("<%struct:name%>");
   switch(this->getType()) {
 <%#struct:fields%><%#field:type%>
+<%#field:optional?%>
+    if (this->__isset.<%field:name%>) {
+<%/field:optional?%>
+<%^field:optional?%>
     case <%struct:name%>::Type::<%field:name%>:
     {
+<%/field:optional?%>
       xfer += prot_->writeFieldBegin("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
 <%#type:resolves_to_base?%>
       xfer += prot_->write<% > module_types_tcc/struct_field_type%>(this->get_<%field:name%>());
@@ -87,7 +106,9 @@ uint32_t <%struct:name%>::write(Protocol_* prot_) const {
       xfer += ::apache::thrift::Cpp2Ops< <% > Type%>>::write(prot_, &this->get_<%field:name%>());
 <%/type:struct?%>
       xfer += prot_->writeFieldEnd();
+<%^field:optional?%>
       break;
+<%/field:optional?%>
     }
 <%/field:type%><%/struct:fields%>
     case <%struct:name%>::Type::__EMPTY__:;

@@ -14,21 +14,26 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%!
-%>bool <%struct:name%>::operator==(const <%struct:name%>& <%!
-  %><%#struct:base_fields?%><%!
-    %>rhs<%!
-  %><%/struct:base_fields?%><%!
-  %><%^struct:base_fields?%><%!
-    %>/* rhs */<%!
-  %><%/struct:base_fields?%><%!
-%>) const {
-  <%#struct:fields%>
+%><%#struct:base_fields?%>
+bool <%struct:name%>::operator==(const <%struct:name%>& rhs) const {
+<%/struct:base_fields?%>
+<%^struct:base_fields?%>
+bool <%struct:name%>::operator==(const <%struct:name%>& /* rhs */) const {
+<%/struct:base_fields?%>
+<%#struct:fields%>
+<%#field:optional?%>
+  if (__isset.<%field:name%> != rhs.__isset.<%field:name%>) {
+    return false;
+  }
+  else if (__isset.<%field:name%> && !((<%field:name%> == rhs.<%field:name%>))) {
+    return false;
+  }
+<%/field:optional?%>
+<%^field:optional?%>
   if (!((<%field:name%> == rhs.<%field:name%>))) {
     return false;
   }
-  <%/struct:fields%>
+<%/field:optional?%>
+<%/struct:fields%>
   return true;
 }
-<%!
-%>

@@ -630,8 +630,10 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     __EMPTY__ = 0,
     intValue = 1,
     req_intValue = 101,
+    opt_intValue = 201,
     stringValue = 3,
     req_stringValue = 103,
+    opt_stringValue = 203,
     intValue2 = 4,
     intValue3 = 6,
     doubelValue = 7,
@@ -640,12 +642,14 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     union_set = 10,
     union_map = 11,
     req_union_map = 111,
+    opt_union_map = 211,
     enum_field = 12,
     enum_container = 13,
     a_struct = 14,
     a_set_struct = 15,
     a_union = 16,
     req_a_union = 116,
+    opt_a_union = 216,
     a_union_list = 17,
     a_union_typedef = 18,
     a_union_typedef_list = 19,
@@ -669,6 +673,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
         set_req_intValue(std::move(rhs.value_.req_intValue));
         break;
       }
+      case Type::opt_intValue:
+      {
+        set_opt_intValue(std::move(rhs.value_.opt_intValue));
+        break;
+      }
       case Type::stringValue:
       {
         set_stringValue(std::move(rhs.value_.stringValue));
@@ -677,6 +686,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
       case Type::req_stringValue:
       {
         set_req_stringValue(std::move(rhs.value_.req_stringValue));
+        break;
+      }
+      case Type::opt_stringValue:
+      {
+        set_opt_stringValue(std::move(rhs.value_.opt_stringValue));
         break;
       }
       case Type::intValue2:
@@ -719,6 +733,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
         set_req_union_map(std::move(rhs.value_.req_union_map));
         break;
       }
+      case Type::opt_union_map:
+      {
+        set_opt_union_map(std::move(rhs.value_.opt_union_map));
+        break;
+      }
       case Type::enum_field:
       {
         set_enum_field(std::move(rhs.value_.enum_field));
@@ -747,6 +766,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
       case Type::req_a_union:
       {
         set_req_a_union(std::move(rhs.value_.req_a_union));
+        break;
+      }
+      case Type::opt_a_union:
+      {
+        set_opt_a_union(std::move(rhs.value_.opt_a_union));
         break;
       }
       case Type::a_union_list:
@@ -788,6 +812,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
         set_req_intValue(rhs.value_.req_intValue);
         break;
       }
+      case Type::opt_intValue:
+      {
+        set_opt_intValue(rhs.value_.opt_intValue);
+        break;
+      }
       case Type::stringValue:
       {
         set_stringValue(rhs.value_.stringValue);
@@ -796,6 +825,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
       case Type::req_stringValue:
       {
         set_req_stringValue(rhs.value_.req_stringValue);
+        break;
+      }
+      case Type::opt_stringValue:
+      {
+        set_opt_stringValue(rhs.value_.opt_stringValue);
         break;
       }
       case Type::intValue2:
@@ -838,6 +872,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
         set_req_union_map(rhs.value_.req_union_map);
         break;
       }
+      case Type::opt_union_map:
+      {
+        set_opt_union_map(rhs.value_.opt_union_map);
+        break;
+      }
       case Type::enum_field:
       {
         set_enum_field(rhs.value_.enum_field);
@@ -866,6 +905,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
       case Type::req_a_union:
       {
         set_req_a_union(rhs.value_.req_a_union);
+        break;
+      }
+      case Type::opt_a_union:
+      {
+        set_opt_a_union(rhs.value_.opt_a_union);
         break;
       }
       case Type::a_union_list:
@@ -906,6 +950,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
         set_req_intValue(std::move(rhs.value_.req_intValue));
         break;
       }
+      case Type::opt_intValue:
+      {
+        set_opt_intValue(std::move(rhs.value_.opt_intValue));
+        break;
+      }
       case Type::stringValue:
       {
         set_stringValue(std::move(rhs.value_.stringValue));
@@ -914,6 +963,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
       case Type::req_stringValue:
       {
         set_req_stringValue(std::move(rhs.value_.req_stringValue));
+        break;
+      }
+      case Type::opt_stringValue:
+      {
+        set_opt_stringValue(std::move(rhs.value_.opt_stringValue));
         break;
       }
       case Type::intValue2:
@@ -956,6 +1010,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
         set_req_union_map(std::move(rhs.value_.req_union_map));
         break;
       }
+      case Type::opt_union_map:
+      {
+        set_opt_union_map(std::move(rhs.value_.opt_union_map));
+        break;
+      }
       case Type::enum_field:
       {
         set_enum_field(std::move(rhs.value_.enum_field));
@@ -984,6 +1043,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
       case Type::req_a_union:
       {
         set_req_a_union(std::move(rhs.value_.req_a_union));
+        break;
+      }
+      case Type::opt_a_union:
+      {
+        set_opt_a_union(std::move(rhs.value_.opt_a_union));
         break;
       }
       case Type::a_union_list:
@@ -1026,6 +1090,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
         set_req_intValue(rhs.value_.req_intValue);
         break;
       }
+      case Type::opt_intValue:
+      {
+        set_opt_intValue(rhs.value_.opt_intValue);
+        break;
+      }
       case Type::stringValue:
       {
         set_stringValue(rhs.value_.stringValue);
@@ -1034,6 +1103,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
       case Type::req_stringValue:
       {
         set_req_stringValue(rhs.value_.req_stringValue);
+        break;
+      }
+      case Type::opt_stringValue:
+      {
+        set_opt_stringValue(rhs.value_.opt_stringValue);
         break;
       }
       case Type::intValue2:
@@ -1076,6 +1150,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
         set_req_union_map(rhs.value_.req_union_map);
         break;
       }
+      case Type::opt_union_map:
+      {
+        set_opt_union_map(rhs.value_.opt_union_map);
+        break;
+      }
       case Type::enum_field:
       {
         set_enum_field(rhs.value_.enum_field);
@@ -1104,6 +1183,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
       case Type::req_a_union:
       {
         set_req_a_union(rhs.value_.req_a_union);
+        break;
+      }
+      case Type::opt_a_union:
+      {
+        set_opt_a_union(rhs.value_.opt_a_union);
         break;
       }
       case Type::a_union_list:
@@ -1142,6 +1226,12 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     set_req_intValue(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor>
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<201, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_opt_intValue(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
   ComplexUnion(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
@@ -1152,6 +1242,12 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     type_(Type::__EMPTY__)
   {
     set_req_stringValue(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<203, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_opt_stringValue(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor>
   ComplexUnion(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg):
@@ -1202,6 +1298,12 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     set_req_union_map(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor>
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<211, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_opt_union_map(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
   ComplexUnion(::apache::thrift::detail::argument_wrapper<12, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
@@ -1238,6 +1340,12 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     set_req_a_union(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor>
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<216, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_opt_a_union(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
   ComplexUnion(::apache::thrift::detail::argument_wrapper<17, T__ThriftWrappedArgument__Ctor> arg):
     type_(Type::__EMPTY__)
   {
@@ -1264,8 +1372,10 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
   union storage_type {
     int64_t intValue;
     int64_t req_intValue;
+    int64_t opt_intValue;
     std::string stringValue;
     std::string req_stringValue;
+    std::string opt_stringValue;
     int16_t intValue2;
     int32_t intValue3;
     double doubelValue;
@@ -1274,12 +1384,14 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     std::set<int64_t> union_set;
     std::map<std::string, int32_t> union_map;
     std::map<std::string, int32_t> req_union_map;
+    std::map<std::string, int32_t> opt_union_map;
      ::some::valid::ns::MyEnumA enum_field;
     std::vector< ::some::valid::ns::MyEnumA> enum_container;
      ::some::valid::ns::MyStruct a_struct;
     std::set< ::some::valid::ns::MyStruct> a_set_struct;
      ::some::valid::ns::SimpleUnion a_union;
      ::some::valid::ns::SimpleUnion req_a_union;
+     ::some::valid::ns::SimpleUnion opt_a_union;
     std::vector< ::some::valid::ns::SimpleUnion> a_union_list;
      ::some::valid::ns::unionTypeDef a_union_typedef;
     std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list;
@@ -1302,6 +1414,13 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     type_ = Type::req_intValue;
     ::new (std::addressof(value_.req_intValue)) int64_t(t);
     return value_.req_intValue;
+  }
+
+  int64_t& set_opt_intValue(int64_t t = int64_t()) {
+    __clear();
+    type_ = Type::opt_intValue;
+    ::new (std::addressof(value_.opt_intValue)) int64_t(t);
+    return value_.opt_intValue;
   }
 
   std::string& set_stringValue(std::string const &t) {
@@ -1344,6 +1463,27 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     type_ = Type::req_stringValue;
     ::new (std::addressof(value_.req_stringValue)) std::string(std::forward<T>(t)...);
     return value_.req_stringValue;
+  }
+
+  std::string& set_opt_stringValue(std::string const &t) {
+    __clear();
+    type_ = Type::opt_stringValue;
+    ::new (std::addressof(value_.opt_stringValue)) std::string(t);
+    return value_.opt_stringValue;
+  }
+
+  std::string& set_opt_stringValue(std::string&& t) {
+    __clear();
+    type_ = Type::opt_stringValue;
+    ::new (std::addressof(value_.opt_stringValue)) std::string(std::move(t));
+    return value_.opt_stringValue;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::string, T...>> std::string& set_opt_stringValue(T&&... t) {
+    __clear();
+    type_ = Type::opt_stringValue;
+    ::new (std::addressof(value_.opt_stringValue)) std::string(std::forward<T>(t)...);
+    return value_.opt_stringValue;
   }
 
   int16_t& set_intValue2(int16_t t = int16_t()) {
@@ -1458,6 +1598,27 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     return value_.req_union_map;
   }
 
+  std::map<std::string, int32_t>& set_opt_union_map(std::map<std::string, int32_t> const &t) {
+    __clear();
+    type_ = Type::opt_union_map;
+    ::new (std::addressof(value_.opt_union_map)) std::map<std::string, int32_t>(t);
+    return value_.opt_union_map;
+  }
+
+  std::map<std::string, int32_t>& set_opt_union_map(std::map<std::string, int32_t>&& t) {
+    __clear();
+    type_ = Type::opt_union_map;
+    ::new (std::addressof(value_.opt_union_map)) std::map<std::string, int32_t>(std::move(t));
+    return value_.opt_union_map;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::map<std::string, int32_t>, T...>> std::map<std::string, int32_t>& set_opt_union_map(T&&... t) {
+    __clear();
+    type_ = Type::opt_union_map;
+    ::new (std::addressof(value_.opt_union_map)) std::map<std::string, int32_t>(std::forward<T>(t)...);
+    return value_.opt_union_map;
+  }
+
    ::some::valid::ns::MyEnumA& set_enum_field( ::some::valid::ns::MyEnumA t =  ::some::valid::ns::MyEnumA()) {
     __clear();
     type_ = Type::enum_field;
@@ -1570,6 +1731,27 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     return value_.req_a_union;
   }
 
+   ::some::valid::ns::SimpleUnion& set_opt_a_union( ::some::valid::ns::SimpleUnion const &t) {
+    __clear();
+    type_ = Type::opt_a_union;
+    ::new (std::addressof(value_.opt_a_union))  ::some::valid::ns::SimpleUnion(t);
+    return value_.opt_a_union;
+  }
+
+   ::some::valid::ns::SimpleUnion& set_opt_a_union( ::some::valid::ns::SimpleUnion&& t) {
+    __clear();
+    type_ = Type::opt_a_union;
+    ::new (std::addressof(value_.opt_a_union))  ::some::valid::ns::SimpleUnion(std::move(t));
+    return value_.opt_a_union;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::some::valid::ns::SimpleUnion, T...>>  ::some::valid::ns::SimpleUnion& set_opt_a_union(T&&... t) {
+    __clear();
+    type_ = Type::opt_a_union;
+    ::new (std::addressof(value_.opt_a_union))  ::some::valid::ns::SimpleUnion(std::forward<T>(t)...);
+    return value_.opt_a_union;
+  }
+
   std::vector< ::some::valid::ns::SimpleUnion>& set_a_union_list(std::vector< ::some::valid::ns::SimpleUnion> const &t) {
     __clear();
     type_ = Type::a_union_list;
@@ -1643,6 +1825,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     return value_.req_intValue;
   }
 
+  int64_t const & get_opt_intValue() const {
+    assert(type_ == Type::opt_intValue);
+    return value_.opt_intValue;
+  }
+
   std::string const & get_stringValue() const {
     assert(type_ == Type::stringValue);
     return value_.stringValue;
@@ -1651,6 +1838,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
   std::string const & get_req_stringValue() const {
     assert(type_ == Type::req_stringValue);
     return value_.req_stringValue;
+  }
+
+  std::string const & get_opt_stringValue() const {
+    assert(type_ == Type::opt_stringValue);
+    return value_.opt_stringValue;
   }
 
   int16_t const & get_intValue2() const {
@@ -1693,6 +1885,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     return value_.req_union_map;
   }
 
+  std::map<std::string, int32_t> const & get_opt_union_map() const {
+    assert(type_ == Type::opt_union_map);
+    return value_.opt_union_map;
+  }
+
    ::some::valid::ns::MyEnumA const & get_enum_field() const {
     assert(type_ == Type::enum_field);
     return value_.enum_field;
@@ -1723,6 +1920,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     return value_.req_a_union;
   }
 
+   ::some::valid::ns::SimpleUnion const & get_opt_a_union() const {
+    assert(type_ == Type::opt_a_union);
+    return value_.opt_a_union;
+  }
+
   std::vector< ::some::valid::ns::SimpleUnion> const & get_a_union_list() const {
     assert(type_ == Type::a_union_list);
     return value_.a_union_list;
@@ -1748,6 +1950,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     return value_.req_intValue;
   }
 
+  int64_t & mutable_opt_intValue() {
+    assert(type_ == Type::opt_intValue);
+    return value_.opt_intValue;
+  }
+
   std::string & mutable_stringValue() {
     assert(type_ == Type::stringValue);
     return value_.stringValue;
@@ -1756,6 +1963,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
   std::string & mutable_req_stringValue() {
     assert(type_ == Type::req_stringValue);
     return value_.req_stringValue;
+  }
+
+  std::string & mutable_opt_stringValue() {
+    assert(type_ == Type::opt_stringValue);
+    return value_.opt_stringValue;
   }
 
   int16_t & mutable_intValue2() {
@@ -1798,6 +2010,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     return value_.req_union_map;
   }
 
+  std::map<std::string, int32_t> & mutable_opt_union_map() {
+    assert(type_ == Type::opt_union_map);
+    return value_.opt_union_map;
+  }
+
    ::some::valid::ns::MyEnumA & mutable_enum_field() {
     assert(type_ == Type::enum_field);
     return value_.enum_field;
@@ -1828,6 +2045,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     return value_.req_a_union;
   }
 
+   ::some::valid::ns::SimpleUnion & mutable_opt_a_union() {
+    assert(type_ == Type::opt_a_union);
+    return value_.opt_a_union;
+  }
+
   std::vector< ::some::valid::ns::SimpleUnion> & mutable_a_union_list() {
     assert(type_ == Type::a_union_list);
     return value_.a_union_list;
@@ -1853,6 +2075,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     return std::move(value_.req_intValue);
   }
 
+  int64_t move_opt_intValue() {
+    assert(type_ == Type::opt_intValue);
+    return std::move(value_.opt_intValue);
+  }
+
   std::string move_stringValue() {
     assert(type_ == Type::stringValue);
     return std::move(value_.stringValue);
@@ -1861,6 +2088,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
   std::string move_req_stringValue() {
     assert(type_ == Type::req_stringValue);
     return std::move(value_.req_stringValue);
+  }
+
+  std::string move_opt_stringValue() {
+    assert(type_ == Type::opt_stringValue);
+    return std::move(value_.opt_stringValue);
   }
 
   int16_t move_intValue2() {
@@ -1903,6 +2135,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     return std::move(value_.req_union_map);
   }
 
+  std::map<std::string, int32_t> move_opt_union_map() {
+    assert(type_ == Type::opt_union_map);
+    return std::move(value_.opt_union_map);
+  }
+
    ::some::valid::ns::MyEnumA move_enum_field() {
     assert(type_ == Type::enum_field);
     return std::move(value_.enum_field);
@@ -1931,6 +2168,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
    ::some::valid::ns::SimpleUnion move_req_a_union() {
     assert(type_ == Type::req_a_union);
     return std::move(value_.req_a_union);
+  }
+
+   ::some::valid::ns::SimpleUnion move_opt_a_union() {
+    assert(type_ == Type::opt_a_union);
+    return std::move(value_.opt_a_union);
   }
 
   std::vector< ::some::valid::ns::SimpleUnion> move_a_union_list() {
@@ -2369,6 +2611,7 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   containerStruct() :
       fieldA(0),
       req_fieldA(0),
+      opt_fieldA(0),
       fieldC(std::initializer_list<int32_t>{1,
   2,
   3,
@@ -2377,8 +2620,13 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   2,
   3,
   4}),
+      opt_fieldC(std::initializer_list<int32_t>{1,
+  2,
+  3,
+  4}),
       fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
       req_fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
+      opt_fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
       fieldF(std::initializer_list<std::vector<int32_t>>{std::initializer_list<int32_t>{1,
   3,
   5,
@@ -2402,22 +2650,27 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
       fieldQ(static_cast< ::some::valid::ns::MyEnumA>(0)),
       fieldR( ::some::valid::ns::MyEnumA::fieldB),
       req_fieldR( ::some::valid::ns::MyEnumA::fieldB),
+      opt_fieldR( ::some::valid::ns::MyEnumA::fieldB),
       fieldS( ::some::valid::ns::MyEnumA::fieldB),
       fieldU(std::initializer_list< ::some::valid::ns::MyEnumA>{ ::some::valid::ns::MyEnumA::fieldC,
    ::some::valid::ns::MyEnumA::fieldB,
    ::some::valid::ns::MyEnumA::fieldA}) {}
   // FragileConstructor for use in initialization lists only
 
-  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, std::map<std::string, bool> fieldB__arg, std::map<std::string, bool> req_fieldB__arg, std::set<int32_t> fieldC__arg, std::set<int32_t> req_fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::string req_fieldE__arg, std::vector<std::vector<int32_t>> fieldF__arg, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG__arg, std::vector<std::set<int32_t>> fieldH__arg, bool fieldI__arg, std::map<std::string, std::vector<int32_t>> fieldJ__arg, std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK__arg, std::set<std::set<std::set<bool>>> fieldL__arg, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM__arg,  ::some::valid::ns::simpleTypeDef fieldN__arg,  ::some::valid::ns::complexStructTypeDef fieldO__arg, std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP__arg,  ::some::valid::ns::MyEnumA fieldQ__arg,  ::some::valid::ns::MyEnumA fieldR__arg,  ::some::valid::ns::MyEnumA req_fieldR__arg,  ::some::valid::ns::MyEnumA fieldS__arg, std::vector< ::some::valid::ns::MyEnumA> fieldT__arg, std::vector< ::some::valid::ns::MyEnumA> fieldU__arg,  ::some::valid::ns::MyStruct fieldV__arg,  ::some::valid::ns::MyStruct req_fieldV__arg, std::set< ::some::valid::ns::MyStruct> fieldW__arg,  ::some::valid::ns::ComplexUnion fieldX__arg,  ::some::valid::ns::ComplexUnion req_fieldX__arg, std::vector< ::some::valid::ns::ComplexUnion> fieldY__arg,  ::some::valid::ns::unionTypeDef fieldZ__arg, std::vector< ::some::valid::ns::unionTypeDef> fieldAA__arg) :
+  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, std::map<std::string, bool> fieldB__arg, std::map<std::string, bool> req_fieldB__arg, std::map<std::string, bool> opt_fieldB__arg, std::set<int32_t> fieldC__arg, std::set<int32_t> req_fieldC__arg, std::set<int32_t> opt_fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::string req_fieldE__arg, std::string opt_fieldE__arg, std::vector<std::vector<int32_t>> fieldF__arg, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG__arg, std::vector<std::set<int32_t>> fieldH__arg, bool fieldI__arg, std::map<std::string, std::vector<int32_t>> fieldJ__arg, std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK__arg, std::set<std::set<std::set<bool>>> fieldL__arg, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM__arg,  ::some::valid::ns::simpleTypeDef fieldN__arg,  ::some::valid::ns::complexStructTypeDef fieldO__arg, std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP__arg,  ::some::valid::ns::MyEnumA fieldQ__arg,  ::some::valid::ns::MyEnumA fieldR__arg,  ::some::valid::ns::MyEnumA req_fieldR__arg,  ::some::valid::ns::MyEnumA opt_fieldR__arg,  ::some::valid::ns::MyEnumA fieldS__arg, std::vector< ::some::valid::ns::MyEnumA> fieldT__arg, std::vector< ::some::valid::ns::MyEnumA> fieldU__arg,  ::some::valid::ns::MyStruct fieldV__arg,  ::some::valid::ns::MyStruct req_fieldV__arg,  ::some::valid::ns::MyStruct opt_fieldV__arg, std::set< ::some::valid::ns::MyStruct> fieldW__arg,  ::some::valid::ns::ComplexUnion fieldX__arg,  ::some::valid::ns::ComplexUnion req_fieldX__arg,  ::some::valid::ns::ComplexUnion opt_fieldX__arg, std::vector< ::some::valid::ns::ComplexUnion> fieldY__arg,  ::some::valid::ns::unionTypeDef fieldZ__arg, std::vector< ::some::valid::ns::unionTypeDef> fieldAA__arg) :
       fieldA(std::move(fieldA__arg)),
       req_fieldA(std::move(req_fieldA__arg)),
+      opt_fieldA(std::move(opt_fieldA__arg)),
       fieldB(std::move(fieldB__arg)),
       req_fieldB(std::move(req_fieldB__arg)),
+      opt_fieldB(std::move(opt_fieldB__arg)),
       fieldC(std::move(fieldC__arg)),
       req_fieldC(std::move(req_fieldC__arg)),
+      opt_fieldC(std::move(opt_fieldC__arg)),
       fieldD(std::move(fieldD__arg)),
       fieldE(std::move(fieldE__arg)),
       req_fieldE(std::move(req_fieldE__arg)),
+      opt_fieldE(std::move(opt_fieldE__arg)),
       fieldF(std::move(fieldF__arg)),
       fieldG(std::move(fieldG__arg)),
       fieldH(std::move(fieldH__arg)),
@@ -2432,22 +2685,29 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
       fieldQ(std::move(fieldQ__arg)),
       fieldR(std::move(fieldR__arg)),
       req_fieldR(std::move(req_fieldR__arg)),
+      opt_fieldR(std::move(opt_fieldR__arg)),
       fieldS(std::move(fieldS__arg)),
       fieldT(std::move(fieldT__arg)),
       fieldU(std::move(fieldU__arg)),
       fieldV(std::move(fieldV__arg)),
       req_fieldV(std::move(req_fieldV__arg)),
+      opt_fieldV(std::move(opt_fieldV__arg)),
       fieldW(std::move(fieldW__arg)),
       fieldX(std::move(fieldX__arg)),
       req_fieldX(std::move(req_fieldX__arg)),
+      opt_fieldX(std::move(opt_fieldX__arg)),
       fieldY(std::move(fieldY__arg)),
       fieldZ(std::move(fieldZ__arg)),
       fieldAA(std::move(fieldAA__arg)) {
     __isset.fieldA = true;
+    __isset.opt_fieldA = true;
     __isset.fieldB = true;
+    __isset.opt_fieldB = true;
     __isset.fieldC = true;
+    __isset.opt_fieldC = true;
     __isset.fieldD = true;
     __isset.fieldE = true;
+    __isset.opt_fieldE = true;
     __isset.fieldF = true;
     __isset.fieldG = true;
     __isset.fieldH = true;
@@ -2461,12 +2721,15 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     __isset.fieldP = true;
     __isset.fieldQ = true;
     __isset.fieldR = true;
+    __isset.opt_fieldR = true;
     __isset.fieldS = true;
     __isset.fieldT = true;
     __isset.fieldU = true;
     __isset.fieldV = true;
+    __isset.opt_fieldV = true;
     __isset.fieldW = true;
     __isset.fieldX = true;
+    __isset.opt_fieldX = true;
     __isset.fieldY = true;
     __isset.fieldZ = true;
     __isset.fieldAA = true;
@@ -2485,6 +2748,13 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     req_fieldA = arg.move();
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct(::apache::thrift::detail::argument_wrapper<201, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    opt_fieldA = arg.move();
+    __isset.opt_fieldA = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   containerStruct(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
@@ -2498,6 +2768,13 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     req_fieldB = arg.move();
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct(::apache::thrift::detail::argument_wrapper<202, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    opt_fieldB = arg.move();
+    __isset.opt_fieldB = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   containerStruct(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
@@ -2509,6 +2786,13 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     req_fieldC = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct(::apache::thrift::detail::argument_wrapper<203, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    opt_fieldC = arg.move();
+    __isset.opt_fieldC = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   containerStruct(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -2529,6 +2813,13 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     req_fieldE = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct(::apache::thrift::detail::argument_wrapper<205, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    opt_fieldE = arg.move();
+    __isset.opt_fieldE = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   containerStruct(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -2628,6 +2919,13 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     req_fieldR = arg.move();
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct(::apache::thrift::detail::argument_wrapper<218, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    opt_fieldR = arg.move();
+    __isset.opt_fieldR = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   containerStruct(::apache::thrift::detail::argument_wrapper<19, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
@@ -2662,6 +2960,13 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     req_fieldV = arg.move();
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct(::apache::thrift::detail::argument_wrapper<223, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    opt_fieldV = arg.move();
+    __isset.opt_fieldV = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   containerStruct(::apache::thrift::detail::argument_wrapper<24, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
@@ -2680,6 +2985,13 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     req_fieldX = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct(::apache::thrift::detail::argument_wrapper<225, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    opt_fieldX = arg.move();
+    __isset.opt_fieldX = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   containerStruct(::apache::thrift::detail::argument_wrapper<26, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -2716,13 +3028,17 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
 
   bool fieldA;
   bool req_fieldA;
+  bool opt_fieldA;
   std::map<std::string, bool> fieldB;
   std::map<std::string, bool> req_fieldB;
+  std::map<std::string, bool> opt_fieldB;
   std::set<int32_t> fieldC;
   std::set<int32_t> req_fieldC;
+  std::set<int32_t> opt_fieldC;
   std::string fieldD;
   std::string fieldE;
   std::string req_fieldE;
+  std::string opt_fieldE;
   std::vector<std::vector<int32_t>> fieldF;
   std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG;
   std::vector<std::set<int32_t>> fieldH;
@@ -2737,14 +3053,17 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
    ::some::valid::ns::MyEnumA fieldQ;
    ::some::valid::ns::MyEnumA fieldR;
    ::some::valid::ns::MyEnumA req_fieldR;
+   ::some::valid::ns::MyEnumA opt_fieldR;
    ::some::valid::ns::MyEnumA fieldS;
   std::vector< ::some::valid::ns::MyEnumA> fieldT;
   std::vector< ::some::valid::ns::MyEnumA> fieldU;
    ::some::valid::ns::MyStruct fieldV;
    ::some::valid::ns::MyStruct req_fieldV;
+   ::some::valid::ns::MyStruct opt_fieldV;
   std::set< ::some::valid::ns::MyStruct> fieldW;
    ::some::valid::ns::ComplexUnion fieldX;
    ::some::valid::ns::ComplexUnion req_fieldX;
+   ::some::valid::ns::ComplexUnion opt_fieldX;
   std::vector< ::some::valid::ns::ComplexUnion> fieldY;
    ::some::valid::ns::unionTypeDef fieldZ;
   std::vector< ::some::valid::ns::unionTypeDef> fieldAA;
@@ -2752,10 +3071,14 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   struct __isset {
     void __clear() {
       fieldA = false;
+      opt_fieldA = false;
       fieldB = false;
+      opt_fieldB = false;
       fieldC = false;
+      opt_fieldC = false;
       fieldD = false;
       fieldE = false;
+      opt_fieldE = false;
       fieldF = false;
       fieldG = false;
       fieldH = false;
@@ -2769,22 +3092,29 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
       fieldP = false;
       fieldQ = false;
       fieldR = false;
+      opt_fieldR = false;
       fieldS = false;
       fieldT = false;
       fieldU = false;
       fieldV = false;
+      opt_fieldV = false;
       fieldW = false;
       fieldX = false;
+      opt_fieldX = false;
       fieldY = false;
       fieldZ = false;
       fieldAA = false;
     }
 
     bool fieldA = false;
+    bool opt_fieldA = false;
     bool fieldB = false;
+    bool opt_fieldB = false;
     bool fieldC = false;
+    bool opt_fieldC = false;
     bool fieldD = false;
     bool fieldE = false;
+    bool opt_fieldE = false;
     bool fieldF = false;
     bool fieldG = false;
     bool fieldH = false;
@@ -2798,12 +3128,15 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     bool fieldP = false;
     bool fieldQ = false;
     bool fieldR = false;
+    bool opt_fieldR = false;
     bool fieldS = false;
     bool fieldT = false;
     bool fieldU = false;
     bool fieldV = false;
+    bool opt_fieldV = false;
     bool fieldW = false;
     bool fieldX = false;
+    bool opt_fieldX = false;
     bool fieldY = false;
     bool fieldZ = false;
     bool fieldAA = false;
@@ -2829,6 +3162,21 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     req_fieldA = req_fieldA_;
     return req_fieldA;
   }
+
+  const bool* get_opt_fieldA() const& {
+    return __isset.opt_fieldA ? std::addressof(opt_fieldA) : nullptr;
+  }
+
+  bool* get_opt_fieldA() & {
+    return __isset.opt_fieldA ? std::addressof(opt_fieldA) : nullptr;
+  }
+  bool* get_opt_fieldA() && = delete;
+
+  bool& set_opt_fieldA(bool opt_fieldA_) {
+    opt_fieldA = opt_fieldA_;
+    __isset.opt_fieldA = true;
+    return opt_fieldA;
+  }
   const std::map<std::string, bool>& get_fieldB() const&;
   std::map<std::string, bool> get_fieldB() &&;
   template <typename T_containerStruct_fieldB_struct_setter>
@@ -2837,6 +3185,11 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   std::map<std::string, bool> get_req_fieldB() &&;
   template <typename T_containerStruct_req_fieldB_struct_setter>
   std::map<std::string, bool>& set_req_fieldB(T_containerStruct_req_fieldB_struct_setter&& req_fieldB_);
+  const std::map<std::string, bool>* get_opt_fieldB() const&;
+  std::map<std::string, bool>* get_opt_fieldB() &;
+  std::map<std::string, bool>* get_opt_fieldB() && = delete;
+  template <typename T_containerStruct_opt_fieldB_struct_setter>
+  std::map<std::string, bool>& set_opt_fieldB(T_containerStruct_opt_fieldB_struct_setter&& opt_fieldB_);
   const std::set<int32_t>& get_fieldC() const&;
   std::set<int32_t> get_fieldC() &&;
   template <typename T_containerStruct_fieldC_struct_setter>
@@ -2845,6 +3198,11 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   std::set<int32_t> get_req_fieldC() &&;
   template <typename T_containerStruct_req_fieldC_struct_setter>
   std::set<int32_t>& set_req_fieldC(T_containerStruct_req_fieldC_struct_setter&& req_fieldC_);
+  const std::set<int32_t>* get_opt_fieldC() const&;
+  std::set<int32_t>* get_opt_fieldC() &;
+  std::set<int32_t>* get_opt_fieldC() && = delete;
+  template <typename T_containerStruct_opt_fieldC_struct_setter>
+  std::set<int32_t>& set_opt_fieldC(T_containerStruct_opt_fieldC_struct_setter&& opt_fieldC_);
 
   const std::string& get_fieldD() const& {
     return fieldD;
@@ -2888,6 +3246,22 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   std::string& set_req_fieldE(T_containerStruct_req_fieldE_struct_setter&& req_fieldE_) {
     req_fieldE = std::forward<T_containerStruct_req_fieldE_struct_setter>(req_fieldE_);
     return req_fieldE;
+  }
+
+  const std::string* get_opt_fieldE() const& {
+    return __isset.opt_fieldE ? std::addressof(opt_fieldE) : nullptr;
+  }
+
+  std::string* get_opt_fieldE() & {
+    return __isset.opt_fieldE ? std::addressof(opt_fieldE) : nullptr;
+  }
+  std::string* get_opt_fieldE() && = delete;
+
+  template <typename T_containerStruct_opt_fieldE_struct_setter>
+  std::string& set_opt_fieldE(T_containerStruct_opt_fieldE_struct_setter&& opt_fieldE_) {
+    opt_fieldE = std::forward<T_containerStruct_opt_fieldE_struct_setter>(opt_fieldE_);
+    __isset.opt_fieldE = true;
+    return opt_fieldE;
   }
   const std::vector<std::vector<int32_t>>& get_fieldF() const&;
   std::vector<std::vector<int32_t>> get_fieldF() &&;
@@ -2975,6 +3349,21 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     return req_fieldR;
   }
 
+  const  ::some::valid::ns::MyEnumA* get_opt_fieldR() const& {
+    return __isset.opt_fieldR ? std::addressof(opt_fieldR) : nullptr;
+  }
+
+   ::some::valid::ns::MyEnumA* get_opt_fieldR() & {
+    return __isset.opt_fieldR ? std::addressof(opt_fieldR) : nullptr;
+  }
+   ::some::valid::ns::MyEnumA* get_opt_fieldR() && = delete;
+
+   ::some::valid::ns::MyEnumA& set_opt_fieldR( ::some::valid::ns::MyEnumA opt_fieldR_) {
+    opt_fieldR = opt_fieldR_;
+    __isset.opt_fieldR = true;
+    return opt_fieldR;
+  }
+
    ::some::valid::ns::MyEnumA get_fieldS() const {
     return fieldS;
   }
@@ -3000,6 +3389,11 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
    ::some::valid::ns::MyStruct get_req_fieldV() &&;
   template <typename T_containerStruct_req_fieldV_struct_setter>
    ::some::valid::ns::MyStruct& set_req_fieldV(T_containerStruct_req_fieldV_struct_setter&& req_fieldV_);
+  const  ::some::valid::ns::MyStruct* get_opt_fieldV() const&;
+   ::some::valid::ns::MyStruct* get_opt_fieldV() &;
+   ::some::valid::ns::MyStruct* get_opt_fieldV() && = delete;
+  template <typename T_containerStruct_opt_fieldV_struct_setter>
+   ::some::valid::ns::MyStruct& set_opt_fieldV(T_containerStruct_opt_fieldV_struct_setter&& opt_fieldV_);
   const std::set< ::some::valid::ns::MyStruct>& get_fieldW() const&;
   std::set< ::some::valid::ns::MyStruct> get_fieldW() &&;
   template <typename T_containerStruct_fieldW_struct_setter>
@@ -3012,6 +3406,11 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
    ::some::valid::ns::ComplexUnion get_req_fieldX() &&;
   template <typename T_containerStruct_req_fieldX_struct_setter>
    ::some::valid::ns::ComplexUnion& set_req_fieldX(T_containerStruct_req_fieldX_struct_setter&& req_fieldX_);
+  const  ::some::valid::ns::ComplexUnion* get_opt_fieldX() const&;
+   ::some::valid::ns::ComplexUnion* get_opt_fieldX() &;
+   ::some::valid::ns::ComplexUnion* get_opt_fieldX() && = delete;
+  template <typename T_containerStruct_opt_fieldX_struct_setter>
+   ::some::valid::ns::ComplexUnion& set_opt_fieldX(T_containerStruct_opt_fieldX_struct_setter&& opt_fieldX_);
   const std::vector< ::some::valid::ns::ComplexUnion>& get_fieldY() const&;
   std::vector< ::some::valid::ns::ComplexUnion> get_fieldY() &&;
   template <typename T_containerStruct_fieldY_struct_setter>

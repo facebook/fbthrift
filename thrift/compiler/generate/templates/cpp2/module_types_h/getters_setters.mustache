@@ -14,15 +14,27 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%!
 %><%#struct:fields%><%#field:type%>
-  <%#type:resolves_to_base_or_enum?%>
+<%#type:resolves_to_base_or_enum?%>
 
-    <%^type:string?%>
+<%^type:string?%>
+<%#field:optional?%>
+  const <% > Type%>* get_<%field:name%>() const& {
+    return __isset.<%field:name%> ? std::addressof(<%field:name%>) : nullptr;
+  }
+
+  <% > Type%>* get_<%field:name%>() & {
+    return __isset.<%field:name%> ? std::addressof(<%field:name%>) : nullptr;
+  }
+  <% > Type%>* get_<%field:name%>() && = delete;
+
+<%/field:optional?%>
+<%^field:optional?%>
   <% > Type%> get_<%field:name%>() const {
     return <%field:name%>;
   }
 
+<%/field:optional?%>
   <% > Type%>& set_<%field:name%>(<% > Type%> <%field:name%>_) {
     <%field:name%> = <%field:name%>_;
 <%^field:required?%>
@@ -30,8 +42,19 @@
 <%/field:required?%>
     return <%field:name%>;
   }
-    <%/type:string?%>
-    <%#type:string?%>
+<%/type:string?%>
+<%#type:string?%>
+<%#field:optional?%>
+  const <% > Type%>* get_<%field:name%>() const& {
+    return __isset.<%field:name%> ? std::addressof(<%field:name%>) : nullptr;
+  }
+
+  <% > Type%>* get_<%field:name%>() & {
+    return __isset.<%field:name%> ? std::addressof(<%field:name%>) : nullptr;
+  }
+  <% > Type%>* get_<%field:name%>() && = delete;
+<%/field:optional?%>
+<%^field:optional?%>
   const <% > Type%>& get_<%field:name%>() const& {
     return <%field:name%>;
   }
@@ -39,6 +62,7 @@
   <% > Type%> get_<%field:name%>() && {
     return std::move(<%field:name%>);
   }
+<%/field:optional?%>
 
   template <typename T_<%struct:name%>_<%field:name%>_struct_setter>
   <% > Type%>& set_<%field:name%>(T_<%struct:name%>_<%field:name%>_struct_setter&& <%field:name%>_) {
@@ -48,12 +72,19 @@
 <%/field:required?%>
     return <%field:name%>;
   }
-    <%/type:string?%>
-  <%/type:resolves_to_base_or_enum?%>
-  <%#type:resolves_to_container_or_struct?%>
+<%/type:string?%>
+<%/type:resolves_to_base_or_enum?%>
+<%#type:resolves_to_container_or_struct?%>
+<%#field:optional?%>
+  const <% > Type%>* get_<%field:name%>() const&;
+  <% > Type%>* get_<%field:name%>() &;
+  <% > Type%>* get_<%field:name%>() && = delete;
+<%/field:optional?%>
+<%^field:optional?%>
   const <% > Type%>& get_<%field:name%>() const&;
   <% > Type%> get_<%field:name%>() &&;
+<%/field:optional?%>
   template <typename T_<%struct:name%>_<%field:name%>_struct_setter>
   <% > Type%>& set_<%field:name%>(T_<%struct:name%>_<%field:name%>_struct_setter&& <%field:name%>_);
-  <%/type:resolves_to_container_or_struct?%>
+<%/type:resolves_to_container_or_struct?%>
 <%/field:type%><%/struct:fields%>

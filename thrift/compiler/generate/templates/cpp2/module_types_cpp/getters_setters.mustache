@@ -15,6 +15,17 @@
   limitations under the License.
 
 %><%#struct:fields?%><%#struct:fields%><%#field:type%><%#type:resolves_to_container_or_struct?%>
+<%#field:optional?%>
+const <% > Type%>* <%struct:name%>::get_<%field:name%>() const& {
+  return __isset.<%field:name%> ? std::addressof(<%field:name%>) : nullptr;
+}
+
+<% > Type%>* <%struct:name%>::get_<%field:name%>() & {
+  return __isset.<%field:name%> ? std::addressof(<%field:name%>) : nullptr;
+}
+
+<%/field:optional?%>
+<%^field:optional?%>
 const <% > Type%>& <%struct:name%>::get_<%field:name%>() const& {
   return <%field:name%>;
 }
@@ -23,4 +34,5 @@ const <% > Type%>& <%struct:name%>::get_<%field:name%>() const& {
   return std::move(<%field:name%>);
 }
 
+<%/field:optional?%>
 <%/type:resolves_to_container_or_struct?%><%/field:type%><%/struct:fields%><%/struct:fields?%>

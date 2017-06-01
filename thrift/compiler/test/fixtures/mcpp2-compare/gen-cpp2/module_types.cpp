@@ -197,6 +197,11 @@ void ComplexUnion::__clear() {
       destruct(value_.req_intValue);
       break;
     }
+    case Type::opt_intValue:
+    {
+      destruct(value_.opt_intValue);
+      break;
+    }
     case Type::stringValue:
     {
       destruct(value_.stringValue);
@@ -205,6 +210,11 @@ void ComplexUnion::__clear() {
     case Type::req_stringValue:
     {
       destruct(value_.req_stringValue);
+      break;
+    }
+    case Type::opt_stringValue:
+    {
+      destruct(value_.opt_stringValue);
       break;
     }
     case Type::intValue2:
@@ -247,6 +257,11 @@ void ComplexUnion::__clear() {
       destruct(value_.req_union_map);
       break;
     }
+    case Type::opt_union_map:
+    {
+      destruct(value_.opt_union_map);
+      break;
+    }
     case Type::enum_field:
     {
       destruct(value_.enum_field);
@@ -275,6 +290,11 @@ void ComplexUnion::__clear() {
     case Type::req_a_union:
     {
       destruct(value_.req_a_union);
+      break;
+    }
+    case Type::opt_a_union:
+    {
+      destruct(value_.opt_a_union);
       break;
     }
     case Type::a_union_list:
@@ -312,6 +332,10 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
     {
       return value_.req_intValue == rhs.value_.req_intValue;
     }
+    case Type::opt_intValue:
+    {
+      return value_.opt_intValue == rhs.value_.opt_intValue;
+    }
     case Type::stringValue:
     {
       return value_.stringValue == rhs.value_.stringValue;
@@ -319,6 +343,10 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
     case Type::req_stringValue:
     {
       return value_.req_stringValue == rhs.value_.req_stringValue;
+    }
+    case Type::opt_stringValue:
+    {
+      return value_.opt_stringValue == rhs.value_.opt_stringValue;
     }
     case Type::intValue2:
     {
@@ -352,6 +380,10 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
     {
       return value_.req_union_map == rhs.value_.req_union_map;
     }
+    case Type::opt_union_map:
+    {
+      return value_.opt_union_map == rhs.value_.opt_union_map;
+    }
     case Type::enum_field:
     {
       return value_.enum_field == rhs.value_.enum_field;
@@ -375,6 +407,10 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
     case Type::req_a_union:
     {
       return value_.req_a_union == rhs.value_.req_a_union;
+    }
+    case Type::opt_a_union:
+    {
+      return value_.opt_a_union == rhs.value_.opt_a_union;
     }
     case Type::a_union_list:
     {
@@ -604,13 +640,17 @@ void containerStruct::__clear() {
   // clear all fields
   fieldA = 0;
   req_fieldA = 0;
+  opt_fieldA = 0;
   fieldB.clear();
   req_fieldB.clear();
+  opt_fieldB.clear();
   fieldC.clear();
   req_fieldC.clear();
+  opt_fieldC.clear();
   fieldD = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   fieldE = apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring");
   req_fieldE = apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring");
+  opt_fieldE = apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring");
   fieldF.clear();
   fieldG.clear();
   fieldH.clear();
@@ -625,14 +665,17 @@ void containerStruct::__clear() {
   fieldQ = static_cast< ::some::valid::ns::MyEnumA>(0);
   fieldR =  ::some::valid::ns::MyEnumA::fieldB;
   req_fieldR =  ::some::valid::ns::MyEnumA::fieldB;
+  opt_fieldR =  ::some::valid::ns::MyEnumA::fieldB;
   fieldS =  ::some::valid::ns::MyEnumA::fieldB;
   fieldT.clear();
   fieldU.clear();
   ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::clear(&fieldV);
   ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::clear(&req_fieldV);
+  ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::clear(&opt_fieldV);
   fieldW.clear();
   ::apache::thrift::Cpp2Ops<  ::some::valid::ns::ComplexUnion>::clear(&fieldX);
   ::apache::thrift::Cpp2Ops<  ::some::valid::ns::ComplexUnion>::clear(&req_fieldX);
+  ::apache::thrift::Cpp2Ops<  ::some::valid::ns::ComplexUnion>::clear(&opt_fieldX);
   fieldY.clear();
   fieldZ.clear();
   fieldAA.clear();
@@ -646,16 +689,34 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
   if (!((req_fieldA == rhs.req_fieldA))) {
     return false;
   }
+  if (__isset.opt_fieldA != rhs.__isset.opt_fieldA) {
+    return false;
+  }
+  else if (__isset.opt_fieldA && !((opt_fieldA == rhs.opt_fieldA))) {
+    return false;
+  }
   if (!((fieldB == rhs.fieldB))) {
     return false;
   }
   if (!((req_fieldB == rhs.req_fieldB))) {
     return false;
   }
+  if (__isset.opt_fieldB != rhs.__isset.opt_fieldB) {
+    return false;
+  }
+  else if (__isset.opt_fieldB && !((opt_fieldB == rhs.opt_fieldB))) {
+    return false;
+  }
   if (!((fieldC == rhs.fieldC))) {
     return false;
   }
   if (!((req_fieldC == rhs.req_fieldC))) {
+    return false;
+  }
+  if (__isset.opt_fieldC != rhs.__isset.opt_fieldC) {
+    return false;
+  }
+  else if (__isset.opt_fieldC && !((opt_fieldC == rhs.opt_fieldC))) {
     return false;
   }
   if (!((fieldD == rhs.fieldD))) {
@@ -665,6 +726,12 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
     return false;
   }
   if (!((req_fieldE == rhs.req_fieldE))) {
+    return false;
+  }
+  if (__isset.opt_fieldE != rhs.__isset.opt_fieldE) {
+    return false;
+  }
+  else if (__isset.opt_fieldE && !((opt_fieldE == rhs.opt_fieldE))) {
     return false;
   }
   if (!((fieldF == rhs.fieldF))) {
@@ -709,6 +776,12 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
   if (!((req_fieldR == rhs.req_fieldR))) {
     return false;
   }
+  if (__isset.opt_fieldR != rhs.__isset.opt_fieldR) {
+    return false;
+  }
+  else if (__isset.opt_fieldR && !((opt_fieldR == rhs.opt_fieldR))) {
+    return false;
+  }
   if (!((fieldS == rhs.fieldS))) {
     return false;
   }
@@ -724,6 +797,12 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
   if (!((req_fieldV == rhs.req_fieldV))) {
     return false;
   }
+  if (__isset.opt_fieldV != rhs.__isset.opt_fieldV) {
+    return false;
+  }
+  else if (__isset.opt_fieldV && !((opt_fieldV == rhs.opt_fieldV))) {
+    return false;
+  }
   if (!((fieldW == rhs.fieldW))) {
     return false;
   }
@@ -731,6 +810,12 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
     return false;
   }
   if (!((req_fieldX == rhs.req_fieldX))) {
+    return false;
+  }
+  if (__isset.opt_fieldX != rhs.__isset.opt_fieldX) {
+    return false;
+  }
+  else if (__isset.opt_fieldX && !((opt_fieldX == rhs.opt_fieldX))) {
     return false;
   }
   if (!((fieldY == rhs.fieldY))) {
@@ -761,6 +846,14 @@ std::map<std::string, bool> containerStruct::get_req_fieldB() && {
   return std::move(req_fieldB);
 }
 
+const std::map<std::string, bool>* containerStruct::get_opt_fieldB() const& {
+  return __isset.opt_fieldB ? std::addressof(opt_fieldB) : nullptr;
+}
+
+std::map<std::string, bool>* containerStruct::get_opt_fieldB() & {
+  return __isset.opt_fieldB ? std::addressof(opt_fieldB) : nullptr;
+}
+
 const std::set<int32_t>& containerStruct::get_fieldC() const& {
   return fieldC;
 }
@@ -775,6 +868,14 @@ const std::set<int32_t>& containerStruct::get_req_fieldC() const& {
 
 std::set<int32_t> containerStruct::get_req_fieldC() && {
   return std::move(req_fieldC);
+}
+
+const std::set<int32_t>* containerStruct::get_opt_fieldC() const& {
+  return __isset.opt_fieldC ? std::addressof(opt_fieldC) : nullptr;
+}
+
+std::set<int32_t>* containerStruct::get_opt_fieldC() & {
+  return __isset.opt_fieldC ? std::addressof(opt_fieldC) : nullptr;
 }
 
 const std::vector<std::vector<int32_t>>& containerStruct::get_fieldF() const& {
@@ -881,6 +982,14 @@ const  ::some::valid::ns::MyStruct& containerStruct::get_req_fieldV() const& {
   return std::move(req_fieldV);
 }
 
+const  ::some::valid::ns::MyStruct* containerStruct::get_opt_fieldV() const& {
+  return __isset.opt_fieldV ? std::addressof(opt_fieldV) : nullptr;
+}
+
+ ::some::valid::ns::MyStruct* containerStruct::get_opt_fieldV() & {
+  return __isset.opt_fieldV ? std::addressof(opt_fieldV) : nullptr;
+}
+
 const std::set< ::some::valid::ns::MyStruct>& containerStruct::get_fieldW() const& {
   return fieldW;
 }
@@ -903,6 +1012,14 @@ const  ::some::valid::ns::ComplexUnion& containerStruct::get_req_fieldX() const&
 
  ::some::valid::ns::ComplexUnion containerStruct::get_req_fieldX() && {
   return std::move(req_fieldX);
+}
+
+const  ::some::valid::ns::ComplexUnion* containerStruct::get_opt_fieldX() const& {
+  return __isset.opt_fieldX ? std::addressof(opt_fieldX) : nullptr;
+}
+
+ ::some::valid::ns::ComplexUnion* containerStruct::get_opt_fieldX() & {
+  return __isset.opt_fieldX ? std::addressof(opt_fieldX) : nullptr;
 }
 
 const std::vector< ::some::valid::ns::ComplexUnion>& containerStruct::get_fieldY() const& {
@@ -933,13 +1050,17 @@ void swap(containerStruct& a, containerStruct& b) {
   using ::std::swap;
   swap(a.fieldA, b.fieldA);
   swap(a.req_fieldA, b.req_fieldA);
+  swap(a.opt_fieldA, b.opt_fieldA);
   swap(a.fieldB, b.fieldB);
   swap(a.req_fieldB, b.req_fieldB);
+  swap(a.opt_fieldB, b.opt_fieldB);
   swap(a.fieldC, b.fieldC);
   swap(a.req_fieldC, b.req_fieldC);
+  swap(a.opt_fieldC, b.opt_fieldC);
   swap(a.fieldD, b.fieldD);
   swap(a.fieldE, b.fieldE);
   swap(a.req_fieldE, b.req_fieldE);
+  swap(a.opt_fieldE, b.opt_fieldE);
   swap(a.fieldF, b.fieldF);
   swap(a.fieldG, b.fieldG);
   swap(a.fieldH, b.fieldH);
@@ -954,14 +1075,17 @@ void swap(containerStruct& a, containerStruct& b) {
   swap(a.fieldQ, b.fieldQ);
   swap(a.fieldR, b.fieldR);
   swap(a.req_fieldR, b.req_fieldR);
+  swap(a.opt_fieldR, b.opt_fieldR);
   swap(a.fieldS, b.fieldS);
   swap(a.fieldT, b.fieldT);
   swap(a.fieldU, b.fieldU);
   swap(a.fieldV, b.fieldV);
   swap(a.req_fieldV, b.req_fieldV);
+  swap(a.opt_fieldV, b.opt_fieldV);
   swap(a.fieldW, b.fieldW);
   swap(a.fieldX, b.fieldX);
   swap(a.req_fieldX, b.req_fieldX);
+  swap(a.opt_fieldX, b.opt_fieldX);
   swap(a.fieldY, b.fieldY);
   swap(a.fieldZ, b.fieldZ);
   swap(a.fieldAA, b.fieldAA);
