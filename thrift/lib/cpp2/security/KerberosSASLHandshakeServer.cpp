@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -293,6 +293,10 @@ const string& KerberosSASLHandshakeServer::getEstablishedClientPrincipal()
   const {
 
   assert(phase_ == COMPLETE);
+  return establishedClientPrincipal_;
+}
+
+const string& KerberosSASLHandshakeServer::getClientPrincipal() const {
   return establishedClientPrincipal_;
 }
 

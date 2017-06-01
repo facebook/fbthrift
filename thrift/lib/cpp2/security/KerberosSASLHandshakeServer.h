@@ -1,4 +1,6 @@
 /*
+ * Copyright 2014-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -79,6 +81,11 @@ class KerberosSASLHandshakeServer {
      */
     const std::string& getEstablishedServicePrincipal() const;
     const std::string& getEstablishedClientPrincipal() const;
+
+    /**
+     * Get client principal. It can be called at anytime
+     */
+    const std::string& getClientPrincipal() const;
 
     /**
      * Set/get the security mechanism
