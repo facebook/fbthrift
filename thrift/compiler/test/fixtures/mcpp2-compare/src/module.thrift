@@ -160,8 +160,23 @@ struct MyIncludedStruct {
 service EmptyService {
 }
 
-service MyService {
-  void ping()
+service ReturnService {
+  void noReturn()
   bool boolReturn()
+  i16 i16Return()
+  i32 i32Return()
+  i64 i64Return()
+  float floatReturn()
+  double doubleReturn()
   string stringReturn()
+  map<string, i64> mapReturn()
+  simpleTypeDef simpleTypedefReturn()
+  complexStructTypeDef complexTypedefReturn()
+  list<mostComplexTypeDef> list_mostComplexTypedefReturn()
+  MyEnumA enumReturn()
+  list<MyEnumA> list_EnumReturn()
+  MyStruct structReturn()
+  set<MyStruct> set_StructReturn()
+  ComplexUnion unionReturn()
+  list<ComplexUnion> list_UnionReturn()
 }

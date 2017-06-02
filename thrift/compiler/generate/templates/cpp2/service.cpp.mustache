@@ -32,33 +32,33 @@ std::unique_ptr<apache::thrift::AsyncProcessor> <%service:name%>SvIf::getProcess
 <%#service:functions%><%#function:returnType%>
 
 <%^type:resolves_to_complex_return?%>
-<% > Type%> MyServiceSvIf::<%function:name%>() {
+<% > Type%> <%service:name%>SvIf::<%function:name%>() {
   throw apache::thrift::TApplicationException("Function <%function:name%> is unimplemented");
 }
 
 <%#type:void?%>
-folly::Future<folly::Unit> MyServiceSvIf::future_<%function:name%>() {
+folly::Future<folly::Unit> <%service:name%>SvIf::future_<%function:name%>() {
 <%/type:void?%>
 <%^type:void?%>
-folly::Future<<% > Type%>> MyServiceSvIf::future_<%function:name%>() {
+folly::Future<<% > Type%>> <%service:name%>SvIf::future_<%function:name%>() {
 <%/type:void?%>
   return apache::thrift::detail::si::future([&] { return <%function:name%>(); });
 }
 
-void MyServiceSvIf::async_tm_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback) {
+void <%service:name%>SvIf::async_tm_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_<%function:name%>(); });
 }
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-void MyServiceSvIf::<%function:name%>(<% > Type%>& /*_return*/) {
+void <%service:name%>SvIf::<%function:name%>(<% > Type%>& /*_return*/) {
   throw apache::thrift::TApplicationException("Function <%function:name%> is unimplemented");
 }
 
-folly::Future<std::unique_ptr<<% > Type%>>> MyServiceSvIf::future_<%function:name%>() {
+folly::Future<std::unique_ptr<<% > Type%>>> <%service:name%>SvIf::future_<%function:name%>() {
   return apache::thrift::detail::si::future_returning_uptr([&](<% > Type%>& _return) { <%function:name%>(_return); });
 }
 
-void MyServiceSvIf::async_tm_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>> callback) {
+void <%service:name%>SvIf::async_tm_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_<%function:name%>(); });
 }
 <%/type:resolves_to_complex_return?%>
@@ -71,7 +71,12 @@ void <%service:name%>SvNull::<%function:name%>() {}
 <%/type:void?%>
 <%^type:void?%>
 <% > Type%> <%service:name%>SvNull::<%function:name%>() {
+<%#type:enum?%>
+  return (<% > Type%>)0;
+<%/type:enum?%>
+<%^type:enum?%>
   return 0;
+<%/type:enum?%>
 }
 <%/type:void?%>
 <%/type:resolves_to_complex_return?%>
@@ -108,7 +113,7 @@ const <%service:name%>AsyncProcessor::BinaryProtocolProcessMap <%service:name%>A
 <%#service:functions?%>
 const <%service:name%>AsyncProcessor::BinaryProtocolProcessMap <%service:name%>AsyncProcessor::binaryProcessMap_ {
 <%#service:functions%><%#function:returnType%>
-  {"<%function:name%>", &MyServiceAsyncProcessor::_processInThread_<%function:name%><apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"<%function:name%>", &<%service:name%>AsyncProcessor::_processInThread_<%function:name%><apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 <%/function:returnType%><%/service:functions%>
 };
 <%/service:functions?%>
@@ -123,7 +128,7 @@ const <%service:name%>AsyncProcessor::CompactProtocolProcessMap <%service:name%>
 <%#service:functions?%>
 const <%service:name%>AsyncProcessor::CompactProtocolProcessMap <%service:name%>AsyncProcessor::compactProcessMap_ {
 <%#service:functions%><%#function:returnType%>
-  {"<%function:name%>", &MyServiceAsyncProcessor::_processInThread_<%function:name%><apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"<%function:name%>", &<%service:name%>AsyncProcessor::_processInThread_<%function:name%><apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 <%/function:returnType%><%/service:functions%>
 };
 <%/service:functions?%>
