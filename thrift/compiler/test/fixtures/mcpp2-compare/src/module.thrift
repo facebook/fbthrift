@@ -159,3 +159,9 @@ struct MyIncludedStruct {
 
 service EmptyService {
 }
+
+service MyService {
+  void ping()
+  bool boolReturn()
+  string stringReturn()
+}

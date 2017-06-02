@@ -207,6 +207,7 @@ mstch::map t_mstch_generator::dump(const t_service& service) const {
       {"name", service.get_name()},
       {"annotations", this->dump_elems(service.annotations_)},
       {"functions", this->dump_elems(service.get_functions())},
+      {"functions?", !service.get_functions().empty()},
       {"extends?", extends != nullptr},
       {"extends",
        extends ? static_cast<mstch::node>(this->dump(*extends)) : false},

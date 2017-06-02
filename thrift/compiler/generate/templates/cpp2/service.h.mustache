@@ -52,6 +52,23 @@ namespace apache { namespace thrift {
 class <%service:name%>SvAsyncIf {
  public:
   virtual ~<%service:name%>SvAsyncIf() {}
+<%#service:functions%><%#function:returnType%>
+<%^type:resolves_to_complex_return?%>
+  virtual void async_tm_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback) = 0;
+  virtual void async_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback) = delete;
+<%#type:void?%>
+  virtual folly::Future<folly::Unit> future_<%function:name%>() = 0;
+<%/type:void?%>
+<%^type:void?%>
+  virtual folly::Future<<% > Type%>> future_<%function:name%>() = 0;
+<%/type:void?%>
+<%/type:resolves_to_complex_return?%>
+<%#type:resolves_to_complex_return?%>
+  virtual void async_tm_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>> callback) = 0;
+  virtual void async_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>> callback) = delete;
+  virtual folly::Future<std::unique_ptr<<% > Type%>>> future_<%function:name%>() = 0;
+<%/type:resolves_to_complex_return?%>
+<%/function:returnType%><%/service:functions%>
 };
 
 class <%service:name%>AsyncProcessor;
@@ -60,10 +77,36 @@ class <%service:name%>SvIf : public <%service:name%>SvAsyncIf, public apache::th
  public:
   typedef <%service:name%>AsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+<%#service:functions%><%#function:returnType%>
+<%^type:resolves_to_complex_return?%>
+  virtual <% > Type%> <%function:name%>();
+<%#type:void?%>
+  folly::Future<folly::Unit> future_<%function:name%>() override;
+<%/type:void?%>
+<%^type:void?%>
+  folly::Future<<% > Type%>> future_<%function:name%>() override;
+<%/type:void?%>
+  void async_tm_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback) override;
+<%/type:resolves_to_complex_return?%>
+<%#type:resolves_to_complex_return?%>
+  virtual void <%function:name%>(<% > Type%>& /*_return*/);
+  folly::Future<std::unique_ptr<<% > Type%>>> future_<%function:name%>() override;
+  void async_tm_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>> callback) override;
+<%/type:resolves_to_complex_return?%>
+<%/function:returnType%><%/service:functions%>
 };
 
 class <%service:name%>SvNull : public <%service:name%>SvIf {
  public:
+<%#service:functions%><%#function:returnType%>
+<%^type:resolves_to_complex_return?%>
+  <% > Type%> <%function:name%>() override;
+<%/type:resolves_to_complex_return?%>
+<%#type:resolves_to_complex_return?%>
+  void <%function:name%>(<% > Type%>& /*_return*/) override;
+<%/type:resolves_to_complex_return?%>
+<%/function:returnType%><%/service:functions%>
+<%/service:functions%>
 };
 
 class <%service:name%>AsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
@@ -93,6 +136,23 @@ class <%service:name%>AsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
  private:
   static const <%service:name%>AsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
  private:
+<%#service:functions%><%#function:returnType%>
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void _processInThread_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <class ProtocolIn_, class ProtocolOut_>
+<%#type:void?%>
+  static folly::IOBufQueue return_<%function:name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
+<%/type:void?%>
+<%^type:void?%>
+  static folly::IOBufQueue return_<%function:name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > Type%> const& _return);
+<%/type:void?%>
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+<%/function:returnType%><%/service:functions%>
  public:
   <%service:name%>AsyncProcessor(<%service:name%>SvIf* iface) :
       iface_(iface) {}
@@ -119,6 +179,73 @@ class <%service:name%>AsyncClient : public apache::thrift::TClientBase {
   apache::thrift::HeaderChannel*  getHeaderChannel() {
     return dynamic_cast<apache::thrift::HeaderChannel*>(this->channel_.get());
   }
+<%#service:functions%><%#function:returnType%>
+  virtual void <%function:name%>(std::unique_ptr<apache::thrift::RequestCallback> callback);
+  virtual void <%function:name%>(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ private:
+  virtual void <%function:name%>Impl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ public:
+<%^type:resolves_to_complex_return?%>
+  virtual <% > Type%> sync_<%function:name%>();
+  virtual <% > Type%> sync_<%function:name%>(apache::thrift::RpcOptions& rpcOptions);
+<%#type:void?%>
+  virtual folly::Future<folly::Unit> future_<%function:name%>();
+  virtual folly::Future<folly::Unit> future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions);
+<%/type:void?%>
+<%^type:void?%>
+  virtual folly::Future<<% > Type%>> future_<%function:name%>();
+  virtual folly::Future<<% > Type%>> future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<std::pair<<% > Type%>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions);
+<%/type:void?%>
+<%/type:resolves_to_complex_return?%>
+<%#type:resolves_to_complex_return?%>
+  virtual void sync_<%function:name%>(<% > Type%>& _return);
+  virtual void sync_<%function:name%>(apache::thrift::RpcOptions& rpcOptions, <% > Type%>& _return);
+  virtual folly::Future<<% > Type%>> future_<%function:name%>();
+  virtual folly::Future<<% > Type%>> future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<std::pair<<% > Type%>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions);
+<%/type:resolves_to_complex_return?%>
+  virtual void <%function:name%>(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
+<%#type:void?%>
+  static folly::exception_wrapper recv_wrapped_<%function:name%>(::apache::thrift::ClientReceiveState& state);
+  static void recv_<%function:name%>(::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual void recv_instance_<%function:name%>(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_<%function:name%>(::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  void <%function:name%>T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  template <typename Protocol_>
+  static folly::exception_wrapper recv_wrapped_<%function:name%>T(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  static void recv_<%function:name%>T(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+<%/type:void?%>
+<%^type:void?%>
+  static folly::exception_wrapper recv_wrapped_<%function:name%>(<% > Type%>& _return, ::apache::thrift::ClientReceiveState& state);
+<%^type:resolves_to_complex_return?%>
+  static <% > Type%> recv_<%function:name%>(::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual <% > Type%> recv_instance_<%function:name%>(::apache::thrift::ClientReceiveState& state);
+<%/type:resolves_to_complex_return?%>
+<%#type:resolves_to_complex_return?%>
+  static void recv_<%function:name%>(<% > Type%>& _return, ::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual void recv_instance_<%function:name%>(<% > Type%>& _return, ::apache::thrift::ClientReceiveState& state);
+<%/type:resolves_to_complex_return?%>
+  virtual folly::exception_wrapper recv_instance_wrapped_<%function:name%>(<% > Type%>& _return, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  void <%function:name%>T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  template <typename Protocol_>
+  static folly::exception_wrapper recv_wrapped_<%function:name%>T(Protocol_* prot, <% > Type%>& _return, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+<%^type:resolves_to_complex_return?%>
+  static <% > Type%> recv_<%function:name%>T(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+<%/type:resolves_to_complex_return?%>
+<%#type:resolves_to_complex_return?%>
+  static void recv_<%function:name%>T(Protocol_* prot, <% > Type%>& _return, ::apache::thrift::ClientReceiveState& state);
+<%/type:resolves_to_complex_return?%>
+<%/type:void?%>
+<%/function:returnType%><%/service:functions%>
  protected:
   std::unique_ptr<apache::thrift::Cpp2ConnContext> connectionContext_;
   std::shared_ptr<apache::thrift::RequestChannel> channel_;

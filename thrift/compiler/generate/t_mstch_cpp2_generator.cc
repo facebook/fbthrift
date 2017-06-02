@@ -42,7 +42,6 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
 
  private:
   bool get_is_eb(const t_function& fn) const;
-  bool get_is_complex_return_type(const t_function& fn) const;
   bool get_is_stack_args() const;
   void generate_constants(const t_program& program);
   void generate_structs(const t_program& program);
@@ -152,11 +151,11 @@ mstch::map t_mstch_cpp2_generator::extend_service(const t_service& svc) const {
 }
 
 mstch::map t_mstch_cpp2_generator::extend_function(const t_function& fn) const {
-  return mstch::map {
-    {"eb?", this->get_is_eb(fn)},
-    {"complexReturnType?", this->get_is_complex_return_type(fn)},
-    {"stackArgs?", this->get_is_stack_args()},
-  };
+  mstch::map m;
+
+  m.emplace("eb?", this->get_is_eb(fn));
+  m.emplace("stackArgs?", this->get_is_stack_args());
+  return m;
 }
 
 mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) const {
@@ -244,6 +243,10 @@ mstch::map t_mstch_cpp2_generator::extend_type(const t_type& t) const {
   m.emplace(
       "resolves_to_container_or_enum?",
       resolve_typedef(&t)->is_container() || resolve_typedef(&t)->is_enum());
+  m.emplace(
+      "resolves_to_complex_return?",
+      resolve_typedef(&t)->is_container() || resolve_typedef(&t)->is_string() ||
+          resolve_typedef(&t)->is_struct() || resolve_typedef(&t)->is_stream());
 
   return m;
 }
@@ -292,15 +295,6 @@ bool t_mstch_cpp2_generator::get_is_eb(const t_function& fn) const {
     return it != annotations->annotations_.end() && it->second == "eb";
   }
   return false;
-}
-
-bool t_mstch_cpp2_generator::get_is_complex_return_type(
-    const t_function& fn) const {
-  auto rt = fn.get_returntype();
-  return rt->is_string() ||
-      rt->is_struct() ||
-      rt->is_container() ||
-      rt->is_stream();
 }
 
 bool t_mstch_cpp2_generator::get_is_stack_args() const {
