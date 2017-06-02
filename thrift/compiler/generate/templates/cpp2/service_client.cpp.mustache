@@ -20,20 +20,17 @@
 
 #include "<%service:programIncludePrefix%><%service:name%>.tcc"
 
-<%#program:namespace_cpp2%>
-namespace <%namespace:name%> {<%^last?%> <%/last?%><%!
-%><%/program:namespace_cpp2%>
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+<% > common/namespace_cpp2_begin%>
 
-<%#service:separate_processmap%>
-<% > ProcessMap%>
 
-<%/service:separate_processmap%>
-<%#program:namespace_cpp2%>
-}<%/program:namespace_cpp2%><%!
-%> // <%!
-%><%#program:namespace_cpp2%><%!
-    %><%namespace:name%><%^last?%>::<%/last?%><%!
-%><%/program:namespace_cpp2%>
+const char* <%service:name%>AsyncClient::getServiceName() {
+  return "<%service:name%>";
+}
+
+<% > common/namespace_cpp2_end%>
+
 namespace apache { namespace thrift {
 
 }} // apache::thrift

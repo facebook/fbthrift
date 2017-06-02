@@ -1,0 +1,131 @@
+<%!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+%>
+<% > Autogen%>
+#pragma once
+
+#include <thrift/lib/cpp2/ServiceIncludes.h>
+#include <thrift/lib/cpp2/async/HeaderChannel.h>
+#include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp2/async/FutureRequest.h>
+#include <folly/futures/Future.h>
+
+<%#service:thrift_includes%>
+#include "<%program:normalizedIncludePrefix%><%program:name%>_types.h"
+<%/service:thrift_includes%>
+
+<%#service:cpp_includes%>
+<%#system?%>#include <%path%><%/system?%><%!
+%><%^system?%>#include "<%path%>"<%/system?%>
+<%/service:cpp_includes%>
+
+#include "<%service:programIncludePrefix%><%service:programName%>_types.h"
+
+namespace folly {
+  class IOBuf;
+  class IOBufQueue;
+}
+namespace apache { namespace thrift {
+  class Cpp2RequestContext;
+  class BinaryProtocolReader;
+  class CompactProtocolReader;
+  namespace transport { class THeader; }
+}}
+
+<% > common/namespace_cpp2_begin%>
+
+
+class <%service:name%>SvAsyncIf {
+ public:
+  virtual ~<%service:name%>SvAsyncIf() {}
+};
+
+class <%service:name%>AsyncProcessor;
+
+class <%service:name%>SvIf : public <%service:name%>SvAsyncIf, public apache::thrift::ServerInterface {
+ public:
+  typedef <%service:name%>AsyncProcessor ProcessorType;
+  std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+};
+
+class <%service:name%>SvNull : public <%service:name%>SvIf {
+ public:
+};
+
+class <%service:name%>AsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
+ public:
+  const char* getServiceName() override;
+  using BaseAsyncProcessor = void;
+ protected:
+  <%service:name%>SvIf* iface_;
+  folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) override;
+ public:
+  void process(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
+ protected:
+  bool isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header) override;
+ private:
+  static std::unordered_set<std::string> onewayMethods_;
+  static std::unordered_map<std::string, int16_t> cacheKeyMap_;
+ public:
+  using BinaryProtocolProcessFunc = ProcessFunc<<%service:name%>AsyncProcessor, apache::thrift::BinaryProtocolReader>;
+  using BinaryProtocolProcessMap = ProcessMap<BinaryProtocolProcessFunc>;
+  static const <%service:name%>AsyncProcessor::BinaryProtocolProcessMap& getBinaryProtocolProcessMap();
+ private:
+  static const <%service:name%>AsyncProcessor::BinaryProtocolProcessMap binaryProcessMap_;
+ public:
+  using CompactProtocolProcessFunc = ProcessFunc<<%service:name%>AsyncProcessor, apache::thrift::CompactProtocolReader>;
+  using CompactProtocolProcessMap = ProcessMap<CompactProtocolProcessFunc>;
+  static const <%service:name%>AsyncProcessor::CompactProtocolProcessMap& getCompactProtocolProcessMap();
+ private:
+  static const <%service:name%>AsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
+ private:
+ public:
+  <%service:name%>AsyncProcessor(<%service:name%>SvIf* iface) :
+      iface_(iface) {}
+
+  virtual ~<%service:name%>AsyncProcessor() {}
+};
+
+class <%service:name%>AsyncClient : public apache::thrift::TClientBase {
+ public:
+  virtual const char* getServiceName();
+  typedef std::unique_ptr<apache::thrift::RequestChannel, folly::DelayedDestruction::Destructor> channel_ptr;
+
+  virtual ~<%service:name%>AsyncClient() {}
+
+  <%service:name%>AsyncClient(std::shared_ptr<apache::thrift::RequestChannel> channel) :
+      channel_(channel) {
+    connectionContext_.reset(new apache::thrift::Cpp2ConnContext);
+  }
+
+  apache::thrift::RequestChannel*  getChannel() {
+    return this->channel_.get();
+  }
+
+  apache::thrift::HeaderChannel*  getHeaderChannel() {
+    return dynamic_cast<apache::thrift::HeaderChannel*>(this->channel_.get());
+  }
+ protected:
+  std::unique_ptr<apache::thrift::Cpp2ConnContext> connectionContext_;
+  std::shared_ptr<apache::thrift::RequestChannel> channel_;
+};
+
+<% > common/namespace_cpp2_end%>
+
+namespace apache { namespace thrift {
+
+}} // apache::thrift

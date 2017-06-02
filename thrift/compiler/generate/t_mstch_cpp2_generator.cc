@@ -109,15 +109,26 @@ mstch::map t_mstch_cpp2_generator::extend_program(
 }
 
 mstch::map t_mstch_cpp2_generator::extend_service(const t_service& svc) const {
+  mstch::map m;
+  m.emplace("programName", svc.get_program()->get_name());
+  m.emplace(
+      "programIncludePrefix", this->get_include_prefix(*svc.get_program()));
+  m.emplace(
+      "separate_processmap", (bool)this->get_option("separate_processmap"));
+  m.emplace(
+      "thrift_includes", this->dump_elems(svc.get_program()->get_includes()));
+  m.emplace("namespace_cpp2", this->get_namespace(*svc.get_program()));
+
   mstch::array protocol_array{};
   for (auto it = protocols_.begin(); it != protocols_.end(); ++it) {
-    mstch::map m;
-    m.emplace("protocol:name", it->at(0));
-    m.emplace("protocol:longName", it->at(1));
-    m.emplace("protocol:enum", it->at(2));
-    protocol_array.push_back(m);
+    mstch::map protocol;
+    protocol.emplace("protocol:name", it->at(0));
+    protocol.emplace("protocol:longName", it->at(1));
+    protocol.emplace("protocol:enum", it->at(2));
+    protocol_array.push_back(protocol);
   }
   add_first_last(protocol_array);
+  m.emplace("protocols", protocol_array);
 
   mstch::array oneway_functions_array{};
   for (auto fn : svc.get_functions()) {
@@ -126,15 +137,18 @@ mstch::map t_mstch_cpp2_generator::extend_service(const t_service& svc) const {
     }
   }
   add_first_last(oneway_functions_array);
+  m.emplace("onewayfunctions", oneway_functions_array);
 
-  return mstch::map {
-    {"onewayfunctions", oneway_functions_array},
-    {"protocols", protocol_array},
-    {"programName", svc.get_program()->get_name()},
-    {"programIncludePrefix", this->get_include_prefix(*svc.get_program())},
-    {"separate_processmap", (bool)this->get_option("separate_processmap")},
-    {"thriftIncludes", this->dump_elems(svc.get_program()->get_includes())},
-  };
+  mstch::array cpp_includes{};
+  for (auto const& s : svc.get_program()->get_cpp_includes()) {
+    mstch::map cpp_include;
+    cpp_include.emplace("system?", s.at(0) == '<' ? std::to_string(0) : "");
+    cpp_include.emplace("path", std::string(s));
+    cpp_includes.push_back(cpp_include);
+  }
+  m.emplace("cpp_includes", cpp_includes);
+
+  return m;
 }
 
 mstch::map t_mstch_cpp2_generator::extend_function(const t_function& fn) const {
@@ -319,12 +333,12 @@ void t_mstch_cpp2_generator::generate_structs(const t_program& program) {
 
 void t_mstch_cpp2_generator::generate_service(t_service* service) {
   auto name = service->get_name();
-  render_to_file(*service, "Service.cpp", name + ".cpp");
-  render_to_file(*service, "Service.h", name + ".h");
-  render_to_file(*service, "Service_client.cpp", name + "_client.cpp");
-  render_to_file(*service,
-                 "Service_custom_protocol.h",
-                 name + "_custom_protocol.h");
+  render_to_file(*service, "service.cpp", name + ".cpp");
+  render_to_file(*service, "service.h", name + ".h");
+  render_to_file(*service, "service.tcc", name + ".tcc");
+  render_to_file(*service, "service_client.cpp", name + "_client.cpp");
+  render_to_file(
+      *service, "types_custom_protocol.h", name + "_custom_protocol.h");
 
   for (const auto& protocol : protocols_) {
     auto m = dump(*service);
@@ -333,7 +347,7 @@ void t_mstch_cpp2_generator::generate_service(t_service* service) {
     m.emplace("protocol:enum", protocol.at(2));
     render_to_file(
         m,
-        "Service_processmap_protocol.cpp",
+        "service_processmap_protocol.cpp",
         name + "_processmap_" + protocol.at(0) + ".cpp");
   }
 }

@@ -28,12 +28,7 @@
 
 #include "<%service:programIncludePrefix%><%service:name%>.tcc"
 
-#include "<%service:programIncludePrefix%><%service:programName%>_types_<%!
-    %>custom_protocol.h"
-<%#service:thriftIncludes%>
-#include "<%program:normalizedIncludePrefix%><%program:name%>_types_<%!
-    %>custom_protocol.h"
-<%/service:thriftIncludes%>
-<%#service:extends%>
-#include "<%service:programIncludePrefix%><%service:name%>_custom_protocol.h"
-<%/service:extends%>
+#include "<%service:programIncludePrefix%><%service:programName%>_types_custom_protocol.h"
+<%#service:thrift_includes%>
+#include "<%program:normalizedIncludePrefix%><%program:name%>_types_custom_protocol.h"
+<%/service:thrift_includes%>

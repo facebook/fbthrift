@@ -156,3 +156,6 @@ struct containerStruct {
 struct MyIncludedStruct {
   1: includes.IncludedInt64 MyIncludedInt = includes.IncludedConstant
 }
+
+service EmptyService {
+}

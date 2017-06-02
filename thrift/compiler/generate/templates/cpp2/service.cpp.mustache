@@ -1,0 +1,67 @@
+<%!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+%>
+<% > Autogen%>
+#include "<%service:programIncludePrefix%><%service:name%>.h"
+
+#include "<%service:programIncludePrefix%><%service:name%>.tcc"
+
+#include <thrift/lib/cpp2/protocol/Protocol.h>
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+<% > common/namespace_cpp2_begin%>
+
+
+std::unique_ptr<apache::thrift::AsyncProcessor> <%service:name%>SvIf::getProcessor() {
+  return std::make_unique<<%service:name%>AsyncProcessor>(this);
+}
+
+const char* <%service:name%>AsyncProcessor::getServiceName() {
+  return "<%service:name%>";
+}
+
+folly::Optional<std::string> <%service:name%>AsyncProcessor::getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) {
+  return apache::thrift::detail::ap::get_cache_key(buf, protType, cacheKeyMap_);
+}
+
+void <%service:name%>AsyncProcessor::process(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  apache::thrift::detail::ap::process(this, std::move(req), std::move(buf), protType, context, eb, tm);
+}
+
+bool <%service:name%>AsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header) {
+  return apache::thrift::detail::ap::is_oneway_method(buf, header, onewayMethods_);
+}
+
+std::unordered_set<std::string> <%service:name%>AsyncProcessor::onewayMethods_ {};
+std::unordered_map<std::string, int16_t> <%service:name%>AsyncProcessor::cacheKeyMap_ {};
+const <%service:name%>AsyncProcessor::BinaryProtocolProcessMap& <%service:name%>AsyncProcessor::getBinaryProtocolProcessMap() {
+  return binaryProcessMap_;
+}
+
+const <%service:name%>AsyncProcessor::BinaryProtocolProcessMap <%service:name%>AsyncProcessor::binaryProcessMap_ {};
+
+const <%service:name%>AsyncProcessor::CompactProtocolProcessMap& <%service:name%>AsyncProcessor::getCompactProtocolProcessMap() {
+  return compactProcessMap_;
+}
+
+const <%service:name%>AsyncProcessor::CompactProtocolProcessMap <%service:name%>AsyncProcessor::compactProcessMap_ {};
+
+<% > common/namespace_cpp2_end%>
+
+namespace apache { namespace thrift {
+
+}} // apache::thrift
