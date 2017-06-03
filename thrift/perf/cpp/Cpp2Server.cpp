@@ -70,7 +70,7 @@ void setTunables(ThriftServer* server) {
 
 ThriftServer *g_server = nullptr;
 
-void sigHandler(int /* signo */) {
+[[noreturn]] void sigHandler(int /* signo */) {
   g_server->stop();
   exit(0);
 }

@@ -35,7 +35,7 @@ using std::endl;
 using namespace apache::thrift::transport;
 using namespace apache::thrift::protocol;
 
-void usage() {
+[[noreturn]] void usage() {
   fprintf(stderr,
       "usage: thrift_dump [-c] {-b|-f|-s} < input > output\n"
       "  -c use TCompactProtocol instead of TBinaryProtocol\n"

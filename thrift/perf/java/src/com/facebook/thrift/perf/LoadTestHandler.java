@@ -6,6 +6,7 @@ import java.lang.System;
 import com.facebook.thrift.TException;
 import com.facebook.fbcode.fb303.fb_status;
 import com.facebook.fbcode.fb303.FacebookBase;
+import java.util.List;
 
 public class LoadTestHandler extends FacebookBase implements LoadTest.Iface  {
   public LoadTestHandler() {
@@ -99,5 +100,12 @@ public class LoadTestHandler extends FacebookBase implements LoadTest.Iface  {
   private void burnImpl(long microseconds) {
     long end = System.nanoTime() + microseconds;
     while (System.nanoTime() < end) {}
+  }
+
+  public void largeContainer(List<BigStruct> items) throws TException {
+  }
+
+  public List<BigStruct> iterAllFields(List<BigStruct> items) throws TException {
+    return items;
   }
 }

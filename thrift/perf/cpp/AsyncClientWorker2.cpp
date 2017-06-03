@@ -47,7 +47,6 @@ typedef std::shared_ptr<AsyncClientWorker2::Client> LoadTestClientPtr;
 
 const int kTimeout = 60000;
 const int MAX_LOOPS = 0;
-const int MAX_MESSAGE_SIZE = 64;
 
 class OpData {
  public:
@@ -287,6 +286,7 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
 
 void AsyncClientWorker2::run() {
   int loopCount = 0;
+  int maxLoops = MAX_LOOPS;
   std::list<AsyncRunner2*> clients;
   std::list<AsyncRunner2*>::iterator it;
   LoopTerminator loopTerminator(&eb_);
@@ -340,7 +340,7 @@ void AsyncClientWorker2::run() {
     }
     clients.clear();
 
-  } while (MAX_LOOPS == 0 || ++loopCount < MAX_LOOPS);
+  } while (maxLoops == 0 || ++loopCount < MAX_LOOPS);
 
   stopWorker();
 }
