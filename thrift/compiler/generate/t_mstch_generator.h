@@ -108,7 +108,7 @@ class t_mstch_generator : public t_generator {
    */
   mstch::map dump(const t_program&) const;
   mstch::map dump(const t_struct&, bool shallow = false) const;
-  mstch::map dump(const t_field&) const;
+  mstch::map dump(const t_field&, int32_t index = 0) const;
   mstch::map dump(const t_type&) const;
   mstch::map dump(const t_enum&) const;
   mstch::map dump(const t_enum_value&) const;
@@ -144,14 +144,25 @@ class t_mstch_generator : public t_generator {
       const std::map<t_const_value*, t_const_value*>::value_type&) const;
   virtual mstch::map extend_annotation(const annotation&) const;
 
+  template <typename element>
+  mstch::map dump_elem(const element& elem, int32_t /*index*/) const {
+    return this->dump(elem);
+  }
+
+  mstch::map dump_elem(const t_field& elem, int32_t index) const {
+    return this->dump(elem, index);
+  }
+
   template <typename container>
   mstch::array dump_elems(const container& elems) const {
     using T = typename container::value_type;
     mstch::array result{};
+    int32_t index = 0;
     for (auto itr = elems.begin(); itr != elems.end(); ++itr) {
-      auto map = this->dump(
-          *as_const_pointer<typename std::remove_pointer<T>::type>(*itr));
+      auto map = this->dump_elem(
+          *as_const_pointer<std::remove_pointer_t<T>>(*itr), index);
       result.push_back(map);
+      ++index;
     }
     add_first_last(result);
     return result;

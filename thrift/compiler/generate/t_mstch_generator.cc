@@ -93,12 +93,13 @@ mstch::map t_mstch_generator::dump(const t_struct& strct, bool shallow) const {
   return this->prepend_prefix("struct", std::move(result));
 }
 
-mstch::map t_mstch_generator::dump(const t_field& field) const {
+mstch::map t_mstch_generator::dump(const t_field& field, int32_t index) const {
   auto req = field.get_req();
   mstch::map result{
       {"name", field.get_name()},
       {"key", std::to_string(field.get_key())},
       {"type", this->dump(*field.get_type())},
+      {"index", std::to_string(index)},
       {"required?", req == t_field::e_req::T_REQUIRED},
       {"optional?", req == t_field::e_req::T_OPTIONAL},
       {"optInReqOut?", req == t_field::e_req::T_OPT_IN_REQ_OUT},
