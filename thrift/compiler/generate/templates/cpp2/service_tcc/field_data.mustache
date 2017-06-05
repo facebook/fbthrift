@@ -14,15 +14,4 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>class <%service:name%>SvNull : public <%service:name%>SvIf {
- public:
-<%#service:functions%><%#function:returnType%>
-<%^type:resolves_to_complex_return?%>
-  <% > Type%> <%function:name%>(<% > service_common/commented_out_function_param_list_no_start_comma%>) override;
-<%/type:resolves_to_complex_return?%>
-<%#type:resolves_to_complex_return?%>
-  void <%function:name%>(<% > Type%>& /*_return*/) override;
-<%/type:resolves_to_complex_return?%>
-<%/function:returnType%><%/service:functions%>
-<%/service:functions%>
-};
+%><%#function:args%><%#field:type%>, apache::thrift::FieldData<<%field:key%>, apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <% > Type%>*><%/field:type%><%/function:args%>

@@ -180,3 +180,8 @@ service ReturnService {
   ComplexUnion unionReturn()
   list<ComplexUnion> list_UnionReturn()
 }
+
+service ParamService {
+  void void_i16_param(1: i16 param1)
+  void void_i32_i64_param(1: i32 param1, 2: i64 param2)
+}

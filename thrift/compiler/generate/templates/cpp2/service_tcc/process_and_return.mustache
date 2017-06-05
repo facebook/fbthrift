@@ -27,6 +27,10 @@ void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<a
   // so async calls don't accidentally use it
   iface_->setConnectionContext(nullptr);
   <%service:name%>_<%function:name%>_pargs args;
+<%#function:args%><%#field:type%>
+  <% > Type%> uarg_<%field:name%>{0};
+  args.get<<%field:index%>>().value = &uarg_<%field:name%>;
+<%/field:type%><%/function:args%>
   std::unique_ptr<apache::thrift::ContextStack> c(this->getContextStack(this->getServiceName(), "<%service:name%>.<%function:name%>", ctx));
   try {
     deserializeRequest(args, buf.get(), iprot.get(), c.get());
@@ -59,7 +63,7 @@ void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<a
     return;
   }
   ctx->setStartedProcessing();
-  iface_->async_tm_<%function:name%>(std::move(callback));
+  iface_->async_tm_<%function:name%>(std::move(callback)<% > service_tcc/get_args_ref%>);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>

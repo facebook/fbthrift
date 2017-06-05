@@ -20,9 +20,9 @@
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
 <%#service:functions%><%#function:returnType%>
 <%^type:resolves_to_complex_return?%>
-  virtual <% > Type%> <%function:name%>();
-  folly::Future<<% > ServiceType%>> future_<%function:name%>() override;
-  void async_tm_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback) override;
+  virtual <% > Type%> <%function:name%>(<% > service_common/commented_out_function_param_list_no_start_comma%>);
+  folly::Future<<% > ServiceType%>> future_<%function:name%>(<% > service_common/function_param_list_no_start_comma%>) override;
+  void async_tm_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback<% > service_common/function_param_list%>) override;
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
   virtual void <%function:name%>(<% > Type%>& /*_return*/);

@@ -16,13 +16,16 @@
 
 %><%#service:functions%><%#function:returnType%>
 template <typename Protocol_>
-void <%service:name%>AsyncClient::<%function:name%>T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+void <%service:name%>AsyncClient::<%function:name%>T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<% > service_common/function_param_list%>) {
   auto header = std::make_shared<apache::thrift::transport::THeader>(apache::thrift::transport::THeader::ALLOW_BIG_FRAMES);
   header->setProtocolId(getChannel()->getProtocolId());
   header->setHeaders(rpcOptions.releaseWriteHeaders());
   connectionContext_->setRequestHeader(header.get());
   std::unique_ptr<apache::thrift::ContextStack> ctx = this->getContextStack(this->getServiceName(), "<%service:name%>.<%function:name%>", connectionContext_.get());
   <%service:name%>_<%function:name%>_pargs args;
+<%#function:args%><%#field:type%>
+  args.get<<%field:index%>>().value = &<%field:name%>;
+<%/field:type%><%/function:args%>
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "<%function:name%>", writer, sizer, false, useSync);
