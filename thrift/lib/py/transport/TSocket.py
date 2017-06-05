@@ -283,10 +283,16 @@ class TSocket(TSocketBase):
             raise TTransportException(TTransportException.NOT_OPEN, message)
 
     def read(self, sz):
-        buff = self.handle.recv(sz)
-        if len(buff) == 0:
+        try:
+            buff = self.handle.recv(sz)
+            if len(buff) == 0:
+                raise TTransportException(type=TTransportException.END_OF_FILE,
+                                          message='TSocket read 0 bytes')
+        except socket.error as e:
+            message = 'Socket read failed with error %s (%s)' % \
+                      (e.errno, e.strerror)
             raise TTransportException(type=TTransportException.END_OF_FILE,
-                                      message='TSocket read 0 bytes')
+                                      message=message)
         return buff
 
     def write(self, buff):
