@@ -1,0 +1,45 @@
+<%!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+%><%#service:functions%><%#function:returnType%>
+
+<%^type:resolves_to_complex_return?%>
+<% > Type%> <%service:name%>SvIf::<%function:name%>() {
+  throw apache::thrift::TApplicationException("Function <%function:name%> is unimplemented");
+}
+
+folly::Future<<% > ServiceType%>> <%service:name%>SvIf::future_<%function:name%>() {
+  return apache::thrift::detail::si::future([&] { return <%function:name%>(); });
+}
+
+void <%service:name%>SvIf::async_tm_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_<%function:name%>(); });
+}
+<%/type:resolves_to_complex_return?%>
+<%#type:resolves_to_complex_return?%>
+void <%service:name%>SvIf::<%function:name%>(<% > Type%>& /*_return*/) {
+  throw apache::thrift::TApplicationException("Function <%function:name%> is unimplemented");
+}
+
+folly::Future<std::unique_ptr<<% > Type%>>> <%service:name%>SvIf::future_<%function:name%>() {
+  return apache::thrift::detail::si::future_returning_uptr([&](<% > Type%>& _return) { <%function:name%>(_return); });
+}
+
+void <%service:name%>SvIf::async_tm_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>> callback) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_<%function:name%>(); });
+}
+<%/type:resolves_to_complex_return?%>
+<%/function:returnType%><%/service:functions%>

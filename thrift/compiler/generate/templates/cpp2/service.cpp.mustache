@@ -29,62 +29,9 @@
 std::unique_ptr<apache::thrift::AsyncProcessor> <%service:name%>SvIf::getProcessor() {
   return std::make_unique<<%service:name%>AsyncProcessor>(this);
 }
-<%#service:functions%><%#function:returnType%>
+<% > service_cpp/service_interface_impl%>
 
-<%^type:resolves_to_complex_return?%>
-<% > Type%> <%service:name%>SvIf::<%function:name%>() {
-  throw apache::thrift::TApplicationException("Function <%function:name%> is unimplemented");
-}
-
-<%#type:void?%>
-folly::Future<folly::Unit> <%service:name%>SvIf::future_<%function:name%>() {
-<%/type:void?%>
-<%^type:void?%>
-folly::Future<<% > Type%>> <%service:name%>SvIf::future_<%function:name%>() {
-<%/type:void?%>
-  return apache::thrift::detail::si::future([&] { return <%function:name%>(); });
-}
-
-void <%service:name%>SvIf::async_tm_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_<%function:name%>(); });
-}
-<%/type:resolves_to_complex_return?%>
-<%#type:resolves_to_complex_return?%>
-void <%service:name%>SvIf::<%function:name%>(<% > Type%>& /*_return*/) {
-  throw apache::thrift::TApplicationException("Function <%function:name%> is unimplemented");
-}
-
-folly::Future<std::unique_ptr<<% > Type%>>> <%service:name%>SvIf::future_<%function:name%>() {
-  return apache::thrift::detail::si::future_returning_uptr([&](<% > Type%>& _return) { <%function:name%>(_return); });
-}
-
-void <%service:name%>SvIf::async_tm_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_<%function:name%>(); });
-}
-<%/type:resolves_to_complex_return?%>
-<%/function:returnType%><%/service:functions%>
-<%#service:functions%><%#function:returnType%>
-
-<%^type:resolves_to_complex_return?%>
-<%#type:void?%>
-void <%service:name%>SvNull::<%function:name%>() {}
-<%/type:void?%>
-<%^type:void?%>
-<% > Type%> <%service:name%>SvNull::<%function:name%>() {
-<%#type:enum?%>
-  return (<% > Type%>)0;
-<%/type:enum?%>
-<%^type:enum?%>
-  return 0;
-<%/type:enum?%>
-}
-<%/type:void?%>
-<%/type:resolves_to_complex_return?%>
-<%#type:resolves_to_complex_return?%>
-void <%service:name%>SvNull::<%function:name%>(<% > Type%>& /*_return*/) {}
-<%/type:resolves_to_complex_return?%>
-<%/function:returnType%><%/service:functions%>
-
+<% > service_cpp/service_null_impl%>
 const char* <%service:name%>AsyncProcessor::getServiceName() {
   return "<%service:name%>";
 }
@@ -103,35 +50,9 @@ bool <%service:name%>AsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, con
 
 std::unordered_set<std::string> <%service:name%>AsyncProcessor::onewayMethods_ {};
 std::unordered_map<std::string, int16_t> <%service:name%>AsyncProcessor::cacheKeyMap_ {};
-const <%service:name%>AsyncProcessor::BinaryProtocolProcessMap& <%service:name%>AsyncProcessor::getBinaryProtocolProcessMap() {
-  return binaryProcessMap_;
-}
+<% > service_cpp/binary_processmap%>
 
-<%^service:functions?%>
-const <%service:name%>AsyncProcessor::BinaryProtocolProcessMap <%service:name%>AsyncProcessor::binaryProcessMap_ {};
-<%/service:functions?%>
-<%#service:functions?%>
-const <%service:name%>AsyncProcessor::BinaryProtocolProcessMap <%service:name%>AsyncProcessor::binaryProcessMap_ {
-<%#service:functions%><%#function:returnType%>
-  {"<%function:name%>", &<%service:name%>AsyncProcessor::_processInThread_<%function:name%><apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-<%/function:returnType%><%/service:functions%>
-};
-<%/service:functions?%>
-
-const <%service:name%>AsyncProcessor::CompactProtocolProcessMap& <%service:name%>AsyncProcessor::getCompactProtocolProcessMap() {
-  return compactProcessMap_;
-}
-
-<%^service:functions?%>
-const <%service:name%>AsyncProcessor::CompactProtocolProcessMap <%service:name%>AsyncProcessor::compactProcessMap_ {};
-<%/service:functions?%>
-<%#service:functions?%>
-const <%service:name%>AsyncProcessor::CompactProtocolProcessMap <%service:name%>AsyncProcessor::compactProcessMap_ {
-<%#service:functions%><%#function:returnType%>
-  {"<%function:name%>", &<%service:name%>AsyncProcessor::_processInThread_<%function:name%><apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-<%/function:returnType%><%/service:functions%>
-};
-<%/service:functions?%>
+<% > service_cpp/compact_processmap%>
 
 <% > common/namespace_cpp2_end%>
 

@@ -1,0 +1,40 @@
+<%!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+%>folly::Future<<% > ServiceType%>> <%service:name%>AsyncClient::future_<%function:name%>() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return future_<%function:name%>(rpcOptions);
+}
+
+folly::Future<<% > ServiceType%>> <%service:name%>AsyncClient::future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions) {
+  folly::Promise<<% > ServiceType%>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<<% > ServiceType%>>>(std::move(_promise), recv_wrapped_<%function:name%>, channel_);
+  <%function:name%>(rpcOptions, std::move(callback));
+  return _future;
+}
+
+folly::Future<std::pair<<% > ServiceType%>, std::unique_ptr<apache::thrift::transport::THeader>>> <%service:name%>AsyncClient::header_future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions) {
+  folly::Promise<std::pair<<% > ServiceType%>, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<<% > ServiceType%>>>(std::move(_promise), recv_wrapped_<%function:name%>, channel_);
+  <%function:name%>(rpcOptions, std::move(callback));
+  return _future;
+}
+
+void <%service:name%>AsyncClient::<%function:name%>(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
+  <%function:name%>(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
+}

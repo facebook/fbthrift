@@ -1,0 +1,66 @@
+<%!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+%>class <%service:name%>AsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
+ public:
+  const char* getServiceName() override;
+  using BaseAsyncProcessor = void;
+ protected:
+  <%service:name%>SvIf* iface_;
+  folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) override;
+ public:
+  void process(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
+ protected:
+  bool isOnewayMethod(const folly::IOBuf* buf, const apache::thrift::transport::THeader* header) override;
+ private:
+  static std::unordered_set<std::string> onewayMethods_;
+  static std::unordered_map<std::string, int16_t> cacheKeyMap_;
+ public:
+  using BinaryProtocolProcessFunc = ProcessFunc<<%service:name%>AsyncProcessor, apache::thrift::BinaryProtocolReader>;
+  using BinaryProtocolProcessMap = ProcessMap<BinaryProtocolProcessFunc>;
+  static const <%service:name%>AsyncProcessor::BinaryProtocolProcessMap& getBinaryProtocolProcessMap();
+ private:
+  static const <%service:name%>AsyncProcessor::BinaryProtocolProcessMap binaryProcessMap_;
+ public:
+  using CompactProtocolProcessFunc = ProcessFunc<<%service:name%>AsyncProcessor, apache::thrift::CompactProtocolReader>;
+  using CompactProtocolProcessMap = ProcessMap<CompactProtocolProcessFunc>;
+  static const <%service:name%>AsyncProcessor::CompactProtocolProcessMap& getCompactProtocolProcessMap();
+ private:
+  static const <%service:name%>AsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
+ private:
+<%#service:functions%><%#function:returnType%>
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void _processInThread_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <class ProtocolIn_, class ProtocolOut_>
+<%#type:void?%>
+  static folly::IOBufQueue return_<%function:name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
+<%/type:void?%>
+<%^type:void?%>
+  static folly::IOBufQueue return_<%function:name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > Type%> const& _return);
+<%/type:void?%>
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+<%/function:returnType%><%/service:functions%>
+ public:
+  <%service:name%>AsyncProcessor(<%service:name%>SvIf* iface) :
+      iface_(iface) {}
+
+  virtual ~<%service:name%>AsyncProcessor() {}
+};
