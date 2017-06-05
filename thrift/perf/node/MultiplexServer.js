@@ -105,6 +105,15 @@ if (options.server == "multiplex") {
   app.listen(options.port, '::');
 } else if (options.server == "cpp") {
   var server = new ThriftServer(LoadTest, methods);
+  if (options.ssl_cert && options.ssl_key) {
+    var config = new ThriftServer.SSLConfig();
+    config.certPath = options.ssl_cert;
+    config.keyPath = options.ssl_key;
+    if (options.ticket_file) {
+      config.ticketFilePath = options.ticket_file;
+    }
+    server.setSSLConfig(config);
+  }
   server.listen(options.port);
 
 } else {

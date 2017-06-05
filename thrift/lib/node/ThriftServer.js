@@ -43,15 +43,57 @@ function ThriftServer(service, methods) {
   this.server.setInterface(wrappedProcessor);
 }
 
+ThriftServer.SSLPolicy = Object.freeze({
+  PERMITTED: "permitted",
+  REQUIRED: "required"
+});
+
+ThriftServer.SSLVerify = Object.freeze({
+  IF_SENT: "verify",
+  REQUIRED: "verify_required",
+  NONE: "no_verify"
+});
+
+ThriftServer.SSLConfig = function() {
+  this.certPath = "";
+  this.keyPath = "";
+  this.keyPwPath = "";
+  this.clientCaPath = "";
+  this.eccCurveName = "";
+  this.verify = ThriftServer.SSLVerify.IF_SENT;
+  this.policy = ThriftServer.SSLPolicy.PERMITTED;
+  this.ticketFilePath = "";
+  this.alpnProtocols = [];
+  this.sessionContext = "";
+};
+
+ThriftServer.prototype.setSSLConfig = function(config) {
+  if (!(config instanceof ThriftServer.SSLConfig)) {
+    throw new Error("Config must be instance of ThriftServer.SSLConfig");
+  }
+  // validate verify and policy
+  var validVerify = ["verify", "verify_required", "no_verify"];
+  if (validVerify.indexOf(config.verify) === -1) {
+    throw new Error("config.verify is invalid.  Must be one of: " +
+      validVerify.join(", "));
+  }
+  var validPolicy = ["permitted", "required"];
+  if (validPolicy.indexOf(config.policy) === -1) {
+    throw new Error("config.policy is invalid.  Must be one of: " +
+      validPolicy.join(", "));
+  }
+  this.server.setSSLConfig(config);
+};
+
 ThriftServer.prototype.listen = function(port) {
   this.server.setPort(port);
   this.server.serve();
   return this;
-}
+};
 
 ThriftServer.prototype.setTimeout = function(timeout) {
   this.server.setTimeout(timeout);
   return this;
-}
+};
 
 module.exports = ThriftServer;
