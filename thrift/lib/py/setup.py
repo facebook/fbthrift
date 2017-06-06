@@ -52,7 +52,7 @@ fastprotomod = Extension(
     'thrift.protocol.fastproto',
     sources = ['protocol/fastproto.cpp'],
     libraries=['thriftcpp2', 'folly'],
-    extra_compile_args=['-std=c++0x'],
+    extra_compile_args=['-std=c++1y'],
     optional=True,
 )
 
@@ -64,7 +64,7 @@ cppservermod = Extension(
     sources=['server/CppServerWrapper.cpp'],
     include_dirs=['../../../'],
     libraries=[boost_python, 'thriftcpp2', 'folly', 'wangle'],
-    extra_compile_args=['-std=c++0x', '-fno-strict-aliasing'],
+    extra_compile_args=['-std=c++1y', '-fno-strict-aliasing'],
     optional=True,
 )
 
