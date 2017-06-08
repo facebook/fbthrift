@@ -34,10 +34,10 @@
 <%#program:structs%><%!
 %><% > common/namespace_cpp2_begin%>
 
+
 <%^program:enums?%>
 <% > module_types_h/struct_forward_declare%>
 <%/program:enums?%>
-
 <% > module_types_h/typedef_initialize%>
 class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<<%struct:name%>><%#struct:exception?%>, public apache::thrift::TException<%/struct:exception?%> {
  public:
