@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>class <%service:name%>SvIf : public <%service:name%>SvAsyncIf, <%#service:extends%>virtual public <% > common/namespace_cpp2%><%service:name%>SvIf<%/service:extends%><%^service:extends%>public apache::thrift::ServerInterface<%/service:extends%> {
+%>class <%service:name%>SvIf : public <%service:name%>SvAsyncIf, public apache::thrift::ServerInterface {
  public:
   typedef <%service:name%>AsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;

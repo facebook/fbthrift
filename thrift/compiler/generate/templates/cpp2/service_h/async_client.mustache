@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>class <%service:name%>AsyncClient : public apache::thrift::TClientBase {
+%>class <%service:name%>AsyncClient : public <%#service:extends%><% > common/namespace_cpp2%><%service:name%>AsyncClient<%/service:extends%><%^service:extends%>apache::thrift::TClientBase<%/service:extends%> {
  public:
   virtual const char* getServiceName();
   typedef std::unique_ptr<apache::thrift::RequestChannel, folly::DelayedDestruction::Destructor> channel_ptr;
@@ -22,6 +22,10 @@
   virtual ~<%service:name%>AsyncClient() {}
 
   <%service:name%>AsyncClient(std::shared_ptr<apache::thrift::RequestChannel> channel) :
+<%#service:extends%>
+      <% > common/namespace_cpp2%><%service:name%>AsyncClient(channel) {}
+<%/service:extends%>
+<%^service:extends%>
       channel_(channel) {
     connectionContext_.reset(new apache::thrift::Cpp2ConnContext);
   }
@@ -33,6 +37,7 @@
   apache::thrift::HeaderChannel*  getHeaderChannel() {
     return dynamic_cast<apache::thrift::HeaderChannel*>(this->channel_.get());
   }
+<%/service:extends%>
 <%#service:functions%><%#function:returnType%>
   virtual void <%function:name%>(std::unique_ptr<apache::thrift::RequestCallback> callback<% > service_common/function_param_list_const%>);
   virtual void <%function:name%>(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<% > service_common/function_param_list_const%>);
@@ -90,7 +95,9 @@
 <%/type:resolves_to_complex_return?%>
 <%/type:void?%>
 <%/function:returnType%><%/service:functions%>
+<%^service:extends%>
  protected:
   std::unique_ptr<apache::thrift::Cpp2ConnContext> connectionContext_;
   std::shared_ptr<apache::thrift::RequestChannel> channel_;
+<%/service:extends%>
 };

@@ -32,6 +32,9 @@
 <%#system?%>#include <%path%><%/system?%><%!
 %><%^system?%>#include "<%path%>"<%/system?%>
 <%/service:cpp_includes%>
+<%#service:extends%>
+#include "<%service:programIncludePrefix%><%service:name%>.h"
+<%/service:extends%>
 
 #include "<%service:programIncludePrefix%><%service:programName%>_types.h"
 

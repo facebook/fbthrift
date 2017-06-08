@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>class <%service:name%>SvNull : public <%service:name%>SvIf {
+%>class <%service:name%>SvNull : public <%service:name%>SvIf<%#service:extends%>, virtual public <% > common/namespace_cpp2%><%service:name%>SvIf<%/service:extends%> {
  public:
 <%#service:functions%><%#function:returnType%>
 <%^type:resolves_to_complex_return?%>

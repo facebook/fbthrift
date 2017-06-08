@@ -225,3 +225,7 @@ service ParamService {
   ComplexUnion union_ret_i32_i32_param(4: i32 param1, 2: i32 param2)
   list<ComplexUnion> listunion_string_param(1: string param1)
 }
+
+service ExtraService extends ParamService {
+  bool simple_function()
+}

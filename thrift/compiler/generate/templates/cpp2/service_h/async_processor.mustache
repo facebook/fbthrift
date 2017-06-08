@@ -14,10 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>class <%service:name%>AsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
+%>class <%service:name%>AsyncProcessor : public <%#service:extends%><% > common/namespace_cpp2%><%service:name%>AsyncProcessor<%/service:extends%><%^service:extends%>::apache::thrift::GeneratedAsyncProcessor<%/service:extends%> {
  public:
   const char* getServiceName() override;
+<%#service:extends%>
+  using BaseAsyncProcessor = <% > common/namespace_cpp2%><%service:name%>AsyncProcessor;
+<%/service:extends%>
+<%^service:extends%>
   using BaseAsyncProcessor = void;
+<%/service:extends%>
  protected:
   <%service:name%>SvIf* iface_;
   folly::Optional<std::string> getCacheKey(folly::IOBuf* buf, apache::thrift::protocol::PROTOCOL_TYPES protType) override;
@@ -60,6 +65,9 @@
 <%/function:returnType%><%/service:functions%>
  public:
   <%service:name%>AsyncProcessor(<%service:name%>SvIf* iface) :
+<%#service:extends%>
+      <% > common/namespace_cpp2%><%service:name%>AsyncProcessor(iface),
+<%/service:extends%>
       iface_(iface) {}
 
   virtual ~<%service:name%>AsyncProcessor() {}
