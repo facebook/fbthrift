@@ -53,6 +53,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
 
   std::unique_ptr<std::string> include_prefix_;
   std::vector<std::array<std::string, 3>> protocols_;
+  bool use_proxy_accessors_;
 };
 
 t_mstch_cpp2_generator::t_mstch_cpp2_generator(
@@ -69,6 +70,7 @@ t_mstch_cpp2_generator::t_mstch_cpp2_generator(
   };
 
   include_prefix_ = this->get_option("include_prefix");
+  use_proxy_accessors_ = this->get_option("proxy_accessors") != nullptr;
 }
 
 void t_mstch_cpp2_generator::generate_program() {
@@ -161,6 +163,7 @@ mstch::map t_mstch_cpp2_generator::extend_function(const t_function& fn) const {
 mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) const {
   mstch::map m;
   m.emplace("namespaces", this->get_namespace(*s.get_program()));
+  m.emplace("proxy_accessors?", this->use_proxy_accessors_);
 
   std::vector<t_field*> s_members = s.get_members();
 
