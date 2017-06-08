@@ -182,6 +182,12 @@ service ReturnService {
 }
 
 service ParamService {
-  void void_i16_param(1: i16 param1)
-  void void_i32_i64_param(1: i32 param1, 2: i64 param2)
+  void void_ret_i16_param(1: i16 param1)
+  void void_ret_byte_i16_param(1: byte param1, 2: i16 param2)
+  bool bool_ret_i32_i64_param(1: i32 param1, 3: i64 param2)
+  i64 i64_ret_float_double_param(1: float param1, 3: double param2)
+  string string_ret_string_param(1: string param1)
+  map<string, i64> map_ret_bool_param(1: bool param1)
+  bool bool_ret_map_param(1: map<string, i64> param1)
+  void void_ret_map_param(1: map<string, i64> param1)
 }

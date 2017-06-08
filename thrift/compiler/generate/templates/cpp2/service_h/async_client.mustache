@@ -34,26 +34,23 @@
     return dynamic_cast<apache::thrift::HeaderChannel*>(this->channel_.get());
   }
 <%#service:functions%><%#function:returnType%>
-  virtual void <%function:name%>(std::unique_ptr<apache::thrift::RequestCallback> callback<% > service_common/function_param_list%>);
-  virtual void <%function:name%>(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<% > service_common/function_param_list%>);
+  virtual void <%function:name%>(std::unique_ptr<apache::thrift::RequestCallback> callback<% > service_common/function_param_list_const%>);
+  virtual void <%function:name%>(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<% > service_common/function_param_list_const%>);
  private:
-  virtual void <%function:name%>Impl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<% > service_common/function_param_list%>);
+  virtual void <%function:name%>Impl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<% > service_common/function_param_list_const%>);
  public:
 <%^type:resolves_to_complex_return?%>
-  virtual <% > Type%> sync_<%function:name%>(<% > service_common/function_param_list_no_start_comma%>);
-  virtual <% > Type%> sync_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<% > service_common/function_param_list%>);
-  virtual folly::Future<<% > ServiceType%>> future_<%function:name%>(<% > service_common/function_param_list_no_start_comma%>);
-  virtual folly::Future<<% > ServiceType%>> future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<% > service_common/function_param_list%>);
-  virtual folly::Future<std::pair<<% > ServiceType%>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<% > service_common/function_param_list%>);
+  virtual <% > Type%> sync_<%function:name%>(<% > service_common/function_param_list_const_no_start_comma%>);
+  virtual <% > Type%> sync_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<% > service_common/function_param_list_const%>);
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  virtual void sync_<%function:name%>(<% > Type%>& _return);
-  virtual void sync_<%function:name%>(apache::thrift::RpcOptions& rpcOptions, <% > Type%>& _return);
-  virtual folly::Future<<% > Type%>> future_<%function:name%>();
-  virtual folly::Future<<% > Type%>> future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions);
-  virtual folly::Future<std::pair<<% > Type%>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions);
+  virtual void sync_<%function:name%>(<% > Type%>& _return<% > service_common/function_param_list_const%>);
+  virtual void sync_<%function:name%>(apache::thrift::RpcOptions& rpcOptions, <% > Type%>& _return<% > service_common/function_param_list_const%>);
 <%/type:resolves_to_complex_return?%>
-  virtual void <%function:name%>(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback<% > service_common/function_param_list%>);
+  virtual folly::Future<<% > ServiceType%>> future_<%function:name%>(<% > service_common/function_param_list_const_no_start_comma%>);
+  virtual folly::Future<<% > ServiceType%>> future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<% > service_common/function_param_list_const%>);
+  virtual folly::Future<std::pair<<% > ServiceType%>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<% > service_common/function_param_list_const%>);
+  virtual void <%function:name%>(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback<% > service_common/function_param_list_const%>);
 <%#type:void?%>
   static folly::exception_wrapper recv_wrapped_<%function:name%>(::apache::thrift::ClientReceiveState& state);
   static void recv_<%function:name%>(::apache::thrift::ClientReceiveState& state);
@@ -61,7 +58,7 @@
   virtual void recv_instance_<%function:name%>(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_<%function:name%>(::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
-  void <%function:name%>T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<% > service_common/function_param_list%>);
+  void <%function:name%>T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<% > service_common/function_param_list_const%>);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_<%function:name%>T(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
@@ -81,7 +78,7 @@
 <%/type:resolves_to_complex_return?%>
   virtual folly::exception_wrapper recv_instance_wrapped_<%function:name%>(<% > Type%>& _return, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
-  void <%function:name%>T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  void <%function:name%>T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<% > service_common/function_param_list_const%>);
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_<%function:name%>T(Protocol_* prot, <% > Type%>& _return, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>

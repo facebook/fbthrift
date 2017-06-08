@@ -17,33 +17,123 @@ std::unique_ptr<apache::thrift::AsyncProcessor> ParamServiceSvIf::getProcessor()
   return std::make_unique<ParamServiceAsyncProcessor>(this);
 }
 
-void ParamServiceSvIf::void_i16_param(int16_t /*param1*/) {
-  throw apache::thrift::TApplicationException("Function void_i16_param is unimplemented");
+void ParamServiceSvIf::void_ret_i16_param(int16_t /*param1*/) {
+  throw apache::thrift::TApplicationException("Function void_ret_i16_param is unimplemented");
 }
 
-folly::Future<folly::Unit> ParamServiceSvIf::future_void_i16_param(int16_t param1) {
-  return apache::thrift::detail::si::future([&] { return void_i16_param(param1); });
+folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_i16_param(int16_t param1) {
+  return apache::thrift::detail::si::future([&] { return void_ret_i16_param(param1); });
 }
 
-void ParamServiceSvIf::async_tm_void_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int16_t param1) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_void_i16_param(param1); });
+void ParamServiceSvIf::async_tm_void_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int16_t param1) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_void_ret_i16_param(param1); });
 }
 
-void ParamServiceSvIf::void_i32_i64_param(int32_t /*param1*/, int64_t /*param2*/) {
-  throw apache::thrift::TApplicationException("Function void_i32_i64_param is unimplemented");
+void ParamServiceSvIf::void_ret_byte_i16_param(int8_t /*param1*/, int16_t /*param2*/) {
+  throw apache::thrift::TApplicationException("Function void_ret_byte_i16_param is unimplemented");
 }
 
-folly::Future<folly::Unit> ParamServiceSvIf::future_void_i32_i64_param(int32_t param1, int64_t param2) {
-  return apache::thrift::detail::si::future([&] { return void_i32_i64_param(param1, param2); });
+folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_byte_i16_param(int8_t param1, int16_t param2) {
+  return apache::thrift::detail::si::future([&] { return void_ret_byte_i16_param(param1, param2); });
 }
 
-void ParamServiceSvIf::async_tm_void_i32_i64_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int32_t param1, int64_t param2) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_void_i32_i64_param(param1, param2); });
+void ParamServiceSvIf::async_tm_void_ret_byte_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int8_t param1, int16_t param2) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_void_ret_byte_i16_param(param1, param2); });
 }
 
-void ParamServiceSvNull::void_i16_param(int16_t /*param1*/) {}
+bool ParamServiceSvIf::bool_ret_i32_i64_param(int32_t /*param1*/, int64_t /*param2*/) {
+  throw apache::thrift::TApplicationException("Function bool_ret_i32_i64_param is unimplemented");
+}
 
-void ParamServiceSvNull::void_i32_i64_param(int32_t /*param1*/, int64_t /*param2*/) {}
+folly::Future<bool> ParamServiceSvIf::future_bool_ret_i32_i64_param(int32_t param1, int64_t param2) {
+  return apache::thrift::detail::si::future([&] { return bool_ret_i32_i64_param(param1, param2); });
+}
+
+void ParamServiceSvIf::async_tm_bool_ret_i32_i64_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int32_t param1, int64_t param2) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_bool_ret_i32_i64_param(param1, param2); });
+}
+
+int64_t ParamServiceSvIf::i64_ret_float_double_param(float /*param1*/, double /*param2*/) {
+  throw apache::thrift::TApplicationException("Function i64_ret_float_double_param is unimplemented");
+}
+
+folly::Future<int64_t> ParamServiceSvIf::future_i64_ret_float_double_param(float param1, double param2) {
+  return apache::thrift::detail::si::future([&] { return i64_ret_float_double_param(param1, param2); });
+}
+
+void ParamServiceSvIf::async_tm_i64_ret_float_double_param(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback, float param1, double param2) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_i64_ret_float_double_param(param1, param2); });
+}
+
+void ParamServiceSvIf::string_ret_string_param(std::string& /*_return*/, std::unique_ptr<std::string> /*param1*/) {
+  throw apache::thrift::TApplicationException("Function string_ret_string_param is unimplemented");
+}
+
+folly::Future<std::unique_ptr<std::string>> ParamServiceSvIf::future_string_ret_string_param(std::unique_ptr<std::string> param1) {
+  return apache::thrift::detail::si::future_returning_uptr([&](std::string& _return) { string_ret_string_param(_return, std::move(param1)); });
+}
+
+void ParamServiceSvIf::async_tm_string_ret_string_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback, std::unique_ptr<std::string> param1) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_string_ret_string_param(std::move(param1)); });
+}
+
+void ParamServiceSvIf::map_ret_bool_param(std::map<std::string, int64_t>& /*_return*/, bool /*param1*/) {
+  throw apache::thrift::TApplicationException("Function map_ret_bool_param is unimplemented");
+}
+
+folly::Future<std::unique_ptr<std::map<std::string, int64_t>>> ParamServiceSvIf::future_map_ret_bool_param(bool param1) {
+  return apache::thrift::detail::si::future_returning_uptr([&](std::map<std::string, int64_t>& _return) { map_ret_bool_param(_return, param1); });
+}
+
+void ParamServiceSvIf::async_tm_map_ret_bool_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::map<std::string, int64_t>>>> callback, bool param1) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_map_ret_bool_param(param1); });
+}
+
+bool ParamServiceSvIf::bool_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/) {
+  throw apache::thrift::TApplicationException("Function bool_ret_map_param is unimplemented");
+}
+
+folly::Future<bool> ParamServiceSvIf::future_bool_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> param1) {
+  return apache::thrift::detail::si::future([&] { return bool_ret_map_param(std::move(param1)); });
+}
+
+void ParamServiceSvIf::async_tm_bool_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<std::map<std::string, int64_t>> param1) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_bool_ret_map_param(std::move(param1)); });
+}
+
+void ParamServiceSvIf::void_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/) {
+  throw apache::thrift::TApplicationException("Function void_ret_map_param is unimplemented");
+}
+
+folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> param1) {
+  return apache::thrift::detail::si::future([&] { return void_ret_map_param(std::move(param1)); });
+}
+
+void ParamServiceSvIf::async_tm_void_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<std::map<std::string, int64_t>> param1) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_void_ret_map_param(std::move(param1)); });
+}
+
+void ParamServiceSvNull::void_ret_i16_param(int16_t /*param1*/) {}
+
+void ParamServiceSvNull::void_ret_byte_i16_param(int8_t /*param1*/, int16_t /*param2*/) {}
+
+bool ParamServiceSvNull::bool_ret_i32_i64_param(int32_t /*param1*/, int64_t /*param2*/) {
+  return 0;
+}
+
+int64_t ParamServiceSvNull::i64_ret_float_double_param(float /*param1*/, double /*param2*/) {
+  return 0;
+}
+
+void ParamServiceSvNull::string_ret_string_param(std::string& /*_return*/, std::unique_ptr<std::string> /*param1*/) {}
+
+void ParamServiceSvNull::map_ret_bool_param(std::map<std::string, int64_t>& /*_return*/, bool /*param1*/) {}
+
+bool ParamServiceSvNull::bool_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/) {
+  return 0;
+}
+
+void ParamServiceSvNull::void_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/) {}
 
 const char* ParamServiceAsyncProcessor::getServiceName() {
   return "ParamService";
@@ -68,8 +158,14 @@ const ParamServiceAsyncProcessor::BinaryProtocolProcessMap& ParamServiceAsyncPro
 }
 
 const ParamServiceAsyncProcessor::BinaryProtocolProcessMap ParamServiceAsyncProcessor::binaryProcessMap_ {
-  {"void_i16_param", &ParamServiceAsyncProcessor::_processInThread_void_i16_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"void_i32_i64_param", &ParamServiceAsyncProcessor::_processInThread_void_i32_i64_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"void_ret_i16_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_i16_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"void_ret_byte_i16_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_byte_i16_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"bool_ret_i32_i64_param", &ParamServiceAsyncProcessor::_processInThread_bool_ret_i32_i64_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"i64_ret_float_double_param", &ParamServiceAsyncProcessor::_processInThread_i64_ret_float_double_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"string_ret_string_param", &ParamServiceAsyncProcessor::_processInThread_string_ret_string_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"map_ret_bool_param", &ParamServiceAsyncProcessor::_processInThread_map_ret_bool_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"bool_ret_map_param", &ParamServiceAsyncProcessor::_processInThread_bool_ret_map_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"void_ret_map_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_map_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const ParamServiceAsyncProcessor::CompactProtocolProcessMap& ParamServiceAsyncProcessor::getCompactProtocolProcessMap() {
@@ -77,8 +173,14 @@ const ParamServiceAsyncProcessor::CompactProtocolProcessMap& ParamServiceAsyncPr
 }
 
 const ParamServiceAsyncProcessor::CompactProtocolProcessMap ParamServiceAsyncProcessor::compactProcessMap_ {
-  {"void_i16_param", &ParamServiceAsyncProcessor::_processInThread_void_i16_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"void_i32_i64_param", &ParamServiceAsyncProcessor::_processInThread_void_i32_i64_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"void_ret_i16_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_i16_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"void_ret_byte_i16_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_byte_i16_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"bool_ret_i32_i64_param", &ParamServiceAsyncProcessor::_processInThread_bool_ret_i32_i64_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"i64_ret_float_double_param", &ParamServiceAsyncProcessor::_processInThread_i64_ret_float_double_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"string_ret_string_param", &ParamServiceAsyncProcessor::_processInThread_string_ret_string_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"map_ret_bool_param", &ParamServiceAsyncProcessor::_processInThread_map_ret_bool_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"bool_ret_map_param", &ParamServiceAsyncProcessor::_processInThread_bool_ret_map_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"void_ret_map_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_map_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 }}} // some::valid::ns

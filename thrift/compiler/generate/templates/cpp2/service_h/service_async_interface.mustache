@@ -19,14 +19,14 @@
   virtual ~<%service:name%>SvAsyncIf() {}
 <%#service:functions%><%#function:returnType%>
 <%^type:resolves_to_complex_return?%>
-  virtual void async_tm_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback<% > service_common/function_param_list%>) = 0;
-  virtual void async_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback<% > service_common/function_param_list%>) = delete;
-  virtual folly::Future<<% > ServiceType%>> future_<%function:name%>(<% > service_common/function_param_list_no_start_comma%>) = 0;
+  virtual void async_tm_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback<% > service_common/function_param_list_ptr%>) = 0;
+  virtual void async_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback<% > service_common/function_param_list_ptr%>) = delete;
+  virtual folly::Future<<% > ServiceType%>> future_<%function:name%>(<% > service_common/function_param_list_ptr_no_start_comma%>) = 0;
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  virtual void async_tm_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>> callback) = 0;
-  virtual void async_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>> callback) = delete;
-  virtual folly::Future<std::unique_ptr<<% > Type%>>> future_<%function:name%>() = 0;
+  virtual void async_tm_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>> callback<% > service_common/function_param_list_ptr%>) = 0;
+  virtual void async_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>> callback<% > service_common/function_param_list_ptr%>) = delete;
+  virtual folly::Future<std::unique_ptr<<% > Type%>>> future_<%function:name%>(<% > service_common/function_param_list_ptr_no_start_comma%>) = 0;
 <%/type:resolves_to_complex_return?%>
 <%/function:returnType%><%/service:functions%>
 };

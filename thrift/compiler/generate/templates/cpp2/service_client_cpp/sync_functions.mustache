@@ -15,7 +15,7 @@
   limitations under the License.
 
 %><%^type:resolves_to_complex_return?%>
-<% > Type%> <%service:name%>AsyncClient::sync_<%function:name%>(<% > service_common/function_param_list_no_start_comma%>) {
+<% > Type%> <%service:name%>AsyncClient::sync_<%function:name%>(<% > service_common/function_param_list_const_no_start_comma%>) {
   ::apache::thrift::RpcOptions rpcOptions;
 <%#type:void?%>
   sync_<%function:name%>(rpcOptions<% > service_common/param_list%>);
@@ -25,17 +25,17 @@
 <%/type:void?%>
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-void <%service:name%>AsyncClient::sync_<%function:name%>(<% > Type%>& _return) {
+void <%service:name%>AsyncClient::sync_<%function:name%>(<% > Type%>& _return<% > service_common/function_param_list_const%>) {
   ::apache::thrift::RpcOptions rpcOptions;
-  sync_<%function:name%>(rpcOptions, _return);
+  sync_<%function:name%>(rpcOptions, _return<% > service_common/param_list%>);
 <%/type:resolves_to_complex_return?%>
 }
 
 <%^type:resolves_to_complex_return?%>
-<% > Type%> <%service:name%>AsyncClient::sync_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<% > service_common/function_param_list%>) {
+<% > Type%> <%service:name%>AsyncClient::sync_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<% > service_common/function_param_list_const%>) {
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-void <%service:name%>AsyncClient::sync_<%function:name%>(apache::thrift::RpcOptions& rpcOptions, <% > Type%>& _return) {
+void <%service:name%>AsyncClient::sync_<%function:name%>(apache::thrift::RpcOptions& rpcOptions, <% > Type%>& _return<% > service_common/function_param_list_const%>) {
 <%/type:resolves_to_complex_return?%>
   apache::thrift::ClientReceiveState _returnState;
   auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);

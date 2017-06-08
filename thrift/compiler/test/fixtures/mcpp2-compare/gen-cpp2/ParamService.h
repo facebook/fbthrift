@@ -34,12 +34,30 @@ namespace some { namespace valid { namespace ns {
 class ParamServiceSvAsyncIf {
  public:
   virtual ~ParamServiceSvAsyncIf() {}
-  virtual void async_tm_void_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int16_t param1) = 0;
-  virtual void async_void_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int16_t param1) = delete;
-  virtual folly::Future<folly::Unit> future_void_i16_param(int16_t param1) = 0;
-  virtual void async_tm_void_i32_i64_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int32_t param1, int64_t param2) = 0;
-  virtual void async_void_i32_i64_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int32_t param1, int64_t param2) = delete;
-  virtual folly::Future<folly::Unit> future_void_i32_i64_param(int32_t param1, int64_t param2) = 0;
+  virtual void async_tm_void_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int16_t param1) = 0;
+  virtual void async_void_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int16_t param1) = delete;
+  virtual folly::Future<folly::Unit> future_void_ret_i16_param(int16_t param1) = 0;
+  virtual void async_tm_void_ret_byte_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int8_t param1, int16_t param2) = 0;
+  virtual void async_void_ret_byte_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int8_t param1, int16_t param2) = delete;
+  virtual folly::Future<folly::Unit> future_void_ret_byte_i16_param(int8_t param1, int16_t param2) = 0;
+  virtual void async_tm_bool_ret_i32_i64_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int32_t param1, int64_t param2) = 0;
+  virtual void async_bool_ret_i32_i64_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int32_t param1, int64_t param2) = delete;
+  virtual folly::Future<bool> future_bool_ret_i32_i64_param(int32_t param1, int64_t param2) = 0;
+  virtual void async_tm_i64_ret_float_double_param(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback, float param1, double param2) = 0;
+  virtual void async_i64_ret_float_double_param(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback, float param1, double param2) = delete;
+  virtual folly::Future<int64_t> future_i64_ret_float_double_param(float param1, double param2) = 0;
+  virtual void async_tm_string_ret_string_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback, std::unique_ptr<std::string> param1) = 0;
+  virtual void async_string_ret_string_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback, std::unique_ptr<std::string> param1) = delete;
+  virtual folly::Future<std::unique_ptr<std::string>> future_string_ret_string_param(std::unique_ptr<std::string> param1) = 0;
+  virtual void async_tm_map_ret_bool_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::map<std::string, int64_t>>>> callback, bool param1) = 0;
+  virtual void async_map_ret_bool_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::map<std::string, int64_t>>>> callback, bool param1) = delete;
+  virtual folly::Future<std::unique_ptr<std::map<std::string, int64_t>>> future_map_ret_bool_param(bool param1) = 0;
+  virtual void async_tm_bool_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<std::map<std::string, int64_t>> param1) = 0;
+  virtual void async_bool_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<std::map<std::string, int64_t>> param1) = delete;
+  virtual folly::Future<bool> future_bool_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> param1) = 0;
+  virtual void async_tm_void_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<std::map<std::string, int64_t>> param1) = 0;
+  virtual void async_void_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<std::map<std::string, int64_t>> param1) = delete;
+  virtual folly::Future<folly::Unit> future_void_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> param1) = 0;
 };
 
 class ParamServiceAsyncProcessor;
@@ -48,18 +66,42 @@ class ParamServiceSvIf : public ParamServiceSvAsyncIf, public apache::thrift::Se
  public:
   typedef ParamServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
-  virtual void void_i16_param(int16_t /*param1*/);
-  folly::Future<folly::Unit> future_void_i16_param(int16_t param1) override;
-  void async_tm_void_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int16_t param1) override;
-  virtual void void_i32_i64_param(int32_t /*param1*/, int64_t /*param2*/);
-  folly::Future<folly::Unit> future_void_i32_i64_param(int32_t param1, int64_t param2) override;
-  void async_tm_void_i32_i64_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int32_t param1, int64_t param2) override;
+  virtual void void_ret_i16_param(int16_t /*param1*/);
+  folly::Future<folly::Unit> future_void_ret_i16_param(int16_t param1) override;
+  void async_tm_void_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int16_t param1) override;
+  virtual void void_ret_byte_i16_param(int8_t /*param1*/, int16_t /*param2*/);
+  folly::Future<folly::Unit> future_void_ret_byte_i16_param(int8_t param1, int16_t param2) override;
+  void async_tm_void_ret_byte_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int8_t param1, int16_t param2) override;
+  virtual bool bool_ret_i32_i64_param(int32_t /*param1*/, int64_t /*param2*/);
+  folly::Future<bool> future_bool_ret_i32_i64_param(int32_t param1, int64_t param2) override;
+  void async_tm_bool_ret_i32_i64_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, int32_t param1, int64_t param2) override;
+  virtual int64_t i64_ret_float_double_param(float /*param1*/, double /*param2*/);
+  folly::Future<int64_t> future_i64_ret_float_double_param(float param1, double param2) override;
+  void async_tm_i64_ret_float_double_param(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback, float param1, double param2) override;
+  virtual void string_ret_string_param(std::string& /*_return*/, std::unique_ptr<std::string> /*param1*/);
+  folly::Future<std::unique_ptr<std::string>> future_string_ret_string_param(std::unique_ptr<std::string> param1) override;
+  void async_tm_string_ret_string_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback, std::unique_ptr<std::string> param1) override;
+  virtual void map_ret_bool_param(std::map<std::string, int64_t>& /*_return*/, bool /*param1*/);
+  folly::Future<std::unique_ptr<std::map<std::string, int64_t>>> future_map_ret_bool_param(bool param1) override;
+  void async_tm_map_ret_bool_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::map<std::string, int64_t>>>> callback, bool param1) override;
+  virtual bool bool_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/);
+  folly::Future<bool> future_bool_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> param1) override;
+  void async_tm_bool_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<std::map<std::string, int64_t>> param1) override;
+  virtual void void_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/);
+  folly::Future<folly::Unit> future_void_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> param1) override;
+  void async_tm_void_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<std::map<std::string, int64_t>> param1) override;
 };
 
 class ParamServiceSvNull : public ParamServiceSvIf {
  public:
-  void void_i16_param(int16_t /*param1*/) override;
-  void void_i32_i64_param(int32_t /*param1*/, int64_t /*param2*/) override;
+  void void_ret_i16_param(int16_t /*param1*/) override;
+  void void_ret_byte_i16_param(int8_t /*param1*/, int16_t /*param2*/) override;
+  bool bool_ret_i32_i64_param(int32_t /*param1*/, int64_t /*param2*/) override;
+  int64_t i64_ret_float_double_param(float /*param1*/, double /*param2*/) override;
+  void string_ret_string_param(std::string& /*_return*/, std::unique_ptr<std::string> /*param1*/) override;
+  void map_ret_bool_param(std::map<std::string, int64_t>& /*_return*/, bool /*param1*/) override;
+  bool bool_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/) override;
+  void void_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/) override;
 };
 
 class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
@@ -90,25 +132,85 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
   static const ParamServiceAsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_void_i16_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void _processInThread_void_ret_i16_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void process_void_i16_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void process_void_ret_i16_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_void_i16_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
+  static folly::IOBufQueue return_void_ret_i16_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
   template <class ProtocolIn_, class ProtocolOut_>
-  static void throw_void_i16_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
+  static void throw_void_ret_i16_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
   template <class ProtocolIn_, class ProtocolOut_>
-  static void throw_wrapped_void_i16_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+  static void throw_wrapped_void_ret_i16_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_void_i32_i64_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void _processInThread_void_ret_byte_i16_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void process_void_i32_i64_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void process_void_ret_byte_i16_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
-  static folly::IOBufQueue return_void_i32_i64_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
+  static folly::IOBufQueue return_void_ret_byte_i16_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
   template <class ProtocolIn_, class ProtocolOut_>
-  static void throw_void_i32_i64_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
+  static void throw_void_ret_byte_i16_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
   template <class ProtocolIn_, class ProtocolOut_>
-  static void throw_wrapped_void_i32_i64_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+  static void throw_wrapped_void_ret_byte_i16_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void _processInThread_bool_ret_i32_i64_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_bool_ret_i32_i64_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static folly::IOBufQueue return_bool_ret_i32_i64_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, bool const& _return);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_bool_ret_i32_i64_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_bool_ret_i32_i64_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void _processInThread_i64_ret_float_double_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_i64_ret_float_double_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static folly::IOBufQueue return_i64_ret_float_double_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, int64_t const& _return);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_i64_ret_float_double_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_i64_ret_float_double_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void _processInThread_string_ret_string_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_string_ret_string_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static folly::IOBufQueue return_string_ret_string_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, std::string const& _return);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_string_ret_string_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_string_ret_string_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void _processInThread_map_ret_bool_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_map_ret_bool_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static folly::IOBufQueue return_map_ret_bool_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, std::map<std::string, int64_t> const& _return);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_map_ret_bool_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_map_ret_bool_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void _processInThread_bool_ret_map_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_bool_ret_map_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static folly::IOBufQueue return_bool_ret_map_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx, bool const& _return);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_bool_ret_map_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_bool_ret_map_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void _processInThread_void_ret_map_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_void_ret_map_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static folly::IOBufQueue return_void_ret_map_param(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_void_ret_map_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_void_ret_map_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
   ParamServiceAsyncProcessor(ParamServiceSvIf* iface) :
       iface_(iface) {}
@@ -135,50 +237,182 @@ class ParamServiceAsyncClient : public apache::thrift::TClientBase {
   apache::thrift::HeaderChannel*  getHeaderChannel() {
     return dynamic_cast<apache::thrift::HeaderChannel*>(this->channel_.get());
   }
-  virtual void void_i16_param(std::unique_ptr<apache::thrift::RequestCallback> callback, int16_t param1);
-  virtual void void_i16_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int16_t param1);
+  virtual void void_ret_i16_param(std::unique_ptr<apache::thrift::RequestCallback> callback, int16_t param1);
+  virtual void void_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int16_t param1);
  private:
-  virtual void void_i16_paramImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int16_t param1);
+  virtual void void_ret_i16_paramImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int16_t param1);
  public:
-  virtual void sync_void_i16_param(int16_t param1);
-  virtual void sync_void_i16_param(apache::thrift::RpcOptions& rpcOptions, int16_t param1);
-  virtual folly::Future<folly::Unit> future_void_i16_param(int16_t param1);
-  virtual folly::Future<folly::Unit> future_void_i16_param(apache::thrift::RpcOptions& rpcOptions, int16_t param1);
-  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_void_i16_param(apache::thrift::RpcOptions& rpcOptions, int16_t param1);
-  virtual void void_i16_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int16_t param1);
-  static folly::exception_wrapper recv_wrapped_void_i16_param(::apache::thrift::ClientReceiveState& state);
-  static void recv_void_i16_param(::apache::thrift::ClientReceiveState& state);
+  virtual void sync_void_ret_i16_param(int16_t param1);
+  virtual void sync_void_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, int16_t param1);
+  virtual folly::Future<folly::Unit> future_void_ret_i16_param(int16_t param1);
+  virtual folly::Future<folly::Unit> future_void_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, int16_t param1);
+  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_void_ret_i16_param(apache::thrift::RpcOptions& rpcOptions, int16_t param1);
+  virtual void void_ret_i16_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int16_t param1);
+  static folly::exception_wrapper recv_wrapped_void_ret_i16_param(::apache::thrift::ClientReceiveState& state);
+  static void recv_void_ret_i16_param(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual void recv_instance_void_i16_param(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_void_i16_param(::apache::thrift::ClientReceiveState& state);
+  virtual void recv_instance_void_ret_i16_param(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_void_ret_i16_param(::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
-  void void_i16_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int16_t param1);
+  void void_ret_i16_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int16_t param1);
   template <typename Protocol_>
-  static folly::exception_wrapper recv_wrapped_void_i16_paramT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_void_ret_i16_paramT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
-  static void recv_void_i16_paramT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
-  virtual void void_i32_i64_param(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int64_t param2);
-  virtual void void_i32_i64_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int64_t param2);
+  static void recv_void_ret_i16_paramT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+  virtual void void_ret_byte_i16_param(std::unique_ptr<apache::thrift::RequestCallback> callback, int8_t param1, int16_t param2);
+  virtual void void_ret_byte_i16_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int8_t param1, int16_t param2);
  private:
-  virtual void void_i32_i64_paramImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int64_t param2);
+  virtual void void_ret_byte_i16_paramImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int8_t param1, int16_t param2);
  public:
-  virtual void sync_void_i32_i64_param(int32_t param1, int64_t param2);
-  virtual void sync_void_i32_i64_param(apache::thrift::RpcOptions& rpcOptions, int32_t param1, int64_t param2);
-  virtual folly::Future<folly::Unit> future_void_i32_i64_param(int32_t param1, int64_t param2);
-  virtual folly::Future<folly::Unit> future_void_i32_i64_param(apache::thrift::RpcOptions& rpcOptions, int32_t param1, int64_t param2);
-  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_void_i32_i64_param(apache::thrift::RpcOptions& rpcOptions, int32_t param1, int64_t param2);
-  virtual void void_i32_i64_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t param1, int64_t param2);
-  static folly::exception_wrapper recv_wrapped_void_i32_i64_param(::apache::thrift::ClientReceiveState& state);
-  static void recv_void_i32_i64_param(::apache::thrift::ClientReceiveState& state);
+  virtual void sync_void_ret_byte_i16_param(int8_t param1, int16_t param2);
+  virtual void sync_void_ret_byte_i16_param(apache::thrift::RpcOptions& rpcOptions, int8_t param1, int16_t param2);
+  virtual folly::Future<folly::Unit> future_void_ret_byte_i16_param(int8_t param1, int16_t param2);
+  virtual folly::Future<folly::Unit> future_void_ret_byte_i16_param(apache::thrift::RpcOptions& rpcOptions, int8_t param1, int16_t param2);
+  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_void_ret_byte_i16_param(apache::thrift::RpcOptions& rpcOptions, int8_t param1, int16_t param2);
+  virtual void void_ret_byte_i16_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int8_t param1, int16_t param2);
+  static folly::exception_wrapper recv_wrapped_void_ret_byte_i16_param(::apache::thrift::ClientReceiveState& state);
+  static void recv_void_ret_byte_i16_param(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
-  virtual void recv_instance_void_i32_i64_param(::apache::thrift::ClientReceiveState& state);
-  virtual folly::exception_wrapper recv_instance_wrapped_void_i32_i64_param(::apache::thrift::ClientReceiveState& state);
+  virtual void recv_instance_void_ret_byte_i16_param(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_void_ret_byte_i16_param(::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
-  void void_i32_i64_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int64_t param2);
+  void void_ret_byte_i16_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int8_t param1, int16_t param2);
   template <typename Protocol_>
-  static folly::exception_wrapper recv_wrapped_void_i32_i64_paramT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+  static folly::exception_wrapper recv_wrapped_void_ret_byte_i16_paramT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
-  static void recv_void_i32_i64_paramT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+  static void recv_void_ret_byte_i16_paramT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+  virtual void bool_ret_i32_i64_param(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int64_t param2);
+  virtual void bool_ret_i32_i64_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int64_t param2);
+ private:
+  virtual void bool_ret_i32_i64_paramImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int64_t param2);
+ public:
+  virtual bool sync_bool_ret_i32_i64_param(int32_t param1, int64_t param2);
+  virtual bool sync_bool_ret_i32_i64_param(apache::thrift::RpcOptions& rpcOptions, int32_t param1, int64_t param2);
+  virtual folly::Future<bool> future_bool_ret_i32_i64_param(int32_t param1, int64_t param2);
+  virtual folly::Future<bool> future_bool_ret_i32_i64_param(apache::thrift::RpcOptions& rpcOptions, int32_t param1, int64_t param2);
+  virtual folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_bool_ret_i32_i64_param(apache::thrift::RpcOptions& rpcOptions, int32_t param1, int64_t param2);
+  virtual void bool_ret_i32_i64_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t param1, int64_t param2);
+  static folly::exception_wrapper recv_wrapped_bool_ret_i32_i64_param(bool& _return, ::apache::thrift::ClientReceiveState& state);
+  static bool recv_bool_ret_i32_i64_param(::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual bool recv_instance_bool_ret_i32_i64_param(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_bool_ret_i32_i64_param(bool& _return, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  void bool_ret_i32_i64_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int64_t param2);
+  template <typename Protocol_>
+  static folly::exception_wrapper recv_wrapped_bool_ret_i32_i64_paramT(Protocol_* prot, bool& _return, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  static bool recv_bool_ret_i32_i64_paramT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+  virtual void i64_ret_float_double_param(std::unique_ptr<apache::thrift::RequestCallback> callback, float param1, double param2);
+  virtual void i64_ret_float_double_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, float param1, double param2);
+ private:
+  virtual void i64_ret_float_double_paramImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, float param1, double param2);
+ public:
+  virtual int64_t sync_i64_ret_float_double_param(float param1, double param2);
+  virtual int64_t sync_i64_ret_float_double_param(apache::thrift::RpcOptions& rpcOptions, float param1, double param2);
+  virtual folly::Future<int64_t> future_i64_ret_float_double_param(float param1, double param2);
+  virtual folly::Future<int64_t> future_i64_ret_float_double_param(apache::thrift::RpcOptions& rpcOptions, float param1, double param2);
+  virtual folly::Future<std::pair<int64_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_i64_ret_float_double_param(apache::thrift::RpcOptions& rpcOptions, float param1, double param2);
+  virtual void i64_ret_float_double_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, float param1, double param2);
+  static folly::exception_wrapper recv_wrapped_i64_ret_float_double_param(int64_t& _return, ::apache::thrift::ClientReceiveState& state);
+  static int64_t recv_i64_ret_float_double_param(::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual int64_t recv_instance_i64_ret_float_double_param(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_i64_ret_float_double_param(int64_t& _return, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  void i64_ret_float_double_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, float param1, double param2);
+  template <typename Protocol_>
+  static folly::exception_wrapper recv_wrapped_i64_ret_float_double_paramT(Protocol_* prot, int64_t& _return, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  static int64_t recv_i64_ret_float_double_paramT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+  virtual void string_ret_string_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const std::string& param1);
+  virtual void string_ret_string_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::string& param1);
+ private:
+  virtual void string_ret_string_paramImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::string& param1);
+ public:
+  virtual void sync_string_ret_string_param(std::string& _return, const std::string& param1);
+  virtual void sync_string_ret_string_param(apache::thrift::RpcOptions& rpcOptions, std::string& _return, const std::string& param1);
+  virtual folly::Future<std::string> future_string_ret_string_param(const std::string& param1);
+  virtual folly::Future<std::string> future_string_ret_string_param(apache::thrift::RpcOptions& rpcOptions, const std::string& param1);
+  virtual folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_string_ret_string_param(apache::thrift::RpcOptions& rpcOptions, const std::string& param1);
+  virtual void string_ret_string_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::string& param1);
+  static folly::exception_wrapper recv_wrapped_string_ret_string_param(std::string& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_string_ret_string_param(std::string& _return, ::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual void recv_instance_string_ret_string_param(std::string& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_string_ret_string_param(std::string& _return, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  void string_ret_string_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::string& param1);
+  template <typename Protocol_>
+  static folly::exception_wrapper recv_wrapped_string_ret_string_paramT(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  static void recv_string_ret_string_paramT(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void map_ret_bool_param(std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1);
+  virtual void map_ret_bool_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1);
+ private:
+  virtual void map_ret_bool_paramImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1);
+ public:
+  virtual void sync_map_ret_bool_param(std::map<std::string, int64_t>& _return, bool param1);
+  virtual void sync_map_ret_bool_param(apache::thrift::RpcOptions& rpcOptions, std::map<std::string, int64_t>& _return, bool param1);
+  virtual folly::Future<std::map<std::string, int64_t>> future_map_ret_bool_param(bool param1);
+  virtual folly::Future<std::map<std::string, int64_t>> future_map_ret_bool_param(apache::thrift::RpcOptions& rpcOptions, bool param1);
+  virtual folly::Future<std::pair<std::map<std::string, int64_t>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_map_ret_bool_param(apache::thrift::RpcOptions& rpcOptions, bool param1);
+  virtual void map_ret_bool_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, bool param1);
+  static folly::exception_wrapper recv_wrapped_map_ret_bool_param(std::map<std::string, int64_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_map_ret_bool_param(std::map<std::string, int64_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual void recv_instance_map_ret_bool_param(std::map<std::string, int64_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_map_ret_bool_param(std::map<std::string, int64_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  void map_ret_bool_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1);
+  template <typename Protocol_>
+  static folly::exception_wrapper recv_wrapped_map_ret_bool_paramT(Protocol_* prot, std::map<std::string, int64_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  static void recv_map_ret_bool_paramT(Protocol_* prot, std::map<std::string, int64_t>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void bool_ret_map_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1);
+  virtual void bool_ret_map_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1);
+ private:
+  virtual void bool_ret_map_paramImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1);
+ public:
+  virtual bool sync_bool_ret_map_param(const std::map<std::string, int64_t>& param1);
+  virtual bool sync_bool_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const std::map<std::string, int64_t>& param1);
+  virtual folly::Future<bool> future_bool_ret_map_param(const std::map<std::string, int64_t>& param1);
+  virtual folly::Future<bool> future_bool_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const std::map<std::string, int64_t>& param1);
+  virtual folly::Future<std::pair<bool, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_bool_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const std::map<std::string, int64_t>& param1);
+  virtual void bool_ret_map_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::map<std::string, int64_t>& param1);
+  static folly::exception_wrapper recv_wrapped_bool_ret_map_param(bool& _return, ::apache::thrift::ClientReceiveState& state);
+  static bool recv_bool_ret_map_param(::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual bool recv_instance_bool_ret_map_param(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_bool_ret_map_param(bool& _return, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  void bool_ret_map_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1);
+  template <typename Protocol_>
+  static folly::exception_wrapper recv_wrapped_bool_ret_map_paramT(Protocol_* prot, bool& _return, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  static bool recv_bool_ret_map_paramT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+  virtual void void_ret_map_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1);
+  virtual void void_ret_map_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1);
+ private:
+  virtual void void_ret_map_paramImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1);
+ public:
+  virtual void sync_void_ret_map_param(const std::map<std::string, int64_t>& param1);
+  virtual void sync_void_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const std::map<std::string, int64_t>& param1);
+  virtual folly::Future<folly::Unit> future_void_ret_map_param(const std::map<std::string, int64_t>& param1);
+  virtual folly::Future<folly::Unit> future_void_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const std::map<std::string, int64_t>& param1);
+  virtual folly::Future<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_void_ret_map_param(apache::thrift::RpcOptions& rpcOptions, const std::map<std::string, int64_t>& param1);
+  virtual void void_ret_map_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::map<std::string, int64_t>& param1);
+  static folly::exception_wrapper recv_wrapped_void_ret_map_param(::apache::thrift::ClientReceiveState& state);
+  static void recv_void_ret_map_param(::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual void recv_instance_void_ret_map_param(::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_void_ret_map_param(::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  void void_ret_map_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1);
+  template <typename Protocol_>
+  static folly::exception_wrapper recv_wrapped_void_ret_map_paramT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  static void recv_void_ret_map_paramT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
  protected:
   std::unique_ptr<apache::thrift::Cpp2ConnContext> connectionContext_;
   std::shared_ptr<apache::thrift::RequestChannel> channel_;

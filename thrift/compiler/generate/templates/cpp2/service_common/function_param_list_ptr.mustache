@@ -16,9 +16,9 @@
 
 %><%#function:args%><%#field:type%><%!
 %><%#type:resolves_to_complex_return?%><%!
-  %>, std::move(uarg_<%field:name%>)<%!
+  %>, std::unique_ptr<<% > Type%>> <%field:name%><%!
 %><%/type:resolves_to_complex_return?%><%!
 %><%^type:resolves_to_complex_return?%><%!
-  %>, args.get<<%field:index%>>().ref()<%!
+  %>, <% > Type%> <%field:name%><%!
 %><%/type:resolves_to_complex_return?%><%!
 %><%/field:type%><%/function:args%>
