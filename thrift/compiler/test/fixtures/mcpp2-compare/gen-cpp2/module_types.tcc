@@ -1759,6 +1759,137 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
+template <class Protocol_>
+uint32_t AnotherException::read(Protocol_* iprot) {
+  uint32_t xfer = 0;
+  std::string fname;
+  apache::thrift::protocol::TType ftype;
+  int16_t fid;
+
+  xfer += iprot->readStructBegin(fname);
+
+  using apache::thrift::TProtocolException;
+
+  bool isset_req_code = false;
+
+  while (true) {
+    xfer += iprot->readFieldBegin(fname, ftype, fid);
+    if (ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    if (fid == std::numeric_limits<int16_t>::min()) {
+      if (fname == "code") {
+        fid = 1;
+        ftype = apache::thrift::protocol::T_I32;
+      }
+      else if (fname == "req_code") {
+        fid = 101;
+        ftype = apache::thrift::protocol::T_I32;
+      }
+      else if (fname == "message") {
+        fid = 2;
+        ftype = apache::thrift::protocol::T_STRING;
+      }
+    }
+    switch (fid) {
+      case 1:
+      {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->code);
+          this->__isset.code = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 101:
+      {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->req_code);
+          isset_req_code = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 2:
+      {
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->message);
+          this->__isset.message = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      default:
+      {
+        xfer += iprot->skip(ftype);
+        break;
+      }
+    }
+    xfer += iprot->readFieldEnd();
+  }
+  xfer += iprot->readStructEnd();
+
+  if (!isset_req_code) {
+    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_code' was not found in serialized data! Struct: AnotherException");
+  }
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t AnotherException::serializedSize(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("AnotherException");
+  xfer += prot_->serializedFieldSize("code", apache::thrift::protocol::T_I32, 1);
+  xfer += prot_->serializedSizeI32(this->code);
+  xfer += prot_->serializedFieldSize("req_code", apache::thrift::protocol::T_I32, 101);
+  xfer += prot_->serializedSizeI32(this->req_code);
+  xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 2);
+  xfer += prot_->serializedSizeString(this->message);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t AnotherException::serializedSizeZC(Protocol_ const* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->serializedStructSize("AnotherException");
+  xfer += prot_->serializedFieldSize("code", apache::thrift::protocol::T_I32, 1);
+  xfer += prot_->serializedSizeI32(this->code);
+  xfer += prot_->serializedFieldSize("req_code", apache::thrift::protocol::T_I32, 101);
+  xfer += prot_->serializedSizeI32(this->req_code);
+  xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 2);
+  xfer += prot_->serializedSizeString(this->message);
+  xfer += prot_->serializedSizeStop();
+  return xfer;
+}
+
+template <class Protocol_>
+uint32_t AnotherException::write(Protocol_* prot_) const {
+  uint32_t xfer = 0;
+  xfer += prot_->writeStructBegin("AnotherException");
+  xfer += prot_->writeFieldBegin("code", apache::thrift::protocol::T_I32, 1);
+  xfer += prot_->writeI32(this->code);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("req_code", apache::thrift::protocol::T_I32, 101);
+  xfer += prot_->writeI32(this->req_code);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("message", apache::thrift::protocol::T_STRING, 2);
+  xfer += prot_->writeString(this->message);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldStop();
+  xfer += prot_->writeStructEnd();
+  return xfer;
+}
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
 template <typename T_containerStruct_fieldB_struct_setter>
 std::map<std::string, bool>& containerStruct::set_fieldB(T_containerStruct_fieldB_struct_setter&& fieldB_) {
   fieldB = std::forward<T_containerStruct_fieldB_struct_setter>(fieldB_);

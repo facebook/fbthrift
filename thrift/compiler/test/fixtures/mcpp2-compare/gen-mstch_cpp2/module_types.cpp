@@ -636,6 +636,50 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
+void AnotherException::__clear() {
+  // clear all fields
+  code = 0;
+  req_code = 0;
+  message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  __isset.__clear();
+}
+
+bool AnotherException::operator==(const AnotherException& rhs) const {
+  if (!((code == rhs.code))) {
+    return false;
+  }
+  if (!((req_code == rhs.req_code))) {
+    return false;
+  }
+  if (!((message == rhs.message))) {
+    return false;
+  }
+  return true;
+}
+
+void swap(AnotherException& a, AnotherException& b) {
+  using ::std::swap;
+  swap(a.code, b.code);
+  swap(a.req_code, b.req_code);
+  swap(a.message, b.message);
+  swap(a.__isset, b.__isset);
+}
+
+template uint32_t AnotherException::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t AnotherException::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t AnotherException::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t AnotherException::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t AnotherException::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t AnotherException::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t AnotherException::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t AnotherException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
 void containerStruct::__clear() {
   // clear all fields
   fieldA = 0;

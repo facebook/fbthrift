@@ -25,6 +25,7 @@ class MyStruct;
 class SimpleUnion;
 class ComplexUnion;
 class AnException;
+class AnotherException;
 class containerStruct;
 class MyIncludedStruct;
 
@@ -2599,6 +2600,170 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnExc
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnException>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::AnException const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
+class AnotherException : private apache::thrift::detail::st::ComparisonOperators<AnotherException>, public apache::thrift::TException {
+ public:
+
+  AnotherException() :
+      code(0),
+      req_code(0) {}
+  // FragileConstructor for use in initialization lists only
+
+  AnotherException(apache::thrift::FragileConstructor, int32_t code__arg, int32_t req_code__arg, std::string message__arg) :
+      code(std::move(code__arg)),
+      req_code(std::move(req_code__arg)),
+      message(std::move(message__arg)) {
+    __isset.code = true;
+    __isset.message = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnotherException(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnotherException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    code = arg.move();
+    __isset.code = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnotherException(::apache::thrift::detail::argument_wrapper<101, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnotherException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    req_code = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnotherException(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnotherException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    message = arg.move();
+    __isset.message = true;
+  }
+
+  AnotherException(AnotherException&&) = default;
+
+  AnotherException(const AnotherException&) = default;
+
+  AnotherException& operator=(AnotherException&&) = default;
+
+  AnotherException& operator=(const AnotherException&) = default;
+  void __clear();
+
+  virtual ~AnotherException() throw() {}
+
+  int32_t code;
+  int32_t req_code;
+  std::string message;
+
+  struct __isset {
+    void __clear() {
+      code = false;
+      message = false;
+    }
+
+    bool code = false;
+    bool message = false;
+  } __isset;
+  bool operator==(const AnotherException& rhs) const;
+
+  bool operator < (const AnotherException& rhs) const {
+    if (!(code == rhs.code)) {
+      return code < rhs.code;
+    }
+    if (!(req_code == rhs.req_code)) {
+      return req_code < rhs.req_code;
+    }
+    if (!(message == rhs.message)) {
+      return message < rhs.message;
+    }
+    (void)rhs;
+    return false;
+  }
+
+  int32_t get_code() const {
+    return code;
+  }
+
+  int32_t& set_code(int32_t code_) {
+    code = code_;
+    __isset.code = true;
+    return code;
+  }
+
+  int32_t get_req_code() const {
+    return req_code;
+  }
+
+  int32_t& set_req_code(int32_t req_code_) {
+    req_code = req_code_;
+    return req_code;
+  }
+
+  const std::string& get_message() const& {
+    return message;
+  }
+
+  std::string get_message() && {
+    return std::move(message);
+  }
+
+  template <typename T_AnotherException_message_struct_setter>
+  std::string& set_message(T_AnotherException_message_struct_setter&& message_) {
+    message = std::forward<T_AnotherException_message_struct_setter>(message_);
+    __isset.message = true;
+    return message;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+  virtual const char* what() const throw() {
+    return " ::some::valid::ns::AnotherException";
+  }
+};
+
+void swap(AnotherException& a, AnotherException& b);
+extern template uint32_t AnotherException::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t AnotherException::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t AnotherException::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t AnotherException::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t AnotherException::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t AnotherException::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t AnotherException::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t AnotherException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::some::valid::ns::AnotherException>::clear( ::some::valid::ns::AnotherException* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::AnotherException>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnotherException>::write(Protocol* proto,  ::some::valid::ns::AnotherException const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnotherException>::read(Protocol* proto,  ::some::valid::ns::AnotherException* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnotherException>::serializedSize(Protocol const* proto,  ::some::valid::ns::AnotherException const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnotherException>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::AnotherException const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

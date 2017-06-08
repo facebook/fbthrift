@@ -100,6 +100,7 @@ mstch::map t_mstch_generator::dump(const t_field& field, int32_t index) const {
       {"key", std::to_string(field.get_key())},
       {"type", this->dump(*field.get_type())},
       {"index", std::to_string(index)},
+      {"index_plus_one", std::to_string(index + 1)},
       {"required?", req == t_field::e_req::T_REQUIRED},
       {"optional?", req == t_field::e_req::T_OPTIONAL},
       {"optInReqOut?", req == t_field::e_req::T_OPT_IN_REQ_OUT},
@@ -225,6 +226,7 @@ mstch::map t_mstch_generator::dump(const t_function& function) const {
       {"oneway?", function.is_oneway()},
       {"returnType", this->dump(*function.get_returntype())},
       {"exceptions", this->dump_elems(function.get_xceptions()->get_members())},
+      {"exceptions?", !function.get_xceptions()->get_members().empty()},
       {"annotations",
        function.get_annotations()
            ? this->dump_elems(function.get_annotations()->annotations_)

@@ -92,6 +92,14 @@ folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:na
       // _return pointer has been filled
       return; // from try_and_catch
     }
+<%/type:void?%>
+<%#function:exceptions%>
+    if (result.getIsSet(<%#type:void?%><%field:index%><%/type:void?%><%^type:void?%><%field:index_plus_one%><%/type:void?%>)) {
+      interior_ew = folly::make_exception_wrapper<<% > common/namespace_cpp2%><%#field:type%><%type:name%><%/field:type%>>(result.get<<%#type:void?%><%field:index%><%/type:void?%><%^type:void?%><%field:index_plus_one%><%/type:void?%>>().ref());
+      return; // from try_and_catch
+    }
+<%/function:exceptions%>
+<%^type:void?%>
     else {
       interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::TApplicationExceptionType::MISSING_RESULT, "failed: unknown result");
       return; // from try_and_catch

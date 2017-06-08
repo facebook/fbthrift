@@ -29,9 +29,53 @@ void ExtraServiceSvIf::async_tm_simple_function(std::unique_ptr<apache::thrift::
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_simple_function(); });
 }
 
+void ExtraServiceSvIf::throws_function() {
+  throw apache::thrift::TApplicationException("Function throws_function is unimplemented");
+}
+
+folly::Future<folly::Unit> ExtraServiceSvIf::future_throws_function() {
+  return apache::thrift::detail::si::future([&] { return throws_function(); });
+}
+
+void ExtraServiceSvIf::async_tm_throws_function(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_throws_function(); });
+}
+
+bool ExtraServiceSvIf::throws_function2(bool /*param1*/) {
+  throw apache::thrift::TApplicationException("Function throws_function2 is unimplemented");
+}
+
+folly::Future<bool> ExtraServiceSvIf::future_throws_function2(bool param1) {
+  return apache::thrift::detail::si::future([&] { return throws_function2(param1); });
+}
+
+void ExtraServiceSvIf::async_tm_throws_function2(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, bool param1) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_throws_function2(param1); });
+}
+
+void ExtraServiceSvIf::throws_function3(std::map<int32_t, std::string>& /*_return*/, bool /*param1*/, std::unique_ptr<std::string> /*param2*/) {
+  throw apache::thrift::TApplicationException("Function throws_function3 is unimplemented");
+}
+
+folly::Future<std::unique_ptr<std::map<int32_t, std::string>>> ExtraServiceSvIf::future_throws_function3(bool param1, std::unique_ptr<std::string> param2) {
+  return apache::thrift::detail::si::future_returning_uptr([&](std::map<int32_t, std::string>& _return) { throws_function3(_return, param1, std::move(param2)); });
+}
+
+void ExtraServiceSvIf::async_tm_throws_function3(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::map<int32_t, std::string>>>> callback, bool param1, std::unique_ptr<std::string> param2) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_throws_function3(param1, std::move(param2)); });
+}
+
 bool ExtraServiceSvNull::simple_function() {
   return 0;
 }
+
+void ExtraServiceSvNull::throws_function() {}
+
+bool ExtraServiceSvNull::throws_function2(bool /*param1*/) {
+  return 0;
+}
+
+void ExtraServiceSvNull::throws_function3(std::map<int32_t, std::string>& /*_return*/, bool /*param1*/, std::unique_ptr<std::string> /*param2*/) {}
 
 const char* ExtraServiceAsyncProcessor::getServiceName() {
   return "ExtraService";
@@ -57,6 +101,9 @@ const ExtraServiceAsyncProcessor::BinaryProtocolProcessMap& ExtraServiceAsyncPro
 
 const ExtraServiceAsyncProcessor::BinaryProtocolProcessMap ExtraServiceAsyncProcessor::binaryProcessMap_ {
   {"simple_function", &ExtraServiceAsyncProcessor::_processInThread_simple_function<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"throws_function", &ExtraServiceAsyncProcessor::_processInThread_throws_function<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"throws_function2", &ExtraServiceAsyncProcessor::_processInThread_throws_function2<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"throws_function3", &ExtraServiceAsyncProcessor::_processInThread_throws_function3<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const ExtraServiceAsyncProcessor::CompactProtocolProcessMap& ExtraServiceAsyncProcessor::getCompactProtocolProcessMap() {
@@ -65,6 +112,9 @@ const ExtraServiceAsyncProcessor::CompactProtocolProcessMap& ExtraServiceAsyncPr
 
 const ExtraServiceAsyncProcessor::CompactProtocolProcessMap ExtraServiceAsyncProcessor::compactProcessMap_ {
   {"simple_function", &ExtraServiceAsyncProcessor::_processInThread_simple_function<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"throws_function", &ExtraServiceAsyncProcessor::_processInThread_throws_function<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"throws_function2", &ExtraServiceAsyncProcessor::_processInThread_throws_function2<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"throws_function3", &ExtraServiceAsyncProcessor::_processInThread_throws_function3<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 }}} // some::valid::ns

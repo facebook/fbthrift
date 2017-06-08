@@ -96,9 +96,25 @@ folly::IOBufQueue <%service:name%>AsyncProcessor::return_<%function:name%>(int32
 template <class ProtocolIn_, class ProtocolOut_>
 void <%service:name%>AsyncProcessor::throw_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx) {
   ProtocolOut_ prot;
+<%#function:exceptions?%>
+  <%service:name%>_<%function:name%>_presult result;
+<%/function:exceptions?%>
   try {
     std::rethrow_exception(ep);
   }
+<%#function:exceptions%>
+  catch (const <% > common/namespace_cpp2%><%#field:type%><%type:name%><%/field:type%>& e) {
+    ctx->userExceptionWrapped(true, folly::exception_wrapper(ep, e));
+<%#type:void?%>
+    result.get<<%field:index%>>().ref() = e;
+    result.setIsSet(<%field:index%>, true);
+<%/type:void?%>
+<%^type:void?%>
+    result.get<<%field:index_plus_one%>>().ref() = e;
+    result.setIsSet(<%field:index_plus_one%>, true);
+<%/type:void?%>
+  }
+<%/function:exceptions%>
   catch (const std::exception& e) {
     auto ew = folly::exception_wrapper(ep, e);
     if (req) {
@@ -128,6 +144,11 @@ void <%service:name%>AsyncProcessor::throw_<%function:name%>(std::unique_ptr<apa
       LOG(ERROR) << "<unknown exception>" << " in oneway function <%function:name%>";
     }
   }
+<%#function:exceptions?%>
+  auto queue = serializeResponse("<%function:name%>", &prot, protoSeqId, ctx, result);
+  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+  return req->sendReply(queue.move());
+<%/function:exceptions?%>
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -136,6 +157,23 @@ void <%service:name%>AsyncProcessor::throw_wrapped_<%function:name%>(std::unique
     return;
   }
   ProtocolOut_ prot;
+<%#function:exceptions?%>
+  <%service:name%>_<%function:name%>_presult result;
+<%/function:exceptions?%>
+<%#function:exceptions%>
+  if (ew.with_exception([&](<% > common/namespace_cpp2%><%#field:type%><%type:name%><%/field:type%>& e) {
+    ctx->userExceptionWrapped(true, ew);
+<%#type:void?%>
+    result.get<<%field:index%>>().ref() = e;
+    result.setIsSet(<%field:index%>, true);
+<%/type:void?%>
+<%^type:void?%>
+    result.get<<%field:index_plus_one%>>().ref() = e;
+    result.setIsSet(<%field:index_plus_one%>, true);
+<%/type:void?%>
+  }
+  )) {} else
+<%/function:exceptions%>
    {
     if (req) {
       LOG(ERROR) << ew.what().toStdString() << " in function <%function:name%>";
@@ -151,6 +189,11 @@ void <%service:name%>AsyncProcessor::throw_wrapped_<%function:name%>(std::unique
       LOG(ERROR) << ew.what().toStdString() << " in oneway function <%function:name%>";
     }
   }
+<%#function:exceptions?%>
+  auto queue = serializeResponse("<%function:name%>", &prot, protoSeqId, ctx, result);
+  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
+  return req->sendReply(queue.move());
+<%/function:exceptions?%>
 }
 
 <%/function:returnType%><%/service:functions%>

@@ -106,6 +106,12 @@ exception AnException {
   19: list<unionTypeDef> a_union_typedef_list
 }
 
+exception AnotherException {
+  1: i32 code
+  101: required i32 req_code
+  2: string message
+}
+
 struct containerStruct {
   1: bool fieldA
   101: required bool req_fieldA
@@ -228,4 +234,9 @@ service ParamService {
 
 service ExtraService extends ParamService {
   bool simple_function()
+  void throws_function() throws (1: AnException ex, 2: AnotherException aex)
+  bool throws_function2(1: bool param1)
+      throws (1: AnException ex, 2: AnotherException aex)
+  map<i32, string> throws_function3(1: bool param1, 3: string param2)
+      throws (2: AnException ex, 5: AnotherException aex)
 }
