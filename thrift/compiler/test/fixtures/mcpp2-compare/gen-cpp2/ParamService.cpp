@@ -41,6 +41,78 @@ void ParamServiceSvIf::async_tm_void_ret_byte_i16_param(std::unique_ptr<apache::
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_void_ret_byte_i16_param(param1, param2); });
 }
 
+void ParamServiceSvIf::void_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/) {
+  throw apache::thrift::TApplicationException("Function void_ret_map_param is unimplemented");
+}
+
+folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> param1) {
+  return apache::thrift::detail::si::future([&] { return void_ret_map_param(std::move(param1)); });
+}
+
+void ParamServiceSvIf::async_tm_void_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<std::map<std::string, int64_t>> param1) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_void_ret_map_param(std::move(param1)); });
+}
+
+void ParamServiceSvIf::void_ret_map_setlist_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/, std::unique_ptr<std::set<std::vector<std::string>>> /*param2*/) {
+  throw apache::thrift::TApplicationException("Function void_ret_map_setlist_param is unimplemented");
+}
+
+folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_map_setlist_param(std::unique_ptr<std::map<std::string, int64_t>> param1, std::unique_ptr<std::set<std::vector<std::string>>> param2) {
+  return apache::thrift::detail::si::future([&] { return void_ret_map_setlist_param(std::move(param1), std::move(param2)); });
+}
+
+void ParamServiceSvIf::async_tm_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<std::map<std::string, int64_t>> param1, std::unique_ptr<std::set<std::vector<std::string>>> param2) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_void_ret_map_setlist_param(std::move(param1), std::move(param2)); });
+}
+
+void ParamServiceSvIf::void_ret_map_typedef_param( ::some::valid::ns::simpleTypeDef /*param1*/) {
+  throw apache::thrift::TApplicationException("Function void_ret_map_typedef_param is unimplemented");
+}
+
+folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_map_typedef_param( ::some::valid::ns::simpleTypeDef param1) {
+  return apache::thrift::detail::si::future([&] { return void_ret_map_typedef_param(param1); });
+}
+
+void ParamServiceSvIf::async_tm_void_ret_map_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback,  ::some::valid::ns::simpleTypeDef param1) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_void_ret_map_typedef_param(param1); });
+}
+
+void ParamServiceSvIf::void_ret_enum_param( ::some::valid::ns::MyEnumA /*param1*/) {
+  throw apache::thrift::TApplicationException("Function void_ret_enum_param is unimplemented");
+}
+
+folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_enum_param( ::some::valid::ns::MyEnumA param1) {
+  return apache::thrift::detail::si::future([&] { return void_ret_enum_param(param1); });
+}
+
+void ParamServiceSvIf::async_tm_void_ret_enum_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback,  ::some::valid::ns::MyEnumA param1) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_void_ret_enum_param(param1); });
+}
+
+void ParamServiceSvIf::void_ret_struct_param(std::unique_ptr< ::some::valid::ns::MyStruct> /*param1*/) {
+  throw apache::thrift::TApplicationException("Function void_ret_struct_param is unimplemented");
+}
+
+folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_struct_param(std::unique_ptr< ::some::valid::ns::MyStruct> param1) {
+  return apache::thrift::detail::si::future([&] { return void_ret_struct_param(std::move(param1)); });
+}
+
+void ParamServiceSvIf::async_tm_void_ret_struct_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr< ::some::valid::ns::MyStruct> param1) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_void_ret_struct_param(std::move(param1)); });
+}
+
+void ParamServiceSvIf::void_ret_listunion_param(std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>> /*param1*/) {
+  throw apache::thrift::TApplicationException("Function void_ret_listunion_param is unimplemented");
+}
+
+folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_listunion_param(std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>> param1) {
+  return apache::thrift::detail::si::future([&] { return void_ret_listunion_param(std::move(param1)); });
+}
+
+void ParamServiceSvIf::async_tm_void_ret_listunion_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>> param1) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_void_ret_listunion_param(std::move(param1)); });
+}
+
 bool ParamServiceSvIf::bool_ret_i32_i64_param(int32_t /*param1*/, int64_t /*param2*/) {
   throw apache::thrift::TApplicationException("Function bool_ret_i32_i64_param is unimplemented");
 }
@@ -53,6 +125,30 @@ void ParamServiceSvIf::async_tm_bool_ret_i32_i64_param(std::unique_ptr<apache::t
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_bool_ret_i32_i64_param(param1, param2); });
 }
 
+bool ParamServiceSvIf::bool_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/) {
+  throw apache::thrift::TApplicationException("Function bool_ret_map_param is unimplemented");
+}
+
+folly::Future<bool> ParamServiceSvIf::future_bool_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> param1) {
+  return apache::thrift::detail::si::future([&] { return bool_ret_map_param(std::move(param1)); });
+}
+
+void ParamServiceSvIf::async_tm_bool_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<std::map<std::string, int64_t>> param1) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_bool_ret_map_param(std::move(param1)); });
+}
+
+bool ParamServiceSvIf::bool_ret_union_param(std::unique_ptr< ::some::valid::ns::ComplexUnion> /*param1*/) {
+  throw apache::thrift::TApplicationException("Function bool_ret_union_param is unimplemented");
+}
+
+folly::Future<bool> ParamServiceSvIf::future_bool_ret_union_param(std::unique_ptr< ::some::valid::ns::ComplexUnion> param1) {
+  return apache::thrift::detail::si::future([&] { return bool_ret_union_param(std::move(param1)); });
+}
+
+void ParamServiceSvIf::async_tm_bool_ret_union_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr< ::some::valid::ns::ComplexUnion> param1) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_bool_ret_union_param(std::move(param1)); });
+}
+
 int64_t ParamServiceSvIf::i64_ret_float_double_param(float /*param1*/, double /*param2*/) {
   throw apache::thrift::TApplicationException("Function i64_ret_float_double_param is unimplemented");
 }
@@ -63,6 +159,42 @@ folly::Future<int64_t> ParamServiceSvIf::future_i64_ret_float_double_param(float
 
 void ParamServiceSvIf::async_tm_i64_ret_float_double_param(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback, float param1, double param2) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_i64_ret_float_double_param(param1, param2); });
+}
+
+int64_t ParamServiceSvIf::i64_ret_string_typedef_param(std::unique_ptr<std::string> /*param1*/, std::unique_ptr<std::set< ::some::valid::ns::mostComplexTypeDef>> /*param2*/) {
+  throw apache::thrift::TApplicationException("Function i64_ret_string_typedef_param is unimplemented");
+}
+
+folly::Future<int64_t> ParamServiceSvIf::future_i64_ret_string_typedef_param(std::unique_ptr<std::string> param1, std::unique_ptr<std::set< ::some::valid::ns::mostComplexTypeDef>> param2) {
+  return apache::thrift::detail::si::future([&] { return i64_ret_string_typedef_param(std::move(param1), std::move(param2)); });
+}
+
+void ParamServiceSvIf::async_tm_i64_ret_string_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback, std::unique_ptr<std::string> param1, std::unique_ptr<std::set< ::some::valid::ns::mostComplexTypeDef>> param2) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_i64_ret_string_typedef_param(std::move(param1), std::move(param2)); });
+}
+
+int64_t ParamServiceSvIf::i64_ret_i32_i32_i32_i32_i32_param(int32_t /*param1*/, int32_t /*param2*/, int32_t /*param3*/, int32_t /*param4*/, int32_t /*param5*/) {
+  throw apache::thrift::TApplicationException("Function i64_ret_i32_i32_i32_i32_i32_param is unimplemented");
+}
+
+folly::Future<int64_t> ParamServiceSvIf::future_i64_ret_i32_i32_i32_i32_i32_param(int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
+  return apache::thrift::detail::si::future([&] { return i64_ret_i32_i32_i32_i32_i32_param(param1, param2, param3, param4, param5); });
+}
+
+void ParamServiceSvIf::async_tm_i64_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_i64_ret_i32_i32_i32_i32_i32_param(param1, param2, param3, param4, param5); });
+}
+
+double ParamServiceSvIf::double_ret_setstruct_param(std::unique_ptr<std::set< ::some::valid::ns::MyStruct>> /*param1*/) {
+  throw apache::thrift::TApplicationException("Function double_ret_setstruct_param is unimplemented");
+}
+
+folly::Future<double> ParamServiceSvIf::future_double_ret_setstruct_param(std::unique_ptr<std::set< ::some::valid::ns::MyStruct>> param1) {
+  return apache::thrift::detail::si::future([&] { return double_ret_setstruct_param(std::move(param1)); });
+}
+
+void ParamServiceSvIf::async_tm_double_ret_setstruct_param(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback, std::unique_ptr<std::set< ::some::valid::ns::MyStruct>> param1) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_double_ret_setstruct_param(std::move(param1)); });
 }
 
 void ParamServiceSvIf::string_ret_string_param(std::string& /*_return*/, std::unique_ptr<std::string> /*param1*/) {
@@ -89,35 +221,163 @@ void ParamServiceSvIf::async_tm_map_ret_bool_param(std::unique_ptr<apache::thrif
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_map_ret_bool_param(param1); });
 }
 
-bool ParamServiceSvIf::bool_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/) {
-  throw apache::thrift::TApplicationException("Function bool_ret_map_param is unimplemented");
+void ParamServiceSvIf::list_ret_map_setlist_param(std::vector<bool>& /*_return*/, std::unique_ptr<std::map<int32_t, std::vector<std::string>>> /*param1*/, std::unique_ptr<std::vector<std::string>> /*param2*/) {
+  throw apache::thrift::TApplicationException("Function list_ret_map_setlist_param is unimplemented");
 }
 
-folly::Future<bool> ParamServiceSvIf::future_bool_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> param1) {
-  return apache::thrift::detail::si::future([&] { return bool_ret_map_param(std::move(param1)); });
+folly::Future<std::unique_ptr<std::vector<bool>>> ParamServiceSvIf::future_list_ret_map_setlist_param(std::unique_ptr<std::map<int32_t, std::vector<std::string>>> param1, std::unique_ptr<std::vector<std::string>> param2) {
+  return apache::thrift::detail::si::future_returning_uptr([&](std::vector<bool>& _return) { list_ret_map_setlist_param(_return, std::move(param1), std::move(param2)); });
 }
 
-void ParamServiceSvIf::async_tm_bool_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<std::map<std::string, int64_t>> param1) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_bool_ret_map_param(std::move(param1)); });
+void ParamServiceSvIf::async_tm_list_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector<bool>>>> callback, std::unique_ptr<std::map<int32_t, std::vector<std::string>>> param1, std::unique_ptr<std::vector<std::string>> param2) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_list_ret_map_setlist_param(std::move(param1), std::move(param2)); });
 }
 
-void ParamServiceSvIf::void_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/) {
-  throw apache::thrift::TApplicationException("Function void_ret_map_param is unimplemented");
+void ParamServiceSvIf::mapsetlistmapliststring_ret_listlistlist_param(std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>>& /*_return*/, std::unique_ptr<std::vector<std::vector<std::vector<std::vector<int32_t>>>>> /*param1*/) {
+  throw apache::thrift::TApplicationException("Function mapsetlistmapliststring_ret_listlistlist_param is unimplemented");
 }
 
-folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> param1) {
-  return apache::thrift::detail::si::future([&] { return void_ret_map_param(std::move(param1)); });
+folly::Future<std::unique_ptr<std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>>>> ParamServiceSvIf::future_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<std::vector<std::vector<std::vector<std::vector<int32_t>>>>> param1) {
+  return apache::thrift::detail::si::future_returning_uptr([&](std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>>& _return) { mapsetlistmapliststring_ret_listlistlist_param(_return, std::move(param1)); });
 }
 
-void ParamServiceSvIf::async_tm_void_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, std::unique_ptr<std::map<std::string, int64_t>> param1) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_void_ret_map_param(std::move(param1)); });
+void ParamServiceSvIf::async_tm_mapsetlistmapliststring_ret_listlistlist_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>>>>> callback, std::unique_ptr<std::vector<std::vector<std::vector<std::vector<int32_t>>>>> param1) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_mapsetlistmapliststring_ret_listlistlist_param(std::move(param1)); });
+}
+
+ ::some::valid::ns::simpleTypeDef ParamServiceSvIf::typedef_ret_i32_param(int32_t /*param1*/) {
+  throw apache::thrift::TApplicationException("Function typedef_ret_i32_param is unimplemented");
+}
+
+folly::Future< ::some::valid::ns::simpleTypeDef> ParamServiceSvIf::future_typedef_ret_i32_param(int32_t param1) {
+  return apache::thrift::detail::si::future([&] { return typedef_ret_i32_param(param1); });
+}
+
+void ParamServiceSvIf::async_tm_typedef_ret_i32_param(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::simpleTypeDef>> callback, int32_t param1) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_typedef_ret_i32_param(param1); });
+}
+
+void ParamServiceSvIf::listtypedef_ret_typedef_param(std::vector< ::some::valid::ns::simpleTypeDef>& /*_return*/, std::unique_ptr< ::some::valid::ns::complexStructTypeDef> /*param1*/) {
+  throw apache::thrift::TApplicationException("Function listtypedef_ret_typedef_param is unimplemented");
+}
+
+folly::Future<std::unique_ptr<std::vector< ::some::valid::ns::simpleTypeDef>>> ParamServiceSvIf::future_listtypedef_ret_typedef_param(std::unique_ptr< ::some::valid::ns::complexStructTypeDef> param1) {
+  return apache::thrift::detail::si::future_returning_uptr([&](std::vector< ::some::valid::ns::simpleTypeDef>& _return) { listtypedef_ret_typedef_param(_return, std::move(param1)); });
+}
+
+void ParamServiceSvIf::async_tm_listtypedef_ret_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::simpleTypeDef>>>> callback, std::unique_ptr< ::some::valid::ns::complexStructTypeDef> param1) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_listtypedef_ret_typedef_param(std::move(param1)); });
+}
+
+ ::some::valid::ns::MyEnumA ParamServiceSvIf::enum_ret_double_param(double /*param1*/) {
+  throw apache::thrift::TApplicationException("Function enum_ret_double_param is unimplemented");
+}
+
+folly::Future< ::some::valid::ns::MyEnumA> ParamServiceSvIf::future_enum_ret_double_param(double param1) {
+  return apache::thrift::detail::si::future([&] { return enum_ret_double_param(param1); });
+}
+
+void ParamServiceSvIf::async_tm_enum_ret_double_param(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>> callback, double param1) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_enum_ret_double_param(param1); });
+}
+
+ ::some::valid::ns::MyEnumA ParamServiceSvIf::enum_ret_double_enum_param(double /*param1*/,  ::some::valid::ns::MyEnumA /*param2*/) {
+  throw apache::thrift::TApplicationException("Function enum_ret_double_enum_param is unimplemented");
+}
+
+folly::Future< ::some::valid::ns::MyEnumA> ParamServiceSvIf::future_enum_ret_double_enum_param(double param1,  ::some::valid::ns::MyEnumA param2) {
+  return apache::thrift::detail::si::future([&] { return enum_ret_double_enum_param(param1, param2); });
+}
+
+void ParamServiceSvIf::async_tm_enum_ret_double_enum_param(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>> callback, double param1,  ::some::valid::ns::MyEnumA param2) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_enum_ret_double_enum_param(param1, param2); });
+}
+
+void ParamServiceSvIf::listenum_ret_map_param(std::vector< ::some::valid::ns::MyEnumA>& /*_return*/, std::unique_ptr<std::map<std::string, int64_t>> /*param1*/) {
+  throw apache::thrift::TApplicationException("Function listenum_ret_map_param is unimplemented");
+}
+
+folly::Future<std::unique_ptr<std::vector< ::some::valid::ns::MyEnumA>>> ParamServiceSvIf::future_listenum_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> param1) {
+  return apache::thrift::detail::si::future_returning_uptr([&](std::vector< ::some::valid::ns::MyEnumA>& _return) { listenum_ret_map_param(_return, std::move(param1)); });
+}
+
+void ParamServiceSvIf::async_tm_listenum_ret_map_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::MyEnumA>>>> callback, std::unique_ptr<std::map<std::string, int64_t>> param1) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_listenum_ret_map_param(std::move(param1)); });
+}
+
+void ParamServiceSvIf::struct_ret_i16_param( ::some::valid::ns::MyStruct& /*_return*/, int16_t /*param1*/) {
+  throw apache::thrift::TApplicationException("Function struct_ret_i16_param is unimplemented");
+}
+
+folly::Future<std::unique_ptr< ::some::valid::ns::MyStruct>> ParamServiceSvIf::future_struct_ret_i16_param(int16_t param1) {
+  return apache::thrift::detail::si::future_returning_uptr([&]( ::some::valid::ns::MyStruct& _return) { struct_ret_i16_param(_return, param1); });
+}
+
+void ParamServiceSvIf::async_tm_struct_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::MyStruct>>> callback, int16_t param1) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_struct_ret_i16_param(param1); });
+}
+
+void ParamServiceSvIf::setstruct_ret_set_param(std::set< ::some::valid::ns::MyStruct>& /*_return*/, std::unique_ptr<std::set<std::string>> /*param1*/) {
+  throw apache::thrift::TApplicationException("Function setstruct_ret_set_param is unimplemented");
+}
+
+folly::Future<std::unique_ptr<std::set< ::some::valid::ns::MyStruct>>> ParamServiceSvIf::future_setstruct_ret_set_param(std::unique_ptr<std::set<std::string>> param1) {
+  return apache::thrift::detail::si::future_returning_uptr([&](std::set< ::some::valid::ns::MyStruct>& _return) { setstruct_ret_set_param(_return, std::move(param1)); });
+}
+
+void ParamServiceSvIf::async_tm_setstruct_ret_set_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::set< ::some::valid::ns::MyStruct>>>> callback, std::unique_ptr<std::set<std::string>> param1) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_setstruct_ret_set_param(std::move(param1)); });
+}
+
+void ParamServiceSvIf::union_ret_i32_i32_param( ::some::valid::ns::ComplexUnion& /*_return*/, int32_t /*param1*/, int32_t /*param2*/) {
+  throw apache::thrift::TApplicationException("Function union_ret_i32_i32_param is unimplemented");
+}
+
+folly::Future<std::unique_ptr< ::some::valid::ns::ComplexUnion>> ParamServiceSvIf::future_union_ret_i32_i32_param(int32_t param1, int32_t param2) {
+  return apache::thrift::detail::si::future_returning_uptr([&]( ::some::valid::ns::ComplexUnion& _return) { union_ret_i32_i32_param(_return, param1, param2); });
+}
+
+void ParamServiceSvIf::async_tm_union_ret_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::ComplexUnion>>> callback, int32_t param1, int32_t param2) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_union_ret_i32_i32_param(param1, param2); });
+}
+
+void ParamServiceSvIf::listunion_string_param(std::vector< ::some::valid::ns::ComplexUnion>& /*_return*/, std::unique_ptr<std::string> /*param1*/) {
+  throw apache::thrift::TApplicationException("Function listunion_string_param is unimplemented");
+}
+
+folly::Future<std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>>> ParamServiceSvIf::future_listunion_string_param(std::unique_ptr<std::string> param1) {
+  return apache::thrift::detail::si::future_returning_uptr([&](std::vector< ::some::valid::ns::ComplexUnion>& _return) { listunion_string_param(_return, std::move(param1)); });
+}
+
+void ParamServiceSvIf::async_tm_listunion_string_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>>>> callback, std::unique_ptr<std::string> param1) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_listunion_string_param(std::move(param1)); });
 }
 
 void ParamServiceSvNull::void_ret_i16_param(int16_t /*param1*/) {}
 
 void ParamServiceSvNull::void_ret_byte_i16_param(int8_t /*param1*/, int16_t /*param2*/) {}
 
+void ParamServiceSvNull::void_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/) {}
+
+void ParamServiceSvNull::void_ret_map_setlist_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/, std::unique_ptr<std::set<std::vector<std::string>>> /*param2*/) {}
+
+void ParamServiceSvNull::void_ret_map_typedef_param( ::some::valid::ns::simpleTypeDef /*param1*/) {}
+
+void ParamServiceSvNull::void_ret_enum_param( ::some::valid::ns::MyEnumA /*param1*/) {}
+
+void ParamServiceSvNull::void_ret_struct_param(std::unique_ptr< ::some::valid::ns::MyStruct> /*param1*/) {}
+
+void ParamServiceSvNull::void_ret_listunion_param(std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>> /*param1*/) {}
+
 bool ParamServiceSvNull::bool_ret_i32_i64_param(int32_t /*param1*/, int64_t /*param2*/) {
+  return 0;
+}
+
+bool ParamServiceSvNull::bool_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/) {
+  return 0;
+}
+
+bool ParamServiceSvNull::bool_ret_union_param(std::unique_ptr< ::some::valid::ns::ComplexUnion> /*param1*/) {
   return 0;
 }
 
@@ -125,15 +385,49 @@ int64_t ParamServiceSvNull::i64_ret_float_double_param(float /*param1*/, double 
   return 0;
 }
 
+int64_t ParamServiceSvNull::i64_ret_string_typedef_param(std::unique_ptr<std::string> /*param1*/, std::unique_ptr<std::set< ::some::valid::ns::mostComplexTypeDef>> /*param2*/) {
+  return 0;
+}
+
+int64_t ParamServiceSvNull::i64_ret_i32_i32_i32_i32_i32_param(int32_t /*param1*/, int32_t /*param2*/, int32_t /*param3*/, int32_t /*param4*/, int32_t /*param5*/) {
+  return 0;
+}
+
+double ParamServiceSvNull::double_ret_setstruct_param(std::unique_ptr<std::set< ::some::valid::ns::MyStruct>> /*param1*/) {
+  return 0;
+}
+
 void ParamServiceSvNull::string_ret_string_param(std::string& /*_return*/, std::unique_ptr<std::string> /*param1*/) {}
 
 void ParamServiceSvNull::map_ret_bool_param(std::map<std::string, int64_t>& /*_return*/, bool /*param1*/) {}
 
-bool ParamServiceSvNull::bool_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/) {
+void ParamServiceSvNull::list_ret_map_setlist_param(std::vector<bool>& /*_return*/, std::unique_ptr<std::map<int32_t, std::vector<std::string>>> /*param1*/, std::unique_ptr<std::vector<std::string>> /*param2*/) {}
+
+void ParamServiceSvNull::mapsetlistmapliststring_ret_listlistlist_param(std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>>& /*_return*/, std::unique_ptr<std::vector<std::vector<std::vector<std::vector<int32_t>>>>> /*param1*/) {}
+
+ ::some::valid::ns::simpleTypeDef ParamServiceSvNull::typedef_ret_i32_param(int32_t /*param1*/) {
   return 0;
 }
 
-void ParamServiceSvNull::void_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/) {}
+void ParamServiceSvNull::listtypedef_ret_typedef_param(std::vector< ::some::valid::ns::simpleTypeDef>& /*_return*/, std::unique_ptr< ::some::valid::ns::complexStructTypeDef> /*param1*/) {}
+
+ ::some::valid::ns::MyEnumA ParamServiceSvNull::enum_ret_double_param(double /*param1*/) {
+  return ( ::some::valid::ns::MyEnumA)0;
+}
+
+ ::some::valid::ns::MyEnumA ParamServiceSvNull::enum_ret_double_enum_param(double /*param1*/,  ::some::valid::ns::MyEnumA /*param2*/) {
+  return ( ::some::valid::ns::MyEnumA)0;
+}
+
+void ParamServiceSvNull::listenum_ret_map_param(std::vector< ::some::valid::ns::MyEnumA>& /*_return*/, std::unique_ptr<std::map<std::string, int64_t>> /*param1*/) {}
+
+void ParamServiceSvNull::struct_ret_i16_param( ::some::valid::ns::MyStruct& /*_return*/, int16_t /*param1*/) {}
+
+void ParamServiceSvNull::setstruct_ret_set_param(std::set< ::some::valid::ns::MyStruct>& /*_return*/, std::unique_ptr<std::set<std::string>> /*param1*/) {}
+
+void ParamServiceSvNull::union_ret_i32_i32_param( ::some::valid::ns::ComplexUnion& /*_return*/, int32_t /*param1*/, int32_t /*param2*/) {}
+
+void ParamServiceSvNull::listunion_string_param(std::vector< ::some::valid::ns::ComplexUnion>& /*_return*/, std::unique_ptr<std::string> /*param1*/) {}
 
 const char* ParamServiceAsyncProcessor::getServiceName() {
   return "ParamService";
@@ -160,12 +454,32 @@ const ParamServiceAsyncProcessor::BinaryProtocolProcessMap& ParamServiceAsyncPro
 const ParamServiceAsyncProcessor::BinaryProtocolProcessMap ParamServiceAsyncProcessor::binaryProcessMap_ {
   {"void_ret_i16_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_i16_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"void_ret_byte_i16_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_byte_i16_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"void_ret_map_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_map_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"void_ret_map_setlist_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_map_setlist_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"void_ret_map_typedef_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_map_typedef_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"void_ret_enum_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_enum_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"void_ret_struct_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_struct_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"void_ret_listunion_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_listunion_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"bool_ret_i32_i64_param", &ParamServiceAsyncProcessor::_processInThread_bool_ret_i32_i64_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"bool_ret_map_param", &ParamServiceAsyncProcessor::_processInThread_bool_ret_map_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"bool_ret_union_param", &ParamServiceAsyncProcessor::_processInThread_bool_ret_union_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"i64_ret_float_double_param", &ParamServiceAsyncProcessor::_processInThread_i64_ret_float_double_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"i64_ret_string_typedef_param", &ParamServiceAsyncProcessor::_processInThread_i64_ret_string_typedef_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"i64_ret_i32_i32_i32_i32_i32_param", &ParamServiceAsyncProcessor::_processInThread_i64_ret_i32_i32_i32_i32_i32_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"double_ret_setstruct_param", &ParamServiceAsyncProcessor::_processInThread_double_ret_setstruct_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"string_ret_string_param", &ParamServiceAsyncProcessor::_processInThread_string_ret_string_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"map_ret_bool_param", &ParamServiceAsyncProcessor::_processInThread_map_ret_bool_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"bool_ret_map_param", &ParamServiceAsyncProcessor::_processInThread_bool_ret_map_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"void_ret_map_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_map_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"list_ret_map_setlist_param", &ParamServiceAsyncProcessor::_processInThread_list_ret_map_setlist_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"mapsetlistmapliststring_ret_listlistlist_param", &ParamServiceAsyncProcessor::_processInThread_mapsetlistmapliststring_ret_listlistlist_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"typedef_ret_i32_param", &ParamServiceAsyncProcessor::_processInThread_typedef_ret_i32_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"listtypedef_ret_typedef_param", &ParamServiceAsyncProcessor::_processInThread_listtypedef_ret_typedef_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"enum_ret_double_param", &ParamServiceAsyncProcessor::_processInThread_enum_ret_double_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"enum_ret_double_enum_param", &ParamServiceAsyncProcessor::_processInThread_enum_ret_double_enum_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"listenum_ret_map_param", &ParamServiceAsyncProcessor::_processInThread_listenum_ret_map_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"struct_ret_i16_param", &ParamServiceAsyncProcessor::_processInThread_struct_ret_i16_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"setstruct_ret_set_param", &ParamServiceAsyncProcessor::_processInThread_setstruct_ret_set_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"union_ret_i32_i32_param", &ParamServiceAsyncProcessor::_processInThread_union_ret_i32_i32_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"listunion_string_param", &ParamServiceAsyncProcessor::_processInThread_listunion_string_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const ParamServiceAsyncProcessor::CompactProtocolProcessMap& ParamServiceAsyncProcessor::getCompactProtocolProcessMap() {
@@ -175,12 +489,32 @@ const ParamServiceAsyncProcessor::CompactProtocolProcessMap& ParamServiceAsyncPr
 const ParamServiceAsyncProcessor::CompactProtocolProcessMap ParamServiceAsyncProcessor::compactProcessMap_ {
   {"void_ret_i16_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_i16_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"void_ret_byte_i16_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_byte_i16_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"void_ret_map_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_map_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"void_ret_map_setlist_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_map_setlist_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"void_ret_map_typedef_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_map_typedef_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"void_ret_enum_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_enum_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"void_ret_struct_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_struct_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"void_ret_listunion_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_listunion_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"bool_ret_i32_i64_param", &ParamServiceAsyncProcessor::_processInThread_bool_ret_i32_i64_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"bool_ret_map_param", &ParamServiceAsyncProcessor::_processInThread_bool_ret_map_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"bool_ret_union_param", &ParamServiceAsyncProcessor::_processInThread_bool_ret_union_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"i64_ret_float_double_param", &ParamServiceAsyncProcessor::_processInThread_i64_ret_float_double_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"i64_ret_string_typedef_param", &ParamServiceAsyncProcessor::_processInThread_i64_ret_string_typedef_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"i64_ret_i32_i32_i32_i32_i32_param", &ParamServiceAsyncProcessor::_processInThread_i64_ret_i32_i32_i32_i32_i32_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"double_ret_setstruct_param", &ParamServiceAsyncProcessor::_processInThread_double_ret_setstruct_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"string_ret_string_param", &ParamServiceAsyncProcessor::_processInThread_string_ret_string_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"map_ret_bool_param", &ParamServiceAsyncProcessor::_processInThread_map_ret_bool_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"bool_ret_map_param", &ParamServiceAsyncProcessor::_processInThread_bool_ret_map_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"void_ret_map_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_map_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"list_ret_map_setlist_param", &ParamServiceAsyncProcessor::_processInThread_list_ret_map_setlist_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"mapsetlistmapliststring_ret_listlistlist_param", &ParamServiceAsyncProcessor::_processInThread_mapsetlistmapliststring_ret_listlistlist_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"typedef_ret_i32_param", &ParamServiceAsyncProcessor::_processInThread_typedef_ret_i32_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"listtypedef_ret_typedef_param", &ParamServiceAsyncProcessor::_processInThread_listtypedef_ret_typedef_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"enum_ret_double_param", &ParamServiceAsyncProcessor::_processInThread_enum_ret_double_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"enum_ret_double_enum_param", &ParamServiceAsyncProcessor::_processInThread_enum_ret_double_enum_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"listenum_ret_map_param", &ParamServiceAsyncProcessor::_processInThread_listenum_ret_map_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"struct_ret_i16_param", &ParamServiceAsyncProcessor::_processInThread_struct_ret_i16_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"setstruct_ret_set_param", &ParamServiceAsyncProcessor::_processInThread_setstruct_ret_set_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"union_ret_i32_i32_param", &ParamServiceAsyncProcessor::_processInThread_union_ret_i32_i32_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"listunion_string_param", &ParamServiceAsyncProcessor::_processInThread_listunion_string_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 }}} // some::valid::ns

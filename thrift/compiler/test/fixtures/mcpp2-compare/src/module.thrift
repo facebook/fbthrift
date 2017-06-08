@@ -184,10 +184,44 @@ service ReturnService {
 service ParamService {
   void void_ret_i16_param(1: i16 param1)
   void void_ret_byte_i16_param(1: byte param1, 2: i16 param2)
+  void void_ret_map_param(1: map<string, i64> param1)
+  void void_ret_map_setlist_param(
+      1: map<string, i64> param1,
+      3: set<list<string>> param2)
+  void void_ret_map_typedef_param(1: simpleTypeDef param1)
+  void void_ret_enum_param(1: MyEnumA param1)
+  void void_ret_struct_param(1: MyStruct param1)
+  void void_ret_listunion_param(1: list<ComplexUnion> param1)
   bool bool_ret_i32_i64_param(1: i32 param1, 3: i64 param2)
+  bool bool_ret_map_param(1: map<string, i64> param1)
+  bool bool_ret_union_param(1: ComplexUnion param1)
   i64 i64_ret_float_double_param(1: float param1, 3: double param2)
+  i64 i64_ret_string_typedef_param(
+      1: string param1,
+      3: set<mostComplexTypeDef> param2)
+  i64 i64_ret_i32_i32_i32_i32_i32_param(
+      1: i32 param1,
+      2: i32 param2,
+      3: i32 param3,
+      4: i32 param4,
+      5: i32 param5)
+  double double_ret_setstruct_param(4: set<MyStruct> param1)
   string string_ret_string_param(1: string param1)
   map<string, i64> map_ret_bool_param(1: bool param1)
-  bool bool_ret_map_param(1: map<string, i64> param1)
-  void void_ret_map_param(1: map<string, i64> param1)
+  list<bool> list_ret_map_setlist_param(
+      1: map<i32, list<string>> param1,
+      2: list<string> param2)
+  map<set<list<i32>>, map<list<set<string>>, string>>
+      mapsetlistmapliststring_ret_listlistlist_param(
+          1:list<list<list<list<i32>>>> param1)
+  simpleTypeDef typedef_ret_i32_param(1: i32 param1)
+  list<simpleTypeDef> listtypedef_ret_typedef_param(
+      1: complexStructTypeDef param1)
+  MyEnumA enum_ret_double_param(3: double param1)
+  MyEnumA enum_ret_double_enum_param(3: double param1, 5: MyEnumA param2)
+  list<MyEnumA> listenum_ret_map_param(1: map<string, i64> param1)
+  MyStruct struct_ret_i16_param(1: i16 param1)
+  set<MyStruct> setstruct_ret_set_param(8: set<string> param1)
+  ComplexUnion union_ret_i32_i32_param(4: i32 param1, 2: i32 param2)
+  list<ComplexUnion> listunion_string_param(1: string param1)
 }

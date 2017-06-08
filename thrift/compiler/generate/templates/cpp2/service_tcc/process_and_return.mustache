@@ -29,7 +29,12 @@ void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<a
   <%service:name%>_<%function:name%>_pargs args;
 <%#function:args%><%#field:type%>
 <%^type:resolves_to_complex_return?%>
+<%^type:enum?%>
   <% > Type%> uarg_<%field:name%>{0};
+<%/type:enum?%>
+<%#type:enum?%>
+  <% > Type%> uarg_<%field:name%>{static_cast<<% > Type%>>(0)};
+<%/type:enum?%>
   args.get<<%field:index%>>().value = &uarg_<%field:name%>;
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
