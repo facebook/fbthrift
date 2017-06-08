@@ -3956,10 +3956,9 @@ void t_hack_generator::_generate_service_client_children(
     string funname = (*f_iter)->get_name();
     string return_typehint = type_to_typehint((*f_iter)->get_returntype());
 
-    generate_php_docstring(out, *f_iter);
-
     if (!async) {
       // Non-Async function
+      indent(out) << "<<__Deprecated('use gen_" << funname << "()')>>" << endl;
       indent(out) <<
         "public function " << function_signature(*f_iter) << " {" << endl;
       indent_up();
@@ -3990,6 +3989,7 @@ void t_hack_generator::_generate_service_client_children(
     }
 
     // Async function
+    generate_php_docstring(out, *f_iter);
     indent(out)
       << "public async function "
       << function_signature(

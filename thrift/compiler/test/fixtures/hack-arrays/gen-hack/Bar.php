@@ -160,17 +160,18 @@ class BarAsyncClient extends ThriftClientBase implements BarAsyncIf {
 class BarClient extends ThriftClientBase implements BarIf {
   use BarClientBase;
 
+  <<__Deprecated('use gen_baz()')>>
+  public function baz(keyset<int> $a, \Indexish<int, \Indexish<int, keyset<string>>> $b): string {
+    $currentseqid = $this->sendImpl_baz($a, $b);
+    return $this->recvImpl_baz($currentseqid);
+  }
+
   /**
    * Original thrift definition:-
    * string
    *   baz(1: set<i32> a,
    *       2: list<map<i32, set<string>>> b);
    */
-  public function baz(keyset<int> $a, \Indexish<int, \Indexish<int, keyset<string>>> $b): string {
-    $currentseqid = $this->sendImpl_baz($a, $b);
-    return $this->recvImpl_baz($currentseqid);
-  }
-
   public async function gen_baz(keyset<int> $a, \Indexish<int, \Indexish<int, keyset<string>>> $b): Awaitable<string> {
     $currentseqid = $this->sendImpl_baz($a, $b);
     await $this->asyncHandler_->genWait($currentseqid);

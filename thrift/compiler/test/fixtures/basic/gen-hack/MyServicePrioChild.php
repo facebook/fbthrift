@@ -149,16 +149,17 @@ class MyServicePrioChildAsyncClient extends MyServicePrioParentAsyncClient imple
 class MyServicePrioChildClient extends MyServicePrioParentClient implements MyServicePrioChildIf {
   use MyServicePrioChildClientBase;
 
-  /**
-   * Original thrift definition:-
-   * void
-   *   pang();
-   */
+  <<__Deprecated('use gen_pang()')>>
   public function pang(): void {
     $currentseqid = $this->sendImpl_pang();
     $this->recvImpl_pang($currentseqid);
   }
 
+  /**
+   * Original thrift definition:-
+   * void
+   *   pang();
+   */
   public async function gen_pang(): Awaitable<void> {
     $currentseqid = $this->sendImpl_pang();
     await $this->asyncHandler_->genWait($currentseqid);
