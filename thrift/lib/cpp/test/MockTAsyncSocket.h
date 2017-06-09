@@ -49,7 +49,7 @@ class MockTAsyncSocket : public apache::thrift::async::TAsyncSocket {
                       const OptionMap&,
                       const folly::SocketAddress&));
 
-  virtual void connect(
+  void connect(
       AsyncSocket::ConnectCallback* callback,
       const folly::SocketAddress& addr,
       int timeout = 0,

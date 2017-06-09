@@ -29,7 +29,7 @@ class TAsyncSSLSocketFactory :
  public TAsyncSocketFactory {
  public:
   explicit TAsyncSSLSocketFactory(folly::EventBase* eventBase);
-  virtual ~TAsyncSSLSocketFactory();
+  ~TAsyncSSLSocketFactory() override;
 
   /**
    * Set the SSLContext to use when constructing sockets.
@@ -44,8 +44,8 @@ class TAsyncSSLSocketFactory :
   void setServerMode(bool serverMode);
 
   // TAsyncSocketFactory
-  virtual TAsyncSocket::UniquePtr make() const override;
-  virtual TAsyncSocket::UniquePtr make(int fd) const override;
+  TAsyncSocket::UniquePtr make() const override;
+  TAsyncSocket::UniquePtr make(int fd) const override;
 
  protected:
   folly::EventBase* eventBase_;

@@ -95,7 +95,7 @@ class ProxygenThriftServer : public BaseThriftServer,
           taskTimeout_(this, true),
           request_(nullptr) {}
 
-    virtual ~ThriftRequestHandler() {
+    ~ThriftRequestHandler() override {
       queueTimeout_.cancelTimeout();
       taskTimeout_.cancelTimeout();
     }
@@ -139,7 +139,7 @@ class ProxygenThriftServer : public BaseThriftServer,
             connCtx_(connCtx),
             reqCtx_(reqCtx) {}
 
-      ~ProxygenRequest() {
+      ~ProxygenRequest() override {
         if (handler_) {
           handler_->request_ = nullptr;
         }
@@ -233,7 +233,7 @@ class ProxygenThriftServer : public BaseThriftServer,
         : apache::thrift::server::TConnectionContext() {
       peerAddress_ = session.getPeerAddress();
     }
-    ~ConnectionContext() {}
+    ~ConnectionContext() override {}
   };
 
   bool isOverloaded(
@@ -242,7 +242,7 @@ class ProxygenThriftServer : public BaseThriftServer,
   /**
    * Get the number of connections dropped by the AsyncServerSocket
    */
-  virtual uint64_t getNumDroppedConnections() const override;
+  uint64_t getNumDroppedConnections() const override;
 
   // proxygen::HTTPSession::InfoCallback methods
   void onCreate(const proxygen::HTTPSession& session) override {
@@ -298,15 +298,15 @@ class ProxygenThriftServer : public BaseThriftServer,
 
   size_t getInitialReceiveWindow() { return initialReceiveWindow_; }
 
-  virtual void serve() override;
+  void serve() override;
 
-  virtual void stop() override;
+  void stop() override;
 
   // This API is intended to stop listening on the server
   // socket and stop accepting new connection first while
   // still letting the established connections to be
   // processed on the server.
-  virtual void stopListening() override;
+  void stopListening() override;
 };
 }
 } // apache::thrift

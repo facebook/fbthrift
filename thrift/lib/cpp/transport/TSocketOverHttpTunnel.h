@@ -33,7 +33,7 @@ public:
           TSocket(&proxyAddress), address_(address),
           proxyAddress_(proxyAddress) { }
 
-  void open();
+  void open() override;
 };
 
 }}} // namespace apache::thrift::transport

@@ -158,7 +158,7 @@ class HTTPClientChannel : public ClientChannel,
         bool isSecurityActive,
         uint16_t protoId);
 
-    ~HTTPTransactionCallback();
+    ~HTTPTransactionCallback() override;
 
     // MessageChannel::SendCallback methods
 

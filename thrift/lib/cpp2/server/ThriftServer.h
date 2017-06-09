@@ -272,8 +272,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer
    */
   int32_t getPendingCount() const;
 
-  virtual bool isOverloaded(
-    const apache::thrift::transport::THeader* header = nullptr) override;
+  bool isOverloaded(
+      const apache::thrift::transport::THeader* header = nullptr) override;
 
   int64_t getRequestLoad() override;
   std::string getLoadInfo(int64_t load) override;
@@ -554,7 +554,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   /**
    * Get the number of connections dropped by the AsyncServerSocket
    */
-  virtual uint64_t getNumDroppedConnections() const override;
+  uint64_t getNumDroppedConnections() const override;
 
   /**
    * Clear all the workers.

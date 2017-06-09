@@ -324,7 +324,7 @@ class PriorityThreadManager : public ThreadManager {
   using ThreadManager::tryAdd;
   virtual bool tryAdd(PRIORITY priority, std::shared_ptr<Runnable> task) = 0;
 
-  virtual uint8_t getNumPriorities() const override {
+  uint8_t getNumPriorities() const override {
     return N_PRIORITIES;
   }
 

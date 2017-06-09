@@ -27,7 +27,7 @@ namespace krb5 {
 class Krb5CredentialsCacheManagerLogger : public virtual SecurityLogger {
  public:
   Krb5CredentialsCacheManagerLogger() {}
-  virtual ~Krb5CredentialsCacheManagerLogger() {}
+  ~Krb5CredentialsCacheManagerLogger() override {}
 
   virtual void logCredentialsCache(
       const std::string& /* key */,

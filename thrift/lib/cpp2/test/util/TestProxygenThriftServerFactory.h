@@ -27,7 +27,7 @@ namespace thrift {
 template <typename Interface>
 struct TestProxygenThriftServerFactory : public TestServerFactory {
  public:
-  std::shared_ptr<BaseThriftServer> create() {
+  std::shared_ptr<BaseThriftServer> create() override {
     auto server = std::make_shared<apache::thrift::ProxygenThriftServer>();
     server->setNumIOWorkerThreads(1);
     size_t windowSize = 32 * 1024 * 1024;
@@ -59,13 +59,14 @@ struct TestProxygenThriftServerFactory : public TestServerFactory {
     return server;
   }
 
-  TestProxygenThriftServerFactory& useSimpleThreadManager(bool use) {
+  TestProxygenThriftServerFactory& useSimpleThreadManager(bool use) override {
     useSimpleThreadManager_ = use;
     return *this;
   }
 
   TestProxygenThriftServerFactory& useThreadManager(
-      std::shared_ptr<apache::thrift::concurrency::ThreadManager> exe) {
+      std::shared_ptr<apache::thrift::concurrency::ThreadManager> exe)
+      override {
     exe_ = exe;
     return *this;
   }

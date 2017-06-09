@@ -23,10 +23,10 @@
 struct TestHTTPClientChannelFactory : public TestClientChannelFactory {
  public:
   TestHTTPClientChannelFactory() : TestClientChannelFactory() {}
-  ~TestHTTPClientChannelFactory() {}
+  ~TestHTTPClientChannelFactory() override {}
 
   apache::thrift::ClientChannel::Ptr create(
-      apache::thrift::async::TAsyncTransport::UniquePtr socket) {
+      apache::thrift::async::TAsyncTransport::UniquePtr socket) override {
     auto channel = apache::thrift::HTTPClientChannel::newHTTP2Channel(
         std::move(socket));
 
