@@ -35,16 +35,16 @@ class CalculatorHandler : public CalculatorSvIf {
  public:
   CalculatorHandler() {}
 
-  void ping() {
+  void ping() override {
     printf("ping()\n");
   }
 
-  int32_t add(const int32_t n1, const int32_t n2) {
+  int32_t add(const int32_t n1, const int32_t n2) override {
     printf("add(%d,%d)\n", n1, n2);
     return n1 + n2;
   }
 
-  int32_t calculate(const int32_t logid, const Work &work) {
+  int32_t calculate(const int32_t logid, const Work& work) override {
     printf("calculate(%d,{%d,%d,%d})\n",
            logid,
            static_cast<int32_t>(work.op),
@@ -89,12 +89,12 @@ class CalculatorHandler : public CalculatorSvIf {
     return val;
   }
 
-  void getStruct(SharedStruct &ret, const int32_t logid) {
+  void getStruct(SharedStruct& ret, const int32_t logid) override {
     printf("getStruct(%d)\n", logid);
     ret = log[logid];
   }
 
-  void zip() {
+  void zip() override {
     printf("zip()\n");
   }
 

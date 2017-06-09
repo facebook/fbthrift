@@ -496,7 +496,7 @@ class HeaderChannelClosedTest
     explicit Callback(HeaderChannelClosedTest* c)
       : c_(c) {}
 
-    ~Callback() {
+    ~Callback() override {
       c_->callbackDtor_ = true;
     }
 

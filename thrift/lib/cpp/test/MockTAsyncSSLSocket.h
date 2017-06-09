@@ -64,7 +64,7 @@ class MockTAsyncSSLSocket : public apache::thrift::async::TAsyncSSLSocket {
           const OptionMap&,
           const folly::SocketAddress&));
 
-  virtual void connect(
+  void connect(
       AsyncSocket::ConnectCallback* callback,
       const folly::SocketAddress& addr,
       int timeout = 0,
@@ -73,7 +73,7 @@ class MockTAsyncSSLSocket : public apache::thrift::async::TAsyncSSLSocket {
     connectInternal(callback, addr, timeout, options, bindAddr);
   }
 
-  virtual void connect(
+  void connect(
       AsyncSocket::ConnectCallback* callback,
       const folly::SocketAddress& addr,
       std::chrono::milliseconds connectTimeout,

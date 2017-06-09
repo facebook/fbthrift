@@ -94,7 +94,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     return saslServer_;
   }
 
-  virtual folly::EventBaseManager* getEventBaseManager() override {
+  folly::EventBaseManager* getEventBaseManager() override {
     return manager_;
   }
 

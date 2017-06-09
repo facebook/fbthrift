@@ -45,7 +45,7 @@ class ScopedServerThread::Helper : public Runnable,
  public:
   Helper() : state_(STATE_NOT_STARTED) {}
 
-  ~Helper();
+  ~Helper() override;
 
   void init(shared_ptr<TServer> server, shared_ptr<Helper> self);
 
