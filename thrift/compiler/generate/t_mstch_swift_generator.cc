@@ -248,11 +248,12 @@ void t_mstch_swift_generator::generate_program() {
   // Load templates
   auto& templates = get_template_map();
 
+  // TODO: Fix generation of enums
+  generate_items("Enum", get_program()->get_enums());
+
   generate_items("Object", get_program()->get_objects());
 
   generate_items("Service", get_program()->get_services());
-
-  generate_items("Enum", get_program()->get_enums());
 
   generate_constants(*get_program());
 }

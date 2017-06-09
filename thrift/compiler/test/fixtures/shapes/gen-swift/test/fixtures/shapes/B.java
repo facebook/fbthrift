@@ -35,7 +35,7 @@ public final class B
         @ThriftField(value=14, name="list_of_map_of_string_to_A", requiredness=Requiredness.NONE) final List<Map<String, test.fixtures.shapes.A>> listOfMapOfStringToA,
         @ThriftField(value=15, name="list_of_self", requiredness=Requiredness.NONE) final List<test.fixtures.shapes.B> listOfSelf,
         @ThriftField(value=16, name="map_of_string_to_self", requiredness=Requiredness.NONE) final Map<String, test.fixtures.shapes.B> mapOfStringToSelf,
-        @ThriftField(value=17, name="just_an_enum", requiredness=Requiredness.NONE) final test.fixtures.shapes.Enum justAnEnum,
+        @ThriftField(value=17, name="just_an_enum", requiredness=Requiredness.NONE) final . justAnEnum,
         @ThriftField(value=51, name="optional_just_an_A", requiredness=Requiredness.OPTIONAL) final test.fixtures.shapes.A optionalJustAnA,
         @ThriftField(value=52, name="optional_set_of_i32", requiredness=Requiredness.OPTIONAL) final Set<Integer> optionalSetOfI32,
         @ThriftField(value=53, name="optional_list_of_i32", requiredness=Requiredness.OPTIONAL) final List<Integer> optionalListOfI32,
@@ -45,12 +45,12 @@ public final class B
         @ThriftField(value=57, name="optional_map_of_string_to_list_of_i32", requiredness=Requiredness.OPTIONAL) final Map<String, List<Integer>> optionalMapOfStringToListOfI32,
         @ThriftField(value=58, name="optional_map_of_string_to_list_of_A", requiredness=Requiredness.OPTIONAL) final Map<String, List<test.fixtures.shapes.A>> optionalMapOfStringToListOfA,
         @ThriftField(value=59, name="optional_map_of_string_to_set_of_i32", requiredness=Requiredness.OPTIONAL) final Map<String, Set<Integer>> optionalMapOfStringToSetOfI32,
-        @ThriftField(value=60, name="optional_enum", requiredness=Requiredness.OPTIONAL) final test.fixtures.shapes.Enum optionalEnum,
-        @ThriftField(value=70, name="required_enum_with_default", requiredness=Requiredness.REQUIRED) final test.fixtures.shapes.Enum requiredEnumWithDefault,
+        @ThriftField(value=60, name="optional_enum", requiredness=Requiredness.OPTIONAL) final . optionalEnum,
+        @ThriftField(value=70, name="required_enum_with_default", requiredness=Requiredness.REQUIRED) final . requiredEnumWithDefault,
         @ThriftField(value=80, name="string_with_default_value", requiredness=Requiredness.NONE) final String stringWithDefaultValue,
         @ThriftField(value=81, name="i32_with_default_value", requiredness=Requiredness.NONE) final int i32WithDefaultValue,
         @ThriftField(value=82, name="double_with_default_value", requiredness=Requiredness.NONE) final double doubleWithDefaultValue,
-        @ThriftField(value=83, name="enum_with_default_value", requiredness=Requiredness.NONE) final test.fixtures.shapes.Enum enumWithDefaultValue,
+        @ThriftField(value=83, name="enum_with_default_value", requiredness=Requiredness.NONE) final . enumWithDefaultValue,
         @ThriftField(value=84, name="A_with_default_value", requiredness=Requiredness.NONE) final test.fixtures.shapes.A aWithDefaultValue,
         @ThriftField(value=85, name="set_of_i32_with_default_value", requiredness=Requiredness.NONE) final Set<Integer> setOfI32WithDefaultValue,
         @ThriftField(value=86, name="map_of_i32_to_string_with_default_value", requiredness=Requiredness.NONE) final Map<Integer, String> mapOfI32ToStringWithDefaultValue,
@@ -193,9 +193,9 @@ public final class B
             this.mapOfStringToSelf = mapOfStringToSelf;
             return this;
         }
-        private test.fixtures.shapes.Enum justAnEnum;
+        private . justAnEnum;
 
-        public Builder setJustAnEnum(test.fixtures.shapes.Enum justAnEnum) {
+        public Builder setJustAnEnum(. justAnEnum) {
             this.justAnEnum = justAnEnum;
             return this;
         }
@@ -253,15 +253,15 @@ public final class B
             this.optionalMapOfStringToSetOfI32 = optionalMapOfStringToSetOfI32;
             return this;
         }
-        private test.fixtures.shapes.Enum optionalEnum;
+        private . optionalEnum;
 
-        public Builder setOptionalEnum(test.fixtures.shapes.Enum optionalEnum) {
+        public Builder setOptionalEnum(. optionalEnum) {
             this.optionalEnum = optionalEnum;
             return this;
         }
-        private test.fixtures.shapes.Enum requiredEnumWithDefault;
+        private . requiredEnumWithDefault;
 
-        public Builder setRequiredEnumWithDefault(test.fixtures.shapes.Enum requiredEnumWithDefault) {
+        public Builder setRequiredEnumWithDefault(. requiredEnumWithDefault) {
             this.requiredEnumWithDefault = requiredEnumWithDefault;
             return this;
         }
@@ -283,9 +283,9 @@ public final class B
             this.doubleWithDefaultValue = doubleWithDefaultValue;
             return this;
         }
-        private test.fixtures.shapes.Enum enumWithDefaultValue;
+        private . enumWithDefaultValue;
 
-        public Builder setEnumWithDefaultValue(test.fixtures.shapes.Enum enumWithDefaultValue) {
+        public Builder setEnumWithDefaultValue(. enumWithDefaultValue) {
             this.enumWithDefaultValue = enumWithDefaultValue;
             return this;
         }
@@ -484,10 +484,10 @@ public final class B
     @ThriftField(value=16, name="map_of_string_to_self", requiredness=Requiredness.NONE)
     public Map<String, test.fixtures.shapes.B> getMapOfStringToSelf() { return mapOfStringToSelf; }
 
-    private final test.fixtures.shapes.Enum justAnEnum;
+    private final . justAnEnum;
 
     @ThriftField(value=17, name="just_an_enum", requiredness=Requiredness.NONE)
-    public test.fixtures.shapes.Enum getJustAnEnum() { return justAnEnum; }
+    public . getJustAnEnum() { return justAnEnum; }
 
     private final test.fixtures.shapes.A optionalJustAnA;
 
@@ -534,15 +534,15 @@ public final class B
     @ThriftField(value=59, name="optional_map_of_string_to_set_of_i32", requiredness=Requiredness.OPTIONAL)
     public Map<String, Set<Integer>> getOptionalMapOfStringToSetOfI32() { return optionalMapOfStringToSetOfI32; }
 
-    private final test.fixtures.shapes.Enum optionalEnum;
+    private final . optionalEnum;
 
     @ThriftField(value=60, name="optional_enum", requiredness=Requiredness.OPTIONAL)
-    public test.fixtures.shapes.Enum getOptionalEnum() { return optionalEnum; }
+    public . getOptionalEnum() { return optionalEnum; }
 
-    private final test.fixtures.shapes.Enum requiredEnumWithDefault;
+    private final . requiredEnumWithDefault;
 
     @ThriftField(value=70, name="required_enum_with_default", requiredness=Requiredness.REQUIRED)
-    public test.fixtures.shapes.Enum getRequiredEnumWithDefault() { return requiredEnumWithDefault; }
+    public . getRequiredEnumWithDefault() { return requiredEnumWithDefault; }
 
     private final String stringWithDefaultValue;
 
@@ -559,10 +559,10 @@ public final class B
     @ThriftField(value=82, name="double_with_default_value", requiredness=Requiredness.NONE)
     public double getDoubleWithDefaultValue() { return doubleWithDefaultValue; }
 
-    private final test.fixtures.shapes.Enum enumWithDefaultValue;
+    private final . enumWithDefaultValue;
 
     @ThriftField(value=83, name="enum_with_default_value", requiredness=Requiredness.NONE)
-    public test.fixtures.shapes.Enum getEnumWithDefaultValue() { return enumWithDefaultValue; }
+    public . getEnumWithDefaultValue() { return enumWithDefaultValue; }
 
     private final test.fixtures.shapes.A aWithDefaultValue;
 

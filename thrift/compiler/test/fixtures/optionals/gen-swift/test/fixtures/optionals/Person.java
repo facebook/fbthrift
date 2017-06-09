@@ -26,8 +26,8 @@ public final class Person
         @ThriftField(value=5, name="favoriteColor", requiredness=Requiredness.OPTIONAL) final test.fixtures.optionals.Color favoriteColor,
         @ThriftField(value=6, name="friends", requiredness=Requiredness.OPTIONAL) final Set<Long> friends,
         @ThriftField(value=7, name="bestFriend", requiredness=Requiredness.OPTIONAL) final Long bestFriend,
-        @ThriftField(value=8, name="petNames", requiredness=Requiredness.OPTIONAL) final Map<test.fixtures.optionals.Animal, String> petNames,
-        @ThriftField(value=9, name="afraidOfAnimal", requiredness=Requiredness.OPTIONAL) final test.fixtures.optionals.Animal afraidOfAnimal,
+        @ThriftField(value=8, name="petNames", requiredness=Requiredness.OPTIONAL) final Map<., String> petNames,
+        @ThriftField(value=9, name="afraidOfAnimal", requiredness=Requiredness.OPTIONAL) final . afraidOfAnimal,
         @ThriftField(value=10, name="vehicles", requiredness=Requiredness.OPTIONAL) final List<test.fixtures.optionals.Vehicle> vehicles
     ) {
         this.id = id;
@@ -85,15 +85,15 @@ public final class Person
             this.bestFriend = bestFriend;
             return this;
         }
-        private Map<test.fixtures.optionals.Animal, String> petNames;
+        private Map<., String> petNames;
 
-        public Builder setPetNames(Map<test.fixtures.optionals.Animal, String> petNames) {
+        public Builder setPetNames(Map<., String> petNames) {
             this.petNames = petNames;
             return this;
         }
-        private test.fixtures.optionals.Animal afraidOfAnimal;
+        private . afraidOfAnimal;
 
-        public Builder setAfraidOfAnimal(test.fixtures.optionals.Animal afraidOfAnimal) {
+        public Builder setAfraidOfAnimal(. afraidOfAnimal) {
             this.afraidOfAnimal = afraidOfAnimal;
             return this;
         }
@@ -169,15 +169,15 @@ public final class Person
     @ThriftField(value=7, name="bestFriend", requiredness=Requiredness.OPTIONAL)
     public Long getBestFriend() { return bestFriend; }
 
-    private final Map<test.fixtures.optionals.Animal, String> petNames;
+    private final Map<., String> petNames;
 
     @ThriftField(value=8, name="petNames", requiredness=Requiredness.OPTIONAL)
-    public Map<test.fixtures.optionals.Animal, String> getPetNames() { return petNames; }
+    public Map<., String> getPetNames() { return petNames; }
 
-    private final test.fixtures.optionals.Animal afraidOfAnimal;
+    private final . afraidOfAnimal;
 
     @ThriftField(value=9, name="afraidOfAnimal", requiredness=Requiredness.OPTIONAL)
-    public test.fixtures.optionals.Animal getAfraidOfAnimal() { return afraidOfAnimal; }
+    public . getAfraidOfAnimal() { return afraidOfAnimal; }
 
     private final List<test.fixtures.optionals.Vehicle> vehicles;
 

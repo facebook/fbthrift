@@ -19,15 +19,15 @@ public final class UnEnumStruct
 {
     @ThriftConstructor
     public UnEnumStruct(
-        @ThriftField(value=1, name="city", requiredness=Requiredness.NONE) final test.fixtures.constants.City city
+        @ThriftField(value=1, name="city", requiredness=Requiredness.NONE) final . city
     ) {
         this.city = city;
     }
 
     public static class Builder {
-        private test.fixtures.constants.City city;
+        private . city;
 
-        public Builder setCity(test.fixtures.constants.City city) {
+        public Builder setCity(. city) {
             this.city = city;
             return this;
         }
@@ -44,10 +44,10 @@ public final class UnEnumStruct
         }
     }
 
-    private final test.fixtures.constants.City city;
+    private final . city;
 
     @ThriftField(value=1, name="city", requiredness=Requiredness.NONE)
-    public test.fixtures.constants.City getCity() { return city; }
+    public . getCity() { return city; }
 
     @Override
     public String toString()
