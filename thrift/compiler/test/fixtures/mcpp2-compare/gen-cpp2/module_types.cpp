@@ -1185,4 +1185,46 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
+void AnnotatatedStruct::__clear() {
+  // clear all fields
+  ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(&no_annotation);
+  __isset.__clear();
+}
+
+bool AnnotatatedStruct::operator==(const AnnotatatedStruct& rhs) const {
+  if (!((no_annotation == rhs.no_annotation))) {
+    return false;
+  }
+  return true;
+}
+
+const  ::some::valid::ns::containerStruct& AnnotatatedStruct::get_no_annotation() const& {
+  return no_annotation;
+}
+
+ ::some::valid::ns::containerStruct AnnotatatedStruct::get_no_annotation() && {
+  return std::move(no_annotation);
+}
+
+void swap(AnnotatatedStruct& a, AnnotatatedStruct& b) {
+  using ::std::swap;
+  swap(a.no_annotation, b.no_annotation);
+  swap(a.__isset, b.__isset);
+}
+
+template uint32_t AnnotatatedStruct::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t AnnotatatedStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t AnnotatatedStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t AnnotatatedStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t AnnotatatedStruct::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t AnnotatatedStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t AnnotatatedStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t AnnotatatedStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
 }}} // some::valid::ns

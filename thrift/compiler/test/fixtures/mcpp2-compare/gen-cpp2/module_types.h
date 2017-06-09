@@ -28,6 +28,7 @@ class AnException;
 class AnotherException;
 class containerStruct;
 class MyIncludedStruct;
+class AnnotatatedStruct;
 
 enum class MyEnumA {
   fieldA = 1,
@@ -3735,6 +3736,101 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::MyInc
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::MyIncludedStruct>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::MyIncludedStruct const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
+class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperators<AnnotatatedStruct> {
+ public:
+
+  AnnotatatedStruct() {}
+  // FragileConstructor for use in initialization lists only
+
+  AnnotatatedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::containerStruct no_annotation__arg) :
+      no_annotation(std::move(no_annotation__arg)) {
+    __isset.no_annotation = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    no_annotation = arg.move();
+    __isset.no_annotation = true;
+  }
+
+  AnnotatatedStruct(AnnotatatedStruct&&) = default;
+
+  AnnotatatedStruct(const AnnotatatedStruct&) = default;
+
+  AnnotatatedStruct& operator=(AnnotatatedStruct&&) = default;
+
+  AnnotatatedStruct& operator=(const AnnotatatedStruct&) = default;
+  void __clear();
+
+  virtual ~AnnotatatedStruct() throw() {}
+
+   ::some::valid::ns::containerStruct no_annotation;
+
+  struct __isset {
+    void __clear() {
+      no_annotation = false;
+    }
+
+    bool no_annotation = false;
+  } __isset;
+  bool operator==(const AnnotatatedStruct& rhs) const;
+  bool operator < (const AnnotatatedStruct& rhs) const;
+  const  ::some::valid::ns::containerStruct& get_no_annotation() const&;
+   ::some::valid::ns::containerStruct get_no_annotation() &&;
+  template <typename T_AnnotatatedStruct_no_annotation_struct_setter>
+   ::some::valid::ns::containerStruct& set_no_annotation(T_AnnotatatedStruct_no_annotation_struct_setter&& no_annotation_);
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+};
+
+void swap(AnnotatatedStruct& a, AnnotatatedStruct& b);
+extern template uint32_t AnnotatatedStruct::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t AnnotatatedStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t AnnotatatedStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t AnnotatatedStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t AnnotatatedStruct::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t AnnotatatedStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t AnnotatatedStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t AnnotatatedStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::some::valid::ns::AnnotatatedStruct>::clear( ::some::valid::ns::AnnotatatedStruct* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::AnnotatatedStruct>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnnotatatedStruct>::write(Protocol* proto,  ::some::valid::ns::AnnotatatedStruct const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnnotatatedStruct>::read(Protocol* proto,  ::some::valid::ns::AnnotatatedStruct* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnnotatatedStruct>::serializedSize(Protocol const* proto,  ::some::valid::ns::AnnotatatedStruct const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnnotatatedStruct>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::AnnotatatedStruct const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

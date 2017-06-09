@@ -50,6 +50,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   mstch::array get_namespace(const t_program& program) const;
   std::string get_include_prefix(const t_program& program) const;
   const t_type* resolve_typedef(const t_type* type) const;
+  bool has_annotation(const t_field* f, const std::string& name) const;
 
   std::unique_ptr<std::string> include_prefix_;
   std::vector<std::array<std::string, 3>> protocols_;
@@ -172,15 +173,16 @@ mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) const {
   std::vector<t_field*> s_members = s.get_members();
 
   // Check if the struct contains any base field
-  auto const has_base_field = [&] {
+  auto const has_base_field_or_struct = [&] {
     for (auto const& field : s.get_members()) {
-      if (resolve_typedef(field->get_type())->is_base_type()) {
-        return std::to_string(0);
+      auto resolved_typedef = resolve_typedef(field->get_type());
+      if (resolved_typedef->is_base_type() || resolved_typedef->is_struct()) {
+        return true;
       }
     }
-    return std::string();
+    return false;
   }();
-  m.emplace("base_fields?", has_base_field);
+  m.emplace("base_field_or_struct?", has_base_field_or_struct);
 
   // Filter fields according to the following criteria:
   // Get all base_types but strings (empty and non-empty)
@@ -211,6 +213,12 @@ mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) const {
       return true;
     }
     if (type->is_struct()) {
+      for (auto const* f : dynamic_cast<t_struct const*>(type)->get_members()) {
+        if (f->get_req() == t_field::e_req::T_OPTIONAL ||
+            has_annotation(f, "cpp.template") || !is_orderable(f->get_type())) {
+          return false;
+        }
+      }
       return true;
     }
     if (type->is_list()) {
@@ -403,6 +411,12 @@ const t_type* t_mstch_cpp2_generator::resolve_typedef(const t_type* t) const {
     t = dynamic_cast<const t_typedef*>(t)->get_type();
   }
   return t;
+}
+
+bool t_mstch_cpp2_generator::has_annotation(
+    const t_field* f,
+    const std::string& name) const {
+  return f->annotations_.count(name);
 }
 }
 
