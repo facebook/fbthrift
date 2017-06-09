@@ -56,7 +56,7 @@ class t_mstch_generator : public t_generator {
    * file for this generator
    */
   const std::map<std::string, std::string>& get_template_map() const {
-    return this->template_map_;
+    return template_map_;
   }
 
   /**
@@ -94,7 +94,7 @@ class t_mstch_generator : public t_generator {
       const T& obj,
       const std::string& template_name,
       const boost::filesystem::path& path) {
-    this->render_to_file(this->dump(obj), template_name, path);
+    render_to_file(dump(obj), template_name, path);
   }
 
   /**
@@ -146,11 +146,11 @@ class t_mstch_generator : public t_generator {
 
   template <typename element>
   mstch::map dump_elem(const element& elem, int32_t /*index*/) const {
-    return this->dump(elem);
+    return dump(elem);
   }
 
   mstch::map dump_elem(const t_field& elem, int32_t index) const {
-    return this->dump(elem, index);
+    return dump(elem, index);
   }
 
   template <typename container>
@@ -159,8 +159,8 @@ class t_mstch_generator : public t_generator {
     mstch::array result{};
     int32_t index = 0;
     for (auto itr = elems.begin(); itr != elems.end(); ++itr) {
-      auto map = this->dump_elem(
-          *as_const_pointer<std::remove_pointer_t<T>>(*itr), index);
+      auto map =
+          dump_elem(*as_const_pointer<std::remove_pointer_t<T>>(*itr), index);
       result.push_back(map);
       ++index;
     }

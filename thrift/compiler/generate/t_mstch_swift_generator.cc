@@ -27,10 +27,10 @@ class t_mstch_swift_generator : public t_mstch_generator {
       const std::map<std::string, std::string>& parsed_options,
       const std::string& /* option_string */)
       : t_mstch_generator(program, "java/swift", parsed_options),
-        default_package_(this->get_option("default_package")),
+        default_package_(get_option("default_package")),
         namespace_identifier_(
-            this->get_option("use_java_namespace") ? "java" : "java.swift") {
-    this->out_dir_base_ = "gen-swift";
+            get_option("use_java_namespace") ? "java" : "java.swift") {
+    out_dir_base_ = "gen-swift";
   }
 
   void generate_program() override;
@@ -45,15 +45,14 @@ class t_mstch_swift_generator : public t_mstch_generator {
    * If no default specified, throws runtime error
    */
   std::string get_namespace_or_default(const t_program& prog) const {
-    const auto& prog_namespace =
-        prog.get_namespace(this->namespace_identifier_);
+    const auto& prog_namespace = prog.get_namespace(namespace_identifier_);
     if (prog_namespace != "") {
       return prog_namespace;
     } else if (default_package_) {
       return *default_package_;
     } else {
-      throw std::runtime_error{"No namespace '" + this->namespace_identifier_ +
-        "' in " + prog.get_name()};
+      throw std::runtime_error{"No namespace '" + namespace_identifier_ +
+                               "' in " + prog.get_name()};
     }
   }
 
@@ -67,10 +66,10 @@ class t_mstch_swift_generator : public t_mstch_generator {
       const std::vector<T*>& items) {
     for (const T* item : items) {
       auto package_dir =
-          package_to_path(this->get_namespace_or_default(*item->get_program()));
-      auto filename = this->mangle_java_name(item->get_name(), true) + ".java";
+          package_to_path(get_namespace_or_default(*item->get_program()));
+      auto filename = mangle_java_name(item->get_name(), true) + ".java";
 
-      this->render_to_file(*item, tpl_path, package_dir / filename);
+      render_to_file(*item, tpl_path, package_dir / filename);
     }
   }
 
@@ -79,8 +78,8 @@ class t_mstch_swift_generator : public t_mstch_generator {
       // Only generate Constants.java if we actually have constants
       return;
     }
-    auto package_dir = package_to_path(this->get_namespace_or_default(prog));
-    this->render_to_file(prog, "Constants", package_dir / "Constants.java");
+    auto package_dir = package_to_path(get_namespace_or_default(prog));
+    render_to_file(prog, "Constants", package_dir / "Constants.java");
   }
 
   mstch::map extend_program(const t_program& program) const override {
@@ -93,50 +92,50 @@ class t_mstch_swift_generator : public t_mstch_generator {
           return std::less<std::string>{}(x->get_name(), y->get_name());
         });
     return mstch::map{
-        {"javaPackage", this->get_namespace_or_default(program)},
-        {"sortedConstants", this->dump_elems(constants)},
+        {"javaPackage", get_namespace_or_default(program)},
+        {"sortedConstants", dump_elems(constants)},
     };
   }
 
   mstch::map extend_struct(const t_struct& strct) const override {
     mstch::map result{
-        {"javaPackage", this->get_namespace_or_default(*strct.get_program())},
+        {"javaPackage", get_namespace_or_default(*strct.get_program())},
     };
-    this->add_java_names(result, strct.get_name());
+    add_java_names(result, strct.get_name());
     return result;
   }
 
   mstch::map extend_service(const t_service& service) const override {
     mstch::map result{
-        {"javaPackage", this->get_namespace_or_default(*service.get_program())},
+        {"javaPackage", get_namespace_or_default(*service.get_program())},
     };
-    this->add_java_names(result, service.get_name());
+    add_java_names(result, service.get_name());
     return result;
   }
 
   mstch::map extend_function(const t_function& func) const override {
     mstch::map result{};
-    this->add_java_names(result, func.get_name());
+    add_java_names(result, func.get_name());
     return result;
   }
 
   mstch::map extend_field(const t_field& field) const override {
     mstch::map result{};
-    this->add_java_names(result, field.get_name());
+    add_java_names(result, field.get_name());
     return result;
   }
 
   mstch::map extend_enum(const t_enum& enm) const override {
     mstch::map result{
-        {"javaPackage", this->get_namespace_or_default(*enm.get_program())},
+        {"javaPackage", get_namespace_or_default(*enm.get_program())},
     };
-    this->add_java_names(result, enm.get_name());
+    add_java_names(result, enm.get_name());
     return result;
   }
 
   mstch::map extend_enum_value(const t_enum_value& value) const override {
     mstch::map result{};
-    this->add_java_names(result, value.get_name());
+    add_java_names(result, value.get_name());
     return result;
   }
 
@@ -247,15 +246,15 @@ void t_mstch_swift_generator::generate_program() {
   mstch::config::escape = [](const std::string s) { return s; };
 
   // Load templates
-  auto& templates = this->get_template_map();
+  auto& templates = get_template_map();
 
-  this->generate_items("Object", this->get_program()->get_objects());
+  generate_items("Object", get_program()->get_objects());
 
-  this->generate_items("Service", this->get_program()->get_services());
+  generate_items("Service", get_program()->get_services());
 
-  this->generate_items("Enum", this->get_program()->get_enums());
+  generate_items("Enum", get_program()->get_enums());
 
-  this->generate_constants(*this->get_program());
+  generate_constants(*get_program());
 }
 
 THRIFT_REGISTER_GENERATOR(mstch_swift, "Java Swift", "");

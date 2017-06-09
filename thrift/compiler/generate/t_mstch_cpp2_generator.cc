@@ -65,30 +65,30 @@ t_mstch_cpp2_generator::t_mstch_cpp2_generator(
     : t_mstch_generator(program, "cpp2", parsed_options, true) {
   // TODO: use gen-cpp2 when this implementation is ready to replace the
   // old python implementation.
-  this->out_dir_base_ = "gen-mstch_cpp2";
-  this->protocols_ = {
-    {{"binary", "BinaryProtocol", "T_BINARY_PROTOCOL"}},
-    {{"compact", "CompactProtocol", "T_COMPACT_PROTOCOL"}},
+  out_dir_base_ = "gen-mstch_cpp2";
+  protocols_ = {
+      {{"binary", "BinaryProtocol", "T_BINARY_PROTOCOL"}},
+      {{"compact", "CompactProtocol", "T_COMPACT_PROTOCOL"}},
   };
 
-  include_prefix_ = this->get_option("include_prefix");
-  use_proxy_accessors_ = this->get_option("proxy_accessors") != nullptr;
-  use_getters_setters_ = this->get_option("disable_getters_setters") == nullptr;
+  include_prefix_ = get_option("include_prefix");
+  use_proxy_accessors_ = get_option("proxy_accessors") != nullptr;
+  use_getters_setters_ = get_option("disable_getters_setters") == nullptr;
 }
 
 void t_mstch_cpp2_generator::generate_program() {
   // disable mstch escaping
   mstch::config::escape = [](const std::string& s) { return s; };
 
-  auto services = this->get_program()->get_services();
-  auto root = this->dump(*this->get_program());
+  auto services = get_program()->get_services();
+  auto root = dump(*get_program());
 
-  this->generate_constants(*this->get_program());
-  this->generate_structs(*this->get_program());
+  generate_constants(*get_program());
+  generate_structs(*get_program());
 
   // Generate client_interface_tpl
   for (const auto& service : services ) {
-    this->generate_service(service);
+    generate_service(service);
   }
 }
 
@@ -104,10 +104,10 @@ mstch::map t_mstch_cpp2_generator::extend_program(
     cpp_includes.push_back(cpp_include);
   }
 
-  m.emplace("namespace_cpp2", this->get_namespace(program)),
-  m.emplace("normalizedIncludePrefix", this->get_include_prefix(program));
+  m.emplace("namespace_cpp2", get_namespace(program)),
+      m.emplace("normalizedIncludePrefix", get_include_prefix(program));
   m.emplace("enums?", !program.get_enums().empty());
-  m.emplace("thrift_includes", this->dump_elems(program.get_includes()));
+  m.emplace("thrift_includes", dump_elems(program.get_includes()));
   m.emplace("cpp_includes", cpp_includes);
   return m;
 }
@@ -115,13 +115,10 @@ mstch::map t_mstch_cpp2_generator::extend_program(
 mstch::map t_mstch_cpp2_generator::extend_service(const t_service& svc) const {
   mstch::map m;
   m.emplace("programName", svc.get_program()->get_name());
-  m.emplace(
-      "programIncludePrefix", this->get_include_prefix(*svc.get_program()));
-  m.emplace(
-      "separate_processmap", (bool)this->get_option("separate_processmap"));
-  m.emplace(
-      "thrift_includes", this->dump_elems(svc.get_program()->get_includes()));
-  m.emplace("namespace_cpp2", this->get_namespace(*svc.get_program()));
+  m.emplace("programIncludePrefix", get_include_prefix(*svc.get_program()));
+  m.emplace("separate_processmap", (bool)get_option("separate_processmap"));
+  m.emplace("thrift_includes", dump_elems(svc.get_program()->get_includes()));
+  m.emplace("namespace_cpp2", get_namespace(*svc.get_program()));
 
   mstch::array protocol_array{};
   for (auto it = protocols_.begin(); it != protocols_.end(); ++it) {
@@ -137,7 +134,7 @@ mstch::map t_mstch_cpp2_generator::extend_service(const t_service& svc) const {
   mstch::array oneway_functions_array{};
   for (auto fn : svc.get_functions()) {
     if (fn->is_oneway()) {
-      oneway_functions_array.push_back(this->dump(*fn));
+      oneway_functions_array.push_back(dump(*fn));
     }
   }
   add_first_last(oneway_functions_array);
@@ -159,16 +156,16 @@ mstch::map t_mstch_cpp2_generator::extend_service(const t_service& svc) const {
 mstch::map t_mstch_cpp2_generator::extend_function(const t_function& fn) const {
   mstch::map m;
 
-  m.emplace("eb?", this->get_is_eb(fn));
-  m.emplace("stackArgs?", this->get_is_stack_args());
+  m.emplace("eb?", get_is_eb(fn));
+  m.emplace("stackArgs?", get_is_stack_args());
   return m;
 }
 
 mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) const {
   mstch::map m;
-  m.emplace("namespaces", this->get_namespace(*s.get_program()));
-  m.emplace("proxy_accessors?", this->use_proxy_accessors_);
-  m.emplace("getters_setters?", this->use_getters_setters_);
+  m.emplace("namespaces", get_namespace(*s.get_program()));
+  m.emplace("proxy_accessors?", use_proxy_accessors_);
+  m.emplace("getters_setters?", use_getters_setters_);
 
   std::vector<t_field*> s_members = s.get_members();
 
@@ -200,7 +197,7 @@ mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) const {
             (t->is_string() && f->get_value() != nullptr) ||
             (t->is_container() && f->get_value() != nullptr) || t->is_enum();
       });
-  m.emplace("filtered_fields", this->dump_elems(filtered_fields));
+  m.emplace("filtered_fields", dump_elems(filtered_fields));
 
   // Check if all the struct elements:
   // Are only containers (list, map, set) that recursively end up in
@@ -313,31 +310,26 @@ bool t_mstch_cpp2_generator::get_is_eb(const t_function& fn) const {
 }
 
 bool t_mstch_cpp2_generator::get_is_stack_args() const {
-  return this->get_option("stack_arguments") != nullptr;
+  return get_option("stack_arguments") != nullptr;
 }
 
 void t_mstch_cpp2_generator::generate_constants(const t_program& program) {
   auto name = program.get_name();
-  this->render_to_file(program, "module_constants.h", name + "_constants.h");
-  this->render_to_file(
-    program,
-    "module_constants.cpp",
-    name + "_constants.cpp"
-  );
+  render_to_file(program, "module_constants.h", name + "_constants.h");
+  render_to_file(program, "module_constants.cpp", name + "_constants.cpp");
 }
 
 void t_mstch_cpp2_generator::generate_structs(const t_program& program) {
   auto name = program.get_name();
-  this->render_to_file(program, "module_data.h", name + "_data.h");
-  this->render_to_file(program, "module_data.cpp", name + "_data.cpp");
-  this->render_to_file(program, "module_types.h", name + "_types.h");
-  this->render_to_file(program, "module_types.tcc", name + "_types.tcc");
-  this->render_to_file(program, "module_types.cpp", name + "_types.cpp");
-  this->render_to_file(
-    program,
-    "module_types_custom_protocol.h",
-    name + "_types_custom_protocol.h"
-  );
+  render_to_file(program, "module_data.h", name + "_data.h");
+  render_to_file(program, "module_data.cpp", name + "_data.cpp");
+  render_to_file(program, "module_types.h", name + "_types.h");
+  render_to_file(program, "module_types.tcc", name + "_types.tcc");
+  render_to_file(program, "module_types.cpp", name + "_types.cpp");
+  render_to_file(
+      program,
+      "module_types_custom_protocol.h",
+      name + "_types_custom_protocol.h");
 }
 
 void t_mstch_cpp2_generator::generate_service(t_service* service) {
@@ -388,8 +380,7 @@ mstch::array t_mstch_cpp2_generator::get_namespace(
 std::string t_mstch_cpp2_generator::get_include_prefix(
     const t_program& program) const {
   string include_prefix = program.get_include_prefix();
-  if (&program == this->get_program() &&
-      include_prefix_ && *include_prefix_ != "") {
+  if (&program == get_program() && include_prefix_ && *include_prefix_ != "") {
     include_prefix = *include_prefix_;
   }
   auto path = boost::filesystem::path(include_prefix);
