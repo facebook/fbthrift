@@ -238,8 +238,9 @@ protected:
 
     bool handleSecurityMessage(
         std::unique_ptr<folly::IOBuf>&& buf,
-        std::unique_ptr<apache::thrift::transport::THeader>&& header);
-  private:
+        std::unique_ptr<apache::thrift::transport::THeader>&& header) override;
+
+   private:
     HeaderServerChannel& channel_;
   };
 

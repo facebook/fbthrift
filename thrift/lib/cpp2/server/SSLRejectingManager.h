@@ -48,7 +48,7 @@ class SSLRejectingManager
         secureTransportType_(secureTransportType),
         tinfo_(std::move(tinfo)) {}
 
-  virtual ~SSLRejectingManager() = default;
+  ~SSLRejectingManager() override = default;
 
   void start(
       folly::AsyncTransportWrapper::UniquePtr sock,

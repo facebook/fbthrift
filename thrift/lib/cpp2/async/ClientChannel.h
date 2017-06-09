@@ -27,7 +27,7 @@ namespace thrift {
 class ClientChannel : public RequestChannel, public HeaderChannel {
  public:
   ClientChannel() {}
-  virtual ~ClientChannel() {}
+  ~ClientChannel() override {}
 
   typedef
     std::unique_ptr<ClientChannel,

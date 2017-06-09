@@ -85,7 +85,9 @@ struct MultiProtocolTest : public TypedTestCommon<Pair> {};
 
 template <typename Pair>
 struct MultiProtocolTestConcrete : public TypedTestCommon<Pair> {
-  virtual void TestBody() { return; }
+  void TestBody() override {
+    return;
+  }
 };
 
 template <typename Pair>

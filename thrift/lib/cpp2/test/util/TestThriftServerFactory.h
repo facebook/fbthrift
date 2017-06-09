@@ -27,60 +27,60 @@ namespace apache { namespace thrift {
 template<typename Interface>
 struct TestThriftServerFactory : public TestServerFactory {
   public:
-    std::shared_ptr<BaseThriftServer> create() {
-      auto server = std::make_shared<apache::thrift::ThriftServer>();
-      server->setNumIOWorkerThreads(1);
-      if (useSimpleThreadManager_) {
-        auto threadFactory =
-            std::make_shared<apache::thrift::concurrency::PosixThreadFactory>();
-        auto threadManager =
-            apache::thrift::concurrency::ThreadManager::newSimpleThreadManager(
-                1, 5, false, 50);
-        threadManager->threadFactory(threadFactory);
-        threadManager->start();
-        server->setThreadManager(threadManager);
-      } else if (exe_) {
-        server->setThreadManager(exe_);
-      }
+   std::shared_ptr<BaseThriftServer> create() override {
+     auto server = std::make_shared<apache::thrift::ThriftServer>();
+     server->setNumIOWorkerThreads(1);
+     if (useSimpleThreadManager_) {
+       auto threadFactory =
+           std::make_shared<apache::thrift::concurrency::PosixThreadFactory>();
+       auto threadManager =
+           apache::thrift::concurrency::ThreadManager::newSimpleThreadManager(
+               1, 5, false, 50);
+       threadManager->threadFactory(threadFactory);
+       threadManager->start();
+       server->setThreadManager(threadManager);
+     } else if (exe_) {
+       server->setThreadManager(exe_);
+     }
 
-    server->setPort(0);
-    server->setSaslEnabled(true);
-    if (useStubSaslServer_) {
-      server->setSaslServerFactory(
-          [] (folly::EventBase* evb) {
-            return std::unique_ptr<apache::thrift::SaslServer>(
-                new apache::thrift::StubSaslServer(evb));
-          });
-    }
+     server->setPort(0);
+     server->setSaslEnabled(true);
+     if (useStubSaslServer_) {
+       server->setSaslServerFactory([](folly::EventBase* evb) {
+         return std::unique_ptr<apache::thrift::SaslServer>(
+             new apache::thrift::StubSaslServer(evb));
+       });
+     }
 
-    if (idleTimeoutMs_ != 0) {
-      server->setIdleTimeout(std::chrono::milliseconds(idleTimeoutMs_));
-    }
+     if (idleTimeoutMs_ != 0) {
+       server->setIdleTimeout(std::chrono::milliseconds(idleTimeoutMs_));
+     }
 
-    if (duplex_) {
-      server->setDuplex(true);
-    }
+     if (duplex_) {
+       server->setDuplex(true);
+     }
 
-    if (serverEventHandler_) {
-      server->setServerEventHandler(serverEventHandler_);
-    }
+     if (serverEventHandler_) {
+       server->setServerEventHandler(serverEventHandler_);
+     }
 
-    server->setMinCompressBytes(minCompressBytes_);
-    if (transId_) {
-      std::vector<uint16_t> transforms{transId_};
-      server->setDefaultWriteTransforms(transforms);
-    }
-    server->setInterface(std::unique_ptr<Interface>(new Interface));
-    return server;
+     server->setMinCompressBytes(minCompressBytes_);
+     if (transId_) {
+       std::vector<uint16_t> transforms{transId_};
+       server->setDefaultWriteTransforms(transforms);
+     }
+     server->setInterface(std::unique_ptr<Interface>(new Interface));
+     return server;
   }
 
-  TestThriftServerFactory& useSimpleThreadManager(bool use) {
+  TestThriftServerFactory& useSimpleThreadManager(bool use) override {
     useSimpleThreadManager_ = use;
     return *this;
   }
 
   TestThriftServerFactory& useThreadManager(
-      std::shared_ptr<apache::thrift::concurrency::ThreadManager> exe) {
+      std::shared_ptr<apache::thrift::concurrency::ThreadManager> exe)
+      override {
     exe_ = exe;
     return *this;
   }
