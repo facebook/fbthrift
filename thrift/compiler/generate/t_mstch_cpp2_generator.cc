@@ -140,7 +140,8 @@ mstch::map t_mstch_cpp2_generator::extend_service(const t_service& svc) const {
     }
   }
   add_first_last(oneway_functions_array);
-  m.emplace("onewayfunctions", oneway_functions_array);
+  m.emplace("oneway_functions", oneway_functions_array);
+  m.emplace("oneways?", !oneway_functions_array.empty());
 
   mstch::array cpp_includes{};
   for (auto const& s : svc.get_program()->get_cpp_includes()) {

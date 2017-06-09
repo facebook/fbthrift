@@ -14,9 +14,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#service:functions%><%#function:returnType%>
-typedef apache::thrift::ThriftPresult<false<% > service_tcc/field_data_params%>> <%service:name%>_<%function:name%>_pargs;
-<%^function:oneway?%>
-typedef apache::thrift::ThriftPresult<true<% > service_tcc/field_data_return%><% > service_tcc/field_data_throws%>> <%service:name%>_<%function:name%>_presult;
-<%/function:oneway?%>
-<%/function:returnType%><%/service:functions%>
+%><%#service:oneways?%>
+std::unordered_set<std::string> <%service:name%>AsyncProcessor::onewayMethods_ {
+<%#service:oneway_functions%>
+  "<%function:name%>"<%^last?%>,<%/last?%>
+<%/service:oneway_functions%>
+};
+<%/service:oneways?%>
+<%^service:oneways?%>
+std::unordered_set<std::string> <%service:name%>AsyncProcessor::onewayMethods_ {};
+<%/service:oneways?%>

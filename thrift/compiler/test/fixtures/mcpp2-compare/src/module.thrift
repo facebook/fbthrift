@@ -234,9 +234,22 @@ service ParamService {
 
 service ExtraService extends ParamService {
   bool simple_function()
-  void throws_function() throws (1: AnException ex, 2: AnotherException aex)
+  void throws_function()
+      throws (1: AnException ex, 2: AnotherException aex)
   bool throws_function2(1: bool param1)
       throws (1: AnException ex, 2: AnotherException aex)
   map<i32, string> throws_function3(1: bool param1, 3: string param2)
       throws (2: AnException ex, 5: AnotherException aex)
+  oneway void oneway_void_ret()
+  oneway void oneway_void_ret_i32_i32_i32_i32_i32_param(
+      1: i32 param1,
+      2: i32 param2,
+      3: i32 param3,
+      4: i32 param4,
+      5: i32 param5)
+  oneway void oneway_void_ret_map_setlist_param(
+      1: map<string, i64> param1,
+      3: set<list<string>> param2)
+  oneway void oneway_void_ret_struct_param(1: MyStruct param1)
+  oneway void oneway_void_ret_listunion_param(1: list<ComplexUnion> param1)
 }

@@ -1,0 +1,43 @@
+<%!
+
+  Copyright 2016 Facebook, Inc.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+%><%^type:resolves_to_complex_return?%>
+<% > Type%> <%service:name%>AsyncClient::sync_<%function:name%>(<% > service_common/function_param_list_const_no_start_comma%>) {
+  ::apache::thrift::RpcOptions rpcOptions;
+<%#type:void?%>
+  sync_<%function:name%>(rpcOptions<% > service_common/param_list%>);
+<%/type:void?%>
+<%^type:void?%>
+  return sync_<%function:name%>(rpcOptions<% > service_common/param_list%>);
+<%/type:void?%>
+<%/type:resolves_to_complex_return?%>
+<%#type:resolves_to_complex_return?%>
+void <%service:name%>AsyncClient::sync_<%function:name%>(<% > Type%>& _return<% > service_common/function_param_list_const%>) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  sync_<%function:name%>(rpcOptions, _return<% > service_common/param_list%>);
+<%/type:resolves_to_complex_return?%>
+}
+
+<%^type:resolves_to_complex_return?%>
+<% > Type%> <%service:name%>AsyncClient::sync_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<% > service_common/function_param_list_const%>) {
+<%/type:resolves_to_complex_return?%>
+<%#type:resolves_to_complex_return?%>
+void <%service:name%>AsyncClient::sync_<%function:name%>(apache::thrift::RpcOptions& rpcOptions, <% > Type%>& _return<% > service_common/function_param_list_const%>) {
+<%/type:resolves_to_complex_return?%>
+  apache::thrift::ClientReceiveState _returnState;
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, true);
+  <%function:name%>Impl(true, rpcOptions, std::move(callback)<% > service_common/param_list%>);
+}

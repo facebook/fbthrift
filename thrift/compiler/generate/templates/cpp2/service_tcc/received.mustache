@@ -33,10 +33,16 @@ void <%service:name%>AsyncClient::<%function:name%>T(Protocol_* prot, bool useSy
 <%/field:type%><%/function:args%>
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
+<%#function:oneway?%>
+  apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "<%function:name%>", writer, sizer, true, useSync);
+<%/function:oneway?%>
+<%^function:oneway?%>
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "<%function:name%>", writer, sizer, false, useSync);
+<%/function:oneway?%>
   connectionContext_->setRequestHeader(nullptr);
 }
 
+<%^function:oneway?%>
 template <typename Protocol_>
 <%#type:void?%>
 folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:name%>T(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
@@ -137,4 +143,5 @@ void <%service:name%>AsyncClient::recv_<%function:name%>T(Protocol_* prot, <% > 
 <%/type:void?%><%/type:resolves_to_complex_return?%>
 }
 
+<%/function:oneway?%>
 <%/function:returnType%><%/service:functions%>

@@ -18,7 +18,12 @@
 template <typename ProtocolIn_, typename ProtocolOut_>
 void <%service:name%>AsyncProcessor::_processInThread_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
+<%^function:oneway?%>
   processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &<%service:name%>AsyncProcessor::process_<%function:name%><ProtocolIn_, ProtocolOut_>, this);
+<%/function:oneway?%>
+<%#function:oneway?%>
+  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, true, &<%service:name%>AsyncProcessor::process_<%function:name%><ProtocolIn_, ProtocolOut_>, this);
+<%/function:oneway?%>
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -47,6 +52,13 @@ void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<a
     deserializeRequest(args, buf.get(), iprot.get(), c.get());
   }
   catch (const std::exception& ex) {
+<%#function:oneway?%>
+    LOG(ERROR) << ex.what() << " in function noResponse";
+    return;
+  }
+  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(c), nullptr, nullptr, eb, tm, ctx));
+<%/function:oneway?%>
+<%^function:oneway?%>
     ProtocolOut_ prot;
     if (req) {
       LOG(ERROR) << ex.what() << " in function <%function:name%>";
@@ -73,10 +85,12 @@ void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<a
     callback.release()->deleteInThread();
     return;
   }
+<%/function:oneway?%>
   ctx->setStartedProcessing();
   iface_->async_tm_<%function:name%>(std::move(callback)<% > service_tcc/get_args_ref%>);
 }
 
+<%^function:oneway?%>
 template <class ProtocolIn_, class ProtocolOut_>
 <%#type:void?%>
 folly::IOBufQueue <%service:name%>AsyncProcessor::return_<%function:name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
@@ -196,4 +210,5 @@ void <%service:name%>AsyncProcessor::throw_wrapped_<%function:name%>(std::unique
 <%/function:exceptions?%>
 }
 
+<%/function:oneway?%>
 <%/function:returnType%><%/service:functions%>

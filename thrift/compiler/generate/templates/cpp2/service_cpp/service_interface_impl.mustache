@@ -25,9 +25,16 @@ folly::Future<<% > ServiceType%>> <%service:name%>SvIf::future_<%function:name%>
   return apache::thrift::detail::si::future([&] { return <%function:name%>(<% > service_common/move_param_list_no_start_comma%>); });
 }
 
+<%#function:oneway?%>
+void <%service:name%>SvIf::async_tm_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<% > service_common/function_param_list_ptr%>) {
+  apache::thrift::detail::si::async_tm_oneway(this, std::move(callback), [&] { return future_<%function:name%>(<% > service_common/move_param_list_no_start_comma%>); });
+}
+<%/function:oneway?%>
+<%^function:oneway?%>
 void <%service:name%>SvIf::async_tm_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback<% > service_common/function_param_list_ptr%>) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_<%function:name%>(<% > service_common/move_param_list_no_start_comma%>); });
 }
+<%/function:oneway?%>
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
 void <%service:name%>SvIf::<%function:name%>(<% > Type%>& /*_return*/<% > service_common/commented_out_function_param_list_ptr%>) {

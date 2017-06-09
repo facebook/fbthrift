@@ -47,6 +47,21 @@ class ExtraServiceSvAsyncIf {
   virtual void async_tm_throws_function3(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::map<int32_t, std::string>>>> callback, bool param1, std::unique_ptr<std::string> param2) = 0;
   virtual void async_throws_function3(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::map<int32_t, std::string>>>> callback, bool param1, std::unique_ptr<std::string> param2) = delete;
   virtual folly::Future<std::unique_ptr<std::map<int32_t, std::string>>> future_throws_function3(bool param1, std::unique_ptr<std::string> param2) = 0;
+  virtual void async_tm_oneway_void_ret(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback) = 0;
+  virtual void async_oneway_void_ret(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback) = delete;
+  virtual folly::Future<folly::Unit> future_oneway_void_ret() = 0;
+  virtual void async_tm_oneway_void_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) = 0;
+  virtual void async_oneway_void_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) = delete;
+  virtual folly::Future<folly::Unit> future_oneway_void_ret_i32_i32_i32_i32_i32_param(int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) = 0;
+  virtual void async_tm_oneway_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, std::unique_ptr<std::map<std::string, int64_t>> param1, std::unique_ptr<std::set<std::vector<std::string>>> param2) = 0;
+  virtual void async_oneway_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, std::unique_ptr<std::map<std::string, int64_t>> param1, std::unique_ptr<std::set<std::vector<std::string>>> param2) = delete;
+  virtual folly::Future<folly::Unit> future_oneway_void_ret_map_setlist_param(std::unique_ptr<std::map<std::string, int64_t>> param1, std::unique_ptr<std::set<std::vector<std::string>>> param2) = 0;
+  virtual void async_tm_oneway_void_ret_struct_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, std::unique_ptr< ::some::valid::ns::MyStruct> param1) = 0;
+  virtual void async_oneway_void_ret_struct_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, std::unique_ptr< ::some::valid::ns::MyStruct> param1) = delete;
+  virtual folly::Future<folly::Unit> future_oneway_void_ret_struct_param(std::unique_ptr< ::some::valid::ns::MyStruct> param1) = 0;
+  virtual void async_tm_oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>> param1) = 0;
+  virtual void async_oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>> param1) = delete;
+  virtual folly::Future<folly::Unit> future_oneway_void_ret_listunion_param(std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>> param1) = 0;
 };
 
 class ExtraServiceAsyncProcessor;
@@ -67,6 +82,21 @@ class ExtraServiceSvIf : public ExtraServiceSvAsyncIf, virtual public  ::some::v
   virtual void throws_function3(std::map<int32_t, std::string>& /*_return*/, bool /*param1*/, std::unique_ptr<std::string> /*param2*/);
   folly::Future<std::unique_ptr<std::map<int32_t, std::string>>> future_throws_function3(bool param1, std::unique_ptr<std::string> param2) override;
   void async_tm_throws_function3(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::map<int32_t, std::string>>>> callback, bool param1, std::unique_ptr<std::string> param2) override;
+  virtual void oneway_void_ret();
+  folly::Future<folly::Unit> future_oneway_void_ret() override;
+  void async_tm_oneway_void_ret(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback) override;
+  virtual void oneway_void_ret_i32_i32_i32_i32_i32_param(int32_t /*param1*/, int32_t /*param2*/, int32_t /*param3*/, int32_t /*param4*/, int32_t /*param5*/);
+  folly::Future<folly::Unit> future_oneway_void_ret_i32_i32_i32_i32_i32_param(int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) override;
+  void async_tm_oneway_void_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) override;
+  virtual void oneway_void_ret_map_setlist_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/, std::unique_ptr<std::set<std::vector<std::string>>> /*param2*/);
+  folly::Future<folly::Unit> future_oneway_void_ret_map_setlist_param(std::unique_ptr<std::map<std::string, int64_t>> param1, std::unique_ptr<std::set<std::vector<std::string>>> param2) override;
+  void async_tm_oneway_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, std::unique_ptr<std::map<std::string, int64_t>> param1, std::unique_ptr<std::set<std::vector<std::string>>> param2) override;
+  virtual void oneway_void_ret_struct_param(std::unique_ptr< ::some::valid::ns::MyStruct> /*param1*/);
+  folly::Future<folly::Unit> future_oneway_void_ret_struct_param(std::unique_ptr< ::some::valid::ns::MyStruct> param1) override;
+  void async_tm_oneway_void_ret_struct_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, std::unique_ptr< ::some::valid::ns::MyStruct> param1) override;
+  virtual void oneway_void_ret_listunion_param(std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>> /*param1*/);
+  folly::Future<folly::Unit> future_oneway_void_ret_listunion_param(std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>> param1) override;
+  void async_tm_oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>> param1) override;
 };
 
 class ExtraServiceSvNull : public ExtraServiceSvIf, virtual public  ::some::valid::ns::ParamServiceSvIf {
@@ -75,6 +105,11 @@ class ExtraServiceSvNull : public ExtraServiceSvIf, virtual public  ::some::vali
   void throws_function() override;
   bool throws_function2(bool /*param1*/) override;
   void throws_function3(std::map<int32_t, std::string>& /*_return*/, bool /*param1*/, std::unique_ptr<std::string> /*param2*/) override;
+  void oneway_void_ret() override;
+  void oneway_void_ret_i32_i32_i32_i32_i32_param(int32_t /*param1*/, int32_t /*param2*/, int32_t /*param3*/, int32_t /*param4*/, int32_t /*param5*/) override;
+  void oneway_void_ret_map_setlist_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/, std::unique_ptr<std::set<std::vector<std::string>>> /*param2*/) override;
+  void oneway_void_ret_struct_param(std::unique_ptr< ::some::valid::ns::MyStruct> /*param1*/) override;
+  void oneway_void_ret_listunion_param(std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>> /*param1*/) override;
 };
 
 class ExtraServiceAsyncProcessor : public  ::some::valid::ns::ParamServiceAsyncProcessor {
@@ -144,6 +179,26 @@ class ExtraServiceAsyncProcessor : public  ::some::valid::ns::ParamServiceAsyncP
   static void throw_throws_function3(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_throws_function3(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void _processInThread_oneway_void_ret(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_oneway_void_ret(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void _processInThread_oneway_void_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_oneway_void_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void _processInThread_oneway_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_oneway_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void _processInThread_oneway_void_ret_struct_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_oneway_void_ret_struct_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void _processInThread_oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
  public:
   ExtraServiceAsyncProcessor(ExtraServiceSvIf* iface) :
        ::some::valid::ns::ParamServiceAsyncProcessor(iface),
@@ -249,6 +304,66 @@ class ExtraServiceAsyncClient : public  ::some::valid::ns::ParamServiceAsyncClie
   static folly::exception_wrapper recv_wrapped_throws_function3T(Protocol_* prot, std::map<int32_t, std::string>& _return, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_throws_function3T(Protocol_* prot, std::map<int32_t, std::string>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void oneway_void_ret(std::unique_ptr<apache::thrift::RequestCallback> callback);
+  virtual void oneway_void_ret(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ private:
+  virtual void oneway_void_retImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ public:
+  virtual void sync_oneway_void_ret();
+  virtual void sync_oneway_void_ret(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<folly::Unit> future_oneway_void_ret();
+  virtual folly::Future<folly::Unit> future_oneway_void_ret(apache::thrift::RpcOptions& rpcOptions);
+  virtual void oneway_void_ret(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
+  template <typename Protocol_>
+  void oneway_void_retT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  virtual void oneway_void_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
+  virtual void oneway_void_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
+ private:
+  virtual void oneway_void_ret_i32_i32_i32_i32_i32_paramImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
+ public:
+  virtual void sync_oneway_void_ret_i32_i32_i32_i32_i32_param(int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
+  virtual void sync_oneway_void_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
+  virtual folly::Future<folly::Unit> future_oneway_void_ret_i32_i32_i32_i32_i32_param(int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
+  virtual folly::Future<folly::Unit> future_oneway_void_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
+  virtual void oneway_void_ret_i32_i32_i32_i32_i32_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
+  template <typename Protocol_>
+  void oneway_void_ret_i32_i32_i32_i32_i32_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5);
+  virtual void oneway_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2);
+  virtual void oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2);
+ private:
+  virtual void oneway_void_ret_map_setlist_paramImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2);
+ public:
+  virtual void sync_oneway_void_ret_map_setlist_param(const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2);
+  virtual void sync_oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2);
+  virtual folly::Future<folly::Unit> future_oneway_void_ret_map_setlist_param(const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2);
+  virtual folly::Future<folly::Unit> future_oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2);
+  virtual void oneway_void_ret_map_setlist_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2);
+  template <typename Protocol_>
+  void oneway_void_ret_map_setlist_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2);
+  virtual void oneway_void_ret_struct_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::MyStruct& param1);
+  virtual void oneway_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::MyStruct& param1);
+ private:
+  virtual void oneway_void_ret_struct_paramImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::MyStruct& param1);
+ public:
+  virtual void sync_oneway_void_ret_struct_param(const  ::some::valid::ns::MyStruct& param1);
+  virtual void sync_oneway_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, const  ::some::valid::ns::MyStruct& param1);
+  virtual folly::Future<folly::Unit> future_oneway_void_ret_struct_param(const  ::some::valid::ns::MyStruct& param1);
+  virtual folly::Future<folly::Unit> future_oneway_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, const  ::some::valid::ns::MyStruct& param1);
+  virtual void oneway_void_ret_struct_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::some::valid::ns::MyStruct& param1);
+  template <typename Protocol_>
+  void oneway_void_ret_struct_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::MyStruct& param1);
+  virtual void oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1);
+  virtual void oneway_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1);
+ private:
+  virtual void oneway_void_ret_listunion_paramImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1);
+ public:
+  virtual void sync_oneway_void_ret_listunion_param(const std::vector< ::some::valid::ns::ComplexUnion>& param1);
+  virtual void sync_oneway_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const std::vector< ::some::valid::ns::ComplexUnion>& param1);
+  virtual folly::Future<folly::Unit> future_oneway_void_ret_listunion_param(const std::vector< ::some::valid::ns::ComplexUnion>& param1);
+  virtual folly::Future<folly::Unit> future_oneway_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const std::vector< ::some::valid::ns::ComplexUnion>& param1);
+  virtual void oneway_void_ret_listunion_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1);
+  template <typename Protocol_>
+  void oneway_void_ret_listunion_paramT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1);
 };
 
 }}} // some::valid::ns

@@ -48,7 +48,7 @@ bool <%service:name%>AsyncProcessor::isOnewayMethod(const folly::IOBuf* buf, con
   return apache::thrift::detail::ap::is_oneway_method(buf, header, onewayMethods_);
 }
 
-std::unordered_set<std::string> <%service:name%>AsyncProcessor::onewayMethods_ {};
+<% > service_cpp/oneway_methods%>
 std::unordered_map<std::string, int16_t> <%service:name%>AsyncProcessor::cacheKeyMap_ {};
 <% > service_cpp/binary_processmap%>
 

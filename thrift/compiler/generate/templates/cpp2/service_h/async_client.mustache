@@ -54,22 +54,29 @@
 <%/type:resolves_to_complex_return?%>
   virtual folly::Future<<% > ServiceType%>> future_<%function:name%>(<% > service_common/function_param_list_const_no_start_comma%>);
   virtual folly::Future<<% > ServiceType%>> future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<% > service_common/function_param_list_const%>);
+<%^function:oneway?%>
   virtual folly::Future<std::pair<<% > ServiceType%>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_<%function:name%>(apache::thrift::RpcOptions& rpcOptions<% > service_common/function_param_list_const%>);
+<%/function:oneway?%>
   virtual void <%function:name%>(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback<% > service_common/function_param_list_const%>);
 <%#type:void?%>
+<%^function:oneway?%>
   static folly::exception_wrapper recv_wrapped_<%function:name%>(::apache::thrift::ClientReceiveState& state);
   static void recv_<%function:name%>(::apache::thrift::ClientReceiveState& state);
   // Mock friendly virtual instance method
   virtual void recv_instance_<%function:name%>(::apache::thrift::ClientReceiveState& state);
   virtual folly::exception_wrapper recv_instance_wrapped_<%function:name%>(::apache::thrift::ClientReceiveState& state);
+<%/function:oneway?%>
   template <typename Protocol_>
   void <%function:name%>T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<% > service_common/function_param_list_const%>);
+<%^function:oneway?%>
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_<%function:name%>T(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_<%function:name%>T(Protocol_* prot, ::apache::thrift::ClientReceiveState& state);
+<%/function:oneway?%>
 <%/type:void?%>
 <%^type:void?%>
+<%^function:oneway?%>
   static folly::exception_wrapper recv_wrapped_<%function:name%>(<% > Type%>& _return, ::apache::thrift::ClientReceiveState& state);
 <%^type:resolves_to_complex_return?%>
   static <% > Type%> recv_<%function:name%>(::apache::thrift::ClientReceiveState& state);
@@ -82,8 +89,10 @@
   virtual void recv_instance_<%function:name%>(<% > Type%>& _return, ::apache::thrift::ClientReceiveState& state);
 <%/type:resolves_to_complex_return?%>
   virtual folly::exception_wrapper recv_instance_wrapped_<%function:name%>(<% > Type%>& _return, ::apache::thrift::ClientReceiveState& state);
+<%/function:oneway?%>
   template <typename Protocol_>
   void <%function:name%>T(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback<% > service_common/function_param_list_const%>);
+<%^function:oneway?%>
   template <typename Protocol_>
   static folly::exception_wrapper recv_wrapped_<%function:name%>T(Protocol_* prot, <% > Type%>& _return, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
@@ -93,6 +102,7 @@
 <%#type:resolves_to_complex_return?%>
   static void recv_<%function:name%>T(Protocol_* prot, <% > Type%>& _return, ::apache::thrift::ClientReceiveState& state);
 <%/type:resolves_to_complex_return?%>
+<%/function:oneway?%>
 <%/type:void?%>
 <%/function:returnType%><%/service:functions%>
 <%^service:extends%>

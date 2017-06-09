@@ -488,6 +488,296 @@ folly::exception_wrapper ExtraServiceAsyncClient::recv_instance_wrapped_throws_f
   return recv_wrapped_throws_function3(_return, state);
 }
 
+void ExtraServiceAsyncClient::oneway_void_ret(std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  oneway_void_retImpl(false, rpcOptions, std::move(callback));
+}
+
+void ExtraServiceAsyncClient::oneway_void_ret(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  oneway_void_retImpl(false, rpcOptions, std::move(callback));
+}
+
+void ExtraServiceAsyncClient::oneway_void_retImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback) {
+  switch(getChannel()->getProtocolId()) {
+    case apache::thrift::protocol::T_BINARY_PROTOCOL:
+    {
+      apache::thrift::BinaryProtocolWriter writer;
+      oneway_void_retT(&writer, useSync, rpcOptions, std::move(callback));
+      break;
+    }
+    case apache::thrift::protocol::T_COMPACT_PROTOCOL:
+    {
+      apache::thrift::CompactProtocolWriter writer;
+      oneway_void_retT(&writer, useSync, rpcOptions, std::move(callback));
+      break;
+    }
+    default:
+    {
+      throw apache::thrift::TApplicationException("Could not find Protocol");
+    }
+  }
+}
+
+void ExtraServiceAsyncClient::sync_oneway_void_ret() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  sync_oneway_void_ret(rpcOptions);
+}
+
+void ExtraServiceAsyncClient::sync_oneway_void_ret(apache::thrift::RpcOptions& rpcOptions) {
+  apache::thrift::ClientReceiveState _returnState;
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, true);
+  oneway_void_retImpl(true, rpcOptions, std::move(callback));
+}
+
+folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret() {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return future_oneway_void_ret(rpcOptions);
+}
+
+folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret(apache::thrift::RpcOptions& rpcOptions) {
+  folly::Promise<folly::Unit> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::OneWayFutureCallback>(std::move(_promise), channel_);
+  oneway_void_ret(rpcOptions, std::move(callback));
+  return _future;
+}
+
+void ExtraServiceAsyncClient::oneway_void_ret(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback) {
+  oneway_void_ret(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)));
+}
+
+void ExtraServiceAsyncClient::oneway_void_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  oneway_void_ret_i32_i32_i32_i32_i32_paramImpl(false, rpcOptions, std::move(callback), param1, param2, param3, param4, param5);
+}
+
+void ExtraServiceAsyncClient::oneway_void_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
+  oneway_void_ret_i32_i32_i32_i32_i32_paramImpl(false, rpcOptions, std::move(callback), param1, param2, param3, param4, param5);
+}
+
+void ExtraServiceAsyncClient::oneway_void_ret_i32_i32_i32_i32_i32_paramImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
+  switch(getChannel()->getProtocolId()) {
+    case apache::thrift::protocol::T_BINARY_PROTOCOL:
+    {
+      apache::thrift::BinaryProtocolWriter writer;
+      oneway_void_ret_i32_i32_i32_i32_i32_paramT(&writer, useSync, rpcOptions, std::move(callback), param1, param2, param3, param4, param5);
+      break;
+    }
+    case apache::thrift::protocol::T_COMPACT_PROTOCOL:
+    {
+      apache::thrift::CompactProtocolWriter writer;
+      oneway_void_ret_i32_i32_i32_i32_i32_paramT(&writer, useSync, rpcOptions, std::move(callback), param1, param2, param3, param4, param5);
+      break;
+    }
+    default:
+    {
+      throw apache::thrift::TApplicationException("Could not find Protocol");
+    }
+  }
+}
+
+void ExtraServiceAsyncClient::sync_oneway_void_ret_i32_i32_i32_i32_i32_param(int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  sync_oneway_void_ret_i32_i32_i32_i32_i32_param(rpcOptions, param1, param2, param3, param4, param5);
+}
+
+void ExtraServiceAsyncClient::sync_oneway_void_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
+  apache::thrift::ClientReceiveState _returnState;
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, true);
+  oneway_void_ret_i32_i32_i32_i32_i32_paramImpl(true, rpcOptions, std::move(callback), param1, param2, param3, param4, param5);
+}
+
+folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret_i32_i32_i32_i32_i32_param(int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return future_oneway_void_ret_i32_i32_i32_i32_i32_param(rpcOptions, param1, param2, param3, param4, param5);
+}
+
+folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret_i32_i32_i32_i32_i32_param(apache::thrift::RpcOptions& rpcOptions, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
+  folly::Promise<folly::Unit> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::OneWayFutureCallback>(std::move(_promise), channel_);
+  oneway_void_ret_i32_i32_i32_i32_i32_param(rpcOptions, std::move(callback), param1, param2, param3, param4, param5);
+  return _future;
+}
+
+void ExtraServiceAsyncClient::oneway_void_ret_i32_i32_i32_i32_i32_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
+  oneway_void_ret_i32_i32_i32_i32_i32_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1, param2, param3, param4, param5);
+}
+
+void ExtraServiceAsyncClient::oneway_void_ret_map_setlist_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  oneway_void_ret_map_setlist_paramImpl(false, rpcOptions, std::move(callback), param1, param2);
+}
+
+void ExtraServiceAsyncClient::oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
+  oneway_void_ret_map_setlist_paramImpl(false, rpcOptions, std::move(callback), param1, param2);
+}
+
+void ExtraServiceAsyncClient::oneway_void_ret_map_setlist_paramImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
+  switch(getChannel()->getProtocolId()) {
+    case apache::thrift::protocol::T_BINARY_PROTOCOL:
+    {
+      apache::thrift::BinaryProtocolWriter writer;
+      oneway_void_ret_map_setlist_paramT(&writer, useSync, rpcOptions, std::move(callback), param1, param2);
+      break;
+    }
+    case apache::thrift::protocol::T_COMPACT_PROTOCOL:
+    {
+      apache::thrift::CompactProtocolWriter writer;
+      oneway_void_ret_map_setlist_paramT(&writer, useSync, rpcOptions, std::move(callback), param1, param2);
+      break;
+    }
+    default:
+    {
+      throw apache::thrift::TApplicationException("Could not find Protocol");
+    }
+  }
+}
+
+void ExtraServiceAsyncClient::sync_oneway_void_ret_map_setlist_param(const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  sync_oneway_void_ret_map_setlist_param(rpcOptions, param1, param2);
+}
+
+void ExtraServiceAsyncClient::sync_oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
+  apache::thrift::ClientReceiveState _returnState;
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, true);
+  oneway_void_ret_map_setlist_paramImpl(true, rpcOptions, std::move(callback), param1, param2);
+}
+
+folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret_map_setlist_param(const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return future_oneway_void_ret_map_setlist_param(rpcOptions, param1, param2);
+}
+
+folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret_map_setlist_param(apache::thrift::RpcOptions& rpcOptions, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
+  folly::Promise<folly::Unit> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::OneWayFutureCallback>(std::move(_promise), channel_);
+  oneway_void_ret_map_setlist_param(rpcOptions, std::move(callback), param1, param2);
+  return _future;
+}
+
+void ExtraServiceAsyncClient::oneway_void_ret_map_setlist_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::map<std::string, int64_t>& param1, const std::set<std::vector<std::string>>& param2) {
+  oneway_void_ret_map_setlist_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1, param2);
+}
+
+void ExtraServiceAsyncClient::oneway_void_ret_struct_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::MyStruct& param1) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  oneway_void_ret_struct_paramImpl(false, rpcOptions, std::move(callback), param1);
+}
+
+void ExtraServiceAsyncClient::oneway_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::MyStruct& param1) {
+  oneway_void_ret_struct_paramImpl(false, rpcOptions, std::move(callback), param1);
+}
+
+void ExtraServiceAsyncClient::oneway_void_ret_struct_paramImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const  ::some::valid::ns::MyStruct& param1) {
+  switch(getChannel()->getProtocolId()) {
+    case apache::thrift::protocol::T_BINARY_PROTOCOL:
+    {
+      apache::thrift::BinaryProtocolWriter writer;
+      oneway_void_ret_struct_paramT(&writer, useSync, rpcOptions, std::move(callback), param1);
+      break;
+    }
+    case apache::thrift::protocol::T_COMPACT_PROTOCOL:
+    {
+      apache::thrift::CompactProtocolWriter writer;
+      oneway_void_ret_struct_paramT(&writer, useSync, rpcOptions, std::move(callback), param1);
+      break;
+    }
+    default:
+    {
+      throw apache::thrift::TApplicationException("Could not find Protocol");
+    }
+  }
+}
+
+void ExtraServiceAsyncClient::sync_oneway_void_ret_struct_param(const  ::some::valid::ns::MyStruct& param1) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  sync_oneway_void_ret_struct_param(rpcOptions, param1);
+}
+
+void ExtraServiceAsyncClient::sync_oneway_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, const  ::some::valid::ns::MyStruct& param1) {
+  apache::thrift::ClientReceiveState _returnState;
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, true);
+  oneway_void_ret_struct_paramImpl(true, rpcOptions, std::move(callback), param1);
+}
+
+folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret_struct_param(const  ::some::valid::ns::MyStruct& param1) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return future_oneway_void_ret_struct_param(rpcOptions, param1);
+}
+
+folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret_struct_param(apache::thrift::RpcOptions& rpcOptions, const  ::some::valid::ns::MyStruct& param1) {
+  folly::Promise<folly::Unit> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::OneWayFutureCallback>(std::move(_promise), channel_);
+  oneway_void_ret_struct_param(rpcOptions, std::move(callback), param1);
+  return _future;
+}
+
+void ExtraServiceAsyncClient::oneway_void_ret_struct_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const  ::some::valid::ns::MyStruct& param1) {
+  oneway_void_ret_struct_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
+}
+
+void ExtraServiceAsyncClient::oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  oneway_void_ret_listunion_paramImpl(false, rpcOptions, std::move(callback), param1);
+}
+
+void ExtraServiceAsyncClient::oneway_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1) {
+  oneway_void_ret_listunion_paramImpl(false, rpcOptions, std::move(callback), param1);
+}
+
+void ExtraServiceAsyncClient::oneway_void_ret_listunion_paramImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1) {
+  switch(getChannel()->getProtocolId()) {
+    case apache::thrift::protocol::T_BINARY_PROTOCOL:
+    {
+      apache::thrift::BinaryProtocolWriter writer;
+      oneway_void_ret_listunion_paramT(&writer, useSync, rpcOptions, std::move(callback), param1);
+      break;
+    }
+    case apache::thrift::protocol::T_COMPACT_PROTOCOL:
+    {
+      apache::thrift::CompactProtocolWriter writer;
+      oneway_void_ret_listunion_paramT(&writer, useSync, rpcOptions, std::move(callback), param1);
+      break;
+    }
+    default:
+    {
+      throw apache::thrift::TApplicationException("Could not find Protocol");
+    }
+  }
+}
+
+void ExtraServiceAsyncClient::sync_oneway_void_ret_listunion_param(const std::vector< ::some::valid::ns::ComplexUnion>& param1) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  sync_oneway_void_ret_listunion_param(rpcOptions, param1);
+}
+
+void ExtraServiceAsyncClient::sync_oneway_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const std::vector< ::some::valid::ns::ComplexUnion>& param1) {
+  apache::thrift::ClientReceiveState _returnState;
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, true);
+  oneway_void_ret_listunion_paramImpl(true, rpcOptions, std::move(callback), param1);
+}
+
+folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret_listunion_param(const std::vector< ::some::valid::ns::ComplexUnion>& param1) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return future_oneway_void_ret_listunion_param(rpcOptions, param1);
+}
+
+folly::Future<folly::Unit> ExtraServiceAsyncClient::future_oneway_void_ret_listunion_param(apache::thrift::RpcOptions& rpcOptions, const std::vector< ::some::valid::ns::ComplexUnion>& param1) {
+  folly::Promise<folly::Unit> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::OneWayFutureCallback>(std::move(_promise), channel_);
+  oneway_void_ret_listunion_param(rpcOptions, std::move(callback), param1);
+  return _future;
+}
+
+void ExtraServiceAsyncClient::oneway_void_ret_listunion_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::vector< ::some::valid::ns::ComplexUnion>& param1) {
+  oneway_void_ret_listunion_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
+}
+
 }}} // some::valid::ns
 namespace apache { namespace thrift {
 
