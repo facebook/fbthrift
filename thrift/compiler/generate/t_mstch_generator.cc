@@ -56,7 +56,7 @@ t_mstch_generator::t_mstch_generator(
   gen_template_map(template_dir_ / template_prefix, "");
 }
 
-mstch::map t_mstch_generator::dump(const t_program& program) const {
+mstch::map t_mstch_generator::dump(const t_program& program) {
   mstch::map result{
       {"name", program.get_name()},
       {"path", program.get_path()},
@@ -75,7 +75,7 @@ mstch::map t_mstch_generator::dump(const t_program& program) const {
   return prepend_prefix("program", std::move(result));
 }
 
-mstch::map t_mstch_generator::dump(const t_struct& strct, bool shallow) const {
+mstch::map t_mstch_generator::dump(const t_struct& strct, bool shallow) {
   mstch::map result{
       {"name", strct.get_name()},
       {"fields?", !strct.get_members().empty()},
@@ -93,7 +93,7 @@ mstch::map t_mstch_generator::dump(const t_struct& strct, bool shallow) const {
   return prepend_prefix("struct", std::move(result));
 }
 
-mstch::map t_mstch_generator::dump(const t_field& field, int32_t index) const {
+mstch::map t_mstch_generator::dump(const t_field& field, int32_t index) {
   auto req = field.get_req();
   mstch::map result{
       {"name", field.get_name()},
@@ -116,7 +116,7 @@ mstch::map t_mstch_generator::dump(const t_field& field, int32_t index) const {
   return prepend_prefix("field", std::move(result));
 }
 
-mstch::map t_mstch_generator::dump(const t_type& type) const {
+mstch::map t_mstch_generator::dump(const t_type& type) {
   mstch::map result{
       {"name", type.get_name()},
       {"annotations", dump_elems(type.annotations_)},
@@ -176,7 +176,7 @@ mstch::map t_mstch_generator::dump(const t_type& type) const {
   return prepend_prefix("type", std::move(result));
 }
 
-mstch::map t_mstch_generator::dump(const t_enum& enm) const {
+mstch::map t_mstch_generator::dump(const t_enum& enm) {
   mstch::map result{
       {"name", enm.get_name()},
       {"values", dump_elems(enm.get_constants())},
@@ -188,7 +188,7 @@ mstch::map t_mstch_generator::dump(const t_enum& enm) const {
   return prepend_prefix("enum", std::move(result));
 }
 
-mstch::map t_mstch_generator::dump(const t_enum_value& val) const {
+mstch::map t_mstch_generator::dump(const t_enum_value& val) {
   mstch::map result{
       {"name", val.get_name()}, {"value", std::to_string(val.get_value())},
   };
@@ -198,7 +198,7 @@ mstch::map t_mstch_generator::dump(const t_enum_value& val) const {
   return prepend_prefix("enumValue", std::move(result));
 }
 
-mstch::map t_mstch_generator::dump(const t_service& service) const {
+mstch::map t_mstch_generator::dump(const t_service& service) {
   t_service* extends = service.get_extends();
   mstch::map result{
       {"name", service.get_name()},
@@ -214,7 +214,7 @@ mstch::map t_mstch_generator::dump(const t_service& service) const {
   return prepend_prefix("service", std::move(result));
 }
 
-mstch::map t_mstch_generator::dump(const t_function& function) const {
+mstch::map t_mstch_generator::dump(const t_function& function) {
   mstch::map result{
       {"name", function.get_name()},
       {"oneway?", function.is_oneway()},
@@ -233,7 +233,7 @@ mstch::map t_mstch_generator::dump(const t_function& function) const {
   return prepend_prefix("function", std::move(result));
 }
 
-mstch::map t_mstch_generator::dump(const t_const& cnst) const {
+mstch::map t_mstch_generator::dump(const t_const& cnst) {
   mstch::map result{
       {"type", dump(*cnst.get_type())},
       {"name", cnst.get_name()},
@@ -245,7 +245,7 @@ mstch::map t_mstch_generator::dump(const t_const& cnst) const {
   return prepend_prefix("constant", std::move(result));
 }
 
-mstch::map t_mstch_generator::dump(const t_const_value& value) const {
+mstch::map t_mstch_generator::dump(const t_const_value& value) {
   using cv = t_const_value::t_const_value_type;
   const cv type = value.get_type();
   mstch::map result{
@@ -311,7 +311,7 @@ mstch::map t_mstch_generator::dump(const t_const_value& value) const {
 }
 
 mstch::map t_mstch_generator::dump(
-    const std::map<t_const_value*, t_const_value*>::value_type& pair) const {
+    const std::map<t_const_value*, t_const_value*>::value_type& pair) {
   mstch::map result{
       {"key", dump(*pair.first)}, {"value", dump(*pair.second)},
   };
@@ -320,7 +320,7 @@ mstch::map t_mstch_generator::dump(
   return prepend_prefix("element", std::move(result));
 }
 
-mstch::map t_mstch_generator::dump(const annotation& pair) const {
+mstch::map t_mstch_generator::dump(const annotation& pair) {
   mstch::map result{
       {"key", pair.first}, {"value", pair.second},
   };
@@ -329,7 +329,7 @@ mstch::map t_mstch_generator::dump(const annotation& pair) const {
   return prepend_prefix("annotation", std::move(result));
 }
 
-mstch::map t_mstch_generator::dump(const t_typedef& typdef) const {
+mstch::map t_mstch_generator::dump(const t_typedef& typdef) {
   mstch::map result{
       {"type", dump(*typdef.get_type())}, {"symbolic", typdef.get_symbolic()},
   };
@@ -339,12 +339,12 @@ mstch::map t_mstch_generator::dump(const t_typedef& typdef) const {
   return prepend_prefix("typedef", std::move(result));
 }
 
-mstch::map t_mstch_generator::dump(const string& value) const {
+mstch::map t_mstch_generator::dump(const string& value) {
   mstch::map result{{"value", value}};
   return result;
 }
 
-mstch::map t_mstch_generator::dump_options() const {
+mstch::map t_mstch_generator::dump_options() {
   mstch::map result;
   for (auto& elem : parsed_options_) {
     result.emplace(elem.first, elem.second);
@@ -354,56 +354,56 @@ mstch::map t_mstch_generator::dump_options() const {
 
 // Extenders, by default do no extending
 
-mstch::map t_mstch_generator::extend_program(const t_program&) const {
+mstch::map t_mstch_generator::extend_program(const t_program&) {
   return {};
 }
 
-mstch::map t_mstch_generator::extend_struct(const t_struct&) const {
+mstch::map t_mstch_generator::extend_struct(const t_struct&) {
   return {};
 }
 
-mstch::map t_mstch_generator::extend_field(const t_field&) const {
+mstch::map t_mstch_generator::extend_field(const t_field&) {
   return {};
 }
 
-mstch::map t_mstch_generator::extend_type(const t_type&) const {
+mstch::map t_mstch_generator::extend_type(const t_type&) {
   return {};
 }
 
-mstch::map t_mstch_generator::extend_enum(const t_enum&) const {
+mstch::map t_mstch_generator::extend_enum(const t_enum&) {
   return {};
 }
 
-mstch::map t_mstch_generator::extend_enum_value(const t_enum_value&) const {
+mstch::map t_mstch_generator::extend_enum_value(const t_enum_value&) {
   return {};
 }
 
-mstch::map t_mstch_generator::extend_service(const t_service&) const {
+mstch::map t_mstch_generator::extend_service(const t_service&) {
   return {};
 }
 
-mstch::map t_mstch_generator::extend_function(const t_function&) const {
+mstch::map t_mstch_generator::extend_function(const t_function&) {
   return {};
 }
 
-mstch::map t_mstch_generator::extend_typedef(const t_typedef&) const {
+mstch::map t_mstch_generator::extend_typedef(const t_typedef&) {
   return {};
 }
 
-mstch::map t_mstch_generator::extend_const(const t_const&) const {
+mstch::map t_mstch_generator::extend_const(const t_const&) {
   return {};
 }
 
-mstch::map t_mstch_generator::extend_const_value(const t_const_value&) const {
+mstch::map t_mstch_generator::extend_const_value(const t_const_value&) {
   return {};
 }
 
 mstch::map t_mstch_generator::extend_const_value_map_elem(
-    const std::map<t_const_value*, t_const_value*>::value_type&) const {
+    const std::map<t_const_value*, t_const_value*>::value_type&) {
   return {};
 }
 
-mstch::map t_mstch_generator::extend_annotation(const annotation&) const {
+mstch::map t_mstch_generator::extend_annotation(const annotation&) {
   return {};
 }
 
@@ -434,7 +434,7 @@ void t_mstch_generator::gen_template_map(
 }
 
 const std::string& t_mstch_generator::get_template(
-    const std::string& template_name) const {
+    const std::string& template_name) {
   auto itr = template_map_.find(template_name);
   if (itr == template_map_.end()) {
     std::ostringstream err;
@@ -459,7 +459,7 @@ void t_mstch_generator::write_output(
 }
 
 std::unique_ptr<std::string> t_mstch_generator::get_option(
-    const std::string& key) const {
+    const std::string& key) {
   auto itr = parsed_options_.find(key);
   if (itr == parsed_options_.end()) {
     return nullptr;
@@ -479,7 +479,7 @@ mstch::map t_mstch_generator::prepend_prefix(
 
 std::string t_mstch_generator::render(
     const std::string& template_name,
-    const mstch::node& context) const {
+    const mstch::node& context) {
   return mstch::render(
       get_template(template_name), context, get_template_map());
 }

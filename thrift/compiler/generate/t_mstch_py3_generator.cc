@@ -38,36 +38,30 @@ class t_mstch_py3_generator : public t_mstch_generator {
     }
 
     void generate_program() override;
-    mstch::map extend_program(const t_program&) const override;
-    mstch::map extend_type(const t_type&) const override;
-    mstch::map extend_service(const t_service&) const override;
+    mstch::map extend_program(const t_program&) override;
+    mstch::map extend_type(const t_type&) override;
+    mstch::map extend_service(const t_service&) override;
 
-  protected:
+   protected:
     void generate_init_files(const t_program&);
     void generate_structs(const t_program&);
     void generate_services(const t_program&);
     void generate_clients(const t_program&);
     boost::filesystem::path package_to_path(std::string package);
-    mstch::array get_return_types(const t_program&) const;
-    void add_container_types(const t_program&, mstch::map&) const;
-    mstch::array get_cpp2_namespace(const t_program&) const;
-    mstch::array get_py3_namespace(
-      const t_program&,
-      const string& tail = ""
-    ) const;
-    std::string flatten_type_name(const t_type&) const;
+    mstch::array get_return_types(const t_program&);
+    void add_container_types(const t_program&, mstch::map&);
+    mstch::array get_cpp2_namespace(const t_program&);
+    mstch::array get_py3_namespace(const t_program&, const string& tail = "");
+    std::string flatten_type_name(const t_type&);
 
-  private:
+   private:
     void load_container_type(
-      vector<t_type*>& container_types,
-      std::set<string>& visited_names,
-      t_type* type
-    ) const;
+        vector<t_type*>& container_types,
+        std::set<string>& visited_names,
+        t_type* type);
 };
 
-mstch::map t_mstch_py3_generator::extend_program(
-  const t_program& program
-) const {
+mstch::map t_mstch_py3_generator::extend_program(const t_program& program) {
   const auto& cppNamespaces = get_cpp2_namespace(program);
   const auto& py3Namespaces = get_py3_namespace(program, "");
   mstch::array includeNamespaces;
@@ -99,7 +93,7 @@ mstch::map t_mstch_py3_generator::extend_program(
   return result;
 }
 
-mstch::map t_mstch_py3_generator::extend_type(const t_type& type) const {
+mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {
   const auto type_program = type.get_program();
   const auto program = type_program ? type_program : get_program();
   const auto modulePath =
@@ -121,9 +115,7 @@ mstch::map t_mstch_py3_generator::extend_type(const t_type& type) const {
   return result;
 }
 
-mstch::map t_mstch_py3_generator::extend_service(
-  const t_service& service
-) const {
+mstch::map t_mstch_py3_generator::extend_service(const t_service& service) {
   const auto program = service.get_program();
   const auto& cppNamespaces = get_cpp2_namespace(*program);
   const auto& py3Namespaces = get_py3_namespace(*program);
@@ -201,9 +193,7 @@ boost::filesystem::path t_mstch_py3_generator::package_to_path(
   return boost::filesystem::path{package};
 }
 
-mstch::array t_mstch_py3_generator::get_return_types(
-  const t_program& program
-) const {
+mstch::array t_mstch_py3_generator::get_return_types(const t_program& program) {
   mstch::array distinct_return_types;
   std::set<string> visited_names;
 
@@ -226,9 +216,8 @@ mstch::array t_mstch_py3_generator::get_return_types(
  * as one type. Required because in pxd's we can't have duplicate move(string)
  * definitions */
 void t_mstch_py3_generator::add_container_types(
-  const t_program& program,
-  mstch::map& results
-) const {
+    const t_program& program,
+    mstch::map& results) {
   vector<t_type*> container_types;
   vector<t_type*> move_container_types;
   std::set<string> visited_names;
@@ -273,10 +262,9 @@ void t_mstch_py3_generator::add_container_types(
 }
 
 void t_mstch_py3_generator::load_container_type(
-  vector<t_type*>& container_types,
-  std::set<string>& visited_names,
-  t_type* type
-) const {
+    vector<t_type*>& container_types,
+    std::set<string>& visited_names,
+    t_type* type) {
   if (!type->is_container()) return;
 
   string flat_name = flatten_type_name(*type);
@@ -302,10 +290,10 @@ void t_mstch_py3_generator::load_container_type(
   container_types.push_back(type);
 }
 
-std::string t_mstch_py3_generator::flatten_type_name(const t_type& type) const {
-    if (type.is_list()) {
-      return "List__" +
-          flatten_type_name(*dynamic_cast<const t_list&>(type).get_elem_type());
+std::string t_mstch_py3_generator::flatten_type_name(const t_type& type) {
+  if (type.is_list()) {
+    return "List__" +
+        flatten_type_name(*dynamic_cast<const t_list&>(type).get_elem_type());
   } else if (type.is_set()) {
     return "Set__" +
         flatten_type_name(*dynamic_cast<const t_set&>(type).get_elem_type());
@@ -323,8 +311,7 @@ std::string t_mstch_py3_generator::flatten_type_name(const t_type& type) const {
 }
 
 mstch::array t_mstch_py3_generator::get_cpp2_namespace(
-  const t_program& program
-) const {
+    const t_program& program) {
   auto cpp_namespace = program.get_namespace("cpp2");
   if (cpp_namespace == "") {
     cpp_namespace = program.get_namespace("cpp");
@@ -340,9 +327,8 @@ mstch::array t_mstch_py3_generator::get_cpp2_namespace(
 }
 
 mstch::array t_mstch_py3_generator::get_py3_namespace(
-  const t_program& program,
-  const string& tail
-) const {
+    const t_program& program,
+    const string& tail) {
   const auto& py3_namespace = program.get_namespace("py3");
   vector<string> ns = split_namespace(py3_namespace);
   if (tail != "") {

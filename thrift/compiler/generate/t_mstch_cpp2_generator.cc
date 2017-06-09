@@ -32,25 +32,25 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   void generate_program() override;
 
  protected:
-  mstch::map extend_function(const t_function&) const override;
-  mstch::map extend_program(const t_program&) const override;
-  mstch::map extend_service(const t_service&) const override;
-  mstch::map extend_struct(const t_struct&) const override;
-  mstch::map extend_type(const t_type& t) const override;
-  mstch::map extend_enum(const t_enum&) const override;
-  mstch::map extend_const(const t_const&) const override;
+  mstch::map extend_function(const t_function&) override;
+  mstch::map extend_program(const t_program&) override;
+  mstch::map extend_service(const t_service&) override;
+  mstch::map extend_struct(const t_struct&) override;
+  mstch::map extend_type(const t_type& t) override;
+  mstch::map extend_enum(const t_enum&) override;
+  mstch::map extend_const(const t_const&) override;
 
  private:
-  bool get_is_eb(const t_function& fn) const;
-  bool get_is_stack_args() const;
+  bool get_is_eb(const t_function& fn);
+  bool get_is_stack_args();
   void generate_constants(const t_program& program);
   void generate_structs(const t_program& program);
   void generate_service(t_service* service);
 
-  mstch::array get_namespace(const t_program& program) const;
-  std::string get_include_prefix(const t_program& program) const;
-  const t_type* resolve_typedef(const t_type* type) const;
-  bool has_annotation(const t_field* f, const std::string& name) const;
+  mstch::array get_namespace(const t_program& program);
+  std::string get_include_prefix(const t_program& program);
+  const t_type* resolve_typedef(const t_type* type);
+  bool has_annotation(const t_field* f, const std::string& name);
 
   std::unique_ptr<std::string> include_prefix_;
   std::vector<std::array<std::string, 3>> protocols_;
@@ -92,8 +92,7 @@ void t_mstch_cpp2_generator::generate_program() {
   }
 }
 
-mstch::map t_mstch_cpp2_generator::extend_program(
-    const t_program& program) const {
+mstch::map t_mstch_cpp2_generator::extend_program(const t_program& program) {
   mstch::map m;
 
   mstch::array cpp_includes{};
@@ -112,7 +111,7 @@ mstch::map t_mstch_cpp2_generator::extend_program(
   return m;
 }
 
-mstch::map t_mstch_cpp2_generator::extend_service(const t_service& svc) const {
+mstch::map t_mstch_cpp2_generator::extend_service(const t_service& svc) {
   mstch::map m;
   m.emplace("programName", svc.get_program()->get_name());
   m.emplace("programIncludePrefix", get_include_prefix(*svc.get_program()));
@@ -153,7 +152,7 @@ mstch::map t_mstch_cpp2_generator::extend_service(const t_service& svc) const {
   return m;
 }
 
-mstch::map t_mstch_cpp2_generator::extend_function(const t_function& fn) const {
+mstch::map t_mstch_cpp2_generator::extend_function(const t_function& fn) {
   mstch::map m;
 
   m.emplace("eb?", get_is_eb(fn));
@@ -161,7 +160,7 @@ mstch::map t_mstch_cpp2_generator::extend_function(const t_function& fn) const {
   return m;
 }
 
-mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) const {
+mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) {
   mstch::map m;
   m.emplace("namespaces", get_namespace(*s.get_program()));
   m.emplace("proxy_accessors?", use_proxy_accessors_);
@@ -241,7 +240,7 @@ mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) const {
   return m;
 }
 
-mstch::map t_mstch_cpp2_generator::extend_type(const t_type& t) const {
+mstch::map t_mstch_cpp2_generator::extend_type(const t_type& t) {
   mstch::map m;
 
   m.emplace("resolves_to_base?", resolve_typedef(&t)->is_base_type());
@@ -263,7 +262,7 @@ mstch::map t_mstch_cpp2_generator::extend_type(const t_type& t) const {
   return m;
 }
 
-mstch::map t_mstch_cpp2_generator::extend_enum(const t_enum& e) const {
+mstch::map t_mstch_cpp2_generator::extend_enum(const t_enum& e) {
   mstch::map m;
 
   m.emplace("empty?", e.get_constants().empty());
@@ -284,7 +283,7 @@ mstch::map t_mstch_cpp2_generator::extend_enum(const t_enum& e) const {
   return m;
 }
 
-mstch::map t_mstch_cpp2_generator::extend_const(const t_const& c) const {
+mstch::map t_mstch_cpp2_generator::extend_const(const t_const& c) {
   mstch::map m;
 
   if (c.get_type()->is_enum()) {
@@ -300,7 +299,7 @@ mstch::map t_mstch_cpp2_generator::extend_const(const t_const& c) const {
   return m;
 }
 
-bool t_mstch_cpp2_generator::get_is_eb(const t_function& fn) const {
+bool t_mstch_cpp2_generator::get_is_eb(const t_function& fn) {
   auto annotations = fn.get_annotations();
   if (annotations) {
     auto it = annotations->annotations_.find("thread");
@@ -309,7 +308,7 @@ bool t_mstch_cpp2_generator::get_is_eb(const t_function& fn) const {
   return false;
 }
 
-bool t_mstch_cpp2_generator::get_is_stack_args() const {
+bool t_mstch_cpp2_generator::get_is_stack_args() {
   return get_option("stack_arguments") != nullptr;
 }
 
@@ -353,8 +352,7 @@ void t_mstch_cpp2_generator::generate_service(t_service* service) {
   }
 }
 
-mstch::array t_mstch_cpp2_generator::get_namespace(
-    const t_program& program) const {
+mstch::array t_mstch_cpp2_generator::get_namespace(const t_program& program) {
   std::vector<std::string> v;
 
   auto ns = program.get_namespace("cpp2");
@@ -378,7 +376,7 @@ mstch::array t_mstch_cpp2_generator::get_namespace(
 }
 
 std::string t_mstch_cpp2_generator::get_include_prefix(
-    const t_program& program) const {
+    const t_program& program) {
   string include_prefix = program.get_include_prefix();
   if (&program == get_program() && include_prefix_ && *include_prefix_ != "") {
     include_prefix = *include_prefix_;
@@ -397,7 +395,7 @@ std::string t_mstch_cpp2_generator::get_include_prefix(
   return (path / "gen-cpp2").string() + "/";
 }
 
-const t_type* t_mstch_cpp2_generator::resolve_typedef(const t_type* t) const {
+const t_type* t_mstch_cpp2_generator::resolve_typedef(const t_type* t) {
   while (t->is_typedef()) {
     t = dynamic_cast<const t_typedef*>(t)->get_type();
   }
@@ -406,7 +404,7 @@ const t_type* t_mstch_cpp2_generator::resolve_typedef(const t_type* t) const {
 
 bool t_mstch_cpp2_generator::has_annotation(
     const t_field* f,
-    const std::string& name) const {
+    const std::string& name) {
   return f->annotations_.count(name);
 }
 }

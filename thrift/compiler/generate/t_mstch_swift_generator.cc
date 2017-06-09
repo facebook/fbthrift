@@ -44,7 +44,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
    * Gets the swift namespace, or, if it doesn't exist, uses the default.
    * If no default specified, throws runtime error
    */
-  std::string get_namespace_or_default(const t_program& prog) const {
+  std::string get_namespace_or_default(const t_program& prog) {
     const auto& prog_namespace = prog.get_namespace(namespace_identifier_);
     if (prog_namespace != "") {
       return prog_namespace;
@@ -82,7 +82,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
     render_to_file(prog, "Constants", package_dir / "Constants.java");
   }
 
-  mstch::map extend_program(const t_program& program) const override {
+  mstch::map extend_program(const t_program& program) override {
     // Sort constant members to match java swift generator
     auto constants = program.get_consts();
     std::sort(
@@ -97,7 +97,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
     };
   }
 
-  mstch::map extend_struct(const t_struct& strct) const override {
+  mstch::map extend_struct(const t_struct& strct) override {
     mstch::map result{
         {"javaPackage", get_namespace_or_default(*strct.get_program())},
     };
@@ -105,7 +105,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
     return result;
   }
 
-  mstch::map extend_service(const t_service& service) const override {
+  mstch::map extend_service(const t_service& service) override {
     mstch::map result{
         {"javaPackage", get_namespace_or_default(*service.get_program())},
     };
@@ -113,19 +113,19 @@ class t_mstch_swift_generator : public t_mstch_generator {
     return result;
   }
 
-  mstch::map extend_function(const t_function& func) const override {
+  mstch::map extend_function(const t_function& func) override {
     mstch::map result{};
     add_java_names(result, func.get_name());
     return result;
   }
 
-  mstch::map extend_field(const t_field& field) const override {
+  mstch::map extend_field(const t_field& field) override {
     mstch::map result{};
     add_java_names(result, field.get_name());
     return result;
   }
 
-  mstch::map extend_enum(const t_enum& enm) const override {
+  mstch::map extend_enum(const t_enum& enm) override {
     mstch::map result{
         {"javaPackage", get_namespace_or_default(*enm.get_program())},
     };
@@ -133,7 +133,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
     return result;
   }
 
-  mstch::map extend_enum_value(const t_enum_value& value) const override {
+  mstch::map extend_enum_value(const t_enum_value& value) override {
     mstch::map result{};
     add_java_names(result, value.get_name());
     return result;
@@ -144,7 +144,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
    * a primitive representation. We need this because these types are treated
    * differently when they are arguments to type constructors in Java.
    */
-  mstch::map extend_type(const t_type& type) const override {
+  mstch::map extend_type(const t_type& type) override {
     return mstch::map{
         {"primitive?",
          type.is_void() || type.is_bool() || type.is_byte() || type.is_i16() ||
