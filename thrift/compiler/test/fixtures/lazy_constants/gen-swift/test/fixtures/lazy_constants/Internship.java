@@ -21,7 +21,7 @@ public final class Internship
     public Internship(
         @ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED) final int weeks,
         @ThriftField(value=2, name="title", requiredness=Requiredness.NONE) final String title,
-        @ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL) final . employer
+        @ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL) final test.fixtures.lazy_constants.Company employer
     ) {
         this.weeks = weeks;
         this.title = title;
@@ -41,9 +41,9 @@ public final class Internship
             this.title = title;
             return this;
         }
-        private . employer;
+        private test.fixtures.lazy_constants.Company employer;
 
-        public Builder setEmployer(. employer) {
+        public Builder setEmployer(test.fixtures.lazy_constants.Company employer) {
             this.employer = employer;
             return this;
         }
@@ -74,10 +74,10 @@ public final class Internship
     @ThriftField(value=2, name="title", requiredness=Requiredness.NONE)
     public String getTitle() { return title; }
 
-    private final . employer;
+    private final test.fixtures.lazy_constants.Company employer;
 
     @ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL)
-    public . getEmployer() { return employer; }
+    public test.fixtures.lazy_constants.Company getEmployer() { return employer; }
 
     @Override
     public String toString()

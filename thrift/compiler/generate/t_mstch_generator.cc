@@ -63,8 +63,8 @@ mstch::map t_mstch_generator::dump(const t_program& program) {
       {"outPath", program.get_out_path()},
       {"namespace", program.get_namespace()},
       {"includePrefix", program.get_include_prefix()},
-      {"enums", dump_elems(program.get_enums())},
       {"structs", dump_elems(program.get_objects())},
+      {"enums", dump_elems(program.get_enums())},
       {"services", dump_elems(program.get_services())},
       {"typedefs", dump_elems(program.get_typedefs())},
       {"constants", dump_elems(program.get_consts())},
@@ -117,9 +117,8 @@ mstch::map t_mstch_generator::dump(const t_field& field, int32_t index) {
 }
 
 mstch::map t_mstch_generator::dump(const t_type& type) {
-  std::string name = type.get_name();
   mstch::map result{
-      {"name", name},
+      {"name", type.get_name()},
       {"annotations", dump_elems(type.annotations_)},
 
       {"void?", type.is_void()},
@@ -148,7 +147,7 @@ mstch::map t_mstch_generator::dump(const t_type& type) {
     // Shallow dump the struct
     result.emplace("struct", dump(dynamic_cast<const t_struct&>(type), true));
   } else if (type.is_enum()) {
-    result.emplace("enum", enums_[name]);
+    result.emplace("enum", dump(dynamic_cast<const t_enum&>(type)));
   } else if (type.is_service()) {
     result.emplace("service", dump(dynamic_cast<const t_service&>(type)));
   } else if (type.is_list()) {
@@ -178,16 +177,14 @@ mstch::map t_mstch_generator::dump(const t_type& type) {
 }
 
 mstch::map t_mstch_generator::dump(const t_enum& enm) {
-  std::string name = enm.get_name();
   mstch::map result{
-      {"name", name},
+      {"name", enm.get_name()},
       {"values", dump_elems(enm.get_constants())},
       {"annotations", dump_elems(enm.annotations_)},
   };
 
   mstch::map extension = extend_enum(enm);
   result.insert(extension.begin(), extension.end());
-  enums_[name] = std::make_shared<mstch_enum>(&enm);
   return prepend_prefix("enum", std::move(result));
 }
 

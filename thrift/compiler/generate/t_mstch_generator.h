@@ -19,60 +19,12 @@
 #include <memory>
 #include <sstream>
 #include <stdexcept>
-#include <unordered_map>
 
 #include <mstch/mstch.hpp>
 
 #include <boost/filesystem.hpp>
 
 #include <thrift/compiler/generate/t_generator.h>
-
-class mstch_enum_value : public mstch::object {
- public:
-  explicit mstch_enum_value(t_enum_value const* enm_value)
-      : enm_value_(enm_value) {
-    register_methods(
-        this,
-        {
-            {"enumValue:name", &mstch_enum_value::name},
-            {"enumValue:value", &mstch_enum_value::value},
-        });
-  }
-  mstch::node name() {
-    return enm_value_->get_name();
-  }
-  mstch::node value() {
-    return std::to_string(enm_value_->get_value());
-  }
-
- private:
-  const t_enum_value* enm_value_;
-};
-
-class mstch_enum : public mstch::object {
- public:
-  explicit mstch_enum(t_enum const* enm) : enm_(enm) {
-    register_methods(
-        this,
-        {
-            {"enum:name", &mstch_enum::name},
-            {"enum:values", &mstch_enum::values},
-        });
-  }
-  mstch::node name() {
-    return enm_->get_name();
-  }
-  mstch::node values() {
-    mstch::array a{};
-    for (auto const* enm_value : enm_->get_constants()) {
-      a.push_back(std::make_shared<mstch_enum_value>(enm_value));
-    }
-    return a;
-  }
-
- private:
-  const t_enum* enm_;
-};
 
 class t_mstch_generator : public t_generator {
  public:
@@ -224,8 +176,6 @@ class t_mstch_generator : public t_generator {
   }
 
   std::unique_ptr<std::string> get_option(const std::string& key);
-
-  std::unordered_map<std::string, std::shared_ptr<mstch_enum>> enums_;
 
  private:
   std::map<std::string, std::string> template_map_{};

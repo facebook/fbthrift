@@ -18,8 +18,8 @@ public final class Constants
 
     public static final test.fixtures.module0.Struct c0 = ;
 
-    public static final List<.> e0s = ImmutableList.<.>builder()
-        .add(..fromInteger(1))
-        .add(..fromInteger(3))
+    public static final List<test.fixtures.module0.Enum> e0s = ImmutableList.<test.fixtures.module0.Enum>builder()
+        .add(test.fixtures.module0.Enum.fromInteger(1))
+        .add(test.fixtures.module0.Enum.fromInteger(3))
         .build();
 }
