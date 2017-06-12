@@ -8,3 +8,4 @@ hack src/module.thrift
 #mstch_cpp2:optionals src/module.thrift
 mstch_swift src/module.thrift
 json src/module.thrift
+mstch_py3 src/module.thrift
