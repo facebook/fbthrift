@@ -83,6 +83,8 @@ cdef class Fiery(thrift.py3.exceptions.Error):
         self.c_Fiery = make_shared[cFiery]()
 
         inst = self
+        if message is not None:
+            deref(inst.c_Fiery).message = message.encode('UTF-8')
 
 
     def __iter__(self):

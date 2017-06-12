@@ -83,14 +83,14 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
 
         inst = self
         {{#struct:fields}}
-        {{^field:required?}}
         {{#field:type}}
         {{> CythonAssignField}}
 
+        {{^field:required?}}
             deref(inst.c_{{struct:name}}).__isset.{{field:name}} = True
 
-        {{/field:type}}
         {{/field:required?}}
+        {{/field:type}}
         {{/struct:fields}}
 
     {{^struct:exception?}}
@@ -112,24 +112,24 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
 
         # Convert None's to default value.
         {{#struct:fields}}
-        {{^field:required?}}
         if {{field:name}} is None:
             deref(inst.c_{{struct:name}}).{{field:name}} = deref(defaults.c_{{struct:name}}).{{field:name}}
+            {{^field:required?}}
             deref(inst.c_{{struct:name}}).__isset.{{field:name}} = False
+            {{/field:required?}}
         if {{field:name}} is NOTSET:
             {{field:name}} = None
-        {{/field:required?}}
         {{/struct:fields}}
 
         {{#struct:fields}}
-        {{^field:required?}}
         {{#field:type}}
         {{> CythonAssignField}}
 
+        {{^field:required?}}
             deref(inst.c_{{struct:name}}).__isset.{{field:name}} = True
 
-        {{/field:type}}
         {{/field:required?}}
+        {{/field:type}}
         {{/struct:fields}}
         return inst
     {{/struct:exception?}}

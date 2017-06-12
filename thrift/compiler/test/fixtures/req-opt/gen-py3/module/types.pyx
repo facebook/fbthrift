@@ -37,6 +37,8 @@ cdef class Foo(thrift.py3.types.Struct):
         self.c_Foo = make_shared[cFoo]()
 
         inst = self
+        if myInteger is not None:
+            deref(inst.c_Foo).myInteger = myInteger
         if myString is not None:
             deref(inst.c_Foo).myString = myString.encode('UTF-8')
             deref(inst.c_Foo).__isset.myString = True
@@ -47,6 +49,10 @@ cdef class Foo(thrift.py3.types.Struct):
             deref(inst.c_Foo).myBools = deref(_myBools._vector)
             deref(inst.c_Foo).__isset.myBools = True
 
+        cdef List__i32 _myNumbers
+        if myNumbers is not None:
+            _myNumbers = List__i32(myNumbers)
+            deref(inst.c_Foo).myNumbers = deref(_myNumbers._vector)
 
     def __call__(
         Foo self,
@@ -73,6 +79,10 @@ cdef class Foo(thrift.py3.types.Struct):
         cdef Foo defaults = Foo_defaults
 
         # Convert None's to default value.
+        if myInteger is None:
+            deref(inst.c_Foo).myInteger = deref(defaults.c_Foo).myInteger
+        if myInteger is NOTSET:
+            myInteger = None
         if myString is None:
             deref(inst.c_Foo).myString = deref(defaults.c_Foo).myString
             deref(inst.c_Foo).__isset.myString = False
@@ -83,7 +93,13 @@ cdef class Foo(thrift.py3.types.Struct):
             deref(inst.c_Foo).__isset.myBools = False
         if myBools is NOTSET:
             myBools = None
+        if myNumbers is None:
+            deref(inst.c_Foo).myNumbers = deref(defaults.c_Foo).myNumbers
+        if myNumbers is NOTSET:
+            myNumbers = None
 
+        if myInteger is not None:
+            deref(inst.c_Foo).myInteger = myInteger
         if myString is not None:
             deref(inst.c_Foo).myString = myString.encode('UTF-8')
             deref(inst.c_Foo).__isset.myString = True
@@ -94,6 +110,10 @@ cdef class Foo(thrift.py3.types.Struct):
             deref(inst.c_Foo).myBools = deref(_myBools._vector)
             deref(inst.c_Foo).__isset.myBools = True
 
+        cdef List__i32 _myNumbers
+        if myNumbers is not None:
+            _myNumbers = List__i32(myNumbers)
+            deref(inst.c_Foo).myNumbers = deref(_myNumbers._vector)
         return inst
 
     def __iter__(self):

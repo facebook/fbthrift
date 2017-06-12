@@ -69,6 +69,8 @@ cdef class Internship(thrift.py3.types.Struct):
         self.c_Internship = make_shared[cInternship]()
 
         inst = self
+        if weeks is not None:
+            deref(inst.c_Internship).weeks = weeks
         if title is not None:
             deref(inst.c_Internship).title = title.encode('UTF-8')
             deref(inst.c_Internship).__isset.title = True
@@ -101,6 +103,10 @@ cdef class Internship(thrift.py3.types.Struct):
         cdef Internship defaults = Internship_defaults
 
         # Convert None's to default value.
+        if weeks is None:
+            deref(inst.c_Internship).weeks = deref(defaults.c_Internship).weeks
+        if weeks is NOTSET:
+            weeks = None
         if title is None:
             deref(inst.c_Internship).title = deref(defaults.c_Internship).title
             deref(inst.c_Internship).__isset.title = False
@@ -112,6 +118,8 @@ cdef class Internship(thrift.py3.types.Struct):
         if employer is NOTSET:
             employer = None
 
+        if weeks is not None:
+            deref(inst.c_Internship).weeks = weeks
         if title is not None:
             deref(inst.c_Internship).title = title.encode('UTF-8')
             deref(inst.c_Internship).__isset.title = True
@@ -307,6 +315,10 @@ cdef class Range(thrift.py3.types.Struct):
         self.c_Range = make_shared[cRange]()
 
         inst = self
+        if min is not None:
+            deref(inst.c_Range).min = min
+        if max is not None:
+            deref(inst.c_Range).max = max
 
     def __call__(
         Range self,
@@ -327,7 +339,19 @@ cdef class Range(thrift.py3.types.Struct):
         cdef Range defaults = Range_defaults
 
         # Convert None's to default value.
+        if min is None:
+            deref(inst.c_Range).min = deref(defaults.c_Range).min
+        if min is NOTSET:
+            min = None
+        if max is None:
+            deref(inst.c_Range).max = deref(defaults.c_Range).max
+        if max is NOTSET:
+            max = None
 
+        if min is not None:
+            deref(inst.c_Range).min = min
+        if max is not None:
+            deref(inst.c_Range).max = max
         return inst
 
     def __iter__(self):
