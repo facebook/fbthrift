@@ -129,7 +129,7 @@ class ConnectionSelect:
         # avoid dying horribly by trying again with the appropriately
         # shortened timout.
         deadline = time.clock() + float(timeout or 0)
-        poll_timeout = timeout
+        poll_timeout = timeout if timeout is None or timeout > 0 else None
         while True:
             if timeout is not None and timeout > 0:
                 poll_timeout = max(0, deadline - time.clock())
