@@ -268,20 +268,30 @@ proxygen::HTTPMessage HTTPClientChannel::buildHTTPMessage(THeader* header) {
   msg.setIsChunked(false);
   auto& headers = msg.getHeaders();
 
-  auto pwh = getPersistentWriteHeaders();
-
-  for (auto it = pwh.begin(); it != pwh.end(); ++it) {
-    headers.rawSet(it->first, it->second);
+  {
+    auto pwh = getPersistentWriteHeaders();
+    for (auto it = pwh.begin(); it != pwh.end(); ++it) {
+      headers.rawSet(it->first, it->second);
+    }
+    // We do not clear the persistent write headers, since http does not
+    // distinguish persistent/per request headers
+    // pwh.clear();
   }
 
-  // We do not clear the persistent write headers, since http does not
-  // distinguish persistent/per request headers
-  // pwh.clear();
+  {
+    auto wh = header->releaseWriteHeaders();
+    for (auto it = wh.begin(); it != wh.end(); ++it) {
+      headers.rawSet(it->first, it->second);
+    }
+  }
 
-  auto wh = header->releaseWriteHeaders();
-
-  for (auto it = wh.begin(); it != wh.end(); ++it) {
-    headers.rawSet(it->first, it->second);
+  {
+    auto eh = header->getExtraWriteHeaders();
+    if (eh) {
+      for (auto it = eh->cbegin(); it != eh->cend(); ++it) {
+        headers.rawSet(it->first, it->second);
+      }
+    }
   }
 
   headers.set(proxygen::HTTPHeaderCode::HTTP_HEADER_HOST, httpHost_);
