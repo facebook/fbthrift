@@ -205,6 +205,9 @@ class THeader {
   void setExtraWriteHeaders(StringToStringMap* extraWriteHeaders) {
     extraWriteHeaders_ = extraWriteHeaders;
   }
+  StringToStringMap* getExtraWriteHeaders() const {
+    return extraWriteHeaders_;
+  }
 
   std::string getPeerIdentity();
   void setIdentity(const std::string& identity);
