@@ -33,7 +33,7 @@ cdef extern from "gen-cpp2/module_types.h" namespace "cpp2":
         cMyStruct(const cMyStruct&) except +
         bint operator==(cMyStruct&)
         includes.types.cIncluded MyIncludedField
-         MyIncludedInt
+        int64_t MyIncludedInt
         cMyStruct__isset __isset
 
 

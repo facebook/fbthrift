@@ -437,7 +437,8 @@ cdef class Person(thrift.py3.types.Struct):
         self.c_Person = make_shared[cPerson]()
 
         inst = self
-        
+        if id is not None:
+            deref(inst.c_Person).id = id
             deref(inst.c_Person).__isset.id = True
 
         if name is not None:
@@ -465,7 +466,8 @@ cdef class Person(thrift.py3.types.Struct):
             deref(inst.c_Person).friends = deref(_friends._set)
             deref(inst.c_Person).__isset.friends = True
 
-        
+        if bestFriend is not None:
+            deref(inst.c_Person).bestFriend = bestFriend
             deref(inst.c_Person).__isset.bestFriend = True
 
         cdef Map__Animal_string _petNames
@@ -580,7 +582,8 @@ cdef class Person(thrift.py3.types.Struct):
         if vehicles is NOTSET:
             vehicles = None
 
-        
+        if id is not None:
+            deref(inst.c_Person).id = id
             deref(inst.c_Person).__isset.id = True
 
         if name is not None:
@@ -608,7 +611,8 @@ cdef class Person(thrift.py3.types.Struct):
             deref(inst.c_Person).friends = deref(_friends._set)
             deref(inst.c_Person).__isset.friends = True
 
-        
+        if bestFriend is not None:
+            deref(inst.c_Person).bestFriend = bestFriend
             deref(inst.c_Person).__isset.bestFriend = True
 
         cdef Map__Animal_string _petNames
@@ -656,7 +660,7 @@ cdef class Person(thrift.py3.types.Struct):
         if not deref(self.c_Person).__isset.id:
             return None
 
-        
+        return self.c_Person.get().id
 
     @property
     def name(self):
@@ -697,9 +701,9 @@ cdef class Person(thrift.py3.types.Struct):
         if not deref(self.c_Person).__isset.friends:
             return None
 
-        cdef shared_ptr[cset[]] item
+        cdef shared_ptr[cset[int64_t]] item
         if self.__friends is None:
-            item = make_shared[cset[]](
+            item = make_shared[cset[int64_t]](
                 deref(self.c_Person).friends)
             self.__friends = Set__PersonID.create(item)
         return self.__friends
@@ -710,7 +714,7 @@ cdef class Person(thrift.py3.types.Struct):
         if not deref(self.c_Person).__isset.bestFriend:
             return None
 
-        
+        return self.c_Person.get().bestFriend
 
     @property
     def petNames(self):
@@ -798,13 +802,13 @@ cdef class Set__PersonID:
         if isinstance(items, Set__PersonID):
             self._set = (<Set__PersonID> items)._set
         else:
-          self._set = make_shared[cset[]]()
+          self._set = make_shared[cset[int64_t]]()
           if items:
               for item in items:
-                  deref(self._set).insert()
+                  deref(self._set).insert(item)
 
     @staticmethod
-    cdef create(shared_ptr[cset[]] c_items):
+    cdef create(shared_ptr[cset[int64_t]] c_items):
         inst = <Set__PersonID>Set__PersonID.__new__(Set__PersonID)
         inst._set = c_items
         return inst
@@ -812,7 +816,7 @@ cdef class Set__PersonID:
     def __contains__(self, item):
         if not self:
             return False
-        return pbool(deref(self._set).count())
+        return pbool(deref(self._set).count(item))
 
     def __len__(self):
         return deref(self._set).size()
@@ -821,7 +825,7 @@ cdef class Set__PersonID:
         if not self:
             raise StopIteration
         for citem in deref(self._set):
-            yield 
+            yield citem
 
     def __repr__(self):
         if not self:
@@ -830,7 +834,7 @@ cdef class Set__PersonID:
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        cdef cset[] cself, cother
+        cdef cset[int64_t] cself, cother
         cdef cbool retval
         if (isinstance(self, Set__PersonID) and
                 isinstance(other, Set__PersonID)):
@@ -899,8 +903,8 @@ cdef class Set__PersonID:
         if not isinstance(other, Set__PersonID):
             other = Set__PersonID(other)
 
-        cdef shared_ptr[cset[]] shretval = \
-            make_shared[cset[]]()
+        cdef shared_ptr[cset[int64_t]] shretval = \
+            make_shared[cset[int64_t]]()
         for citem in deref((<Set__PersonID> self)._set):
             if deref((<Set__PersonID> other)._set).count(citem) > 0:
                 deref(shretval).insert(citem)
@@ -912,8 +916,8 @@ cdef class Set__PersonID:
         if not isinstance(other, Set__PersonID):
             other = Set__PersonID(other)
 
-        cdef shared_ptr[cset[]] shretval = \
-            make_shared[cset[]]()
+        cdef shared_ptr[cset[int64_t]] shretval = \
+            make_shared[cset[int64_t]]()
         for citem in deref((<Set__PersonID> self)._set):
             if deref((<Set__PersonID> other)._set).count(citem) == 0:
                 deref(shretval).insert(citem)
@@ -925,8 +929,8 @@ cdef class Set__PersonID:
         if not isinstance(other, Set__PersonID):
             other = Set__PersonID(other)
 
-        cdef shared_ptr[cset[]] shretval = \
-            make_shared[cset[]]()
+        cdef shared_ptr[cset[int64_t]] shretval = \
+            make_shared[cset[int64_t]]()
         for citem in deref((<Set__PersonID> self)._set):
                 deref(shretval).insert(citem)
         for citem in deref((<Set__PersonID> other)._set):
@@ -939,8 +943,8 @@ cdef class Set__PersonID:
         if not isinstance(other, Set__PersonID):
             other = Set__PersonID(other)
 
-        cdef shared_ptr[cset[]] shretval = \
-            make_shared[cset[]]()
+        cdef shared_ptr[cset[int64_t]] shretval = \
+            make_shared[cset[int64_t]]()
         for citem in deref((<Set__PersonID> self)._set):
             if deref((<Set__PersonID> other)._set).count(citem) == 0:
                 deref(shretval).insert(citem)

@@ -46,6 +46,14 @@ class t_mstch_generator : public t_generator {
   const std::map<std::string, std::string> parsed_options_;
 
   /**
+   * If true, typedefs will be automatically resolved to their underlying
+   * type.
+   */
+  virtual bool should_resolve_typedefs() const {
+    return false;
+  }
+
+  /**
    * Fetches a particular template from the template map, throwing an error
    * if the template doesn't exist
    */
@@ -176,6 +184,8 @@ class t_mstch_generator : public t_generator {
   }
 
   std::unique_ptr<std::string> get_option(const std::string& key);
+
+  const t_type& resolve_typedef(const t_type& type) const;
 
  private:
   std::map<std::string, std::string> template_map_{};

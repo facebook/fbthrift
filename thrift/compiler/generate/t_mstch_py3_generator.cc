@@ -43,6 +43,10 @@ class t_mstch_py3_generator : public t_mstch_generator {
     mstch::map extend_service(const t_service&) override;
 
    protected:
+    bool should_resolve_typedefs() const override {
+      return true;
+    }
+
     void generate_init_files(const t_program&);
     void generate_structs(const t_program&);
     void generate_services(const t_program&);

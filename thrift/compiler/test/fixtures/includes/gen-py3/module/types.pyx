@@ -44,7 +44,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
             deref(inst.c_MyStruct).MyIncludedField = deref(__MyIncludedField.get())
             deref(inst.c_MyStruct).__isset.MyIncludedField = True
 
-        
+        if MyIncludedInt is not None:
+            deref(inst.c_MyStruct).MyIncludedInt = MyIncludedInt
             deref(inst.c_MyStruct).__isset.MyIncludedInt = True
 
 
@@ -85,7 +86,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
             deref(inst.c_MyStruct).MyIncludedField = deref(__MyIncludedField.get())
             deref(inst.c_MyStruct).__isset.MyIncludedField = True
 
-        
+        if MyIncludedInt is not None:
+            deref(inst.c_MyStruct).MyIncludedInt = MyIncludedInt
             deref(inst.c_MyStruct).__isset.MyIncludedInt = True
 
         return inst
@@ -117,7 +119,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
     @property
     def MyIncludedInt(self):
 
-        
+        return self.c_MyStruct.get().MyIncludedInt
 
 
     def __richcmp__(self, other, op):

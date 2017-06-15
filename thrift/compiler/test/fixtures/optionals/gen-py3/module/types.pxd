@@ -86,13 +86,13 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cPerson() except +
         cPerson(const cPerson&) except +
         bint operator==(cPerson&)
-         id
+        int64_t id
         string name
         int16_t age
         string address
         cColor favoriteColor
-        cset[] friends
-         bestFriend
+        cset[int64_t] friends
+        int64_t bestFriend
         cmap[cAnimal,string] petNames
         cAnimal afraidOfAnimal
         vector[cVehicle] vehicles
@@ -146,9 +146,9 @@ cdef class Person(thrift.py3.types.Struct):
 cdef class Set__PersonID:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cset[]] _set
+    cdef shared_ptr[cset[int64_t]] _set
     @staticmethod
-    cdef create(shared_ptr[cset[]])
+    cdef create(shared_ptr[cset[int64_t]])
 
 cdef class Map__Animal_string:
     cdef object __hash
@@ -165,7 +165,7 @@ cdef class List__Vehicle:
     cdef create(shared_ptr[vector[cVehicle]])
 
 cdef extern from "<utility>" namespace "std" nogil:
-    cdef shared_ptr[cset[]] move(unique_ptr[cset[]])
+    cdef shared_ptr[cset[int64_t]] move(unique_ptr[cset[int64_t]])
     cdef shared_ptr[cmap[cAnimal,string]] move(unique_ptr[cmap[cAnimal,string]])
     cdef shared_ptr[vector[cVehicle]] move(unique_ptr[vector[cVehicle]])
 

@@ -49,7 +49,6 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
 
   mstch::array get_namespace(const t_program& program);
   std::string get_include_prefix(const t_program& program);
-  const t_type* resolve_typedef(const t_type* type);
   bool has_annotation(const t_field* f, const std::string& name);
 
   std::unique_ptr<std::string> include_prefix_;
@@ -171,8 +170,8 @@ mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) {
   // Check if the struct contains any base field
   auto const has_base_field_or_struct = [&] {
     for (auto const& field : s.get_members()) {
-      auto resolved_typedef = resolve_typedef(field->get_type());
-      if (resolved_typedef->is_base_type() || resolved_typedef->is_struct()) {
+      auto const& resolved_typedef = resolve_typedef(*field->get_type());
+      if (resolved_typedef.is_base_type() || resolved_typedef.is_struct()) {
         return true;
       }
     }
@@ -191,10 +190,10 @@ mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) {
       s_members.end(),
       std::back_inserter(filtered_fields),
       [&](t_field* f) {
-        const t_type* t = resolve_typedef(f->get_type());
-        return (t->is_base_type() && !t->is_string()) ||
-            (t->is_string() && f->get_value() != nullptr) ||
-            (t->is_container() && f->get_value() != nullptr) || t->is_enum();
+        const t_type& t = resolve_typedef(*f->get_type());
+        return (t.is_base_type() && !t.is_string()) ||
+            (t.is_string() && f->get_value() != nullptr) ||
+            (t.is_container() && f->get_value() != nullptr) || t.is_enum();
       });
   m.emplace("filtered_fields", dump_elems(filtered_fields));
 
@@ -243,21 +242,21 @@ mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) {
 mstch::map t_mstch_cpp2_generator::extend_type(const t_type& t) {
   mstch::map m;
 
-  m.emplace("resolves_to_base?", resolve_typedef(&t)->is_base_type());
+  m.emplace("resolves_to_base?", resolve_typedef(t).is_base_type());
   m.emplace(
       "resolves_to_base_or_enum?",
-      resolve_typedef(&t)->is_base_type() || resolve_typedef(&t)->is_enum());
-  m.emplace("resolves_to_container?", resolve_typedef(&t)->is_container());
+      resolve_typedef(t).is_base_type() || resolve_typedef(t).is_enum());
+  m.emplace("resolves_to_container?", resolve_typedef(t).is_container());
   m.emplace(
       "resolves_to_container_or_struct?",
-      resolve_typedef(&t)->is_container() || resolve_typedef(&t)->is_struct());
+      resolve_typedef(t).is_container() || resolve_typedef(t).is_struct());
   m.emplace(
       "resolves_to_container_or_enum?",
-      resolve_typedef(&t)->is_container() || resolve_typedef(&t)->is_enum());
+      resolve_typedef(t).is_container() || resolve_typedef(t).is_enum());
   m.emplace(
       "resolves_to_complex_return?",
-      resolve_typedef(&t)->is_container() || resolve_typedef(&t)->is_string() ||
-          resolve_typedef(&t)->is_struct() || resolve_typedef(&t)->is_stream());
+      resolve_typedef(t).is_container() || resolve_typedef(t).is_string() ||
+          resolve_typedef(t).is_struct() || resolve_typedef(t).is_stream());
 
   return m;
 }
@@ -394,14 +393,6 @@ std::string t_mstch_cpp2_generator::get_include_prefix(
   }
   return (path / "gen-cpp2").string() + "/";
 }
-
-const t_type* t_mstch_cpp2_generator::resolve_typedef(const t_type* t) {
-  while (t->is_typedef()) {
-    t = dynamic_cast<const t_typedef*>(t)->get_type();
-  }
-  return t;
-}
-
 bool t_mstch_cpp2_generator::has_annotation(
     const t_field* f,
     const std::string& name) {
