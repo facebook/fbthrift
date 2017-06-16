@@ -16,7 +16,8 @@ from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
 from thrift.py3.exceptions cimport cTApplicationException
-from thrift.py3.server cimport ServiceInterface
+from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
+from thrift.py3.server import RequestContext
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -257,1432 +258,6 @@ cdef class Promise_List__AnEnum:
         inst = <Promise_List__AnEnum>Promise_List__AnEnum.__new__(Promise_List__AnEnum)
         inst.cPromise = move(cPromise)
         return inst
-
-cdef api void call_cy_SimpleService_get_five(
-    object self,
-    cFollyPromise[int32_t] cPromise
-):  
-    promise = Promise_i32.create(move(cPromise))
-    asyncio.get_event_loop().create_task(
-        SimpleService_get_five_coro(
-            self,
-            promise
-        )
-    )
-
-async def SimpleService_get_five_coro(
-    object self,
-    Promise_i32 promise
-):
-    try:
-      result = await self.get_five()
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler get_five:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<int32_t> result)
-
-cdef api void call_cy_SimpleService_add_five(
-    object self,
-    cFollyPromise[int32_t] cPromise,
-    int32_t num
-):  
-    promise = Promise_i32.create(move(cPromise))
-    arg_num = num
-    asyncio.get_event_loop().create_task(
-        SimpleService_add_five_coro(
-            self,
-            promise,
-            arg_num
-        )
-    )
-
-async def SimpleService_add_five_coro(
-    object self,
-    Promise_i32 promise,
-    num
-):
-    try:
-      result = await self.add_five(
-          num)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler add_five:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<int32_t> result)
-
-cdef api void call_cy_SimpleService_do_nothing(
-    object self,
-    cFollyPromise[cFollyUnit] cPromise
-):  
-    promise = Promise_void.create(move(cPromise))
-    asyncio.get_event_loop().create_task(
-        SimpleService_do_nothing_coro(
-            self,
-            promise
-        )
-    )
-
-async def SimpleService_do_nothing_coro(
-    object self,
-    Promise_void promise
-):
-    try:
-      result = await self.do_nothing()
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler do_nothing:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(c_unit)
-
-cdef api void call_cy_SimpleService_concat(
-    object self,
-    cFollyPromise[unique_ptr[string]] cPromise,
-    unique_ptr[string] first,
-    unique_ptr[string] second
-):  
-    promise = Promise_string.create(move(cPromise))
-    arg_first = (deref(first.get())).decode('UTF-8')
-    arg_second = (deref(second.get())).decode('UTF-8')
-    asyncio.get_event_loop().create_task(
-        SimpleService_concat_coro(
-            self,
-            promise,
-            arg_first,
-            arg_second
-        )
-    )
-
-async def SimpleService_concat_coro(
-    object self,
-    Promise_string promise,
-    first,
-    second
-):
-    try:
-      result = await self.concat(
-          first,
-          second)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler concat:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
-
-cdef api void call_cy_SimpleService_get_value(
-    object self,
-    cFollyPromise[int32_t] cPromise,
-    unique_ptr[module.types.cSimpleStruct] simple_struct
-):  
-    promise = Promise_i32.create(move(cPromise))
-    arg_simple_struct = module.types.SimpleStruct.create(shared_ptr[module.types.cSimpleStruct](simple_struct.release()))
-    asyncio.get_event_loop().create_task(
-        SimpleService_get_value_coro(
-            self,
-            promise,
-            arg_simple_struct
-        )
-    )
-
-async def SimpleService_get_value_coro(
-    object self,
-    Promise_i32 promise,
-    simple_struct
-):
-    try:
-      result = await self.get_value(
-          simple_struct)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler get_value:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<int32_t> result)
-
-cdef api void call_cy_SimpleService_negate(
-    object self,
-    cFollyPromise[cbool] cPromise,
-    cbool input
-):  
-    promise = Promise_bool.create(move(cPromise))
-    arg_input = input
-    asyncio.get_event_loop().create_task(
-        SimpleService_negate_coro(
-            self,
-            promise,
-            arg_input
-        )
-    )
-
-async def SimpleService_negate_coro(
-    object self,
-    Promise_bool promise,
-    input
-):
-    try:
-      result = await self.negate(
-          input)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler negate:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<cbool> result)
-
-cdef api void call_cy_SimpleService_tiny(
-    object self,
-    cFollyPromise[int8_t] cPromise,
-    int8_t input
-):  
-    promise = Promise_byte.create(move(cPromise))
-    arg_input = input
-    asyncio.get_event_loop().create_task(
-        SimpleService_tiny_coro(
-            self,
-            promise,
-            arg_input
-        )
-    )
-
-async def SimpleService_tiny_coro(
-    object self,
-    Promise_byte promise,
-    input
-):
-    try:
-      result = await self.tiny(
-          input)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler tiny:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<int8_t> result)
-
-cdef api void call_cy_SimpleService_small(
-    object self,
-    cFollyPromise[int16_t] cPromise,
-    int16_t input
-):  
-    promise = Promise_i16.create(move(cPromise))
-    arg_input = input
-    asyncio.get_event_loop().create_task(
-        SimpleService_small_coro(
-            self,
-            promise,
-            arg_input
-        )
-    )
-
-async def SimpleService_small_coro(
-    object self,
-    Promise_i16 promise,
-    input
-):
-    try:
-      result = await self.small(
-          input)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler small:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<int16_t> result)
-
-cdef api void call_cy_SimpleService_big(
-    object self,
-    cFollyPromise[int64_t] cPromise,
-    int64_t input
-):  
-    promise = Promise_i64.create(move(cPromise))
-    arg_input = input
-    asyncio.get_event_loop().create_task(
-        SimpleService_big_coro(
-            self,
-            promise,
-            arg_input
-        )
-    )
-
-async def SimpleService_big_coro(
-    object self,
-    Promise_i64 promise,
-    input
-):
-    try:
-      result = await self.big(
-          input)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler big:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<int64_t> result)
-
-cdef api void call_cy_SimpleService_two(
-    object self,
-    cFollyPromise[double] cPromise,
-    double input
-):  
-    promise = Promise_double.create(move(cPromise))
-    arg_input = input
-    asyncio.get_event_loop().create_task(
-        SimpleService_two_coro(
-            self,
-            promise,
-            arg_input
-        )
-    )
-
-async def SimpleService_two_coro(
-    object self,
-    Promise_double promise,
-    input
-):
-    try:
-      result = await self.two(
-          input)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler two:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<double> result)
-
-cdef api void call_cy_SimpleService_expected_exception(
-    object self,
-    cFollyPromise[cFollyUnit] cPromise
-):  
-    promise = Promise_void.create(move(cPromise))
-    asyncio.get_event_loop().create_task(
-        SimpleService_expected_exception_coro(
-            self,
-            promise
-        )
-    )
-
-async def SimpleService_expected_exception_coro(
-    object self,
-    Promise_void promise
-):
-    try:
-      result = await self.expected_exception()
-    except module.types.SimpleException as ex:
-        promise.cPromise.setException(deref((<module.types.SimpleException> ex).c_SimpleException.get()))
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler expected_exception:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(c_unit)
-
-cdef api void call_cy_SimpleService_unexpected_exception(
-    object self,
-    cFollyPromise[int32_t] cPromise
-):  
-    promise = Promise_i32.create(move(cPromise))
-    asyncio.get_event_loop().create_task(
-        SimpleService_unexpected_exception_coro(
-            self,
-            promise
-        )
-    )
-
-async def SimpleService_unexpected_exception_coro(
-    object self,
-    Promise_i32 promise
-):
-    try:
-      result = await self.unexpected_exception()
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler unexpected_exception:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<int32_t> result)
-
-cdef api void call_cy_SimpleService_sum_i16_list(
-    object self,
-    cFollyPromise[int32_t] cPromise,
-    unique_ptr[vector[int16_t]] numbers
-):  
-    promise = Promise_i32.create(move(cPromise))
-    arg_numbers = module.types.List__i16.create(module.types.move(numbers))
-    asyncio.get_event_loop().create_task(
-        SimpleService_sum_i16_list_coro(
-            self,
-            promise,
-            arg_numbers
-        )
-    )
-
-async def SimpleService_sum_i16_list_coro(
-    object self,
-    Promise_i32 promise,
-    numbers
-):
-    try:
-      result = await self.sum_i16_list(
-          numbers)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler sum_i16_list:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<int32_t> result)
-
-cdef api void call_cy_SimpleService_sum_i32_list(
-    object self,
-    cFollyPromise[int32_t] cPromise,
-    unique_ptr[vector[int32_t]] numbers
-):  
-    promise = Promise_i32.create(move(cPromise))
-    arg_numbers = module.types.List__i32.create(module.types.move(numbers))
-    asyncio.get_event_loop().create_task(
-        SimpleService_sum_i32_list_coro(
-            self,
-            promise,
-            arg_numbers
-        )
-    )
-
-async def SimpleService_sum_i32_list_coro(
-    object self,
-    Promise_i32 promise,
-    numbers
-):
-    try:
-      result = await self.sum_i32_list(
-          numbers)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler sum_i32_list:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<int32_t> result)
-
-cdef api void call_cy_SimpleService_sum_i64_list(
-    object self,
-    cFollyPromise[int32_t] cPromise,
-    unique_ptr[vector[int64_t]] numbers
-):  
-    promise = Promise_i32.create(move(cPromise))
-    arg_numbers = module.types.List__i64.create(module.types.move(numbers))
-    asyncio.get_event_loop().create_task(
-        SimpleService_sum_i64_list_coro(
-            self,
-            promise,
-            arg_numbers
-        )
-    )
-
-async def SimpleService_sum_i64_list_coro(
-    object self,
-    Promise_i32 promise,
-    numbers
-):
-    try:
-      result = await self.sum_i64_list(
-          numbers)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler sum_i64_list:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<int32_t> result)
-
-cdef api void call_cy_SimpleService_concat_many(
-    object self,
-    cFollyPromise[unique_ptr[string]] cPromise,
-    unique_ptr[vector[string]] words
-):  
-    promise = Promise_string.create(move(cPromise))
-    arg_words = module.types.List__string.create(module.types.move(words))
-    asyncio.get_event_loop().create_task(
-        SimpleService_concat_many_coro(
-            self,
-            promise,
-            arg_words
-        )
-    )
-
-async def SimpleService_concat_many_coro(
-    object self,
-    Promise_string promise,
-    words
-):
-    try:
-      result = await self.concat_many(
-          words)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler concat_many:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
-
-cdef api void call_cy_SimpleService_count_structs(
-    object self,
-    cFollyPromise[int32_t] cPromise,
-    unique_ptr[vector[module.types.cSimpleStruct]] items
-):  
-    promise = Promise_i32.create(move(cPromise))
-    arg_items = module.types.List__SimpleStruct.create(module.types.move(items))
-    asyncio.get_event_loop().create_task(
-        SimpleService_count_structs_coro(
-            self,
-            promise,
-            arg_items
-        )
-    )
-
-async def SimpleService_count_structs_coro(
-    object self,
-    Promise_i32 promise,
-    items
-):
-    try:
-      result = await self.count_structs(
-          items)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler count_structs:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<int32_t> result)
-
-cdef api void call_cy_SimpleService_sum_set(
-    object self,
-    cFollyPromise[int32_t] cPromise,
-    unique_ptr[cset[int32_t]] numbers
-):  
-    promise = Promise_i32.create(move(cPromise))
-    arg_numbers = module.types.Set__i32.create(module.types.move(numbers))
-    asyncio.get_event_loop().create_task(
-        SimpleService_sum_set_coro(
-            self,
-            promise,
-            arg_numbers
-        )
-    )
-
-async def SimpleService_sum_set_coro(
-    object self,
-    Promise_i32 promise,
-    numbers
-):
-    try:
-      result = await self.sum_set(
-          numbers)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler sum_set:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<int32_t> result)
-
-cdef api void call_cy_SimpleService_contains_word(
-    object self,
-    cFollyPromise[cbool] cPromise,
-    unique_ptr[cset[string]] words,
-    unique_ptr[string] word
-):  
-    promise = Promise_bool.create(move(cPromise))
-    arg_words = module.types.Set__string.create(module.types.move(words))
-    arg_word = (deref(word.get())).decode('UTF-8')
-    asyncio.get_event_loop().create_task(
-        SimpleService_contains_word_coro(
-            self,
-            promise,
-            arg_words,
-            arg_word
-        )
-    )
-
-async def SimpleService_contains_word_coro(
-    object self,
-    Promise_bool promise,
-    words,
-    word
-):
-    try:
-      result = await self.contains_word(
-          words,
-          word)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler contains_word:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<cbool> result)
-
-cdef api void call_cy_SimpleService_get_map_value(
-    object self,
-    cFollyPromise[unique_ptr[string]] cPromise,
-    unique_ptr[cmap[string,string]] words,
-    unique_ptr[string] key
-):  
-    promise = Promise_string.create(move(cPromise))
-    arg_words = module.types.Map__string_string.create(module.types.move(words))
-    arg_key = (deref(key.get())).decode('UTF-8')
-    asyncio.get_event_loop().create_task(
-        SimpleService_get_map_value_coro(
-            self,
-            promise,
-            arg_words,
-            arg_key
-        )
-    )
-
-async def SimpleService_get_map_value_coro(
-    object self,
-    Promise_string promise,
-    words,
-    key
-):
-    try:
-      result = await self.get_map_value(
-          words,
-          key)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler get_map_value:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
-
-cdef api void call_cy_SimpleService_map_length(
-    object self,
-    cFollyPromise[int16_t] cPromise,
-    unique_ptr[cmap[string,module.types.cSimpleStruct]] items
-):  
-    promise = Promise_i16.create(move(cPromise))
-    arg_items = module.types.Map__string_SimpleStruct.create(module.types.move(items))
-    asyncio.get_event_loop().create_task(
-        SimpleService_map_length_coro(
-            self,
-            promise,
-            arg_items
-        )
-    )
-
-async def SimpleService_map_length_coro(
-    object self,
-    Promise_i16 promise,
-    items
-):
-    try:
-      result = await self.map_length(
-          items)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler map_length:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<int16_t> result)
-
-cdef api void call_cy_SimpleService_sum_map_values(
-    object self,
-    cFollyPromise[int16_t] cPromise,
-    unique_ptr[cmap[string,int16_t]] items
-):  
-    promise = Promise_i16.create(move(cPromise))
-    arg_items = module.types.Map__string_i16.create(module.types.move(items))
-    asyncio.get_event_loop().create_task(
-        SimpleService_sum_map_values_coro(
-            self,
-            promise,
-            arg_items
-        )
-    )
-
-async def SimpleService_sum_map_values_coro(
-    object self,
-    Promise_i16 promise,
-    items
-):
-    try:
-      result = await self.sum_map_values(
-          items)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler sum_map_values:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<int16_t> result)
-
-cdef api void call_cy_SimpleService_complex_sum_i32(
-    object self,
-    cFollyPromise[int32_t] cPromise,
-    unique_ptr[module.types.cComplexStruct] counter
-):  
-    promise = Promise_i32.create(move(cPromise))
-    arg_counter = module.types.ComplexStruct.create(shared_ptr[module.types.cComplexStruct](counter.release()))
-    asyncio.get_event_loop().create_task(
-        SimpleService_complex_sum_i32_coro(
-            self,
-            promise,
-            arg_counter
-        )
-    )
-
-async def SimpleService_complex_sum_i32_coro(
-    object self,
-    Promise_i32 promise,
-    counter
-):
-    try:
-      result = await self.complex_sum_i32(
-          counter)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler complex_sum_i32:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<int32_t> result)
-
-cdef api void call_cy_SimpleService_repeat_name(
-    object self,
-    cFollyPromise[unique_ptr[string]] cPromise,
-    unique_ptr[module.types.cComplexStruct] counter
-):  
-    promise = Promise_string.create(move(cPromise))
-    arg_counter = module.types.ComplexStruct.create(shared_ptr[module.types.cComplexStruct](counter.release()))
-    asyncio.get_event_loop().create_task(
-        SimpleService_repeat_name_coro(
-            self,
-            promise,
-            arg_counter
-        )
-    )
-
-async def SimpleService_repeat_name_coro(
-    object self,
-    Promise_string promise,
-    counter
-):
-    try:
-      result = await self.repeat_name(
-          counter)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler repeat_name:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
-
-cdef api void call_cy_SimpleService_get_struct(
-    object self,
-    cFollyPromise[unique_ptr[module.types.cSimpleStruct]] cPromise
-):  
-    promise = Promise_SimpleStruct.create(move(cPromise))
-    asyncio.get_event_loop().create_task(
-        SimpleService_get_struct_coro(
-            self,
-            promise
-        )
-    )
-
-async def SimpleService_get_struct_coro(
-    object self,
-    Promise_SimpleStruct promise
-):
-    try:
-      result = await self.get_struct()
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler get_struct:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(make_unique[module.types.cSimpleStruct](deref((<module.types.SimpleStruct?> result).c_SimpleStruct)))
-
-cdef api void call_cy_SimpleService_fib(
-    object self,
-    cFollyPromise[unique_ptr[vector[int32_t]]] cPromise,
-    int16_t n
-):  
-    promise = Promise_List__i32.create(move(cPromise))
-    arg_n = n
-    asyncio.get_event_loop().create_task(
-        SimpleService_fib_coro(
-            self,
-            promise,
-            arg_n
-        )
-    )
-
-async def SimpleService_fib_coro(
-    object self,
-    Promise_List__i32 promise,
-    n
-):
-    try:
-      result = await self.fib(
-          n)
-      result = module.types.List__i32(result)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler fib:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(make_unique[vector[int32_t]](deref((<module.types.List__i32?> result)._vector)))
-
-cdef api void call_cy_SimpleService_unique_words(
-    object self,
-    cFollyPromise[unique_ptr[cset[string]]] cPromise,
-    unique_ptr[vector[string]] words
-):  
-    promise = Promise_Set__string.create(move(cPromise))
-    arg_words = module.types.List__string.create(module.types.move(words))
-    asyncio.get_event_loop().create_task(
-        SimpleService_unique_words_coro(
-            self,
-            promise,
-            arg_words
-        )
-    )
-
-async def SimpleService_unique_words_coro(
-    object self,
-    Promise_Set__string promise,
-    words
-):
-    try:
-      result = await self.unique_words(
-          words)
-      result = module.types.Set__string(result)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler unique_words:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(make_unique[cset[string]](deref((<module.types.Set__string?> result)._set)))
-
-cdef api void call_cy_SimpleService_words_count(
-    object self,
-    cFollyPromise[unique_ptr[cmap[string,int16_t]]] cPromise,
-    unique_ptr[vector[string]] words
-):  
-    promise = Promise_Map__string_i16.create(move(cPromise))
-    arg_words = module.types.List__string.create(module.types.move(words))
-    asyncio.get_event_loop().create_task(
-        SimpleService_words_count_coro(
-            self,
-            promise,
-            arg_words
-        )
-    )
-
-async def SimpleService_words_count_coro(
-    object self,
-    Promise_Map__string_i16 promise,
-    words
-):
-    try:
-      result = await self.words_count(
-          words)
-      result = module.types.Map__string_i16(result)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler words_count:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(make_unique[cmap[string,int16_t]](deref((<module.types.Map__string_i16?> result)._map)))
-
-cdef api void call_cy_SimpleService_set_enum(
-    object self,
-    cFollyPromise[module.types.cAnEnum] cPromise,
-    module.types.cAnEnum in_enum
-):  
-    promise = Promise_AnEnum.create(move(cPromise))
-    arg_in_enum = module.types.AnEnum(<int> in_enum)
-    asyncio.get_event_loop().create_task(
-        SimpleService_set_enum_coro(
-            self,
-            promise,
-            arg_in_enum
-        )
-    )
-
-async def SimpleService_set_enum_coro(
-    object self,
-    Promise_AnEnum promise,
-    in_enum
-):
-    try:
-      result = await self.set_enum(
-          in_enum)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler set_enum:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(module.types.AnEnum_to_cpp(result))
-
-cdef api void call_cy_SimpleService_list_of_lists(
-    object self,
-    cFollyPromise[unique_ptr[vector[vector[int32_t]]]] cPromise,
-    int16_t num_lists,
-    int16_t num_items
-):  
-    promise = Promise_List__List__i32.create(move(cPromise))
-    arg_num_lists = num_lists
-    arg_num_items = num_items
-    asyncio.get_event_loop().create_task(
-        SimpleService_list_of_lists_coro(
-            self,
-            promise,
-            arg_num_lists,
-            arg_num_items
-        )
-    )
-
-async def SimpleService_list_of_lists_coro(
-    object self,
-    Promise_List__List__i32 promise,
-    num_lists,
-    num_items
-):
-    try:
-      result = await self.list_of_lists(
-          num_lists,
-          num_items)
-      result = module.types.List__List__i32(result)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler list_of_lists:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(make_unique[vector[vector[int32_t]]](deref((<module.types.List__List__i32?> result)._vector)))
-
-cdef api void call_cy_SimpleService_word_character_frequency(
-    object self,
-    cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] cPromise,
-    unique_ptr[string] sentence
-):  
-    promise = Promise_Map__string_Map__string_i32.create(move(cPromise))
-    arg_sentence = (deref(sentence.get())).decode('UTF-8')
-    asyncio.get_event_loop().create_task(
-        SimpleService_word_character_frequency_coro(
-            self,
-            promise,
-            arg_sentence
-        )
-    )
-
-async def SimpleService_word_character_frequency_coro(
-    object self,
-    Promise_Map__string_Map__string_i32 promise,
-    sentence
-):
-    try:
-      result = await self.word_character_frequency(
-          sentence)
-      result = module.types.Map__string_Map__string_i32(result)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler word_character_frequency:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(make_unique[cmap[string,cmap[string,int32_t]]](deref((<module.types.Map__string_Map__string_i32?> result)._map)))
-
-cdef api void call_cy_SimpleService_list_of_sets(
-    object self,
-    cFollyPromise[unique_ptr[vector[cset[string]]]] cPromise,
-    unique_ptr[string] some_words
-):  
-    promise = Promise_List__Set__string.create(move(cPromise))
-    arg_some_words = (deref(some_words.get())).decode('UTF-8')
-    asyncio.get_event_loop().create_task(
-        SimpleService_list_of_sets_coro(
-            self,
-            promise,
-            arg_some_words
-        )
-    )
-
-async def SimpleService_list_of_sets_coro(
-    object self,
-    Promise_List__Set__string promise,
-    some_words
-):
-    try:
-      result = await self.list_of_sets(
-          some_words)
-      result = module.types.List__Set__string(result)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler list_of_sets:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(make_unique[vector[cset[string]]](deref((<module.types.List__Set__string?> result)._vector)))
-
-cdef api void call_cy_SimpleService_nested_map_argument(
-    object self,
-    cFollyPromise[int32_t] cPromise,
-    unique_ptr[cmap[string,vector[module.types.cSimpleStruct]]] struct_map
-):  
-    promise = Promise_i32.create(move(cPromise))
-    arg_struct_map = module.types.Map__string_List__SimpleStruct.create(module.types.move(struct_map))
-    asyncio.get_event_loop().create_task(
-        SimpleService_nested_map_argument_coro(
-            self,
-            promise,
-            arg_struct_map
-        )
-    )
-
-async def SimpleService_nested_map_argument_coro(
-    object self,
-    Promise_i32 promise,
-    struct_map
-):
-    try:
-      result = await self.nested_map_argument(
-          struct_map)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler nested_map_argument:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<int32_t> result)
-
-cdef api void call_cy_SimpleService_make_sentence(
-    object self,
-    cFollyPromise[unique_ptr[string]] cPromise,
-    unique_ptr[vector[vector[string]]] word_chars
-):  
-    promise = Promise_string.create(move(cPromise))
-    arg_word_chars = module.types.List__List__string.create(module.types.move(word_chars))
-    asyncio.get_event_loop().create_task(
-        SimpleService_make_sentence_coro(
-            self,
-            promise,
-            arg_word_chars
-        )
-    )
-
-async def SimpleService_make_sentence_coro(
-    object self,
-    Promise_string promise,
-    word_chars
-):
-    try:
-      result = await self.make_sentence(
-          word_chars)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler make_sentence:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
-
-cdef api void call_cy_SimpleService_get_union(
-    object self,
-    cFollyPromise[unique_ptr[cset[int32_t]]] cPromise,
-    unique_ptr[vector[cset[int32_t]]] sets
-):  
-    promise = Promise_Set__i32.create(move(cPromise))
-    arg_sets = module.types.List__Set__i32.create(module.types.move(sets))
-    asyncio.get_event_loop().create_task(
-        SimpleService_get_union_coro(
-            self,
-            promise,
-            arg_sets
-        )
-    )
-
-async def SimpleService_get_union_coro(
-    object self,
-    Promise_Set__i32 promise,
-    sets
-):
-    try:
-      result = await self.get_union(
-          sets)
-      result = module.types.Set__i32(result)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler get_union:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(make_unique[cset[int32_t]](deref((<module.types.Set__i32?> result)._set)))
-
-cdef api void call_cy_SimpleService_get_keys(
-    object self,
-    cFollyPromise[unique_ptr[cset[string]]] cPromise,
-    unique_ptr[vector[cmap[string,string]]] string_map
-):  
-    promise = Promise_Set__string.create(move(cPromise))
-    arg_string_map = module.types.List__Map__string_string.create(module.types.move(string_map))
-    asyncio.get_event_loop().create_task(
-        SimpleService_get_keys_coro(
-            self,
-            promise,
-            arg_string_map
-        )
-    )
-
-async def SimpleService_get_keys_coro(
-    object self,
-    Promise_Set__string promise,
-    string_map
-):
-    try:
-      result = await self.get_keys(
-          string_map)
-      result = module.types.Set__string(result)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler get_keys:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(make_unique[cset[string]](deref((<module.types.Set__string?> result)._set)))
-
-cdef api void call_cy_SimpleService_lookup_double(
-    object self,
-    cFollyPromise[double] cPromise,
-    int32_t key
-):  
-    promise = Promise_double.create(move(cPromise))
-    arg_key = key
-    asyncio.get_event_loop().create_task(
-        SimpleService_lookup_double_coro(
-            self,
-            promise,
-            arg_key
-        )
-    )
-
-async def SimpleService_lookup_double_coro(
-    object self,
-    Promise_double promise,
-    key
-):
-    try:
-      result = await self.lookup_double(
-          key)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler lookup_double:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<double> result)
-
-cdef api void call_cy_SimpleService_retrieve_binary(
-    object self,
-    cFollyPromise[unique_ptr[string]] cPromise,
-    unique_ptr[string] something
-):  
-    promise = Promise_binary.create(move(cPromise))
-    arg_something = (deref(something.get()))
-    asyncio.get_event_loop().create_task(
-        SimpleService_retrieve_binary_coro(
-            self,
-            promise,
-            arg_something
-        )
-    )
-
-async def SimpleService_retrieve_binary_coro(
-    object self,
-    Promise_binary promise,
-    something
-):
-    try:
-      result = await self.retrieve_binary(
-          something)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler retrieve_binary:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(make_unique[string](<string?> result))
-
-cdef api void call_cy_SimpleService_contain_binary(
-    object self,
-    cFollyPromise[unique_ptr[cset[string]]] cPromise,
-    unique_ptr[vector[string]] binaries
-):  
-    promise = Promise_Set__binary.create(move(cPromise))
-    arg_binaries = module.types.List__binary.create(module.types.move(binaries))
-    asyncio.get_event_loop().create_task(
-        SimpleService_contain_binary_coro(
-            self,
-            promise,
-            arg_binaries
-        )
-    )
-
-async def SimpleService_contain_binary_coro(
-    object self,
-    Promise_Set__binary promise,
-    binaries
-):
-    try:
-      result = await self.contain_binary(
-          binaries)
-      result = module.types.Set__binary(result)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler contain_binary:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(make_unique[cset[string]](deref((<module.types.Set__binary?> result)._set)))
-
-cdef api void call_cy_SimpleService_contain_enum(
-    object self,
-    cFollyPromise[unique_ptr[vector[module.types.cAnEnum]]] cPromise,
-    unique_ptr[vector[module.types.cAnEnum]] the_enum
-):  
-    promise = Promise_List__AnEnum.create(move(cPromise))
-    arg_the_enum = module.types.List__AnEnum.create(module.types.move(the_enum))
-    asyncio.get_event_loop().create_task(
-        SimpleService_contain_enum_coro(
-            self,
-            promise,
-            arg_the_enum
-        )
-    )
-
-async def SimpleService_contain_enum_coro(
-    object self,
-    Promise_List__AnEnum promise,
-    the_enum
-):
-    try:
-      result = await self.contain_enum(
-          the_enum)
-      result = module.types.List__AnEnum(result)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler contain_enum:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(make_unique[vector[module.types.cAnEnum]](deref((<module.types.List__AnEnum?> result)._vector)))
-
-cdef api void call_cy_DerivedService_get_six(
-    object self,
-    cFollyPromise[int32_t] cPromise
-):  
-    promise = Promise_i32.create(move(cPromise))
-    asyncio.get_event_loop().create_task(
-        DerivedService_get_six_coro(
-            self,
-            promise
-        )
-    )
-
-async def DerivedService_get_six_coro(
-    object self,
-    Promise_i32 promise
-):
-    try:
-      result = await self.get_six()
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler get_six:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<int32_t> result)
-
-cdef api void call_cy_RederivedService_get_seven(
-    object self,
-    cFollyPromise[int32_t] cPromise
-):  
-    promise = Promise_i32.create(move(cPromise))
-    asyncio.get_event_loop().create_task(
-        RederivedService_get_seven_coro(
-            self,
-            promise
-        )
-    )
-
-async def RederivedService_get_seven_coro(
-    object self,
-    Promise_i32 promise
-):
-    try:
-      result = await self.get_seven()
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler get_seven:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<int32_t> result)
-
 
 cdef class SimpleServiceInterface(
     ServiceInterface
@@ -1959,4 +534,1932 @@ cdef class RederivedServiceInterface(
             self):
         raise NotImplementedError("async def get_seven is not implemented")
 
+
+
+
+cdef api void call_cy_SimpleService_get_five(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[int32_t] cPromise
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_i32.create(move(cPromise))
+    context = None
+    if iface._pass_context_get_five:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_get_five_coro(
+            self,
+            context,
+            promise
+        )
+    )
+
+async def SimpleService_get_five_coro(
+    object self,
+    object ctx,
+    Promise_i32 promise
+):
+    try:
+        if ctx is not None:
+            result = await self.get_five(ctx, )
+        else:
+            result = await self.get_five()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler get_five:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<int32_t> result)
+
+cdef api void call_cy_SimpleService_add_five(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[int32_t] cPromise,
+    int32_t num
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_i32.create(move(cPromise))
+    arg_num = num
+    context = None
+    if iface._pass_context_add_five:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_add_five_coro(
+            self,
+            context,
+            promise,
+            arg_num
+        )
+    )
+
+async def SimpleService_add_five_coro(
+    object self,
+    object ctx,
+    Promise_i32 promise,
+    num
+):
+    try:
+        if ctx is not None:
+            result = await self.add_five(ctx, 
+                      num)
+        else:
+            result = await self.add_five(
+                      num)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler add_five:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<int32_t> result)
+
+cdef api void call_cy_SimpleService_do_nothing(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_void.create(move(cPromise))
+    context = None
+    if iface._pass_context_do_nothing:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_do_nothing_coro(
+            self,
+            context,
+            promise
+        )
+    )
+
+async def SimpleService_do_nothing_coro(
+    object self,
+    object ctx,
+    Promise_void promise
+):
+    try:
+        if ctx is not None:
+            result = await self.do_nothing(ctx, )
+        else:
+            result = await self.do_nothing()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler do_nothing:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+cdef api void call_cy_SimpleService_concat(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[string]] cPromise,
+    unique_ptr[string] first,
+    unique_ptr[string] second
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_string.create(move(cPromise))
+    arg_first = (deref(first.get())).decode('UTF-8')
+    arg_second = (deref(second.get())).decode('UTF-8')
+    context = None
+    if iface._pass_context_concat:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_concat_coro(
+            self,
+            context,
+            promise,
+            arg_first,
+            arg_second
+        )
+    )
+
+async def SimpleService_concat_coro(
+    object self,
+    object ctx,
+    Promise_string promise,
+    first,
+    second
+):
+    try:
+        if ctx is not None:
+            result = await self.concat(ctx, 
+                      first,
+                      second)
+        else:
+            result = await self.concat(
+                      first,
+                      second)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler concat:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
+
+cdef api void call_cy_SimpleService_get_value(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[int32_t] cPromise,
+    unique_ptr[module.types.cSimpleStruct] simple_struct
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_i32.create(move(cPromise))
+    arg_simple_struct = module.types.SimpleStruct.create(shared_ptr[module.types.cSimpleStruct](simple_struct.release()))
+    context = None
+    if iface._pass_context_get_value:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_get_value_coro(
+            self,
+            context,
+            promise,
+            arg_simple_struct
+        )
+    )
+
+async def SimpleService_get_value_coro(
+    object self,
+    object ctx,
+    Promise_i32 promise,
+    simple_struct
+):
+    try:
+        if ctx is not None:
+            result = await self.get_value(ctx, 
+                      simple_struct)
+        else:
+            result = await self.get_value(
+                      simple_struct)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler get_value:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<int32_t> result)
+
+cdef api void call_cy_SimpleService_negate(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cbool] cPromise,
+    cbool input
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_bool.create(move(cPromise))
+    arg_input = input
+    context = None
+    if iface._pass_context_negate:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_negate_coro(
+            self,
+            context,
+            promise,
+            arg_input
+        )
+    )
+
+async def SimpleService_negate_coro(
+    object self,
+    object ctx,
+    Promise_bool promise,
+    input
+):
+    try:
+        if ctx is not None:
+            result = await self.negate(ctx, 
+                      input)
+        else:
+            result = await self.negate(
+                      input)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler negate:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<cbool> result)
+
+cdef api void call_cy_SimpleService_tiny(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[int8_t] cPromise,
+    int8_t input
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_byte.create(move(cPromise))
+    arg_input = input
+    context = None
+    if iface._pass_context_tiny:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_tiny_coro(
+            self,
+            context,
+            promise,
+            arg_input
+        )
+    )
+
+async def SimpleService_tiny_coro(
+    object self,
+    object ctx,
+    Promise_byte promise,
+    input
+):
+    try:
+        if ctx is not None:
+            result = await self.tiny(ctx, 
+                      input)
+        else:
+            result = await self.tiny(
+                      input)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler tiny:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<int8_t> result)
+
+cdef api void call_cy_SimpleService_small(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[int16_t] cPromise,
+    int16_t input
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_i16.create(move(cPromise))
+    arg_input = input
+    context = None
+    if iface._pass_context_small:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_small_coro(
+            self,
+            context,
+            promise,
+            arg_input
+        )
+    )
+
+async def SimpleService_small_coro(
+    object self,
+    object ctx,
+    Promise_i16 promise,
+    input
+):
+    try:
+        if ctx is not None:
+            result = await self.small(ctx, 
+                      input)
+        else:
+            result = await self.small(
+                      input)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler small:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<int16_t> result)
+
+cdef api void call_cy_SimpleService_big(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[int64_t] cPromise,
+    int64_t input
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_i64.create(move(cPromise))
+    arg_input = input
+    context = None
+    if iface._pass_context_big:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_big_coro(
+            self,
+            context,
+            promise,
+            arg_input
+        )
+    )
+
+async def SimpleService_big_coro(
+    object self,
+    object ctx,
+    Promise_i64 promise,
+    input
+):
+    try:
+        if ctx is not None:
+            result = await self.big(ctx, 
+                      input)
+        else:
+            result = await self.big(
+                      input)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler big:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<int64_t> result)
+
+cdef api void call_cy_SimpleService_two(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[double] cPromise,
+    double input
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_double.create(move(cPromise))
+    arg_input = input
+    context = None
+    if iface._pass_context_two:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_two_coro(
+            self,
+            context,
+            promise,
+            arg_input
+        )
+    )
+
+async def SimpleService_two_coro(
+    object self,
+    object ctx,
+    Promise_double promise,
+    input
+):
+    try:
+        if ctx is not None:
+            result = await self.two(ctx, 
+                      input)
+        else:
+            result = await self.two(
+                      input)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler two:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<double> result)
+
+cdef api void call_cy_SimpleService_expected_exception(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_void.create(move(cPromise))
+    context = None
+    if iface._pass_context_expected_exception:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_expected_exception_coro(
+            self,
+            context,
+            promise
+        )
+    )
+
+async def SimpleService_expected_exception_coro(
+    object self,
+    object ctx,
+    Promise_void promise
+):
+    try:
+        if ctx is not None:
+            result = await self.expected_exception(ctx, )
+        else:
+            result = await self.expected_exception()
+    except module.types.SimpleException as ex:
+        promise.cPromise.setException(deref((<module.types.SimpleException> ex).c_SimpleException.get()))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler expected_exception:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+cdef api void call_cy_SimpleService_unexpected_exception(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[int32_t] cPromise
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_i32.create(move(cPromise))
+    context = None
+    if iface._pass_context_unexpected_exception:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_unexpected_exception_coro(
+            self,
+            context,
+            promise
+        )
+    )
+
+async def SimpleService_unexpected_exception_coro(
+    object self,
+    object ctx,
+    Promise_i32 promise
+):
+    try:
+        if ctx is not None:
+            result = await self.unexpected_exception(ctx, )
+        else:
+            result = await self.unexpected_exception()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler unexpected_exception:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<int32_t> result)
+
+cdef api void call_cy_SimpleService_sum_i16_list(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[int32_t] cPromise,
+    unique_ptr[vector[int16_t]] numbers
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_i32.create(move(cPromise))
+    arg_numbers = module.types.List__i16.create(module.types.move(numbers))
+    context = None
+    if iface._pass_context_sum_i16_list:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_sum_i16_list_coro(
+            self,
+            context,
+            promise,
+            arg_numbers
+        )
+    )
+
+async def SimpleService_sum_i16_list_coro(
+    object self,
+    object ctx,
+    Promise_i32 promise,
+    numbers
+):
+    try:
+        if ctx is not None:
+            result = await self.sum_i16_list(ctx, 
+                      numbers)
+        else:
+            result = await self.sum_i16_list(
+                      numbers)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler sum_i16_list:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<int32_t> result)
+
+cdef api void call_cy_SimpleService_sum_i32_list(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[int32_t] cPromise,
+    unique_ptr[vector[int32_t]] numbers
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_i32.create(move(cPromise))
+    arg_numbers = module.types.List__i32.create(module.types.move(numbers))
+    context = None
+    if iface._pass_context_sum_i32_list:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_sum_i32_list_coro(
+            self,
+            context,
+            promise,
+            arg_numbers
+        )
+    )
+
+async def SimpleService_sum_i32_list_coro(
+    object self,
+    object ctx,
+    Promise_i32 promise,
+    numbers
+):
+    try:
+        if ctx is not None:
+            result = await self.sum_i32_list(ctx, 
+                      numbers)
+        else:
+            result = await self.sum_i32_list(
+                      numbers)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler sum_i32_list:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<int32_t> result)
+
+cdef api void call_cy_SimpleService_sum_i64_list(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[int32_t] cPromise,
+    unique_ptr[vector[int64_t]] numbers
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_i32.create(move(cPromise))
+    arg_numbers = module.types.List__i64.create(module.types.move(numbers))
+    context = None
+    if iface._pass_context_sum_i64_list:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_sum_i64_list_coro(
+            self,
+            context,
+            promise,
+            arg_numbers
+        )
+    )
+
+async def SimpleService_sum_i64_list_coro(
+    object self,
+    object ctx,
+    Promise_i32 promise,
+    numbers
+):
+    try:
+        if ctx is not None:
+            result = await self.sum_i64_list(ctx, 
+                      numbers)
+        else:
+            result = await self.sum_i64_list(
+                      numbers)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler sum_i64_list:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<int32_t> result)
+
+cdef api void call_cy_SimpleService_concat_many(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[string]] cPromise,
+    unique_ptr[vector[string]] words
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_string.create(move(cPromise))
+    arg_words = module.types.List__string.create(module.types.move(words))
+    context = None
+    if iface._pass_context_concat_many:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_concat_many_coro(
+            self,
+            context,
+            promise,
+            arg_words
+        )
+    )
+
+async def SimpleService_concat_many_coro(
+    object self,
+    object ctx,
+    Promise_string promise,
+    words
+):
+    try:
+        if ctx is not None:
+            result = await self.concat_many(ctx, 
+                      words)
+        else:
+            result = await self.concat_many(
+                      words)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler concat_many:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
+
+cdef api void call_cy_SimpleService_count_structs(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[int32_t] cPromise,
+    unique_ptr[vector[module.types.cSimpleStruct]] items
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_i32.create(move(cPromise))
+    arg_items = module.types.List__SimpleStruct.create(module.types.move(items))
+    context = None
+    if iface._pass_context_count_structs:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_count_structs_coro(
+            self,
+            context,
+            promise,
+            arg_items
+        )
+    )
+
+async def SimpleService_count_structs_coro(
+    object self,
+    object ctx,
+    Promise_i32 promise,
+    items
+):
+    try:
+        if ctx is not None:
+            result = await self.count_structs(ctx, 
+                      items)
+        else:
+            result = await self.count_structs(
+                      items)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler count_structs:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<int32_t> result)
+
+cdef api void call_cy_SimpleService_sum_set(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[int32_t] cPromise,
+    unique_ptr[cset[int32_t]] numbers
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_i32.create(move(cPromise))
+    arg_numbers = module.types.Set__i32.create(module.types.move(numbers))
+    context = None
+    if iface._pass_context_sum_set:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_sum_set_coro(
+            self,
+            context,
+            promise,
+            arg_numbers
+        )
+    )
+
+async def SimpleService_sum_set_coro(
+    object self,
+    object ctx,
+    Promise_i32 promise,
+    numbers
+):
+    try:
+        if ctx is not None:
+            result = await self.sum_set(ctx, 
+                      numbers)
+        else:
+            result = await self.sum_set(
+                      numbers)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler sum_set:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<int32_t> result)
+
+cdef api void call_cy_SimpleService_contains_word(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cbool] cPromise,
+    unique_ptr[cset[string]] words,
+    unique_ptr[string] word
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_bool.create(move(cPromise))
+    arg_words = module.types.Set__string.create(module.types.move(words))
+    arg_word = (deref(word.get())).decode('UTF-8')
+    context = None
+    if iface._pass_context_contains_word:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_contains_word_coro(
+            self,
+            context,
+            promise,
+            arg_words,
+            arg_word
+        )
+    )
+
+async def SimpleService_contains_word_coro(
+    object self,
+    object ctx,
+    Promise_bool promise,
+    words,
+    word
+):
+    try:
+        if ctx is not None:
+            result = await self.contains_word(ctx, 
+                      words,
+                      word)
+        else:
+            result = await self.contains_word(
+                      words,
+                      word)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler contains_word:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<cbool> result)
+
+cdef api void call_cy_SimpleService_get_map_value(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[string]] cPromise,
+    unique_ptr[cmap[string,string]] words,
+    unique_ptr[string] key
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_string.create(move(cPromise))
+    arg_words = module.types.Map__string_string.create(module.types.move(words))
+    arg_key = (deref(key.get())).decode('UTF-8')
+    context = None
+    if iface._pass_context_get_map_value:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_get_map_value_coro(
+            self,
+            context,
+            promise,
+            arg_words,
+            arg_key
+        )
+    )
+
+async def SimpleService_get_map_value_coro(
+    object self,
+    object ctx,
+    Promise_string promise,
+    words,
+    key
+):
+    try:
+        if ctx is not None:
+            result = await self.get_map_value(ctx, 
+                      words,
+                      key)
+        else:
+            result = await self.get_map_value(
+                      words,
+                      key)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler get_map_value:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
+
+cdef api void call_cy_SimpleService_map_length(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[int16_t] cPromise,
+    unique_ptr[cmap[string,module.types.cSimpleStruct]] items
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_i16.create(move(cPromise))
+    arg_items = module.types.Map__string_SimpleStruct.create(module.types.move(items))
+    context = None
+    if iface._pass_context_map_length:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_map_length_coro(
+            self,
+            context,
+            promise,
+            arg_items
+        )
+    )
+
+async def SimpleService_map_length_coro(
+    object self,
+    object ctx,
+    Promise_i16 promise,
+    items
+):
+    try:
+        if ctx is not None:
+            result = await self.map_length(ctx, 
+                      items)
+        else:
+            result = await self.map_length(
+                      items)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler map_length:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<int16_t> result)
+
+cdef api void call_cy_SimpleService_sum_map_values(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[int16_t] cPromise,
+    unique_ptr[cmap[string,int16_t]] items
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_i16.create(move(cPromise))
+    arg_items = module.types.Map__string_i16.create(module.types.move(items))
+    context = None
+    if iface._pass_context_sum_map_values:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_sum_map_values_coro(
+            self,
+            context,
+            promise,
+            arg_items
+        )
+    )
+
+async def SimpleService_sum_map_values_coro(
+    object self,
+    object ctx,
+    Promise_i16 promise,
+    items
+):
+    try:
+        if ctx is not None:
+            result = await self.sum_map_values(ctx, 
+                      items)
+        else:
+            result = await self.sum_map_values(
+                      items)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler sum_map_values:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<int16_t> result)
+
+cdef api void call_cy_SimpleService_complex_sum_i32(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[int32_t] cPromise,
+    unique_ptr[module.types.cComplexStruct] counter
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_i32.create(move(cPromise))
+    arg_counter = module.types.ComplexStruct.create(shared_ptr[module.types.cComplexStruct](counter.release()))
+    context = None
+    if iface._pass_context_complex_sum_i32:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_complex_sum_i32_coro(
+            self,
+            context,
+            promise,
+            arg_counter
+        )
+    )
+
+async def SimpleService_complex_sum_i32_coro(
+    object self,
+    object ctx,
+    Promise_i32 promise,
+    counter
+):
+    try:
+        if ctx is not None:
+            result = await self.complex_sum_i32(ctx, 
+                      counter)
+        else:
+            result = await self.complex_sum_i32(
+                      counter)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler complex_sum_i32:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<int32_t> result)
+
+cdef api void call_cy_SimpleService_repeat_name(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[string]] cPromise,
+    unique_ptr[module.types.cComplexStruct] counter
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_string.create(move(cPromise))
+    arg_counter = module.types.ComplexStruct.create(shared_ptr[module.types.cComplexStruct](counter.release()))
+    context = None
+    if iface._pass_context_repeat_name:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_repeat_name_coro(
+            self,
+            context,
+            promise,
+            arg_counter
+        )
+    )
+
+async def SimpleService_repeat_name_coro(
+    object self,
+    object ctx,
+    Promise_string promise,
+    counter
+):
+    try:
+        if ctx is not None:
+            result = await self.repeat_name(ctx, 
+                      counter)
+        else:
+            result = await self.repeat_name(
+                      counter)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler repeat_name:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
+
+cdef api void call_cy_SimpleService_get_struct(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[module.types.cSimpleStruct]] cPromise
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_SimpleStruct.create(move(cPromise))
+    context = None
+    if iface._pass_context_get_struct:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_get_struct_coro(
+            self,
+            context,
+            promise
+        )
+    )
+
+async def SimpleService_get_struct_coro(
+    object self,
+    object ctx,
+    Promise_SimpleStruct promise
+):
+    try:
+        if ctx is not None:
+            result = await self.get_struct(ctx, )
+        else:
+            result = await self.get_struct()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler get_struct:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[module.types.cSimpleStruct](deref((<module.types.SimpleStruct?> result).c_SimpleStruct)))
+
+cdef api void call_cy_SimpleService_fib(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[vector[int32_t]]] cPromise,
+    int16_t n
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_List__i32.create(move(cPromise))
+    arg_n = n
+    context = None
+    if iface._pass_context_fib:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_fib_coro(
+            self,
+            context,
+            promise,
+            arg_n
+        )
+    )
+
+async def SimpleService_fib_coro(
+    object self,
+    object ctx,
+    Promise_List__i32 promise,
+    n
+):
+    try:
+        if ctx is not None:
+            result = await self.fib(ctx, 
+                      n)
+        else:
+            result = await self.fib(
+                      n)
+        result = module.types.List__i32(result)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler fib:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[vector[int32_t]](deref((<module.types.List__i32?> result)._vector)))
+
+cdef api void call_cy_SimpleService_unique_words(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[cset[string]]] cPromise,
+    unique_ptr[vector[string]] words
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_Set__string.create(move(cPromise))
+    arg_words = module.types.List__string.create(module.types.move(words))
+    context = None
+    if iface._pass_context_unique_words:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_unique_words_coro(
+            self,
+            context,
+            promise,
+            arg_words
+        )
+    )
+
+async def SimpleService_unique_words_coro(
+    object self,
+    object ctx,
+    Promise_Set__string promise,
+    words
+):
+    try:
+        if ctx is not None:
+            result = await self.unique_words(ctx, 
+                      words)
+        else:
+            result = await self.unique_words(
+                      words)
+        result = module.types.Set__string(result)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler unique_words:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[cset[string]](deref((<module.types.Set__string?> result)._set)))
+
+cdef api void call_cy_SimpleService_words_count(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[cmap[string,int16_t]]] cPromise,
+    unique_ptr[vector[string]] words
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_Map__string_i16.create(move(cPromise))
+    arg_words = module.types.List__string.create(module.types.move(words))
+    context = None
+    if iface._pass_context_words_count:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_words_count_coro(
+            self,
+            context,
+            promise,
+            arg_words
+        )
+    )
+
+async def SimpleService_words_count_coro(
+    object self,
+    object ctx,
+    Promise_Map__string_i16 promise,
+    words
+):
+    try:
+        if ctx is not None:
+            result = await self.words_count(ctx, 
+                      words)
+        else:
+            result = await self.words_count(
+                      words)
+        result = module.types.Map__string_i16(result)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler words_count:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[cmap[string,int16_t]](deref((<module.types.Map__string_i16?> result)._map)))
+
+cdef api void call_cy_SimpleService_set_enum(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[module.types.cAnEnum] cPromise,
+    module.types.cAnEnum in_enum
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_AnEnum.create(move(cPromise))
+    arg_in_enum = module.types.AnEnum(<int> in_enum)
+    context = None
+    if iface._pass_context_set_enum:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_set_enum_coro(
+            self,
+            context,
+            promise,
+            arg_in_enum
+        )
+    )
+
+async def SimpleService_set_enum_coro(
+    object self,
+    object ctx,
+    Promise_AnEnum promise,
+    in_enum
+):
+    try:
+        if ctx is not None:
+            result = await self.set_enum(ctx, 
+                      in_enum)
+        else:
+            result = await self.set_enum(
+                      in_enum)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler set_enum:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(module.types.AnEnum_to_cpp(result))
+
+cdef api void call_cy_SimpleService_list_of_lists(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[vector[vector[int32_t]]]] cPromise,
+    int16_t num_lists,
+    int16_t num_items
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_List__List__i32.create(move(cPromise))
+    arg_num_lists = num_lists
+    arg_num_items = num_items
+    context = None
+    if iface._pass_context_list_of_lists:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_list_of_lists_coro(
+            self,
+            context,
+            promise,
+            arg_num_lists,
+            arg_num_items
+        )
+    )
+
+async def SimpleService_list_of_lists_coro(
+    object self,
+    object ctx,
+    Promise_List__List__i32 promise,
+    num_lists,
+    num_items
+):
+    try:
+        if ctx is not None:
+            result = await self.list_of_lists(ctx, 
+                      num_lists,
+                      num_items)
+        else:
+            result = await self.list_of_lists(
+                      num_lists,
+                      num_items)
+        result = module.types.List__List__i32(result)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler list_of_lists:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[vector[vector[int32_t]]](deref((<module.types.List__List__i32?> result)._vector)))
+
+cdef api void call_cy_SimpleService_word_character_frequency(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] cPromise,
+    unique_ptr[string] sentence
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_Map__string_Map__string_i32.create(move(cPromise))
+    arg_sentence = (deref(sentence.get())).decode('UTF-8')
+    context = None
+    if iface._pass_context_word_character_frequency:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_word_character_frequency_coro(
+            self,
+            context,
+            promise,
+            arg_sentence
+        )
+    )
+
+async def SimpleService_word_character_frequency_coro(
+    object self,
+    object ctx,
+    Promise_Map__string_Map__string_i32 promise,
+    sentence
+):
+    try:
+        if ctx is not None:
+            result = await self.word_character_frequency(ctx, 
+                      sentence)
+        else:
+            result = await self.word_character_frequency(
+                      sentence)
+        result = module.types.Map__string_Map__string_i32(result)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler word_character_frequency:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[cmap[string,cmap[string,int32_t]]](deref((<module.types.Map__string_Map__string_i32?> result)._map)))
+
+cdef api void call_cy_SimpleService_list_of_sets(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[vector[cset[string]]]] cPromise,
+    unique_ptr[string] some_words
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_List__Set__string.create(move(cPromise))
+    arg_some_words = (deref(some_words.get())).decode('UTF-8')
+    context = None
+    if iface._pass_context_list_of_sets:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_list_of_sets_coro(
+            self,
+            context,
+            promise,
+            arg_some_words
+        )
+    )
+
+async def SimpleService_list_of_sets_coro(
+    object self,
+    object ctx,
+    Promise_List__Set__string promise,
+    some_words
+):
+    try:
+        if ctx is not None:
+            result = await self.list_of_sets(ctx, 
+                      some_words)
+        else:
+            result = await self.list_of_sets(
+                      some_words)
+        result = module.types.List__Set__string(result)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler list_of_sets:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[vector[cset[string]]](deref((<module.types.List__Set__string?> result)._vector)))
+
+cdef api void call_cy_SimpleService_nested_map_argument(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[int32_t] cPromise,
+    unique_ptr[cmap[string,vector[module.types.cSimpleStruct]]] struct_map
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_i32.create(move(cPromise))
+    arg_struct_map = module.types.Map__string_List__SimpleStruct.create(module.types.move(struct_map))
+    context = None
+    if iface._pass_context_nested_map_argument:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_nested_map_argument_coro(
+            self,
+            context,
+            promise,
+            arg_struct_map
+        )
+    )
+
+async def SimpleService_nested_map_argument_coro(
+    object self,
+    object ctx,
+    Promise_i32 promise,
+    struct_map
+):
+    try:
+        if ctx is not None:
+            result = await self.nested_map_argument(ctx, 
+                      struct_map)
+        else:
+            result = await self.nested_map_argument(
+                      struct_map)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler nested_map_argument:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<int32_t> result)
+
+cdef api void call_cy_SimpleService_make_sentence(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[string]] cPromise,
+    unique_ptr[vector[vector[string]]] word_chars
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_string.create(move(cPromise))
+    arg_word_chars = module.types.List__List__string.create(module.types.move(word_chars))
+    context = None
+    if iface._pass_context_make_sentence:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_make_sentence_coro(
+            self,
+            context,
+            promise,
+            arg_word_chars
+        )
+    )
+
+async def SimpleService_make_sentence_coro(
+    object self,
+    object ctx,
+    Promise_string promise,
+    word_chars
+):
+    try:
+        if ctx is not None:
+            result = await self.make_sentence(ctx, 
+                      word_chars)
+        else:
+            result = await self.make_sentence(
+                      word_chars)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler make_sentence:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
+
+cdef api void call_cy_SimpleService_get_union(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[cset[int32_t]]] cPromise,
+    unique_ptr[vector[cset[int32_t]]] sets
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_Set__i32.create(move(cPromise))
+    arg_sets = module.types.List__Set__i32.create(module.types.move(sets))
+    context = None
+    if iface._pass_context_get_union:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_get_union_coro(
+            self,
+            context,
+            promise,
+            arg_sets
+        )
+    )
+
+async def SimpleService_get_union_coro(
+    object self,
+    object ctx,
+    Promise_Set__i32 promise,
+    sets
+):
+    try:
+        if ctx is not None:
+            result = await self.get_union(ctx, 
+                      sets)
+        else:
+            result = await self.get_union(
+                      sets)
+        result = module.types.Set__i32(result)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler get_union:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[cset[int32_t]](deref((<module.types.Set__i32?> result)._set)))
+
+cdef api void call_cy_SimpleService_get_keys(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[cset[string]]] cPromise,
+    unique_ptr[vector[cmap[string,string]]] string_map
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_Set__string.create(move(cPromise))
+    arg_string_map = module.types.List__Map__string_string.create(module.types.move(string_map))
+    context = None
+    if iface._pass_context_get_keys:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_get_keys_coro(
+            self,
+            context,
+            promise,
+            arg_string_map
+        )
+    )
+
+async def SimpleService_get_keys_coro(
+    object self,
+    object ctx,
+    Promise_Set__string promise,
+    string_map
+):
+    try:
+        if ctx is not None:
+            result = await self.get_keys(ctx, 
+                      string_map)
+        else:
+            result = await self.get_keys(
+                      string_map)
+        result = module.types.Set__string(result)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler get_keys:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[cset[string]](deref((<module.types.Set__string?> result)._set)))
+
+cdef api void call_cy_SimpleService_lookup_double(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[double] cPromise,
+    int32_t key
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_double.create(move(cPromise))
+    arg_key = key
+    context = None
+    if iface._pass_context_lookup_double:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_lookup_double_coro(
+            self,
+            context,
+            promise,
+            arg_key
+        )
+    )
+
+async def SimpleService_lookup_double_coro(
+    object self,
+    object ctx,
+    Promise_double promise,
+    key
+):
+    try:
+        if ctx is not None:
+            result = await self.lookup_double(ctx, 
+                      key)
+        else:
+            result = await self.lookup_double(
+                      key)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler lookup_double:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<double> result)
+
+cdef api void call_cy_SimpleService_retrieve_binary(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[string]] cPromise,
+    unique_ptr[string] something
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_binary.create(move(cPromise))
+    arg_something = (deref(something.get()))
+    context = None
+    if iface._pass_context_retrieve_binary:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_retrieve_binary_coro(
+            self,
+            context,
+            promise,
+            arg_something
+        )
+    )
+
+async def SimpleService_retrieve_binary_coro(
+    object self,
+    object ctx,
+    Promise_binary promise,
+    something
+):
+    try:
+        if ctx is not None:
+            result = await self.retrieve_binary(ctx, 
+                      something)
+        else:
+            result = await self.retrieve_binary(
+                      something)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler retrieve_binary:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[string](<string?> result))
+
+cdef api void call_cy_SimpleService_contain_binary(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[cset[string]]] cPromise,
+    unique_ptr[vector[string]] binaries
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_Set__binary.create(move(cPromise))
+    arg_binaries = module.types.List__binary.create(module.types.move(binaries))
+    context = None
+    if iface._pass_context_contain_binary:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_contain_binary_coro(
+            self,
+            context,
+            promise,
+            arg_binaries
+        )
+    )
+
+async def SimpleService_contain_binary_coro(
+    object self,
+    object ctx,
+    Promise_Set__binary promise,
+    binaries
+):
+    try:
+        if ctx is not None:
+            result = await self.contain_binary(ctx, 
+                      binaries)
+        else:
+            result = await self.contain_binary(
+                      binaries)
+        result = module.types.Set__binary(result)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler contain_binary:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[cset[string]](deref((<module.types.Set__binary?> result)._set)))
+
+cdef api void call_cy_SimpleService_contain_enum(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[vector[module.types.cAnEnum]]] cPromise,
+    unique_ptr[vector[module.types.cAnEnum]] the_enum
+):  
+    cdef SimpleServiceInterface iface
+    iface = self
+    promise = Promise_List__AnEnum.create(move(cPromise))
+    arg_the_enum = module.types.List__AnEnum.create(module.types.move(the_enum))
+    context = None
+    if iface._pass_context_contain_enum:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        SimpleService_contain_enum_coro(
+            self,
+            context,
+            promise,
+            arg_the_enum
+        )
+    )
+
+async def SimpleService_contain_enum_coro(
+    object self,
+    object ctx,
+    Promise_List__AnEnum promise,
+    the_enum
+):
+    try:
+        if ctx is not None:
+            result = await self.contain_enum(ctx, 
+                      the_enum)
+        else:
+            result = await self.contain_enum(
+                      the_enum)
+        result = module.types.List__AnEnum(result)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler contain_enum:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[vector[module.types.cAnEnum]](deref((<module.types.List__AnEnum?> result)._vector)))
+
+cdef api void call_cy_DerivedService_get_six(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[int32_t] cPromise
+):  
+    cdef DerivedServiceInterface iface
+    iface = self
+    promise = Promise_i32.create(move(cPromise))
+    context = None
+    if iface._pass_context_get_six:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        DerivedService_get_six_coro(
+            self,
+            context,
+            promise
+        )
+    )
+
+async def DerivedService_get_six_coro(
+    object self,
+    object ctx,
+    Promise_i32 promise
+):
+    try:
+        if ctx is not None:
+            result = await self.get_six(ctx, )
+        else:
+            result = await self.get_six()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler get_six:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<int32_t> result)
+
+cdef api void call_cy_RederivedService_get_seven(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[int32_t] cPromise
+):  
+    cdef RederivedServiceInterface iface
+    iface = self
+    promise = Promise_i32.create(move(cPromise))
+    context = None
+    if iface._pass_context_get_seven:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        RederivedService_get_seven_coro(
+            self,
+            context,
+            promise
+        )
+    )
+
+async def RederivedService_get_seven_coro(
+    object self,
+    object ctx,
+    Promise_i32 promise
+):
+    try:
+        if ctx is not None:
+            result = await self.get_seven(ctx, )
+        else:
+            result = await self.get_seven()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler get_seven:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<int32_t> result)
 

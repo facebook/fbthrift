@@ -16,7 +16,8 @@ from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
 from thrift.py3.exceptions cimport cTApplicationException
-from thrift.py3.server cimport ServiceInterface
+from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
+from thrift.py3.server import RequestContext
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -51,41 +52,6 @@ cdef class Promise_i64:
         inst.cPromise = move(cPromise)
         return inst
 
-cdef api void call_cy_TestService_init(
-    object self,
-    cFollyPromise[int64_t] cPromise,
-    int64_t int1
-):  
-    promise = Promise_i64.create(move(cPromise))
-    arg_int1 = int1
-    asyncio.get_event_loop().create_task(
-        TestService_init_coro(
-            self,
-            promise,
-            arg_int1
-        )
-    )
-
-async def TestService_init_coro(
-    object self,
-    Promise_i64 promise,
-    int1
-):
-    try:
-      result = await self.init(
-          int1)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler init:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<int64_t> result)
-
-
 cdef class TestServiceInterface(
     ServiceInterface
 ):
@@ -100,4 +66,52 @@ cdef class TestServiceInterface(
             int1):
         raise NotImplementedError("async def init is not implemented")
 
+
+
+
+cdef api void call_cy_TestService_init(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[int64_t] cPromise,
+    int64_t int1
+):  
+    cdef TestServiceInterface iface
+    iface = self
+    promise = Promise_i64.create(move(cPromise))
+    arg_int1 = int1
+    context = None
+    if iface._pass_context_init:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        TestService_init_coro(
+            self,
+            context,
+            promise,
+            arg_int1
+        )
+    )
+
+async def TestService_init_coro(
+    object self,
+    object ctx,
+    Promise_i64 promise,
+    int1
+):
+    try:
+        if ctx is not None:
+            result = await self.init(ctx, 
+                      int1)
+        else:
+            result = await self.init(
+                      int1)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler init:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<int64_t> result)
 

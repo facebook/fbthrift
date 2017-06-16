@@ -25,12 +25,14 @@ RaiserWrapper::~RaiserWrapper() {
 folly::Future<folly::Unit> RaiserWrapper::future_doBland() {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise)    ]() mutable {
         call_cy_Raiser_doBland(
             this->if_object,
+            ctx,
             std::move(promise)        );
     });
 
@@ -40,12 +42,14 @@ folly::Future<folly::Unit> RaiserWrapper::future_doBland() {
 folly::Future<folly::Unit> RaiserWrapper::future_doRaise() {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise)    ]() mutable {
         call_cy_Raiser_doRaise(
             this->if_object,
+            ctx,
             std::move(promise)        );
     });
 
@@ -55,12 +59,14 @@ folly::Future<folly::Unit> RaiserWrapper::future_doRaise() {
 folly::Future<std::unique_ptr<std::string>> RaiserWrapper::future_get200() {
   folly::Promise<std::unique_ptr<std::string>> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise)    ]() mutable {
         call_cy_Raiser_get200(
             this->if_object,
+            ctx,
             std::move(promise)        );
     });
 
@@ -70,12 +76,14 @@ folly::Future<std::unique_ptr<std::string>> RaiserWrapper::future_get200() {
 folly::Future<std::unique_ptr<std::string>> RaiserWrapper::future_get500() {
   folly::Promise<std::unique_ptr<std::string>> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise)    ]() mutable {
         call_cy_Raiser_get500(
             this->if_object,
+            ctx,
             std::move(promise)        );
     });
 

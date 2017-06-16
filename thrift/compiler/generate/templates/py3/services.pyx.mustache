@@ -36,7 +36,8 @@ from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
 from thrift.py3.exceptions cimport cTApplicationException
-from thrift.py3.server cimport ServiceInterface
+from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
+from thrift.py3.server import RequestContext
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -69,7 +70,6 @@ from {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:nam
 {{/program:services}}
 
 {{> services/Promises}}
-{{> services/Callbacks}}
 
 {{#program:services}}
 cdef class {{service:name}}Interface(
@@ -96,3 +96,5 @@ cdef class {{service:name}}Interface(
 
     {{/service:functions}}
 {{/program:services}}
+
+{{> services/Callbacks}}

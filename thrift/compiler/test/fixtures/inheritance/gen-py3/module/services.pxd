@@ -9,11 +9,14 @@ from thrift.py3.server cimport ServiceInterface
 
 
 cdef class MyRootInterface(ServiceInterface):
+    cdef public bint _pass_context_do_root
     pass
 
 cdef class MyNodeInterface(module.services.MyRootInterface):
+    cdef public bint _pass_context_do_mid
     pass
 
 cdef class MyLeafInterface(module.services.MyNodeInterface):
+    cdef public bint _pass_context_do_leaf
     pass
 

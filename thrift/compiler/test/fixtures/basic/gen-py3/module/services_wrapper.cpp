@@ -25,12 +25,14 @@ MyServiceWrapper::~MyServiceWrapper() {
 folly::Future<folly::Unit> MyServiceWrapper::future_ping() {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise)    ]() mutable {
         call_cy_MyService_ping(
             this->if_object,
+            ctx,
             std::move(promise)        );
     });
 
@@ -40,12 +42,14 @@ folly::Future<folly::Unit> MyServiceWrapper::future_ping() {
 folly::Future<std::unique_ptr<std::string>> MyServiceWrapper::future_getRandomData() {
   folly::Promise<std::unique_ptr<std::string>> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise)    ]() mutable {
         call_cy_MyService_getRandomData(
             this->if_object,
+            ctx,
             std::move(promise)        );
     });
 
@@ -57,13 +61,15 @@ folly::Future<bool> MyServiceWrapper::future_hasDataById(
 ) {
   folly::Promise<bool> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise),
 id    ]() mutable {
         call_cy_MyService_hasDataById(
             this->if_object,
+            ctx,
             std::move(promise),
             id        );
     });
@@ -76,13 +82,15 @@ folly::Future<std::unique_ptr<std::string>> MyServiceWrapper::future_getDataById
 ) {
   folly::Promise<std::unique_ptr<std::string>> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise),
 id    ]() mutable {
         call_cy_MyService_getDataById(
             this->if_object,
+            ctx,
             std::move(promise),
             id        );
     });
@@ -96,14 +104,16 @@ folly::Future<folly::Unit> MyServiceWrapper::future_putDataById(
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise),
 id,
 data = std::move(data)    ]() mutable {
         call_cy_MyService_putDataById(
             this->if_object,
+            ctx,
             std::move(promise),
             id,
             std::move(data)        );
@@ -118,14 +128,16 @@ folly::Future<folly::Unit> MyServiceWrapper::future_lobDataById(
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise),
 id,
 data = std::move(data)    ]() mutable {
         call_cy_MyService_lobDataById(
             this->if_object,
+            ctx,
             std::move(promise),
             id,
             std::move(data)        );
@@ -153,12 +165,14 @@ MyServiceFastWrapper::~MyServiceFastWrapper() {
 folly::Future<folly::Unit> MyServiceFastWrapper::future_ping() {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise)    ]() mutable {
         call_cy_MyServiceFast_ping(
             this->if_object,
+            ctx,
             std::move(promise)        );
     });
 
@@ -168,12 +182,14 @@ folly::Future<folly::Unit> MyServiceFastWrapper::future_ping() {
 folly::Future<std::unique_ptr<std::string>> MyServiceFastWrapper::future_getRandomData() {
   folly::Promise<std::unique_ptr<std::string>> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise)    ]() mutable {
         call_cy_MyServiceFast_getRandomData(
             this->if_object,
+            ctx,
             std::move(promise)        );
     });
 
@@ -185,13 +201,15 @@ folly::Future<bool> MyServiceFastWrapper::future_hasDataById(
 ) {
   folly::Promise<bool> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise),
 id    ]() mutable {
         call_cy_MyServiceFast_hasDataById(
             this->if_object,
+            ctx,
             std::move(promise),
             id        );
     });
@@ -204,13 +222,15 @@ folly::Future<std::unique_ptr<std::string>> MyServiceFastWrapper::future_getData
 ) {
   folly::Promise<std::unique_ptr<std::string>> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise),
 id    ]() mutable {
         call_cy_MyServiceFast_getDataById(
             this->if_object,
+            ctx,
             std::move(promise),
             id        );
     });
@@ -224,14 +244,16 @@ folly::Future<folly::Unit> MyServiceFastWrapper::future_putDataById(
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise),
 id,
 data = std::move(data)    ]() mutable {
         call_cy_MyServiceFast_putDataById(
             this->if_object,
+            ctx,
             std::move(promise),
             id,
             std::move(data)        );
@@ -246,14 +268,16 @@ folly::Future<folly::Unit> MyServiceFastWrapper::future_lobDataById(
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise),
 id,
 data = std::move(data)    ]() mutable {
         call_cy_MyServiceFast_lobDataById(
             this->if_object,
+            ctx,
             std::move(promise),
             id,
             std::move(data)        );
@@ -297,12 +321,14 @@ MyServicePrioParentWrapper::~MyServicePrioParentWrapper() {
 folly::Future<folly::Unit> MyServicePrioParentWrapper::future_ping() {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise)    ]() mutable {
         call_cy_MyServicePrioParent_ping(
             this->if_object,
+            ctx,
             std::move(promise)        );
     });
 
@@ -312,12 +338,14 @@ folly::Future<folly::Unit> MyServicePrioParentWrapper::future_ping() {
 folly::Future<folly::Unit> MyServicePrioParentWrapper::future_pong() {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise)    ]() mutable {
         call_cy_MyServicePrioParent_pong(
             this->if_object,
+            ctx,
             std::move(promise)        );
     });
 
@@ -338,12 +366,14 @@ MyServicePrioChildWrapper::MyServicePrioChildWrapper(PyObject *obj, folly::Execu
 folly::Future<folly::Unit> MyServicePrioChildWrapper::future_pang() {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise)    ]() mutable {
         call_cy_MyServicePrioChild_pang(
             this->if_object,
+            ctx,
             std::move(promise)        );
     });
 

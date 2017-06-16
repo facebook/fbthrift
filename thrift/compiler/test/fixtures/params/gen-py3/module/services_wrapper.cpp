@@ -27,13 +27,15 @@ folly::Future<folly::Unit> NestedContainersWrapper::future_mapList(
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise),
 foo = std::move(foo)    ]() mutable {
         call_cy_NestedContainers_mapList(
             this->if_object,
+            ctx,
             std::move(promise),
             std::move(foo)        );
     });
@@ -46,13 +48,15 @@ folly::Future<folly::Unit> NestedContainersWrapper::future_mapSet(
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise),
 foo = std::move(foo)    ]() mutable {
         call_cy_NestedContainers_mapSet(
             this->if_object,
+            ctx,
             std::move(promise),
             std::move(foo)        );
     });
@@ -65,13 +69,15 @@ folly::Future<folly::Unit> NestedContainersWrapper::future_listMap(
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise),
 foo = std::move(foo)    ]() mutable {
         call_cy_NestedContainers_listMap(
             this->if_object,
+            ctx,
             std::move(promise),
             std::move(foo)        );
     });
@@ -84,13 +90,15 @@ folly::Future<folly::Unit> NestedContainersWrapper::future_listSet(
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise),
 foo = std::move(foo)    ]() mutable {
         call_cy_NestedContainers_listSet(
             this->if_object,
+            ctx,
             std::move(promise),
             std::move(foo)        );
     });
@@ -103,13 +111,15 @@ folly::Future<folly::Unit> NestedContainersWrapper::future_turtles(
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise),
 foo = std::move(foo)    ]() mutable {
         call_cy_NestedContainers_turtles(
             this->if_object,
+            ctx,
             std::move(promise),
             std::move(foo)        );
     });

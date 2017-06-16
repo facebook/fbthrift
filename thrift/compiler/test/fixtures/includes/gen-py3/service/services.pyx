@@ -16,7 +16,8 @@ from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
 from thrift.py3.exceptions cimport cTApplicationException
-from thrift.py3.server cimport ServiceInterface
+from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
+from thrift.py3.server import RequestContext
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -55,85 +56,6 @@ cdef class Promise_void:
         inst.cPromise = move(cPromise)
         return inst
 
-cdef api void call_cy_MyService_query(
-    object self,
-    cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[module.types.cMyStruct] s,
-    unique_ptr[includes.types.cIncluded] i
-):  
-    promise = Promise_void.create(move(cPromise))
-    arg_s = module.types.MyStruct.create(shared_ptr[module.types.cMyStruct](s.release()))
-    arg_i = includes.types.Included.create(shared_ptr[includes.types.cIncluded](i.release()))
-    asyncio.get_event_loop().create_task(
-        MyService_query_coro(
-            self,
-            promise,
-            arg_s,
-            arg_i
-        )
-    )
-
-async def MyService_query_coro(
-    object self,
-    Promise_void promise,
-    s,
-    i
-):
-    try:
-      result = await self.query(
-          s,
-          i)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler query:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(c_unit)
-
-cdef api void call_cy_MyService_has_arg_docs(
-    object self,
-    cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[module.types.cMyStruct] s,
-    unique_ptr[includes.types.cIncluded] i
-):  
-    promise = Promise_void.create(move(cPromise))
-    arg_s = module.types.MyStruct.create(shared_ptr[module.types.cMyStruct](s.release()))
-    arg_i = includes.types.Included.create(shared_ptr[includes.types.cIncluded](i.release()))
-    asyncio.get_event_loop().create_task(
-        MyService_has_arg_docs_coro(
-            self,
-            promise,
-            arg_s,
-            arg_i
-        )
-    )
-
-async def MyService_has_arg_docs_coro(
-    object self,
-    Promise_void promise,
-    s,
-    i
-):
-    try:
-      result = await self.has_arg_docs(
-          s,
-          i)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler has_arg_docs:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(c_unit)
-
-
 cdef class MyServiceInterface(
     ServiceInterface
 ):
@@ -156,4 +78,110 @@ cdef class MyServiceInterface(
             i):
         raise NotImplementedError("async def has_arg_docs is not implemented")
 
+
+
+
+cdef api void call_cy_MyService_query(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise,
+    unique_ptr[module.types.cMyStruct] s,
+    unique_ptr[includes.types.cIncluded] i
+):  
+    cdef MyServiceInterface iface
+    iface = self
+    promise = Promise_void.create(move(cPromise))
+    arg_s = module.types.MyStruct.create(shared_ptr[module.types.cMyStruct](s.release()))
+    arg_i = includes.types.Included.create(shared_ptr[includes.types.cIncluded](i.release()))
+    context = None
+    if iface._pass_context_query:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        MyService_query_coro(
+            self,
+            context,
+            promise,
+            arg_s,
+            arg_i
+        )
+    )
+
+async def MyService_query_coro(
+    object self,
+    object ctx,
+    Promise_void promise,
+    s,
+    i
+):
+    try:
+        if ctx is not None:
+            result = await self.query(ctx, 
+                      s,
+                      i)
+        else:
+            result = await self.query(
+                      s,
+                      i)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler query:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+cdef api void call_cy_MyService_has_arg_docs(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise,
+    unique_ptr[module.types.cMyStruct] s,
+    unique_ptr[includes.types.cIncluded] i
+):  
+    cdef MyServiceInterface iface
+    iface = self
+    promise = Promise_void.create(move(cPromise))
+    arg_s = module.types.MyStruct.create(shared_ptr[module.types.cMyStruct](s.release()))
+    arg_i = includes.types.Included.create(shared_ptr[includes.types.cIncluded](i.release()))
+    context = None
+    if iface._pass_context_has_arg_docs:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        MyService_has_arg_docs_coro(
+            self,
+            context,
+            promise,
+            arg_s,
+            arg_i
+        )
+    )
+
+async def MyService_has_arg_docs_coro(
+    object self,
+    object ctx,
+    Promise_void promise,
+    s,
+    i
+):
+    try:
+        if ctx is not None:
+            result = await self.has_arg_docs(ctx, 
+                      s,
+                      i)
+        else:
+            result = await self.has_arg_docs(
+                      s,
+                      i)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler has_arg_docs:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
 

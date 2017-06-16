@@ -16,7 +16,8 @@ from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
 from thrift.py3.exceptions cimport cTApplicationException
-from thrift.py3.server cimport ServiceInterface
+from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
+from thrift.py3.server import RequestContext
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -60,131 +61,6 @@ cdef class Promise_string:
         inst.cPromise = move(cPromise)
         return inst
 
-cdef api void call_cy_Raiser_doBland(
-    object self,
-    cFollyPromise[cFollyUnit] cPromise
-):  
-    promise = Promise_void.create(move(cPromise))
-    asyncio.get_event_loop().create_task(
-        Raiser_doBland_coro(
-            self,
-            promise
-        )
-    )
-
-async def Raiser_doBland_coro(
-    object self,
-    Promise_void promise
-):
-    try:
-      result = await self.doBland()
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler doBland:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(c_unit)
-
-cdef api void call_cy_Raiser_doRaise(
-    object self,
-    cFollyPromise[cFollyUnit] cPromise
-):  
-    promise = Promise_void.create(move(cPromise))
-    asyncio.get_event_loop().create_task(
-        Raiser_doRaise_coro(
-            self,
-            promise
-        )
-    )
-
-async def Raiser_doRaise_coro(
-    object self,
-    Promise_void promise
-):
-    try:
-      result = await self.doRaise()
-    except module.types.Banal as ex:
-        promise.cPromise.setException(deref((<module.types.Banal> ex).c_Banal.get()))
-    except module.types.Fiery as ex:
-        promise.cPromise.setException(deref((<module.types.Fiery> ex).c_Fiery.get()))
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler doRaise:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(c_unit)
-
-cdef api void call_cy_Raiser_get200(
-    object self,
-    cFollyPromise[unique_ptr[string]] cPromise
-):  
-    promise = Promise_string.create(move(cPromise))
-    asyncio.get_event_loop().create_task(
-        Raiser_get200_coro(
-            self,
-            promise
-        )
-    )
-
-async def Raiser_get200_coro(
-    object self,
-    Promise_string promise
-):
-    try:
-      result = await self.get200()
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler get200:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
-
-cdef api void call_cy_Raiser_get500(
-    object self,
-    cFollyPromise[unique_ptr[string]] cPromise
-):  
-    promise = Promise_string.create(move(cPromise))
-    asyncio.get_event_loop().create_task(
-        Raiser_get500_coro(
-            self,
-            promise
-        )
-    )
-
-async def Raiser_get500_coro(
-    object self,
-    Promise_string promise
-):
-    try:
-      result = await self.get500()
-    except module.types.Fiery as ex:
-        promise.cPromise.setException(deref((<module.types.Fiery> ex).c_Fiery.get()))
-    except module.types.Banal as ex:
-        promise.cPromise.setException(deref((<module.types.Banal> ex).c_Banal.get()))
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler get500:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
-
-
 cdef class RaiserInterface(
     ServiceInterface
 ):
@@ -213,4 +89,174 @@ cdef class RaiserInterface(
             self):
         raise NotImplementedError("async def get500 is not implemented")
 
+
+
+
+cdef api void call_cy_Raiser_doBland(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise
+):  
+    cdef RaiserInterface iface
+    iface = self
+    promise = Promise_void.create(move(cPromise))
+    context = None
+    if iface._pass_context_doBland:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        Raiser_doBland_coro(
+            self,
+            context,
+            promise
+        )
+    )
+
+async def Raiser_doBland_coro(
+    object self,
+    object ctx,
+    Promise_void promise
+):
+    try:
+        if ctx is not None:
+            result = await self.doBland(ctx, )
+        else:
+            result = await self.doBland()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler doBland:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+cdef api void call_cy_Raiser_doRaise(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise
+):  
+    cdef RaiserInterface iface
+    iface = self
+    promise = Promise_void.create(move(cPromise))
+    context = None
+    if iface._pass_context_doRaise:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        Raiser_doRaise_coro(
+            self,
+            context,
+            promise
+        )
+    )
+
+async def Raiser_doRaise_coro(
+    object self,
+    object ctx,
+    Promise_void promise
+):
+    try:
+        if ctx is not None:
+            result = await self.doRaise(ctx, )
+        else:
+            result = await self.doRaise()
+    except module.types.Banal as ex:
+        promise.cPromise.setException(deref((<module.types.Banal> ex).c_Banal.get()))
+    except module.types.Fiery as ex:
+        promise.cPromise.setException(deref((<module.types.Fiery> ex).c_Fiery.get()))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler doRaise:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+cdef api void call_cy_Raiser_get200(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[string]] cPromise
+):  
+    cdef RaiserInterface iface
+    iface = self
+    promise = Promise_string.create(move(cPromise))
+    context = None
+    if iface._pass_context_get200:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        Raiser_get200_coro(
+            self,
+            context,
+            promise
+        )
+    )
+
+async def Raiser_get200_coro(
+    object self,
+    object ctx,
+    Promise_string promise
+):
+    try:
+        if ctx is not None:
+            result = await self.get200(ctx, )
+        else:
+            result = await self.get200()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler get200:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
+
+cdef api void call_cy_Raiser_get500(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[string]] cPromise
+):  
+    cdef RaiserInterface iface
+    iface = self
+    promise = Promise_string.create(move(cPromise))
+    context = None
+    if iface._pass_context_get500:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        Raiser_get500_coro(
+            self,
+            context,
+            promise
+        )
+    )
+
+async def Raiser_get500_coro(
+    object self,
+    object ctx,
+    Promise_string promise
+):
+    try:
+        if ctx is not None:
+            result = await self.get500(ctx, )
+        else:
+            result = await self.get500()
+    except module.types.Fiery as ex:
+        promise.cPromise.setException(deref((<module.types.Fiery> ex).c_Fiery.get()))
+    except module.types.Banal as ex:
+        promise.cPromise.setException(deref((<module.types.Banal> ex).c_Banal.get()))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler get500:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 

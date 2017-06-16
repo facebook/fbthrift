@@ -9,5 +9,7 @@ from thrift.py3.server cimport ServiceInterface
 
 
 cdef class MyServiceInterface(ServiceInterface):
+    cdef public bint _pass_context_query
+    cdef public bint _pass_context_has_arg_docs
     pass
 

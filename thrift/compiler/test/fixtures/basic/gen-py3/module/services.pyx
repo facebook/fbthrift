@@ -16,7 +16,8 @@ from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
 from thrift.py3.exceptions cimport cTApplicationException
-from thrift.py3.server cimport ServiceInterface
+from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
+from thrift.py3.server import RequestContext
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -74,502 +75,6 @@ cdef class Promise_bool:
         inst = <Promise_bool>Promise_bool.__new__(Promise_bool)
         inst.cPromise = move(cPromise)
         return inst
-
-cdef api void call_cy_MyService_ping(
-    object self,
-    cFollyPromise[cFollyUnit] cPromise
-):  
-    promise = Promise_void.create(move(cPromise))
-    asyncio.get_event_loop().create_task(
-        MyService_ping_coro(
-            self,
-            promise
-        )
-    )
-
-async def MyService_ping_coro(
-    object self,
-    Promise_void promise
-):
-    try:
-      result = await self.ping()
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler ping:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(c_unit)
-
-cdef api void call_cy_MyService_getRandomData(
-    object self,
-    cFollyPromise[unique_ptr[string]] cPromise
-):  
-    promise = Promise_string.create(move(cPromise))
-    asyncio.get_event_loop().create_task(
-        MyService_getRandomData_coro(
-            self,
-            promise
-        )
-    )
-
-async def MyService_getRandomData_coro(
-    object self,
-    Promise_string promise
-):
-    try:
-      result = await self.getRandomData()
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler getRandomData:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
-
-cdef api void call_cy_MyService_hasDataById(
-    object self,
-    cFollyPromise[cbool] cPromise,
-    int64_t id
-):  
-    promise = Promise_bool.create(move(cPromise))
-    arg_id = id
-    asyncio.get_event_loop().create_task(
-        MyService_hasDataById_coro(
-            self,
-            promise,
-            arg_id
-        )
-    )
-
-async def MyService_hasDataById_coro(
-    object self,
-    Promise_bool promise,
-    id
-):
-    try:
-      result = await self.hasDataById(
-          id)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler hasDataById:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<cbool> result)
-
-cdef api void call_cy_MyService_getDataById(
-    object self,
-    cFollyPromise[unique_ptr[string]] cPromise,
-    int64_t id
-):  
-    promise = Promise_string.create(move(cPromise))
-    arg_id = id
-    asyncio.get_event_loop().create_task(
-        MyService_getDataById_coro(
-            self,
-            promise,
-            arg_id
-        )
-    )
-
-async def MyService_getDataById_coro(
-    object self,
-    Promise_string promise,
-    id
-):
-    try:
-      result = await self.getDataById(
-          id)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler getDataById:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
-
-cdef api void call_cy_MyService_putDataById(
-    object self,
-    cFollyPromise[cFollyUnit] cPromise,
-    int64_t id,
-    unique_ptr[string] data
-):  
-    promise = Promise_void.create(move(cPromise))
-    arg_id = id
-    arg_data = (deref(data.get())).decode('UTF-8')
-    asyncio.get_event_loop().create_task(
-        MyService_putDataById_coro(
-            self,
-            promise,
-            arg_id,
-            arg_data
-        )
-    )
-
-async def MyService_putDataById_coro(
-    object self,
-    Promise_void promise,
-    id,
-    data
-):
-    try:
-      result = await self.putDataById(
-          id,
-          data)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler putDataById:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(c_unit)
-
-cdef api void call_cy_MyService_lobDataById(
-    object self,
-    cFollyPromise[cFollyUnit] cPromise,
-    int64_t id,
-    unique_ptr[string] data
-):  
-    promise = Promise_void.create(move(cPromise))
-    arg_id = id
-    arg_data = (deref(data.get())).decode('UTF-8')
-    asyncio.get_event_loop().create_task(
-        MyService_lobDataById_coro(
-            self,
-            promise,
-            arg_id,
-            arg_data
-        )
-    )
-
-async def MyService_lobDataById_coro(
-    object self,
-    Promise_void promise,
-    id,
-    data
-):
-    try:
-      result = await self.lobDataById(
-          id,
-          data)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler lobDataById:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(c_unit)
-
-cdef api void call_cy_MyServiceFast_ping(
-    object self,
-    cFollyPromise[cFollyUnit] cPromise
-):  
-    promise = Promise_void.create(move(cPromise))
-    asyncio.get_event_loop().create_task(
-        MyServiceFast_ping_coro(
-            self,
-            promise
-        )
-    )
-
-async def MyServiceFast_ping_coro(
-    object self,
-    Promise_void promise
-):
-    try:
-      result = await self.ping()
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler ping:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(c_unit)
-
-cdef api void call_cy_MyServiceFast_getRandomData(
-    object self,
-    cFollyPromise[unique_ptr[string]] cPromise
-):  
-    promise = Promise_string.create(move(cPromise))
-    asyncio.get_event_loop().create_task(
-        MyServiceFast_getRandomData_coro(
-            self,
-            promise
-        )
-    )
-
-async def MyServiceFast_getRandomData_coro(
-    object self,
-    Promise_string promise
-):
-    try:
-      result = await self.getRandomData()
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler getRandomData:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
-
-cdef api void call_cy_MyServiceFast_hasDataById(
-    object self,
-    cFollyPromise[cbool] cPromise,
-    int64_t id
-):  
-    promise = Promise_bool.create(move(cPromise))
-    arg_id = id
-    asyncio.get_event_loop().create_task(
-        MyServiceFast_hasDataById_coro(
-            self,
-            promise,
-            arg_id
-        )
-    )
-
-async def MyServiceFast_hasDataById_coro(
-    object self,
-    Promise_bool promise,
-    id
-):
-    try:
-      result = await self.hasDataById(
-          id)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler hasDataById:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(<cbool> result)
-
-cdef api void call_cy_MyServiceFast_getDataById(
-    object self,
-    cFollyPromise[unique_ptr[string]] cPromise,
-    int64_t id
-):  
-    promise = Promise_string.create(move(cPromise))
-    arg_id = id
-    asyncio.get_event_loop().create_task(
-        MyServiceFast_getDataById_coro(
-            self,
-            promise,
-            arg_id
-        )
-    )
-
-async def MyServiceFast_getDataById_coro(
-    object self,
-    Promise_string promise,
-    id
-):
-    try:
-      result = await self.getDataById(
-          id)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler getDataById:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
-
-cdef api void call_cy_MyServiceFast_putDataById(
-    object self,
-    cFollyPromise[cFollyUnit] cPromise,
-    int64_t id,
-    unique_ptr[string] data
-):  
-    promise = Promise_void.create(move(cPromise))
-    arg_id = id
-    arg_data = (deref(data.get())).decode('UTF-8')
-    asyncio.get_event_loop().create_task(
-        MyServiceFast_putDataById_coro(
-            self,
-            promise,
-            arg_id,
-            arg_data
-        )
-    )
-
-async def MyServiceFast_putDataById_coro(
-    object self,
-    Promise_void promise,
-    id,
-    data
-):
-    try:
-      result = await self.putDataById(
-          id,
-          data)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler putDataById:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(c_unit)
-
-cdef api void call_cy_MyServiceFast_lobDataById(
-    object self,
-    cFollyPromise[cFollyUnit] cPromise,
-    int64_t id,
-    unique_ptr[string] data
-):  
-    promise = Promise_void.create(move(cPromise))
-    arg_id = id
-    arg_data = (deref(data.get())).decode('UTF-8')
-    asyncio.get_event_loop().create_task(
-        MyServiceFast_lobDataById_coro(
-            self,
-            promise,
-            arg_id,
-            arg_data
-        )
-    )
-
-async def MyServiceFast_lobDataById_coro(
-    object self,
-    Promise_void promise,
-    id,
-    data
-):
-    try:
-      result = await self.lobDataById(
-          id,
-          data)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler lobDataById:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(c_unit)
-
-cdef api void call_cy_MyServicePrioParent_ping(
-    object self,
-    cFollyPromise[cFollyUnit] cPromise
-):  
-    promise = Promise_void.create(move(cPromise))
-    asyncio.get_event_loop().create_task(
-        MyServicePrioParent_ping_coro(
-            self,
-            promise
-        )
-    )
-
-async def MyServicePrioParent_ping_coro(
-    object self,
-    Promise_void promise
-):
-    try:
-      result = await self.ping()
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler ping:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(c_unit)
-
-cdef api void call_cy_MyServicePrioParent_pong(
-    object self,
-    cFollyPromise[cFollyUnit] cPromise
-):  
-    promise = Promise_void.create(move(cPromise))
-    asyncio.get_event_loop().create_task(
-        MyServicePrioParent_pong_coro(
-            self,
-            promise
-        )
-    )
-
-async def MyServicePrioParent_pong_coro(
-    object self,
-    Promise_void promise
-):
-    try:
-      result = await self.pong()
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler pong:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(c_unit)
-
-cdef api void call_cy_MyServicePrioChild_pang(
-    object self,
-    cFollyPromise[cFollyUnit] cPromise
-):  
-    promise = Promise_void.create(move(cPromise))
-    asyncio.get_event_loop().create_task(
-        MyServicePrioChild_pang_coro(
-            self,
-            promise
-        )
-    )
-
-async def MyServicePrioChild_pang_coro(
-    object self,
-    Promise_void promise
-):
-    try:
-      result = await self.pang()
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler pang:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(c_unit)
-
 
 cdef class MyServiceInterface(
     ServiceInterface
@@ -702,4 +207,678 @@ cdef class MyServicePrioChildInterface(
             self):
         raise NotImplementedError("async def pang is not implemented")
 
+
+
+
+cdef api void call_cy_MyService_ping(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise
+):  
+    cdef MyServiceInterface iface
+    iface = self
+    promise = Promise_void.create(move(cPromise))
+    context = None
+    if iface._pass_context_ping:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        MyService_ping_coro(
+            self,
+            context,
+            promise
+        )
+    )
+
+async def MyService_ping_coro(
+    object self,
+    object ctx,
+    Promise_void promise
+):
+    try:
+        if ctx is not None:
+            result = await self.ping(ctx, )
+        else:
+            result = await self.ping()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler ping:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+cdef api void call_cy_MyService_getRandomData(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[string]] cPromise
+):  
+    cdef MyServiceInterface iface
+    iface = self
+    promise = Promise_string.create(move(cPromise))
+    context = None
+    if iface._pass_context_getRandomData:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        MyService_getRandomData_coro(
+            self,
+            context,
+            promise
+        )
+    )
+
+async def MyService_getRandomData_coro(
+    object self,
+    object ctx,
+    Promise_string promise
+):
+    try:
+        if ctx is not None:
+            result = await self.getRandomData(ctx, )
+        else:
+            result = await self.getRandomData()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler getRandomData:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
+
+cdef api void call_cy_MyService_hasDataById(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cbool] cPromise,
+    int64_t id
+):  
+    cdef MyServiceInterface iface
+    iface = self
+    promise = Promise_bool.create(move(cPromise))
+    arg_id = id
+    context = None
+    if iface._pass_context_hasDataById:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        MyService_hasDataById_coro(
+            self,
+            context,
+            promise,
+            arg_id
+        )
+    )
+
+async def MyService_hasDataById_coro(
+    object self,
+    object ctx,
+    Promise_bool promise,
+    id
+):
+    try:
+        if ctx is not None:
+            result = await self.hasDataById(ctx, 
+                      id)
+        else:
+            result = await self.hasDataById(
+                      id)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler hasDataById:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<cbool> result)
+
+cdef api void call_cy_MyService_getDataById(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[string]] cPromise,
+    int64_t id
+):  
+    cdef MyServiceInterface iface
+    iface = self
+    promise = Promise_string.create(move(cPromise))
+    arg_id = id
+    context = None
+    if iface._pass_context_getDataById:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        MyService_getDataById_coro(
+            self,
+            context,
+            promise,
+            arg_id
+        )
+    )
+
+async def MyService_getDataById_coro(
+    object self,
+    object ctx,
+    Promise_string promise,
+    id
+):
+    try:
+        if ctx is not None:
+            result = await self.getDataById(ctx, 
+                      id)
+        else:
+            result = await self.getDataById(
+                      id)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler getDataById:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
+
+cdef api void call_cy_MyService_putDataById(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise,
+    int64_t id,
+    unique_ptr[string] data
+):  
+    cdef MyServiceInterface iface
+    iface = self
+    promise = Promise_void.create(move(cPromise))
+    arg_id = id
+    arg_data = (deref(data.get())).decode('UTF-8')
+    context = None
+    if iface._pass_context_putDataById:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        MyService_putDataById_coro(
+            self,
+            context,
+            promise,
+            arg_id,
+            arg_data
+        )
+    )
+
+async def MyService_putDataById_coro(
+    object self,
+    object ctx,
+    Promise_void promise,
+    id,
+    data
+):
+    try:
+        if ctx is not None:
+            result = await self.putDataById(ctx, 
+                      id,
+                      data)
+        else:
+            result = await self.putDataById(
+                      id,
+                      data)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler putDataById:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+cdef api void call_cy_MyService_lobDataById(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise,
+    int64_t id,
+    unique_ptr[string] data
+):  
+    cdef MyServiceInterface iface
+    iface = self
+    promise = Promise_void.create(move(cPromise))
+    arg_id = id
+    arg_data = (deref(data.get())).decode('UTF-8')
+    context = None
+    if iface._pass_context_lobDataById:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        MyService_lobDataById_coro(
+            self,
+            context,
+            promise,
+            arg_id,
+            arg_data
+        )
+    )
+
+async def MyService_lobDataById_coro(
+    object self,
+    object ctx,
+    Promise_void promise,
+    id,
+    data
+):
+    try:
+        if ctx is not None:
+            result = await self.lobDataById(ctx, 
+                      id,
+                      data)
+        else:
+            result = await self.lobDataById(
+                      id,
+                      data)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler lobDataById:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+cdef api void call_cy_MyServiceFast_ping(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise
+):  
+    cdef MyServiceFastInterface iface
+    iface = self
+    promise = Promise_void.create(move(cPromise))
+    context = None
+    if iface._pass_context_ping:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        MyServiceFast_ping_coro(
+            self,
+            context,
+            promise
+        )
+    )
+
+async def MyServiceFast_ping_coro(
+    object self,
+    object ctx,
+    Promise_void promise
+):
+    try:
+        if ctx is not None:
+            result = await self.ping(ctx, )
+        else:
+            result = await self.ping()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler ping:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+cdef api void call_cy_MyServiceFast_getRandomData(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[string]] cPromise
+):  
+    cdef MyServiceFastInterface iface
+    iface = self
+    promise = Promise_string.create(move(cPromise))
+    context = None
+    if iface._pass_context_getRandomData:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        MyServiceFast_getRandomData_coro(
+            self,
+            context,
+            promise
+        )
+    )
+
+async def MyServiceFast_getRandomData_coro(
+    object self,
+    object ctx,
+    Promise_string promise
+):
+    try:
+        if ctx is not None:
+            result = await self.getRandomData(ctx, )
+        else:
+            result = await self.getRandomData()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler getRandomData:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
+
+cdef api void call_cy_MyServiceFast_hasDataById(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cbool] cPromise,
+    int64_t id
+):  
+    cdef MyServiceFastInterface iface
+    iface = self
+    promise = Promise_bool.create(move(cPromise))
+    arg_id = id
+    context = None
+    if iface._pass_context_hasDataById:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        MyServiceFast_hasDataById_coro(
+            self,
+            context,
+            promise,
+            arg_id
+        )
+    )
+
+async def MyServiceFast_hasDataById_coro(
+    object self,
+    object ctx,
+    Promise_bool promise,
+    id
+):
+    try:
+        if ctx is not None:
+            result = await self.hasDataById(ctx, 
+                      id)
+        else:
+            result = await self.hasDataById(
+                      id)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler hasDataById:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(<cbool> result)
+
+cdef api void call_cy_MyServiceFast_getDataById(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[unique_ptr[string]] cPromise,
+    int64_t id
+):  
+    cdef MyServiceFastInterface iface
+    iface = self
+    promise = Promise_string.create(move(cPromise))
+    arg_id = id
+    context = None
+    if iface._pass_context_getDataById:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        MyServiceFast_getDataById_coro(
+            self,
+            context,
+            promise,
+            arg_id
+        )
+    )
+
+async def MyServiceFast_getDataById_coro(
+    object self,
+    object ctx,
+    Promise_string promise,
+    id
+):
+    try:
+        if ctx is not None:
+            result = await self.getDataById(ctx, 
+                      id)
+        else:
+            result = await self.getDataById(
+                      id)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler getDataById:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
+
+cdef api void call_cy_MyServiceFast_putDataById(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise,
+    int64_t id,
+    unique_ptr[string] data
+):  
+    cdef MyServiceFastInterface iface
+    iface = self
+    promise = Promise_void.create(move(cPromise))
+    arg_id = id
+    arg_data = (deref(data.get())).decode('UTF-8')
+    context = None
+    if iface._pass_context_putDataById:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        MyServiceFast_putDataById_coro(
+            self,
+            context,
+            promise,
+            arg_id,
+            arg_data
+        )
+    )
+
+async def MyServiceFast_putDataById_coro(
+    object self,
+    object ctx,
+    Promise_void promise,
+    id,
+    data
+):
+    try:
+        if ctx is not None:
+            result = await self.putDataById(ctx, 
+                      id,
+                      data)
+        else:
+            result = await self.putDataById(
+                      id,
+                      data)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler putDataById:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+cdef api void call_cy_MyServiceFast_lobDataById(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise,
+    int64_t id,
+    unique_ptr[string] data
+):  
+    cdef MyServiceFastInterface iface
+    iface = self
+    promise = Promise_void.create(move(cPromise))
+    arg_id = id
+    arg_data = (deref(data.get())).decode('UTF-8')
+    context = None
+    if iface._pass_context_lobDataById:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        MyServiceFast_lobDataById_coro(
+            self,
+            context,
+            promise,
+            arg_id,
+            arg_data
+        )
+    )
+
+async def MyServiceFast_lobDataById_coro(
+    object self,
+    object ctx,
+    Promise_void promise,
+    id,
+    data
+):
+    try:
+        if ctx is not None:
+            result = await self.lobDataById(ctx, 
+                      id,
+                      data)
+        else:
+            result = await self.lobDataById(
+                      id,
+                      data)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler lobDataById:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+cdef api void call_cy_MyServicePrioParent_ping(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise
+):  
+    cdef MyServicePrioParentInterface iface
+    iface = self
+    promise = Promise_void.create(move(cPromise))
+    context = None
+    if iface._pass_context_ping:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        MyServicePrioParent_ping_coro(
+            self,
+            context,
+            promise
+        )
+    )
+
+async def MyServicePrioParent_ping_coro(
+    object self,
+    object ctx,
+    Promise_void promise
+):
+    try:
+        if ctx is not None:
+            result = await self.ping(ctx, )
+        else:
+            result = await self.ping()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler ping:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+cdef api void call_cy_MyServicePrioParent_pong(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise
+):  
+    cdef MyServicePrioParentInterface iface
+    iface = self
+    promise = Promise_void.create(move(cPromise))
+    context = None
+    if iface._pass_context_pong:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        MyServicePrioParent_pong_coro(
+            self,
+            context,
+            promise
+        )
+    )
+
+async def MyServicePrioParent_pong_coro(
+    object self,
+    object ctx,
+    Promise_void promise
+):
+    try:
+        if ctx is not None:
+            result = await self.pong(ctx, )
+        else:
+            result = await self.pong()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler pong:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+cdef api void call_cy_MyServicePrioChild_pang(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise
+):  
+    cdef MyServicePrioChildInterface iface
+    iface = self
+    promise = Promise_void.create(move(cPromise))
+    context = None
+    if iface._pass_context_pang:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        MyServicePrioChild_pang_coro(
+            self,
+            context,
+            promise
+        )
+    )
+
+async def MyServicePrioChild_pang_coro(
+    object self,
+    object ctx,
+    Promise_void promise
+):
+    try:
+        if ctx is not None:
+            result = await self.pang(ctx, )
+        else:
+            result = await self.pang()
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler pang:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
 

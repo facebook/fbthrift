@@ -25,12 +25,14 @@ MyRootWrapper::~MyRootWrapper() {
 folly::Future<folly::Unit> MyRootWrapper::future_do_root() {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise)    ]() mutable {
         call_cy_MyRoot_do_root(
             this->if_object,
+            ctx,
             std::move(promise)        );
     });
 
@@ -51,12 +53,14 @@ MyNodeWrapper::MyNodeWrapper(PyObject *obj, folly::Executor* exc)
 folly::Future<folly::Unit> MyNodeWrapper::future_do_mid() {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise)    ]() mutable {
         call_cy_MyNode_do_mid(
             this->if_object,
+            ctx,
             std::move(promise)        );
     });
 
@@ -77,12 +81,14 @@ MyLeafWrapper::MyLeafWrapper(PyObject *obj, folly::Executor* exc)
 folly::Future<folly::Unit> MyLeafWrapper::future_do_leaf() {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise)    ]() mutable {
         call_cy_MyLeaf_do_leaf(
             this->if_object,
+            ctx,
             std::move(promise)        );
     });
 

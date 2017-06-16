@@ -34,17 +34,24 @@ sets the converted value on that promise.
 {{#service:functions}}
 cdef api void call_cy_{{service:name}}_{{function:name}}(
     object self,
+    Cpp2RequestContext* ctx,
     cFollyPromise[{{#function:returnType}}{{> CythonFieldType}}{{/function:returnType}}]{{!
     }} cPromise{{#function:args}},
     {{#field:type}}{{> CythonFieldType}}{{/field:type}} {{field:name}}{{/function:args}}
 ):  {{! Gets called from a python Executor }}
+    cdef {{service:name}}Interface iface
+    iface = self
     promise = Promise_{{#function:returnType}}{{type:flat_name}}{{/function:returnType}}.create(move(cPromise))
     {{#function:args}}
     arg_{{field:name}} = {{#field:type}}{{> CythonCppToPython}}{{/field:type}}
     {{/function:args}}
+    context = None
+    if iface._pass_context_{{function:name}}:
+        context = RequestContext.create(ctx)
     asyncio.get_event_loop().create_task(
         {{service:name}}_{{function:name}}_coro(
             self,
+            context,
             promise{{#function:args}},
             arg_{{field:name}}{{/function:args}}
         )
@@ -52,18 +59,23 @@ cdef api void call_cy_{{service:name}}_{{function:name}}(
 
 async def {{service:name}}_{{function:name}}_coro(
     object self,
+    object ctx,
     Promise_{{#function:returnType}}{{type:flat_name}}{{/function:returnType}}{{!
     }} promise{{#function:args}},
     {{field:name}}{{/function:args}}
 ):
     try:
-      result = await self.{{function:name}}({{#function:args}}
-          {{field:name}}{{^last?}},{{/last?}}{{/function:args}})
-      {{#function:returnType}}
-      {{#type:container?}}
-      result = {{> common/ModulePath}}.{{type:flat_name}}(result)
-      {{/type:container?}}
-      {{/function:returnType}}
+        if ctx is not None:
+            result = await self.{{function:name}}(ctx, {{#function:args}}
+                      {{field:name}}{{^last?}},{{/last?}}{{/function:args}})
+        else:
+            result = await self.{{function:name}}({{#function:args}}
+                      {{field:name}}{{^last?}},{{/last?}}{{/function:args}})
+        {{#function:returnType}}
+        {{#type:container?}}
+        result = {{> common/ModulePath}}.{{type:flat_name}}(result)
+        {{/type:container?}}
+        {{/function:returnType}}
     {{#function:exceptions}}
     {{#field:type}}
     except {{> common/ModulePath}}.{{type:name}} as ex:

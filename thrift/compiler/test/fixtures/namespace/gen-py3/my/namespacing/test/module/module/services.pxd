@@ -9,5 +9,6 @@ from thrift.py3.server cimport ServiceInterface
 
 
 cdef class TestServiceInterface(ServiceInterface):
+    cdef public bint _pass_context_init
     pass
 

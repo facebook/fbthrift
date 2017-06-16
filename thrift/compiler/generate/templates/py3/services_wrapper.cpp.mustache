@@ -64,14 +64,16 @@ folly::Future<{{#function:returnType}}{{> CppFieldType}}{{/function:returnType}}
 {{/last?}}{{/function:args}}) {
   {{#function:returnType}}folly::Promise<{{>CppFieldType}}>{{/function:returnType}} promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise){{#function:args}},
      {{#field:type}}{{> CppFieldCapture}}{{/field:type}}{{/function:args}}
     ]() mutable {
         call_cy_{{service:name}}_{{function:name}}(
             this->if_object,
+            ctx,
             std::move(promise){{#function:args}}{{#field:type}},
             {{> CppPassField}}
 {{/field:type}}{{/function:args}}

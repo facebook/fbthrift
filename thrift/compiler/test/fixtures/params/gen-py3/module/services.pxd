@@ -9,5 +9,10 @@ from thrift.py3.server cimport ServiceInterface
 
 
 cdef class NestedContainersInterface(ServiceInterface):
+    cdef public bint _pass_context_mapList
+    cdef public bint _pass_context_mapSet
+    cdef public bint _pass_context_listMap
+    cdef public bint _pass_context_listSet
+    cdef public bint _pass_context_turtles
     pass
 

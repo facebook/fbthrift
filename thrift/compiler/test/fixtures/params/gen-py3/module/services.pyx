@@ -16,7 +16,8 @@ from libcpp.map cimport map as cmap
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
 from thrift.py3.exceptions cimport cTApplicationException
-from thrift.py3.server cimport ServiceInterface
+from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
+from thrift.py3.server import RequestContext
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -50,177 +51,6 @@ cdef class Promise_void:
         inst = <Promise_void>Promise_void.__new__(Promise_void)
         inst.cPromise = move(cPromise)
         return inst
-
-cdef api void call_cy_NestedContainers_mapList(
-    object self,
-    cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[cmap[int32_t,vector[int32_t]]] foo
-):  
-    promise = Promise_void.create(move(cPromise))
-    arg_foo = module.types.Map__i32_List__i32.create(module.types.move(foo))
-    asyncio.get_event_loop().create_task(
-        NestedContainers_mapList_coro(
-            self,
-            promise,
-            arg_foo
-        )
-    )
-
-async def NestedContainers_mapList_coro(
-    object self,
-    Promise_void promise,
-    foo
-):
-    try:
-      result = await self.mapList(
-          foo)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler mapList:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(c_unit)
-
-cdef api void call_cy_NestedContainers_mapSet(
-    object self,
-    cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[cmap[int32_t,cset[int32_t]]] foo
-):  
-    promise = Promise_void.create(move(cPromise))
-    arg_foo = module.types.Map__i32_Set__i32.create(module.types.move(foo))
-    asyncio.get_event_loop().create_task(
-        NestedContainers_mapSet_coro(
-            self,
-            promise,
-            arg_foo
-        )
-    )
-
-async def NestedContainers_mapSet_coro(
-    object self,
-    Promise_void promise,
-    foo
-):
-    try:
-      result = await self.mapSet(
-          foo)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler mapSet:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(c_unit)
-
-cdef api void call_cy_NestedContainers_listMap(
-    object self,
-    cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[vector[cmap[int32_t,int32_t]]] foo
-):  
-    promise = Promise_void.create(move(cPromise))
-    arg_foo = module.types.List__Map__i32_i32.create(module.types.move(foo))
-    asyncio.get_event_loop().create_task(
-        NestedContainers_listMap_coro(
-            self,
-            promise,
-            arg_foo
-        )
-    )
-
-async def NestedContainers_listMap_coro(
-    object self,
-    Promise_void promise,
-    foo
-):
-    try:
-      result = await self.listMap(
-          foo)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler listMap:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(c_unit)
-
-cdef api void call_cy_NestedContainers_listSet(
-    object self,
-    cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[vector[cset[int32_t]]] foo
-):  
-    promise = Promise_void.create(move(cPromise))
-    arg_foo = module.types.List__Set__i32.create(module.types.move(foo))
-    asyncio.get_event_loop().create_task(
-        NestedContainers_listSet_coro(
-            self,
-            promise,
-            arg_foo
-        )
-    )
-
-async def NestedContainers_listSet_coro(
-    object self,
-    Promise_void promise,
-    foo
-):
-    try:
-      result = await self.listSet(
-          foo)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler listSet:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(c_unit)
-
-cdef api void call_cy_NestedContainers_turtles(
-    object self,
-    cFollyPromise[cFollyUnit] cPromise,
-    unique_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]] foo
-):  
-    promise = Promise_void.create(move(cPromise))
-    arg_foo = module.types.List__List__Map__i32_Map__i32_Set__i32.create(module.types.move(foo))
-    asyncio.get_event_loop().create_task(
-        NestedContainers_turtles_coro(
-            self,
-            promise,
-            arg_foo
-        )
-    )
-
-async def NestedContainers_turtles_coro(
-    object self,
-    Promise_void promise,
-    foo
-):
-    try:
-      result = await self.turtles(
-          foo)
-    except Exception as ex:
-        print(
-            "Unexpected error in service handler turtles:",
-            file=sys.stderr)
-        traceback.print_exc()
-        promise.cPromise.setException(cTApplicationException(
-            repr(ex).encode('UTF-8')
-        ))
-    else:
-        promise.cPromise.setValue(c_unit)
-
 
 cdef class NestedContainersInterface(
     ServiceInterface
@@ -260,4 +90,236 @@ cdef class NestedContainersInterface(
             foo):
         raise NotImplementedError("async def turtles is not implemented")
 
+
+
+
+cdef api void call_cy_NestedContainers_mapList(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise,
+    unique_ptr[cmap[int32_t,vector[int32_t]]] foo
+):  
+    cdef NestedContainersInterface iface
+    iface = self
+    promise = Promise_void.create(move(cPromise))
+    arg_foo = module.types.Map__i32_List__i32.create(module.types.move(foo))
+    context = None
+    if iface._pass_context_mapList:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        NestedContainers_mapList_coro(
+            self,
+            context,
+            promise,
+            arg_foo
+        )
+    )
+
+async def NestedContainers_mapList_coro(
+    object self,
+    object ctx,
+    Promise_void promise,
+    foo
+):
+    try:
+        if ctx is not None:
+            result = await self.mapList(ctx, 
+                      foo)
+        else:
+            result = await self.mapList(
+                      foo)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler mapList:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+cdef api void call_cy_NestedContainers_mapSet(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise,
+    unique_ptr[cmap[int32_t,cset[int32_t]]] foo
+):  
+    cdef NestedContainersInterface iface
+    iface = self
+    promise = Promise_void.create(move(cPromise))
+    arg_foo = module.types.Map__i32_Set__i32.create(module.types.move(foo))
+    context = None
+    if iface._pass_context_mapSet:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        NestedContainers_mapSet_coro(
+            self,
+            context,
+            promise,
+            arg_foo
+        )
+    )
+
+async def NestedContainers_mapSet_coro(
+    object self,
+    object ctx,
+    Promise_void promise,
+    foo
+):
+    try:
+        if ctx is not None:
+            result = await self.mapSet(ctx, 
+                      foo)
+        else:
+            result = await self.mapSet(
+                      foo)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler mapSet:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+cdef api void call_cy_NestedContainers_listMap(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise,
+    unique_ptr[vector[cmap[int32_t,int32_t]]] foo
+):  
+    cdef NestedContainersInterface iface
+    iface = self
+    promise = Promise_void.create(move(cPromise))
+    arg_foo = module.types.List__Map__i32_i32.create(module.types.move(foo))
+    context = None
+    if iface._pass_context_listMap:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        NestedContainers_listMap_coro(
+            self,
+            context,
+            promise,
+            arg_foo
+        )
+    )
+
+async def NestedContainers_listMap_coro(
+    object self,
+    object ctx,
+    Promise_void promise,
+    foo
+):
+    try:
+        if ctx is not None:
+            result = await self.listMap(ctx, 
+                      foo)
+        else:
+            result = await self.listMap(
+                      foo)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler listMap:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+cdef api void call_cy_NestedContainers_listSet(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise,
+    unique_ptr[vector[cset[int32_t]]] foo
+):  
+    cdef NestedContainersInterface iface
+    iface = self
+    promise = Promise_void.create(move(cPromise))
+    arg_foo = module.types.List__Set__i32.create(module.types.move(foo))
+    context = None
+    if iface._pass_context_listSet:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        NestedContainers_listSet_coro(
+            self,
+            context,
+            promise,
+            arg_foo
+        )
+    )
+
+async def NestedContainers_listSet_coro(
+    object self,
+    object ctx,
+    Promise_void promise,
+    foo
+):
+    try:
+        if ctx is not None:
+            result = await self.listSet(ctx, 
+                      foo)
+        else:
+            result = await self.listSet(
+                      foo)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler listSet:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+cdef api void call_cy_NestedContainers_turtles(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise,
+    unique_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]] foo
+):  
+    cdef NestedContainersInterface iface
+    iface = self
+    promise = Promise_void.create(move(cPromise))
+    arg_foo = module.types.List__List__Map__i32_Map__i32_Set__i32.create(module.types.move(foo))
+    context = None
+    if iface._pass_context_turtles:
+        context = RequestContext.create(ctx)
+    asyncio.get_event_loop().create_task(
+        NestedContainers_turtles_coro(
+            self,
+            context,
+            promise,
+            arg_foo
+        )
+    )
+
+async def NestedContainers_turtles_coro(
+    object self,
+    object ctx,
+    Promise_void promise,
+    foo
+):
+    try:
+        if ctx is not None:
+            result = await self.turtles(ctx, 
+                      foo)
+        else:
+            result = await self.turtles(
+                      foo)
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler turtles:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
 

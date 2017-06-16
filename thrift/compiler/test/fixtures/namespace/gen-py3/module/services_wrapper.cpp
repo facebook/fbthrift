@@ -27,13 +27,15 @@ folly::Future<int64_t> TestServiceWrapper::future_init(
 ) {
   folly::Promise<int64_t> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise),
 int1    ]() mutable {
         call_cy_TestService_init(
             this->if_object,
+            ctx,
             std::move(promise),
             int1        );
     });

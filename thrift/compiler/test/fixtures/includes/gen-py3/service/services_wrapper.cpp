@@ -28,14 +28,16 @@ folly::Future<folly::Unit> MyServiceWrapper::future_query(
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise),
 s = std::move(s),
 i = std::move(i)    ]() mutable {
         call_cy_MyService_query(
             this->if_object,
+            ctx,
             std::move(promise),
             std::move(s),
             std::move(i)        );
@@ -50,14 +52,16 @@ folly::Future<folly::Unit> MyServiceWrapper::future_has_arg_docs(
 ) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise),
 s = std::move(s),
 i = std::move(i)    ]() mutable {
         call_cy_MyService_has_arg_docs(
             this->if_object,
+            ctx,
             std::move(promise),
             std::move(s),
             std::move(i)        );

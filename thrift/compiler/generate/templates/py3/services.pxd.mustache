@@ -41,6 +41,9 @@ cdef class {{service:name}}Interface({{#service:extends}}{{!
     }}{{service:programName}}.services.{{service:name}}Interface{{!
   }}{{/service:extends}}{{!
   }}{{^service:extends?}}ServiceInterface{{/service:extends?}}):
+    {{#service:functions}}
+    cdef public bint _pass_context_{{function:name}}
+    {{/service:functions}}
     pass
 
 {{/program:services}}

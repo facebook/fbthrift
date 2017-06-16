@@ -22,13 +22,15 @@ folly::Future<bool> ExtendTestServiceWrapper::future_check(
 ) {
   folly::Promise<bool> promise;
   auto future = promise.getFuture();
+  auto ctx = getConnectionContext();
   folly::via(
     this->executor,
-    [this,
+    [this, ctx,
      promise = std::move(promise),
 struct1 = std::move(struct1)    ]() mutable {
         call_cy_ExtendTestService_check(
             this->if_object,
+            ctx,
             std::move(promise),
             std::move(struct1)        );
     });
