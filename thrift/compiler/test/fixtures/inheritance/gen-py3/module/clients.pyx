@@ -41,14 +41,12 @@ cdef void MyRoot_do_root_callback(
     PyObject* future
 ):
     cdef object pyfuture = <object> future
-    cdef cFollyUnit citem
     if result.hasException():
         try:
             result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        citem = c_unit;
         pyfuture.set_result(None)
 
 cdef void MyNode_do_mid_callback(
@@ -56,14 +54,12 @@ cdef void MyNode_do_mid_callback(
     PyObject* future
 ):
     cdef object pyfuture = <object> future
-    cdef cFollyUnit citem
     if result.hasException():
         try:
             result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        citem = c_unit;
         pyfuture.set_result(None)
 
 cdef void MyLeaf_do_leaf_callback(
@@ -71,14 +67,12 @@ cdef void MyLeaf_do_leaf_callback(
     PyObject* future
 ):
     cdef object pyfuture = <object> future
-    cdef cFollyUnit citem
     if result.hasException():
         try:
             result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        citem = c_unit;
         pyfuture.set_result(None)
 
 

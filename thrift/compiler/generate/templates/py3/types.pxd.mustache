@@ -76,7 +76,7 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
         c{{struct:name}}(const c{{struct:name}}&) except +
         bint operator==(c{{struct:name}}&)
     {{#struct:fields}}
-        {{#field:type}}{{> CythonCppWrapperFieldType}}{{/field:type}} {{field:name}}
+        {{#field:type}}{{> types/CythonCppType}}{{/field:type}} {{field:name}}
     {{/struct:fields}}
         c{{struct:name}}__isset __isset
 
@@ -97,9 +97,9 @@ cdef class {{struct:name}}{{#struct:exception?}}(Error){{/struct:exception?}}{{^
     {{!Memoized Python wrappers of struct fields, created lazily}}
     {{#struct:fields}}
     {{#field:type}}{{#type:struct}}
-    cdef {{> types/WrapperFieldType}} __{{field:name}}
+    cdef {{> types/CythonPythonType}} __{{field:name}}
     {{/type:struct}}{{#type:container?}}
-    cdef {{> types/WrapperFieldType}} __{{field:name}}
+    cdef {{> types/CythonPythonType}} __{{field:name}}
     {{/type:container?}}{{/field:type}}
     {{/struct:fields}}
 
@@ -113,14 +113,14 @@ cdef class {{type:flat_name}}:
     cdef object __hash
     cdef object __weakref__
 {{#type:listElemType}}
-    cdef shared_ptr[vector[{{> CythonCppWrapperFieldType}}]] _vector
+    cdef shared_ptr[vector[{{> types/CythonCppType}}]] _vector
     @staticmethod
-    cdef create(shared_ptr[vector[{{> CythonCppWrapperFieldType}}]])
+    cdef create(shared_ptr[vector[{{> types/CythonCppType}}]])
 {{/type:listElemType}}
 {{#type:setElemType}}
-    cdef shared_ptr[cset[{{> CythonCppWrapperFieldType}}]] _set
+    cdef shared_ptr[cset[{{> types/CythonCppType}}]] _set
     @staticmethod
-    cdef create(shared_ptr[cset[{{> CythonCppWrapperFieldType}}]])
+    cdef create(shared_ptr[cset[{{> types/CythonCppType}}]])
 {{/type:setElemType}}
 {{#type:map?}}
     cdef shared_ptr[cmap[{{> CythonCppWrapperMapKeyValue}}]] _map
@@ -130,10 +130,10 @@ cdef class {{type:flat_name}}:
 
 {{/program:containerTypes}}{{#program:moveContainerTypes}}
 {{#first?}}cdef extern from "<utility>" namespace "std" nogil:{{/first?}}
-{{#type:listElemType}}    cdef shared_ptr[vector[{{> CythonCppWrapperFieldType}}]] {{!
-}}move(unique_ptr[vector[{{> CythonCppWrapperFieldType}}]]){{/type:listElemType}}{{!
-}}{{#type:setElemType}}    cdef shared_ptr[cset[{{> CythonCppWrapperFieldType}}]] {{!
-}}move(unique_ptr[cset[{{> CythonCppWrapperFieldType}}]]){{/type:setElemType}}{{!
+{{#type:listElemType}}    cdef shared_ptr[vector[{{> types/CythonCppType}}]] {{!
+}}move(unique_ptr[vector[{{> types/CythonCppType}}]]){{/type:listElemType}}{{!
+}}{{#type:setElemType}}    cdef shared_ptr[cset[{{> types/CythonCppType}}]] {{!
+}}move(unique_ptr[cset[{{> types/CythonCppType}}]]){{/type:setElemType}}{{!
 }}{{#type:map?}}    cdef shared_ptr[cmap[{{> CythonCppWrapperMapKeyValue}}]] {{!
 }}move(unique_ptr[cmap[{{> CythonCppWrapperMapKeyValue}}]]){{/type:map?}}{{/program:moveContainerTypes}}
 
@@ -141,6 +141,6 @@ cdef class {{type:flat_name}}:
 {{#first?}}cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_constants.h"{{!
 }} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":{{/first?}}
     {{#constant:type}}
-    cdef {{^type:string?}}{{> ConstantCythonFieldType}}{{/type:string?}}{{#type:string?}}const char*{{/type:string?}} {{!
+    cdef {{^type:string?}}{{> types/CythonCppType}}{{/type:string?}}{{#type:string?}}const char*{{/type:string?}} {{!
     }}c{{constant:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{program:name}}_constants::{{constant:name}}"{{!
     }}{{#type:struct?}}(){{/type:struct?}}{{#type:string?}}(){{/type:string?}}{{#type:binary?}}(){{/type:binary?}}{{#type:container?}}(){{/type:container?}}{{#type:enum?}}(){{/type:enum?}}{{/constant:type}}{{/program:constants}}

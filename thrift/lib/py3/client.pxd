@@ -24,7 +24,7 @@ cdef extern from "thrift/lib/py3/client.h" namespace "thrift::py3":
 
     cdef shared_ptr[U] makeClientWrapper[T, U](cRequestChannel_ptr channel)
 
-    cdef unique_ptr[T] py3_get_exception[T](
+    cdef shared_ptr[T] py3_get_exception[T](
         const cFollyExceptionWrapper& excepton)
 
 cdef class Client:

@@ -61,14 +61,15 @@ folly::Future<RequestChannel_ptr> createThriftChannel(
     });
 }
 
-
+// The only place this function is used it needs a shared_ptr, so may as
+// well just return one instead of a unique_ptr
 template <class T>
-std::unique_ptr<T> py3_get_exception(
+std::shared_ptr<T> py3_get_exception(
     const folly::exception_wrapper& exception) {
   try {
     exception.throw_exception();
   } catch (const T& typed_exception) {
-    return std::make_unique<T>(typed_exception);
+    return std::make_shared<T>(typed_exception);
   }
 }
 

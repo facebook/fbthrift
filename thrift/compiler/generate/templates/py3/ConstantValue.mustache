@@ -60,17 +60,17 @@ file.
 {{/type:struct}}
 {{#type:list?}}
 {{constant:name}} = {{type:flat_name}}.create(make_shared[vector[{{!
-    }}{{#type:listElemType}}{{> ContainerCythonFieldTypeConditionally}}{{!
+    }}{{#type:listElemType}}{{> types/CythonCppType}}{{!
     }}{{/type:listElemType}}]](c{{constant:name}}()))
 {{/type:list?}}
 {{#type:set?}}
 {{constant:name}} = {{type:flat_name}}.create(make_shared[cset[{{!
-    }}{{#type:setElemType}}{{> ContainerCythonFieldTypeConditionally}}{{!
+    }}{{#type:setElemType}}{{> types/CythonCppType}}{{!
     }}{{/type:setElemType}}]](c{{constant:name}}()))
 {{/type:set?}}
 {{#type:map?}}
 {{constant:name}} = {{type:flat_name}}.create({{!
-    }}make_shared[cmap[{{> CythonMapKeyValueConditionally}}{{!
+    }}make_shared[cmap[{{> CythonMapKeyValue}}{{!
     }}]](c{{constant:name}}()))
 {{/type:map?}}
 {{#type:enum}}

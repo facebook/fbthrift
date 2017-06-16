@@ -37,10 +37,10 @@ keys (conventionally used for sets, lists, and map values).
   }}).c_{{struct:name}}){{/type:struct}}{{!
 }}{{#type:list?}}deref({{> common/ModulePath}}.{{type:flat_name}}(arg_{{field:name}})._vector.get()){{/type:list?}}{{!
 }}{{#type:set?}}cset[{{!
-  }}{{#type:setElemType}}{{> ContainerCythonFieldType}}{{/type:setElemType}}{{!
+  }}{{#type:setElemType}}{{> types/CythonCppType}}{{/type:setElemType}}{{!
   }}](deref({{> common/ModulePath}}.{{type:flat_name}}(arg_{{field:name}})._set.get())){{/type:set?}}{{!
 }}{{#type:map?}}cmap[{{!
-  }}{{#type:keyType}}{{> ContainerCythonFieldType}}{{/type:keyType}},{{!
-  }}{{#type:valueType}}{{> ContainerCythonFieldType}}{{/type:valueType}}{{!
+  }}{{#type:keyType}}{{> types/CythonCppType}}{{/type:keyType}},{{!
+  }}{{#type:valueType}}{{> types/CythonCppType}}{{/type:valueType}}{{!
   }}](deref({{> common/ModulePath}}.{{type:flat_name}}(arg_{{field:name}})._map.get())){{/type:map?}}{{!
 }}{{#type:enum}}{{> common/ModulePath}}.{{enum:name}}_to_cpp(arg_{{field:name}}){{/type:enum}}

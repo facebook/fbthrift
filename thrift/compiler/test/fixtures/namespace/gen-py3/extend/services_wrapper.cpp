@@ -30,7 +30,7 @@ struct1 = std::move(struct1)    ]() mutable {
         call_cy_ExtendTestService_check(
             this->if_object,
             std::move(promise),
-    std::move(struct1)        );
+            std::move(struct1)        );
     });
 
   return future;

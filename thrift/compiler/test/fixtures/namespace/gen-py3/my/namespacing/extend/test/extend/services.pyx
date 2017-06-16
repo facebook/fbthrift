@@ -61,7 +61,7 @@ cdef api void call_cy_ExtendTestService_check(
     unique_ptr[hsmodule.types.cHsFoo] struct1
 ):  
     promise = Promise_bool.create(move(cPromise))
-    arg_struct1 = hsmodule.types.HsFoo.create(hsmodule.types.move(struct1))
+    arg_struct1 = hsmodule.types.HsFoo.create(shared_ptr[hsmodule.types.cHsFoo](struct1.release()))
     asyncio.get_event_loop().create_task(
         ExtendTestService_check_coro(
             self,

@@ -39,15 +39,13 @@ cdef void HsTestService_init_callback(
     PyObject* future
 ):
     cdef object pyfuture = <object> future
-    cdef int64_t citem
     if result.hasException():
         try:
             result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        citem = result.value();
-        pyfuture.set_result(citem)
+        pyfuture.set_result(result.value())
 
 
 cdef class HsTestService(thrift.py3.client.Client):

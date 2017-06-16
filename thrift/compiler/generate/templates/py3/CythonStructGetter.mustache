@@ -47,9 +47,9 @@ if they have been previously retrieved.
   }}return self.c_{{struct:name}}.get().{{field:name}}{{!
 }}{{/type:binary?}}{{!
 }}{{#type:struct?}}{{!
-}}cdef shared_ptr[{{> ContainerCythonFieldTypeConditionally}}] item
+}}cdef shared_ptr[{{> types/CythonCppType}}] item
 if self.__{{field:name}} is None:
-    item = make_shared[{{> ContainerCythonFieldTypeConditionally}}](
+    item = make_shared[{{> types/CythonCppType}}](
         deref(self.c_{{struct:name}}).{{field:name}})
     self.__{{field:name}} = {{#type:struct}}{{!
       }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
@@ -57,9 +57,9 @@ if self.__{{field:name}} is None:
 return self.__{{field:name}}
 {{/type:struct?}}{{!
 }}{{#type:container?}}{{!
-}}cdef shared_ptr[{{> ContainerCythonFieldTypeConditionally}}] item
+}}cdef shared_ptr[{{> types/CythonCppType}}] item
 if self.__{{field:name}} is None:
-    item = make_shared[{{> ContainerCythonFieldTypeConditionally}}](
+    item = make_shared[{{> types/CythonCppType}}](
         deref(self.c_{{struct:name}}).{{field:name}})
     self.__{{field:name}} = {{!
       }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!

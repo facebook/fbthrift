@@ -20,7 +20,7 @@ Included from CythonClients.pyx, this file defines the core adapter between the
 C++ async future calls and Python asyncio futures. The C++ classes defined in
 ClientsWrapper.h and ClientsWrapper.cpp take these callbacks and call into them
 from the IO thread. The callbacks examine the result, extract the exception if
-one occurred, and then schedulde setting the result on the future to be safely
+one occurred, and then schedule setting the result on the future to be safely
 executed in the asyncio loop.
 
 }}
@@ -28,20 +28,16 @@ executed in the asyncio loop.
 {{#program:services}}
 {{#service:functions}}
 cdef void {{service:name}}_{{function:name}}_callback(
-    cFollyTry[{{#function:returnType}}{{> CythonValueFieldType}}{{/function:returnType}}]&& result,
+    cFollyTry[{{#function:returnType}}{{> types/CythonCppType}}{{/function:returnType}}]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
-    cdef {{#function:returnType}}{{> CythonFieldType}}{{/function:returnType}} citem
-    {{#function:exceptions}}
-    cdef unique_ptr[{{#field:type}}{{> common/ModulePath}}.c{{#type:struct}}{{struct:name}}{{/type:struct}}{{/field:type}}] ex_{{field:name}}
-    {{/function:exceptions}}
     if {{#function:exceptions}}{{!
-    }}result.hasException[{{#field:type}}{{> common/ModulePath}}.c{{#type:struct}}{{struct:name}}{{/type:struct}}{{/field:type}}]():
-        ex_{{field:name}} = py3_get_exception[{{#field:type}}{{#type:struct}}{{> common/ModulePath}}.c{{struct:name}}{{/type:struct}}{{/field:type}}](result.exception())
-        pyfuture.set_exception({{!
-        }}{{#field:type}}{{> common/ModulePath}}{{#type:struct}}.{{type:name}}.create({{!
-  }}{{> common/ModulePath}}.move(ex_{{field:name}})){{/type:struct}}{{/field:type}})
+    }}result.hasException[{{#field:type}}{{> types/CythonCppType}}{{/field:type}}]():
+        {{#field:type}}pyfuture.set_exception({{!
+        }}{{> types/CythonPythonType}}.create({{!
+        }}py3_get_exception[{{> types/CythonCppType}}](result.exception()){{!
+        }})){{/field:type}}
     elif {{/function:exceptions}}{{!
     }}result.hasException():
         try:
@@ -49,8 +45,7 @@ cdef void {{service:name}}_{{function:name}}_callback(
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        citem = {{#function:returnType}}{{> CythonCppValueToReturnValue}}{{/function:returnType}};
-        pyfuture.set_result({{#function:returnType}}{{> CythonCppItemToPython}}{{/function:returnType}})
+        pyfuture.set_result({{#function:returnType}}{{> clients/CythonCppValueToReturnValue}}{{/function:returnType}})
 
 {{/service:functions}}
 {{/program:services}}

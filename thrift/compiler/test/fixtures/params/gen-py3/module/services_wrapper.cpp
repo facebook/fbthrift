@@ -35,7 +35,7 @@ foo = std::move(foo)    ]() mutable {
         call_cy_NestedContainers_mapList(
             this->if_object,
             std::move(promise),
-    std::move(foo)        );
+            std::move(foo)        );
     });
 
   return future;
@@ -54,7 +54,7 @@ foo = std::move(foo)    ]() mutable {
         call_cy_NestedContainers_mapSet(
             this->if_object,
             std::move(promise),
-    std::move(foo)        );
+            std::move(foo)        );
     });
 
   return future;
@@ -73,7 +73,7 @@ foo = std::move(foo)    ]() mutable {
         call_cy_NestedContainers_listMap(
             this->if_object,
             std::move(promise),
-    std::move(foo)        );
+            std::move(foo)        );
     });
 
   return future;
@@ -92,7 +92,7 @@ foo = std::move(foo)    ]() mutable {
         call_cy_NestedContainers_listSet(
             this->if_object,
             std::move(promise),
-    std::move(foo)        );
+            std::move(foo)        );
     });
 
   return future;
@@ -111,7 +111,7 @@ foo = std::move(foo)    ]() mutable {
         call_cy_NestedContainers_turtles(
             this->if_object,
             std::move(promise),
-    std::move(foo)        );
+            std::move(foo)        );
     });
 
   return future;

@@ -151,43 +151,81 @@ void t_mstch_py3_generator::generate_init_files(const t_program& program) {
 }
 
 void t_mstch_py3_generator::generate_structs(const t_program& program) {
+  mstch::map extra_context{
+      {"program:typeContext?", true},
+  };
+
   auto path = package_to_path(program.get_namespace("py3"));
   auto name = program.get_name();
   std::string module = "types";
-  render_to_file(program, "types.pxd", path / name / (module + ".pxd"));
-  render_to_file(program, "types.pyx", path / name / (module + ".pyx"));
+  render_to_file(
+      program, extra_context, "types.pxd", path / name / (module + ".pxd"));
+  render_to_file(
+      program, extra_context, "types.pyx", path / name / (module + ".pyx"));
 }
 
 void t_mstch_py3_generator::generate_services(const t_program& program) {
+  mstch::map extra_context{
+      {"program:typeContext?", false},
+  };
+
   auto path = package_to_path(program.get_namespace("py3"));
 
   auto name = program.get_name();
-  render_to_file(program, "services.pxd", path / name / "services.pxd");
-  render_to_file(program, "services.pyx", path / name / "services.pyx");
+  render_to_file(
+      program, extra_context, "services.pxd", path / name / "services.pxd");
+  render_to_file(
+      program, extra_context, "services.pyx", path / name / "services.pyx");
 
   std::string basename = "services_wrapper";
   auto cpp_path = boost::filesystem::path{name};
-  render_to_file(program, "services_wrapper.h", cpp_path / (basename + ".h"));
   render_to_file(
-      program, "services_wrapper.cpp", cpp_path / (basename + ".cpp"));
+      program,
+      extra_context,
+      "services_wrapper.h",
+      cpp_path / (basename + ".h"));
   render_to_file(
-      program, "services_wrapper.pxd", path / name / (basename + ".pxd"));
+      program,
+      extra_context,
+      "services_wrapper.cpp",
+      cpp_path / (basename + ".cpp"));
+  render_to_file(
+      program,
+      extra_context,
+      "services_wrapper.pxd",
+      path / name / (basename + ".pxd"));
 }
 
 void t_mstch_py3_generator::generate_clients(const t_program& program) {
+  mstch::map extra_context{
+      {"program:typeContext?", false},
+  };
+
   auto path = package_to_path(program.get_namespace("py3"));
 
   auto name = program.get_name();
-  render_to_file(program, "clients.pxd", path / name / "clients.pxd");
-  render_to_file(program, "clients.pyx", path / name / "clients.pyx");
+  render_to_file(
+      program, extra_context, "clients.pxd", path / name / "clients.pxd");
+  render_to_file(
+      program, extra_context, "clients.pyx", path / name / "clients.pyx");
 
   std::string basename = "clients_wrapper";
   auto cpp_path = boost::filesystem::path{name};
-  render_to_file(program, "clients_wrapper.h", cpp_path / (basename + ".h"));
   render_to_file(
-      program, "clients_wrapper.cpp", cpp_path / (basename + ".cpp"));
+      program,
+      extra_context,
+      "clients_wrapper.h",
+      cpp_path / (basename + ".h"));
   render_to_file(
-      program, "clients_wrapper.pxd", path / name / (basename + ".pxd"));
+      program,
+      extra_context,
+      "clients_wrapper.cpp",
+      cpp_path / (basename + ".cpp"));
+  render_to_file(
+      program,
+      extra_context,
+      "clients_wrapper.pxd",
+      path / name / (basename + ".pxd"));
 }
 
 boost::filesystem::path t_mstch_py3_generator::package_to_path(

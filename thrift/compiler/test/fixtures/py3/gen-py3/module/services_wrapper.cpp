@@ -51,7 +51,7 @@ num    ]() mutable {
         call_cy_SimpleService_add_five(
             this->if_object,
             std::move(promise),
-    num        );
+            num        );
     });
 
   return future;
@@ -87,8 +87,8 @@ second = std::move(second)    ]() mutable {
         call_cy_SimpleService_concat(
             this->if_object,
             std::move(promise),
-    std::move(first),
-    std::move(second)        );
+            std::move(first),
+            std::move(second)        );
     });
 
   return future;
@@ -107,7 +107,7 @@ simple_struct = std::move(simple_struct)    ]() mutable {
         call_cy_SimpleService_get_value(
             this->if_object,
             std::move(promise),
-    std::move(simple_struct)        );
+            std::move(simple_struct)        );
     });
 
   return future;
@@ -126,7 +126,7 @@ input    ]() mutable {
         call_cy_SimpleService_negate(
             this->if_object,
             std::move(promise),
-    input        );
+            input        );
     });
 
   return future;
@@ -145,7 +145,7 @@ input    ]() mutable {
         call_cy_SimpleService_tiny(
             this->if_object,
             std::move(promise),
-    input        );
+            input        );
     });
 
   return future;
@@ -164,7 +164,7 @@ input    ]() mutable {
         call_cy_SimpleService_small(
             this->if_object,
             std::move(promise),
-    input        );
+            input        );
     });
 
   return future;
@@ -183,7 +183,7 @@ input    ]() mutable {
         call_cy_SimpleService_big(
             this->if_object,
             std::move(promise),
-    input        );
+            input        );
     });
 
   return future;
@@ -202,7 +202,7 @@ input    ]() mutable {
         call_cy_SimpleService_two(
             this->if_object,
             std::move(promise),
-    input        );
+            input        );
     });
 
   return future;
@@ -251,7 +251,7 @@ numbers = std::move(numbers)    ]() mutable {
         call_cy_SimpleService_sum_i16_list(
             this->if_object,
             std::move(promise),
-    std::move(numbers)        );
+            std::move(numbers)        );
     });
 
   return future;
@@ -270,7 +270,7 @@ numbers = std::move(numbers)    ]() mutable {
         call_cy_SimpleService_sum_i32_list(
             this->if_object,
             std::move(promise),
-    std::move(numbers)        );
+            std::move(numbers)        );
     });
 
   return future;
@@ -289,7 +289,7 @@ numbers = std::move(numbers)    ]() mutable {
         call_cy_SimpleService_sum_i64_list(
             this->if_object,
             std::move(promise),
-    std::move(numbers)        );
+            std::move(numbers)        );
     });
 
   return future;
@@ -308,7 +308,7 @@ words = std::move(words)    ]() mutable {
         call_cy_SimpleService_concat_many(
             this->if_object,
             std::move(promise),
-    std::move(words)        );
+            std::move(words)        );
     });
 
   return future;
@@ -327,7 +327,7 @@ items = std::move(items)    ]() mutable {
         call_cy_SimpleService_count_structs(
             this->if_object,
             std::move(promise),
-    std::move(items)        );
+            std::move(items)        );
     });
 
   return future;
@@ -346,7 +346,7 @@ numbers = std::move(numbers)    ]() mutable {
         call_cy_SimpleService_sum_set(
             this->if_object,
             std::move(promise),
-    std::move(numbers)        );
+            std::move(numbers)        );
     });
 
   return future;
@@ -367,8 +367,8 @@ word = std::move(word)    ]() mutable {
         call_cy_SimpleService_contains_word(
             this->if_object,
             std::move(promise),
-    std::move(words),
-    std::move(word)        );
+            std::move(words),
+            std::move(word)        );
     });
 
   return future;
@@ -389,8 +389,8 @@ key = std::move(key)    ]() mutable {
         call_cy_SimpleService_get_map_value(
             this->if_object,
             std::move(promise),
-    std::move(words),
-    std::move(key)        );
+            std::move(words),
+            std::move(key)        );
     });
 
   return future;
@@ -409,7 +409,7 @@ items = std::move(items)    ]() mutable {
         call_cy_SimpleService_map_length(
             this->if_object,
             std::move(promise),
-    std::move(items)        );
+            std::move(items)        );
     });
 
   return future;
@@ -428,7 +428,7 @@ items = std::move(items)    ]() mutable {
         call_cy_SimpleService_sum_map_values(
             this->if_object,
             std::move(promise),
-    std::move(items)        );
+            std::move(items)        );
     });
 
   return future;
@@ -447,7 +447,7 @@ counter = std::move(counter)    ]() mutable {
         call_cy_SimpleService_complex_sum_i32(
             this->if_object,
             std::move(promise),
-    std::move(counter)        );
+            std::move(counter)        );
     });
 
   return future;
@@ -466,7 +466,7 @@ counter = std::move(counter)    ]() mutable {
         call_cy_SimpleService_repeat_name(
             this->if_object,
             std::move(promise),
-    std::move(counter)        );
+            std::move(counter)        );
     });
 
   return future;
@@ -500,7 +500,7 @@ n    ]() mutable {
         call_cy_SimpleService_fib(
             this->if_object,
             std::move(promise),
-    n        );
+            n        );
     });
 
   return future;
@@ -519,7 +519,7 @@ words = std::move(words)    ]() mutable {
         call_cy_SimpleService_unique_words(
             this->if_object,
             std::move(promise),
-    std::move(words)        );
+            std::move(words)        );
     });
 
   return future;
@@ -538,7 +538,7 @@ words = std::move(words)    ]() mutable {
         call_cy_SimpleService_words_count(
             this->if_object,
             std::move(promise),
-    std::move(words)        );
+            std::move(words)        );
     });
 
   return future;
@@ -557,7 +557,7 @@ in_enum    ]() mutable {
         call_cy_SimpleService_set_enum(
             this->if_object,
             std::move(promise),
-    in_enum        );
+            in_enum        );
     });
 
   return future;
@@ -578,8 +578,8 @@ num_items    ]() mutable {
         call_cy_SimpleService_list_of_lists(
             this->if_object,
             std::move(promise),
-    num_lists,
-    num_items        );
+            num_lists,
+            num_items        );
     });
 
   return future;
@@ -598,7 +598,7 @@ sentence = std::move(sentence)    ]() mutable {
         call_cy_SimpleService_word_character_frequency(
             this->if_object,
             std::move(promise),
-    std::move(sentence)        );
+            std::move(sentence)        );
     });
 
   return future;
@@ -617,7 +617,7 @@ some_words = std::move(some_words)    ]() mutable {
         call_cy_SimpleService_list_of_sets(
             this->if_object,
             std::move(promise),
-    std::move(some_words)        );
+            std::move(some_words)        );
     });
 
   return future;
@@ -636,7 +636,7 @@ struct_map = std::move(struct_map)    ]() mutable {
         call_cy_SimpleService_nested_map_argument(
             this->if_object,
             std::move(promise),
-    std::move(struct_map)        );
+            std::move(struct_map)        );
     });
 
   return future;
@@ -655,7 +655,7 @@ word_chars = std::move(word_chars)    ]() mutable {
         call_cy_SimpleService_make_sentence(
             this->if_object,
             std::move(promise),
-    std::move(word_chars)        );
+            std::move(word_chars)        );
     });
 
   return future;
@@ -674,7 +674,7 @@ sets = std::move(sets)    ]() mutable {
         call_cy_SimpleService_get_union(
             this->if_object,
             std::move(promise),
-    std::move(sets)        );
+            std::move(sets)        );
     });
 
   return future;
@@ -693,7 +693,7 @@ string_map = std::move(string_map)    ]() mutable {
         call_cy_SimpleService_get_keys(
             this->if_object,
             std::move(promise),
-    std::move(string_map)        );
+            std::move(string_map)        );
     });
 
   return future;
@@ -712,7 +712,7 @@ key    ]() mutable {
         call_cy_SimpleService_lookup_double(
             this->if_object,
             std::move(promise),
-    key        );
+            key        );
     });
 
   return future;
@@ -731,7 +731,7 @@ something = std::move(something)    ]() mutable {
         call_cy_SimpleService_retrieve_binary(
             this->if_object,
             std::move(promise),
-    std::move(something)        );
+            std::move(something)        );
     });
 
   return future;
@@ -750,7 +750,7 @@ binaries = std::move(binaries)    ]() mutable {
         call_cy_SimpleService_contain_binary(
             this->if_object,
             std::move(promise),
-    std::move(binaries)        );
+            std::move(binaries)        );
     });
 
   return future;
@@ -769,7 +769,7 @@ the_enum = std::move(the_enum)    ]() mutable {
         call_cy_SimpleService_contain_enum(
             this->if_object,
             std::move(promise),
-    std::move(the_enum)        );
+            std::move(the_enum)        );
     });
 
   return future;

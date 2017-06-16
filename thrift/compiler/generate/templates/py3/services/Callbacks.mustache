@@ -34,13 +34,13 @@ sets the converted value on that promise.
 {{#service:functions}}
 cdef api void call_cy_{{service:name}}_{{function:name}}(
     object self,
-    cFollyPromise[{{#function:returnType}}{{>CythonFieldType}}{{/function:returnType}}]{{!
+    cFollyPromise[{{#function:returnType}}{{> CythonFieldType}}{{/function:returnType}}]{{!
     }} cPromise{{#function:args}},
-    {{#field:type}}{{>CythonFieldType}}{{/field:type}} {{field:name}}{{/function:args}}
+    {{#field:type}}{{> CythonFieldType}}{{/field:type}} {{field:name}}{{/function:args}}
 ):  {{! Gets called from a python Executor }}
     promise = Promise_{{#function:returnType}}{{type:flat_name}}{{/function:returnType}}.create(move(cPromise))
     {{#function:args}}
-    arg_{{field:name}} = {{#field:type}}{{>CythonCppToPython}}{{/field:type}}
+    arg_{{field:name}} = {{#field:type}}{{> CythonCppToPython}}{{/field:type}}
     {{/function:args}}
     asyncio.get_event_loop().create_task(
         {{service:name}}_{{function:name}}_coro(

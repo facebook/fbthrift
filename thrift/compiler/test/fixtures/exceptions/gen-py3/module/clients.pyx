@@ -39,14 +39,12 @@ cdef void Raiser_doBland_callback(
     PyObject* future
 ):
     cdef object pyfuture = <object> future
-    cdef cFollyUnit citem
     if result.hasException():
         try:
             result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        citem = c_unit;
         pyfuture.set_result(None)
 
 cdef void Raiser_doRaise_callback(
@@ -54,22 +52,16 @@ cdef void Raiser_doRaise_callback(
     PyObject* future
 ):
     cdef object pyfuture = <object> future
-    cdef cFollyUnit citem
-    cdef unique_ptr[module.types.cBanal] ex_b
-    cdef unique_ptr[module.types.cFiery] ex_f
     if result.hasException[module.types.cBanal]():
-        ex_b = py3_get_exception[module.types.cBanal](result.exception())
-        pyfuture.set_exception(module.types.Banal.create(module.types.move(ex_b)))
+        pyfuture.set_exception(module.types.Banal.create(py3_get_exception[module.types.cBanal](result.exception())))
     elif result.hasException[module.types.cFiery]():
-        ex_f = py3_get_exception[module.types.cFiery](result.exception())
-        pyfuture.set_exception(module.types.Fiery.create(module.types.move(ex_f)))
+        pyfuture.set_exception(module.types.Fiery.create(py3_get_exception[module.types.cFiery](result.exception())))
     elif result.hasException():
         try:
             result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        citem = c_unit;
         pyfuture.set_result(None)
 
 cdef void Raiser_get200_callback(
@@ -77,38 +69,30 @@ cdef void Raiser_get200_callback(
     PyObject* future
 ):
     cdef object pyfuture = <object> future
-    cdef unique_ptr[string] citem
     if result.hasException():
         try:
             result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        citem = make_unique[string](result.value());
-        pyfuture.set_result((deref(citem.get())).decode('UTF-8'))
+        pyfuture.set_result(result.value().decode('UTF-8'))
 
 cdef void Raiser_get500_callback(
     cFollyTry[string]&& result,
     PyObject* future
 ):
     cdef object pyfuture = <object> future
-    cdef unique_ptr[string] citem
-    cdef unique_ptr[module.types.cFiery] ex_f
-    cdef unique_ptr[module.types.cBanal] ex_b
     if result.hasException[module.types.cFiery]():
-        ex_f = py3_get_exception[module.types.cFiery](result.exception())
-        pyfuture.set_exception(module.types.Fiery.create(module.types.move(ex_f)))
+        pyfuture.set_exception(module.types.Fiery.create(py3_get_exception[module.types.cFiery](result.exception())))
     elif result.hasException[module.types.cBanal]():
-        ex_b = py3_get_exception[module.types.cBanal](result.exception())
-        pyfuture.set_exception(module.types.Banal.create(module.types.move(ex_b)))
+        pyfuture.set_exception(module.types.Banal.create(py3_get_exception[module.types.cBanal](result.exception())))
     elif result.hasException():
         try:
             result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        citem = make_unique[string](result.value());
-        pyfuture.set_result((deref(citem.get())).decode('UTF-8'))
+        pyfuture.set_result(result.value().decode('UTF-8'))
 
 
 cdef class Raiser(thrift.py3.client.Client):

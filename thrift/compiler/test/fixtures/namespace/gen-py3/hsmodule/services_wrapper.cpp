@@ -35,7 +35,7 @@ int1    ]() mutable {
         call_cy_HsTestService_init(
             this->if_object,
             std::move(promise),
-    int1        );
+            int1        );
     });
 
   return future;

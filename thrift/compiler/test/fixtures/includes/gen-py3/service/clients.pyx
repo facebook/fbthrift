@@ -43,14 +43,12 @@ cdef void MyService_query_callback(
     PyObject* future
 ):
     cdef object pyfuture = <object> future
-    cdef cFollyUnit citem
     if result.hasException():
         try:
             result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        citem = c_unit;
         pyfuture.set_result(None)
 
 cdef void MyService_has_arg_docs_callback(
@@ -58,14 +56,12 @@ cdef void MyService_has_arg_docs_callback(
     PyObject* future
 ):
     cdef object pyfuture = <object> future
-    cdef cFollyUnit citem
     if result.hasException():
         try:
             result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        citem = c_unit;
         pyfuture.set_result(None)
 
 

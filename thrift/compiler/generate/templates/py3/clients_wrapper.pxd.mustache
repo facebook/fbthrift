@@ -70,8 +70,8 @@ cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/clients_wrap
     {{/service:extends?}}
 
     {{#service:functions}}
-    cFollyFuture[{{#function:returnType}}{{> CythonValueFieldType}}{{/function:returnType}}] {{function:name}}({{#function:args}}
-      {{#field:type}}{{> CythonValueFieldType}}{{/field:type}} arg_{{field:name}},{{/function:args}})
+    cFollyFuture[{{#function:returnType}}{{> types/CythonCppType}}{{/function:returnType}}] {{function:name}}({{#function:args}}
+      {{#field:type}}{{> types/CythonCppType}}{{/field:type}} arg_{{field:name}},{{/function:args}})
     {{/service:functions}}
 
 {{/program:services}}

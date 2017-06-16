@@ -37,8 +37,8 @@ i = std::move(i)    ]() mutable {
         call_cy_MyService_query(
             this->if_object,
             std::move(promise),
-    std::move(s),
-    std::move(i)        );
+            std::move(s),
+            std::move(i)        );
     });
 
   return future;
@@ -59,8 +59,8 @@ i = std::move(i)    ]() mutable {
         call_cy_MyService_has_arg_docs(
             this->if_object,
             std::move(promise),
-    std::move(s),
-    std::move(i)        );
+            std::move(s),
+            std::move(i)        );
     });
 
   return future;

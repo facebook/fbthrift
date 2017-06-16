@@ -21,14 +21,9 @@ c++ object. Most of the values are direct references to variables imported
 from libcpp and friends. Structs are the special case, as they refer to the
 struct by name as defined in the pxd file, with a 'c' prefix.
 
-This file is almost identical to ContainerCythonFieldType, but it has extra
-logic for structs to include the cython prefix only if it is an external program.
-In the foo_types.pyx if it is referring to an object in the same library, there
-should be no prefix, but if it is an object in a different library there should
-be a prefix. In foo_services.pyx or foo_clients.pyx it is importing from the
-foo_types library no matter what, so it always needs a prefix.
-
-This file is included from Struct.pyx
+Structs and enums will be namespaced appropriately if they are either defined
+in a different thrift file, or defined in the same thrift file but this is
+in the client or server source rather than the type definition source.
 
 }}{{#type:bool?}}cbool{{/type:bool?}}{{!
 }}{{#type:byte?}}int8_t{{/type:byte?}}{{!
@@ -40,16 +35,26 @@ This file is included from Struct.pyx
 }}{{#type:binary?}}string{{/type:binary?}}{{!
 }}{{#type:struct}}{{!
   }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
+  }}{{^type:externalProgram?}}{{^program:typeContext?}}{{!
+    }}{{> common/ModulePath}}.{{!
+  }}{{/program:typeContext?}}{{/type:externalProgram?}}{{!
   }}c{{struct:name}}{{!
 }}{{/type:struct}}{{!
 }}{{#type:list?}}vector[{{!
-  }}{{#type:listElemType}}{{> ContainerCythonFieldTypeConditionally}}{{/type:listElemType}}{{!
+  }}{{#type:listElemType}}{{> types/CythonCppType}}{{/type:listElemType}}{{!
 }}]{{/type:list?}}{{!
 }}{{#type:set?}}cset[{{!
-  }}{{#type:setElemType}}{{> ContainerCythonFieldTypeConditionally}}{{/type:setElemType}}{{!
+  }}{{#type:setElemType}}{{> types/CythonCppType}}{{/type:setElemType}}{{!
 }}]{{/type:set?}}{{!
 }}{{#type:map?}}cmap[{{!
-  }}{{#type:keyType}}{{> ContainerCythonFieldTypeConditionally}}{{/type:keyType}},{{!
-  }}{{#type:valueType}}{{> ContainerCythonFieldTypeConditionally}}{{/type:valueType}}{{!
+  }}{{#type:keyType}}{{> types/CythonCppType}}{{/type:keyType}},{{!
+  }}{{#type:valueType}}{{> types/CythonCppType}}{{/type:valueType}}{{!
 }}]{{/type:map?}}{{!
-}}{{#type:enum}}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}c{{enum:name}}{{/type:enum}}
+}}{{#type:enum}}{{!
+  }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
+  }}{{^type:externalProgram?}}{{^program:typeContext?}}{{!
+    }}{{> common/ModulePath}}.{{!
+  }}{{/program:typeContext?}}{{/type:externalProgram?}}{{!
+  }}c{{enum:name}}{{!
+}}{{/type:enum}}{{!
+}}{{#type:void?}}cFollyUnit{{/type:void?}}

@@ -77,7 +77,6 @@ cdef class Internship(thrift.py3.types.Struct):
 
         if employer is not None:
             deref(inst.c_Internship).employer = Company_to_cpp(employer)
-        
             deref(inst.c_Internship).__isset.employer = True
 
 
@@ -126,7 +125,6 @@ cdef class Internship(thrift.py3.types.Struct):
 
         if employer is not None:
             deref(inst.c_Internship).employer = Company_to_cpp(employer)
-        
             deref(inst.c_Internship).__isset.employer = True
 
         return inst
@@ -216,7 +214,6 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
         inst = self
         if city is not None:
             deref(inst.c_UnEnumStruct).city = City_to_cpp(city)
-        
             deref(inst.c_UnEnumStruct).__isset.city = True
 
 
@@ -244,7 +241,6 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
 
         if city is not None:
             deref(inst.c_UnEnumStruct).city = City_to_cpp(city)
-        
             deref(inst.c_UnEnumStruct).__isset.city = True
 
         return inst

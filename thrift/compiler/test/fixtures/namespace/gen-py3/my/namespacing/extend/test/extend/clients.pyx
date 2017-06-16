@@ -44,15 +44,13 @@ cdef void ExtendTestService_check_callback(
     PyObject* future
 ):
     cdef object pyfuture = <object> future
-    cdef cbool citem
     if result.hasException():
         try:
             result.exception().throw_exception()
         except Exception as ex:
             pyfuture.set_exception(ex)
     else:
-        citem = result.value();
-        pyfuture.set_result(citem)
+        pyfuture.set_result(<bint>result.value())
 
 
 cdef class ExtendTestService(hsmodule.clients.HsTestService):

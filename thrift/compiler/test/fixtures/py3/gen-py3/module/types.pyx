@@ -364,7 +364,6 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
 
         if an_enum is not None:
             deref(inst.c_ComplexStruct).an_enum = AnEnum_to_cpp(an_enum)
-        
             deref(inst.c_ComplexStruct).__isset.an_enum = True
 
         if some_bytes is not None:
@@ -458,7 +457,6 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
 
         if an_enum is not None:
             deref(inst.c_ComplexStruct).an_enum = AnEnum_to_cpp(an_enum)
-        
             deref(inst.c_ComplexStruct).__isset.an_enum = True
 
         if some_bytes is not None:

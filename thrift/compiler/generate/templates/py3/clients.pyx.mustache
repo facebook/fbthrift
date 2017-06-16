@@ -150,7 +150,7 @@ cdef class {{service:name}}{{#service:extends}}({{#service:externalProgram?}}{{!
         self._check_connect_future()
         loop = asyncio.get_event_loop()
         future = loop.create_future()
-        bridgeFutureWith[{{#function:returnType}}{{> CythonValueFieldType}}{{/function:returnType}}](
+        bridgeFutureWith[{{#function:returnType}}{{> types/CythonCppType}}{{/function:returnType}}](
             self._executor,
             deref(self._{{program:name}}_{{service:name}}_client).{{function:name}}({{#function:args}}
                 {{#field:type}}{{> CythonPythonToCppArg}}{{/field:type}},{{/function:args}}

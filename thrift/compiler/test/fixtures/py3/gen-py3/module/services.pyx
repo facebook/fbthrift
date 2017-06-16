@@ -395,7 +395,7 @@ cdef api void call_cy_SimpleService_get_value(
     unique_ptr[module.types.cSimpleStruct] simple_struct
 ):  
     promise = Promise_i32.create(move(cPromise))
-    arg_simple_struct = module.types.SimpleStruct.create(module.types.move(simple_struct))
+    arg_simple_struct = module.types.SimpleStruct.create(shared_ptr[module.types.cSimpleStruct](simple_struct.release()))
     asyncio.get_event_loop().create_task(
         SimpleService_get_value_coro(
             self,
@@ -1009,7 +1009,7 @@ cdef api void call_cy_SimpleService_complex_sum_i32(
     unique_ptr[module.types.cComplexStruct] counter
 ):  
     promise = Promise_i32.create(move(cPromise))
-    arg_counter = module.types.ComplexStruct.create(module.types.move(counter))
+    arg_counter = module.types.ComplexStruct.create(shared_ptr[module.types.cComplexStruct](counter.release()))
     asyncio.get_event_loop().create_task(
         SimpleService_complex_sum_i32_coro(
             self,
@@ -1043,7 +1043,7 @@ cdef api void call_cy_SimpleService_repeat_name(
     unique_ptr[module.types.cComplexStruct] counter
 ):  
     promise = Promise_string.create(move(cPromise))
-    arg_counter = module.types.ComplexStruct.create(module.types.move(counter))
+    arg_counter = module.types.ComplexStruct.create(shared_ptr[module.types.cComplexStruct](counter.release()))
     asyncio.get_event_loop().create_task(
         SimpleService_repeat_name_coro(
             self,

@@ -72,8 +72,9 @@ folly::Future<{{#function:returnType}}{{> CppFieldType}}{{/function:returnType}}
     ]() mutable {
         call_cy_{{service:name}}_{{function:name}}(
             this->if_object,
-            std::move(promise){{#function:args}},
-            {{#field:type}}{{> CppPassField}}{{/field:type}}{{/function:args}}
+            std::move(promise){{#function:args}}{{#field:type}},
+            {{> CppPassField}}
+{{/field:type}}{{/function:args}}
         );
     });
 

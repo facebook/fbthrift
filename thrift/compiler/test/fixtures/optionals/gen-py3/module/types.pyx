@@ -478,7 +478,6 @@ cdef class Person(thrift.py3.types.Struct):
 
         if afraidOfAnimal is not None:
             deref(inst.c_Person).afraidOfAnimal = Animal_to_cpp(afraidOfAnimal)
-        
             deref(inst.c_Person).__isset.afraidOfAnimal = True
 
         cdef List__Vehicle _vehicles
@@ -623,7 +622,6 @@ cdef class Person(thrift.py3.types.Struct):
 
         if afraidOfAnimal is not None:
             deref(inst.c_Person).afraidOfAnimal = Animal_to_cpp(afraidOfAnimal)
-        
             deref(inst.c_Person).__isset.afraidOfAnimal = True
 
         cdef List__Vehicle _vehicles

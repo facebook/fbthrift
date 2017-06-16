@@ -34,15 +34,14 @@ citem.
 }}{{#type:binary?}}bytes(citem){{/type:binary?}}{{!
 }}{{#type:struct}}{{!
     }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
-    }}{{type:name}}.create(make_shared[{{!
-    }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
-    }}c{{struct:name}}](citem)){{/type:struct}}{{!
+    }}{{type:name}}.create({{!
+    }}make_shared[{{> types/CythonCppType}}](citem)){{/type:struct}}{{!
 }}{{#type:list?}}{{type:flat_name}}.create(
-    make_shared[{{> ContainerCythonFieldTypeConditionally}}](citem)){{/type:list?}}{{!
+    make_shared[{{> types/CythonCppType}}](citem)){{/type:list?}}{{!
 }}{{#type:set?}}{{type:flat_name}}.create(
-    make_shared[{{> ContainerCythonFieldTypeConditionally}}](citem)){{/type:set?}}{{!
+    make_shared[{{> types/CythonCppType}}](citem)){{/type:set?}}{{!
 }}{{#type:map?}}{{type:flat_name}}.create(
-    make_shared[{{> ContainerCythonFieldTypeConditionally}}](citem)){{/type:map?}}{{!
+    make_shared[{{> types/CythonCppType}}](citem)){{/type:map?}}{{!
 }}{{#type:enum}}{{!
     }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
     }}{{enum:name}}(<int> citem){{/type:enum}}

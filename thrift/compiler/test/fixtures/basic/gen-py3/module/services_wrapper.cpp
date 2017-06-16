@@ -65,7 +65,7 @@ id    ]() mutable {
         call_cy_MyService_hasDataById(
             this->if_object,
             std::move(promise),
-    id        );
+            id        );
     });
 
   return future;
@@ -84,7 +84,7 @@ id    ]() mutable {
         call_cy_MyService_getDataById(
             this->if_object,
             std::move(promise),
-    id        );
+            id        );
     });
 
   return future;
@@ -105,8 +105,8 @@ data = std::move(data)    ]() mutable {
         call_cy_MyService_putDataById(
             this->if_object,
             std::move(promise),
-    id,
-    std::move(data)        );
+            id,
+            std::move(data)        );
     });
 
   return future;
@@ -127,8 +127,8 @@ data = std::move(data)    ]() mutable {
         call_cy_MyService_lobDataById(
             this->if_object,
             std::move(promise),
-    id,
-    std::move(data)        );
+            id,
+            std::move(data)        );
     });
 
   return future;
@@ -193,7 +193,7 @@ id    ]() mutable {
         call_cy_MyServiceFast_hasDataById(
             this->if_object,
             std::move(promise),
-    id        );
+            id        );
     });
 
   return future;
@@ -212,7 +212,7 @@ id    ]() mutable {
         call_cy_MyServiceFast_getDataById(
             this->if_object,
             std::move(promise),
-    id        );
+            id        );
     });
 
   return future;
@@ -233,8 +233,8 @@ data = std::move(data)    ]() mutable {
         call_cy_MyServiceFast_putDataById(
             this->if_object,
             std::move(promise),
-    id,
-    std::move(data)        );
+            id,
+            std::move(data)        );
     });
 
   return future;
@@ -255,8 +255,8 @@ data = std::move(data)    ]() mutable {
         call_cy_MyServiceFast_lobDataById(
             this->if_object,
             std::move(promise),
-    id,
-    std::move(data)        );
+            id,
+            std::move(data)        );
     });
 
   return future;

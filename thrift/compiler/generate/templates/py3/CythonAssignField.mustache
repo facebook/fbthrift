@@ -85,5 +85,5 @@ if {{field:name}} is not None:
 }}if {{field:name}} is not None:
     deref(inst.c_{{struct:name}}).{{field:name}} = {{#type:enum}}{{!
 }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
-}}{{enum:name}}{{/type:enum}}_to_cpp({{field:name}})
-{{/type:enum?}}
+}}{{enum:name}}{{/type:enum}}_to_cpp({{field:name}}){{!
+}}{{/type:enum?}}

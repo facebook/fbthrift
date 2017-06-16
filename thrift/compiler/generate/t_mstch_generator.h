@@ -105,6 +105,17 @@ class t_mstch_generator : public t_generator {
     render_to_file(dump(obj), template_name, path);
   }
 
+  template <typename T>
+  void render_to_file(
+      const T& obj,
+      const mstch::map& extra_context,
+      const std::string& template_name,
+      const boost::filesystem::path& path) {
+    mstch::map result = this->dump(obj);
+    result.insert(extra_context.begin(), extra_context.end());
+    this->render_to_file(result, template_name, path);
+  }
+
   /**
    * Dump map of command line flags passed to generator
    */

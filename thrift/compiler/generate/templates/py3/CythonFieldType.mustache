@@ -21,19 +21,13 @@ It is used in pxd files to wrap the same types as CppFieldType.mustache. It is
 used in pyx to cast an unknown type. It is used to define argument types and
 return types in Cython code.
 
-}}{{#type:bool?}}cbool{{/type:bool?}}{{!
-}}{{#type:byte?}}int8_t{{/type:byte?}}{{!
-}}{{#type:i16?}}int16_t{{/type:i16?}}{{!
-}}{{#type:i32?}}int32_t{{/type:i32?}}{{!
-}}{{#type:i64?}}int64_t{{/type:i64?}}{{!
-}}{{#type:double?}}double{{/type:double?}}{{!
-}}{{#type:string?}}unique_ptr[string]{{/type:string?}}{{!
-}}{{#type:binary?}}unique_ptr[string]{{/type:binary?}}{{!
-}}{{#type:struct}}unique_ptr[{{> common/ModulePath}}.c{{struct:name}}]{{/type:struct}}{{!
-}}{{#type:listElemType}}unique_ptr[vector[{{> ContainerCythonFieldType}}]]{{/type:listElemType}}{{!
-}}{{#type:setElemType}}unique_ptr[cset[{{> ContainerCythonFieldType}}]]{{/type:setElemType}}{{!
-}}{{#type:map?}}unique_ptr[cmap[{{!
-  }}{{#type:keyType}}{{> ContainerCythonFieldType}}{{/type:keyType}},{{!
-  }}{{#type:valueType}}{{>ContainerCythonFieldType}}{{/type:valueType}}]]{{/type:map?}}{{!
-}}{{#type:void?}}cFollyUnit{{/type:void?}}{{!
-}}{{#type:enum}}{{> common/ModulePath}}.c{{enum:name}}{{/type:enum}}
+}}{{#type:string?}}unique_ptr[{{/type:string?}}{{!
+}}{{#type:binary?}}unique_ptr[{{/type:binary?}}{{!
+}}{{#type:struct?}}unique_ptr[{{/type:struct?}}{{!
+}}{{#type:container?}}unique_ptr[{{/type:container?}}{{!
+}}{{> types/CythonCppType}}{{!
+}}{{#type:string?}}]{{/type:string?}}{{!
+}}{{#type:binary?}}]{{/type:binary?}}{{!
+}}{{#type:struct?}}]{{/type:struct?}}{{!
+}}{{#type:container?}}]{{/type:container?}}{{!
+}}

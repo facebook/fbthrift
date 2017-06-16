@@ -62,8 +62,8 @@ cdef api void call_cy_MyService_query(
     unique_ptr[includes.types.cIncluded] i
 ):  
     promise = Promise_void.create(move(cPromise))
-    arg_s = module.types.MyStruct.create(module.types.move(s))
-    arg_i = includes.types.Included.create(includes.types.move(i))
+    arg_s = module.types.MyStruct.create(shared_ptr[module.types.cMyStruct](s.release()))
+    arg_i = includes.types.Included.create(shared_ptr[includes.types.cIncluded](i.release()))
     asyncio.get_event_loop().create_task(
         MyService_query_coro(
             self,
@@ -101,8 +101,8 @@ cdef api void call_cy_MyService_has_arg_docs(
     unique_ptr[includes.types.cIncluded] i
 ):  
     promise = Promise_void.create(move(cPromise))
-    arg_s = module.types.MyStruct.create(module.types.move(s))
-    arg_i = includes.types.Included.create(includes.types.move(i))
+    arg_s = module.types.MyStruct.create(shared_ptr[module.types.cMyStruct](s.release()))
+    arg_i = includes.types.Included.create(shared_ptr[includes.types.cIncluded](i.release()))
     asyncio.get_event_loop().create_task(
         MyService_has_arg_docs_coro(
             self,
