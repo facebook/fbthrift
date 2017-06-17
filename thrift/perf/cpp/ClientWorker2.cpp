@@ -233,7 +233,7 @@ void ClientWorker2::performThrowError(const std::shared_ptr<Client>& client) {
     client->sync_throwError(code);
     T_ERROR("throwError() didn't throw any exception");
   } catch (const LoadError& error) {
-    assert(error.code == code);
+    assert(static_cast<uint32_t>(error.code) == code);
   }
 }
 
