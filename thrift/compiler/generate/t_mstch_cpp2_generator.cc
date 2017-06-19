@@ -166,6 +166,101 @@ class mstch_cpp2_type : public mstch_type {
   t_type const* resolved_type_;
 };
 
+class mstch_cpp2_struct : public mstch_struct {
+ public:
+  mstch_cpp2_struct(
+      t_struct const* strct,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION const pos)
+      : mstch_struct(strct, generators, cache, pos) {
+    register_methods(
+        this,
+        {
+            {"struct:getters_setters?", &mstch_cpp2_struct::getters_setters},
+            {"struct:base_field_or_struct?",
+             &mstch_cpp2_struct::has_base_field_or_struct},
+            {"struct:filtered_fields", &mstch_cpp2_struct::filtered_fields},
+            {"struct:is_struct_orderable?",
+             &mstch_cpp2_struct::is_struct_orderable},
+        });
+  }
+  mstch::node getters_setters() {
+    for (auto const* field : strct_->get_members()) {
+      auto const* resolved_typedef = resolve_typedef(field->get_type());
+      if (resolved_typedef->is_base_type() || resolved_typedef->is_struct()) {
+        return true;
+      }
+    }
+    return false;
+  }
+  mstch::node has_base_field_or_struct() {
+    for (auto const* field : strct_->get_members()) {
+      auto const* resolved_typedef = resolve_typedef(field->get_type());
+      if (resolved_typedef->is_base_type() || resolved_typedef->is_struct()) {
+        return true;
+      }
+    }
+    return false;
+  }
+  mstch::node filtered_fields() {
+    // Filter fields according to the following criteria:
+    // Get all base_types but strings (empty and non-empty)
+    // Get all non empty strings
+    // Get all non empty containers
+    // Get all enums
+    std::vector<t_field const*> filtered_fields;
+    for (auto const* field : strct_->get_members()) {
+      const t_type* type = resolve_typedef(field->get_type());
+      if ((type->is_base_type() && !type->is_string()) ||
+          (type->is_string() && field->get_value() != nullptr) ||
+          (type->is_container() && field->get_value() != nullptr) ||
+          type->is_enum()) {
+        filtered_fields.push_back(field);
+      }
+    }
+    return generate_elements(
+        filtered_fields,
+        generators_->field_generator_.get(),
+        generators_,
+        cache_);
+  }
+  bool is_orderable(t_type const* type) {
+    if (type->is_base_type()) {
+      return true;
+    }
+    if (type->is_enum()) {
+      return true;
+    }
+    if (type->is_struct()) {
+      for (auto const* f : dynamic_cast<t_struct const*>(type)->get_members()) {
+        if (f->get_req() == t_field::e_req::T_OPTIONAL ||
+            !is_orderable(f->get_type())) {
+          return false;
+        }
+      }
+      return true;
+    }
+    if (type->is_list()) {
+      return is_orderable(dynamic_cast<t_list const*>(type)->get_elem_type());
+    }
+    if (type->is_set()) {
+      return is_orderable(dynamic_cast<t_set const*>(type)->get_elem_type());
+    }
+    if (type->is_map()) {
+      return is_orderable(dynamic_cast<t_map const*>(type)->get_key_type()) &&
+          is_orderable(dynamic_cast<t_map const*>(type)->get_val_type());
+    }
+    return false;
+  }
+  mstch::node is_struct_orderable() {
+    return std::all_of(
+        strct_->get_members().begin(),
+        strct_->get_members().end(),
+        [&](auto m) { return is_orderable(m->get_type()); });
+  }
+};
+
 class enum_cpp2_generator : public enum_generator {
  public:
   enum_cpp2_generator() = default;
@@ -227,6 +322,20 @@ void t_mstch_cpp2_generator::generate_program() {
     generate_service(service);
   }
 }
+
+class struct_cpp2_generator : public struct_generator {
+ public:
+  struct_cpp2_generator() = default;
+  virtual ~struct_cpp2_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_struct const* strct,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const override {
+    return std::make_shared<mstch_cpp2_struct>(strct, generators, cache, pos);
+  }
+};
 
 mstch::map t_mstch_cpp2_generator::extend_program(const t_program& program) {
   mstch::map m;

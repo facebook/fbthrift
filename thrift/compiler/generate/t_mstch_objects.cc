@@ -52,6 +52,15 @@ std::shared_ptr<mstch_base> field_generator::generate(
   return std::make_shared<mstch_field>(field, generators, cache, pos, index);
 }
 
+std::shared_ptr<mstch_base> struct_generator::generate(
+    t_struct const* strct,
+    std::shared_ptr<mstch_generators const> generators,
+    std::shared_ptr<mstch_cache> cache,
+    ELEMENT_POSITION pos,
+    int32_t /*index*/) const {
+  return std::make_shared<mstch_struct>(strct, generators, cache, pos);
+}
+
 mstch::node mstch_enum::values() {
   return generate_elements(
       enm_->get_constants(),
@@ -64,7 +73,6 @@ mstch::node mstch_type::get_struct() {
   if (type_->is_struct() || type_->is_xception()) {
     std::string id = type_->get_program()->get_name() +
         get_type_namespace(type_->get_program());
-    /*
     return generate_elements_cached(
         std::vector<t_struct const*>{dynamic_cast<t_struct const*>(type_)},
         generators_->struct_generator_.get(),
@@ -72,7 +80,6 @@ mstch::node mstch_type::get_struct() {
         id,
         generators_,
         cache_);
-    */
   }
   return mstch::node();
 }
@@ -156,4 +163,12 @@ mstch::node mstch_field::value() {
 mstch::node mstch_field::type() {
   return generators_->type_generator_->generate(
       field_->get_type(), generators_, cache_, pos_);
+}
+
+mstch::node mstch_struct::fields() {
+  return generate_elements(
+      strct_->get_members(),
+      generators_->field_generator_.get(),
+      generators_,
+      cache_);
 }

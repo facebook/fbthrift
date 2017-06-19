@@ -32,6 +32,7 @@ enum ELEMENT_POSITION {
 
 struct mstch_cache {
   std::unordered_map<std::string, std::shared_ptr<mstch_base>> enums_;
+  std::unordered_map<std::string, std::shared_ptr<mstch_base>> structs_;
 };
 
 class enum_value_generator {
@@ -80,13 +81,26 @@ class field_generator {
       int32_t /*index*/ = 0) const;
 };
 
+class struct_generator {
+ public:
+  struct_generator() = default;
+  virtual ~struct_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_struct const* strct,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const;
+};
+
 class mstch_generators {
  public:
   mstch_generators()
       : enum_value_generator_(std::make_unique<enum_value_generator>()),
         enum_generator_(std::make_unique<enum_generator>()),
         type_generator_(std::make_unique<type_generator>()),
-        field_generator_(std::make_unique<field_generator>()) {}
+        field_generator_(std::make_unique<field_generator>()),
+        struct_generator_(std::make_unique<struct_generator>()) {}
   ~mstch_generators() = default;
 
   void set_enum_value_generator(std::unique_ptr<enum_value_generator> g) {
@@ -105,10 +119,15 @@ class mstch_generators {
     field_generator_ = std::move(g);
   }
 
+  void set_struct_generator(std::unique_ptr<struct_generator> g) {
+    struct_generator_ = std::move(g);
+  }
+
   std::unique_ptr<enum_value_generator> enum_value_generator_;
   std::unique_ptr<enum_generator> enum_generator_;
   std::unique_ptr<type_generator> type_generator_;
   std::unique_ptr<field_generator> field_generator_;
+  std::unique_ptr<struct_generator> struct_generator_;
 };
 
 class mstch_base : public mstch::object {
@@ -419,4 +438,44 @@ class mstch_field : public mstch_base {
  protected:
   t_field const* field_;
   int32_t index_;
+};
+
+class mstch_struct : public mstch_base {
+ public:
+  mstch_struct(
+      t_struct const* strct,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos)
+      : mstch_base(generators, cache, pos), strct_(strct) {
+    register_methods(
+        this,
+        {
+            {"struct:name", &mstch_struct::name},
+            {"struct:fields?", &mstch_struct::has_fields},
+            {"struct:fields", &mstch_struct::fields},
+            {"struct:exception?", &mstch_struct::is_exception},
+            {"struct:union?", &mstch_struct::is_union},
+            {"struct:plain?", &mstch_struct::is_plain},
+        });
+  }
+  mstch::node name() {
+    return strct_->get_name();
+  }
+  mstch::node has_fields() {
+    return !strct_->get_members().empty();
+  }
+  mstch::node fields();
+  mstch::node is_exception() {
+    return strct_->is_xception();
+  }
+  mstch::node is_union() {
+    return strct_->is_union();
+  }
+  mstch::node is_plain() {
+    return !strct_->is_xception() && !strct_->is_union();
+  }
+
+ protected:
+  t_struct const* strct_;
 };
