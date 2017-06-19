@@ -8,6 +8,11 @@ enum MyEnumA {
   fieldC = 4
 }
 
+struct SmallStruct {
+  1: bool small_A
+  2: i32 small_B
+}
+
 struct containerStruct {
   1: bool fieldA
   2: map<string, bool> fieldB
@@ -29,4 +34,9 @@ struct containerStruct {
   15: list<IndirectionB> fieldO
   16: list<IndirectionC> fieldP
   17: MyEnumA fieldQ
+  18: map<string, bool> fieldR (cpp.ref)
+  19: SmallStruct fieldS (cpp.ref_type="unique")
+  20: SmallStruct fieldT (cpp.ref_type="shared")
+  21: SmallStruct fieldU (cpp.ref_type="shared_const")
+  23: SmallStruct fieldX (cpp.ref)
 }
