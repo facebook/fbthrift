@@ -25,6 +25,7 @@
 #include <boost/filesystem.hpp>
 
 #include <thrift/compiler/generate/t_generator.h>
+#include <thrift/compiler/generate/t_mstch_objects.h>
 
 class t_mstch_generator : public t_generator {
  public:

@@ -51,6 +51,7 @@ thrift1_SOURCES = main.cc \
                  generate/t_generator.cc \
                  generate/t_concat_generator.cc \
                  generate/t_mstch_generator.cc \
+                 generate/t_mstch_objects.cc \
                  globals.h \
                  mutator.h \
                  platform.h \
@@ -82,6 +83,7 @@ thrift1_SOURCES = main.cc \
                  generate/t_oop_generator.h \
                  generate/t_concat_generator.h \
                  generate/t_mstch_generator.h \
+                 generate/t_mstch_objects.h \
                  generate/t_html_generator.h
 
 # Specific client generator source
