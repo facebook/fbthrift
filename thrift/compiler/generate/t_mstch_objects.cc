@@ -43,6 +43,15 @@ std::shared_ptr<mstch_base> type_generator::generate(
   return std::make_shared<mstch_type>(type, generators, cache, pos);
 }
 
+std::shared_ptr<mstch_base> field_generator::generate(
+    t_field const* field,
+    std::shared_ptr<mstch_generators const> generators,
+    std::shared_ptr<mstch_cache> cache,
+    ELEMENT_POSITION pos,
+    int32_t index) const {
+  return std::make_shared<mstch_field>(field, generators, cache, pos, index);
+}
+
 mstch::node mstch_enum::values() {
   return generate_elements(
       enm_->get_constants(),
@@ -92,52 +101,59 @@ mstch::node mstch_type::get_list_type() {
 
 mstch::node mstch_type::get_set_type() {
   if (type_->is_set()) {
-    /*
     return generators_->type_generator_->generate(
         dynamic_cast<const t_set*>(type_)->get_elem_type(),
         generators_,
         cache_,
         pos_);
-    */
   }
   return mstch::node();
 }
 
 mstch::node mstch_type::get_key_type() {
   if (type_->is_map()) {
-    /*
     return generators_->type_generator_->generate(
         dynamic_cast<const t_map*>(type_)->get_key_type(),
         generators_,
         cache_,
         pos_);
-    */
   }
   return mstch::node();
 }
 
 mstch::node mstch_type::get_value_type() {
   if (type_->is_map()) {
-    /*
     return generators_->type_generator_->generate(
         dynamic_cast<const t_map*>(type_)->get_val_type(),
         generators_,
         cache_,
         pos_);
-    */
   }
   return mstch::node();
 }
 
 mstch::node mstch_type::get_typedef_type() {
   if (type_->is_typedef()) {
-    /*
     return generators_->type_generator_->generate(
         dynamic_cast<const t_typedef*>(type_)->get_type(),
         generators_,
         cache_,
         pos_);
+  }
+  return mstch::node();
+}
+
+mstch::node mstch_field::value() {
+  if (field_->get_value()) {
+    /*
+    return generators_->const_value_generator_->generate(
+        field_->get_value(), generators_, cache_, pos_);
     */
   }
   return mstch::node();
+}
+
+mstch::node mstch_field::type() {
+  return generators_->type_generator_->generate(
+      field_->get_type(), generators_, cache_, pos_);
 }

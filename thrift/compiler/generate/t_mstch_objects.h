@@ -68,11 +68,25 @@ class type_generator {
       int32_t /*index*/ = 0) const;
 };
 
+class field_generator {
+ public:
+  field_generator() = default;
+  virtual ~field_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_field const* field,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const;
+};
+
 class mstch_generators {
  public:
   mstch_generators()
       : enum_value_generator_(std::make_unique<enum_value_generator>()),
-        enum_generator_(std::make_unique<enum_generator>()) {}
+        enum_generator_(std::make_unique<enum_generator>()),
+        type_generator_(std::make_unique<type_generator>()),
+        field_generator_(std::make_unique<field_generator>()) {}
   ~mstch_generators() = default;
 
   void set_enum_value_generator(std::unique_ptr<enum_value_generator> g) {
@@ -83,8 +97,18 @@ class mstch_generators {
     enum_generator_ = std::move(g);
   }
 
+  void set_type_generator(std::unique_ptr<type_generator> g) {
+    type_generator_ = std::move(g);
+  }
+
+  void set_field_generator(std::unique_ptr<field_generator> g) {
+    field_generator_ = std::move(g);
+  }
+
   std::unique_ptr<enum_value_generator> enum_value_generator_;
   std::unique_ptr<enum_generator> enum_generator_;
+  std::unique_ptr<type_generator> type_generator_;
+  std::unique_ptr<field_generator> field_generator_;
 };
 
 class mstch_base : public mstch::object {
@@ -343,4 +367,56 @@ class mstch_type : public mstch_base {
 
  protected:
   const t_type* type_;
+};
+
+class mstch_field : public mstch_base {
+ public:
+  mstch_field(
+      t_field const* field,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos,
+      int32_t index)
+      : mstch_base(generators, cache, pos), field_(field), index_(index) {
+    register_methods(
+        this,
+        {
+            {"field:name", &mstch_field::name},
+            {"field:key", &mstch_field::key},
+            {"field:value", &mstch_field::value},
+            {"field:type", &mstch_field::type},
+            {"field:index", &mstch_field::index},
+            {"field:index_plus_one", &mstch_field::index_plus_one},
+            {"field:required?", &mstch_field::is_required},
+            {"field:optional?", &mstch_field::is_optional},
+            {"field:optInReqOut?", &mstch_field::is_optInReqOut},
+        });
+  }
+  mstch::node name() {
+    return field_->get_name();
+  }
+  mstch::node key() {
+    return std::to_string(field_->get_key());
+  }
+  mstch::node value();
+  mstch::node type();
+  mstch::node index() {
+    return std::to_string(index_);
+  }
+  mstch::node index_plus_one() {
+    return std::to_string(index_ + 1);
+  }
+  mstch::node is_required() {
+    return field_->get_req() == t_field::e_req::T_REQUIRED;
+  }
+  mstch::node is_optional() {
+    return field_->get_req() == t_field::e_req::T_OPTIONAL;
+  }
+  mstch::node is_optInReqOut() {
+    return field_->get_req() == t_field::e_req::T_OPT_IN_REQ_OUT;
+  }
+
+ protected:
+  t_field const* field_;
+  int32_t index_;
 };
