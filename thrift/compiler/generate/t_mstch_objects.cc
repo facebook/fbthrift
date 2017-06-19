@@ -15,3 +15,12 @@
  */
 
 #include <thrift/compiler/generate/t_mstch_objects.h>
+
+std::shared_ptr<mstch_base> enum_value_generator::generate(
+    t_enum_value const* enum_value,
+    std::shared_ptr<mstch_generators const> generators,
+    std::shared_ptr<mstch_cache> cache,
+    ELEMENT_POSITION pos,
+    int32_t /*index*/) const {
+  return std::make_shared<mstch_enum_value>(enum_value, generators, cache, pos);
+}
