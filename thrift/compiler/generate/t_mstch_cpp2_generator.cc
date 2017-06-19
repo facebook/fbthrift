@@ -107,6 +107,65 @@ class mstch_cpp2_enum : public mstch_enum {
   }
 };
 
+class mstch_cpp2_type : public mstch_type {
+ public:
+  mstch_cpp2_type(
+      t_type const* type,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION const pos)
+      : mstch_type(type, generators, cache, pos),
+        resolved_type_(resolve_typedef(type)) {
+    register_methods(
+        this,
+        {
+            {"type:resolves_to_base?", &mstch_cpp2_type::resolves_to_base},
+            {"type:resolves_to_base_or_enum?",
+             &mstch_cpp2_type::resolves_to_base_or_enum},
+            {"type:resolves_to_container?",
+             &mstch_cpp2_type::resolves_to_container},
+            {"type:resolves_to_container_or_struct?",
+             &mstch_cpp2_type::resolves_to_container_or_struct},
+            {"type:resolves_to_container_or_enum?",
+             &mstch_cpp2_type::resolves_to_container_or_enum},
+            {"type:resolves_to_complex_return?",
+             &mstch_cpp2_type::resolves_to_complex_return},
+        });
+  }
+  virtual std::string get_type_namespace(t_program const* program) override {
+    auto ns = program->get_namespace("cpp2");
+    if (ns.empty()) {
+      ns = program->get_namespace("cpp");
+      if (ns.empty()) {
+        ns = "cpp2";
+      }
+    }
+    return ns;
+  }
+  mstch::node resolves_to_base() {
+    return resolved_type_->is_base_type();
+  }
+  mstch::node resolves_to_base_or_enum() {
+    return resolved_type_->is_base_type() || resolved_type_->is_enum();
+  }
+  mstch::node resolves_to_container() {
+    return resolved_type_->is_container();
+  }
+  mstch::node resolves_to_container_or_struct() {
+    return resolved_type_->is_container() || resolved_type_->is_struct();
+  }
+  mstch::node resolves_to_container_or_enum() {
+    return resolved_type_->is_container() || resolved_type_->is_enum();
+  }
+  mstch::node resolves_to_complex_return() {
+    return resolved_type_->is_container() || resolved_type_->is_string() ||
+        resolved_type_->is_struct();
+  }
+
+ protected:
+  t_type const* resolved_type_;
+};
+
 class enum_cpp2_generator : public enum_generator {
  public:
   enum_cpp2_generator() = default;
@@ -118,6 +177,20 @@ class enum_cpp2_generator : public enum_generator {
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t /*index*/ = 0) const override {
     return std::make_shared<mstch_cpp2_enum>(enm, generators, cache, pos);
+  }
+};
+
+class type_cpp2_generator : public type_generator {
+ public:
+  type_cpp2_generator() = default;
+  virtual ~type_cpp2_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_type const* type,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const override {
+    return std::make_shared<mstch_cpp2_type>(type, generators, cache, pos);
   }
 };
 

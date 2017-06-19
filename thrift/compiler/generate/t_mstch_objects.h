@@ -30,7 +30,9 @@ enum ELEMENT_POSITION {
   FIRST_AND_LAST = 3,
 };
 
-struct mstch_cache {};
+struct mstch_cache {
+  std::unordered_map<std::string, std::shared_ptr<mstch_base>> enums_;
+};
 
 class enum_value_generator {
  public:
@@ -48,6 +50,18 @@ class enum_generator {
   virtual ~enum_generator() = default;
   virtual std::shared_ptr<mstch_base> generate(
       t_enum const* enm,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const;
+};
+
+class type_generator {
+ public:
+  type_generator() = default;
+  virtual ~type_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_type const* type,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
@@ -130,6 +144,27 @@ class mstch_base : public mstch::object {
     return a;
   }
 
+  template <typename Container, typename Generator, typename Cache>
+  static mstch::array generate_elements_cached(
+      Container const& container,
+      Generator const* generator,
+      Cache& c,
+      std::string const& id,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache) {
+    mstch::array a{};
+    for (size_t i = 0; i < container.size(); ++i) {
+      auto pos = element_position(i, container.size());
+      std::string elem_id = id + container[i]->get_name();
+      if (!c.count(elem_id)) {
+        c[elem_id] =
+            generator->generate(container[i], generators, cache, pos, i);
+      }
+      a.push_back(c[elem_id]);
+    }
+    return a;
+  }
+
  protected:
   std::shared_ptr<mstch_generators const> generators_;
   std::shared_ptr<mstch_cache> cache_;
@@ -188,4 +223,124 @@ class mstch_enum : public mstch_base {
 
  protected:
   t_enum const* enm_;
+};
+
+class mstch_type : public mstch_base {
+ public:
+  mstch_type(
+      t_type const* type,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos)
+      : mstch_base(generators, cache, pos), type_(type) {
+    register_methods(
+        this,
+        {
+            {"type:name", &mstch_type::name},
+            {"type:void?", &mstch_type::is_void},
+            {"type:string?", &mstch_type::is_string},
+            {"type:binary?", &mstch_type::is_binary},
+            {"type:bool?", &mstch_type::is_bool},
+            {"type:byte?", &mstch_type::is_byte},
+            {"type:i16?", &mstch_type::is_i16},
+            {"type:i32?", &mstch_type::is_i32},
+            {"type:i64?", &mstch_type::is_i64},
+            {"type:double?", &mstch_type::is_double},
+            {"type:float?", &mstch_type::is_float},
+            {"type:struct?", &mstch_type::is_struct},
+            {"type:enum?", &mstch_type::is_enum},
+            {"type:stream?", &mstch_type::is_stream},
+            {"type:service?", &mstch_type::is_service},
+            {"type:base?", &mstch_type::is_base},
+            {"type:container?", &mstch_type::is_container},
+            {"type:list?", &mstch_type::is_list},
+            {"type:set?", &mstch_type::is_set},
+            {"type:map?", &mstch_type::is_map},
+            {"type:typedef?", &mstch_type::is_typedef},
+            {"type:struct", &mstch_type::get_struct},
+            {"type:enum", &mstch_type::get_enum},
+            {"type:listElemType", &mstch_type::get_list_type},
+            {"type:setElemType", &mstch_type::get_set_type},
+            {"type:keyType", &mstch_type::get_key_type},
+            {"type:valueType", &mstch_type::get_value_type},
+            {"type:typedefType", &mstch_type::get_typedef_type},
+        });
+  }
+  virtual ~mstch_type() = default;
+  mstch::node name() {
+    return type_->get_name();
+  }
+  mstch::node is_void() {
+    return type_->is_void();
+  }
+  mstch::node is_string() {
+    return type_->is_string() && !type_->is_binary();
+  }
+  mstch::node is_binary() {
+    return type_->is_string() && type_->is_binary();
+  }
+  mstch::node is_bool() {
+    return type_->is_bool();
+  }
+  mstch::node is_byte() {
+    return type_->is_byte();
+  }
+  mstch::node is_i16() {
+    return type_->is_i16();
+  }
+  mstch::node is_i32() {
+    return type_->is_i32();
+  }
+  mstch::node is_i64() {
+    return type_->is_i64();
+  }
+  mstch::node is_double() {
+    return type_->is_double();
+  }
+  mstch::node is_float() {
+    return type_->is_float();
+  }
+  mstch::node is_struct() {
+    return type_->is_struct() || type_->is_xception();
+  }
+  mstch::node is_enum() {
+    return type_->is_enum();
+  }
+  mstch::node is_stream() {
+    return type_->is_stream();
+  }
+  mstch::node is_service() {
+    return type_->is_service();
+  }
+  mstch::node is_base() {
+    return type_->is_base_type();
+  }
+  mstch::node is_container() {
+    return type_->is_container();
+  }
+  mstch::node is_list() {
+    return type_->is_list();
+  }
+  mstch::node is_set() {
+    return type_->is_set();
+  }
+  mstch::node is_map() {
+    return type_->is_map();
+  }
+  mstch::node is_typedef() {
+    return type_->is_typedef();
+  }
+  virtual std::string get_type_namespace(t_program const*) {
+    return "";
+  }
+  mstch::node get_struct();
+  mstch::node get_enum();
+  mstch::node get_list_type();
+  mstch::node get_set_type();
+  mstch::node get_key_type();
+  mstch::node get_value_type();
+  mstch::node get_typedef_type();
+
+ protected:
+  const t_type* type_;
 };
