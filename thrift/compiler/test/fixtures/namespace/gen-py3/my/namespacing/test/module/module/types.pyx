@@ -120,4 +120,3 @@ cdef class Foo(thrift.py3.types.Struct):
 Foo_defaults = Foo()
 
 
-

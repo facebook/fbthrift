@@ -131,4 +131,3 @@ cdef class Fiery(thrift.py3.exceptions.Error):
         return f'Fiery(message={repr(self.message)})'
 
 
-

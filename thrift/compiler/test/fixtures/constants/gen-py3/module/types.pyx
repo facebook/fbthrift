@@ -1745,7 +1745,6 @@ cdef class Map__string_string:
 
 Mapping.register(Map__string_string)
 
-
 myInt = 1337
 name = cname().decode('UTF-8')
 states = List__Map__string_i32.create(make_shared[vector[cmap[string,int32_t]]](cstates()))

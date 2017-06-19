@@ -120,4 +120,3 @@ cdef class HsFoo(thrift.py3.types.Struct):
 HsFoo_defaults = HsFoo()
 
 
-

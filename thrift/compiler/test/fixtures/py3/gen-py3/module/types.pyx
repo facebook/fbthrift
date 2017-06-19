@@ -3301,7 +3301,6 @@ cdef class List__Map__i32_double:
 
 Sequence.register(List__Map__i32_double)
 
-
 A_BOOL = True
 A_BYTE = 8
 THE_ANSWER = 42

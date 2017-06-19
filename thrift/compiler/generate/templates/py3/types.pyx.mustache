@@ -693,7 +693,9 @@ Set.register({{type:flat_name}})
 Mapping.register({{type:flat_name}})
 {{/type:map?}}
 
-{{/program:containerTypes}}
-
-{{#program:constants}}
-{{#constant:value}}{{> ConstantValue}}{{/constant:value}}{{/program:constants}}
+{{/program:containerTypes}}{{!
+}}{{#program:constants}}
+{{#constant:value}}{{> ConstantValue}}{{/constant:value}}{{/program:constants}}{{!
+}}{{#program:typedefs}}
+{{typedef:symbolic}} = {{#typedef:type}}{{> types/CythonPythonType}}{{/typedef:type}}
+{{/program:typedefs}}

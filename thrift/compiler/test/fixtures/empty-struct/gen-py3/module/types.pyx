@@ -167,4 +167,3 @@ cdef class Nada(thrift.py3.types.Struct):
 Nada_defaults = Nada()
 
 
-

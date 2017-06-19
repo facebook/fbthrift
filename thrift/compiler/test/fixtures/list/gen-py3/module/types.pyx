@@ -246,5 +246,4 @@ cdef class Map__i64_List__string:
 
 Mapping.register(Map__i64_List__string)
 
-
 TEST_MAP = Map__i64_List__string.create(make_shared[cmap[int64_t,vector[string]]](cTEST_MAP()))

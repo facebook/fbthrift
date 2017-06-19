@@ -284,6 +284,10 @@ void t_mstch_py3_generator::add_container_types(
     const auto const_type = constant->get_type();
     load_container_type(container_types, visited_names, const_type);
   }
+  for (const auto typedef_def : program.get_typedefs()) {
+    const auto typedef_type = typedef_def->get_type();
+    load_container_type(container_types, visited_names, typedef_type);
+  }
 
   results.emplace("containerTypes", dump_elems(container_types));
 

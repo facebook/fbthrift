@@ -1192,4 +1192,4 @@ cdef class List__Vehicle:
 
 Sequence.register(List__Vehicle)
 
-
+PersonID = int

@@ -118,5 +118,5 @@ cdef class Included(thrift.py3.types.Struct):
 Included_defaults = Included()
 
 
-
 IncludedConstant = 42
+IncludedInt64 = int

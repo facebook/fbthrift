@@ -264,7 +264,6 @@ cdef class List__Enum:
 
 Sequence.register(List__Enum)
 
-
 c1 = Struct.create(
     make_shared[cStruct](cc1()))
 e1s = List__Enum.create(make_shared[vector[cEnum]](ce1s()))
