@@ -43,18 +43,34 @@ class enum_value_generator {
       int32_t /*index*/ = 0) const;
 };
 
+class enum_generator {
+ public:
+  virtual ~enum_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_enum const* enm,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const;
+};
+
 class mstch_generators {
  public:
   mstch_generators()
-      : enum_value_generator_(std::make_unique<enum_value_generator>()) {}
+      : enum_value_generator_(std::make_unique<enum_value_generator>()),
+        enum_generator_(std::make_unique<enum_generator>()) {}
   ~mstch_generators() = default;
 
   void set_enum_value_generator(std::unique_ptr<enum_value_generator> g) {
     enum_value_generator_ = std::move(g);
   }
 
- private:
+  void set_enum_generator(std::unique_ptr<enum_generator> g) {
+    enum_generator_ = std::move(g);
+  }
+
   std::unique_ptr<enum_value_generator> enum_value_generator_;
+  std::unique_ptr<enum_generator> enum_generator_;
 };
 
 class mstch_base : public mstch::object {
@@ -84,6 +100,34 @@ class mstch_base : public mstch::object {
       type = dynamic_cast<t_typedef const*>(type)->get_type();
     }
     return type;
+  }
+
+  static ELEMENT_POSITION element_position(size_t index, size_t length) {
+    ELEMENT_POSITION pos = ELEMENT_POSITION::NONE;
+    if (index == 0) {
+      pos = ELEMENT_POSITION::FIRST;
+    }
+    if (index == length - 1) {
+      pos = ELEMENT_POSITION::LAST;
+    }
+    if (length == 1) {
+      pos = ELEMENT_POSITION::FIRST_AND_LAST;
+    }
+    return pos;
+  }
+
+  template <typename Container, typename Generator>
+  static mstch::array generate_elements(
+      Container const& container,
+      Generator const* generator,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache) {
+    mstch::array a{};
+    for (size_t i = 0; i < container.size(); ++i) {
+      auto pos = element_position(i, container.size());
+      a.push_back(generator->generate(container[i], generators, cache, pos, i));
+    }
+    return a;
   }
 
  protected:
@@ -117,4 +161,31 @@ class mstch_enum_value : public mstch_base {
 
  protected:
   t_enum_value const* enm_value_;
+};
+
+class mstch_enum : public mstch_base {
+ public:
+  using node_type = t_enum;
+  mstch_enum(
+      t_enum const* enm,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos)
+      : mstch_base(generators, cache, pos), enm_(enm) {
+    register_methods(
+        this,
+        {
+            {"enum:name", &mstch_enum::name},
+            {"enum:values", &mstch_enum::values},
+        });
+  }
+  ~mstch_enum() = default;
+
+  mstch::node name() {
+    return enm_->get_name();
+  }
+  mstch::node values();
+
+ protected:
+  t_enum const* enm_;
 };

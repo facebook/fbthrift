@@ -19,6 +19,7 @@
 
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
+#include <thrift/compiler/generate/t_mstch_objects.h>
 
 namespace {
 
@@ -55,6 +56,69 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   std::vector<std::array<std::string, 3>> protocols_;
   bool use_proxy_accessors_;
   bool use_getters_setters_;
+};
+
+class mstch_cpp2_enum : public mstch_enum {
+ public:
+  mstch_cpp2_enum(
+      t_enum const* enm,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION const pos)
+      : mstch_enum(enm, generators, cache, pos) {
+    register_methods(
+        this,
+        {
+            {"enum:empty?", &mstch_cpp2_enum::is_empty},
+            {"enum:size", &mstch_cpp2_enum::size},
+            {"enum:min", &mstch_cpp2_enum::min},
+            {"enum:max", &mstch_cpp2_enum::max},
+        });
+  }
+  mstch::node is_empty() {
+    return enm_->get_constants().empty();
+  }
+  mstch::node size() {
+    return std::to_string(enm_->get_constants().size());
+  }
+  mstch::node min() {
+    if (!enm_->get_constants().empty()) {
+      auto e_min = std::min_element(
+          enm_->get_constants().begin(),
+          enm_->get_constants().end(),
+          [](t_enum_value* a, t_enum_value* b) {
+            return a->get_value() < b->get_value();
+          });
+      return (*e_min)->get_name();
+    }
+    return mstch::node();
+  }
+  mstch::node max() {
+    if (!enm_->get_constants().empty()) {
+      auto e_max = std::max_element(
+          enm_->get_constants().begin(),
+          enm_->get_constants().end(),
+          [](t_enum_value* a, t_enum_value* b) {
+            return a->get_value() < b->get_value();
+          });
+      return (*e_max)->get_name();
+    }
+    return mstch::node();
+  }
+};
+
+class enum_cpp2_generator : public enum_generator {
+ public:
+  enum_cpp2_generator() = default;
+  virtual ~enum_cpp2_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_enum const* enm,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const override {
+    return std::make_shared<mstch_cpp2_enum>(enm, generators, cache, pos);
+  }
 };
 
 t_mstch_cpp2_generator::t_mstch_cpp2_generator(

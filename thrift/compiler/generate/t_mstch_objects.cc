@@ -24,3 +24,20 @@ std::shared_ptr<mstch_base> enum_value_generator::generate(
     int32_t /*index*/) const {
   return std::make_shared<mstch_enum_value>(enum_value, generators, cache, pos);
 }
+
+std::shared_ptr<mstch_base> enum_generator::generate(
+    t_enum const* enm,
+    std::shared_ptr<mstch_generators const> generators,
+    std::shared_ptr<mstch_cache> cache,
+    ELEMENT_POSITION pos,
+    int32_t /*index*/) const {
+  return std::make_shared<mstch_enum>(enm, generators, cache, pos);
+}
+
+mstch::node mstch_enum::values() {
+  return generate_elements(
+      enm_->get_constants(),
+      generators_->enum_value_generator_.get(),
+      generators_,
+      cache_);
+}
