@@ -511,10 +511,9 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       case 18:
       {
         if (ftype == apache::thrift::protocol::T_MAP) {
-          using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->fieldR)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype0(new element_type());
-          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::read(*iprot, *_ptype0);
-          this->fieldR = std::move(_ptype0);
+          std::unique_ptr<std::map<std::string, bool>> ptr = std::make_unique<std::map<std::string, bool>>();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::read(*iprot, *ptr);
+          this->fieldR = std::move(ptr);
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -523,10 +522,9 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       case 19:
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
-          using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->fieldS)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype1(new element_type());
-          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::read(iprot, _ptype1.get());
-          this->fieldS = std::move(_ptype1);
+          std::unique_ptr< ::cpp2::SmallStruct> ptr = std::make_unique< ::cpp2::SmallStruct>();
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::read(iprot, ptr.get());
+          this->fieldS = std::move(ptr);
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -535,10 +533,9 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       case 20:
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
-          using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->fieldT)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype2(new element_type());
-          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::read(iprot, _ptype2.get());
-          this->fieldT = std::move(_ptype2);
+          std::unique_ptr< ::cpp2::SmallStruct> ptr = std::make_unique< ::cpp2::SmallStruct>();
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::read(iprot, ptr.get());
+          this->fieldT = std::move(ptr);
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -547,10 +544,9 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       case 21:
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
-          using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->fieldU)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype3(new element_type());
-          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::read(iprot, _ptype3.get());
-          this->fieldU = std::move(_ptype3);
+          std::unique_ptr< ::cpp2::SmallStruct> ptr = std::make_unique< ::cpp2::SmallStruct>();
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::read(iprot, ptr.get());
+          this->fieldU = std::move(ptr);
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -559,10 +555,9 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       case 23:
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
-          using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->fieldX)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype4(new element_type());
-          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::read(iprot, _ptype4.get());
-          this->fieldX = std::move(_ptype4);
+          std::unique_ptr< ::cpp2::SmallStruct> ptr = std::make_unique< ::cpp2::SmallStruct>();
+          xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::SmallStruct>::read(iprot, ptr.get());
+          this->fieldX = std::move(ptr);
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -621,8 +616,7 @@ uint32_t containerStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnumA>::serializedSize<false>(*prot_, this->fieldQ);
   xfer += prot_->serializedFieldSize("fieldR", apache::thrift::protocol::T_MAP, 18);
   if (this->fieldR) {
-    const auto& _rtype5 = *this->fieldR;
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::serializedSize<false>(*prot_, _rtype5);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::serializedSize<false>(*prot_, *this->fieldR);
   }
   else {
     xfer += prot_->serializedSizeMapBegin(apache::thrift::protocol::T_STRING, apache::thrift::protocol::T_BOOL, 0);
@@ -704,8 +698,7 @@ uint32_t containerStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::MyEnumA>::serializedSize<false>(*prot_, this->fieldQ);
   xfer += prot_->serializedFieldSize("fieldR", apache::thrift::protocol::T_MAP, 18);
   if (this->fieldR) {
-    const auto& _rtype6 = *this->fieldR;
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::serializedSize<false>(*prot_, _rtype6);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::serializedSize<false>(*prot_, *this->fieldR);
   }
   else {
     xfer += prot_->serializedSizeMapBegin(apache::thrift::protocol::T_STRING, apache::thrift::protocol::T_BOOL, 0);
@@ -804,8 +797,7 @@ uint32_t containerStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldR", apache::thrift::protocol::T_MAP, 18);
   if (this->fieldR) {
-    const auto& _rtype7 = *this->fieldR;
-    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::write(*prot_, _rtype7);
+    xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, bool>>::write(*prot_, *this->fieldR);
   }
   else {
     xfer += prot_->writeMapBegin(apache::thrift::protocol::T_STRING, apache::thrift::protocol::T_BOOL, 0);

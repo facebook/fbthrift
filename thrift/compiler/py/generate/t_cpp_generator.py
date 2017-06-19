@@ -3572,15 +3572,11 @@ class CppGenerator(t_generator.Generator):
                                      pointer=False, optional_wrapped=False):
         s = scope
         if pointer:
-            ptrtype = self.tmp('_ptype')
-            s('using element_type = typename std::remove_const<typename '
-                    'std::remove_reference<decltype({0})>::type::element_type>'
-                    '::type;'.format(prefix))
-            s('std::unique_ptr<element_type> {0}(new element_type());'
-                    .format(ptrtype))
+            s('std::unique_ptr<{0}> ptr = std::make_unique<{0}>();'.format(
+                self._type_name(otype)))
             s('xfer += ::apache::thrift::Cpp2Ops< {0}>::read('
-                'iprot, {1}.get());'.format(self._type_name(otype), ptrtype))
-            s('{0} = std::move({1});'.format(prefix, ptrtype))
+                'iprot, ptr.get());'.format(self._type_name(otype)))
+            s('{0} = std::move(ptr);'.format(prefix))
         elif optional_wrapped:
             scope("{0} = {1}();".format(
                 prefix, self._type_name(otype)))
@@ -3686,18 +3682,13 @@ class CppGenerator(t_generator.Generator):
                                                   optional_wrapped=False):
         s = scope
         if pointer:
-            ptrtype = self.tmp('_ptype')
-            s('using element_type = typename std::remove_const<typename '
-                    'std::remove_reference<decltype({0})>::type::element_type>'
-                    '::type;'.format(prefix))
-            s('std::unique_ptr<element_type> {0}(new element_type());'
-                    .format(ptrtype))
+            s('std::unique_ptr<{0}> ptr = std::make_unique<{0}>();'.format(
+                self._type_name(otype)))
             s('xfer += ::apache::thrift::detail::pm::protocol_methods'
-                    '< {0}, {1}>::read(*iprot, *{2});'.format(
+                    '< {0}, {1}>::read(*iprot, *ptr);'.format(
                         self._render_type_class_for_serialization(otype),
-                        self._type_name(otype),
-                        ptrtype))
-            s('{0} = std::move({1});'.format(prefix, ptrtype))
+                        self._type_name(otype)))
+            s('{0} = std::move(ptr);'.format(prefix))
         elif optional_wrapped:
             s("{0} = {1}();".format(prefix, self._type_name(otype)))
             s('xfer += ::apache::thrift::detail::pm::protocol_methods'
@@ -4325,9 +4316,7 @@ class CppGenerator(t_generator.Generator):
 
         if pointer:
             with scope('if ({0})'.format(prefix)):
-                reftype = self.tmp('_rtype')
-                out('const auto& {0} = *{1};'.format(reftype, prefix))
-                prefix = reftype
+                prefix = '*' + prefix
                 self._generate_templated_serialize_container_internal(
                     scope, otype,
                     pointer, prefix,

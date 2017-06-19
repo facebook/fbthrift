@@ -3095,10 +3095,9 @@ uint32_t struct4::read(Protocol_* iprot) {
       case 6:
       {
         if (ftype == apache::thrift::protocol::T_STRUCT) {
-          using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->field3)>::type::element_type>::type;
-          std::unique_ptr<element_type> _ptype0(new element_type());
-          xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::read(iprot, _ptype0.get());
-          this->field3 = std::move(_ptype0);
+          std::unique_ptr< ::test_cpp2::cpp_reflection::structA> ptr = std::make_unique< ::test_cpp2::cpp_reflection::structA>();
+          xfer += ::apache::thrift::Cpp2Ops<  ::test_cpp2::cpp_reflection::structA>::read(iprot, ptr.get());
+          this->field3 = std::move(ptr);
         } else {
           xfer += iprot->skip(ftype);
         }
