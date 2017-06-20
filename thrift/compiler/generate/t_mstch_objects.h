@@ -57,6 +57,24 @@ class enum_generator {
       int32_t /*index*/ = 0) const;
 };
 
+class const_value_generator {
+ public:
+  const_value_generator() = default;
+  virtual ~const_value_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_const_value const* const_value,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const;
+  virtual std::shared_ptr<mstch_base> generate(
+      std::pair<t_const_value*, t_const_value*> const& value_pair,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const;
+};
+
 class type_generator {
  public:
   type_generator() = default;
@@ -98,6 +116,7 @@ class mstch_generators {
   mstch_generators()
       : enum_value_generator_(std::make_unique<enum_value_generator>()),
         enum_generator_(std::make_unique<enum_generator>()),
+        const_value_generator_(std::make_unique<const_value_generator>()),
         type_generator_(std::make_unique<type_generator>()),
         field_generator_(std::make_unique<field_generator>()),
         struct_generator_(std::make_unique<struct_generator>()) {}
@@ -109,6 +128,10 @@ class mstch_generators {
 
   void set_enum_generator(std::unique_ptr<enum_generator> g) {
     enum_generator_ = std::move(g);
+  }
+
+  void set_const_value_generator(std::unique_ptr<const_value_generator> g) {
+    const_value_generator_ = std::move(g);
   }
 
   void set_type_generator(std::unique_ptr<type_generator> g) {
@@ -125,6 +148,7 @@ class mstch_generators {
 
   std::unique_ptr<enum_value_generator> enum_value_generator_;
   std::unique_ptr<enum_generator> enum_generator_;
+  std::unique_ptr<const_value_generator> const_value_generator_;
   std::unique_ptr<type_generator> type_generator_;
   std::unique_ptr<field_generator> field_generator_;
   std::unique_ptr<struct_generator> struct_generator_;
@@ -266,6 +290,111 @@ class mstch_enum : public mstch_base {
 
  protected:
   t_enum const* enm_;
+};
+
+class mstch_const_value : public mstch_base {
+ public:
+  using cv = t_const_value::t_const_value_type;
+  mstch_const_value(
+      t_const_value const* const_value,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos)
+      : mstch_base(generators, cache, pos),
+        const_value_(const_value),
+        type_(const_value->get_type()) {
+    register_methods(
+        this,
+        {
+            {"value:bool?", &mstch_const_value::is_bool},
+            {"value:double?", &mstch_const_value::is_double},
+            {"value:integer?", &mstch_const_value::is_integer},
+            {"value:enum?", &mstch_const_value::is_enum},
+            {"value:string?", &mstch_const_value::is_string},
+            {"value:base?", &mstch_const_value::is_base},
+            {"value:map?", &mstch_const_value::is_map},
+            {"value:list?", &mstch_const_value::is_list},
+            {"value:container?", &mstch_const_value::is_container},
+            {"value:value", &mstch_const_value::value},
+            {"value:integerValue", &mstch_const_value::integer_value},
+            {"value:doubleValue", &mstch_const_value::double_value},
+            {"value:boolValue", &mstch_const_value::bool_value},
+            {"value:nonzero?", &mstch_const_value::is_non_zero},
+            {"value:enum_name", &mstch_const_value::enum_name},
+            {"value:enum_value_name", &mstch_const_value::enum_value_name},
+            {"value:stringValue", &mstch_const_value::string_value},
+            {"value:listElements", &mstch_const_value::list_elems},
+            {"value:mapElements", &mstch_const_value::map_elems},
+        });
+  }
+  mstch_const_value(
+      std::pair<t_const_value*, t_const_value*> const& pair_values,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos)
+      : mstch_base(generators, cache, pos),
+        type_(static_cast<cv>(0)),
+        pair_(pair_values) {
+    register_methods(
+        this,
+        {
+            {"element:key", &mstch_const_value::element_key},
+            {"element:value", &mstch_const_value::element_value},
+        });
+  }
+  std::string format_double_string(const double d) {
+    std::string d_str = std::to_string(d);
+    d_str.erase(d_str.find_last_not_of('0') + 1);
+    if (d_str.back() == '.') {
+      d_str.push_back('0');
+    }
+    return d_str;
+  }
+  mstch::node is_bool() {
+    return type_ == cv::CV_BOOL;
+  }
+  mstch::node is_double() {
+    return type_ == cv::CV_DOUBLE;
+  }
+  mstch::node is_integer() {
+    return type_ == cv::CV_INTEGER && !const_value_->is_enum();
+  }
+  mstch::node is_enum() {
+    return type_ == cv::CV_INTEGER && const_value_->is_enum();
+  }
+  mstch::node is_string() {
+    return type_ == cv::CV_STRING;
+  }
+  mstch::node is_base() {
+    return type_ == cv::CV_BOOL || type_ == cv::CV_DOUBLE ||
+        type_ == cv::CV_INTEGER || type_ == cv::CV_STRING;
+  }
+  mstch::node is_map() {
+    return type_ == cv::CV_MAP;
+  }
+  mstch::node is_list() {
+    return type_ == cv::CV_LIST;
+  }
+  mstch::node is_container() {
+    return type_ == cv::CV_MAP || type_ == cv::CV_LIST;
+  }
+  mstch::node element_key();
+  mstch::node element_value();
+  mstch::node value();
+  mstch::node integer_value();
+  mstch::node double_value();
+  mstch::node bool_value();
+  mstch::node is_non_zero();
+  mstch::node enum_name();
+  mstch::node enum_value_name();
+  mstch::node string_value();
+  mstch::node list_elems();
+  mstch::node map_elems();
+
+ protected:
+  t_const_value const* const_value_;
+  cv const type_;
+  std::pair<t_const_value*, t_const_value*> const pair_;
 };
 
 class mstch_type : public mstch_base {

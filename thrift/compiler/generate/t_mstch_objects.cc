@@ -34,6 +34,26 @@ std::shared_ptr<mstch_base> enum_generator::generate(
   return std::make_shared<mstch_enum>(enm, generators, cache, pos);
 }
 
+std::shared_ptr<mstch_base> const_value_generator::generate(
+    t_const_value const* const_value,
+    std::shared_ptr<mstch_generators const> generators,
+    std::shared_ptr<mstch_cache> cache,
+    ELEMENT_POSITION pos,
+    int32_t /*index*/) const {
+  return std::make_shared<mstch_const_value>(
+      const_value, generators, cache, pos);
+}
+
+std::shared_ptr<mstch_base> const_value_generator::generate(
+    std::pair<t_const_value*, t_const_value*> const& value_pair,
+    std::shared_ptr<mstch_generators const> generators,
+    std::shared_ptr<mstch_cache> cache,
+    ELEMENT_POSITION pos,
+    int32_t /*index*/) const {
+  return std::make_shared<mstch_const_value>(
+      value_pair, generators, cache, pos);
+}
+
 std::shared_ptr<mstch_base> type_generator::generate(
     t_type const* type,
     std::shared_ptr<mstch_generators const> generators,
@@ -152,10 +172,110 @@ mstch::node mstch_type::get_typedef_type() {
 
 mstch::node mstch_field::value() {
   if (field_->get_value()) {
-    /*
     return generators_->const_value_generator_->generate(
         field_->get_value(), generators_, cache_, pos_);
-    */
+  }
+  return mstch::node();
+}
+
+mstch::node mstch_const_value::element_key() {
+  return generators_->const_value_generator_->generate(
+      pair_.first, generators_, cache_, pos_);
+}
+
+mstch::node mstch_const_value::element_value() {
+  return generators_->const_value_generator_->generate(
+      pair_.second, generators_, cache_, pos_);
+}
+
+mstch::node mstch_const_value::value() {
+  switch (type_) {
+    case cv::CV_DOUBLE:
+      return format_double_string(const_value_->get_double());
+    case cv::CV_BOOL:
+      return std::to_string(const_value_->get_bool());
+    case cv::CV_INTEGER:
+      return std::to_string(const_value_->get_integer());
+    case cv::CV_STRING:
+      return const_value_->get_string();
+    default:
+      return mstch::node();
+  }
+}
+
+mstch::node mstch_const_value::integer_value() {
+  if (type_ == cv::CV_INTEGER) {
+    return std::to_string(const_value_->get_integer());
+  }
+  return mstch::node();
+}
+
+mstch::node mstch_const_value::double_value() {
+  if (type_ == cv::CV_DOUBLE) {
+    return format_double_string(const_value_->get_double());
+  }
+  return mstch::node();
+}
+
+mstch::node mstch_const_value::bool_value() {
+  if (type_ == cv::CV_BOOL) {
+    return const_value_->get_bool() == true;
+  }
+  return mstch::node();
+}
+
+mstch::node mstch_const_value::is_non_zero() {
+  switch (type_) {
+    case cv::CV_DOUBLE:
+      return const_value_->get_double() != 0.0;
+    case cv::CV_BOOL:
+      return const_value_->get_bool() == true;
+    case cv::CV_INTEGER:
+      return const_value_->get_integer() != 0;
+    default:
+      return mstch::node();
+  }
+}
+
+mstch::node mstch_const_value::enum_name() {
+  if (type_ == cv::CV_INTEGER && const_value_->is_enum()) {
+    return const_value_->get_enum()->get_name();
+  }
+  return mstch::node();
+}
+
+mstch::node mstch_const_value::enum_value_name() {
+  if (type_ == cv::CV_INTEGER && const_value_->is_enum()) {
+    return const_value_->get_enum_value()->get_name();
+  }
+  return mstch::node();
+}
+
+mstch::node mstch_const_value::string_value() {
+  if (type_ == cv::CV_STRING) {
+    return const_value_->get_string();
+  }
+  return mstch::node();
+}
+
+mstch::node mstch_const_value::list_elems() {
+  if (type_ == cv::CV_LIST) {
+    return generate_elements(
+        const_value_->get_list(),
+        generators_->const_value_generator_.get(),
+        generators_,
+        cache_);
+  }
+  return mstch::node();
+}
+
+mstch::node mstch_const_value::map_elems() {
+  if (type_ == cv::CV_MAP) {
+    return generate_elements(
+        const_value_->get_map(),
+        generators_->const_value_generator_.get(),
+        generators_,
+        cache_);
   }
   return mstch::node();
 }
