@@ -47,7 +47,10 @@ t_mstch_generator::t_mstch_generator(
     : t_generator(program),
       template_dir_(g_template_dir),
       parsed_options_(std::move(parsed_options)),
-      convert_delimiter_(convert_delimiter) {
+      convert_delimiter_(convert_delimiter),
+      generators_(std::make_shared<mstch_generators>()),
+      cache_(std::make_shared<mstch_cache>()) {
+  cache_->parsed_options_ = parsed_options_;
   if (template_dir_ == "") {
     std::string s = "Must set template directory when using mstch generator";
     throw std::runtime_error{s};

@@ -118,6 +118,17 @@ class t_mstch_generator : public t_generator {
   }
 
   /**
+   * Render the mstch template with name `template_name` with the given context.
+   * This writes to a path under the output directory.
+   */
+  void render_to_file(
+      const std::shared_ptr<mstch_base> context,
+      const std::string& template_name,
+      const boost::filesystem::path& path) {
+    write_output(path, render(template_name, context));
+  }
+
+  /**
    * Dump map of command line flags passed to generator
    */
   mstch::map dump_options();
@@ -221,4 +232,8 @@ class t_mstch_generator : public t_generator {
   static const T* as_const_pointer(const T& x) {
     return std::addressof(x);
   }
+
+ protected:
+  std::shared_ptr<mstch_generators> generators_;
+  std::shared_ptr<mstch_cache> cache_;
 };

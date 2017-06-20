@@ -117,6 +117,15 @@ std::shared_ptr<mstch_base> const_generator::generate(
   return std::make_shared<mstch_const>(cnst, generators, cache, pos);
 }
 
+std::shared_ptr<mstch_base> program_generator::generate(
+    t_program const* program,
+    std::shared_ptr<mstch_generators const> generators,
+    std::shared_ptr<mstch_cache> cache,
+    ELEMENT_POSITION pos,
+    int32_t /*index*/) const {
+  return std::make_shared<mstch_program>(program, generators, cache, pos);
+}
+
 mstch::node mstch_enum::values() {
   return generate_elements(
       enm_->get_constants(),
@@ -157,7 +166,11 @@ mstch::node mstch_type::get_enum() {
 
 mstch::node mstch_type::get_list_type() {
   if (type_->is_list()) {
-    return mstch::node();
+    return generators_->type_generator_->generate(
+        dynamic_cast<const t_list*>(type_)->get_elem_type(),
+        generators_,
+        cache_,
+        pos_);
   }
   return mstch::node();
 }

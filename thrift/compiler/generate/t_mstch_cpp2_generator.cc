@@ -33,6 +33,11 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   void generate_program() override;
 
  protected:
+  void set_mstch_generators();
+  void generate_constants(t_program const* program);
+  void generate_structs(t_program const* program);
+  void generate_service(t_service const* service);
+  std::string get_cpp2_namespace(t_program const* program);
   mstch::map extend_function(const t_function&) override;
   mstch::map extend_program(const t_program&) override;
   mstch::map extend_service(const t_service&) override;
@@ -525,6 +530,20 @@ class type_cpp2_generator : public type_generator {
   }
 };
 
+class struct_cpp2_generator : public struct_generator {
+ public:
+  struct_cpp2_generator() = default;
+  virtual ~struct_cpp2_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_struct const* strct,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const override {
+    return std::make_shared<mstch_cpp2_struct>(strct, generators, cache, pos);
+  }
+};
+
 class service_cpp2_generator : public service_generator {
  public:
   service_cpp2_generator() = default;
@@ -591,31 +610,26 @@ void t_mstch_cpp2_generator::generate_program() {
   // disable mstch escaping
   mstch::config::escape = [](const std::string& s) { return s; };
 
-  auto services = get_program()->get_services();
-  auto root = dump(*get_program());
+  auto const* program = get_program();
+  set_mstch_generators();
 
-  generate_constants(*get_program());
-  generate_structs(*get_program());
-
-  // Generate client_interface_tpl
-  for (const auto& service : services ) {
+  generate_constants(program);
+  generate_structs(program);
+  for (const auto* service : program->get_services()) {
     generate_service(service);
   }
 }
 
-class struct_cpp2_generator : public struct_generator {
- public:
-  struct_cpp2_generator() = default;
-  virtual ~struct_cpp2_generator() = default;
-  virtual std::shared_ptr<mstch_base> generate(
-      t_struct const* strct,
-      std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const override {
-    return std::make_shared<mstch_cpp2_struct>(strct, generators, cache, pos);
-  }
-};
+void t_mstch_cpp2_generator::set_mstch_generators() {
+  generators_->set_enum_generator(std::make_unique<enum_cpp2_generator>());
+  generators_->set_type_generator(std::make_unique<type_cpp2_generator>());
+  generators_->set_struct_generator(std::make_unique<struct_cpp2_generator>());
+  generators_->set_service_generator(
+      std::make_unique<service_cpp2_generator>());
+  generators_->set_const_generator(std::make_unique<const_cpp2_generator>());
+  generators_->set_program_generator(
+      std::make_unique<program_cpp2_generator>());
+}
 
 mstch::map t_mstch_cpp2_generator::extend_program(const t_program& program) {
   mstch::map m;
@@ -837,45 +851,6 @@ bool t_mstch_cpp2_generator::get_is_stack_args() {
   return get_option("stack_arguments") != nullptr;
 }
 
-void t_mstch_cpp2_generator::generate_constants(const t_program& program) {
-  auto name = program.get_name();
-  render_to_file(program, "module_constants.h", name + "_constants.h");
-  render_to_file(program, "module_constants.cpp", name + "_constants.cpp");
-}
-
-void t_mstch_cpp2_generator::generate_structs(const t_program& program) {
-  auto name = program.get_name();
-  render_to_file(program, "module_data.h", name + "_data.h");
-  render_to_file(program, "module_data.cpp", name + "_data.cpp");
-  render_to_file(program, "module_types.h", name + "_types.h");
-  render_to_file(program, "module_types.tcc", name + "_types.tcc");
-  render_to_file(program, "module_types.cpp", name + "_types.cpp");
-  render_to_file(
-      program,
-      "module_types_custom_protocol.h",
-      name + "_types_custom_protocol.h");
-}
-
-void t_mstch_cpp2_generator::generate_service(t_service* service) {
-  auto name = service->get_name();
-  render_to_file(*service, "service.cpp", name + ".cpp");
-  render_to_file(*service, "service.h", name + ".h");
-  render_to_file(*service, "service.tcc", name + ".tcc");
-  render_to_file(*service, "service_client.cpp", name + "_client.cpp");
-  render_to_file(
-      *service, "types_custom_protocol.h", name + "_custom_protocol.h");
-
-  for (const auto& protocol : protocols_) {
-    auto m = dump(*service);
-    m.emplace("protocol:name", protocol.at(0));
-    m.emplace("protocol:longName", protocol.at(1));
-    m.emplace("protocol:enum", protocol.at(2));
-    render_to_file(
-        m,
-        "service_processmap_protocol.cpp",
-        name + "_processmap_" + protocol.at(0) + ".cpp");
-  }
-}
 
 mstch::array t_mstch_cpp2_generator::get_namespace(const t_program& program) {
   std::vector<std::string> v;
@@ -898,6 +873,84 @@ mstch::array t_mstch_cpp2_generator::get_namespace(const t_program& program) {
   }
   add_first_last(a);
   return a;
+}
+
+void t_mstch_cpp2_generator::generate_constants(t_program const* program) {
+  std::string name = program->get_name();
+  std::string id = name + get_cpp2_namespace(program);
+  if (!cache_->programs_.count(id)) {
+    cache_->programs_[id] =
+        generators_->program_generator_->generate(program, generators_, cache_);
+  }
+  render_to_file(
+      cache_->programs_[id], "module_constants.h", name + "_constants.h");
+  render_to_file(
+      cache_->programs_[id], "module_constants.cpp", name + "_constants.cpp");
+}
+
+void t_mstch_cpp2_generator::generate_structs(t_program const* program) {
+  auto name = program->get_name();
+  std::string id = name + get_cpp2_namespace(program);
+  if (!cache_->programs_.count(id)) {
+    cache_->programs_[id] =
+        generators_->program_generator_->generate(program, generators_, cache_);
+  }
+  render_to_file(cache_->programs_[id], "module_data.h", name + "_data.h");
+  render_to_file(cache_->programs_[id], "module_data.cpp", name + "_data.cpp");
+  render_to_file(cache_->programs_[id], "module_types.h", name + "_types.h");
+  render_to_file(
+      cache_->programs_[id], "module_types.tcc", name + "_types.tcc");
+  render_to_file(
+      cache_->programs_[id], "module_types.cpp", name + "_types.cpp");
+  render_to_file(
+      cache_->programs_[id],
+      "module_types_custom_protocol.h",
+      name + "_types_custom_protocol.h");
+}
+
+void t_mstch_cpp2_generator::generate_service(t_service const* service) {
+  std::string id =
+      get_program()->get_name() + get_cpp2_namespace(service->get_program());
+  std::string name = service->get_name();
+  std::string service_id = id + name;
+  if (!cache_->services_.count(service_id)) {
+    cache_->services_[service_id] =
+        generators_->service_generator_->generate(service, generators_, cache_);
+  }
+  render_to_file(cache_->services_[service_id], "service.cpp", name + ".cpp");
+  render_to_file(cache_->services_[service_id], "service.h", name + ".h");
+  render_to_file(cache_->services_[service_id], "service.tcc", name + ".tcc");
+  render_to_file(
+      cache_->services_[service_id],
+      "service_client.cpp",
+      name + "_client.cpp");
+  render_to_file(
+      cache_->services_[service_id],
+      "types_custom_protocol.h",
+      name + "_custom_protocol.h");
+
+  std::vector<std::array<std::string, 3>> protocols = {
+      {{"binary", "BinaryProtocol", "T_BINARY_PROTOCOL"}},
+      {{"compact", "CompactProtocol", "T_COMPACT_PROTOCOL"}},
+  };
+  for (const auto& protocol : protocols) {
+    render_to_file(
+        cache_->services_[service_id],
+        "service_processmap_protocol.cpp",
+        name + "_processmap_" + protocol.at(0) + ".cpp");
+  }
+}
+
+std::string t_mstch_cpp2_generator::get_cpp2_namespace(
+    t_program const* program) {
+  auto ns = program->get_namespace("cpp2");
+  if (ns.empty()) {
+    ns = program->get_namespace("cpp");
+    if (ns.empty()) {
+      ns = "cpp2";
+    }
+  }
+  return ns;
 }
 
 std::string t_mstch_cpp2_generator::get_include_prefix(
