@@ -90,6 +90,15 @@ std::shared_ptr<mstch_base> function_generator::generate(
   return std::make_shared<mstch_function>(function, generators, cache, pos);
 }
 
+std::shared_ptr<mstch_base> service_generator::generate(
+    t_service const* service,
+    std::shared_ptr<mstch_generators const> generators,
+    std::shared_ptr<mstch_cache> cache,
+    ELEMENT_POSITION pos,
+    int32_t /*index*/) const {
+  return std::make_shared<mstch_service>(service, generators, cache, pos);
+}
+
 mstch::node mstch_enum::values() {
   return generate_elements(
       enm_->get_constants(),
@@ -321,4 +330,28 @@ mstch::node mstch_function::arg_list() {
       generators_->field_generator_.get(),
       generators_,
       cache_);
+}
+
+mstch::node mstch_service::functions() {
+  return generate_elements(
+      service_->get_functions(),
+      generators_->function_generator_.get(),
+      generators_,
+      cache_);
+}
+
+mstch::node mstch_service::extends() {
+  auto const* extends = service_->get_extends();
+  if (extends) {
+    std::string id = extends->get_program()->get_name() +
+        get_service_namespace(extends->get_program());
+    return generate_elements_cached(
+        std::vector<t_service const*>{extends},
+        generators_->service_generator_.get(),
+        cache_->services_,
+        id,
+        generators_,
+        cache_);
+  }
+  return mstch::node();
 }

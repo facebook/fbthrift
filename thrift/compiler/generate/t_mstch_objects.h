@@ -31,8 +31,10 @@ enum ELEMENT_POSITION {
 };
 
 struct mstch_cache {
+  std::map<std::string, std::string> parsed_options_;
   std::unordered_map<std::string, std::shared_ptr<mstch_base>> enums_;
   std::unordered_map<std::string, std::shared_ptr<mstch_base>> structs_;
+  std::unordered_map<std::string, std::shared_ptr<mstch_base>> services_;
 };
 
 class enum_value_generator {
@@ -123,6 +125,18 @@ class function_generator {
       int32_t /*index*/ = 0) const;
 };
 
+class service_generator {
+ public:
+  service_generator() = default;
+  virtual ~service_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_service const* service,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const;
+};
+
 class mstch_generators {
  public:
   mstch_generators()
@@ -132,7 +146,8 @@ class mstch_generators {
         type_generator_(std::make_unique<type_generator>()),
         field_generator_(std::make_unique<field_generator>()),
         struct_generator_(std::make_unique<struct_generator>()),
-        function_generator_(std::make_unique<function_generator>()) {}
+        function_generator_(std::make_unique<function_generator>()),
+        service_generator_(std::make_unique<service_generator>()) {}
   ~mstch_generators() = default;
 
   void set_enum_value_generator(std::unique_ptr<enum_value_generator> g) {
@@ -163,6 +178,10 @@ class mstch_generators {
     function_generator_ = std::move(g);
   }
 
+  void set_service_generator(std::unique_ptr<service_generator> g) {
+    service_generator_ = std::move(g);
+  }
+
   std::unique_ptr<enum_value_generator> enum_value_generator_;
   std::unique_ptr<enum_generator> enum_generator_;
   std::unique_ptr<const_value_generator> const_value_generator_;
@@ -170,6 +189,7 @@ class mstch_generators {
   std::unique_ptr<field_generator> field_generator_;
   std::unique_ptr<struct_generator> struct_generator_;
   std::unique_ptr<function_generator> function_generator_;
+  std::unique_ptr<service_generator> service_generator_;
 };
 
 class mstch_base : public mstch::object {
@@ -661,4 +681,42 @@ class mstch_function : public mstch_base {
 
  protected:
   t_function const* function_;
+};
+
+class mstch_service : public mstch_base {
+ public:
+  mstch_service(
+      t_service const* service,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos)
+      : mstch_base(generators, cache, pos), service_(service) {
+    register_methods(
+        this,
+        {
+            {"service:name", &mstch_service::name},
+            {"service:functions", &mstch_service::functions},
+            {"service:functions?", &mstch_service::has_functions},
+            {"service:extends", &mstch_service::extends},
+            {"service:extends?", &mstch_service::has_extends},
+        });
+  }
+  virtual ~mstch_service() = default;
+  mstch::node name() {
+    return service_->get_name();
+  }
+  mstch::node functions();
+  mstch::node has_functions() {
+    return !service_->get_functions().empty();
+  }
+  virtual std::string get_service_namespace(t_program const*) {
+    return "";
+  }
+  mstch::node extends();
+  mstch::node has_extends() {
+    return service_->get_extends() != nullptr;
+  }
+
+ protected:
+  t_service const* service_;
 };

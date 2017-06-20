@@ -261,6 +261,114 @@ class mstch_cpp2_struct : public mstch_struct {
   }
 };
 
+class mstch_cpp2_service : public mstch_service {
+ public:
+  mstch_cpp2_service(
+      t_service const* service,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION const pos)
+      : mstch_service(service, generators, cache, pos) {
+    register_methods(
+        this,
+        {
+            {"service:programName", &mstch_cpp2_service::program_name},
+            {"service:programIncludePrefix",
+             &mstch_cpp2_service::include_prefix},
+            {"service:thrift_includes", &mstch_cpp2_service::thrift_includes},
+            {"service:namespace_cpp2", &mstch_cpp2_service::namespace_cpp2},
+            {"service:oneway_functions", &mstch_cpp2_service::oneway_functions},
+            {"service:oneways?", &mstch_cpp2_service::has_oneway},
+            {"service:cpp_includes", &mstch_cpp2_service::cpp_includes},
+        });
+  }
+  mstch::array get_namespace_array(t_program const* program) {
+    std::vector<std::string> v;
+
+    auto ns = program->get_namespace("cpp2");
+    if (ns != "") {
+      v = split_namespace(ns);
+    } else {
+      ns = program->get_namespace("cpp");
+      if (ns != "") {
+        v = split_namespace(ns);
+      }
+      v.push_back("cpp2");
+    }
+    mstch::array a;
+    for (auto it = v.begin(); it != v.end(); ++it) {
+      mstch::map m;
+      m.emplace("namespace:name", *it);
+      a.push_back(m);
+    }
+    for (auto itr = a.begin(); itr != a.end(); ++itr) {
+      boost::get<mstch::map>(*itr).emplace("first?", itr == a.begin());
+      boost::get<mstch::map>(*itr).emplace("last?", std::next(itr) == a.end());
+    }
+    return a;
+  }
+  mstch::node program_name() {
+    return service_->get_program()->get_name();
+  }
+  mstch::node include_prefix() {
+    if (cache_->parsed_options_.count("include_prefix")) {
+      return cache_->parsed_options_["include_prefix"] + "/gen-cpp2/";
+    }
+    return std::string("");
+  }
+  mstch::node thrift_includes() {
+    mstch::array a{};
+    /*
+    for (auto const* program : service_->get_program()->get_includes()) {
+      std::string program_id = service_->get_program()->get_name() +
+          get_service_namespace(service_->get_program());
+      if (!cache_->programs_.count(program_id)) {
+        cache_->programs_[program_id] =
+            generators_->program_generator_->generate(
+                program, generators_, cache_);
+      }
+      a.push_back(cache_->programs_[program_id]);
+    }
+    */
+    return a;
+  }
+  mstch::node namespace_cpp2() {
+    return get_namespace_array(service_->get_program());
+  }
+  mstch::node oneway_functions() {
+    std::vector<t_function const*> oneway_functions;
+    for (auto const* function : service_->get_functions()) {
+      if (function->is_oneway()) {
+        oneway_functions.push_back(function);
+      }
+    }
+    return generate_elements(
+        oneway_functions,
+        generators_->function_generator_.get(),
+        generators_,
+        cache_);
+  }
+  mstch::node has_oneway() {
+    for (auto const* function : service_->get_functions()) {
+      if (function->is_oneway()) {
+        return true;
+      }
+    }
+    return false;
+  }
+  mstch::node cpp_includes() {
+    mstch::array a{};
+    for (auto const& include : service_->get_program()->get_cpp_includes()) {
+      mstch::map cpp_include;
+      cpp_include.emplace(
+          "system?", include.at(0) == '<' ? std::to_string(0) : "");
+      cpp_include.emplace("path", std::string(include));
+      a.push_back(cpp_include);
+    }
+    return a;
+  }
+};
+
 class enum_cpp2_generator : public enum_generator {
  public:
   enum_cpp2_generator() = default;
@@ -286,6 +394,21 @@ class type_cpp2_generator : public type_generator {
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t /*index*/ = 0) const override {
     return std::make_shared<mstch_cpp2_type>(type, generators, cache, pos);
+  }
+};
+
+class service_cpp2_generator : public service_generator {
+ public:
+  service_cpp2_generator() = default;
+  virtual ~service_cpp2_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_service const* service,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const override {
+    return std::make_shared<mstch_cpp2_service>(
+        service, generators, cache, pos);
   }
 };
 
