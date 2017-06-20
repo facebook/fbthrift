@@ -35,6 +35,7 @@ struct mstch_cache {
   std::unordered_map<std::string, std::shared_ptr<mstch_base>> enums_;
   std::unordered_map<std::string, std::shared_ptr<mstch_base>> structs_;
   std::unordered_map<std::string, std::shared_ptr<mstch_base>> services_;
+  std::unordered_map<std::string, std::shared_ptr<mstch_base>> programs_;
 };
 
 class enum_value_generator {
@@ -161,6 +162,18 @@ class const_generator {
       int32_t /*index*/ = 0) const;
 };
 
+class program_generator {
+ public:
+  program_generator() = default;
+  virtual ~program_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_program const* program,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const;
+};
+
 class mstch_generators {
  public:
   mstch_generators()
@@ -173,7 +186,8 @@ class mstch_generators {
         function_generator_(std::make_unique<function_generator>()),
         service_generator_(std::make_unique<service_generator>()),
         typedef_generator_(std::make_unique<typedef_generator>()),
-        const_generator_(std::make_unique<const_generator>()) {}
+        const_generator_(std::make_unique<const_generator>()),
+        program_generator_(std::make_unique<program_generator>()) {}
   ~mstch_generators() = default;
 
   void set_enum_value_generator(std::unique_ptr<enum_value_generator> g) {
@@ -216,6 +230,10 @@ class mstch_generators {
     const_generator_ = std::move(g);
   }
 
+  void set_program_generator(std::unique_ptr<program_generator> g) {
+    program_generator_ = std::move(g);
+  }
+
   std::unique_ptr<enum_value_generator> enum_value_generator_;
   std::unique_ptr<enum_generator> enum_generator_;
   std::unique_ptr<const_value_generator> const_value_generator_;
@@ -226,6 +244,7 @@ class mstch_generators {
   std::unique_ptr<service_generator> service_generator_;
   std::unique_ptr<typedef_generator> typedef_generator_;
   std::unique_ptr<const_generator> const_generator_;
+  std::unique_ptr<program_generator> program_generator_;
 };
 
 class mstch_base : public mstch::object {
@@ -805,4 +824,44 @@ class mstch_const : public mstch_base {
 
  protected:
   t_const const* cnst_;
+};
+
+class mstch_program : public mstch_base {
+ public:
+  mstch_program(
+      t_program const* program,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos)
+      : mstch_base(generators, cache, pos), program_(program) {
+    register_methods(
+        this,
+        {
+            {"program:name", &mstch_program::name},
+            {"program:includePrefix", &mstch_program::include_prefix},
+            {"program:structs", &mstch_program::structs},
+            {"program:enums", &mstch_program::enums},
+            {"program:services", &mstch_program::services},
+            {"program:typedefs", &mstch_program::typedefs},
+            {"program:constants", &mstch_program::constants},
+        });
+  }
+  virtual ~mstch_program() = default;
+  virtual std::string get_program_namespace() {
+    return "";
+  }
+  mstch::node name() {
+    return program_->get_name();
+  }
+  mstch::node include_prefix() {
+    return program_->get_include_prefix();
+  }
+  mstch::node structs();
+  mstch::node enums();
+  mstch::node services();
+  mstch::node typedefs();
+  mstch::node constants();
+
+ protected:
+  t_program const* program_;
 };

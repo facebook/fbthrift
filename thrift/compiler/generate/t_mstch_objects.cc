@@ -388,3 +388,52 @@ mstch::node mstch_const::value() {
   return generators_->const_value_generator_->generate(
       cnst_->get_value(), generators_, cache_, pos_);
 }
+
+mstch::node mstch_program::structs() {
+  std::string id = program_->get_name() + get_program_namespace();
+  return generate_elements_cached(
+      program_->get_objects(),
+      generators_->struct_generator_.get(),
+      cache_->structs_,
+      id,
+      generators_,
+      cache_);
+}
+
+mstch::node mstch_program::enums() {
+  std::string id = program_->get_name() + get_program_namespace();
+  return generate_elements_cached(
+      program_->get_enums(),
+      generators_->enum_generator_.get(),
+      cache_->enums_,
+      id,
+      generators_,
+      cache_);
+}
+
+mstch::node mstch_program::services() {
+  std::string id = program_->get_name() + get_program_namespace();
+  return generate_elements_cached(
+      program_->get_services(),
+      generators_->service_generator_.get(),
+      cache_->services_,
+      id,
+      generators_,
+      cache_);
+}
+
+mstch::node mstch_program::typedefs() {
+  return generate_elements(
+      program_->get_typedefs(),
+      generators_->typedef_generator_.get(),
+      generators_,
+      cache_);
+}
+
+mstch::node mstch_program::constants() {
+  return generate_elements(
+      program_->get_consts(),
+      generators_->const_generator_.get(),
+      generators_,
+      cache_);
+}
