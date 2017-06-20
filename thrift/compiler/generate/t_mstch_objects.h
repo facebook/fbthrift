@@ -137,6 +137,18 @@ class service_generator {
       int32_t /*index*/ = 0) const;
 };
 
+class typedef_generator {
+ public:
+  typedef_generator() = default;
+  virtual ~typedef_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_typedef const* typedf,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const;
+};
+
 class mstch_generators {
  public:
   mstch_generators()
@@ -147,7 +159,8 @@ class mstch_generators {
         field_generator_(std::make_unique<field_generator>()),
         struct_generator_(std::make_unique<struct_generator>()),
         function_generator_(std::make_unique<function_generator>()),
-        service_generator_(std::make_unique<service_generator>()) {}
+        service_generator_(std::make_unique<service_generator>()),
+        typedef_generator_(std::make_unique<typedef_generator>()) {}
   ~mstch_generators() = default;
 
   void set_enum_value_generator(std::unique_ptr<enum_value_generator> g) {
@@ -182,6 +195,10 @@ class mstch_generators {
     service_generator_ = std::move(g);
   }
 
+  void set_typedef_generator(std::unique_ptr<typedef_generator> g) {
+    typedef_generator_ = std::move(g);
+  }
+
   std::unique_ptr<enum_value_generator> enum_value_generator_;
   std::unique_ptr<enum_generator> enum_generator_;
   std::unique_ptr<const_value_generator> const_value_generator_;
@@ -190,6 +207,7 @@ class mstch_generators {
   std::unique_ptr<struct_generator> struct_generator_;
   std::unique_ptr<function_generator> function_generator_;
   std::unique_ptr<service_generator> service_generator_;
+  std::unique_ptr<typedef_generator> typedef_generator_;
 };
 
 class mstch_base : public mstch::object {
@@ -719,4 +737,28 @@ class mstch_service : public mstch_base {
 
  protected:
   t_service const* service_;
+};
+
+class mstch_typedef : public mstch_base {
+ public:
+  mstch_typedef(
+      t_typedef const* typedf,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos)
+      : mstch_base(generators, cache, pos), typedf_(typedf) {
+    register_methods(
+        this,
+        {
+            {"typedef:type", &mstch_typedef::type},
+            {"typedef:symbolic", &mstch_typedef::symbolic},
+        });
+  }
+  mstch::node type();
+  mstch::node symbolic() {
+    return typedf_->get_symbolic();
+  }
+
+ protected:
+  t_typedef const* typedf_;
 };
