@@ -111,6 +111,18 @@ class struct_generator {
       int32_t /*index*/ = 0) const;
 };
 
+class function_generator {
+ public:
+  function_generator() = default;
+  virtual ~function_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_function const* function,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const;
+};
+
 class mstch_generators {
  public:
   mstch_generators()
@@ -119,7 +131,8 @@ class mstch_generators {
         const_value_generator_(std::make_unique<const_value_generator>()),
         type_generator_(std::make_unique<type_generator>()),
         field_generator_(std::make_unique<field_generator>()),
-        struct_generator_(std::make_unique<struct_generator>()) {}
+        struct_generator_(std::make_unique<struct_generator>()),
+        function_generator_(std::make_unique<function_generator>()) {}
   ~mstch_generators() = default;
 
   void set_enum_value_generator(std::unique_ptr<enum_value_generator> g) {
@@ -146,12 +159,17 @@ class mstch_generators {
     struct_generator_ = std::move(g);
   }
 
+  void set_function_generator(std::unique_ptr<function_generator> g) {
+    function_generator_ = std::move(g);
+  }
+
   std::unique_ptr<enum_value_generator> enum_value_generator_;
   std::unique_ptr<enum_generator> enum_generator_;
   std::unique_ptr<const_value_generator> const_value_generator_;
   std::unique_ptr<type_generator> type_generator_;
   std::unique_ptr<field_generator> field_generator_;
   std::unique_ptr<struct_generator> struct_generator_;
+  std::unique_ptr<function_generator> function_generator_;
 };
 
 class mstch_base : public mstch::object {
@@ -607,4 +625,40 @@ class mstch_struct : public mstch_base {
 
  protected:
   t_struct const* strct_;
+};
+
+class mstch_function : public mstch_base {
+ public:
+  mstch_function(
+      t_function const* function,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos)
+      : mstch_base(generators, cache, pos), function_(function) {
+    register_methods(
+        this,
+        {
+            {"function:name", &mstch_function::name},
+            {"function:oneway?", &mstch_function::oneway},
+            {"function:returnType", &mstch_function::return_type},
+            {"function:exceptions", &mstch_function::exceptions},
+            {"function:exceptions?", &mstch_function::has_exceptions},
+            {"function:args", &mstch_function::arg_list},
+        });
+  }
+  mstch::node name() {
+    return function_->get_name();
+  }
+  mstch::node oneway() {
+    return function_->is_oneway();
+  }
+  mstch::node return_type();
+  mstch::node exceptions();
+  mstch::node has_exceptions() {
+    return !function_->get_xceptions()->get_members().empty();
+  }
+  mstch::node arg_list();
+
+ protected:
+  t_function const* function_;
 };
