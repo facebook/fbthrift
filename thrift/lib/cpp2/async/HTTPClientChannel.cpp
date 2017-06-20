@@ -105,6 +105,16 @@ bool HTTPClientChannel::good() {
   return transport && transport->good();
 }
 
+ClientChannel::SaturationStatus HTTPClientChannel::getSaturationStatus() {
+  if (httpSession_) {
+    return SaturationStatus(
+        httpSession_->getNumOutgoingStreams(),
+        httpSession_->getMaxConcurrentOutgoingStreams());
+  } else {
+    return SaturationStatus();
+  }
+}
+
 void HTTPClientChannel::closeNow() {
   if (httpSession_) {
     httpSession_->dropConnection();

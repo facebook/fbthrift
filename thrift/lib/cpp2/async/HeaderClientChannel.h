@@ -17,6 +17,11 @@
 #ifndef THRIFT_ASYNC_THEADERCLIENTCHANNEL_H_
 #define THRIFT_ASYNC_THEADERCLIENTCHANNEL_H_ 1
 
+#include <deque>
+#include <limits>
+#include <memory>
+#include <unordered_map>
+
 #include <thrift/lib/cpp2/async/ChannelCallbacks.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
@@ -30,10 +35,6 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp/util/THttpParser.h>
-#include <memory>
-
-#include <unordered_map>
-#include <deque>
 
 namespace apache { namespace thrift {
 
@@ -150,6 +151,10 @@ class HeaderClientChannel : public ClientChannel,
   void useAsHttpClient(const std::string& host, const std::string& uri);
 
   bool good() override;
+
+  SaturationStatus getSaturationStatus() override {
+    return SaturationStatus(0, std::numeric_limits<uint32_t>::max());
+  }
 
   // event base methods
   void attachEventBase(folly::EventBase*) override;

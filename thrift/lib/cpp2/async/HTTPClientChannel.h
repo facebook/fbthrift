@@ -70,6 +70,8 @@ class HTTPClientChannel : public ClientChannel,
 
   bool good() override;
 
+  SaturationStatus getSaturationStatus() override;
+
   void attachEventBase(folly::EventBase*) override;
   void detachEventBase() override;
   bool isDetachable() override;

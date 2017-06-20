@@ -29,6 +29,23 @@ class ClientChannel : public RequestChannel, public HeaderChannel {
   ClientChannel() {}
   ~ClientChannel() override {}
 
+  struct SaturationStatus {
+    enum class SaturationType {
+      INVALID = 0,
+      REQUEST = 1,
+    };
+    SaturationType type = SaturationType::INVALID;
+    uint32_t usedCapacity = 0;
+    uint32_t capacity = 0;
+
+    SaturationStatus() = default;
+
+    SaturationStatus(uint32_t usedCapacity, uint32_t capacity)
+        : type(SaturationType::REQUEST),
+          usedCapacity(usedCapacity),
+          capacity(capacity) {}
+  };
+
   typedef
     std::unique_ptr<ClientChannel,
                     folly::DelayedDestruction::Destructor>
@@ -37,6 +54,8 @@ class ClientChannel : public RequestChannel, public HeaderChannel {
   virtual apache::thrift::async::TAsyncTransport* getTransport() = 0;
 
   virtual bool good() = 0;
+
+  virtual SaturationStatus getSaturationStatus() = 0;
 
   virtual void attachEventBase(folly::EventBase*) = 0;
   virtual void detachEventBase() = 0;
