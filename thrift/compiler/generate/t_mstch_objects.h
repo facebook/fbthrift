@@ -149,6 +149,18 @@ class typedef_generator {
       int32_t /*index*/ = 0) const;
 };
 
+class const_generator {
+ public:
+  const_generator() = default;
+  virtual ~const_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_const const* cnst,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const;
+};
+
 class mstch_generators {
  public:
   mstch_generators()
@@ -160,7 +172,8 @@ class mstch_generators {
         struct_generator_(std::make_unique<struct_generator>()),
         function_generator_(std::make_unique<function_generator>()),
         service_generator_(std::make_unique<service_generator>()),
-        typedef_generator_(std::make_unique<typedef_generator>()) {}
+        typedef_generator_(std::make_unique<typedef_generator>()),
+        const_generator_(std::make_unique<const_generator>()) {}
   ~mstch_generators() = default;
 
   void set_enum_value_generator(std::unique_ptr<enum_value_generator> g) {
@@ -199,6 +212,10 @@ class mstch_generators {
     typedef_generator_ = std::move(g);
   }
 
+  void set_const_generator(std::unique_ptr<const_generator> g) {
+    const_generator_ = std::move(g);
+  }
+
   std::unique_ptr<enum_value_generator> enum_value_generator_;
   std::unique_ptr<enum_generator> enum_generator_;
   std::unique_ptr<const_value_generator> const_value_generator_;
@@ -208,6 +225,7 @@ class mstch_generators {
   std::unique_ptr<function_generator> function_generator_;
   std::unique_ptr<service_generator> service_generator_;
   std::unique_ptr<typedef_generator> typedef_generator_;
+  std::unique_ptr<const_generator> const_generator_;
 };
 
 class mstch_base : public mstch::object {
@@ -761,4 +779,30 @@ class mstch_typedef : public mstch_base {
 
  protected:
   t_typedef const* typedf_;
+};
+
+class mstch_const : public mstch_base {
+ public:
+  mstch_const(
+      t_const const* cnst,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos)
+      : mstch_base(generators, cache, pos), cnst_(cnst) {
+    register_methods(
+        this,
+        {
+            {"constant:name", &mstch_const::name},
+            {"constant:type", &mstch_const::type},
+            {"constant:value", &mstch_const::value},
+        });
+  }
+  mstch::node name() {
+    return cnst_->get_name();
+  }
+  mstch::node type();
+  mstch::node value();
+
+ protected:
+  t_const const* cnst_;
 };

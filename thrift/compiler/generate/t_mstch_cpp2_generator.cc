@@ -369,6 +369,44 @@ class mstch_cpp2_service : public mstch_service {
   }
 };
 
+class mstch_cpp2_const : public mstch_const {
+ public:
+  mstch_cpp2_const(
+      t_const const* cnst,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION const pos)
+      : mstch_const(cnst, generators, cache, pos) {
+    register_methods(
+        this,
+        {
+            {"constant:enum_value?", &mstch_cpp2_const::has_enum_value},
+            {"constant:enum_value", &mstch_cpp2_const::enum_value},
+        });
+  }
+  mstch::node has_enum_value() {
+    if (cnst_->get_type()->is_enum()) {
+      auto const* enm = static_cast<t_enum const*>(cnst_->get_type());
+      if (enm->find_value(cnst_->get_value()->get_integer())) {
+        return true;
+      }
+    }
+    return false;
+  }
+  mstch::node enum_value() {
+    if (cnst_->get_type()->is_enum()) {
+      auto const* enm = static_cast<t_enum const*>(cnst_->get_type());
+      auto const* enm_val = enm->find_value(cnst_->get_value()->get_integer());
+      if (enm_val) {
+        return enm_val->get_name();
+      } else {
+        return std::to_string(cnst_->get_value()->get_integer());
+      }
+    }
+    return mstch::node();
+  }
+};
+
 class enum_cpp2_generator : public enum_generator {
  public:
   enum_cpp2_generator() = default;
@@ -409,6 +447,20 @@ class service_cpp2_generator : public service_generator {
       int32_t /*index*/ = 0) const override {
     return std::make_shared<mstch_cpp2_service>(
         service, generators, cache, pos);
+  }
+};
+
+class const_cpp2_generator : public const_generator {
+ public:
+  const_cpp2_generator() = default;
+  virtual ~const_cpp2_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_const const* cnst,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t /*index*/ = 0) const override {
+    return std::make_shared<mstch_cpp2_const>(cnst, generators, cache, pos);
   }
 };
 

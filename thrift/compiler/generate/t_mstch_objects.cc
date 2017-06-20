@@ -108,6 +108,15 @@ std::shared_ptr<mstch_base> typedef_generator::generate(
   return std::make_shared<mstch_typedef>(typedf, generators, cache, pos);
 }
 
+std::shared_ptr<mstch_base> const_generator::generate(
+    t_const const* cnst,
+    std::shared_ptr<mstch_generators const> generators,
+    std::shared_ptr<mstch_cache> cache,
+    ELEMENT_POSITION pos,
+    int32_t /*index*/) const {
+  return std::make_shared<mstch_const>(cnst, generators, cache, pos);
+}
+
 mstch::node mstch_enum::values() {
   return generate_elements(
       enm_->get_constants(),
@@ -368,4 +377,14 @@ mstch::node mstch_service::extends() {
 mstch::node mstch_typedef::type() {
   return generators_->type_generator_->generate(
       typedf_->get_type(), generators_, cache_, pos_);
+}
+
+mstch::node mstch_const::type() {
+  return generators_->type_generator_->generate(
+      cnst_->get_type(), generators_, cache_, pos_);
+}
+
+mstch::node mstch_const::value() {
+  return generators_->const_value_generator_->generate(
+      cnst_->get_value(), generators_, cache_, pos_);
 }

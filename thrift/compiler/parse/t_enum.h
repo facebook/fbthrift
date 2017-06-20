@@ -1,4 +1,6 @@
 /*
+ * Copyright 2017-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #ifndef T_ENUM_H
 #define T_ENUM_H
 
@@ -42,7 +43,7 @@ class t_enum : public t_type {
     return constants_;
   }
 
-  const t_enum_value* find_value(const int32_t enum_value) {
+  const t_enum_value* find_value(const int32_t enum_value) const {
     for (const auto it : constants_) {
       if (it->get_value() == enum_value) {
         return it;
