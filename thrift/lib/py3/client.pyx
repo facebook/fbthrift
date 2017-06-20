@@ -9,6 +9,7 @@ from cpython.ref cimport PyObject
 from libcpp cimport nullptr
 import asyncio
 
+
 cdef class Client:
     """
     Base class for all thrift clients
@@ -17,7 +18,7 @@ cdef class Client:
         return NULL
 
 
-def get_client(clientKlass, *, str host='::1', int port, float timeout=1):
+def get_client(clientKlass, *, str host='::1', int port, float timeout=1, headers=None):
     assert issubclass(clientKlass, Client), "Must by a py3 thrift client"
     cdef string chost = <bytes> host.encode('idna')
     cdef int _timeout = int(timeout * 1000)
@@ -28,6 +29,9 @@ def get_client(clientKlass, *, str host='::1', int port, float timeout=1):
         requestchannel_callback,
         <PyObject *> client
     )
+    if headers:
+        for key, value in headers.items():
+            client.set_persistent_header(key, value)
     return client
 
 
