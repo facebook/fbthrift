@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,3 +35,4 @@ const std::string kServerQueueTimeoutErrorCode{"15"};
 const std::string kProxyResponseSizeThrottledExceptionErrorCode{"16"};
 const std::string kResponseTooBigErrorCode{"17"};
 const std::string kProxyAclCheckExceptionErrorCode{"18"};
+const std::string kProxyOverloadedErrorCode{"19"};

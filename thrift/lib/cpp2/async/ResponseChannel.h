@@ -1,4 +1,6 @@
 /*
+ * Copyright 2004-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -49,6 +51,7 @@ extern const std::string kInjectedFailureErrorCode;
 extern const std::string kServerQueueTimeoutErrorCode;
 extern const std::string kResponseTooBigErrorCode;
 extern const std::string kProxyAclCheckExceptionErrorCode;
+extern const std::string kProxyOverloadedErrorCode;
 
 namespace apache { namespace thrift {
 
