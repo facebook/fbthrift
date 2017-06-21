@@ -173,9 +173,7 @@ class NodeProcessor : public apache::thrift::AsyncProcessor {
         buf->coalesce();
         uint64_t resp;
         char* data;
-
         void *user_data = NULL;
-
         assert(buf->length() > 0);
         node::Buffer* inBuffer = node::Buffer::New(buf->length());
         assert(inBuffer);
@@ -185,13 +183,11 @@ class NodeProcessor : public apache::thrift::AsyncProcessor {
         Local<Object> globalObj = Context::GetCurrent()->Global();
         Local<Function> bufferConstructor = Local<Function>::Cast(
           globalObj->Get(String::New("Buffer")));
+        std::array<Handle<class v8::Value>, 2> constructorArgs = {
+            {inBuffer->handle_, v8::Integer::New(buf->length())}};
 
-        Handle<Value> constructorArgs[3] = {
-          inBuffer->handle_,
-          v8::Integer::New(buf->length()),
-          v8::Integer::New(0) };
-        Local<Object> bufin = bufferConstructor->NewInstance(
-          3, constructorArgs);
+        Local<Object> bufin =
+            bufferConstructor->NewInstance(2, constructorArgs.data());
 
         auto callback = ThriftServerCallback::NewInstance();
         ThriftServerCallback::setRequest(
@@ -207,7 +203,6 @@ class NodeProcessor : public apache::thrift::AsyncProcessor {
 
         // Delete objects created since scope creation on stack (i.e. inBuffer)
         scope.Close(Undefined());
-
       });
     uv_async_send(&async);
   }
@@ -382,7 +377,6 @@ void init(Handle<Object> exports) {
   integrated_uv_event_base.reset(new folly::EventBase());
   CppThriftServer::Init(exports);
   ThriftServerCallback::Init(exports);
-
   uv_async_init(uv_default_loop(), &async, run_loop);
 }
 
