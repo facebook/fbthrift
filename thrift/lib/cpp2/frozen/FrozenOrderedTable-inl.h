@@ -70,7 +70,6 @@ struct SortedTableLayout : public ArrayLayout<T, Item> {
     maybeIndex(coll, index);
 
     FieldPosition noField; // not really used
-    bool distinct = true;
     const typename KeyExtractor::KeyType* lastKey = nullptr;
     if (index.empty()) {
       // either the collection was already sorted or it's empty
