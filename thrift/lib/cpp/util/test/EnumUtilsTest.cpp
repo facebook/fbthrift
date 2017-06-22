@@ -43,8 +43,6 @@ TEST(EnumNonStrict, ShortEnumName) {
   EXPECT_EQ(strcmp(enumName((EnumStrict)42, "Universe"), "Universe"), 0);
   EXPECT_EQ(enumName((EnumNonStrict)4), nullptr);
   EXPECT_EQ(enumName((EnumNonStrict)5), nullptr);
-  EXPECT_EQ(enumName((EnumNonStrict)42), nullptr);
-  EXPECT_EQ(enumName((EnumNonStrict)-1), nullptr);
 }
 
 TEST(EnumStrict, ShortEnumNameSafe) {
@@ -64,6 +62,4 @@ TEST(EnumNonStrict, ShortEnumNameSafe) {
   EXPECT_EQ(enumNameSafe((EnumNonStrict)6), "NEW_VALUE");
   EXPECT_EQ(enumNameSafe((EnumNonStrict)4), "4");
   EXPECT_EQ(enumNameSafe((EnumNonStrict)5), "5");
-  EXPECT_EQ(enumNameSafe((EnumNonStrict)42), "42");
-  EXPECT_EQ(enumNameSafe((EnumNonStrict)-1), "-1");
 }
