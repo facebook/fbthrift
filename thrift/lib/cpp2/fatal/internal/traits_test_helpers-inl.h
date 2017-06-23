@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -244,6 +244,16 @@ void test_thrift_list_traits() {
     EXPECT_TRUE(traits::empty(s));
     EXPECT_EQ(0, s.size());
   }
+
+  {
+    T s(detail::test_data::primes.begin(), detail::test_data::primes.end());
+    auto sizeBefore = traits::size(s);
+    EXPECT_FALSE(traits::empty(s));
+    auto iter = traits::erase(s, s.begin());
+    EXPECT_EQ(s.size(), traits::size(s));
+    EXPECT_EQ(traits::size(s), sizeBefore - 1);
+    EXPECT_EQ(*iter, *(traits::begin(s)));
+  }
 }
 
 template <typename T>
@@ -362,6 +372,21 @@ void test_thrift_set_traits() {
     EXPECT_EQ(s.find(k), traits::find(s, k));
     EXPECT_EQ(sconst.find(k), traits::find(sconst, k));
   }
+
+  {
+    T s(detail::test_data::primes.begin(), detail::test_data::primes.end());
+    EXPECT_FALSE(traits::empty(s));
+    auto sizeBefore = traits::size(s);
+    EXPECT_FALSE(traits::empty(s));
+
+    auto count = traits::erase(s, 6);
+    EXPECT_EQ(traits::size(s), sizeBefore);
+    EXPECT_EQ(count, 0);
+
+    count = traits::erase(s, 5);
+    EXPECT_EQ(traits::size(s), sizeBefore - 1);
+    EXPECT_EQ(count, 1);
+  }
 }
 
 template <typename T>
@@ -435,6 +460,23 @@ void test_thrift_map_traits() {
     EXPECT_EQ(1, s.count(k));
     EXPECT_EQ(s.find(17), traits::find(s, 17));
     EXPECT_EQ(sconst.find(17), traits::find(sconst, 17));
+  }
+
+  {
+    T s(
+      detail::test_data::primes_2x.begin(),
+      detail::test_data::primes_2x.end()
+    );
+    EXPECT_FALSE(traits::empty(s));
+    auto sizeBefore = traits::size(s);
+
+    auto count = traits::erase(s, 6);
+    EXPECT_EQ(traits::size(s), sizeBefore);
+    EXPECT_EQ(count, 0);
+
+    count = traits::erase(s, 5);
+    EXPECT_EQ(traits::size(s), sizeBefore - 1);
+    EXPECT_EQ(count, 1);
   }
 }
 

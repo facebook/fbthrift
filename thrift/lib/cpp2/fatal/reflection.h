@@ -2119,6 +2119,9 @@ struct thrift_list_traits_std {
   }
   static inline void reserve(type &what, size_type size) { what.reserve(size); }
   static inline size_type size(type const &what) { return what.size(); }
+  static inline iterator erase(type& what, const_iterator pos) {
+    return what.erase(pos);
+  }
 };
 
 template <typename List>
@@ -2160,6 +2163,9 @@ class thrift_list_traits_adapter {
   auto push_back(value_type &&e) { traits::push_back(_, std::move(e)); }
   auto reserve(size_type size) { traits::reserve(_, size); }
   auto size() const { return traits::size(_); }
+  auto erase(const_iterator pos) {
+    return traits::erase(_, pos);
+  }
 };
 
 /**
@@ -2256,6 +2262,12 @@ struct thrift_set_traits_std {
     return what.insert(position, std::move(val));
   }
   static inline size_type size(type const &what) { return what.size(); }
+  static inline iterator erase(type& what, const_iterator pos) {
+    return what.erase(pos);
+  }
+  static inline size_type erase(type& what, const key_type& key) {
+    return what.erase(key);
+  }
 };
 
 template <typename Set>
@@ -2303,6 +2315,12 @@ class thrift_set_traits_adapter {
   auto insert(const_iterator position, value_type &&val) {
     return traits::insert(_, position, std::move(val)); }
   auto size() const { return traits::size(_); }
+  auto erase(const_iterator pos) {
+    return traits::erase(_, pos);
+  }
+  auto erase(const key_type& key) {
+    return traits::erase(_, key);
+  }
 };
 
 /**
@@ -2425,6 +2443,12 @@ struct thrift_map_traits_std {
     return what[std::move(k)];
   }
   static inline size_type size(type const &what) { return what.size(); }
+  static inline iterator erase(type& what, const_iterator pos) {
+    return what.erase(pos);
+  }
+  static inline size_type erase(type& what, const key_type& key) {
+    return what.erase(key);
+  }
 };
 
 template <typename Map>
@@ -2474,6 +2498,12 @@ class thrift_map_traits_adapter {
   auto &operator[](key_type &&k) {
     return traits::get_or_create(_, std::move(k)); }
   auto size() const { return traits::size(_); }
+  auto erase(const_iterator pos) {
+    return traits::erase(_, pos);
+  }
+  auto erase(const key_type& key) {
+    return traits::erase(_, key);
+  }
 };
 
 }} // apache::thrift
