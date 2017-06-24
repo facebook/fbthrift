@@ -155,6 +155,7 @@ class BaseThriftServer : public apache::thrift::server::TServer {
   // If it is set true, server will check and use client timeout header
   bool useClientTimeout_ = true;
 
+  std::string overloadedErrorCode_ = kOverloadedErrorCode;
   folly::Function<bool(const transport::THeader*)> isOverloaded_ =
       [](const transport::THeader*) { return false; };
   std::function<int64_t(const std::string&)> getLoad_;
@@ -621,6 +622,14 @@ class BaseThriftServer : public apache::thrift::server::TServer {
    * @return listen backlog.
    */
   int getListenBacklog() const { return listenBacklog_; }
+
+  void setOverloadedErrorCode(const std::string& errorCode) {
+    overloadedErrorCode_ = errorCode;
+  }
+
+  const std::string& getOverloadedErrorCode() {
+    return overloadedErrorCode_;
+  }
 
   void setIsOverloaded(folly::Function<
       bool(const apache::thrift::transport::THeader*)> isOverloaded) {
