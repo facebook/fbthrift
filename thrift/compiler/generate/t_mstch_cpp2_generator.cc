@@ -23,6 +23,8 @@
 
 namespace {
 
+bool is_orderable(t_type const* type);
+
 class t_mstch_cpp2_generator : public t_mstch_generator {
  public:
   t_mstch_cpp2_generator(
@@ -229,34 +231,6 @@ class mstch_cpp2_struct : public mstch_struct {
         generators_->field_generator_.get(),
         generators_,
         cache_);
-  }
-  bool is_orderable(t_type const* type) {
-    if (type->is_base_type()) {
-      return true;
-    }
-    if (type->is_enum()) {
-      return true;
-    }
-    if (type->is_struct()) {
-      for (auto const* f : dynamic_cast<t_struct const*>(type)->get_members()) {
-        if (f->get_req() == t_field::e_req::T_OPTIONAL ||
-            !is_orderable(f->get_type())) {
-          return false;
-        }
-      }
-      return true;
-    }
-    if (type->is_list()) {
-      return is_orderable(dynamic_cast<t_list const*>(type)->get_elem_type());
-    }
-    if (type->is_set()) {
-      return is_orderable(dynamic_cast<t_set const*>(type)->get_elem_type());
-    }
-    if (type->is_map()) {
-      return is_orderable(dynamic_cast<t_map const*>(type)->get_key_type()) &&
-          is_orderable(dynamic_cast<t_map const*>(type)->get_val_type());
-    }
-    return false;
   }
   mstch::node is_struct_orderable() {
     return std::all_of(
@@ -976,6 +950,35 @@ bool t_mstch_cpp2_generator::has_annotation(
     const t_field* f,
     const std::string& name) {
   return f->annotations_.count(name);
+}
+
+bool is_orderable(t_type const* type) {
+  if (type->is_base_type()) {
+    return true;
+  }
+  if (type->is_enum()) {
+    return true;
+  }
+  if (type->is_struct()) {
+    for (auto const* f : dynamic_cast<t_struct const*>(type)->get_members()) {
+      if (f->get_req() == t_field::e_req::T_OPTIONAL ||
+          !is_orderable(f->get_type())) {
+        return false;
+      }
+    }
+    return true;
+  }
+  if (type->is_list()) {
+    return is_orderable(dynamic_cast<t_list const*>(type)->get_elem_type());
+  }
+  if (type->is_set()) {
+    return is_orderable(dynamic_cast<t_set const*>(type)->get_elem_type());
+  }
+  if (type->is_map()) {
+    return is_orderable(dynamic_cast<t_map const*>(type)->get_key_type()) &&
+        is_orderable(dynamic_cast<t_map const*>(type)->get_val_type());
+  }
+  return false;
 }
 }
 
