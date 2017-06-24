@@ -10,7 +10,7 @@
  * Original thrift enum:-
  * MyEnum
  */
-enum MyEnum: int {
+enum MyEnum : int {
   MyValue1 = 0;
   MyValue2 = 1;
 }

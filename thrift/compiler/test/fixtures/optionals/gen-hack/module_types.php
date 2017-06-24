@@ -10,7 +10,7 @@
  * Original thrift enum:-
  * Animal
  */
-enum Animal: int {
+enum Animal : int {
   DOG = 1;
   CAT = 2;
   TARANTULA = 3;

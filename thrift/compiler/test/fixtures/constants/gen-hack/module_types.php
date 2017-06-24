@@ -10,7 +10,7 @@
  * Original thrift enum:-
  * EmptyEnum
  */
-enum EmptyEnum: int {
+enum EmptyEnum : int {
 }
 type EmptyEnumType = EmptyEnum;
 
@@ -18,7 +18,7 @@ type EmptyEnumType = EmptyEnum;
  * Original thrift enum:-
  * City
  */
-enum City: int {
+enum City : int {
   NYC = 0;
   MPK = 1;
   SEA = 2;
@@ -30,7 +30,7 @@ type CityType = City;
  * Original thrift enum:-
  * Company
  */
-enum Company: int {
+enum Company : int {
   FACEBOOK = 0;
   WHATSAPP = 1;
   OCULUS = 2;

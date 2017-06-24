@@ -870,14 +870,14 @@ void t_hack_generator::generate_enum(t_enum* tenum) {
     f_types_ << "final class " << hack_name(tenum, true) << " extends Flags {"
              << endl;
   } else if (oldenum_) {
-    typehint = hack_name(tenum) + "Type";
+    typehint = hack_name(tenum, true) + "Type";
     f_types_ << "newtype " << typehint << " = int;" << endl
-             << "final class " << hack_name(tenum) << " extends Enum<"
+             << "final class " << hack_name(tenum, true) << " extends Enum<"
              << typehint << "> {" << endl;
   } else {
     hack_enum = true;
-    typehint = hack_name(tenum);
-    f_types_ << "enum " << hack_name(tenum) << ": int {" << endl;
+    typehint = hack_name(tenum, true);
+    f_types_ << "enum " << hack_name(tenum, true) << " : int {" << endl;
   }
 
   indent_up();

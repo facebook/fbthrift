@@ -10,7 +10,7 @@
  * Original thrift enum:-
  * Enum
  */
-enum Enum: int {
+enum Enum : int {
   ENUM = 1;
 }
 type EnumType = Enum;

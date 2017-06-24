@@ -12,10 +12,10 @@ namespace test\fixtures;
  * Original thrift enum:-
  * Enum
  */
-enum \test\fixtures\Enum: int {
+enum Enum : int {
   ENUM = 1;
 }
-type \test\fixtures\EnumType = \test\fixtures\Enum;
+type EnumType = Enum;
 
 /**
  * Original thrift struct:-
