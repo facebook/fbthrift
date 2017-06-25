@@ -141,6 +141,8 @@ class ClientLoadConfig : public loadgen::WeightedLoadConfig {
 
   bool zlib() const;
 
+  std::string server() const;
+  uint32_t port() const;
   std::string SASLPolicy() const;
   std::string SASLServiceTier() const;
   std::string key() const;

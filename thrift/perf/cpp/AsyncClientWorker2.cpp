@@ -212,14 +212,11 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
       return std::make_shared<LoadTestAsyncClient>(std::move(channel));
     } else if (config->useHTTP2Protocol()) {
       TAsyncTransport::UniquePtr socket(
-          new TAsyncSocket(&eb_, *config->getAddress(), kTimeout));
-      std::unique_ptr<apache::thrift::HTTPClientChannel,
-                      folly::DelayedDestruction::Destructor>
-          channel(HTTPClientChannel::newHTTP2Channel(
-                    std::move(socket)));
-      channel->setHTTPHost("localhost");
+          new TAsyncSocket(&eb_, config->server(), config->port(), kTimeout));
+      auto channel = HTTPClientChannel::newHTTP2Channel(std::move(socket));
+      channel->setHTTPHost("localhost6");
       channel->setHTTPUrl("/");
-
+      channel->setProtocolId(T_COMPACT_PROTOCOL);
       return std::make_shared<LoadTestAsyncClient>(std::move(channel));
     }
 

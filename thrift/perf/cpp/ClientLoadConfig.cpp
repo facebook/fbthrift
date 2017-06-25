@@ -250,6 +250,14 @@ bool ClientLoadConfig::zlib() const {
   return FLAGS_zlib;
 }
 
+std::string ClientLoadConfig::server() const {
+  return FLAGS_server;
+}
+
+uint32_t ClientLoadConfig::port() const {
+  return FLAGS_port;
+}
+
 std::string ClientLoadConfig::SASLPolicy() const {
   return FLAGS_sasl_policy_test;
 }
