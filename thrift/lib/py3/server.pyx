@@ -5,6 +5,7 @@ from libc.stdint cimport uint64_t
 from thrift.py3.server cimport (
     cSSLPolicy, SSLPolicy__DISABLED, SSLPolicy__PERMITTED, SSLPolicy__REQUIRED
 )
+from folly.iobuf cimport IOBuf, move
 
 import asyncio
 import collections

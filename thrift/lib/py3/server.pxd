@@ -1,7 +1,7 @@
-from libc.stdint cimport uint16_t, uint64_t
-from libc.string cimport const_uchar
+from libc.stdint cimport uint16_t
 from libcpp.string cimport string
 from libcpp.memory cimport shared_ptr, unique_ptr
+from folly.iobuf cimport IOBuf
 
 cdef extern from "thrift/lib/cpp2/async/AsyncProcessor.h" \
         namespace "apache::thrift":
@@ -31,19 +31,10 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         void stop() nogil except +
         void setSSLPolicy(cSSLPolicy policy) nogil
 
-
-cdef extern from "folly/io/IOBuf.h" namespace "folly":
-    cdef cppclass IOBuf:
-        uint64_t length()
-        const_uchar* data()
-
 cdef extern from "folly/ssl/OpenSSLCertUtils.h":
     # I need a opque id for x509 structs
     cdef cppclass X509:
         pass
-
-cdef extern from '<utility>' namespace 'std':
-    unique_ptr[IOBuf] move(unique_ptr[IOBuf])
 
 cdef extern from "folly/ssl/OpenSSLCertUtils.h" \
         namespace "folly::ssl::OpenSSLCertUtils":

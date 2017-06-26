@@ -37,7 +37,7 @@ cdef cEmptyEnum EmptyEnum_to_cpp(value)
 cdef cCity City_to_cpp(value)
 cdef cCompany Company_to_cpp(value)
 
-cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
+cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
     cdef cppclass cInternship__isset "cpp2::Internship::__isset":
         bint weeks
         bint title

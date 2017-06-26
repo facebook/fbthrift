@@ -57,7 +57,7 @@ cdef c{{enum:name}} {{enum:name}}_to_cpp(value)
 
 {{#program:structs}}
 {{#first?}}
-cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
+cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types_custom_protocol.h"{{!
 }} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":
 {{/first?}}
     cdef cppclass c{{struct:name}}__isset "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::__isset":

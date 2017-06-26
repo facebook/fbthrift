@@ -39,13 +39,16 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
+from libc.stdint cimport int8_t, int16_t, int32_t, int64_t, uint32_t
 from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET
 cimport thrift.py3.std_libcpp as std_libcpp
+from thrift.py3.serializer cimport IOBuf
+from thrift.py3.serializer import Protocol
+cimport thrift.py3.serializer as serializer
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -94,6 +97,26 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
         {{/struct:fields}}
 
     {{^struct:exception?}}
+    cdef bytes _serialize({{struct:name}} self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[c{{struct:name}}](deref(self.c_{{struct:name}}.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[c{{struct:name}}](deref(self.c_{{struct:name}}.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[c{{struct:name}}](deref(self.c_{{struct:name}}.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize({{struct:name}} self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[c{{struct:name}}](buf, deref(self.c_{{struct:name}}.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[c{{struct:name}}](buf, deref(self.c_{{struct:name}}.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[c{{struct:name}}](buf, deref(self.c_{{struct:name}}.get()))
+        return needed
+
     def __call__(
         {{struct:name}} self{{#struct:fields}},
         {{field:name}}=NOTSET{{/struct:fields}}

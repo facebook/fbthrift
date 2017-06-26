@@ -10,13 +10,16 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
+from libc.stdint cimport int8_t, int16_t, int32_t, int64_t, uint32_t
 from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET
 cimport thrift.py3.std_libcpp as std_libcpp
+from thrift.py3.serializer cimport IOBuf
+from thrift.py3.serializer import Protocol
+cimport thrift.py3.serializer as serializer
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -139,6 +142,26 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
             deref(inst.c_SimpleStruct).real = real
             deref(inst.c_SimpleStruct).__isset.real = True
 
+
+    cdef bytes _serialize(SimpleStruct self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cSimpleStruct](deref(self.c_SimpleStruct.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cSimpleStruct](deref(self.c_SimpleStruct.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cSimpleStruct](deref(self.c_SimpleStruct.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize(SimpleStruct self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cSimpleStruct](buf, deref(self.c_SimpleStruct.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cSimpleStruct](buf, deref(self.c_SimpleStruct.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cSimpleStruct](buf, deref(self.c_SimpleStruct.get()))
+        return needed
 
     def __call__(
         SimpleStruct self,
@@ -370,6 +393,26 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
             deref(inst.c_ComplexStruct).some_bytes = some_bytes
             deref(inst.c_ComplexStruct).__isset.some_bytes = True
 
+
+    cdef bytes _serialize(ComplexStruct self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cComplexStruct](deref(self.c_ComplexStruct.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cComplexStruct](deref(self.c_ComplexStruct.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cComplexStruct](deref(self.c_ComplexStruct.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize(ComplexStruct self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cComplexStruct](buf, deref(self.c_ComplexStruct.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cComplexStruct](buf, deref(self.c_ComplexStruct.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cComplexStruct](buf, deref(self.c_ComplexStruct.get()))
+        return needed
 
     def __call__(
         ComplexStruct self,

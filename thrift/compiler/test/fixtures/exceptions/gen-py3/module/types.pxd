@@ -19,7 +19,7 @@ cimport thrift.py3.types
 
 
 
-cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
+cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
     cdef cppclass cBanal__isset "cpp2::Banal::__isset":
         pass
 

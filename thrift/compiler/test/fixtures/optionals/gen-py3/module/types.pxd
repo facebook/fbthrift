@@ -26,7 +26,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
 
 cdef cAnimal Animal_to_cpp(value)
 
-cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
+cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
     cdef cppclass cColor__isset "cpp2::Color::__isset":
         bint red
         bint green

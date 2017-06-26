@@ -21,7 +21,7 @@ cimport module1.types
 
 
 
-cdef extern from "src/gen-cpp2/module2_types.h" namespace "module2":
+cdef extern from "src/gen-cpp2/module2_types_custom_protocol.h" namespace "module2":
     cdef cppclass cStruct__isset "module2::Struct::__isset":
         bint first
         bint second

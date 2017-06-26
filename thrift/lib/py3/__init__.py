@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 __all__ = [
     'get_client', 'Client', 'ThriftServer', 'Struct', 'BadEnum', 'Error',
-    'ApplicationError', 'TransportError', 'SSLPolicy', 'pass_context'
+    'ApplicationError', 'TransportError', 'SSLPolicy', 'pass_context',
+    'Protocol', 'serialize', 'deserialize'
 ]
 
 try:
@@ -29,3 +30,10 @@ except ImportError:
     __all__.remove('Error')
     __all__.remove('ApplicationError')
     __all__.remove('TransportError')
+
+try:
+    from thrift.py3.serializer import Protocol, serialize, deserialize
+except ImportError:
+    __all__.remove('Protocol')
+    __all__.remove('serialize')
+    __all__.remove('deserialize')

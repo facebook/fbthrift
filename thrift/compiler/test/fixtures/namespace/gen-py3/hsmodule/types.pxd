@@ -19,7 +19,7 @@ cimport thrift.py3.types
 
 
 
-cdef extern from "gen-cpp2/hsmodule_types.h" namespace "cpp2":
+cdef extern from "gen-cpp2/hsmodule_types_custom_protocol.h" namespace "cpp2":
     cdef cppclass cHsFoo__isset "cpp2::HsFoo::__isset":
         bint MyInt
 

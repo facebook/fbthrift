@@ -10,13 +10,16 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
+from libc.stdint cimport int8_t, int16_t, int32_t, int64_t, uint32_t
 from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET
 cimport thrift.py3.std_libcpp as std_libcpp
+from thrift.py3.serializer cimport IOBuf
+from thrift.py3.serializer import Protocol
+cimport thrift.py3.serializer as serializer
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -38,6 +41,26 @@ cdef class Included(thrift.py3.types.Struct):
             deref(inst.c_Included).MyIntField = MyIntField
             deref(inst.c_Included).__isset.MyIntField = True
 
+
+    cdef bytes _serialize(Included self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cIncluded](deref(self.c_Included.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cIncluded](deref(self.c_Included.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cIncluded](deref(self.c_Included.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize(Included self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cIncluded](buf, deref(self.c_Included.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cIncluded](buf, deref(self.c_Included.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cIncluded](buf, deref(self.c_Included.get()))
+        return needed
 
     def __call__(
         Included self,

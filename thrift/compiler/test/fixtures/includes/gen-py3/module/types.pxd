@@ -20,7 +20,7 @@ cimport includes.types
 
 
 
-cdef extern from "gen-cpp2/module_types.h" namespace "cpp2":
+cdef extern from "gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
     cdef cppclass cMyStruct__isset "cpp2::MyStruct::__isset":
         bint MyIncludedField
         bint MyIncludedInt

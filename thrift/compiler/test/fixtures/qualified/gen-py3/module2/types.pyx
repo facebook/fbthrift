@@ -10,13 +10,16 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
+from libc.stdint cimport int8_t, int16_t, int32_t, int64_t, uint32_t
 from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET
 cimport thrift.py3.std_libcpp as std_libcpp
+from thrift.py3.serializer cimport IOBuf
+from thrift.py3.serializer import Protocol
+cimport thrift.py3.serializer as serializer
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -53,6 +56,26 @@ cdef class Struct(thrift.py3.types.Struct):
             deref(inst.c_Struct).second = deref(__second.get())
             deref(inst.c_Struct).__isset.second = True
 
+
+    cdef bytes _serialize(Struct self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cStruct](deref(self.c_Struct.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cStruct](deref(self.c_Struct.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cStruct](deref(self.c_Struct.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize(Struct self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cStruct](buf, deref(self.c_Struct.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cStruct](buf, deref(self.c_Struct.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cStruct](buf, deref(self.c_Struct.get()))
+        return needed
 
     def __call__(
         Struct self,
@@ -195,6 +218,26 @@ cdef class BigStruct(thrift.py3.types.Struct):
             deref(inst.c_BigStruct).id = id
             deref(inst.c_BigStruct).__isset.id = True
 
+
+    cdef bytes _serialize(BigStruct self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cBigStruct](deref(self.c_BigStruct.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cBigStruct](deref(self.c_BigStruct.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cBigStruct](deref(self.c_BigStruct.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize(BigStruct self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cBigStruct](buf, deref(self.c_BigStruct.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cBigStruct](buf, deref(self.c_BigStruct.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cBigStruct](buf, deref(self.c_BigStruct.get()))
+        return needed
 
     def __call__(
         BigStruct self,

@@ -10,13 +10,16 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
+from libc.stdint cimport int8_t, int16_t, int32_t, int64_t, uint32_t
 from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET
 cimport thrift.py3.std_libcpp as std_libcpp
+from thrift.py3.serializer cimport IOBuf
+from thrift.py3.serializer import Protocol
+cimport thrift.py3.serializer as serializer
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -79,6 +82,26 @@ cdef class Internship(thrift.py3.types.Struct):
             deref(inst.c_Internship).employer = Company_to_cpp(employer)
             deref(inst.c_Internship).__isset.employer = True
 
+
+    cdef bytes _serialize(Internship self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cInternship](deref(self.c_Internship.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cInternship](deref(self.c_Internship.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cInternship](deref(self.c_Internship.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize(Internship self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cInternship](buf, deref(self.c_Internship.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cInternship](buf, deref(self.c_Internship.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cInternship](buf, deref(self.c_Internship.get()))
+        return needed
 
     def __call__(
         Internship self,
@@ -217,6 +240,26 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
             deref(inst.c_UnEnumStruct).__isset.city = True
 
 
+    cdef bytes _serialize(UnEnumStruct self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cUnEnumStruct](deref(self.c_UnEnumStruct.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cUnEnumStruct](deref(self.c_UnEnumStruct.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cUnEnumStruct](deref(self.c_UnEnumStruct.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize(UnEnumStruct self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cUnEnumStruct](buf, deref(self.c_UnEnumStruct.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cUnEnumStruct](buf, deref(self.c_UnEnumStruct.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cUnEnumStruct](buf, deref(self.c_UnEnumStruct.get()))
+        return needed
+
     def __call__(
         UnEnumStruct self,
         city=NOTSET
@@ -315,6 +358,26 @@ cdef class Range(thrift.py3.types.Struct):
             deref(inst.c_Range).min = min
         if max is not None:
             deref(inst.c_Range).max = max
+
+    cdef bytes _serialize(Range self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cRange](deref(self.c_Range.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cRange](deref(self.c_Range.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cRange](deref(self.c_Range.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize(Range self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cRange](buf, deref(self.c_Range.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cRange](buf, deref(self.c_Range.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cRange](buf, deref(self.c_Range.get()))
+        return needed
 
     def __call__(
         Range self,

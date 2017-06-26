@@ -27,7 +27,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
 
 cdef cAnEnum AnEnum_to_cpp(value)
 
-cdef extern from "src/gen-cpp2/module_types.h" namespace "py3::simple":
+cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "py3::simple":
     cdef cppclass cSimpleException__isset "py3::simple::SimpleException::__isset":
         bint err_code
 

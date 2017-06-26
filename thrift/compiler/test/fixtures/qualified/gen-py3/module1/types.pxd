@@ -26,7 +26,7 @@ cdef extern from "gen-cpp2/module1_types.h" namespace "module1":
 
 cdef cEnum Enum_to_cpp(value)
 
-cdef extern from "gen-cpp2/module1_types.h" namespace "module1":
+cdef extern from "gen-cpp2/module1_types_custom_protocol.h" namespace "module1":
     cdef cppclass cStruct__isset "module1::Struct::__isset":
         bint first
         bint second

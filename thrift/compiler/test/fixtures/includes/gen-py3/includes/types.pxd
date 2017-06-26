@@ -19,7 +19,7 @@ cimport thrift.py3.types
 
 
 
-cdef extern from "gen-cpp2/includes_types.h" namespace "cpp2":
+cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "cpp2":
     cdef cppclass cIncluded__isset "cpp2::Included::__isset":
         bint MyIntField
 

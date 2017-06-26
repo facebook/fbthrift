@@ -25,7 +25,7 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
 
 cdef cMyEnum MyEnum_to_cpp(value)
 
-cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
+cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
     cdef cppclass cMyStruct__isset "cpp2::MyStruct::__isset":
         bint MyIntField
         bint MyStringField

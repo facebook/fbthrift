@@ -10,13 +10,16 @@ from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from libcpp.iterator cimport inserter as cinserter
 from cpython cimport bool as pbool
-from libc.stdint cimport int8_t, int16_t, int32_t, int64_t
+from libc.stdint cimport int8_t, int16_t, int32_t, int64_t, uint32_t
 from cython.operator cimport dereference as deref, preincrement as inc
 import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET
 cimport thrift.py3.std_libcpp as std_libcpp
+from thrift.py3.serializer cimport IOBuf
+from thrift.py3.serializer import Protocol
+cimport thrift.py3.serializer as serializer
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -33,6 +36,26 @@ cdef class Empty(thrift.py3.types.Struct):
         self.c_Empty = make_shared[cEmpty]()
 
         inst = self
+
+    cdef bytes _serialize(Empty self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cEmpty](deref(self.c_Empty.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cEmpty](deref(self.c_Empty.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cEmpty](deref(self.c_Empty.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize(Empty self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cEmpty](buf, deref(self.c_Empty.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cEmpty](buf, deref(self.c_Empty.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cEmpty](buf, deref(self.c_Empty.get()))
+        return needed
 
     def __call__(
         Empty self
@@ -104,6 +127,26 @@ cdef class Nada(thrift.py3.types.Struct):
         self.c_Nada = make_shared[cNada]()
 
         inst = self
+
+    cdef bytes _serialize(Nada self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cNada](deref(self.c_Nada.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cNada](deref(self.c_Nada.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cNada](deref(self.c_Nada.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize(Nada self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cNada](buf, deref(self.c_Nada.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cNada](buf, deref(self.c_Nada.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cNada](buf, deref(self.c_Nada.get()))
+        return needed
 
     def __call__(
         Nada self
