@@ -49,6 +49,7 @@ cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
 cimport thrift.py3.serializer as serializer
+from thrift.py3.serializer import deserialize, serialize
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -116,6 +117,9 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
         elif proto is Protocol.JSON:
             needed = serializer.JSONDeserialize[c{{struct:name}}](buf, deref(self.c_{{struct:name}}.get()))
         return needed
+
+    def __reduce__(self):
+        return (deserialize, ({{struct:name}}, serialize(self)))
 
     def __call__(
         {{struct:name}} self{{#struct:fields}},

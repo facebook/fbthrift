@@ -20,6 +20,7 @@ cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
 cimport thrift.py3.serializer as serializer
+from thrift.py3.serializer import deserialize, serialize
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -61,6 +62,9 @@ cdef class Foo(thrift.py3.types.Struct):
         elif proto is Protocol.JSON:
             needed = serializer.JSONDeserialize[cFoo](buf, deref(self.c_Foo.get()))
         return needed
+
+    def __reduce__(self):
+        return (deserialize, (Foo, serialize(self)))
 
     def __call__(
         Foo self,

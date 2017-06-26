@@ -20,6 +20,7 @@ cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
 cimport thrift.py3.serializer as serializer
+from thrift.py3.serializer import deserialize, serialize
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -102,6 +103,9 @@ cdef class Internship(thrift.py3.types.Struct):
         elif proto is Protocol.JSON:
             needed = serializer.JSONDeserialize[cInternship](buf, deref(self.c_Internship.get()))
         return needed
+
+    def __reduce__(self):
+        return (deserialize, (Internship, serialize(self)))
 
     def __call__(
         Internship self,
@@ -260,6 +264,9 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
             needed = serializer.JSONDeserialize[cUnEnumStruct](buf, deref(self.c_UnEnumStruct.get()))
         return needed
 
+    def __reduce__(self):
+        return (deserialize, (UnEnumStruct, serialize(self)))
+
     def __call__(
         UnEnumStruct self,
         city=NOTSET
@@ -378,6 +385,9 @@ cdef class Range(thrift.py3.types.Struct):
         elif proto is Protocol.JSON:
             needed = serializer.JSONDeserialize[cRange](buf, deref(self.c_Range.get()))
         return needed
+
+    def __reduce__(self):
+        return (deserialize, (Range, serialize(self)))
 
     def __call__(
         Range self,

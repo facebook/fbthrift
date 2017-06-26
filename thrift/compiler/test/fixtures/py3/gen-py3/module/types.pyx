@@ -20,6 +20,7 @@ cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
 cimport thrift.py3.serializer as serializer
+from thrift.py3.serializer import deserialize, serialize
 
 import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
@@ -162,6 +163,9 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         elif proto is Protocol.JSON:
             needed = serializer.JSONDeserialize[cSimpleStruct](buf, deref(self.c_SimpleStruct.get()))
         return needed
+
+    def __reduce__(self):
+        return (deserialize, (SimpleStruct, serialize(self)))
 
     def __call__(
         SimpleStruct self,
@@ -413,6 +417,9 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         elif proto is Protocol.JSON:
             needed = serializer.JSONDeserialize[cComplexStruct](buf, deref(self.c_ComplexStruct.get()))
         return needed
+
+    def __reduce__(self):
+        return (deserialize, (ComplexStruct, serialize(self)))
 
     def __call__(
         ComplexStruct self,
