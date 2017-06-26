@@ -4666,6 +4666,7 @@ class CppGenerator(t_generator.Generator):
             with s.namespace('apache.thrift.frozen').scope:
                 for obj in objects:
                     self._generate_frozen_layout(obj, out())
+        s.release()
 
     def _generate_modulemap(self):
         name = self._program.name
