@@ -259,6 +259,7 @@ class mstch_cpp2_service : public mstch_service {
             {"service:oneway_functions", &mstch_cpp2_service::oneway_functions},
             {"service:oneways?", &mstch_cpp2_service::has_oneway},
             {"service:cpp_includes", &mstch_cpp2_service::cpp_includes},
+            {"service:frozen2?", &mstch_cpp2_service::frozen2},
         });
   }
   mstch::array get_namespace_array(t_program const* program) {
@@ -344,6 +345,9 @@ class mstch_cpp2_service : public mstch_service {
     }
     return a;
   }
+  mstch::node frozen2() {
+    return cache_->parsed_options_.count("frozen2") != 0;
+  }
 };
 
 class mstch_cpp2_const : public mstch_const {
@@ -401,6 +405,7 @@ class mstch_cpp2_program : public mstch_program {
              &mstch_cpp2_program::include_prefix},
             {"program:enums?", &mstch_cpp2_program::has_enums},
             {"program:thrift_includes", &mstch_cpp2_program::thrift_includes},
+            {"program:frozen2?", &mstch_cpp2_program::frozen2},
         });
   }
   virtual std::string get_program_namespace() override {
@@ -473,6 +478,9 @@ class mstch_cpp2_program : public mstch_program {
       a.push_back(cache_->programs_[program_id]);
     }
     return a;
+  }
+  mstch::node frozen2() {
+    return cache_->parsed_options_.count("frozen2") != 0;
   }
 };
 
@@ -880,6 +888,12 @@ void t_mstch_cpp2_generator::generate_structs(t_program const* program) {
       cache_->programs_[id],
       "module_types_custom_protocol.h",
       name + "_types_custom_protocol.h");
+  if (cache_->parsed_options_.count("frozen2")) {
+    render_to_file(
+        cache_->programs_[id], "module_layouts.h", name + "_layouts.h");
+    render_to_file(
+        cache_->programs_[id], "module_layouts.cpp", name + "_layouts.cpp");
+  }
 }
 
 void t_mstch_cpp2_generator::generate_service(t_service const* service) {
