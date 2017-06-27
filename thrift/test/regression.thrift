@@ -13,7 +13,7 @@ enum repeated_values_enum {
   C = 1,
   D = 2,
   E = 3
-}
+} (thrift.duplicate_values)
 
 struct template_arguments_struct {
   1: i32 T
