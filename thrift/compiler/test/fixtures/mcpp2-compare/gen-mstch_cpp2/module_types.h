@@ -3747,11 +3747,14 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
 
   AnnotatatedStruct() :
       container_with_ref(std::make_unique<std::map<int32_t, std::vector<std::string>>>()),
-      req_container_with_ref(std::make_unique<std::map<int32_t, std::string>>()),
-      opt_container_with_ref(std::make_unique<std::map<int32_t, std::string>>()) {}
+      req_container_with_ref(std::make_unique<std::vector<std::string>>()),
+      opt_container_with_ref(std::make_unique<std::set<int32_t>>()),
+      ref_type_const(std::make_shared<std::map<int32_t, std::vector<std::string>>>()),
+      req_ref_type_unique(std::make_unique<std::vector<std::string>>()),
+      opt_ref_type_shared(std::make_shared<std::set<int32_t>>()) {}
   // FragileConstructor for use in initialization lists only
 
-  AnnotatatedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::containerStruct no_annotation__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref__arg, std::unique_ptr<std::map<int32_t, std::vector<std::string>>> container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, std::unique_ptr<std::map<int32_t, std::string>> req_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, std::unique_ptr<std::map<int32_t, std::string>> opt_container_with_ref__arg) :
+  AnnotatatedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::containerStruct no_annotation__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref__arg, std::unique_ptr<std::map<int32_t, std::vector<std::string>>> container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, std::unique_ptr<std::vector<std::string>> req_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, std::unique_ptr<std::set<int32_t>> opt_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique__arg, std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared__arg, std::shared_ptr<const std::map<int32_t, std::vector<std::string>>> ref_type_const__arg, std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const__arg, std::unique_ptr<std::vector<std::string>> req_ref_type_unique__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique__arg, std::shared_ptr<std::set<int32_t>> opt_ref_type_shared__arg) :
       no_annotation(std::move(no_annotation__arg)),
       cpp_unique_ref(std::move(cpp_unique_ref__arg)),
       cpp2_unique_ref(std::move(cpp2_unique_ref__arg)),
@@ -3761,7 +3764,16 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
       req_container_with_ref(std::move(req_container_with_ref__arg)),
       opt_cpp_unique_ref(std::move(opt_cpp_unique_ref__arg)),
       opt_cpp2_unique_ref(std::move(opt_cpp2_unique_ref__arg)),
-      opt_container_with_ref(std::move(opt_container_with_ref__arg)) {
+      opt_container_with_ref(std::move(opt_container_with_ref__arg)),
+      ref_type_unique(std::move(ref_type_unique__arg)),
+      ref_type_shared(std::move(ref_type_shared__arg)),
+      ref_type_const(std::move(ref_type_const__arg)),
+      req_ref_type_shared(std::move(req_ref_type_shared__arg)),
+      req_ref_type_const(std::move(req_ref_type_const__arg)),
+      req_ref_type_unique(std::move(req_ref_type_unique__arg)),
+      opt_ref_type_const(std::move(opt_ref_type_const__arg)),
+      opt_ref_type_unique(std::move(opt_ref_type_unique__arg)),
+      opt_ref_type_shared(std::move(opt_ref_type_shared__arg)) {
     __isset.no_annotation = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
@@ -3825,6 +3837,60 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
   {
     opt_container_with_ref = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<11, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    ref_type_unique = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<12, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    ref_type_shared = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<13, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    ref_type_const = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<14, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    req_ref_type_shared = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<15, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    req_ref_type_const = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<16, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    req_ref_type_unique = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<17, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    opt_ref_type_const = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<18, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    opt_ref_type_unique = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<19, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    opt_ref_type_shared = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+  }
 
   AnnotatatedStruct(AnnotatatedStruct&&) = default;
   AnnotatatedStruct(const AnnotatatedStruct& src);
@@ -3841,10 +3907,19 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
   std::unique_ptr<std::map<int32_t, std::vector<std::string>>> container_with_ref;
   std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref;
   std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref;
-  std::unique_ptr<std::map<int32_t, std::string>> req_container_with_ref;
+  std::unique_ptr<std::vector<std::string>> req_container_with_ref;
   std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref;
   std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref;
-  std::unique_ptr<std::map<int32_t, std::string>> opt_container_with_ref;
+  std::unique_ptr<std::set<int32_t>> opt_container_with_ref;
+  std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique;
+  std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared;
+  std::shared_ptr<const std::map<int32_t, std::vector<std::string>>> ref_type_const;
+  std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared;
+  std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const;
+  std::unique_ptr<std::vector<std::string>> req_ref_type_unique;
+  std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const;
+  std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique;
+  std::shared_ptr<std::set<int32_t>> opt_ref_type_shared;
 
   struct __isset {
     void __clear() {

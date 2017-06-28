@@ -37,9 +37,15 @@
 <%^field:cpp_ref?%>
   ::apache::thrift::Cpp2Ops< <% > Type%>>::clear(&<%field:name%>);
 <%/field:cpp_ref?%>
-<%#field:cpp_ref?%>
+<%#field:cpp_ref_unique?%>
   if (<%field:name%>) ::apache::thrift::Cpp2Ops< <% > Type%>>::clear(<%field:name%>.get());
-<%/field:cpp_ref?%>
+<%/field:cpp_ref_unique?%>
+<%#field:cpp_ref_shared?%>
+  if (<%field:name%>) ::apache::thrift::Cpp2Ops< <% > Type%>>::clear(<%field:name%>.get());
+<%/field:cpp_ref_shared?%>
+<%#field:cpp_ref_shared_const?%>
+  <%field:name%>.reset();
+<%/field:cpp_ref_shared_const?%>
 <%/type:struct?%>
 <%/field:type%><%/struct:fields%>
 <%#struct:fields?%>

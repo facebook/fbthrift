@@ -22,7 +22,7 @@
         %><% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%><%!
       %><%/field:value%><%!
       %><%^field:value%><%!
-        %><%#field:cpp_ref?%><%#type:resolves_to_container?%>std::make_unique<<% > Type%>>()<%/type:resolves_to_container?%><%/field:cpp_ref?%><%!
+        %><%#type:resolves_to_container?%><% > module_types_h/smart_ptr_constructor%><%/type:resolves_to_container?%><%!
         %><%#type:enum?%>static_cast<<% > common/namespace_cpp2%><%type:name%>>(0)<%/type:enum?%><%!
         %><%^type:enum?%><%^type:container?%>0<%/type:container?%><%/type:enum?%><%!
       %><%/field:value%><%!

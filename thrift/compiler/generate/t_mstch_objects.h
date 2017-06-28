@@ -636,6 +636,12 @@ class mstch_field : public mstch_base {
   bool has_annotation(std::string const& name) {
     return field_->annotations_.count(name);
   }
+  std::string get_annotation(std::string const& name) {
+    if (has_annotation(name)) {
+      return field_->annotations_.at(name);
+    }
+    return std::string();
+  }
   mstch::node name() {
     return field_->get_name();
   }

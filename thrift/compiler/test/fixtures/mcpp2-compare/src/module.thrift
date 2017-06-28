@@ -170,10 +170,19 @@ struct AnnotatatedStruct {
   4: map<i32, list<string>> container_with_ref (cpp2.ref)
   5: required containerStruct req_cpp_unique_ref (cpp.ref)
   6: required containerStruct req_cpp2_unique_ref (cpp2.ref)
-  7: required map<i32, string> req_container_with_ref (cpp2.ref)
+  7: required list<string> req_container_with_ref (cpp2.ref)
   8: optional containerStruct opt_cpp_unique_ref (cpp.ref)
   9: optional containerStruct opt_cpp2_unique_ref (cpp2.ref)
-  10: optional map<i32, string> opt_container_with_ref (cpp2.ref)
+  10: optional set<i32> opt_container_with_ref (cpp2.ref)
+  11: containerStruct ref_type_unique (cpp.ref_type="unique")
+  12: containerStruct ref_type_shared (cpp2.ref_type="shared")
+  13: map<i32, list<string>> ref_type_const (cpp2.ref_type="shared_const")
+  14: required containerStruct req_ref_type_shared (cpp.ref_type="shared")
+  15: required containerStruct req_ref_type_const (cpp2.ref_type="shared_const")
+  16: required list<string> req_ref_type_unique (cpp2.ref_type="unique")
+  17: optional containerStruct opt_ref_type_const (cpp.ref_type="shared_const")
+  18: optional containerStruct opt_ref_type_unique (cpp2.ref_type="unique")
+  19: optional set<i32> opt_ref_type_shared (cpp2.ref_type="shared")
 }
 
 service EmptyService {

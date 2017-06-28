@@ -1193,10 +1193,19 @@ AnnotatatedStruct::AnnotatatedStruct(const AnnotatatedStruct& src) {
   if (src.container_with_ref) container_with_ref.reset(new std::map<int32_t, std::vector<std::string>>(*src.container_with_ref));
   if (src.req_cpp_unique_ref) req_cpp_unique_ref.reset(new  ::some::valid::ns::containerStruct(*src.req_cpp_unique_ref));
   if (src.req_cpp2_unique_ref) req_cpp2_unique_ref.reset(new  ::some::valid::ns::containerStruct(*src.req_cpp2_unique_ref));
-  if (src.req_container_with_ref) req_container_with_ref.reset(new std::map<int32_t, std::string>(*src.req_container_with_ref));
+  if (src.req_container_with_ref) req_container_with_ref.reset(new std::vector<std::string>(*src.req_container_with_ref));
   if (src.opt_cpp_unique_ref) opt_cpp_unique_ref.reset(new  ::some::valid::ns::containerStruct(*src.opt_cpp_unique_ref));
   if (src.opt_cpp2_unique_ref) opt_cpp2_unique_ref.reset(new  ::some::valid::ns::containerStruct(*src.opt_cpp2_unique_ref));
-  if (src.opt_container_with_ref) opt_container_with_ref.reset(new std::map<int32_t, std::string>(*src.opt_container_with_ref));
+  if (src.opt_container_with_ref) opt_container_with_ref.reset(new std::set<int32_t>(*src.opt_container_with_ref));
+  if (src.ref_type_unique) ref_type_unique.reset(new  ::some::valid::ns::containerStruct(*src.ref_type_unique));
+  ref_type_shared = src.ref_type_shared;
+  ref_type_const = src.ref_type_const;
+  req_ref_type_shared = src.req_ref_type_shared;
+  req_ref_type_const = src.req_ref_type_const;
+  if (src.req_ref_type_unique) req_ref_type_unique.reset(new std::vector<std::string>(*src.req_ref_type_unique));
+  opt_ref_type_const = src.opt_ref_type_const;
+  if (src.opt_ref_type_unique) opt_ref_type_unique.reset(new  ::some::valid::ns::containerStruct(*src.opt_ref_type_unique));
+  opt_ref_type_shared = src.opt_ref_type_shared;
 }
 
 AnnotatatedStruct& AnnotatatedStruct::operator=(const AnnotatatedStruct& src) {
@@ -1217,6 +1226,15 @@ void AnnotatatedStruct::__clear() {
   if (opt_cpp_unique_ref) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(opt_cpp_unique_ref.get());
   if (opt_cpp2_unique_ref) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(opt_cpp2_unique_ref.get());
   opt_container_with_ref.reset(new typename decltype(opt_container_with_ref)::element_type());
+  if (ref_type_unique) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(ref_type_unique.get());
+  if (ref_type_shared) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(ref_type_shared.get());
+  ref_type_const.reset(new typename decltype(ref_type_const)::element_type());
+  if (req_ref_type_shared) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(req_ref_type_shared.get());
+  req_ref_type_const.reset();
+  req_ref_type_unique.reset(new typename decltype(req_ref_type_unique)::element_type());
+  opt_ref_type_const.reset();
+  if (opt_ref_type_unique) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(opt_ref_type_unique.get());
+  opt_ref_type_shared.reset(new typename decltype(opt_ref_type_shared)::element_type());
   __isset.__clear();
 }
 
@@ -1251,6 +1269,33 @@ bool AnnotatatedStruct::operator==(const AnnotatatedStruct& rhs) const {
   if (!(((opt_container_with_ref && rhs.opt_container_with_ref && *opt_container_with_ref == *rhs.opt_container_with_ref) ||(!opt_container_with_ref && !rhs.opt_container_with_ref)))) {
     return false;
   }
+  if (!(((ref_type_unique && rhs.ref_type_unique && *ref_type_unique == *rhs.ref_type_unique) ||(!ref_type_unique && !rhs.ref_type_unique)))) {
+    return false;
+  }
+  if (!(((ref_type_shared && rhs.ref_type_shared && *ref_type_shared == *rhs.ref_type_shared) ||(!ref_type_shared && !rhs.ref_type_shared)))) {
+    return false;
+  }
+  if (!(((ref_type_const && rhs.ref_type_const && *ref_type_const == *rhs.ref_type_const) ||(!ref_type_const && !rhs.ref_type_const)))) {
+    return false;
+  }
+  if (!(((req_ref_type_shared && rhs.req_ref_type_shared && *req_ref_type_shared == *rhs.req_ref_type_shared) ||(!req_ref_type_shared && !rhs.req_ref_type_shared)))) {
+    return false;
+  }
+  if (!(((req_ref_type_const && rhs.req_ref_type_const && *req_ref_type_const == *rhs.req_ref_type_const) ||(!req_ref_type_const && !rhs.req_ref_type_const)))) {
+    return false;
+  }
+  if (!(((req_ref_type_unique && rhs.req_ref_type_unique && *req_ref_type_unique == *rhs.req_ref_type_unique) ||(!req_ref_type_unique && !rhs.req_ref_type_unique)))) {
+    return false;
+  }
+  if (!(((opt_ref_type_const && rhs.opt_ref_type_const && *opt_ref_type_const == *rhs.opt_ref_type_const) ||(!opt_ref_type_const && !rhs.opt_ref_type_const)))) {
+    return false;
+  }
+  if (!(((opt_ref_type_unique && rhs.opt_ref_type_unique && *opt_ref_type_unique == *rhs.opt_ref_type_unique) ||(!opt_ref_type_unique && !rhs.opt_ref_type_unique)))) {
+    return false;
+  }
+  if (!(((opt_ref_type_shared && rhs.opt_ref_type_shared && *opt_ref_type_shared == *rhs.opt_ref_type_shared) ||(!opt_ref_type_shared && !rhs.opt_ref_type_shared)))) {
+    return false;
+  }
   return true;
 }
 
@@ -1274,6 +1319,15 @@ void swap(AnnotatatedStruct& a, AnnotatatedStruct& b) {
   swap(a.opt_cpp_unique_ref, b.opt_cpp_unique_ref);
   swap(a.opt_cpp2_unique_ref, b.opt_cpp2_unique_ref);
   swap(a.opt_container_with_ref, b.opt_container_with_ref);
+  swap(a.ref_type_unique, b.ref_type_unique);
+  swap(a.ref_type_shared, b.ref_type_shared);
+  swap(a.ref_type_const, b.ref_type_const);
+  swap(a.req_ref_type_shared, b.req_ref_type_shared);
+  swap(a.req_ref_type_const, b.req_ref_type_const);
+  swap(a.req_ref_type_unique, b.req_ref_type_unique);
+  swap(a.opt_ref_type_const, b.opt_ref_type_const);
+  swap(a.opt_ref_type_unique, b.opt_ref_type_unique);
+  swap(a.opt_ref_type_shared, b.opt_ref_type_shared);
   swap(a.__isset, b.__isset);
 }
 

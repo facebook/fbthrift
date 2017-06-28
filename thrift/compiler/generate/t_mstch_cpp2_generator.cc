@@ -161,10 +161,28 @@ class mstch_cpp2_field : public mstch_field {
         this,
         {
             {"field:cpp_ref?", &mstch_cpp2_field::cpp_ref},
+            {"field:cpp_ref_unique?", &mstch_cpp2_field::cpp_ref_unique},
+            {"field:cpp_ref_shared?", &mstch_cpp2_field::cpp_ref_shared},
+            {"field:cpp_ref_shared_const?",
+             &mstch_cpp2_field::cpp_ref_shared_const},
         });
   }
   mstch::node cpp_ref() {
-    return has_annotation("cpp.ref") || has_annotation("cpp2.ref");
+    return has_annotation("cpp.ref") || has_annotation("cpp2.ref") ||
+        has_annotation("cpp.ref_type") || has_annotation("cpp2.ref_type");
+  }
+  mstch::node cpp_ref_unique() {
+    return has_annotation("cpp.ref") || has_annotation("cpp2.ref") ||
+        get_annotation("cpp.ref_type") == "unique" ||
+        get_annotation("cpp2.ref_type") == "unique";
+  }
+  mstch::node cpp_ref_shared() {
+    return get_annotation("cpp.ref_type") == "shared" ||
+        get_annotation("cpp2.ref_type") == "shared";
+  }
+  mstch::node cpp_ref_shared_const() {
+    return get_annotation("cpp.ref_type") == "shared_const" ||
+        get_annotation("cpp2.ref_type") == "shared_const";
   }
 };
 
@@ -225,7 +243,9 @@ class mstch_cpp2_struct : public mstch_struct {
           type->is_enum() ||
           (type->is_container() &&
            (has_annotation(field, "cpp.ref") ||
-            has_annotation(field, "cpp2.ref")))) {
+            has_annotation(field, "cpp2.ref") ||
+            has_annotation(field, "cpp.ref_type") ||
+            has_annotation(field, "cpp2.ref_type")))) {
         filtered_fields.push_back(field);
       }
     }
