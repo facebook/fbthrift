@@ -209,6 +209,18 @@ void ParamServiceSvIf::async_tm_string_ret_string_param(std::unique_ptr<apache::
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_string_ret_string_param(std::move(param1)); });
 }
 
+void ParamServiceSvIf::binary_ret_binary_param(std::string& /*_return*/, std::unique_ptr<std::string> /*param1*/) {
+  throw apache::thrift::TApplicationException("Function binary_ret_binary_param is unimplemented");
+}
+
+folly::Future<std::unique_ptr<std::string>> ParamServiceSvIf::future_binary_ret_binary_param(std::unique_ptr<std::string> param1) {
+  return apache::thrift::detail::si::future_returning_uptr([&](std::string& _return) { binary_ret_binary_param(_return, std::move(param1)); });
+}
+
+void ParamServiceSvIf::async_tm_binary_ret_binary_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback, std::unique_ptr<std::string> param1) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_binary_ret_binary_param(std::move(param1)); });
+}
+
 void ParamServiceSvIf::map_ret_bool_param(std::map<std::string, int64_t>& /*_return*/, bool /*param1*/) {
   throw apache::thrift::TApplicationException("Function map_ret_bool_param is unimplemented");
 }
@@ -399,6 +411,8 @@ double ParamServiceSvNull::double_ret_setstruct_param(std::unique_ptr<std::set< 
 
 void ParamServiceSvNull::string_ret_string_param(std::string& /*_return*/, std::unique_ptr<std::string> /*param1*/) {}
 
+void ParamServiceSvNull::binary_ret_binary_param(std::string& /*_return*/, std::unique_ptr<std::string> /*param1*/) {}
+
 void ParamServiceSvNull::map_ret_bool_param(std::map<std::string, int64_t>& /*_return*/, bool /*param1*/) {}
 
 void ParamServiceSvNull::list_ret_map_setlist_param(std::vector<bool>& /*_return*/, std::unique_ptr<std::map<int32_t, std::vector<std::string>>> /*param1*/, std::unique_ptr<std::vector<std::string>> /*param2*/) {}
@@ -468,6 +482,7 @@ const ParamServiceAsyncProcessor::BinaryProtocolProcessMap ParamServiceAsyncProc
   {"i64_ret_i32_i32_i32_i32_i32_param", &ParamServiceAsyncProcessor::_processInThread_i64_ret_i32_i32_i32_i32_i32_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"double_ret_setstruct_param", &ParamServiceAsyncProcessor::_processInThread_double_ret_setstruct_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"string_ret_string_param", &ParamServiceAsyncProcessor::_processInThread_string_ret_string_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"binary_ret_binary_param", &ParamServiceAsyncProcessor::_processInThread_binary_ret_binary_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"map_ret_bool_param", &ParamServiceAsyncProcessor::_processInThread_map_ret_bool_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"list_ret_map_setlist_param", &ParamServiceAsyncProcessor::_processInThread_list_ret_map_setlist_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"mapsetlistmapliststring_ret_listlistlist_param", &ParamServiceAsyncProcessor::_processInThread_mapsetlistmapliststring_ret_listlistlist_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
@@ -503,6 +518,7 @@ const ParamServiceAsyncProcessor::CompactProtocolProcessMap ParamServiceAsyncPro
   {"i64_ret_i32_i32_i32_i32_i32_param", &ParamServiceAsyncProcessor::_processInThread_i64_ret_i32_i32_i32_i32_i32_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"double_ret_setstruct_param", &ParamServiceAsyncProcessor::_processInThread_double_ret_setstruct_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"string_ret_string_param", &ParamServiceAsyncProcessor::_processInThread_string_ret_string_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"binary_ret_binary_param", &ParamServiceAsyncProcessor::_processInThread_binary_ret_binary_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"map_ret_bool_param", &ParamServiceAsyncProcessor::_processInThread_map_ret_bool_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"list_ret_map_setlist_param", &ParamServiceAsyncProcessor::_processInThread_list_ret_map_setlist_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"mapsetlistmapliststring_ret_listlistlist_param", &ParamServiceAsyncProcessor::_processInThread_mapsetlistmapliststring_ret_listlistlist_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},

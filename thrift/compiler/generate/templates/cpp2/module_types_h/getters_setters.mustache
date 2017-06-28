@@ -17,7 +17,7 @@
 %><%#struct:fields%><%#field:type%><%^field:cpp_ref?%>
 <%#type:resolves_to_base_or_enum?%>
 
-<%^type:string?%>
+<%^type:string_or_binary?%>
 <%#field:optional?%>
   const <% > Type%>* get_<%field:name%>() const& {
     return __isset.<%field:name%> ? std::addressof(<%field:name%>) : nullptr;
@@ -42,8 +42,8 @@
 <%/field:required?%>
     return <%field:name%>;
   }
-<%/type:string?%>
-<%#type:string?%>
+<%/type:string_or_binary?%>
+<%#type:string_or_binary?%>
 <%#field:optional?%>
   const <% > Type%>* get_<%field:name%>() const& {
     return __isset.<%field:name%> ? std::addressof(<%field:name%>) : nullptr;
@@ -72,7 +72,7 @@
 <%/field:required?%>
     return <%field:name%>;
   }
-<%/type:string?%>
+<%/type:string_or_binary?%>
 <%/type:resolves_to_base_or_enum?%>
 <%#type:resolves_to_container_or_struct?%>
 <%#field:optional?%>

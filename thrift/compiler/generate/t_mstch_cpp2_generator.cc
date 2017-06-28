@@ -113,6 +113,7 @@ class mstch_cpp2_type : public mstch_type {
             {"type:resolves_to_complex_return?",
              &mstch_cpp2_type::resolves_to_complex_return},
             {"type:cpp_type", &mstch_cpp2_type::cpp_type},
+            {"type:string_or_binary?", &mstch_cpp2_type::is_string_or_binary},
         });
   }
   virtual std::string get_type_namespace(t_program const* program) override {
@@ -149,6 +150,9 @@ class mstch_cpp2_type : public mstch_type {
       return type_->annotations_.at("cpp.type");
     }
     return std::string();
+  }
+  mstch::node is_string_or_binary() {
+    return type_->is_string() || type_->is_binary();
   }
 
  protected:

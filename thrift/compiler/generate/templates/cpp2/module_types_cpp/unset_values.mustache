@@ -14,10 +14,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#type:string?%><%!
+%><%#type:string_or_binary?%><%!
 %>apache::thrift::StringTraits< std::string>::fromStringLiteral("")<%!
-%><%/type:string?%><%!
+%><%/type:string_or_binary?%><%!
 
 %><%#type:enum?%>static_cast<<% > common/namespace_cpp2%><%type:name%>>(0)<%/type:enum?%><%!
 
-%><%^type:string?%><%^type:enum?%>0<%/type:enum?%><%/type:string?%>
+%><%^type:string_or_binary?%><%^type:enum?%>0<%/type:enum?%><%/type:string_or_binary?%>

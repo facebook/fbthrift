@@ -91,6 +91,13 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
+template <typename T_MyStruct_MyBinaryListField4_struct_setter>
+std::vector<std::string>& MyStruct::set_MyBinaryListField4(T_MyStruct_MyBinaryListField4_struct_setter&& MyBinaryListField4_) {
+  MyBinaryListField4 = std::forward<T_MyStruct_MyBinaryListField4_struct_setter>(MyBinaryListField4_);
+  __isset.MyBinaryListField4 = true;
+  return MyBinaryListField4;
+}
+
 template <class Protocol_>
 uint32_t MyStruct::read(Protocol_* iprot) {
   uint32_t xfer = 0;
@@ -102,6 +109,7 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
+  bool isset_MyBinaryField3 = false;
 
   while (true) {
     xfer += iprot->readFieldBegin(fname, ftype, fid);
@@ -124,6 +132,22 @@ uint32_t MyStruct::read(Protocol_* iprot) {
       else if (fname == "MyStringField2") {
         fid = 4;
         ftype = apache::thrift::protocol::T_STRING;
+      }
+      else if (fname == "MyBinaryField") {
+        fid = 5;
+        ftype = apache::thrift::protocol::T_STRING;
+      }
+      else if (fname == "MyBinaryField2") {
+        fid = 6;
+        ftype = apache::thrift::protocol::T_STRING;
+      }
+      else if (fname == "MyBinaryField3") {
+        fid = 7;
+        ftype = apache::thrift::protocol::T_STRING;
+      }
+      else if (fname == "MyBinaryListField4") {
+        fid = 8;
+        ftype = apache::thrift::protocol::T_LIST;
       }
     }
     switch (fid) {
@@ -167,6 +191,47 @@ uint32_t MyStruct::read(Protocol_* iprot) {
         }
         break;
       }
+      case 5:
+      {
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readBinary(this->MyBinaryField);
+          this->__isset.MyBinaryField = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 6:
+      {
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readBinary(this->MyBinaryField2);
+          this->__isset.MyBinaryField2 = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 7:
+      {
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readBinary(this->MyBinaryField3);
+          isset_MyBinaryField3 = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 8:
+      {
+        if (ftype == apache::thrift::protocol::T_LIST) {
+          this->MyBinaryListField4 = std::vector<std::string>();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, std::vector<std::string>>::read(*iprot, this->MyBinaryListField4);
+          this->__isset.MyBinaryListField4 = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
       default:
       {
         xfer += iprot->skip(ftype);
@@ -177,6 +242,9 @@ uint32_t MyStruct::read(Protocol_* iprot) {
   }
   xfer += iprot->readStructEnd();
 
+  if (!isset_MyBinaryField3) {
+    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'MyBinaryField3' was not found in serialized data! Struct: MyStruct");
+  }
   return xfer;
 }
 
@@ -192,6 +260,16 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedSizeString(this->MyStringField);
   xfer += prot_->serializedFieldSize("MyStringField2", apache::thrift::protocol::T_STRING, 4);
   xfer += prot_->serializedSizeString(this->MyStringField2);
+  xfer += prot_->serializedFieldSize("MyBinaryField", apache::thrift::protocol::T_STRING, 5);
+  xfer += prot_->serializedSizeBinary(this->MyBinaryField);
+  if (this->__isset.MyBinaryField2) {
+    xfer += prot_->serializedFieldSize("MyBinaryField2", apache::thrift::protocol::T_STRING, 6);
+    xfer += prot_->serializedSizeBinary(this->MyBinaryField2);
+  }
+  xfer += prot_->serializedFieldSize("MyBinaryField3", apache::thrift::protocol::T_STRING, 7);
+  xfer += prot_->serializedSizeBinary(this->MyBinaryField3);
+  xfer += prot_->serializedFieldSize("MyBinaryListField4", apache::thrift::protocol::T_LIST, 8);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, std::vector<std::string>>::serializedSize<false>(*prot_, this->MyBinaryListField4);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -208,6 +286,16 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedSizeString(this->MyStringField);
   xfer += prot_->serializedFieldSize("MyStringField2", apache::thrift::protocol::T_STRING, 4);
   xfer += prot_->serializedSizeString(this->MyStringField2);
+  xfer += prot_->serializedFieldSize("MyBinaryField", apache::thrift::protocol::T_STRING, 5);
+  xfer += prot_->serializedSizeZCBinary(this->MyBinaryField);
+  if (this->__isset.MyBinaryField2) {
+    xfer += prot_->serializedFieldSize("MyBinaryField2", apache::thrift::protocol::T_STRING, 6);
+    xfer += prot_->serializedSizeZCBinary(this->MyBinaryField2);
+  }
+  xfer += prot_->serializedFieldSize("MyBinaryField3", apache::thrift::protocol::T_STRING, 7);
+  xfer += prot_->serializedSizeZCBinary(this->MyBinaryField3);
+  xfer += prot_->serializedFieldSize("MyBinaryListField4", apache::thrift::protocol::T_LIST, 8);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, std::vector<std::string>>::serializedSize<false>(*prot_, this->MyBinaryListField4);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -227,6 +315,20 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("MyStringField2", apache::thrift::protocol::T_STRING, 4);
   xfer += prot_->writeString(this->MyStringField2);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("MyBinaryField", apache::thrift::protocol::T_STRING, 5);
+  xfer += prot_->writeBinary(this->MyBinaryField);
+  xfer += prot_->writeFieldEnd();
+  if (this->__isset.MyBinaryField2) {
+    xfer += prot_->writeFieldBegin("MyBinaryField2", apache::thrift::protocol::T_STRING, 6);
+    xfer += prot_->writeBinary(this->MyBinaryField2);
+    xfer += prot_->writeFieldEnd();
+  }
+  xfer += prot_->writeFieldBegin("MyBinaryField3", apache::thrift::protocol::T_STRING, 7);
+  xfer += prot_->writeBinary(this->MyBinaryField3);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("MyBinaryListField4", apache::thrift::protocol::T_LIST, 8);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, std::vector<std::string>>::write(*prot_, this->MyBinaryListField4);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
@@ -397,6 +499,7 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
   bool isset_req_stringValue = false;
   bool isset_req_union_map = false;
   bool isset_req_a_union = false;
+  bool isset_MyBinaryField3 = false;
 
   xfer += iprot->readFieldBegin(fname, ftype, fid);
   if (ftype == apache::thrift::protocol::T_STOP) {
@@ -501,6 +604,22 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
       }
       else if (fname == "a_union_typedef_list") {
         fid = 19;
+        ftype = apache::thrift::protocol::T_LIST;
+      }
+      else if (fname == "MyBinaryField") {
+        fid = 20;
+        ftype = apache::thrift::protocol::T_STRING;
+      }
+      else if (fname == "MyBinaryField2") {
+        fid = 21;
+        ftype = apache::thrift::protocol::T_STRING;
+      }
+      else if (fname == "MyBinaryField3") {
+        fid = 22;
+        ftype = apache::thrift::protocol::T_STRING;
+      }
+      else if (fname == "MyBinaryListField4") {
+        fid = 23;
         ftype = apache::thrift::protocol::T_LIST;
       }
     }
@@ -769,6 +888,48 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
         }
         break;
       }
+      case 20:
+      {
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          this->set_MyBinaryField();
+          xfer += iprot->readBinary(this->mutable_MyBinaryField());
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 21:
+      {
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          this->set_MyBinaryField2();
+          xfer += iprot->readBinary(this->mutable_MyBinaryField2());
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 22:
+      {
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          this->set_MyBinaryField3();
+          xfer += iprot->readBinary(this->mutable_MyBinaryField3());
+          isset_MyBinaryField3 = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 23:
+      {
+        if (ftype == apache::thrift::protocol::T_LIST) {
+          this->set_MyBinaryListField4();
+          this->mutable_MyBinaryListField4() = std::vector<std::string>();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, std::vector<std::string>>::read(*iprot, this->mutable_MyBinaryListField4());
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
       default:
       {
         xfer += iprot->skip(ftype);
@@ -795,6 +956,9 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
   }
   if (!isset_req_a_union) {
     throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_a_union' was not found in serialized data! Struct: ComplexUnion");
+  }
+  if (!isset_MyBinaryField3) {
+    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'MyBinaryField3' was not found in serialized data! Struct: ComplexUnion");
   }
   return xfer;
 }
@@ -944,6 +1108,28 @@ uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
     {
       xfer += prot_->serializedFieldSize("a_union_typedef_list", apache::thrift::protocol::T_LIST, 19);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::structure>>, std::vector< ::some::valid::ns::unionTypeDef>>::serializedSize<false>(*prot_, this->get_a_union_typedef_list());
+      break;
+    }
+    case ComplexUnion::Type::MyBinaryField:
+    {
+      xfer += prot_->serializedFieldSize("MyBinaryField", apache::thrift::protocol::T_STRING, 20);
+      xfer += prot_->serializedSizeBinary(this->get_MyBinaryField());
+      break;
+    }
+    if (this->__isset.MyBinaryField2) {
+      xfer += prot_->serializedFieldSize("MyBinaryField2", apache::thrift::protocol::T_STRING, 21);
+      xfer += prot_->serializedSizeBinary(this->get_MyBinaryField2());
+    }
+    case ComplexUnion::Type::MyBinaryField3:
+    {
+      xfer += prot_->serializedFieldSize("MyBinaryField3", apache::thrift::protocol::T_STRING, 22);
+      xfer += prot_->serializedSizeBinary(this->get_MyBinaryField3());
+      break;
+    }
+    case ComplexUnion::Type::MyBinaryListField4:
+    {
+      xfer += prot_->serializedFieldSize("MyBinaryListField4", apache::thrift::protocol::T_LIST, 23);
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, std::vector<std::string>>::serializedSize<false>(*prot_, this->get_MyBinaryListField4());
       break;
     }
     case ComplexUnion::Type::__EMPTY__:;
@@ -1097,6 +1283,28 @@ uint32_t ComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
     {
       xfer += prot_->serializedFieldSize("a_union_typedef_list", apache::thrift::protocol::T_LIST, 19);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::structure>>, std::vector< ::some::valid::ns::unionTypeDef>>::serializedSize<false>(*prot_, this->get_a_union_typedef_list());
+      break;
+    }
+    case ComplexUnion::Type::MyBinaryField:
+    {
+      xfer += prot_->serializedFieldSize("MyBinaryField", apache::thrift::protocol::T_STRING, 20);
+      xfer += prot_->serializedSizeZCBinary(this->get_MyBinaryField());
+      break;
+    }
+    if (this->__isset.MyBinaryField2) {
+      xfer += prot_->serializedFieldSize("MyBinaryField2", apache::thrift::protocol::T_STRING, 21);
+      xfer += prot_->serializedSizeZCBinary(this->get_MyBinaryField2());
+    }
+    case ComplexUnion::Type::MyBinaryField3:
+    {
+      xfer += prot_->serializedFieldSize("MyBinaryField3", apache::thrift::protocol::T_STRING, 22);
+      xfer += prot_->serializedSizeZCBinary(this->get_MyBinaryField3());
+      break;
+    }
+    case ComplexUnion::Type::MyBinaryListField4:
+    {
+      xfer += prot_->serializedFieldSize("MyBinaryListField4", apache::thrift::protocol::T_LIST, 23);
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, std::vector<std::string>>::serializedSize<false>(*prot_, this->get_MyBinaryListField4());
       break;
     }
     case ComplexUnion::Type::__EMPTY__:;
@@ -1274,6 +1482,32 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
     {
       xfer += prot_->writeFieldBegin("a_union_typedef_list", apache::thrift::protocol::T_LIST, 19);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::structure>>, std::vector< ::some::valid::ns::unionTypeDef>>::write(*prot_, this->get_a_union_typedef_list());
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case ComplexUnion::Type::MyBinaryField:
+    {
+      xfer += prot_->writeFieldBegin("MyBinaryField", apache::thrift::protocol::T_STRING, 20);
+      xfer += prot_->writeBinary(this->get_MyBinaryField());
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    if (this->__isset.MyBinaryField2) {
+      xfer += prot_->writeFieldBegin("MyBinaryField2", apache::thrift::protocol::T_STRING, 21);
+      xfer += prot_->writeBinary(this->get_MyBinaryField2());
+      xfer += prot_->writeFieldEnd();
+    }
+    case ComplexUnion::Type::MyBinaryField3:
+    {
+      xfer += prot_->writeFieldBegin("MyBinaryField3", apache::thrift::protocol::T_STRING, 22);
+      xfer += prot_->writeBinary(this->get_MyBinaryField3());
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case ComplexUnion::Type::MyBinaryListField4:
+    {
+      xfer += prot_->writeFieldBegin("MyBinaryListField4", apache::thrift::protocol::T_LIST, 23);
+      xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, std::vector<std::string>>::write(*prot_, this->get_MyBinaryListField4());
       xfer += prot_->writeFieldEnd();
       break;
     }

@@ -63,7 +63,7 @@ uint32_t <%struct:name%>::serializedSizeZC(Protocol_ const* prot_) const {
 <%/field:optional?%>
       xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
 <%#type:resolves_to_base?%>
-      xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>(this->get_<%field:name%>());
+      xfer += prot_->serializedSize<%#type:binary?%>ZC<%/type:binary?%><% > module_types_tcc/struct_field_type%>(this->get_<%field:name%>());
 <%/type:resolves_to_base?%>
 <%#type:resolves_to_container_or_enum?%>
       xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > Type%>>::serializedSize<false>(*prot_, this->get_<%field:name%>());

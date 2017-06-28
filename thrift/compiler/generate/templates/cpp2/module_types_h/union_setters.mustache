@@ -16,7 +16,7 @@
 
 %><%#struct:fields%><%#field:type%>
   <%#type:resolves_to_base_or_enum?%>
-  <%^type:string?%>
+  <%^type:string_or_binary?%>
   <% > Type%>& set_<%field:name%>(<% > Type%> t = <% > Type%>()) {
     __clear();
     type_ = Type::<%field:name%>;
@@ -24,8 +24,8 @@
     return value_.<%field:name%>;
   }
 
-  <%/type:string?%>
-  <%#type:string?%>
+  <%/type:string_or_binary?%>
+  <%#type:string_or_binary?%>
   <% > Type%>& set_<%field:name%>(<% > Type%> const &t) {
     __clear();
     type_ = Type::<%field:name%>;
@@ -47,7 +47,7 @@
     return value_.<%field:name%>;
   }
 
-  <%/type:string?%>
+  <%/type:string_or_binary?%>
   <%/type:resolves_to_base_or_enum?%>
   <%#type:resolves_to_container_or_struct?%>
   <% > Type%>& set_<%field:name%>(<% > Type%> const &t) {

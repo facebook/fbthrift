@@ -69,7 +69,7 @@ uint32_t <%struct:name%>::serializedSizeZC(Protocol_ const* prot_) const {
 <%#field:optional?%>  <%/field:optional?%>  if (this-><%field:name%>) {
 <%/field:cpp_ref?%>
 <%#type:resolves_to_base?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%>  xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>(this-><%field:name%>);
+<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%>  xfer += prot_->serializedSize<%#type:binary?%>ZC<%/type:binary?%><% > module_types_tcc/struct_field_type%>(this-><%field:name%>);
 <%/type:resolves_to_base?%>
 <%#type:resolves_to_container_or_enum?%>
 <%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%>  xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > Type%>>::serializedSize<false>(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this-><%field:name%>);

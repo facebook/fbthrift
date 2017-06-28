@@ -113,6 +113,18 @@ void ReturnServiceSvIf::async_tm_stringReturn(std::unique_ptr<apache::thrift::Ha
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_stringReturn(); });
 }
 
+void ReturnServiceSvIf::binaryReturn(std::string& /*_return*/) {
+  throw apache::thrift::TApplicationException("Function binaryReturn is unimplemented");
+}
+
+folly::Future<std::unique_ptr<std::string>> ReturnServiceSvIf::future_binaryReturn() {
+  return apache::thrift::detail::si::future_returning_uptr([&](std::string& _return) { binaryReturn(_return); });
+}
+
+void ReturnServiceSvIf::async_tm_binaryReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_binaryReturn(); });
+}
+
 void ReturnServiceSvIf::mapReturn(std::map<std::string, int64_t>& /*_return*/) {
   throw apache::thrift::TApplicationException("Function mapReturn is unimplemented");
 }
@@ -261,6 +273,8 @@ double ReturnServiceSvNull::doubleReturn() {
 
 void ReturnServiceSvNull::stringReturn(std::string& /*_return*/) {}
 
+void ReturnServiceSvNull::binaryReturn(std::string& /*_return*/) {}
+
 void ReturnServiceSvNull::mapReturn(std::map<std::string, int64_t>& /*_return*/) {}
 
  ::some::valid::ns::simpleTypeDef ReturnServiceSvNull::simpleTypedefReturn() {
@@ -316,6 +330,7 @@ const ReturnServiceAsyncProcessor::BinaryProtocolProcessMap ReturnServiceAsyncPr
   {"floatReturn", &ReturnServiceAsyncProcessor::_processInThread_floatReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"doubleReturn", &ReturnServiceAsyncProcessor::_processInThread_doubleReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"stringReturn", &ReturnServiceAsyncProcessor::_processInThread_stringReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"binaryReturn", &ReturnServiceAsyncProcessor::_processInThread_binaryReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"mapReturn", &ReturnServiceAsyncProcessor::_processInThread_mapReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"simpleTypedefReturn", &ReturnServiceAsyncProcessor::_processInThread_simpleTypedefReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"complexTypedefReturn", &ReturnServiceAsyncProcessor::_processInThread_complexTypedefReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
@@ -341,6 +356,7 @@ const ReturnServiceAsyncProcessor::CompactProtocolProcessMap ReturnServiceAsyncP
   {"floatReturn", &ReturnServiceAsyncProcessor::_processInThread_floatReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"doubleReturn", &ReturnServiceAsyncProcessor::_processInThread_doubleReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"stringReturn", &ReturnServiceAsyncProcessor::_processInThread_stringReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"binaryReturn", &ReturnServiceAsyncProcessor::_processInThread_binaryReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"mapReturn", &ReturnServiceAsyncProcessor::_processInThread_mapReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"simpleTypedefReturn", &ReturnServiceAsyncProcessor::_processInThread_simpleTypedefReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"complexTypedefReturn", &ReturnServiceAsyncProcessor::_processInThread_complexTypedefReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},

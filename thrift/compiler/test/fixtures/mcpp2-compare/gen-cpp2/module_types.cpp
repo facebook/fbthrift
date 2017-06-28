@@ -78,6 +78,10 @@ void MyStruct::__clear() {
   MyIntField = 12LL;
   MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("test");
   MyStringField2 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  MyBinaryField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  MyBinaryField2 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  MyBinaryField3 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  MyBinaryListField4.clear();
   __isset.__clear();
 }
 
@@ -94,7 +98,30 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   if (!((MyStringField2 == rhs.MyStringField2))) {
     return false;
   }
+  if (!(apache::thrift::StringTraits<std::string>::isEqual(MyBinaryField, rhs.MyBinaryField))) {
+    return false;
+  }
+  if (__isset.MyBinaryField2 != rhs.__isset.MyBinaryField2) {
+    return false;
+  }
+  else if (__isset.MyBinaryField2 && !(apache::thrift::StringTraits<std::string>::isEqual(MyBinaryField2, rhs.MyBinaryField2))) {
+    return false;
+  }
+  if (!(apache::thrift::StringTraits<std::string>::isEqual(MyBinaryField3, rhs.MyBinaryField3))) {
+    return false;
+  }
+  if (!((MyBinaryListField4 == rhs.MyBinaryListField4))) {
+    return false;
+  }
   return true;
+}
+
+const std::vector<std::string>& MyStruct::get_MyBinaryListField4() const& {
+  return MyBinaryListField4;
+}
+
+std::vector<std::string> MyStruct::get_MyBinaryListField4() && {
+  return std::move(MyBinaryListField4);
 }
 
 void swap(MyStruct& a, MyStruct& b) {
@@ -103,6 +130,10 @@ void swap(MyStruct& a, MyStruct& b) {
   swap(a.MyIntField, b.MyIntField);
   swap(a.MyStringField, b.MyStringField);
   swap(a.MyStringField2, b.MyStringField2);
+  swap(a.MyBinaryField, b.MyBinaryField);
+  swap(a.MyBinaryField2, b.MyBinaryField2);
+  swap(a.MyBinaryField3, b.MyBinaryField3);
+  swap(a.MyBinaryListField4, b.MyBinaryListField4);
   swap(a.__isset, b.__isset);
 }
 
@@ -312,6 +343,26 @@ void ComplexUnion::__clear() {
       destruct(value_.a_union_typedef_list);
       break;
     }
+    case Type::MyBinaryField:
+    {
+      destruct(value_.MyBinaryField);
+      break;
+    }
+    case Type::MyBinaryField2:
+    {
+      destruct(value_.MyBinaryField2);
+      break;
+    }
+    case Type::MyBinaryField3:
+    {
+      destruct(value_.MyBinaryField3);
+      break;
+    }
+    case Type::MyBinaryListField4:
+    {
+      destruct(value_.MyBinaryListField4);
+      break;
+    }
     default:
     {
       assert(false);
@@ -423,6 +474,22 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
     case Type::a_union_typedef_list:
     {
       return value_.a_union_typedef_list == rhs.value_.a_union_typedef_list;
+    }
+    case Type::MyBinaryField:
+    {
+      return value_.MyBinaryField == rhs.value_.MyBinaryField;
+    }
+    case Type::MyBinaryField2:
+    {
+      return value_.MyBinaryField2 == rhs.value_.MyBinaryField2;
+    }
+    case Type::MyBinaryField3:
+    {
+      return value_.MyBinaryField3 == rhs.value_.MyBinaryField3;
+    }
+    case Type::MyBinaryListField4:
+    {
+      return value_.MyBinaryListField4 == rhs.value_.MyBinaryListField4;
     }
     default:
     {

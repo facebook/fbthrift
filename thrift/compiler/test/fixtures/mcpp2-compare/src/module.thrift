@@ -45,6 +45,10 @@ struct MyStruct {
   2: i64 MyIntField = 12,
   3: string MyStringField = "test"
   4: string MyStringField2
+  5: binary MyBinaryField
+  6: optional binary MyBinaryField2
+  7: required binary MyBinaryField3
+  8: list<binary> MyBinaryListField4
 }
 
 union SimpleUnion {
@@ -86,6 +90,10 @@ union ComplexUnion {
   17: list<SimpleUnion> a_union_list
   18: unionTypeDef a_union_typedef
   19: list<unionTypeDef> a_union_typedef_list
+  20: binary MyBinaryField
+  21: optional binary MyBinaryField2
+  22: required binary MyBinaryField3
+  23: list<binary> MyBinaryListField4
 }
 
 exception AnException {
@@ -211,6 +219,7 @@ service ReturnService {
   float floatReturn()
   double doubleReturn()
   string stringReturn()
+  binary binaryReturn()
   map<string, i64> mapReturn()
   simpleTypeDef simpleTypedefReturn()
   complexStructTypeDef complexTypedefReturn()
@@ -249,6 +258,7 @@ service ParamService {
       5: i32 param5)
   double double_ret_setstruct_param(4: set<MyStruct> param1)
   string string_ret_string_param(1: string param1)
+  binary binary_ret_binary_param(1: binary param1)
   map<string, i64> map_ret_bool_param(1: bool param1)
   list<bool> list_ret_map_setlist_param(
       1: map<i32, list<string>> param1,

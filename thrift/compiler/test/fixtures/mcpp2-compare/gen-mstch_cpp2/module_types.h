@@ -181,15 +181,22 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
       MyStringField(apache::thrift::StringTraits< std::string>::fromStringLiteral("test")) {}
   // FragileConstructor for use in initialization lists only
 
-  MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, int64_t MyIntField__arg, std::string MyStringField__arg, std::string MyStringField2__arg) :
+  MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, int64_t MyIntField__arg, std::string MyStringField__arg, std::string MyStringField2__arg, std::string MyBinaryField__arg, std::string MyBinaryField2__arg, std::string MyBinaryField3__arg, std::vector<std::string> MyBinaryListField4__arg) :
       MyBoolField(std::move(MyBoolField__arg)),
       MyIntField(std::move(MyIntField__arg)),
       MyStringField(std::move(MyStringField__arg)),
-      MyStringField2(std::move(MyStringField2__arg)) {
+      MyStringField2(std::move(MyStringField2__arg)),
+      MyBinaryField(std::move(MyBinaryField__arg)),
+      MyBinaryField2(std::move(MyBinaryField2__arg)),
+      MyBinaryField3(std::move(MyBinaryField3__arg)),
+      MyBinaryListField4(std::move(MyBinaryListField4__arg)) {
     __isset.MyBoolField = true;
     __isset.MyIntField = true;
     __isset.MyStringField = true;
     __isset.MyStringField2 = true;
+    __isset.MyBinaryField = true;
+    __isset.MyBinaryField2 = true;
+    __isset.MyBinaryListField4 = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   MyStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -219,6 +226,33 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
     MyStringField2 = arg.move();
     __isset.MyStringField2 = true;
   }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  MyStruct(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    MyBinaryField = arg.move();
+    __isset.MyBinaryField = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  MyStruct(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    MyBinaryField2 = arg.move();
+    __isset.MyBinaryField2 = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  MyStruct(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    MyBinaryField3 = arg.move();
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  MyStruct(::apache::thrift::detail::argument_wrapper<8, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    MyStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    MyBinaryListField4 = arg.move();
+    __isset.MyBinaryListField4 = true;
+  }
 
   MyStruct(MyStruct&&) = default;
 
@@ -235,6 +269,10 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
   int64_t MyIntField;
   std::string MyStringField;
   std::string MyStringField2;
+  std::string MyBinaryField;
+  std::string MyBinaryField2;
+  std::string MyBinaryField3;
+  std::vector<std::string> MyBinaryListField4;
 
   struct __isset {
     void __clear() {
@@ -242,31 +280,21 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
       MyIntField = false;
       MyStringField = false;
       MyStringField2 = false;
+      MyBinaryField = false;
+      MyBinaryField2 = false;
+      MyBinaryListField4 = false;
     }
 
     bool MyBoolField = false;
     bool MyIntField = false;
     bool MyStringField = false;
     bool MyStringField2 = false;
+    bool MyBinaryField = false;
+    bool MyBinaryField2 = false;
+    bool MyBinaryListField4 = false;
   } __isset;
   bool operator==(const MyStruct& rhs) const;
-
-  bool operator < (const MyStruct& rhs) const {
-    if (!(MyBoolField == rhs.MyBoolField)) {
-      return MyBoolField < rhs.MyBoolField;
-    }
-    if (!(MyIntField == rhs.MyIntField)) {
-      return MyIntField < rhs.MyIntField;
-    }
-    if (!(MyStringField == rhs.MyStringField)) {
-      return MyStringField < rhs.MyStringField;
-    }
-    if (!(MyStringField2 == rhs.MyStringField2)) {
-      return MyStringField2 < rhs.MyStringField2;
-    }
-    (void)rhs;
-    return false;
-  }
+  bool operator < (const MyStruct& rhs) const;
 
   bool get_MyBoolField() const {
     return MyBoolField;
@@ -317,6 +345,55 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
     __isset.MyStringField2 = true;
     return MyStringField2;
   }
+
+  const std::string& get_MyBinaryField() const& {
+    return MyBinaryField;
+  }
+
+  std::string get_MyBinaryField() && {
+    return std::move(MyBinaryField);
+  }
+
+  template <typename T_MyStruct_MyBinaryField_struct_setter>
+  std::string& set_MyBinaryField(T_MyStruct_MyBinaryField_struct_setter&& MyBinaryField_) {
+    MyBinaryField = std::forward<T_MyStruct_MyBinaryField_struct_setter>(MyBinaryField_);
+    __isset.MyBinaryField = true;
+    return MyBinaryField;
+  }
+
+  const std::string* get_MyBinaryField2() const& {
+    return __isset.MyBinaryField2 ? std::addressof(MyBinaryField2) : nullptr;
+  }
+
+  std::string* get_MyBinaryField2() & {
+    return __isset.MyBinaryField2 ? std::addressof(MyBinaryField2) : nullptr;
+  }
+  std::string* get_MyBinaryField2() && = delete;
+
+  template <typename T_MyStruct_MyBinaryField2_struct_setter>
+  std::string& set_MyBinaryField2(T_MyStruct_MyBinaryField2_struct_setter&& MyBinaryField2_) {
+    MyBinaryField2 = std::forward<T_MyStruct_MyBinaryField2_struct_setter>(MyBinaryField2_);
+    __isset.MyBinaryField2 = true;
+    return MyBinaryField2;
+  }
+
+  const std::string& get_MyBinaryField3() const& {
+    return MyBinaryField3;
+  }
+
+  std::string get_MyBinaryField3() && {
+    return std::move(MyBinaryField3);
+  }
+
+  template <typename T_MyStruct_MyBinaryField3_struct_setter>
+  std::string& set_MyBinaryField3(T_MyStruct_MyBinaryField3_struct_setter&& MyBinaryField3_) {
+    MyBinaryField3 = std::forward<T_MyStruct_MyBinaryField3_struct_setter>(MyBinaryField3_);
+    return MyBinaryField3;
+  }
+  const std::vector<std::string>& get_MyBinaryListField4() const&;
+  std::vector<std::string> get_MyBinaryListField4() &&;
+  template <typename T_MyStruct_MyBinaryListField4_struct_setter>
+  std::vector<std::string>& set_MyBinaryListField4(T_MyStruct_MyBinaryListField4_struct_setter&& MyBinaryListField4_);
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -666,6 +743,10 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     a_union_list = 17,
     a_union_typedef = 18,
     a_union_typedef_list = 19,
+    MyBinaryField = 20,
+    MyBinaryField2 = 21,
+    MyBinaryField3 = 22,
+    MyBinaryListField4 = 23,
   } ;
 
   ComplexUnion() :
@@ -799,6 +880,26 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
       case Type::a_union_typedef_list:
       {
         set_a_union_typedef_list(std::move(rhs.value_.a_union_typedef_list));
+        break;
+      }
+      case Type::MyBinaryField:
+      {
+        set_MyBinaryField(std::move(rhs.value_.MyBinaryField));
+        break;
+      }
+      case Type::MyBinaryField2:
+      {
+        set_MyBinaryField2(std::move(rhs.value_.MyBinaryField2));
+        break;
+      }
+      case Type::MyBinaryField3:
+      {
+        set_MyBinaryField3(std::move(rhs.value_.MyBinaryField3));
+        break;
+      }
+      case Type::MyBinaryListField4:
+      {
+        set_MyBinaryListField4(std::move(rhs.value_.MyBinaryListField4));
         break;
       }
       default:
@@ -940,6 +1041,26 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
         set_a_union_typedef_list(rhs.value_.a_union_typedef_list);
         break;
       }
+      case Type::MyBinaryField:
+      {
+        set_MyBinaryField(rhs.value_.MyBinaryField);
+        break;
+      }
+      case Type::MyBinaryField2:
+      {
+        set_MyBinaryField2(rhs.value_.MyBinaryField2);
+        break;
+      }
+      case Type::MyBinaryField3:
+      {
+        set_MyBinaryField3(rhs.value_.MyBinaryField3);
+        break;
+      }
+      case Type::MyBinaryListField4:
+      {
+        set_MyBinaryListField4(rhs.value_.MyBinaryListField4);
+        break;
+      }
       default:
       {
         assert(false);
@@ -1076,6 +1197,26 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
       case Type::a_union_typedef_list:
       {
         set_a_union_typedef_list(std::move(rhs.value_.a_union_typedef_list));
+        break;
+      }
+      case Type::MyBinaryField:
+      {
+        set_MyBinaryField(std::move(rhs.value_.MyBinaryField));
+        break;
+      }
+      case Type::MyBinaryField2:
+      {
+        set_MyBinaryField2(std::move(rhs.value_.MyBinaryField2));
+        break;
+      }
+      case Type::MyBinaryField3:
+      {
+        set_MyBinaryField3(std::move(rhs.value_.MyBinaryField3));
+        break;
+      }
+      case Type::MyBinaryListField4:
+      {
+        set_MyBinaryListField4(std::move(rhs.value_.MyBinaryListField4));
         break;
       }
       default:
@@ -1216,6 +1357,26 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
       case Type::a_union_typedef_list:
       {
         set_a_union_typedef_list(rhs.value_.a_union_typedef_list);
+        break;
+      }
+      case Type::MyBinaryField:
+      {
+        set_MyBinaryField(rhs.value_.MyBinaryField);
+        break;
+      }
+      case Type::MyBinaryField2:
+      {
+        set_MyBinaryField2(rhs.value_.MyBinaryField2);
+        break;
+      }
+      case Type::MyBinaryField3:
+      {
+        set_MyBinaryField3(rhs.value_.MyBinaryField3);
+        break;
+      }
+      case Type::MyBinaryListField4:
+      {
+        set_MyBinaryListField4(rhs.value_.MyBinaryListField4);
         break;
       }
       default:
@@ -1376,6 +1537,30 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
   {
     set_a_union_typedef_list(arg.move());
   }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<20, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_MyBinaryField(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<21, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_MyBinaryField2(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<22, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_MyBinaryField3(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<23, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_MyBinaryListField4(arg.move());
+  }
   void __clear();
 
   virtual ~ComplexUnion() throw() {
@@ -1408,6 +1593,10 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     std::vector< ::some::valid::ns::SimpleUnion> a_union_list;
      ::some::valid::ns::unionTypeDef a_union_typedef;
     std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list;
+    std::string MyBinaryField;
+    std::string MyBinaryField2;
+    std::string MyBinaryField3;
+    std::vector<std::string> MyBinaryListField4;
 
     storage_type() {}
     ~storage_type() {}
@@ -1828,6 +2017,90 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     return value_.a_union_typedef_list;
   }
 
+  std::string& set_MyBinaryField(std::string const &t) {
+    __clear();
+    type_ = Type::MyBinaryField;
+    ::new (std::addressof(value_.MyBinaryField)) std::string(t);
+    return value_.MyBinaryField;
+  }
+
+  std::string& set_MyBinaryField(std::string&& t) {
+    __clear();
+    type_ = Type::MyBinaryField;
+    ::new (std::addressof(value_.MyBinaryField)) std::string(std::move(t));
+    return value_.MyBinaryField;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::string, T...>> std::string& set_MyBinaryField(T&&... t) {
+    __clear();
+    type_ = Type::MyBinaryField;
+    ::new (std::addressof(value_.MyBinaryField)) std::string(std::forward<T>(t)...);
+    return value_.MyBinaryField;
+  }
+
+  std::string& set_MyBinaryField2(std::string const &t) {
+    __clear();
+    type_ = Type::MyBinaryField2;
+    ::new (std::addressof(value_.MyBinaryField2)) std::string(t);
+    return value_.MyBinaryField2;
+  }
+
+  std::string& set_MyBinaryField2(std::string&& t) {
+    __clear();
+    type_ = Type::MyBinaryField2;
+    ::new (std::addressof(value_.MyBinaryField2)) std::string(std::move(t));
+    return value_.MyBinaryField2;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::string, T...>> std::string& set_MyBinaryField2(T&&... t) {
+    __clear();
+    type_ = Type::MyBinaryField2;
+    ::new (std::addressof(value_.MyBinaryField2)) std::string(std::forward<T>(t)...);
+    return value_.MyBinaryField2;
+  }
+
+  std::string& set_MyBinaryField3(std::string const &t) {
+    __clear();
+    type_ = Type::MyBinaryField3;
+    ::new (std::addressof(value_.MyBinaryField3)) std::string(t);
+    return value_.MyBinaryField3;
+  }
+
+  std::string& set_MyBinaryField3(std::string&& t) {
+    __clear();
+    type_ = Type::MyBinaryField3;
+    ::new (std::addressof(value_.MyBinaryField3)) std::string(std::move(t));
+    return value_.MyBinaryField3;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::string, T...>> std::string& set_MyBinaryField3(T&&... t) {
+    __clear();
+    type_ = Type::MyBinaryField3;
+    ::new (std::addressof(value_.MyBinaryField3)) std::string(std::forward<T>(t)...);
+    return value_.MyBinaryField3;
+  }
+
+  std::vector<std::string>& set_MyBinaryListField4(std::vector<std::string> const &t) {
+    __clear();
+    type_ = Type::MyBinaryListField4;
+    ::new (std::addressof(value_.MyBinaryListField4)) std::vector<std::string>(t);
+    return value_.MyBinaryListField4;
+  }
+
+  std::vector<std::string>& set_MyBinaryListField4(std::vector<std::string>&& t) {
+    __clear();
+    type_ = Type::MyBinaryListField4;
+    ::new (std::addressof(value_.MyBinaryListField4)) std::vector<std::string>(std::move(t));
+    return value_.MyBinaryListField4;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<std::vector<std::string>, T...>> std::vector<std::string>& set_MyBinaryListField4(T&&... t) {
+    __clear();
+    type_ = Type::MyBinaryListField4;
+    ::new (std::addressof(value_.MyBinaryListField4)) std::vector<std::string>(std::forward<T>(t)...);
+    return value_.MyBinaryListField4;
+  }
+
   int64_t const & get_intValue() const {
     assert(type_ == Type::intValue);
     return value_.intValue;
@@ -1951,6 +2224,26 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
   std::vector< ::some::valid::ns::unionTypeDef> const & get_a_union_typedef_list() const {
     assert(type_ == Type::a_union_typedef_list);
     return value_.a_union_typedef_list;
+  }
+
+  std::string const & get_MyBinaryField() const {
+    assert(type_ == Type::MyBinaryField);
+    return value_.MyBinaryField;
+  }
+
+  std::string const & get_MyBinaryField2() const {
+    assert(type_ == Type::MyBinaryField2);
+    return value_.MyBinaryField2;
+  }
+
+  std::string const & get_MyBinaryField3() const {
+    assert(type_ == Type::MyBinaryField3);
+    return value_.MyBinaryField3;
+  }
+
+  std::vector<std::string> const & get_MyBinaryListField4() const {
+    assert(type_ == Type::MyBinaryListField4);
+    return value_.MyBinaryListField4;
   }
 
   int64_t & mutable_intValue() {
@@ -2078,6 +2371,26 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     return value_.a_union_typedef_list;
   }
 
+  std::string & mutable_MyBinaryField() {
+    assert(type_ == Type::MyBinaryField);
+    return value_.MyBinaryField;
+  }
+
+  std::string & mutable_MyBinaryField2() {
+    assert(type_ == Type::MyBinaryField2);
+    return value_.MyBinaryField2;
+  }
+
+  std::string & mutable_MyBinaryField3() {
+    assert(type_ == Type::MyBinaryField3);
+    return value_.MyBinaryField3;
+  }
+
+  std::vector<std::string> & mutable_MyBinaryListField4() {
+    assert(type_ == Type::MyBinaryListField4);
+    return value_.MyBinaryListField4;
+  }
+
   int64_t move_intValue() {
     assert(type_ == Type::intValue);
     return std::move(value_.intValue);
@@ -2201,6 +2514,26 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
   std::vector< ::some::valid::ns::unionTypeDef> move_a_union_typedef_list() {
     assert(type_ == Type::a_union_typedef_list);
     return std::move(value_.a_union_typedef_list);
+  }
+
+  std::string move_MyBinaryField() {
+    assert(type_ == Type::MyBinaryField);
+    return std::move(value_.MyBinaryField);
+  }
+
+  std::string move_MyBinaryField2() {
+    assert(type_ == Type::MyBinaryField2);
+    return std::move(value_.MyBinaryField2);
+  }
+
+  std::string move_MyBinaryField3() {
+    assert(type_ == Type::MyBinaryField3);
+    return std::move(value_.MyBinaryField3);
+  }
+
+  std::vector<std::string> move_MyBinaryListField4() {
+    assert(type_ == Type::MyBinaryListField4);
+    return std::move(value_.MyBinaryListField4);
   }
 
   Type getType() const { return type_; }

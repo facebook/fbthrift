@@ -20,7 +20,7 @@ bool <%struct:name%>::operator==(const <%struct:name%>& rhs) const {
 <%^struct:base_field_or_struct?%>
 bool <%struct:name%>::operator==(const <%struct:name%>& /* rhs */) const {
 <%/struct:base_field_or_struct?%>
-<%#struct:fields%>
+<%#struct:fields%><%#field:type%>
 <%#field:cpp_ref?%>
   if (!(((<%field:name%> && rhs.<%field:name%> && *<%field:name%> == *rhs.<%field:name%>) ||(!<%field:name%> && !rhs.<%field:name%>)))) {
     return false;
@@ -31,16 +31,30 @@ bool <%struct:name%>::operator==(const <%struct:name%>& /* rhs */) const {
   if (__isset.<%field:name%> != rhs.__isset.<%field:name%>) {
     return false;
   }
+<%#type:binary?%>
+  else if (__isset.<%field:name%> && !(apache::thrift::StringTraits<std::string>::isEqual(<%field:name%>, rhs.<%field:name%>))) {
+    return false;
+  }
+<%/type:binary?%>
+<%^type:binary?%>
   else if (__isset.<%field:name%> && !((<%field:name%> == rhs.<%field:name%>))) {
     return false;
   }
+<%/type:binary?%>
 <%/field:optional?%>
 <%^field:optional?%>
+<%#type:binary?%>
+  if (!(apache::thrift::StringTraits<std::string>::isEqual(<%field:name%>, rhs.<%field:name%>))) {
+    return false;
+  }
+<%/type:binary?%>
+<%^type:binary?%>
   if (!((<%field:name%> == rhs.<%field:name%>))) {
     return false;
   }
+<%/type:binary?%>
 <%/field:optional?%>
 <%/field:cpp_ref?%>
-<%/struct:fields%>
+<%/field:type%><%/struct:fields%>
   return true;
 }

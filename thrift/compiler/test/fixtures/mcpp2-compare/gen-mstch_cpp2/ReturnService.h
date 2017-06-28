@@ -58,6 +58,9 @@ class ReturnServiceSvAsyncIf {
   virtual void async_tm_stringReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) = 0;
   virtual void async_stringReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) = delete;
   virtual folly::Future<std::unique_ptr<std::string>> future_stringReturn() = 0;
+  virtual void async_tm_binaryReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) = 0;
+  virtual void async_binaryReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) = delete;
+  virtual folly::Future<std::unique_ptr<std::string>> future_binaryReturn() = 0;
   virtual void async_tm_mapReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::map<std::string, int64_t>>>> callback) = 0;
   virtual void async_mapReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::map<std::string, int64_t>>>> callback) = delete;
   virtual folly::Future<std::unique_ptr<std::map<std::string, int64_t>>> future_mapReturn() = 0;
@@ -120,6 +123,9 @@ class ReturnServiceSvIf : public ReturnServiceSvAsyncIf, public apache::thrift::
   virtual void stringReturn(std::string& /*_return*/);
   folly::Future<std::unique_ptr<std::string>> future_stringReturn() override;
   void async_tm_stringReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) override;
+  virtual void binaryReturn(std::string& /*_return*/);
+  folly::Future<std::unique_ptr<std::string>> future_binaryReturn() override;
+  void async_tm_binaryReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) override;
   virtual void mapReturn(std::map<std::string, int64_t>& /*_return*/);
   folly::Future<std::unique_ptr<std::map<std::string, int64_t>>> future_mapReturn() override;
   void async_tm_mapReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::map<std::string, int64_t>>>> callback) override;
@@ -162,6 +168,7 @@ class ReturnServiceSvNull : public ReturnServiceSvIf {
   float floatReturn() override;
   double doubleReturn() override;
   void stringReturn(std::string& /*_return*/) override;
+  void binaryReturn(std::string& /*_return*/) override;
   void mapReturn(std::map<std::string, int64_t>& /*_return*/) override;
    ::some::valid::ns::simpleTypeDef simpleTypedefReturn() override;
   void complexTypedefReturn( ::some::valid::ns::complexStructTypeDef& /*_return*/) override;
@@ -281,6 +288,16 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   static void throw_stringReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_stringReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void _processInThread_binaryReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_binaryReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static folly::IOBufQueue return_binaryReturn(int32_t protoSeqId, apache::thrift::ContextStack* ctx, std::string const& _return);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_binaryReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_binaryReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_mapReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
@@ -583,6 +600,28 @@ class ReturnServiceAsyncClient : public apache::thrift::TClientBase {
   static folly::exception_wrapper recv_wrapped_stringReturnT(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_stringReturnT(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void binaryReturn(std::unique_ptr<apache::thrift::RequestCallback> callback);
+  virtual void binaryReturn(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ private:
+  virtual void binaryReturnImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+ public:
+  virtual void sync_binaryReturn(std::string& _return);
+  virtual void sync_binaryReturn(apache::thrift::RpcOptions& rpcOptions, std::string& _return);
+  virtual folly::Future<std::string> future_binaryReturn();
+  virtual folly::Future<std::string> future_binaryReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_binaryReturn(apache::thrift::RpcOptions& rpcOptions);
+  virtual void binaryReturn(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback);
+  static folly::exception_wrapper recv_wrapped_binaryReturn(std::string& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_binaryReturn(std::string& _return, ::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual void recv_instance_binaryReturn(std::string& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_binaryReturn(std::string& _return, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  void binaryReturnT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
+  template <typename Protocol_>
+  static folly::exception_wrapper recv_wrapped_binaryReturnT(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  static void recv_binaryReturnT(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state);
   virtual void mapReturn(std::unique_ptr<apache::thrift::RequestCallback> callback);
   virtual void mapReturn(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback);
  private:

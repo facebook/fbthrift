@@ -1902,6 +1902,123 @@ folly::exception_wrapper ParamServiceAsyncClient::recv_instance_wrapped_string_r
   return recv_wrapped_string_ret_string_param(_return, state);
 }
 
+void ParamServiceAsyncClient::binary_ret_binary_param(std::unique_ptr<apache::thrift::RequestCallback> callback, const std::string& param1) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  binary_ret_binary_paramImpl(false, rpcOptions, std::move(callback), param1);
+}
+
+void ParamServiceAsyncClient::binary_ret_binary_param(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::string& param1) {
+  binary_ret_binary_paramImpl(false, rpcOptions, std::move(callback), param1);
+}
+
+void ParamServiceAsyncClient::binary_ret_binary_paramImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, const std::string& param1) {
+  switch(getChannel()->getProtocolId()) {
+    case apache::thrift::protocol::T_BINARY_PROTOCOL:
+    {
+      apache::thrift::BinaryProtocolWriter writer;
+      binary_ret_binary_paramT(&writer, useSync, rpcOptions, std::move(callback), param1);
+      break;
+    }
+    case apache::thrift::protocol::T_COMPACT_PROTOCOL:
+    {
+      apache::thrift::CompactProtocolWriter writer;
+      binary_ret_binary_paramT(&writer, useSync, rpcOptions, std::move(callback), param1);
+      break;
+    }
+    default:
+    {
+      throw apache::thrift::TApplicationException("Could not find Protocol");
+    }
+  }
+}
+
+void ParamServiceAsyncClient::sync_binary_ret_binary_param(std::string& _return, const std::string& param1) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  sync_binary_ret_binary_param(rpcOptions, _return, param1);
+}
+
+void ParamServiceAsyncClient::sync_binary_ret_binary_param(apache::thrift::RpcOptions& rpcOptions, std::string& _return, const std::string& param1) {
+  apache::thrift::ClientReceiveState _returnState;
+  auto callback = std::make_unique<apache::thrift::ClientSyncCallback>(&_returnState, false);
+  binary_ret_binary_paramImpl(true, rpcOptions, std::move(callback), param1);
+  SCOPE_EXIT {
+    if (_returnState.header() && !_returnState.header()->getHeaders().empty()) {
+      rpcOptions.setReadHeaders(_returnState.header()->releaseHeaders());
+    }
+  };
+  if (!_returnState.buf()) {
+    assert(_returnState.exception());
+    std::rethrow_exception(_returnState.exception());
+  }
+  recv_binary_ret_binary_param(_return, _returnState);
+}
+
+folly::Future<std::string> ParamServiceAsyncClient::future_binary_ret_binary_param(const std::string& param1) {
+  ::apache::thrift::RpcOptions rpcOptions;
+  return future_binary_ret_binary_param(rpcOptions, param1);
+}
+
+folly::Future<std::string> ParamServiceAsyncClient::future_binary_ret_binary_param(apache::thrift::RpcOptions& rpcOptions, const std::string& param1) {
+  folly::Promise<std::string> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::FutureCallback<std::string>>(std::move(_promise), recv_wrapped_binary_ret_binary_param, channel_);
+  binary_ret_binary_param(rpcOptions, std::move(callback), param1);
+  return _future;
+}
+
+folly::Future<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> ParamServiceAsyncClient::header_future_binary_ret_binary_param(apache::thrift::RpcOptions& rpcOptions, const std::string& param1) {
+  folly::Promise<std::pair<std::string, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<std::string>>(std::move(_promise), recv_wrapped_binary_ret_binary_param, channel_);
+  binary_ret_binary_param(rpcOptions, std::move(callback), param1);
+  return _future;
+}
+
+void ParamServiceAsyncClient::binary_ret_binary_param(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, const std::string& param1) {
+  binary_ret_binary_param(std::make_unique<apache::thrift::FunctionReplyCallback>(std::move(callback)), param1);
+}
+
+folly::exception_wrapper ParamServiceAsyncClient::recv_wrapped_binary_ret_binary_param(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+  auto ew = state.exceptionWrapper();
+  if (ew) {
+    return ew;
+  }
+  if (!state.buf()) {
+    return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
+  }
+  switch(state.protocolId()) {
+    case apache::thrift::protocol::T_BINARY_PROTOCOL:
+    {
+      apache::thrift::BinaryProtocolReader reader;
+      return recv_wrapped_binary_ret_binary_paramT(&reader, _return, state);
+    }
+    case apache::thrift::protocol::T_COMPACT_PROTOCOL:
+    {
+      apache::thrift::CompactProtocolReader reader;
+      return recv_wrapped_binary_ret_binary_paramT(&reader, _return, state);
+    }
+    default:
+    {
+    }
+  }
+  return folly::make_exception_wrapper<apache::thrift::TApplicationException>("Could not find Protocol");
+}
+
+void ParamServiceAsyncClient::recv_binary_ret_binary_param(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+  auto ew = recv_wrapped_binary_ret_binary_param(_return, state);
+  if (ew) {
+    ew.throw_exception();
+  }
+}
+
+void ParamServiceAsyncClient::recv_instance_binary_ret_binary_param(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+  return recv_binary_ret_binary_param(_return, state);
+}
+
+folly::exception_wrapper ParamServiceAsyncClient::recv_instance_wrapped_binary_ret_binary_param(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
+  return recv_wrapped_binary_ret_binary_param(_return, state);
+}
+
 void ParamServiceAsyncClient::map_ret_bool_param(std::unique_ptr<apache::thrift::RequestCallback> callback, bool param1) {
   ::apache::thrift::RpcOptions rpcOptions;
   map_ret_bool_paramImpl(false, rpcOptions, std::move(callback), param1);
