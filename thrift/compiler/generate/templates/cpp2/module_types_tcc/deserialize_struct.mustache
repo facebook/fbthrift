@@ -43,34 +43,40 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
     <%/last?%><%/field:type%><%/struct:fields%><%!
     %>}
     switch (fid) {
-    <%#struct:fields%><%#field:type%>
+<%#struct:fields%><%#field:type%>
       case <%field:key%>:
       {
         if (ftype == apache::thrift::protocol::<% > module_types_tcc/struct_type%>) {
+<%#field:cpp_ref?%>
+          std::unique_ptr<<% > Type%>> ptr = std::make_unique<<% > Type%>>();
+<%/field:cpp_ref?%>
 <%#type:resolves_to_base?%>
           xfer += iprot->read<% > module_types_tcc/struct_field_type%>(this-><%field:name%>);
 <%/type:resolves_to_base?%>
 <%#type:resolves_to_container_or_enum?%>
-<%^type:enum?%>
+<%^type:enum?%><%^field:cpp_ref?%>
           this-><%field:name%> = <% > Type%>();
-<%/type:enum?%>
-          xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > Type%>>::read(*iprot, this-><%field:name%>);
+<%/field:cpp_ref?%><%/type:enum?%>
+          xfer += ::apache::thrift::detail::pm::protocol_methods< <% > module_types_tcc/protocol_methods%>, <% > Type%>>::read(*iprot, <%#field:cpp_ref?%>*ptr<%/field:cpp_ref?%><%^field:cpp_ref?%>this-><%field:name%><%/field:cpp_ref?%>);
 <%/type:resolves_to_container_or_enum?%>
 <%#type:struct?%>
-          xfer += ::apache::thrift::Cpp2Ops< <% > Type%>>::read(iprot, &this-><%field:name%>);
+          xfer += ::apache::thrift::Cpp2Ops< <% > Type%>>::read(iprot, <%#field:cpp_ref?%>ptr.get()<%/field:cpp_ref?%><%^field:cpp_ref?%>&this-><%field:name%><%/field:cpp_ref?%>);
 <%/type:struct?%>
+<%#field:cpp_ref?%>
+          this-><%field:name%> = std::move(ptr);
+<%/field:cpp_ref?%>
 <%#field:required?%>
           isset_<%field:name%> = true;
 <%/field:required?%>
-<%^field:required?%>
+<%^field:required?%><%^field:cpp_ref?%>
           this->__isset.<%field:name%> = true;
-<%/field:required?%>
+<%/field:cpp_ref?%><%/field:required?%>
         } else {
           xfer += iprot->skip(ftype);
         }
         break;
       }
-    <%/field:type%><%/struct:fields%>
+<%/field:type%><%/struct:fields%>
       default:
       {
         xfer += iprot->skip(ftype);

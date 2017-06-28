@@ -14,26 +14,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#struct:base_field_or_struct?%>
-bool <%struct:name%>::operator==(const <%struct:name%>& rhs) const {
-<%/struct:base_field_or_struct?%>
-<%^struct:base_field_or_struct?%>
-bool <%struct:name%>::operator==(const <%struct:name%>& /* rhs */) const {
-<%/struct:base_field_or_struct?%>
-<%#struct:fields%>
-<%#field:optional?%>
-  if (__isset.<%field:name%> != rhs.__isset.<%field:name%>) {
-    return false;
-  }
-  else if (__isset.<%field:name%> && !((<%field:name%> == rhs.<%field:name%>))) {
-    return false;
-  }
-<%/field:optional?%>
-<%^field:optional?%>
-  if (!((<%field:name%> == rhs.<%field:name%>))) {
-    return false;
-  }
-<%/field:optional?%>
-<%/struct:fields%>
-  return true;
+%><%struct:name%>& <%struct:name%>::operator=(const <%struct:name%>& src) {
+  <%struct:name%> tmp(src);
+  swap(*this, tmp);
+  return *this;
 }

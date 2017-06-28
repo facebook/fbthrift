@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#struct:fields%><%#field:type%><%#type:resolves_to_container_or_struct?%>
+%><%#struct:fields%><%^field:cpp_ref?%><%#field:type%><%#type:resolves_to_container_or_struct?%>
 template <typename T_<%struct:name%>_<%field:name%>_struct_setter>
 <% > Type%>& <%struct:name%>::set_<%field:name%>(T_<%struct:name%>_<%field:name%>_struct_setter&& <%field:name%>_) {
   <%field:name%> = std::forward<T_<%struct:name%>_<%field:name%>_struct_setter>(<%field:name%>_);
@@ -24,4 +24,4 @@ template <typename T_<%struct:name%>_<%field:name%>_struct_setter>
   return <%field:name%>;
 }
 
-<%/type:resolves_to_container_or_struct?%><%/field:type%><%/struct:fields%>
+<%/type:resolves_to_container_or_struct?%><%/field:type%><%/field:cpp_ref?%><%/struct:fields%>

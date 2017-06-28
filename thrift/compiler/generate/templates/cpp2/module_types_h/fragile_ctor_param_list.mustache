@@ -14,18 +14,4 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#struct:fields%><%#field:type%>
-  <% > RefType%> <%field:name%>;
-<%/field:type%><%/struct:fields%>
-
-  struct __isset {
-    void __clear() {
-<%#struct:fields%><%^field:required?%><%^field:cpp_ref?%>
-      <%field:name%> = false;
-<%/field:cpp_ref?%><%/field:required?%><%/struct:fields%>
-    }
-
-<%#struct:fields%><%^field:required?%><%^field:cpp_ref?%>
-    bool <%field:name%> = false;
-<%/field:cpp_ref?%><%/field:required?%><%/struct:fields%>
-  } __isset;
+%><%#struct:fields%><%#field:type%>, <% > RefType%> <%field:name%>__arg<%/field:type%><%/struct:fields%>

@@ -1185,14 +1185,70 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
+AnnotatatedStruct::AnnotatatedStruct(const AnnotatatedStruct& src) {
+  no_annotation = src.no_annotation;
+  __isset.no_annotation = src.__isset.no_annotation;
+  if (src.cpp_unique_ref) cpp_unique_ref.reset(new  ::some::valid::ns::containerStruct(*src.cpp_unique_ref));
+  if (src.cpp2_unique_ref) cpp2_unique_ref.reset(new  ::some::valid::ns::containerStruct(*src.cpp2_unique_ref));
+  if (src.container_with_ref) container_with_ref.reset(new std::map<int32_t, std::vector<std::string>>(*src.container_with_ref));
+  if (src.req_cpp_unique_ref) req_cpp_unique_ref.reset(new  ::some::valid::ns::containerStruct(*src.req_cpp_unique_ref));
+  if (src.req_cpp2_unique_ref) req_cpp2_unique_ref.reset(new  ::some::valid::ns::containerStruct(*src.req_cpp2_unique_ref));
+  if (src.req_container_with_ref) req_container_with_ref.reset(new std::map<int32_t, std::string>(*src.req_container_with_ref));
+  if (src.opt_cpp_unique_ref) opt_cpp_unique_ref.reset(new  ::some::valid::ns::containerStruct(*src.opt_cpp_unique_ref));
+  if (src.opt_cpp2_unique_ref) opt_cpp2_unique_ref.reset(new  ::some::valid::ns::containerStruct(*src.opt_cpp2_unique_ref));
+  if (src.opt_container_with_ref) opt_container_with_ref.reset(new std::map<int32_t, std::string>(*src.opt_container_with_ref));
+}
+
+AnnotatatedStruct& AnnotatatedStruct::operator=(const AnnotatatedStruct& src) {
+  AnnotatatedStruct tmp(src);
+  swap(*this, tmp);
+  return *this;
+}
+
 void AnnotatatedStruct::__clear() {
   // clear all fields
   ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(&no_annotation);
+  if (cpp_unique_ref) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(cpp_unique_ref.get());
+  if (cpp2_unique_ref) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(cpp2_unique_ref.get());
+  container_with_ref.reset(new typename decltype(container_with_ref)::element_type());
+  if (req_cpp_unique_ref) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(req_cpp_unique_ref.get());
+  if (req_cpp2_unique_ref) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(req_cpp2_unique_ref.get());
+  req_container_with_ref.reset(new typename decltype(req_container_with_ref)::element_type());
+  if (opt_cpp_unique_ref) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(opt_cpp_unique_ref.get());
+  if (opt_cpp2_unique_ref) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(opt_cpp2_unique_ref.get());
+  opt_container_with_ref.reset(new typename decltype(opt_container_with_ref)::element_type());
   __isset.__clear();
 }
 
 bool AnnotatatedStruct::operator==(const AnnotatatedStruct& rhs) const {
   if (!((no_annotation == rhs.no_annotation))) {
+    return false;
+  }
+  if (!(((cpp_unique_ref && rhs.cpp_unique_ref && *cpp_unique_ref == *rhs.cpp_unique_ref) ||(!cpp_unique_ref && !rhs.cpp_unique_ref)))) {
+    return false;
+  }
+  if (!(((cpp2_unique_ref && rhs.cpp2_unique_ref && *cpp2_unique_ref == *rhs.cpp2_unique_ref) ||(!cpp2_unique_ref && !rhs.cpp2_unique_ref)))) {
+    return false;
+  }
+  if (!(((container_with_ref && rhs.container_with_ref && *container_with_ref == *rhs.container_with_ref) ||(!container_with_ref && !rhs.container_with_ref)))) {
+    return false;
+  }
+  if (!(((req_cpp_unique_ref && rhs.req_cpp_unique_ref && *req_cpp_unique_ref == *rhs.req_cpp_unique_ref) ||(!req_cpp_unique_ref && !rhs.req_cpp_unique_ref)))) {
+    return false;
+  }
+  if (!(((req_cpp2_unique_ref && rhs.req_cpp2_unique_ref && *req_cpp2_unique_ref == *rhs.req_cpp2_unique_ref) ||(!req_cpp2_unique_ref && !rhs.req_cpp2_unique_ref)))) {
+    return false;
+  }
+  if (!(((req_container_with_ref && rhs.req_container_with_ref && *req_container_with_ref == *rhs.req_container_with_ref) ||(!req_container_with_ref && !rhs.req_container_with_ref)))) {
+    return false;
+  }
+  if (!(((opt_cpp_unique_ref && rhs.opt_cpp_unique_ref && *opt_cpp_unique_ref == *rhs.opt_cpp_unique_ref) ||(!opt_cpp_unique_ref && !rhs.opt_cpp_unique_ref)))) {
+    return false;
+  }
+  if (!(((opt_cpp2_unique_ref && rhs.opt_cpp2_unique_ref && *opt_cpp2_unique_ref == *rhs.opt_cpp2_unique_ref) ||(!opt_cpp2_unique_ref && !rhs.opt_cpp2_unique_ref)))) {
+    return false;
+  }
+  if (!(((opt_container_with_ref && rhs.opt_container_with_ref && *opt_container_with_ref == *rhs.opt_container_with_ref) ||(!opt_container_with_ref && !rhs.opt_container_with_ref)))) {
     return false;
   }
   return true;
@@ -1209,6 +1265,15 @@ const  ::some::valid::ns::containerStruct& AnnotatatedStruct::get_no_annotation(
 void swap(AnnotatatedStruct& a, AnnotatatedStruct& b) {
   using ::std::swap;
   swap(a.no_annotation, b.no_annotation);
+  swap(a.cpp_unique_ref, b.cpp_unique_ref);
+  swap(a.cpp2_unique_ref, b.cpp2_unique_ref);
+  swap(a.container_with_ref, b.container_with_ref);
+  swap(a.req_cpp_unique_ref, b.req_cpp_unique_ref);
+  swap(a.req_cpp2_unique_ref, b.req_cpp2_unique_ref);
+  swap(a.req_container_with_ref, b.req_container_with_ref);
+  swap(a.opt_cpp_unique_ref, b.opt_cpp_unique_ref);
+  swap(a.opt_cpp2_unique_ref, b.opt_cpp2_unique_ref);
+  swap(a.opt_container_with_ref, b.opt_container_with_ref);
   swap(a.__isset, b.__isset);
 }
 

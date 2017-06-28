@@ -164,7 +164,16 @@ struct MyIncludedStruct {
 }
 
 struct AnnotatatedStruct {
-  1: containerStruct no_annotation,
+  1: containerStruct no_annotation
+  2: containerStruct cpp_unique_ref (cpp.ref)
+  3: containerStruct cpp2_unique_ref (cpp2.ref)
+  4: map<i32, list<string>> container_with_ref (cpp2.ref)
+  5: required containerStruct req_cpp_unique_ref (cpp.ref)
+  6: required containerStruct req_cpp2_unique_ref (cpp2.ref)
+  7: required map<i32, string> req_container_with_ref (cpp2.ref)
+  8: optional containerStruct opt_cpp_unique_ref (cpp.ref)
+  9: optional containerStruct opt_cpp2_unique_ref (cpp2.ref)
+  10: optional map<i32, string> opt_container_with_ref (cpp2.ref)
 }
 
 service EmptyService {

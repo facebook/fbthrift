@@ -14,53 +14,18 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%!
-
-####################### FORMAT #######################
-
-  // FragileConstructor for use in initialization lists only
-
-Struct(apache::thrift::FragileConstructor) {}
-
------------------------------------------------------
-
-  // FragileConstructor for use in initialization lists only
-
-Struct(apache::thrift::FragileConstructor, ...) :
-    ...,
-    element1(std::move(element1__arg)) {
-  ...;
-  __isset.element1 = true;
-}
-
-######################################################
-
 %>  // FragileConstructor for use in initialization lists only
 
-<%!
-%>  <%struct:name%>(<%!
-%>apache::thrift::FragileConstructor<%!
-
-Arguments
-
-%><%#struct:fields%><% > common/comma_space%><%!
-  %><%#field:type%><%!
-    %><% > Type%> <%field:name%>__arg<%!
-  %><%/field:type%><%!
-%><%/struct:fields%><%!
-%>)<%!
-
-Fields
-
-%><%#struct:fields%><% > common/colon_newline%><%!
-%>      <%field:name%>(std::move(<%field:name%>__arg))<% > common/comma_newline%><%!
-%><%/struct:fields%><%!
-
-__isset
-
-%><%^struct:fields?%> {}<%/struct:fields?%><%!
-%><%#struct:fields?%> {
-  <%#struct:fields%><%^field:required?%>
+<%^struct:fields?%>
+  <%struct:name%>(apache::thrift::FragileConstructor) {}
+<%/struct:fields?%>
+<%#struct:fields?%>
+  <%struct:name%>(apache::thrift::FragileConstructor<% > module_types_h/fragile_ctor_param_list%>) :
+<%#struct:fields%>
+      <%field:name%>(std::move(<%field:name%>__arg))<%#last?%> {<%/last?%><%^last?%>,<%/last?%>
+<%/struct:fields%>
+<%#struct:fields%><%^field:required?%><%^field:cpp_ref?%>
     __isset.<%field:name%> = true;
-  <%/field:required?%><%/struct:fields%>
-  }<%/struct:fields?%>
+<%/field:cpp_ref?%><%/field:required?%><%/struct:fields%>
+  }
+<%/struct:fields?%>

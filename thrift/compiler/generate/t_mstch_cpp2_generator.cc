@@ -148,6 +148,26 @@ class mstch_cpp2_type : public mstch_type {
   t_type const* resolved_type_;
 };
 
+class mstch_cpp2_field : public mstch_field {
+ public:
+  mstch_cpp2_field(
+      t_field const* field,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION const pos,
+      int32_t index)
+      : mstch_field(field, generators, cache, pos, index) {
+    register_methods(
+        this,
+        {
+            {"field:cpp_ref?", &mstch_cpp2_field::cpp_ref},
+        });
+  }
+  mstch::node cpp_ref() {
+    return has_annotation("cpp.ref") || has_annotation("cpp2.ref");
+  }
+};
+
 class mstch_cpp2_struct : public mstch_struct {
  public:
   mstch_cpp2_struct(
@@ -165,6 +185,7 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:filtered_fields", &mstch_cpp2_struct::filtered_fields},
             {"struct:is_struct_orderable?",
              &mstch_cpp2_struct::is_struct_orderable},
+            {"struct:fields_contain_cpp_ref?", &mstch_cpp2_struct::has_cpp_ref},
         });
   }
   mstch::node getters_setters() {
@@ -186,18 +207,25 @@ class mstch_cpp2_struct : public mstch_struct {
     return false;
   }
   mstch::node filtered_fields() {
+    auto has_annotation = [](t_field const* field, std::string const& name) {
+      return field->annotations_.count(name);
+    };
     // Filter fields according to the following criteria:
     // Get all base_types but strings (empty and non-empty)
     // Get all non empty strings
     // Get all non empty containers
     // Get all enums
+    // Get all containers with references
     std::vector<t_field const*> filtered_fields;
     for (auto const* field : strct_->get_members()) {
       const t_type* type = resolve_typedef(field->get_type());
       if ((type->is_base_type() && !type->is_string()) ||
           (type->is_string() && field->get_value() != nullptr) ||
           (type->is_container() && field->get_value() != nullptr) ||
-          type->is_enum()) {
+          type->is_enum() ||
+          (type->is_container() &&
+           (has_annotation(field, "cpp.ref") ||
+            has_annotation(field, "cpp2.ref")))) {
         filtered_fields.push_back(field);
       }
     }
@@ -237,6 +265,15 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node is_struct_orderable() {
     return is_orderable(strct_);
+  }
+  mstch::node has_cpp_ref() {
+    for (auto const* f : strct_->get_members()) {
+      if (f->annotations_.count("cpp.ref") ||
+          f->annotations_.count("cpp2.ref")) {
+        return true;
+      }
+    }
+    return false;
   }
 };
 
@@ -512,6 +549,21 @@ class type_cpp2_generator : public type_generator {
   }
 };
 
+class field_cpp2_generator : public field_generator {
+ public:
+  field_cpp2_generator() = default;
+  virtual ~field_cpp2_generator() = default;
+  virtual std::shared_ptr<mstch_base> generate(
+      t_field const* field,
+      std::shared_ptr<mstch_generators const> generators,
+      std::shared_ptr<mstch_cache> cache,
+      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
+      int32_t index = 0) const override {
+    return std::make_shared<mstch_cpp2_field>(
+        field, generators, cache, pos, index);
+  }
+};
+
 class struct_cpp2_generator : public struct_generator {
  public:
   struct_cpp2_generator() = default;
@@ -597,6 +649,7 @@ void t_mstch_cpp2_generator::generate_program() {
 void t_mstch_cpp2_generator::set_mstch_generators() {
   generators_->set_enum_generator(std::make_unique<enum_cpp2_generator>());
   generators_->set_type_generator(std::make_unique<type_cpp2_generator>());
+  generators_->set_field_generator(std::make_unique<field_cpp2_generator>());
   generators_->set_struct_generator(std::make_unique<struct_cpp2_generator>());
   generators_->set_service_generator(
       std::make_unique<service_cpp2_generator>());

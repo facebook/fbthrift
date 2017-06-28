@@ -99,7 +99,7 @@ class field_generator {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const;
+      int32_t index = 0) const;
 };
 
 class struct_generator {
@@ -632,6 +632,9 @@ class mstch_field : public mstch_base {
             {"field:optional?", &mstch_field::is_optional},
             {"field:optInReqOut?", &mstch_field::is_optInReqOut},
         });
+  }
+  bool has_annotation(std::string const& name) {
+    return field_->annotations_.count(name);
   }
   mstch::node name() {
     return field_->get_name();

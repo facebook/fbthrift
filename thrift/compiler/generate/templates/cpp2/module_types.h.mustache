@@ -93,16 +93,25 @@ class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<
 <% > module_types_h/base_ctor%>
 
 <% > module_types_h/fragile_ctor%>
-
 <% > module_types_h/template_ctor%>
 
   <%struct:name%>(<%struct:name%>&&) = default;
+<%^struct:fields_contain_cpp_ref?%>
 
   <%struct:name%>(const <%struct:name%>&) = default;
+<%/struct:fields_contain_cpp_ref?%>
+<%#struct:fields_contain_cpp_ref?%>
+  <%struct:name%>(const <%struct:name%>& src);
+<%/struct:fields_contain_cpp_ref?%>
 
   <%struct:name%>& operator=(<%struct:name%>&&) = default;
+<%^struct:fields_contain_cpp_ref?%>
 
   <%struct:name%>& operator=(const <%struct:name%>&) = default;
+<%/struct:fields_contain_cpp_ref?%>
+<%#struct:fields_contain_cpp_ref?%>
+  <%struct:name%>& operator=(const <%struct:name%>& src);
+<%/struct:fields_contain_cpp_ref?%>
   void __clear();
 
   virtual ~<%struct:name%>() throw() {}

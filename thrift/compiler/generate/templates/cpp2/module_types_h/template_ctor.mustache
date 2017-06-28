@@ -14,14 +14,19 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#struct:fields%><%!
-%>  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+%><%#struct:fields%>
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   <%struct:name%>(::apache::thrift::detail::argument_wrapper<<%field:key%>, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     <%struct:name%>(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
+<%#field:cpp_ref?%>
+    <%field:name%> = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
+<%/field:cpp_ref?%>
+<%^field:cpp_ref?%>
     <%field:name%> = arg.move();
-<%^field:required?%>
+<%/field:cpp_ref?%>
+<%^field:required?%><%^field:cpp_ref?%>
     __isset.<%field:name%> = true;
-<%/field:required?%>
+<%/field:cpp_ref?%><%/field:required?%>
   }
 <%/struct:fields%>

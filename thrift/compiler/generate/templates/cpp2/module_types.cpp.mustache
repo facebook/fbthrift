@@ -33,10 +33,19 @@
 %><% > common/namespace_cpp2_begin%>
 
 
+<%#struct:fields_contain_cpp_ref?%>
+<% > module_types_cpp/copy_ctor%>
+
+
+<% > module_types_cpp/eq_overload%>
+
+
+<%/struct:fields_contain_cpp_ref?%>
 <%^struct:union?%>
 <% > module_types_cpp/declare_members%>
 
-<% > module_types_cpp/eq_overload%>
+
+<% > module_types_cpp/equality_overload%>
 
 
 <%#struct:getters_setters?%>
@@ -47,7 +56,7 @@
 <%#struct:union?%>
 <% > module_types_cpp/union_declare_members%>
 
-<% > module_types_cpp/union_eq_overload%>
+<% > module_types_cpp/union_equality_overload%>
 
 <% > module_types_cpp/union_swap%>
 <%/struct:union?%>
