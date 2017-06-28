@@ -23,8 +23,6 @@
 
 namespace {
 
-bool is_orderable(t_type const* type);
-
 class t_mstch_cpp2_generator : public t_mstch_generator {
  public:
   t_mstch_cpp2_generator(
@@ -34,35 +32,12 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
 
   void generate_program() override;
 
- protected:
+ private:
   void set_mstch_generators();
   void generate_constants(t_program const* program);
   void generate_structs(t_program const* program);
   void generate_service(t_service const* service);
   std::string get_cpp2_namespace(t_program const* program);
-  mstch::map extend_function(const t_function&) override;
-  mstch::map extend_program(const t_program&) override;
-  mstch::map extend_service(const t_service&) override;
-  mstch::map extend_struct(const t_struct&) override;
-  mstch::map extend_type(const t_type& t) override;
-  mstch::map extend_enum(const t_enum&) override;
-  mstch::map extend_const(const t_const&) override;
-
- private:
-  bool get_is_eb(const t_function& fn);
-  bool get_is_stack_args();
-  void generate_constants(const t_program& program);
-  void generate_structs(const t_program& program);
-  void generate_service(t_service* service);
-
-  mstch::array get_namespace(const t_program& program);
-  std::string get_include_prefix(const t_program& program);
-  bool has_annotation(const t_field* f, const std::string& name);
-
-  std::unique_ptr<std::string> include_prefix_;
-  std::vector<std::array<std::string, 3>> protocols_;
-  bool use_proxy_accessors_;
-  bool use_getters_setters_;
 };
 
 class mstch_cpp2_enum : public mstch_enum {
@@ -232,11 +207,36 @@ class mstch_cpp2_struct : public mstch_struct {
         generators_,
         cache_);
   }
+  bool is_orderable(t_type const* type) {
+    if (type->is_base_type()) {
+      return true;
+    }
+    if (type->is_enum()) {
+      return true;
+    }
+    if (type->is_struct() || type->is_xception()) {
+      for (auto const* f : dynamic_cast<t_struct const*>(type)->get_members()) {
+        if (f->get_req() == t_field::e_req::T_OPTIONAL ||
+            !is_orderable(f->get_type())) {
+          return false;
+        }
+      }
+      return true;
+    }
+    if (type->is_list()) {
+      return is_orderable(dynamic_cast<t_list const*>(type)->get_elem_type());
+    }
+    if (type->is_set()) {
+      return is_orderable(dynamic_cast<t_set const*>(type)->get_elem_type());
+    }
+    if (type->is_map()) {
+      return is_orderable(dynamic_cast<t_map const*>(type)->get_key_type()) &&
+          is_orderable(dynamic_cast<t_map const*>(type)->get_val_type());
+    }
+    return false;
+  }
   mstch::node is_struct_orderable() {
-    return std::all_of(
-        strct_->get_members().begin(),
-        strct_->get_members().end(),
-        [&](auto m) { return is_orderable(m->get_type()); });
+    return is_orderable(strct_);
   }
 };
 
@@ -578,14 +578,6 @@ t_mstch_cpp2_generator::t_mstch_cpp2_generator(
   // TODO: use gen-cpp2 when this implementation is ready to replace the
   // old python implementation.
   out_dir_base_ = "gen-mstch_cpp2";
-  protocols_ = {
-      {{"binary", "BinaryProtocol", "T_BINARY_PROTOCOL"}},
-      {{"compact", "CompactProtocol", "T_COMPACT_PROTOCOL"}},
-  };
-
-  include_prefix_ = get_option("include_prefix");
-  use_proxy_accessors_ = get_option("proxy_accessors") != nullptr;
-  use_getters_setters_ = get_option("disable_getters_setters") == nullptr;
 }
 
 void t_mstch_cpp2_generator::generate_program() {
@@ -611,250 +603,6 @@ void t_mstch_cpp2_generator::set_mstch_generators() {
   generators_->set_const_generator(std::make_unique<const_cpp2_generator>());
   generators_->set_program_generator(
       std::make_unique<program_cpp2_generator>());
-}
-
-mstch::map t_mstch_cpp2_generator::extend_program(const t_program& program) {
-  mstch::map m;
-
-  mstch::array cpp_includes{};
-  for (auto const& s : program.get_cpp_includes()) {
-    mstch::map cpp_include;
-    cpp_include.emplace("system?", s.at(0) == '<' ? std::to_string(0) : "");
-    cpp_include.emplace("path", std::string(s));
-    cpp_includes.push_back(cpp_include);
-  }
-
-  m.emplace("namespace_cpp2", get_namespace(program)),
-      m.emplace("normalizedIncludePrefix", get_include_prefix(program));
-  m.emplace("enums?", !program.get_enums().empty());
-  m.emplace("thrift_includes", dump_elems(program.get_includes()));
-  m.emplace("cpp_includes", cpp_includes);
-  return m;
-}
-
-mstch::map t_mstch_cpp2_generator::extend_service(const t_service& svc) {
-  mstch::map m;
-  m.emplace("programName", svc.get_program()->get_name());
-  m.emplace("programIncludePrefix", get_include_prefix(*svc.get_program()));
-  m.emplace("separate_processmap", (bool)get_option("separate_processmap"));
-  m.emplace("thrift_includes", dump_elems(svc.get_program()->get_includes()));
-  m.emplace("namespace_cpp2", get_namespace(*svc.get_program()));
-
-  mstch::array protocol_array{};
-  for (auto it = protocols_.begin(); it != protocols_.end(); ++it) {
-    mstch::map protocol;
-    protocol.emplace("protocol:name", it->at(0));
-    protocol.emplace("protocol:longName", it->at(1));
-    protocol.emplace("protocol:enum", it->at(2));
-    protocol_array.push_back(protocol);
-  }
-  add_first_last(protocol_array);
-  m.emplace("protocols", protocol_array);
-
-  mstch::array oneway_functions_array{};
-  for (auto fn : svc.get_functions()) {
-    if (fn->is_oneway()) {
-      oneway_functions_array.push_back(dump(*fn));
-    }
-  }
-  add_first_last(oneway_functions_array);
-  m.emplace("oneway_functions", oneway_functions_array);
-  m.emplace("oneways?", !oneway_functions_array.empty());
-
-  mstch::array cpp_includes{};
-  for (auto const& s : svc.get_program()->get_cpp_includes()) {
-    mstch::map cpp_include;
-    cpp_include.emplace("system?", s.at(0) == '<' ? std::to_string(0) : "");
-    cpp_include.emplace("path", std::string(s));
-    cpp_includes.push_back(cpp_include);
-  }
-  m.emplace("cpp_includes", cpp_includes);
-
-  return m;
-}
-
-mstch::map t_mstch_cpp2_generator::extend_function(const t_function& fn) {
-  mstch::map m;
-
-  m.emplace("eb?", get_is_eb(fn));
-  m.emplace("stackArgs?", get_is_stack_args());
-  return m;
-}
-
-mstch::map t_mstch_cpp2_generator::extend_struct(const t_struct& s) {
-  mstch::map m;
-  m.emplace("namespaces", get_namespace(*s.get_program()));
-  m.emplace("proxy_accessors?", use_proxy_accessors_);
-  m.emplace("getters_setters?", use_getters_setters_);
-
-  std::vector<t_field*> s_members = s.get_members();
-
-  // Check if the struct contains any base field
-  auto const has_base_field_or_struct = [&] {
-    for (auto const& field : s.get_members()) {
-      auto const& resolved_typedef = resolve_typedef(*field->get_type());
-      if (resolved_typedef.is_base_type() || resolved_typedef.is_struct()) {
-        return true;
-      }
-    }
-    return false;
-  }();
-  m.emplace("base_field_or_struct?", has_base_field_or_struct);
-
-  // Filter fields according to the following criteria:
-  // Get all base_types but strings (empty and non-empty)
-  // Get all non empty strings
-  // Get all non empty containers
-  // Get all enums
-  std::vector<t_field*> filtered_fields;
-  std::copy_if(
-      s_members.begin(),
-      s_members.end(),
-      std::back_inserter(filtered_fields),
-      [&](t_field* f) {
-        const t_type& t = resolve_typedef(*f->get_type());
-        return (t.is_base_type() && !t.is_string()) ||
-            (t.is_string() && f->get_value() != nullptr) ||
-            (t.is_container() && f->get_value() != nullptr) || t.is_enum();
-      });
-  m.emplace("filtered_fields", dump_elems(filtered_fields));
-
-  // Check if all the struct elements:
-  // Are only containers (list, map, set) that recursively end up in
-  // base types or enums
-  std::function<bool(t_type const*)> is_orderable = [&](t_type const* type) {
-    if (type->is_base_type()) {
-      return true;
-    }
-    if (type->is_enum()) {
-      return true;
-    }
-    if (type->is_struct()) {
-      for (auto const* f : dynamic_cast<t_struct const*>(type)->get_members()) {
-        if (f->get_req() == t_field::e_req::T_OPTIONAL ||
-            has_annotation(f, "cpp.template") || !is_orderable(f->get_type())) {
-          return false;
-        }
-      }
-      return true;
-    }
-    if (type->is_list()) {
-      return is_orderable(dynamic_cast<t_list const*>(type)->get_elem_type());
-    }
-    if (type->is_set()) {
-      return is_orderable(dynamic_cast<t_set const*>(type)->get_elem_type());
-    }
-    if (type->is_map()) {
-      return is_orderable(dynamic_cast<t_map const*>(type)->get_key_type()) &&
-          is_orderable(dynamic_cast<t_map const*>(type)->get_val_type());
-    }
-    return false;
-  };
-  auto const is_struct_orderable =
-      std::all_of(s.get_members().begin(), s.get_members().end(), [&](auto m) {
-        return is_orderable(m->get_type());
-      });
-  if (is_struct_orderable) {
-    m.emplace("is_struct_orderable?", std::to_string(0));
-  }
-
-  return m;
-}
-
-mstch::map t_mstch_cpp2_generator::extend_type(const t_type& t) {
-  mstch::map m;
-
-  m.emplace("resolves_to_base?", resolve_typedef(t).is_base_type());
-  m.emplace(
-      "resolves_to_base_or_enum?",
-      resolve_typedef(t).is_base_type() || resolve_typedef(t).is_enum());
-  m.emplace("resolves_to_container?", resolve_typedef(t).is_container());
-  m.emplace(
-      "resolves_to_container_or_struct?",
-      resolve_typedef(t).is_container() || resolve_typedef(t).is_struct());
-  m.emplace(
-      "resolves_to_container_or_enum?",
-      resolve_typedef(t).is_container() || resolve_typedef(t).is_enum());
-  m.emplace(
-      "resolves_to_complex_return?",
-      resolve_typedef(t).is_container() || resolve_typedef(t).is_string() ||
-          resolve_typedef(t).is_struct() || resolve_typedef(t).is_stream());
-
-  return m;
-}
-
-mstch::map t_mstch_cpp2_generator::extend_enum(const t_enum& e) {
-  mstch::map m;
-
-  m.emplace("empty?", e.get_constants().empty());
-  m.emplace("size", std::to_string(e.get_constants().size()));
-
-  // Obtain the name of the minimum and maximum enum
-  const std::vector<t_enum_value*> e_members = e.get_constants();
-  if (!e_members.empty()) {
-    auto e_minmax = std::minmax_element(
-        e_members.begin(),
-        e_members.end(),
-        [](t_enum_value* a, t_enum_value* b) {
-          return a->get_value() < b->get_value();
-        });
-    m.emplace("min", std::string((*e_minmax.first)->get_name()));
-    m.emplace("max", std::string((*e_minmax.second)->get_name()));
-  }
-  return m;
-}
-
-mstch::map t_mstch_cpp2_generator::extend_const(const t_const& c) {
-  mstch::map m;
-
-  if (c.get_type()->is_enum()) {
-    auto e = static_cast<const t_enum&>(*c.get_type());
-    auto e_val = e.find_value(c.get_value()->get_integer());
-    m.emplace("enum_value?", e_val != nullptr);
-    m.emplace(
-        "enum_value",
-        e_val != nullptr ? std::string(e_val->get_name())
-                         : std::to_string(c.get_value()->get_integer()));
-  }
-
-  return m;
-}
-
-bool t_mstch_cpp2_generator::get_is_eb(const t_function& fn) {
-  auto annotations = fn.get_annotations();
-  if (annotations) {
-    auto it = annotations->annotations_.find("thread");
-    return it != annotations->annotations_.end() && it->second == "eb";
-  }
-  return false;
-}
-
-bool t_mstch_cpp2_generator::get_is_stack_args() {
-  return get_option("stack_arguments") != nullptr;
-}
-
-
-mstch::array t_mstch_cpp2_generator::get_namespace(const t_program& program) {
-  std::vector<std::string> v;
-
-  auto ns = program.get_namespace("cpp2");
-  if (ns != "") {
-    v = split_namespace(ns);
-  } else {
-    ns = program.get_namespace("cpp");
-    if (ns != "") {
-      v = split_namespace(ns);
-    }
-    v.push_back("cpp2");
-  }
-  mstch::array a;
-  for (auto it = v.begin(); it != v.end(); ++it) {
-    mstch::map m;
-    m.emplace("namespace:name", *it);
-    a.push_back(m);
-  }
-  add_first_last(a);
-  return a;
 }
 
 void t_mstch_cpp2_generator::generate_constants(t_program const* program) {
@@ -939,60 +687,6 @@ std::string t_mstch_cpp2_generator::get_cpp2_namespace(
     }
   }
   return ns;
-}
-
-std::string t_mstch_cpp2_generator::get_include_prefix(
-    const t_program& program) {
-  string include_prefix = program.get_include_prefix();
-  if (&program == get_program() && include_prefix_ && *include_prefix_ != "") {
-    include_prefix = *include_prefix_;
-  }
-  auto path = boost::filesystem::path(include_prefix);
-  if (!include_prefix_ || path.is_absolute()) {
-    return "";
-  }
-
-  if (!path.has_stem()) {
-    return "";
-  }
-  if (program.is_out_path_absolute()) {
-    return path.string();
-  }
-  return (path / "gen-cpp2").string() + "/";
-}
-bool t_mstch_cpp2_generator::has_annotation(
-    const t_field* f,
-    const std::string& name) {
-  return f->annotations_.count(name);
-}
-
-bool is_orderable(t_type const* type) {
-  if (type->is_base_type()) {
-    return true;
-  }
-  if (type->is_enum()) {
-    return true;
-  }
-  if (type->is_struct()) {
-    for (auto const* f : dynamic_cast<t_struct const*>(type)->get_members()) {
-      if (f->get_req() == t_field::e_req::T_OPTIONAL ||
-          !is_orderable(f->get_type())) {
-        return false;
-      }
-    }
-    return true;
-  }
-  if (type->is_list()) {
-    return is_orderable(dynamic_cast<t_list const*>(type)->get_elem_type());
-  }
-  if (type->is_set()) {
-    return is_orderable(dynamic_cast<t_set const*>(type)->get_elem_type());
-  }
-  if (type->is_map()) {
-    return is_orderable(dynamic_cast<t_map const*>(type)->get_key_type()) &&
-        is_orderable(dynamic_cast<t_map const*>(type)->get_val_type());
-  }
-  return false;
 }
 }
 
