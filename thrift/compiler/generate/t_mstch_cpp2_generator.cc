@@ -112,6 +112,7 @@ class mstch_cpp2_type : public mstch_type {
              &mstch_cpp2_type::resolves_to_container_or_enum},
             {"type:resolves_to_complex_return?",
              &mstch_cpp2_type::resolves_to_complex_return},
+            {"type:cpp_type", &mstch_cpp2_type::cpp_type},
         });
   }
   virtual std::string get_type_namespace(t_program const* program) override {
@@ -142,6 +143,12 @@ class mstch_cpp2_type : public mstch_type {
   mstch::node resolves_to_complex_return() {
     return resolved_type_->is_container() || resolved_type_->is_string() ||
         resolved_type_->is_struct();
+  }
+  mstch::node cpp_type() {
+    if (type_->annotations_.count("cpp.type")) {
+      return type_->annotations_.at("cpp.type");
+    }
+    return std::string();
   }
 
  protected:

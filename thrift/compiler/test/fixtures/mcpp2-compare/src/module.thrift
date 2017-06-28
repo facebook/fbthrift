@@ -163,6 +163,15 @@ struct MyIncludedStruct {
   1: includes.IncludedInt64 MyIncludedInt = includes.IncludedConstant
 }
 
+typedef i32 CppFakeI32 (cpp.type = "CppFakeI32")
+typedef list<i64> FollySmallVectorI64 (
+    cpp.type = "folly::small_vector<int64_t, 8 /* maxInline */>")
+typedef set<string> SortedVectorSetString (
+    cpp.type = "folly::sorted_vector_set<std::string>")
+typedef map<i64, double> FakeMap (cpp.type = "FakeMap")
+typedef map<string, containerStruct> UnorderedMapStruct (
+    cpp.type = "std::unordered_map<std::string, containerStruct>")
+
 struct AnnotatatedStruct {
   1: containerStruct no_annotation
   2: containerStruct cpp_unique_ref (cpp.ref)
@@ -183,6 +192,11 @@ struct AnnotatatedStruct {
   17: optional containerStruct opt_ref_type_const (cpp.ref_type="shared_const")
   18: optional containerStruct opt_ref_type_unique (cpp2.ref_type="unique")
   19: optional set<i32> opt_ref_type_shared (cpp2.ref_type="shared")
+  20: CppFakeI32 base_type
+  21: FollySmallVectorI64 list_type
+  22: SortedVectorSetString set_type
+  23: FakeMap map_type
+  24: UnorderedMapStruct map_struct_type
 }
 
 service EmptyService {

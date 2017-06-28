@@ -85,6 +85,17 @@ typedef std::vector<std::map< ::some::valid::ns::Empty,  ::some::valid::ns::MySt
 
 typedef std::vector< ::some::valid::ns::complexStructTypeDef> mostComplexTypeDef;
 
+typedef int32_t CppFakeI32;
+
+typedef std::vector<int64_t> FollySmallVectorI64;
+
+typedef std::set<std::string> SortedVectorSetString;
+
+typedef std::map<int64_t, double> FakeMap;
+
+class containerStruct;
+typedef std::map<std::string,  ::some::valid::ns::containerStruct> UnorderedMapStruct;
+
 class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
  public:
 
@@ -3751,10 +3762,11 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
       opt_container_with_ref(std::make_unique<std::set<int32_t>>()),
       ref_type_const(std::make_shared<std::map<int32_t, std::vector<std::string>>>()),
       req_ref_type_unique(std::make_unique<std::vector<std::string>>()),
-      opt_ref_type_shared(std::make_shared<std::set<int32_t>>()) {}
+      opt_ref_type_shared(std::make_shared<std::set<int32_t>>()),
+      base_type(0) {}
   // FragileConstructor for use in initialization lists only
 
-  AnnotatatedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::containerStruct no_annotation__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref__arg, std::unique_ptr<std::map<int32_t, std::vector<std::string>>> container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, std::unique_ptr<std::vector<std::string>> req_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, std::unique_ptr<std::set<int32_t>> opt_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique__arg, std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared__arg, std::shared_ptr<const std::map<int32_t, std::vector<std::string>>> ref_type_const__arg, std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const__arg, std::unique_ptr<std::vector<std::string>> req_ref_type_unique__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique__arg, std::shared_ptr<std::set<int32_t>> opt_ref_type_shared__arg) :
+  AnnotatatedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::containerStruct no_annotation__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref__arg, std::unique_ptr<std::map<int32_t, std::vector<std::string>>> container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, std::unique_ptr<std::vector<std::string>> req_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, std::unique_ptr<std::set<int32_t>> opt_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique__arg, std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared__arg, std::shared_ptr<const std::map<int32_t, std::vector<std::string>>> ref_type_const__arg, std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const__arg, std::unique_ptr<std::vector<std::string>> req_ref_type_unique__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique__arg, std::shared_ptr<std::set<int32_t>> opt_ref_type_shared__arg, CppFakeI32 base_type__arg, folly::small_vector<int64_t, 8 /* maxInline */> list_type__arg, folly::sorted_vector_set<std::string> set_type__arg, FakeMap map_type__arg, std::unordered_map<std::string, containerStruct> map_struct_type__arg) :
       no_annotation(std::move(no_annotation__arg)),
       cpp_unique_ref(std::move(cpp_unique_ref__arg)),
       cpp2_unique_ref(std::move(cpp2_unique_ref__arg)),
@@ -3773,8 +3785,18 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
       req_ref_type_unique(std::move(req_ref_type_unique__arg)),
       opt_ref_type_const(std::move(opt_ref_type_const__arg)),
       opt_ref_type_unique(std::move(opt_ref_type_unique__arg)),
-      opt_ref_type_shared(std::move(opt_ref_type_shared__arg)) {
+      opt_ref_type_shared(std::move(opt_ref_type_shared__arg)),
+      base_type(std::move(base_type__arg)),
+      list_type(std::move(list_type__arg)),
+      set_type(std::move(set_type__arg)),
+      map_type(std::move(map_type__arg)),
+      map_struct_type(std::move(map_struct_type__arg)) {
     __isset.no_annotation = true;
+    __isset.base_type = true;
+    __isset.list_type = true;
+    __isset.set_type = true;
+    __isset.map_type = true;
+    __isset.map_struct_type = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -3891,6 +3913,41 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
   {
     opt_ref_type_shared = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<20, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    base_type = arg.move();
+    __isset.base_type = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<21, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    list_type = arg.move();
+    __isset.list_type = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<22, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    set_type = arg.move();
+    __isset.set_type = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<23, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    map_type = arg.move();
+    __isset.map_type = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<24, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    map_struct_type = arg.move();
+    __isset.map_struct_type = true;
+  }
 
   AnnotatatedStruct(AnnotatatedStruct&&) = default;
   AnnotatatedStruct(const AnnotatatedStruct& src);
@@ -3920,13 +3977,28 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
   std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const;
   std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique;
   std::shared_ptr<std::set<int32_t>> opt_ref_type_shared;
+  CppFakeI32 base_type;
+  folly::small_vector<int64_t, 8 /* maxInline */> list_type;
+  folly::sorted_vector_set<std::string> set_type;
+  FakeMap map_type;
+  std::unordered_map<std::string, containerStruct> map_struct_type;
 
   struct __isset {
     void __clear() {
       no_annotation = false;
+      base_type = false;
+      list_type = false;
+      set_type = false;
+      map_type = false;
+      map_struct_type = false;
     }
 
     bool no_annotation = false;
+    bool base_type = false;
+    bool list_type = false;
+    bool set_type = false;
+    bool map_type = false;
+    bool map_struct_type = false;
   } __isset;
   bool operator==(const AnnotatatedStruct& rhs) const;
   bool operator < (const AnnotatatedStruct& rhs) const;
@@ -3934,6 +4006,32 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
    ::some::valid::ns::containerStruct get_no_annotation() &&;
   template <typename T_AnnotatatedStruct_no_annotation_struct_setter>
    ::some::valid::ns::containerStruct& set_no_annotation(T_AnnotatatedStruct_no_annotation_struct_setter&& no_annotation_);
+
+  CppFakeI32 get_base_type() const {
+    return base_type;
+  }
+
+  CppFakeI32& set_base_type(CppFakeI32 base_type_) {
+    base_type = base_type_;
+    __isset.base_type = true;
+    return base_type;
+  }
+  const folly::small_vector<int64_t, 8 /* maxInline */>& get_list_type() const&;
+  folly::small_vector<int64_t, 8 /* maxInline */> get_list_type() &&;
+  template <typename T_AnnotatatedStruct_list_type_struct_setter>
+  folly::small_vector<int64_t, 8 /* maxInline */>& set_list_type(T_AnnotatatedStruct_list_type_struct_setter&& list_type_);
+  const folly::sorted_vector_set<std::string>& get_set_type() const&;
+  folly::sorted_vector_set<std::string> get_set_type() &&;
+  template <typename T_AnnotatatedStruct_set_type_struct_setter>
+  folly::sorted_vector_set<std::string>& set_set_type(T_AnnotatatedStruct_set_type_struct_setter&& set_type_);
+  const FakeMap& get_map_type() const&;
+  FakeMap get_map_type() &&;
+  template <typename T_AnnotatatedStruct_map_type_struct_setter>
+  FakeMap& set_map_type(T_AnnotatatedStruct_map_type_struct_setter&& map_type_);
+  const std::unordered_map<std::string, containerStruct>& get_map_struct_type() const&;
+  std::unordered_map<std::string, containerStruct> get_map_struct_type() &&;
+  template <typename T_AnnotatatedStruct_map_struct_type_struct_setter>
+  std::unordered_map<std::string, containerStruct>& set_map_struct_type(T_AnnotatatedStruct_map_struct_type_struct_setter&& map_struct_type_);
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

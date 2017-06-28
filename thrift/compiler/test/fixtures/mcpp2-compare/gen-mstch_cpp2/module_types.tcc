@@ -3183,6 +3183,34 @@ template <typename T_AnnotatatedStruct_no_annotation_struct_setter>
   return no_annotation;
 }
 
+template <typename T_AnnotatatedStruct_list_type_struct_setter>
+folly::small_vector<int64_t, 8 /* maxInline */>& AnnotatatedStruct::set_list_type(T_AnnotatatedStruct_list_type_struct_setter&& list_type_) {
+  list_type = std::forward<T_AnnotatatedStruct_list_type_struct_setter>(list_type_);
+  __isset.list_type = true;
+  return list_type;
+}
+
+template <typename T_AnnotatatedStruct_set_type_struct_setter>
+folly::sorted_vector_set<std::string>& AnnotatatedStruct::set_set_type(T_AnnotatatedStruct_set_type_struct_setter&& set_type_) {
+  set_type = std::forward<T_AnnotatatedStruct_set_type_struct_setter>(set_type_);
+  __isset.set_type = true;
+  return set_type;
+}
+
+template <typename T_AnnotatatedStruct_map_type_struct_setter>
+FakeMap& AnnotatatedStruct::set_map_type(T_AnnotatatedStruct_map_type_struct_setter&& map_type_) {
+  map_type = std::forward<T_AnnotatatedStruct_map_type_struct_setter>(map_type_);
+  __isset.map_type = true;
+  return map_type;
+}
+
+template <typename T_AnnotatatedStruct_map_struct_type_struct_setter>
+std::unordered_map<std::string, containerStruct>& AnnotatatedStruct::set_map_struct_type(T_AnnotatatedStruct_map_struct_type_struct_setter&& map_struct_type_) {
+  map_struct_type = std::forward<T_AnnotatatedStruct_map_struct_type_struct_setter>(map_struct_type_);
+  __isset.map_struct_type = true;
+  return map_struct_type;
+}
+
 template <class Protocol_>
 uint32_t AnnotatatedStruct::read(Protocol_* iprot) {
   uint32_t xfer = 0;
@@ -3282,6 +3310,26 @@ uint32_t AnnotatatedStruct::read(Protocol_* iprot) {
       else if (fname == "opt_ref_type_shared") {
         fid = 19;
         ftype = apache::thrift::protocol::T_SET;
+      }
+      else if (fname == "base_type") {
+        fid = 20;
+        ftype = apache::thrift::protocol::T_I32;
+      }
+      else if (fname == "list_type") {
+        fid = 21;
+        ftype = apache::thrift::protocol::T_LIST;
+      }
+      else if (fname == "set_type") {
+        fid = 22;
+        ftype = apache::thrift::protocol::T_SET;
+      }
+      else if (fname == "map_type") {
+        fid = 23;
+        ftype = apache::thrift::protocol::T_MAP;
+      }
+      else if (fname == "map_struct_type") {
+        fid = 24;
+        ftype = apache::thrift::protocol::T_MAP;
       }
     }
     switch (fid) {
@@ -3499,6 +3547,60 @@ uint32_t AnnotatatedStruct::read(Protocol_* iprot) {
         }
         break;
       }
+      case 20:
+      {
+        if (ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->base_type);
+          this->__isset.base_type = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 21:
+      {
+        if (ftype == apache::thrift::protocol::T_LIST) {
+          this->list_type = folly::small_vector<int64_t, 8 /* maxInline */>();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, folly::small_vector<int64_t, 8 /* maxInline */>>::read(*iprot, this->list_type);
+          this->__isset.list_type = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 22:
+      {
+        if (ftype == apache::thrift::protocol::T_SET) {
+          this->set_type = folly::sorted_vector_set<std::string>();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::string>, folly::sorted_vector_set<std::string>>::read(*iprot, this->set_type);
+          this->__isset.set_type = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 23:
+      {
+        if (ftype == apache::thrift::protocol::T_MAP) {
+          this->map_type = FakeMap();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>, FakeMap>::read(*iprot, this->map_type);
+          this->__isset.map_type = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 24:
+      {
+        if (ftype == apache::thrift::protocol::T_MAP) {
+          this->map_struct_type = std::unordered_map<std::string, containerStruct>();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>, std::unordered_map<std::string, containerStruct>>::read(*iprot, this->map_struct_type);
+          this->__isset.map_struct_type = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
       default:
       {
         xfer += iprot->skip(ftype);
@@ -3692,6 +3794,16 @@ uint32_t AnnotatatedStruct::serializedSize(Protocol_ const* prot_) const {
       xfer += prot_->serializedSizeSetEnd();
     }
   }
+  xfer += prot_->serializedFieldSize("base_type", apache::thrift::protocol::T_I32, 20);
+  xfer += prot_->serializedSizeI32(this->base_type);
+  xfer += prot_->serializedFieldSize("list_type", apache::thrift::protocol::T_LIST, 21);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, folly::small_vector<int64_t, 8 /* maxInline */>>::serializedSize<false>(*prot_, this->list_type);
+  xfer += prot_->serializedFieldSize("set_type", apache::thrift::protocol::T_SET, 22);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::string>, folly::sorted_vector_set<std::string>>::serializedSize<false>(*prot_, this->set_type);
+  xfer += prot_->serializedFieldSize("map_type", apache::thrift::protocol::T_MAP, 23);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>, FakeMap>::serializedSize<false>(*prot_, this->map_type);
+  xfer += prot_->serializedFieldSize("map_struct_type", apache::thrift::protocol::T_MAP, 24);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>, std::unordered_map<std::string, containerStruct>>::serializedSize<false>(*prot_, this->map_struct_type);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -3858,6 +3970,16 @@ uint32_t AnnotatatedStruct::serializedSizeZC(Protocol_ const* prot_) const {
       xfer += prot_->serializedSizeSetEnd();
     }
   }
+  xfer += prot_->serializedFieldSize("base_type", apache::thrift::protocol::T_I32, 20);
+  xfer += prot_->serializedSizeI32(this->base_type);
+  xfer += prot_->serializedFieldSize("list_type", apache::thrift::protocol::T_LIST, 21);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, folly::small_vector<int64_t, 8 /* maxInline */>>::serializedSize<false>(*prot_, this->list_type);
+  xfer += prot_->serializedFieldSize("set_type", apache::thrift::protocol::T_SET, 22);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::string>, folly::sorted_vector_set<std::string>>::serializedSize<false>(*prot_, this->set_type);
+  xfer += prot_->serializedFieldSize("map_type", apache::thrift::protocol::T_MAP, 23);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>, FakeMap>::serializedSize<false>(*prot_, this->map_type);
+  xfer += prot_->serializedFieldSize("map_struct_type", apache::thrift::protocol::T_MAP, 24);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>, std::unordered_map<std::string, containerStruct>>::serializedSize<false>(*prot_, this->map_struct_type);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -4055,6 +4177,21 @@ uint32_t AnnotatatedStruct::write(Protocol_* prot_) const {
     }
     xfer += prot_->writeFieldEnd();
   }
+  xfer += prot_->writeFieldBegin("base_type", apache::thrift::protocol::T_I32, 20);
+  xfer += prot_->writeI32(this->base_type);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("list_type", apache::thrift::protocol::T_LIST, 21);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, folly::small_vector<int64_t, 8 /* maxInline */>>::write(*prot_, this->list_type);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("set_type", apache::thrift::protocol::T_SET, 22);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::string>, folly::sorted_vector_set<std::string>>::write(*prot_, this->set_type);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("map_type", apache::thrift::protocol::T_MAP, 23);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>, FakeMap>::write(*prot_, this->map_type);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("map_struct_type", apache::thrift::protocol::T_MAP, 24);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>, std::unordered_map<std::string, containerStruct>>::write(*prot_, this->map_struct_type);
+  xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;

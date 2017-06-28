@@ -1206,6 +1206,16 @@ AnnotatatedStruct::AnnotatatedStruct(const AnnotatatedStruct& src) {
   opt_ref_type_const = src.opt_ref_type_const;
   if (src.opt_ref_type_unique) opt_ref_type_unique.reset(new  ::some::valid::ns::containerStruct(*src.opt_ref_type_unique));
   opt_ref_type_shared = src.opt_ref_type_shared;
+  base_type = src.base_type;
+  __isset.base_type = src.__isset.base_type;
+  list_type = src.list_type;
+  __isset.list_type = src.__isset.list_type;
+  set_type = src.set_type;
+  __isset.set_type = src.__isset.set_type;
+  map_type = src.map_type;
+  __isset.map_type = src.__isset.map_type;
+  map_struct_type = src.map_struct_type;
+  __isset.map_struct_type = src.__isset.map_struct_type;
 }
 
 AnnotatatedStruct& AnnotatatedStruct::operator=(const AnnotatatedStruct& src) {
@@ -1235,6 +1245,11 @@ void AnnotatatedStruct::__clear() {
   opt_ref_type_const.reset();
   if (opt_ref_type_unique) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(opt_ref_type_unique.get());
   opt_ref_type_shared.reset(new typename decltype(opt_ref_type_shared)::element_type());
+  base_type = 0;
+  list_type.clear();
+  set_type.clear();
+  map_type.clear();
+  map_struct_type.clear();
   __isset.__clear();
 }
 
@@ -1296,6 +1311,21 @@ bool AnnotatatedStruct::operator==(const AnnotatatedStruct& rhs) const {
   if (!(((opt_ref_type_shared && rhs.opt_ref_type_shared && *opt_ref_type_shared == *rhs.opt_ref_type_shared) ||(!opt_ref_type_shared && !rhs.opt_ref_type_shared)))) {
     return false;
   }
+  if (!((base_type == rhs.base_type))) {
+    return false;
+  }
+  if (!((list_type == rhs.list_type))) {
+    return false;
+  }
+  if (!((set_type == rhs.set_type))) {
+    return false;
+  }
+  if (!((map_type == rhs.map_type))) {
+    return false;
+  }
+  if (!((map_struct_type == rhs.map_struct_type))) {
+    return false;
+  }
   return true;
 }
 
@@ -1305,6 +1335,38 @@ const  ::some::valid::ns::containerStruct& AnnotatatedStruct::get_no_annotation(
 
  ::some::valid::ns::containerStruct AnnotatatedStruct::get_no_annotation() && {
   return std::move(no_annotation);
+}
+
+const folly::small_vector<int64_t, 8 /* maxInline */>& AnnotatatedStruct::get_list_type() const& {
+  return list_type;
+}
+
+folly::small_vector<int64_t, 8 /* maxInline */> AnnotatatedStruct::get_list_type() && {
+  return std::move(list_type);
+}
+
+const folly::sorted_vector_set<std::string>& AnnotatatedStruct::get_set_type() const& {
+  return set_type;
+}
+
+folly::sorted_vector_set<std::string> AnnotatatedStruct::get_set_type() && {
+  return std::move(set_type);
+}
+
+const FakeMap& AnnotatatedStruct::get_map_type() const& {
+  return map_type;
+}
+
+FakeMap AnnotatatedStruct::get_map_type() && {
+  return std::move(map_type);
+}
+
+const std::unordered_map<std::string, containerStruct>& AnnotatatedStruct::get_map_struct_type() const& {
+  return map_struct_type;
+}
+
+std::unordered_map<std::string, containerStruct> AnnotatatedStruct::get_map_struct_type() && {
+  return std::move(map_struct_type);
 }
 
 void swap(AnnotatatedStruct& a, AnnotatatedStruct& b) {
@@ -1328,6 +1390,11 @@ void swap(AnnotatatedStruct& a, AnnotatatedStruct& b) {
   swap(a.opt_ref_type_const, b.opt_ref_type_const);
   swap(a.opt_ref_type_unique, b.opt_ref_type_unique);
   swap(a.opt_ref_type_shared, b.opt_ref_type_shared);
+  swap(a.base_type, b.base_type);
+  swap(a.list_type, b.list_type);
+  swap(a.set_type, b.set_type);
+  swap(a.map_type, b.map_type);
+  swap(a.map_struct_type, b.map_struct_type);
   swap(a.__isset, b.__isset);
 }
 
