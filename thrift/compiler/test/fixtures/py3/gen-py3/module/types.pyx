@@ -114,7 +114,8 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         small_int=None,
         nice_sized_int=None,
         big_int=None,
-        real=None
+        real=None,
+        smaller_real=None
     ):
         self.c_SimpleStruct = make_shared[cSimpleStruct]()
 
@@ -142,6 +143,10 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         if real is not None:
             deref(inst.c_SimpleStruct).real = real
             deref(inst.c_SimpleStruct).__isset.real = True
+
+        if smaller_real is not None:
+            deref(inst.c_SimpleStruct).smaller_real = smaller_real
+            deref(inst.c_SimpleStruct).__isset.smaller_real = True
 
 
     cdef bytes _serialize(SimpleStruct self, proto):
@@ -174,7 +179,8 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         small_int=NOTSET,
         nice_sized_int=NOTSET,
         big_int=NOTSET,
-        real=NOTSET
+        real=NOTSET,
+        smaller_real=NOTSET
     ):
         changes = any((
             is_on is not NOTSET,
@@ -188,6 +194,8 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
             big_int is not NOTSET,
 
             real is not NOTSET,
+
+            smaller_real is not NOTSET,
         ))
 
         if not changes:
@@ -228,6 +236,11 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
             deref(inst.c_SimpleStruct).__isset.real = False
         if real is NOTSET:
             real = None
+        if smaller_real is None:
+            deref(inst.c_SimpleStruct).smaller_real = deref(defaults.c_SimpleStruct).smaller_real
+            deref(inst.c_SimpleStruct).__isset.smaller_real = False
+        if smaller_real is NOTSET:
+            smaller_real = None
 
         if is_on is not None:
             deref(inst.c_SimpleStruct).is_on = is_on
@@ -253,6 +266,10 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
             deref(inst.c_SimpleStruct).real = real
             deref(inst.c_SimpleStruct).__isset.real = True
 
+        if smaller_real is not None:
+            deref(inst.c_SimpleStruct).smaller_real = smaller_real
+            deref(inst.c_SimpleStruct).__isset.smaller_real = True
+
         return inst
 
     def __iter__(self):
@@ -262,9 +279,10 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         yield 'nice_sized_int', self.nice_sized_int
         yield 'big_int', self.big_int
         yield 'real', self.real
+        yield 'smaller_real', self.smaller_real
 
     def __bool__(self):
-        return deref(self.c_SimpleStruct).__isset.is_on or deref(self.c_SimpleStruct).__isset.tiny_int or deref(self.c_SimpleStruct).__isset.small_int or deref(self.c_SimpleStruct).__isset.nice_sized_int or deref(self.c_SimpleStruct).__isset.big_int or deref(self.c_SimpleStruct).__isset.real
+        return deref(self.c_SimpleStruct).__isset.is_on or deref(self.c_SimpleStruct).__isset.tiny_int or deref(self.c_SimpleStruct).__isset.small_int or deref(self.c_SimpleStruct).__isset.nice_sized_int or deref(self.c_SimpleStruct).__isset.big_int or deref(self.c_SimpleStruct).__isset.real or deref(self.c_SimpleStruct).__isset.smaller_real
 
     @staticmethod
     cdef create(shared_ptr[cSimpleStruct] c_SimpleStruct):
@@ -314,6 +332,13 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
 
         return self.c_SimpleStruct.get().real
 
+    @property
+    def smaller_real(self):
+        if not deref(self.c_SimpleStruct).__isset.smaller_real:
+            return None
+
+        return self.c_SimpleStruct.get().smaller_real
+
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -343,11 +368,12 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
             self.nice_sized_int,
             self.big_int,
             self.real,
+            self.smaller_real,
             ))
         return self.__hash
 
     def __repr__(SimpleStruct self):
-        return f'SimpleStruct(is_on={repr(self.is_on)}, tiny_int={repr(self.tiny_int)}, small_int={repr(self.small_int)}, nice_sized_int={repr(self.nice_sized_int)}, big_int={repr(self.big_int)}, real={repr(self.real)})'
+        return f'SimpleStruct(is_on={repr(self.is_on)}, tiny_int={repr(self.tiny_int)}, small_int={repr(self.small_int)}, nice_sized_int={repr(self.nice_sized_int)}, big_int={repr(self.big_int)}, real={repr(self.real)}, smaller_real={repr(self.smaller_real)})'
 
 
 SimpleStruct_defaults = SimpleStruct()

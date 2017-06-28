@@ -46,6 +46,12 @@ file.
 }}{{#value:double?}}{{value:doubleValue}}{{/value:double?}}{{!
 }}{{/constant:value}}
 {{/type:double?}}
+{{#type:float?}}
+{{constant:name}} = {{#constant:value}}{{!
+}}{{#value:integer?}}{{value:integerValue}}.0{{/value:integer?}}{{!
+}}{{#value:double?}}{{value:doubleValue}}{{/value:double?}}{{!
+}}{{/constant:value}}
+{{/type:float?}}
 {{#type:string?}}
 {{constant:name}} = c{{constant:name}}().decode('UTF-8')
 {{/type:string?}}

@@ -26,6 +26,7 @@ to the client.
 }}{{#type:i32?}}<int32_t> result{{/type:i32?}}{{!
 }}{{#type:i64?}}<int64_t> result{{/type:i64?}}{{!
 }}{{#type:double?}}<double> result{{/type:double?}}{{!
+}}{{#type:float?}}<float> result{{/type:float?}}{{!
 }}{{#type:string?}}make_unique[string](<string?> result.encode('UTF-8')){{/type:string?}}{{!
 }}{{#type:binary?}}make_unique[string](<string?> result){{/type:binary?}}{{!
 }}{{#type:struct}}make_unique[{{> common/ModulePath}}.c{{struct:name}}]({{!

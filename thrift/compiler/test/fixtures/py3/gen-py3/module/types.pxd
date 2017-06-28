@@ -48,6 +48,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "py3::s
         bint nice_sized_int
         bint big_int
         bint real
+        bint smaller_real
 
     # Forward Declaration
     cdef cppclass cSimpleStruct "py3::simple::SimpleStruct"
@@ -62,6 +63,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "py3::s
         int32_t nice_sized_int
         int64_t big_int
         double real
+        float smaller_real
         cSimpleStruct__isset __isset
 
     cdef cppclass cComplexStruct__isset "py3::simple::ComplexStruct::__isset":

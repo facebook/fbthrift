@@ -30,6 +30,7 @@ ckey.
 }}{{#type:i32?}}ckey{{/type:i32?}}{{!
 }}{{#type:i64?}}ckey{{/type:i64?}}{{!
 }}{{#type:double?}}ckey{{/type:double?}}{{!
+}}{{#type:float?}}ckey{{/type:float?}}{{!
 }}{{#type:string?}}ckey.decode('UTF-8'){{/type:string?}}{{!
 }}{{#type:binary?}}ckey{{/type:binary?}}{{!
 }}{{#type:struct}}{{> common/ModulePath}}.{{type:name}}.create(make_shared[{{> types/CythonCppType}}](ckey)){{/type:struct}}{{!

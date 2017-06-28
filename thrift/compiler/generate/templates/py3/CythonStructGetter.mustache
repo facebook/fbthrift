@@ -40,6 +40,9 @@ if they have been previously retrieved.
 }}{{#type:double?}}{{!
   }}return self.c_{{struct:name}}.get().{{field:name}}{{!
 }}{{/type:double?}}{{!
+}}{{#type:float?}}{{!
+  }}return self.c_{{struct:name}}.get().{{field:name}}{{!
+}}{{/type:float?}}{{!
 }}{{#type:string?}}{{!
   }}return self.c_{{struct:name}}.get().{{field:name}}.decode('UTF-8'){{!
 }}{{/type:string?}}{{!

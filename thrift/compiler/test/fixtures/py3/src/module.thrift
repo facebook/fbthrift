@@ -18,6 +18,7 @@ struct SimpleStruct {
   4: i32 nice_sized_int
   5: i64 big_int
   6: double real
+  7: float smaller_real
 }
 
 struct ComplexStruct {

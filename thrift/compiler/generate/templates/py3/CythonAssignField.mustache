@@ -43,6 +43,10 @@ on a struct from an existing struct passed in by the user.
 }}if {{field:name}} is not None:
     deref(inst.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
 }}{{/type:double?}}{{!
+}}{{#type:float?}}{{!
+}}if {{field:name}} is not None:
+    deref(inst.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
+}}{{/type:float?}}{{!
 }}{{#type:string?}}{{!
 }}if {{field:name}} is not None:
     deref(inst.c_{{struct:name}}).{{field:name}} = {{field:name}}.encode('UTF-8'){{!

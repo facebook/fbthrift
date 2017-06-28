@@ -27,6 +27,7 @@ to be converted from unicode to binary representation.
 }}{{#type:i32?}}{{field:name}}{{/type:i32?}}{{!
 }}{{#type:i64?}}{{field:name}}{{/type:i64?}}{{!
 }}{{#type:double?}}{{field:name}}{{/type:double?}}{{!
+}}{{#type:float?}}{{field:name}}{{/type:float?}}{{!
 }}{{#type:string?}}(deref({{field:name}}.get())).decode('UTF-8'){{/type:string?}}{{!
 }}{{#type:binary?}}(deref({{field:name}}.get())){{/type:binary?}}{{!
 }}{{#type:struct}}{{> types/CythonPythonType}}.create({{!
