@@ -15,7 +15,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from libcpp.unordered_set cimport unordered_set as cuset
 from libcpp.unordered_map cimport unordered_map as cumap
-from thrift.py3.exceptions cimport cTException, Error
+from thrift.py3.exceptions cimport cTException, Error as __Error
 cimport thrift.py3.types
 
 
@@ -98,9 +98,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cComplexStruct] move(unique_ptr[cComplexStruct])
 
 # Forward Definition of the cython struct
-cdef class SimpleException(Error)
+cdef class SimpleException(__Error)
 
-cdef class SimpleException(Error):
+cdef class SimpleException(__Error):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cSimpleException] c_SimpleException

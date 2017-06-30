@@ -15,7 +15,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from libcpp.unordered_set cimport unordered_set as cuset
 from libcpp.unordered_map cimport unordered_map as cumap
-from thrift.py3.exceptions cimport cTException, Error
+from thrift.py3.exceptions cimport cTException, Error as __Error
 cimport thrift.py3.types
 
 
@@ -53,9 +53,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cFiery] move(unique_ptr[cFiery])
 
 # Forward Definition of the cython struct
-cdef class Banal(Error)
+cdef class Banal(__Error)
 
-cdef class Banal(Error):
+cdef class Banal(__Error):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cBanal] c_Banal
@@ -64,9 +64,9 @@ cdef class Banal(Error):
     cdef create(shared_ptr[cBanal] c_Banal)
 
 # Forward Definition of the cython struct
-cdef class Fiery(Error)
+cdef class Fiery(__Error)
 
-cdef class Fiery(Error):
+cdef class Fiery(__Error):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cFiery] c_Fiery

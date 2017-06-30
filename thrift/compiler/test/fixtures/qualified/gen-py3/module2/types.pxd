@@ -15,7 +15,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from libcpp.unordered_set cimport unordered_set as cuset
 from libcpp.unordered_map cimport unordered_map as cumap
-from thrift.py3.exceptions cimport cTException, Error
+from thrift.py3.exceptions cimport cTException, Error as __Error
 cimport thrift.py3.types
 cimport module0.types
 cimport module1.types
