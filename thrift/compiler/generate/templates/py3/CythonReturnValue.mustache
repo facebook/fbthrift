@@ -33,9 +33,9 @@ to the client.
   }}deref((<{{> common/ModulePath}}.{{struct:name}}?> result).c_{{struct:name}})){{/type:struct}}{{!
 }}{{#type:list?}}make_unique[vector[{{#type:listElemType}}{{>types/CythonCppType}}{{/type:listElemType}}]]({{!
   }}deref((<{{> common/ModulePath}}.{{type:flat_name}}?> result)._vector)){{/type:list?}}{{!
-}}{{#type:set?}}make_unique[cset[{{#type:setElemType}}{{>types/CythonCppType}}{{/type:setElemType}}]]({{!
+}}{{#type:set?}}make_unique[c{{#type:unordered?}}u{{/type:unordered?}}set[{{#type:setElemType}}{{>types/CythonCppType}}{{/type:setElemType}}]]({{!
   }}deref((<{{> common/ModulePath}}.{{type:flat_name}}?> result)._set)){{/type:set?}}{{!
-}}{{#type:map?}}make_unique[cmap[{{> CythonMapKeyValue}}]]({{!
+}}{{#type:map?}}make_unique[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonMapKeyValue}}]]({{!
   }}deref((<{{> common/ModulePath}}.{{type:flat_name}}?> result)._map)){{/type:map?}}{{!
 }}{{#type:void?}}c_unit{{/type:void?}}{{!
 }}{{#type:enum}}{{> common/ModulePath}}.{{enum:name}}_to_cpp(result){{/type:enum}}

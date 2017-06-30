@@ -44,10 +44,10 @@ in the client or server source rather than the type definition source.
 }}{{#type:list?}}vector[{{!
   }}{{#type:listElemType}}{{> types/CythonCppType}}{{/type:listElemType}}{{!
 }}]{{/type:list?}}{{!
-}}{{#type:set?}}cset[{{!
+}}{{#type:set?}}c{{#type:unordered?}}u{{/type:unordered?}}set[{{!
   }}{{#type:setElemType}}{{> types/CythonCppType}}{{/type:setElemType}}{{!
 }}]{{/type:set?}}{{!
-}}{{#type:map?}}cmap[{{!
+}}{{#type:map?}}c{{#type:unordered?}}u{{/type:unordered?}}map[{{!
   }}{{#type:keyType}}{{> types/CythonCppType}}{{/type:keyType}},{{!
   }}{{#type:valueType}}{{> types/CythonCppType}}{{/type:valueType}}{{!
 }}]{{/type:map?}}{{!

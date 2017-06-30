@@ -385,13 +385,13 @@ Sequence.register({{type:flat_name}})
         if isinstance(items, {{type:flat_name}}):
             self._set = (<{{type:flat_name}}> items)._set
         else:
-          self._set = make_shared[cset[{{#type:setElemType}}{{> types/CythonCppType}}{{/type:setElemType}}]]()
+          self._set = make_shared[c{{#type:unordered?}}u{{/type:unordered?}}set[{{#type:setElemType}}{{> types/CythonCppType}}{{/type:setElemType}}]]()
           if items:
               for item in items:
                   deref(self._set).insert({{#type:setElemType}}{{> CythonPythonToCppItem}}{{/type:setElemType}})
 
     @staticmethod
-    cdef create(shared_ptr[cset[{{!
+    cdef create(shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{!
             }}{{#type:setElemType}}{{> types/CythonCppType}}{{/type:setElemType}}{{!
             }}]] c_items):
         inst = <{{type:flat_name}}>{{type:flat_name}}.__new__({{type:flat_name}})
@@ -421,7 +421,7 @@ Sequence.register({{type:flat_name}})
 
     def __richcmp__(self, other, op):
         cdef int cop = op
-        cdef cset[{{!
+        cdef c{{#type:unordered?}}u{{/type:unordered?}}set[{{!
             }}{{#type:setElemType}}{{!
             }}{{> types/CythonCppType}}{{!
             }}{{/type:setElemType}}]{{!
@@ -495,8 +495,8 @@ Sequence.register({{type:flat_name}})
             other = {{type:flat_name}}(other)
 
         {{#type:setElemType}}
-        cdef shared_ptr[cset[{{> types/CythonCppType}}]] shretval = \
-            make_shared[cset[{{> types/CythonCppType}}]]()
+        cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]] shretval = \
+            make_shared[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]]()
         {{/type:setElemType}}
         for citem in deref((<{{type:flat_name}}> self)._set):
             if deref((<{{type:flat_name}}> other)._set).count(citem) > 0:
@@ -510,8 +510,8 @@ Sequence.register({{type:flat_name}})
             other = {{type:flat_name}}(other)
 
         {{#type:setElemType}}
-        cdef shared_ptr[cset[{{> types/CythonCppType}}]] shretval = \
-            make_shared[cset[{{> types/CythonCppType}}]]()
+        cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]] shretval = \
+            make_shared[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]]()
         {{/type:setElemType}}
         for citem in deref((<{{type:flat_name}}> self)._set):
             if deref((<{{type:flat_name}}> other)._set).count(citem) == 0:
@@ -525,8 +525,8 @@ Sequence.register({{type:flat_name}})
             other = {{type:flat_name}}(other)
 
         {{#type:setElemType}}
-        cdef shared_ptr[cset[{{> types/CythonCppType}}]] shretval = \
-            make_shared[cset[{{> types/CythonCppType}}]]()
+        cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]] shretval = \
+            make_shared[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]]()
         {{/type:setElemType}}
         for citem in deref((<{{type:flat_name}}> self)._set):
                 deref(shretval).insert(citem)
@@ -541,8 +541,8 @@ Sequence.register({{type:flat_name}})
             other = {{type:flat_name}}(other)
 
         {{#type:setElemType}}
-        cdef shared_ptr[cset[{{> types/CythonCppType}}]] shretval = \
-            make_shared[cset[{{> types/CythonCppType}}]]()
+        cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]] shretval = \
+            make_shared[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]]()
         {{/type:setElemType}}
         for citem in deref((<{{type:flat_name}}> self)._set):
             if deref((<{{type:flat_name}}> other)._set).count(citem) == 0:
@@ -581,7 +581,7 @@ Set.register({{type:flat_name}})
         if isinstance(items, {{type:flat_name}}):
             self._map = (<{{type:flat_name}}> items)._map
         else:
-          self._map = make_shared[cmap[{{> CythonMapKeyValue}}]]()
+          self._map = make_shared[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonMapKeyValue}}]]()
           if items:
               for key, item in items.items():
                   deref(self._map).insert(
@@ -590,7 +590,7 @@ Set.register({{type:flat_name}})
                           {{#type:valueType}}{{> CythonPythonToCppItem}}{{/type:valueType}}))
 
     @staticmethod
-    cdef create(shared_ptr[cmap[{{> CythonMapKeyValue}}]] c_items):
+    cdef create(shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonMapKeyValue}}]] c_items):
         inst = <{{type:flat_name}}>{{type:flat_name}}.__new__({{type:flat_name}})
         inst._map = c_items
         return inst
@@ -600,7 +600,7 @@ Set.register({{type:flat_name}})
             raise KeyError(f'{key}')
         cdef {{#type:keyType}}{{> types/CythonCppType}} ckey = {{!
             }}{{> CythonPythonToCppKey}}{{/type:keyType}}
-        cdef cmap[{{>CythonMapKeyValue}}].iterator iter = deref(
+        cdef c{{#type:unordered?}}u{{/type:unordered?}}map[{{>CythonMapKeyValue}}].iterator iter = deref(
             self._map).find(ckey)
         if iter == deref(self._map).end():
             raise KeyError(f'{key}')
@@ -666,7 +666,7 @@ Set.register({{type:flat_name}})
         cdef {{#type:keyType}}{{!
             }}{{> types/CythonCppType}} ckey = {{!
             }}{{> CythonPythonToCppKey}}{{/type:keyType}}
-        cdef cmap[{{>CythonMapKeyValue}}].iterator iter = \
+        cdef c{{#type:unordered?}}u{{/type:unordered?}}map[{{>CythonMapKeyValue}}].iterator iter = \
             deref(self._map).find(ckey)
         if iter == deref(self._map).end():
             return default

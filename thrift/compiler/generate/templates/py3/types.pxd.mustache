@@ -32,6 +32,8 @@ from libcpp.memory cimport shared_ptr, unique_ptr
 from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
+from libcpp.unordered_set cimport unordered_set as cuset
+from libcpp.unordered_map cimport unordered_map as cumap
 from thrift.py3.exceptions cimport cTException, Error
 cimport thrift.py3.types
 {{#program:includeNamespaces}}
@@ -118,24 +120,24 @@ cdef class {{type:flat_name}}:
     cdef create(shared_ptr[vector[{{> types/CythonCppType}}]])
 {{/type:listElemType}}
 {{#type:setElemType}}
-    cdef shared_ptr[cset[{{> types/CythonCppType}}]] _set
+    cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]] _set
     @staticmethod
-    cdef create(shared_ptr[cset[{{> types/CythonCppType}}]])
+    cdef create(shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]])
 {{/type:setElemType}}
 {{#type:map?}}
-    cdef shared_ptr[cmap[{{> CythonCppWrapperMapKeyValue}}]] _map
+    cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonCppWrapperMapKeyValue}}]] _map
     @staticmethod
-    cdef create(shared_ptr[cmap[{{> CythonCppWrapperMapKeyValue}}]])
+    cdef create(shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonCppWrapperMapKeyValue}}]])
 {{/type:map?}}
 
 {{/program:containerTypes}}{{#program:moveContainerTypes}}
 {{#first?}}cdef extern from "<utility>" namespace "std" nogil:{{/first?}}
 {{#type:listElemType}}    cdef shared_ptr[vector[{{> types/CythonCppType}}]] {{!
 }}move(unique_ptr[vector[{{> types/CythonCppType}}]]){{/type:listElemType}}{{!
-}}{{#type:setElemType}}    cdef shared_ptr[cset[{{> types/CythonCppType}}]] {{!
-}}move(unique_ptr[cset[{{> types/CythonCppType}}]]){{/type:setElemType}}{{!
-}}{{#type:map?}}    cdef shared_ptr[cmap[{{> CythonCppWrapperMapKeyValue}}]] {{!
-}}move(unique_ptr[cmap[{{> CythonCppWrapperMapKeyValue}}]]){{/type:map?}}{{/program:moveContainerTypes}}
+}}{{#type:setElemType}}    cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]] {{!
+}}move(unique_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]]){{/type:setElemType}}{{!
+}}{{#type:map?}}    cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonCppWrapperMapKeyValue}}]] {{!
+}}move(unique_ptr[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonCppWrapperMapKeyValue}}]]){{/type:map?}}{{/program:moveContainerTypes}}
 
 {{#program:constants}}
 {{#first?}}cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_constants.h"{{!

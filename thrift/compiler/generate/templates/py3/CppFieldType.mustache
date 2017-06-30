@@ -40,9 +40,9 @@ to define the types that go in those containers.
   }}std::unique_ptr<std::vector<{{>ContainerCppFieldType}}>>{{!
   }}{{/type:listElemType}}{{!
 }}{{#type:setElemType}}{{!
-  }}std::unique_ptr<std::set<{{>ContainerCppFieldType}}>>{{!
+  }}std::unique_ptr<std::{{#type:unordered?}}unordered_{{/type:unordered?}}set<{{>ContainerCppFieldType}}>>{{!
   }}{{/type:setElemType}}{{!
 }}{{#type:map?}}{{!
-  }}std::unique_ptr<std::map<{{> CppMapKeyValue}}>>{{!
+  }}std::unique_ptr<std::{{#type:unordered?}}unordered_{{/type:unordered?}}map<{{> CppMapKeyValue}}>>{{!
   }}{{/type:map?}}{{!
 }}{{#type:void?}}folly::Unit{{/type:void?}}

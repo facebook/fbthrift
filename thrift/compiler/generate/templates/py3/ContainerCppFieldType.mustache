@@ -34,8 +34,8 @@ argumnts or return types tend to use unique_ptr.
   }}{{#type:cppNamespaces}}{{value}}::{{/type:cppNamespaces}}{{struct:name}}{{!
   }}{{/type:struct}}{{!
 }}{{#type:list?}}std::vector<{{#type:listElemType}}{{> ContainerCppFieldType}}{{/type:listElemType}}>{{/type:list?}}{{!
-}}{{#type:set?}}std::set<{{#type:setElemType}}{{> ContainerCppFieldType}}{{/type:setElemType}}>{{/type:set?}}{{!
-}}{{#type:map?}}std::map<{{#type:keyType}}{{> ContainerCppFieldType}}{{/type:keyType}},{{#type:valueType}}{{> ContainerCppFieldType}}{{/type:valueType}}>{{/type:map?}}{{!
+}}{{#type:set?}}std::{{#type:unordered?}}unordered_{{/type:unordered?}}set<{{#type:setElemType}}{{> ContainerCppFieldType}}{{/type:setElemType}}>{{/type:set?}}{{!
+}}{{#type:map?}}std::{{#type:unordered?}}unordered_{{/type:unordered?}}map<{{#type:keyType}}{{> ContainerCppFieldType}}{{/type:keyType}},{{#type:valueType}}{{> ContainerCppFieldType}}{{/type:valueType}}>{{/type:map?}}{{!
 }}{{#type:enum}}{{!
   }}{{#type:cppNamespaces}}{{value}}::{{/type:cppNamespaces}}{{enum:name}}{{!
   }}{{/type:enum}}

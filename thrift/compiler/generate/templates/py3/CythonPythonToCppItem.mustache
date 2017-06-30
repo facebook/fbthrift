@@ -39,10 +39,10 @@ key, include the parallel CythonPythonToCppKey file instead.
   }}{{struct:name}}> item).c_{{struct:name}}){{!
 }}{{/type:struct}}{{!
 }}{{#type:list?}}deref({{type:flat_name}}(item)._vector.get()){{/type:list?}}{{!
-}}{{#type:set?}}cset[{{!
+}}{{#type:set?}}c{{#type:unordered?}}u{{/type:unordered?}}set[{{!
   }}{{#type:setElemType}}{{> types/CythonCppType}}{{/type:setElemType}}{{!
   }}](deref({{type:flat_name}}(item)._set.get())){{/type:set?}}{{!
-}}{{#type:map?}}cmap[{{!
+}}{{#type:map?}}c{{#type:unordered?}}u{{/type:unordered?}}map[{{!
   }}{{#type:keyType}}{{> types/CythonCppType}}{{/type:keyType}},{{!
   }}{{#type:valueType}}{{> types/CythonCppType}}{{/type:valueType}}{{!
   }}](deref({{type:flat_name}}(item)._map.get())){{/type:map?}}{{!

@@ -40,9 +40,9 @@ file to define the types that go in those containers.
   }}std::vector<{{>ContainerCppFieldType}}>{{!
   }}{{/type:listElemType}}{{!
 }}{{#type:setElemType}}{{!
-  }}std::set<{{>ContainerCppFieldType}}>{{!
+  }}std::{{#type:unordered?}}unordered_{{/type:unordered?}}set<{{>ContainerCppFieldType}}>{{!
   }}{{/type:setElemType}}{{!
 }}{{#type:map?}}{{!
-  }}std::map<{{> CppMapKeyValue}}>{{!
+  }}std::{{#type:unordered?}}unordered_{{/type:unordered?}}map<{{> CppMapKeyValue}}>{{!
   }}{{/type:map?}}{{!
 }}{{#type:void?}}folly::Unit{{/type:void?}}

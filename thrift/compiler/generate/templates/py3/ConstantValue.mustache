@@ -70,13 +70,13 @@ file.
     }}{{/type:listElemType}}]](c{{constant:name}}()))
 {{/type:list?}}
 {{#type:set?}}
-{{constant:name}} = {{type:flat_name}}.create(make_shared[cset[{{!
+{{constant:name}} = {{type:flat_name}}.create(make_shared[c{{#type:unordered?}}u{{/type:unordered?}}set[{{!
     }}{{#type:setElemType}}{{> types/CythonCppType}}{{!
     }}{{/type:setElemType}}]](c{{constant:name}}()))
 {{/type:set?}}
 {{#type:map?}}
 {{constant:name}} = {{type:flat_name}}.create({{!
-    }}make_shared[cmap[{{> CythonMapKeyValue}}{{!
+    }}make_shared[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonMapKeyValue}}{{!
     }}]](c{{constant:name}}()))
 {{/type:map?}}
 {{#type:enum}}

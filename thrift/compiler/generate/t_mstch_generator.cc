@@ -167,7 +167,11 @@ mstch::map t_mstch_generator::dump(const t_type& orig_type) {
   } else if (type.is_set()) {
     result.emplace(
         "setElemType", dump(*dynamic_cast<const t_set&>(type).get_elem_type()));
+    result.emplace(
+        "unordered?", dynamic_cast<const t_set&>(type).is_unordered());
   } else if (type.is_map()) {
+    result.emplace(
+        "unordered?", dynamic_cast<const t_map&>(type).is_unordered());
     result.emplace(
         "keyType", dump(*dynamic_cast<const t_map&>(type).get_key_type()));
     result.emplace(
