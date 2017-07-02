@@ -14,19 +14,24 @@
  * limitations under the License.
  */
 #include <folly/Benchmark.h>
-#include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_types.h>
+
+#include <thrift/lib/cpp2/frozen/HintTypes.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_layouts.h>
+#include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_types.h>
 
 using namespace apache::thrift;
 using namespace frozen;
 
-template <class T>
-std::vector<std::vector<T>> makeMatrix() {
-  std::vector<std::vector<T>> vals;
-  for (int y = 0; y < 4096; ++y) {
+const int kRows = 409;
+const int kCols = 51;
+
+template <class T, class Inner = std::vector<T>>
+std::vector<Inner> makeMatrix() {
+  std::vector<Inner> vals;
+  for (int y = 0; y < kRows; ++y) {
     vals.emplace_back();
     auto& row = vals.back();
-    for (int x = 0; x < 512; ++x) {
+    for (int x = 0; x < kCols; ++x) {
       row.push_back(rand() % 12000 - 6000);
     }
   }
@@ -34,48 +39,87 @@ std::vector<std::vector<T>> makeMatrix() {
 }
 
 auto vvf32 = makeMatrix<float>();
+auto fvvf32 = freeze(vvf32);
+
 auto vvi16 = makeMatrix<int16_t>();
 auto vvi32 = makeMatrix<int32_t>();
 auto vvi64 = makeMatrix<int64_t>();
-auto fvvf32 = freeze(vvf32);
 auto fvvi16 = freeze(vvi16);
 auto fvvi32 = freeze(vvi32);
 auto fvvi64 = freeze(vvi64);
-
-template <class T>
-void benchmarkSum(int iters, const std::vector<std::vector<T>>& matrix) {
-  int s = 0;
-  while (iters--)
-    for (auto& row : matrix)
-      for (auto val : row)
-        s += val;
-  folly::doNotOptimizeAway(s);
-}
+auto fuvvi16 = freeze(makeMatrix<int16_t, VectorUnpacked<int16_t>>());
+auto fuvvi32 = freeze(makeMatrix<int32_t, VectorUnpacked<int32_t>>());
+auto fuvvi64 = freeze(makeMatrix<int64_t, VectorUnpacked<int64_t>>());
 
 template <class F>
 void benchmarkSum(int iters, const F& matrix) {
   int s = 0;
-  while (iters--)
-    for (auto row : matrix)
-      for (auto val : row)
+  while (iters--) {
+    for (auto& row : matrix) {
+      for (auto val : row) {
         s += val;
+      }
+    }
+  }
+  folly::doNotOptimizeAway(s);
+}
+
+template <class F>
+void benchmarkSumCols(int iters, const F& matrix) {
+  int s = 0;
+  while (iters--) {
+    for (size_t x = 0; x < kCols; ++x) {
+      for (size_t y = x; y < kRows; ++y) {
+        s += matrix[y][x];
+      }
+    }
+  }
+  folly::doNotOptimizeAway(s);
+}
+
+template <class F>
+void benchmarkSumSavedCols(int iters, const F& matrix) {
+  folly::BenchmarkSuspender setup;
+  std::vector<typename F::value_type> rows;
+  for (size_t y = 0; y < kRows; ++y) {
+    rows.push_back(matrix[y]);
+  }
+  setup.dismiss();
+
+  int s = 0;
+  while (iters--) {
+    for (size_t x = 0; x < kCols; ++x) {
+      for (size_t y = x; y < kRows; ++y) {
+        s += rows[y][x];
+      }
+    }
+  }
   folly::doNotOptimizeAway(s);
 }
 
 BENCHMARK_PARAM(benchmarkSum, vvi16);
 BENCHMARK_RELATIVE_PARAM(benchmarkSum, fvvi16);
+BENCHMARK_RELATIVE_PARAM(benchmarkSum, fuvvi16);
 BENCHMARK_PARAM(benchmarkSum, vvi32);
 BENCHMARK_RELATIVE_PARAM(benchmarkSum, fvvi32);
+BENCHMARK_RELATIVE_PARAM(benchmarkSum, fuvvi32);
 BENCHMARK_PARAM(benchmarkSum, vvi64);
 BENCHMARK_RELATIVE_PARAM(benchmarkSum, fvvi64);
+BENCHMARK_RELATIVE_PARAM(benchmarkSum, fuvvi64);
 BENCHMARK_PARAM(benchmarkSum, vvf32);
 BENCHMARK_RELATIVE_PARAM(benchmarkSum, fvvf32);
+BENCHMARK_DRAW_LINE();
+BENCHMARK_PARAM(benchmarkSumCols, vvi32);
+BENCHMARK_RELATIVE_PARAM(benchmarkSumCols, fvvi32);
+BENCHMARK_RELATIVE_PARAM(benchmarkSumCols, fuvvi32);
+BENCHMARK_RELATIVE_PARAM(benchmarkSumSavedCols, fvvi32);
+BENCHMARK_RELATIVE_PARAM(benchmarkSumSavedCols, fuvvi32);
 
-const size_t entries = 1000000;
+const size_t entries = 100000;
 template <class Map>
 Map makeMap() {
   Map hist;
-  for (int y = 0; y < 10000000; ++y) {
+  for (size_t y = 0; y < entries * 3; ++y) {
     auto k = (rand() * 8192 + rand()) % entries;
     ++hist[k];
   }
@@ -169,32 +213,41 @@ BENCHMARK_RELATIVE_PARAM(benchmarkLookup, frozenHashMap_i64);
 ============================================================================
 thrift/lib/cpp2/frozen/test/FrozenBench.cpp     relative  time/iter  iters/s
 ============================================================================
-benchmarkSum(vvi16)                                        560.87us    1.78K
-benchmarkSum(fvvi16)                               3.11%    18.04ms    55.43
-benchmarkSum(vvi32)                                        631.93us    1.58K
-benchmarkSum(fvvi32)                               4.38%    14.42ms    69.37
-benchmarkSum(vvi64)                                          1.85ms   539.33
-benchmarkSum(fvvi64)                              18.01%    10.29ms    97.15
-benchmarkSum(vvf32)                                         10.52ms    95.04
-benchmarkSum(fvvf32)                              99.75%    10.55ms    94.80
+benchmarkSum(vvi16)                                          4.13us  241.93K
+benchmarkSum(fvvi16)                               3.80%   108.74us    9.20K
+benchmarkSum(fuvvi16)                             48.05%     8.60us  116.24K
+benchmarkSum(vvi32)                                          4.70us  212.83K
+benchmarkSum(fvvi32)                               4.35%   107.97us    9.26K
+benchmarkSum(fuvvi32)                             55.06%     8.53us  117.19K
+benchmarkSum(vvi64)                                         10.83us   92.34K
+benchmarkSum(fvvi64)                              14.84%    72.98us   13.70K
+benchmarkSum(fuvvi64)                             65.67%    16.49us   60.64K
+benchmarkSum(vvf32)                                         69.91us   14.30K
+benchmarkSum(fvvf32)                              99.85%    70.02us   14.28K
 ----------------------------------------------------------------------------
-benchmarkLookup(map_f32)                                   297.68us    3.36K
-benchmarkLookup(frozenMap_f32)                   141.90%   209.78us    4.77K
-benchmarkLookup(map_i16)                                   251.54us    3.98K
-benchmarkLookup(frozenMap_i16)                    77.51%   324.54us    3.08K
-benchmarkLookup(map_i32)                                   288.40us    3.47K
-benchmarkLookup(frozenMap_i32)                    85.67%   336.62us    2.97K
-benchmarkLookup(map_i64)                                   290.03us    3.45K
-benchmarkLookup(frozenMap_i64)                    88.82%   326.54us    3.06K
+benchmarkSumCols(vvi32)                                     14.90us   67.11K
+benchmarkSumCols(fvvi32)                           6.75%   220.84us    4.53K
+benchmarkSumCols(fuvvi32)                         10.51%   141.85us    7.05K
+benchmarkSumSavedCols(fvvi32)                     15.29%    97.46us   10.26K
+benchmarkSumSavedCols(fuvvi32)                   124.74%    11.95us   83.70K
 ----------------------------------------------------------------------------
-benchmarkLookup(hashMap_f32)                               100.01us   10.00K
-benchmarkLookup(frozenHashMap_f32)               138.78%    72.06us   13.88K
-benchmarkLookup(hashMap_i16)                                70.05us   14.28K
-benchmarkLookup(frozenHashMap_i16)               107.99%    64.87us   15.42K
-benchmarkLookup(hashMap_i32)                                63.55us   15.74K
-benchmarkLookup(frozenHashMap_i32)                89.94%    70.65us   14.15K
-benchmarkLookup(hashMap_i64)                                66.91us   14.95K
-benchmarkLookup(frozenHashMap_i64)                94.22%    71.01us   14.08K
+benchmarkLookup(map_f32)                                   241.65us    4.14K
+benchmarkLookup(frozenMap_f32)                   423.24%    57.09us   17.51K
+benchmarkLookup(map_i16)                                   212.87us    4.70K
+benchmarkLookup(frozenMap_i16)                    85.52%   248.91us    4.02K
+benchmarkLookup(map_i32)                                   229.78us    4.35K
+benchmarkLookup(frozenMap_i32)                   171.00%   134.37us    7.44K
+benchmarkLookup(map_i64)                                   231.73us    4.32K
+benchmarkLookup(frozenMap_i64)                   205.83%   112.58us    8.88K
+----------------------------------------------------------------------------
+benchmarkLookup(hashMap_f32)                                88.28us   11.33K
+benchmarkLookup(frozenHashMap_f32)               220.12%    40.11us   24.93K
+benchmarkLookup(hashMap_i16)                                51.96us   19.24K
+benchmarkLookup(frozenHashMap_i16)               108.97%    47.68us   20.97K
+benchmarkLookup(hashMap_i32)                                48.50us   20.62K
+benchmarkLookup(frozenHashMap_i32)               133.37%    36.37us   27.50K
+benchmarkLookup(hashMap_i64)                                51.68us   19.35K
+benchmarkLookup(frozenHashMap_i64)                61.69%    83.77us   11.94K
 ============================================================================
 #endif
 int main(int argc, char** argv) {
