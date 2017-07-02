@@ -15,6 +15,7 @@
  */
 #include <folly/Benchmark.h>
 
+#include <thrift/lib/cpp2/frozen/FrozenUtil.h>
 #include <thrift/lib/cpp2/frozen/HintTypes.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_layouts.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_types.h>
@@ -22,7 +23,7 @@
 using namespace apache::thrift;
 using namespace frozen;
 
-const int kRows = 409;
+const int kRows = 490;
 const int kCols = 51;
 
 template <class T, class Inner = std::vector<T>>
@@ -40,7 +41,6 @@ std::vector<Inner> makeMatrix() {
 
 auto vvf32 = makeMatrix<float>();
 auto fvvf32 = freeze(vvf32);
-
 auto vvi16 = makeMatrix<int16_t>();
 auto vvi32 = makeMatrix<int32_t>();
 auto vvi64 = makeMatrix<int64_t>();
@@ -50,6 +50,8 @@ auto fvvi64 = freeze(vvi64);
 auto fuvvi16 = freeze(makeMatrix<int16_t, VectorUnpacked<int16_t>>());
 auto fuvvi32 = freeze(makeMatrix<int32_t, VectorUnpacked<int32_t>>());
 auto fuvvi64 = freeze(makeMatrix<int64_t, VectorUnpacked<int64_t>>());
+auto strings = std::vector<std::string>{"one", "two", "three", "four", "five"};
+auto tuple = std::make_pair(std::make_pair(1.3, 2.4), std::make_pair(4.5, 'x'));
 
 template <class F>
 void benchmarkSum(int iters, const F& matrix) {
@@ -208,6 +210,43 @@ BENCHMARK_PARAM(benchmarkLookup, hashMap_i32);
 BENCHMARK_RELATIVE_PARAM(benchmarkLookup, frozenHashMap_i32);
 BENCHMARK_PARAM(benchmarkLookup, hashMap_i64);
 BENCHMARK_RELATIVE_PARAM(benchmarkLookup, frozenHashMap_i64);
+
+BENCHMARK_DRAW_LINE();
+
+template <class T>
+void benchmarkOldFreezeDataToString(int iters, const T& data) {
+  const auto layout = maximumLayout<T>();
+  size_t s = 0;
+  while (iters--) {
+    std::string out;
+    out.resize(frozenSize(data, layout));
+    folly::MutableByteRange writeRange(
+        reinterpret_cast<byte*>(&out[0]), out.size());
+    ByteRangeFreezer::freeze(layout, data, writeRange);
+    out.resize(out.size() - writeRange.size());
+    s += out.size();
+  }
+  folly::doNotOptimizeAway(s);
+}
+
+template <class T>
+void benchmarkFreezeDataToString(int iters, const T& data) {
+  const auto layout = maximumLayout<T>();
+  size_t s = 0;
+  while (iters--) {
+    s += freezeDataToString(data, layout).size();
+  }
+  folly::doNotOptimizeAway(s);
+}
+
+BENCHMARK_PARAM(benchmarkFreezeDataToString, vvf32);
+BENCHMARK_RELATIVE_PARAM(benchmarkOldFreezeDataToString, vvf32);
+BENCHMARK_PARAM(benchmarkFreezeDataToString, tuple);
+BENCHMARK_RELATIVE_PARAM(benchmarkOldFreezeDataToString, tuple);
+BENCHMARK_PARAM(benchmarkFreezeDataToString, strings);
+BENCHMARK_RELATIVE_PARAM(benchmarkOldFreezeDataToString, strings);
+BENCHMARK_PARAM(benchmarkFreezeDataToString, hashMap_i32);
+BENCHMARK_RELATIVE_PARAM(benchmarkOldFreezeDataToString, hashMap_i32);
 
 #if 0
 ============================================================================

@@ -102,7 +102,7 @@ struct ArrayLayout : public LayoutBase {
 
     root.freezeField(self, distanceField, dist);
 
-    FreezePosition write{self.start + dist, 0};
+    FreezePosition write{range.begin(), 0};
     FieldPosition writeStep(itemBytes, itemBits);
     freezeItems(root, coll, self, write, writeStep);
   }

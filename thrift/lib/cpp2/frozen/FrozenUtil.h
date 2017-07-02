@@ -42,6 +42,54 @@ class FrozenFileForwardIncompatible : public std::runtime_error {
 };
 
 /**
+ * A FreezeRoot that mallocs buffers as needed.
+ */
+class MallocFreezer final : public FreezeRoot {
+ public:
+  explicit MallocFreezer() {}
+
+  template <class T>
+  void freeze(const Layout<T>& layout, const T& root) {
+    doFreeze(layout, root);
+  }
+
+  void appendTo(std::string& out) const {
+    out.reserve(size_ + out.size());
+    for (auto& segment : segments_) {
+      out.append(segment.buffer, segment.buffer + segment.size);
+    }
+  }
+
+ private:
+  size_t distanceToEnd(const byte* origin) const;
+  size_t offsetOf(const byte* origin) const;
+
+  folly::MutableByteRange appendBuffer(size_t size);
+
+  void doAppendBytes(
+      byte* origin,
+      size_t n,
+      folly::MutableByteRange& range,
+      size_t& distance,
+      size_t alignment) override;
+
+  struct Segment {
+    explicit Segment(size_t size);
+    Segment(Segment&& other) : size(other.size), buffer(other.buffer) {
+      other.buffer = nullptr;
+    }
+
+    ~Segment();
+
+    size_t size{0};
+    byte* buffer{nullptr}; // owned
+  };
+  std::map<const byte*, size_t> offsets_;
+  std::vector<Segment> segments_;
+  size_t size_{0};
+};
+
+/**
  * Returns an upper bound estimate of the number of bytes required to freeze
  * this object with a minimal layout. Actual bytes required will depend on the
  * alignment of the freeze buffer.
@@ -126,7 +174,7 @@ void freezeToString(const T& x, std::string& out) {
 
   size_t schemaSize = out.size();
   size_t bufferSize = schemaSize + contentSize;
-  out.resize(bufferSize);
+  out.resize(bufferSize, 0);
   folly::MutableByteRange writeRange(
       reinterpret_cast<byte*>(&out[schemaSize]), contentSize);
   ByteRangeFreezer::freeze(layout, x, writeRange);
@@ -136,12 +184,21 @@ void freezeToString(const T& x, std::string& out) {
 template <class T>
 std::string freezeDataToString(const T& x, const Layout<T>& layout) {
   std::string out;
-  out.resize(frozenSize(x, layout));
-  folly::MutableByteRange writeRange(
-      reinterpret_cast<byte*>(&out[0]), out.size());
-  ByteRangeFreezer::freeze(layout, x, writeRange);
-  out.resize(out.size() - writeRange.size());
+  MallocFreezer freezer;
+  freezer.freeze(layout, x);
+  freezer.appendTo(out);
   return out;
+}
+
+template <class T>
+void freezeToStringMalloc(const T& x, std::string& out) {
+  Layout<T> layout;
+  LayoutRoot::layout(x, layout);
+  out.clear();
+  serializeRootLayout(layout, out);
+  MallocFreezer freezer;
+  freezer.freeze(layout, x);
+  freezer.appendTo(out);
 }
 
 /**

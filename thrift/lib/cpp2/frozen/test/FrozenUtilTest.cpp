@@ -96,6 +96,17 @@ TEST(FrozenUtil, FreezeToString) {
     frozen = mapFrozen<TestType>(std::move(store), false);
   }
   EXPECT_EQ(frozen.at(3).at(5), 15);
+  {
+    std::string store;
+    freezeToString(m, store);
+    std::string store2;
+    freezeToStringMalloc(m, store2);
+    EXPECT_EQ(store.size(), store2.size());
+    EXPECT_EQ(store, store2);
+    // false = don't trim the space for the schema
+    frozen = mapFrozen<TestType>(std::move(store), false);
+  }
+  EXPECT_EQ(frozen.at(3).at(5), 15);
 }
 
 TEST(Frozen, WorstCasePadding) {
@@ -139,18 +150,33 @@ TEST(Frozen, ConstLayout) {
   EXPECT_EQ(21, frozenSize(Table{"hello", "world"}, layout));
 }
 
+TEST(Frozen, FreezeToStringMalloc) {
+  using Table = std::vector<std::string>;
+  std::string x, y;
+  Table value{"hello", "world"};
+  freezeToString(value, x);
+  freezeToStringMalloc(value, y);
+  EXPECT_EQ(x, y);
+  auto fx = mapFrozen<Table>(std::move(x));
+  auto fy = mapFrozen<Table>(std::move(y));
+  EXPECT_EQ(fx[0], fy[0]);
+  EXPECT_EQ(fx[1], fy[1]);
+}
+
 TEST(Frozen, FreezeDataToString) {
   using Table = std::vector<std::string>;
   Layout<Table> layout;
-  LayoutRoot::layout(Table{"x"}, layout);
+  LayoutRoot::layout(Table{"xxx", "yyy", "www"}, layout);
   const Layout<Table> fixedLayout = layout;
   EXPECT_THROW(
       freezeDataToString(Table{"hello", "world"}, fixedLayout),
       LayoutException);
-  auto str = freezeDataToString(Table{"y"}, fixedLayout);
+  auto str = freezeDataToString(Table{"abc", "123", "xyz"}, fixedLayout);
   auto view = fixedLayout.view({reinterpret_cast<byte*>(&str[0]), 0});
-  EXPECT_EQ(view.size(), 1);
-  EXPECT_EQ(view[0], "y");
+  EXPECT_EQ(view.size(), 3);
+  EXPECT_EQ(view[0], "abc");
+  EXPECT_EQ(view[1], "123");
+  EXPECT_EQ(view[2], "xyz");
 }
 
 int main(int argc, char** argv) {

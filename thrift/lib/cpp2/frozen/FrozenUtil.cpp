@@ -15,6 +15,8 @@
  */
 #include <thrift/lib/cpp2/frozen/FrozenUtil.h>
 
+#include <cstdlib>
+
 #include <folly/Conv.h>
 
 DEFINE_bool(thrift_frozen_util_disable_mlock, false,
@@ -30,4 +32,70 @@ FrozenFileForwardIncompatible::FrozenFileForwardIncompatible(int fileVersion)
           schema::frozen_constants::kCurrentFrozenFileVersion(),
           " are supported.")),
       fileVersion_(fileVersion) {}
+
+MallocFreezer::Segment::Segment(size_t size)
+    : size(size), buffer(reinterpret_cast<byte*>(calloc(size, 1))) {
+  if (!buffer) {
+    throw std::runtime_error("Couldn't allocate memory");
+  }
+}
+
+MallocFreezer::Segment::~Segment() {
+  if (buffer) {
+    free(buffer);
+  }
+}
+
+size_t MallocFreezer::offsetOf(const byte* ptr) const {
+  if (offsets_.empty() || !ptr) {
+    return 0;
+  }
+  auto offsetIt = offsets_.upper_bound(ptr);
+  if (offsetIt == offsets_.begin()) {
+    throw std::runtime_error("offset");
+  }
+  --offsetIt;
+  return ptr - offsetIt->first;
+}
+
+size_t MallocFreezer::distanceToEnd(const byte* ptr) const {
+  if (offsets_.empty()) {
+    return 0;
+  }
+  auto offsetIt = offsets_.upper_bound(ptr);
+  if (offsetIt == offsets_.begin()) {
+    throw std::runtime_error("dist");
+  }
+  --offsetIt;
+  CHECK_GE(ptr, offsetIt->first);
+  return (size_ - offsetIt->second) - (ptr - offsetIt->first);
+}
+
+folly::MutableByteRange MallocFreezer::appendBuffer(size_t size) {
+  Segment segment(size);
+  offsets_.emplace(segment.buffer, size_);
+
+  folly::MutableByteRange range(segment.buffer, size);
+  size_ += segment.size;
+  segments_.push_back(std::move(segment));
+  return range;
+}
+
+void MallocFreezer::doAppendBytes(
+    byte* origin,
+    size_t n,
+    folly::MutableByteRange& range,
+    size_t& distance,
+    size_t alignment) {
+  if (!n) {
+    distance = 0;
+    range.reset(nullptr, 0);
+    return;
+  }
+  auto aligned = alignBy(size_, alignment);
+  auto padding = aligned - size_;
+  distance = distanceToEnd(origin) + padding;
+  range = appendBuffer(padding + n);
+  range.advance(padding);
+}
 }}}

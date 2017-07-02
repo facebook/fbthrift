@@ -653,10 +653,11 @@ class FreezeRoot {
  protected:
   template <class T>
   typename Layout<T>::View doFreeze(const Layout<T>& layout, const T& root) {
-    folly::MutableByteRange range;
+    folly::MutableByteRange range, tail;
     size_t dist;
-    appendBytes(0, layout.size, range, dist, 1);
+    appendBytes(nullptr, layout.size, range, dist, 1);
     layout.freeze(*this, root, {range.begin(), 0});
+    appendBytes(range.end(), LayoutRoot::kPaddingBytes, tail, dist, 1);
     return layout.view({range.begin(), 0});
   }
 
@@ -728,7 +729,6 @@ class ByteRangeFreezer final : public FreezeRoot {
       folly::MutableByteRange& write) {
     ByteRangeFreezer freezer(write);
     auto view = freezer.doFreeze(layout, root);
-    freezer.write_.advance(LayoutRoot::kPaddingBytes);
     return view;
   }
 
@@ -738,23 +738,7 @@ class ByteRangeFreezer final : public FreezeRoot {
       size_t n,
       folly::MutableByteRange& range,
       size_t& distance,
-      size_t alignment) override {
-    CHECK_LE(origin, write_.begin());
-    if (!n) {
-      distance = 0;
-      range.reset(nullptr, 0);
-      return;
-    }
-    auto start = reinterpret_cast<intptr_t>(write_.begin());
-    auto aligned = alignBy(start, alignment);
-    auto padding = aligned - start;
-    if (padding + n > write_.size()) {
-      throw std::length_error("Insufficient buffer allocated");
-    }
-    range.reset(write_.begin() + padding, n);
-    write_.advance(padding + n);
-    distance = range.begin() - origin;
-  }
+      size_t alignment) override;
 
   folly::MutableByteRange& write_;
 };

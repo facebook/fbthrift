@@ -70,6 +70,29 @@ void LayoutBase::clear() {
   inlined = false;
 }
 
+void ByteRangeFreezer::doAppendBytes(
+    byte* origin,
+    size_t n,
+    folly::MutableByteRange& range,
+    size_t& distance,
+    size_t alignment) {
+  CHECK_LE(origin, write_.begin());
+  if (!n) {
+    distance = 0;
+    range.reset(nullptr, 0);
+    return;
+  }
+  auto start = reinterpret_cast<intptr_t>(write_.begin());
+  auto aligned = alignBy(start, alignment);
+  auto padding = aligned - start;
+  if (padding + n > write_.size()) {
+    throw std::length_error("Insufficient buffer allocated");
+  }
+  range.reset(write_.begin() + padding, n);
+  write_.advance(padding + n);
+  distance = range.begin() - origin;
+}
+
 namespace detail {
 
 FieldPosition BlockLayout::maximize() {
@@ -122,4 +145,7 @@ void BufferHelpers<std::unique_ptr<folly::IOBuf>>::thawTo(
   dst = folly::IOBuf::copyBuffer(src.begin(), src.size());
 }
 
-}}}}
+} // namespace detail
+}
+}
+}
