@@ -77,6 +77,63 @@ using _AnnotatedEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<An
 extern const _AnnotatedEnum_EnumMapFactory::ValuesToNamesMapType _AnnotatedEnum_VALUES_TO_NAMES;
 extern const _AnnotatedEnum_EnumMapFactory::NamesToValuesMapType _AnnotatedEnum_NAMES_TO_VALUES;
 
+inline constexpr AnnotatedEnum operator&(AnnotatedEnum a, AnnotatedEnum b) {
+  using E = AnnotatedEnum;
+  using U = std::underlying_type_t<E>;
+  return static_cast<E>(static_cast<U>(a) & static_cast<U>(b));
+}
+#if __cplusplus >= 201402L
+
+inline constexpr AnnotatedEnum& operator&=(AnnotatedEnum& a, AnnotatedEnum b) {
+  return a = a & b;
+}
+#else
+
+inline AnnotatedEnum& operator&=(AnnotatedEnum& a, AnnotatedEnum b) {
+  return a = a & b;
+}
+#endif
+
+inline constexpr AnnotatedEnum operator|(AnnotatedEnum a, AnnotatedEnum b) {
+  using E = AnnotatedEnum;
+  using U = std::underlying_type_t<E>;
+  return static_cast<E>(static_cast<U>(a) | static_cast<U>(b));
+}
+#if __cplusplus >= 201402L
+
+inline constexpr AnnotatedEnum& operator|=(AnnotatedEnum& a, AnnotatedEnum b) {
+  return a = a | b;
+}
+#else
+
+inline AnnotatedEnum& operator|=(AnnotatedEnum& a, AnnotatedEnum b) {
+  return a = a | b;
+}
+#endif
+
+inline constexpr AnnotatedEnum operator^(AnnotatedEnum a, AnnotatedEnum b) {
+  using E = AnnotatedEnum;
+  using U = std::underlying_type_t<E>;
+  return static_cast<E>(static_cast<U>(a) ^ static_cast<U>(b));
+}
+#if __cplusplus >= 201402L
+
+inline constexpr AnnotatedEnum& operator^=(AnnotatedEnum& a, AnnotatedEnum b) {
+  return a = a ^ b;
+}
+#else
+
+inline AnnotatedEnum& operator^=(AnnotatedEnum& a, AnnotatedEnum b) {
+  return a = a ^ b;
+}
+#endif
+
+inline constexpr AnnotatedEnum operator~(AnnotatedEnum a) {
+  using E = AnnotatedEnum;
+  using U = std::underlying_type_t<E>;
+  return static_cast<E>(~static_cast<U>(a));
+}
+
 }}} // some::valid::ns
 namespace std {
 
@@ -113,6 +170,63 @@ enum class AnnotatedEnum2 : short {
 using _AnnotatedEnum2_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnnotatedEnum2, AnnotatedEnum2>;
 extern const _AnnotatedEnum2_EnumMapFactory::ValuesToNamesMapType _AnnotatedEnum2_VALUES_TO_NAMES;
 extern const _AnnotatedEnum2_EnumMapFactory::NamesToValuesMapType _AnnotatedEnum2_NAMES_TO_VALUES;
+
+inline constexpr AnnotatedEnum2 operator&(AnnotatedEnum2 a, AnnotatedEnum2 b) {
+  using E = AnnotatedEnum2;
+  using U = std::underlying_type_t<E>;
+  return static_cast<E>(static_cast<U>(a) & static_cast<U>(b));
+}
+#if __cplusplus >= 201402L
+
+inline constexpr AnnotatedEnum2& operator&=(AnnotatedEnum2& a, AnnotatedEnum2 b) {
+  return a = a & b;
+}
+#else
+
+inline AnnotatedEnum2& operator&=(AnnotatedEnum2& a, AnnotatedEnum2 b) {
+  return a = a & b;
+}
+#endif
+
+inline constexpr AnnotatedEnum2 operator|(AnnotatedEnum2 a, AnnotatedEnum2 b) {
+  using E = AnnotatedEnum2;
+  using U = std::underlying_type_t<E>;
+  return static_cast<E>(static_cast<U>(a) | static_cast<U>(b));
+}
+#if __cplusplus >= 201402L
+
+inline constexpr AnnotatedEnum2& operator|=(AnnotatedEnum2& a, AnnotatedEnum2 b) {
+  return a = a | b;
+}
+#else
+
+inline AnnotatedEnum2& operator|=(AnnotatedEnum2& a, AnnotatedEnum2 b) {
+  return a = a | b;
+}
+#endif
+
+inline constexpr AnnotatedEnum2 operator^(AnnotatedEnum2 a, AnnotatedEnum2 b) {
+  using E = AnnotatedEnum2;
+  using U = std::underlying_type_t<E>;
+  return static_cast<E>(static_cast<U>(a) ^ static_cast<U>(b));
+}
+#if __cplusplus >= 201402L
+
+inline constexpr AnnotatedEnum2& operator^=(AnnotatedEnum2& a, AnnotatedEnum2 b) {
+  return a = a ^ b;
+}
+#else
+
+inline AnnotatedEnum2& operator^=(AnnotatedEnum2& a, AnnotatedEnum2 b) {
+  return a = a ^ b;
+}
+#endif
+
+inline constexpr AnnotatedEnum2 operator~(AnnotatedEnum2 a) {
+  using E = AnnotatedEnum2;
+  using U = std::underlying_type_t<E>;
+  return static_cast<E>(~static_cast<U>(a));
+}
 
 }}} // some::valid::ns
 namespace std {

@@ -56,6 +56,8 @@ class mstch_cpp2_enum : public mstch_enum {
             {"enum:min", &mstch_cpp2_enum::min},
             {"enum:max", &mstch_cpp2_enum::max},
             {"enum:cpp_enum_type", &mstch_cpp2_enum::cpp_enum_type},
+            {"enum:cpp_declare_bitwise_ops",
+             &mstch_cpp2_enum::cpp_declare_bitwise_ops},
         });
   }
   mstch::node is_empty() {
@@ -93,6 +95,14 @@ class mstch_cpp2_enum : public mstch_enum {
       return enm_->annotations_.at("cpp.enum_type");
     } else if (enm_->annotations_.count("cpp2.enum_type")) {
       return enm_->annotations_.at("cpp2.enum_type");
+    }
+    return std::string();
+  }
+  mstch::node cpp_declare_bitwise_ops() {
+    if (enm_->annotations_.count("cpp.declare_bitwise_ops")) {
+      return enm_->annotations_.at("cpp.declare_bitwise_ops");
+    } else if (enm_->annotations_.count("cpp2.declare_bitwise_ops")) {
+      return enm_->annotations_.at("cpp2.declare_bitwise_ops");
     }
     return std::string();
   }

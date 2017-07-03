@@ -33,6 +33,11 @@ using _<%enum:name%>_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<<%
 extern const _<%enum:name%>_EnumMapFactory::ValuesToNamesMapType _<%enum:name%>_VALUES_TO_NAMES;
 extern const _<%enum:name%>_EnumMapFactory::NamesToValuesMapType _<%enum:name%>_NAMES_TO_VALUES;
 
+<%#enum:cpp_declare_bitwise_ops%>
+<% > module_types_h/enum_bitwise_ops%>
+
+
+<%/enum:cpp_declare_bitwise_ops%>
 <% > common/namespace_cpp2_end%>
 
 namespace std {

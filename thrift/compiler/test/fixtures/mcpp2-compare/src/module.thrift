@@ -37,13 +37,13 @@ enum AnnotatedEnum {
   FIELDA = 2,
   FIELDB = 4,
   FIELDC = 9,
-} (cpp.enum_type = "std::uint32_t")
+} (cpp2.declare_bitwise_ops, cpp.enum_type = "std::uint32_t")
 
 enum AnnotatedEnum2 {
   FIELDA = 2,
   FIELDB = 4,
   FIELDC = 9,
-} (cpp2.enum_type = "short")
+} (cpp2.enum_type = "short", cpp.declare_bitwise_ops)
 
 const MyEnumA constEnumA = MyEnumA.fieldB
 
