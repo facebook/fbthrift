@@ -15,7 +15,7 @@
   limitations under the License.
 
 %><%#struct:fields%><%#field:type%>
-  <% > Type%> move_<%field:name%>() {
+  <% > RefType%> move_<%field:name%>() {
     assert(type_ == Type::<%field:name%>);
     return std::move(value_.<%field:name%>);
   }

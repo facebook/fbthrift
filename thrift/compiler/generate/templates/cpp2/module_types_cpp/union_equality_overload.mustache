@@ -22,7 +22,12 @@ bool <%struct:name%>::operator==(const <%struct:name%>& rhs) const {
 <%#struct:fields%>
     case Type::<%field:name%>:
     {
+<%#field:cpp_ref?%>
+      return *value_.<%field:name%> == *rhs.value_.<%field:name%>;
+<%/field:cpp_ref?%>
+<%^field:cpp_ref?%>
       return value_.<%field:name%> == rhs.value_.<%field:name%>;
+<%/field:cpp_ref?%>
     }
 <%/struct:fields%>
     default:

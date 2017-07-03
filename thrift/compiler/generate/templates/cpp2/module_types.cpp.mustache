@@ -33,6 +33,7 @@
 %><% > common/namespace_cpp2_begin%>
 
 
+<%^struct:union?%>
 <%#struct:fields_contain_cpp_ref?%><%^struct:cpp_noexcept_move_ctor%>
 <% > module_types_cpp/copy_ctor%>
 
@@ -41,7 +42,6 @@
 
 
 <%/struct:cpp_noexcept_move_ctor%><%/struct:fields_contain_cpp_ref?%>
-<%^struct:union?%>
 <% > module_types_cpp/declare_members%>
 
 

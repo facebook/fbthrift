@@ -22,7 +22,12 @@
 <%#struct:fields%>
       case Type::<%field:name%>:
       {
+<%#field:cpp_ref?%>
+        set_<%field:name%>(std::move(*rhs.value_.<%field:name%>));
+<%/field:cpp_ref?%>
+<%^field:cpp_ref?%>
         set_<%field:name%>(std::move(rhs.value_.<%field:name%>));
+<%/field:cpp_ref?%>
         break;
       }
 <%/struct:fields%>
@@ -44,7 +49,12 @@
 <%#struct:fields%>
       case Type::<%field:name%>:
       {
+<%#field:cpp_ref?%>
+        set_<%field:name%>(*rhs.value_.<%field:name%>);
+<%/field:cpp_ref?%>
+<%^field:cpp_ref?%>
         set_<%field:name%>(rhs.value_.<%field:name%>);
+<%/field:cpp_ref?%>
         break;
       }
 <%/struct:fields%>
