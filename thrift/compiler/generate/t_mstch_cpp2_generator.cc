@@ -131,6 +131,7 @@ class mstch_cpp2_type : public mstch_type {
             {"type:resolves_to_complex_return?",
              &mstch_cpp2_type::resolves_to_complex_return},
             {"type:cpp_type", &mstch_cpp2_type::cpp_type},
+            {"type:cpp_typedef_type", &mstch_cpp2_type::cpp_typedef_type},
             {"type:string_or_binary?", &mstch_cpp2_type::is_string_or_binary},
             {"type:cpp_template", &mstch_cpp2_type::cpp_template},
             {"type:cpp_indirection", &mstch_cpp2_type::cpp_indirection},
@@ -170,6 +171,17 @@ class mstch_cpp2_type : public mstch_type {
       return type_->annotations_.at("cpp.type");
     } else if (type_->annotations_.count("cpp2.type")) {
       return type_->annotations_.at("cpp2.type");
+    }
+    return std::string();
+  }
+  mstch::node cpp_typedef_type() {
+    if (type_->is_typedef()) {
+      auto const* typedf = dynamic_cast<const t_typedef*>(type_)->get_type();
+      if (typedf->annotations_.count("cpp.type")) {
+        return typedf->annotations_.at("cpp.type");
+      } else if (typedf->annotations_.count("cpp2.type")) {
+        return typedf->annotations_.at("cpp2.type");
+      }
     }
     return std::string();
   }

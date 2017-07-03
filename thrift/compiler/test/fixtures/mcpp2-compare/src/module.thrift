@@ -188,16 +188,16 @@ struct MyIncludedStruct {
   1: includes.IncludedInt64 MyIncludedInt = includes.IncludedConstant
 } (cpp2.declare_hash = 1, cpp2.declare_equal_to)
 
-typedef i32 CppFakeI32 (cpp.type = "CppFakeI32")
-typedef list<i64> FollySmallVectorI64 (
-    cpp.type = "folly::small_vector<int64_t, 8 /* maxInline */>")
-typedef set<string> SortedVectorSetString (
-    cpp.type = "folly::sorted_vector_set<std::string>")
-typedef map<i64, double> FakeMap (cpp.type = "FakeMap")
-typedef map<string, containerStruct> UnorderedMapStruct (
-    cpp.type = "std::unordered_map<std::string, containerStruct>")
-typedef binary IOBuf (cpp2.type = "folly::IOBuf")
-typedef binary IOBufPtr (cpp2.type = "std::unique_ptr<folly::IOBuf>")
+typedef i32 (cpp.type = "CppFakeI32") CppFakeI32
+typedef list<i64> (cpp.type =
+    "folly::small_vector<int64_t, 8 /* maxInline */>") FollySmallVectorI64
+typedef set<string> (cpp.type =
+    "folly::sorted_vector_set<std::string>") SortedVectorSetString
+typedef map<i64, double> (cpp.type = "FakeMap") FakeMap
+typedef map<string, containerStruct> (cpp.type =
+    "std::unordered_map<std::string, containerStruct>") UnorderedMapStruct
+typedef binary (cpp2.type = "folly::IOBuf") IOBuf
+typedef binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") IOBufPtr
 
 typedef list<i32> (cpp.template = "std::list") std_list
 typedef list<string> (cpp2.template = "std::deque") std_deque

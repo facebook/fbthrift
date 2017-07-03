@@ -309,20 +309,19 @@ typedef Baz IndirectionC;
 
 typedef Bar IndirectionB;
 
-typedef int32_t CppFakeI32;
+typedef CppFakeI32 CppFakeI32;
 
-typedef std::vector<int64_t> FollySmallVectorI64;
+typedef folly::small_vector<int64_t, 8 /* maxInline */> FollySmallVectorI64;
 
-typedef std::set<std::string> SortedVectorSetString;
+typedef folly::sorted_vector_set<std::string> SortedVectorSetString;
 
-typedef std::map<int64_t, double> FakeMap;
+typedef FakeMap FakeMap;
 
-class containerStruct;
-typedef std::map<std::string,  ::some::valid::ns::containerStruct> UnorderedMapStruct;
+typedef std::unordered_map<std::string, containerStruct> UnorderedMapStruct;
 
-typedef std::string IOBuf;
+typedef folly::IOBuf IOBuf;
 
-typedef std::string IOBufPtr;
+typedef std::unique_ptr<folly::IOBuf> IOBufPtr;
 
 typedef std::list<int32_t> std_list;
 
@@ -4373,7 +4372,7 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
       indirection_a(0) {}
   // FragileConstructor for use in initialization lists only
 
-  AnnotatedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::containerStruct no_annotation__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref__arg, std::unique_ptr<std::map<int32_t, std::vector<std::string>>> container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, std::unique_ptr<std::vector<std::string>> req_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, std::unique_ptr<std::set<int32_t>> opt_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique__arg, std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared__arg, std::shared_ptr<const std::map<int32_t, std::vector<std::string>>> ref_type_const__arg, std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const__arg, std::unique_ptr<std::vector<std::string>> req_ref_type_unique__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique__arg, std::shared_ptr<std::set<int32_t>> opt_ref_type_shared__arg, CppFakeI32 base_type__arg, folly::small_vector<int64_t, 8 /* maxInline */> list_type__arg, folly::sorted_vector_set<std::string> set_type__arg, FakeMap map_type__arg, std::unordered_map<std::string, containerStruct> map_struct_type__arg, folly::IOBuf iobuf_type__arg, std::unique_ptr<folly::IOBuf> iobuf_ptr__arg, std::list<int32_t> list_i32_template__arg, std::deque<std::string> list_string_template__arg, folly::sorted_vector_set<std::string> set_template__arg, folly::sorted_vector_map<int64_t, std::string> map_template__arg,  ::some::valid::ns::std_list typedef_list_template__arg,  ::some::valid::ns::std_deque typedef_deque_template__arg,  ::some::valid::ns::folly_set typedef_set_template__arg,  ::some::valid::ns::folly_map typedef_map_template__arg,  ::some::valid::ns::IndirectionA indirection_a__arg, std::vector< ::some::valid::ns::IndirectionB> indirection_b__arg, std::set< ::some::valid::ns::IndirectionC> indirection_c__arg) :
+  AnnotatedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::containerStruct no_annotation__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref__arg, std::unique_ptr<std::map<int32_t, std::vector<std::string>>> container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, std::unique_ptr<std::vector<std::string>> req_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, std::unique_ptr<std::set<int32_t>> opt_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique__arg, std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared__arg, std::shared_ptr<const std::map<int32_t, std::vector<std::string>>> ref_type_const__arg, std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const__arg, std::unique_ptr<std::vector<std::string>> req_ref_type_unique__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique__arg, std::shared_ptr<std::set<int32_t>> opt_ref_type_shared__arg,  ::some::valid::ns::CppFakeI32 base_type__arg,  ::some::valid::ns::FollySmallVectorI64 list_type__arg,  ::some::valid::ns::SortedVectorSetString set_type__arg,  ::some::valid::ns::FakeMap map_type__arg,  ::some::valid::ns::UnorderedMapStruct map_struct_type__arg,  ::some::valid::ns::IOBuf iobuf_type__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr__arg, std::list<int32_t> list_i32_template__arg, std::deque<std::string> list_string_template__arg, folly::sorted_vector_set<std::string> set_template__arg, folly::sorted_vector_map<int64_t, std::string> map_template__arg,  ::some::valid::ns::std_list typedef_list_template__arg,  ::some::valid::ns::std_deque typedef_deque_template__arg,  ::some::valid::ns::folly_set typedef_set_template__arg,  ::some::valid::ns::folly_map typedef_map_template__arg,  ::some::valid::ns::IndirectionA indirection_a__arg, std::vector< ::some::valid::ns::IndirectionB> indirection_b__arg, std::set< ::some::valid::ns::IndirectionC> indirection_c__arg) :
       no_annotation(std::move(no_annotation__arg)),
       cpp_unique_ref(std::move(cpp_unique_ref__arg)),
       cpp2_unique_ref(std::move(cpp2_unique_ref__arg)),
@@ -4734,13 +4733,13 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
   std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const;
   std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique;
   std::shared_ptr<std::set<int32_t>> opt_ref_type_shared;
-  CppFakeI32 base_type;
-  folly::small_vector<int64_t, 8 /* maxInline */> list_type;
-  folly::sorted_vector_set<std::string> set_type;
-  FakeMap map_type;
-  std::unordered_map<std::string, containerStruct> map_struct_type;
-  folly::IOBuf iobuf_type;
-  std::unique_ptr<folly::IOBuf> iobuf_ptr;
+   ::some::valid::ns::CppFakeI32 base_type;
+   ::some::valid::ns::FollySmallVectorI64 list_type;
+   ::some::valid::ns::SortedVectorSetString set_type;
+   ::some::valid::ns::FakeMap map_type;
+   ::some::valid::ns::UnorderedMapStruct map_struct_type;
+   ::some::valid::ns::IOBuf iobuf_type;
+   ::some::valid::ns::IOBufPtr iobuf_ptr;
   std::list<int32_t> list_i32_template;
   std::deque<std::string> list_string_template;
   folly::sorted_vector_set<std::string> set_template;
@@ -4803,57 +4802,57 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
   template <typename T_AnnotatedStruct_no_annotation_struct_setter>
    ::some::valid::ns::containerStruct& set_no_annotation(T_AnnotatedStruct_no_annotation_struct_setter&& no_annotation_);
 
-  CppFakeI32 get_base_type() const {
+   ::some::valid::ns::CppFakeI32 get_base_type() const {
     return base_type;
   }
 
-  CppFakeI32& set_base_type(CppFakeI32 base_type_) {
+   ::some::valid::ns::CppFakeI32& set_base_type( ::some::valid::ns::CppFakeI32 base_type_) {
     base_type = base_type_;
     __isset.base_type = true;
     return base_type;
   }
-  const folly::small_vector<int64_t, 8 /* maxInline */>& get_list_type() const&;
-  folly::small_vector<int64_t, 8 /* maxInline */> get_list_type() &&;
+  const  ::some::valid::ns::FollySmallVectorI64& get_list_type() const&;
+   ::some::valid::ns::FollySmallVectorI64 get_list_type() &&;
   template <typename T_AnnotatedStruct_list_type_struct_setter>
-  folly::small_vector<int64_t, 8 /* maxInline */>& set_list_type(T_AnnotatedStruct_list_type_struct_setter&& list_type_);
-  const folly::sorted_vector_set<std::string>& get_set_type() const&;
-  folly::sorted_vector_set<std::string> get_set_type() &&;
+   ::some::valid::ns::FollySmallVectorI64& set_list_type(T_AnnotatedStruct_list_type_struct_setter&& list_type_);
+  const  ::some::valid::ns::SortedVectorSetString& get_set_type() const&;
+   ::some::valid::ns::SortedVectorSetString get_set_type() &&;
   template <typename T_AnnotatedStruct_set_type_struct_setter>
-  folly::sorted_vector_set<std::string>& set_set_type(T_AnnotatedStruct_set_type_struct_setter&& set_type_);
-  const FakeMap& get_map_type() const&;
-  FakeMap get_map_type() &&;
+   ::some::valid::ns::SortedVectorSetString& set_set_type(T_AnnotatedStruct_set_type_struct_setter&& set_type_);
+  const  ::some::valid::ns::FakeMap& get_map_type() const&;
+   ::some::valid::ns::FakeMap get_map_type() &&;
   template <typename T_AnnotatedStruct_map_type_struct_setter>
-  FakeMap& set_map_type(T_AnnotatedStruct_map_type_struct_setter&& map_type_);
-  const std::unordered_map<std::string, containerStruct>& get_map_struct_type() const&;
-  std::unordered_map<std::string, containerStruct> get_map_struct_type() &&;
+   ::some::valid::ns::FakeMap& set_map_type(T_AnnotatedStruct_map_type_struct_setter&& map_type_);
+  const  ::some::valid::ns::UnorderedMapStruct& get_map_struct_type() const&;
+   ::some::valid::ns::UnorderedMapStruct get_map_struct_type() &&;
   template <typename T_AnnotatedStruct_map_struct_type_struct_setter>
-  std::unordered_map<std::string, containerStruct>& set_map_struct_type(T_AnnotatedStruct_map_struct_type_struct_setter&& map_struct_type_);
+   ::some::valid::ns::UnorderedMapStruct& set_map_struct_type(T_AnnotatedStruct_map_struct_type_struct_setter&& map_struct_type_);
 
-  const folly::IOBuf& get_iobuf_type() const& {
+  const  ::some::valid::ns::IOBuf& get_iobuf_type() const& {
     return iobuf_type;
   }
 
-  folly::IOBuf get_iobuf_type() && {
+   ::some::valid::ns::IOBuf get_iobuf_type() && {
     return std::move(iobuf_type);
   }
 
   template <typename T_AnnotatedStruct_iobuf_type_struct_setter>
-  folly::IOBuf& set_iobuf_type(T_AnnotatedStruct_iobuf_type_struct_setter&& iobuf_type_) {
+   ::some::valid::ns::IOBuf& set_iobuf_type(T_AnnotatedStruct_iobuf_type_struct_setter&& iobuf_type_) {
     iobuf_type = std::forward<T_AnnotatedStruct_iobuf_type_struct_setter>(iobuf_type_);
     __isset.iobuf_type = true;
     return iobuf_type;
   }
 
-  const std::unique_ptr<folly::IOBuf>& get_iobuf_ptr() const& {
+  const  ::some::valid::ns::IOBufPtr& get_iobuf_ptr() const& {
     return iobuf_ptr;
   }
 
-  std::unique_ptr<folly::IOBuf> get_iobuf_ptr() && {
+   ::some::valid::ns::IOBufPtr get_iobuf_ptr() && {
     return std::move(iobuf_ptr);
   }
 
   template <typename T_AnnotatedStruct_iobuf_ptr_struct_setter>
-  std::unique_ptr<folly::IOBuf>& set_iobuf_ptr(T_AnnotatedStruct_iobuf_ptr_struct_setter&& iobuf_ptr_) {
+   ::some::valid::ns::IOBufPtr& set_iobuf_ptr(T_AnnotatedStruct_iobuf_ptr_struct_setter&& iobuf_ptr_) {
     iobuf_ptr = std::forward<T_AnnotatedStruct_iobuf_ptr_struct_setter>(iobuf_ptr_);
     __isset.iobuf_ptr = true;
     return iobuf_ptr;

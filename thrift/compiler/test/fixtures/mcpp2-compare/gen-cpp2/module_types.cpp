@@ -1344,8 +1344,8 @@ void AnnotatedStruct::__clear() {
   set_type.clear();
   map_type.clear();
   map_struct_type.clear();
-  iobuf_type = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  iobuf_ptr = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  iobuf_type = apache::thrift::StringTraits< folly::IOBuf>::fromStringLiteral("");
+  iobuf_ptr = apache::thrift::StringTraits< std::unique_ptr<folly::IOBuf>>::fromStringLiteral("");
   list_i32_template.clear();
   list_string_template.clear();
   set_template.clear();
@@ -1433,10 +1433,10 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
   if (!((map_struct_type == rhs.map_struct_type))) {
     return false;
   }
-  if (!(apache::thrift::StringTraits<std::string>::isEqual(iobuf_type, rhs.iobuf_type))) {
+  if (!(apache::thrift::StringTraits<folly::IOBuf>::isEqual(iobuf_type, rhs.iobuf_type))) {
     return false;
   }
-  if (!(apache::thrift::StringTraits<std::string>::isEqual(iobuf_ptr, rhs.iobuf_ptr))) {
+  if (!(apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(iobuf_ptr, rhs.iobuf_ptr))) {
     return false;
   }
   if (!((list_i32_template == rhs.list_i32_template))) {
@@ -1483,35 +1483,35 @@ const  ::some::valid::ns::containerStruct& AnnotatedStruct::get_no_annotation() 
   return std::move(no_annotation);
 }
 
-const folly::small_vector<int64_t, 8 /* maxInline */>& AnnotatedStruct::get_list_type() const& {
+const  ::some::valid::ns::FollySmallVectorI64& AnnotatedStruct::get_list_type() const& {
   return list_type;
 }
 
-folly::small_vector<int64_t, 8 /* maxInline */> AnnotatedStruct::get_list_type() && {
+ ::some::valid::ns::FollySmallVectorI64 AnnotatedStruct::get_list_type() && {
   return std::move(list_type);
 }
 
-const folly::sorted_vector_set<std::string>& AnnotatedStruct::get_set_type() const& {
+const  ::some::valid::ns::SortedVectorSetString& AnnotatedStruct::get_set_type() const& {
   return set_type;
 }
 
-folly::sorted_vector_set<std::string> AnnotatedStruct::get_set_type() && {
+ ::some::valid::ns::SortedVectorSetString AnnotatedStruct::get_set_type() && {
   return std::move(set_type);
 }
 
-const FakeMap& AnnotatedStruct::get_map_type() const& {
+const  ::some::valid::ns::FakeMap& AnnotatedStruct::get_map_type() const& {
   return map_type;
 }
 
-FakeMap AnnotatedStruct::get_map_type() && {
+ ::some::valid::ns::FakeMap AnnotatedStruct::get_map_type() && {
   return std::move(map_type);
 }
 
-const std::unordered_map<std::string, containerStruct>& AnnotatedStruct::get_map_struct_type() const& {
+const  ::some::valid::ns::UnorderedMapStruct& AnnotatedStruct::get_map_struct_type() const& {
   return map_struct_type;
 }
 
-std::unordered_map<std::string, containerStruct> AnnotatedStruct::get_map_struct_type() && {
+ ::some::valid::ns::UnorderedMapStruct AnnotatedStruct::get_map_struct_type() && {
   return std::move(map_struct_type);
 }
 
