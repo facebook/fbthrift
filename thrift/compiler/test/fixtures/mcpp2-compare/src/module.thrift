@@ -177,7 +177,7 @@ struct containerStruct {
   26: list<ComplexUnion> fieldY
   27: unionTypeDef fieldZ
   28: list<unionTypeDef> fieldAA
-} (cpp.methods = "void foo(const std::string& bar) {}")
+} (cpp2.noncopyable, cpp.methods = "void foo(const std::string& bar) {}")
 
 struct MyIncludedStruct {
   1: includes.IncludedInt64 MyIncludedInt = includes.IncludedConstant
@@ -235,6 +235,7 @@ struct AnnotatatedStruct {
   33: folly_set typedef_set_template
   34: folly_map typedef_map_template
 } (
+    cpp2.noncopyable,
     cpp.declare_hash,
     cpp.declare_equal_to = 1,
     cpp2.methods = "void foo(const std::string& bar) {}"

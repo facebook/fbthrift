@@ -235,6 +235,7 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:cpp_declare_hash", &mstch_cpp2_struct::cpp_declare_hash},
             {"struct:cpp_declare_equal_to",
              &mstch_cpp2_struct::cpp_declare_equal_to},
+            {"struct:cpp_noncopyable", &mstch_cpp2_struct::cpp_noncopyable},
         });
   }
   mstch::node getters_setters() {
@@ -346,6 +347,12 @@ class mstch_cpp2_struct : public mstch_struct {
     if (strct_->annotations_.count("cpp.declare_equal_to")) {
       return true;
     } else if (strct_->annotations_.count("cpp2.declare_equal_to")) {
+      return true;
+    }
+    return false;
+  }
+  mstch::node cpp_noncopyable() {
+    if (strct_->annotations_.count("cpp2.noncopyable")) {
       return true;
     }
     return false;

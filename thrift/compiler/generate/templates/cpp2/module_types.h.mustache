@@ -96,6 +96,7 @@ class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<
 <% > module_types_h/template_ctor%>
 
   <%struct:name%>(<%struct:name%>&&) = default;
+<%^struct:cpp_noncopyable%>
 <%^struct:fields_contain_cpp_ref?%>
 
   <%struct:name%>(const <%struct:name%>&) = default;
@@ -103,8 +104,10 @@ class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<
 <%#struct:fields_contain_cpp_ref?%>
   <%struct:name%>(const <%struct:name%>& src);
 <%/struct:fields_contain_cpp_ref?%>
+<%/struct:cpp_noncopyable%>
 
   <%struct:name%>& operator=(<%struct:name%>&&) = default;
+<%^struct:cpp_noncopyable%>
 <%^struct:fields_contain_cpp_ref?%>
 
   <%struct:name%>& operator=(const <%struct:name%>&) = default;
@@ -112,6 +115,7 @@ class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<
 <%#struct:fields_contain_cpp_ref?%>
   <%struct:name%>& operator=(const <%struct:name%>& src);
 <%/struct:fields_contain_cpp_ref?%>
+<%/struct:cpp_noncopyable%>
   void __clear();
 
   virtual ~<%struct:name%>() throw() {}

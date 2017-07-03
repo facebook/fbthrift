@@ -3615,11 +3615,7 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
 
   containerStruct(containerStruct&&) = default;
 
-  containerStruct(const containerStruct&) = default;
-
   containerStruct& operator=(containerStruct&&) = default;
-
-  containerStruct& operator=(const containerStruct&) = default;
   void __clear();
 
   virtual ~containerStruct() throw() {}
@@ -4473,10 +4469,8 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
   }
 
   AnnotatatedStruct(AnnotatatedStruct&&) = default;
-  AnnotatatedStruct(const AnnotatatedStruct& src);
 
   AnnotatatedStruct& operator=(AnnotatatedStruct&&) = default;
-  AnnotatatedStruct& operator=(const AnnotatatedStruct& src);
   void __clear();
 
   virtual ~AnnotatatedStruct() throw() {}
