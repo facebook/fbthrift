@@ -3565,6 +3565,14 @@ uint32_t AnnotatatedStruct::read(Protocol_* iprot) {
         fid = 24;
         ftype = apache::thrift::protocol::T_MAP;
       }
+      else if (fname == "iobuf_type") {
+        fid = 25;
+        ftype = apache::thrift::protocol::T_STRING;
+      }
+      else if (fname == "iobuf_ptr") {
+        fid = 26;
+        ftype = apache::thrift::protocol::T_STRING;
+      }
     }
     switch (fid) {
       case 1:
@@ -3835,6 +3843,26 @@ uint32_t AnnotatatedStruct::read(Protocol_* iprot) {
         }
         break;
       }
+      case 25:
+      {
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readBinary(this->iobuf_type);
+          this->__isset.iobuf_type = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 26:
+      {
+        if (ftype == apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readBinary(this->iobuf_ptr);
+          this->__isset.iobuf_ptr = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
       default:
       {
         xfer += iprot->skip(ftype);
@@ -4038,6 +4066,10 @@ uint32_t AnnotatatedStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>, FakeMap>::serializedSize<false>(*prot_, this->map_type);
   xfer += prot_->serializedFieldSize("map_struct_type", apache::thrift::protocol::T_MAP, 24);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>, std::unordered_map<std::string, containerStruct>>::serializedSize<false>(*prot_, this->map_struct_type);
+  xfer += prot_->serializedFieldSize("iobuf_type", apache::thrift::protocol::T_STRING, 25);
+  xfer += prot_->serializedSizeBinary(this->iobuf_type);
+  xfer += prot_->serializedFieldSize("iobuf_ptr", apache::thrift::protocol::T_STRING, 26);
+  xfer += prot_->serializedSizeBinary(this->iobuf_ptr);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -4214,6 +4246,10 @@ uint32_t AnnotatatedStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::floating_point>, FakeMap>::serializedSize<false>(*prot_, this->map_type);
   xfer += prot_->serializedFieldSize("map_struct_type", apache::thrift::protocol::T_MAP, 24);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>, std::unordered_map<std::string, containerStruct>>::serializedSize<false>(*prot_, this->map_struct_type);
+  xfer += prot_->serializedFieldSize("iobuf_type", apache::thrift::protocol::T_STRING, 25);
+  xfer += prot_->serializedSizeZCBinary(this->iobuf_type);
+  xfer += prot_->serializedFieldSize("iobuf_ptr", apache::thrift::protocol::T_STRING, 26);
+  xfer += prot_->serializedSizeZCBinary(this->iobuf_ptr);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -4425,6 +4461,12 @@ uint32_t AnnotatatedStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("map_struct_type", apache::thrift::protocol::T_MAP, 24);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>, std::unordered_map<std::string, containerStruct>>::write(*prot_, this->map_struct_type);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("iobuf_type", apache::thrift::protocol::T_STRING, 25);
+  xfer += prot_->writeBinary(this->iobuf_type);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("iobuf_ptr", apache::thrift::protocol::T_STRING, 26);
+  xfer += prot_->writeBinary(this->iobuf_ptr);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

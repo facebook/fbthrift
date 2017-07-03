@@ -497,7 +497,9 @@ class mstch_type : public mstch_base {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos)
-      : mstch_base(generators, cache, pos), type_(type) {
+      : mstch_base(generators, cache, pos),
+        type_(type),
+        resolved_type_(resolve_typedef(type)) {
     register_methods(
         this,
         {
@@ -536,61 +538,61 @@ class mstch_type : public mstch_base {
     return type_->get_name();
   }
   mstch::node is_void() {
-    return type_->is_void();
+    return resolved_type_->is_void();
   }
   mstch::node is_string() {
-    return type_->is_string() && !type_->is_binary();
+    return resolved_type_->is_string() && !resolved_type_->is_binary();
   }
   mstch::node is_binary() {
-    return type_->is_string() && type_->is_binary();
+    return resolved_type_->is_string() && resolved_type_->is_binary();
   }
   mstch::node is_bool() {
-    return type_->is_bool();
+    return resolved_type_->is_bool();
   }
   mstch::node is_byte() {
-    return type_->is_byte();
+    return resolved_type_->is_byte();
   }
   mstch::node is_i16() {
-    return type_->is_i16();
+    return resolved_type_->is_i16();
   }
   mstch::node is_i32() {
-    return type_->is_i32();
+    return resolved_type_->is_i32();
   }
   mstch::node is_i64() {
-    return type_->is_i64();
+    return resolved_type_->is_i64();
   }
   mstch::node is_double() {
-    return type_->is_double();
+    return resolved_type_->is_double();
   }
   mstch::node is_float() {
-    return type_->is_float();
+    return resolved_type_->is_float();
   }
   mstch::node is_struct() {
-    return type_->is_struct() || type_->is_xception();
+    return resolved_type_->is_struct() || resolved_type_->is_xception();
   }
   mstch::node is_enum() {
-    return type_->is_enum();
+    return resolved_type_->is_enum();
   }
   mstch::node is_stream() {
-    return type_->is_stream();
+    return resolved_type_->is_stream();
   }
   mstch::node is_service() {
-    return type_->is_service();
+    return resolved_type_->is_service();
   }
   mstch::node is_base() {
-    return type_->is_base_type();
+    return resolved_type_->is_base_type();
   }
   mstch::node is_container() {
-    return type_->is_container();
+    return resolved_type_->is_container();
   }
   mstch::node is_list() {
-    return type_->is_list();
+    return resolved_type_->is_list();
   }
   mstch::node is_set() {
-    return type_->is_set();
+    return resolved_type_->is_set();
   }
   mstch::node is_map() {
-    return type_->is_map();
+    return resolved_type_->is_map();
   }
   mstch::node is_typedef() {
     return type_->is_typedef();
@@ -607,7 +609,8 @@ class mstch_type : public mstch_base {
   mstch::node get_typedef_type();
 
  protected:
-  const t_type* type_;
+  t_type const* type_;
+  t_type const* resolved_type_;
 };
 
 class mstch_field : public mstch_base {

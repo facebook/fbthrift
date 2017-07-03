@@ -165,9 +165,9 @@ mstch::node mstch_type::get_enum() {
 }
 
 mstch::node mstch_type::get_list_type() {
-  if (type_->is_list()) {
+  if (resolved_type_->is_list()) {
     return generators_->type_generator_->generate(
-        dynamic_cast<const t_list*>(type_)->get_elem_type(),
+        dynamic_cast<const t_list*>(resolved_type_)->get_elem_type(),
         generators_,
         cache_,
         pos_);
@@ -176,9 +176,9 @@ mstch::node mstch_type::get_list_type() {
 }
 
 mstch::node mstch_type::get_set_type() {
-  if (type_->is_set()) {
+  if (resolved_type_->is_set()) {
     return generators_->type_generator_->generate(
-        dynamic_cast<const t_set*>(type_)->get_elem_type(),
+        dynamic_cast<const t_set*>(resolved_type_)->get_elem_type(),
         generators_,
         cache_,
         pos_);
@@ -187,9 +187,9 @@ mstch::node mstch_type::get_set_type() {
 }
 
 mstch::node mstch_type::get_key_type() {
-  if (type_->is_map()) {
+  if (resolved_type_->is_map()) {
     return generators_->type_generator_->generate(
-        dynamic_cast<const t_map*>(type_)->get_key_type(),
+        dynamic_cast<const t_map*>(resolved_type_)->get_key_type(),
         generators_,
         cache_,
         pos_);
@@ -198,9 +198,9 @@ mstch::node mstch_type::get_key_type() {
 }
 
 mstch::node mstch_type::get_value_type() {
-  if (type_->is_map()) {
+  if (resolved_type_->is_map()) {
     return generators_->type_generator_->generate(
-        dynamic_cast<const t_map*>(type_)->get_val_type(),
+        dynamic_cast<const t_map*>(resolved_type_)->get_val_type(),
         generators_,
         cache_,
         pos_);

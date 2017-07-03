@@ -96,8 +96,7 @@ class mstch_cpp2_type : public mstch_type {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_type(type, generators, cache, pos),
-        resolved_type_(resolve_typedef(type)) {
+      : mstch_type(type, generators, cache, pos) {
     register_methods(
         this,
         {
@@ -152,11 +151,8 @@ class mstch_cpp2_type : public mstch_type {
     return std::string();
   }
   mstch::node is_string_or_binary() {
-    return type_->is_string() || type_->is_binary();
+    return resolved_type_->is_string() || resolved_type_->is_binary();
   }
-
- protected:
-  t_type const* resolved_type_;
 };
 
 class mstch_cpp2_field : public mstch_field {

@@ -21,18 +21,18 @@
 Containers:
 
 %><%#type:list?%><%#type:listElemType%><%!
-  %><% > module_types_h/typedef_recursive_forward_declare%><%!
+  %><%^type:typedef?%><% > module_types_h/typedef_recursive_forward_declare%><%/type:typedef?%><%!
 %><%/type:listElemType%><%/type:list?%><%!
 
 %><%#type:set?%><%#type:setElemType%><%!
-  %><% > module_types_h/typedef_recursive_forward_declare%><%!
+  %><%^type:typedef?%><% > module_types_h/typedef_recursive_forward_declare%><%/type:typedef?%><%!
 %><%/type:setElemType%><%/type:set?%><%!
 
 %><%#type:map?%><%!
   %><%#type:keyType%><%!
-    %><% > module_types_h/typedef_recursive_forward_declare%><%!
+    %><%^type:typedef?%><% > module_types_h/typedef_recursive_forward_declare%><%/type:typedef?%><%!
   %><%/type:keyType%><%!
   %><%#type:valueType%><%!
-    %><% > module_types_h/typedef_recursive_forward_declare%><%!
+    %><%^type:typedef?%><% > module_types_h/typedef_recursive_forward_declare%><%/type:typedef?%><%!
   %><%/type:valueType%><%!
 %><%/type:map?%>

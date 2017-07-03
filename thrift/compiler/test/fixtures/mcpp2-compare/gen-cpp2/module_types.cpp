@@ -1283,6 +1283,10 @@ AnnotatatedStruct::AnnotatatedStruct(const AnnotatatedStruct& src) {
   __isset.map_type = src.__isset.map_type;
   map_struct_type = src.map_struct_type;
   __isset.map_struct_type = src.__isset.map_struct_type;
+  iobuf_type = src.iobuf_type;
+  __isset.iobuf_type = src.__isset.iobuf_type;
+  iobuf_ptr = src.iobuf_ptr;
+  __isset.iobuf_ptr = src.__isset.iobuf_ptr;
 }
 
 AnnotatatedStruct& AnnotatatedStruct::operator=(const AnnotatatedStruct& src) {
@@ -1317,6 +1321,8 @@ void AnnotatatedStruct::__clear() {
   set_type.clear();
   map_type.clear();
   map_struct_type.clear();
+  iobuf_type = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  iobuf_ptr = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   __isset.__clear();
 }
 
@@ -1393,6 +1399,12 @@ bool AnnotatatedStruct::operator==(const AnnotatatedStruct& rhs) const {
   if (!((map_struct_type == rhs.map_struct_type))) {
     return false;
   }
+  if (!(apache::thrift::StringTraits<std::string>::isEqual(iobuf_type, rhs.iobuf_type))) {
+    return false;
+  }
+  if (!(apache::thrift::StringTraits<std::string>::isEqual(iobuf_ptr, rhs.iobuf_ptr))) {
+    return false;
+  }
   return true;
 }
 
@@ -1462,6 +1474,8 @@ void swap(AnnotatatedStruct& a, AnnotatatedStruct& b) {
   swap(a.set_type, b.set_type);
   swap(a.map_type, b.map_type);
   swap(a.map_struct_type, b.map_struct_type);
+  swap(a.iobuf_type, b.iobuf_type);
+  swap(a.iobuf_ptr, b.iobuf_ptr);
   swap(a.__isset, b.__isset);
 }
 
