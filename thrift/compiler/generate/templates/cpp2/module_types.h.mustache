@@ -94,6 +94,14 @@ class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<
 
 <% > module_types_h/base_ctor%>
 
+<%#struct:exception?%><%#struct:message%>
+
+  explicit <%struct:name%>(const std::string& __message) :
+      <%struct:message%>(__message) {}
+
+  explicit <%struct:name%>(std::string&& __message) :
+      <%struct:message%>(std::move(__message)) {}
+<%/struct:message%><%/struct:exception?%>
 <% > module_types_h/fragile_ctor%>
 <% > module_types_h/template_ctor%>
 <%#struct:cpp_noexcept_move_ctor%>
@@ -153,7 +161,12 @@ class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<
 <%#struct:exception?%>
 
   virtual const char* what() const throw() {
+<%#struct:message%>
+    return <%struct:message%>.c_str();
+<%/struct:message%>
+<%^struct:message%>
     return "<% > common/namespace_cpp2%><%struct:name%>";
+<%/struct:message%>
   }
 <%/struct:exception?%>
 <%/struct:union?%>

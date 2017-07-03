@@ -2816,12 +2816,18 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
   2,
   3}),
       enum_field(static_cast< ::some::valid::ns::MyEnumA>(0)) {}
+
+  explicit AnException(const std::string& __message) :
+      message2(__message) {}
+
+  explicit AnException(std::string&& __message) :
+      message2(std::move(__message)) {}
   // FragileConstructor for use in initialization lists only
 
-  AnException(apache::thrift::FragileConstructor, int32_t code__arg, int32_t req_code__arg, std::string message__arg, std::string req_message__arg, std::vector<int32_t> exception_list__arg, std::set<int64_t> exception_set__arg, std::map<std::string, int32_t> exception_map__arg, std::map<std::string, int32_t> req_exception_map__arg,  ::some::valid::ns::MyEnumA enum_field__arg, std::vector< ::some::valid::ns::MyEnumA> enum_container__arg,  ::some::valid::ns::MyStruct a_struct__arg, std::set< ::some::valid::ns::MyStruct> a_set_struct__arg, std::vector< ::some::valid::ns::SimpleUnion> a_union_list__arg,  ::some::valid::ns::unionTypeDef union_typedef__arg, std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list__arg) :
+  AnException(apache::thrift::FragileConstructor, int32_t code__arg, int32_t req_code__arg, std::string message2__arg, std::string req_message__arg, std::vector<int32_t> exception_list__arg, std::set<int64_t> exception_set__arg, std::map<std::string, int32_t> exception_map__arg, std::map<std::string, int32_t> req_exception_map__arg,  ::some::valid::ns::MyEnumA enum_field__arg, std::vector< ::some::valid::ns::MyEnumA> enum_container__arg,  ::some::valid::ns::MyStruct a_struct__arg, std::set< ::some::valid::ns::MyStruct> a_set_struct__arg, std::vector< ::some::valid::ns::SimpleUnion> a_union_list__arg,  ::some::valid::ns::unionTypeDef union_typedef__arg, std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list__arg) :
       code(std::move(code__arg)),
       req_code(std::move(req_code__arg)),
-      message(std::move(message__arg)),
+      message2(std::move(message2__arg)),
       req_message(std::move(req_message__arg)),
       exception_list(std::move(exception_list__arg)),
       exception_set(std::move(exception_set__arg)),
@@ -2835,7 +2841,7 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
       union_typedef(std::move(union_typedef__arg)),
       a_union_typedef_list(std::move(a_union_typedef_list__arg)) {
     __isset.code = true;
-    __isset.message = true;
+    __isset.message2 = true;
     __isset.exception_list = true;
     __isset.exception_set = true;
     __isset.exception_map = true;
@@ -2864,8 +2870,8 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
   AnException(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     AnException(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
-    message = arg.move();
-    __isset.message = true;
+    message2 = arg.move();
+    __isset.message2 = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   AnException(::apache::thrift::detail::argument_wrapper<102, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -2963,7 +2969,7 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
 
   int32_t code;
   int32_t req_code;
-  std::string message;
+  std::string message2;
   std::string req_message;
   std::vector<int32_t> exception_list;
   std::set<int64_t> exception_set;
@@ -2980,7 +2986,7 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
   struct __isset {
     void __clear() {
       code = false;
-      message = false;
+      message2 = false;
       exception_list = false;
       exception_set = false;
       exception_map = false;
@@ -2994,7 +3000,7 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
     }
 
     bool code = false;
-    bool message = false;
+    bool message2 = false;
     bool exception_list = false;
     bool exception_set = false;
     bool exception_map = false;
@@ -3028,19 +3034,19 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
     return req_code;
   }
 
-  const std::string& get_message() const& {
-    return message;
+  const std::string& get_message2() const& {
+    return message2;
   }
 
-  std::string get_message() && {
-    return std::move(message);
+  std::string get_message2() && {
+    return std::move(message2);
   }
 
-  template <typename T_AnException_message_struct_setter>
-  std::string& set_message(T_AnException_message_struct_setter&& message_) {
-    message = std::forward<T_AnException_message_struct_setter>(message_);
-    __isset.message = true;
-    return message;
+  template <typename T_AnException_message2_struct_setter>
+  std::string& set_message2(T_AnException_message2_struct_setter&& message2_) {
+    message2 = std::forward<T_AnException_message2_struct_setter>(message2_);
+    __isset.message2 = true;
+    return message2;
   }
 
   const std::string& get_req_message() const& {
@@ -3117,7 +3123,7 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
   uint32_t write(Protocol_* prot_) const;
 
   virtual const char* what() const throw() {
-    return " ::some::valid::ns::AnException";
+    return message2.c_str();
   }
 };
 

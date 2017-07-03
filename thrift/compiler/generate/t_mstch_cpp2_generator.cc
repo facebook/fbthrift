@@ -249,6 +249,7 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:cpp_noexcept_move_ctor",
              &mstch_cpp2_struct::cpp_noexcept_move_ctor},
             {"struct:final", &mstch_cpp2_struct::cpp_final},
+            {"struct:message", &mstch_cpp2_struct::message},
         });
   }
   mstch::node getters_setters() {
@@ -383,6 +384,12 @@ class mstch_cpp2_struct : public mstch_struct {
       return true;
     }
     return false;
+  }
+  mstch::node message() {
+    if (strct_->annotations_.count("message")) {
+      return strct_->annotations_.at("message");
+    }
+    return std::string();
   }
 };
 

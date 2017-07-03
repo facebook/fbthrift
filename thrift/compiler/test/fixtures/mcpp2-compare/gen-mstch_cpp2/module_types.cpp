@@ -573,7 +573,7 @@ void AnException::__clear() {
   // clear all fields
   code = 0;
   req_code = 0;
-  message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  message2 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   req_message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   exception_list.clear();
   exception_set.clear();
@@ -596,7 +596,7 @@ bool AnException::operator==(const AnException& rhs) const {
   if (!((req_code == rhs.req_code))) {
     return false;
   }
-  if (!((message == rhs.message))) {
+  if (!((message2 == rhs.message2))) {
     return false;
   }
   if (!((req_message == rhs.req_message))) {
@@ -722,7 +722,7 @@ void swap(AnException& a, AnException& b) {
   using ::std::swap;
   swap(a.code, b.code);
   swap(a.req_code, b.req_code);
-  swap(a.message, b.message);
+  swap(a.message2, b.message2);
   swap(a.req_message, b.req_message);
   swap(a.exception_list, b.exception_list);
   swap(a.exception_set, b.exception_set);

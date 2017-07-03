@@ -111,7 +111,7 @@ union ComplexUnion {
 exception AnException {
   1: i32 code
   101: required i32 req_code
-  2: string message
+  2: string message2
   102: required string req_message
   3: list<i32> exception_list = [1, 2, 3]
   4: set<i64> exception_set
@@ -124,7 +124,7 @@ exception AnException {
   10: list<SimpleUnion> a_union_list
   11: unionTypeDef union_typedef
   19: list<unionTypeDef> a_union_typedef_list
-}
+} (message = "message2")
 
 exception AnotherException {
   1: i32 code

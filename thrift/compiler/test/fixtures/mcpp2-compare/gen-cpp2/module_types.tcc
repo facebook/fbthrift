@@ -1640,7 +1640,7 @@ uint32_t AnException::read(Protocol_* iprot) {
         fid = 101;
         ftype = apache::thrift::protocol::T_I32;
       }
-      else if (fname == "message") {
+      else if (fname == "message2") {
         fid = 2;
         ftype = apache::thrift::protocol::T_STRING;
       }
@@ -1717,8 +1717,8 @@ uint32_t AnException::read(Protocol_* iprot) {
       case 2:
       {
         if (ftype == apache::thrift::protocol::T_STRING) {
-          xfer += iprot->readString(this->message);
-          this->__isset.message = true;
+          xfer += iprot->readString(this->message2);
+          this->__isset.message2 = true;
         } else {
           xfer += iprot->skip(ftype);
         }
@@ -1883,8 +1883,8 @@ uint32_t AnException::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedSizeI32(this->code);
   xfer += prot_->serializedFieldSize("req_code", apache::thrift::protocol::T_I32, 101);
   xfer += prot_->serializedSizeI32(this->req_code);
-  xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 2);
-  xfer += prot_->serializedSizeString(this->message);
+  xfer += prot_->serializedFieldSize("message2", apache::thrift::protocol::T_STRING, 2);
+  xfer += prot_->serializedSizeString(this->message2);
   xfer += prot_->serializedFieldSize("req_message", apache::thrift::protocol::T_STRING, 102);
   xfer += prot_->serializedSizeString(this->req_message);
   xfer += prot_->serializedFieldSize("exception_list", apache::thrift::protocol::T_LIST, 3);
@@ -1921,8 +1921,8 @@ uint32_t AnException::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedSizeI32(this->code);
   xfer += prot_->serializedFieldSize("req_code", apache::thrift::protocol::T_I32, 101);
   xfer += prot_->serializedSizeI32(this->req_code);
-  xfer += prot_->serializedFieldSize("message", apache::thrift::protocol::T_STRING, 2);
-  xfer += prot_->serializedSizeString(this->message);
+  xfer += prot_->serializedFieldSize("message2", apache::thrift::protocol::T_STRING, 2);
+  xfer += prot_->serializedSizeString(this->message2);
   xfer += prot_->serializedFieldSize("req_message", apache::thrift::protocol::T_STRING, 102);
   xfer += prot_->serializedSizeString(this->req_message);
   xfer += prot_->serializedFieldSize("exception_list", apache::thrift::protocol::T_LIST, 3);
@@ -1961,8 +1961,8 @@ uint32_t AnException::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldBegin("req_code", apache::thrift::protocol::T_I32, 101);
   xfer += prot_->writeI32(this->req_code);
   xfer += prot_->writeFieldEnd();
-  xfer += prot_->writeFieldBegin("message", apache::thrift::protocol::T_STRING, 2);
-  xfer += prot_->writeString(this->message);
+  xfer += prot_->writeFieldBegin("message2", apache::thrift::protocol::T_STRING, 2);
+  xfer += prot_->writeString(this->message2);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("req_message", apache::thrift::protocol::T_STRING, 102);
   xfer += prot_->writeString(this->req_message);
