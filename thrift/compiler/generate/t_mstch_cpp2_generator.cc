@@ -233,6 +233,8 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:fields_contain_cpp_ref?", &mstch_cpp2_struct::has_cpp_ref},
             {"struct:cpp_methods", &mstch_cpp2_struct::cpp_methods},
             {"struct:cpp_declare_hash", &mstch_cpp2_struct::cpp_declare_hash},
+            {"struct:cpp_declare_equal_to",
+             &mstch_cpp2_struct::cpp_declare_equal_to},
         });
   }
   mstch::node getters_setters() {
@@ -336,6 +338,14 @@ class mstch_cpp2_struct : public mstch_struct {
     if (strct_->annotations_.count("cpp.declare_hash")) {
       return true;
     } else if (strct_->annotations_.count("cpp2.declare_hash")) {
+      return true;
+    }
+    return false;
+  }
+  mstch::node cpp_declare_equal_to() {
+    if (strct_->annotations_.count("cpp.declare_equal_to")) {
+      return true;
+    } else if (strct_->annotations_.count("cpp2.declare_equal_to")) {
       return true;
     }
     return false;

@@ -4179,6 +4179,9 @@ namespace std {
 template<> struct hash<typename  ::some::valid::ns::MyIncludedStruct> {
   size_t operator()(const  ::some::valid::ns::MyIncludedStruct&) const;
 };
+template<> struct equal_to<typename  ::some::valid::ns::MyIncludedStruct> {
+  bool operator()(const  ::some::valid::ns::MyIncludedStruct&,const  ::some::valid::ns::MyIncludedStruct&) const;
+};
 
 } // std
 namespace some { namespace valid { namespace ns {
@@ -4699,6 +4702,9 @@ namespace std {
 
 template<> struct hash<typename  ::some::valid::ns::AnnotatatedStruct> {
   size_t operator()(const  ::some::valid::ns::AnnotatatedStruct&) const;
+};
+template<> struct equal_to<typename  ::some::valid::ns::AnnotatatedStruct> {
+  bool operator()(const  ::some::valid::ns::AnnotatatedStruct&,const  ::some::valid::ns::AnnotatatedStruct&) const;
 };
 
 } // std

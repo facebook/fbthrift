@@ -194,6 +194,11 @@ namespace std {
 template<> struct hash<typename <% > common/namespace_cpp2%><%struct:name%>> {
   size_t operator()(const <% > common/namespace_cpp2%><%struct:name%>&) const;
 };
+<%#struct:cpp_declare_equal_to%>
+template<> struct equal_to<typename <% > common/namespace_cpp2%><%struct:name%>> {
+  bool operator()(const <% > common/namespace_cpp2%><%struct:name%>&,const <% > common/namespace_cpp2%><%struct:name%>&) const;
+};
+<%/struct:cpp_declare_equal_to%>
 
 } // std
 <%/struct:cpp_declare_hash%>
