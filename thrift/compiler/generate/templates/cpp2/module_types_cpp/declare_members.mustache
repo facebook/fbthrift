@@ -19,10 +19,10 @@
 <%#struct:fields%><%#field:type%>
 <%#type:resolves_to_base_or_enum?%>
 <%#field:value%>
-  <%field:name%> = <% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%>;
+  <%field:name%><%type:cpp_indirection%> = <% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%>;
 <%/field:value%>
 <%^field:value%>
-  <%field:name%> = <% > module_types_cpp/unset_values%>;
+  <%field:name%><%type:cpp_indirection%> = <% > module_types_cpp/unset_values%>;
 <%/field:value%>
 <%/type:resolves_to_base_or_enum?%>
 <%#type:resolves_to_container?%>

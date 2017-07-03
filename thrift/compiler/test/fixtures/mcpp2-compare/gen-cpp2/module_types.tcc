@@ -2327,6 +2327,13 @@ std::vector< ::some::valid::ns::unionTypeDef>& containerStruct::set_fieldAA(T_co
   return fieldAA;
 }
 
+template <typename T_containerStruct_fieldAB_struct_setter>
+std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>& containerStruct::set_fieldAB(T_containerStruct_fieldAB_struct_setter&& fieldAB_) {
+  fieldAB = std::forward<T_containerStruct_fieldAB_struct_setter>(fieldAB_);
+  __isset.fieldAB = true;
+  return fieldAB;
+}
+
 template <class Protocol_>
 uint32_t containerStruct::read(Protocol_* iprot) {
   uint32_t xfer = 0;
@@ -2515,6 +2522,10 @@ uint32_t containerStruct::read(Protocol_* iprot) {
       else if (fname == "fieldAA") {
         fid = 28;
         ftype = apache::thrift::protocol::T_LIST;
+      }
+      else if (fname == "fieldAB") {
+        fid = 29;
+        ftype = apache::thrift::protocol::T_MAP;
       }
     }
     switch (fid) {
@@ -2949,6 +2960,17 @@ uint32_t containerStruct::read(Protocol_* iprot) {
         }
         break;
       }
+      case 29:
+      {
+        if (ftype == apache::thrift::protocol::T_MAP) {
+          this->fieldAB = std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionB, ::apache::thrift::type_class::floating_point>, ::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionC, ::apache::thrift::type_class::integral>>, std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>>::read(*iprot, this->fieldAB);
+          this->__isset.fieldAB = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
       default:
       {
         xfer += iprot->skip(ftype);
@@ -3083,6 +3105,8 @@ uint32_t containerStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,  ::some::valid::ns::unionTypeDef>::serializedSize<false>(*prot_, this->fieldZ);
   xfer += prot_->serializedFieldSize("fieldAA", apache::thrift::protocol::T_LIST, 28);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::structure>>, std::vector< ::some::valid::ns::unionTypeDef>>::serializedSize<false>(*prot_, this->fieldAA);
+  xfer += prot_->serializedFieldSize("fieldAB", apache::thrift::protocol::T_MAP, 29);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionB, ::apache::thrift::type_class::floating_point>, ::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionC, ::apache::thrift::type_class::integral>>, std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>>::serializedSize<false>(*prot_, this->fieldAB);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -3187,6 +3211,8 @@ uint32_t containerStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,  ::some::valid::ns::unionTypeDef>::serializedSize<false>(*prot_, this->fieldZ);
   xfer += prot_->serializedFieldSize("fieldAA", apache::thrift::protocol::T_LIST, 28);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::structure>>, std::vector< ::some::valid::ns::unionTypeDef>>::serializedSize<false>(*prot_, this->fieldAA);
+  xfer += prot_->serializedFieldSize("fieldAB", apache::thrift::protocol::T_MAP, 29);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionB, ::apache::thrift::type_class::floating_point>, ::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionC, ::apache::thrift::type_class::integral>>, std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>>::serializedSize<false>(*prot_, this->fieldAB);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -3332,6 +3358,9 @@ uint32_t containerStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldBegin("fieldAA", apache::thrift::protocol::T_LIST, 28);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::structure>>, std::vector< ::some::valid::ns::unionTypeDef>>::write(*prot_, this->fieldAA);
   xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("fieldAB", apache::thrift::protocol::T_MAP, 29);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionB, ::apache::thrift::type_class::floating_point>, ::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionC, ::apache::thrift::type_class::integral>>, std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>>::write(*prot_, this->fieldAB);
+  xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
@@ -3431,99 +3460,113 @@ namespace std {
 } // std
 namespace some { namespace valid { namespace ns {
 
-template <typename T_AnnotatatedStruct_no_annotation_struct_setter>
- ::some::valid::ns::containerStruct& AnnotatatedStruct::set_no_annotation(T_AnnotatatedStruct_no_annotation_struct_setter&& no_annotation_) {
-  no_annotation = std::forward<T_AnnotatatedStruct_no_annotation_struct_setter>(no_annotation_);
+template <typename T_AnnotatedStruct_no_annotation_struct_setter>
+ ::some::valid::ns::containerStruct& AnnotatedStruct::set_no_annotation(T_AnnotatedStruct_no_annotation_struct_setter&& no_annotation_) {
+  no_annotation = std::forward<T_AnnotatedStruct_no_annotation_struct_setter>(no_annotation_);
   __isset.no_annotation = true;
   return no_annotation;
 }
 
-template <typename T_AnnotatatedStruct_list_type_struct_setter>
-folly::small_vector<int64_t, 8 /* maxInline */>& AnnotatatedStruct::set_list_type(T_AnnotatatedStruct_list_type_struct_setter&& list_type_) {
-  list_type = std::forward<T_AnnotatatedStruct_list_type_struct_setter>(list_type_);
+template <typename T_AnnotatedStruct_list_type_struct_setter>
+folly::small_vector<int64_t, 8 /* maxInline */>& AnnotatedStruct::set_list_type(T_AnnotatedStruct_list_type_struct_setter&& list_type_) {
+  list_type = std::forward<T_AnnotatedStruct_list_type_struct_setter>(list_type_);
   __isset.list_type = true;
   return list_type;
 }
 
-template <typename T_AnnotatatedStruct_set_type_struct_setter>
-folly::sorted_vector_set<std::string>& AnnotatatedStruct::set_set_type(T_AnnotatatedStruct_set_type_struct_setter&& set_type_) {
-  set_type = std::forward<T_AnnotatatedStruct_set_type_struct_setter>(set_type_);
+template <typename T_AnnotatedStruct_set_type_struct_setter>
+folly::sorted_vector_set<std::string>& AnnotatedStruct::set_set_type(T_AnnotatedStruct_set_type_struct_setter&& set_type_) {
+  set_type = std::forward<T_AnnotatedStruct_set_type_struct_setter>(set_type_);
   __isset.set_type = true;
   return set_type;
 }
 
-template <typename T_AnnotatatedStruct_map_type_struct_setter>
-FakeMap& AnnotatatedStruct::set_map_type(T_AnnotatatedStruct_map_type_struct_setter&& map_type_) {
-  map_type = std::forward<T_AnnotatatedStruct_map_type_struct_setter>(map_type_);
+template <typename T_AnnotatedStruct_map_type_struct_setter>
+FakeMap& AnnotatedStruct::set_map_type(T_AnnotatedStruct_map_type_struct_setter&& map_type_) {
+  map_type = std::forward<T_AnnotatedStruct_map_type_struct_setter>(map_type_);
   __isset.map_type = true;
   return map_type;
 }
 
-template <typename T_AnnotatatedStruct_map_struct_type_struct_setter>
-std::unordered_map<std::string, containerStruct>& AnnotatatedStruct::set_map_struct_type(T_AnnotatatedStruct_map_struct_type_struct_setter&& map_struct_type_) {
-  map_struct_type = std::forward<T_AnnotatatedStruct_map_struct_type_struct_setter>(map_struct_type_);
+template <typename T_AnnotatedStruct_map_struct_type_struct_setter>
+std::unordered_map<std::string, containerStruct>& AnnotatedStruct::set_map_struct_type(T_AnnotatedStruct_map_struct_type_struct_setter&& map_struct_type_) {
+  map_struct_type = std::forward<T_AnnotatedStruct_map_struct_type_struct_setter>(map_struct_type_);
   __isset.map_struct_type = true;
   return map_struct_type;
 }
 
-template <typename T_AnnotatatedStruct_list_i32_template_struct_setter>
-std::list<int32_t>& AnnotatatedStruct::set_list_i32_template(T_AnnotatatedStruct_list_i32_template_struct_setter&& list_i32_template_) {
-  list_i32_template = std::forward<T_AnnotatatedStruct_list_i32_template_struct_setter>(list_i32_template_);
+template <typename T_AnnotatedStruct_list_i32_template_struct_setter>
+std::list<int32_t>& AnnotatedStruct::set_list_i32_template(T_AnnotatedStruct_list_i32_template_struct_setter&& list_i32_template_) {
+  list_i32_template = std::forward<T_AnnotatedStruct_list_i32_template_struct_setter>(list_i32_template_);
   __isset.list_i32_template = true;
   return list_i32_template;
 }
 
-template <typename T_AnnotatatedStruct_list_string_template_struct_setter>
-std::deque<std::string>& AnnotatatedStruct::set_list_string_template(T_AnnotatatedStruct_list_string_template_struct_setter&& list_string_template_) {
-  list_string_template = std::forward<T_AnnotatatedStruct_list_string_template_struct_setter>(list_string_template_);
+template <typename T_AnnotatedStruct_list_string_template_struct_setter>
+std::deque<std::string>& AnnotatedStruct::set_list_string_template(T_AnnotatedStruct_list_string_template_struct_setter&& list_string_template_) {
+  list_string_template = std::forward<T_AnnotatedStruct_list_string_template_struct_setter>(list_string_template_);
   __isset.list_string_template = true;
   return list_string_template;
 }
 
-template <typename T_AnnotatatedStruct_set_template_struct_setter>
-folly::sorted_vector_set<std::string>& AnnotatatedStruct::set_set_template(T_AnnotatatedStruct_set_template_struct_setter&& set_template_) {
-  set_template = std::forward<T_AnnotatatedStruct_set_template_struct_setter>(set_template_);
+template <typename T_AnnotatedStruct_set_template_struct_setter>
+folly::sorted_vector_set<std::string>& AnnotatedStruct::set_set_template(T_AnnotatedStruct_set_template_struct_setter&& set_template_) {
+  set_template = std::forward<T_AnnotatedStruct_set_template_struct_setter>(set_template_);
   __isset.set_template = true;
   return set_template;
 }
 
-template <typename T_AnnotatatedStruct_map_template_struct_setter>
-folly::sorted_vector_map<int64_t, std::string>& AnnotatatedStruct::set_map_template(T_AnnotatatedStruct_map_template_struct_setter&& map_template_) {
-  map_template = std::forward<T_AnnotatatedStruct_map_template_struct_setter>(map_template_);
+template <typename T_AnnotatedStruct_map_template_struct_setter>
+folly::sorted_vector_map<int64_t, std::string>& AnnotatedStruct::set_map_template(T_AnnotatedStruct_map_template_struct_setter&& map_template_) {
+  map_template = std::forward<T_AnnotatedStruct_map_template_struct_setter>(map_template_);
   __isset.map_template = true;
   return map_template;
 }
 
-template <typename T_AnnotatatedStruct_typedef_list_template_struct_setter>
- ::some::valid::ns::std_list& AnnotatatedStruct::set_typedef_list_template(T_AnnotatatedStruct_typedef_list_template_struct_setter&& typedef_list_template_) {
-  typedef_list_template = std::forward<T_AnnotatatedStruct_typedef_list_template_struct_setter>(typedef_list_template_);
+template <typename T_AnnotatedStruct_typedef_list_template_struct_setter>
+ ::some::valid::ns::std_list& AnnotatedStruct::set_typedef_list_template(T_AnnotatedStruct_typedef_list_template_struct_setter&& typedef_list_template_) {
+  typedef_list_template = std::forward<T_AnnotatedStruct_typedef_list_template_struct_setter>(typedef_list_template_);
   __isset.typedef_list_template = true;
   return typedef_list_template;
 }
 
-template <typename T_AnnotatatedStruct_typedef_deque_template_struct_setter>
- ::some::valid::ns::std_deque& AnnotatatedStruct::set_typedef_deque_template(T_AnnotatatedStruct_typedef_deque_template_struct_setter&& typedef_deque_template_) {
-  typedef_deque_template = std::forward<T_AnnotatatedStruct_typedef_deque_template_struct_setter>(typedef_deque_template_);
+template <typename T_AnnotatedStruct_typedef_deque_template_struct_setter>
+ ::some::valid::ns::std_deque& AnnotatedStruct::set_typedef_deque_template(T_AnnotatedStruct_typedef_deque_template_struct_setter&& typedef_deque_template_) {
+  typedef_deque_template = std::forward<T_AnnotatedStruct_typedef_deque_template_struct_setter>(typedef_deque_template_);
   __isset.typedef_deque_template = true;
   return typedef_deque_template;
 }
 
-template <typename T_AnnotatatedStruct_typedef_set_template_struct_setter>
- ::some::valid::ns::folly_set& AnnotatatedStruct::set_typedef_set_template(T_AnnotatatedStruct_typedef_set_template_struct_setter&& typedef_set_template_) {
-  typedef_set_template = std::forward<T_AnnotatatedStruct_typedef_set_template_struct_setter>(typedef_set_template_);
+template <typename T_AnnotatedStruct_typedef_set_template_struct_setter>
+ ::some::valid::ns::folly_set& AnnotatedStruct::set_typedef_set_template(T_AnnotatedStruct_typedef_set_template_struct_setter&& typedef_set_template_) {
+  typedef_set_template = std::forward<T_AnnotatedStruct_typedef_set_template_struct_setter>(typedef_set_template_);
   __isset.typedef_set_template = true;
   return typedef_set_template;
 }
 
-template <typename T_AnnotatatedStruct_typedef_map_template_struct_setter>
- ::some::valid::ns::folly_map& AnnotatatedStruct::set_typedef_map_template(T_AnnotatatedStruct_typedef_map_template_struct_setter&& typedef_map_template_) {
-  typedef_map_template = std::forward<T_AnnotatatedStruct_typedef_map_template_struct_setter>(typedef_map_template_);
+template <typename T_AnnotatedStruct_typedef_map_template_struct_setter>
+ ::some::valid::ns::folly_map& AnnotatedStruct::set_typedef_map_template(T_AnnotatedStruct_typedef_map_template_struct_setter&& typedef_map_template_) {
+  typedef_map_template = std::forward<T_AnnotatedStruct_typedef_map_template_struct_setter>(typedef_map_template_);
   __isset.typedef_map_template = true;
   return typedef_map_template;
 }
 
+template <typename T_AnnotatedStruct_indirection_b_struct_setter>
+std::vector< ::some::valid::ns::IndirectionB>& AnnotatedStruct::set_indirection_b(T_AnnotatedStruct_indirection_b_struct_setter&& indirection_b_) {
+  indirection_b = std::forward<T_AnnotatedStruct_indirection_b_struct_setter>(indirection_b_);
+  __isset.indirection_b = true;
+  return indirection_b;
+}
+
+template <typename T_AnnotatedStruct_indirection_c_struct_setter>
+std::set< ::some::valid::ns::IndirectionC>& AnnotatedStruct::set_indirection_c(T_AnnotatedStruct_indirection_c_struct_setter&& indirection_c_) {
+  indirection_c = std::forward<T_AnnotatedStruct_indirection_c_struct_setter>(indirection_c_);
+  __isset.indirection_c = true;
+  return indirection_c;
+}
+
 template <class Protocol_>
-uint32_t AnnotatatedStruct::read(Protocol_* iprot) {
+uint32_t AnnotatedStruct::read(Protocol_* iprot) {
   uint32_t xfer = 0;
   std::string fname;
   apache::thrift::protocol::TType ftype;
@@ -3681,6 +3724,18 @@ uint32_t AnnotatatedStruct::read(Protocol_* iprot) {
       else if (fname == "typedef_map_template") {
         fid = 34;
         ftype = apache::thrift::protocol::T_MAP;
+      }
+      else if (fname == "indirection_a") {
+        fid = 35;
+        ftype = apache::thrift::protocol::T_I64;
+      }
+      else if (fname == "indirection_b") {
+        fid = 36;
+        ftype = apache::thrift::protocol::T_LIST;
+      }
+      else if (fname == "indirection_c") {
+        fid = 37;
+        ftype = apache::thrift::protocol::T_SET;
       }
     }
     switch (fid) {
@@ -4060,6 +4115,38 @@ uint32_t AnnotatatedStruct::read(Protocol_* iprot) {
         }
         break;
       }
+      case 35:
+      {
+        if (ftype == apache::thrift::protocol::T_I64) {
+          xfer += iprot->readI64(this->indirection_a.value);
+          this->__isset.indirection_a = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 36:
+      {
+        if (ftype == apache::thrift::protocol::T_LIST) {
+          this->indirection_b = std::vector< ::some::valid::ns::IndirectionB>();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionB, ::apache::thrift::type_class::floating_point>>, std::vector< ::some::valid::ns::IndirectionB>>::read(*iprot, this->indirection_b);
+          this->__isset.indirection_b = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 37:
+      {
+        if (ftype == apache::thrift::protocol::T_SET) {
+          this->indirection_c = std::set< ::some::valid::ns::IndirectionC>();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionC, ::apache::thrift::type_class::integral>>, std::set< ::some::valid::ns::IndirectionC>>::read(*iprot, this->indirection_c);
+          this->__isset.indirection_c = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
       default:
       {
         xfer += iprot->skip(ftype);
@@ -4071,30 +4158,30 @@ uint32_t AnnotatatedStruct::read(Protocol_* iprot) {
   xfer += iprot->readStructEnd();
 
   if (!isset_req_cpp_unique_ref) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_cpp_unique_ref' was not found in serialized data! Struct: AnnotatatedStruct");
+    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_cpp_unique_ref' was not found in serialized data! Struct: AnnotatedStruct");
   }
   if (!isset_req_cpp2_unique_ref) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_cpp2_unique_ref' was not found in serialized data! Struct: AnnotatatedStruct");
+    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_cpp2_unique_ref' was not found in serialized data! Struct: AnnotatedStruct");
   }
   if (!isset_req_container_with_ref) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_container_with_ref' was not found in serialized data! Struct: AnnotatatedStruct");
+    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_container_with_ref' was not found in serialized data! Struct: AnnotatedStruct");
   }
   if (!isset_req_ref_type_shared) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_ref_type_shared' was not found in serialized data! Struct: AnnotatatedStruct");
+    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_ref_type_shared' was not found in serialized data! Struct: AnnotatedStruct");
   }
   if (!isset_req_ref_type_const) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_ref_type_const' was not found in serialized data! Struct: AnnotatatedStruct");
+    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_ref_type_const' was not found in serialized data! Struct: AnnotatedStruct");
   }
   if (!isset_req_ref_type_unique) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_ref_type_unique' was not found in serialized data! Struct: AnnotatatedStruct");
+    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_ref_type_unique' was not found in serialized data! Struct: AnnotatedStruct");
   }
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t AnnotatatedStruct::serializedSize(Protocol_ const* prot_) const {
+uint32_t AnnotatedStruct::serializedSize(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
-  xfer += prot_->serializedStructSize("AnnotatatedStruct");
+  xfer += prot_->serializedStructSize("AnnotatedStruct");
   xfer += prot_->serializedFieldSize("no_annotation", apache::thrift::protocol::T_STRUCT, 1);
   xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::serializedSize(prot_, &this->no_annotation);
   xfer += prot_->serializedFieldSize("cpp_unique_ref", apache::thrift::protocol::T_STRUCT, 2);
@@ -4283,14 +4370,20 @@ uint32_t AnnotatatedStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::string>,  ::some::valid::ns::folly_set>::serializedSize<false>(*prot_, this->typedef_set_template);
   xfer += prot_->serializedFieldSize("typedef_map_template", apache::thrift::protocol::T_MAP, 34);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>,  ::some::valid::ns::folly_map>::serializedSize<false>(*prot_, this->typedef_map_template);
+  xfer += prot_->serializedFieldSize("indirection_a", apache::thrift::protocol::T_I64, 35);
+  xfer += prot_->serializedSizeI64(this->indirection_a.value);
+  xfer += prot_->serializedFieldSize("indirection_b", apache::thrift::protocol::T_LIST, 36);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionB, ::apache::thrift::type_class::floating_point>>, std::vector< ::some::valid::ns::IndirectionB>>::serializedSize<false>(*prot_, this->indirection_b);
+  xfer += prot_->serializedFieldSize("indirection_c", apache::thrift::protocol::T_SET, 37);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionC, ::apache::thrift::type_class::integral>>, std::set< ::some::valid::ns::IndirectionC>>::serializedSize<false>(*prot_, this->indirection_c);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t AnnotatatedStruct::serializedSizeZC(Protocol_ const* prot_) const {
+uint32_t AnnotatedStruct::serializedSizeZC(Protocol_ const* prot_) const {
   uint32_t xfer = 0;
-  xfer += prot_->serializedStructSize("AnnotatatedStruct");
+  xfer += prot_->serializedStructSize("AnnotatedStruct");
   xfer += prot_->serializedFieldSize("no_annotation", apache::thrift::protocol::T_STRUCT, 1);
   xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::serializedSizeZC(prot_, &this->no_annotation);
   xfer += prot_->serializedFieldSize("cpp_unique_ref", apache::thrift::protocol::T_STRUCT, 2);
@@ -4479,14 +4572,20 @@ uint32_t AnnotatatedStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::string>,  ::some::valid::ns::folly_set>::serializedSize<false>(*prot_, this->typedef_set_template);
   xfer += prot_->serializedFieldSize("typedef_map_template", apache::thrift::protocol::T_MAP, 34);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>,  ::some::valid::ns::folly_map>::serializedSize<false>(*prot_, this->typedef_map_template);
+  xfer += prot_->serializedFieldSize("indirection_a", apache::thrift::protocol::T_I64, 35);
+  xfer += prot_->serializedSizeI64(this->indirection_a.value);
+  xfer += prot_->serializedFieldSize("indirection_b", apache::thrift::protocol::T_LIST, 36);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionB, ::apache::thrift::type_class::floating_point>>, std::vector< ::some::valid::ns::IndirectionB>>::serializedSize<false>(*prot_, this->indirection_b);
+  xfer += prot_->serializedFieldSize("indirection_c", apache::thrift::protocol::T_SET, 37);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionC, ::apache::thrift::type_class::integral>>, std::set< ::some::valid::ns::IndirectionC>>::serializedSize<false>(*prot_, this->indirection_c);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
 
 template <class Protocol_>
-uint32_t AnnotatatedStruct::write(Protocol_* prot_) const {
+uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
-  xfer += prot_->writeStructBegin("AnnotatatedStruct");
+  xfer += prot_->writeStructBegin("AnnotatedStruct");
   xfer += prot_->writeFieldBegin("no_annotation", apache::thrift::protocol::T_STRUCT, 1);
   xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::write(prot_, &this->no_annotation);
   xfer += prot_->writeFieldEnd();
@@ -4720,6 +4819,15 @@ uint32_t AnnotatatedStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("typedef_map_template", apache::thrift::protocol::T_MAP, 34);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>,  ::some::valid::ns::folly_map>::write(*prot_, this->typedef_map_template);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("indirection_a", apache::thrift::protocol::T_I64, 35);
+  xfer += prot_->writeI64(this->indirection_a.value);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("indirection_b", apache::thrift::protocol::T_LIST, 36);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionB, ::apache::thrift::type_class::floating_point>>, std::vector< ::some::valid::ns::IndirectionB>>::write(*prot_, this->indirection_b);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("indirection_c", apache::thrift::protocol::T_SET, 37);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionC, ::apache::thrift::type_class::integral>>, std::set< ::some::valid::ns::IndirectionC>>::write(*prot_, this->indirection_c);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

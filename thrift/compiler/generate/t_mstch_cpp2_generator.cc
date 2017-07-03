@@ -133,6 +133,7 @@ class mstch_cpp2_type : public mstch_type {
             {"type:cpp_type", &mstch_cpp2_type::cpp_type},
             {"type:string_or_binary?", &mstch_cpp2_type::is_string_or_binary},
             {"type:cpp_template", &mstch_cpp2_type::cpp_template},
+            {"type:cpp_indirection", &mstch_cpp2_type::cpp_indirection},
         });
   }
   virtual std::string get_type_namespace(t_program const* program) override {
@@ -180,6 +181,14 @@ class mstch_cpp2_type : public mstch_type {
       return type_->annotations_.at("cpp.template");
     } else if (type_->annotations_.count("cpp2.template")) {
       return type_->annotations_.at("cpp2.template");
+    }
+    return std::string();
+  }
+  mstch::node cpp_indirection() {
+    if (resolved_type_->annotations_.count("cpp.indirection")) {
+      return resolved_type_->annotations_.at("cpp.indirection");
+    } else if (resolved_type_->annotations_.count("cpp2.indirection")) {
+      return resolved_type_->annotations_.at("cpp2.indirection");
     }
     return std::string();
   }
@@ -583,6 +592,7 @@ class mstch_cpp2_program : public mstch_program {
             {"program:enums?", &mstch_cpp2_program::has_enums},
             {"program:thrift_includes", &mstch_cpp2_program::thrift_includes},
             {"program:frozen2?", &mstch_cpp2_program::frozen2},
+            {"program:indirection?", &mstch_cpp2_program::has_indirection},
         });
   }
   virtual std::string get_program_namespace() override {
@@ -658,6 +668,14 @@ class mstch_cpp2_program : public mstch_program {
   }
   mstch::node frozen2() {
     return cache_->parsed_options_.count("frozen2") != 0;
+  }
+  mstch::node has_indirection() {
+    for (auto const* typedf : program_->get_typedefs()) {
+      if (typedf->get_type()->annotations_.count("cpp.indirection")) {
+        return true;
+      }
+    }
+    return true;
   }
 };
 

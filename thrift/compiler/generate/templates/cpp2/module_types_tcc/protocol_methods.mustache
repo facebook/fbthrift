@@ -14,6 +14,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
+%><%#type:cpp_indirection%><%!
+  %>::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_<%type:name%>, <%!
+%><%/type:cpp_indirection%><%!
+
 %>::apache::thrift::type_class::<%!
 %><%#type:binary?%>binary<%/type:binary?%><%!
 %><%#type:string?%>string<%/type:string?%><%!
@@ -27,14 +31,19 @@
 %><%#type:enum?%>enumeration<%/type:enum?%><%!
 %><%#type:struct?%>structure<%/type:struct?%><%!
 
+
 %><%#type:list?%><%!
-%>list<<%#type:listElemType%><% > module_types_tcc/protocol_methods%><%/type:listElemType%>><%!
+  %>list<<%#type:listElemType%><% > module_types_tcc/protocol_methods%><%/type:listElemType%>><%!
 %><%/type:list?%><%!
 
 %><%#type:set?%><%!
-%>set<<%#type:setElemType%><% > module_types_tcc/protocol_methods%><%/type:setElemType%>><%!
+  %>set<<%#type:setElemType%><% > module_types_tcc/protocol_methods%><%/type:setElemType%>><%!
 %><%/type:set?%><%!
 
 %><%#type:map?%><%!
     %>map<<%#type:keyType%><% > module_types_tcc/protocol_methods%><%/type:keyType%>, <%#type:valueType%><% > module_types_tcc/protocol_methods%><%/type:valueType%>><%!
-%><%/type:map?%>
+%><%/type:map?%><%!
+
+%><%#type:cpp_indirection%><%!
+  %>><%!
+%><%/type:cpp_indirection%>

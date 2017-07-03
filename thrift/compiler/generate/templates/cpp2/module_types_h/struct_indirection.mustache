@@ -14,13 +14,15 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%!
-Form:
-typedef type name;
+%><%#program:typedefs%><%#typedef:type%><%#type:cpp_indirection%>
+struct apache_thrift_indirection_module_<%typedef:symbolic%> {
+  template <typename T> static auto&& get(T&& x) {
+    return std::forward<T>(x)<%type:cpp_indirection%>;
+  }
 
-%>
-<%#first?%><%#program:typedefs%><%#typedef:type%>
-<% > module_types_h/typedef_recursive_forward_declare%>
-typedef <%#type:cpp_type%><%type:cpp_type%><%/type:cpp_type%><%^type:cpp_type%><% > Type%><%/type:cpp_type%> <%typedef:symbolic%>;
+  template <typename T> static auto&& get(T const&& x) {
+    return std::forward<T>(x)<%type:cpp_indirection%>;
+  }
+};
 
-<%/typedef:type%><%/program:typedefs%><%/first?%>
+<%/type:cpp_indirection%><%/typedef:type%><%/program:typedefs%>

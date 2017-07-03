@@ -51,7 +51,7 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
           std::unique_ptr<<% > Type%>> ptr = std::make_unique<<% > Type%>>();
 <%/field:cpp_ref?%>
 <%#type:resolves_to_base?%>
-          xfer += iprot->read<% > module_types_tcc/struct_field_type%>(this-><%field:name%>);
+          xfer += iprot->read<% > module_types_tcc/struct_field_type%>(this-><%field:name%><%type:cpp_indirection%>);
 <%/type:resolves_to_base?%>
 <%#type:resolves_to_container_or_enum?%>
 <%^type:enum?%><%^field:cpp_ref?%>

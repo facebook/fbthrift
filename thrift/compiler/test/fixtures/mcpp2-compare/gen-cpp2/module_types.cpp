@@ -840,6 +840,7 @@ void containerStruct::__clear() {
   fieldY.clear();
   fieldZ.clear();
   fieldAA.clear();
+  fieldAB.clear();
   __isset.__clear();
 }
 
@@ -986,6 +987,9 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
     return false;
   }
   if (!((fieldAA == rhs.fieldAA))) {
+    return false;
+  }
+  if (!((fieldAB == rhs.fieldAB))) {
     return false;
   }
   return true;
@@ -1207,6 +1211,14 @@ std::vector< ::some::valid::ns::unionTypeDef> containerStruct::get_fieldAA() && 
   return std::move(fieldAA);
 }
 
+const std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>& containerStruct::get_fieldAB() const& {
+  return fieldAB;
+}
+
+std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> containerStruct::get_fieldAB() && {
+  return std::move(fieldAB);
+}
+
 void swap(containerStruct& a, containerStruct& b) {
   using ::std::swap;
   swap(a.fieldA, b.fieldA);
@@ -1250,6 +1262,7 @@ void swap(containerStruct& a, containerStruct& b) {
   swap(a.fieldY, b.fieldY);
   swap(a.fieldZ, b.fieldZ);
   swap(a.fieldAA, b.fieldAA);
+  swap(a.fieldAB, b.fieldAB);
   swap(a.__isset, b.__isset);
 }
 
@@ -1305,7 +1318,7 @@ namespace std {
 } // std
 namespace some { namespace valid { namespace ns {
 
-void AnnotatatedStruct::__clear() {
+void AnnotatedStruct::__clear() {
   // clear all fields
   ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(&no_annotation);
   if (cpp_unique_ref) ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(cpp_unique_ref.get());
@@ -1341,10 +1354,13 @@ void AnnotatatedStruct::__clear() {
   typedef_deque_template.clear();
   typedef_set_template.clear();
   typedef_map_template.clear();
+  indirection_a.value = 0;
+  indirection_b.clear();
+  indirection_c.clear();
   __isset.__clear();
 }
 
-bool AnnotatatedStruct::operator==(const AnnotatatedStruct& rhs) const {
+bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
   if (!((no_annotation == rhs.no_annotation))) {
     return false;
   }
@@ -1447,114 +1463,139 @@ bool AnnotatatedStruct::operator==(const AnnotatatedStruct& rhs) const {
   if (!((typedef_map_template == rhs.typedef_map_template))) {
     return false;
   }
+  if (!((indirection_a == rhs.indirection_a))) {
+    return false;
+  }
+  if (!((indirection_b == rhs.indirection_b))) {
+    return false;
+  }
+  if (!((indirection_c == rhs.indirection_c))) {
+    return false;
+  }
   return true;
 }
 
-const  ::some::valid::ns::containerStruct& AnnotatatedStruct::get_no_annotation() const& {
+const  ::some::valid::ns::containerStruct& AnnotatedStruct::get_no_annotation() const& {
   return no_annotation;
 }
 
- ::some::valid::ns::containerStruct AnnotatatedStruct::get_no_annotation() && {
+ ::some::valid::ns::containerStruct AnnotatedStruct::get_no_annotation() && {
   return std::move(no_annotation);
 }
 
-const folly::small_vector<int64_t, 8 /* maxInline */>& AnnotatatedStruct::get_list_type() const& {
+const folly::small_vector<int64_t, 8 /* maxInline */>& AnnotatedStruct::get_list_type() const& {
   return list_type;
 }
 
-folly::small_vector<int64_t, 8 /* maxInline */> AnnotatatedStruct::get_list_type() && {
+folly::small_vector<int64_t, 8 /* maxInline */> AnnotatedStruct::get_list_type() && {
   return std::move(list_type);
 }
 
-const folly::sorted_vector_set<std::string>& AnnotatatedStruct::get_set_type() const& {
+const folly::sorted_vector_set<std::string>& AnnotatedStruct::get_set_type() const& {
   return set_type;
 }
 
-folly::sorted_vector_set<std::string> AnnotatatedStruct::get_set_type() && {
+folly::sorted_vector_set<std::string> AnnotatedStruct::get_set_type() && {
   return std::move(set_type);
 }
 
-const FakeMap& AnnotatatedStruct::get_map_type() const& {
+const FakeMap& AnnotatedStruct::get_map_type() const& {
   return map_type;
 }
 
-FakeMap AnnotatatedStruct::get_map_type() && {
+FakeMap AnnotatedStruct::get_map_type() && {
   return std::move(map_type);
 }
 
-const std::unordered_map<std::string, containerStruct>& AnnotatatedStruct::get_map_struct_type() const& {
+const std::unordered_map<std::string, containerStruct>& AnnotatedStruct::get_map_struct_type() const& {
   return map_struct_type;
 }
 
-std::unordered_map<std::string, containerStruct> AnnotatatedStruct::get_map_struct_type() && {
+std::unordered_map<std::string, containerStruct> AnnotatedStruct::get_map_struct_type() && {
   return std::move(map_struct_type);
 }
 
-const std::list<int32_t>& AnnotatatedStruct::get_list_i32_template() const& {
+const std::list<int32_t>& AnnotatedStruct::get_list_i32_template() const& {
   return list_i32_template;
 }
 
-std::list<int32_t> AnnotatatedStruct::get_list_i32_template() && {
+std::list<int32_t> AnnotatedStruct::get_list_i32_template() && {
   return std::move(list_i32_template);
 }
 
-const std::deque<std::string>& AnnotatatedStruct::get_list_string_template() const& {
+const std::deque<std::string>& AnnotatedStruct::get_list_string_template() const& {
   return list_string_template;
 }
 
-std::deque<std::string> AnnotatatedStruct::get_list_string_template() && {
+std::deque<std::string> AnnotatedStruct::get_list_string_template() && {
   return std::move(list_string_template);
 }
 
-const folly::sorted_vector_set<std::string>& AnnotatatedStruct::get_set_template() const& {
+const folly::sorted_vector_set<std::string>& AnnotatedStruct::get_set_template() const& {
   return set_template;
 }
 
-folly::sorted_vector_set<std::string> AnnotatatedStruct::get_set_template() && {
+folly::sorted_vector_set<std::string> AnnotatedStruct::get_set_template() && {
   return std::move(set_template);
 }
 
-const folly::sorted_vector_map<int64_t, std::string>& AnnotatatedStruct::get_map_template() const& {
+const folly::sorted_vector_map<int64_t, std::string>& AnnotatedStruct::get_map_template() const& {
   return map_template;
 }
 
-folly::sorted_vector_map<int64_t, std::string> AnnotatatedStruct::get_map_template() && {
+folly::sorted_vector_map<int64_t, std::string> AnnotatedStruct::get_map_template() && {
   return std::move(map_template);
 }
 
-const  ::some::valid::ns::std_list& AnnotatatedStruct::get_typedef_list_template() const& {
+const  ::some::valid::ns::std_list& AnnotatedStruct::get_typedef_list_template() const& {
   return typedef_list_template;
 }
 
- ::some::valid::ns::std_list AnnotatatedStruct::get_typedef_list_template() && {
+ ::some::valid::ns::std_list AnnotatedStruct::get_typedef_list_template() && {
   return std::move(typedef_list_template);
 }
 
-const  ::some::valid::ns::std_deque& AnnotatatedStruct::get_typedef_deque_template() const& {
+const  ::some::valid::ns::std_deque& AnnotatedStruct::get_typedef_deque_template() const& {
   return typedef_deque_template;
 }
 
- ::some::valid::ns::std_deque AnnotatatedStruct::get_typedef_deque_template() && {
+ ::some::valid::ns::std_deque AnnotatedStruct::get_typedef_deque_template() && {
   return std::move(typedef_deque_template);
 }
 
-const  ::some::valid::ns::folly_set& AnnotatatedStruct::get_typedef_set_template() const& {
+const  ::some::valid::ns::folly_set& AnnotatedStruct::get_typedef_set_template() const& {
   return typedef_set_template;
 }
 
- ::some::valid::ns::folly_set AnnotatatedStruct::get_typedef_set_template() && {
+ ::some::valid::ns::folly_set AnnotatedStruct::get_typedef_set_template() && {
   return std::move(typedef_set_template);
 }
 
-const  ::some::valid::ns::folly_map& AnnotatatedStruct::get_typedef_map_template() const& {
+const  ::some::valid::ns::folly_map& AnnotatedStruct::get_typedef_map_template() const& {
   return typedef_map_template;
 }
 
- ::some::valid::ns::folly_map AnnotatatedStruct::get_typedef_map_template() && {
+ ::some::valid::ns::folly_map AnnotatedStruct::get_typedef_map_template() && {
   return std::move(typedef_map_template);
 }
 
-void swap(AnnotatatedStruct& a, AnnotatatedStruct& b) {
+const std::vector< ::some::valid::ns::IndirectionB>& AnnotatedStruct::get_indirection_b() const& {
+  return indirection_b;
+}
+
+std::vector< ::some::valid::ns::IndirectionB> AnnotatedStruct::get_indirection_b() && {
+  return std::move(indirection_b);
+}
+
+const std::set< ::some::valid::ns::IndirectionC>& AnnotatedStruct::get_indirection_c() const& {
+  return indirection_c;
+}
+
+std::set< ::some::valid::ns::IndirectionC> AnnotatedStruct::get_indirection_c() && {
+  return std::move(indirection_c);
+}
+
+void swap(AnnotatedStruct& a, AnnotatedStruct& b) {
   using ::std::swap;
   swap(a.no_annotation, b.no_annotation);
   swap(a.cpp_unique_ref, b.cpp_unique_ref);
@@ -1590,17 +1631,20 @@ void swap(AnnotatatedStruct& a, AnnotatatedStruct& b) {
   swap(a.typedef_deque_template, b.typedef_deque_template);
   swap(a.typedef_set_template, b.typedef_set_template);
   swap(a.typedef_map_template, b.typedef_map_template);
+  swap(a.indirection_a, b.indirection_a);
+  swap(a.indirection_b, b.indirection_b);
+  swap(a.indirection_c, b.indirection_c);
   swap(a.__isset, b.__isset);
 }
 
-template uint32_t AnnotatatedStruct::read<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t AnnotatatedStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t AnnotatatedStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t AnnotatatedStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t AnnotatatedStruct::read<>(apache::thrift::CompactProtocolReader*);
-template uint32_t AnnotatatedStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t AnnotatatedStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t AnnotatatedStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t AnnotatedStruct::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t AnnotatedStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t AnnotatedStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t AnnotatedStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t AnnotatedStruct::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t AnnotatedStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t AnnotatedStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t AnnotatedStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }}} // some::valid::ns
 namespace apache { namespace thrift {

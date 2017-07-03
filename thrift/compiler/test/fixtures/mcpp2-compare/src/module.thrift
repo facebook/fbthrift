@@ -132,6 +132,10 @@ exception AnotherException {
   2: string message
 } (final)
 
+typedef i64 (cpp.type = "Foo", cpp.indirection=".value") IndirectionA
+typedef i32 (cpp.type = "Baz", cpp.indirection=".__value()") IndirectionC
+typedef double (cpp.type = "Bar", cpp.indirection=".value") IndirectionB
+
 struct containerStruct {
   1: bool fieldA
   101: required bool req_fieldA
@@ -177,6 +181,7 @@ struct containerStruct {
   26: list<ComplexUnion> fieldY
   27: unionTypeDef fieldZ
   28: list<unionTypeDef> fieldAA
+  29: map<IndirectionB, IndirectionC> fieldAB
 } (cpp2.noncopyable, cpp.methods = "void foo(const std::string& bar) {}")
 
 struct MyIncludedStruct {
@@ -199,7 +204,7 @@ typedef list<string> (cpp2.template = "std::deque") std_deque
 typedef set<string> (cpp.template = "folly::sorted_vector_set") folly_set
 typedef map<i64, string> (cpp2.template = "folly::sorted_vector_map") folly_map
 
-struct AnnotatatedStruct {
+struct AnnotatedStruct {
   1: containerStruct no_annotation
   2: containerStruct cpp_unique_ref (cpp.ref)
   3: containerStruct cpp2_unique_ref (cpp2.ref)
@@ -234,6 +239,9 @@ struct AnnotatatedStruct {
   32: std_deque typedef_deque_template
   33: folly_set typedef_set_template
   34: folly_map typedef_map_template
+  35: IndirectionA indirection_a
+  36: list<IndirectionB> indirection_b
+  37: set<IndirectionC> indirection_c
 } (
     final,
     cpp2.noexcept_move_ctor,

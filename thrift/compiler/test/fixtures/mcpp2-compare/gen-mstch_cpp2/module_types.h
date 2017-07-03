@@ -20,6 +20,36 @@
 
 namespace some { namespace valid { namespace ns {
 
+struct apache_thrift_indirection_module_IndirectionA {
+  template <typename T> static auto&& get(T&& x) {
+    return std::forward<T>(x).value;
+  }
+
+  template <typename T> static auto&& get(T const&& x) {
+    return std::forward<T>(x).value;
+  }
+};
+
+struct apache_thrift_indirection_module_IndirectionC {
+  template <typename T> static auto&& get(T&& x) {
+    return std::forward<T>(x).__value();
+  }
+
+  template <typename T> static auto&& get(T const&& x) {
+    return std::forward<T>(x).__value();
+  }
+};
+
+struct apache_thrift_indirection_module_IndirectionB {
+  template <typename T> static auto&& get(T&& x) {
+    return std::forward<T>(x).value;
+  }
+
+  template <typename T> static auto&& get(T const&& x) {
+    return std::forward<T>(x).value;
+  }
+};
+
 class Empty;
 class MyStruct;
 class SimpleUnion;
@@ -28,7 +58,7 @@ class AnException;
 class AnotherException;
 class containerStruct;
 class MyIncludedStruct;
-class AnnotatatedStruct;
+class AnnotatedStruct;
 
 enum class MyEnumA {
   fieldA = 1,
@@ -272,6 +302,12 @@ class MyStruct;
 typedef std::vector<std::map< ::some::valid::ns::Empty,  ::some::valid::ns::MyStruct>> complexStructTypeDef;
 
 typedef std::vector< ::some::valid::ns::complexStructTypeDef> mostComplexTypeDef;
+
+typedef Foo IndirectionA;
+
+typedef Baz IndirectionC;
+
+typedef Bar IndirectionB;
 
 typedef int32_t CppFakeI32;
 
@@ -3380,7 +3416,7 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
    ::some::valid::ns::MyEnumA::fieldA}) {}
   // FragileConstructor for use in initialization lists only
 
-  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, std::map<std::string, bool> fieldB__arg, std::map<std::string, bool> req_fieldB__arg, std::map<std::string, bool> opt_fieldB__arg, std::set<int32_t> fieldC__arg, std::set<int32_t> req_fieldC__arg, std::set<int32_t> opt_fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::string req_fieldE__arg, std::string opt_fieldE__arg, std::vector<std::vector<int32_t>> fieldF__arg, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG__arg, std::vector<std::set<int32_t>> fieldH__arg, bool fieldI__arg, std::map<std::string, std::vector<int32_t>> fieldJ__arg, std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK__arg, std::set<std::set<std::set<bool>>> fieldL__arg, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM__arg,  ::some::valid::ns::simpleTypeDef fieldN__arg,  ::some::valid::ns::complexStructTypeDef fieldO__arg, std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP__arg,  ::some::valid::ns::MyEnumA fieldQ__arg,  ::some::valid::ns::MyEnumA fieldR__arg,  ::some::valid::ns::MyEnumA req_fieldR__arg,  ::some::valid::ns::MyEnumA opt_fieldR__arg,  ::some::valid::ns::MyEnumA fieldS__arg, std::vector< ::some::valid::ns::MyEnumA> fieldT__arg, std::vector< ::some::valid::ns::MyEnumA> fieldU__arg,  ::some::valid::ns::MyStruct fieldV__arg,  ::some::valid::ns::MyStruct req_fieldV__arg,  ::some::valid::ns::MyStruct opt_fieldV__arg, std::set< ::some::valid::ns::MyStruct> fieldW__arg,  ::some::valid::ns::ComplexUnion fieldX__arg,  ::some::valid::ns::ComplexUnion req_fieldX__arg,  ::some::valid::ns::ComplexUnion opt_fieldX__arg, std::vector< ::some::valid::ns::ComplexUnion> fieldY__arg,  ::some::valid::ns::unionTypeDef fieldZ__arg, std::vector< ::some::valid::ns::unionTypeDef> fieldAA__arg) :
+  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, std::map<std::string, bool> fieldB__arg, std::map<std::string, bool> req_fieldB__arg, std::map<std::string, bool> opt_fieldB__arg, std::set<int32_t> fieldC__arg, std::set<int32_t> req_fieldC__arg, std::set<int32_t> opt_fieldC__arg, std::string fieldD__arg, std::string fieldE__arg, std::string req_fieldE__arg, std::string opt_fieldE__arg, std::vector<std::vector<int32_t>> fieldF__arg, std::map<std::string, std::map<std::string, std::map<std::string, int32_t>>> fieldG__arg, std::vector<std::set<int32_t>> fieldH__arg, bool fieldI__arg, std::map<std::string, std::vector<int32_t>> fieldJ__arg, std::vector<std::vector<std::vector<std::vector<int32_t>>>> fieldK__arg, std::set<std::set<std::set<bool>>> fieldL__arg, std::map<std::set<std::vector<int32_t>>, std::map<std::vector<std::set<std::string>>, std::string>> fieldM__arg,  ::some::valid::ns::simpleTypeDef fieldN__arg,  ::some::valid::ns::complexStructTypeDef fieldO__arg, std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP__arg,  ::some::valid::ns::MyEnumA fieldQ__arg,  ::some::valid::ns::MyEnumA fieldR__arg,  ::some::valid::ns::MyEnumA req_fieldR__arg,  ::some::valid::ns::MyEnumA opt_fieldR__arg,  ::some::valid::ns::MyEnumA fieldS__arg, std::vector< ::some::valid::ns::MyEnumA> fieldT__arg, std::vector< ::some::valid::ns::MyEnumA> fieldU__arg,  ::some::valid::ns::MyStruct fieldV__arg,  ::some::valid::ns::MyStruct req_fieldV__arg,  ::some::valid::ns::MyStruct opt_fieldV__arg, std::set< ::some::valid::ns::MyStruct> fieldW__arg,  ::some::valid::ns::ComplexUnion fieldX__arg,  ::some::valid::ns::ComplexUnion req_fieldX__arg,  ::some::valid::ns::ComplexUnion opt_fieldX__arg, std::vector< ::some::valid::ns::ComplexUnion> fieldY__arg,  ::some::valid::ns::unionTypeDef fieldZ__arg, std::vector< ::some::valid::ns::unionTypeDef> fieldAA__arg, std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> fieldAB__arg) :
       fieldA(std::move(fieldA__arg)),
       req_fieldA(std::move(req_fieldA__arg)),
       opt_fieldA(std::move(opt_fieldA__arg)),
@@ -3421,7 +3457,8 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
       opt_fieldX(std::move(opt_fieldX__arg)),
       fieldY(std::move(fieldY__arg)),
       fieldZ(std::move(fieldZ__arg)),
-      fieldAA(std::move(fieldAA__arg)) {
+      fieldAA(std::move(fieldAA__arg)),
+      fieldAB(std::move(fieldAB__arg)) {
     __isset.fieldA = true;
     __isset.opt_fieldA = true;
     __isset.fieldB = true;
@@ -3456,6 +3493,7 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     __isset.fieldY = true;
     __isset.fieldZ = true;
     __isset.fieldAA = true;
+    __isset.fieldAB = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   containerStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -3737,6 +3775,13 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     fieldAA = arg.move();
     __isset.fieldAA = true;
   }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  containerStruct(::apache::thrift::detail::argument_wrapper<29, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    containerStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    fieldAB = arg.move();
+    __isset.fieldAB = true;
+  }
 
   containerStruct(containerStruct&&) = default;
 
@@ -3786,6 +3831,7 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   std::vector< ::some::valid::ns::ComplexUnion> fieldY;
    ::some::valid::ns::unionTypeDef fieldZ;
   std::vector< ::some::valid::ns::unionTypeDef> fieldAA;
+  std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> fieldAB;
 
   struct __isset {
     void __clear() {
@@ -3823,6 +3869,7 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
       fieldY = false;
       fieldZ = false;
       fieldAA = false;
+      fieldAB = false;
     }
 
     bool fieldA = false;
@@ -3859,6 +3906,7 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
     bool fieldY = false;
     bool fieldZ = false;
     bool fieldAA = false;
+    bool fieldAB = false;
   } __isset;
   bool operator==(const containerStruct& rhs) const;
   bool operator < (const containerStruct& rhs) const;
@@ -4142,6 +4190,10 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   std::vector< ::some::valid::ns::unionTypeDef> get_fieldAA() &&;
   template <typename T_containerStruct_fieldAA_struct_setter>
   std::vector< ::some::valid::ns::unionTypeDef>& set_fieldAA(T_containerStruct_fieldAA_struct_setter&& fieldAA_);
+  const std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>& get_fieldAB() const&;
+  std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> get_fieldAB() &&;
+  template <typename T_containerStruct_fieldAB_struct_setter>
+  std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>& set_fieldAB(T_containerStruct_fieldAB_struct_setter&& fieldAB_);
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -4307,20 +4359,21 @@ template<> struct equal_to<typename  ::some::valid::ns::MyIncludedStruct> {
 } // std
 namespace some { namespace valid { namespace ns {
 
-class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperators<AnnotatatedStruct> {
+class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<AnnotatedStruct> {
  public:
 
-  AnnotatatedStruct() :
+  AnnotatedStruct() :
       container_with_ref(std::make_unique<std::map<int32_t, std::vector<std::string>>>()),
       req_container_with_ref(std::make_unique<std::vector<std::string>>()),
       opt_container_with_ref(std::make_unique<std::set<int32_t>>()),
       ref_type_const(std::make_shared<std::map<int32_t, std::vector<std::string>>>()),
       req_ref_type_unique(std::make_unique<std::vector<std::string>>()),
       opt_ref_type_shared(std::make_shared<std::set<int32_t>>()),
-      base_type(0) {}
+      base_type(0),
+      indirection_a(0) {}
   // FragileConstructor for use in initialization lists only
 
-  AnnotatatedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::containerStruct no_annotation__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref__arg, std::unique_ptr<std::map<int32_t, std::vector<std::string>>> container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, std::unique_ptr<std::vector<std::string>> req_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, std::unique_ptr<std::set<int32_t>> opt_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique__arg, std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared__arg, std::shared_ptr<const std::map<int32_t, std::vector<std::string>>> ref_type_const__arg, std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const__arg, std::unique_ptr<std::vector<std::string>> req_ref_type_unique__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique__arg, std::shared_ptr<std::set<int32_t>> opt_ref_type_shared__arg, CppFakeI32 base_type__arg, folly::small_vector<int64_t, 8 /* maxInline */> list_type__arg, folly::sorted_vector_set<std::string> set_type__arg, FakeMap map_type__arg, std::unordered_map<std::string, containerStruct> map_struct_type__arg, folly::IOBuf iobuf_type__arg, std::unique_ptr<folly::IOBuf> iobuf_ptr__arg, std::list<int32_t> list_i32_template__arg, std::deque<std::string> list_string_template__arg, folly::sorted_vector_set<std::string> set_template__arg, folly::sorted_vector_map<int64_t, std::string> map_template__arg,  ::some::valid::ns::std_list typedef_list_template__arg,  ::some::valid::ns::std_deque typedef_deque_template__arg,  ::some::valid::ns::folly_set typedef_set_template__arg,  ::some::valid::ns::folly_map typedef_map_template__arg) :
+  AnnotatedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::containerStruct no_annotation__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref__arg, std::unique_ptr<std::map<int32_t, std::vector<std::string>>> container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, std::unique_ptr<std::vector<std::string>> req_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, std::unique_ptr<std::set<int32_t>> opt_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique__arg, std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared__arg, std::shared_ptr<const std::map<int32_t, std::vector<std::string>>> ref_type_const__arg, std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const__arg, std::unique_ptr<std::vector<std::string>> req_ref_type_unique__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique__arg, std::shared_ptr<std::set<int32_t>> opt_ref_type_shared__arg, CppFakeI32 base_type__arg, folly::small_vector<int64_t, 8 /* maxInline */> list_type__arg, folly::sorted_vector_set<std::string> set_type__arg, FakeMap map_type__arg, std::unordered_map<std::string, containerStruct> map_struct_type__arg, folly::IOBuf iobuf_type__arg, std::unique_ptr<folly::IOBuf> iobuf_ptr__arg, std::list<int32_t> list_i32_template__arg, std::deque<std::string> list_string_template__arg, folly::sorted_vector_set<std::string> set_template__arg, folly::sorted_vector_map<int64_t, std::string> map_template__arg,  ::some::valid::ns::std_list typedef_list_template__arg,  ::some::valid::ns::std_deque typedef_deque_template__arg,  ::some::valid::ns::folly_set typedef_set_template__arg,  ::some::valid::ns::folly_map typedef_map_template__arg,  ::some::valid::ns::IndirectionA indirection_a__arg, std::vector< ::some::valid::ns::IndirectionB> indirection_b__arg, std::set< ::some::valid::ns::IndirectionC> indirection_c__arg) :
       no_annotation(std::move(no_annotation__arg)),
       cpp_unique_ref(std::move(cpp_unique_ref__arg)),
       cpp2_unique_ref(std::move(cpp2_unique_ref__arg)),
@@ -4354,7 +4407,10 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
       typedef_list_template(std::move(typedef_list_template__arg)),
       typedef_deque_template(std::move(typedef_deque_template__arg)),
       typedef_set_template(std::move(typedef_set_template__arg)),
-      typedef_map_template(std::move(typedef_map_template__arg)) {
+      typedef_map_template(std::move(typedef_map_template__arg)),
+      indirection_a(std::move(indirection_a__arg)),
+      indirection_b(std::move(indirection_b__arg)),
+      indirection_c(std::move(indirection_c__arg)) {
     __isset.no_annotation = true;
     __isset.base_type = true;
     __isset.list_type = true;
@@ -4371,229 +4427,253 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
     __isset.typedef_deque_template = true;
     __isset.typedef_set_template = true;
     __isset.typedef_map_template = true;
+    __isset.indirection_a = true;
+    __isset.indirection_b = true;
+    __isset.indirection_c = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     no_annotation = arg.move();
     __isset.no_annotation = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     cpp_unique_ref = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     cpp2_unique_ref = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     container_with_ref = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     req_cpp_unique_ref = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     req_cpp2_unique_ref = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     req_container_with_ref = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<8, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<8, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     opt_cpp_unique_ref = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<9, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<9, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     opt_cpp2_unique_ref = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<10, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<10, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     opt_container_with_ref = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<11, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<11, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     ref_type_unique = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<12, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<12, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     ref_type_shared = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<13, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<13, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     ref_type_const = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<14, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<14, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     req_ref_type_shared = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<15, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<15, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     req_ref_type_const = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<16, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<16, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     req_ref_type_unique = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<17, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<17, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     opt_ref_type_const = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<18, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<18, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     opt_ref_type_unique = std::make_unique<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<19, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<19, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     opt_ref_type_shared = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<20, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<20, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     base_type = arg.move();
     __isset.base_type = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<21, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<21, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     list_type = arg.move();
     __isset.list_type = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<22, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<22, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     set_type = arg.move();
     __isset.set_type = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<23, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<23, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     map_type = arg.move();
     __isset.map_type = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<24, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<24, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     map_struct_type = arg.move();
     __isset.map_struct_type = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<25, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<25, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     iobuf_type = arg.move();
     __isset.iobuf_type = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<26, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<26, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     iobuf_ptr = arg.move();
     __isset.iobuf_ptr = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<27, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<27, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     list_i32_template = arg.move();
     __isset.list_i32_template = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<28, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<28, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     list_string_template = arg.move();
     __isset.list_string_template = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<29, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<29, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     set_template = arg.move();
     __isset.set_template = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<30, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<30, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     map_template = arg.move();
     __isset.map_template = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<31, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<31, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     typedef_list_template = arg.move();
     __isset.typedef_list_template = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<32, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<32, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     typedef_deque_template = arg.move();
     __isset.typedef_deque_template = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<33, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<33, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     typedef_set_template = arg.move();
     __isset.typedef_set_template = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<34, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<34, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
   {
     typedef_map_template = arg.move();
     __isset.typedef_map_template = true;
   }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<35, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    indirection_a = arg.move();
+    __isset.indirection_a = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<36, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    indirection_b = arg.move();
+    __isset.indirection_b = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<37, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    indirection_c = arg.move();
+    __isset.indirection_c = true;
+  }
 
-  AnnotatatedStruct(AnnotatatedStruct&& other) noexcept :
+  AnnotatedStruct(AnnotatedStruct&& other) noexcept :
       no_annotation(std::move(other.no_annotation)),
       cpp_unique_ref(std::move(other.cpp_unique_ref)),
       cpp2_unique_ref(std::move(other.cpp2_unique_ref)),
@@ -4628,9 +4708,12 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
       typedef_deque_template(std::move(other.typedef_deque_template)),
       typedef_set_template(std::move(other.typedef_set_template)),
       typedef_map_template(std::move(other.typedef_map_template)),
+      indirection_a(std::move(other.indirection_a)),
+      indirection_b(std::move(other.indirection_b)),
+      indirection_c(std::move(other.indirection_c)),
       __isset(other.__isset) {}
 
-  AnnotatatedStruct& operator=(AnnotatatedStruct&&) = default;
+  AnnotatedStruct& operator=(AnnotatedStruct&&) = default;
   void __clear();
    ::some::valid::ns::containerStruct no_annotation;
   std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref;
@@ -4666,6 +4749,9 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
    ::some::valid::ns::std_deque typedef_deque_template;
    ::some::valid::ns::folly_set typedef_set_template;
    ::some::valid::ns::folly_map typedef_map_template;
+   ::some::valid::ns::IndirectionA indirection_a;
+  std::vector< ::some::valid::ns::IndirectionB> indirection_b;
+  std::set< ::some::valid::ns::IndirectionC> indirection_c;
 
   struct __isset {
     void __clear() {
@@ -4685,6 +4771,9 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
       typedef_deque_template = false;
       typedef_set_template = false;
       typedef_map_template = false;
+      indirection_a = false;
+      indirection_b = false;
+      indirection_c = false;
     }
 
     bool no_annotation = false;
@@ -4703,13 +4792,16 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
     bool typedef_deque_template = false;
     bool typedef_set_template = false;
     bool typedef_map_template = false;
+    bool indirection_a = false;
+    bool indirection_b = false;
+    bool indirection_c = false;
   } __isset;
-  bool operator==(const AnnotatatedStruct& rhs) const;
-  bool operator < (const AnnotatatedStruct& rhs) const;
+  bool operator==(const AnnotatedStruct& rhs) const;
+  bool operator < (const AnnotatedStruct& rhs) const;
   const  ::some::valid::ns::containerStruct& get_no_annotation() const&;
    ::some::valid::ns::containerStruct get_no_annotation() &&;
-  template <typename T_AnnotatatedStruct_no_annotation_struct_setter>
-   ::some::valid::ns::containerStruct& set_no_annotation(T_AnnotatatedStruct_no_annotation_struct_setter&& no_annotation_);
+  template <typename T_AnnotatedStruct_no_annotation_struct_setter>
+   ::some::valid::ns::containerStruct& set_no_annotation(T_AnnotatedStruct_no_annotation_struct_setter&& no_annotation_);
 
   CppFakeI32 get_base_type() const {
     return base_type;
@@ -4722,20 +4814,20 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
   }
   const folly::small_vector<int64_t, 8 /* maxInline */>& get_list_type() const&;
   folly::small_vector<int64_t, 8 /* maxInline */> get_list_type() &&;
-  template <typename T_AnnotatatedStruct_list_type_struct_setter>
-  folly::small_vector<int64_t, 8 /* maxInline */>& set_list_type(T_AnnotatatedStruct_list_type_struct_setter&& list_type_);
+  template <typename T_AnnotatedStruct_list_type_struct_setter>
+  folly::small_vector<int64_t, 8 /* maxInline */>& set_list_type(T_AnnotatedStruct_list_type_struct_setter&& list_type_);
   const folly::sorted_vector_set<std::string>& get_set_type() const&;
   folly::sorted_vector_set<std::string> get_set_type() &&;
-  template <typename T_AnnotatatedStruct_set_type_struct_setter>
-  folly::sorted_vector_set<std::string>& set_set_type(T_AnnotatatedStruct_set_type_struct_setter&& set_type_);
+  template <typename T_AnnotatedStruct_set_type_struct_setter>
+  folly::sorted_vector_set<std::string>& set_set_type(T_AnnotatedStruct_set_type_struct_setter&& set_type_);
   const FakeMap& get_map_type() const&;
   FakeMap get_map_type() &&;
-  template <typename T_AnnotatatedStruct_map_type_struct_setter>
-  FakeMap& set_map_type(T_AnnotatatedStruct_map_type_struct_setter&& map_type_);
+  template <typename T_AnnotatedStruct_map_type_struct_setter>
+  FakeMap& set_map_type(T_AnnotatedStruct_map_type_struct_setter&& map_type_);
   const std::unordered_map<std::string, containerStruct>& get_map_struct_type() const&;
   std::unordered_map<std::string, containerStruct> get_map_struct_type() &&;
-  template <typename T_AnnotatatedStruct_map_struct_type_struct_setter>
-  std::unordered_map<std::string, containerStruct>& set_map_struct_type(T_AnnotatatedStruct_map_struct_type_struct_setter&& map_struct_type_);
+  template <typename T_AnnotatedStruct_map_struct_type_struct_setter>
+  std::unordered_map<std::string, containerStruct>& set_map_struct_type(T_AnnotatedStruct_map_struct_type_struct_setter&& map_struct_type_);
 
   const folly::IOBuf& get_iobuf_type() const& {
     return iobuf_type;
@@ -4745,9 +4837,9 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
     return std::move(iobuf_type);
   }
 
-  template <typename T_AnnotatatedStruct_iobuf_type_struct_setter>
-  folly::IOBuf& set_iobuf_type(T_AnnotatatedStruct_iobuf_type_struct_setter&& iobuf_type_) {
-    iobuf_type = std::forward<T_AnnotatatedStruct_iobuf_type_struct_setter>(iobuf_type_);
+  template <typename T_AnnotatedStruct_iobuf_type_struct_setter>
+  folly::IOBuf& set_iobuf_type(T_AnnotatedStruct_iobuf_type_struct_setter&& iobuf_type_) {
+    iobuf_type = std::forward<T_AnnotatedStruct_iobuf_type_struct_setter>(iobuf_type_);
     __isset.iobuf_type = true;
     return iobuf_type;
   }
@@ -4760,44 +4852,62 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
     return std::move(iobuf_ptr);
   }
 
-  template <typename T_AnnotatatedStruct_iobuf_ptr_struct_setter>
-  std::unique_ptr<folly::IOBuf>& set_iobuf_ptr(T_AnnotatatedStruct_iobuf_ptr_struct_setter&& iobuf_ptr_) {
-    iobuf_ptr = std::forward<T_AnnotatatedStruct_iobuf_ptr_struct_setter>(iobuf_ptr_);
+  template <typename T_AnnotatedStruct_iobuf_ptr_struct_setter>
+  std::unique_ptr<folly::IOBuf>& set_iobuf_ptr(T_AnnotatedStruct_iobuf_ptr_struct_setter&& iobuf_ptr_) {
+    iobuf_ptr = std::forward<T_AnnotatedStruct_iobuf_ptr_struct_setter>(iobuf_ptr_);
     __isset.iobuf_ptr = true;
     return iobuf_ptr;
   }
   const std::list<int32_t>& get_list_i32_template() const&;
   std::list<int32_t> get_list_i32_template() &&;
-  template <typename T_AnnotatatedStruct_list_i32_template_struct_setter>
-  std::list<int32_t>& set_list_i32_template(T_AnnotatatedStruct_list_i32_template_struct_setter&& list_i32_template_);
+  template <typename T_AnnotatedStruct_list_i32_template_struct_setter>
+  std::list<int32_t>& set_list_i32_template(T_AnnotatedStruct_list_i32_template_struct_setter&& list_i32_template_);
   const std::deque<std::string>& get_list_string_template() const&;
   std::deque<std::string> get_list_string_template() &&;
-  template <typename T_AnnotatatedStruct_list_string_template_struct_setter>
-  std::deque<std::string>& set_list_string_template(T_AnnotatatedStruct_list_string_template_struct_setter&& list_string_template_);
+  template <typename T_AnnotatedStruct_list_string_template_struct_setter>
+  std::deque<std::string>& set_list_string_template(T_AnnotatedStruct_list_string_template_struct_setter&& list_string_template_);
   const folly::sorted_vector_set<std::string>& get_set_template() const&;
   folly::sorted_vector_set<std::string> get_set_template() &&;
-  template <typename T_AnnotatatedStruct_set_template_struct_setter>
-  folly::sorted_vector_set<std::string>& set_set_template(T_AnnotatatedStruct_set_template_struct_setter&& set_template_);
+  template <typename T_AnnotatedStruct_set_template_struct_setter>
+  folly::sorted_vector_set<std::string>& set_set_template(T_AnnotatedStruct_set_template_struct_setter&& set_template_);
   const folly::sorted_vector_map<int64_t, std::string>& get_map_template() const&;
   folly::sorted_vector_map<int64_t, std::string> get_map_template() &&;
-  template <typename T_AnnotatatedStruct_map_template_struct_setter>
-  folly::sorted_vector_map<int64_t, std::string>& set_map_template(T_AnnotatatedStruct_map_template_struct_setter&& map_template_);
+  template <typename T_AnnotatedStruct_map_template_struct_setter>
+  folly::sorted_vector_map<int64_t, std::string>& set_map_template(T_AnnotatedStruct_map_template_struct_setter&& map_template_);
   const  ::some::valid::ns::std_list& get_typedef_list_template() const&;
    ::some::valid::ns::std_list get_typedef_list_template() &&;
-  template <typename T_AnnotatatedStruct_typedef_list_template_struct_setter>
-   ::some::valid::ns::std_list& set_typedef_list_template(T_AnnotatatedStruct_typedef_list_template_struct_setter&& typedef_list_template_);
+  template <typename T_AnnotatedStruct_typedef_list_template_struct_setter>
+   ::some::valid::ns::std_list& set_typedef_list_template(T_AnnotatedStruct_typedef_list_template_struct_setter&& typedef_list_template_);
   const  ::some::valid::ns::std_deque& get_typedef_deque_template() const&;
    ::some::valid::ns::std_deque get_typedef_deque_template() &&;
-  template <typename T_AnnotatatedStruct_typedef_deque_template_struct_setter>
-   ::some::valid::ns::std_deque& set_typedef_deque_template(T_AnnotatatedStruct_typedef_deque_template_struct_setter&& typedef_deque_template_);
+  template <typename T_AnnotatedStruct_typedef_deque_template_struct_setter>
+   ::some::valid::ns::std_deque& set_typedef_deque_template(T_AnnotatedStruct_typedef_deque_template_struct_setter&& typedef_deque_template_);
   const  ::some::valid::ns::folly_set& get_typedef_set_template() const&;
    ::some::valid::ns::folly_set get_typedef_set_template() &&;
-  template <typename T_AnnotatatedStruct_typedef_set_template_struct_setter>
-   ::some::valid::ns::folly_set& set_typedef_set_template(T_AnnotatatedStruct_typedef_set_template_struct_setter&& typedef_set_template_);
+  template <typename T_AnnotatedStruct_typedef_set_template_struct_setter>
+   ::some::valid::ns::folly_set& set_typedef_set_template(T_AnnotatedStruct_typedef_set_template_struct_setter&& typedef_set_template_);
   const  ::some::valid::ns::folly_map& get_typedef_map_template() const&;
    ::some::valid::ns::folly_map get_typedef_map_template() &&;
-  template <typename T_AnnotatatedStruct_typedef_map_template_struct_setter>
-   ::some::valid::ns::folly_map& set_typedef_map_template(T_AnnotatatedStruct_typedef_map_template_struct_setter&& typedef_map_template_);
+  template <typename T_AnnotatedStruct_typedef_map_template_struct_setter>
+   ::some::valid::ns::folly_map& set_typedef_map_template(T_AnnotatedStruct_typedef_map_template_struct_setter&& typedef_map_template_);
+
+   ::some::valid::ns::IndirectionA get_indirection_a() const {
+    return indirection_a;
+  }
+
+   ::some::valid::ns::IndirectionA& set_indirection_a( ::some::valid::ns::IndirectionA indirection_a_) {
+    indirection_a = indirection_a_;
+    __isset.indirection_a = true;
+    return indirection_a;
+  }
+  const std::vector< ::some::valid::ns::IndirectionB>& get_indirection_b() const&;
+  std::vector< ::some::valid::ns::IndirectionB> get_indirection_b() &&;
+  template <typename T_AnnotatedStruct_indirection_b_struct_setter>
+  std::vector< ::some::valid::ns::IndirectionB>& set_indirection_b(T_AnnotatedStruct_indirection_b_struct_setter&& indirection_b_);
+  const std::set< ::some::valid::ns::IndirectionC>& get_indirection_c() const&;
+  std::set< ::some::valid::ns::IndirectionC> get_indirection_c() &&;
+  template <typename T_AnnotatedStruct_indirection_c_struct_setter>
+  std::set< ::some::valid::ns::IndirectionC>& set_indirection_c(T_AnnotatedStruct_indirection_c_struct_setter&& indirection_c_);
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -4811,51 +4921,51 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
   void foo(const std::string& bar) {}
 };
 
-void swap(AnnotatatedStruct& a, AnnotatatedStruct& b);
-extern template uint32_t AnnotatatedStruct::read<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t AnnotatatedStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t AnnotatatedStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t AnnotatatedStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t AnnotatatedStruct::read<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t AnnotatatedStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t AnnotatatedStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t AnnotatatedStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+void swap(AnnotatedStruct& a, AnnotatedStruct& b);
+extern template uint32_t AnnotatedStruct::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t AnnotatedStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t AnnotatedStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t AnnotatedStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t AnnotatedStruct::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t AnnotatedStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t AnnotatedStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t AnnotatedStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 }}} // some::valid::ns
 namespace apache { namespace thrift {
 
-template <> inline void Cpp2Ops< ::some::valid::ns::AnnotatatedStruct>::clear( ::some::valid::ns::AnnotatatedStruct* obj) {
+template <> inline void Cpp2Ops< ::some::valid::ns::AnnotatedStruct>::clear( ::some::valid::ns::AnnotatedStruct* obj) {
   return obj->__clear();
 }
 
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::AnnotatatedStruct>::thriftType() {
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::AnnotatedStruct>::thriftType() {
   return apache::thrift::protocol::T_STRUCT;
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnnotatatedStruct>::write(Protocol* proto,  ::some::valid::ns::AnnotatatedStruct const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnnotatedStruct>::write(Protocol* proto,  ::some::valid::ns::AnnotatedStruct const* obj) {
   return obj->write(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnnotatatedStruct>::read(Protocol* proto,  ::some::valid::ns::AnnotatatedStruct* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnnotatedStruct>::read(Protocol* proto,  ::some::valid::ns::AnnotatedStruct* obj) {
   return obj->read(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnnotatatedStruct>::serializedSize(Protocol const* proto,  ::some::valid::ns::AnnotatatedStruct const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnnotatedStruct>::serializedSize(Protocol const* proto,  ::some::valid::ns::AnnotatedStruct const* obj) {
   return obj->serializedSize(proto);
 }
 
-template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnnotatatedStruct>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::AnnotatatedStruct const* obj) {
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::AnnotatedStruct>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::AnnotatedStruct const* obj) {
   return obj->serializedSizeZC(proto);
 }
 
 }} // apache::thrift
 namespace std {
 
-template<> struct hash<typename  ::some::valid::ns::AnnotatatedStruct> {
-  size_t operator()(const  ::some::valid::ns::AnnotatatedStruct&) const;
+template<> struct hash<typename  ::some::valid::ns::AnnotatedStruct> {
+  size_t operator()(const  ::some::valid::ns::AnnotatedStruct&) const;
 };
-template<> struct equal_to<typename  ::some::valid::ns::AnnotatatedStruct> {
-  bool operator()(const  ::some::valid::ns::AnnotatatedStruct&,const  ::some::valid::ns::AnnotatatedStruct&) const;
+template<> struct equal_to<typename  ::some::valid::ns::AnnotatedStruct> {
+  bool operator()(const  ::some::valid::ns::AnnotatedStruct&,const  ::some::valid::ns::AnnotatedStruct&) const;
 };
 
 } // std
