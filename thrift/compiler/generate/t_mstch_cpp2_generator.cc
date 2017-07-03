@@ -55,6 +55,7 @@ class mstch_cpp2_enum : public mstch_enum {
             {"enum:size", &mstch_cpp2_enum::size},
             {"enum:min", &mstch_cpp2_enum::min},
             {"enum:max", &mstch_cpp2_enum::max},
+            {"enum:cpp_enum_type", &mstch_cpp2_enum::cpp_enum_type},
         });
   }
   mstch::node is_empty() {
@@ -86,6 +87,14 @@ class mstch_cpp2_enum : public mstch_enum {
       return (*e_max)->get_name();
     }
     return mstch::node();
+  }
+  mstch::node cpp_enum_type() {
+    if (enm_->annotations_.count("cpp.enum_type")) {
+      return enm_->annotations_.at("cpp.enum_type");
+    } else if (enm_->annotations_.count("cpp2.enum_type")) {
+      return enm_->annotations_.at("cpp2.enum_type");
+    }
+    return std::string();
   }
 };
 

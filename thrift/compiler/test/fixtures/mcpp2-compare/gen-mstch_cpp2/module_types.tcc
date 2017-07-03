@@ -28,6 +28,24 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
+}}} // some::valid::ns
+namespace std {
+
+} // std
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
+}}} // some::valid::ns
+namespace std {
+
+} // std
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
 template <class Protocol_>
 uint32_t Empty::read(Protocol_* iprot) {
   uint32_t xfer = 0;

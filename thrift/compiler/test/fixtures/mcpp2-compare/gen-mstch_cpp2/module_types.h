@@ -67,6 +67,80 @@ template <> inline constexpr  ::some::valid::ns::MyEnumA TEnumTraits< ::some::va
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
+enum class AnnotatedEnum : std::uint32_t {
+  FIELDA = 2,
+  FIELDB = 4,
+  FIELDC = 9
+};
+
+using _AnnotatedEnum_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnnotatedEnum, AnnotatedEnum>;
+extern const _AnnotatedEnum_EnumMapFactory::ValuesToNamesMapType _AnnotatedEnum_VALUES_TO_NAMES;
+extern const _AnnotatedEnum_EnumMapFactory::NamesToValuesMapType _AnnotatedEnum_NAMES_TO_VALUES;
+
+}}} // some::valid::ns
+namespace std {
+
+template<> struct hash<typename  ::some::valid::ns::AnnotatedEnum> : public apache::thrift::detail::enum_hash<typename  ::some::valid::ns::AnnotatedEnum> {};
+template<> struct equal_to<typename  ::some::valid::ns::AnnotatedEnum> : public apache::thrift::detail::enum_equal_to<typename  ::some::valid::ns::AnnotatedEnum> {};
+
+} // std
+namespace apache { namespace thrift {
+
+template <> struct TEnumDataStorage< ::some::valid::ns::AnnotatedEnum>;
+template <> const std::size_t TEnumTraits< ::some::valid::ns::AnnotatedEnum>::size;
+template <> const folly::Range<const  ::some::valid::ns::AnnotatedEnum*> TEnumTraits< ::some::valid::ns::AnnotatedEnum>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::valid::ns::AnnotatedEnum>::names;
+template <> const char* TEnumTraits< ::some::valid::ns::AnnotatedEnum>::findName( ::some::valid::ns::AnnotatedEnum value);
+template <> bool TEnumTraits< ::some::valid::ns::AnnotatedEnum>::findValue(const char* name,  ::some::valid::ns::AnnotatedEnum* outValue);
+
+template <> inline constexpr  ::some::valid::ns::AnnotatedEnum TEnumTraits< ::some::valid::ns::AnnotatedEnum>::min() {
+  return  ::some::valid::ns::AnnotatedEnum::FIELDA;
+}
+
+template <> inline constexpr  ::some::valid::ns::AnnotatedEnum TEnumTraits< ::some::valid::ns::AnnotatedEnum>::max() {
+  return  ::some::valid::ns::AnnotatedEnum::FIELDC;
+}
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
+enum class AnnotatedEnum2 : short {
+  FIELDA = 2,
+  FIELDB = 4,
+  FIELDC = 9
+};
+
+using _AnnotatedEnum2_EnumMapFactory = apache::thrift::detail::TEnumMapFactory<AnnotatedEnum2, AnnotatedEnum2>;
+extern const _AnnotatedEnum2_EnumMapFactory::ValuesToNamesMapType _AnnotatedEnum2_VALUES_TO_NAMES;
+extern const _AnnotatedEnum2_EnumMapFactory::NamesToValuesMapType _AnnotatedEnum2_NAMES_TO_VALUES;
+
+}}} // some::valid::ns
+namespace std {
+
+template<> struct hash<typename  ::some::valid::ns::AnnotatedEnum2> : public apache::thrift::detail::enum_hash<typename  ::some::valid::ns::AnnotatedEnum2> {};
+template<> struct equal_to<typename  ::some::valid::ns::AnnotatedEnum2> : public apache::thrift::detail::enum_equal_to<typename  ::some::valid::ns::AnnotatedEnum2> {};
+
+} // std
+namespace apache { namespace thrift {
+
+template <> struct TEnumDataStorage< ::some::valid::ns::AnnotatedEnum2>;
+template <> const std::size_t TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::size;
+template <> const folly::Range<const  ::some::valid::ns::AnnotatedEnum2*> TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::values;
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::names;
+template <> const char* TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::findName( ::some::valid::ns::AnnotatedEnum2 value);
+template <> bool TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::findValue(const char* name,  ::some::valid::ns::AnnotatedEnum2* outValue);
+
+template <> inline constexpr  ::some::valid::ns::AnnotatedEnum2 TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::min() {
+  return  ::some::valid::ns::AnnotatedEnum2::FIELDA;
+}
+
+template <> inline constexpr  ::some::valid::ns::AnnotatedEnum2 TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::max() {
+  return  ::some::valid::ns::AnnotatedEnum2::FIELDC;
+}
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
 typedef int32_t simpleTypeDef;
 
 typedef std::map<int16_t, std::string> containerTypeDef;

@@ -33,6 +33,18 @@ enum MyEnumA {
   fieldC = 4
 }
 
+enum AnnotatedEnum {
+  FIELDA = 2,
+  FIELDB = 4,
+  FIELDC = 9,
+} (cpp.enum_type = "std::uint32_t")
+
+enum AnnotatedEnum2 {
+  FIELDA = 2,
+  FIELDB = 4,
+  FIELDC = 9,
+} (cpp2.enum_type = "short")
+
 const MyEnumA constEnumA = MyEnumA.fieldB
 
 const MyEnumA constEnumB = 3

@@ -43,6 +43,56 @@ template <> bool TEnumTraits< ::some::valid::ns::MyEnumA>::findValue(const char*
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
+const _AnnotatedEnum_EnumMapFactory::ValuesToNamesMapType _AnnotatedEnum_VALUES_TO_NAMES = _AnnotatedEnum_EnumMapFactory::makeValuesToNamesMap();
+const _AnnotatedEnum_EnumMapFactory::NamesToValuesMapType _AnnotatedEnum_NAMES_TO_VALUES = _AnnotatedEnum_EnumMapFactory::makeNamesToValuesMap();
+
+}}} // some::valid::ns
+namespace std {
+
+} // std
+namespace apache { namespace thrift {
+
+template <> const std::size_t TEnumTraits< ::some::valid::ns::AnnotatedEnum>::size = 3;
+template <> const folly::Range<const  ::some::valid::ns::AnnotatedEnum*> TEnumTraits< ::some::valid::ns::AnnotatedEnum>::values = folly::range( ::some::valid::ns::_AnnotatedEnumEnumDataStorage::values);
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::valid::ns::AnnotatedEnum>::names = folly::range( ::some::valid::ns::_AnnotatedEnumEnumDataStorage::names);
+template <> const char* TEnumTraits< ::some::valid::ns::AnnotatedEnum>::findName( ::some::valid::ns::AnnotatedEnum value) {
+  static auto const map = folly::Indestructible< ::some::valid::ns::_AnnotatedEnum_EnumMapFactory::ValuesToNamesMapType>{ ::some::valid::ns::_AnnotatedEnum_EnumMapFactory::makeValuesToNamesMap()};
+  return findName(*map, value);
+}
+
+template <> bool TEnumTraits< ::some::valid::ns::AnnotatedEnum>::findValue(const char* name,  ::some::valid::ns::AnnotatedEnum* outValue) {
+  static auto const map = folly::Indestructible< ::some::valid::ns::_AnnotatedEnum_EnumMapFactory::NamesToValuesMapType>{ ::some::valid::ns::_AnnotatedEnum_EnumMapFactory::makeNamesToValuesMap()};
+  return findValue(*map, name, outValue);
+}
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
+const _AnnotatedEnum2_EnumMapFactory::ValuesToNamesMapType _AnnotatedEnum2_VALUES_TO_NAMES = _AnnotatedEnum2_EnumMapFactory::makeValuesToNamesMap();
+const _AnnotatedEnum2_EnumMapFactory::NamesToValuesMapType _AnnotatedEnum2_NAMES_TO_VALUES = _AnnotatedEnum2_EnumMapFactory::makeNamesToValuesMap();
+
+}}} // some::valid::ns
+namespace std {
+
+} // std
+namespace apache { namespace thrift {
+
+template <> const std::size_t TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::size = 3;
+template <> const folly::Range<const  ::some::valid::ns::AnnotatedEnum2*> TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::values = folly::range( ::some::valid::ns::_AnnotatedEnum2EnumDataStorage::values);
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::names = folly::range( ::some::valid::ns::_AnnotatedEnum2EnumDataStorage::names);
+template <> const char* TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::findName( ::some::valid::ns::AnnotatedEnum2 value) {
+  static auto const map = folly::Indestructible< ::some::valid::ns::_AnnotatedEnum2_EnumMapFactory::ValuesToNamesMapType>{ ::some::valid::ns::_AnnotatedEnum2_EnumMapFactory::makeValuesToNamesMap()};
+  return findName(*map, value);
+}
+
+template <> bool TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::findValue(const char* name,  ::some::valid::ns::AnnotatedEnum2* outValue) {
+  static auto const map = folly::Indestructible< ::some::valid::ns::_AnnotatedEnum2_EnumMapFactory::NamesToValuesMapType>{ ::some::valid::ns::_AnnotatedEnum2_EnumMapFactory::makeNamesToValuesMap()};
+  return findValue(*map, name, outValue);
+}
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
 void Empty::__clear() {
   // clear all fields
 }

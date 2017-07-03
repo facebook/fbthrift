@@ -17,12 +17,12 @@
 %><%#program:enums%>
 <% > common/namespace_cpp2_begin%>
 
-
 <%#first?%>
+
 <% > module_types_h/struct_forward_declare%>
 <%/first?%>
 
-enum class <%enum:name%> {<%!
+enum class <%enum:name%><%#enum:cpp_enum_type%> : <%enum:cpp_enum_type%><%/enum:cpp_enum_type%> {<%!
   %><%#enum:values%><%#first?%>
 <%/first?%><%!
     %>  <%enumValue:name%> = <%enumValue:value%><% > common/comma_newline%><%#last?%>
