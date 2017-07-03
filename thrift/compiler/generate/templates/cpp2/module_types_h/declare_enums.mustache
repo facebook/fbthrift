@@ -17,14 +17,15 @@
 %><%#program:enums%>
 <% > common/namespace_cpp2_begin%>
 
-<%#first?%>
 
+<%#first?%>
 <%#program:indirection?%>
 <% > module_types_h/struct_indirection%>
 <%/program:indirection?%>
+<%#program:structs%>
 <% > module_types_h/struct_forward_declare%>
+<%/program:structs%>
 <%/first?%>
-
 enum class <%enum:name%><%#enum:cpp_enum_type%> : <%enum:cpp_enum_type%><%/enum:cpp_enum_type%> {<%!
   %><%#enum:values%><%#first?%>
 <%/first?%><%!

@@ -14,12 +14,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%!
-Form:
-...;
-class Struct;
-%><%#first?%><%!
-%><%#program:structs%>
-class <%struct:name%><% > common/semicolon_newline%><%!
-  %><%/program:structs%><%!
-%><%/first?%>
+%><%#first?%>
+<%#struct:struct_list%>
+class <%struct_name%>;
+<%/struct:struct_list%>
+
+<%/first?%>

@@ -271,6 +271,7 @@ class mstch_cpp2_struct : public mstch_struct {
              &mstch_cpp2_struct::cpp_noexcept_move_ctor},
             {"struct:final", &mstch_cpp2_struct::cpp_final},
             {"struct:message", &mstch_cpp2_struct::message},
+            {"struct:struct_list", &mstch_cpp2_struct::struct_list},
         });
   }
   mstch::node getters_setters() {
@@ -411,6 +412,15 @@ class mstch_cpp2_struct : public mstch_struct {
       return strct_->annotations_.at("message");
     }
     return std::string();
+  }
+  mstch::node struct_list() {
+    mstch::array a;
+    for (const auto* strct : strct_->get_program()->get_objects()) {
+      mstch::map m;
+      m.emplace("struct_name", strct->get_name());
+      a.push_back(m);
+    }
+    return a;
   }
 };
 
