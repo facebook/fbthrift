@@ -4174,6 +4174,13 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::MyInc
 }
 
 }} // apache::thrift
+namespace std {
+
+template<> struct hash<typename  ::some::valid::ns::MyIncludedStruct> {
+  size_t operator()(const  ::some::valid::ns::MyIncludedStruct&) const;
+};
+
+} // std
 namespace some { namespace valid { namespace ns {
 
 class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperators<AnnotatatedStruct> {
@@ -4688,6 +4695,13 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::Annot
 }
 
 }} // apache::thrift
+namespace std {
+
+template<> struct hash<typename  ::some::valid::ns::AnnotatatedStruct> {
+  size_t operator()(const  ::some::valid::ns::AnnotatatedStruct&) const;
+};
+
+} // std
 namespace some { namespace valid { namespace ns {
 
 }}} // some::valid::ns

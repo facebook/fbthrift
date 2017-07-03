@@ -181,7 +181,7 @@ struct containerStruct {
 
 struct MyIncludedStruct {
   1: includes.IncludedInt64 MyIncludedInt = includes.IncludedConstant
-}
+} (cpp2.declare_hash = 1)
 
 typedef i32 CppFakeI32 (cpp.type = "CppFakeI32")
 typedef list<i64> FollySmallVectorI64 (
@@ -234,7 +234,7 @@ struct AnnotatatedStruct {
   32: std_deque typedef_deque_template
   33: folly_set typedef_set_template
   34: folly_map typedef_map_template
-} (cpp2.methods = "void foo(const std::string& bar) {}")
+} (cpp.declare_hash, cpp2.methods = "void foo(const std::string& bar) {}")
 
 service EmptyService {
 }

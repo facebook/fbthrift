@@ -3426,6 +3426,9 @@ uint32_t MyIncludedStruct::write(Protocol_* prot_) const {
 namespace apache { namespace thrift {
 
 }} // apache::thrift
+namespace std {
+
+} // std
 namespace some { namespace valid { namespace ns {
 
 template <typename T_AnnotatatedStruct_no_annotation_struct_setter>
@@ -4727,6 +4730,9 @@ uint32_t AnnotatatedStruct::write(Protocol_* prot_) const {
 namespace apache { namespace thrift {
 
 }} // apache::thrift
+namespace std {
+
+} // std
 namespace some { namespace valid { namespace ns {
 
 }}} // some::valid::ns

@@ -188,6 +188,15 @@ template <> template <class Protocol> uint32_t Cpp2Ops<<% > common/namespace_cpp
 }
 
 }} // apache::thrift
+<%#struct:cpp_declare_hash%>
+namespace std {
+
+template<> struct hash<typename <% > common/namespace_cpp2%><%struct:name%>> {
+  size_t operator()(const <% > common/namespace_cpp2%><%struct:name%>&) const;
+};
+
+} // std
+<%/struct:cpp_declare_hash%>
 <%/program:structs%>
 <% > common/namespace_cpp2_begin%>
 

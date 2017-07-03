@@ -75,6 +75,11 @@ template uint32_t <%struct:name%>::serializedSizeZC<>(apache::thrift::CompactPro
 namespace apache { namespace thrift {
 
 }} // apache::thrift
+<%#struct:cpp_declare_hash%>
+namespace std {
+
+} // std
+<%/struct:cpp_declare_hash%>
 <%/program:structs%>
 <% > common/namespace_cpp2_begin%>
 

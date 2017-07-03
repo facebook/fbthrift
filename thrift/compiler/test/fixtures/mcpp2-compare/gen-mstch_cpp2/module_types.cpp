@@ -1300,6 +1300,9 @@ template uint32_t MyIncludedStruct::serializedSizeZC<>(apache::thrift::CompactPr
 namespace apache { namespace thrift {
 
 }} // apache::thrift
+namespace std {
+
+} // std
 namespace some { namespace valid { namespace ns {
 
 AnnotatatedStruct::AnnotatatedStruct(const AnnotatatedStruct& src) {
@@ -1662,6 +1665,9 @@ template uint32_t AnnotatatedStruct::serializedSizeZC<>(apache::thrift::CompactP
 namespace apache { namespace thrift {
 
 }} // apache::thrift
+namespace std {
+
+} // std
 namespace some { namespace valid { namespace ns {
 
 }}} // some::valid::ns
