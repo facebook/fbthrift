@@ -24,7 +24,7 @@ const <%service:name%>AsyncProcessor::CompactProtocolProcessMap <%service:name%>
 <%#service:functions?%>
 const <%service:name%>AsyncProcessor::CompactProtocolProcessMap <%service:name%>AsyncProcessor::compactProcessMap_ {
 <%#service:functions%><%#function:returnType%>
-  {"<%function:name%>", &<%service:name%>AsyncProcessor::_processInThread_<%function:name%><apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"<%function:name%>", &<%service:name%>AsyncProcessor::<%#function:eb%>process<%/function:eb%><%^function:eb%>_processInThread<%/function:eb%>_<%function:name%><apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 <%/function:returnType%><%/service:functions%>
 };
 <%/service:functions?%>

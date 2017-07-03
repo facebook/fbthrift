@@ -26,13 +26,13 @@ folly::Future<<% > ServiceType%>> <%service:name%>SvIf::future_<%function:name%>
 }
 
 <%#function:oneway?%>
-void <%service:name%>SvIf::async_tm_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<% > service_common/function_param_list_ptr%>) {
-  apache::thrift::detail::si::async_tm_oneway(this, std::move(callback), [&] { return future_<%function:name%>(<% > service_common/move_param_list_no_start_comma%>); });
+void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<% > service_common/function_param_list_ptr%>) {
+  apache::thrift::detail::si::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_oneway(this, std::move(callback), <%#function:eb%>[this<% > service_common/param_move_param_list%>]() mutable<%/function:eb%><%^function:eb%>[&]<%/function:eb%> { return future_<%function:name%>(<% > service_common/move_param_list_no_start_comma%>); });
 }
 <%/function:oneway?%>
 <%^function:oneway?%>
-void <%service:name%>SvIf::async_tm_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback<% > service_common/function_param_list_ptr%>) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_<%function:name%>(<% > service_common/move_param_list_no_start_comma%>); });
+void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > Type%>>> callback<% > service_common/function_param_list_ptr%>) {
+  apache::thrift::detail::si::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>(this, std::move(callback), <%#function:eb%>[this<% > service_common/param_move_param_list%>]() mutable<%/function:eb%><%^function:eb%>[&]<%/function:eb%> { return future_<%function:name%>(<% > service_common/move_param_list_no_start_comma%>); });
 }
 <%/function:oneway?%>
 <%/type:resolves_to_complex_return?%>
@@ -45,8 +45,8 @@ folly::Future<std::unique_ptr<<% > Type%>>> <%service:name%>SvIf::future_<%funct
   return apache::thrift::detail::si::future_returning_uptr([&](<% > Type%>& _return) { <%function:name%>(_return<% > service_common/move_param_list%>); });
 }
 
-void <%service:name%>SvIf::async_tm_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>> callback<% > service_common/function_param_list_ptr%>) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_<%function:name%>(<% > service_common/move_param_list_no_start_comma%>); });
+void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:name%>(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>> callback<% > service_common/function_param_list_ptr%>) {
+  apache::thrift::detail::si::async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>(this, std::move(callback), <%#function:eb%>[this<% > service_common/param_move_param_list%>]() mutable<%/function:eb%><%^function:eb%>[&]<%/function:eb%> { return future_<%function:name%>(<% > service_common/move_param_list_no_start_comma%>); });
 }
 <%/type:resolves_to_complex_return?%>
 <%/function:returnType%><%/service:functions%>

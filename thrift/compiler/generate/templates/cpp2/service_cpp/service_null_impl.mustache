@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#service:functions%><%#function:returnType%>
+%><%#service:functions%><%#function:returnType%><%^function:eb%>
 <%^type:resolves_to_complex_return?%>
 <%#type:void?%>
 void <%service:name%>SvNull::<%function:name%>(<% > service_common/commented_out_function_param_list_ptr_no_start_comma%>) {}
@@ -34,4 +34,4 @@ void <%service:name%>SvNull::<%function:name%>(<% > service_common/commented_out
 void <%service:name%>SvNull::<%function:name%>(<% > Type%>& /*_return*/<% > service_common/commented_out_function_param_list_ptr%>) {}
 <%/type:resolves_to_complex_return?%>
 
-<%/function:returnType%><%/service:functions%>
+<%/function:eb%><%/function:returnType%><%/service:functions%>

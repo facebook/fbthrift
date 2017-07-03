@@ -25,8 +25,8 @@ folly::Future<folly::Unit> ReturnServiceSvIf::future_noReturn() {
   return apache::thrift::detail::si::future([&] { return noReturn(); });
 }
 
-void ReturnServiceSvIf::async_tm_noReturn(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_noReturn(); });
+void ReturnServiceSvIf::async_eb_noReturn(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [this]() mutable { return future_noReturn(); });
 }
 
 bool ReturnServiceSvIf::boolReturn() {
@@ -109,8 +109,8 @@ folly::Future<std::unique_ptr<std::string>> ReturnServiceSvIf::future_stringRetu
   return apache::thrift::detail::si::future_returning_uptr([&](std::string& _return) { stringReturn(_return); });
 }
 
-void ReturnServiceSvIf::async_tm_stringReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_stringReturn(); });
+void ReturnServiceSvIf::async_eb_stringReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) {
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [this]() mutable { return future_stringReturn(); });
 }
 
 void ReturnServiceSvIf::binaryReturn(std::string& /*_return*/) {
@@ -181,8 +181,8 @@ folly::Future< ::some::valid::ns::MyEnumA> ReturnServiceSvIf::future_enumReturn(
   return apache::thrift::detail::si::future([&] { return enumReturn(); });
 }
 
-void ReturnServiceSvIf::async_tm_enumReturn(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_enumReturn(); });
+void ReturnServiceSvIf::async_eb_enumReturn(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>> callback) {
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [this]() mutable { return future_enumReturn(); });
 }
 
 void ReturnServiceSvIf::list_EnumReturn(std::vector< ::some::valid::ns::MyEnumA>& /*_return*/) {
@@ -193,8 +193,8 @@ folly::Future<std::unique_ptr<std::vector< ::some::valid::ns::MyEnumA>>> ReturnS
   return apache::thrift::detail::si::future_returning_uptr([&](std::vector< ::some::valid::ns::MyEnumA>& _return) { list_EnumReturn(_return); });
 }
 
-void ReturnServiceSvIf::async_tm_list_EnumReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::MyEnumA>>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_list_EnumReturn(); });
+void ReturnServiceSvIf::async_eb_list_EnumReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::MyEnumA>>>> callback) {
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [this]() mutable { return future_list_EnumReturn(); });
 }
 
 void ReturnServiceSvIf::structReturn( ::some::valid::ns::MyStruct& /*_return*/) {
@@ -229,8 +229,8 @@ folly::Future<std::unique_ptr< ::some::valid::ns::ComplexUnion>> ReturnServiceSv
   return apache::thrift::detail::si::future_returning_uptr([&]( ::some::valid::ns::ComplexUnion& _return) { unionReturn(_return); });
 }
 
-void ReturnServiceSvIf::async_tm_unionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::ComplexUnion>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_unionReturn(); });
+void ReturnServiceSvIf::async_eb_unionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::ComplexUnion>>> callback) {
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [this]() mutable { return future_unionReturn(); });
 }
 
 void ReturnServiceSvIf::list_UnionReturn(std::vector< ::some::valid::ns::ComplexUnion>& /*_return*/) {
@@ -244,8 +244,6 @@ folly::Future<std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>>> Re
 void ReturnServiceSvIf::async_tm_list_UnionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>>>> callback) {
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_list_UnionReturn(); });
 }
-
-void ReturnServiceSvNull::noReturn() {}
 
 bool ReturnServiceSvNull::boolReturn() {
   return 0;
@@ -271,8 +269,6 @@ double ReturnServiceSvNull::doubleReturn() {
   return 0;
 }
 
-void ReturnServiceSvNull::stringReturn(std::string& /*_return*/) {}
-
 void ReturnServiceSvNull::binaryReturn(std::string& /*_return*/) {}
 
 void ReturnServiceSvNull::mapReturn(std::map<std::string, int64_t>& /*_return*/) {}
@@ -285,17 +281,9 @@ void ReturnServiceSvNull::complexTypedefReturn( ::some::valid::ns::complexStruct
 
 void ReturnServiceSvNull::list_mostComplexTypedefReturn(std::vector< ::some::valid::ns::mostComplexTypeDef>& /*_return*/) {}
 
- ::some::valid::ns::MyEnumA ReturnServiceSvNull::enumReturn() {
-  return ( ::some::valid::ns::MyEnumA)0;
-}
-
-void ReturnServiceSvNull::list_EnumReturn(std::vector< ::some::valid::ns::MyEnumA>& /*_return*/) {}
-
 void ReturnServiceSvNull::structReturn( ::some::valid::ns::MyStruct& /*_return*/) {}
 
 void ReturnServiceSvNull::set_StructReturn(std::set< ::some::valid::ns::MyStruct>& /*_return*/) {}
-
-void ReturnServiceSvNull::unionReturn( ::some::valid::ns::ComplexUnion& /*_return*/) {}
 
 void ReturnServiceSvNull::list_UnionReturn(std::vector< ::some::valid::ns::ComplexUnion>& /*_return*/) {}
 
@@ -322,24 +310,24 @@ const ReturnServiceAsyncProcessor::BinaryProtocolProcessMap& ReturnServiceAsyncP
 }
 
 const ReturnServiceAsyncProcessor::BinaryProtocolProcessMap ReturnServiceAsyncProcessor::binaryProcessMap_ {
-  {"noReturn", &ReturnServiceAsyncProcessor::_processInThread_noReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"noReturn", &ReturnServiceAsyncProcessor::process_noReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"boolReturn", &ReturnServiceAsyncProcessor::_processInThread_boolReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"i16Return", &ReturnServiceAsyncProcessor::_processInThread_i16Return<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"i32Return", &ReturnServiceAsyncProcessor::_processInThread_i32Return<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"i64Return", &ReturnServiceAsyncProcessor::_processInThread_i64Return<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"floatReturn", &ReturnServiceAsyncProcessor::_processInThread_floatReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"doubleReturn", &ReturnServiceAsyncProcessor::_processInThread_doubleReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"stringReturn", &ReturnServiceAsyncProcessor::_processInThread_stringReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"stringReturn", &ReturnServiceAsyncProcessor::process_stringReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"binaryReturn", &ReturnServiceAsyncProcessor::_processInThread_binaryReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"mapReturn", &ReturnServiceAsyncProcessor::_processInThread_mapReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"simpleTypedefReturn", &ReturnServiceAsyncProcessor::_processInThread_simpleTypedefReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"complexTypedefReturn", &ReturnServiceAsyncProcessor::_processInThread_complexTypedefReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"list_mostComplexTypedefReturn", &ReturnServiceAsyncProcessor::_processInThread_list_mostComplexTypedefReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"enumReturn", &ReturnServiceAsyncProcessor::_processInThread_enumReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"list_EnumReturn", &ReturnServiceAsyncProcessor::_processInThread_list_EnumReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"enumReturn", &ReturnServiceAsyncProcessor::process_enumReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"list_EnumReturn", &ReturnServiceAsyncProcessor::process_list_EnumReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"structReturn", &ReturnServiceAsyncProcessor::_processInThread_structReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"set_StructReturn", &ReturnServiceAsyncProcessor::_processInThread_set_StructReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"unionReturn", &ReturnServiceAsyncProcessor::_processInThread_unionReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"unionReturn", &ReturnServiceAsyncProcessor::process_unionReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"list_UnionReturn", &ReturnServiceAsyncProcessor::_processInThread_list_UnionReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
@@ -348,24 +336,24 @@ const ReturnServiceAsyncProcessor::CompactProtocolProcessMap& ReturnServiceAsync
 }
 
 const ReturnServiceAsyncProcessor::CompactProtocolProcessMap ReturnServiceAsyncProcessor::compactProcessMap_ {
-  {"noReturn", &ReturnServiceAsyncProcessor::_processInThread_noReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"noReturn", &ReturnServiceAsyncProcessor::process_noReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"boolReturn", &ReturnServiceAsyncProcessor::_processInThread_boolReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"i16Return", &ReturnServiceAsyncProcessor::_processInThread_i16Return<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"i32Return", &ReturnServiceAsyncProcessor::_processInThread_i32Return<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"i64Return", &ReturnServiceAsyncProcessor::_processInThread_i64Return<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"floatReturn", &ReturnServiceAsyncProcessor::_processInThread_floatReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"doubleReturn", &ReturnServiceAsyncProcessor::_processInThread_doubleReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"stringReturn", &ReturnServiceAsyncProcessor::_processInThread_stringReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"stringReturn", &ReturnServiceAsyncProcessor::process_stringReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"binaryReturn", &ReturnServiceAsyncProcessor::_processInThread_binaryReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"mapReturn", &ReturnServiceAsyncProcessor::_processInThread_mapReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"simpleTypedefReturn", &ReturnServiceAsyncProcessor::_processInThread_simpleTypedefReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"complexTypedefReturn", &ReturnServiceAsyncProcessor::_processInThread_complexTypedefReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"list_mostComplexTypedefReturn", &ReturnServiceAsyncProcessor::_processInThread_list_mostComplexTypedefReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"enumReturn", &ReturnServiceAsyncProcessor::_processInThread_enumReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"list_EnumReturn", &ReturnServiceAsyncProcessor::_processInThread_list_EnumReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"enumReturn", &ReturnServiceAsyncProcessor::process_enumReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"list_EnumReturn", &ReturnServiceAsyncProcessor::process_list_EnumReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"structReturn", &ReturnServiceAsyncProcessor::_processInThread_structReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"set_StructReturn", &ReturnServiceAsyncProcessor::_processInThread_set_StructReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"unionReturn", &ReturnServiceAsyncProcessor::_processInThread_unionReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"unionReturn", &ReturnServiceAsyncProcessor::process_unionReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"list_UnionReturn", &ReturnServiceAsyncProcessor::_processInThread_list_UnionReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 

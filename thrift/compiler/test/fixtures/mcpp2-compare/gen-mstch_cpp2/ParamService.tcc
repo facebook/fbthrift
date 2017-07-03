@@ -76,12 +76,6 @@ typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache:
 typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, apache::thrift::protocol::T_STRING, std::string*>> ParamService_listunion_string_param_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, apache::thrift::protocol::T_LIST, std::vector< ::some::valid::ns::ComplexUnion>*>> ParamService_listunion_string_param_presult;
 template <typename ProtocolIn_, typename ProtocolOut_>
-void ParamServiceAsyncProcessor::_processInThread_void_ret_i16_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ParamServiceAsyncProcessor::process_void_ret_i16_param<ProtocolIn_, ProtocolOut_>, this);
-}
-
-template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_void_ret_i16_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
@@ -111,12 +105,8 @@ void ParamServiceAsyncProcessor::process_void_ret_i16_param(std::unique_ptr<apac
     }
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_void_ret_i16_param<ProtocolIn_,ProtocolOut_>, throw_void_ret_i16_param<ProtocolIn_, ProtocolOut_>, throw_wrapped_void_ret_i16_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
-    return;
-  }
   ctx->setStartedProcessing();
-  iface_->async_tm_void_ret_i16_param(std::move(callback), args.get<0>().ref());
+  iface_->async_eb_void_ret_i16_param(std::move(callback), args.get<0>().ref());
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1539,12 +1529,6 @@ void ParamServiceAsyncProcessor::throw_wrapped_i64_ret_string_typedef_param(std:
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void ParamServiceAsyncProcessor::_processInThread_i64_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ParamServiceAsyncProcessor::process_i64_ret_i32_i32_i32_i32_i32_param<ProtocolIn_, ProtocolOut_>, this);
-}
-
-template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_i64_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
@@ -1582,12 +1566,8 @@ void ParamServiceAsyncProcessor::process_i64_ret_i32_i32_i32_i32_i32_param(std::
     }
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<int64_t>>(std::move(req), std::move(c), return_i64_ret_i32_i32_i32_i32_i32_param<ProtocolIn_,ProtocolOut_>, throw_i64_ret_i32_i32_i32_i32_i32_param<ProtocolIn_, ProtocolOut_>, throw_wrapped_i64_ret_i32_i32_i32_i32_i32_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
-    return;
-  }
   ctx->setStartedProcessing();
-  iface_->async_tm_i64_ret_i32_i32_i32_i32_i32_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref(), args.get<2>().ref(), args.get<3>().ref(), args.get<4>().ref());
+  iface_->async_eb_i64_ret_i32_i32_i32_i32_i32_param(std::move(callback), args.get<0>().ref(), args.get<1>().ref(), args.get<2>().ref(), args.get<3>().ref(), args.get<4>().ref());
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -2453,12 +2433,6 @@ void ParamServiceAsyncProcessor::throw_wrapped_typedef_ret_i32_param(std::unique
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void ParamServiceAsyncProcessor::_processInThread_listtypedef_ret_typedef_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ParamServiceAsyncProcessor::process_listtypedef_ret_typedef_param<ProtocolIn_, ProtocolOut_>, this);
-}
-
-template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_listtypedef_ret_typedef_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
@@ -2488,12 +2462,8 @@ void ParamServiceAsyncProcessor::process_listtypedef_ret_typedef_param(std::uniq
     }
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::simpleTypeDef>>>>(std::move(req), std::move(c), return_listtypedef_ret_typedef_param<ProtocolIn_,ProtocolOut_>, throw_listtypedef_ret_typedef_param<ProtocolIn_, ProtocolOut_>, throw_wrapped_listtypedef_ret_typedef_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
-    return;
-  }
   ctx->setStartedProcessing();
-  iface_->async_tm_listtypedef_ret_typedef_param(std::move(callback), std::move(uarg_param1));
+  iface_->async_eb_listtypedef_ret_typedef_param(std::move(callback), std::move(uarg_param1));
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -2907,12 +2877,6 @@ void ParamServiceAsyncProcessor::throw_wrapped_listenum_ret_map_param(std::uniqu
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
-void ParamServiceAsyncProcessor::_processInThread_struct_ret_i16_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
-  auto pri = iface_->getRequestPriority(ctx, apache::thrift::concurrency::NORMAL);
-  processInThread<ProtocolIn_, ProtocolOut_>(std::move(req), std::move(buf),std::move(iprot), ctx, eb, tm, pri, false, &ParamServiceAsyncProcessor::process_struct_ret_i16_param<ProtocolIn_, ProtocolOut_>, this);
-}
-
-template <typename ProtocolIn_, typename ProtocolOut_>
 void ParamServiceAsyncProcessor::process_struct_ret_i16_param(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   // make sure getConnectionContext is null
   // so async calls don't accidentally use it
@@ -2942,12 +2906,8 @@ void ParamServiceAsyncProcessor::process_struct_ret_i16_param(std::unique_ptr<ap
     }
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::MyStruct>>>(std::move(req), std::move(c), return_struct_ret_i16_param<ProtocolIn_,ProtocolOut_>, throw_struct_ret_i16_param<ProtocolIn_, ProtocolOut_>, throw_wrapped_struct_ret_i16_param<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  if (!callback->isRequestActive()) {
-    callback.release()->deleteInThread();
-    return;
-  }
   ctx->setStartedProcessing();
-  iface_->async_tm_struct_ret_i16_param(std::move(callback), args.get<0>().ref());
+  iface_->async_eb_struct_ret_i16_param(std::move(callback), args.get<0>().ref());
 }
 
 template <class ProtocolIn_, class ProtocolOut_>

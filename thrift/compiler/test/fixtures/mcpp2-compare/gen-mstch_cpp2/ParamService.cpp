@@ -25,8 +25,8 @@ folly::Future<folly::Unit> ParamServiceSvIf::future_void_ret_i16_param(int16_t p
   return apache::thrift::detail::si::future([&] { return void_ret_i16_param(param1); });
 }
 
-void ParamServiceSvIf::async_tm_void_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int16_t param1) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_void_ret_i16_param(param1); });
+void ParamServiceSvIf::async_eb_void_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback, int16_t param1) {
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [this, param1]() mutable { return future_void_ret_i16_param(param1); });
 }
 
 void ParamServiceSvIf::void_ret_byte_i16_param(int8_t /*param1*/, int16_t /*param2*/) {
@@ -181,8 +181,8 @@ folly::Future<int64_t> ParamServiceSvIf::future_i64_ret_i32_i32_i32_i32_i32_para
   return apache::thrift::detail::si::future([&] { return i64_ret_i32_i32_i32_i32_i32_param(param1, param2, param3, param4, param5); });
 }
 
-void ParamServiceSvIf::async_tm_i64_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_i64_ret_i32_i32_i32_i32_i32_param(param1, param2, param3, param4, param5); });
+void ParamServiceSvIf::async_eb_i64_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback, int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [this, param1, param2, param3, param4, param5]() mutable { return future_i64_ret_i32_i32_i32_i32_i32_param(param1, param2, param3, param4, param5); });
 }
 
 double ParamServiceSvIf::double_ret_setstruct_param(std::unique_ptr<std::set< ::some::valid::ns::MyStruct>> /*param1*/) {
@@ -277,8 +277,8 @@ folly::Future<std::unique_ptr<std::vector< ::some::valid::ns::simpleTypeDef>>> P
   return apache::thrift::detail::si::future_returning_uptr([&](std::vector< ::some::valid::ns::simpleTypeDef>& _return) { listtypedef_ret_typedef_param(_return, std::move(param1)); });
 }
 
-void ParamServiceSvIf::async_tm_listtypedef_ret_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::simpleTypeDef>>>> callback, std::unique_ptr< ::some::valid::ns::complexStructTypeDef> param1) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_listtypedef_ret_typedef_param(std::move(param1)); });
+void ParamServiceSvIf::async_eb_listtypedef_ret_typedef_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::simpleTypeDef>>>> callback, std::unique_ptr< ::some::valid::ns::complexStructTypeDef> param1) {
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [this, param1 = std::move(param1)]() mutable { return future_listtypedef_ret_typedef_param(std::move(param1)); });
 }
 
  ::some::valid::ns::MyEnumA ParamServiceSvIf::enum_ret_double_param(double /*param1*/) {
@@ -325,8 +325,8 @@ folly::Future<std::unique_ptr< ::some::valid::ns::MyStruct>> ParamServiceSvIf::f
   return apache::thrift::detail::si::future_returning_uptr([&]( ::some::valid::ns::MyStruct& _return) { struct_ret_i16_param(_return, param1); });
 }
 
-void ParamServiceSvIf::async_tm_struct_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::MyStruct>>> callback, int16_t param1) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_struct_ret_i16_param(param1); });
+void ParamServiceSvIf::async_eb_struct_ret_i16_param(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::MyStruct>>> callback, int16_t param1) {
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [this, param1]() mutable { return future_struct_ret_i16_param(param1); });
 }
 
 void ParamServiceSvIf::setstruct_ret_set_param(std::set< ::some::valid::ns::MyStruct>& /*_return*/, std::unique_ptr<std::set<std::string>> /*param1*/) {
@@ -365,8 +365,6 @@ void ParamServiceSvIf::async_tm_listunion_string_param(std::unique_ptr<apache::t
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_listunion_string_param(std::move(param1)); });
 }
 
-void ParamServiceSvNull::void_ret_i16_param(int16_t /*param1*/) {}
-
 void ParamServiceSvNull::void_ret_byte_i16_param(int8_t /*param1*/, int16_t /*param2*/) {}
 
 void ParamServiceSvNull::void_ret_map_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/) {}
@@ -401,10 +399,6 @@ int64_t ParamServiceSvNull::i64_ret_string_typedef_param(std::unique_ptr<std::st
   return 0;
 }
 
-int64_t ParamServiceSvNull::i64_ret_i32_i32_i32_i32_i32_param(int32_t /*param1*/, int32_t /*param2*/, int32_t /*param3*/, int32_t /*param4*/, int32_t /*param5*/) {
-  return 0;
-}
-
 double ParamServiceSvNull::double_ret_setstruct_param(std::unique_ptr<std::set< ::some::valid::ns::MyStruct>> /*param1*/) {
   return 0;
 }
@@ -423,8 +417,6 @@ void ParamServiceSvNull::mapsetlistmapliststring_ret_listlistlist_param(std::map
   return 0;
 }
 
-void ParamServiceSvNull::listtypedef_ret_typedef_param(std::vector< ::some::valid::ns::simpleTypeDef>& /*_return*/, std::unique_ptr< ::some::valid::ns::complexStructTypeDef> /*param1*/) {}
-
  ::some::valid::ns::MyEnumA ParamServiceSvNull::enum_ret_double_param(double /*param1*/) {
   return ( ::some::valid::ns::MyEnumA)0;
 }
@@ -434,8 +426,6 @@ void ParamServiceSvNull::listtypedef_ret_typedef_param(std::vector< ::some::vali
 }
 
 void ParamServiceSvNull::listenum_ret_map_param(std::vector< ::some::valid::ns::MyEnumA>& /*_return*/, std::unique_ptr<std::map<std::string, int64_t>> /*param1*/) {}
-
-void ParamServiceSvNull::struct_ret_i16_param( ::some::valid::ns::MyStruct& /*_return*/, int16_t /*param1*/) {}
 
 void ParamServiceSvNull::setstruct_ret_set_param(std::set< ::some::valid::ns::MyStruct>& /*_return*/, std::unique_ptr<std::set<std::string>> /*param1*/) {}
 
@@ -466,7 +456,7 @@ const ParamServiceAsyncProcessor::BinaryProtocolProcessMap& ParamServiceAsyncPro
 }
 
 const ParamServiceAsyncProcessor::BinaryProtocolProcessMap ParamServiceAsyncProcessor::binaryProcessMap_ {
-  {"void_ret_i16_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_i16_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"void_ret_i16_param", &ParamServiceAsyncProcessor::process_void_ret_i16_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"void_ret_byte_i16_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_byte_i16_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"void_ret_map_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_map_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"void_ret_map_setlist_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_map_setlist_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
@@ -479,7 +469,7 @@ const ParamServiceAsyncProcessor::BinaryProtocolProcessMap ParamServiceAsyncProc
   {"bool_ret_union_param", &ParamServiceAsyncProcessor::_processInThread_bool_ret_union_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"i64_ret_float_double_param", &ParamServiceAsyncProcessor::_processInThread_i64_ret_float_double_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"i64_ret_string_typedef_param", &ParamServiceAsyncProcessor::_processInThread_i64_ret_string_typedef_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"i64_ret_i32_i32_i32_i32_i32_param", &ParamServiceAsyncProcessor::_processInThread_i64_ret_i32_i32_i32_i32_i32_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"i64_ret_i32_i32_i32_i32_i32_param", &ParamServiceAsyncProcessor::process_i64_ret_i32_i32_i32_i32_i32_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"double_ret_setstruct_param", &ParamServiceAsyncProcessor::_processInThread_double_ret_setstruct_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"string_ret_string_param", &ParamServiceAsyncProcessor::_processInThread_string_ret_string_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"binary_ret_binary_param", &ParamServiceAsyncProcessor::_processInThread_binary_ret_binary_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
@@ -487,11 +477,11 @@ const ParamServiceAsyncProcessor::BinaryProtocolProcessMap ParamServiceAsyncProc
   {"list_ret_map_setlist_param", &ParamServiceAsyncProcessor::_processInThread_list_ret_map_setlist_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"mapsetlistmapliststring_ret_listlistlist_param", &ParamServiceAsyncProcessor::_processInThread_mapsetlistmapliststring_ret_listlistlist_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"typedef_ret_i32_param", &ParamServiceAsyncProcessor::_processInThread_typedef_ret_i32_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"listtypedef_ret_typedef_param", &ParamServiceAsyncProcessor::_processInThread_listtypedef_ret_typedef_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"listtypedef_ret_typedef_param", &ParamServiceAsyncProcessor::process_listtypedef_ret_typedef_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"enum_ret_double_param", &ParamServiceAsyncProcessor::_processInThread_enum_ret_double_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"enum_ret_double_enum_param", &ParamServiceAsyncProcessor::_processInThread_enum_ret_double_enum_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"listenum_ret_map_param", &ParamServiceAsyncProcessor::_processInThread_listenum_ret_map_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"struct_ret_i16_param", &ParamServiceAsyncProcessor::_processInThread_struct_ret_i16_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"struct_ret_i16_param", &ParamServiceAsyncProcessor::process_struct_ret_i16_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"setstruct_ret_set_param", &ParamServiceAsyncProcessor::_processInThread_setstruct_ret_set_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"union_ret_i32_i32_param", &ParamServiceAsyncProcessor::_processInThread_union_ret_i32_i32_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"listunion_string_param", &ParamServiceAsyncProcessor::_processInThread_listunion_string_param<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
@@ -502,7 +492,7 @@ const ParamServiceAsyncProcessor::CompactProtocolProcessMap& ParamServiceAsyncPr
 }
 
 const ParamServiceAsyncProcessor::CompactProtocolProcessMap ParamServiceAsyncProcessor::compactProcessMap_ {
-  {"void_ret_i16_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_i16_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"void_ret_i16_param", &ParamServiceAsyncProcessor::process_void_ret_i16_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"void_ret_byte_i16_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_byte_i16_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"void_ret_map_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_map_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"void_ret_map_setlist_param", &ParamServiceAsyncProcessor::_processInThread_void_ret_map_setlist_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
@@ -515,7 +505,7 @@ const ParamServiceAsyncProcessor::CompactProtocolProcessMap ParamServiceAsyncPro
   {"bool_ret_union_param", &ParamServiceAsyncProcessor::_processInThread_bool_ret_union_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"i64_ret_float_double_param", &ParamServiceAsyncProcessor::_processInThread_i64_ret_float_double_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"i64_ret_string_typedef_param", &ParamServiceAsyncProcessor::_processInThread_i64_ret_string_typedef_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"i64_ret_i32_i32_i32_i32_i32_param", &ParamServiceAsyncProcessor::_processInThread_i64_ret_i32_i32_i32_i32_i32_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"i64_ret_i32_i32_i32_i32_i32_param", &ParamServiceAsyncProcessor::process_i64_ret_i32_i32_i32_i32_i32_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"double_ret_setstruct_param", &ParamServiceAsyncProcessor::_processInThread_double_ret_setstruct_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"string_ret_string_param", &ParamServiceAsyncProcessor::_processInThread_string_ret_string_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"binary_ret_binary_param", &ParamServiceAsyncProcessor::_processInThread_binary_ret_binary_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
@@ -523,11 +513,11 @@ const ParamServiceAsyncProcessor::CompactProtocolProcessMap ParamServiceAsyncPro
   {"list_ret_map_setlist_param", &ParamServiceAsyncProcessor::_processInThread_list_ret_map_setlist_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"mapsetlistmapliststring_ret_listlistlist_param", &ParamServiceAsyncProcessor::_processInThread_mapsetlistmapliststring_ret_listlistlist_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"typedef_ret_i32_param", &ParamServiceAsyncProcessor::_processInThread_typedef_ret_i32_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"listtypedef_ret_typedef_param", &ParamServiceAsyncProcessor::_processInThread_listtypedef_ret_typedef_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"listtypedef_ret_typedef_param", &ParamServiceAsyncProcessor::process_listtypedef_ret_typedef_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"enum_ret_double_param", &ParamServiceAsyncProcessor::_processInThread_enum_ret_double_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"enum_ret_double_enum_param", &ParamServiceAsyncProcessor::_processInThread_enum_ret_double_enum_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"listenum_ret_map_param", &ParamServiceAsyncProcessor::_processInThread_listenum_ret_map_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"struct_ret_i16_param", &ParamServiceAsyncProcessor::_processInThread_struct_ret_i16_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"struct_ret_i16_param", &ParamServiceAsyncProcessor::process_struct_ret_i16_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"setstruct_ret_set_param", &ParamServiceAsyncProcessor::_processInThread_setstruct_ret_set_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"union_ret_i32_i32_param", &ParamServiceAsyncProcessor::_processInThread_union_ret_i32_i32_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"listunion_string_param", &ParamServiceAsyncProcessor::_processInThread_listunion_string_param<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},

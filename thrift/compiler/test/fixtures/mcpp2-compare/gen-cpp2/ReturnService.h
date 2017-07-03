@@ -34,7 +34,7 @@ namespace some { namespace valid { namespace ns {
 class ReturnServiceSvAsyncIf {
  public:
   virtual ~ReturnServiceSvAsyncIf() {}
-  virtual void async_tm_noReturn(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
+  virtual void async_eb_noReturn(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = 0;
   virtual void async_noReturn(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) = delete;
   virtual folly::Future<folly::Unit> future_noReturn() = 0;
   virtual void async_tm_boolReturn(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback) = 0;
@@ -55,7 +55,7 @@ class ReturnServiceSvAsyncIf {
   virtual void async_tm_doubleReturn(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback) = 0;
   virtual void async_doubleReturn(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback) = delete;
   virtual folly::Future<double> future_doubleReturn() = 0;
-  virtual void async_tm_stringReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) = 0;
+  virtual void async_eb_stringReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) = 0;
   virtual void async_stringReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) = delete;
   virtual folly::Future<std::unique_ptr<std::string>> future_stringReturn() = 0;
   virtual void async_tm_binaryReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) = 0;
@@ -73,10 +73,10 @@ class ReturnServiceSvAsyncIf {
   virtual void async_tm_list_mostComplexTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::mostComplexTypeDef>>>> callback) = 0;
   virtual void async_list_mostComplexTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::mostComplexTypeDef>>>> callback) = delete;
   virtual folly::Future<std::unique_ptr<std::vector< ::some::valid::ns::mostComplexTypeDef>>> future_list_mostComplexTypedefReturn() = 0;
-  virtual void async_tm_enumReturn(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>> callback) = 0;
+  virtual void async_eb_enumReturn(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>> callback) = 0;
   virtual void async_enumReturn(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>> callback) = delete;
   virtual folly::Future< ::some::valid::ns::MyEnumA> future_enumReturn() = 0;
-  virtual void async_tm_list_EnumReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::MyEnumA>>>> callback) = 0;
+  virtual void async_eb_list_EnumReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::MyEnumA>>>> callback) = 0;
   virtual void async_list_EnumReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::MyEnumA>>>> callback) = delete;
   virtual folly::Future<std::unique_ptr<std::vector< ::some::valid::ns::MyEnumA>>> future_list_EnumReturn() = 0;
   virtual void async_tm_structReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::MyStruct>>> callback) = 0;
@@ -85,7 +85,7 @@ class ReturnServiceSvAsyncIf {
   virtual void async_tm_set_StructReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::set< ::some::valid::ns::MyStruct>>>> callback) = 0;
   virtual void async_set_StructReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::set< ::some::valid::ns::MyStruct>>>> callback) = delete;
   virtual folly::Future<std::unique_ptr<std::set< ::some::valid::ns::MyStruct>>> future_set_StructReturn() = 0;
-  virtual void async_tm_unionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::ComplexUnion>>> callback) = 0;
+  virtual void async_eb_unionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::ComplexUnion>>> callback) = 0;
   virtual void async_unionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::ComplexUnion>>> callback) = delete;
   virtual folly::Future<std::unique_ptr< ::some::valid::ns::ComplexUnion>> future_unionReturn() = 0;
   virtual void async_tm_list_UnionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>>>> callback) = 0;
@@ -101,7 +101,7 @@ class ReturnServiceSvIf : public ReturnServiceSvAsyncIf, public apache::thrift::
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   virtual void noReturn();
   folly::Future<folly::Unit> future_noReturn() override;
-  void async_tm_noReturn(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
+  void async_eb_noReturn(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) override;
   virtual bool boolReturn();
   folly::Future<bool> future_boolReturn() override;
   void async_tm_boolReturn(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback) override;
@@ -122,7 +122,7 @@ class ReturnServiceSvIf : public ReturnServiceSvAsyncIf, public apache::thrift::
   void async_tm_doubleReturn(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback) override;
   virtual void stringReturn(std::string& /*_return*/);
   folly::Future<std::unique_ptr<std::string>> future_stringReturn() override;
-  void async_tm_stringReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) override;
+  void async_eb_stringReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) override;
   virtual void binaryReturn(std::string& /*_return*/);
   folly::Future<std::unique_ptr<std::string>> future_binaryReturn() override;
   void async_tm_binaryReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) override;
@@ -140,10 +140,10 @@ class ReturnServiceSvIf : public ReturnServiceSvAsyncIf, public apache::thrift::
   void async_tm_list_mostComplexTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::mostComplexTypeDef>>>> callback) override;
   virtual  ::some::valid::ns::MyEnumA enumReturn();
   folly::Future< ::some::valid::ns::MyEnumA> future_enumReturn() override;
-  void async_tm_enumReturn(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>> callback) override;
+  void async_eb_enumReturn(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>> callback) override;
   virtual void list_EnumReturn(std::vector< ::some::valid::ns::MyEnumA>& /*_return*/);
   folly::Future<std::unique_ptr<std::vector< ::some::valid::ns::MyEnumA>>> future_list_EnumReturn() override;
-  void async_tm_list_EnumReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::MyEnumA>>>> callback) override;
+  void async_eb_list_EnumReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::MyEnumA>>>> callback) override;
   virtual void structReturn( ::some::valid::ns::MyStruct& /*_return*/);
   folly::Future<std::unique_ptr< ::some::valid::ns::MyStruct>> future_structReturn() override;
   void async_tm_structReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::MyStruct>>> callback) override;
@@ -152,7 +152,7 @@ class ReturnServiceSvIf : public ReturnServiceSvAsyncIf, public apache::thrift::
   void async_tm_set_StructReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::set< ::some::valid::ns::MyStruct>>>> callback) override;
   virtual void unionReturn( ::some::valid::ns::ComplexUnion& /*_return*/);
   folly::Future<std::unique_ptr< ::some::valid::ns::ComplexUnion>> future_unionReturn() override;
-  void async_tm_unionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::ComplexUnion>>> callback) override;
+  void async_eb_unionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::ComplexUnion>>> callback) override;
   virtual void list_UnionReturn(std::vector< ::some::valid::ns::ComplexUnion>& /*_return*/);
   folly::Future<std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>>> future_list_UnionReturn() override;
   void async_tm_list_UnionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>>>> callback) override;
@@ -160,24 +160,19 @@ class ReturnServiceSvIf : public ReturnServiceSvAsyncIf, public apache::thrift::
 
 class ReturnServiceSvNull : public ReturnServiceSvIf {
  public:
-  void noReturn() override;
   bool boolReturn() override;
   int16_t i16Return() override;
   int32_t i32Return() override;
   int64_t i64Return() override;
   float floatReturn() override;
   double doubleReturn() override;
-  void stringReturn(std::string& /*_return*/) override;
   void binaryReturn(std::string& /*_return*/) override;
   void mapReturn(std::map<std::string, int64_t>& /*_return*/) override;
    ::some::valid::ns::simpleTypeDef simpleTypedefReturn() override;
   void complexTypedefReturn( ::some::valid::ns::complexStructTypeDef& /*_return*/) override;
   void list_mostComplexTypedefReturn(std::vector< ::some::valid::ns::mostComplexTypeDef>& /*_return*/) override;
-   ::some::valid::ns::MyEnumA enumReturn() override;
-  void list_EnumReturn(std::vector< ::some::valid::ns::MyEnumA>& /*_return*/) override;
   void structReturn( ::some::valid::ns::MyStruct& /*_return*/) override;
   void set_StructReturn(std::set< ::some::valid::ns::MyStruct>& /*_return*/) override;
-  void unionReturn( ::some::valid::ns::ComplexUnion& /*_return*/) override;
   void list_UnionReturn(std::vector< ::some::valid::ns::ComplexUnion>& /*_return*/) override;
 };
 
@@ -208,8 +203,6 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
  private:
   static const ReturnServiceAsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
  private:
-  template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_noReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_noReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
@@ -279,8 +272,6 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_doubleReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_stringReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  template <typename ProtocolIn_, typename ProtocolOut_>
   void process_stringReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_stringReturn(int32_t protoSeqId, apache::thrift::ContextStack* ctx, std::string const& _return);
@@ -339,8 +330,6 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_list_mostComplexTypedefReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_enumReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
-  template <typename ProtocolIn_, typename ProtocolOut_>
   void process_enumReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_enumReturn(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  ::some::valid::ns::MyEnumA const& _return);
@@ -348,8 +337,6 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   static void throw_enumReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_enumReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
-  template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_list_EnumReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_list_EnumReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>
@@ -378,8 +365,6 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   static void throw_set_StructReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_set_StructReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
-  template <typename ProtocolIn_, typename ProtocolOut_>
-  void _processInThread_unionReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_unionReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <class ProtocolIn_, class ProtocolOut_>

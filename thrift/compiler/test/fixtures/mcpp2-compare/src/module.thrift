@@ -247,29 +247,29 @@ service EmptyService {
 }
 
 service ReturnService {
-  void noReturn()
+  void noReturn() (thread="eb")
   bool boolReturn()
   i16 i16Return()
   i32 i32Return()
   i64 i64Return()
   float floatReturn()
   double doubleReturn()
-  string stringReturn()
+  string stringReturn() (thread="eb")
   binary binaryReturn()
   map<string, i64> mapReturn()
   simpleTypeDef simpleTypedefReturn()
   complexStructTypeDef complexTypedefReturn()
   list<mostComplexTypeDef> list_mostComplexTypedefReturn()
-  MyEnumA enumReturn()
-  list<MyEnumA> list_EnumReturn()
+  MyEnumA enumReturn() (thread="eb")
+  list<MyEnumA> list_EnumReturn() (thread="eb")
   MyStruct structReturn()
   set<MyStruct> set_StructReturn()
-  ComplexUnion unionReturn()
+  ComplexUnion unionReturn() (thread="eb")
   list<ComplexUnion> list_UnionReturn()
 }
 
 service ParamService {
-  void void_ret_i16_param(1: i16 param1)
+  void void_ret_i16_param(1: i16 param1) (thread="eb")
   void void_ret_byte_i16_param(1: byte param1, 2: i16 param2)
   void void_ret_map_param(1: map<string, i64> param1)
   void void_ret_map_setlist_param(
@@ -291,7 +291,7 @@ service ParamService {
       2: i32 param2,
       3: i32 param3,
       4: i32 param4,
-      5: i32 param5)
+      5: i32 param5) (thread="eb")
   double double_ret_setstruct_param(4: set<MyStruct> param1)
   string string_ret_string_param(1: string param1)
   binary binary_ret_binary_param(1: binary param1)
@@ -304,11 +304,11 @@ service ParamService {
           1:list<list<list<list<i32>>>> param1)
   simpleTypeDef typedef_ret_i32_param(1: i32 param1)
   list<simpleTypeDef> listtypedef_ret_typedef_param(
-      1: complexStructTypeDef param1)
+      1: complexStructTypeDef param1) (thread="eb")
   MyEnumA enum_ret_double_param(3: double param1)
   MyEnumA enum_ret_double_enum_param(3: double param1, 5: MyEnumA param2)
   list<MyEnumA> listenum_ret_map_param(1: map<string, i64> param1)
-  MyStruct struct_ret_i16_param(1: i16 param1)
+  MyStruct struct_ret_i16_param(1: i16 param1) (thread="eb")
   set<MyStruct> setstruct_ret_set_param(8: set<string> param1)
   ComplexUnion union_ret_i32_i32_param(4: i32 param1, 2: i32 param2)
   list<ComplexUnion> listunion_string_param(1: string param1)
@@ -317,7 +317,7 @@ service ParamService {
 service ExtraService extends ParamService {
   bool simple_function()
   void throws_function()
-      throws (1: AnException ex, 2: AnotherException aex)
+      throws (1: AnException ex, 2: AnotherException aex) (thread="eb")
   bool throws_function2(1: bool param1)
       throws (1: AnException ex, 2: AnotherException aex)
   map<i32, string> throws_function3(1: bool param1, 3: string param2)
@@ -331,7 +331,7 @@ service ExtraService extends ParamService {
       5: i32 param5)
   oneway void oneway_void_ret_map_setlist_param(
       1: map<string, i64> param1,
-      3: set<list<string>> param2)
+      3: set<list<string>> param2) (thread="eb")
   oneway void oneway_void_ret_struct_param(1: MyStruct param1)
   oneway void oneway_void_ret_listunion_param(1: list<ComplexUnion> param1)
 }

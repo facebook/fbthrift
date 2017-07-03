@@ -47,8 +47,10 @@
   static const <%service:name%>AsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
  private:
 <%#service:functions%><%#function:returnType%>
+<%^function:eb%>
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+<%/function:eb%>
   template <typename ProtocolIn_, typename ProtocolOut_>
   void process_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
 <%^function:oneway?%>
