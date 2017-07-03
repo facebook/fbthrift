@@ -179,8 +179,8 @@ typedef set<string> SortedVectorSetString (
 typedef map<i64, double> FakeMap (cpp.type = "FakeMap")
 typedef map<string, containerStruct> UnorderedMapStruct (
     cpp.type = "std::unordered_map<std::string, containerStruct>")
-typedef binary IOBuf (cpp.type = "folly::IOBuf")
-typedef binary IOBufPtr (cpp.type = "std::unique_ptr<folly::IOBuf>")
+typedef binary IOBuf (cpp2.type = "folly::IOBuf")
+typedef binary IOBufPtr (cpp2.type = "std::unique_ptr<folly::IOBuf>")
 
 struct AnnotatatedStruct {
   1: containerStruct no_annotation

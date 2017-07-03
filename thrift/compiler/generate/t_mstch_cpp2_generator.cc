@@ -147,6 +147,8 @@ class mstch_cpp2_type : public mstch_type {
   mstch::node cpp_type() {
     if (type_->annotations_.count("cpp.type")) {
       return type_->annotations_.at("cpp.type");
+    } else if (type_->annotations_.count("cpp2.type")) {
+      return type_->annotations_.at("cpp2.type");
     }
     return std::string();
   }
