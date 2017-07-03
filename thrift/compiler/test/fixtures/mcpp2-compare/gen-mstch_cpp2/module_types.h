@@ -190,7 +190,7 @@ class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
 
   Empty(apache::thrift::FragileConstructor) {}
 
-  Empty(Empty&&) = default;
+  Empty(Empty&& other) noexcept {}
 
   Empty(const Empty&) = default;
 
@@ -340,7 +340,16 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
     __isset.MyBinaryListField4 = true;
   }
 
-  MyStruct(MyStruct&&) = default;
+  MyStruct(MyStruct&& other) noexcept :
+      MyBoolField(std::move(other.MyBoolField)),
+      MyIntField(std::move(other.MyIntField)),
+      MyStringField(std::move(other.MyStringField)),
+      MyStringField2(std::move(other.MyStringField2)),
+      MyBinaryField(std::move(other.MyBinaryField)),
+      MyBinaryField2(std::move(other.MyBinaryField2)),
+      MyBinaryField3(std::move(other.MyBinaryField3)),
+      MyBinaryListField4(std::move(other.MyBinaryListField4)),
+      __isset(other.__isset) {}
 
   MyStruct(const MyStruct&) = default;
 
@@ -4468,7 +4477,42 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
     __isset.typedef_map_template = true;
   }
 
-  AnnotatatedStruct(AnnotatatedStruct&&) = default;
+  AnnotatatedStruct(AnnotatatedStruct&& other) noexcept :
+      no_annotation(std::move(other.no_annotation)),
+      cpp_unique_ref(std::move(other.cpp_unique_ref)),
+      cpp2_unique_ref(std::move(other.cpp2_unique_ref)),
+      container_with_ref(std::move(other.container_with_ref)),
+      req_cpp_unique_ref(std::move(other.req_cpp_unique_ref)),
+      req_cpp2_unique_ref(std::move(other.req_cpp2_unique_ref)),
+      req_container_with_ref(std::move(other.req_container_with_ref)),
+      opt_cpp_unique_ref(std::move(other.opt_cpp_unique_ref)),
+      opt_cpp2_unique_ref(std::move(other.opt_cpp2_unique_ref)),
+      opt_container_with_ref(std::move(other.opt_container_with_ref)),
+      ref_type_unique(std::move(other.ref_type_unique)),
+      ref_type_shared(std::move(other.ref_type_shared)),
+      ref_type_const(std::move(other.ref_type_const)),
+      req_ref_type_shared(std::move(other.req_ref_type_shared)),
+      req_ref_type_const(std::move(other.req_ref_type_const)),
+      req_ref_type_unique(std::move(other.req_ref_type_unique)),
+      opt_ref_type_const(std::move(other.opt_ref_type_const)),
+      opt_ref_type_unique(std::move(other.opt_ref_type_unique)),
+      opt_ref_type_shared(std::move(other.opt_ref_type_shared)),
+      base_type(std::move(other.base_type)),
+      list_type(std::move(other.list_type)),
+      set_type(std::move(other.set_type)),
+      map_type(std::move(other.map_type)),
+      map_struct_type(std::move(other.map_struct_type)),
+      iobuf_type(std::move(other.iobuf_type)),
+      iobuf_ptr(std::move(other.iobuf_ptr)),
+      list_i32_template(std::move(other.list_i32_template)),
+      list_string_template(std::move(other.list_string_template)),
+      set_template(std::move(other.set_template)),
+      map_template(std::move(other.map_template)),
+      typedef_list_template(std::move(other.typedef_list_template)),
+      typedef_deque_template(std::move(other.typedef_deque_template)),
+      typedef_set_template(std::move(other.typedef_set_template)),
+      typedef_map_template(std::move(other.typedef_map_template)),
+      __isset(other.__isset) {}
 
   AnnotatatedStruct& operator=(AnnotatatedStruct&&) = default;
   void __clear();

@@ -50,7 +50,7 @@ const MyEnumA constEnumA = MyEnumA.fieldB
 const MyEnumA constEnumB = 3
 
 struct Empty {
-}
+} (cpp.noexcept_move_ctor)
 
 struct MyStruct {
   1: bool MyBoolField,
@@ -61,7 +61,7 @@ struct MyStruct {
   6: optional binary MyBinaryField2
   7: required binary MyBinaryField3
   8: list<binary> MyBinaryListField4
-}
+} (cpp.noexcept_move_ctor)
 
 union SimpleUnion {
   7: i64 intValue;
@@ -235,6 +235,7 @@ struct AnnotatatedStruct {
   33: folly_set typedef_set_template
   34: folly_map typedef_map_template
 } (
+    cpp2.noexcept_move_ctor
     cpp2.noncopyable,
     cpp.declare_hash,
     cpp.declare_equal_to = 1,

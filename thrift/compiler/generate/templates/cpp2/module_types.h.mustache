@@ -94,8 +94,14 @@ class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<
 
 <% > module_types_h/fragile_ctor%>
 <% > module_types_h/template_ctor%>
+<%#struct:cpp_noexcept_move_ctor%>
+
+<% > module_types_h/move_ctor%>
+<%/struct:cpp_noexcept_move_ctor%>
+<%^struct:cpp_noexcept_move_ctor%>
 
   <%struct:name%>(<%struct:name%>&&) = default;
+<%/struct:cpp_noexcept_move_ctor%>
 <%^struct:cpp_noncopyable%>
 <%^struct:fields_contain_cpp_ref?%>
 

@@ -1305,65 +1305,6 @@ namespace std {
 } // std
 namespace some { namespace valid { namespace ns {
 
-AnnotatatedStruct::AnnotatatedStruct(const AnnotatatedStruct& src) {
-  no_annotation = src.no_annotation;
-  __isset.no_annotation = src.__isset.no_annotation;
-  if (src.cpp_unique_ref) cpp_unique_ref.reset(new  ::some::valid::ns::containerStruct(*src.cpp_unique_ref));
-  if (src.cpp2_unique_ref) cpp2_unique_ref.reset(new  ::some::valid::ns::containerStruct(*src.cpp2_unique_ref));
-  if (src.container_with_ref) container_with_ref.reset(new std::map<int32_t, std::vector<std::string>>(*src.container_with_ref));
-  if (src.req_cpp_unique_ref) req_cpp_unique_ref.reset(new  ::some::valid::ns::containerStruct(*src.req_cpp_unique_ref));
-  if (src.req_cpp2_unique_ref) req_cpp2_unique_ref.reset(new  ::some::valid::ns::containerStruct(*src.req_cpp2_unique_ref));
-  if (src.req_container_with_ref) req_container_with_ref.reset(new std::vector<std::string>(*src.req_container_with_ref));
-  if (src.opt_cpp_unique_ref) opt_cpp_unique_ref.reset(new  ::some::valid::ns::containerStruct(*src.opt_cpp_unique_ref));
-  if (src.opt_cpp2_unique_ref) opt_cpp2_unique_ref.reset(new  ::some::valid::ns::containerStruct(*src.opt_cpp2_unique_ref));
-  if (src.opt_container_with_ref) opt_container_with_ref.reset(new std::set<int32_t>(*src.opt_container_with_ref));
-  if (src.ref_type_unique) ref_type_unique.reset(new  ::some::valid::ns::containerStruct(*src.ref_type_unique));
-  ref_type_shared = src.ref_type_shared;
-  ref_type_const = src.ref_type_const;
-  req_ref_type_shared = src.req_ref_type_shared;
-  req_ref_type_const = src.req_ref_type_const;
-  if (src.req_ref_type_unique) req_ref_type_unique.reset(new std::vector<std::string>(*src.req_ref_type_unique));
-  opt_ref_type_const = src.opt_ref_type_const;
-  if (src.opt_ref_type_unique) opt_ref_type_unique.reset(new  ::some::valid::ns::containerStruct(*src.opt_ref_type_unique));
-  opt_ref_type_shared = src.opt_ref_type_shared;
-  base_type = src.base_type;
-  __isset.base_type = src.__isset.base_type;
-  list_type = src.list_type;
-  __isset.list_type = src.__isset.list_type;
-  set_type = src.set_type;
-  __isset.set_type = src.__isset.set_type;
-  map_type = src.map_type;
-  __isset.map_type = src.__isset.map_type;
-  map_struct_type = src.map_struct_type;
-  __isset.map_struct_type = src.__isset.map_struct_type;
-  iobuf_type = src.iobuf_type;
-  __isset.iobuf_type = src.__isset.iobuf_type;
-  iobuf_ptr = src.iobuf_ptr;
-  __isset.iobuf_ptr = src.__isset.iobuf_ptr;
-  list_i32_template = src.list_i32_template;
-  __isset.list_i32_template = src.__isset.list_i32_template;
-  list_string_template = src.list_string_template;
-  __isset.list_string_template = src.__isset.list_string_template;
-  set_template = src.set_template;
-  __isset.set_template = src.__isset.set_template;
-  map_template = src.map_template;
-  __isset.map_template = src.__isset.map_template;
-  typedef_list_template = src.typedef_list_template;
-  __isset.typedef_list_template = src.__isset.typedef_list_template;
-  typedef_deque_template = src.typedef_deque_template;
-  __isset.typedef_deque_template = src.__isset.typedef_deque_template;
-  typedef_set_template = src.typedef_set_template;
-  __isset.typedef_set_template = src.__isset.typedef_set_template;
-  typedef_map_template = src.typedef_map_template;
-  __isset.typedef_map_template = src.__isset.typedef_map_template;
-}
-
-AnnotatatedStruct& AnnotatatedStruct::operator=(const AnnotatatedStruct& src) {
-  AnnotatatedStruct tmp(src);
-  swap(*this, tmp);
-  return *this;
-}
-
 void AnnotatatedStruct::__clear() {
   // clear all fields
   ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(&no_annotation);
