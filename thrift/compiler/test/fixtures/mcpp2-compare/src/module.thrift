@@ -182,6 +182,11 @@ typedef map<string, containerStruct> UnorderedMapStruct (
 typedef binary IOBuf (cpp2.type = "folly::IOBuf")
 typedef binary IOBufPtr (cpp2.type = "std::unique_ptr<folly::IOBuf>")
 
+typedef list<i32> (cpp.template = "std::list") std_list
+typedef list<string> (cpp2.template = "std::deque") std_deque
+typedef set<string> (cpp.template = "folly::sorted_vector_set") folly_set
+typedef map<i64, string> (cpp2.template = "folly::sorted_vector_map") folly_map
+
 struct AnnotatatedStruct {
   1: containerStruct no_annotation
   2: containerStruct cpp_unique_ref (cpp.ref)
@@ -209,6 +214,14 @@ struct AnnotatatedStruct {
   24: UnorderedMapStruct map_struct_type
   25: IOBuf iobuf_type
   26: IOBufPtr iobuf_ptr
+  27: list<i32> (cpp.template = "std::list") list_i32_template
+  28: list<string> (cpp2.template = "std::deque") list_string_template
+  29: set<string> (cpp.template = "folly::sorted_vector_set") set_template
+  30: map<i64, string> (cpp2.template = "folly::sorted_vector_map") map_template
+  31: std_list typedef_list_template
+  32: std_deque typedef_deque_template
+  33: folly_set typedef_set_template
+  34: folly_map typedef_map_template
 }
 
 service EmptyService {

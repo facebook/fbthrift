@@ -3445,6 +3445,62 @@ std::unordered_map<std::string, containerStruct>& AnnotatatedStruct::set_map_str
   return map_struct_type;
 }
 
+template <typename T_AnnotatatedStruct_list_i32_template_struct_setter>
+std::list<int32_t>& AnnotatatedStruct::set_list_i32_template(T_AnnotatatedStruct_list_i32_template_struct_setter&& list_i32_template_) {
+  list_i32_template = std::forward<T_AnnotatatedStruct_list_i32_template_struct_setter>(list_i32_template_);
+  __isset.list_i32_template = true;
+  return list_i32_template;
+}
+
+template <typename T_AnnotatatedStruct_list_string_template_struct_setter>
+std::deque<std::string>& AnnotatatedStruct::set_list_string_template(T_AnnotatatedStruct_list_string_template_struct_setter&& list_string_template_) {
+  list_string_template = std::forward<T_AnnotatatedStruct_list_string_template_struct_setter>(list_string_template_);
+  __isset.list_string_template = true;
+  return list_string_template;
+}
+
+template <typename T_AnnotatatedStruct_set_template_struct_setter>
+folly::sorted_vector_set<std::string>& AnnotatatedStruct::set_set_template(T_AnnotatatedStruct_set_template_struct_setter&& set_template_) {
+  set_template = std::forward<T_AnnotatatedStruct_set_template_struct_setter>(set_template_);
+  __isset.set_template = true;
+  return set_template;
+}
+
+template <typename T_AnnotatatedStruct_map_template_struct_setter>
+folly::sorted_vector_map<int64_t, std::string>& AnnotatatedStruct::set_map_template(T_AnnotatatedStruct_map_template_struct_setter&& map_template_) {
+  map_template = std::forward<T_AnnotatatedStruct_map_template_struct_setter>(map_template_);
+  __isset.map_template = true;
+  return map_template;
+}
+
+template <typename T_AnnotatatedStruct_typedef_list_template_struct_setter>
+ ::some::valid::ns::std_list& AnnotatatedStruct::set_typedef_list_template(T_AnnotatatedStruct_typedef_list_template_struct_setter&& typedef_list_template_) {
+  typedef_list_template = std::forward<T_AnnotatatedStruct_typedef_list_template_struct_setter>(typedef_list_template_);
+  __isset.typedef_list_template = true;
+  return typedef_list_template;
+}
+
+template <typename T_AnnotatatedStruct_typedef_deque_template_struct_setter>
+ ::some::valid::ns::std_deque& AnnotatatedStruct::set_typedef_deque_template(T_AnnotatatedStruct_typedef_deque_template_struct_setter&& typedef_deque_template_) {
+  typedef_deque_template = std::forward<T_AnnotatatedStruct_typedef_deque_template_struct_setter>(typedef_deque_template_);
+  __isset.typedef_deque_template = true;
+  return typedef_deque_template;
+}
+
+template <typename T_AnnotatatedStruct_typedef_set_template_struct_setter>
+ ::some::valid::ns::folly_set& AnnotatatedStruct::set_typedef_set_template(T_AnnotatatedStruct_typedef_set_template_struct_setter&& typedef_set_template_) {
+  typedef_set_template = std::forward<T_AnnotatatedStruct_typedef_set_template_struct_setter>(typedef_set_template_);
+  __isset.typedef_set_template = true;
+  return typedef_set_template;
+}
+
+template <typename T_AnnotatatedStruct_typedef_map_template_struct_setter>
+ ::some::valid::ns::folly_map& AnnotatatedStruct::set_typedef_map_template(T_AnnotatatedStruct_typedef_map_template_struct_setter&& typedef_map_template_) {
+  typedef_map_template = std::forward<T_AnnotatatedStruct_typedef_map_template_struct_setter>(typedef_map_template_);
+  __isset.typedef_map_template = true;
+  return typedef_map_template;
+}
+
 template <class Protocol_>
 uint32_t AnnotatatedStruct::read(Protocol_* iprot) {
   uint32_t xfer = 0;
@@ -3572,6 +3628,38 @@ uint32_t AnnotatatedStruct::read(Protocol_* iprot) {
       else if (fname == "iobuf_ptr") {
         fid = 26;
         ftype = apache::thrift::protocol::T_STRING;
+      }
+      else if (fname == "list_i32_template") {
+        fid = 27;
+        ftype = apache::thrift::protocol::T_LIST;
+      }
+      else if (fname == "list_string_template") {
+        fid = 28;
+        ftype = apache::thrift::protocol::T_LIST;
+      }
+      else if (fname == "set_template") {
+        fid = 29;
+        ftype = apache::thrift::protocol::T_SET;
+      }
+      else if (fname == "map_template") {
+        fid = 30;
+        ftype = apache::thrift::protocol::T_MAP;
+      }
+      else if (fname == "typedef_list_template") {
+        fid = 31;
+        ftype = apache::thrift::protocol::T_LIST;
+      }
+      else if (fname == "typedef_deque_template") {
+        fid = 32;
+        ftype = apache::thrift::protocol::T_LIST;
+      }
+      else if (fname == "typedef_set_template") {
+        fid = 33;
+        ftype = apache::thrift::protocol::T_SET;
+      }
+      else if (fname == "typedef_map_template") {
+        fid = 34;
+        ftype = apache::thrift::protocol::T_MAP;
       }
     }
     switch (fid) {
@@ -3863,6 +3951,94 @@ uint32_t AnnotatatedStruct::read(Protocol_* iprot) {
         }
         break;
       }
+      case 27:
+      {
+        if (ftype == apache::thrift::protocol::T_LIST) {
+          this->list_i32_template = std::list<int32_t>();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>>::read(*iprot, this->list_i32_template);
+          this->__isset.list_i32_template = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 28:
+      {
+        if (ftype == apache::thrift::protocol::T_LIST) {
+          this->list_string_template = std::deque<std::string>();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::deque<std::string>>::read(*iprot, this->list_string_template);
+          this->__isset.list_string_template = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 29:
+      {
+        if (ftype == apache::thrift::protocol::T_SET) {
+          this->set_template = folly::sorted_vector_set<std::string>();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::string>, folly::sorted_vector_set<std::string>>::read(*iprot, this->set_template);
+          this->__isset.set_template = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 30:
+      {
+        if (ftype == apache::thrift::protocol::T_MAP) {
+          this->map_template = folly::sorted_vector_map<int64_t, std::string>();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>, folly::sorted_vector_map<int64_t, std::string>>::read(*iprot, this->map_template);
+          this->__isset.map_template = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 31:
+      {
+        if (ftype == apache::thrift::protocol::T_LIST) {
+          this->typedef_list_template =  ::some::valid::ns::std_list();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>,  ::some::valid::ns::std_list>::read(*iprot, this->typedef_list_template);
+          this->__isset.typedef_list_template = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 32:
+      {
+        if (ftype == apache::thrift::protocol::T_LIST) {
+          this->typedef_deque_template =  ::some::valid::ns::std_deque();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>,  ::some::valid::ns::std_deque>::read(*iprot, this->typedef_deque_template);
+          this->__isset.typedef_deque_template = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 33:
+      {
+        if (ftype == apache::thrift::protocol::T_SET) {
+          this->typedef_set_template =  ::some::valid::ns::folly_set();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::string>,  ::some::valid::ns::folly_set>::read(*iprot, this->typedef_set_template);
+          this->__isset.typedef_set_template = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
+      case 34:
+      {
+        if (ftype == apache::thrift::protocol::T_MAP) {
+          this->typedef_map_template =  ::some::valid::ns::folly_map();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>,  ::some::valid::ns::folly_map>::read(*iprot, this->typedef_map_template);
+          this->__isset.typedef_map_template = true;
+        } else {
+          xfer += iprot->skip(ftype);
+        }
+        break;
+      }
       default:
       {
         xfer += iprot->skip(ftype);
@@ -4070,6 +4246,22 @@ uint32_t AnnotatatedStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedSizeBinary(this->iobuf_type);
   xfer += prot_->serializedFieldSize("iobuf_ptr", apache::thrift::protocol::T_STRING, 26);
   xfer += prot_->serializedSizeBinary(this->iobuf_ptr);
+  xfer += prot_->serializedFieldSize("list_i32_template", apache::thrift::protocol::T_LIST, 27);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>>::serializedSize<false>(*prot_, this->list_i32_template);
+  xfer += prot_->serializedFieldSize("list_string_template", apache::thrift::protocol::T_LIST, 28);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::deque<std::string>>::serializedSize<false>(*prot_, this->list_string_template);
+  xfer += prot_->serializedFieldSize("set_template", apache::thrift::protocol::T_SET, 29);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::string>, folly::sorted_vector_set<std::string>>::serializedSize<false>(*prot_, this->set_template);
+  xfer += prot_->serializedFieldSize("map_template", apache::thrift::protocol::T_MAP, 30);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>, folly::sorted_vector_map<int64_t, std::string>>::serializedSize<false>(*prot_, this->map_template);
+  xfer += prot_->serializedFieldSize("typedef_list_template", apache::thrift::protocol::T_LIST, 31);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>,  ::some::valid::ns::std_list>::serializedSize<false>(*prot_, this->typedef_list_template);
+  xfer += prot_->serializedFieldSize("typedef_deque_template", apache::thrift::protocol::T_LIST, 32);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>,  ::some::valid::ns::std_deque>::serializedSize<false>(*prot_, this->typedef_deque_template);
+  xfer += prot_->serializedFieldSize("typedef_set_template", apache::thrift::protocol::T_SET, 33);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::string>,  ::some::valid::ns::folly_set>::serializedSize<false>(*prot_, this->typedef_set_template);
+  xfer += prot_->serializedFieldSize("typedef_map_template", apache::thrift::protocol::T_MAP, 34);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>,  ::some::valid::ns::folly_map>::serializedSize<false>(*prot_, this->typedef_map_template);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -4250,6 +4442,22 @@ uint32_t AnnotatatedStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedSizeZCBinary(this->iobuf_type);
   xfer += prot_->serializedFieldSize("iobuf_ptr", apache::thrift::protocol::T_STRING, 26);
   xfer += prot_->serializedSizeZCBinary(this->iobuf_ptr);
+  xfer += prot_->serializedFieldSize("list_i32_template", apache::thrift::protocol::T_LIST, 27);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>>::serializedSize<false>(*prot_, this->list_i32_template);
+  xfer += prot_->serializedFieldSize("list_string_template", apache::thrift::protocol::T_LIST, 28);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::deque<std::string>>::serializedSize<false>(*prot_, this->list_string_template);
+  xfer += prot_->serializedFieldSize("set_template", apache::thrift::protocol::T_SET, 29);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::string>, folly::sorted_vector_set<std::string>>::serializedSize<false>(*prot_, this->set_template);
+  xfer += prot_->serializedFieldSize("map_template", apache::thrift::protocol::T_MAP, 30);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>, folly::sorted_vector_map<int64_t, std::string>>::serializedSize<false>(*prot_, this->map_template);
+  xfer += prot_->serializedFieldSize("typedef_list_template", apache::thrift::protocol::T_LIST, 31);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>,  ::some::valid::ns::std_list>::serializedSize<false>(*prot_, this->typedef_list_template);
+  xfer += prot_->serializedFieldSize("typedef_deque_template", apache::thrift::protocol::T_LIST, 32);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>,  ::some::valid::ns::std_deque>::serializedSize<false>(*prot_, this->typedef_deque_template);
+  xfer += prot_->serializedFieldSize("typedef_set_template", apache::thrift::protocol::T_SET, 33);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::string>,  ::some::valid::ns::folly_set>::serializedSize<false>(*prot_, this->typedef_set_template);
+  xfer += prot_->serializedFieldSize("typedef_map_template", apache::thrift::protocol::T_MAP, 34);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>,  ::some::valid::ns::folly_map>::serializedSize<false>(*prot_, this->typedef_map_template);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -4467,6 +4675,30 @@ uint32_t AnnotatatedStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("iobuf_ptr", apache::thrift::protocol::T_STRING, 26);
   xfer += prot_->writeBinary(this->iobuf_ptr);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("list_i32_template", apache::thrift::protocol::T_LIST, 27);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>>::write(*prot_, this->list_i32_template);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("list_string_template", apache::thrift::protocol::T_LIST, 28);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>, std::deque<std::string>>::write(*prot_, this->list_string_template);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("set_template", apache::thrift::protocol::T_SET, 29);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::string>, folly::sorted_vector_set<std::string>>::write(*prot_, this->set_template);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("map_template", apache::thrift::protocol::T_MAP, 30);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>, folly::sorted_vector_map<int64_t, std::string>>::write(*prot_, this->map_template);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("typedef_list_template", apache::thrift::protocol::T_LIST, 31);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>,  ::some::valid::ns::std_list>::write(*prot_, this->typedef_list_template);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("typedef_deque_template", apache::thrift::protocol::T_LIST, 32);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::string>,  ::some::valid::ns::std_deque>::write(*prot_, this->typedef_deque_template);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("typedef_set_template", apache::thrift::protocol::T_SET, 33);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::string>,  ::some::valid::ns::folly_set>::write(*prot_, this->typedef_set_template);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("typedef_map_template", apache::thrift::protocol::T_MAP, 34);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>,  ::some::valid::ns::folly_map>::write(*prot_, this->typedef_map_template);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

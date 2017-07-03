@@ -1287,6 +1287,22 @@ AnnotatatedStruct::AnnotatatedStruct(const AnnotatatedStruct& src) {
   __isset.iobuf_type = src.__isset.iobuf_type;
   iobuf_ptr = src.iobuf_ptr;
   __isset.iobuf_ptr = src.__isset.iobuf_ptr;
+  list_i32_template = src.list_i32_template;
+  __isset.list_i32_template = src.__isset.list_i32_template;
+  list_string_template = src.list_string_template;
+  __isset.list_string_template = src.__isset.list_string_template;
+  set_template = src.set_template;
+  __isset.set_template = src.__isset.set_template;
+  map_template = src.map_template;
+  __isset.map_template = src.__isset.map_template;
+  typedef_list_template = src.typedef_list_template;
+  __isset.typedef_list_template = src.__isset.typedef_list_template;
+  typedef_deque_template = src.typedef_deque_template;
+  __isset.typedef_deque_template = src.__isset.typedef_deque_template;
+  typedef_set_template = src.typedef_set_template;
+  __isset.typedef_set_template = src.__isset.typedef_set_template;
+  typedef_map_template = src.typedef_map_template;
+  __isset.typedef_map_template = src.__isset.typedef_map_template;
 }
 
 AnnotatatedStruct& AnnotatatedStruct::operator=(const AnnotatatedStruct& src) {
@@ -1323,6 +1339,14 @@ void AnnotatatedStruct::__clear() {
   map_struct_type.clear();
   iobuf_type = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   iobuf_ptr = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  list_i32_template.clear();
+  list_string_template.clear();
+  set_template.clear();
+  map_template.clear();
+  typedef_list_template.clear();
+  typedef_deque_template.clear();
+  typedef_set_template.clear();
+  typedef_map_template.clear();
   __isset.__clear();
 }
 
@@ -1405,6 +1429,30 @@ bool AnnotatatedStruct::operator==(const AnnotatatedStruct& rhs) const {
   if (!(apache::thrift::StringTraits<std::string>::isEqual(iobuf_ptr, rhs.iobuf_ptr))) {
     return false;
   }
+  if (!((list_i32_template == rhs.list_i32_template))) {
+    return false;
+  }
+  if (!((list_string_template == rhs.list_string_template))) {
+    return false;
+  }
+  if (!((set_template == rhs.set_template))) {
+    return false;
+  }
+  if (!((map_template == rhs.map_template))) {
+    return false;
+  }
+  if (!((typedef_list_template == rhs.typedef_list_template))) {
+    return false;
+  }
+  if (!((typedef_deque_template == rhs.typedef_deque_template))) {
+    return false;
+  }
+  if (!((typedef_set_template == rhs.typedef_set_template))) {
+    return false;
+  }
+  if (!((typedef_map_template == rhs.typedef_map_template))) {
+    return false;
+  }
   return true;
 }
 
@@ -1448,6 +1496,70 @@ std::unordered_map<std::string, containerStruct> AnnotatatedStruct::get_map_stru
   return std::move(map_struct_type);
 }
 
+const std::list<int32_t>& AnnotatatedStruct::get_list_i32_template() const& {
+  return list_i32_template;
+}
+
+std::list<int32_t> AnnotatatedStruct::get_list_i32_template() && {
+  return std::move(list_i32_template);
+}
+
+const std::deque<std::string>& AnnotatatedStruct::get_list_string_template() const& {
+  return list_string_template;
+}
+
+std::deque<std::string> AnnotatatedStruct::get_list_string_template() && {
+  return std::move(list_string_template);
+}
+
+const folly::sorted_vector_set<std::string>& AnnotatatedStruct::get_set_template() const& {
+  return set_template;
+}
+
+folly::sorted_vector_set<std::string> AnnotatatedStruct::get_set_template() && {
+  return std::move(set_template);
+}
+
+const folly::sorted_vector_map<int64_t, std::string>& AnnotatatedStruct::get_map_template() const& {
+  return map_template;
+}
+
+folly::sorted_vector_map<int64_t, std::string> AnnotatatedStruct::get_map_template() && {
+  return std::move(map_template);
+}
+
+const  ::some::valid::ns::std_list& AnnotatatedStruct::get_typedef_list_template() const& {
+  return typedef_list_template;
+}
+
+ ::some::valid::ns::std_list AnnotatatedStruct::get_typedef_list_template() && {
+  return std::move(typedef_list_template);
+}
+
+const  ::some::valid::ns::std_deque& AnnotatatedStruct::get_typedef_deque_template() const& {
+  return typedef_deque_template;
+}
+
+ ::some::valid::ns::std_deque AnnotatatedStruct::get_typedef_deque_template() && {
+  return std::move(typedef_deque_template);
+}
+
+const  ::some::valid::ns::folly_set& AnnotatatedStruct::get_typedef_set_template() const& {
+  return typedef_set_template;
+}
+
+ ::some::valid::ns::folly_set AnnotatatedStruct::get_typedef_set_template() && {
+  return std::move(typedef_set_template);
+}
+
+const  ::some::valid::ns::folly_map& AnnotatatedStruct::get_typedef_map_template() const& {
+  return typedef_map_template;
+}
+
+ ::some::valid::ns::folly_map AnnotatatedStruct::get_typedef_map_template() && {
+  return std::move(typedef_map_template);
+}
+
 void swap(AnnotatatedStruct& a, AnnotatatedStruct& b) {
   using ::std::swap;
   swap(a.no_annotation, b.no_annotation);
@@ -1476,6 +1588,14 @@ void swap(AnnotatatedStruct& a, AnnotatatedStruct& b) {
   swap(a.map_struct_type, b.map_struct_type);
   swap(a.iobuf_type, b.iobuf_type);
   swap(a.iobuf_ptr, b.iobuf_ptr);
+  swap(a.list_i32_template, b.list_i32_template);
+  swap(a.list_string_template, b.list_string_template);
+  swap(a.set_template, b.set_template);
+  swap(a.map_template, b.map_template);
+  swap(a.typedef_list_template, b.typedef_list_template);
+  swap(a.typedef_deque_template, b.typedef_deque_template);
+  swap(a.typedef_set_template, b.typedef_set_template);
+  swap(a.typedef_map_template, b.typedef_map_template);
   swap(a.__isset, b.__isset);
 }
 

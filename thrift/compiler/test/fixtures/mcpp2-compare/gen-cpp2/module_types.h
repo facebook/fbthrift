@@ -100,6 +100,14 @@ typedef std::string IOBuf;
 
 typedef std::string IOBufPtr;
 
+typedef std::list<int32_t> std_list;
+
+typedef std::deque<std::string> std_deque;
+
+typedef folly::sorted_vector_set<std::string> folly_set;
+
+typedef folly::sorted_vector_map<int64_t, std::string> folly_map;
+
 class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
  public:
 
@@ -4103,7 +4111,7 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
       base_type(0) {}
   // FragileConstructor for use in initialization lists only
 
-  AnnotatatedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::containerStruct no_annotation__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref__arg, std::unique_ptr<std::map<int32_t, std::vector<std::string>>> container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, std::unique_ptr<std::vector<std::string>> req_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, std::unique_ptr<std::set<int32_t>> opt_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique__arg, std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared__arg, std::shared_ptr<const std::map<int32_t, std::vector<std::string>>> ref_type_const__arg, std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const__arg, std::unique_ptr<std::vector<std::string>> req_ref_type_unique__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique__arg, std::shared_ptr<std::set<int32_t>> opt_ref_type_shared__arg, CppFakeI32 base_type__arg, folly::small_vector<int64_t, 8 /* maxInline */> list_type__arg, folly::sorted_vector_set<std::string> set_type__arg, FakeMap map_type__arg, std::unordered_map<std::string, containerStruct> map_struct_type__arg, folly::IOBuf iobuf_type__arg, std::unique_ptr<folly::IOBuf> iobuf_ptr__arg) :
+  AnnotatatedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::containerStruct no_annotation__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref__arg, std::unique_ptr<std::map<int32_t, std::vector<std::string>>> container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, std::unique_ptr<std::vector<std::string>> req_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, std::unique_ptr<std::set<int32_t>> opt_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique__arg, std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared__arg, std::shared_ptr<const std::map<int32_t, std::vector<std::string>>> ref_type_const__arg, std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const__arg, std::unique_ptr<std::vector<std::string>> req_ref_type_unique__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique__arg, std::shared_ptr<std::set<int32_t>> opt_ref_type_shared__arg, CppFakeI32 base_type__arg, folly::small_vector<int64_t, 8 /* maxInline */> list_type__arg, folly::sorted_vector_set<std::string> set_type__arg, FakeMap map_type__arg, std::unordered_map<std::string, containerStruct> map_struct_type__arg, folly::IOBuf iobuf_type__arg, std::unique_ptr<folly::IOBuf> iobuf_ptr__arg, std::list<int32_t> list_i32_template__arg, std::deque<std::string> list_string_template__arg, folly::sorted_vector_set<std::string> set_template__arg, folly::sorted_vector_map<int64_t, std::string> map_template__arg,  ::some::valid::ns::std_list typedef_list_template__arg,  ::some::valid::ns::std_deque typedef_deque_template__arg,  ::some::valid::ns::folly_set typedef_set_template__arg,  ::some::valid::ns::folly_map typedef_map_template__arg) :
       no_annotation(std::move(no_annotation__arg)),
       cpp_unique_ref(std::move(cpp_unique_ref__arg)),
       cpp2_unique_ref(std::move(cpp2_unique_ref__arg)),
@@ -4129,7 +4137,15 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
       map_type(std::move(map_type__arg)),
       map_struct_type(std::move(map_struct_type__arg)),
       iobuf_type(std::move(iobuf_type__arg)),
-      iobuf_ptr(std::move(iobuf_ptr__arg)) {
+      iobuf_ptr(std::move(iobuf_ptr__arg)),
+      list_i32_template(std::move(list_i32_template__arg)),
+      list_string_template(std::move(list_string_template__arg)),
+      set_template(std::move(set_template__arg)),
+      map_template(std::move(map_template__arg)),
+      typedef_list_template(std::move(typedef_list_template__arg)),
+      typedef_deque_template(std::move(typedef_deque_template__arg)),
+      typedef_set_template(std::move(typedef_set_template__arg)),
+      typedef_map_template(std::move(typedef_map_template__arg)) {
     __isset.no_annotation = true;
     __isset.base_type = true;
     __isset.list_type = true;
@@ -4138,6 +4154,14 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
     __isset.map_struct_type = true;
     __isset.iobuf_type = true;
     __isset.iobuf_ptr = true;
+    __isset.list_i32_template = true;
+    __isset.list_string_template = true;
+    __isset.set_template = true;
+    __isset.map_template = true;
+    __isset.typedef_list_template = true;
+    __isset.typedef_deque_template = true;
+    __isset.typedef_set_template = true;
+    __isset.typedef_map_template = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -4303,6 +4327,62 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
     iobuf_ptr = arg.move();
     __isset.iobuf_ptr = true;
   }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<27, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    list_i32_template = arg.move();
+    __isset.list_i32_template = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<28, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    list_string_template = arg.move();
+    __isset.list_string_template = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<29, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    set_template = arg.move();
+    __isset.set_template = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<30, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    map_template = arg.move();
+    __isset.map_template = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<31, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    typedef_list_template = arg.move();
+    __isset.typedef_list_template = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<32, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    typedef_deque_template = arg.move();
+    __isset.typedef_deque_template = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<33, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    typedef_set_template = arg.move();
+    __isset.typedef_set_template = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatatedStruct(::apache::thrift::detail::argument_wrapper<34, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    typedef_map_template = arg.move();
+    __isset.typedef_map_template = true;
+  }
 
   AnnotatatedStruct(AnnotatatedStruct&&) = default;
   AnnotatatedStruct(const AnnotatatedStruct& src);
@@ -4339,6 +4419,14 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
   std::unordered_map<std::string, containerStruct> map_struct_type;
   folly::IOBuf iobuf_type;
   std::unique_ptr<folly::IOBuf> iobuf_ptr;
+  std::list<int32_t> list_i32_template;
+  std::deque<std::string> list_string_template;
+  folly::sorted_vector_set<std::string> set_template;
+  folly::sorted_vector_map<int64_t, std::string> map_template;
+   ::some::valid::ns::std_list typedef_list_template;
+   ::some::valid::ns::std_deque typedef_deque_template;
+   ::some::valid::ns::folly_set typedef_set_template;
+   ::some::valid::ns::folly_map typedef_map_template;
 
   struct __isset {
     void __clear() {
@@ -4350,6 +4438,14 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
       map_struct_type = false;
       iobuf_type = false;
       iobuf_ptr = false;
+      list_i32_template = false;
+      list_string_template = false;
+      set_template = false;
+      map_template = false;
+      typedef_list_template = false;
+      typedef_deque_template = false;
+      typedef_set_template = false;
+      typedef_map_template = false;
     }
 
     bool no_annotation = false;
@@ -4360,6 +4456,14 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
     bool map_struct_type = false;
     bool iobuf_type = false;
     bool iobuf_ptr = false;
+    bool list_i32_template = false;
+    bool list_string_template = false;
+    bool set_template = false;
+    bool map_template = false;
+    bool typedef_list_template = false;
+    bool typedef_deque_template = false;
+    bool typedef_set_template = false;
+    bool typedef_map_template = false;
   } __isset;
   bool operator==(const AnnotatatedStruct& rhs) const;
   bool operator < (const AnnotatatedStruct& rhs) const;
@@ -4423,6 +4527,38 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
     __isset.iobuf_ptr = true;
     return iobuf_ptr;
   }
+  const std::list<int32_t>& get_list_i32_template() const&;
+  std::list<int32_t> get_list_i32_template() &&;
+  template <typename T_AnnotatatedStruct_list_i32_template_struct_setter>
+  std::list<int32_t>& set_list_i32_template(T_AnnotatatedStruct_list_i32_template_struct_setter&& list_i32_template_);
+  const std::deque<std::string>& get_list_string_template() const&;
+  std::deque<std::string> get_list_string_template() &&;
+  template <typename T_AnnotatatedStruct_list_string_template_struct_setter>
+  std::deque<std::string>& set_list_string_template(T_AnnotatatedStruct_list_string_template_struct_setter&& list_string_template_);
+  const folly::sorted_vector_set<std::string>& get_set_template() const&;
+  folly::sorted_vector_set<std::string> get_set_template() &&;
+  template <typename T_AnnotatatedStruct_set_template_struct_setter>
+  folly::sorted_vector_set<std::string>& set_set_template(T_AnnotatatedStruct_set_template_struct_setter&& set_template_);
+  const folly::sorted_vector_map<int64_t, std::string>& get_map_template() const&;
+  folly::sorted_vector_map<int64_t, std::string> get_map_template() &&;
+  template <typename T_AnnotatatedStruct_map_template_struct_setter>
+  folly::sorted_vector_map<int64_t, std::string>& set_map_template(T_AnnotatatedStruct_map_template_struct_setter&& map_template_);
+  const  ::some::valid::ns::std_list& get_typedef_list_template() const&;
+   ::some::valid::ns::std_list get_typedef_list_template() &&;
+  template <typename T_AnnotatatedStruct_typedef_list_template_struct_setter>
+   ::some::valid::ns::std_list& set_typedef_list_template(T_AnnotatatedStruct_typedef_list_template_struct_setter&& typedef_list_template_);
+  const  ::some::valid::ns::std_deque& get_typedef_deque_template() const&;
+   ::some::valid::ns::std_deque get_typedef_deque_template() &&;
+  template <typename T_AnnotatatedStruct_typedef_deque_template_struct_setter>
+   ::some::valid::ns::std_deque& set_typedef_deque_template(T_AnnotatatedStruct_typedef_deque_template_struct_setter&& typedef_deque_template_);
+  const  ::some::valid::ns::folly_set& get_typedef_set_template() const&;
+   ::some::valid::ns::folly_set get_typedef_set_template() &&;
+  template <typename T_AnnotatatedStruct_typedef_set_template_struct_setter>
+   ::some::valid::ns::folly_set& set_typedef_set_template(T_AnnotatatedStruct_typedef_set_template_struct_setter&& typedef_set_template_);
+  const  ::some::valid::ns::folly_map& get_typedef_map_template() const&;
+   ::some::valid::ns::folly_map get_typedef_map_template() &&;
+  template <typename T_AnnotatatedStruct_typedef_map_template_struct_setter>
+   ::some::valid::ns::folly_map& set_typedef_map_template(T_AnnotatatedStruct_typedef_map_template_struct_setter&& typedef_map_template_);
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
