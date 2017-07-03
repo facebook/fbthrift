@@ -238,6 +238,7 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:cpp_noncopyable", &mstch_cpp2_struct::cpp_noncopyable},
             {"struct:cpp_noexcept_move_ctor",
              &mstch_cpp2_struct::cpp_noexcept_move_ctor},
+            {"struct:final", &mstch_cpp2_struct::cpp_final},
         });
   }
   mstch::node getters_setters() {
@@ -363,6 +364,12 @@ class mstch_cpp2_struct : public mstch_struct {
     if (strct_->annotations_.count("cpp.noexcept_move_ctor")) {
       return true;
     } else if (strct_->annotations_.count("cpp2.noexcept_move_ctor")) {
+      return true;
+    }
+    return false;
+  }
+  mstch::node cpp_final() {
+    if (strct_->annotations_.count("final")) {
       return true;
     }
     return false;

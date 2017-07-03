@@ -56,10 +56,12 @@ class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<
 <% > module_types_h/union_template_ctor%>
   void __clear();
 
-  virtual ~<%struct:name%>() throw() {
+  <%^struct:final%>virtual <%/struct:final%>~<%struct:name%>() throw() {
     __clear();
   }
+<%^struct:final%>
 
+<%/struct:final%>
 <% > module_types_h/union_storage%>
 
   bool operator==(const <%struct:name%>& rhs) const;
@@ -123,9 +125,11 @@ class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<
 <%/struct:fields_contain_cpp_ref?%>
 <%/struct:cpp_noncopyable%>
   void __clear();
+<%^struct:final%>
 
   virtual ~<%struct:name%>() throw() {}
 
+<%/struct:final%>
 <%#struct:fields?%>
 <% > module_types_h/declare_members%>
 

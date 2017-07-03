@@ -66,7 +66,7 @@ struct MyStruct {
 union SimpleUnion {
   7: i64 intValue;
   2: string stringValue;
-}
+} (final)
 
 typedef i32 simpleTypeDef
 typedef map<i16, string> containerTypeDef
@@ -130,7 +130,7 @@ exception AnotherException {
   1: i32 code
   101: required i32 req_code
   2: string message
-}
+} (final)
 
 struct containerStruct {
   1: bool fieldA
@@ -235,7 +235,8 @@ struct AnnotatatedStruct {
   33: folly_set typedef_set_template
   34: folly_map typedef_map_template
 } (
-    cpp2.noexcept_move_ctor
+    final,
+    cpp2.noexcept_move_ctor,
     cpp2.noncopyable,
     cpp.declare_hash,
     cpp.declare_equal_to = 1,

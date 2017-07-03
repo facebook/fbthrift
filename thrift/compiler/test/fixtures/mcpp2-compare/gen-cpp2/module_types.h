@@ -660,10 +660,9 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
   }
   void __clear();
 
-  virtual ~SimpleUnion() throw() {
+  ~SimpleUnion() throw() {
     __clear();
   }
-
   union storage_type {
     int64_t intValue;
     std::string stringValue;
@@ -3092,9 +3091,6 @@ class AnotherException : private apache::thrift::detail::st::ComparisonOperators
 
   AnotherException& operator=(const AnotherException&) = default;
   void __clear();
-
-  virtual ~AnotherException() throw() {}
-
   int32_t code;
   int32_t req_code;
   std::string message;
@@ -4516,9 +4512,6 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
 
   AnnotatatedStruct& operator=(AnnotatatedStruct&&) = default;
   void __clear();
-
-  virtual ~AnnotatatedStruct() throw() {}
-
    ::some::valid::ns::containerStruct no_annotation;
   std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref;
   std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref;
