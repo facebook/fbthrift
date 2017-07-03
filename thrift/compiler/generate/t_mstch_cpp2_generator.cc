@@ -222,6 +222,7 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:is_struct_orderable?",
              &mstch_cpp2_struct::is_struct_orderable},
             {"struct:fields_contain_cpp_ref?", &mstch_cpp2_struct::has_cpp_ref},
+            {"struct:cpp_methods", &mstch_cpp2_struct::cpp_methods},
         });
   }
   mstch::node getters_setters() {
@@ -312,6 +313,14 @@ class mstch_cpp2_struct : public mstch_struct {
       }
     }
     return false;
+  }
+  mstch::node cpp_methods() {
+    if (strct_->annotations_.count("cpp.methods")) {
+      return strct_->annotations_.at("cpp.methods");
+    } else if (strct_->annotations_.count("cpp2.methods")) {
+      return strct_->annotations_.at("cpp2.methods");
+    }
+    return std::string();
   }
 };
 

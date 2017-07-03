@@ -2566,6 +2566,8 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
 
   Type type_;
   storage_type value_;
+  // user defined code (cpp2.methods = ...)
+  void foo(const std::string& bar) {}
 };
 
 void swap(ComplexUnion& a, ComplexUnion& b);
@@ -3954,6 +3956,8 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+  // user defined code (cpp2.methods = ...)
+  void foo(const std::string& bar) {}
 };
 
 void swap(containerStruct& a, containerStruct& b);
@@ -4568,6 +4572,8 @@ class AnnotatatedStruct : private apache::thrift::detail::st::ComparisonOperator
   uint32_t serializedSizeZC(Protocol_ const* prot_) const;
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
+  // user defined code (cpp2.methods = ...)
+  void foo(const std::string& bar) {}
 };
 
 void swap(AnnotatatedStruct& a, AnnotatatedStruct& b);

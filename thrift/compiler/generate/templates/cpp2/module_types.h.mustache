@@ -143,6 +143,10 @@ class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<
   }
 <%/struct:exception?%>
 <%/struct:union?%>
+<%#struct:cpp_methods%>
+  // user defined code (cpp2.methods = ...)
+  <%struct:cpp_methods%>
+<%/struct:cpp_methods%>
 };
 
 void swap(<%struct:name%>& a, <%struct:name%>& b);

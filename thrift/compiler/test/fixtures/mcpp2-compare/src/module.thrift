@@ -94,7 +94,7 @@ union ComplexUnion {
   21: optional binary MyBinaryField2
   22: required binary MyBinaryField3
   23: list<binary> MyBinaryListField4
-}
+} (cpp.methods = "void foo(const std::string& bar) {}")
 
 exception AnException {
   1: i32 code
@@ -165,7 +165,7 @@ struct containerStruct {
   26: list<ComplexUnion> fieldY
   27: unionTypeDef fieldZ
   28: list<unionTypeDef> fieldAA
-}
+} (cpp.methods = "void foo(const std::string& bar) {}")
 
 struct MyIncludedStruct {
   1: includes.IncludedInt64 MyIncludedInt = includes.IncludedConstant
@@ -222,7 +222,7 @@ struct AnnotatatedStruct {
   32: std_deque typedef_deque_template
   33: folly_set typedef_set_template
   34: folly_map typedef_map_template
-}
+} (cpp2.methods = "void foo(const std::string& bar) {}")
 
 service EmptyService {
 }
