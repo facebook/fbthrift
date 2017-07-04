@@ -77,8 +77,13 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
   bool operator < (const MyStruct& rhs) const;
   const  ::cpp2::Included& get_MyIncludedField() const&;
    ::cpp2::Included get_MyIncludedField() &&;
+
   template <typename T_MyStruct_MyIncludedField_struct_setter>
-   ::cpp2::Included& set_MyIncludedField(T_MyStruct_MyIncludedField_struct_setter&& MyIncludedField_);
+   ::cpp2::Included& set_MyIncludedField(T_MyStruct_MyIncludedField_struct_setter&& MyIncludedField_) {
+    MyIncludedField = std::forward<T_MyStruct_MyIncludedField_struct_setter>(MyIncludedField_);
+    __isset.MyIncludedField = true;
+    return MyIncludedField;
+  }
 
    ::cpp2::IncludedInt64 get_MyIncludedInt() const {
     return MyIncludedInt;

@@ -2608,100 +2608,220 @@ class structC : private apache::thrift::detail::st::ComparisonOperators<structC>
   }
   const  ::test_cpp2::cpp_reflection::union1& get_g() const&;
    ::test_cpp2::cpp_reflection::union1 get_g() &&;
+
   template <typename T_structC_g_struct_setter>
-   ::test_cpp2::cpp_reflection::union1& set_g(T_structC_g_struct_setter&& g_);
+   ::test_cpp2::cpp_reflection::union1& set_g(T_structC_g_struct_setter&& g_) {
+    g = std::forward<T_structC_g_struct_setter>(g_);
+    __isset.g = true;
+    return g;
+  }
   const  ::test_cpp2::cpp_reflection::unionA& get_h() const&;
    ::test_cpp2::cpp_reflection::unionA get_h() &&;
+
   template <typename T_structC_h_struct_setter>
-   ::test_cpp2::cpp_reflection::unionA& set_h(T_structC_h_struct_setter&& h_);
+   ::test_cpp2::cpp_reflection::unionA& set_h(T_structC_h_struct_setter&& h_) {
+    h = std::forward<T_structC_h_struct_setter>(h_);
+    __isset.h = true;
+    return h;
+  }
   const  ::test_cpp2::cpp_reflection::unionA& get_i() const&;
    ::test_cpp2::cpp_reflection::unionA get_i() &&;
+
   template <typename T_structC_i_struct_setter>
-   ::test_cpp2::cpp_reflection::unionA& set_i(T_structC_i_struct_setter&& i_);
+   ::test_cpp2::cpp_reflection::unionA& set_i(T_structC_i_struct_setter&& i_) {
+    i = std::forward<T_structC_i_struct_setter>(i_);
+    __isset.i = true;
+    return i;
+  }
   const std::vector<int32_t>& get_j() const&;
   std::vector<int32_t> get_j() &&;
+
   template <typename T_structC_j_struct_setter>
-  std::vector<int32_t>& set_j(T_structC_j_struct_setter&& j_);
+  std::vector<int32_t>& set_j(T_structC_j_struct_setter&& j_) {
+    j = std::forward<T_structC_j_struct_setter>(j_);
+    __isset.j = true;
+    return j;
+  }
   const std::vector<int32_t>& get_j1() const&;
   std::vector<int32_t> get_j1() &&;
+
   template <typename T_structC_j1_struct_setter>
-  std::vector<int32_t>& set_j1(T_structC_j1_struct_setter&& j1_);
+  std::vector<int32_t>& set_j1(T_structC_j1_struct_setter&& j1_) {
+    j1 = std::forward<T_structC_j1_struct_setter>(j1_);
+    __isset.j1 = true;
+    return j1;
+  }
   const std::vector< ::test_cpp2::cpp_reflection::enum1>& get_j2() const&;
   std::vector< ::test_cpp2::cpp_reflection::enum1> get_j2() &&;
+
   template <typename T_structC_j2_struct_setter>
-  std::vector< ::test_cpp2::cpp_reflection::enum1>& set_j2(T_structC_j2_struct_setter&& j2_);
+  std::vector< ::test_cpp2::cpp_reflection::enum1>& set_j2(T_structC_j2_struct_setter&& j2_) {
+    j2 = std::forward<T_structC_j2_struct_setter>(j2_);
+    __isset.j2 = true;
+    return j2;
+  }
   const std::vector< ::test_cpp2::cpp_reflection::structA>& get_j3() const&;
   std::vector< ::test_cpp2::cpp_reflection::structA> get_j3() &&;
+
   template <typename T_structC_j3_struct_setter>
-  std::vector< ::test_cpp2::cpp_reflection::structA>& set_j3(T_structC_j3_struct_setter&& j3_);
+  std::vector< ::test_cpp2::cpp_reflection::structA>& set_j3(T_structC_j3_struct_setter&& j3_) {
+    j3 = std::forward<T_structC_j3_struct_setter>(j3_);
+    __isset.j3 = true;
+    return j3;
+  }
   const std::set<int32_t>& get_k() const&;
   std::set<int32_t> get_k() &&;
+
   template <typename T_structC_k_struct_setter>
-  std::set<int32_t>& set_k(T_structC_k_struct_setter&& k_);
+  std::set<int32_t>& set_k(T_structC_k_struct_setter&& k_) {
+    k = std::forward<T_structC_k_struct_setter>(k_);
+    __isset.k = true;
+    return k;
+  }
   const std::set<int32_t>& get_k1() const&;
   std::set<int32_t> get_k1() &&;
+
   template <typename T_structC_k1_struct_setter>
-  std::set<int32_t>& set_k1(T_structC_k1_struct_setter&& k1_);
+  std::set<int32_t>& set_k1(T_structC_k1_struct_setter&& k1_) {
+    k1 = std::forward<T_structC_k1_struct_setter>(k1_);
+    __isset.k1 = true;
+    return k1;
+  }
   const std::set< ::test_cpp2::cpp_reflection::enum2>& get_k2() const&;
   std::set< ::test_cpp2::cpp_reflection::enum2> get_k2() &&;
+
   template <typename T_structC_k2_struct_setter>
-  std::set< ::test_cpp2::cpp_reflection::enum2>& set_k2(T_structC_k2_struct_setter&& k2_);
+  std::set< ::test_cpp2::cpp_reflection::enum2>& set_k2(T_structC_k2_struct_setter&& k2_) {
+    k2 = std::forward<T_structC_k2_struct_setter>(k2_);
+    __isset.k2 = true;
+    return k2;
+  }
   const std::set< ::test_cpp2::cpp_reflection::structB>& get_k3() const&;
   std::set< ::test_cpp2::cpp_reflection::structB> get_k3() &&;
+
   template <typename T_structC_k3_struct_setter>
-  std::set< ::test_cpp2::cpp_reflection::structB>& set_k3(T_structC_k3_struct_setter&& k3_);
+  std::set< ::test_cpp2::cpp_reflection::structB>& set_k3(T_structC_k3_struct_setter&& k3_) {
+    k3 = std::forward<T_structC_k3_struct_setter>(k3_);
+    __isset.k3 = true;
+    return k3;
+  }
   const std::map<int32_t, int32_t>& get_l() const&;
   std::map<int32_t, int32_t> get_l() &&;
+
   template <typename T_structC_l_struct_setter>
-  std::map<int32_t, int32_t>& set_l(T_structC_l_struct_setter&& l_);
+  std::map<int32_t, int32_t>& set_l(T_structC_l_struct_setter&& l_) {
+    l = std::forward<T_structC_l_struct_setter>(l_);
+    __isset.l = true;
+    return l;
+  }
   const std::map<int32_t, int32_t>& get_l1() const&;
   std::map<int32_t, int32_t> get_l1() &&;
+
   template <typename T_structC_l1_struct_setter>
-  std::map<int32_t, int32_t>& set_l1(T_structC_l1_struct_setter&& l1_);
+  std::map<int32_t, int32_t>& set_l1(T_structC_l1_struct_setter&& l1_) {
+    l1 = std::forward<T_structC_l1_struct_setter>(l1_);
+    __isset.l1 = true;
+    return l1;
+  }
   const std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1>& get_l2() const&;
   std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1> get_l2() &&;
+
   template <typename T_structC_l2_struct_setter>
-  std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1>& set_l2(T_structC_l2_struct_setter&& l2_);
+  std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1>& set_l2(T_structC_l2_struct_setter&& l2_) {
+    l2 = std::forward<T_structC_l2_struct_setter>(l2_);
+    __isset.l2 = true;
+    return l2;
+  }
   const std::map<int32_t,  ::test_cpp2::cpp_reflection::structB>& get_l3() const&;
   std::map<int32_t,  ::test_cpp2::cpp_reflection::structB> get_l3() &&;
+
   template <typename T_structC_l3_struct_setter>
-  std::map<int32_t,  ::test_cpp2::cpp_reflection::structB>& set_l3(T_structC_l3_struct_setter&& l3_);
+  std::map<int32_t,  ::test_cpp2::cpp_reflection::structB>& set_l3(T_structC_l3_struct_setter&& l3_) {
+    l3 = std::forward<T_structC_l3_struct_setter>(l3_);
+    __isset.l3 = true;
+    return l3;
+  }
   const std::map< ::test_cpp2::cpp_reflection::enum1, int32_t>& get_m1() const&;
   std::map< ::test_cpp2::cpp_reflection::enum1, int32_t> get_m1() &&;
+
   template <typename T_structC_m1_struct_setter>
-  std::map< ::test_cpp2::cpp_reflection::enum1, int32_t>& set_m1(T_structC_m1_struct_setter&& m1_);
+  std::map< ::test_cpp2::cpp_reflection::enum1, int32_t>& set_m1(T_structC_m1_struct_setter&& m1_) {
+    m1 = std::forward<T_structC_m1_struct_setter>(m1_);
+    __isset.m1 = true;
+    return m1;
+  }
   const std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2>& get_m2() const&;
   std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2> get_m2() &&;
+
   template <typename T_structC_m2_struct_setter>
-  std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2>& set_m2(T_structC_m2_struct_setter&& m2_);
+  std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2>& set_m2(T_structC_m2_struct_setter&& m2_) {
+    m2 = std::forward<T_structC_m2_struct_setter>(m2_);
+    __isset.m2 = true;
+    return m2;
+  }
   const std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB>& get_m3() const&;
   std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB> get_m3() &&;
+
   template <typename T_structC_m3_struct_setter>
-  std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB>& set_m3(T_structC_m3_struct_setter&& m3_);
+  std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB>& set_m3(T_structC_m3_struct_setter&& m3_) {
+    m3 = std::forward<T_structC_m3_struct_setter>(m3_);
+    __isset.m3 = true;
+    return m3;
+  }
   const std::map<std::string, int32_t>& get_n1() const&;
   std::map<std::string, int32_t> get_n1() &&;
+
   template <typename T_structC_n1_struct_setter>
-  std::map<std::string, int32_t>& set_n1(T_structC_n1_struct_setter&& n1_);
+  std::map<std::string, int32_t>& set_n1(T_structC_n1_struct_setter&& n1_) {
+    n1 = std::forward<T_structC_n1_struct_setter>(n1_);
+    __isset.n1 = true;
+    return n1;
+  }
   const std::map<std::string,  ::test_cpp2::cpp_reflection::enum1>& get_n2() const&;
   std::map<std::string,  ::test_cpp2::cpp_reflection::enum1> get_n2() &&;
+
   template <typename T_structC_n2_struct_setter>
-  std::map<std::string,  ::test_cpp2::cpp_reflection::enum1>& set_n2(T_structC_n2_struct_setter&& n2_);
+  std::map<std::string,  ::test_cpp2::cpp_reflection::enum1>& set_n2(T_structC_n2_struct_setter&& n2_) {
+    n2 = std::forward<T_structC_n2_struct_setter>(n2_);
+    __isset.n2 = true;
+    return n2;
+  }
   const std::map<std::string,  ::test_cpp2::cpp_reflection::structB>& get_n3() const&;
   std::map<std::string,  ::test_cpp2::cpp_reflection::structB> get_n3() &&;
+
   template <typename T_structC_n3_struct_setter>
-  std::map<std::string,  ::test_cpp2::cpp_reflection::structB>& set_n3(T_structC_n3_struct_setter&& n3_);
+  std::map<std::string,  ::test_cpp2::cpp_reflection::structB>& set_n3(T_structC_n3_struct_setter&& n3_) {
+    n3 = std::forward<T_structC_n3_struct_setter>(n3_);
+    __isset.n3 = true;
+    return n3;
+  }
   const std::map< ::test_cpp2::cpp_reflection::structA, int32_t>& get_o1() const&;
   std::map< ::test_cpp2::cpp_reflection::structA, int32_t> get_o1() &&;
+
   template <typename T_structC_o1_struct_setter>
-  std::map< ::test_cpp2::cpp_reflection::structA, int32_t>& set_o1(T_structC_o1_struct_setter&& o1_);
+  std::map< ::test_cpp2::cpp_reflection::structA, int32_t>& set_o1(T_structC_o1_struct_setter&& o1_) {
+    o1 = std::forward<T_structC_o1_struct_setter>(o1_);
+    __isset.o1 = true;
+    return o1;
+  }
   const std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1>& get_o2() const&;
   std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1> get_o2() &&;
+
   template <typename T_structC_o2_struct_setter>
-  std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1>& set_o2(T_structC_o2_struct_setter&& o2_);
+  std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1>& set_o2(T_structC_o2_struct_setter&& o2_) {
+    o2 = std::forward<T_structC_o2_struct_setter>(o2_);
+    __isset.o2 = true;
+    return o2;
+  }
   const std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB>& get_o3() const&;
   std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB> get_o3() &&;
+
   template <typename T_structC_o3_struct_setter>
-  std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB>& set_o3(T_structC_o3_struct_setter&& o3_);
+  std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB>& set_o3(T_structC_o3_struct_setter&& o3_) {
+    o3 = std::forward<T_structC_o3_struct_setter>(o3_);
+    __isset.o3 = true;
+    return o3;
+  }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -2895,12 +3015,22 @@ class struct1 : private apache::thrift::detail::st::ComparisonOperators<struct1>
   const  ::test_cpp2::cpp_reflection::union1* get_field4() const&;
    ::test_cpp2::cpp_reflection::union1* get_field4() &;
    ::test_cpp2::cpp_reflection::union1* get_field4() && = delete;
+
   template <typename T_struct1_field4_struct_setter>
-   ::test_cpp2::cpp_reflection::union1& set_field4(T_struct1_field4_struct_setter&& field4_);
+   ::test_cpp2::cpp_reflection::union1& set_field4(T_struct1_field4_struct_setter&& field4_) {
+    field4 = std::forward<T_struct1_field4_struct_setter>(field4_);
+    __isset.field4 = true;
+    return field4;
+  }
   const  ::test_cpp2::cpp_reflection::union2& get_field5() const&;
    ::test_cpp2::cpp_reflection::union2 get_field5() &&;
+
   template <typename T_struct1_field5_struct_setter>
-   ::test_cpp2::cpp_reflection::union2& set_field5(T_struct1_field5_struct_setter&& field5_);
+   ::test_cpp2::cpp_reflection::union2& set_field5(T_struct1_field5_struct_setter&& field5_) {
+    field5 = std::forward<T_struct1_field5_struct_setter>(field5_);
+    __isset.field5 = true;
+    return field5;
+  }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -3114,16 +3244,31 @@ class struct2 : private apache::thrift::detail::st::ComparisonOperators<struct2>
   }
   const  ::test_cpp2::cpp_reflection::union1& get_fieldE() const&;
    ::test_cpp2::cpp_reflection::union1 get_fieldE() &&;
+
   template <typename T_struct2_fieldE_struct_setter>
-   ::test_cpp2::cpp_reflection::union1& set_fieldE(T_struct2_fieldE_struct_setter&& fieldE_);
+   ::test_cpp2::cpp_reflection::union1& set_fieldE(T_struct2_fieldE_struct_setter&& fieldE_) {
+    fieldE = std::forward<T_struct2_fieldE_struct_setter>(fieldE_);
+    __isset.fieldE = true;
+    return fieldE;
+  }
   const  ::test_cpp2::cpp_reflection::union2& get_fieldF() const&;
    ::test_cpp2::cpp_reflection::union2 get_fieldF() &&;
+
   template <typename T_struct2_fieldF_struct_setter>
-   ::test_cpp2::cpp_reflection::union2& set_fieldF(T_struct2_fieldF_struct_setter&& fieldF_);
+   ::test_cpp2::cpp_reflection::union2& set_fieldF(T_struct2_fieldF_struct_setter&& fieldF_) {
+    fieldF = std::forward<T_struct2_fieldF_struct_setter>(fieldF_);
+    __isset.fieldF = true;
+    return fieldF;
+  }
   const  ::test_cpp2::cpp_reflection::struct1& get_fieldG() const&;
    ::test_cpp2::cpp_reflection::struct1 get_fieldG() &&;
+
   template <typename T_struct2_fieldG_struct_setter>
-   ::test_cpp2::cpp_reflection::struct1& set_fieldG(T_struct2_fieldG_struct_setter&& fieldG_);
+   ::test_cpp2::cpp_reflection::struct1& set_fieldG(T_struct2_fieldG_struct_setter&& fieldG_) {
+    fieldG = std::forward<T_struct2_fieldG_struct_setter>(fieldG_);
+    __isset.fieldG = true;
+    return fieldG;
+  }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -3469,60 +3614,130 @@ class struct3 : private apache::thrift::detail::st::ComparisonOperators<struct3>
   }
   const  ::test_cpp2::cpp_reflection::union1& get_fieldE() const&;
    ::test_cpp2::cpp_reflection::union1 get_fieldE() &&;
+
   template <typename T_struct3_fieldE_struct_setter>
-   ::test_cpp2::cpp_reflection::union1& set_fieldE(T_struct3_fieldE_struct_setter&& fieldE_);
+   ::test_cpp2::cpp_reflection::union1& set_fieldE(T_struct3_fieldE_struct_setter&& fieldE_) {
+    fieldE = std::forward<T_struct3_fieldE_struct_setter>(fieldE_);
+    __isset.fieldE = true;
+    return fieldE;
+  }
   const  ::test_cpp2::cpp_reflection::union2& get_fieldF() const&;
    ::test_cpp2::cpp_reflection::union2 get_fieldF() &&;
+
   template <typename T_struct3_fieldF_struct_setter>
-   ::test_cpp2::cpp_reflection::union2& set_fieldF(T_struct3_fieldF_struct_setter&& fieldF_);
+   ::test_cpp2::cpp_reflection::union2& set_fieldF(T_struct3_fieldF_struct_setter&& fieldF_) {
+    fieldF = std::forward<T_struct3_fieldF_struct_setter>(fieldF_);
+    __isset.fieldF = true;
+    return fieldF;
+  }
   const  ::test_cpp2::cpp_reflection::struct1& get_fieldG() const&;
    ::test_cpp2::cpp_reflection::struct1 get_fieldG() &&;
+
   template <typename T_struct3_fieldG_struct_setter>
-   ::test_cpp2::cpp_reflection::struct1& set_fieldG(T_struct3_fieldG_struct_setter&& fieldG_);
+   ::test_cpp2::cpp_reflection::struct1& set_fieldG(T_struct3_fieldG_struct_setter&& fieldG_) {
+    fieldG = std::forward<T_struct3_fieldG_struct_setter>(fieldG_);
+    __isset.fieldG = true;
+    return fieldG;
+  }
   const  ::test_cpp2::cpp_reflection::union2& get_fieldH() const&;
    ::test_cpp2::cpp_reflection::union2 get_fieldH() &&;
+
   template <typename T_struct3_fieldH_struct_setter>
-   ::test_cpp2::cpp_reflection::union2& set_fieldH(T_struct3_fieldH_struct_setter&& fieldH_);
+   ::test_cpp2::cpp_reflection::union2& set_fieldH(T_struct3_fieldH_struct_setter&& fieldH_) {
+    fieldH = std::forward<T_struct3_fieldH_struct_setter>(fieldH_);
+    __isset.fieldH = true;
+    return fieldH;
+  }
   const std::vector<int32_t>& get_fieldI() const&;
   std::vector<int32_t> get_fieldI() &&;
+
   template <typename T_struct3_fieldI_struct_setter>
-  std::vector<int32_t>& set_fieldI(T_struct3_fieldI_struct_setter&& fieldI_);
+  std::vector<int32_t>& set_fieldI(T_struct3_fieldI_struct_setter&& fieldI_) {
+    fieldI = std::forward<T_struct3_fieldI_struct_setter>(fieldI_);
+    __isset.fieldI = true;
+    return fieldI;
+  }
   const std::vector<std::string>& get_fieldJ() const&;
   std::vector<std::string> get_fieldJ() &&;
+
   template <typename T_struct3_fieldJ_struct_setter>
-  std::vector<std::string>& set_fieldJ(T_struct3_fieldJ_struct_setter&& fieldJ_);
+  std::vector<std::string>& set_fieldJ(T_struct3_fieldJ_struct_setter&& fieldJ_) {
+    fieldJ = std::forward<T_struct3_fieldJ_struct_setter>(fieldJ_);
+    __isset.fieldJ = true;
+    return fieldJ;
+  }
   const std::vector<std::string>& get_fieldK() const&;
   std::vector<std::string> get_fieldK() &&;
+
   template <typename T_struct3_fieldK_struct_setter>
-  std::vector<std::string>& set_fieldK(T_struct3_fieldK_struct_setter&& fieldK_);
+  std::vector<std::string>& set_fieldK(T_struct3_fieldK_struct_setter&& fieldK_) {
+    fieldK = std::forward<T_struct3_fieldK_struct_setter>(fieldK_);
+    __isset.fieldK = true;
+    return fieldK;
+  }
   const std::vector< ::test_cpp2::cpp_reflection::structA>& get_fieldL() const&;
   std::vector< ::test_cpp2::cpp_reflection::structA> get_fieldL() &&;
+
   template <typename T_struct3_fieldL_struct_setter>
-  std::vector< ::test_cpp2::cpp_reflection::structA>& set_fieldL(T_struct3_fieldL_struct_setter&& fieldL_);
+  std::vector< ::test_cpp2::cpp_reflection::structA>& set_fieldL(T_struct3_fieldL_struct_setter&& fieldL_) {
+    fieldL = std::forward<T_struct3_fieldL_struct_setter>(fieldL_);
+    __isset.fieldL = true;
+    return fieldL;
+  }
   const std::set<int32_t>& get_fieldM() const&;
   std::set<int32_t> get_fieldM() &&;
+
   template <typename T_struct3_fieldM_struct_setter>
-  std::set<int32_t>& set_fieldM(T_struct3_fieldM_struct_setter&& fieldM_);
+  std::set<int32_t>& set_fieldM(T_struct3_fieldM_struct_setter&& fieldM_) {
+    fieldM = std::forward<T_struct3_fieldM_struct_setter>(fieldM_);
+    __isset.fieldM = true;
+    return fieldM;
+  }
   const std::set<std::string>& get_fieldN() const&;
   std::set<std::string> get_fieldN() &&;
+
   template <typename T_struct3_fieldN_struct_setter>
-  std::set<std::string>& set_fieldN(T_struct3_fieldN_struct_setter&& fieldN_);
+  std::set<std::string>& set_fieldN(T_struct3_fieldN_struct_setter&& fieldN_) {
+    fieldN = std::forward<T_struct3_fieldN_struct_setter>(fieldN_);
+    __isset.fieldN = true;
+    return fieldN;
+  }
   const std::set<std::string>& get_fieldO() const&;
   std::set<std::string> get_fieldO() &&;
+
   template <typename T_struct3_fieldO_struct_setter>
-  std::set<std::string>& set_fieldO(T_struct3_fieldO_struct_setter&& fieldO_);
+  std::set<std::string>& set_fieldO(T_struct3_fieldO_struct_setter&& fieldO_) {
+    fieldO = std::forward<T_struct3_fieldO_struct_setter>(fieldO_);
+    __isset.fieldO = true;
+    return fieldO;
+  }
   const std::set< ::test_cpp2::cpp_reflection::structB>& get_fieldP() const&;
   std::set< ::test_cpp2::cpp_reflection::structB> get_fieldP() &&;
+
   template <typename T_struct3_fieldP_struct_setter>
-  std::set< ::test_cpp2::cpp_reflection::structB>& set_fieldP(T_struct3_fieldP_struct_setter&& fieldP_);
+  std::set< ::test_cpp2::cpp_reflection::structB>& set_fieldP(T_struct3_fieldP_struct_setter&& fieldP_) {
+    fieldP = std::forward<T_struct3_fieldP_struct_setter>(fieldP_);
+    __isset.fieldP = true;
+    return fieldP;
+  }
   const std::map<std::string,  ::test_cpp2::cpp_reflection::structA>& get_fieldQ() const&;
   std::map<std::string,  ::test_cpp2::cpp_reflection::structA> get_fieldQ() &&;
+
   template <typename T_struct3_fieldQ_struct_setter>
-  std::map<std::string,  ::test_cpp2::cpp_reflection::structA>& set_fieldQ(T_struct3_fieldQ_struct_setter&& fieldQ_);
+  std::map<std::string,  ::test_cpp2::cpp_reflection::structA>& set_fieldQ(T_struct3_fieldQ_struct_setter&& fieldQ_) {
+    fieldQ = std::forward<T_struct3_fieldQ_struct_setter>(fieldQ_);
+    __isset.fieldQ = true;
+    return fieldQ;
+  }
   const std::map<std::string,  ::test_cpp2::cpp_reflection::structB>& get_fieldR() const&;
   std::map<std::string,  ::test_cpp2::cpp_reflection::structB> get_fieldR() &&;
+
   template <typename T_struct3_fieldR_struct_setter>
-  std::map<std::string,  ::test_cpp2::cpp_reflection::structB>& set_fieldR(T_struct3_fieldR_struct_setter&& fieldR_);
+  std::map<std::string,  ::test_cpp2::cpp_reflection::structB>& set_fieldR(T_struct3_fieldR_struct_setter&& fieldR_) {
+    fieldR = std::forward<T_struct3_fieldR_struct_setter>(fieldR_);
+    __isset.fieldR = true;
+    return fieldR;
+  }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

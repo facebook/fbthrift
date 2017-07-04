@@ -84,7 +84,14 @@
   const <% > Type%>& get_<%field:name%>() const&;
   <% > Type%> get_<%field:name%>() &&;
 <%/field:optional?%>
+
   template <typename T_<%struct:name%>_<%field:name%>_struct_setter>
-  <% > Type%>& set_<%field:name%>(T_<%struct:name%>_<%field:name%>_struct_setter&& <%field:name%>_);
+  <% > Type%>& set_<%field:name%>(T_<%struct:name%>_<%field:name%>_struct_setter&& <%field:name%>_) {
+    <%field:name%> = std::forward<T_<%struct:name%>_<%field:name%>_struct_setter>(<%field:name%>_);
+<%^field:required?%>
+    __isset.<%field:name%> = true;
+<%/field:required?%>
+    return <%field:name%>;
+  }
 <%/type:resolves_to_container_or_struct?%>
 <%/field:cpp_ref?%><%/field:type%><%/struct:fields%>

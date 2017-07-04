@@ -28,20 +28,6 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace some { namespace ns {
 
-template <typename T_ModuleA_listField_struct_setter>
-std::vector<int16_t>& ModuleA::set_listField(T_ModuleA_listField_struct_setter&& listField_) {
-  listField = std::forward<T_ModuleA_listField_struct_setter>(listField_);
-  __isset.listField = true;
-  return listField;
-}
-
-template <typename T_ModuleA_mapField_struct_setter>
-std::map<std::string, int32_t>& ModuleA::set_mapField(T_ModuleA_mapField_struct_setter&& mapField_) {
-  mapField = std::forward<T_ModuleA_mapField_struct_setter>(mapField_);
-  __isset.mapField = true;
-  return mapField;
-}
-
 template <class Protocol_>
 uint32_t ModuleA::read(Protocol_* iprot) {
   uint32_t xfer = 0;

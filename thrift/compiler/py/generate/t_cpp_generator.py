@@ -3096,8 +3096,7 @@ class CppGenerator(t_generator.Generator):
                                     '{1}& {{name}}({0}&& {2})')
                                     .format(setter_arg, t, param_name),
                                     name=setter_name,
-                                    output=self._out_tcc if outofline else None,
-                                    in_header=not outofline):
+                                    in_header=True):
                         out('{0} = std::forward<{1}>({2});'
                             .format(member.name, setter_arg, param_name))
                         if self._has_isset(member):

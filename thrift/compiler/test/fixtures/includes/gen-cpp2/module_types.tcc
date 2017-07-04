@@ -19,13 +19,6 @@
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 namespace cpp2 {
 
-template <typename T_MyStruct_MyIncludedField_struct_setter>
- ::cpp2::Included& MyStruct::set_MyIncludedField(T_MyStruct_MyIncludedField_struct_setter&& MyIncludedField_) {
-  MyIncludedField = std::forward<T_MyStruct_MyIncludedField_struct_setter>(MyIncludedField_);
-  __isset.MyIncludedField = true;
-  return MyIncludedField;
-}
-
 template <class Protocol_>
 uint32_t MyStruct::read(Protocol_* iprot) {
   uint32_t xfer = 0;

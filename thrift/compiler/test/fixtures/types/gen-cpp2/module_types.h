@@ -369,32 +369,67 @@ class ContainerStruct : private apache::thrift::detail::st::ComparisonOperators<
   bool operator < (const ContainerStruct& rhs) const;
   const std::vector<int32_t>& get_fieldA() const&;
   std::vector<int32_t> get_fieldA() &&;
+
   template <typename T_ContainerStruct_fieldA_struct_setter>
-  std::vector<int32_t>& set_fieldA(T_ContainerStruct_fieldA_struct_setter&& fieldA_);
+  std::vector<int32_t>& set_fieldA(T_ContainerStruct_fieldA_struct_setter&& fieldA_) {
+    fieldA = std::forward<T_ContainerStruct_fieldA_struct_setter>(fieldA_);
+    __isset.fieldA = true;
+    return fieldA;
+  }
   const std::list<int32_t>& get_fieldB() const&;
   std::list<int32_t> get_fieldB() &&;
+
   template <typename T_ContainerStruct_fieldB_struct_setter>
-  std::list<int32_t>& set_fieldB(T_ContainerStruct_fieldB_struct_setter&& fieldB_);
+  std::list<int32_t>& set_fieldB(T_ContainerStruct_fieldB_struct_setter&& fieldB_) {
+    fieldB = std::forward<T_ContainerStruct_fieldB_struct_setter>(fieldB_);
+    __isset.fieldB = true;
+    return fieldB;
+  }
   const std::deque<int32_t>& get_fieldC() const&;
   std::deque<int32_t> get_fieldC() &&;
+
   template <typename T_ContainerStruct_fieldC_struct_setter>
-  std::deque<int32_t>& set_fieldC(T_ContainerStruct_fieldC_struct_setter&& fieldC_);
+  std::deque<int32_t>& set_fieldC(T_ContainerStruct_fieldC_struct_setter&& fieldC_) {
+    fieldC = std::forward<T_ContainerStruct_fieldC_struct_setter>(fieldC_);
+    __isset.fieldC = true;
+    return fieldC;
+  }
   const folly::fbvector<int32_t>& get_fieldD() const&;
   folly::fbvector<int32_t> get_fieldD() &&;
+
   template <typename T_ContainerStruct_fieldD_struct_setter>
-  folly::fbvector<int32_t>& set_fieldD(T_ContainerStruct_fieldD_struct_setter&& fieldD_);
+  folly::fbvector<int32_t>& set_fieldD(T_ContainerStruct_fieldD_struct_setter&& fieldD_) {
+    fieldD = std::forward<T_ContainerStruct_fieldD_struct_setter>(fieldD_);
+    __isset.fieldD = true;
+    return fieldD;
+  }
   const folly::small_vector<int32_t>& get_fieldE() const&;
   folly::small_vector<int32_t> get_fieldE() &&;
+
   template <typename T_ContainerStruct_fieldE_struct_setter>
-  folly::small_vector<int32_t>& set_fieldE(T_ContainerStruct_fieldE_struct_setter&& fieldE_);
+  folly::small_vector<int32_t>& set_fieldE(T_ContainerStruct_fieldE_struct_setter&& fieldE_) {
+    fieldE = std::forward<T_ContainerStruct_fieldE_struct_setter>(fieldE_);
+    __isset.fieldE = true;
+    return fieldE;
+  }
   const folly::sorted_vector_set<int32_t>& get_fieldF() const&;
   folly::sorted_vector_set<int32_t> get_fieldF() &&;
+
   template <typename T_ContainerStruct_fieldF_struct_setter>
-  folly::sorted_vector_set<int32_t>& set_fieldF(T_ContainerStruct_fieldF_struct_setter&& fieldF_);
+  folly::sorted_vector_set<int32_t>& set_fieldF(T_ContainerStruct_fieldF_struct_setter&& fieldF_) {
+    fieldF = std::forward<T_ContainerStruct_fieldF_struct_setter>(fieldF_);
+    __isset.fieldF = true;
+    return fieldF;
+  }
   const folly::sorted_vector_map<int32_t, std::string>& get_fieldG() const&;
   folly::sorted_vector_map<int32_t, std::string> get_fieldG() &&;
+
   template <typename T_ContainerStruct_fieldG_struct_setter>
-  folly::sorted_vector_map<int32_t, std::string>& set_fieldG(T_ContainerStruct_fieldG_struct_setter&& fieldG_);
+  folly::sorted_vector_map<int32_t, std::string>& set_fieldG(T_ContainerStruct_fieldG_struct_setter&& fieldG_) {
+    fieldG = std::forward<T_ContainerStruct_fieldG_struct_setter>(fieldG_);
+    __isset.fieldG = true;
+    return fieldG;
+  }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

@@ -122,55 +122,6 @@ namespace std {
 } // std
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
-template <typename T_ContainerStruct_fieldA_struct_setter>
-std::vector<int32_t>& ContainerStruct::set_fieldA(T_ContainerStruct_fieldA_struct_setter&& fieldA_) {
-  fieldA = std::forward<T_ContainerStruct_fieldA_struct_setter>(fieldA_);
-  __isset.fieldA = true;
-  return fieldA;
-}
-
-template <typename T_ContainerStruct_fieldB_struct_setter>
-std::list<int32_t>& ContainerStruct::set_fieldB(T_ContainerStruct_fieldB_struct_setter&& fieldB_) {
-  fieldB = std::forward<T_ContainerStruct_fieldB_struct_setter>(fieldB_);
-  __isset.fieldB = true;
-  return fieldB;
-}
-
-template <typename T_ContainerStruct_fieldC_struct_setter>
-std::deque<int32_t>& ContainerStruct::set_fieldC(T_ContainerStruct_fieldC_struct_setter&& fieldC_) {
-  fieldC = std::forward<T_ContainerStruct_fieldC_struct_setter>(fieldC_);
-  __isset.fieldC = true;
-  return fieldC;
-}
-
-template <typename T_ContainerStruct_fieldD_struct_setter>
-folly::fbvector<int32_t>& ContainerStruct::set_fieldD(T_ContainerStruct_fieldD_struct_setter&& fieldD_) {
-  fieldD = std::forward<T_ContainerStruct_fieldD_struct_setter>(fieldD_);
-  __isset.fieldD = true;
-  return fieldD;
-}
-
-template <typename T_ContainerStruct_fieldE_struct_setter>
-folly::small_vector<int32_t>& ContainerStruct::set_fieldE(T_ContainerStruct_fieldE_struct_setter&& fieldE_) {
-  fieldE = std::forward<T_ContainerStruct_fieldE_struct_setter>(fieldE_);
-  __isset.fieldE = true;
-  return fieldE;
-}
-
-template <typename T_ContainerStruct_fieldF_struct_setter>
-folly::sorted_vector_set<int32_t>& ContainerStruct::set_fieldF(T_ContainerStruct_fieldF_struct_setter&& fieldF_) {
-  fieldF = std::forward<T_ContainerStruct_fieldF_struct_setter>(fieldF_);
-  __isset.fieldF = true;
-  return fieldF;
-}
-
-template <typename T_ContainerStruct_fieldG_struct_setter>
-folly::sorted_vector_map<int32_t, std::string>& ContainerStruct::set_fieldG(T_ContainerStruct_fieldG_struct_setter&& fieldG_) {
-  fieldG = std::forward<T_ContainerStruct_fieldG_struct_setter>(fieldG_);
-  __isset.fieldG = true;
-  return fieldG;
-}
-
 template <class Protocol_>
 uint32_t ContainerStruct::read(Protocol_* iprot) {
   uint32_t xfer = 0;

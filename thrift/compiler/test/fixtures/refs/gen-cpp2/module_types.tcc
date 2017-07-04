@@ -506,13 +506,6 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace cpp2 {
 
-template <typename T_StructWithUnion_f_struct_setter>
- ::cpp2::MyField& StructWithUnion::set_f(T_StructWithUnion_f_struct_setter&& f_) {
-  f = std::forward<T_StructWithUnion_f_struct_setter>(f_);
-  __isset.f = true;
-  return f;
-}
-
 template <class Protocol_>
 uint32_t StructWithUnion::read(Protocol_* iprot) {
   uint32_t xfer = 0;
@@ -659,13 +652,6 @@ namespace apache { namespace thrift {
 
 }} // apache::thrift
 namespace cpp2 {
-
-template <typename T_RecursiveStruct_mes_struct_setter>
-std::vector< ::cpp2::RecursiveStruct>& RecursiveStruct::set_mes(T_RecursiveStruct_mes_struct_setter&& mes_) {
-  mes = std::forward<T_RecursiveStruct_mes_struct_setter>(mes_);
-  __isset.mes = true;
-  return mes;
-}
 
 template <class Protocol_>
 uint32_t RecursiveStruct::read(Protocol_* iprot) {

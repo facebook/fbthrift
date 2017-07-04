@@ -176,12 +176,22 @@ class ModuleA : private apache::thrift::detail::st::ComparisonOperators<ModuleA>
   }
   const std::vector<int16_t>& get_listField() const&;
   std::vector<int16_t> get_listField() &&;
+
   template <typename T_ModuleA_listField_struct_setter>
-  std::vector<int16_t>& set_listField(T_ModuleA_listField_struct_setter&& listField_);
+  std::vector<int16_t>& set_listField(T_ModuleA_listField_struct_setter&& listField_) {
+    listField = std::forward<T_ModuleA_listField_struct_setter>(listField_);
+    __isset.listField = true;
+    return listField;
+  }
   const std::map<std::string, int32_t>& get_mapField() const&;
   std::map<std::string, int32_t> get_mapField() &&;
+
   template <typename T_ModuleA_mapField_struct_setter>
-  std::map<std::string, int32_t>& set_mapField(T_ModuleA_mapField_struct_setter&& mapField_);
+  std::map<std::string, int32_t>& set_mapField(T_ModuleA_mapField_struct_setter&& mapField_) {
+    mapField = std::forward<T_ModuleA_mapField_struct_setter>(mapField_);
+    __isset.mapField = true;
+    return mapField;
+  }
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
