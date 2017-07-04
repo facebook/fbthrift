@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #pragma once
 
 namespace apache { namespace thrift {
@@ -626,7 +625,7 @@ template <typename T>
 T JSONProtocolReaderCommon::castIntegral(folly::StringPiece val) {
   try {
     return folly::to<T>(val);
-  } catch (const std::exception& e) {
+  } catch (const std::exception&) {
     throw TProtocolException(
       TProtocolException::INVALID_DATA,
       folly::to<std::string>(val, " is not a valid ", typeid(T).name()));
@@ -729,7 +728,7 @@ uint32_t JSONProtocolReaderCommon::readJSONVal(double& val) {
   ret += readNumericalChars(s);
   try {
     val = folly::to<double>(s);
-  } catch (const std::exception& e) {
+  } catch (const std::exception&) {
     throw TProtocolException(
       TProtocolException::INVALID_DATA,
       s + " is not a valid float/double");
@@ -854,8 +853,8 @@ uint32_t JSONProtocolReaderCommon::readJSONString(StrType& val) {
       val += parsed.getString();
     } catch (const std::exception& e) {
       throw TProtocolException(
-        TProtocolException::INVALID_DATA,
-        json + " is not a valid JSON string");
+          TProtocolException::INVALID_DATA,
+          json + " is not a valid JSON string: " + e.what());
     }
   }
 

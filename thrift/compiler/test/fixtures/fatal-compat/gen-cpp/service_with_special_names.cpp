@@ -3440,7 +3440,7 @@ int32_t service_with_special_namesClient::get()
   try {
     send_get();
     return recv_get();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -3549,7 +3549,7 @@ int32_t service_with_special_namesClient::getter()
   try {
     send_getter();
     return recv_getter();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -3658,7 +3658,7 @@ int32_t service_with_special_namesClient::lists()
   try {
     send_lists();
     return recv_lists();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -3767,7 +3767,7 @@ int32_t service_with_special_namesClient::maps()
   try {
     send_maps();
     return recv_maps();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -3876,7 +3876,7 @@ int32_t service_with_special_namesClient::name()
   try {
     send_name();
     return recv_name();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -3985,7 +3985,7 @@ int32_t service_with_special_namesClient::name_to_value()
   try {
     send_name_to_value();
     return recv_name_to_value();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -4094,7 +4094,7 @@ int32_t service_with_special_namesClient::names()
   try {
     send_names();
     return recv_names();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -4203,7 +4203,7 @@ int32_t service_with_special_namesClient::prefix_tree()
   try {
     send_prefix_tree();
     return recv_prefix_tree();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -4312,7 +4312,7 @@ int32_t service_with_special_namesClient::sets()
   try {
     send_sets();
     return recv_sets();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -4421,7 +4421,7 @@ int32_t service_with_special_namesClient::setter()
   try {
     send_setter();
     return recv_setter();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -4530,7 +4530,7 @@ int32_t service_with_special_namesClient::str()
   try {
     send_str();
     return recv_str();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -4639,7 +4639,7 @@ int32_t service_with_special_namesClient::strings()
   try {
     send_strings();
     return recv_strings();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -4748,7 +4748,7 @@ int32_t service_with_special_namesClient::type()
   try {
     send_type();
     return recv_type();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -4857,7 +4857,7 @@ int32_t service_with_special_namesClient::value()
   try {
     send_value();
     return recv_value();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -4966,7 +4966,7 @@ int32_t service_with_special_namesClient::value_to_name()
   try {
     send_value_to_name();
     return recv_value_to_name();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -5075,7 +5075,7 @@ int32_t service_with_special_namesClient::values()
   try {
     send_values();
     return recv_values();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -5184,7 +5184,7 @@ int32_t service_with_special_namesClient::id()
   try {
     send_id();
     return recv_id();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -5293,7 +5293,7 @@ int32_t service_with_special_namesClient::ids()
   try {
     send_ids();
     return recv_ids();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -5402,7 +5402,7 @@ int32_t service_with_special_namesClient::descriptor()
   try {
     send_descriptor();
     return recv_descriptor();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -5511,7 +5511,7 @@ int32_t service_with_special_namesClient::descriptors()
   try {
     send_descriptors();
     return recv_descriptors();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -5620,7 +5620,7 @@ int32_t service_with_special_namesClient::key()
   try {
     send_key();
     return recv_key();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -5729,7 +5729,7 @@ int32_t service_with_special_namesClient::keys()
   try {
     send_keys();
     return recv_keys();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -5838,7 +5838,7 @@ int32_t service_with_special_namesClient::annotation()
   try {
     send_annotation();
     return recv_annotation();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -5947,7 +5947,7 @@ int32_t service_with_special_namesClient::annotations()
   try {
     send_annotations();
     return recv_annotations();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -6056,7 +6056,7 @@ int32_t service_with_special_namesClient::member()
   try {
     send_member();
     return recv_member();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -6165,7 +6165,7 @@ int32_t service_with_special_namesClient::members()
   try {
     send_members();
     return recv_members();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();

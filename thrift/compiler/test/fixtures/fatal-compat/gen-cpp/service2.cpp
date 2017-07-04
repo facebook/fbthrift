@@ -975,7 +975,7 @@ void service2Client::methodA()
   try {
     send_methodA();
     recv_methodA();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -1077,7 +1077,7 @@ void service2Client::methodB(int32_t x, const struct1& y, double z)
   try {
     send_methodB(x, y, z);
     recv_methodB();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -1182,7 +1182,7 @@ int32_t service2Client::methodC()
   try {
     send_methodC();
     return recv_methodC();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -1291,7 +1291,7 @@ int32_t service2Client::methodD(int32_t i, const struct1& j, double k)
   try {
     send_methodD(i, j, k);
     return recv_methodD();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -1403,7 +1403,7 @@ void service2Client::methodE(struct2& _return)
   try {
     send_methodE();
     recv_methodE(_return);
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -1511,7 +1511,7 @@ void service2Client::methodF(struct2& _return, int32_t l, const struct1& m, doub
   try {
     send_methodF(l, m, n);
     recv_methodF(_return);
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();

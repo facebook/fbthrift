@@ -899,7 +899,7 @@ void MyServiceClientT<Protocol_>::ping()
   try {
     send_ping();
     recv_ping();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     this->iprot_->getTransport()->close();
@@ -1005,7 +1005,7 @@ void MyServiceClientT<Protocol_>::getRandomData(std::string& _return)
   try {
     send_getRandomData();
     recv_getRandomData(_return);
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     this->iprot_->getTransport()->close();
@@ -1117,7 +1117,7 @@ bool MyServiceClientT<Protocol_>::hasDataById(int64_t id)
   try {
     send_hasDataById(id);
     return recv_hasDataById();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     this->iprot_->getTransport()->close();
@@ -1231,7 +1231,7 @@ void MyServiceClientT<Protocol_>::getDataById(std::string& _return, int64_t id)
   try {
     send_getDataById(id);
     recv_getDataById(_return);
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     this->iprot_->getTransport()->close();
@@ -1344,7 +1344,7 @@ void MyServiceClientT<Protocol_>::putDataById(int64_t id, const std::string& dat
   try {
     send_putDataById(id, data);
     recv_putDataById();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     this->iprot_->getTransport()->close();
@@ -1451,7 +1451,7 @@ void MyServiceClientT<Protocol_>::lobDataById(int64_t id, const std::string& dat
 
   try {
     send_lobDataById(id, data);
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     this->iprot_->getTransport()->close();
@@ -1496,7 +1496,7 @@ void MyServiceClientT<Protocol_>::putStructById(int64_t id, const MyStruct& data
   try {
     send_putStructById(id, data);
     recv_putStructById();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     this->iprot_->getTransport()->close();
@@ -2180,7 +2180,7 @@ void MyServiceProcessorT<Protocol_>::process_lobDataById(int32_t seqid, apache::
 
   try {
     iface_->lobDataById(args.id, args.data);
-  } catch (const std::exception& e) {
+  } catch (const std::exception&) {
     if (ctx) ctx->handlerError();
 
     return;
@@ -2215,7 +2215,7 @@ void MyServiceProcessorT<Protocol_>::process_lobDataById(int32_t seqid, Protocol
 
   try {
     iface_->lobDataById(args.id, args.data);
-  } catch (const std::exception& e) {
+  } catch (const std::exception&) {
     if (ctx) ctx->handlerError();
 
     return;
@@ -2359,7 +2359,7 @@ void MyServiceCobClientT<Protocol_>::ping(std::function<void(MyServiceCobClientT
   try {
     send_ping();
     this->channel_->sendAndRecvMessage(std::bind(cob, this), this->otrans_.get(), this->itrans_.get());
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     this->iprot_->getTransport()->close();
@@ -2477,7 +2477,7 @@ void MyServiceCobClientT<Protocol_>::getRandomData(std::function<void(MyServiceC
   try {
     send_getRandomData();
     this->channel_->sendAndRecvMessage(std::bind(cob, this), this->otrans_.get(), this->itrans_.get());
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     this->iprot_->getTransport()->close();
@@ -2602,7 +2602,7 @@ void MyServiceCobClientT<Protocol_>::hasDataById(std::function<void(MyServiceCob
   try {
     send_hasDataById(id);
     this->channel_->sendAndRecvMessage(std::bind(cob, this), this->otrans_.get(), this->itrans_.get());
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     this->iprot_->getTransport()->close();
@@ -2729,7 +2729,7 @@ void MyServiceCobClientT<Protocol_>::getDataById(std::function<void(MyServiceCob
   try {
     send_getDataById(id);
     this->channel_->sendAndRecvMessage(std::bind(cob, this), this->otrans_.get(), this->itrans_.get());
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     this->iprot_->getTransport()->close();
@@ -2855,7 +2855,7 @@ void MyServiceCobClientT<Protocol_>::putDataById(std::function<void(MyServiceCob
   try {
     send_putDataById(id, data);
     this->channel_->sendAndRecvMessage(std::bind(cob, this), this->otrans_.get(), this->itrans_.get());
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     this->iprot_->getTransport()->close();
@@ -2975,7 +2975,7 @@ void MyServiceCobClientT<Protocol_>::lobDataById(std::function<void(MyServiceCob
   try {
     send_lobDataById(id, data);
     this->channel_->sendOnewayMessage(std::bind(cob, this), this->otrans_.get());
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     this->iprot_->getTransport()->close();
@@ -3020,7 +3020,7 @@ void MyServiceCobClientT<Protocol_>::putStructById(std::function<void(MyServiceC
   try {
     send_putStructById(id, data);
     this->channel_->sendAndRecvMessage(std::bind(cob, this), this->otrans_.get(), this->itrans_.get());
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     this->iprot_->getTransport()->close();
@@ -3195,7 +3195,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_ping(std::function<void(bool o
     if (ctx) ctx->postRead(nullptr, bytes);
 
   }
-  catch (const std::exception& exn) {
+  catch (const std::exception&) {
     if (ctx) ctx->handlerError();
     return cob(false);
   }
@@ -3244,7 +3244,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_ping(std::function<void(bool o
     if (ctx) ctx->postRead(nullptr, bytes);
 
   }
-  catch (const std::exception& exn) {
+  catch (const std::exception&) {
     if (ctx) ctx->handlerError();
     return cob(false);
   }
@@ -3295,7 +3295,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_getRandomData(std::function<vo
     if (ctx) ctx->postRead(nullptr, bytes);
 
   }
-  catch (const std::exception& exn) {
+  catch (const std::exception&) {
     if (ctx) ctx->handlerError();
     return cob(false);
   }
@@ -3346,7 +3346,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_getRandomData(std::function<vo
     if (ctx) ctx->postRead(nullptr, bytes);
 
   }
-  catch (const std::exception& exn) {
+  catch (const std::exception&) {
     if (ctx) ctx->handlerError();
     return cob(false);
   }
@@ -3399,7 +3399,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_hasDataById(std::function<void
     if (ctx) ctx->postRead(nullptr, bytes);
 
   }
-  catch (const std::exception& exn) {
+  catch (const std::exception&) {
     if (ctx) ctx->handlerError();
     return cob(false);
   }
@@ -3451,7 +3451,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_hasDataById(std::function<void
     if (ctx) ctx->postRead(nullptr, bytes);
 
   }
-  catch (const std::exception& exn) {
+  catch (const std::exception&) {
     if (ctx) ctx->handlerError();
     return cob(false);
   }
@@ -3505,7 +3505,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_getDataById(std::function<void
     if (ctx) ctx->postRead(nullptr, bytes);
 
   }
-  catch (const std::exception& exn) {
+  catch (const std::exception&) {
     if (ctx) ctx->handlerError();
     return cob(false);
   }
@@ -3557,7 +3557,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_getDataById(std::function<void
     if (ctx) ctx->postRead(nullptr, bytes);
 
   }
-  catch (const std::exception& exn) {
+  catch (const std::exception&) {
     if (ctx) ctx->handlerError();
     return cob(false);
   }
@@ -3611,7 +3611,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_putDataById(std::function<void
     if (ctx) ctx->postRead(nullptr, bytes);
 
   }
-  catch (const std::exception& exn) {
+  catch (const std::exception&) {
     if (ctx) ctx->handlerError();
     return cob(false);
   }
@@ -3662,7 +3662,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_putDataById(std::function<void
     if (ctx) ctx->postRead(nullptr, bytes);
 
   }
-  catch (const std::exception& exn) {
+  catch (const std::exception&) {
     if (ctx) ctx->handlerError();
     return cob(false);
   }
@@ -3715,7 +3715,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_lobDataById(std::function<void
     if (ctx) ctx->postRead(nullptr, bytes);
 
   }
-  catch (const std::exception& exn) {
+  catch (const std::exception&) {
     if (ctx) ctx->handlerError();
     return cob(false);
   }
@@ -3741,7 +3741,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_lobDataById(std::function<void
     if (ctx) ctx->postRead(nullptr, bytes);
 
   }
-  catch (const std::exception& exn) {
+  catch (const std::exception&) {
     if (ctx) ctx->handlerError();
     return cob(false);
   }
@@ -3775,7 +3775,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_putStructById(std::function<vo
     if (ctx) ctx->postRead(nullptr, bytes);
 
   }
-  catch (const std::exception& exn) {
+  catch (const std::exception&) {
     if (ctx) ctx->handlerError();
     return cob(false);
   }
@@ -3826,7 +3826,7 @@ void MyServiceAsyncProcessorT<Protocol_>::process_putStructById(std::function<vo
     if (ctx) ctx->postRead(nullptr, bytes);
 
   }
-  catch (const std::exception& exn) {
+  catch (const std::exception&) {
     if (ctx) ctx->handlerError();
     return cob(false);
   }

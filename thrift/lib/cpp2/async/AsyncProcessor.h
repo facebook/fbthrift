@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #ifndef THRIFT_ASYNCPROCESSOR2_H
 #define THRIFT_ASYNCPROCESSOR2_H 1
 
@@ -246,7 +245,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
         true, // cancellable
         true); // numa
       req.release();
-    } catch (const std::exception& e) {
+    } catch (const std::exception&) {
       if (!oneway) {
         req->sendErrorWrapped(
             folly::make_exception_wrapper<TApplicationException>(

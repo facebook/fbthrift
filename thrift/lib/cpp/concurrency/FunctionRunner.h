@@ -129,7 +129,7 @@ class FunctionRunner : public virtual Runnable {
           // this wait could time out (normal interval-"sleep" case),
           // or the monitor_ could have been notify()'ed by stop method.
           monitor_.waitForTimeRelative(intervalMs_);
-        } catch (const TimedOutException& te) { /* restart loop */ }
+        } catch (const TimedOutException&) { /* restart loop */ }
       }
     } else {
       func_();

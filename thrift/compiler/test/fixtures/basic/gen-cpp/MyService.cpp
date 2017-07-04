@@ -811,7 +811,7 @@ void MyServiceClient::ping()
   try {
     send_ping();
     recv_ping();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -913,7 +913,7 @@ void MyServiceClient::getRandomData(std::string& _return)
   try {
     send_getRandomData();
     recv_getRandomData(_return);
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -1021,7 +1021,7 @@ bool MyServiceClient::hasDataById(int64_t id)
   try {
     send_hasDataById(id);
     return recv_hasDataById();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -1131,7 +1131,7 @@ void MyServiceClient::getDataById(std::string& _return, int64_t id)
   try {
     send_getDataById(id);
     recv_getDataById(_return);
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -1240,7 +1240,7 @@ void MyServiceClient::putDataById(int64_t id, const std::string& data)
   try {
     send_putDataById(id, data);
     recv_putDataById();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -1343,7 +1343,7 @@ void MyServiceClient::lobDataById(int64_t id, const std::string& data)
 
   try {
     send_lobDataById(id, data);
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -1676,7 +1676,7 @@ void MyServiceProcessor::process_lobDataById(int32_t seqid, apache::thrift::prot
 
   try {
     iface_->lobDataById(args.id, args.data);
-  } catch (const std::exception& e) {
+  } catch (const std::exception&) {
     if (ctx) ctx->handlerError();
 
     return;

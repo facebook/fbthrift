@@ -5130,7 +5130,7 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
     indent_down();
     out <<
       indent() <<
-      "} catch (apache::thrift::transport::TTransportException& ex) {" << endl;
+      "} catch (apache::thrift::transport::TTransportException&) {" << endl;
     indent(out) << "  ::apache::thrift::ContextStack* c = "
                    "this->getClientContextStack();" << endl <<
        indent() << "  if (c) c->handlerError();" << endl;
@@ -6218,7 +6218,8 @@ void t_cpp_generator::generate_process_function(t_service* tservice,
       }
     }
 
-    out << " catch (const std::exception& e) {" << endl;
+    out << " catch (const std::exception&"
+        << (tfunction->is_oneway() ? "" : " e") << ") {" << endl;
 
     indent_up();
     out <<
@@ -6327,7 +6328,7 @@ void t_cpp_generator::generate_process_function(t_service* tservice,
 
     // TODO(dreiss): Handle TExceptions?  Expose to server?
     out <<
-      indent() << "catch (const std::exception& exn) {" << endl <<
+      indent() << "catch (const std::exception&) {" << endl <<
       indent() << "  if (ctx) ctx->handlerError();" << endl <<
       indent() << "  return cob(false);" << endl <<
       indent() << "}" << endl;

@@ -270,7 +270,7 @@ void MyServicePrioParentClient::ping()
   try {
     send_ping();
     recv_ping();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
@@ -372,7 +372,7 @@ void MyServicePrioParentClient::pong()
   try {
     send_pong();
     recv_pong();
-  } catch (apache::thrift::transport::TTransportException& ex) {
+  } catch (apache::thrift::transport::TTransportException&) {
     ::apache::thrift::ContextStack* c = this->getClientContextStack();
     if (c) c->handlerError();
     iprot_->getTransport()->close();
