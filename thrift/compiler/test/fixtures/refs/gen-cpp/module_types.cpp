@@ -42,38 +42,38 @@ bool TEnumTraits< ::TypedEnum>::findValue(const char* name,  ::TypedEnum* out) {
 
 uint32_t MyUnion::read(apache::thrift::protocol::TProtocol* iprot) {
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
-  xfer += iprot->readStructBegin(fname);
-  xfer += iprot->readFieldBegin(fname, ftype, fid);
-  if (ftype == apache::thrift::protocol::T_STOP) {
+  xfer += iprot->readStructBegin(_fname);
+  xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+  if (_ftype == apache::thrift::protocol::T_STOP) {
     __clear();
   } else {
     switch (fid) {
       case 1: {
-        if (ftype == apache::thrift::protocol::T_I32) {
+        if (_ftype == apache::thrift::protocol::T_I32) {
           set_anInteger();
           xfer += iprot->readI32(this->value_.anInteger);
         } else {
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         }
         break;
       }
       case 2: {
-        if (ftype == apache::thrift::protocol::T_STRING) {
+        if (_ftype == apache::thrift::protocol::T_STRING) {
           set_aString();
           xfer += iprot->readString(this->value_.aString);
         } else {
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         }
         break;
       }
-      default: xfer += iprot->skip(ftype); break;
+      default: xfer += iprot->skip(_ftype); break;
     }
     xfer += iprot->readFieldEnd();
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (UNLIKELY(ftype != apache::thrift::protocol::T_STOP)) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (UNLIKELY(_ftype != apache::thrift::protocol::T_STOP)) {
       using apache::thrift::protocol::TProtocolException;
       TProtocolException::throwUnionMissingStop();
     }
@@ -126,8 +126,8 @@ bool MyField::operator == (const MyField & rhs) const {
 uint32_t MyField::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -135,7 +135,7 @@ uint32_t MyField::read(apache::thrift::protocol::TProtocol* iprot) {
      ::module_reflection_::reflectionInitializer_16778989117799402412(*schema);
     iprot->setNextStructType(MyField::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -144,38 +144,38 @@ uint32_t MyField::read(apache::thrift::protocol::TProtocol* iprot) {
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       case 1:
-        if (ftype == apache::thrift::protocol::T_I64) {
+        if (_ftype == apache::thrift::protocol::T_I64) {
           xfer += iprot->readI64(this->opt_value);
           this->__isset.opt_value = true;
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 2:
-        if (ftype == apache::thrift::protocol::T_I64) {
+        if (_ftype == apache::thrift::protocol::T_I64) {
           xfer += iprot->readI64(this->value);
           this->__isset.value = true;
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 3:
-        if (ftype == apache::thrift::protocol::T_I64) {
+        if (_ftype == apache::thrift::protocol::T_I64) {
           xfer += iprot->readI64(this->req_value);
           isset_req_value = true;
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -277,8 +277,8 @@ bool MyStruct::operator == (const MyStruct & rhs) const {
 uint32_t MyStruct::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -286,7 +286,7 @@ uint32_t MyStruct::read(apache::thrift::protocol::TProtocol* iprot) {
      ::module_reflection_::reflectionInitializer_7958971832214294220(*schema);
     iprot->setNextStructType(MyStruct::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -296,14 +296,14 @@ uint32_t MyStruct::read(apache::thrift::protocol::TProtocol* iprot) {
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       case 1:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           try {
             using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->opt_ref)>::type::element_type>::type;
             std::unique_ptr<element_type> _ptype3(new element_type());
@@ -320,11 +320,11 @@ uint32_t MyStruct::read(apache::thrift::protocol::TProtocol* iprot) {
             exception = std::current_exception();
           }
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 2:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           try {
             using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->ref)>::type::element_type>::type;
             std::unique_ptr<element_type> _ptype4(new element_type());
@@ -341,11 +341,11 @@ uint32_t MyStruct::read(apache::thrift::protocol::TProtocol* iprot) {
             exception = std::current_exception();
           }
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 3:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           try {
             using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->req_ref)>::type::element_type>::type;
             std::unique_ptr<element_type> _ptype5(new element_type());
@@ -363,11 +363,11 @@ uint32_t MyStruct::read(apache::thrift::protocol::TProtocol* iprot) {
           }
           isset_req_ref = true;
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -467,8 +467,8 @@ bool StructWithUnion::operator == (const StructWithUnion & rhs) const {
 uint32_t StructWithUnion::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -476,7 +476,7 @@ uint32_t StructWithUnion::read(apache::thrift::protocol::TProtocol* iprot) {
      ::module_reflection_::reflectionInitializer_11295191354176986988(*schema);
     iprot->setNextStructType(StructWithUnion::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -485,14 +485,14 @@ uint32_t StructWithUnion::read(apache::thrift::protocol::TProtocol* iprot) {
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       case 1:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->u)>::type::element_type>::type;
           std::unique_ptr<element_type> _ptype8(new element_type());
           xfer += _ptype8->read(iprot);
@@ -501,19 +501,19 @@ uint32_t StructWithUnion::read(apache::thrift::protocol::TProtocol* iprot) {
             this->u = nullptr; 
           }
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 2:
-        if (ftype == apache::thrift::protocol::T_DOUBLE) {
+        if (_ftype == apache::thrift::protocol::T_DOUBLE) {
           xfer += iprot->readDouble(this->aDouble);
           this->__isset.aDouble = true;
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 3:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           try {
             xfer += this->f.read(iprot);
           } catch (const TProtocolException& e) {
@@ -524,11 +524,11 @@ uint32_t StructWithUnion::read(apache::thrift::protocol::TProtocol* iprot) {
           }
           this->__isset.f = true;
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -612,8 +612,8 @@ bool RecursiveStruct::operator == (const RecursiveStruct & rhs) const {
 uint32_t RecursiveStruct::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -621,7 +621,7 @@ uint32_t RecursiveStruct::read(apache::thrift::protocol::TProtocol* iprot) {
      ::module_reflection_::reflectionInitializer_2826922994162023308(*schema);
     iprot->setNextStructType(RecursiveStruct::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -629,14 +629,14 @@ uint32_t RecursiveStruct::read(apache::thrift::protocol::TProtocol* iprot) {
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       case 1:
-        if (ftype == apache::thrift::protocol::T_LIST) {
+        if (_ftype == apache::thrift::protocol::T_LIST) {
           {
             this->mes.clear();
             uint32_t _size10;
@@ -662,11 +662,11 @@ uint32_t RecursiveStruct::read(apache::thrift::protocol::TProtocol* iprot) {
           }
           this->__isset.mes = true;
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -780,8 +780,8 @@ bool StructWithContainers::operator == (const StructWithContainers & rhs) const 
 uint32_t StructWithContainers::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -789,7 +789,7 @@ uint32_t StructWithContainers::read(apache::thrift::protocol::TProtocol* iprot) 
      ::module_reflection_::reflectionInitializer_18101585657679500556(*schema);
     iprot->setNextStructType(StructWithContainers::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -797,14 +797,14 @@ uint32_t StructWithContainers::read(apache::thrift::protocol::TProtocol* iprot) 
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       case 1:
-        if (ftype == apache::thrift::protocol::T_LIST) {
+        if (_ftype == apache::thrift::protocol::T_LIST) {
           {
             using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->list_ref)>::type::element_type>::type;
             std::unique_ptr<element_type> _ptype26(new element_type());
@@ -833,11 +833,11 @@ uint32_t StructWithContainers::read(apache::thrift::protocol::TProtocol* iprot) 
             xfer += iprot->readListEnd();
           }
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 2:
-        if (ftype == apache::thrift::protocol::T_SET) {
+        if (_ftype == apache::thrift::protocol::T_SET) {
           {
             using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->set_ref)>::type::element_type>::type;
             std::unique_ptr<element_type> _ptype35(new element_type());
@@ -867,11 +867,11 @@ uint32_t StructWithContainers::read(apache::thrift::protocol::TProtocol* iprot) 
             xfer += iprot->readSetEnd();
           }
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 3:
-        if (ftype == apache::thrift::protocol::T_MAP) {
+        if (_ftype == apache::thrift::protocol::T_MAP) {
           {
             using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->map_ref)>::type::element_type>::type;
             std::unique_ptr<element_type> _ptype45(new element_type());
@@ -904,11 +904,11 @@ uint32_t StructWithContainers::read(apache::thrift::protocol::TProtocol* iprot) 
             xfer += iprot->readMapEnd();
           }
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 4:
-        if (ftype == apache::thrift::protocol::T_LIST) {
+        if (_ftype == apache::thrift::protocol::T_LIST) {
           {
             using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->list_ref_unique)>::type::element_type>::type;
             std::unique_ptr<element_type> _ptype57(new element_type());
@@ -937,11 +937,11 @@ uint32_t StructWithContainers::read(apache::thrift::protocol::TProtocol* iprot) 
             xfer += iprot->readListEnd();
           }
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 5:
-        if (ftype == apache::thrift::protocol::T_SET) {
+        if (_ftype == apache::thrift::protocol::T_SET) {
           {
             using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->set_ref_shared)>::type::element_type>::type;
             std::unique_ptr<element_type> _ptype66(new element_type());
@@ -971,11 +971,11 @@ uint32_t StructWithContainers::read(apache::thrift::protocol::TProtocol* iprot) 
             xfer += iprot->readSetEnd();
           }
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 6:
-        if (ftype == apache::thrift::protocol::T_LIST) {
+        if (_ftype == apache::thrift::protocol::T_LIST) {
           {
             using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->list_ref_shared_const)>::type::element_type>::type;
             std::unique_ptr<element_type> _ptype76(new element_type());
@@ -1004,11 +1004,11 @@ uint32_t StructWithContainers::read(apache::thrift::protocol::TProtocol* iprot) 
             xfer += iprot->readListEnd();
           }
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 7:
-        if (ftype == apache::thrift::protocol::T_SET) {
+        if (_ftype == apache::thrift::protocol::T_SET) {
           {
             using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->set_custom_ref)>::type::element_type>::type;
             std::unique_ptr<element_type> _ptype85(new element_type());
@@ -1038,11 +1038,11 @@ uint32_t StructWithContainers::read(apache::thrift::protocol::TProtocol* iprot) 
             xfer += iprot->readSetEnd();
           }
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -1265,8 +1265,8 @@ bool StructWithSharedConst::operator == (const StructWithSharedConst & rhs) cons
 uint32_t StructWithSharedConst::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -1274,7 +1274,7 @@ uint32_t StructWithSharedConst::read(apache::thrift::protocol::TProtocol* iprot)
      ::module_reflection_::reflectionInitializer_17232433652683371404(*schema);
     iprot->setNextStructType(StructWithSharedConst::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -1284,14 +1284,14 @@ uint32_t StructWithSharedConst::read(apache::thrift::protocol::TProtocol* iprot)
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       case 1:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           try {
             using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->opt_shared_const)>::type::element_type>::type;
             std::unique_ptr<element_type> _ptype105(new element_type());
@@ -1308,11 +1308,11 @@ uint32_t StructWithSharedConst::read(apache::thrift::protocol::TProtocol* iprot)
             exception = std::current_exception();
           }
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 2:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           try {
             using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->shared_const)>::type::element_type>::type;
             std::unique_ptr<element_type> _ptype106(new element_type());
@@ -1329,11 +1329,11 @@ uint32_t StructWithSharedConst::read(apache::thrift::protocol::TProtocol* iprot)
             exception = std::current_exception();
           }
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 3:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           try {
             using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->req_shared_const)>::type::element_type>::type;
             std::unique_ptr<element_type> _ptype107(new element_type());
@@ -1351,11 +1351,11 @@ uint32_t StructWithSharedConst::read(apache::thrift::protocol::TProtocol* iprot)
           }
           isset_req_shared_const = true;
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -1440,8 +1440,8 @@ bool Empty::operator == (const Empty & rhs) const {
 uint32_t Empty::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -1449,7 +1449,7 @@ uint32_t Empty::read(apache::thrift::protocol::TProtocol* iprot) {
      ::module_reflection_::reflectionInitializer_14313748354111837868(*schema);
     iprot->setNextStructType(Empty::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -1457,14 +1457,14 @@ uint32_t Empty::read(apache::thrift::protocol::TProtocol* iprot) {
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -1535,8 +1535,8 @@ bool StructWithRef::operator == (const StructWithRef & rhs) const {
 uint32_t StructWithRef::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -1544,7 +1544,7 @@ uint32_t StructWithRef::read(apache::thrift::protocol::TProtocol* iprot) {
      ::module_reflection_::reflectionInitializer_11749517231251122252(*schema);
     iprot->setNextStructType(StructWithRef::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -1553,14 +1553,14 @@ uint32_t StructWithRef::read(apache::thrift::protocol::TProtocol* iprot) {
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       case 1:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->def_field)>::type::element_type>::type;
           std::unique_ptr<element_type> _ptype111(new element_type());
           xfer += _ptype111->read(iprot);
@@ -1568,11 +1568,11 @@ uint32_t StructWithRef::read(apache::thrift::protocol::TProtocol* iprot) {
           if (false) {
           } else { this->def_field = nullptr; }
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 2:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->opt_field)>::type::element_type>::type;
           std::unique_ptr<element_type> _ptype112(new element_type());
           xfer += _ptype112->read(iprot);
@@ -1580,11 +1580,11 @@ uint32_t StructWithRef::read(apache::thrift::protocol::TProtocol* iprot) {
           if (false) {
           } else { this->opt_field = nullptr; }
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 3:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->req_field)>::type::element_type>::type;
           std::unique_ptr<element_type> _ptype113(new element_type());
           xfer += _ptype113->read(iprot);
@@ -1593,11 +1593,11 @@ uint32_t StructWithRef::read(apache::thrift::protocol::TProtocol* iprot) {
           } else { this->req_field = nullptr; }
           isset_req_field = true;
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -1698,8 +1698,8 @@ bool StructWithRefTypeUnique::operator == (const StructWithRefTypeUnique & rhs) 
 uint32_t StructWithRefTypeUnique::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -1707,7 +1707,7 @@ uint32_t StructWithRefTypeUnique::read(apache::thrift::protocol::TProtocol* ipro
      ::module_reflection_::reflectionInitializer_215755688094406540(*schema);
     iprot->setNextStructType(StructWithRefTypeUnique::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -1716,14 +1716,14 @@ uint32_t StructWithRefTypeUnique::read(apache::thrift::protocol::TProtocol* ipro
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       case 1:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->def_field)>::type::element_type>::type;
           std::unique_ptr<element_type> _ptype116(new element_type());
           xfer += _ptype116->read(iprot);
@@ -1731,11 +1731,11 @@ uint32_t StructWithRefTypeUnique::read(apache::thrift::protocol::TProtocol* ipro
           if (false) {
           } else { this->def_field = nullptr; }
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 2:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->opt_field)>::type::element_type>::type;
           std::unique_ptr<element_type> _ptype117(new element_type());
           xfer += _ptype117->read(iprot);
@@ -1743,11 +1743,11 @@ uint32_t StructWithRefTypeUnique::read(apache::thrift::protocol::TProtocol* ipro
           if (false) {
           } else { this->opt_field = nullptr; }
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 3:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->req_field)>::type::element_type>::type;
           std::unique_ptr<element_type> _ptype118(new element_type());
           xfer += _ptype118->read(iprot);
@@ -1756,11 +1756,11 @@ uint32_t StructWithRefTypeUnique::read(apache::thrift::protocol::TProtocol* ipro
           } else { this->req_field = nullptr; }
           isset_req_field = true;
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -1853,8 +1853,8 @@ bool StructWithRefTypeShared::operator == (const StructWithRefTypeShared & rhs) 
 uint32_t StructWithRefTypeShared::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -1862,7 +1862,7 @@ uint32_t StructWithRefTypeShared::read(apache::thrift::protocol::TProtocol* ipro
      ::module_reflection_::reflectionInitializer_12352376109981065772(*schema);
     iprot->setNextStructType(StructWithRefTypeShared::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -1871,14 +1871,14 @@ uint32_t StructWithRefTypeShared::read(apache::thrift::protocol::TProtocol* ipro
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       case 1:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->def_field)>::type::element_type>::type;
           std::unique_ptr<element_type> _ptype120(new element_type());
           xfer += _ptype120->read(iprot);
@@ -1886,11 +1886,11 @@ uint32_t StructWithRefTypeShared::read(apache::thrift::protocol::TProtocol* ipro
           if (false) {
           } else { this->def_field = nullptr; }
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 2:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->opt_field)>::type::element_type>::type;
           std::unique_ptr<element_type> _ptype121(new element_type());
           xfer += _ptype121->read(iprot);
@@ -1898,11 +1898,11 @@ uint32_t StructWithRefTypeShared::read(apache::thrift::protocol::TProtocol* ipro
           if (false) {
           } else { this->opt_field = nullptr; }
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 3:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->req_field)>::type::element_type>::type;
           std::unique_ptr<element_type> _ptype122(new element_type());
           xfer += _ptype122->read(iprot);
@@ -1911,11 +1911,11 @@ uint32_t StructWithRefTypeShared::read(apache::thrift::protocol::TProtocol* ipro
           } else { this->req_field = nullptr; }
           isset_req_field = true;
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -2008,8 +2008,8 @@ bool StructWithRefTypeSharedConst::operator == (const StructWithRefTypeSharedCon
 uint32_t StructWithRefTypeSharedConst::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -2017,7 +2017,7 @@ uint32_t StructWithRefTypeSharedConst::read(apache::thrift::protocol::TProtocol*
      ::module_reflection_::reflectionInitializer_11678635121852876428(*schema);
     iprot->setNextStructType(StructWithRefTypeSharedConst::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -2026,14 +2026,14 @@ uint32_t StructWithRefTypeSharedConst::read(apache::thrift::protocol::TProtocol*
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       case 1:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->def_field)>::type::element_type>::type;
           std::unique_ptr<element_type> _ptype124(new element_type());
           xfer += _ptype124->read(iprot);
@@ -2041,11 +2041,11 @@ uint32_t StructWithRefTypeSharedConst::read(apache::thrift::protocol::TProtocol*
           if (false) {
           } else { this->def_field = nullptr; }
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 2:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->opt_field)>::type::element_type>::type;
           std::unique_ptr<element_type> _ptype125(new element_type());
           xfer += _ptype125->read(iprot);
@@ -2053,11 +2053,11 @@ uint32_t StructWithRefTypeSharedConst::read(apache::thrift::protocol::TProtocol*
           if (false) {
           } else { this->opt_field = nullptr; }
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 3:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->req_field)>::type::element_type>::type;
           std::unique_ptr<element_type> _ptype126(new element_type());
           xfer += _ptype126->read(iprot);
@@ -2066,11 +2066,11 @@ uint32_t StructWithRefTypeSharedConst::read(apache::thrift::protocol::TProtocol*
           } else { this->req_field = nullptr; }
           isset_req_field = true;
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -2171,8 +2171,8 @@ bool StructWithRefTypeCustom::operator == (const StructWithRefTypeCustom & rhs) 
 uint32_t StructWithRefTypeCustom::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -2180,7 +2180,7 @@ uint32_t StructWithRefTypeCustom::read(apache::thrift::protocol::TProtocol* ipro
      ::module_reflection_::reflectionInitializer_10045417637546770700(*schema);
     iprot->setNextStructType(StructWithRefTypeCustom::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -2189,14 +2189,14 @@ uint32_t StructWithRefTypeCustom::read(apache::thrift::protocol::TProtocol* ipro
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       case 1:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->def_field)>::type::element_type>::type;
           std::unique_ptr<element_type> _ptype129(new element_type());
           xfer += _ptype129->read(iprot);
@@ -2204,11 +2204,11 @@ uint32_t StructWithRefTypeCustom::read(apache::thrift::protocol::TProtocol* ipro
           if (false) {
           } else { this->def_field = nullptr; }
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 2:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->opt_field)>::type::element_type>::type;
           std::unique_ptr<element_type> _ptype130(new element_type());
           xfer += _ptype130->read(iprot);
@@ -2216,11 +2216,11 @@ uint32_t StructWithRefTypeCustom::read(apache::thrift::protocol::TProtocol* ipro
           if (false) {
           } else { this->opt_field = nullptr; }
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 3:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->req_field)>::type::element_type>::type;
           std::unique_ptr<element_type> _ptype131(new element_type());
           xfer += _ptype131->read(iprot);
@@ -2229,11 +2229,11 @@ uint32_t StructWithRefTypeCustom::read(apache::thrift::protocol::TProtocol* ipro
           } else { this->req_field = nullptr; }
           isset_req_field = true;
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();

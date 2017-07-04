@@ -17,11 +17,11 @@
 %>template <class Protocol_>
 uint32_t <%struct:name%>::read(Protocol_* iprot) {
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
@@ -30,15 +30,15 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
 <%/field:required?%><%/struct:fields%>
 
   while (true) {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {<%!
     %><%#struct:fields%><%#field:type%>
-      <%^first?%>else <%/first?%>if (fname == "<%field:name%>") {
+      <%^first?%>else <%/first?%>if (_fname == "<%field:name%>") {
         fid = <%field:key%>;
-        ftype = apache::thrift::protocol::<% > module_types_tcc/struct_type%>;
+        _ftype = apache::thrift::protocol::<% > module_types_tcc/struct_type%>;
       }<%#last?%>
     <%/last?%><%/field:type%><%/struct:fields%><%!
     %>}
@@ -46,7 +46,7 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
 <%#struct:fields%><%#field:type%>
       case <%field:key%>:
       {
-        if (ftype == apache::thrift::protocol::<% > module_types_tcc/struct_type%>) {
+        if (_ftype == apache::thrift::protocol::<% > module_types_tcc/struct_type%>) {
 <%#field:cpp_ref?%>
           std::unique_ptr<<% > Type%>> ptr = std::make_unique<<% > Type%>>();
 <%/field:cpp_ref?%>
@@ -77,14 +77,14 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
           this->__isset.<%field:name%> = true;
 <%/field:cpp_ref?%><%/field:required?%>
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       }
 <%/field:type%><%/struct:fields%>
       default:
       {
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
       }
     }

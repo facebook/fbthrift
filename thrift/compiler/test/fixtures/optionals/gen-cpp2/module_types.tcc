@@ -31,78 +31,78 @@ namespace cpp2 {
 template <class Protocol_>
 uint32_t Color::read(Protocol_* iprot) {
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (fname == "red") {
+      if (_fname == "red") {
         fid = 1;
-        ftype = apache::thrift::protocol::T_DOUBLE;
+        _ftype = apache::thrift::protocol::T_DOUBLE;
       }
-      else if (fname == "green") {
+      else if (_fname == "green") {
         fid = 2;
-        ftype = apache::thrift::protocol::T_DOUBLE;
+        _ftype = apache::thrift::protocol::T_DOUBLE;
       }
-      else if (fname == "blue") {
+      else if (_fname == "blue") {
         fid = 3;
-        ftype = apache::thrift::protocol::T_DOUBLE;
+        _ftype = apache::thrift::protocol::T_DOUBLE;
       }
-      else if (fname == "alpha") {
+      else if (_fname == "alpha") {
         fid = 4;
-        ftype = apache::thrift::protocol::T_DOUBLE;
+        _ftype = apache::thrift::protocol::T_DOUBLE;
       }
     }
     switch (fid) {
       case 1:
       {
-        if (ftype == apache::thrift::protocol::T_DOUBLE) {
+        if (_ftype == apache::thrift::protocol::T_DOUBLE) {
           xfer += iprot->readDouble(this->red);
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       }
       case 2:
       {
-        if (ftype == apache::thrift::protocol::T_DOUBLE) {
+        if (_ftype == apache::thrift::protocol::T_DOUBLE) {
           xfer += iprot->readDouble(this->green);
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       }
       case 3:
       {
-        if (ftype == apache::thrift::protocol::T_DOUBLE) {
+        if (_ftype == apache::thrift::protocol::T_DOUBLE) {
           xfer += iprot->readDouble(this->blue);
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       }
       case 4:
       {
-        if (ftype == apache::thrift::protocol::T_DOUBLE) {
+        if (_ftype == apache::thrift::protocol::T_DOUBLE) {
           xfer += iprot->readDouble(this->alpha);
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
       }
     }
@@ -175,95 +175,95 @@ namespace cpp2 {
 template <class Protocol_>
 uint32_t Vehicle::read(Protocol_* iprot) {
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (fname == "color") {
+      if (_fname == "color") {
         fid = 1;
-        ftype = apache::thrift::protocol::T_STRUCT;
+        _ftype = apache::thrift::protocol::T_STRUCT;
       }
-      else if (fname == "licensePlate") {
+      else if (_fname == "licensePlate") {
         fid = 2;
-        ftype = apache::thrift::protocol::T_STRING;
+        _ftype = apache::thrift::protocol::T_STRING;
       }
-      else if (fname == "description") {
+      else if (_fname == "description") {
         fid = 3;
-        ftype = apache::thrift::protocol::T_STRING;
+        _ftype = apache::thrift::protocol::T_STRING;
       }
-      else if (fname == "name") {
+      else if (_fname == "name") {
         fid = 4;
-        ftype = apache::thrift::protocol::T_STRING;
+        _ftype = apache::thrift::protocol::T_STRING;
       }
-      else if (fname == "hasAC") {
+      else if (_fname == "hasAC") {
         fid = 5;
-        ftype = apache::thrift::protocol::T_BOOL;
+        _ftype = apache::thrift::protocol::T_BOOL;
       }
     }
     switch (fid) {
       case 1:
       {
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Color>::read(iprot, &this->color);
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       }
       case 2:
       {
-        if (ftype == apache::thrift::protocol::T_STRING) {
+        if (_ftype == apache::thrift::protocol::T_STRING) {
           this->licensePlate = std::string();
           xfer += iprot->readString(this->licensePlate.value());
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       }
       case 3:
       {
-        if (ftype == apache::thrift::protocol::T_STRING) {
+        if (_ftype == apache::thrift::protocol::T_STRING) {
           this->description = std::string();
           xfer += iprot->readString(this->description.value());
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       }
       case 4:
       {
-        if (ftype == apache::thrift::protocol::T_STRING) {
+        if (_ftype == apache::thrift::protocol::T_STRING) {
           this->name = std::string();
           xfer += iprot->readString(this->name.value());
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       }
       case 5:
       {
-        if (ftype == apache::thrift::protocol::T_BOOL) {
+        if (_ftype == apache::thrift::protocol::T_BOOL) {
           this->hasAC = bool();
           xfer += iprot->readBool(this->hasAC.value());
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
       }
     }
@@ -367,164 +367,164 @@ namespace cpp2 {
 template <class Protocol_>
 uint32_t Person::read(Protocol_* iprot) {
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
 
   while (true) {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     if (fid == std::numeric_limits<int16_t>::min()) {
-      if (fname == "id") {
+      if (_fname == "id") {
         fid = 1;
-        ftype = apache::thrift::protocol::T_I64;
+        _ftype = apache::thrift::protocol::T_I64;
       }
-      else if (fname == "name") {
+      else if (_fname == "name") {
         fid = 2;
-        ftype = apache::thrift::protocol::T_STRING;
+        _ftype = apache::thrift::protocol::T_STRING;
       }
-      else if (fname == "age") {
+      else if (_fname == "age") {
         fid = 3;
-        ftype = apache::thrift::protocol::T_I16;
+        _ftype = apache::thrift::protocol::T_I16;
       }
-      else if (fname == "address") {
+      else if (_fname == "address") {
         fid = 4;
-        ftype = apache::thrift::protocol::T_STRING;
+        _ftype = apache::thrift::protocol::T_STRING;
       }
-      else if (fname == "favoriteColor") {
+      else if (_fname == "favoriteColor") {
         fid = 5;
-        ftype = apache::thrift::protocol::T_STRUCT;
+        _ftype = apache::thrift::protocol::T_STRUCT;
       }
-      else if (fname == "friends") {
+      else if (_fname == "friends") {
         fid = 6;
-        ftype = apache::thrift::protocol::T_SET;
+        _ftype = apache::thrift::protocol::T_SET;
       }
-      else if (fname == "bestFriend") {
+      else if (_fname == "bestFriend") {
         fid = 7;
-        ftype = apache::thrift::protocol::T_I64;
+        _ftype = apache::thrift::protocol::T_I64;
       }
-      else if (fname == "petNames") {
+      else if (_fname == "petNames") {
         fid = 8;
-        ftype = apache::thrift::protocol::T_MAP;
+        _ftype = apache::thrift::protocol::T_MAP;
       }
-      else if (fname == "afraidOfAnimal") {
+      else if (_fname == "afraidOfAnimal") {
         fid = 9;
-        ftype = apache::thrift::protocol::T_I32;
+        _ftype = apache::thrift::protocol::T_I32;
       }
-      else if (fname == "vehicles") {
+      else if (_fname == "vehicles") {
         fid = 10;
-        ftype = apache::thrift::protocol::T_LIST;
+        _ftype = apache::thrift::protocol::T_LIST;
       }
     }
     switch (fid) {
       case 1:
       {
-        if (ftype == apache::thrift::protocol::T_I64) {
+        if (_ftype == apache::thrift::protocol::T_I64) {
           xfer += iprot->readI64(this->id);
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       }
       case 2:
       {
-        if (ftype == apache::thrift::protocol::T_STRING) {
+        if (_ftype == apache::thrift::protocol::T_STRING) {
           xfer += iprot->readString(this->name);
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       }
       case 3:
       {
-        if (ftype == apache::thrift::protocol::T_I16) {
+        if (_ftype == apache::thrift::protocol::T_I16) {
           this->age = int16_t();
           xfer += iprot->readI16(this->age.value());
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       }
       case 4:
       {
-        if (ftype == apache::thrift::protocol::T_STRING) {
+        if (_ftype == apache::thrift::protocol::T_STRING) {
           this->address = std::string();
           xfer += iprot->readString(this->address.value());
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       }
       case 5:
       {
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           this->favoriteColor =  ::cpp2::Color();
           xfer += ::apache::thrift::Cpp2Ops<  ::cpp2::Color>::read(iprot, &this->favoriteColor.value());
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       }
       case 6:
       {
-        if (ftype == apache::thrift::protocol::T_SET) {
+        if (_ftype == apache::thrift::protocol::T_SET) {
           this->friends = std::set< ::cpp2::PersonID>();
           xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, std::set< ::cpp2::PersonID>>::read(*iprot, this->friends.value());
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       }
       case 7:
       {
-        if (ftype == apache::thrift::protocol::T_I64) {
+        if (_ftype == apache::thrift::protocol::T_I64) {
           this->bestFriend = int64_t();
           xfer += iprot->readI64(this->bestFriend.value());
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       }
       case 8:
       {
-        if (ftype == apache::thrift::protocol::T_MAP) {
+        if (_ftype == apache::thrift::protocol::T_MAP) {
           this->petNames = std::map< ::cpp2::Animal, std::string>();
           xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, std::map< ::cpp2::Animal, std::string>>::read(*iprot, this->petNames.value());
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       }
       case 9:
       {
-        if (ftype == apache::thrift::protocol::T_I32) {
+        if (_ftype == apache::thrift::protocol::T_I32) {
           this->afraidOfAnimal =  ::cpp2::Animal();
           xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::cpp2::Animal>::read(*iprot, this->afraidOfAnimal.value());
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       }
       case 10:
       {
-        if (ftype == apache::thrift::protocol::T_LIST) {
+        if (_ftype == apache::thrift::protocol::T_LIST) {
           this->vehicles = std::vector< ::cpp2::Vehicle>();
           xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, std::vector< ::cpp2::Vehicle>>::read(*iprot, this->vehicles.value());
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       }
       default:
       {
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
       }
     }

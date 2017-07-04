@@ -20,8 +20,8 @@ template <class Protocol_>
 uint32_t MyService_ping_args::read(Protocol_* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -29,7 +29,7 @@ uint32_t MyService_ping_args::read(Protocol_* iprot) {
      ::module_reflection_::reflectionInitializer_16917139520594253004(*schema);
     iprot->setNextStructType(MyService_ping_args::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -37,14 +37,14 @@ uint32_t MyService_ping_args::read(Protocol_* iprot) {
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -77,8 +77,8 @@ template <class Protocol_>
 uint32_t MyService_ping_presult::read(Protocol_* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -86,7 +86,7 @@ uint32_t MyService_ping_presult::read(Protocol_* iprot) {
      ::module_reflection_::reflectionInitializer_7454426369090387564(*schema);
     iprot->setNextStructType(MyService_ping_presult::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -94,14 +94,14 @@ uint32_t MyService_ping_presult::read(Protocol_* iprot) {
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -128,8 +128,8 @@ template <class Protocol_>
 uint32_t MyService_getRandomData_args::read(Protocol_* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -137,7 +137,7 @@ uint32_t MyService_getRandomData_args::read(Protocol_* iprot) {
      ::module_reflection_::reflectionInitializer_15719605412501798860(*schema);
     iprot->setNextStructType(MyService_getRandomData_args::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -145,14 +145,14 @@ uint32_t MyService_getRandomData_args::read(Protocol_* iprot) {
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -185,8 +185,8 @@ template <class Protocol_>
 uint32_t MyService_getRandomData_presult::read(Protocol_* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -194,7 +194,7 @@ uint32_t MyService_getRandomData_presult::read(Protocol_* iprot) {
      ::module_reflection_::reflectionInitializer_11335342061983591980(*schema);
     iprot->setNextStructType(MyService_getRandomData_presult::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -202,22 +202,22 @@ uint32_t MyService_getRandomData_presult::read(Protocol_* iprot) {
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       case 0:
-        if (ftype == apache::thrift::protocol::T_STRING) {
+        if (_ftype == apache::thrift::protocol::T_STRING) {
           xfer += iprot->readString((*(this->success)));
           this->__isset.success = true;
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -249,8 +249,8 @@ template <class Protocol_>
 uint32_t MyService_hasDataById_args::read(Protocol_* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -258,7 +258,7 @@ uint32_t MyService_hasDataById_args::read(Protocol_* iprot) {
      ::module_reflection_::reflectionInitializer_12544043904188382700(*schema);
     iprot->setNextStructType(MyService_hasDataById_args::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -266,22 +266,22 @@ uint32_t MyService_hasDataById_args::read(Protocol_* iprot) {
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       case 1:
-        if (ftype == apache::thrift::protocol::T_I64) {
+        if (_ftype == apache::thrift::protocol::T_I64) {
           xfer += iprot->readI64(this->id);
           this->__isset.id = true;
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -320,8 +320,8 @@ template <class Protocol_>
 uint32_t MyService_hasDataById_presult::read(Protocol_* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -329,7 +329,7 @@ uint32_t MyService_hasDataById_presult::read(Protocol_* iprot) {
      ::module_reflection_::reflectionInitializer_7676580259158416684(*schema);
     iprot->setNextStructType(MyService_hasDataById_presult::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -337,22 +337,22 @@ uint32_t MyService_hasDataById_presult::read(Protocol_* iprot) {
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       case 0:
-        if (ftype == apache::thrift::protocol::T_BOOL) {
+        if (_ftype == apache::thrift::protocol::T_BOOL) {
           xfer += iprot->readBool((*(this->success)));
           this->__isset.success = true;
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -384,8 +384,8 @@ template <class Protocol_>
 uint32_t MyService_getDataById_args::read(Protocol_* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -393,7 +393,7 @@ uint32_t MyService_getDataById_args::read(Protocol_* iprot) {
      ::module_reflection_::reflectionInitializer_6402583257721468108(*schema);
     iprot->setNextStructType(MyService_getDataById_args::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -401,22 +401,22 @@ uint32_t MyService_getDataById_args::read(Protocol_* iprot) {
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       case 1:
-        if (ftype == apache::thrift::protocol::T_I64) {
+        if (_ftype == apache::thrift::protocol::T_I64) {
           xfer += iprot->readI64(this->id);
           this->__isset.id = true;
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -455,8 +455,8 @@ template <class Protocol_>
 uint32_t MyService_getDataById_presult::read(Protocol_* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -464,7 +464,7 @@ uint32_t MyService_getDataById_presult::read(Protocol_* iprot) {
      ::module_reflection_::reflectionInitializer_8469747470745394316(*schema);
     iprot->setNextStructType(MyService_getDataById_presult::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -472,22 +472,22 @@ uint32_t MyService_getDataById_presult::read(Protocol_* iprot) {
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       case 0:
-        if (ftype == apache::thrift::protocol::T_STRING) {
+        if (_ftype == apache::thrift::protocol::T_STRING) {
           xfer += iprot->readString((*(this->success)));
           this->__isset.success = true;
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -519,8 +519,8 @@ template <class Protocol_>
 uint32_t MyService_putDataById_args::read(Protocol_* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -528,7 +528,7 @@ uint32_t MyService_putDataById_args::read(Protocol_* iprot) {
      ::module_reflection_::reflectionInitializer_546042509371991564(*schema);
     iprot->setNextStructType(MyService_putDataById_args::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -536,30 +536,30 @@ uint32_t MyService_putDataById_args::read(Protocol_* iprot) {
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       case 1:
-        if (ftype == apache::thrift::protocol::T_I64) {
+        if (_ftype == apache::thrift::protocol::T_I64) {
           xfer += iprot->readI64(this->id);
           this->__isset.id = true;
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 2:
-        if (ftype == apache::thrift::protocol::T_STRING) {
+        if (_ftype == apache::thrift::protocol::T_STRING) {
           xfer += iprot->readString(this->data);
           this->__isset.data = true;
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -604,8 +604,8 @@ template <class Protocol_>
 uint32_t MyService_putDataById_presult::read(Protocol_* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -613,7 +613,7 @@ uint32_t MyService_putDataById_presult::read(Protocol_* iprot) {
      ::module_reflection_::reflectionInitializer_9940143875439151532(*schema);
     iprot->setNextStructType(MyService_putDataById_presult::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -621,14 +621,14 @@ uint32_t MyService_putDataById_presult::read(Protocol_* iprot) {
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -655,8 +655,8 @@ template <class Protocol_>
 uint32_t MyService_lobDataById_args::read(Protocol_* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -664,7 +664,7 @@ uint32_t MyService_lobDataById_args::read(Protocol_* iprot) {
      ::module_reflection_::reflectionInitializer_15564732069918360876(*schema);
     iprot->setNextStructType(MyService_lobDataById_args::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -672,30 +672,30 @@ uint32_t MyService_lobDataById_args::read(Protocol_* iprot) {
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       case 1:
-        if (ftype == apache::thrift::protocol::T_I64) {
+        if (_ftype == apache::thrift::protocol::T_I64) {
           xfer += iprot->readI64(this->id);
           this->__isset.id = true;
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 2:
-        if (ftype == apache::thrift::protocol::T_STRING) {
+        if (_ftype == apache::thrift::protocol::T_STRING) {
           xfer += iprot->readString(this->data);
           this->__isset.data = true;
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -740,8 +740,8 @@ template <class Protocol_>
 uint32_t MyService_putStructById_args::read(Protocol_* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -749,7 +749,7 @@ uint32_t MyService_putStructById_args::read(Protocol_* iprot) {
      ::module_reflection_::reflectionInitializer_15712934915173236044(*schema);
     iprot->setNextStructType(MyService_putStructById_args::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -757,30 +757,30 @@ uint32_t MyService_putStructById_args::read(Protocol_* iprot) {
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       case 1:
-        if (ftype == apache::thrift::protocol::T_I64) {
+        if (_ftype == apache::thrift::protocol::T_I64) {
           xfer += iprot->readI64(this->id);
           this->__isset.id = true;
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       case 2:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           xfer += this->data.read(iprot);
           this->__isset.data = true;
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -825,8 +825,8 @@ template <class Protocol_>
 uint32_t MyService_putStructById_presult::read(Protocol_* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -834,7 +834,7 @@ uint32_t MyService_putStructById_presult::read(Protocol_* iprot) {
      ::module_reflection_::reflectionInitializer_4967378470319252300(*schema);
     iprot->setNextStructType(MyService_putStructById_presult::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -842,14 +842,14 @@ uint32_t MyService_putStructById_presult::read(Protocol_* iprot) {
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -939,12 +939,12 @@ folly::exception_wrapper MyServiceClientT<Protocol_>::recv_wrapped_ping()
   apache::thrift::ContextStack* ctx = this->getClientContextStack();
   int32_t rseqid = 0;
   int32_t eseqid = this->getNextRecvSequenceId();
-  std::string fname;
+  std::string _fname;
   apache::thrift::protocol::TMessageType mtype;
   if (ctx) ctx->preRead();
   folly::exception_wrapper interior_ew;
   auto caught_ew = folly::try_and_catch<apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
-    this->iprot_->readMessageBegin(fname, mtype, rseqid);
+    this->iprot_->readMessageBegin(_fname, mtype, rseqid);
     if (this->checkSeqid_ && rseqid != eseqid) {
       this->iprot_->skip(apache::thrift::protocol::T_STRUCT);
       this->iprot_->readMessageEnd();
@@ -967,7 +967,7 @@ folly::exception_wrapper MyServiceClientT<Protocol_>::recv_wrapped_ping()
       interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
       return; // from try_and_catch
     }
-    if (fname.compare("ping") != 0) {
+    if (_fname.compare("ping") != 0) {
       this->iprot_->skip(apache::thrift::protocol::T_STRUCT);
       this->iprot_->readMessageEnd();
       this->iprot_->getTransport()->readEnd();
@@ -1045,12 +1045,12 @@ folly::exception_wrapper MyServiceClientT<Protocol_>::recv_wrapped_getRandomData
   apache::thrift::ContextStack* ctx = this->getClientContextStack();
   int32_t rseqid = 0;
   int32_t eseqid = this->getNextRecvSequenceId();
-  std::string fname;
+  std::string _fname;
   apache::thrift::protocol::TMessageType mtype;
   if (ctx) ctx->preRead();
   folly::exception_wrapper interior_ew;
   auto caught_ew = folly::try_and_catch<apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
-    this->iprot_->readMessageBegin(fname, mtype, rseqid);
+    this->iprot_->readMessageBegin(_fname, mtype, rseqid);
     if (this->checkSeqid_ && rseqid != eseqid) {
       this->iprot_->skip(apache::thrift::protocol::T_STRUCT);
       this->iprot_->readMessageEnd();
@@ -1073,7 +1073,7 @@ folly::exception_wrapper MyServiceClientT<Protocol_>::recv_wrapped_getRandomData
       interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
       return; // from try_and_catch
     }
-    if (fname.compare("getRandomData") != 0) {
+    if (_fname.compare("getRandomData") != 0) {
       this->iprot_->skip(apache::thrift::protocol::T_STRUCT);
       this->iprot_->readMessageEnd();
       this->iprot_->getTransport()->readEnd();
@@ -1158,12 +1158,12 @@ folly::exception_wrapper MyServiceClientT<Protocol_>::recv_wrapped_hasDataById(b
   apache::thrift::ContextStack* ctx = this->getClientContextStack();
   int32_t rseqid = 0;
   int32_t eseqid = this->getNextRecvSequenceId();
-  std::string fname;
+  std::string _fname;
   apache::thrift::protocol::TMessageType mtype;
   if (ctx) ctx->preRead();
   folly::exception_wrapper interior_ew;
   auto caught_ew = folly::try_and_catch<apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
-    this->iprot_->readMessageBegin(fname, mtype, rseqid);
+    this->iprot_->readMessageBegin(_fname, mtype, rseqid);
     if (this->checkSeqid_ && rseqid != eseqid) {
       this->iprot_->skip(apache::thrift::protocol::T_STRUCT);
       this->iprot_->readMessageEnd();
@@ -1186,7 +1186,7 @@ folly::exception_wrapper MyServiceClientT<Protocol_>::recv_wrapped_hasDataById(b
       interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
       return; // from try_and_catch
     }
-    if (fname.compare("hasDataById") != 0) {
+    if (_fname.compare("hasDataById") != 0) {
       this->iprot_->skip(apache::thrift::protocol::T_STRUCT);
       this->iprot_->readMessageEnd();
       this->iprot_->getTransport()->readEnd();
@@ -1272,12 +1272,12 @@ folly::exception_wrapper MyServiceClientT<Protocol_>::recv_wrapped_getDataById(s
   apache::thrift::ContextStack* ctx = this->getClientContextStack();
   int32_t rseqid = 0;
   int32_t eseqid = this->getNextRecvSequenceId();
-  std::string fname;
+  std::string _fname;
   apache::thrift::protocol::TMessageType mtype;
   if (ctx) ctx->preRead();
   folly::exception_wrapper interior_ew;
   auto caught_ew = folly::try_and_catch<apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
-    this->iprot_->readMessageBegin(fname, mtype, rseqid);
+    this->iprot_->readMessageBegin(_fname, mtype, rseqid);
     if (this->checkSeqid_ && rseqid != eseqid) {
       this->iprot_->skip(apache::thrift::protocol::T_STRUCT);
       this->iprot_->readMessageEnd();
@@ -1300,7 +1300,7 @@ folly::exception_wrapper MyServiceClientT<Protocol_>::recv_wrapped_getDataById(s
       interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
       return; // from try_and_catch
     }
-    if (fname.compare("getDataById") != 0) {
+    if (_fname.compare("getDataById") != 0) {
       this->iprot_->skip(apache::thrift::protocol::T_STRUCT);
       this->iprot_->readMessageEnd();
       this->iprot_->getTransport()->readEnd();
@@ -1386,12 +1386,12 @@ folly::exception_wrapper MyServiceClientT<Protocol_>::recv_wrapped_putDataById()
   apache::thrift::ContextStack* ctx = this->getClientContextStack();
   int32_t rseqid = 0;
   int32_t eseqid = this->getNextRecvSequenceId();
-  std::string fname;
+  std::string _fname;
   apache::thrift::protocol::TMessageType mtype;
   if (ctx) ctx->preRead();
   folly::exception_wrapper interior_ew;
   auto caught_ew = folly::try_and_catch<apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
-    this->iprot_->readMessageBegin(fname, mtype, rseqid);
+    this->iprot_->readMessageBegin(_fname, mtype, rseqid);
     if (this->checkSeqid_ && rseqid != eseqid) {
       this->iprot_->skip(apache::thrift::protocol::T_STRUCT);
       this->iprot_->readMessageEnd();
@@ -1414,7 +1414,7 @@ folly::exception_wrapper MyServiceClientT<Protocol_>::recv_wrapped_putDataById()
       interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
       return; // from try_and_catch
     }
-    if (fname.compare("putDataById") != 0) {
+    if (_fname.compare("putDataById") != 0) {
       this->iprot_->skip(apache::thrift::protocol::T_STRUCT);
       this->iprot_->readMessageEnd();
       this->iprot_->getTransport()->readEnd();
@@ -1538,12 +1538,12 @@ folly::exception_wrapper MyServiceClientT<Protocol_>::recv_wrapped_putStructById
   apache::thrift::ContextStack* ctx = this->getClientContextStack();
   int32_t rseqid = 0;
   int32_t eseqid = this->getNextRecvSequenceId();
-  std::string fname;
+  std::string _fname;
   apache::thrift::protocol::TMessageType mtype;
   if (ctx) ctx->preRead();
   folly::exception_wrapper interior_ew;
   auto caught_ew = folly::try_and_catch<apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
-    this->iprot_->readMessageBegin(fname, mtype, rseqid);
+    this->iprot_->readMessageBegin(_fname, mtype, rseqid);
     if (this->checkSeqid_ && rseqid != eseqid) {
       this->iprot_->skip(apache::thrift::protocol::T_STRUCT);
       this->iprot_->readMessageEnd();
@@ -1566,7 +1566,7 @@ folly::exception_wrapper MyServiceClientT<Protocol_>::recv_wrapped_putStructById
       interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
       return; // from try_and_catch
     }
-    if (fname.compare("putStructById") != 0) {
+    if (_fname.compare("putStructById") != 0) {
       this->iprot_->skip(apache::thrift::protocol::T_STRUCT);
       this->iprot_->readMessageEnd();
       this->iprot_->getTransport()->readEnd();
@@ -1596,15 +1596,15 @@ void MyServiceClientT<Protocol_>::recv_putStructById()
 }
 
 template <class Protocol_>
-bool MyServiceProcessorT<Protocol_>::dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, apache::thrift::server::TConnectionContext* connectionContext) {
+bool MyServiceProcessorT<Protocol_>::dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& _fname, int32_t seqid, apache::thrift::server::TConnectionContext* connectionContext) {
   typename ProcessMap::iterator pfn;
-  pfn = processMap_.find(fname);
+  pfn = processMap_.find(_fname);
   if (pfn == processMap_.end()) {
     iprot->skip(apache::thrift::protocol::T_STRUCT);
     iprot->readMessageEnd();
     iprot->getTransport()->readEnd();
-    apache::thrift::TApplicationException x(apache::thrift::TApplicationException::UNKNOWN_METHOD, "Invalid method name: '"+fname+"'");
-    oprot->writeMessageBegin(fname, apache::thrift::protocol::T_EXCEPTION, seqid);
+    apache::thrift::TApplicationException x(apache::thrift::TApplicationException::UNKNOWN_METHOD, "Invalid method name: '"+_fname+"'");
+    oprot->writeMessageBegin(_fname, apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
     oprot->getTransport()->writeEnd();
@@ -1617,15 +1617,15 @@ bool MyServiceProcessorT<Protocol_>::dispatchCall(::apache::thrift::protocol::TP
 }
 
 template <class Protocol_>
-bool MyServiceProcessorT<Protocol_>::dispatchCallTemplated(Protocol_* iprot, Protocol_* oprot, const std::string& fname, int32_t seqid, apache::thrift::server::TConnectionContext* connectionContext) {
+bool MyServiceProcessorT<Protocol_>::dispatchCallTemplated(Protocol_* iprot, Protocol_* oprot, const std::string& _fname, int32_t seqid, apache::thrift::server::TConnectionContext* connectionContext) {
   typename ProcessMap::iterator pfn;
-  pfn = processMap_.find(fname);
+  pfn = processMap_.find(_fname);
   if (pfn == processMap_.end()) {
     iprot->skip(apache::thrift::protocol::T_STRUCT);
     iprot->readMessageEnd();
     iprot->getTransport()->readEnd();
-    apache::thrift::TApplicationException x(apache::thrift::TApplicationException::UNKNOWN_METHOD, "Invalid method name: '"+fname+"'");
-    oprot->writeMessageBegin(fname, apache::thrift::protocol::T_EXCEPTION, seqid);
+    apache::thrift::TApplicationException x(apache::thrift::TApplicationException::UNKNOWN_METHOD, "Invalid method name: '"+_fname+"'");
+    oprot->writeMessageBegin(_fname, apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
     oprot->getTransport()->writeEnd();
@@ -2401,12 +2401,12 @@ folly::exception_wrapper MyServiceCobClientT<Protocol_>::recv_wrapped_ping()
   apache::thrift::ContextStack* ctx = this->getClientContextStack();
   int32_t rseqid = 0;
   int32_t eseqid = this->getNextRecvSequenceId();
-  std::string fname;
+  std::string _fname;
   apache::thrift::protocol::TMessageType mtype;
   if (ctx) ctx->preRead();
   folly::exception_wrapper interior_ew;
   auto caught_ew = folly::try_and_catch<apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
-    this->iprot_->readMessageBegin(fname, mtype, rseqid);
+    this->iprot_->readMessageBegin(_fname, mtype, rseqid);
     if (this->checkSeqid_ && rseqid != eseqid) {
       this->iprot_->skip(apache::thrift::protocol::T_STRUCT);
       this->iprot_->readMessageEnd();
@@ -2432,7 +2432,7 @@ folly::exception_wrapper MyServiceCobClientT<Protocol_>::recv_wrapped_ping()
       interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
       return; // from try_and_catch
     }
-    if (fname.compare("ping") != 0) {
+    if (_fname.compare("ping") != 0) {
       this->iprot_->skip(apache::thrift::protocol::T_STRUCT);
       this->iprot_->readMessageEnd();
       this->iprot_->getTransport()->readEnd();
@@ -2519,12 +2519,12 @@ folly::exception_wrapper MyServiceCobClientT<Protocol_>::recv_wrapped_getRandomD
   apache::thrift::ContextStack* ctx = this->getClientContextStack();
   int32_t rseqid = 0;
   int32_t eseqid = this->getNextRecvSequenceId();
-  std::string fname;
+  std::string _fname;
   apache::thrift::protocol::TMessageType mtype;
   if (ctx) ctx->preRead();
   folly::exception_wrapper interior_ew;
   auto caught_ew = folly::try_and_catch<apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
-    this->iprot_->readMessageBegin(fname, mtype, rseqid);
+    this->iprot_->readMessageBegin(_fname, mtype, rseqid);
     if (this->checkSeqid_ && rseqid != eseqid) {
       this->iprot_->skip(apache::thrift::protocol::T_STRUCT);
       this->iprot_->readMessageEnd();
@@ -2550,7 +2550,7 @@ folly::exception_wrapper MyServiceCobClientT<Protocol_>::recv_wrapped_getRandomD
       interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
       return; // from try_and_catch
     }
-    if (fname.compare("getRandomData") != 0) {
+    if (_fname.compare("getRandomData") != 0) {
       this->iprot_->skip(apache::thrift::protocol::T_STRUCT);
       this->iprot_->readMessageEnd();
       this->iprot_->getTransport()->readEnd();
@@ -2645,12 +2645,12 @@ folly::exception_wrapper MyServiceCobClientT<Protocol_>::recv_wrapped_hasDataByI
   apache::thrift::ContextStack* ctx = this->getClientContextStack();
   int32_t rseqid = 0;
   int32_t eseqid = this->getNextRecvSequenceId();
-  std::string fname;
+  std::string _fname;
   apache::thrift::protocol::TMessageType mtype;
   if (ctx) ctx->preRead();
   folly::exception_wrapper interior_ew;
   auto caught_ew = folly::try_and_catch<apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
-    this->iprot_->readMessageBegin(fname, mtype, rseqid);
+    this->iprot_->readMessageBegin(_fname, mtype, rseqid);
     if (this->checkSeqid_ && rseqid != eseqid) {
       this->iprot_->skip(apache::thrift::protocol::T_STRUCT);
       this->iprot_->readMessageEnd();
@@ -2676,7 +2676,7 @@ folly::exception_wrapper MyServiceCobClientT<Protocol_>::recv_wrapped_hasDataByI
       interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
       return; // from try_and_catch
     }
-    if (fname.compare("hasDataById") != 0) {
+    if (_fname.compare("hasDataById") != 0) {
       this->iprot_->skip(apache::thrift::protocol::T_STRUCT);
       this->iprot_->readMessageEnd();
       this->iprot_->getTransport()->readEnd();
@@ -2772,12 +2772,12 @@ folly::exception_wrapper MyServiceCobClientT<Protocol_>::recv_wrapped_getDataByI
   apache::thrift::ContextStack* ctx = this->getClientContextStack();
   int32_t rseqid = 0;
   int32_t eseqid = this->getNextRecvSequenceId();
-  std::string fname;
+  std::string _fname;
   apache::thrift::protocol::TMessageType mtype;
   if (ctx) ctx->preRead();
   folly::exception_wrapper interior_ew;
   auto caught_ew = folly::try_and_catch<apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
-    this->iprot_->readMessageBegin(fname, mtype, rseqid);
+    this->iprot_->readMessageBegin(_fname, mtype, rseqid);
     if (this->checkSeqid_ && rseqid != eseqid) {
       this->iprot_->skip(apache::thrift::protocol::T_STRUCT);
       this->iprot_->readMessageEnd();
@@ -2803,7 +2803,7 @@ folly::exception_wrapper MyServiceCobClientT<Protocol_>::recv_wrapped_getDataByI
       interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
       return; // from try_and_catch
     }
-    if (fname.compare("getDataById") != 0) {
+    if (_fname.compare("getDataById") != 0) {
       this->iprot_->skip(apache::thrift::protocol::T_STRUCT);
       this->iprot_->readMessageEnd();
       this->iprot_->getTransport()->readEnd();
@@ -2899,12 +2899,12 @@ folly::exception_wrapper MyServiceCobClientT<Protocol_>::recv_wrapped_putDataByI
   apache::thrift::ContextStack* ctx = this->getClientContextStack();
   int32_t rseqid = 0;
   int32_t eseqid = this->getNextRecvSequenceId();
-  std::string fname;
+  std::string _fname;
   apache::thrift::protocol::TMessageType mtype;
   if (ctx) ctx->preRead();
   folly::exception_wrapper interior_ew;
   auto caught_ew = folly::try_and_catch<apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
-    this->iprot_->readMessageBegin(fname, mtype, rseqid);
+    this->iprot_->readMessageBegin(_fname, mtype, rseqid);
     if (this->checkSeqid_ && rseqid != eseqid) {
       this->iprot_->skip(apache::thrift::protocol::T_STRUCT);
       this->iprot_->readMessageEnd();
@@ -2930,7 +2930,7 @@ folly::exception_wrapper MyServiceCobClientT<Protocol_>::recv_wrapped_putDataByI
       interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
       return; // from try_and_catch
     }
-    if (fname.compare("putDataById") != 0) {
+    if (_fname.compare("putDataById") != 0) {
       this->iprot_->skip(apache::thrift::protocol::T_STRUCT);
       this->iprot_->readMessageEnd();
       this->iprot_->getTransport()->readEnd();
@@ -3064,12 +3064,12 @@ folly::exception_wrapper MyServiceCobClientT<Protocol_>::recv_wrapped_putStructB
   apache::thrift::ContextStack* ctx = this->getClientContextStack();
   int32_t rseqid = 0;
   int32_t eseqid = this->getNextRecvSequenceId();
-  std::string fname;
+  std::string _fname;
   apache::thrift::protocol::TMessageType mtype;
   if (ctx) ctx->preRead();
   folly::exception_wrapper interior_ew;
   auto caught_ew = folly::try_and_catch<apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
-    this->iprot_->readMessageBegin(fname, mtype, rseqid);
+    this->iprot_->readMessageBegin(_fname, mtype, rseqid);
     if (this->checkSeqid_ && rseqid != eseqid) {
       this->iprot_->skip(apache::thrift::protocol::T_STRUCT);
       this->iprot_->readMessageEnd();
@@ -3095,7 +3095,7 @@ folly::exception_wrapper MyServiceCobClientT<Protocol_>::recv_wrapped_putStructB
       interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
       return; // from try_and_catch
     }
-    if (fname.compare("putStructById") != 0) {
+    if (_fname.compare("putStructById") != 0) {
       this->iprot_->skip(apache::thrift::protocol::T_STRUCT);
       this->iprot_->readMessageEnd();
       this->iprot_->getTransport()->readEnd();
@@ -3132,15 +3132,15 @@ void MyServiceCobClientT<Protocol_>::recv_putStructById()
 }
 
 template <class Protocol_>
-void MyServiceAsyncProcessorT<Protocol_>::dispatchCall(std::function<void(bool ok)> cob, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, apache::thrift::server::TConnectionContext* connectionContext) {
+void MyServiceAsyncProcessorT<Protocol_>::dispatchCall(std::function<void(bool ok)> cob, ::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& _fname, int32_t seqid, apache::thrift::server::TConnectionContext* connectionContext) {
   typename ProcessMap::iterator pfn;
-  pfn = processMap_.find(fname);
+  pfn = processMap_.find(_fname);
   if (pfn == processMap_.end()) {
     iprot->skip(apache::thrift::protocol::T_STRUCT);
     iprot->readMessageEnd();
     iprot->getTransport()->readEnd();
-    apache::thrift::TApplicationException x(apache::thrift::TApplicationException::UNKNOWN_METHOD, "Invalid method name: '"+fname+"'");
-    oprot->writeMessageBegin(fname, apache::thrift::protocol::T_EXCEPTION, seqid);
+    apache::thrift::TApplicationException x(apache::thrift::TApplicationException::UNKNOWN_METHOD, "Invalid method name: '"+_fname+"'");
+    oprot->writeMessageBegin(_fname, apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
     oprot->getTransport()->writeEnd();
@@ -3153,15 +3153,15 @@ void MyServiceAsyncProcessorT<Protocol_>::dispatchCall(std::function<void(bool o
 }
 
 template <class Protocol_>
-void MyServiceAsyncProcessorT<Protocol_>::dispatchCallTemplated(std::function<void(bool ok)> cob, Protocol_* iprot, Protocol_* oprot, const std::string& fname, int32_t seqid, apache::thrift::server::TConnectionContext* connectionContext) {
+void MyServiceAsyncProcessorT<Protocol_>::dispatchCallTemplated(std::function<void(bool ok)> cob, Protocol_* iprot, Protocol_* oprot, const std::string& _fname, int32_t seqid, apache::thrift::server::TConnectionContext* connectionContext) {
   typename ProcessMap::iterator pfn;
-  pfn = processMap_.find(fname);
+  pfn = processMap_.find(_fname);
   if (pfn == processMap_.end()) {
     iprot->skip(apache::thrift::protocol::T_STRUCT);
     iprot->readMessageEnd();
     iprot->getTransport()->readEnd();
-    apache::thrift::TApplicationException x(apache::thrift::TApplicationException::UNKNOWN_METHOD, "Invalid method name: '"+fname+"'");
-    oprot->writeMessageBegin(fname, apache::thrift::protocol::T_EXCEPTION, seqid);
+    apache::thrift::TApplicationException x(apache::thrift::TApplicationException::UNKNOWN_METHOD, "Invalid method name: '"+_fname+"'");
+    oprot->writeMessageBegin(_fname, apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
     oprot->getTransport()->writeEnd();

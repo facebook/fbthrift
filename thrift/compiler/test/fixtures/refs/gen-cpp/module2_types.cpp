@@ -48,8 +48,8 @@ void StructUsingOtherNamespace::readFromJson(const char* jsonText, const folly::
 uint32_t StructUsingOtherNamespace::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -57,7 +57,7 @@ uint32_t StructUsingOtherNamespace::read(apache::thrift::protocol::TProtocol* ip
      ::module2_reflection_::reflectionInitializer_8285996275179549516(*schema);
     iprot->setNextStructType(StructUsingOtherNamespace::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -65,14 +65,14 @@ uint32_t StructUsingOtherNamespace::read(apache::thrift::protocol::TProtocol* ip
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       case 1:
-        if (ftype == apache::thrift::protocol::T_STRUCT) {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
           using element_type = typename std::remove_const<typename std::remove_reference<decltype(this->other)>::type::element_type>::type;
           std::unique_ptr<element_type> _ptype2(new element_type());
           xfer += _ptype2->read(iprot);
@@ -81,11 +81,11 @@ uint32_t StructUsingOtherNamespace::read(apache::thrift::protocol::TProtocol* ip
           } else if (this->other->__isset.some_val) {
           } else { this->other = nullptr; }
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();

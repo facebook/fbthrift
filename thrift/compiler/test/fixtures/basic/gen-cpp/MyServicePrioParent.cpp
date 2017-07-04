@@ -19,8 +19,8 @@ void MyServicePrioParent_ping_args::_reflection_register(::apache::thrift::refle
 uint32_t MyServicePrioParent_ping_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -28,7 +28,7 @@ uint32_t MyServicePrioParent_ping_args::read(apache::thrift::protocol::TProtocol
      ::module_reflection_::reflectionInitializer_15158865162347410572(*schema);
     iprot->setNextStructType(MyServicePrioParent_ping_args::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -36,14 +36,14 @@ uint32_t MyServicePrioParent_ping_args::read(apache::thrift::protocol::TProtocol
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -83,8 +83,8 @@ void MyServicePrioParent_ping_presult::_reflection_register(::apache::thrift::re
 uint32_t MyServicePrioParent_ping_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -92,7 +92,7 @@ uint32_t MyServicePrioParent_ping_presult::read(apache::thrift::protocol::TProto
      ::module_reflection_::reflectionInitializer_1987822334736715596(*schema);
     iprot->setNextStructType(MyServicePrioParent_ping_presult::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -100,14 +100,14 @@ uint32_t MyServicePrioParent_ping_presult::read(apache::thrift::protocol::TProto
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -137,8 +137,8 @@ void MyServicePrioParent_pong_args::_reflection_register(::apache::thrift::refle
 uint32_t MyServicePrioParent_pong_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -146,7 +146,7 @@ uint32_t MyServicePrioParent_pong_args::read(apache::thrift::protocol::TProtocol
      ::module_reflection_::reflectionInitializer_9845490327892903980(*schema);
     iprot->setNextStructType(MyServicePrioParent_pong_args::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -154,14 +154,14 @@ uint32_t MyServicePrioParent_pong_args::read(apache::thrift::protocol::TProtocol
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -201,8 +201,8 @@ void MyServicePrioParent_pong_presult::_reflection_register(::apache::thrift::re
 uint32_t MyServicePrioParent_pong_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -210,7 +210,7 @@ uint32_t MyServicePrioParent_pong_presult::read(apache::thrift::protocol::TProto
      ::module_reflection_::reflectionInitializer_2551766680163974924(*schema);
     iprot->setNextStructType(MyServicePrioParent_pong_presult::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -218,14 +218,14 @@ uint32_t MyServicePrioParent_pong_presult::read(apache::thrift::protocol::TProto
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -308,12 +308,12 @@ folly::exception_wrapper MyServicePrioParentClient::recv_wrapped_ping()
   apache::thrift::ContextStack* ctx = this->getClientContextStack();
   int32_t rseqid = 0;
   int32_t eseqid = getNextRecvSequenceId();
-  std::string fname;
+  std::string _fname;
   apache::thrift::protocol::TMessageType mtype;
   if (ctx) ctx->preRead();
   folly::exception_wrapper interior_ew;
   auto caught_ew = folly::try_and_catch<apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
-    iprot_->readMessageBegin(fname, mtype, rseqid);
+    iprot_->readMessageBegin(_fname, mtype, rseqid);
     if (this->checkSeqid_ && rseqid != eseqid) {
       iprot_->skip(apache::thrift::protocol::T_STRUCT);
       iprot_->readMessageEnd();
@@ -336,7 +336,7 @@ folly::exception_wrapper MyServicePrioParentClient::recv_wrapped_ping()
       interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
       return; // from try_and_catch
     }
-    if (fname.compare("ping") != 0) {
+    if (_fname.compare("ping") != 0) {
       iprot_->skip(apache::thrift::protocol::T_STRUCT);
       iprot_->readMessageEnd();
       iprot_->getTransport()->readEnd();
@@ -410,12 +410,12 @@ folly::exception_wrapper MyServicePrioParentClient::recv_wrapped_pong()
   apache::thrift::ContextStack* ctx = this->getClientContextStack();
   int32_t rseqid = 0;
   int32_t eseqid = getNextRecvSequenceId();
-  std::string fname;
+  std::string _fname;
   apache::thrift::protocol::TMessageType mtype;
   if (ctx) ctx->preRead();
   folly::exception_wrapper interior_ew;
   auto caught_ew = folly::try_and_catch<apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
-    iprot_->readMessageBegin(fname, mtype, rseqid);
+    iprot_->readMessageBegin(_fname, mtype, rseqid);
     if (this->checkSeqid_ && rseqid != eseqid) {
       iprot_->skip(apache::thrift::protocol::T_STRUCT);
       iprot_->readMessageEnd();
@@ -438,7 +438,7 @@ folly::exception_wrapper MyServicePrioParentClient::recv_wrapped_pong()
       interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
       return; // from try_and_catch
     }
-    if (fname.compare("pong") != 0) {
+    if (_fname.compare("pong") != 0) {
       iprot_->skip(apache::thrift::protocol::T_STRUCT);
       iprot_->readMessageEnd();
       iprot_->getTransport()->readEnd();
@@ -466,15 +466,15 @@ void MyServicePrioParentClient::recv_pong()
   }
 }
 
-bool MyServicePrioParentProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, apache::thrift::server::TConnectionContext* connectionContext) {
+bool MyServicePrioParentProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& _fname, int32_t seqid, apache::thrift::server::TConnectionContext* connectionContext) {
   ProcessMap::iterator pfn;
-  pfn = processMap_.find(fname);
+  pfn = processMap_.find(_fname);
   if (pfn == processMap_.end()) {
     iprot->skip(apache::thrift::protocol::T_STRUCT);
     iprot->readMessageEnd();
     iprot->getTransport()->readEnd();
-    apache::thrift::TApplicationException x(apache::thrift::TApplicationException::UNKNOWN_METHOD, "Invalid method name: '"+fname+"'");
-    oprot->writeMessageBegin(fname, apache::thrift::protocol::T_EXCEPTION, seqid);
+    apache::thrift::TApplicationException x(apache::thrift::TApplicationException::UNKNOWN_METHOD, "Invalid method name: '"+_fname+"'");
+    oprot->writeMessageBegin(_fname, apache::thrift::protocol::T_EXCEPTION, seqid);
     x.write(oprot);
     oprot->writeMessageEnd();
     oprot->getTransport()->writeEnd();

@@ -19,8 +19,8 @@ void MyServicePrioChild_pang_args::_reflection_register(::apache::thrift::reflec
 uint32_t MyServicePrioChild_pang_args::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -28,7 +28,7 @@ uint32_t MyServicePrioChild_pang_args::read(apache::thrift::protocol::TProtocol*
      ::module_reflection_::reflectionInitializer_6708350789317430956(*schema);
     iprot->setNextStructType(MyServicePrioChild_pang_args::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -36,14 +36,14 @@ uint32_t MyServicePrioChild_pang_args::read(apache::thrift::protocol::TProtocol*
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -83,8 +83,8 @@ void MyServicePrioChild_pang_presult::_reflection_register(::apache::thrift::ref
 uint32_t MyServicePrioChild_pang_presult::read(apache::thrift::protocol::TProtocol* iprot) {
 
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
   ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
@@ -92,7 +92,7 @@ uint32_t MyServicePrioChild_pang_presult::read(apache::thrift::protocol::TProtoc
      ::module_reflection_::reflectionInitializer_6662883238703015788(*schema);
     iprot->setNextStructType(MyServicePrioChild_pang_presult::_reflection_id);
   }
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::protocol::TProtocolException;
 
@@ -100,14 +100,14 @@ uint32_t MyServicePrioChild_pang_presult::read(apache::thrift::protocol::TProtoc
 
   while (true)
   {
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (ftype == apache::thrift::protocol::T_STOP) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
       break;
     }
     switch (fid)
     {
       default:
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
     }
     xfer += iprot->readFieldEnd();
@@ -180,12 +180,12 @@ folly::exception_wrapper MyServicePrioChildClient::recv_wrapped_pang()
   apache::thrift::ContextStack* ctx = this->getClientContextStack();
   int32_t rseqid = 0;
   int32_t eseqid = getNextRecvSequenceId();
-  std::string fname;
+  std::string _fname;
   apache::thrift::protocol::TMessageType mtype;
   if (ctx) ctx->preRead();
   folly::exception_wrapper interior_ew;
   auto caught_ew = folly::try_and_catch<apache::thrift::TException, apache::thrift::protocol::TProtocolException>([&]() {
-    iprot_->readMessageBegin(fname, mtype, rseqid);
+    iprot_->readMessageBegin(_fname, mtype, rseqid);
     if (this->checkSeqid_ && rseqid != eseqid) {
       iprot_->skip(apache::thrift::protocol::T_STRUCT);
       iprot_->readMessageEnd();
@@ -208,7 +208,7 @@ folly::exception_wrapper MyServicePrioChildClient::recv_wrapped_pang()
       interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);
       return; // from try_and_catch
     }
-    if (fname.compare("pang") != 0) {
+    if (_fname.compare("pang") != 0) {
       iprot_->skip(apache::thrift::protocol::T_STRUCT);
       iprot_->readMessageEnd();
       iprot_->getTransport()->readEnd();
@@ -236,11 +236,11 @@ void MyServicePrioChildClient::recv_pang()
   }
 }
 
-bool MyServicePrioChildProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& fname, int32_t seqid, apache::thrift::server::TConnectionContext* connectionContext) {
+bool MyServicePrioChildProcessor::dispatchCall(::apache::thrift::protocol::TProtocol* iprot, ::apache::thrift::protocol::TProtocol* oprot, const std::string& _fname, int32_t seqid, apache::thrift::server::TConnectionContext* connectionContext) {
   ProcessMap::iterator pfn;
-  pfn = processMap_.find(fname);
+  pfn = processMap_.find(_fname);
   if (pfn == processMap_.end()) {
-    return MyServicePrioParentProcessor::dispatchCall(iprot, oprot, fname, seqid, connectionContext);
+    return MyServicePrioParentProcessor::dispatchCall(iprot, oprot, _fname, seqid, connectionContext);
   }
   const ProcessFunction& pf = pfn->second;
   (this->*pf)(seqid, iprot, oprot, connectionContext);

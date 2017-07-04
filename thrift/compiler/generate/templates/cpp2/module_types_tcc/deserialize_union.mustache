@@ -17,11 +17,11 @@
 %>template <class Protocol_>
 uint32_t <%struct:name%>::read(Protocol_* iprot) {
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
 
-  xfer += iprot->readStructBegin(fname);
+  xfer += iprot->readStructBegin(_fname);
 
   using apache::thrift::TProtocolException;
 
@@ -29,15 +29,15 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
   bool isset_<%field:name%> = false;
 <%/field:required?%><%/struct:fields%>
 
-  xfer += iprot->readFieldBegin(fname, ftype, fid);
-  if (ftype == apache::thrift::protocol::T_STOP) {
+  xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+  if (_ftype == apache::thrift::protocol::T_STOP) {
     this->__clear();
   } else {
     if (fid == std::numeric_limits<int16_t>::min()) {
   <%#struct:fields%><%#field:type%>
-      <%^first?%>else <%/first?%>if (fname == "<%field:name%>") {
+      <%^first?%>else <%/first?%>if (_fname == "<%field:name%>") {
         fid = <%field:key%>;
-        ftype = apache::thrift::protocol::<% > module_types_tcc/struct_type%>;
+        _ftype = apache::thrift::protocol::<% > module_types_tcc/struct_type%>;
       }
   <%/field:type%><%/struct:fields%>
     }
@@ -45,7 +45,7 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
   <%#struct:fields%><%#field:type%>
       case <%field:key%>:
       {
-        if (ftype == apache::thrift::protocol::<% > module_types_tcc/struct_type%>) {
+        if (_ftype == apache::thrift::protocol::<% > module_types_tcc/struct_type%>) {
           this->set_<%field:name%>();
 <%#type:resolves_to_base?%>
 <%#field:cpp_ref?%>
@@ -68,20 +68,20 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
           isset_<%field:name%> = true;
 <%/field:required?%>
         } else {
-          xfer += iprot->skip(ftype);
+          xfer += iprot->skip(_ftype);
         }
         break;
       }
   <%/field:type%><%/struct:fields%>
       default:
       {
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         break;
       }
     }
     xfer += iprot->readFieldEnd();
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (UNLIKELY(ftype != apache::thrift::protocol::T_STOP)) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (UNLIKELY(_ftype != apache::thrift::protocol::T_STOP)) {
       using apache::thrift::protocol::TProtocolException;
       TProtocolException::throwUnionMissingStop();
     }

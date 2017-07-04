@@ -18,35 +18,35 @@
 
 uint32_t ComplexUnion::read(apache::thrift::protocol::TProtocol* iprot) {
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
-  xfer += iprot->readStructBegin(fname);
-  xfer += iprot->readFieldBegin(fname, ftype, fid);
-  if (ftype == apache::thrift::protocol::T_STOP) {
+  xfer += iprot->readStructBegin(_fname);
+  xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+  if (_ftype == apache::thrift::protocol::T_STOP) {
     __clear();
   } else {
     switch (fid) {
       case 1: {
-        if (ftype == apache::thrift::protocol::T_I64) {
+        if (_ftype == apache::thrift::protocol::T_I64) {
           set_intValue();
           xfer += iprot->readI64(this->value_.intValue);
         } else {
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         }
         break;
       }
       case 5: {
-        if (ftype == apache::thrift::protocol::T_STRING) {
+        if (_ftype == apache::thrift::protocol::T_STRING) {
           set_stringValue();
           xfer += iprot->readString(this->value_.stringValue);
         } else {
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         }
         break;
       }
       case 2: {
-        if (ftype == apache::thrift::protocol::T_LIST) {
+        if (_ftype == apache::thrift::protocol::T_LIST) {
           set_intListValue();
           {
             this->value_.intListValue.clear();
@@ -72,12 +72,12 @@ uint32_t ComplexUnion::read(apache::thrift::protocol::TProtocol* iprot) {
             xfer += iprot->readListEnd();
           }
         } else {
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         }
         break;
       }
       case 3: {
-        if (ftype == apache::thrift::protocol::T_LIST) {
+        if (_ftype == apache::thrift::protocol::T_LIST) {
           set_stringListValue();
           {
             this->value_.stringListValue.clear();
@@ -103,12 +103,12 @@ uint32_t ComplexUnion::read(apache::thrift::protocol::TProtocol* iprot) {
             xfer += iprot->readListEnd();
           }
         } else {
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         }
         break;
       }
       case 9: {
-        if (ftype == apache::thrift::protocol::T_MAP) {
+        if (_ftype == apache::thrift::protocol::T_MAP) {
           set_typedefValue();
           {
             this->value_.typedefValue.clear();
@@ -138,24 +138,24 @@ uint32_t ComplexUnion::read(apache::thrift::protocol::TProtocol* iprot) {
             xfer += iprot->readMapEnd();
           }
         } else {
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         }
         break;
       }
       case 14: {
-        if (ftype == apache::thrift::protocol::T_STRING) {
+        if (_ftype == apache::thrift::protocol::T_STRING) {
           set_stringRef();
           xfer += iprot->readString(this->value_.stringRef);
         } else {
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         }
         break;
       }
-      default: xfer += iprot->skip(ftype); break;
+      default: xfer += iprot->skip(_ftype); break;
     }
     xfer += iprot->readFieldEnd();
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (UNLIKELY(ftype != apache::thrift::protocol::T_STOP)) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (UNLIKELY(_ftype != apache::thrift::protocol::T_STOP)) {
       using apache::thrift::protocol::TProtocolException;
       TProtocolException::throwUnionMissingStop();
     }
@@ -239,38 +239,38 @@ uint32_t ComplexUnion::write(apache::thrift::protocol::TProtocol* oprot) const {
 
 uint32_t FinalComplexUnion::read(apache::thrift::protocol::TProtocol* iprot) {
   uint32_t xfer = 0;
-  std::string fname;
-  apache::thrift::protocol::TType ftype;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
   int16_t fid;
-  xfer += iprot->readStructBegin(fname);
-  xfer += iprot->readFieldBegin(fname, ftype, fid);
-  if (ftype == apache::thrift::protocol::T_STOP) {
+  xfer += iprot->readStructBegin(_fname);
+  xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+  if (_ftype == apache::thrift::protocol::T_STOP) {
     __clear();
   } else {
     switch (fid) {
       case 1: {
-        if (ftype == apache::thrift::protocol::T_STRING) {
+        if (_ftype == apache::thrift::protocol::T_STRING) {
           set_thingOne();
           xfer += iprot->readString(this->value_.thingOne);
         } else {
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         }
         break;
       }
       case 2: {
-        if (ftype == apache::thrift::protocol::T_STRING) {
+        if (_ftype == apache::thrift::protocol::T_STRING) {
           set_thingTwo();
           xfer += iprot->readString(this->value_.thingTwo);
         } else {
-        xfer += iprot->skip(ftype);
+        xfer += iprot->skip(_ftype);
         }
         break;
       }
-      default: xfer += iprot->skip(ftype); break;
+      default: xfer += iprot->skip(_ftype); break;
     }
     xfer += iprot->readFieldEnd();
-    xfer += iprot->readFieldBegin(fname, ftype, fid);
-    if (UNLIKELY(ftype != apache::thrift::protocol::T_STOP)) {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (UNLIKELY(_ftype != apache::thrift::protocol::T_STOP)) {
       using apache::thrift::protocol::TProtocolException;
       TProtocolException::throwUnionMissingStop();
     }

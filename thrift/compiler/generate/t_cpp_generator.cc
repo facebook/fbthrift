@@ -2030,14 +2030,14 @@ void t_cpp_generator::generate_union_reader(ofstream& out,
   }
 
   indent(out) << "uint32_t xfer = 0;" << endl;
-  indent(out) << "std::string fname;" << endl;
-  indent(out) << "apache::thrift::protocol::TType ftype;" << endl;
+  indent(out) << "std::string _fname;" << endl;
+  indent(out) << "apache::thrift::protocol::TType _ftype;" << endl;
   indent(out) << "int16_t fid;" << endl;
 
-  indent(out) << "xfer += iprot->readStructBegin(fname);" << endl;
-  indent(out) << "xfer += iprot->readFieldBegin(fname, ftype, fid);" << endl;
+  indent(out) << "xfer += iprot->readStructBegin(_fname);" << endl;
+  indent(out) << "xfer += iprot->readFieldBegin(_fname, _ftype, fid);" << endl;
 
-  indent(out) << "if (ftype == apache::thrift::protocol::T_STOP) {" << endl;
+  indent(out) << "if (_ftype == apache::thrift::protocol::T_STOP) {" << endl;
   indent(out) << "  __clear();" << endl;
   indent(out) << "} else {" << endl;
   indent_up();
@@ -2050,13 +2050,13 @@ void t_cpp_generator::generate_union_reader(ofstream& out,
     indent_up();
 
     auto e = type_to_enum(member->get_type());
-    indent(out) << "if (ftype == " << e << ") {" << endl;
+    indent(out) << "if (_ftype == " << e << ") {" << endl;
     indent(out) << "  set_" << member->get_name() << "();" << endl;
     indent_up();
     generate_deserialize_field(out, member, "this->value_.");
     indent_down();
     indent(out) << "} else {" << endl;
-    indent(out) << "xfer += iprot->skip(ftype);" << endl;
+    indent(out) << "xfer += iprot->skip(_ftype);" << endl;
     indent(out) << "}" << endl;
 
     indent(out) << "break;" << endl;
@@ -2064,13 +2064,13 @@ void t_cpp_generator::generate_union_reader(ofstream& out,
     indent(out) << "}" << endl;
   }
 
-  indent(out) << "default: xfer += iprot->skip(ftype); break;" << endl;
+  indent(out) << "default: xfer += iprot->skip(_ftype); break;" << endl;
   indent_down();
   indent(out) << "}" << endl;
 
   indent(out) << "xfer += iprot->readFieldEnd();" << endl;
-  indent(out) << "xfer += iprot->readFieldBegin(fname, ftype, fid);" << endl;
-  indent(out) << "if (UNLIKELY(ftype != apache::thrift::protocol::T_STOP)) {"
+  indent(out) << "xfer += iprot->readFieldBegin(_fname, _ftype, fid);" << endl;
+  indent(out) << "if (UNLIKELY(_ftype != apache::thrift::protocol::T_STOP)) {"
               << endl;
   indent(out) << "  using apache::thrift::protocol::TProtocolException;"
               << endl;
@@ -3430,8 +3430,8 @@ void t_cpp_generator::generate_struct_reader(ofstream& out,
   out <<
     endl <<
     indent() << "uint32_t xfer = 0;" << endl <<
-    indent() << "std::string fname;" << endl <<
-    indent() << "apache::thrift::protocol::TType ftype;" << endl <<
+    indent() << "std::string _fname;" << endl <<
+    indent() << "apache::thrift::protocol::TType _ftype;" << endl <<
     indent() << "int16_t fid;" << endl <<
     endl;
 
@@ -3454,7 +3454,7 @@ void t_cpp_generator::generate_struct_reader(ofstream& out,
   }
 
   out <<
-    indent() << "xfer += iprot->readStructBegin(fname);" << endl <<
+    indent() << "xfer += iprot->readStructBegin(_fname);" << endl <<
     endl <<
     indent() << "using apache::thrift::protocol::TProtocolException;" << endl <<
     endl;
@@ -3479,11 +3479,11 @@ void t_cpp_generator::generate_struct_reader(ofstream& out,
 
     // Read beginning field marker
     indent(out) <<
-      "xfer += iprot->readFieldBegin(fname, ftype, fid);" << endl;
+      "xfer += iprot->readFieldBegin(_fname, _ftype, fid);" << endl;
 
     // Check for field STOP marker
     out <<
-      indent() << "if (ftype == apache::thrift::protocol::T_STOP) {" << endl <<
+      indent() << "if (_ftype == apache::thrift::protocol::T_STOP) {" << endl <<
       indent() << "  break;" << endl <<
       indent() << "}" << endl;
 
@@ -3499,7 +3499,7 @@ void t_cpp_generator::generate_struct_reader(ofstream& out,
           "case " << (*f_iter)->get_key() << ":" << endl;
         indent_up();
         indent(out) <<
-          "if (ftype == " << type_to_enum((*f_iter)->get_type()) << ") {" << endl;
+          "if (_ftype == " << type_to_enum((*f_iter)->get_type()) << ") {" << endl;
         indent_up();
 
         const char* isset_prefix =
@@ -3527,7 +3527,7 @@ void t_cpp_generator::generate_struct_reader(ofstream& out,
         indent_down();
         out <<
           indent() << "} else {" << endl <<
-          indent() << "  xfer += iprot->skip(ftype);" << endl <<
+          indent() << "  xfer += iprot->skip(_ftype);" << endl <<
           // TODO(dreiss): Make this an option when thrift structs
           // have a common base class.
           // indent() << "  throw TProtocolException(TProtocolException::INVALID_DATA);" << endl <<
@@ -3539,7 +3539,7 @@ void t_cpp_generator::generate_struct_reader(ofstream& out,
       // In the default case we skip the field
       out <<
         indent() << "default:" << endl <<
-        indent() << "  xfer += iprot->skip(ftype);" << endl <<
+        indent() << "  xfer += iprot->skip(_ftype);" << endl <<
         indent() << "  break;" << endl;
 
       scope_down(out);
@@ -5252,7 +5252,7 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
           indent() << "int32_t rseqid = 0;" << endl <<
           indent() << "int32_t eseqid = " << _this
                    << "getNextRecvSequenceId();" << endl <<
-          indent() << "std::string fname;" << endl <<
+          indent() << "std::string _fname;" << endl <<
           indent() << "apache::thrift::protocol::TMessageType mtype;" << endl <<
           indent() << "if (ctx) ctx->preRead();" << endl;
 
@@ -5264,7 +5264,7 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
         indent_up();
         out <<
           indent() << _this << "iprot_->readMessageBegin(" <<
-          "fname, mtype, rseqid);" << endl <<
+          "_fname, mtype, rseqid);" << endl <<
           indent() << "if (this->checkSeqid_ && " <<
             "rseqid != eseqid) {" << endl <<
           indent() << "  " << _this <<
@@ -5311,7 +5311,7 @@ void t_cpp_generator::generate_service_client(t_service* tservice, string style)
           indent() << "  interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(apache::thrift::TApplicationException::INVALID_MESSAGE_TYPE);" << endl <<
           indent() << "  return; // from try_and_catch" << endl <<
           indent() << "}" << endl <<
-          indent() << "if (fname.compare(\"" << (*f_iter)->get_name() << "\") != 0) {" << endl <<
+          indent() << "if (_fname.compare(\"" << (*f_iter)->get_name() << "\") != 0) {" << endl <<
           indent() << "  " << _this << "iprot_->skip(" <<
           "apache::thrift::protocol::T_STRUCT);" << endl <<
           indent() << "  " << _this << "iprot_->readMessageEnd();" << endl <<
@@ -5826,7 +5826,7 @@ void ProcessorGenerator::generate_dispatch_call(bool template_protocol) {
     ret_type_ << class_name_ <<
     template_suffix_ << "::dispatchCall" << function_suffix << "(" <<
     finish_cob_ << protocol << "* iprot, " << protocol << "* oprot, " <<
-    "const std::string& fname, int32_t seqid" << call_context_ << ") {" <<
+    "const std::string& _fname, int32_t seqid" << call_context_ << ") {" <<
     endl;
   indent_up();
 
@@ -5859,13 +5859,13 @@ void ProcessorGenerator::generate_dispatch_call(bool template_protocol) {
     f_out_ << indent() << "};" << endl;
 
     f_out_ <<
-      indent() << "int idx = " << service_name_ << "_method_lookup(fname);" <<
+      indent() << "int idx = " << service_name_ << "_method_lookup(_fname);" <<
       endl <<
       indent() << "if (idx == -1) {" << endl;
   } else {
     f_out_ <<
       indent() << typename_str_ << "ProcessMap::iterator pfn;" << endl <<
-      indent() << "pfn = processMap_.find(fname);" << endl <<
+      indent() << "pfn = processMap_.find(_fname);" << endl <<
       indent() << "if (pfn == processMap_.end()) {" << endl;
   }
 
@@ -5875,8 +5875,8 @@ void ProcessorGenerator::generate_dispatch_call(bool template_protocol) {
       indent() << "  iprot->skip(apache::thrift::protocol::T_STRUCT);" << endl <<
       indent() << "  iprot->readMessageEnd();" << endl <<
       indent() << "  iprot->getTransport()->readEnd();" << endl <<
-      indent() << "  apache::thrift::TApplicationException x(apache::thrift::TApplicationException::UNKNOWN_METHOD, \"Invalid method name: '\"+fname+\"'\");" << endl <<
-      indent() << "  oprot->writeMessageBegin(fname, apache::thrift::protocol::T_EXCEPTION, seqid);" << endl <<
+      indent() << "  apache::thrift::TApplicationException x(apache::thrift::TApplicationException::UNKNOWN_METHOD, \"Invalid method name: '\"+_fname+\"'\");" << endl <<
+      indent() << "  oprot->writeMessageBegin(_fname, apache::thrift::protocol::T_EXCEPTION, seqid);" << endl <<
       indent() << "  x.write(oprot);" << endl <<
       indent() << "  oprot->writeMessageEnd();" << endl <<
       indent() << "  oprot->getTransport()->writeEnd();" << endl <<
@@ -5887,7 +5887,7 @@ void ProcessorGenerator::generate_dispatch_call(bool template_protocol) {
       indent() << "  return "
                << extends_ << "::dispatchCall" << function_suffix << "("
                << (style_ == "Cob" ? "cob, " : "")
-               << "iprot, oprot, fname, seqid" << call_context_arg_ << ");" << endl;
+               << "iprot, oprot, _fname, seqid" << call_context_arg_ << ");" << endl;
   }
 
   // brace ending error case block (which exits non-locally)

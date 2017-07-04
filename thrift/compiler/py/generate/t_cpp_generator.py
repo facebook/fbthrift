@@ -2282,7 +2282,7 @@ class CppGenerator(t_generator.Generator):
             out("prot->setInput(state.buf());")
             out("auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});")
             out("apache::thrift::ContextStack* ctx = state.ctx();")
-            out("std::string fname;")
+            out("std::string _fname;")
             out("int32_t protoSeqId = 0;")
             out("apache::thrift::MessageType mtype;")
             out("ctx->preRead();")
@@ -2292,7 +2292,7 @@ class CppGenerator(t_generator.Generator):
                      "std::exception, "
                      "apache::thrift::TException, "
                      "apache::thrift::protocol::TProtocolException>([&]() "):
-                out("prot->readMessageBegin(fname, mtype, protoSeqId);")
+                out("prot->readMessageBegin(_fname, mtype, protoSeqId);")
 
                 with out("if (mtype == apache::thrift::T_EXCEPTION)"):
                     out("apache::thrift::TApplicationException x;")
@@ -2311,7 +2311,7 @@ class CppGenerator(t_generator.Generator):
                         "::TApplicationExceptionType::INVALID_MESSAGE_TYPE);")
                     out("return; // from try_and_catch")
 
-                with out('if (fname.compare("' + function.name + '") != 0)'):
+                with out('if (_fname.compare("' + function.name + '") != 0)'):
                     out("prot->skip(apache::thrift::protocol::T_STRUCT);")
                     out("prot->readMessageEnd();")
                     out("interior_ew = folly::make_exception_wrapper<"
@@ -3357,11 +3357,11 @@ class CppGenerator(t_generator.Generator):
             s('(void)obj;')
         # Declare stack tmp variables
         s('uint32_t xfer = 0;')
-        s('std::string fname;')
-        s('apache::thrift::protocol::TType ftype;')
+        s('std::string _fname;')
+        s('apache::thrift::protocol::TType _ftype;')
         s('int16_t fid;')
         s()
-        s('xfer += iprot->readStructBegin(fname);')
+        s('xfer += iprot->readStructBegin(_fname);')
         s()
         s('using apache::thrift::TProtocolException;')
         s()
@@ -3381,8 +3381,8 @@ class CppGenerator(t_generator.Generator):
         fields_scope = None
         if obj.is_union:
             # Unions only have one member set, so don't loop
-            s('xfer += iprot->readFieldBegin(fname, ftype, fid);')
-            s1 = s('if (ftype == apache::thrift::protocol::T_STOP)').scope
+            s('xfer += iprot->readFieldBegin(_fname, _ftype, fid);')
+            s1 = s('if (_ftype == apache::thrift::protocol::T_STOP)').scope
             s1(this + '->__clear();')
             s1.release()
             fields_scope = s1 = s.sameLine('else').scope
@@ -3394,18 +3394,18 @@ class CppGenerator(t_generator.Generator):
                 s1('auto fbegin = iprot->getCurrentPosition();')
                 s1('bool fserialized = false;')
             # Read beginning field marker
-            s1('xfer += iprot->readFieldBegin(fname, ftype, fid);')
+            s1('xfer += iprot->readFieldBegin(_fname, _ftype, fid);')
             # Check for field STOP marker
-            with s1('if (ftype == apache::thrift::protocol::T_STOP)'):
+            with s1('if (_ftype == apache::thrift::protocol::T_STOP)'):
                 out('break;')
             fields_scope = s
 
         with s1('if (fid == std::numeric_limits<int16_t>::min())'):
             cond_type = 'if'
             for field in fields:
-                with s1('{0} (fname == "{1}")'.format(cond_type, field.name)):
+                with s1('{0} (_fname == "{1}")'.format(cond_type, field.name)):
                     s1('fid = {0};'.format(field.key))
-                    s1('ftype = {0};'.format(self._type_to_enum(field.type)))
+                    s1('_ftype = {0};'.format(self._type_to_enum(field.type)))
                     cond_type = 'else if'
 
         # Switch statement on the field we are reading
@@ -3416,10 +3416,10 @@ class CppGenerator(t_generator.Generator):
             if ('format' in field.annotations and
                     field.annotations['format'] == 'serialized'):
                 s3('fserialized = true;')
-                s3('xfer += iprot->skip(ftype);')
+                s3('xfer += iprot->skip(_ftype);')
                 s3.release()  # "break;"
                 continue
-            s4 = s3('if (ftype == {0})'.format(self._type_to_enum(
+            s4 = s3('if (_ftype == {0})'.format(self._type_to_enum(
                     field.type))).scope
             with s4:
                 field_prefix = this + '->'
@@ -3445,7 +3445,7 @@ class CppGenerator(t_generator.Generator):
                 elif field.req == e_req.required:
                     s4('isset_{1} = true;'.format(this, field.name))
             with s3.sameLine('else'):
-                out('xfer += iprot->skip(ftype);')
+                out('xfer += iprot->skip(_ftype);')
                 # TODO(dreiss): Make this an option when thrift structs have a
                 # common base class.
                 # s4('throw TProtocolException(TProtocolException::'
@@ -3453,7 +3453,7 @@ class CppGenerator(t_generator.Generator):
             s3.release()  # "break;"
         # Default case
         with s2.case('default'):
-            out('xfer += iprot->skip(ftype);')
+            out('xfer += iprot->skip(_ftype);')
             if struct_options.keep_unknown_fields:
                 out('fserialized = true;')
         s2.release()  # switch
@@ -3461,8 +3461,8 @@ class CppGenerator(t_generator.Generator):
         s1('xfer += iprot->readFieldEnd();')
         # Eat the stop byte that terminates union content
         if obj.is_union:
-            s1('xfer += iprot->readFieldBegin(fname, ftype, fid);')
-            with s1('if (UNLIKELY(ftype != {proto_ns}::T_STOP))'
+            s1('xfer += iprot->readFieldBegin(_fname, _ftype, fid);')
+            with s1('if (UNLIKELY(_ftype != {proto_ns}::T_STOP))'
                     .format(proto_ns="apache::thrift::protocol")).scope:
                 s1('using apache::thrift::protocol::TProtocolException;')
                 s1('TProtocolException::throwUnionMissingStop();')
