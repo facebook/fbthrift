@@ -63,6 +63,7 @@ fixtureNames = [sys.argv[2]] if len(sys.argv) > 2 else sorted([
     if os.path.isfile(os.path.join(fixtureDir, f, 'cmd'))
 ])
 
+processes = []
 hasErrors = False
 
 msgFormat = "Building fixture {{0:>{w}}}/{{1}}: {{2}}".format(
@@ -100,10 +101,16 @@ for name, index in zip(fixtureNames, range(len(fixtureNames))):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
         )
-        out, err = p.communicate()
-        sys.stdout.write(out)
-        if p.returncode != 0:
-            hasErrors = True
-            sys.stderr.write(err)
+        # run all processes in parallel
+        processes.append(p)
+
+# now join results
+for p in processes:
+    out, err = p.communicate()
+    sys.stdout.write(out)
+    if p.returncode != 0:
+        hasErrors = True
+        sys.stderr.write(err)
+
 
 sys.exit(int(hasErrors))
