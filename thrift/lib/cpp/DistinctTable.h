@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -69,8 +69,8 @@ class DistinctTable {
  private:
   class HashIndirect : public Hash {
    public:
-    HashIndirect(Hash hash, Store* store)
-        : Hash(std::move(hash)), store_(store) {}
+    HashIndirect(Hash _hash, Store* store)
+        : Hash(std::move(_hash)), store_(store) {}
 
     size_t operator()(size_t i) const { return Hash::operator()((*store_)[i]); }
 
