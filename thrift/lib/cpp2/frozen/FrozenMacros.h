@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -128,18 +128,19 @@
   }
 
 #define FROZEN_SAVE_FIELD(NAME) \
-  this->NAME##Field.template save<SchemaInfo>(schema, layout, helper);
+  this->NAME##Field.template save<SchemaInfo>(schema, _layout, helper);
 
-#define FROZEN_SAVE_BODY(...)                              \
-  Base::template save<SchemaInfo>(schema, layout, helper); \
+#define FROZEN_SAVE_BODY(...)                               \
+  Base::template save<SchemaInfo>(schema, _layout, helper); \
   __VA_ARGS__
 
-#define FROZEN_SAVE_INLINE(...)                                 \
-  template <typename SchemaInfo>                                \
-  inline void save(typename SchemaInfo::Schema& schema,         \
-                   typename SchemaInfo::Layout& layout,         \
-                   typename SchemaInfo::Helper& helper) const { \
-    FROZEN_SAVE_BODY(__VA_ARGS__)                               \
+#define FROZEN_SAVE_INLINE(...)                    \
+  template <typename SchemaInfo>                   \
+  inline void save(                                \
+      typename SchemaInfo::Schema& schema,         \
+      typename SchemaInfo::Layout& _layout,        \
+      typename SchemaInfo::Helper& helper) const { \
+    FROZEN_SAVE_BODY(__VA_ARGS__)                  \
   }
 
 #define FROZEN_LOAD_FIELD(NAME, ID)                             \
@@ -147,15 +148,16 @@
     this->NAME##Field.template load<SchemaInfo>(schema, field); \
     break;
 
-#define FROZEN_LOAD_BODY(...)                      \
-  Base::template load<SchemaInfo>(schema, layout); \
-  for (const auto& field : layout.getFields()) {   \
-    switch (field.getId()) { __VA_ARGS__ }         \
+#define FROZEN_LOAD_BODY(...)                       \
+  Base::template load<SchemaInfo>(schema, _layout); \
+  for (const auto& field : _layout.getFields()) {   \
+    switch (field.getId()) { __VA_ARGS__ }          \
   }
 
-#define FROZEN_LOAD_INLINE(...)                                 \
-  template <typename SchemaInfo>                                \
-  inline void load(const typename SchemaInfo::Schema& schema,   \
-                   const typename SchemaInfo::Layout& layout) { \
-    FROZEN_LOAD_BODY(__VA_ARGS__)                               \
+#define FROZEN_LOAD_INLINE(...)                     \
+  template <typename SchemaInfo>                    \
+  inline void load(                                 \
+      const typename SchemaInfo::Schema& schema,    \
+      const typename SchemaInfo::Layout& _layout) { \
+    FROZEN_LOAD_BODY(__VA_ARGS__)                   \
   }

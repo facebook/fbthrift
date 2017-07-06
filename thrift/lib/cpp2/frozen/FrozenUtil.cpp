@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,8 +33,8 @@ FrozenFileForwardIncompatible::FrozenFileForwardIncompatible(int fileVersion)
           " are supported.")),
       fileVersion_(fileVersion) {}
 
-MallocFreezer::Segment::Segment(size_t size)
-    : size(size), buffer(reinterpret_cast<byte*>(calloc(size, 1))) {
+MallocFreezer::Segment::Segment(size_t _size)
+    : size(_size), buffer(reinterpret_cast<byte*>(calloc(_size, 1))) {
   if (!buffer) {
     throw std::runtime_error("Couldn't allocate memory");
   }

@@ -81,7 +81,7 @@ typedef uint8_t byte;
  */
 struct DebugLine {
   int level;
-  explicit DebugLine(int level) : level(level) {}
+  explicit DebugLine(int _level) : level(_level) {}
 };
 
 std::ostream& operator<<(std::ostream& os, DebugLine dl);
@@ -92,8 +92,8 @@ std::ostream& operator<<(std::ostream& os, DebugLine dl);
 struct FieldPosition {
   int32_t offset;    // byte offset from owning structure's start
   int32_t bitOffset; // bit offset from owning structure's start
-  explicit FieldPosition(int32_t offset = 0, int32_t bitOffset = 0)
-      : offset(offset), bitOffset(bitOffset) {
+  explicit FieldPosition(int32_t _offset = 0, int32_t _bitOffset = 0)
+      : offset(_offset), bitOffset(_bitOffset) {
     DCHECK(!offset || !bitOffset);
   }
 };
@@ -188,7 +188,7 @@ struct LayoutBase {
    * needed for representing fields which were not present in a serialized
    * structure.
    */
-  explicit LayoutBase(std::type_index type) : type(std::move(type)) {}
+  explicit LayoutBase(std::type_index _type) : type(std::move(_type)) {}
 
   /**
    * Internal: Updates the size of this structure according the the result of a
@@ -303,7 +303,7 @@ struct FieldBase {
   FieldPosition pos;
   const char* name;
 
-  explicit FieldBase(int32_t key, const char* name) : key(key), name(name) {}
+  explicit FieldBase(int32_t _key, const char* _name) : key(_key), name(_name) {}
   virtual ~FieldBase() {}
 
   virtual void clear() = 0;
@@ -313,7 +313,7 @@ template <class T, class Layout = Layout<typename std::decay<T>::type>>
 struct Field final : public FieldBase {
   Layout layout;
 
-  explicit Field(int32_t key, const char* name) : FieldBase(key, name) {}
+  explicit Field(int32_t _key, const char* _name) : FieldBase(_key, _name) {}
 
   /**
    * Prints a description of this layout to the given stream, recursively.
@@ -496,12 +496,12 @@ class LayoutRoot {
    * fixed point is reached.
    */
   template <class T>
-  size_t doLayout(const T& root, Layout<T>& layout, size_t& resizes) {
+  size_t doLayout(const T& root, Layout<T>& _layout, size_t& resizes) {
     for (resizes = 0; resizes < 1000; ++resizes) {
       resized_ = false;
-      cursor_ = layout.size;
-      auto after = layout.layout(*this, root, {0, 0});
-      resized_ = layout.resize(after, false) || resized_;
+      cursor_ = _layout.size;
+      auto after = _layout.layout(*this, root, {0, 0});
+      resized_ = _layout.resize(after, false) || resized_;
       if (!resized_) {
         return cursor_ + kPaddingBytes;
       }
@@ -554,32 +554,32 @@ class LayoutRoot {
                             FieldPosition fieldPos,
                             Field<T, Layout>& field,
                             const Arg& value) {
-    auto& layout = field.layout;
-    bool inlineBits = layout.size == 0;
+    auto& _layout = field.layout;
+    bool inlineBits = _layout.size == 0;
     FieldPosition nextPos = fieldPos;
     if (inlineBits) {
       //  candidate for inlining, place at offset zero and continue from 'self'
       FieldPosition inlinedField(0, fieldPos.bitOffset);
-      FieldPosition after = layout.layout(*this, value, self(inlinedField));
+      FieldPosition after = _layout.layout(*this, value, self(inlinedField));
       if (after.offset) {
         // consumed full bytes for layout, can't be inlined
         inlineBits = false;
       } else {
         // only consumed bits, layout at bit offset
-        resized_ = layout.resize(after, true) || resized_;
-        if (!layout.empty()) {
+        resized_ = _layout.resize(after, true) || resized_;
+        if (!_layout.empty()) {
           field.pos = inlinedField;
-          nextPos.bitOffset += layout.bits;
+          nextPos.bitOffset += _layout.bits;
         }
       }
     }
     if (!inlineBits) {
       FieldPosition normalField(fieldPos.offset, 0);
-      FieldPosition after = layout.layout(*this, value, self(normalField));
-      resized_ = layout.resize(after, false) || resized_;
-      if (!layout.empty()) {
+      FieldPosition after = _layout.layout(*this, value, self(normalField));
+      resized_ = _layout.resize(after, false) || resized_;
+      if (!_layout.empty()) {
         field.pos = normalField;
-        nextPos.offset += layout.size;
+        nextPos.offset += _layout.size;
       }
     }
     return nextPos;

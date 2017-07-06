@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,10 +33,10 @@ std::ostream& operator<<(std::ostream& os, const LayoutBase& layout) {
   return os;
 }
 
-bool LayoutBase::resize(FieldPosition after, bool inlined) {
+bool LayoutBase::resize(FieldPosition after, bool _inlined) {
   bool resized = false;
-  this->inlined = (this->size == 0 && inlined);
-  if (!this->inlined) {
+  inlined = (this->size == 0 && _inlined);
+  if (!inlined) {
     if (static_cast<size_t>(after.offset) > this->size) {
       this->size = after.offset;
       resized = true;

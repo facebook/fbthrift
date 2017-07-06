@@ -36,7 +36,8 @@ template <class T>
 struct PackedIntegerLayout : public LayoutBase {
   typedef LayoutBase Base;
   PackedIntegerLayout() : LayoutBase(typeid(T)) {}
-  explicit PackedIntegerLayout(const std::type_info& type) : LayoutBase(type) {}
+  explicit PackedIntegerLayout(const std::type_info& _type)
+      : LayoutBase(_type) {}
 
   FieldPosition maximize() {
     FieldPosition pos = startFieldPosition();
