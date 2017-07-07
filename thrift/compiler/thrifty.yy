@@ -31,6 +31,8 @@
 #include <stdio.h>
 #include <inttypes.h>
 #include <limits.h>
+#include <stack>
+#include <utility>
 #include "thrift/compiler/common.h"
 #include "thrift/compiler/globals.h"
 #include "thrift/compiler/parse/t_program.h"
@@ -53,10 +55,38 @@ int g_arglist = 0;
 const int struct_is_struct = 0;
 const int struct_is_union = 1;
 char* y_enum_name = nullptr;
-// This global variable is used for keeping track of line number where
-// definition starts
-int y_definition_lineno = -1;
 
+// Define an enum class for all types that have lineno embedded.
+enum class LineType {
+  kTypedef,
+  kEnum,
+  kEnumValue,
+  kConst,
+  kStruct,
+  kService,
+  kFunction,
+  kField,
+  kXception,
+};
+// The LinenoStack class is used for keeping track of line number and automatic
+// type checking
+class LinenoStack {
+ public:
+  void push(LineType type, int lineno) {
+    stack_.emplace(type, lineno);
+  }
+  int pop(LineType type) {
+    if (type != stack_.top().first) {
+      throw std::logic_error("Popping wrong type from line number stack");
+    }
+    int lineno = stack_.top().second;
+    stack_.pop();
+    return lineno;
+  }
+ private:
+  std::stack<std::pair<LineType, int>> stack_;
+};
+LinenoStack lineno_stack;
 %}
 
 /**
@@ -491,14 +521,14 @@ TypeDefinition:
 Typedef:
   tok_typedef
     {
-      y_definition_lineno = yylineno;
+      lineno_stack.push(LineType::kTypedef, yylineno);
     }
   FieldType tok_identifier TypeAnnotations
     {
       pdebug("TypeDef -> tok_typedef FieldType tok_identifier");
       t_typedef *td = new t_typedef(g_program, $3, $4, g_scope_cache);
       $$ = td;
-      $$->set_lineno(y_definition_lineno);
+      $$->set_lineno(lineno_stack.pop(LineType::kTypedef));
       if ($5 != NULL) {
         $$->annotations_ = $5->annotations_;
         delete $5;
@@ -516,7 +546,7 @@ CommaOrSemicolonOptional:
 Enum:
   tok_enum
     {
-      y_definition_lineno = yylineno;
+      lineno_stack.push(LineType::kEnum, yylineno);
     }
   tok_identifier
     {
@@ -528,7 +558,7 @@ Enum:
       pdebug("Enum -> tok_enum tok_identifier { EnumDefList }");
       $$ = $6;
       $$->set_name($3);
-      $$->set_lineno(y_definition_lineno);
+      $$->set_lineno(lineno_stack.pop(LineType::kEnum));
       if ($8 != NULL) {
         $$->annotations_ = $8->annotations_;
         delete $8;
@@ -616,14 +646,14 @@ EnumValue:
 Const:
   tok_const
     {
-      y_definition_lineno = yylineno;
+      lineno_stack.push(LineType::kConst, yylineno);
     }
   FieldType tok_identifier '=' ConstValue CommaOrSemicolonOptional
     {
       pdebug("Const -> tok_const FieldType tok_identifier = ConstValue");
       if (g_parse_mode == PROGRAM) {
         $$ = new t_const(g_program, $3, $4, $6);
-        $$->set_lineno(y_definition_lineno);
+        $$->set_lineno(lineno_stack.pop(LineType::kConst));
         validate_const_type($$);
         g_scope_cache->add_constant(g_program->get_name() + "." + $4, $$);
       } else {
@@ -740,7 +770,7 @@ StructHead:
 Struct:
   StructHead
     {
-        y_definition_lineno = yylineno;
+        lineno_stack.push(LineType::kStruct, yylineno);
     }
   tok_identifier '{' FieldList '}' TypeAnnotations
     {
@@ -748,7 +778,7 @@ Struct:
       $5->set_union($1 == struct_is_union);
       $$ = $5;
       $$->set_name($3);
-      $$->set_lineno(y_definition_lineno);
+      $$->set_lineno(lineno_stack.pop(LineType::kStruct));
       if ($7 != NULL) {
         $$->annotations_ = $7->annotations_;
         delete $7;
@@ -757,15 +787,20 @@ Struct:
     }
 
 Xception:
-  tok_xception tok_identifier '{' FieldList '}' TypeAnnotations
+  tok_xception
+    {
+      lineno_stack.push(LineType::kXception, yylineno);
+    }
+  tok_identifier '{' FieldList '}' TypeAnnotations
     {
       pdebug("Xception -> tok_xception tok_identifier { FieldList }");
-      $4->set_name($2);
-      $4->set_xception(true);
-      $$ = $4;
-      if ($6 != NULL) {
-        $$->annotations_ = $6->annotations_;
-        delete $6;
+      $5->set_name($3);
+      $5->set_xception(true);
+      $$ = $5;
+      $$->set_lineno(lineno_stack.pop(LineType::kXception));
+      if ($7 != NULL) {
+        $$->annotations_ = $7->annotations_;
+        delete $7;
       }
 
       const char* annotations[] = {"message", "code"};
@@ -788,13 +823,13 @@ Xception:
 
         if (!$$->has_field_named(v.c_str())) {
           failure("member specified as exception 'message' should be a valid"
-                  " struct member, '%s' in '%s' is not", v.c_str(), $2);
+                  " struct member, '%s' in '%s' is not", v.c_str(), $3);
         }
 
         auto field = $$->get_field_named(v.c_str());
         if (!field->get_type()->is_string()) {
           failure("member specified as exception 'message' should be of type "
-                  "STRING, '%s' in '%s' is not", v.c_str(), $2);
+                  "STRING, '%s' in '%s' is not", v.c_str(), $3);
         }
       }
 
@@ -804,7 +839,7 @@ Xception:
 Service:
   tok_service
     {
-      y_definition_lineno = yylineno;
+      lineno_stack.push(LineType::kService, yylineno);
     }
   tok_identifier Extends '{' FlagArgs FunctionList UnflagArgs '}' FunctionAnnotations
     {
@@ -812,7 +847,7 @@ Service:
       $$ = $7;
       $$->set_name($3);
       $$->set_extends($4);
-      $$->set_lineno(y_definition_lineno);
+      $$->set_lineno(lineno_stack.pop(LineType::kService));
       if ($10) {
         $$->annotations_ = $10->annotations_;
       }
@@ -957,6 +992,7 @@ Field:
 
       $$ = new t_field($4, $5, $2.value);
       $$->set_req($3);
+      $$->set_lineno(lineno_stack.pop(LineType::kField));
       if ($6 != NULL) {
         validate_field_value($$, $6);
         $$->set_value($6);
@@ -1013,11 +1049,13 @@ FieldIdentifier:
         $$.value = $1;
         $$.auto_assigned = false;
       }
+      lineno_stack.push(LineType::kField, yylineno);
     }
 |
     {
       $$.value = y_field_val--;
       $$.auto_assigned = true;
+      lineno_stack.push(LineType::kField, yylineno);
     }
 
 FieldRequiredness:
