@@ -36,10 +36,16 @@
 
 
 <%#first?%>
-<%^program:enums?%><%#struct:struct_list%>
+<%^program:enums?%>
+<%#struct:struct_list%>
 class <%struct_name%>;
-<%/struct:struct_list%><%/program:enums?%>
+<%/struct:struct_list%>
+<%^program:typedefs?%>
+
+<%/program:typedefs?%><%/program:enums?%>
+<%#program:typedefs?%>
 <% > module_types_h/typedef_initialize%>
+<%/program:typedefs?%>
 <%/first?%>
 class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<<%struct:name%>><%#struct:exception?%>, public apache::thrift::TException<%/struct:exception?%> {
  public:
@@ -66,7 +72,7 @@ class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<
 <%/struct:final%>
 <% > module_types_h/union_storage%>
 
-  bool operator==(const <%struct:name%>& rhs) const;
+<% > module_types_h/eq_overload%>
 <% > module_types_h/union_lt_overload%>
 
 <% > module_types_h/union_setters%>

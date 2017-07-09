@@ -664,6 +664,7 @@ class mstch_cpp2_program : public mstch_program {
             {"program:normalizedIncludePrefix",
              &mstch_cpp2_program::include_prefix},
             {"program:enums?", &mstch_cpp2_program::has_enums},
+            {"program:typedefs?", &mstch_cpp2_program::has_typedefs},
             {"program:thrift_includes", &mstch_cpp2_program::thrift_includes},
             {"program:frozen2?", &mstch_cpp2_program::frozen2},
             {"program:indirection?", &mstch_cpp2_program::has_indirection},
@@ -726,6 +727,9 @@ class mstch_cpp2_program : public mstch_program {
   }
   mstch::node has_enums() {
     return !program_->get_enums().empty();
+  }
+  mstch::node has_typedefs() {
+    return !program_->get_typedefs().empty();
   }
   mstch::node thrift_includes() {
     mstch::array a{};

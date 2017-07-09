@@ -33,14 +33,14 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
   if (_ftype == apache::thrift::protocol::T_STOP) {
     this->__clear();
   } else {
-    if (fid == std::numeric_limits<int16_t>::min()) {
-  <%#struct:fields%><%#field:type%>
+    if (fid == std::numeric_limits<int16_t>::min()) {<%!
+  %><%#struct:fields%><%#field:type%>
       <%^first?%>else <%/first?%>if (_fname == "<%field:name%>") {
         fid = <%field:key%>;
         _ftype = apache::thrift::protocol::<% > module_types_tcc/struct_type%>;
-      }
-  <%/field:type%><%/struct:fields%>
-    }
+      }<%#last?%>
+    <%/last?%><%/field:type%><%/struct:fields%><%!
+  %>}
     switch (fid) {
   <%#struct:fields%><%#field:type%>
       case <%field:key%>:
