@@ -95,5 +95,5 @@ typemap_MyStruct :: Types.TypeMap
 typemap_MyStruct = Map.fromList [("MyIncludedField",(1,(Types.T_STRUCT Includes_Types.typemap_Included))),("MyIncludedInt",(2,Types.T_I64))]
 default_MyStruct :: MyStruct
 default_MyStruct = MyStruct{
-  myStruct_MyIncludedField = Includes_Types.default_Included{Includes_Types.included_MyIntField = 5},
+  myStruct_MyIncludedField = Includes_Types.default_Included,
   myStruct_MyIncludedInt = 42}

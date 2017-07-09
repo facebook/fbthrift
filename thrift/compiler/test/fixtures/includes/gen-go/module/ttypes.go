@@ -34,8 +34,7 @@ MyIncludedInt: 42,
 }
 }
 
-var MyStruct_MyIncludedField_DEFAULT *includes.Included = &includes.Included{
-  MyIntField: 5,}
+var MyStruct_MyIncludedField_DEFAULT *includes.Included
 func (p *MyStruct) GetMyIncludedField() *includes.Included {
   if !p.IsSetMyIncludedField() {
     return MyStruct_MyIncludedField_DEFAULT

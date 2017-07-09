@@ -331,6 +331,7 @@ class mstch_cpp2_struct : public mstch_struct {
       if ((type->is_base_type() && !type->is_string()) ||
           (type->is_string() && field->get_value() != nullptr) ||
           (type->is_container() && field->get_value() != nullptr) ||
+          (type->is_struct() && field->get_value() != nullptr) ||
           type->is_enum() ||
           (type->is_container() &&
            (has_annotation(field, "cpp.ref") ||
@@ -559,8 +560,8 @@ class mstch_cpp2_service : public mstch_service {
   mstch::node thrift_includes() {
     mstch::array a{};
     for (auto const* program : service_->get_program()->get_includes()) {
-      std::string program_id = service_->get_program()->get_name() +
-          get_service_namespace(service_->get_program());
+      std::string program_id =
+          program->get_name() + get_service_namespace(service_->get_program());
       if (!cache_->programs_.count(program_id)) {
         cache_->programs_[program_id] =
             generators_->program_generator_->generate(

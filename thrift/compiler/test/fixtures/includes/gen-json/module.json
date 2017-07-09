@@ -9,8 +9,7 @@
         "MyIncludedField" : {
           "type_enum" : "STRUCT",
           "spec_args" : "includes.Included",
-          "required" : true,
-          "default_value" : { "MyIntField" : 5 }
+          "required" : true
         },
         "MyIncludedInt" : {
           "type_enum" : "I64",

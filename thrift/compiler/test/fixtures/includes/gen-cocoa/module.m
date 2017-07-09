@@ -34,9 +34,6 @@
 - (instancetype) init
 {
   self = [super init];
-  self.MyIncludedField = [[[Included alloc] init] autorelease_stub];
-  [self.MyIncludedField setMyIntField:5];
-
   self.MyIncludedInt = 42;
 
   return self;
