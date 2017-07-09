@@ -326,7 +326,6 @@ StructWithContainers::StructWithContainers(const StructWithContainers& src) {
   if (src.list_ref_unique) list_ref_unique.reset(new std::vector<int32_t>(*src.list_ref_unique));
   set_ref_shared = src.set_ref_shared;
   list_ref_shared_const = src.list_ref_shared_const;
-  if (src.set_custom_ref) set_custom_ref.reset(new std::set<int32_t>(*src.set_custom_ref));
 }
 
 StructWithContainers& StructWithContainers::operator=(const StructWithContainers& src) {
@@ -343,7 +342,6 @@ void StructWithContainers::__clear() {
   list_ref_unique.reset(new typename decltype(list_ref_unique)::element_type());
   set_ref_shared.reset(new typename decltype(set_ref_shared)::element_type());
   list_ref_shared_const.reset(new typename decltype(list_ref_shared_const)::element_type());
-  set_custom_ref.reset(new typename decltype(set_custom_ref)::element_type());
   __isset.__clear();
 }
 
@@ -366,9 +364,6 @@ bool StructWithContainers::operator==(const StructWithContainers& rhs) const {
   if (!(((list_ref_shared_const && rhs.list_ref_shared_const && *list_ref_shared_const == *rhs.list_ref_shared_const) ||(!list_ref_shared_const && !rhs.list_ref_shared_const)))) {
     return false;
   }
-  if (!(((set_custom_ref && rhs.set_custom_ref && *set_custom_ref == *rhs.set_custom_ref) ||(!set_custom_ref && !rhs.set_custom_ref)))) {
-    return false;
-  }
   return true;
 }
 
@@ -380,7 +375,6 @@ void swap(StructWithContainers& a, StructWithContainers& b) {
   swap(a.list_ref_unique, b.list_ref_unique);
   swap(a.set_ref_shared, b.set_ref_shared);
   swap(a.list_ref_shared_const, b.list_ref_shared_const);
-  swap(a.set_custom_ref, b.set_custom_ref);
   swap(a.__isset, b.__isset);
 }
 
@@ -653,59 +647,6 @@ template uint32_t StructWithRefTypeSharedConst::read<>(apache::thrift::CompactPr
 template uint32_t StructWithRefTypeSharedConst::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t StructWithRefTypeSharedConst::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t StructWithRefTypeSharedConst::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-} // cpp2
-namespace apache { namespace thrift {
-
-}} // apache::thrift
-namespace cpp2 {
-
-StructWithRefTypeCustom::StructWithRefTypeCustom(const StructWithRefTypeCustom& src) {
-  if (src.def_field) def_field.reset(new  ::cpp2::Empty(*src.def_field));
-  if (src.opt_field) opt_field.reset(new  ::cpp2::Empty(*src.opt_field));
-  if (src.req_field) req_field.reset(new  ::cpp2::Empty(*src.req_field));
-}
-
-StructWithRefTypeCustom& StructWithRefTypeCustom::operator=(const StructWithRefTypeCustom& src) {
-  StructWithRefTypeCustom tmp(src);
-  swap(*this, tmp);
-  return *this;
-}
-
-void StructWithRefTypeCustom::__clear() {
-  // clear all fields
-  __isset.__clear();
-}
-
-bool StructWithRefTypeCustom::operator==(const StructWithRefTypeCustom& rhs) const {
-  if (!(((def_field && rhs.def_field && *def_field == *rhs.def_field) ||(!def_field && !rhs.def_field)))) {
-    return false;
-  }
-  if (!(((opt_field && rhs.opt_field && *opt_field == *rhs.opt_field) ||(!opt_field && !rhs.opt_field)))) {
-    return false;
-  }
-  if (!(((req_field && rhs.req_field && *req_field == *rhs.req_field) ||(!req_field && !rhs.req_field)))) {
-    return false;
-  }
-  return true;
-}
-
-void swap(StructWithRefTypeCustom& a, StructWithRefTypeCustom& b) {
-  using ::std::swap;
-  swap(a.def_field, b.def_field);
-  swap(a.opt_field, b.opt_field);
-  swap(a.req_field, b.req_field);
-  swap(a.__isset, b.__isset);
-}
-
-template uint32_t StructWithRefTypeCustom::read<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t StructWithRefTypeCustom::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t StructWithRefTypeCustom::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t StructWithRefTypeCustom::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t StructWithRefTypeCustom::read<>(apache::thrift::CompactProtocolReader*);
-template uint32_t StructWithRefTypeCustom::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t StructWithRefTypeCustom::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t StructWithRefTypeCustom::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 } // cpp2
 namespace apache { namespace thrift {

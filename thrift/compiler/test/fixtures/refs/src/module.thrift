@@ -34,8 +34,6 @@ struct StructWithContainers {
   5: set<i32> set_ref_shared (cpp.ref_type = "shared", cpp2.ref_type = "shared")
   6: list<i32> list_ref_shared_const
       (cpp.ref_type = "shared_const", cpp2.ref_type = "shared_const")
-  7: set<i32> set_custom_ref
-      (cpp.ref_type = "std::unique_ptr", cpp2.ref_type = "std::unique_ptr")
 }
 
 struct StructWithSharedConst {
@@ -97,18 +95,6 @@ struct StructWithRefTypeSharedConst {
 }
 
 const StructWithRefTypeSharedConst kStructWithRefTypeSharedConst = {
-  "def_field": {},
-  "opt_field": {},
-  "req_field": {},
-}
-
-struct StructWithRefTypeCustom {
-  1:          Empty def_field (cpp.ref_type = "std::unique_ptr"),
-  2: optional Empty opt_field (cpp.ref_type = "std::unique_ptr"),
-  3: required Empty req_field (cpp.ref_type = "std::unique_ptr"),
-}
-
-const StructWithRefTypeCustom kStructWithRefTypeCustom = {
   "def_field": {},
   "opt_field": {},
   "req_field": {},

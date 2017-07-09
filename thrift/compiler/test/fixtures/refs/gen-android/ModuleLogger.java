@@ -233,17 +233,6 @@ public class ModuleLogger {
           oprot.writeFieldEnd();
         }
       
-        if (mMap.containsKey(Module.StructWithContainers_set_custom_ref) && mMap.get(Module.StructWithContainers_set_custom_ref) != null) {
-          writeFieldBegin(oprot, Module.StructWithContainers_set_custom_ref);
-          Set<Integer> var0 = (Set<Integer>) mMap.get(Module.StructWithContainers_set_custom_ref);
-          oprot.writeSetBegin(new TSet(TType.I32, var0.size()));
-          for(int iter0 : var0) {
-            oprot.writeI32(iter0);
-          }
-          oprot.writeSetEnd();
-          oprot.writeFieldEnd();
-        }
-      
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         break;
@@ -377,33 +366,6 @@ public class ModuleLogger {
           oprot.writeFieldEnd();
         } else {
           throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Required field 'StructWithRefTypeSharedConst.req_field' was not present!");
-        }
-      
-        oprot.writeFieldStop();
-        oprot.writeStructEnd();
-        break;
-      }
-      
-      case StructWithRefTypeCustom: {
-        oprot.writeStructBegin(new TStruct("StructWithRefTypeCustom"));
-        if (mMap.containsKey(Module.StructWithRefTypeCustom_def_field) && mMap.get(Module.StructWithRefTypeCustom_def_field) != null) {
-          writeFieldBegin(oprot, Module.StructWithRefTypeCustom_def_field);
-          ((ModuleLogger) mMap.get(Module.StructWithRefTypeCustom_def_field)).write(oprot);
-          oprot.writeFieldEnd();
-        }
-      
-        if (mMap.containsKey(Module.StructWithRefTypeCustom_opt_field) && mMap.get(Module.StructWithRefTypeCustom_opt_field) != null) {
-          writeFieldBegin(oprot, Module.StructWithRefTypeCustom_opt_field);
-          ((ModuleLogger) mMap.get(Module.StructWithRefTypeCustom_opt_field)).write(oprot);
-          oprot.writeFieldEnd();
-        }
-      
-        if (mMap.containsKey(Module.StructWithRefTypeCustom_req_field) && mMap.get(Module.StructWithRefTypeCustom_req_field) != null) {
-          writeFieldBegin(oprot, Module.StructWithRefTypeCustom_req_field);
-          ((ModuleLogger) mMap.get(Module.StructWithRefTypeCustom_req_field)).write(oprot);
-          oprot.writeFieldEnd();
-        } else {
-          throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Required field 'StructWithRefTypeCustom.req_field' was not present!");
         }
       
         oprot.writeFieldStop();

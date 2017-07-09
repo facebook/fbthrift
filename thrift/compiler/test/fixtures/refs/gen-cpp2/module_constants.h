@@ -20,8 +20,6 @@ struct module_constants {
 
   static  ::cpp2::StructWithRefTypeSharedConst const& kStructWithRefTypeSharedConst();
 
-  static  ::cpp2::StructWithRefTypeCustom const& kStructWithRefTypeCustom();
-
 };
 
 } // cpp2

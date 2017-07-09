@@ -30,7 +30,6 @@ class StructWithRef;
 class StructWithRefTypeUnique;
 class StructWithRefTypeShared;
 class StructWithRefTypeSharedConst;
-class StructWithRefTypeCustom;
 
 enum class TypedEnum : short {
   VAL1 = 0,
@@ -823,18 +822,16 @@ class StructWithContainers : private apache::thrift::detail::st::ComparisonOpera
       map_ref(std::make_unique<std::map<int32_t, int32_t>>()),
       list_ref_unique(std::make_unique<std::vector<int32_t>>()),
       set_ref_shared(std::make_shared<std::set<int32_t>>()),
-      list_ref_shared_const(std::make_shared<std::vector<int32_t>>()),
-      set_custom_ref(std::unique_ptr<std::set<int32_t>>(new std::set<int32_t>())) {}
+      list_ref_shared_const(std::make_shared<std::vector<int32_t>>()) {}
   // FragileConstructor for use in initialization lists only
 
-  StructWithContainers(apache::thrift::FragileConstructor, std::unique_ptr<std::vector<int32_t>> list_ref__arg, std::unique_ptr<std::set<int32_t>> set_ref__arg, std::unique_ptr<std::map<int32_t, int32_t>> map_ref__arg, std::unique_ptr<std::vector<int32_t>> list_ref_unique__arg, std::shared_ptr<std::set<int32_t>> set_ref_shared__arg, std::shared_ptr<const std::vector<int32_t>> list_ref_shared_const__arg, std::unique_ptr<std::set<int32_t>> set_custom_ref__arg) :
+  StructWithContainers(apache::thrift::FragileConstructor, std::unique_ptr<std::vector<int32_t>> list_ref__arg, std::unique_ptr<std::set<int32_t>> set_ref__arg, std::unique_ptr<std::map<int32_t, int32_t>> map_ref__arg, std::unique_ptr<std::vector<int32_t>> list_ref_unique__arg, std::shared_ptr<std::set<int32_t>> set_ref_shared__arg, std::shared_ptr<const std::vector<int32_t>> list_ref_shared_const__arg) :
       list_ref(std::move(list_ref__arg)),
       set_ref(std::move(set_ref__arg)),
       map_ref(std::move(map_ref__arg)),
       list_ref_unique(std::move(list_ref_unique__arg)),
       set_ref_shared(std::move(set_ref_shared__arg)),
-      list_ref_shared_const(std::move(list_ref_shared_const__arg)),
-      set_custom_ref(std::move(set_custom_ref__arg)) {}
+      list_ref_shared_const(std::move(list_ref_shared_const__arg)) {}
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   StructWithContainers(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
     StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
@@ -871,12 +868,6 @@ class StructWithContainers : private apache::thrift::detail::st::ComparisonOpera
   {
     list_ref_shared_const = std::make_shared<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(arg.move());
   }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithContainers(::apache::thrift::detail::argument_wrapper<7, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithContainers(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    set_custom_ref = std::unique_ptr<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(new folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>(arg.move()));
-  }
 
   StructWithContainers(StructWithContainers&&) = default;
   StructWithContainers(const StructWithContainers& src);
@@ -893,7 +884,6 @@ class StructWithContainers : private apache::thrift::detail::st::ComparisonOpera
   std::unique_ptr<std::vector<int32_t>> list_ref_unique;
   std::shared_ptr<std::set<int32_t>> set_ref_shared;
   std::shared_ptr<const std::vector<int32_t>> list_ref_shared_const;
-  std::unique_ptr<std::set<int32_t>> set_custom_ref;
 
   struct __isset {
     void __clear() {}
@@ -919,9 +909,6 @@ class StructWithContainers : private apache::thrift::detail::st::ComparisonOpera
     }
     if (!(list_ref_shared_const == rhs.list_ref_shared_const)) {
       return list_ref_shared_const < rhs.list_ref_shared_const;
-    }
-    if (!(set_custom_ref == rhs.set_custom_ref)) {
-      return set_custom_ref < rhs.set_custom_ref;
     }
     (void)rhs;
     return false;
@@ -1548,105 +1535,6 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithRefTyp
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithRefTypeSharedConst>::serializedSizeZC(Protocol const* proto,  ::cpp2::StructWithRefTypeSharedConst const* obj) {
-  return obj->serializedSizeZC(proto);
-}
-
-}} // apache::thrift
-namespace cpp2 {
-
-class StructWithRefTypeCustom : private apache::thrift::detail::st::ComparisonOperators<StructWithRefTypeCustom> {
- public:
-
-  StructWithRefTypeCustom() {}
-  // FragileConstructor for use in initialization lists only
-
-  StructWithRefTypeCustom(apache::thrift::FragileConstructor, std::unique_ptr< ::cpp2::Empty> def_field__arg, std::unique_ptr< ::cpp2::Empty> opt_field__arg, std::unique_ptr< ::cpp2::Empty> req_field__arg) :
-      def_field(std::move(def_field__arg)),
-      opt_field(std::move(opt_field__arg)),
-      req_field(std::move(req_field__arg)) {}
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithRefTypeCustom(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithRefTypeCustom(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    def_field = std::unique_ptr<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(new folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>(arg.move()));
-  }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithRefTypeCustom(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithRefTypeCustom(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    opt_field = std::unique_ptr<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(new folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>(arg.move()));
-  }
-  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
-  StructWithRefTypeCustom(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
-    StructWithRefTypeCustom(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
-  {
-    req_field = std::unique_ptr<folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>>(new folly::_t<std::decay<T__ThriftWrappedArgument__Ctor>>(arg.move()));
-  }
-
-  StructWithRefTypeCustom(StructWithRefTypeCustom&&) = default;
-  StructWithRefTypeCustom(const StructWithRefTypeCustom& src);
-
-  StructWithRefTypeCustom& operator=(StructWithRefTypeCustom&&) = default;
-  StructWithRefTypeCustom& operator=(const StructWithRefTypeCustom& src);
-  void __clear();
-
-  virtual ~StructWithRefTypeCustom() throw() {}
-
-  std::unique_ptr< ::cpp2::Empty> def_field;
-  std::unique_ptr< ::cpp2::Empty> opt_field;
-  std::unique_ptr< ::cpp2::Empty> req_field;
-
-  struct __isset {
-    void __clear() {}
-
-  } __isset;
-  bool operator==(const StructWithRefTypeCustom& rhs) const;
-  bool operator < (const StructWithRefTypeCustom& rhs) const;
-
-  template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
-  template <class Protocol_>
-  uint32_t serializedSize(Protocol_ const* prot_) const;
-  template <class Protocol_>
-  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
-  template <class Protocol_>
-  uint32_t write(Protocol_* prot_) const;
-};
-
-void swap(StructWithRefTypeCustom& a, StructWithRefTypeCustom& b);
-extern template uint32_t StructWithRefTypeCustom::read<>(apache::thrift::BinaryProtocolReader*);
-extern template uint32_t StructWithRefTypeCustom::write<>(apache::thrift::BinaryProtocolWriter*) const;
-extern template uint32_t StructWithRefTypeCustom::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t StructWithRefTypeCustom::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-extern template uint32_t StructWithRefTypeCustom::read<>(apache::thrift::CompactProtocolReader*);
-extern template uint32_t StructWithRefTypeCustom::write<>(apache::thrift::CompactProtocolWriter*) const;
-extern template uint32_t StructWithRefTypeCustom::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-extern template uint32_t StructWithRefTypeCustom::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-} // cpp2
-namespace apache { namespace thrift {
-
-template <> inline void Cpp2Ops< ::cpp2::StructWithRefTypeCustom>::clear( ::cpp2::StructWithRefTypeCustom* obj) {
-  return obj->__clear();
-}
-
-template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::StructWithRefTypeCustom>::thriftType() {
-  return apache::thrift::protocol::T_STRUCT;
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithRefTypeCustom>::write(Protocol* proto,  ::cpp2::StructWithRefTypeCustom const* obj) {
-  return obj->write(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithRefTypeCustom>::read(Protocol* proto,  ::cpp2::StructWithRefTypeCustom* obj) {
-  return obj->read(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithRefTypeCustom>::serializedSize(Protocol const* proto,  ::cpp2::StructWithRefTypeCustom const* obj) {
-  return obj->serializedSize(proto);
-}
-
-template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::StructWithRefTypeCustom>::serializedSizeZC(Protocol const* proto,  ::cpp2::StructWithRefTypeCustom const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

@@ -71,17 +71,4 @@ public class Constants {
     kStructWithRefTypeSharedConst.setReq_field(tmp11);
   }
 
-  public static final StructWithRefTypeCustom kStructWithRefTypeCustom = new StructWithRefTypeCustom();
-  static {
-    Empty tmp12 = new Empty();
-
-    kStructWithRefTypeCustom.setDef_field(tmp12);
-    Empty tmp13 = new Empty();
-
-    kStructWithRefTypeCustom.setOpt_field(tmp13);
-    Empty tmp14 = new Empty();
-
-    kStructWithRefTypeCustom.setReq_field(tmp14);
-  }
-
 }

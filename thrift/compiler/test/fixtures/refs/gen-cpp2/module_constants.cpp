@@ -30,9 +30,4 @@ namespace cpp2 {
   return *instance;
 }
 
- ::cpp2::StructWithRefTypeCustom const& module_constants::kStructWithRefTypeCustom() {
-  static folly::Indestructible< ::cpp2::StructWithRefTypeCustom> const instance( ::cpp2::StructWithRefTypeCustom(::apache::thrift::detail::wrap_argument<1>( ::cpp2::Empty()), ::apache::thrift::detail::wrap_argument<2>( ::cpp2::Empty()), ::apache::thrift::detail::wrap_argument<3>( ::cpp2::Empty())));
-  return *instance;
-}
-
 } // cpp2

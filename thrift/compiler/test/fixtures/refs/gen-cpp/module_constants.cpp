@@ -47,15 +47,6 @@ StructWithRefTypeSharedConst const &module_constants::kStructWithRefTypeSharedCo
   };
   return *instance;
 }
-StructWithRefTypeCustom const &module_constants::kStructWithRefTypeCustom() {
-  static folly::Indestructible<StructWithRefTypeCustom> const instance{
-    StructWithRefTypeCustom(
-      ::apache::thrift::detail::wrap_argument<1>(Empty()),
-      ::apache::thrift::detail::wrap_argument<2>(Empty()),
-      ::apache::thrift::detail::wrap_argument<3>(Empty()))
-  };
-  return *instance;
-}
 
 
 

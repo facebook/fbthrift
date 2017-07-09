@@ -49,13 +49,4 @@ public class ModuleConstants {
     ModuleLogger tmp11 = new ModuleLogger(Module.EventType.Empty);
     kStructWithRefTypeSharedConst.addProperty(Module.StructWithRefTypeSharedConst_req_field, tmp11);
   }
-  public static final ModuleLogger kStructWithRefTypeCustom = new ModuleLogger(Module.EventType.StructWithRefTypeCustom);
-  static {
-    ModuleLogger tmp12 = new ModuleLogger(Module.EventType.Empty);
-    kStructWithRefTypeCustom.addProperty(Module.StructWithRefTypeCustom_def_field, tmp12);
-    ModuleLogger tmp13 = new ModuleLogger(Module.EventType.Empty);
-    kStructWithRefTypeCustom.addProperty(Module.StructWithRefTypeCustom_opt_field, tmp13);
-    ModuleLogger tmp14 = new ModuleLogger(Module.EventType.Empty);
-    kStructWithRefTypeCustom.addProperty(Module.StructWithRefTypeCustom_req_field, tmp14);
-  }
 }

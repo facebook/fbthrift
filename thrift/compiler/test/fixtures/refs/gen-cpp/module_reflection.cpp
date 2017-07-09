@@ -252,13 +252,6 @@ void reflectionInitializer_18101585657679500556(::apache::thrift::reflection::Sc
     f.name = "list_ref_shared_const";
     f.order = 5;
   }
-  {
-    ::apache::thrift::reflection::StructField& f = dt.fields[7];
-    f.isRequired = true;
-    f.type = 10941653322204590122U;
-    f.name = "set_custom_ref";
-    f.order = 6;
-  }
   reflectionInitializer_10941653322204590122(schema);  // set<i32>
   reflectionInitializer_12058391220869880681(schema);  // list<i32>
   reflectionInitializer_7009713166249494859(schema);  // map<i32, i32>
@@ -413,39 +406,6 @@ void reflectionInitializer_11678635121852876428(::apache::thrift::reflection::Sc
   if (schema.dataTypes.count(id)) return;
   ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
   dt.name = "struct module.StructWithRefTypeSharedConst";
-  schema.names[dt.name] = id;
-  dt.__isset.fields = true;
-  {
-    ::apache::thrift::reflection::StructField& f = dt.fields[1];
-    f.isRequired = true;
-    f.type = 14313748354111837868U;
-    f.name = "def_field";
-    f.order = 0;
-  }
-  {
-    ::apache::thrift::reflection::StructField& f = dt.fields[2];
-    f.isRequired = false;
-    f.type = 14313748354111837868U;
-    f.name = "opt_field";
-    f.order = 1;
-  }
-  {
-    ::apache::thrift::reflection::StructField& f = dt.fields[3];
-    f.isRequired = true;
-    f.type = 14313748354111837868U;
-    f.name = "req_field";
-    f.order = 2;
-  }
-  reflectionInitializer_14313748354111837868(schema);  // struct module.Empty
-}
-
-void  reflectionInitializer_14313748354111837868(::apache::thrift::reflection::Schema&);  // struct module.Empty
-// Reflection initializer for struct module.StructWithRefTypeCustom
-void reflectionInitializer_10045417637546770700(::apache::thrift::reflection::Schema& schema) {
-  const uint64_t id = 10045417637546770700U;
-  if (schema.dataTypes.count(id)) return;
-  ::apache::thrift::reflection::DataType& dt = schema.dataTypes[id];
-  dt.name = "struct module.StructWithRefTypeCustom";
   schema.names[dt.name] = id;
   dt.__isset.fields = true;
   {

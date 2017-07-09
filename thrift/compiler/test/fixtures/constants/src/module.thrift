@@ -86,8 +86,8 @@ const list<string> escaped_strings = [
   "zzz\x61yyy", "zzz\xabyyy", "zzz\x6ayyy", "zzz\xa6yyy"
 ];
 
-const bool false_c = 0;
-const bool true_c = 1;
+const bool false_c = false;
+const bool true_c = true;
 const byte zero_byte = 0;
 const i16 zero16 = 0;
 const i32 zero32 = 0;

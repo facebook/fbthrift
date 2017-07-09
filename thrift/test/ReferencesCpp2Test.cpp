@@ -61,7 +61,6 @@ TEST(References, ref_container_fields) {
   EXPECT_NE(nullptr, a.list_ref_unique);
   EXPECT_NE(nullptr, a.set_ref_shared);
   EXPECT_NE(nullptr, a.list_ref_shared_const);
-  EXPECT_NE(nullptr, a.set_custom_ref);
 }
 
 } // namespace cpp2

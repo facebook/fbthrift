@@ -181,16 +181,16 @@ public class RecursiveStruct implements TBase, java.io.Serializable, Cloneable {
         case MES:
           if (field.type == TType.LIST) {
             {
-              TList _list15 = iprot.readListBegin();
-              this.mes = new ArrayList<RecursiveStruct>(Math.max(0, _list15.size));
-              for (int _i16 = 0; 
-                   (_list15.size < 0) ? iprot.peekList() : (_i16 < _list15.size); 
-                   ++_i16)
+              TList _list12 = iprot.readListBegin();
+              this.mes = new ArrayList<RecursiveStruct>(Math.max(0, _list12.size));
+              for (int _i13 = 0; 
+                   (_list12.size < 0) ? iprot.peekList() : (_i13 < _list12.size); 
+                   ++_i13)
               {
-                RecursiveStruct _elem17;
-                _elem17 = new RecursiveStruct();
-                _elem17.read(iprot);
-                this.mes.add(_elem17);
+                RecursiveStruct _elem14;
+                _elem14 = new RecursiveStruct();
+                _elem14.read(iprot);
+                this.mes.add(_elem14);
               }
               iprot.readListEnd();
             }
@@ -220,8 +220,8 @@ public class RecursiveStruct implements TBase, java.io.Serializable, Cloneable {
         oprot.writeFieldBegin(MES_FIELD_DESC);
         {
           oprot.writeListBegin(new TList(TType.STRUCT, this.mes.size()));
-          for (RecursiveStruct _iter18 : this.mes)          {
-            _iter18.write(oprot);
+          for (RecursiveStruct _iter15 : this.mes)          {
+            _iter15.write(oprot);
           }
           oprot.writeListEnd();
         }
