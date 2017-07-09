@@ -17,6 +17,7 @@
 %><%#struct:fields%><%#field:type%>
   <% > RefType%> <%field:name%>;
 <%/field:type%><%/struct:fields%>
+<%#struct:isset_fields?%>
 
   struct __isset {
     void __clear() {
@@ -29,3 +30,4 @@
     bool <%field:name%> = false;
 <%/field:cpp_ref?%><%/field:required?%><%/struct:fields%>
   } __isset;
+<%/struct:isset_fields?%>

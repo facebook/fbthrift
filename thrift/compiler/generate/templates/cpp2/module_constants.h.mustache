@@ -26,7 +26,7 @@
 struct <%program:name%>_constants {
 
 <%#program:constants%><%#constant:type%><%#constant:value%>
-  <%^type:container?%>
+  <%^type:resolves_to_container_or_struct?%>
     <%#type:string?%>
   // consider using folly::StringPiece instead of std::string whenever possible
   // to referencing this statically allocated string constant, in order to
@@ -61,11 +61,11 @@ struct <%program:name%>_constants {
   }
 
     <%/type:enum?%><%/type:string?%>
-  <%/type:container?%>
-  <%#type:container?%>
+  <%/type:resolves_to_container_or_struct?%>
+  <%#type:resolves_to_container_or_struct?%>
   static <% > Type%> const& <%constant:name%>();
 
-  <%/type:container?%>
+  <%/type:resolves_to_container_or_struct?%>
 <%/constant:value%><%/constant:type%><%/program:constants%>
 };
 

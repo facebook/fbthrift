@@ -39,9 +39,9 @@ std::shared_ptr<mstch_base> const_value_generator::generate(
     std::shared_ptr<mstch_generators const> generators,
     std::shared_ptr<mstch_cache> cache,
     ELEMENT_POSITION pos,
-    int32_t /*index*/) const {
+    int32_t index) const {
   return std::make_shared<mstch_const_value>(
-      const_value, generators, cache, pos);
+      const_value, generators, cache, pos, index);
 }
 
 std::shared_ptr<mstch_base> const_value_generator::generate(
@@ -49,9 +49,9 @@ std::shared_ptr<mstch_base> const_value_generator::generate(
     std::shared_ptr<mstch_generators const> generators,
     std::shared_ptr<mstch_cache> cache,
     ELEMENT_POSITION pos,
-    int32_t /*index*/) const {
+    int32_t index) const {
   return std::make_shared<mstch_const_value>(
-      value_pair, generators, cache, pos);
+      value_pair, generators, cache, pos, index);
 }
 
 std::shared_ptr<mstch_base> type_generator::generate(
@@ -229,12 +229,12 @@ mstch::node mstch_field::value() {
 
 mstch::node mstch_const_value::element_key() {
   return generators_->const_value_generator_->generate(
-      pair_.first, generators_, cache_, pos_);
+      pair_.first, generators_, cache_, pos_, index_);
 }
 
 mstch::node mstch_const_value::element_value() {
   return generators_->const_value_generator_->generate(
-      pair_.second, generators_, cache_, pos_);
+      pair_.second, generators_, cache_, pos_, index_);
 }
 
 mstch::node mstch_const_value::value() {
@@ -302,7 +302,14 @@ mstch::node mstch_const_value::enum_value_name() {
 
 mstch::node mstch_const_value::string_value() {
   if (type_ == cv::CV_STRING) {
-    return const_value_->get_string();
+    std::string string_val = const_value_->get_string();
+    for (auto itr = string_val.begin(); itr != string_val.end(); ++itr) {
+      if (*itr == '"') {
+        itr = string_val.insert(itr, '\\');
+        ++itr;
+      }
+    }
+    return string_val;
   }
   return mstch::node();
 }

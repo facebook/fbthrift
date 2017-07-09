@@ -69,13 +69,13 @@ class const_value_generator {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const;
+      int32_t index = 0) const;
   virtual std::shared_ptr<mstch_base> generate(
       std::pair<t_const_value*, t_const_value*> const& value_pair,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const;
+      int32_t index = 0) const;
 };
 
 class type_generator {
@@ -392,13 +392,16 @@ class mstch_const_value : public mstch_base {
       t_const_value const* const_value,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos)
+      ELEMENT_POSITION pos,
+      int32_t index)
       : mstch_base(generators, cache, pos),
         const_value_(const_value),
-        type_(const_value->get_type()) {
+        type_(const_value->get_type()),
+        index_(index) {
     register_methods(
         this,
         {
+            {"value:index_plus_one", &mstch_const_value::index_plus_one},
             {"value:bool?", &mstch_const_value::is_bool},
             {"value:double?", &mstch_const_value::is_double},
             {"value:integer?", &mstch_const_value::is_integer},
@@ -408,6 +411,7 @@ class mstch_const_value : public mstch_base {
             {"value:map?", &mstch_const_value::is_map},
             {"value:list?", &mstch_const_value::is_list},
             {"value:container?", &mstch_const_value::is_container},
+            {"value:empty_container?", &mstch_const_value::is_empty_container},
             {"value:value", &mstch_const_value::value},
             {"value:integerValue", &mstch_const_value::integer_value},
             {"value:doubleValue", &mstch_const_value::double_value},
@@ -424,10 +428,12 @@ class mstch_const_value : public mstch_base {
       std::pair<t_const_value*, t_const_value*> const& pair_values,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos)
+      ELEMENT_POSITION pos,
+      int32_t index)
       : mstch_base(generators, cache, pos),
         type_(static_cast<cv>(0)),
-        pair_(pair_values) {
+        pair_(pair_values),
+        index_(index) {
     register_methods(
         this,
         {
@@ -442,6 +448,9 @@ class mstch_const_value : public mstch_base {
       d_str.push_back('0');
     }
     return d_str;
+  }
+  mstch::node index_plus_one() {
+    return std::to_string(index_ + 1);
   }
   mstch::node is_bool() {
     return type_ == cv::CV_BOOL;
@@ -471,6 +480,10 @@ class mstch_const_value : public mstch_base {
   mstch::node is_container() {
     return type_ == cv::CV_MAP || type_ == cv::CV_LIST;
   }
+  mstch::node is_empty_container() {
+    return (type_ == cv::CV_MAP && const_value_->get_map().empty()) ||
+        (type_ == cv::CV_LIST && const_value_->get_list().empty());
+  }
   mstch::node element_key();
   mstch::node element_value();
   mstch::node value();
@@ -488,6 +501,7 @@ class mstch_const_value : public mstch_base {
   t_const_value const* const_value_;
   cv const type_;
   std::pair<t_const_value*, t_const_value*> const pair_;
+  int32_t index_;
 };
 
 class mstch_type : public mstch_base {

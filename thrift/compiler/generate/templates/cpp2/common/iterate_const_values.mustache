@@ -28,9 +28,8 @@ Base Types:
 
 Containers:
 
-List
-Form:`std::initializer_list<Type>{Values}`
-E.g.:`std::initializer_list<bool>{true, false, false, true}`
+List:
+%><%^type:struct%><%!
 %><%#value:list?%><%#type:listElemType%><%!
   %>std::initializer_list<<%!
     %><% > Type%><%!
@@ -43,8 +42,7 @@ E.g.:`std::initializer_list<bool>{true, false, false, true}`
   %>}<%!
 %><%/type:listElemType%><%/value:list?%><%!
 
-Set
-Form:`std::initializer_list<Type>{Values}`
+Set:
 %><%#value:list?%><%#type:setElemType%><%!
   %>std::initializer_list<<%!
     %><% > Type%><%!
@@ -58,8 +56,6 @@ Form:`std::initializer_list<Type>{Values}`
 %><%/type:setElemType%><%/value:list?%><%!
 
 Map:
-Form:`std::initializer_list<Type>{{Key, Value}}`
-E.g.:`std::initializer_list<std::pair<int64_t, bool>>{{11, false},{453, false}}`
 %><%#value:map?%><%!
   %>std::initializer_list<std::pair<<%!
     %><%#type:keyType%>const <% > Type%><%/type:keyType%>, <%!
@@ -79,4 +75,10 @@ E.g.:`std::initializer_list<std::pair<int64_t, bool>>{{11, false},{453, false}}`
   <%/last?%><%!
   %><%/value:mapElements%><%!
   %>}<%!
-%><%/value:map?%>
+%><%/value:map?%><%!
+%><%/type:struct%><%!
+%><%#type:struct%><%!
+  %><%#value:map?%><%!
+    %><% > common/namespace_cpp2%><%type:name%>(<%#value:mapElements%><%#element:value%>::apache::thrift::detail::wrap_argument<<%value:index_plus_one%>>(<% > common/iterate_const_values%>)<%^last?%>, <%/last?%><%/element:value%><%/value:mapElements%>)<%!
+  %><%/value:map?%><%!
+%><%/type:struct%>

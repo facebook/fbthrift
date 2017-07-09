@@ -35,10 +35,12 @@
 %><% > common/namespace_cpp2_begin%>
 
 
-<%^program:enums?%>
-<% > module_types_h/struct_forward_declare%>
-<%/program:enums?%>
+<%#first?%>
+<%^program:enums?%><%#struct:struct_list%>
+class <%struct_name%>;
+<%/struct:struct_list%><%/program:enums?%>
 <% > module_types_h/typedef_initialize%>
+<%/first?%>
 class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<<%struct:name%>><%#struct:exception?%>, public apache::thrift::TException<%/struct:exception?%> {
  public:
 <%#struct:union?%>
@@ -140,7 +142,6 @@ class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<
 <%/struct:final%>
 <%#struct:fields?%>
 <% > module_types_h/declare_members%>
-
 <%/struct:fields?%>
 <% > module_types_h/eq_overload%>
 <% > module_types_h/lt_overload%>

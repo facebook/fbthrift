@@ -22,9 +22,9 @@
 <%#program:indirection?%>
 <% > module_types_h/struct_indirection%>
 <%/program:indirection?%>
-<%#program:structs%>
-<% > module_types_h/struct_forward_declare%>
-<%/program:structs%>
+<%#enum:struct_list%>
+class <%struct_name%>;
+<%/enum:struct_list%>
 
 <%/first?%>
 enum class <%enum:name%><%#enum:cpp_enum_type%> : <%enum:cpp_enum_type%><%/enum:cpp_enum_type%> {<%!

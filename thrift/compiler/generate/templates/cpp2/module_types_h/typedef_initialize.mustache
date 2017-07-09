@@ -14,15 +14,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%!
-Form:
-typedef type name;
-
-%>
-<%#first?%><%#program:typedefs%><%#typedef:type%>
+%><%#program:typedefs%><%#typedef:type%>
 <%^type:cpp_type%>
 <% > module_types_h/typedef_recursive_forward_declare%>
 <%/type:cpp_type%>
 typedef <%#type:cpp_type%><%type:cpp_type%><%/type:cpp_type%><%^type:cpp_type%><% > Type%><%/type:cpp_type%> <%typedef:symbolic%>;
 
-<%/typedef:type%><%/program:typedefs%><%/first?%>
+<%/typedef:type%><%/program:typedefs%>

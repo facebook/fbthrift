@@ -58,6 +58,8 @@ class mstch_cpp2_enum : public mstch_enum {
             {"enum:cpp_enum_type", &mstch_cpp2_enum::cpp_enum_type},
             {"enum:cpp_declare_bitwise_ops",
              &mstch_cpp2_enum::cpp_declare_bitwise_ops},
+            {"enum:struct_list", &mstch_cpp2_enum::struct_list},
+            {"enum:has_zero", &mstch_cpp2_enum::has_zero},
         });
   }
   mstch::node is_empty() {
@@ -105,6 +107,23 @@ class mstch_cpp2_enum : public mstch_enum {
       return enm_->annotations_.at("cpp2.declare_bitwise_ops");
     }
     return std::string();
+  }
+  mstch::node struct_list() {
+    mstch::array a;
+    for (const auto* strct : enm_->get_program()->get_objects()) {
+      mstch::map m;
+      m.emplace("struct_name", strct->get_name());
+      a.push_back(m);
+    }
+    return a;
+  }
+  mstch::node has_zero() {
+    auto* enm_value = enm_->find_value(0);
+    if (enm_value != nullptr) {
+      return generators_->enum_value_generator_->generate(
+          enm_value, generators_, cache_, pos_);
+    }
+    return mstch::node();
   }
 };
 
@@ -272,12 +291,15 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:final", &mstch_cpp2_struct::cpp_final},
             {"struct:message", &mstch_cpp2_struct::message},
             {"struct:struct_list", &mstch_cpp2_struct::struct_list},
+            {"struct:isset_fields?", &mstch_cpp2_struct::has_isset_fields},
+            {"struct:isset_fields", &mstch_cpp2_struct::isset_fields},
         });
   }
   mstch::node getters_setters() {
     for (auto const* field : strct_->get_members()) {
       auto const* resolved_typedef = resolve_typedef(field->get_type());
-      if (resolved_typedef->is_base_type() || resolved_typedef->is_struct()) {
+      if (resolved_typedef->is_base_type() || resolved_typedef->is_enum() ||
+          resolved_typedef->is_struct()) {
         return true;
       }
     }
@@ -286,7 +308,8 @@ class mstch_cpp2_struct : public mstch_struct {
   mstch::node has_base_field_or_struct() {
     for (auto const* field : strct_->get_members()) {
       auto const* resolved_typedef = resolve_typedef(field->get_type());
-      if (resolved_typedef->is_base_type() || resolved_typedef->is_struct()) {
+      if (resolved_typedef->is_base_type() || resolved_typedef->is_enum() ||
+          resolved_typedef->is_struct()) {
         return true;
       }
     }
@@ -421,6 +444,35 @@ class mstch_cpp2_struct : public mstch_struct {
       a.push_back(m);
     }
     return a;
+  }
+  mstch::node has_isset_fields() {
+    for (const auto* field : strct_->get_members()) {
+      if (field->get_req() != t_field::e_req::T_REQUIRED &&
+          !field->annotations_.count("cpp.ref") &&
+          !field->annotations_.count("cpp2.ref") &&
+          !field->annotations_.count("cpp.ref_type") &&
+          !field->annotations_.count("cpp2.ref_type")) {
+        return true;
+      }
+    }
+    return false;
+  }
+  mstch::node isset_fields() {
+    std::vector<t_field const*> fields;
+    for (const auto* field : strct_->get_members()) {
+      if (field->get_req() != t_field::e_req::T_REQUIRED &&
+          !field->annotations_.count("cpp.ref") &&
+          !field->annotations_.count("cpp2.ref") &&
+          !field->annotations_.count("cpp.ref_type") &&
+          !field->annotations_.count("cpp2.ref_type")) {
+        fields.push_back(field);
+      }
+    }
+    if (fields.empty()) {
+      return mstch::node();
+    }
+    return generate_elements(
+        fields, generators_->field_generator_.get(), generators_, cache_);
   }
 };
 
