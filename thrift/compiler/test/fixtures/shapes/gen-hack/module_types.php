@@ -938,7 +938,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       $this->required_enum_with_default = $required_enum_with_default;
     }
     if ($string_with_default_value === null) {
-      $this->string_with_default_value = "de_fault_in_our_stars";
+      $this->string_with_default_value = 'de_fault_in_our_stars';
     } else {
       $this->string_with_default_value = $string_with_default_value;
     }
@@ -970,23 +970,23 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
     if ($map_of_i32_to_string_with_default_value === null) {
       $this->map_of_i32_to_string_with_default_value = Map {
-      1 => "fish",
-      2 => "fish",
+      1 => 'fish',
+      2 => 'fish',
     };
     } else {
       $this->map_of_i32_to_string_with_default_value = $map_of_i32_to_string_with_default_value;
     }
     if ($list_of_string_with_default_value === null) {
       $this->list_of_string_with_default_value = Vector {
-      "red fish",
-      "blue fish",
+      'red fish',
+      'blue fish',
     };
     } else {
       $this->list_of_string_with_default_value = $list_of_string_with_default_value;
     }
     if ($map_of_string_to_list_of_i32_with_default_value === null) {
       $this->map_of_string_to_list_of_i32_with_default_value = Map {
-      "Jenny" => Vector {
+      'Jenny' => Vector {
         8,
         6,
         7,
@@ -1578,7 +1578,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     }
 
     if (!array_key_exists('string_with_default_value', $shape_data)) {
-      $shape_data['string_with_default_value'] = "de_fault_in_our_stars";
+      $shape_data['string_with_default_value'] = 'de_fault_in_our_stars';
     }
     if (!is_string($shape_data['string_with_default_value'])) {
       return null;

@@ -1017,11 +1017,11 @@ void t_hack_generator::generate_lazy_init_for_constant(
 string t_hack_generator::render_string(string value) {
   std::ostringstream out;
   size_t pos = 0;
-  while((pos = value.find('"', pos)) != string::npos) {
+  while((pos = value.find("'", pos)) != string::npos) {
     value.insert(pos, 1, '\\');
     pos += 2;
   }
-  out << "\"" << value << "\"";
+  out << "'" << value << "'";
   return out.str();
 }
 
