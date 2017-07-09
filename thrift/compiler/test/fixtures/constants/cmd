@@ -1,7 +1,7 @@
 android_lite src/module.thrift
 py src/module.thrift
-php src/module.thrift
-hack src/module.thrift
+php:lazy_constants=1 src/module.thrift
+hack:lazy_constants=1 src/module.thrift
 cpp src/module.thrift
 cpp2 src/module.thrift
 go src/module.thrift

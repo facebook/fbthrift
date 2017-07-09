@@ -51,6 +51,7 @@ class t_php_generator : public t_oop_generator {
     ducktyping_ = option_is_specified(parsed_options, "ducktyping");
     hphpenum_ = option_is_specified(parsed_options, "hphpenum");
     async_ = option_is_specified(parsed_options, "async");
+    lazy_constants_ = option_is_specified(parsed_options, "lazy_constants");
 
     mangled_services_ = option_is_set(parsed_options, "mangledsvcs", false);
     unmangled_services_ = option_is_set(parsed_options, "unmangledsvcs", true);
@@ -294,6 +295,11 @@ class t_php_generator : public t_oop_generator {
     return php_path(s->get_program());
   }
 
+
+  void generate_lazy_init_for_constant(ofstream& out,
+                                       const std::string& name,
+                                       const std::string& rendered_value);
+
  private:
   /**
    * Generate the namespace mangled string, if necessary
@@ -381,6 +387,11 @@ class t_php_generator : public t_oop_generator {
    * True iff mangled service classes should be emitted
    */
   bool mangled_services_;
+
+  /**
+   * True if we should generate lazy initialization code for constants
+   */
+  bool lazy_constants_;
 };
 
 void t_php_generator::generate_json_enum(
@@ -720,10 +731,23 @@ void t_php_generator::close_generator() {
     // write out the values array
     indent_up();
     f_consts_ << endl;
-    indent(f_consts_) << "public static $__values = array(" << endl;
-    std::copy(constants_values_.begin(), constants_values_.end(),
-        std::ostream_iterator<string>(f_consts_, ",\n"));
-    indent(f_consts_) << ");" << endl;
+    if (!lazy_constants_) {
+      indent(f_consts_) << "public static $__values = array(" << endl;
+      std::copy(constants_values_.begin(), constants_values_.end(),
+          std::ostream_iterator<string>(f_consts_, ",\n"));
+      indent(f_consts_) << ");" << endl;
+    } else {
+      stringstream oss(stringstream::out);
+      oss << "array(" << endl;
+      std::copy(constants_values_.begin(),
+                constants_values_.end(),
+                std::ostream_iterator<string>(oss, ",\n"));
+      indent(oss) << "    )";
+
+      string rendered_value = oss.str();
+      generate_lazy_init_for_constant(
+          f_consts_, "__values", rendered_value);
+    }
     indent_down();
     // close constants class
     f_consts_ << "}" << endl <<
@@ -840,28 +864,75 @@ void t_php_generator::generate_const(t_const* tconst) {
 
   indent_up();
   generate_php_docstring(f_consts_, tconst);
-  // for base php types, use const (guarantees optimization in hphp)
-  if (type->is_base_type()) {
-    indent(f_consts_) << "const " << name << " = ";
-  // cannot use const for objects (incl arrays). use static
+  if (!lazy_constants_) {
+    // for base php types, use const (guarantees optimization in hphp)
+    if (type->is_base_type()) {
+      indent(f_consts_) << "const " << name << " = ";
+    // cannot use const for objects (incl arrays). use static
+    } else {
+      indent(f_consts_) << "static $" << name << " = ";
+    }
+    indent_up();
+    f_consts_ << render_const_value(type, value);
+    indent_down();
+    f_consts_ << ";" << endl;
+    // add the definitions to a values array as well
+    // indent up cause we're going to be in an array definition
+    indent_up();
+    stringstream oss(stringstream::out);
+    indent(oss) << render_string(name) << " => ";
+    indent_up();
+    oss << render_const_value(type, value);
+    indent_down();
+    indent_down();
+    constants_values_.push_back(oss.str());
   } else {
-    indent(f_consts_) << "static $" << name << " = ";
+    // generate rendered value with right number of identations (2)
+    indent_up();
+    indent_up();
+    stringstream val(stringstream::out);
+    val << render_const_value(type, value);
+    indent_down();
+    indent_down();
+
+    string rendered_value = val.str();
+    generate_lazy_init_for_constant(
+        f_consts_, name, rendered_value);
+
+    // add the definitions to a values array as well
+    // indent up 3 times cause we're going to be 2 levels deeper
+    // than in non lazy case
+    indent_up();
+    indent_up();
+    indent_up();
+    stringstream oss(stringstream::out);
+    indent(oss) << render_string(name) << " => ";
+    oss << render_const_value(type, value);
+    indent_down();
+    indent_down();
+    indent_down();
+
+    constants_values_.push_back(oss.str());
   }
-  indent_up();
-  f_consts_ << render_const_value(type, value);
+
   indent_down();
-  f_consts_ << ";" << endl;
-  // add the definitions to a values array as well
-  // indent up cause we're going to be in an array definition
-  indent_up();
-  stringstream oss(stringstream::out);
-  indent(oss) << render_string(name) << " => ";
-  indent_up();
-  oss << render_const_value(type, value);
-  indent_down();
-  indent_down();
-  constants_values_.push_back(oss.str());
-  indent_down();
+}
+
+void t_php_generator::generate_lazy_init_for_constant(
+    ofstream& out,
+    const std::string& name,
+    const std::string& rendered_value) {
+  string name_internal = "__" + name;
+  indent(out) << "private static $" << name_internal
+              << " = null;" << endl;
+  indent(out) << "public static function " << name << "() {"
+              << endl;
+  indent(out) << "  if (self::$" << name_internal << " == null) {" << endl;
+  indent(out) << "    self::$" << name_internal << " = " << rendered_value
+              << ";" << endl;
+  indent(out) << "  }" << endl;
+  indent(out) << "  return self::$" << name_internal << ";" << endl;
+  indent(out) << "}" << endl << endl;
 }
 
 string t_php_generator::render_string(string value) {
@@ -3512,4 +3583,5 @@ THRIFT_REGISTER_GENERATOR(php, "PHP",
 "    json:            Generate functions to parse JSON into thrift struct.\n"
 "    mangledsvcs      Generate services with namespace mangling.\n"
 "    unmangledsvcs    Generate services without namespace mangling.\n"
+"    lazy_constants   Generate lazy initialization code for global constants.\n"
 );
