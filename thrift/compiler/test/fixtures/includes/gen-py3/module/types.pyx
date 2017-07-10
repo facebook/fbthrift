@@ -134,7 +134,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     @property
     def MyIncludedField(self):
-        if not deref(self.c_MyStruct).__isset.MyIncludedField:
+        if not deref(self._cpp_obj).__isset.MyIncludedField:
             return None
 
         cdef shared_ptr[includes.types.cIncluded] item
