@@ -34,28 +34,28 @@ cdef class Empty(thrift.py3.types.Struct):
     def __init__(
         Empty self
     ):
-        self.c_Empty = make_shared[cEmpty]()
+        self._cpp_obj = make_shared[cEmpty]()
 
         inst = self
 
     cdef bytes _serialize(Empty self, proto):
         cdef string c_str
         if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cEmpty](deref(self.c_Empty.get()), &c_str)
+            serializer.CompactSerialize[cEmpty](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cEmpty](deref(self.c_Empty.get()), &c_str)
+            serializer.BinarySerialize[cEmpty](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cEmpty](deref(self.c_Empty.get()), &c_str)
+            serializer.JSONSerialize[cEmpty](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
     cdef uint32_t _deserialize(Empty self, const IOBuf* buf, proto):
         cdef uint32_t needed
         if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cEmpty](buf, deref(self.c_Empty.get()))
+            needed = serializer.CompactDeserialize[cEmpty](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cEmpty](buf, deref(self.c_Empty.get()))
+            needed = serializer.BinaryDeserialize[cEmpty](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cEmpty](buf, deref(self.c_Empty.get()))
+            needed = serializer.JSONDeserialize[cEmpty](buf, deref(self._cpp_obj.get()))
         return needed
 
     def __reduce__(self):
@@ -70,7 +70,7 @@ cdef class Empty(thrift.py3.types.Struct):
             return self
 
         inst = <Empty>Empty.__new__(Empty)
-        inst.c_Empty = make_shared[cEmpty](deref(self.c_Empty))
+        inst._cpp_obj = make_shared[cEmpty](deref(self._cpp_obj))
         cdef Empty defaults = Empty_defaults
 
         # Convert None's to default value.
@@ -84,9 +84,9 @@ cdef class Empty(thrift.py3.types.Struct):
         return True
 
     @staticmethod
-    cdef create(shared_ptr[cEmpty] c_Empty):
+    cdef create(shared_ptr[cEmpty] cpp_obj):
         inst = <Empty>Empty.__new__(Empty)
-        inst.c_Empty = c_Empty
+        inst._cpp_obj = cpp_obj
         return inst
 
 
@@ -102,8 +102,8 @@ cdef class Empty(thrift.py3.types.Struct):
             else:         # different types are always notequal
                 return True
 
-        cdef cEmpty cself = deref((<Empty>self).c_Empty)
-        cdef cEmpty cother = deref((<Empty>other).c_Empty)
+        cdef cEmpty cself = deref((<Empty>self)._cpp_obj)
+        cdef cEmpty cother = deref((<Empty>other)._cpp_obj)
         cdef cbool cmp = cself == cother
         if cop == 2:
             return cmp
@@ -128,28 +128,28 @@ cdef class Nada(thrift.py3.types.Struct):
     def __init__(
         Nada self
     ):
-        self.c_Nada = make_shared[cNada]()
+        self._cpp_obj = make_shared[cNada]()
 
         inst = self
 
     cdef bytes _serialize(Nada self, proto):
         cdef string c_str
         if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cNada](deref(self.c_Nada.get()), &c_str)
+            serializer.CompactSerialize[cNada](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cNada](deref(self.c_Nada.get()), &c_str)
+            serializer.BinarySerialize[cNada](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cNada](deref(self.c_Nada.get()), &c_str)
+            serializer.JSONSerialize[cNada](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
     cdef uint32_t _deserialize(Nada self, const IOBuf* buf, proto):
         cdef uint32_t needed
         if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cNada](buf, deref(self.c_Nada.get()))
+            needed = serializer.CompactDeserialize[cNada](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cNada](buf, deref(self.c_Nada.get()))
+            needed = serializer.BinaryDeserialize[cNada](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cNada](buf, deref(self.c_Nada.get()))
+            needed = serializer.JSONDeserialize[cNada](buf, deref(self._cpp_obj.get()))
         return needed
 
     def __reduce__(self):
@@ -164,7 +164,7 @@ cdef class Nada(thrift.py3.types.Struct):
             return self
 
         inst = <Nada>Nada.__new__(Nada)
-        inst.c_Nada = make_shared[cNada](deref(self.c_Nada))
+        inst._cpp_obj = make_shared[cNada](deref(self._cpp_obj))
         cdef Nada defaults = Nada_defaults
 
         # Convert None's to default value.
@@ -178,9 +178,9 @@ cdef class Nada(thrift.py3.types.Struct):
         return True
 
     @staticmethod
-    cdef create(shared_ptr[cNada] c_Nada):
+    cdef create(shared_ptr[cNada] cpp_obj):
         inst = <Nada>Nada.__new__(Nada)
-        inst.c_Nada = c_Nada
+        inst._cpp_obj = cpp_obj
         return inst
 
 
@@ -196,8 +196,8 @@ cdef class Nada(thrift.py3.types.Struct):
             else:         # different types are always notequal
                 return True
 
-        cdef cNada cself = deref((<Nada>self).c_Nada)
-        cdef cNada cother = deref((<Nada>other).c_Nada)
+        cdef cNada cself = deref((<Nada>self)._cpp_obj)
+        cdef cNada cother = deref((<Nada>other)._cpp_obj)
         cdef cbool cmp = cself == cother
         if cop == 2:
             return cmp

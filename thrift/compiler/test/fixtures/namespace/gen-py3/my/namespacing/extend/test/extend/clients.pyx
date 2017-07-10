@@ -124,7 +124,7 @@ cdef class ExtendTestService(hsmodule.clients.HsTestService):
         bridgeFutureWith[cbool](
             self._executor,
             deref(self._extend_ExtendTestService_client).check(
-                deref((<hsmodule.types.HsFoo>arg_struct1).c_HsFoo),
+                deref((<hsmodule.types.HsFoo>arg_struct1)._cpp_obj),
             ),
             ExtendTestService_check_callback,
             <PyObject *> future

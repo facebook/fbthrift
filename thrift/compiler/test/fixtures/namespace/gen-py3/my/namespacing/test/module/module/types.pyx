@@ -35,32 +35,32 @@ cdef class Foo(thrift.py3.types.Struct):
         Foo self,
         MyInt=None
     ):
-        self.c_Foo = make_shared[cFoo]()
+        self._cpp_obj = make_shared[cFoo]()
 
         inst = self
         if MyInt is not None:
-            deref(inst.c_Foo).MyInt = MyInt
-            deref(inst.c_Foo).__isset.MyInt = True
+            deref(inst._cpp_obj).MyInt = MyInt
+            deref(inst._cpp_obj).__isset.MyInt = True
 
 
     cdef bytes _serialize(Foo self, proto):
         cdef string c_str
         if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cFoo](deref(self.c_Foo.get()), &c_str)
+            serializer.CompactSerialize[cFoo](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cFoo](deref(self.c_Foo.get()), &c_str)
+            serializer.BinarySerialize[cFoo](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cFoo](deref(self.c_Foo.get()), &c_str)
+            serializer.JSONSerialize[cFoo](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
     cdef uint32_t _deserialize(Foo self, const IOBuf* buf, proto):
         cdef uint32_t needed
         if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cFoo](buf, deref(self.c_Foo.get()))
+            needed = serializer.CompactDeserialize[cFoo](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cFoo](buf, deref(self.c_Foo.get()))
+            needed = serializer.BinaryDeserialize[cFoo](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cFoo](buf, deref(self.c_Foo.get()))
+            needed = serializer.JSONDeserialize[cFoo](buf, deref(self._cpp_obj.get()))
         return needed
 
     def __reduce__(self):
@@ -78,19 +78,19 @@ cdef class Foo(thrift.py3.types.Struct):
             return self
 
         inst = <Foo>Foo.__new__(Foo)
-        inst.c_Foo = make_shared[cFoo](deref(self.c_Foo))
+        inst._cpp_obj = make_shared[cFoo](deref(self._cpp_obj))
         cdef Foo defaults = Foo_defaults
 
         # Convert None's to default value.
         if MyInt is None:
-            deref(inst.c_Foo).MyInt = deref(defaults.c_Foo).MyInt
-            deref(inst.c_Foo).__isset.MyInt = False
+            deref(inst._cpp_obj).MyInt = deref(defaults._cpp_obj).MyInt
+            deref(inst._cpp_obj).__isset.MyInt = False
         if MyInt is NOTSET:
             MyInt = None
 
         if MyInt is not None:
-            deref(inst.c_Foo).MyInt = MyInt
-            deref(inst.c_Foo).__isset.MyInt = True
+            deref(inst._cpp_obj).MyInt = MyInt
+            deref(inst._cpp_obj).__isset.MyInt = True
 
         return inst
 
@@ -98,20 +98,20 @@ cdef class Foo(thrift.py3.types.Struct):
         yield 'MyInt', self.MyInt
 
     def __bool__(self):
-        return deref(self.c_Foo).__isset.MyInt
+        return deref(self._cpp_obj).__isset.MyInt
 
     @staticmethod
-    cdef create(shared_ptr[cFoo] c_Foo):
+    cdef create(shared_ptr[cFoo] cpp_obj):
         inst = <Foo>Foo.__new__(Foo)
-        inst.c_Foo = c_Foo
+        inst._cpp_obj = cpp_obj
         return inst
 
     @property
     def MyInt(self):
-        if not deref(self.c_Foo).__isset.MyInt:
+        if not deref(self._cpp_obj).__isset.MyInt:
             return None
 
-        return self.c_Foo.get().MyInt
+        return self._cpp_obj.get().MyInt
 
 
     def __richcmp__(self, other, op):
@@ -126,8 +126,8 @@ cdef class Foo(thrift.py3.types.Struct):
             else:         # different types are always notequal
                 return True
 
-        cdef cFoo cself = deref((<Foo>self).c_Foo)
-        cdef cFoo cother = deref((<Foo>other).c_Foo)
+        cdef cFoo cself = deref((<Foo>self)._cpp_obj)
+        cdef cFoo cother = deref((<Foo>other)._cpp_obj)
         cdef cbool cmp = cself == cother
         if cop == 2:
             return cmp

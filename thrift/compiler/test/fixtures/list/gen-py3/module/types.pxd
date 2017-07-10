@@ -28,14 +28,14 @@ cimport thrift.py3.types
 cdef class List__string:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[vector[string]] _vector
+    cdef shared_ptr[vector[string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[string]])
 
 cdef class Map__i64_List__string:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cmap[int64_t,vector[string]]] _map
+    cdef shared_ptr[cmap[int64_t,vector[string]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[int64_t,vector[string]]])
 

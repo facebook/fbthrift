@@ -54,16 +54,16 @@ cdef class Struct(thrift.py3.types.Struct)
 cdef class Struct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cStruct] c_Struct
+    cdef shared_ptr[cStruct] _cpp_obj
 
     @staticmethod
-    cdef create(shared_ptr[cStruct] c_Struct)
+    cdef create(shared_ptr[cStruct])
 
 
 cdef class List__Enum:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[vector[cEnum]] _vector
+    cdef shared_ptr[vector[cEnum]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cEnum]])
 

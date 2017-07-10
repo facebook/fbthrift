@@ -65,12 +65,12 @@ cdef class Struct(thrift.py3.types.Struct)
 cdef class Struct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cStruct] c_Struct
+    cdef shared_ptr[cStruct] _cpp_obj
     cdef module0.types.Struct __first
     cdef module1.types.Struct __second
 
     @staticmethod
-    cdef create(shared_ptr[cStruct] c_Struct)
+    cdef create(shared_ptr[cStruct])
 
 # Forward Definition of the cython struct
 cdef class BigStruct(thrift.py3.types.Struct)
@@ -78,11 +78,11 @@ cdef class BigStruct(thrift.py3.types.Struct)
 cdef class BigStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cBigStruct] c_BigStruct
+    cdef shared_ptr[cBigStruct] _cpp_obj
     cdef Struct __s
 
     @staticmethod
-    cdef create(shared_ptr[cBigStruct] c_BigStruct)
+    cdef create(shared_ptr[cBigStruct])
 
 
 

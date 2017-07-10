@@ -50,44 +50,44 @@ cdef class Color(thrift.py3.types.Struct):
         blue=None,
         alpha=None
     ):
-        self.c_Color = make_shared[cColor]()
+        self._cpp_obj = make_shared[cColor]()
 
         inst = self
         if red is not None:
-            deref(inst.c_Color).red = red
-            deref(inst.c_Color).__isset.red = True
+            deref(inst._cpp_obj).red = red
+            deref(inst._cpp_obj).__isset.red = True
 
         if green is not None:
-            deref(inst.c_Color).green = green
-            deref(inst.c_Color).__isset.green = True
+            deref(inst._cpp_obj).green = green
+            deref(inst._cpp_obj).__isset.green = True
 
         if blue is not None:
-            deref(inst.c_Color).blue = blue
-            deref(inst.c_Color).__isset.blue = True
+            deref(inst._cpp_obj).blue = blue
+            deref(inst._cpp_obj).__isset.blue = True
 
         if alpha is not None:
-            deref(inst.c_Color).alpha = alpha
-            deref(inst.c_Color).__isset.alpha = True
+            deref(inst._cpp_obj).alpha = alpha
+            deref(inst._cpp_obj).__isset.alpha = True
 
 
     cdef bytes _serialize(Color self, proto):
         cdef string c_str
         if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cColor](deref(self.c_Color.get()), &c_str)
+            serializer.CompactSerialize[cColor](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cColor](deref(self.c_Color.get()), &c_str)
+            serializer.BinarySerialize[cColor](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cColor](deref(self.c_Color.get()), &c_str)
+            serializer.JSONSerialize[cColor](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
     cdef uint32_t _deserialize(Color self, const IOBuf* buf, proto):
         cdef uint32_t needed
         if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cColor](buf, deref(self.c_Color.get()))
+            needed = serializer.CompactDeserialize[cColor](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cColor](buf, deref(self.c_Color.get()))
+            needed = serializer.BinaryDeserialize[cColor](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cColor](buf, deref(self.c_Color.get()))
+            needed = serializer.JSONDeserialize[cColor](buf, deref(self._cpp_obj.get()))
         return needed
 
     def __reduce__(self):
@@ -114,46 +114,46 @@ cdef class Color(thrift.py3.types.Struct):
             return self
 
         inst = <Color>Color.__new__(Color)
-        inst.c_Color = make_shared[cColor](deref(self.c_Color))
+        inst._cpp_obj = make_shared[cColor](deref(self._cpp_obj))
         cdef Color defaults = Color_defaults
 
         # Convert None's to default value.
         if red is None:
-            deref(inst.c_Color).red = deref(defaults.c_Color).red
-            deref(inst.c_Color).__isset.red = False
+            deref(inst._cpp_obj).red = deref(defaults._cpp_obj).red
+            deref(inst._cpp_obj).__isset.red = False
         if red is NOTSET:
             red = None
         if green is None:
-            deref(inst.c_Color).green = deref(defaults.c_Color).green
-            deref(inst.c_Color).__isset.green = False
+            deref(inst._cpp_obj).green = deref(defaults._cpp_obj).green
+            deref(inst._cpp_obj).__isset.green = False
         if green is NOTSET:
             green = None
         if blue is None:
-            deref(inst.c_Color).blue = deref(defaults.c_Color).blue
-            deref(inst.c_Color).__isset.blue = False
+            deref(inst._cpp_obj).blue = deref(defaults._cpp_obj).blue
+            deref(inst._cpp_obj).__isset.blue = False
         if blue is NOTSET:
             blue = None
         if alpha is None:
-            deref(inst.c_Color).alpha = deref(defaults.c_Color).alpha
-            deref(inst.c_Color).__isset.alpha = False
+            deref(inst._cpp_obj).alpha = deref(defaults._cpp_obj).alpha
+            deref(inst._cpp_obj).__isset.alpha = False
         if alpha is NOTSET:
             alpha = None
 
         if red is not None:
-            deref(inst.c_Color).red = red
-            deref(inst.c_Color).__isset.red = True
+            deref(inst._cpp_obj).red = red
+            deref(inst._cpp_obj).__isset.red = True
 
         if green is not None:
-            deref(inst.c_Color).green = green
-            deref(inst.c_Color).__isset.green = True
+            deref(inst._cpp_obj).green = green
+            deref(inst._cpp_obj).__isset.green = True
 
         if blue is not None:
-            deref(inst.c_Color).blue = blue
-            deref(inst.c_Color).__isset.blue = True
+            deref(inst._cpp_obj).blue = blue
+            deref(inst._cpp_obj).__isset.blue = True
 
         if alpha is not None:
-            deref(inst.c_Color).alpha = alpha
-            deref(inst.c_Color).__isset.alpha = True
+            deref(inst._cpp_obj).alpha = alpha
+            deref(inst._cpp_obj).__isset.alpha = True
 
         return inst
 
@@ -164,41 +164,41 @@ cdef class Color(thrift.py3.types.Struct):
         yield 'alpha', self.alpha
 
     def __bool__(self):
-        return deref(self.c_Color).__isset.red or deref(self.c_Color).__isset.green or deref(self.c_Color).__isset.blue or deref(self.c_Color).__isset.alpha
+        return deref(self._cpp_obj).__isset.red or deref(self._cpp_obj).__isset.green or deref(self._cpp_obj).__isset.blue or deref(self._cpp_obj).__isset.alpha
 
     @staticmethod
-    cdef create(shared_ptr[cColor] c_Color):
+    cdef create(shared_ptr[cColor] cpp_obj):
         inst = <Color>Color.__new__(Color)
-        inst.c_Color = c_Color
+        inst._cpp_obj = cpp_obj
         return inst
 
     @property
     def red(self):
-        if not deref(self.c_Color).__isset.red:
+        if not deref(self._cpp_obj).__isset.red:
             return None
 
-        return self.c_Color.get().red
+        return self._cpp_obj.get().red
 
     @property
     def green(self):
-        if not deref(self.c_Color).__isset.green:
+        if not deref(self._cpp_obj).__isset.green:
             return None
 
-        return self.c_Color.get().green
+        return self._cpp_obj.get().green
 
     @property
     def blue(self):
-        if not deref(self.c_Color).__isset.blue:
+        if not deref(self._cpp_obj).__isset.blue:
             return None
 
-        return self.c_Color.get().blue
+        return self._cpp_obj.get().blue
 
     @property
     def alpha(self):
-        if not deref(self.c_Color).__isset.alpha:
+        if not deref(self._cpp_obj).__isset.alpha:
             return None
 
-        return self.c_Color.get().alpha
+        return self._cpp_obj.get().alpha
 
 
     def __richcmp__(self, other, op):
@@ -213,8 +213,8 @@ cdef class Color(thrift.py3.types.Struct):
             else:         # different types are always notequal
                 return True
 
-        cdef cColor cself = deref((<Color>self).c_Color)
-        cdef cColor cother = deref((<Color>other).c_Color)
+        cdef cColor cself = deref((<Color>self)._cpp_obj)
+        cdef cColor cother = deref((<Color>other)._cpp_obj)
         cdef cbool cmp = cself == cother
         if cop == 2:
             return cmp
@@ -247,51 +247,51 @@ cdef class Vehicle(thrift.py3.types.Struct):
         name=None,
         hasAC=None
     ):
-        self.c_Vehicle = make_shared[cVehicle]()
+        self._cpp_obj = make_shared[cVehicle]()
 
         inst = self
         cdef shared_ptr[cColor] __color
         if color is not None:
             __color = (
-            <Color?> color).c_Color
-            deref(inst.c_Vehicle).color = deref(__color.get())
-            deref(inst.c_Vehicle).__isset.color = True
+            <Color?> color)._cpp_obj
+            deref(inst._cpp_obj).color = deref(__color.get())
+            deref(inst._cpp_obj).__isset.color = True
 
         if licensePlate is not None:
-            deref(inst.c_Vehicle).licensePlate = licensePlate.encode('UTF-8')
-            deref(inst.c_Vehicle).__isset.licensePlate = True
+            deref(inst._cpp_obj).licensePlate = licensePlate.encode('UTF-8')
+            deref(inst._cpp_obj).__isset.licensePlate = True
 
         if description is not None:
-            deref(inst.c_Vehicle).description = description.encode('UTF-8')
-            deref(inst.c_Vehicle).__isset.description = True
+            deref(inst._cpp_obj).description = description.encode('UTF-8')
+            deref(inst._cpp_obj).__isset.description = True
 
         if name is not None:
-            deref(inst.c_Vehicle).name = name.encode('UTF-8')
-            deref(inst.c_Vehicle).__isset.name = True
+            deref(inst._cpp_obj).name = name.encode('UTF-8')
+            deref(inst._cpp_obj).__isset.name = True
 
         if hasAC is not None:
-            deref(inst.c_Vehicle).hasAC = hasAC
-            deref(inst.c_Vehicle).__isset.hasAC = True
+            deref(inst._cpp_obj).hasAC = hasAC
+            deref(inst._cpp_obj).__isset.hasAC = True
 
 
     cdef bytes _serialize(Vehicle self, proto):
         cdef string c_str
         if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cVehicle](deref(self.c_Vehicle.get()), &c_str)
+            serializer.CompactSerialize[cVehicle](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cVehicle](deref(self.c_Vehicle.get()), &c_str)
+            serializer.BinarySerialize[cVehicle](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cVehicle](deref(self.c_Vehicle.get()), &c_str)
+            serializer.JSONSerialize[cVehicle](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
     cdef uint32_t _deserialize(Vehicle self, const IOBuf* buf, proto):
         cdef uint32_t needed
         if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cVehicle](buf, deref(self.c_Vehicle.get()))
+            needed = serializer.CompactDeserialize[cVehicle](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cVehicle](buf, deref(self.c_Vehicle.get()))
+            needed = serializer.BinaryDeserialize[cVehicle](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cVehicle](buf, deref(self.c_Vehicle.get()))
+            needed = serializer.JSONDeserialize[cVehicle](buf, deref(self._cpp_obj.get()))
         return needed
 
     def __reduce__(self):
@@ -321,58 +321,58 @@ cdef class Vehicle(thrift.py3.types.Struct):
             return self
 
         inst = <Vehicle>Vehicle.__new__(Vehicle)
-        inst.c_Vehicle = make_shared[cVehicle](deref(self.c_Vehicle))
+        inst._cpp_obj = make_shared[cVehicle](deref(self._cpp_obj))
         cdef Vehicle defaults = Vehicle_defaults
 
         # Convert None's to default value.
         if color is None:
-            deref(inst.c_Vehicle).color = deref(defaults.c_Vehicle).color
-            deref(inst.c_Vehicle).__isset.color = False
+            deref(inst._cpp_obj).color = deref(defaults._cpp_obj).color
+            deref(inst._cpp_obj).__isset.color = False
         if color is NOTSET:
             color = None
         if licensePlate is None:
-            deref(inst.c_Vehicle).licensePlate = deref(defaults.c_Vehicle).licensePlate
-            deref(inst.c_Vehicle).__isset.licensePlate = False
+            deref(inst._cpp_obj).licensePlate = deref(defaults._cpp_obj).licensePlate
+            deref(inst._cpp_obj).__isset.licensePlate = False
         if licensePlate is NOTSET:
             licensePlate = None
         if description is None:
-            deref(inst.c_Vehicle).description = deref(defaults.c_Vehicle).description
-            deref(inst.c_Vehicle).__isset.description = False
+            deref(inst._cpp_obj).description = deref(defaults._cpp_obj).description
+            deref(inst._cpp_obj).__isset.description = False
         if description is NOTSET:
             description = None
         if name is None:
-            deref(inst.c_Vehicle).name = deref(defaults.c_Vehicle).name
-            deref(inst.c_Vehicle).__isset.name = False
+            deref(inst._cpp_obj).name = deref(defaults._cpp_obj).name
+            deref(inst._cpp_obj).__isset.name = False
         if name is NOTSET:
             name = None
         if hasAC is None:
-            deref(inst.c_Vehicle).hasAC = deref(defaults.c_Vehicle).hasAC
-            deref(inst.c_Vehicle).__isset.hasAC = False
+            deref(inst._cpp_obj).hasAC = deref(defaults._cpp_obj).hasAC
+            deref(inst._cpp_obj).__isset.hasAC = False
         if hasAC is NOTSET:
             hasAC = None
 
         cdef shared_ptr[cColor] __color
         if color is not None:
             __color = (
-            <Color?> color).c_Color
-            deref(inst.c_Vehicle).color = deref(__color.get())
-            deref(inst.c_Vehicle).__isset.color = True
+            <Color?> color)._cpp_obj
+            deref(inst._cpp_obj).color = deref(__color.get())
+            deref(inst._cpp_obj).__isset.color = True
 
         if licensePlate is not None:
-            deref(inst.c_Vehicle).licensePlate = licensePlate.encode('UTF-8')
-            deref(inst.c_Vehicle).__isset.licensePlate = True
+            deref(inst._cpp_obj).licensePlate = licensePlate.encode('UTF-8')
+            deref(inst._cpp_obj).__isset.licensePlate = True
 
         if description is not None:
-            deref(inst.c_Vehicle).description = description.encode('UTF-8')
-            deref(inst.c_Vehicle).__isset.description = True
+            deref(inst._cpp_obj).description = description.encode('UTF-8')
+            deref(inst._cpp_obj).__isset.description = True
 
         if name is not None:
-            deref(inst.c_Vehicle).name = name.encode('UTF-8')
-            deref(inst.c_Vehicle).__isset.name = True
+            deref(inst._cpp_obj).name = name.encode('UTF-8')
+            deref(inst._cpp_obj).__isset.name = True
 
         if hasAC is not None:
-            deref(inst.c_Vehicle).hasAC = hasAC
-            deref(inst.c_Vehicle).__isset.hasAC = True
+            deref(inst._cpp_obj).hasAC = hasAC
+            deref(inst._cpp_obj).__isset.hasAC = True
 
         return inst
 
@@ -384,52 +384,52 @@ cdef class Vehicle(thrift.py3.types.Struct):
         yield 'hasAC', self.hasAC
 
     def __bool__(self):
-        return deref(self.c_Vehicle).__isset.color or deref(self.c_Vehicle).__isset.licensePlate or deref(self.c_Vehicle).__isset.description or deref(self.c_Vehicle).__isset.name or deref(self.c_Vehicle).__isset.hasAC
+        return deref(self._cpp_obj).__isset.color or deref(self._cpp_obj).__isset.licensePlate or deref(self._cpp_obj).__isset.description or deref(self._cpp_obj).__isset.name or deref(self._cpp_obj).__isset.hasAC
 
     @staticmethod
-    cdef create(shared_ptr[cVehicle] c_Vehicle):
+    cdef create(shared_ptr[cVehicle] cpp_obj):
         inst = <Vehicle>Vehicle.__new__(Vehicle)
-        inst.c_Vehicle = c_Vehicle
+        inst._cpp_obj = cpp_obj
         return inst
 
     @property
     def color(self):
-        if not deref(self.c_Vehicle).__isset.color:
+        if not deref(self._cpp_obj).__isset.color:
             return None
 
         cdef shared_ptr[cColor] item
         if self.__color is None:
             item = make_shared[cColor](
-                deref(self.c_Vehicle).color)
+                deref(self._cpp_obj).color)
             self.__color = Color.create(item)
         return self.__color
         
 
     @property
     def licensePlate(self):
-        if not deref(self.c_Vehicle).__isset.licensePlate:
+        if not deref(self._cpp_obj).__isset.licensePlate:
             return None
 
-        return self.c_Vehicle.get().licensePlate.decode('UTF-8')
+        return self._cpp_obj.get().licensePlate.decode('UTF-8')
 
     @property
     def description(self):
-        if not deref(self.c_Vehicle).__isset.description:
+        if not deref(self._cpp_obj).__isset.description:
             return None
 
-        return self.c_Vehicle.get().description.decode('UTF-8')
+        return self._cpp_obj.get().description.decode('UTF-8')
 
     @property
     def name(self):
-        if not deref(self.c_Vehicle).__isset.name:
+        if not deref(self._cpp_obj).__isset.name:
             return None
 
-        return self.c_Vehicle.get().name.decode('UTF-8')
+        return self._cpp_obj.get().name.decode('UTF-8')
 
     @property
     def hasAC(self):
 
-        return <pbool> self.c_Vehicle.get().hasAC
+        return <pbool> self._cpp_obj.get().hasAC
 
 
     def __richcmp__(self, other, op):
@@ -444,8 +444,8 @@ cdef class Vehicle(thrift.py3.types.Struct):
             else:         # different types are always notequal
                 return True
 
-        cdef cVehicle cself = deref((<Vehicle>self).c_Vehicle)
-        cdef cVehicle cother = deref((<Vehicle>other).c_Vehicle)
+        cdef cVehicle cself = deref((<Vehicle>self)._cpp_obj)
+        cdef cVehicle cother = deref((<Vehicle>other)._cpp_obj)
         cdef cbool cmp = cself == cother
         if cop == 2:
             return cmp
@@ -484,77 +484,77 @@ cdef class Person(thrift.py3.types.Struct):
         afraidOfAnimal=None,
         vehicles=None
     ):
-        self.c_Person = make_shared[cPerson]()
+        self._cpp_obj = make_shared[cPerson]()
 
         inst = self
         if id is not None:
-            deref(inst.c_Person).id = id
-            deref(inst.c_Person).__isset.id = True
+            deref(inst._cpp_obj).id = id
+            deref(inst._cpp_obj).__isset.id = True
 
         if name is not None:
-            deref(inst.c_Person).name = name.encode('UTF-8')
-            deref(inst.c_Person).__isset.name = True
+            deref(inst._cpp_obj).name = name.encode('UTF-8')
+            deref(inst._cpp_obj).__isset.name = True
 
         if age is not None:
-            deref(inst.c_Person).age = age
-            deref(inst.c_Person).__isset.age = True
+            deref(inst._cpp_obj).age = age
+            deref(inst._cpp_obj).__isset.age = True
 
         if address is not None:
-            deref(inst.c_Person).address = address.encode('UTF-8')
-            deref(inst.c_Person).__isset.address = True
+            deref(inst._cpp_obj).address = address.encode('UTF-8')
+            deref(inst._cpp_obj).__isset.address = True
 
         cdef shared_ptr[cColor] __favoriteColor
         if favoriteColor is not None:
             __favoriteColor = (
-            <Color?> favoriteColor).c_Color
-            deref(inst.c_Person).favoriteColor = deref(__favoriteColor.get())
-            deref(inst.c_Person).__isset.favoriteColor = True
+            <Color?> favoriteColor)._cpp_obj
+            deref(inst._cpp_obj).favoriteColor = deref(__favoriteColor.get())
+            deref(inst._cpp_obj).__isset.favoriteColor = True
 
         cdef Set__PersonID _friends
         if friends is not None:
             _friends = Set__PersonID(friends)
-            deref(inst.c_Person).friends = deref(_friends._set)
-            deref(inst.c_Person).__isset.friends = True
+            deref(inst._cpp_obj).friends = deref(_friends._cpp_obj)
+            deref(inst._cpp_obj).__isset.friends = True
 
         if bestFriend is not None:
-            deref(inst.c_Person).bestFriend = bestFriend
-            deref(inst.c_Person).__isset.bestFriend = True
+            deref(inst._cpp_obj).bestFriend = bestFriend
+            deref(inst._cpp_obj).__isset.bestFriend = True
 
         cdef Map__Animal_string _petNames
         if petNames is not None:
             _petNames = Map__Animal_string(petNames)
-            deref(inst.c_Person).petNames = deref(_petNames._map)
-            deref(inst.c_Person).__isset.petNames = True
+            deref(inst._cpp_obj).petNames = deref(_petNames._cpp_obj)
+            deref(inst._cpp_obj).__isset.petNames = True
 
         if afraidOfAnimal is not None:
-            deref(inst.c_Person).afraidOfAnimal = Animal_to_cpp(afraidOfAnimal)
-            deref(inst.c_Person).__isset.afraidOfAnimal = True
+            deref(inst._cpp_obj).afraidOfAnimal = Animal_to_cpp(afraidOfAnimal)
+            deref(inst._cpp_obj).__isset.afraidOfAnimal = True
 
         cdef List__Vehicle _vehicles
         if vehicles is not None:
             _vehicles = List__Vehicle(vehicles)
-            deref(inst.c_Person).vehicles = deref(_vehicles._vector)
-            deref(inst.c_Person).__isset.vehicles = True
+            deref(inst._cpp_obj).vehicles = deref(_vehicles._cpp_obj)
+            deref(inst._cpp_obj).__isset.vehicles = True
 
 
     cdef bytes _serialize(Person self, proto):
         cdef string c_str
         if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cPerson](deref(self.c_Person.get()), &c_str)
+            serializer.CompactSerialize[cPerson](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cPerson](deref(self.c_Person.get()), &c_str)
+            serializer.BinarySerialize[cPerson](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cPerson](deref(self.c_Person.get()), &c_str)
+            serializer.JSONSerialize[cPerson](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
     cdef uint32_t _deserialize(Person self, const IOBuf* buf, proto):
         cdef uint32_t needed
         if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cPerson](buf, deref(self.c_Person.get()))
+            needed = serializer.CompactDeserialize[cPerson](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cPerson](buf, deref(self.c_Person.get()))
+            needed = serializer.BinaryDeserialize[cPerson](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cPerson](buf, deref(self.c_Person.get()))
+            needed = serializer.JSONDeserialize[cPerson](buf, deref(self._cpp_obj.get()))
         return needed
 
     def __reduce__(self):
@@ -599,109 +599,109 @@ cdef class Person(thrift.py3.types.Struct):
             return self
 
         inst = <Person>Person.__new__(Person)
-        inst.c_Person = make_shared[cPerson](deref(self.c_Person))
+        inst._cpp_obj = make_shared[cPerson](deref(self._cpp_obj))
         cdef Person defaults = Person_defaults
 
         # Convert None's to default value.
         if id is None:
-            deref(inst.c_Person).id = deref(defaults.c_Person).id
-            deref(inst.c_Person).__isset.id = False
+            deref(inst._cpp_obj).id = deref(defaults._cpp_obj).id
+            deref(inst._cpp_obj).__isset.id = False
         if id is NOTSET:
             id = None
         if name is None:
-            deref(inst.c_Person).name = deref(defaults.c_Person).name
-            deref(inst.c_Person).__isset.name = False
+            deref(inst._cpp_obj).name = deref(defaults._cpp_obj).name
+            deref(inst._cpp_obj).__isset.name = False
         if name is NOTSET:
             name = None
         if age is None:
-            deref(inst.c_Person).age = deref(defaults.c_Person).age
-            deref(inst.c_Person).__isset.age = False
+            deref(inst._cpp_obj).age = deref(defaults._cpp_obj).age
+            deref(inst._cpp_obj).__isset.age = False
         if age is NOTSET:
             age = None
         if address is None:
-            deref(inst.c_Person).address = deref(defaults.c_Person).address
-            deref(inst.c_Person).__isset.address = False
+            deref(inst._cpp_obj).address = deref(defaults._cpp_obj).address
+            deref(inst._cpp_obj).__isset.address = False
         if address is NOTSET:
             address = None
         if favoriteColor is None:
-            deref(inst.c_Person).favoriteColor = deref(defaults.c_Person).favoriteColor
-            deref(inst.c_Person).__isset.favoriteColor = False
+            deref(inst._cpp_obj).favoriteColor = deref(defaults._cpp_obj).favoriteColor
+            deref(inst._cpp_obj).__isset.favoriteColor = False
         if favoriteColor is NOTSET:
             favoriteColor = None
         if friends is None:
-            deref(inst.c_Person).friends = deref(defaults.c_Person).friends
-            deref(inst.c_Person).__isset.friends = False
+            deref(inst._cpp_obj).friends = deref(defaults._cpp_obj).friends
+            deref(inst._cpp_obj).__isset.friends = False
         if friends is NOTSET:
             friends = None
         if bestFriend is None:
-            deref(inst.c_Person).bestFriend = deref(defaults.c_Person).bestFriend
-            deref(inst.c_Person).__isset.bestFriend = False
+            deref(inst._cpp_obj).bestFriend = deref(defaults._cpp_obj).bestFriend
+            deref(inst._cpp_obj).__isset.bestFriend = False
         if bestFriend is NOTSET:
             bestFriend = None
         if petNames is None:
-            deref(inst.c_Person).petNames = deref(defaults.c_Person).petNames
-            deref(inst.c_Person).__isset.petNames = False
+            deref(inst._cpp_obj).petNames = deref(defaults._cpp_obj).petNames
+            deref(inst._cpp_obj).__isset.petNames = False
         if petNames is NOTSET:
             petNames = None
         if afraidOfAnimal is None:
-            deref(inst.c_Person).afraidOfAnimal = deref(defaults.c_Person).afraidOfAnimal
-            deref(inst.c_Person).__isset.afraidOfAnimal = False
+            deref(inst._cpp_obj).afraidOfAnimal = deref(defaults._cpp_obj).afraidOfAnimal
+            deref(inst._cpp_obj).__isset.afraidOfAnimal = False
         if afraidOfAnimal is NOTSET:
             afraidOfAnimal = None
         if vehicles is None:
-            deref(inst.c_Person).vehicles = deref(defaults.c_Person).vehicles
-            deref(inst.c_Person).__isset.vehicles = False
+            deref(inst._cpp_obj).vehicles = deref(defaults._cpp_obj).vehicles
+            deref(inst._cpp_obj).__isset.vehicles = False
         if vehicles is NOTSET:
             vehicles = None
 
         if id is not None:
-            deref(inst.c_Person).id = id
-            deref(inst.c_Person).__isset.id = True
+            deref(inst._cpp_obj).id = id
+            deref(inst._cpp_obj).__isset.id = True
 
         if name is not None:
-            deref(inst.c_Person).name = name.encode('UTF-8')
-            deref(inst.c_Person).__isset.name = True
+            deref(inst._cpp_obj).name = name.encode('UTF-8')
+            deref(inst._cpp_obj).__isset.name = True
 
         if age is not None:
-            deref(inst.c_Person).age = age
-            deref(inst.c_Person).__isset.age = True
+            deref(inst._cpp_obj).age = age
+            deref(inst._cpp_obj).__isset.age = True
 
         if address is not None:
-            deref(inst.c_Person).address = address.encode('UTF-8')
-            deref(inst.c_Person).__isset.address = True
+            deref(inst._cpp_obj).address = address.encode('UTF-8')
+            deref(inst._cpp_obj).__isset.address = True
 
         cdef shared_ptr[cColor] __favoriteColor
         if favoriteColor is not None:
             __favoriteColor = (
-            <Color?> favoriteColor).c_Color
-            deref(inst.c_Person).favoriteColor = deref(__favoriteColor.get())
-            deref(inst.c_Person).__isset.favoriteColor = True
+            <Color?> favoriteColor)._cpp_obj
+            deref(inst._cpp_obj).favoriteColor = deref(__favoriteColor.get())
+            deref(inst._cpp_obj).__isset.favoriteColor = True
 
         cdef Set__PersonID _friends
         if friends is not None:
             _friends = Set__PersonID(friends)
-            deref(inst.c_Person).friends = deref(_friends._set)
-            deref(inst.c_Person).__isset.friends = True
+            deref(inst._cpp_obj).friends = deref(_friends._cpp_obj)
+            deref(inst._cpp_obj).__isset.friends = True
 
         if bestFriend is not None:
-            deref(inst.c_Person).bestFriend = bestFriend
-            deref(inst.c_Person).__isset.bestFriend = True
+            deref(inst._cpp_obj).bestFriend = bestFriend
+            deref(inst._cpp_obj).__isset.bestFriend = True
 
         cdef Map__Animal_string _petNames
         if petNames is not None:
             _petNames = Map__Animal_string(petNames)
-            deref(inst.c_Person).petNames = deref(_petNames._map)
-            deref(inst.c_Person).__isset.petNames = True
+            deref(inst._cpp_obj).petNames = deref(_petNames._cpp_obj)
+            deref(inst._cpp_obj).__isset.petNames = True
 
         if afraidOfAnimal is not None:
-            deref(inst.c_Person).afraidOfAnimal = Animal_to_cpp(afraidOfAnimal)
-            deref(inst.c_Person).__isset.afraidOfAnimal = True
+            deref(inst._cpp_obj).afraidOfAnimal = Animal_to_cpp(afraidOfAnimal)
+            deref(inst._cpp_obj).__isset.afraidOfAnimal = True
 
         cdef List__Vehicle _vehicles
         if vehicles is not None:
             _vehicles = List__Vehicle(vehicles)
-            deref(inst.c_Person).vehicles = deref(_vehicles._vector)
-            deref(inst.c_Person).__isset.vehicles = True
+            deref(inst._cpp_obj).vehicles = deref(_vehicles._cpp_obj)
+            deref(inst._cpp_obj).__isset.vehicles = True
 
         return inst
 
@@ -718,94 +718,94 @@ cdef class Person(thrift.py3.types.Struct):
         yield 'vehicles', self.vehicles
 
     def __bool__(self):
-        return deref(self.c_Person).__isset.id or deref(self.c_Person).__isset.name or deref(self.c_Person).__isset.age or deref(self.c_Person).__isset.address or deref(self.c_Person).__isset.favoriteColor or deref(self.c_Person).__isset.friends or deref(self.c_Person).__isset.bestFriend or deref(self.c_Person).__isset.petNames or deref(self.c_Person).__isset.afraidOfAnimal or deref(self.c_Person).__isset.vehicles
+        return deref(self._cpp_obj).__isset.id or deref(self._cpp_obj).__isset.name or deref(self._cpp_obj).__isset.age or deref(self._cpp_obj).__isset.address or deref(self._cpp_obj).__isset.favoriteColor or deref(self._cpp_obj).__isset.friends or deref(self._cpp_obj).__isset.bestFriend or deref(self._cpp_obj).__isset.petNames or deref(self._cpp_obj).__isset.afraidOfAnimal or deref(self._cpp_obj).__isset.vehicles
 
     @staticmethod
-    cdef create(shared_ptr[cPerson] c_Person):
+    cdef create(shared_ptr[cPerson] cpp_obj):
         inst = <Person>Person.__new__(Person)
-        inst.c_Person = c_Person
+        inst._cpp_obj = cpp_obj
         return inst
 
     @property
     def id(self):
-        if not deref(self.c_Person).__isset.id:
+        if not deref(self._cpp_obj).__isset.id:
             return None
 
-        return self.c_Person.get().id
+        return self._cpp_obj.get().id
 
     @property
     def name(self):
-        if not deref(self.c_Person).__isset.name:
+        if not deref(self._cpp_obj).__isset.name:
             return None
 
-        return self.c_Person.get().name.decode('UTF-8')
+        return self._cpp_obj.get().name.decode('UTF-8')
 
     @property
     def age(self):
-        if not deref(self.c_Person).__isset.age:
+        if not deref(self._cpp_obj).__isset.age:
             return None
 
-        return self.c_Person.get().age
+        return self._cpp_obj.get().age
 
     @property
     def address(self):
-        if not deref(self.c_Person).__isset.address:
+        if not deref(self._cpp_obj).__isset.address:
             return None
 
-        return self.c_Person.get().address.decode('UTF-8')
+        return self._cpp_obj.get().address.decode('UTF-8')
 
     @property
     def favoriteColor(self):
-        if not deref(self.c_Person).__isset.favoriteColor:
+        if not deref(self._cpp_obj).__isset.favoriteColor:
             return None
 
         cdef shared_ptr[cColor] item
         if self.__favoriteColor is None:
             item = make_shared[cColor](
-                deref(self.c_Person).favoriteColor)
+                deref(self._cpp_obj).favoriteColor)
             self.__favoriteColor = Color.create(item)
         return self.__favoriteColor
         
 
     @property
     def friends(self):
-        if not deref(self.c_Person).__isset.friends:
+        if not deref(self._cpp_obj).__isset.friends:
             return None
 
         cdef shared_ptr[cset[int64_t]] item
         if self.__friends is None:
             item = make_shared[cset[int64_t]](
-                deref(self.c_Person).friends)
+                deref(self._cpp_obj).friends)
             self.__friends = Set__PersonID.create(item)
         return self.__friends
         
 
     @property
     def bestFriend(self):
-        if not deref(self.c_Person).__isset.bestFriend:
+        if not deref(self._cpp_obj).__isset.bestFriend:
             return None
 
-        return self.c_Person.get().bestFriend
+        return self._cpp_obj.get().bestFriend
 
     @property
     def petNames(self):
-        if not deref(self.c_Person).__isset.petNames:
+        if not deref(self._cpp_obj).__isset.petNames:
             return None
 
         cdef shared_ptr[cmap[cAnimal,string]] item
         if self.__petNames is None:
             item = make_shared[cmap[cAnimal,string]](
-                deref(self.c_Person).petNames)
+                deref(self._cpp_obj).petNames)
             self.__petNames = Map__Animal_string.create(item)
         return self.__petNames
         
 
     @property
     def afraidOfAnimal(self):
-        if not deref(self.c_Person).__isset.afraidOfAnimal:
+        if not deref(self._cpp_obj).__isset.afraidOfAnimal:
             return None
 
-        cdef int value = <int> deref(self.c_Person).afraidOfAnimal
+        cdef int value = <int> deref(self._cpp_obj).afraidOfAnimal
         try:
             return Animal(value)
         except ValueError:
@@ -814,13 +814,13 @@ cdef class Person(thrift.py3.types.Struct):
 
     @property
     def vehicles(self):
-        if not deref(self.c_Person).__isset.vehicles:
+        if not deref(self._cpp_obj).__isset.vehicles:
             return None
 
         cdef shared_ptr[vector[cVehicle]] item
         if self.__vehicles is None:
             item = make_shared[vector[cVehicle]](
-                deref(self.c_Person).vehicles)
+                deref(self._cpp_obj).vehicles)
             self.__vehicles = List__Vehicle.create(item)
         return self.__vehicles
         
@@ -838,8 +838,8 @@ cdef class Person(thrift.py3.types.Struct):
             else:         # different types are always notequal
                 return True
 
-        cdef cPerson cself = deref((<Person>self).c_Person)
-        cdef cPerson cother = deref((<Person>other).c_Person)
+        cdef cPerson cself = deref((<Person>self)._cpp_obj)
+        cdef cPerson cother = deref((<Person>other)._cpp_obj)
         cdef cbool cmp = cself == cother
         if cop == 2:
             return cmp
@@ -871,31 +871,31 @@ Person_defaults = Person()
 cdef class Set__PersonID:
     def __init__(self, items=None):
         if isinstance(items, Set__PersonID):
-            self._set = (<Set__PersonID> items)._set
+            self._cpp_obj = (<Set__PersonID> items)._cpp_obj
         else:
-          self._set = make_shared[cset[int64_t]]()
+          self._cpp_obj = make_shared[cset[int64_t]]()
           if items:
               for item in items:
-                  deref(self._set).insert(item)
+                  deref(self._cpp_obj).insert(item)
 
     @staticmethod
     cdef create(shared_ptr[cset[int64_t]] c_items):
         inst = <Set__PersonID>Set__PersonID.__new__(Set__PersonID)
-        inst._set = c_items
+        inst._cpp_obj = c_items
         return inst
 
     def __contains__(self, item):
         if not self:
             return False
-        return pbool(deref(self._set).count(item))
+        return pbool(deref(self._cpp_obj).count(item))
 
     def __len__(self):
-        return deref(self._set).size()
+        return deref(self._cpp_obj).size()
 
     def __iter__(self):
         if not self:
             raise StopIteration
-        for citem in deref(self._set):
+        for citem in deref(self._cpp_obj):
             yield citem
 
     def __repr__(self):
@@ -909,8 +909,8 @@ cdef class Set__PersonID:
         cdef cbool retval
         if (isinstance(self, Set__PersonID) and
                 isinstance(other, Set__PersonID)):
-            cself = deref((<Set__PersonID> self)._set)
-            cother = deref((<Set__PersonID> other)._set)
+            cself = deref((<Set__PersonID> self)._cpp_obj)
+            cother = deref((<Set__PersonID> other)._cpp_obj)
             # C level comparisons
             if cop == 0:    # Less Than (strict subset)
                 if not cself.size() < cother.size():
@@ -976,8 +976,8 @@ cdef class Set__PersonID:
 
         cdef shared_ptr[cset[int64_t]] shretval = \
             make_shared[cset[int64_t]]()
-        for citem in deref((<Set__PersonID> self)._set):
-            if deref((<Set__PersonID> other)._set).count(citem) > 0:
+        for citem in deref((<Set__PersonID> self)._cpp_obj):
+            if deref((<Set__PersonID> other)._cpp_obj).count(citem) > 0:
                 deref(shretval).insert(citem)
         return Set__PersonID.create(shretval)
 
@@ -989,8 +989,8 @@ cdef class Set__PersonID:
 
         cdef shared_ptr[cset[int64_t]] shretval = \
             make_shared[cset[int64_t]]()
-        for citem in deref((<Set__PersonID> self)._set):
-            if deref((<Set__PersonID> other)._set).count(citem) == 0:
+        for citem in deref((<Set__PersonID> self)._cpp_obj):
+            if deref((<Set__PersonID> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
         return Set__PersonID.create(shretval)
 
@@ -1002,9 +1002,9 @@ cdef class Set__PersonID:
 
         cdef shared_ptr[cset[int64_t]] shretval = \
             make_shared[cset[int64_t]]()
-        for citem in deref((<Set__PersonID> self)._set):
+        for citem in deref((<Set__PersonID> self)._cpp_obj):
                 deref(shretval).insert(citem)
-        for citem in deref((<Set__PersonID> other)._set):
+        for citem in deref((<Set__PersonID> other)._cpp_obj):
                 deref(shretval).insert(citem)
         return Set__PersonID.create(shretval)
 
@@ -1016,11 +1016,11 @@ cdef class Set__PersonID:
 
         cdef shared_ptr[cset[int64_t]] shretval = \
             make_shared[cset[int64_t]]()
-        for citem in deref((<Set__PersonID> self)._set):
-            if deref((<Set__PersonID> other)._set).count(citem) == 0:
+        for citem in deref((<Set__PersonID> self)._cpp_obj):
+            if deref((<Set__PersonID> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        for citem in deref((<Set__PersonID> other)._set):
-            if deref((<Set__PersonID> self)._set).count(citem) == 0:
+        for citem in deref((<Set__PersonID> other)._cpp_obj):
+            if deref((<Set__PersonID> self)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
         return Set__PersonID.create(shretval)
 
@@ -1051,12 +1051,12 @@ Set.register(Set__PersonID)
 cdef class Map__Animal_string:
     def __init__(self, items=None):
         if isinstance(items, Map__Animal_string):
-            self._map = (<Map__Animal_string> items)._map
+            self._cpp_obj = (<Map__Animal_string> items)._cpp_obj
         else:
-          self._map = make_shared[cmap[cAnimal,string]]()
+          self._cpp_obj = make_shared[cmap[cAnimal,string]]()
           if items:
               for key, item in items.items():
-                  deref(self._map).insert(
+                  deref(self._cpp_obj).insert(
                       cpair[cAnimal,string](
                           Animal_to_cpp(key),
                           item.encode('UTF-8')))
@@ -1064,7 +1064,7 @@ cdef class Map__Animal_string:
     @staticmethod
     cdef create(shared_ptr[cmap[cAnimal,string]] c_items):
         inst = <Map__Animal_string>Map__Animal_string.__new__(Map__Animal_string)
-        inst._map = c_items
+        inst._cpp_obj = c_items
         return inst
 
     def __getitem__(self, key):
@@ -1072,20 +1072,20 @@ cdef class Map__Animal_string:
             raise KeyError(f'{key}')
         cdef cAnimal ckey = Animal_to_cpp(key)
         cdef cmap[cAnimal,string].iterator iter = deref(
-            self._map).find(ckey)
-        if iter == deref(self._map).end():
+            self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
             raise KeyError(f'{key}')
         cdef string citem = deref(iter).second
         return bytes(citem).decode('UTF-8')
 
     def __len__(self):
-        return deref(self._map).size()
+        return deref(self._cpp_obj).size()
 
     def __iter__(self):
         if not self:
             raise StopIteration
         cdef cAnimal citem
-        for pair in deref(self._map):
+        for pair in deref(self._cpp_obj):
             citem = pair.first
             yield Animal(<int> citem)
 
@@ -1120,15 +1120,15 @@ cdef class Map__Animal_string:
 
     def __contains__(self, key):
         cdef cAnimal ckey = Animal_to_cpp(key)
-        return deref(self._map).count(ckey) > 0
+        return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
         if not self:
             return default
         cdef cAnimal ckey = Animal_to_cpp(key)
         cdef cmap[cAnimal,string].iterator iter = \
-            deref(self._map).find(ckey)
-        if iter == deref(self._map).end():
+            deref(self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
             return default
         cdef string citem = deref(iter).second
         return bytes(citem).decode('UTF-8')
@@ -1140,7 +1140,7 @@ cdef class Map__Animal_string:
         if not self:
             raise StopIteration
         cdef string citem
-        for pair in deref(self._map):
+        for pair in deref(self._cpp_obj):
             citem = pair.second
             yield bytes(citem).decode('UTF-8')
 
@@ -1149,7 +1149,7 @@ cdef class Map__Animal_string:
             raise StopIteration
         cdef cAnimal ckey
         cdef string citem
-        for pair in deref(self._map):
+        for pair in deref(self._cpp_obj):
             ckey = pair.first
             citem = pair.second
 
@@ -1162,18 +1162,18 @@ Mapping.register(Map__Animal_string)
 cdef class List__Vehicle:
     def __init__(self, items=None):
         if isinstance(items, List__Vehicle):
-            self._vector = (<List__Vehicle> items)._vector
+            self._cpp_obj = (<List__Vehicle> items)._cpp_obj
         else:
-          self._vector = make_shared[vector[cVehicle]]()
+          self._cpp_obj = make_shared[vector[cVehicle]]()
           if items:
               for item in items:
-                  deref(self._vector).push_back(deref((<Vehicle> item).c_Vehicle))
+                  deref(self._cpp_obj).push_back(deref((<Vehicle> item)._cpp_obj))
 
     @staticmethod
     cdef create(
             shared_ptr[vector[cVehicle]] c_items):
         inst = <List__Vehicle>List__Vehicle.__new__(List__Vehicle)
-        inst._vector = c_items
+        inst._cpp_obj = c_items
         return inst
 
     def __getitem__(self, int index):
@@ -1187,11 +1187,11 @@ cdef class List__Vehicle:
         if index < 0:
             index = size - index
         cdef cVehicle citem = (
-            deref(self._vector.get())[index])
+            deref(self._cpp_obj.get())[index])
         return Vehicle.create(make_shared[cVehicle](citem))
 
     def __len__(self):
-        return deref(self._vector).size()
+        return deref(self._cpp_obj).size()
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1216,16 +1216,16 @@ cdef class List__Vehicle:
     def __contains__(self, item):
         if not self:
             return False
-        cdef cVehicle citem = deref((<Vehicle> item).c_Vehicle)
+        cdef cVehicle citem = deref((<Vehicle> item)._cpp_obj)
         cdef vector[cVehicle] vec = deref(
-            self._vector.get())
+            self._cpp_obj.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
         if not self:
             raise StopIteration
         cdef cVehicle citem
-        for citem in deref(self._vector):
+        for citem in deref(self._cpp_obj):
             yield Vehicle.create(make_shared[cVehicle](citem))
 
     def __repr__(self):
@@ -1238,7 +1238,7 @@ cdef class List__Vehicle:
             raise StopIteration
         cdef cVehicle citem
         cdef vector[cVehicle] vec = deref(
-            self._vector.get())
+            self._cpp_obj.get())
         cdef vector[cVehicle].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
@@ -1248,8 +1248,8 @@ cdef class List__Vehicle:
     def index(self, item):
         if not self:
             raise ValueError(f'{item} is not in list')
-        cdef cVehicle citem = deref((<Vehicle> item).c_Vehicle)
-        cdef vector[cVehicle] vec = deref(self._vector.get())
+        cdef cVehicle citem = deref((<Vehicle> item)._cpp_obj)
+        cdef vector[cVehicle] vec = deref(self._cpp_obj.get())
         cdef vector[cVehicle].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
@@ -1258,8 +1258,8 @@ cdef class List__Vehicle:
     def count(self, item):
         if not self:
             return 0
-        cdef cVehicle citem = deref((<Vehicle> item).c_Vehicle)
-        cdef vector[cVehicle] vec = deref(self._vector.get())
+        cdef cVehicle citem = deref((<Vehicle> item)._cpp_obj)
+        cdef vector[cVehicle] vec = deref(self._cpp_obj.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 

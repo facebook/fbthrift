@@ -48,36 +48,36 @@ cdef class Struct(thrift.py3.types.Struct):
         first=None,
         second=None
     ):
-        self.c_Struct = make_shared[cStruct]()
+        self._cpp_obj = make_shared[cStruct]()
 
         inst = self
         if first is not None:
-            deref(inst.c_Struct).first = first
-            deref(inst.c_Struct).__isset.first = True
+            deref(inst._cpp_obj).first = first
+            deref(inst._cpp_obj).__isset.first = True
 
         if second is not None:
-            deref(inst.c_Struct).second = second.encode('UTF-8')
-            deref(inst.c_Struct).__isset.second = True
+            deref(inst._cpp_obj).second = second.encode('UTF-8')
+            deref(inst._cpp_obj).__isset.second = True
 
 
     cdef bytes _serialize(Struct self, proto):
         cdef string c_str
         if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cStruct](deref(self.c_Struct.get()), &c_str)
+            serializer.CompactSerialize[cStruct](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cStruct](deref(self.c_Struct.get()), &c_str)
+            serializer.BinarySerialize[cStruct](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cStruct](deref(self.c_Struct.get()), &c_str)
+            serializer.JSONSerialize[cStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
     cdef uint32_t _deserialize(Struct self, const IOBuf* buf, proto):
         cdef uint32_t needed
         if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cStruct](buf, deref(self.c_Struct.get()))
+            needed = serializer.CompactDeserialize[cStruct](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cStruct](buf, deref(self.c_Struct.get()))
+            needed = serializer.BinaryDeserialize[cStruct](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cStruct](buf, deref(self.c_Struct.get()))
+            needed = serializer.JSONDeserialize[cStruct](buf, deref(self._cpp_obj.get()))
         return needed
 
     def __reduce__(self):
@@ -98,28 +98,28 @@ cdef class Struct(thrift.py3.types.Struct):
             return self
 
         inst = <Struct>Struct.__new__(Struct)
-        inst.c_Struct = make_shared[cStruct](deref(self.c_Struct))
+        inst._cpp_obj = make_shared[cStruct](deref(self._cpp_obj))
         cdef Struct defaults = Struct_defaults
 
         # Convert None's to default value.
         if first is None:
-            deref(inst.c_Struct).first = deref(defaults.c_Struct).first
-            deref(inst.c_Struct).__isset.first = False
+            deref(inst._cpp_obj).first = deref(defaults._cpp_obj).first
+            deref(inst._cpp_obj).__isset.first = False
         if first is NOTSET:
             first = None
         if second is None:
-            deref(inst.c_Struct).second = deref(defaults.c_Struct).second
-            deref(inst.c_Struct).__isset.second = False
+            deref(inst._cpp_obj).second = deref(defaults._cpp_obj).second
+            deref(inst._cpp_obj).__isset.second = False
         if second is NOTSET:
             second = None
 
         if first is not None:
-            deref(inst.c_Struct).first = first
-            deref(inst.c_Struct).__isset.first = True
+            deref(inst._cpp_obj).first = first
+            deref(inst._cpp_obj).__isset.first = True
 
         if second is not None:
-            deref(inst.c_Struct).second = second.encode('UTF-8')
-            deref(inst.c_Struct).__isset.second = True
+            deref(inst._cpp_obj).second = second.encode('UTF-8')
+            deref(inst._cpp_obj).__isset.second = True
 
         return inst
 
@@ -128,27 +128,27 @@ cdef class Struct(thrift.py3.types.Struct):
         yield 'second', self.second
 
     def __bool__(self):
-        return deref(self.c_Struct).__isset.first or deref(self.c_Struct).__isset.second
+        return deref(self._cpp_obj).__isset.first or deref(self._cpp_obj).__isset.second
 
     @staticmethod
-    cdef create(shared_ptr[cStruct] c_Struct):
+    cdef create(shared_ptr[cStruct] cpp_obj):
         inst = <Struct>Struct.__new__(Struct)
-        inst.c_Struct = c_Struct
+        inst._cpp_obj = cpp_obj
         return inst
 
     @property
     def first(self):
-        if not deref(self.c_Struct).__isset.first:
+        if not deref(self._cpp_obj).__isset.first:
             return None
 
-        return self.c_Struct.get().first
+        return self._cpp_obj.get().first
 
     @property
     def second(self):
-        if not deref(self.c_Struct).__isset.second:
+        if not deref(self._cpp_obj).__isset.second:
             return None
 
-        return self.c_Struct.get().second.decode('UTF-8')
+        return self._cpp_obj.get().second.decode('UTF-8')
 
 
     def __richcmp__(self, other, op):
@@ -163,8 +163,8 @@ cdef class Struct(thrift.py3.types.Struct):
             else:         # different types are always notequal
                 return True
 
-        cdef cStruct cself = deref((<Struct>self).c_Struct)
-        cdef cStruct cother = deref((<Struct>other).c_Struct)
+        cdef cStruct cself = deref((<Struct>self)._cpp_obj)
+        cdef cStruct cother = deref((<Struct>other)._cpp_obj)
         cdef cbool cmp = cself == cother
         if cop == 2:
             return cmp
@@ -188,18 +188,18 @@ Struct_defaults = Struct()
 cdef class List__Enum:
     def __init__(self, items=None):
         if isinstance(items, List__Enum):
-            self._vector = (<List__Enum> items)._vector
+            self._cpp_obj = (<List__Enum> items)._cpp_obj
         else:
-          self._vector = make_shared[vector[cEnum]]()
+          self._cpp_obj = make_shared[vector[cEnum]]()
           if items:
               for item in items:
-                  deref(self._vector).push_back(<cEnum> Enum_to_cpp(item))
+                  deref(self._cpp_obj).push_back(<cEnum> Enum_to_cpp(item))
 
     @staticmethod
     cdef create(
             shared_ptr[vector[cEnum]] c_items):
         inst = <List__Enum>List__Enum.__new__(List__Enum)
-        inst._vector = c_items
+        inst._cpp_obj = c_items
         return inst
 
     def __getitem__(self, int index):
@@ -213,11 +213,11 @@ cdef class List__Enum:
         if index < 0:
             index = size - index
         cdef cEnum citem = (
-            deref(self._vector.get())[index])
+            deref(self._cpp_obj.get())[index])
         return Enum(<int> citem)
 
     def __len__(self):
-        return deref(self._vector).size()
+        return deref(self._cpp_obj).size()
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -244,14 +244,14 @@ cdef class List__Enum:
             return False
         cdef cEnum citem = <cEnum> Enum_to_cpp(item)
         cdef vector[cEnum] vec = deref(
-            self._vector.get())
+            self._cpp_obj.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
         if not self:
             raise StopIteration
         cdef cEnum citem
-        for citem in deref(self._vector):
+        for citem in deref(self._cpp_obj):
             yield Enum(<int> citem)
 
     def __repr__(self):
@@ -264,7 +264,7 @@ cdef class List__Enum:
             raise StopIteration
         cdef cEnum citem
         cdef vector[cEnum] vec = deref(
-            self._vector.get())
+            self._cpp_obj.get())
         cdef vector[cEnum].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
@@ -275,7 +275,7 @@ cdef class List__Enum:
         if not self:
             raise ValueError(f'{item} is not in list')
         cdef cEnum citem = <cEnum> Enum_to_cpp(item)
-        cdef vector[cEnum] vec = deref(self._vector.get())
+        cdef vector[cEnum] vec = deref(self._cpp_obj.get())
         cdef vector[cEnum].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
@@ -285,7 +285,7 @@ cdef class List__Enum:
         if not self:
             return 0
         cdef cEnum citem = <cEnum> Enum_to_cpp(item)
-        cdef vector[cEnum] vec = deref(self._vector.get())
+        cdef vector[cEnum] vec = deref(self._cpp_obj.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 

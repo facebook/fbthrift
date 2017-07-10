@@ -83,7 +83,7 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
         {{struct:name}} self{{#struct:fields}},
         {{field:name}}=None{{/struct:fields}}
     ):
-        self.c_{{struct:name}} = make_shared[c{{struct:name}}]()
+        self._cpp_obj = make_shared[c{{struct:name}}]()
 
         inst = self
         {{#struct:fields}}
@@ -91,7 +91,7 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
         {{> CythonAssignField}}
 
         {{^field:required?}}
-            deref(inst.c_{{struct:name}}).__isset.{{field:name}} = True
+            deref(inst._cpp_obj).__isset.{{field:name}} = True
 
         {{/field:required?}}
         {{/field:type}}
@@ -101,21 +101,21 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
     cdef bytes _serialize({{struct:name}} self, proto):
         cdef string c_str
         if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[c{{struct:name}}](deref(self.c_{{struct:name}}.get()), &c_str)
+            serializer.CompactSerialize[c{{struct:name}}](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[c{{struct:name}}](deref(self.c_{{struct:name}}.get()), &c_str)
+            serializer.BinarySerialize[c{{struct:name}}](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.JSON:
-            serializer.JSONSerialize[c{{struct:name}}](deref(self.c_{{struct:name}}.get()), &c_str)
+            serializer.JSONSerialize[c{{struct:name}}](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
     cdef uint32_t _deserialize({{struct:name}} self, const IOBuf* buf, proto):
         cdef uint32_t needed
         if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[c{{struct:name}}](buf, deref(self.c_{{struct:name}}.get()))
+            needed = serializer.CompactDeserialize[c{{struct:name}}](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[c{{struct:name}}](buf, deref(self.c_{{struct:name}}.get()))
+            needed = serializer.BinaryDeserialize[c{{struct:name}}](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[c{{struct:name}}](buf, deref(self.c_{{struct:name}}.get()))
+            needed = serializer.JSONDeserialize[c{{struct:name}}](buf, deref(self._cpp_obj.get()))
         return needed
 
     def __reduce__(self):
@@ -134,15 +134,15 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
             return self
 
         inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}})
-        inst.c_{{struct:name}} = make_shared[c{{struct:name}}](deref(self.c_{{struct:name}}))
+        inst._cpp_obj = make_shared[c{{struct:name}}](deref(self._cpp_obj))
         cdef {{struct:name}} defaults = {{struct:name}}_defaults
 
         # Convert None's to default value.
         {{#struct:fields}}
         if {{field:name}} is None:
-            deref(inst.c_{{struct:name}}).{{field:name}} = deref(defaults.c_{{struct:name}}).{{field:name}}
+            deref(inst._cpp_obj).{{field:name}} = deref(defaults._cpp_obj).{{field:name}}
             {{^field:required?}}
-            deref(inst.c_{{struct:name}}).__isset.{{field:name}} = False
+            deref(inst._cpp_obj).__isset.{{field:name}} = False
             {{/field:required?}}
         if {{field:name}} is NOTSET:
             {{field:name}} = None
@@ -153,7 +153,7 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
         {{> CythonAssignField}}
 
         {{^field:required?}}
-            deref(inst.c_{{struct:name}}).__isset.{{field:name}} = True
+            deref(inst._cpp_obj).__isset.{{field:name}} = True
 
         {{/field:required?}}
         {{/field:type}}
@@ -173,15 +173,15 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
         return {{#struct:fields}}{{!
             }}{{#field:required?}}True{{/field:required?}}{{!
             }}{{^field:required?}}{{!
-            }}deref(self.c_{{struct:name}}).__isset.{{field:name}}{{!
+            }}deref(self._cpp_obj).__isset.{{field:name}}{{!
             }}{{/field:required?}}{{!
             }}{{^last?}} or {{/last?}}{{/struct:fields}}{{!
             }}{{^struct:fields}}True{{/struct:fields}}
 
     @staticmethod
-    cdef create(shared_ptr[c{{struct:name}}] c_{{struct:name}}):
+    cdef create(shared_ptr[c{{struct:name}}] cpp_obj):
         inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}})
-        inst.c_{{struct:name}} = c_{{struct:name}}
+        inst._cpp_obj = cpp_obj
         return inst
 
     {{#struct:fields}}
@@ -191,7 +191,7 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
         {{^field:value}}
         {{^field:required?}}
         {{! If there is no value and not ___isset we can say its None}}
-        if not deref(self.c_{{struct:name}}).__isset.{{field:name}}:
+        if not deref(self._cpp_obj).__isset.{{field:name}}:
             return None
         {{/field:required?}}
         {{/field:value}}
@@ -214,8 +214,8 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
             else:         # different types are always notequal
                 return True
 
-        cdef c{{struct:name}} cself = deref((<{{struct:name}}>self).c_{{struct:name}})
-        cdef c{{struct:name}} cother = deref((<{{struct:name}}>other).c_{{struct:name}})
+        cdef c{{struct:name}} cself = deref((<{{struct:name}}>self)._cpp_obj)
+        cdef c{{struct:name}} cother = deref((<{{struct:name}}>other)._cpp_obj)
         cdef cbool cmp = cself == cother
         if cop == 2:
             return cmp
@@ -253,14 +253,14 @@ cdef class {{type:flat_name}}:
 {{#type:list?}}
     def __init__(self, items=None):
         if isinstance(items, {{type:flat_name}}):
-            self._vector = (<{{type:flat_name}}> items)._vector
+            self._cpp_obj = (<{{type:flat_name}}> items)._cpp_obj
         else:
-          self._vector = make_shared[vector[{{#type:listElemType}}{{!
+          self._cpp_obj = make_shared[vector[{{#type:listElemType}}{{!
               }}{{> types/CythonCppType}}{{!
               }}{{/type:listElemType}}]]()
           if items:
               for item in items:
-                  deref(self._vector).push_back({{#type:listElemType}}{{!
+                  deref(self._cpp_obj).push_back({{#type:listElemType}}{{!
                       }}{{> CythonPythonToCppItem}}{{/type:listElemType}})
 
     @staticmethod
@@ -269,7 +269,7 @@ cdef class {{type:flat_name}}:
             }}{{> types/CythonCppType}}{{/type:listElemType}}{{!
             }}]] c_items):
         inst = <{{type:flat_name}}>{{type:flat_name}}.__new__({{type:flat_name}})
-        inst._vector = c_items
+        inst._cpp_obj = c_items
         return inst
 
     def __getitem__(self, int index):
@@ -284,12 +284,12 @@ cdef class {{type:flat_name}}:
             index = size - index
         {{#type:listElemType}}
         cdef {{> types/CythonCppType}} citem = (
-            deref(self._vector.get())[index])
+            deref(self._cpp_obj.get())[index])
         return {{> ContainerCythonCppToPythonItem}}
         {{/type:listElemType}}
 
     def __len__(self):
-        return deref(self._vector).size()
+        return deref(self._cpp_obj).size()
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -318,7 +318,7 @@ cdef class {{type:flat_name}}:
           }}{{> types/CythonCppType}} citem = {{!
           }}{{> CythonPythonToCppItem}}{{/type:listElemType}}
         cdef {{> types/CythonCppType}} vec = deref(
-            self._vector.get())
+            self._cpp_obj.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
@@ -327,7 +327,7 @@ cdef class {{type:flat_name}}:
         cdef {{#type:listElemType}}{{!
             }}{{>types/CythonCppType}}{{!
             }}{{/type:listElemType}} citem
-        for citem in deref(self._vector):
+        for citem in deref(self._cpp_obj):
             yield {{#type:listElemType}}{{!
                 }}{{> ContainerCythonCppToPythonItem}}{{!
                 }}{{/type:listElemType}}
@@ -344,7 +344,7 @@ cdef class {{type:flat_name}}:
             }}{{>types/CythonCppType}}{{!
             }}{{/type:listElemType}} citem
         cdef {{> types/CythonCppType}} vec = deref(
-            self._vector.get())
+            self._cpp_obj.get())
         cdef {{>types/CythonCppType}}.reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
@@ -360,7 +360,7 @@ cdef class {{type:flat_name}}:
             }}{{> types/CythonCppType}} citem = {{!
             }}{{> CythonPythonToCppItem}}{{/type:listElemType}}
         cdef {{> types/CythonCppType}} vec = {{!
-            }}deref(self._vector.get())
+            }}deref(self._cpp_obj.get())
         cdef {{>types/CythonCppType}}.iterator loc = {{!
             }}std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
@@ -374,7 +374,7 @@ cdef class {{type:flat_name}}:
             }}{{> types/CythonCppType}} citem = {{!
             }}{{> CythonPythonToCppItem}}{{/type:listElemType}}
         cdef {{> types/CythonCppType}} vec = {{!
-            }}deref(self._vector.get())
+            }}deref(self._cpp_obj.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
@@ -383,33 +383,33 @@ Sequence.register({{type:flat_name}})
 {{#type:set?}}
     def __init__(self, items=None):
         if isinstance(items, {{type:flat_name}}):
-            self._set = (<{{type:flat_name}}> items)._set
+            self._cpp_obj = (<{{type:flat_name}}> items)._cpp_obj
         else:
-          self._set = make_shared[c{{#type:unordered?}}u{{/type:unordered?}}set[{{#type:setElemType}}{{> types/CythonCppType}}{{/type:setElemType}}]]()
+          self._cpp_obj = make_shared[c{{#type:unordered?}}u{{/type:unordered?}}set[{{#type:setElemType}}{{> types/CythonCppType}}{{/type:setElemType}}]]()
           if items:
               for item in items:
-                  deref(self._set).insert({{#type:setElemType}}{{> CythonPythonToCppItem}}{{/type:setElemType}})
+                  deref(self._cpp_obj).insert({{#type:setElemType}}{{> CythonPythonToCppItem}}{{/type:setElemType}})
 
     @staticmethod
     cdef create(shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{!
             }}{{#type:setElemType}}{{> types/CythonCppType}}{{/type:setElemType}}{{!
             }}]] c_items):
         inst = <{{type:flat_name}}>{{type:flat_name}}.__new__({{type:flat_name}})
-        inst._set = c_items
+        inst._cpp_obj = c_items
         return inst
 
     def __contains__(self, item):
         if not self:
             return False
-        return pbool(deref(self._set).count({{#type:setElemType}}{{>CythonPythonToCppItem}}{{/type:setElemType}}))
+        return pbool(deref(self._cpp_obj).count({{#type:setElemType}}{{>CythonPythonToCppItem}}{{/type:setElemType}}))
 
     def __len__(self):
-        return deref(self._set).size()
+        return deref(self._cpp_obj).size()
 
     def __iter__(self):
         if not self:
             raise StopIteration
-        for citem in deref(self._set):
+        for citem in deref(self._cpp_obj):
             yield {{#type:setElemType}}{{> ContainerCythonCppToPythonItem}}{{/type:setElemType}}
 
     def __repr__(self):
@@ -429,8 +429,8 @@ Sequence.register({{type:flat_name}})
         cdef cbool retval
         if (isinstance(self, {{type:flat_name}}) and
                 isinstance(other, {{type:flat_name}})):
-            cself = deref((<{{type:flat_name}}> self)._set)
-            cother = deref((<{{type:flat_name}}> other)._set)
+            cself = deref((<{{type:flat_name}}> self)._cpp_obj)
+            cother = deref((<{{type:flat_name}}> other)._cpp_obj)
             # C level comparisons
             if cop == 0:    # Less Than (strict subset)
                 if not cself.size() < cother.size():
@@ -498,8 +498,8 @@ Sequence.register({{type:flat_name}})
         cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]] shretval = \
             make_shared[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]]()
         {{/type:setElemType}}
-        for citem in deref((<{{type:flat_name}}> self)._set):
-            if deref((<{{type:flat_name}}> other)._set).count(citem) > 0:
+        for citem in deref((<{{type:flat_name}}> self)._cpp_obj):
+            if deref((<{{type:flat_name}}> other)._cpp_obj).count(citem) > 0:
                 deref(shretval).insert(citem)
         return {{type:flat_name}}.create(shretval)
 
@@ -513,8 +513,8 @@ Sequence.register({{type:flat_name}})
         cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]] shretval = \
             make_shared[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]]()
         {{/type:setElemType}}
-        for citem in deref((<{{type:flat_name}}> self)._set):
-            if deref((<{{type:flat_name}}> other)._set).count(citem) == 0:
+        for citem in deref((<{{type:flat_name}}> self)._cpp_obj):
+            if deref((<{{type:flat_name}}> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
         return {{type:flat_name}}.create(shretval)
 
@@ -528,9 +528,9 @@ Sequence.register({{type:flat_name}})
         cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]] shretval = \
             make_shared[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]]()
         {{/type:setElemType}}
-        for citem in deref((<{{type:flat_name}}> self)._set):
+        for citem in deref((<{{type:flat_name}}> self)._cpp_obj):
                 deref(shretval).insert(citem)
-        for citem in deref((<{{type:flat_name}}> other)._set):
+        for citem in deref((<{{type:flat_name}}> other)._cpp_obj):
                 deref(shretval).insert(citem)
         return {{type:flat_name}}.create(shretval)
 
@@ -544,11 +544,11 @@ Sequence.register({{type:flat_name}})
         cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]] shretval = \
             make_shared[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]]()
         {{/type:setElemType}}
-        for citem in deref((<{{type:flat_name}}> self)._set):
-            if deref((<{{type:flat_name}}> other)._set).count(citem) == 0:
+        for citem in deref((<{{type:flat_name}}> self)._cpp_obj):
+            if deref((<{{type:flat_name}}> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        for citem in deref((<{{type:flat_name}}> other)._set):
-            if deref((<{{type:flat_name}}> self)._set).count(citem) == 0:
+        for citem in deref((<{{type:flat_name}}> other)._cpp_obj):
+            if deref((<{{type:flat_name}}> self)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
         return {{type:flat_name}}.create(shretval)
 
@@ -579,12 +579,12 @@ Set.register({{type:flat_name}})
 {{#type:map?}}
     def __init__(self, items=None):
         if isinstance(items, {{type:flat_name}}):
-            self._map = (<{{type:flat_name}}> items)._map
+            self._cpp_obj = (<{{type:flat_name}}> items)._cpp_obj
         else:
-          self._map = make_shared[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonMapKeyValue}}]]()
+          self._cpp_obj = make_shared[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonMapKeyValue}}]]()
           if items:
               for key, item in items.items():
-                  deref(self._map).insert(
+                  deref(self._cpp_obj).insert(
                       cpair[{{> CythonMapKeyValue}}](
                           {{#type:keyType}}{{> CythonPythonToCppKey}}{{/type:keyType}},
                           {{#type:valueType}}{{> CythonPythonToCppItem}}{{/type:valueType}}))
@@ -592,7 +592,7 @@ Set.register({{type:flat_name}})
     @staticmethod
     cdef create(shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonMapKeyValue}}]] c_items):
         inst = <{{type:flat_name}}>{{type:flat_name}}.__new__({{type:flat_name}})
-        inst._map = c_items
+        inst._cpp_obj = c_items
         return inst
 
     def __getitem__(self, key):
@@ -601,8 +601,8 @@ Set.register({{type:flat_name}})
         cdef {{#type:keyType}}{{> types/CythonCppType}} ckey = {{!
             }}{{> CythonPythonToCppKey}}{{/type:keyType}}
         cdef c{{#type:unordered?}}u{{/type:unordered?}}map[{{>CythonMapKeyValue}}].iterator iter = deref(
-            self._map).find(ckey)
-        if iter == deref(self._map).end():
+            self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
             raise KeyError(f'{key}')
         cdef {{#type:valueType}}{{!
             }}{{> types/CythonCppType}} {{!
@@ -611,14 +611,14 @@ Set.register({{type:flat_name}})
             }}{{> ContainerCythonCppToPythonItem}}{{/type:valueType}}
 
     def __len__(self):
-        return deref(self._map).size()
+        return deref(self._cpp_obj).size()
 
     def __iter__(self):
         if not self:
             raise StopIteration
         cdef {{#type:keyType}}{{!
             }}{{> types/CythonCppType}}{{/type:keyType}} citem
-        for pair in deref(self._map):
+        for pair in deref(self._cpp_obj):
             citem = pair.first
             yield {{#type:keyType}}{{!
                 }}{{> ContainerCythonCppToPythonItem}}{{/type:keyType}}
@@ -658,7 +658,7 @@ Set.register({{type:flat_name}})
         cdef {{#type:keyType}}{{!
             }}{{> types/CythonCppType}} ckey = {{!
             }}{{> CythonPythonToCppKey}}{{/type:keyType}}
-        return deref(self._map).count(ckey) > 0
+        return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
         if not self:
@@ -667,8 +667,8 @@ Set.register({{type:flat_name}})
             }}{{> types/CythonCppType}} ckey = {{!
             }}{{> CythonPythonToCppKey}}{{/type:keyType}}
         cdef c{{#type:unordered?}}u{{/type:unordered?}}map[{{>CythonMapKeyValue}}].iterator iter = \
-            deref(self._map).find(ckey)
-        if iter == deref(self._map).end():
+            deref(self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
             return default
         cdef {{#type:valueType}}{{!
             }}{{> types/CythonCppType}} citem = {{!
@@ -687,7 +687,7 @@ Set.register({{type:flat_name}})
           }}{{> types/CythonCppType}}{{!
           }}{{/type:valueType}}{{!!
           }} citem
-        for pair in deref(self._map):
+        for pair in deref(self._cpp_obj):
             citem = pair.second
             yield {{#type:valueType}}{{!
               }}{{> ContainerCythonCppToPythonItem}}{{!
@@ -703,7 +703,7 @@ Set.register({{type:flat_name}})
         cdef {{#type:valueType}}{{!
           }}{{> types/CythonCppType}}{{!
           }}{{/type:valueType}} citem
-        for pair in deref(self._map):
+        for pair in deref(self._cpp_obj):
             ckey = pair.first
             citem = pair.second
 

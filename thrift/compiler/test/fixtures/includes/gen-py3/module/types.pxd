@@ -48,11 +48,11 @@ cdef class MyStruct(thrift.py3.types.Struct)
 cdef class MyStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cMyStruct] c_MyStruct
+    cdef shared_ptr[cMyStruct] _cpp_obj
     cdef includes.types.Included __MyIncludedField
 
     @staticmethod
-    cdef create(shared_ptr[cMyStruct] c_MyStruct)
+    cdef create(shared_ptr[cMyStruct])
 
 
 

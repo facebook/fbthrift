@@ -34,7 +34,7 @@ cdef class Banal(thrift.py3.exceptions.Error):
     def __init__(
         Banal self
     ):
-        self.c_Banal = make_shared[cBanal]()
+        self._cpp_obj = make_shared[cBanal]()
 
         inst = self
 
@@ -46,9 +46,9 @@ cdef class Banal(thrift.py3.exceptions.Error):
         return True
 
     @staticmethod
-    cdef create(shared_ptr[cBanal] c_Banal):
+    cdef create(shared_ptr[cBanal] cpp_obj):
         inst = <Banal>Banal.__new__(Banal)
-        inst.c_Banal = c_Banal
+        inst._cpp_obj = cpp_obj
         return inst
 
 
@@ -64,8 +64,8 @@ cdef class Banal(thrift.py3.exceptions.Error):
             else:         # different types are always notequal
                 return True
 
-        cdef cBanal cself = deref((<Banal>self).c_Banal)
-        cdef cBanal cother = deref((<Banal>other).c_Banal)
+        cdef cBanal cself = deref((<Banal>self)._cpp_obj)
+        cdef cBanal cother = deref((<Banal>other)._cpp_obj)
         cdef cbool cmp = cself == cother
         if cop == 2:
             return cmp
@@ -84,11 +84,11 @@ cdef class Fiery(thrift.py3.exceptions.Error):
         Fiery self,
         message=None
     ):
-        self.c_Fiery = make_shared[cFiery]()
+        self._cpp_obj = make_shared[cFiery]()
 
         inst = self
         if message is not None:
-            deref(inst.c_Fiery).message = message.encode('UTF-8')
+            deref(inst._cpp_obj).message = message.encode('UTF-8')
 
 
     def __iter__(self):
@@ -98,15 +98,15 @@ cdef class Fiery(thrift.py3.exceptions.Error):
         return True
 
     @staticmethod
-    cdef create(shared_ptr[cFiery] c_Fiery):
+    cdef create(shared_ptr[cFiery] cpp_obj):
         inst = <Fiery>Fiery.__new__(Fiery)
-        inst.c_Fiery = c_Fiery
+        inst._cpp_obj = cpp_obj
         return inst
 
     @property
     def message(self):
 
-        return self.c_Fiery.get().message.decode('UTF-8')
+        return self._cpp_obj.get().message.decode('UTF-8')
 
 
     def __richcmp__(self, other, op):
@@ -121,8 +121,8 @@ cdef class Fiery(thrift.py3.exceptions.Error):
             else:         # different types are always notequal
                 return True
 
-        cdef cFiery cself = deref((<Fiery>self).c_Fiery)
-        cdef cFiery cother = deref((<Fiery>other).c_Fiery)
+        cdef cFiery cself = deref((<Fiery>self)._cpp_obj)
+        cdef cFiery cother = deref((<Fiery>other)._cpp_obj)
         cdef cbool cmp = cself == cother
         if cop == 2:
             return cmp

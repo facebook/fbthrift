@@ -45,10 +45,10 @@ cdef class Foo(thrift.py3.types.Struct)
 cdef class Foo(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cFoo] c_Foo
+    cdef shared_ptr[cFoo] _cpp_obj
 
     @staticmethod
-    cdef create(shared_ptr[cFoo] c_Foo)
+    cdef create(shared_ptr[cFoo])
 
 
 

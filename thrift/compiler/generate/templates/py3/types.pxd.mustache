@@ -95,7 +95,7 @@ cdef class {{struct:name}}{{#struct:exception?}}(__Error){{/struct:exception?}}{
 cdef class {{struct:name}}{{#struct:exception?}}(__Error){{/struct:exception?}}{{^struct:exception?}}(thrift.py3.types.Struct){{/struct:exception?}}:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[c{{struct:name}}] c_{{struct:name}}
+    cdef shared_ptr[c{{struct:name}}] _cpp_obj
     {{!Memoized Python wrappers of struct fields, created lazily}}
     {{#struct:fields}}
     {{#field:type}}{{#type:struct}}
@@ -106,7 +106,7 @@ cdef class {{struct:name}}{{#struct:exception?}}(__Error){{/struct:exception?}}{
     {{/struct:fields}}
 
     @staticmethod
-    cdef create(shared_ptr[c{{struct:name}}] c_{{struct:name}})
+    cdef create(shared_ptr[c{{struct:name}}])
 
 {{/program:structs}}
 
@@ -115,17 +115,17 @@ cdef class {{type:flat_name}}:
     cdef object __hash
     cdef object __weakref__
 {{#type:listElemType}}
-    cdef shared_ptr[vector[{{> types/CythonCppType}}]] _vector
+    cdef shared_ptr[vector[{{> types/CythonCppType}}]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[{{> types/CythonCppType}}]])
 {{/type:listElemType}}
 {{#type:setElemType}}
-    cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]] _set
+    cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]])
 {{/type:setElemType}}
 {{#type:map?}}
-    cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonCppWrapperMapKeyValue}}]] _map
+    cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonCppWrapperMapKeyValue}}]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonCppWrapperMapKeyValue}}]])
 {{/type:map?}}

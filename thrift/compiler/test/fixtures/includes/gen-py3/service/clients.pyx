@@ -135,8 +135,8 @@ cdef class MyService(thrift.py3.client.Client):
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._service_MyService_client).query(
-                deref((<module.types.MyStruct>arg_s).c_MyStruct),
-                deref((<includes.types.Included>arg_i).c_Included),
+                deref((<module.types.MyStruct>arg_s)._cpp_obj),
+                deref((<includes.types.Included>arg_i)._cpp_obj),
             ),
             MyService_query_callback,
             <PyObject *> future
@@ -153,8 +153,8 @@ cdef class MyService(thrift.py3.client.Client):
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._service_MyService_client).has_arg_docs(
-                deref((<module.types.MyStruct>arg_s).c_MyStruct),
-                deref((<includes.types.Included>arg_i).c_Included),
+                deref((<module.types.MyStruct>arg_s)._cpp_obj),
+                deref((<includes.types.Included>arg_i)._cpp_obj),
             ),
             MyService_has_arg_docs_callback,
             <PyObject *> future

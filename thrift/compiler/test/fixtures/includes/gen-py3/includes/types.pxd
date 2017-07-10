@@ -45,10 +45,10 @@ cdef class Included(thrift.py3.types.Struct)
 cdef class Included(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cIncluded] c_Included
+    cdef shared_ptr[cIncluded] _cpp_obj
 
     @staticmethod
-    cdef create(shared_ptr[cIncluded] c_Included)
+    cdef create(shared_ptr[cIncluded])
 
 
 

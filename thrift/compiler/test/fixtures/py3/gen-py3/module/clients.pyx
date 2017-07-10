@@ -716,7 +716,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).get_value(
-                deref((<module.types.SimpleStruct>arg_simple_struct).c_SimpleStruct),
+                deref((<module.types.SimpleStruct>arg_simple_struct)._cpp_obj),
             ),
             SimpleService_get_value_callback,
             <PyObject *> future
@@ -840,7 +840,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).sum_i16_list(
-                deref(module.types.List__i16(arg_numbers)._vector.get()),
+                deref(module.types.List__i16(arg_numbers)._cpp_obj.get()),
             ),
             SimpleService_sum_i16_list_callback,
             <PyObject *> future
@@ -856,7 +856,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).sum_i32_list(
-                deref(module.types.List__i32(arg_numbers)._vector.get()),
+                deref(module.types.List__i32(arg_numbers)._cpp_obj.get()),
             ),
             SimpleService_sum_i32_list_callback,
             <PyObject *> future
@@ -872,7 +872,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).sum_i64_list(
-                deref(module.types.List__i64(arg_numbers)._vector.get()),
+                deref(module.types.List__i64(arg_numbers)._cpp_obj.get()),
             ),
             SimpleService_sum_i64_list_callback,
             <PyObject *> future
@@ -888,7 +888,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[string](
             self._executor,
             deref(self._module_SimpleService_client).concat_many(
-                deref(module.types.List__string(arg_words)._vector.get()),
+                deref(module.types.List__string(arg_words)._cpp_obj.get()),
             ),
             SimpleService_concat_many_callback,
             <PyObject *> future
@@ -904,7 +904,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).count_structs(
-                deref(module.types.List__SimpleStruct(arg_items)._vector.get()),
+                deref(module.types.List__SimpleStruct(arg_items)._cpp_obj.get()),
             ),
             SimpleService_count_structs_callback,
             <PyObject *> future
@@ -920,7 +920,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).sum_set(
-                cset[int32_t](deref(module.types.Set__i32(arg_numbers)._set.get())),
+                cset[int32_t](deref(module.types.Set__i32(arg_numbers)._cpp_obj.get())),
             ),
             SimpleService_sum_set_callback,
             <PyObject *> future
@@ -937,7 +937,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[cbool](
             self._executor,
             deref(self._module_SimpleService_client).contains_word(
-                cset[string](deref(module.types.Set__string(arg_words)._set.get())),
+                cset[string](deref(module.types.Set__string(arg_words)._cpp_obj.get())),
                 arg_word.encode('UTF-8'),
             ),
             SimpleService_contains_word_callback,
@@ -955,7 +955,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[string](
             self._executor,
             deref(self._module_SimpleService_client).get_map_value(
-                cmap[string,string](deref(module.types.Map__string_string(arg_words)._map.get())),
+                cmap[string,string](deref(module.types.Map__string_string(arg_words)._cpp_obj.get())),
                 arg_key.encode('UTF-8'),
             ),
             SimpleService_get_map_value_callback,
@@ -972,7 +972,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[int16_t](
             self._executor,
             deref(self._module_SimpleService_client).map_length(
-                cmap[string,module.types.cSimpleStruct](deref(module.types.Map__string_SimpleStruct(arg_items)._map.get())),
+                cmap[string,module.types.cSimpleStruct](deref(module.types.Map__string_SimpleStruct(arg_items)._cpp_obj.get())),
             ),
             SimpleService_map_length_callback,
             <PyObject *> future
@@ -988,7 +988,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[int16_t](
             self._executor,
             deref(self._module_SimpleService_client).sum_map_values(
-                cmap[string,int16_t](deref(module.types.Map__string_i16(arg_items)._map.get())),
+                cmap[string,int16_t](deref(module.types.Map__string_i16(arg_items)._cpp_obj.get())),
             ),
             SimpleService_sum_map_values_callback,
             <PyObject *> future
@@ -1004,7 +1004,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).complex_sum_i32(
-                deref((<module.types.ComplexStruct>arg_counter).c_ComplexStruct),
+                deref((<module.types.ComplexStruct>arg_counter)._cpp_obj),
             ),
             SimpleService_complex_sum_i32_callback,
             <PyObject *> future
@@ -1020,7 +1020,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[string](
             self._executor,
             deref(self._module_SimpleService_client).repeat_name(
-                deref((<module.types.ComplexStruct>arg_counter).c_ComplexStruct),
+                deref((<module.types.ComplexStruct>arg_counter)._cpp_obj),
             ),
             SimpleService_repeat_name_callback,
             <PyObject *> future
@@ -1066,7 +1066,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[cset[string]](
             self._executor,
             deref(self._module_SimpleService_client).unique_words(
-                deref(module.types.List__string(arg_words)._vector.get()),
+                deref(module.types.List__string(arg_words)._cpp_obj.get()),
             ),
             SimpleService_unique_words_callback,
             <PyObject *> future
@@ -1082,7 +1082,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[cmap[string,int16_t]](
             self._executor,
             deref(self._module_SimpleService_client).words_count(
-                deref(module.types.List__string(arg_words)._vector.get()),
+                deref(module.types.List__string(arg_words)._cpp_obj.get()),
             ),
             SimpleService_words_count_callback,
             <PyObject *> future
@@ -1164,7 +1164,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[int32_t](
             self._executor,
             deref(self._module_SimpleService_client).nested_map_argument(
-                cmap[string,vector[module.types.cSimpleStruct]](deref(module.types.Map__string_List__SimpleStruct(arg_struct_map)._map.get())),
+                cmap[string,vector[module.types.cSimpleStruct]](deref(module.types.Map__string_List__SimpleStruct(arg_struct_map)._cpp_obj.get())),
             ),
             SimpleService_nested_map_argument_callback,
             <PyObject *> future
@@ -1180,7 +1180,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[string](
             self._executor,
             deref(self._module_SimpleService_client).make_sentence(
-                deref(module.types.List__List__string(arg_word_chars)._vector.get()),
+                deref(module.types.List__List__string(arg_word_chars)._cpp_obj.get()),
             ),
             SimpleService_make_sentence_callback,
             <PyObject *> future
@@ -1196,7 +1196,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[cset[int32_t]](
             self._executor,
             deref(self._module_SimpleService_client).get_union(
-                deref(module.types.List__Set__i32(arg_sets)._vector.get()),
+                deref(module.types.List__Set__i32(arg_sets)._cpp_obj.get()),
             ),
             SimpleService_get_union_callback,
             <PyObject *> future
@@ -1212,7 +1212,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[cset[string]](
             self._executor,
             deref(self._module_SimpleService_client).get_keys(
-                deref(module.types.List__Map__string_string(arg_string_map)._vector.get()),
+                deref(module.types.List__Map__string_string(arg_string_map)._cpp_obj.get()),
             ),
             SimpleService_get_keys_callback,
             <PyObject *> future
@@ -1260,7 +1260,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[cset[string]](
             self._executor,
             deref(self._module_SimpleService_client).contain_binary(
-                deref(module.types.List__binary(arg_binaries)._vector.get()),
+                deref(module.types.List__binary(arg_binaries)._cpp_obj.get()),
             ),
             SimpleService_contain_binary_callback,
             <PyObject *> future
@@ -1276,7 +1276,7 @@ cdef class SimpleService(thrift.py3.client.Client):
         bridgeFutureWith[vector[module.types.cAnEnum]](
             self._executor,
             deref(self._module_SimpleService_client).contain_enum(
-                deref(module.types.List__AnEnum(arg_the_enum)._vector.get()),
+                deref(module.types.List__AnEnum(arg_the_enum)._cpp_obj.get()),
             ),
             SimpleService_contain_enum_callback,
             <PyObject *> future

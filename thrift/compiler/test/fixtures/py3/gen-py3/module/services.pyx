@@ -1021,7 +1021,7 @@ async def SimpleService_expected_exception_coro(
         else:
             result = await self.expected_exception()
     except module.types.SimpleException as ex:
-        promise.cPromise.setException(deref((<module.types.SimpleException> ex).c_SimpleException.get()))
+        promise.cPromise.setException(deref((<module.types.SimpleException> ex)._cpp_obj.get()))
     except Exception as ex:
         print(
             "Unexpected error in service handler expected_exception:",
@@ -1675,7 +1675,7 @@ async def SimpleService_get_struct_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[module.types.cSimpleStruct](deref((<module.types.SimpleStruct?> result).c_SimpleStruct)))
+        promise.cPromise.setValue(make_unique[module.types.cSimpleStruct](deref((<module.types.SimpleStruct?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_fib(
     object self,
@@ -1722,7 +1722,7 @@ async def SimpleService_fib_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[vector[int32_t]](deref((<module.types.List__i32?> result)._vector)))
+        promise.cPromise.setValue(make_unique[vector[int32_t]](deref((<module.types.List__i32?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_unique_words(
     object self,
@@ -1769,7 +1769,7 @@ async def SimpleService_unique_words_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cset[string]](deref((<module.types.Set__string?> result)._set)))
+        promise.cPromise.setValue(make_unique[cset[string]](deref((<module.types.Set__string?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_words_count(
     object self,
@@ -1816,7 +1816,7 @@ async def SimpleService_words_count_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cmap[string,int16_t]](deref((<module.types.Map__string_i16?> result)._map)))
+        promise.cPromise.setValue(make_unique[cmap[string,int16_t]](deref((<module.types.Map__string_i16?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_set_enum(
     object self,
@@ -1915,7 +1915,7 @@ async def SimpleService_list_of_lists_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[vector[vector[int32_t]]](deref((<module.types.List__List__i32?> result)._vector)))
+        promise.cPromise.setValue(make_unique[vector[vector[int32_t]]](deref((<module.types.List__List__i32?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_word_character_frequency(
     object self,
@@ -1962,7 +1962,7 @@ async def SimpleService_word_character_frequency_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cmap[string,cmap[string,int32_t]]](deref((<module.types.Map__string_Map__string_i32?> result)._map)))
+        promise.cPromise.setValue(make_unique[cmap[string,cmap[string,int32_t]]](deref((<module.types.Map__string_Map__string_i32?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_list_of_sets(
     object self,
@@ -2009,7 +2009,7 @@ async def SimpleService_list_of_sets_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[vector[cset[string]]](deref((<module.types.List__Set__string?> result)._vector)))
+        promise.cPromise.setValue(make_unique[vector[cset[string]]](deref((<module.types.List__Set__string?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_nested_map_argument(
     object self,
@@ -2148,7 +2148,7 @@ async def SimpleService_get_union_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cset[int32_t]](deref((<module.types.Set__i32?> result)._set)))
+        promise.cPromise.setValue(make_unique[cset[int32_t]](deref((<module.types.Set__i32?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_get_keys(
     object self,
@@ -2195,7 +2195,7 @@ async def SimpleService_get_keys_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cset[string]](deref((<module.types.Set__string?> result)._set)))
+        promise.cPromise.setValue(make_unique[cset[string]](deref((<module.types.Set__string?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_lookup_double(
     object self,
@@ -2334,7 +2334,7 @@ async def SimpleService_contain_binary_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[cset[string]](deref((<module.types.Set__binary?> result)._set)))
+        promise.cPromise.setValue(make_unique[cset[string]](deref((<module.types.Set__binary?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_contain_enum(
     object self,
@@ -2381,7 +2381,7 @@ async def SimpleService_contain_enum_coro(
             repr(ex).encode('UTF-8')
         ))
     else:
-        promise.cPromise.setValue(make_unique[vector[module.types.cAnEnum]](deref((<module.types.List__AnEnum?> result)._vector)))
+        promise.cPromise.setValue(make_unique[vector[module.types.cAnEnum]](deref((<module.types.List__AnEnum?> result)._cpp_obj)))
 
 cdef api void call_cy_DerivedService_get_six(
     object self,

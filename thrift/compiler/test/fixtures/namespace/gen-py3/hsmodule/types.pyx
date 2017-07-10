@@ -35,32 +35,32 @@ cdef class HsFoo(thrift.py3.types.Struct):
         HsFoo self,
         MyInt=None
     ):
-        self.c_HsFoo = make_shared[cHsFoo]()
+        self._cpp_obj = make_shared[cHsFoo]()
 
         inst = self
         if MyInt is not None:
-            deref(inst.c_HsFoo).MyInt = MyInt
-            deref(inst.c_HsFoo).__isset.MyInt = True
+            deref(inst._cpp_obj).MyInt = MyInt
+            deref(inst._cpp_obj).__isset.MyInt = True
 
 
     cdef bytes _serialize(HsFoo self, proto):
         cdef string c_str
         if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cHsFoo](deref(self.c_HsFoo.get()), &c_str)
+            serializer.CompactSerialize[cHsFoo](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cHsFoo](deref(self.c_HsFoo.get()), &c_str)
+            serializer.BinarySerialize[cHsFoo](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cHsFoo](deref(self.c_HsFoo.get()), &c_str)
+            serializer.JSONSerialize[cHsFoo](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
     cdef uint32_t _deserialize(HsFoo self, const IOBuf* buf, proto):
         cdef uint32_t needed
         if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cHsFoo](buf, deref(self.c_HsFoo.get()))
+            needed = serializer.CompactDeserialize[cHsFoo](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cHsFoo](buf, deref(self.c_HsFoo.get()))
+            needed = serializer.BinaryDeserialize[cHsFoo](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cHsFoo](buf, deref(self.c_HsFoo.get()))
+            needed = serializer.JSONDeserialize[cHsFoo](buf, deref(self._cpp_obj.get()))
         return needed
 
     def __reduce__(self):
@@ -78,19 +78,19 @@ cdef class HsFoo(thrift.py3.types.Struct):
             return self
 
         inst = <HsFoo>HsFoo.__new__(HsFoo)
-        inst.c_HsFoo = make_shared[cHsFoo](deref(self.c_HsFoo))
+        inst._cpp_obj = make_shared[cHsFoo](deref(self._cpp_obj))
         cdef HsFoo defaults = HsFoo_defaults
 
         # Convert None's to default value.
         if MyInt is None:
-            deref(inst.c_HsFoo).MyInt = deref(defaults.c_HsFoo).MyInt
-            deref(inst.c_HsFoo).__isset.MyInt = False
+            deref(inst._cpp_obj).MyInt = deref(defaults._cpp_obj).MyInt
+            deref(inst._cpp_obj).__isset.MyInt = False
         if MyInt is NOTSET:
             MyInt = None
 
         if MyInt is not None:
-            deref(inst.c_HsFoo).MyInt = MyInt
-            deref(inst.c_HsFoo).__isset.MyInt = True
+            deref(inst._cpp_obj).MyInt = MyInt
+            deref(inst._cpp_obj).__isset.MyInt = True
 
         return inst
 
@@ -98,20 +98,20 @@ cdef class HsFoo(thrift.py3.types.Struct):
         yield 'MyInt', self.MyInt
 
     def __bool__(self):
-        return deref(self.c_HsFoo).__isset.MyInt
+        return deref(self._cpp_obj).__isset.MyInt
 
     @staticmethod
-    cdef create(shared_ptr[cHsFoo] c_HsFoo):
+    cdef create(shared_ptr[cHsFoo] cpp_obj):
         inst = <HsFoo>HsFoo.__new__(HsFoo)
-        inst.c_HsFoo = c_HsFoo
+        inst._cpp_obj = cpp_obj
         return inst
 
     @property
     def MyInt(self):
-        if not deref(self.c_HsFoo).__isset.MyInt:
+        if not deref(self._cpp_obj).__isset.MyInt:
             return None
 
-        return self.c_HsFoo.get().MyInt
+        return self._cpp_obj.get().MyInt
 
 
     def __richcmp__(self, other, op):
@@ -126,8 +126,8 @@ cdef class HsFoo(thrift.py3.types.Struct):
             else:         # different types are always notequal
                 return True
 
-        cdef cHsFoo cself = deref((<HsFoo>self).c_HsFoo)
-        cdef cHsFoo cother = deref((<HsFoo>other).c_HsFoo)
+        cdef cHsFoo cself = deref((<HsFoo>self)._cpp_obj)
+        cdef cHsFoo cother = deref((<HsFoo>other)._cpp_obj)
         cdef cbool cmp = cself == cother
         if cop == 2:
             return cmp

@@ -36,16 +36,16 @@ key, include the parallel CythonPythonToCppKey file instead.
 }}{{#type:binary?}}item{{/type:binary?}}{{!
 }}{{#type:struct}}deref((<{{!
   }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
-  }}{{struct:name}}> item).c_{{struct:name}}){{!
+  }}{{struct:name}}> item)._cpp_obj){{!
 }}{{/type:struct}}{{!
-}}{{#type:list?}}deref({{type:flat_name}}(item)._vector.get()){{/type:list?}}{{!
+}}{{#type:list?}}deref({{type:flat_name}}(item)._cpp_obj.get()){{/type:list?}}{{!
 }}{{#type:set?}}c{{#type:unordered?}}u{{/type:unordered?}}set[{{!
   }}{{#type:setElemType}}{{> types/CythonCppType}}{{/type:setElemType}}{{!
-  }}](deref({{type:flat_name}}(item)._set.get())){{/type:set?}}{{!
+  }}](deref({{type:flat_name}}(item)._cpp_obj.get())){{/type:set?}}{{!
 }}{{#type:map?}}c{{#type:unordered?}}u{{/type:unordered?}}map[{{!
   }}{{#type:keyType}}{{> types/CythonCppType}}{{/type:keyType}},{{!
   }}{{#type:valueType}}{{> types/CythonCppType}}{{/type:valueType}}{{!
-  }}](deref({{type:flat_name}}(item)._map.get())){{/type:map?}}{{!
+  }}](deref({{type:flat_name}}(item)._cpp_obj.get())){{/type:map?}}{{!
 }}{{#type:enum}}{{!
   }}<{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
   }}c{{enum:name}}> {{!

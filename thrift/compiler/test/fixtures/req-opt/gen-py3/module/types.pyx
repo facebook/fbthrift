@@ -38,44 +38,44 @@ cdef class Foo(thrift.py3.types.Struct):
         myBools=None,
         myNumbers=None
     ):
-        self.c_Foo = make_shared[cFoo]()
+        self._cpp_obj = make_shared[cFoo]()
 
         inst = self
         if myInteger is not None:
-            deref(inst.c_Foo).myInteger = myInteger
+            deref(inst._cpp_obj).myInteger = myInteger
         if myString is not None:
-            deref(inst.c_Foo).myString = myString.encode('UTF-8')
-            deref(inst.c_Foo).__isset.myString = True
+            deref(inst._cpp_obj).myString = myString.encode('UTF-8')
+            deref(inst._cpp_obj).__isset.myString = True
 
         cdef List__bool _myBools
         if myBools is not None:
             _myBools = List__bool(myBools)
-            deref(inst.c_Foo).myBools = deref(_myBools._vector)
-            deref(inst.c_Foo).__isset.myBools = True
+            deref(inst._cpp_obj).myBools = deref(_myBools._cpp_obj)
+            deref(inst._cpp_obj).__isset.myBools = True
 
         cdef List__i32 _myNumbers
         if myNumbers is not None:
             _myNumbers = List__i32(myNumbers)
-            deref(inst.c_Foo).myNumbers = deref(_myNumbers._vector)
+            deref(inst._cpp_obj).myNumbers = deref(_myNumbers._cpp_obj)
 
     cdef bytes _serialize(Foo self, proto):
         cdef string c_str
         if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cFoo](deref(self.c_Foo.get()), &c_str)
+            serializer.CompactSerialize[cFoo](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cFoo](deref(self.c_Foo.get()), &c_str)
+            serializer.BinarySerialize[cFoo](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cFoo](deref(self.c_Foo.get()), &c_str)
+            serializer.JSONSerialize[cFoo](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
     cdef uint32_t _deserialize(Foo self, const IOBuf* buf, proto):
         cdef uint32_t needed
         if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cFoo](buf, deref(self.c_Foo.get()))
+            needed = serializer.CompactDeserialize[cFoo](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cFoo](buf, deref(self.c_Foo.get()))
+            needed = serializer.BinaryDeserialize[cFoo](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cFoo](buf, deref(self.c_Foo.get()))
+            needed = serializer.JSONDeserialize[cFoo](buf, deref(self._cpp_obj.get()))
         return needed
 
     def __reduce__(self):
@@ -102,45 +102,45 @@ cdef class Foo(thrift.py3.types.Struct):
             return self
 
         inst = <Foo>Foo.__new__(Foo)
-        inst.c_Foo = make_shared[cFoo](deref(self.c_Foo))
+        inst._cpp_obj = make_shared[cFoo](deref(self._cpp_obj))
         cdef Foo defaults = Foo_defaults
 
         # Convert None's to default value.
         if myInteger is None:
-            deref(inst.c_Foo).myInteger = deref(defaults.c_Foo).myInteger
+            deref(inst._cpp_obj).myInteger = deref(defaults._cpp_obj).myInteger
         if myInteger is NOTSET:
             myInteger = None
         if myString is None:
-            deref(inst.c_Foo).myString = deref(defaults.c_Foo).myString
-            deref(inst.c_Foo).__isset.myString = False
+            deref(inst._cpp_obj).myString = deref(defaults._cpp_obj).myString
+            deref(inst._cpp_obj).__isset.myString = False
         if myString is NOTSET:
             myString = None
         if myBools is None:
-            deref(inst.c_Foo).myBools = deref(defaults.c_Foo).myBools
-            deref(inst.c_Foo).__isset.myBools = False
+            deref(inst._cpp_obj).myBools = deref(defaults._cpp_obj).myBools
+            deref(inst._cpp_obj).__isset.myBools = False
         if myBools is NOTSET:
             myBools = None
         if myNumbers is None:
-            deref(inst.c_Foo).myNumbers = deref(defaults.c_Foo).myNumbers
+            deref(inst._cpp_obj).myNumbers = deref(defaults._cpp_obj).myNumbers
         if myNumbers is NOTSET:
             myNumbers = None
 
         if myInteger is not None:
-            deref(inst.c_Foo).myInteger = myInteger
+            deref(inst._cpp_obj).myInteger = myInteger
         if myString is not None:
-            deref(inst.c_Foo).myString = myString.encode('UTF-8')
-            deref(inst.c_Foo).__isset.myString = True
+            deref(inst._cpp_obj).myString = myString.encode('UTF-8')
+            deref(inst._cpp_obj).__isset.myString = True
 
         cdef List__bool _myBools
         if myBools is not None:
             _myBools = List__bool(myBools)
-            deref(inst.c_Foo).myBools = deref(_myBools._vector)
-            deref(inst.c_Foo).__isset.myBools = True
+            deref(inst._cpp_obj).myBools = deref(_myBools._cpp_obj)
+            deref(inst._cpp_obj).__isset.myBools = True
 
         cdef List__i32 _myNumbers
         if myNumbers is not None:
             _myNumbers = List__i32(myNumbers)
-            deref(inst.c_Foo).myNumbers = deref(_myNumbers._vector)
+            deref(inst._cpp_obj).myNumbers = deref(_myNumbers._cpp_obj)
         return inst
 
     def __iter__(self):
@@ -150,35 +150,35 @@ cdef class Foo(thrift.py3.types.Struct):
         yield 'myNumbers', self.myNumbers
 
     def __bool__(self):
-        return True or deref(self.c_Foo).__isset.myString or deref(self.c_Foo).__isset.myBools or True
+        return True or deref(self._cpp_obj).__isset.myString or deref(self._cpp_obj).__isset.myBools or True
 
     @staticmethod
-    cdef create(shared_ptr[cFoo] c_Foo):
+    cdef create(shared_ptr[cFoo] cpp_obj):
         inst = <Foo>Foo.__new__(Foo)
-        inst.c_Foo = c_Foo
+        inst._cpp_obj = cpp_obj
         return inst
 
     @property
     def myInteger(self):
 
-        return self.c_Foo.get().myInteger
+        return self._cpp_obj.get().myInteger
 
     @property
     def myString(self):
-        if not deref(self.c_Foo).__isset.myString:
+        if not deref(self._cpp_obj).__isset.myString:
             return None
 
-        return self.c_Foo.get().myString.decode('UTF-8')
+        return self._cpp_obj.get().myString.decode('UTF-8')
 
     @property
     def myBools(self):
-        if not deref(self.c_Foo).__isset.myBools:
+        if not deref(self._cpp_obj).__isset.myBools:
             return None
 
         cdef shared_ptr[vector[cbool]] item
         if self.__myBools is None:
             item = make_shared[vector[cbool]](
-                deref(self.c_Foo).myBools)
+                deref(self._cpp_obj).myBools)
             self.__myBools = List__bool.create(item)
         return self.__myBools
         
@@ -189,7 +189,7 @@ cdef class Foo(thrift.py3.types.Struct):
         cdef shared_ptr[vector[int32_t]] item
         if self.__myNumbers is None:
             item = make_shared[vector[int32_t]](
-                deref(self.c_Foo).myNumbers)
+                deref(self._cpp_obj).myNumbers)
             self.__myNumbers = List__i32.create(item)
         return self.__myNumbers
         
@@ -207,8 +207,8 @@ cdef class Foo(thrift.py3.types.Struct):
             else:         # different types are always notequal
                 return True
 
-        cdef cFoo cself = deref((<Foo>self).c_Foo)
-        cdef cFoo cother = deref((<Foo>other).c_Foo)
+        cdef cFoo cself = deref((<Foo>self)._cpp_obj)
+        cdef cFoo cother = deref((<Foo>other)._cpp_obj)
         cdef cbool cmp = cself == cother
         if cop == 2:
             return cmp
@@ -234,18 +234,18 @@ Foo_defaults = Foo()
 cdef class List__bool:
     def __init__(self, items=None):
         if isinstance(items, List__bool):
-            self._vector = (<List__bool> items)._vector
+            self._cpp_obj = (<List__bool> items)._cpp_obj
         else:
-          self._vector = make_shared[vector[cbool]]()
+          self._cpp_obj = make_shared[vector[cbool]]()
           if items:
               for item in items:
-                  deref(self._vector).push_back(item)
+                  deref(self._cpp_obj).push_back(item)
 
     @staticmethod
     cdef create(
             shared_ptr[vector[cbool]] c_items):
         inst = <List__bool>List__bool.__new__(List__bool)
-        inst._vector = c_items
+        inst._cpp_obj = c_items
         return inst
 
     def __getitem__(self, int index):
@@ -259,11 +259,11 @@ cdef class List__bool:
         if index < 0:
             index = size - index
         cdef cbool citem = (
-            deref(self._vector.get())[index])
+            deref(self._cpp_obj.get())[index])
         return citem
 
     def __len__(self):
-        return deref(self._vector).size()
+        return deref(self._cpp_obj).size()
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -290,14 +290,14 @@ cdef class List__bool:
             return False
         cdef cbool citem = item
         cdef vector[cbool] vec = deref(
-            self._vector.get())
+            self._cpp_obj.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
         if not self:
             raise StopIteration
         cdef cbool citem
-        for citem in deref(self._vector):
+        for citem in deref(self._cpp_obj):
             yield citem
 
     def __repr__(self):
@@ -310,7 +310,7 @@ cdef class List__bool:
             raise StopIteration
         cdef cbool citem
         cdef vector[cbool] vec = deref(
-            self._vector.get())
+            self._cpp_obj.get())
         cdef vector[cbool].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
@@ -321,7 +321,7 @@ cdef class List__bool:
         if not self:
             raise ValueError(f'{item} is not in list')
         cdef cbool citem = item
-        cdef vector[cbool] vec = deref(self._vector.get())
+        cdef vector[cbool] vec = deref(self._cpp_obj.get())
         cdef vector[cbool].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
@@ -331,7 +331,7 @@ cdef class List__bool:
         if not self:
             return 0
         cdef cbool citem = item
-        cdef vector[cbool] vec = deref(self._vector.get())
+        cdef vector[cbool] vec = deref(self._cpp_obj.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
@@ -340,18 +340,18 @@ Sequence.register(List__bool)
 cdef class List__i32:
     def __init__(self, items=None):
         if isinstance(items, List__i32):
-            self._vector = (<List__i32> items)._vector
+            self._cpp_obj = (<List__i32> items)._cpp_obj
         else:
-          self._vector = make_shared[vector[int32_t]]()
+          self._cpp_obj = make_shared[vector[int32_t]]()
           if items:
               for item in items:
-                  deref(self._vector).push_back(item)
+                  deref(self._cpp_obj).push_back(item)
 
     @staticmethod
     cdef create(
             shared_ptr[vector[int32_t]] c_items):
         inst = <List__i32>List__i32.__new__(List__i32)
-        inst._vector = c_items
+        inst._cpp_obj = c_items
         return inst
 
     def __getitem__(self, int index):
@@ -365,11 +365,11 @@ cdef class List__i32:
         if index < 0:
             index = size - index
         cdef int32_t citem = (
-            deref(self._vector.get())[index])
+            deref(self._cpp_obj.get())[index])
         return citem
 
     def __len__(self):
-        return deref(self._vector).size()
+        return deref(self._cpp_obj).size()
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -396,14 +396,14 @@ cdef class List__i32:
             return False
         cdef int32_t citem = item
         cdef vector[int32_t] vec = deref(
-            self._vector.get())
+            self._cpp_obj.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
         if not self:
             raise StopIteration
         cdef int32_t citem
-        for citem in deref(self._vector):
+        for citem in deref(self._cpp_obj):
             yield citem
 
     def __repr__(self):
@@ -416,7 +416,7 @@ cdef class List__i32:
             raise StopIteration
         cdef int32_t citem
         cdef vector[int32_t] vec = deref(
-            self._vector.get())
+            self._cpp_obj.get())
         cdef vector[int32_t].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
@@ -427,7 +427,7 @@ cdef class List__i32:
         if not self:
             raise ValueError(f'{item} is not in list')
         cdef int32_t citem = item
-        cdef vector[int32_t] vec = deref(self._vector.get())
+        cdef vector[int32_t] vec = deref(self._cpp_obj.get())
         cdef vector[int32_t].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
@@ -437,7 +437,7 @@ cdef class List__i32:
         if not self:
             return 0
         cdef int32_t citem = item
-        cdef vector[int32_t] vec = deref(self._vector.get())
+        cdef vector[int32_t] vec = deref(self._cpp_obj.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 

@@ -58,10 +58,10 @@ cdef class Banal(__Error)
 cdef class Banal(__Error):
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cBanal] c_Banal
+    cdef shared_ptr[cBanal] _cpp_obj
 
     @staticmethod
-    cdef create(shared_ptr[cBanal] c_Banal)
+    cdef create(shared_ptr[cBanal])
 
 # Forward Definition of the cython struct
 cdef class Fiery(__Error)
@@ -69,10 +69,10 @@ cdef class Fiery(__Error)
 cdef class Fiery(__Error):
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cFiery] c_Fiery
+    cdef shared_ptr[cFiery] _cpp_obj
 
     @staticmethod
-    cdef create(shared_ptr[cFiery] c_Fiery)
+    cdef create(shared_ptr[cFiery])
 
 
 

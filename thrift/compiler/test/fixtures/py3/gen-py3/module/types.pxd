@@ -103,10 +103,10 @@ cdef class SimpleException(__Error)
 cdef class SimpleException(__Error):
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cSimpleException] c_SimpleException
+    cdef shared_ptr[cSimpleException] _cpp_obj
 
     @staticmethod
-    cdef create(shared_ptr[cSimpleException] c_SimpleException)
+    cdef create(shared_ptr[cSimpleException])
 
 # Forward Definition of the cython struct
 cdef class SimpleStruct(thrift.py3.types.Struct)
@@ -114,10 +114,10 @@ cdef class SimpleStruct(thrift.py3.types.Struct)
 cdef class SimpleStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cSimpleStruct] c_SimpleStruct
+    cdef shared_ptr[cSimpleStruct] _cpp_obj
 
     @staticmethod
-    cdef create(shared_ptr[cSimpleStruct] c_SimpleStruct)
+    cdef create(shared_ptr[cSimpleStruct])
 
 # Forward Definition of the cython struct
 cdef class ComplexStruct(thrift.py3.types.Struct)
@@ -125,172 +125,172 @@ cdef class ComplexStruct(thrift.py3.types.Struct)
 cdef class ComplexStruct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cComplexStruct] c_ComplexStruct
+    cdef shared_ptr[cComplexStruct] _cpp_obj
     cdef SimpleStruct __structOne
     cdef SimpleStruct __structTwo
 
     @staticmethod
-    cdef create(shared_ptr[cComplexStruct] c_ComplexStruct)
+    cdef create(shared_ptr[cComplexStruct])
 
 
 cdef class List__i16:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[vector[int16_t]] _vector
+    cdef shared_ptr[vector[int16_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[int16_t]])
 
 cdef class List__i32:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[vector[int32_t]] _vector
+    cdef shared_ptr[vector[int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[int32_t]])
 
 cdef class List__i64:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[vector[int64_t]] _vector
+    cdef shared_ptr[vector[int64_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[int64_t]])
 
 cdef class List__string:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[vector[string]] _vector
+    cdef shared_ptr[vector[string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[string]])
 
 cdef class List__SimpleStruct:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[vector[cSimpleStruct]] _vector
+    cdef shared_ptr[vector[cSimpleStruct]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cSimpleStruct]])
 
 cdef class Set__i32:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cset[int32_t]] _set
+    cdef shared_ptr[cset[int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cset[int32_t]])
 
 cdef class Set__string:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cset[string]] _set
+    cdef shared_ptr[cset[string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cset[string]])
 
 cdef class Map__string_string:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cmap[string,string]] _map
+    cdef shared_ptr[cmap[string,string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[string,string]])
 
 cdef class Map__string_SimpleStruct:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cmap[string,cSimpleStruct]] _map
+    cdef shared_ptr[cmap[string,cSimpleStruct]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[string,cSimpleStruct]])
 
 cdef class Map__string_i16:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cmap[string,int16_t]] _map
+    cdef shared_ptr[cmap[string,int16_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[string,int16_t]])
 
 cdef class List__List__i32:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[vector[vector[int32_t]]] _vector
+    cdef shared_ptr[vector[vector[int32_t]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[vector[int32_t]]])
 
 cdef class Map__string_i32:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cmap[string,int32_t]] _map
+    cdef shared_ptr[cmap[string,int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[string,int32_t]])
 
 cdef class Map__string_Map__string_i32:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cmap[string,cmap[string,int32_t]]] _map
+    cdef shared_ptr[cmap[string,cmap[string,int32_t]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[string,cmap[string,int32_t]]])
 
 cdef class List__Set__string:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[vector[cset[string]]] _vector
+    cdef shared_ptr[vector[cset[string]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cset[string]]])
 
 cdef class Map__string_List__SimpleStruct:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cmap[string,vector[cSimpleStruct]]] _map
+    cdef shared_ptr[cmap[string,vector[cSimpleStruct]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[string,vector[cSimpleStruct]]])
 
 cdef class List__List__string:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[vector[vector[string]]] _vector
+    cdef shared_ptr[vector[vector[string]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[vector[string]]])
 
 cdef class List__Set__i32:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[vector[cset[int32_t]]] _vector
+    cdef shared_ptr[vector[cset[int32_t]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cset[int32_t]]])
 
 cdef class List__Map__string_string:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[vector[cmap[string,string]]] _vector
+    cdef shared_ptr[vector[cmap[string,string]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cmap[string,string]]])
 
 cdef class List__binary:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[vector[string]] _vector
+    cdef shared_ptr[vector[string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[string]])
 
 cdef class Set__binary:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cset[string]] _set
+    cdef shared_ptr[cset[string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cset[string]])
 
 cdef class List__AnEnum:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[vector[cAnEnum]] _vector
+    cdef shared_ptr[vector[cAnEnum]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cAnEnum]])
 
 cdef class Map__i32_double:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cmap[int32_t,double]] _map
+    cdef shared_ptr[cmap[int32_t,double]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,double]])
 
 cdef class List__Map__i32_double:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[vector[cmap[int32_t,double]]] _vector
+    cdef shared_ptr[vector[cmap[int32_t,double]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cmap[int32_t,double]]])
 

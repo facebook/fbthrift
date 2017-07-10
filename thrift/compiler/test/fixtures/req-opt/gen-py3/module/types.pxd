@@ -51,25 +51,25 @@ cdef class Foo(thrift.py3.types.Struct)
 cdef class Foo(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cFoo] c_Foo
+    cdef shared_ptr[cFoo] _cpp_obj
     cdef List__bool __myBools
     cdef List__i32 __myNumbers
 
     @staticmethod
-    cdef create(shared_ptr[cFoo] c_Foo)
+    cdef create(shared_ptr[cFoo])
 
 
 cdef class List__bool:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[vector[cbool]] _vector
+    cdef shared_ptr[vector[cbool]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cbool]])
 
 cdef class List__i32:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[vector[int32_t]] _vector
+    cdef shared_ptr[vector[int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[int32_t]])
 

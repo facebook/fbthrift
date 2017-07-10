@@ -21,39 +21,39 @@ on a struct from an existing struct passed in by the user.
 
 }}{{#type:bool?}}{{!
 }}if {{field:name}} is not None:
-    deref(inst.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
+    deref(inst._cpp_obj).{{field:name}} = {{field:name}}{{!
 }}{{/type:bool?}}{{!
 }}{{#type:byte?}}{{!
 }}if {{field:name}} is not None:
-    deref(inst.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
+    deref(inst._cpp_obj).{{field:name}} = {{field:name}}{{!
 }}{{/type:byte?}}{{!
 }}{{#type:i16?}}{{!
 }}if {{field:name}} is not None:
-    deref(inst.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
+    deref(inst._cpp_obj).{{field:name}} = {{field:name}}{{!
 }}{{/type:i16?}}{{!
 }}{{#type:i32?}}{{!
 }}if {{field:name}} is not None:
-    deref(inst.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
+    deref(inst._cpp_obj).{{field:name}} = {{field:name}}{{!
 }}{{/type:i32?}}{{!
 }}{{#type:i64?}}{{!
 }}if {{field:name}} is not None:
-    deref(inst.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
+    deref(inst._cpp_obj).{{field:name}} = {{field:name}}{{!
 }}{{/type:i64?}}{{!
 }}{{#type:double?}}{{!
 }}if {{field:name}} is not None:
-    deref(inst.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
+    deref(inst._cpp_obj).{{field:name}} = {{field:name}}{{!
 }}{{/type:double?}}{{!
 }}{{#type:float?}}{{!
 }}if {{field:name}} is not None:
-    deref(inst.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
+    deref(inst._cpp_obj).{{field:name}} = {{field:name}}{{!
 }}{{/type:float?}}{{!
 }}{{#type:string?}}{{!
 }}if {{field:name}} is not None:
-    deref(inst.c_{{struct:name}}).{{field:name}} = {{field:name}}.encode('UTF-8'){{!
+    deref(inst._cpp_obj).{{field:name}} = {{field:name}}.encode('UTF-8'){{!
 }}{{/type:string?}}{{!
 }}{{#type:binary?}}{{!
 }}if {{field:name}} is not None:
-    deref(inst.c_{{struct:name}}).{{field:name}} = {{field:name}}{{!
+    deref(inst._cpp_obj).{{field:name}} = {{field:name}}{{!
 }}{{/type:binary?}}{{!
 }}{{#type:struct?}}{{!
   }}cdef shared_ptr[{{!
@@ -64,30 +64,30 @@ if {{field:name}} is not None:
     __{{field:name}} = (
     <{{#type:struct}}{{#type:externalProgram?}}{{> common/ModulePath}}.{{!
         }}{{/type:externalProgram?}}{{struct:name}}{{/type:struct}}?> {{!
-    }}{{field:name}}).c_{{#field:type}}{{type:name}}{{/field:type}}
-    deref(inst.c_{{struct:name}}).{{field:name}} = deref(__{{field:name}}.get()){{!
+    }}{{field:name}})._cpp_obj
+    deref(inst._cpp_obj).{{field:name}} = deref(__{{field:name}}.get()){{!
 }}{{/type:struct?}}{{!
 }}{{#type:list?}}{{!
 }}cdef {{type:flat_name}} _{{field:name}}
 if {{field:name}} is not None:
     _{{field:name}} = {{type:flat_name}}({{field:name}})
-    deref(inst.c_{{struct:name}}).{{field:name}} = deref(_{{field:name}}._vector){{!
+    deref(inst._cpp_obj).{{field:name}} = deref(_{{field:name}}._cpp_obj){{!
 }}{{/type:list?}}{{!
 }}{{#type:set?}}{{!
 }}cdef {{type:flat_name}} _{{field:name}}
 if {{field:name}} is not None:
     _{{field:name}} = {{type:flat_name}}({{field:name}})
-    deref(inst.c_{{struct:name}}).{{field:name}} = deref(_{{field:name}}._set){{!
+    deref(inst._cpp_obj).{{field:name}} = deref(_{{field:name}}._cpp_obj){{!
 }}{{/type:set?}}{{!
 }}{{#type:map?}}{{!
 }}cdef {{type:flat_name}} _{{field:name}}
 if {{field:name}} is not None:
     _{{field:name}} = {{type:flat_name}}({{field:name}})
-    deref(inst.c_{{struct:name}}).{{field:name}} = deref(_{{field:name}}._map){{!
+    deref(inst._cpp_obj).{{field:name}} = deref(_{{field:name}}._cpp_obj){{!
 }}{{/type:map?}}{{!
 }}{{#type:enum?}}{{!
 }}if {{field:name}} is not None:
-    deref(inst.c_{{struct:name}}).{{field:name}} = {{#type:enum}}{{!
+    deref(inst._cpp_obj).{{field:name}} = {{#type:enum}}{{!
 }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
 }}{{enum:name}}{{/type:enum}}_to_cpp({{field:name}}){{!
 }}{{/type:enum?}}

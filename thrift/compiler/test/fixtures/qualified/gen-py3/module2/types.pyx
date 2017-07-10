@@ -40,42 +40,42 @@ cdef class Struct(thrift.py3.types.Struct):
         first=None,
         second=None
     ):
-        self.c_Struct = make_shared[cStruct]()
+        self._cpp_obj = make_shared[cStruct]()
 
         inst = self
         cdef shared_ptr[module0.types.cStruct] __first
         if first is not None:
             __first = (
-            <module0.types.Struct?> first).c_Struct
-            deref(inst.c_Struct).first = deref(__first.get())
-            deref(inst.c_Struct).__isset.first = True
+            <module0.types.Struct?> first)._cpp_obj
+            deref(inst._cpp_obj).first = deref(__first.get())
+            deref(inst._cpp_obj).__isset.first = True
 
         cdef shared_ptr[module1.types.cStruct] __second
         if second is not None:
             __second = (
-            <module1.types.Struct?> second).c_Struct
-            deref(inst.c_Struct).second = deref(__second.get())
-            deref(inst.c_Struct).__isset.second = True
+            <module1.types.Struct?> second)._cpp_obj
+            deref(inst._cpp_obj).second = deref(__second.get())
+            deref(inst._cpp_obj).__isset.second = True
 
 
     cdef bytes _serialize(Struct self, proto):
         cdef string c_str
         if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cStruct](deref(self.c_Struct.get()), &c_str)
+            serializer.CompactSerialize[cStruct](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cStruct](deref(self.c_Struct.get()), &c_str)
+            serializer.BinarySerialize[cStruct](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cStruct](deref(self.c_Struct.get()), &c_str)
+            serializer.JSONSerialize[cStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
     cdef uint32_t _deserialize(Struct self, const IOBuf* buf, proto):
         cdef uint32_t needed
         if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cStruct](buf, deref(self.c_Struct.get()))
+            needed = serializer.CompactDeserialize[cStruct](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cStruct](buf, deref(self.c_Struct.get()))
+            needed = serializer.BinaryDeserialize[cStruct](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cStruct](buf, deref(self.c_Struct.get()))
+            needed = serializer.JSONDeserialize[cStruct](buf, deref(self._cpp_obj.get()))
         return needed
 
     def __reduce__(self):
@@ -96,34 +96,34 @@ cdef class Struct(thrift.py3.types.Struct):
             return self
 
         inst = <Struct>Struct.__new__(Struct)
-        inst.c_Struct = make_shared[cStruct](deref(self.c_Struct))
+        inst._cpp_obj = make_shared[cStruct](deref(self._cpp_obj))
         cdef Struct defaults = Struct_defaults
 
         # Convert None's to default value.
         if first is None:
-            deref(inst.c_Struct).first = deref(defaults.c_Struct).first
-            deref(inst.c_Struct).__isset.first = False
+            deref(inst._cpp_obj).first = deref(defaults._cpp_obj).first
+            deref(inst._cpp_obj).__isset.first = False
         if first is NOTSET:
             first = None
         if second is None:
-            deref(inst.c_Struct).second = deref(defaults.c_Struct).second
-            deref(inst.c_Struct).__isset.second = False
+            deref(inst._cpp_obj).second = deref(defaults._cpp_obj).second
+            deref(inst._cpp_obj).__isset.second = False
         if second is NOTSET:
             second = None
 
         cdef shared_ptr[module0.types.cStruct] __first
         if first is not None:
             __first = (
-            <module0.types.Struct?> first).c_Struct
-            deref(inst.c_Struct).first = deref(__first.get())
-            deref(inst.c_Struct).__isset.first = True
+            <module0.types.Struct?> first)._cpp_obj
+            deref(inst._cpp_obj).first = deref(__first.get())
+            deref(inst._cpp_obj).__isset.first = True
 
         cdef shared_ptr[module1.types.cStruct] __second
         if second is not None:
             __second = (
-            <module1.types.Struct?> second).c_Struct
-            deref(inst.c_Struct).second = deref(__second.get())
-            deref(inst.c_Struct).__isset.second = True
+            <module1.types.Struct?> second)._cpp_obj
+            deref(inst._cpp_obj).second = deref(__second.get())
+            deref(inst._cpp_obj).__isset.second = True
 
         return inst
 
@@ -132,36 +132,36 @@ cdef class Struct(thrift.py3.types.Struct):
         yield 'second', self.second
 
     def __bool__(self):
-        return deref(self.c_Struct).__isset.first or deref(self.c_Struct).__isset.second
+        return deref(self._cpp_obj).__isset.first or deref(self._cpp_obj).__isset.second
 
     @staticmethod
-    cdef create(shared_ptr[cStruct] c_Struct):
+    cdef create(shared_ptr[cStruct] cpp_obj):
         inst = <Struct>Struct.__new__(Struct)
-        inst.c_Struct = c_Struct
+        inst._cpp_obj = cpp_obj
         return inst
 
     @property
     def first(self):
-        if not deref(self.c_Struct).__isset.first:
+        if not deref(self._cpp_obj).__isset.first:
             return None
 
         cdef shared_ptr[module0.types.cStruct] item
         if self.__first is None:
             item = make_shared[module0.types.cStruct](
-                deref(self.c_Struct).first)
+                deref(self._cpp_obj).first)
             self.__first = module0.types.Struct.create(item)
         return self.__first
         
 
     @property
     def second(self):
-        if not deref(self.c_Struct).__isset.second:
+        if not deref(self._cpp_obj).__isset.second:
             return None
 
         cdef shared_ptr[module1.types.cStruct] item
         if self.__second is None:
             item = make_shared[module1.types.cStruct](
-                deref(self.c_Struct).second)
+                deref(self._cpp_obj).second)
             self.__second = module1.types.Struct.create(item)
         return self.__second
         
@@ -179,8 +179,8 @@ cdef class Struct(thrift.py3.types.Struct):
             else:         # different types are always notequal
                 return True
 
-        cdef cStruct cself = deref((<Struct>self).c_Struct)
-        cdef cStruct cother = deref((<Struct>other).c_Struct)
+        cdef cStruct cself = deref((<Struct>self)._cpp_obj)
+        cdef cStruct cother = deref((<Struct>other)._cpp_obj)
         cdef cbool cmp = cself == cother
         if cop == 2:
             return cmp
@@ -208,39 +208,39 @@ cdef class BigStruct(thrift.py3.types.Struct):
         s=None,
         id=None
     ):
-        self.c_BigStruct = make_shared[cBigStruct]()
+        self._cpp_obj = make_shared[cBigStruct]()
 
         inst = self
         cdef shared_ptr[cStruct] __s
         if s is not None:
             __s = (
-            <Struct?> s).c_Struct
-            deref(inst.c_BigStruct).s = deref(__s.get())
-            deref(inst.c_BigStruct).__isset.s = True
+            <Struct?> s)._cpp_obj
+            deref(inst._cpp_obj).s = deref(__s.get())
+            deref(inst._cpp_obj).__isset.s = True
 
         if id is not None:
-            deref(inst.c_BigStruct).id = id
-            deref(inst.c_BigStruct).__isset.id = True
+            deref(inst._cpp_obj).id = id
+            deref(inst._cpp_obj).__isset.id = True
 
 
     cdef bytes _serialize(BigStruct self, proto):
         cdef string c_str
         if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cBigStruct](deref(self.c_BigStruct.get()), &c_str)
+            serializer.CompactSerialize[cBigStruct](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cBigStruct](deref(self.c_BigStruct.get()), &c_str)
+            serializer.BinarySerialize[cBigStruct](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cBigStruct](deref(self.c_BigStruct.get()), &c_str)
+            serializer.JSONSerialize[cBigStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
     cdef uint32_t _deserialize(BigStruct self, const IOBuf* buf, proto):
         cdef uint32_t needed
         if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cBigStruct](buf, deref(self.c_BigStruct.get()))
+            needed = serializer.CompactDeserialize[cBigStruct](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cBigStruct](buf, deref(self.c_BigStruct.get()))
+            needed = serializer.BinaryDeserialize[cBigStruct](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cBigStruct](buf, deref(self.c_BigStruct.get()))
+            needed = serializer.JSONDeserialize[cBigStruct](buf, deref(self._cpp_obj.get()))
         return needed
 
     def __reduce__(self):
@@ -261,31 +261,31 @@ cdef class BigStruct(thrift.py3.types.Struct):
             return self
 
         inst = <BigStruct>BigStruct.__new__(BigStruct)
-        inst.c_BigStruct = make_shared[cBigStruct](deref(self.c_BigStruct))
+        inst._cpp_obj = make_shared[cBigStruct](deref(self._cpp_obj))
         cdef BigStruct defaults = BigStruct_defaults
 
         # Convert None's to default value.
         if s is None:
-            deref(inst.c_BigStruct).s = deref(defaults.c_BigStruct).s
-            deref(inst.c_BigStruct).__isset.s = False
+            deref(inst._cpp_obj).s = deref(defaults._cpp_obj).s
+            deref(inst._cpp_obj).__isset.s = False
         if s is NOTSET:
             s = None
         if id is None:
-            deref(inst.c_BigStruct).id = deref(defaults.c_BigStruct).id
-            deref(inst.c_BigStruct).__isset.id = False
+            deref(inst._cpp_obj).id = deref(defaults._cpp_obj).id
+            deref(inst._cpp_obj).__isset.id = False
         if id is NOTSET:
             id = None
 
         cdef shared_ptr[cStruct] __s
         if s is not None:
             __s = (
-            <Struct?> s).c_Struct
-            deref(inst.c_BigStruct).s = deref(__s.get())
-            deref(inst.c_BigStruct).__isset.s = True
+            <Struct?> s)._cpp_obj
+            deref(inst._cpp_obj).s = deref(__s.get())
+            deref(inst._cpp_obj).__isset.s = True
 
         if id is not None:
-            deref(inst.c_BigStruct).id = id
-            deref(inst.c_BigStruct).__isset.id = True
+            deref(inst._cpp_obj).id = id
+            deref(inst._cpp_obj).__isset.id = True
 
         return inst
 
@@ -294,33 +294,33 @@ cdef class BigStruct(thrift.py3.types.Struct):
         yield 'id', self.id
 
     def __bool__(self):
-        return deref(self.c_BigStruct).__isset.s or deref(self.c_BigStruct).__isset.id
+        return deref(self._cpp_obj).__isset.s or deref(self._cpp_obj).__isset.id
 
     @staticmethod
-    cdef create(shared_ptr[cBigStruct] c_BigStruct):
+    cdef create(shared_ptr[cBigStruct] cpp_obj):
         inst = <BigStruct>BigStruct.__new__(BigStruct)
-        inst.c_BigStruct = c_BigStruct
+        inst._cpp_obj = cpp_obj
         return inst
 
     @property
     def s(self):
-        if not deref(self.c_BigStruct).__isset.s:
+        if not deref(self._cpp_obj).__isset.s:
             return None
 
         cdef shared_ptr[cStruct] item
         if self.__s is None:
             item = make_shared[cStruct](
-                deref(self.c_BigStruct).s)
+                deref(self._cpp_obj).s)
             self.__s = Struct.create(item)
         return self.__s
         
 
     @property
     def id(self):
-        if not deref(self.c_BigStruct).__isset.id:
+        if not deref(self._cpp_obj).__isset.id:
             return None
 
-        return self.c_BigStruct.get().id
+        return self._cpp_obj.get().id
 
 
     def __richcmp__(self, other, op):
@@ -335,8 +335,8 @@ cdef class BigStruct(thrift.py3.types.Struct):
             else:         # different types are always notequal
                 return True
 
-        cdef cBigStruct cself = deref((<BigStruct>self).c_BigStruct)
-        cdef cBigStruct cother = deref((<BigStruct>other).c_BigStruct)
+        cdef cBigStruct cself = deref((<BigStruct>self)._cpp_obj)
+        cdef cBigStruct cother = deref((<BigStruct>other)._cpp_obj)
         cdef cbool cmp = cself == cother
         if cop == 2:
             return cmp

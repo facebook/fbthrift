@@ -112,10 +112,10 @@ cdef class Color(thrift.py3.types.Struct)
 cdef class Color(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cColor] c_Color
+    cdef shared_ptr[cColor] _cpp_obj
 
     @staticmethod
-    cdef create(shared_ptr[cColor] c_Color)
+    cdef create(shared_ptr[cColor])
 
 # Forward Definition of the cython struct
 cdef class Vehicle(thrift.py3.types.Struct)
@@ -123,11 +123,11 @@ cdef class Vehicle(thrift.py3.types.Struct)
 cdef class Vehicle(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cVehicle] c_Vehicle
+    cdef shared_ptr[cVehicle] _cpp_obj
     cdef Color __color
 
     @staticmethod
-    cdef create(shared_ptr[cVehicle] c_Vehicle)
+    cdef create(shared_ptr[cVehicle])
 
 # Forward Definition of the cython struct
 cdef class Person(thrift.py3.types.Struct)
@@ -135,34 +135,34 @@ cdef class Person(thrift.py3.types.Struct)
 cdef class Person(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cPerson] c_Person
+    cdef shared_ptr[cPerson] _cpp_obj
     cdef Color __favoriteColor
     cdef Set__PersonID __friends
     cdef Map__Animal_string __petNames
     cdef List__Vehicle __vehicles
 
     @staticmethod
-    cdef create(shared_ptr[cPerson] c_Person)
+    cdef create(shared_ptr[cPerson])
 
 
 cdef class Set__PersonID:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cset[int64_t]] _set
+    cdef shared_ptr[cset[int64_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cset[int64_t]])
 
 cdef class Map__Animal_string:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[cmap[cAnimal,string]] _map
+    cdef shared_ptr[cmap[cAnimal,string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[cAnimal,string]])
 
 cdef class List__Vehicle:
     cdef object __hash
     cdef object __weakref__
-    cdef shared_ptr[vector[cVehicle]] _vector
+    cdef shared_ptr[vector[cVehicle]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cVehicle]])
 

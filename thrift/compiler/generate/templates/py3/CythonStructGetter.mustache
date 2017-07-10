@@ -23,37 +23,37 @@ are special because we try to memoize their wrappers on the parent handler
 if they have been previously retrieved.
 
 }}{{#type:bool?}}{{!
-  }}return <pbool> self.c_{{struct:name}}.get().{{field:name}}{{!
+  }}return <pbool> self._cpp_obj.get().{{field:name}}{{!
 }}{{/type:bool?}}{{!
 }}{{#type:byte?}}{{!
-  }}return self.c_{{struct:name}}.get().{{field:name}}{{!
+  }}return self._cpp_obj.get().{{field:name}}{{!
 }}{{/type:byte?}}{{!
 }}{{#type:i16?}}{{!
-  }}return self.c_{{struct:name}}.get().{{field:name}}{{!
+  }}return self._cpp_obj.get().{{field:name}}{{!
 }}{{/type:i16?}}{{!
 }}{{#type:i32?}}{{!
-  }}return self.c_{{struct:name}}.get().{{field:name}}{{!
+  }}return self._cpp_obj.get().{{field:name}}{{!
 }}{{/type:i32?}}{{!
 }}{{#type:i64?}}{{!
-  }}return self.c_{{struct:name}}.get().{{field:name}}{{!
+  }}return self._cpp_obj.get().{{field:name}}{{!
 }}{{/type:i64?}}{{!
 }}{{#type:double?}}{{!
-  }}return self.c_{{struct:name}}.get().{{field:name}}{{!
+  }}return self._cpp_obj.get().{{field:name}}{{!
 }}{{/type:double?}}{{!
 }}{{#type:float?}}{{!
-  }}return self.c_{{struct:name}}.get().{{field:name}}{{!
+  }}return self._cpp_obj.get().{{field:name}}{{!
 }}{{/type:float?}}{{!
 }}{{#type:string?}}{{!
-  }}return self.c_{{struct:name}}.get().{{field:name}}.decode('UTF-8'){{!
+  }}return self._cpp_obj.get().{{field:name}}.decode('UTF-8'){{!
 }}{{/type:string?}}{{!
 }}{{#type:binary?}}{{!
-  }}return self.c_{{struct:name}}.get().{{field:name}}{{!
+  }}return self._cpp_obj.get().{{field:name}}{{!
 }}{{/type:binary?}}{{!
 }}{{#type:struct?}}{{!
 }}cdef shared_ptr[{{> types/CythonCppType}}] item
 if self.__{{field:name}} is None:
     item = make_shared[{{> types/CythonCppType}}](
-        deref(self.c_{{struct:name}}).{{field:name}})
+        deref(self._cpp_obj).{{field:name}})
     self.__{{field:name}} = {{#type:struct}}{{!
       }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
       }}{{struct:name}}{{/type:struct}}.create(item)
@@ -63,14 +63,14 @@ return self.__{{field:name}}
 }}cdef shared_ptr[{{> types/CythonCppType}}] item
 if self.__{{field:name}} is None:
     item = make_shared[{{> types/CythonCppType}}](
-        deref(self.c_{{struct:name}}).{{field:name}})
+        deref(self._cpp_obj).{{field:name}})
     self.__{{field:name}} = {{!
       }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
       }}{{type:flat_name}}.create(item)
 return self.__{{field:name}}
 {{/type:container?}}{{!
 }}{{#type:enum}}
-cdef int value = <int> deref(self.c_{{struct:name}}).{{field:name}}
+cdef int value = <int> deref(self._cpp_obj).{{field:name}}
 try:
     return {{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{enum:name}}(value)
 except ValueError:

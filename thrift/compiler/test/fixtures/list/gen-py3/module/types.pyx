@@ -32,18 +32,18 @@ from enum import Enum
 cdef class List__string:
     def __init__(self, items=None):
         if isinstance(items, List__string):
-            self._vector = (<List__string> items)._vector
+            self._cpp_obj = (<List__string> items)._cpp_obj
         else:
-          self._vector = make_shared[vector[string]]()
+          self._cpp_obj = make_shared[vector[string]]()
           if items:
               for item in items:
-                  deref(self._vector).push_back(item.encode('UTF-8'))
+                  deref(self._cpp_obj).push_back(item.encode('UTF-8'))
 
     @staticmethod
     cdef create(
             shared_ptr[vector[string]] c_items):
         inst = <List__string>List__string.__new__(List__string)
-        inst._vector = c_items
+        inst._cpp_obj = c_items
         return inst
 
     def __getitem__(self, int index):
@@ -57,11 +57,11 @@ cdef class List__string:
         if index < 0:
             index = size - index
         cdef string citem = (
-            deref(self._vector.get())[index])
+            deref(self._cpp_obj.get())[index])
         return bytes(citem).decode('UTF-8')
 
     def __len__(self):
-        return deref(self._vector).size()
+        return deref(self._cpp_obj).size()
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -88,14 +88,14 @@ cdef class List__string:
             return False
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(
-            self._vector.get())
+            self._cpp_obj.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
         if not self:
             raise StopIteration
         cdef string citem
-        for citem in deref(self._vector):
+        for citem in deref(self._cpp_obj):
             yield bytes(citem).decode('UTF-8')
 
     def __repr__(self):
@@ -108,7 +108,7 @@ cdef class List__string:
             raise StopIteration
         cdef string citem
         cdef vector[string] vec = deref(
-            self._vector.get())
+            self._cpp_obj.get())
         cdef vector[string].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
@@ -119,7 +119,7 @@ cdef class List__string:
         if not self:
             raise ValueError(f'{item} is not in list')
         cdef string citem = item.encode('UTF-8')
-        cdef vector[string] vec = deref(self._vector.get())
+        cdef vector[string] vec = deref(self._cpp_obj.get())
         cdef vector[string].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
@@ -129,7 +129,7 @@ cdef class List__string:
         if not self:
             return 0
         cdef string citem = item.encode('UTF-8')
-        cdef vector[string] vec = deref(self._vector.get())
+        cdef vector[string] vec = deref(self._cpp_obj.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
@@ -138,20 +138,20 @@ Sequence.register(List__string)
 cdef class Map__i64_List__string:
     def __init__(self, items=None):
         if isinstance(items, Map__i64_List__string):
-            self._map = (<Map__i64_List__string> items)._map
+            self._cpp_obj = (<Map__i64_List__string> items)._cpp_obj
         else:
-          self._map = make_shared[cmap[int64_t,vector[string]]]()
+          self._cpp_obj = make_shared[cmap[int64_t,vector[string]]]()
           if items:
               for key, item in items.items():
-                  deref(self._map).insert(
+                  deref(self._cpp_obj).insert(
                       cpair[int64_t,vector[string]](
                           key,
-                          deref(List__string(item)._vector.get())))
+                          deref(List__string(item)._cpp_obj.get())))
 
     @staticmethod
     cdef create(shared_ptr[cmap[int64_t,vector[string]]] c_items):
         inst = <Map__i64_List__string>Map__i64_List__string.__new__(Map__i64_List__string)
-        inst._map = c_items
+        inst._cpp_obj = c_items
         return inst
 
     def __getitem__(self, key):
@@ -159,21 +159,21 @@ cdef class Map__i64_List__string:
             raise KeyError(f'{key}')
         cdef int64_t ckey = key
         cdef cmap[int64_t,vector[string]].iterator iter = deref(
-            self._map).find(ckey)
-        if iter == deref(self._map).end():
+            self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
             raise KeyError(f'{key}')
         cdef vector[string] citem = deref(iter).second
         return List__string.create(
     make_shared[vector[string]](citem))
 
     def __len__(self):
-        return deref(self._map).size()
+        return deref(self._cpp_obj).size()
 
     def __iter__(self):
         if not self:
             raise StopIteration
         cdef int64_t citem
-        for pair in deref(self._map):
+        for pair in deref(self._cpp_obj):
             citem = pair.first
             yield citem
 
@@ -208,15 +208,15 @@ cdef class Map__i64_List__string:
 
     def __contains__(self, key):
         cdef int64_t ckey = key
-        return deref(self._map).count(ckey) > 0
+        return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
         if not self:
             return default
         cdef int64_t ckey = key
         cdef cmap[int64_t,vector[string]].iterator iter = \
-            deref(self._map).find(ckey)
-        if iter == deref(self._map).end():
+            deref(self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
             return default
         cdef vector[string] citem = deref(iter).second
         return List__string.create(
@@ -229,7 +229,7 @@ cdef class Map__i64_List__string:
         if not self:
             raise StopIteration
         cdef vector[string] citem
-        for pair in deref(self._map):
+        for pair in deref(self._cpp_obj):
             citem = pair.second
             yield List__string.create(
     make_shared[vector[string]](citem))
@@ -239,7 +239,7 @@ cdef class Map__i64_List__string:
             raise StopIteration
         cdef int64_t ckey
         cdef vector[string] citem
-        for pair in deref(self._map):
+        for pair in deref(self._cpp_obj):
             ckey = pair.first
             citem = pair.second
 

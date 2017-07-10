@@ -35,32 +35,32 @@ cdef class Included(thrift.py3.types.Struct):
         Included self,
         MyIntField=None
     ):
-        self.c_Included = make_shared[cIncluded]()
+        self._cpp_obj = make_shared[cIncluded]()
 
         inst = self
         if MyIntField is not None:
-            deref(inst.c_Included).MyIntField = MyIntField
-            deref(inst.c_Included).__isset.MyIntField = True
+            deref(inst._cpp_obj).MyIntField = MyIntField
+            deref(inst._cpp_obj).__isset.MyIntField = True
 
 
     cdef bytes _serialize(Included self, proto):
         cdef string c_str
         if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cIncluded](deref(self.c_Included.get()), &c_str)
+            serializer.CompactSerialize[cIncluded](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cIncluded](deref(self.c_Included.get()), &c_str)
+            serializer.BinarySerialize[cIncluded](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cIncluded](deref(self.c_Included.get()), &c_str)
+            serializer.JSONSerialize[cIncluded](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
     cdef uint32_t _deserialize(Included self, const IOBuf* buf, proto):
         cdef uint32_t needed
         if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cIncluded](buf, deref(self.c_Included.get()))
+            needed = serializer.CompactDeserialize[cIncluded](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cIncluded](buf, deref(self.c_Included.get()))
+            needed = serializer.BinaryDeserialize[cIncluded](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cIncluded](buf, deref(self.c_Included.get()))
+            needed = serializer.JSONDeserialize[cIncluded](buf, deref(self._cpp_obj.get()))
         return needed
 
     def __reduce__(self):
@@ -78,19 +78,19 @@ cdef class Included(thrift.py3.types.Struct):
             return self
 
         inst = <Included>Included.__new__(Included)
-        inst.c_Included = make_shared[cIncluded](deref(self.c_Included))
+        inst._cpp_obj = make_shared[cIncluded](deref(self._cpp_obj))
         cdef Included defaults = Included_defaults
 
         # Convert None's to default value.
         if MyIntField is None:
-            deref(inst.c_Included).MyIntField = deref(defaults.c_Included).MyIntField
-            deref(inst.c_Included).__isset.MyIntField = False
+            deref(inst._cpp_obj).MyIntField = deref(defaults._cpp_obj).MyIntField
+            deref(inst._cpp_obj).__isset.MyIntField = False
         if MyIntField is NOTSET:
             MyIntField = None
 
         if MyIntField is not None:
-            deref(inst.c_Included).MyIntField = MyIntField
-            deref(inst.c_Included).__isset.MyIntField = True
+            deref(inst._cpp_obj).MyIntField = MyIntField
+            deref(inst._cpp_obj).__isset.MyIntField = True
 
         return inst
 
@@ -98,18 +98,18 @@ cdef class Included(thrift.py3.types.Struct):
         yield 'MyIntField', self.MyIntField
 
     def __bool__(self):
-        return deref(self.c_Included).__isset.MyIntField
+        return deref(self._cpp_obj).__isset.MyIntField
 
     @staticmethod
-    cdef create(shared_ptr[cIncluded] c_Included):
+    cdef create(shared_ptr[cIncluded] cpp_obj):
         inst = <Included>Included.__new__(Included)
-        inst.c_Included = c_Included
+        inst._cpp_obj = cpp_obj
         return inst
 
     @property
     def MyIntField(self):
 
-        return self.c_Included.get().MyIntField
+        return self._cpp_obj.get().MyIntField
 
 
     def __richcmp__(self, other, op):
@@ -124,8 +124,8 @@ cdef class Included(thrift.py3.types.Struct):
             else:         # different types are always notequal
                 return True
 
-        cdef cIncluded cself = deref((<Included>self).c_Included)
-        cdef cIncluded cother = deref((<Included>other).c_Included)
+        cdef cIncluded cself = deref((<Included>self)._cpp_obj)
+        cdef cIncluded cother = deref((<Included>other)._cpp_obj)
         cdef cbool cmp = cself == cother
         if cop == 2:
             return cmp

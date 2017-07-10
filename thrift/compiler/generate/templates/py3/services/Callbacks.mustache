@@ -79,7 +79,7 @@ async def {{service:name}}_{{function:name}}_coro(
     {{#function:exceptions}}
     {{#field:type}}
     except {{> common/ModulePath}}.{{type:name}} as ex:
-        promise.cPromise.setException(deref((<{{> common/ModulePath}}.{{type:name}}> ex).c_{{type:name}}.get()))
+        promise.cPromise.setException(deref((<{{> common/ModulePath}}.{{type:name}}> ex)._cpp_obj.get()))
     {{/field:type}}
     {{/function:exceptions}}
     except Exception as ex:

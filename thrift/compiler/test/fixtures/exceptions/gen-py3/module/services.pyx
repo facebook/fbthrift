@@ -162,9 +162,9 @@ async def Raiser_doRaise_coro(
         else:
             result = await self.doRaise()
     except module.types.Banal as ex:
-        promise.cPromise.setException(deref((<module.types.Banal> ex).c_Banal.get()))
+        promise.cPromise.setException(deref((<module.types.Banal> ex)._cpp_obj.get()))
     except module.types.Fiery as ex:
-        promise.cPromise.setException(deref((<module.types.Fiery> ex).c_Fiery.get()))
+        promise.cPromise.setException(deref((<module.types.Fiery> ex)._cpp_obj.get()))
     except Exception as ex:
         print(
             "Unexpected error in service handler doRaise:",
@@ -246,9 +246,9 @@ async def Raiser_get500_coro(
         else:
             result = await self.get500()
     except module.types.Fiery as ex:
-        promise.cPromise.setException(deref((<module.types.Fiery> ex).c_Fiery.get()))
+        promise.cPromise.setException(deref((<module.types.Fiery> ex)._cpp_obj.get()))
     except module.types.Banal as ex:
-        promise.cPromise.setException(deref((<module.types.Banal> ex).c_Banal.get()))
+        promise.cPromise.setException(deref((<module.types.Banal> ex)._cpp_obj.get()))
     except Exception as ex:
         print(
             "Unexpected error in service handler get500:",

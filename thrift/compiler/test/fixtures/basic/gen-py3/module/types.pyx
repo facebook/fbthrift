@@ -45,36 +45,36 @@ cdef class MyStruct(thrift.py3.types.Struct):
         MyIntField=None,
         MyStringField=None
     ):
-        self.c_MyStruct = make_shared[cMyStruct]()
+        self._cpp_obj = make_shared[cMyStruct]()
 
         inst = self
         if MyIntField is not None:
-            deref(inst.c_MyStruct).MyIntField = MyIntField
-            deref(inst.c_MyStruct).__isset.MyIntField = True
+            deref(inst._cpp_obj).MyIntField = MyIntField
+            deref(inst._cpp_obj).__isset.MyIntField = True
 
         if MyStringField is not None:
-            deref(inst.c_MyStruct).MyStringField = MyStringField.encode('UTF-8')
-            deref(inst.c_MyStruct).__isset.MyStringField = True
+            deref(inst._cpp_obj).MyStringField = MyStringField.encode('UTF-8')
+            deref(inst._cpp_obj).__isset.MyStringField = True
 
 
     cdef bytes _serialize(MyStruct self, proto):
         cdef string c_str
         if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cMyStruct](deref(self.c_MyStruct.get()), &c_str)
+            serializer.CompactSerialize[cMyStruct](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cMyStruct](deref(self.c_MyStruct.get()), &c_str)
+            serializer.BinarySerialize[cMyStruct](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cMyStruct](deref(self.c_MyStruct.get()), &c_str)
+            serializer.JSONSerialize[cMyStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
     cdef uint32_t _deserialize(MyStruct self, const IOBuf* buf, proto):
         cdef uint32_t needed
         if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cMyStruct](buf, deref(self.c_MyStruct.get()))
+            needed = serializer.CompactDeserialize[cMyStruct](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cMyStruct](buf, deref(self.c_MyStruct.get()))
+            needed = serializer.BinaryDeserialize[cMyStruct](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cMyStruct](buf, deref(self.c_MyStruct.get()))
+            needed = serializer.JSONDeserialize[cMyStruct](buf, deref(self._cpp_obj.get()))
         return needed
 
     def __reduce__(self):
@@ -95,28 +95,28 @@ cdef class MyStruct(thrift.py3.types.Struct):
             return self
 
         inst = <MyStruct>MyStruct.__new__(MyStruct)
-        inst.c_MyStruct = make_shared[cMyStruct](deref(self.c_MyStruct))
+        inst._cpp_obj = make_shared[cMyStruct](deref(self._cpp_obj))
         cdef MyStruct defaults = MyStruct_defaults
 
         # Convert None's to default value.
         if MyIntField is None:
-            deref(inst.c_MyStruct).MyIntField = deref(defaults.c_MyStruct).MyIntField
-            deref(inst.c_MyStruct).__isset.MyIntField = False
+            deref(inst._cpp_obj).MyIntField = deref(defaults._cpp_obj).MyIntField
+            deref(inst._cpp_obj).__isset.MyIntField = False
         if MyIntField is NOTSET:
             MyIntField = None
         if MyStringField is None:
-            deref(inst.c_MyStruct).MyStringField = deref(defaults.c_MyStruct).MyStringField
-            deref(inst.c_MyStruct).__isset.MyStringField = False
+            deref(inst._cpp_obj).MyStringField = deref(defaults._cpp_obj).MyStringField
+            deref(inst._cpp_obj).__isset.MyStringField = False
         if MyStringField is NOTSET:
             MyStringField = None
 
         if MyIntField is not None:
-            deref(inst.c_MyStruct).MyIntField = MyIntField
-            deref(inst.c_MyStruct).__isset.MyIntField = True
+            deref(inst._cpp_obj).MyIntField = MyIntField
+            deref(inst._cpp_obj).__isset.MyIntField = True
 
         if MyStringField is not None:
-            deref(inst.c_MyStruct).MyStringField = MyStringField.encode('UTF-8')
-            deref(inst.c_MyStruct).__isset.MyStringField = True
+            deref(inst._cpp_obj).MyStringField = MyStringField.encode('UTF-8')
+            deref(inst._cpp_obj).__isset.MyStringField = True
 
         return inst
 
@@ -125,27 +125,27 @@ cdef class MyStruct(thrift.py3.types.Struct):
         yield 'MyStringField', self.MyStringField
 
     def __bool__(self):
-        return deref(self.c_MyStruct).__isset.MyIntField or deref(self.c_MyStruct).__isset.MyStringField
+        return deref(self._cpp_obj).__isset.MyIntField or deref(self._cpp_obj).__isset.MyStringField
 
     @staticmethod
-    cdef create(shared_ptr[cMyStruct] c_MyStruct):
+    cdef create(shared_ptr[cMyStruct] cpp_obj):
         inst = <MyStruct>MyStruct.__new__(MyStruct)
-        inst.c_MyStruct = c_MyStruct
+        inst._cpp_obj = cpp_obj
         return inst
 
     @property
     def MyIntField(self):
-        if not deref(self.c_MyStruct).__isset.MyIntField:
+        if not deref(self._cpp_obj).__isset.MyIntField:
             return None
 
-        return self.c_MyStruct.get().MyIntField
+        return self._cpp_obj.get().MyIntField
 
     @property
     def MyStringField(self):
-        if not deref(self.c_MyStruct).__isset.MyStringField:
+        if not deref(self._cpp_obj).__isset.MyStringField:
             return None
 
-        return self.c_MyStruct.get().MyStringField.decode('UTF-8')
+        return self._cpp_obj.get().MyStringField.decode('UTF-8')
 
 
     def __richcmp__(self, other, op):
@@ -160,8 +160,8 @@ cdef class MyStruct(thrift.py3.types.Struct):
             else:         # different types are always notequal
                 return True
 
-        cdef cMyStruct cself = deref((<MyStruct>self).c_MyStruct)
-        cdef cMyStruct cother = deref((<MyStruct>other).c_MyStruct)
+        cdef cMyStruct cself = deref((<MyStruct>self)._cpp_obj)
+        cdef cMyStruct cother = deref((<MyStruct>other)._cpp_obj)
         cdef cbool cmp = cself == cother
         if cop == 2:
             return cmp

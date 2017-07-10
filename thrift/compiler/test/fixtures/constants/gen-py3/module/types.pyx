@@ -70,38 +70,38 @@ cdef class Internship(thrift.py3.types.Struct):
         title=None,
         employer=None
     ):
-        self.c_Internship = make_shared[cInternship]()
+        self._cpp_obj = make_shared[cInternship]()
 
         inst = self
         if weeks is not None:
-            deref(inst.c_Internship).weeks = weeks
+            deref(inst._cpp_obj).weeks = weeks
         if title is not None:
-            deref(inst.c_Internship).title = title.encode('UTF-8')
-            deref(inst.c_Internship).__isset.title = True
+            deref(inst._cpp_obj).title = title.encode('UTF-8')
+            deref(inst._cpp_obj).__isset.title = True
 
         if employer is not None:
-            deref(inst.c_Internship).employer = Company_to_cpp(employer)
-            deref(inst.c_Internship).__isset.employer = True
+            deref(inst._cpp_obj).employer = Company_to_cpp(employer)
+            deref(inst._cpp_obj).__isset.employer = True
 
 
     cdef bytes _serialize(Internship self, proto):
         cdef string c_str
         if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cInternship](deref(self.c_Internship.get()), &c_str)
+            serializer.CompactSerialize[cInternship](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cInternship](deref(self.c_Internship.get()), &c_str)
+            serializer.BinarySerialize[cInternship](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cInternship](deref(self.c_Internship.get()), &c_str)
+            serializer.JSONSerialize[cInternship](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
     cdef uint32_t _deserialize(Internship self, const IOBuf* buf, proto):
         cdef uint32_t needed
         if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cInternship](buf, deref(self.c_Internship.get()))
+            needed = serializer.CompactDeserialize[cInternship](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cInternship](buf, deref(self.c_Internship.get()))
+            needed = serializer.BinaryDeserialize[cInternship](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cInternship](buf, deref(self.c_Internship.get()))
+            needed = serializer.JSONDeserialize[cInternship](buf, deref(self._cpp_obj.get()))
         return needed
 
     def __reduce__(self):
@@ -125,34 +125,34 @@ cdef class Internship(thrift.py3.types.Struct):
             return self
 
         inst = <Internship>Internship.__new__(Internship)
-        inst.c_Internship = make_shared[cInternship](deref(self.c_Internship))
+        inst._cpp_obj = make_shared[cInternship](deref(self._cpp_obj))
         cdef Internship defaults = Internship_defaults
 
         # Convert None's to default value.
         if weeks is None:
-            deref(inst.c_Internship).weeks = deref(defaults.c_Internship).weeks
+            deref(inst._cpp_obj).weeks = deref(defaults._cpp_obj).weeks
         if weeks is NOTSET:
             weeks = None
         if title is None:
-            deref(inst.c_Internship).title = deref(defaults.c_Internship).title
-            deref(inst.c_Internship).__isset.title = False
+            deref(inst._cpp_obj).title = deref(defaults._cpp_obj).title
+            deref(inst._cpp_obj).__isset.title = False
         if title is NOTSET:
             title = None
         if employer is None:
-            deref(inst.c_Internship).employer = deref(defaults.c_Internship).employer
-            deref(inst.c_Internship).__isset.employer = False
+            deref(inst._cpp_obj).employer = deref(defaults._cpp_obj).employer
+            deref(inst._cpp_obj).__isset.employer = False
         if employer is NOTSET:
             employer = None
 
         if weeks is not None:
-            deref(inst.c_Internship).weeks = weeks
+            deref(inst._cpp_obj).weeks = weeks
         if title is not None:
-            deref(inst.c_Internship).title = title.encode('UTF-8')
-            deref(inst.c_Internship).__isset.title = True
+            deref(inst._cpp_obj).title = title.encode('UTF-8')
+            deref(inst._cpp_obj).__isset.title = True
 
         if employer is not None:
-            deref(inst.c_Internship).employer = Company_to_cpp(employer)
-            deref(inst.c_Internship).__isset.employer = True
+            deref(inst._cpp_obj).employer = Company_to_cpp(employer)
+            deref(inst._cpp_obj).__isset.employer = True
 
         return inst
 
@@ -162,32 +162,32 @@ cdef class Internship(thrift.py3.types.Struct):
         yield 'employer', self.employer
 
     def __bool__(self):
-        return True or deref(self.c_Internship).__isset.title or deref(self.c_Internship).__isset.employer
+        return True or deref(self._cpp_obj).__isset.title or deref(self._cpp_obj).__isset.employer
 
     @staticmethod
-    cdef create(shared_ptr[cInternship] c_Internship):
+    cdef create(shared_ptr[cInternship] cpp_obj):
         inst = <Internship>Internship.__new__(Internship)
-        inst.c_Internship = c_Internship
+        inst._cpp_obj = cpp_obj
         return inst
 
     @property
     def weeks(self):
 
-        return self.c_Internship.get().weeks
+        return self._cpp_obj.get().weeks
 
     @property
     def title(self):
-        if not deref(self.c_Internship).__isset.title:
+        if not deref(self._cpp_obj).__isset.title:
             return None
 
-        return self.c_Internship.get().title.decode('UTF-8')
+        return self._cpp_obj.get().title.decode('UTF-8')
 
     @property
     def employer(self):
-        if not deref(self.c_Internship).__isset.employer:
+        if not deref(self._cpp_obj).__isset.employer:
             return None
 
-        cdef int value = <int> deref(self.c_Internship).employer
+        cdef int value = <int> deref(self._cpp_obj).employer
         try:
             return Company(value)
         except ValueError:
@@ -207,8 +207,8 @@ cdef class Internship(thrift.py3.types.Struct):
             else:         # different types are always notequal
                 return True
 
-        cdef cInternship cself = deref((<Internship>self).c_Internship)
-        cdef cInternship cother = deref((<Internship>other).c_Internship)
+        cdef cInternship cself = deref((<Internship>self)._cpp_obj)
+        cdef cInternship cother = deref((<Internship>other)._cpp_obj)
         cdef cbool cmp = cself == cother
         if cop == 2:
             return cmp
@@ -236,32 +236,32 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
         UnEnumStruct self,
         city=None
     ):
-        self.c_UnEnumStruct = make_shared[cUnEnumStruct]()
+        self._cpp_obj = make_shared[cUnEnumStruct]()
 
         inst = self
         if city is not None:
-            deref(inst.c_UnEnumStruct).city = City_to_cpp(city)
-            deref(inst.c_UnEnumStruct).__isset.city = True
+            deref(inst._cpp_obj).city = City_to_cpp(city)
+            deref(inst._cpp_obj).__isset.city = True
 
 
     cdef bytes _serialize(UnEnumStruct self, proto):
         cdef string c_str
         if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cUnEnumStruct](deref(self.c_UnEnumStruct.get()), &c_str)
+            serializer.CompactSerialize[cUnEnumStruct](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cUnEnumStruct](deref(self.c_UnEnumStruct.get()), &c_str)
+            serializer.BinarySerialize[cUnEnumStruct](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cUnEnumStruct](deref(self.c_UnEnumStruct.get()), &c_str)
+            serializer.JSONSerialize[cUnEnumStruct](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
     cdef uint32_t _deserialize(UnEnumStruct self, const IOBuf* buf, proto):
         cdef uint32_t needed
         if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cUnEnumStruct](buf, deref(self.c_UnEnumStruct.get()))
+            needed = serializer.CompactDeserialize[cUnEnumStruct](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cUnEnumStruct](buf, deref(self.c_UnEnumStruct.get()))
+            needed = serializer.BinaryDeserialize[cUnEnumStruct](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cUnEnumStruct](buf, deref(self.c_UnEnumStruct.get()))
+            needed = serializer.JSONDeserialize[cUnEnumStruct](buf, deref(self._cpp_obj.get()))
         return needed
 
     def __reduce__(self):
@@ -279,19 +279,19 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
             return self
 
         inst = <UnEnumStruct>UnEnumStruct.__new__(UnEnumStruct)
-        inst.c_UnEnumStruct = make_shared[cUnEnumStruct](deref(self.c_UnEnumStruct))
+        inst._cpp_obj = make_shared[cUnEnumStruct](deref(self._cpp_obj))
         cdef UnEnumStruct defaults = UnEnumStruct_defaults
 
         # Convert None's to default value.
         if city is None:
-            deref(inst.c_UnEnumStruct).city = deref(defaults.c_UnEnumStruct).city
-            deref(inst.c_UnEnumStruct).__isset.city = False
+            deref(inst._cpp_obj).city = deref(defaults._cpp_obj).city
+            deref(inst._cpp_obj).__isset.city = False
         if city is NOTSET:
             city = None
 
         if city is not None:
-            deref(inst.c_UnEnumStruct).city = City_to_cpp(city)
-            deref(inst.c_UnEnumStruct).__isset.city = True
+            deref(inst._cpp_obj).city = City_to_cpp(city)
+            deref(inst._cpp_obj).__isset.city = True
 
         return inst
 
@@ -299,18 +299,18 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
         yield 'city', self.city
 
     def __bool__(self):
-        return deref(self.c_UnEnumStruct).__isset.city
+        return deref(self._cpp_obj).__isset.city
 
     @staticmethod
-    cdef create(shared_ptr[cUnEnumStruct] c_UnEnumStruct):
+    cdef create(shared_ptr[cUnEnumStruct] cpp_obj):
         inst = <UnEnumStruct>UnEnumStruct.__new__(UnEnumStruct)
-        inst.c_UnEnumStruct = c_UnEnumStruct
+        inst._cpp_obj = cpp_obj
         return inst
 
     @property
     def city(self):
 
-        cdef int value = <int> deref(self.c_UnEnumStruct).city
+        cdef int value = <int> deref(self._cpp_obj).city
         try:
             return City(value)
         except ValueError:
@@ -330,8 +330,8 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
             else:         # different types are always notequal
                 return True
 
-        cdef cUnEnumStruct cself = deref((<UnEnumStruct>self).c_UnEnumStruct)
-        cdef cUnEnumStruct cother = deref((<UnEnumStruct>other).c_UnEnumStruct)
+        cdef cUnEnumStruct cself = deref((<UnEnumStruct>self)._cpp_obj)
+        cdef cUnEnumStruct cother = deref((<UnEnumStruct>other)._cpp_obj)
         cdef cbool cmp = cself == cother
         if cop == 2:
             return cmp
@@ -358,32 +358,32 @@ cdef class Range(thrift.py3.types.Struct):
         min=None,
         max=None
     ):
-        self.c_Range = make_shared[cRange]()
+        self._cpp_obj = make_shared[cRange]()
 
         inst = self
         if min is not None:
-            deref(inst.c_Range).min = min
+            deref(inst._cpp_obj).min = min
         if max is not None:
-            deref(inst.c_Range).max = max
+            deref(inst._cpp_obj).max = max
 
     cdef bytes _serialize(Range self, proto):
         cdef string c_str
         if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cRange](deref(self.c_Range.get()), &c_str)
+            serializer.CompactSerialize[cRange](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cRange](deref(self.c_Range.get()), &c_str)
+            serializer.BinarySerialize[cRange](deref(self._cpp_obj.get()), &c_str)
         elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cRange](deref(self.c_Range.get()), &c_str)
+            serializer.JSONSerialize[cRange](deref(self._cpp_obj.get()), &c_str)
         return <bytes> c_str
 
     cdef uint32_t _deserialize(Range self, const IOBuf* buf, proto):
         cdef uint32_t needed
         if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cRange](buf, deref(self.c_Range.get()))
+            needed = serializer.CompactDeserialize[cRange](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cRange](buf, deref(self.c_Range.get()))
+            needed = serializer.BinaryDeserialize[cRange](buf, deref(self._cpp_obj.get()))
         elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cRange](buf, deref(self.c_Range.get()))
+            needed = serializer.JSONDeserialize[cRange](buf, deref(self._cpp_obj.get()))
         return needed
 
     def __reduce__(self):
@@ -404,23 +404,23 @@ cdef class Range(thrift.py3.types.Struct):
             return self
 
         inst = <Range>Range.__new__(Range)
-        inst.c_Range = make_shared[cRange](deref(self.c_Range))
+        inst._cpp_obj = make_shared[cRange](deref(self._cpp_obj))
         cdef Range defaults = Range_defaults
 
         # Convert None's to default value.
         if min is None:
-            deref(inst.c_Range).min = deref(defaults.c_Range).min
+            deref(inst._cpp_obj).min = deref(defaults._cpp_obj).min
         if min is NOTSET:
             min = None
         if max is None:
-            deref(inst.c_Range).max = deref(defaults.c_Range).max
+            deref(inst._cpp_obj).max = deref(defaults._cpp_obj).max
         if max is NOTSET:
             max = None
 
         if min is not None:
-            deref(inst.c_Range).min = min
+            deref(inst._cpp_obj).min = min
         if max is not None:
-            deref(inst.c_Range).max = max
+            deref(inst._cpp_obj).max = max
         return inst
 
     def __iter__(self):
@@ -431,20 +431,20 @@ cdef class Range(thrift.py3.types.Struct):
         return True or True
 
     @staticmethod
-    cdef create(shared_ptr[cRange] c_Range):
+    cdef create(shared_ptr[cRange] cpp_obj):
         inst = <Range>Range.__new__(Range)
-        inst.c_Range = c_Range
+        inst._cpp_obj = cpp_obj
         return inst
 
     @property
     def min(self):
 
-        return self.c_Range.get().min
+        return self._cpp_obj.get().min
 
     @property
     def max(self):
 
-        return self.c_Range.get().max
+        return self._cpp_obj.get().max
 
 
     def __richcmp__(self, other, op):
@@ -459,8 +459,8 @@ cdef class Range(thrift.py3.types.Struct):
             else:         # different types are always notequal
                 return True
 
-        cdef cRange cself = deref((<Range>self).c_Range)
-        cdef cRange cother = deref((<Range>other).c_Range)
+        cdef cRange cself = deref((<Range>self)._cpp_obj)
+        cdef cRange cother = deref((<Range>other)._cpp_obj)
         cdef cbool cmp = cself == cother
         if cop == 2:
             return cmp
@@ -484,12 +484,12 @@ Range_defaults = Range()
 cdef class Map__string_i32:
     def __init__(self, items=None):
         if isinstance(items, Map__string_i32):
-            self._map = (<Map__string_i32> items)._map
+            self._cpp_obj = (<Map__string_i32> items)._cpp_obj
         else:
-          self._map = make_shared[cmap[string,int32_t]]()
+          self._cpp_obj = make_shared[cmap[string,int32_t]]()
           if items:
               for key, item in items.items():
-                  deref(self._map).insert(
+                  deref(self._cpp_obj).insert(
                       cpair[string,int32_t](
                           key.encode('UTF-8'),
                           item))
@@ -497,7 +497,7 @@ cdef class Map__string_i32:
     @staticmethod
     cdef create(shared_ptr[cmap[string,int32_t]] c_items):
         inst = <Map__string_i32>Map__string_i32.__new__(Map__string_i32)
-        inst._map = c_items
+        inst._cpp_obj = c_items
         return inst
 
     def __getitem__(self, key):
@@ -505,20 +505,20 @@ cdef class Map__string_i32:
             raise KeyError(f'{key}')
         cdef string ckey = key.encode('UTF-8')
         cdef cmap[string,int32_t].iterator iter = deref(
-            self._map).find(ckey)
-        if iter == deref(self._map).end():
+            self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
             raise KeyError(f'{key}')
         cdef int32_t citem = deref(iter).second
         return citem
 
     def __len__(self):
-        return deref(self._map).size()
+        return deref(self._cpp_obj).size()
 
     def __iter__(self):
         if not self:
             raise StopIteration
         cdef string citem
-        for pair in deref(self._map):
+        for pair in deref(self._cpp_obj):
             citem = pair.first
             yield bytes(citem).decode('UTF-8')
 
@@ -553,15 +553,15 @@ cdef class Map__string_i32:
 
     def __contains__(self, key):
         cdef string ckey = key.encode('UTF-8')
-        return deref(self._map).count(ckey) > 0
+        return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
         if not self:
             return default
         cdef string ckey = key.encode('UTF-8')
         cdef cmap[string,int32_t].iterator iter = \
-            deref(self._map).find(ckey)
-        if iter == deref(self._map).end():
+            deref(self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
             return default
         cdef int32_t citem = deref(iter).second
         return citem
@@ -573,7 +573,7 @@ cdef class Map__string_i32:
         if not self:
             raise StopIteration
         cdef int32_t citem
-        for pair in deref(self._map):
+        for pair in deref(self._cpp_obj):
             citem = pair.second
             yield citem
 
@@ -582,7 +582,7 @@ cdef class Map__string_i32:
             raise StopIteration
         cdef string ckey
         cdef int32_t citem
-        for pair in deref(self._map):
+        for pair in deref(self._cpp_obj):
             ckey = pair.first
             citem = pair.second
 
@@ -595,18 +595,18 @@ Mapping.register(Map__string_i32)
 cdef class List__Map__string_i32:
     def __init__(self, items=None):
         if isinstance(items, List__Map__string_i32):
-            self._vector = (<List__Map__string_i32> items)._vector
+            self._cpp_obj = (<List__Map__string_i32> items)._cpp_obj
         else:
-          self._vector = make_shared[vector[cmap[string,int32_t]]]()
+          self._cpp_obj = make_shared[vector[cmap[string,int32_t]]]()
           if items:
               for item in items:
-                  deref(self._vector).push_back(cmap[string,int32_t](deref(Map__string_i32(item)._map.get())))
+                  deref(self._cpp_obj).push_back(cmap[string,int32_t](deref(Map__string_i32(item)._cpp_obj.get())))
 
     @staticmethod
     cdef create(
             shared_ptr[vector[cmap[string,int32_t]]] c_items):
         inst = <List__Map__string_i32>List__Map__string_i32.__new__(List__Map__string_i32)
-        inst._vector = c_items
+        inst._cpp_obj = c_items
         return inst
 
     def __getitem__(self, int index):
@@ -620,12 +620,12 @@ cdef class List__Map__string_i32:
         if index < 0:
             index = size - index
         cdef cmap[string,int32_t] citem = (
-            deref(self._vector.get())[index])
+            deref(self._cpp_obj.get())[index])
         return Map__string_i32.create(
     make_shared[cmap[string,int32_t]](citem))
 
     def __len__(self):
-        return deref(self._vector).size()
+        return deref(self._cpp_obj).size()
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -650,16 +650,16 @@ cdef class List__Map__string_i32:
     def __contains__(self, item):
         if not self:
             return False
-        cdef cmap[string,int32_t] citem = cmap[string,int32_t](deref(Map__string_i32(item)._map.get()))
+        cdef cmap[string,int32_t] citem = cmap[string,int32_t](deref(Map__string_i32(item)._cpp_obj.get()))
         cdef vector[cmap[string,int32_t]] vec = deref(
-            self._vector.get())
+            self._cpp_obj.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
         if not self:
             raise StopIteration
         cdef cmap[string,int32_t] citem
-        for citem in deref(self._vector):
+        for citem in deref(self._cpp_obj):
             yield Map__string_i32.create(
     make_shared[cmap[string,int32_t]](citem))
 
@@ -673,7 +673,7 @@ cdef class List__Map__string_i32:
             raise StopIteration
         cdef cmap[string,int32_t] citem
         cdef vector[cmap[string,int32_t]] vec = deref(
-            self._vector.get())
+            self._cpp_obj.get())
         cdef vector[cmap[string,int32_t]].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
@@ -684,8 +684,8 @@ cdef class List__Map__string_i32:
     def index(self, item):
         if not self:
             raise ValueError(f'{item} is not in list')
-        cdef cmap[string,int32_t] citem = cmap[string,int32_t](deref(Map__string_i32(item)._map.get()))
-        cdef vector[cmap[string,int32_t]] vec = deref(self._vector.get())
+        cdef cmap[string,int32_t] citem = cmap[string,int32_t](deref(Map__string_i32(item)._cpp_obj.get()))
+        cdef vector[cmap[string,int32_t]] vec = deref(self._cpp_obj.get())
         cdef vector[cmap[string,int32_t]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
@@ -694,8 +694,8 @@ cdef class List__Map__string_i32:
     def count(self, item):
         if not self:
             return 0
-        cdef cmap[string,int32_t] citem = cmap[string,int32_t](deref(Map__string_i32(item)._map.get()))
-        cdef vector[cmap[string,int32_t]] vec = deref(self._vector.get())
+        cdef cmap[string,int32_t] citem = cmap[string,int32_t](deref(Map__string_i32(item)._cpp_obj.get()))
+        cdef vector[cmap[string,int32_t]] vec = deref(self._cpp_obj.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
@@ -704,18 +704,18 @@ Sequence.register(List__Map__string_i32)
 cdef class List__Range:
     def __init__(self, items=None):
         if isinstance(items, List__Range):
-            self._vector = (<List__Range> items)._vector
+            self._cpp_obj = (<List__Range> items)._cpp_obj
         else:
-          self._vector = make_shared[vector[cRange]]()
+          self._cpp_obj = make_shared[vector[cRange]]()
           if items:
               for item in items:
-                  deref(self._vector).push_back(deref((<Range> item).c_Range))
+                  deref(self._cpp_obj).push_back(deref((<Range> item)._cpp_obj))
 
     @staticmethod
     cdef create(
             shared_ptr[vector[cRange]] c_items):
         inst = <List__Range>List__Range.__new__(List__Range)
-        inst._vector = c_items
+        inst._cpp_obj = c_items
         return inst
 
     def __getitem__(self, int index):
@@ -729,11 +729,11 @@ cdef class List__Range:
         if index < 0:
             index = size - index
         cdef cRange citem = (
-            deref(self._vector.get())[index])
+            deref(self._cpp_obj.get())[index])
         return Range.create(make_shared[cRange](citem))
 
     def __len__(self):
-        return deref(self._vector).size()
+        return deref(self._cpp_obj).size()
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -758,16 +758,16 @@ cdef class List__Range:
     def __contains__(self, item):
         if not self:
             return False
-        cdef cRange citem = deref((<Range> item).c_Range)
+        cdef cRange citem = deref((<Range> item)._cpp_obj)
         cdef vector[cRange] vec = deref(
-            self._vector.get())
+            self._cpp_obj.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
         if not self:
             raise StopIteration
         cdef cRange citem
-        for citem in deref(self._vector):
+        for citem in deref(self._cpp_obj):
             yield Range.create(make_shared[cRange](citem))
 
     def __repr__(self):
@@ -780,7 +780,7 @@ cdef class List__Range:
             raise StopIteration
         cdef cRange citem
         cdef vector[cRange] vec = deref(
-            self._vector.get())
+            self._cpp_obj.get())
         cdef vector[cRange].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
@@ -790,8 +790,8 @@ cdef class List__Range:
     def index(self, item):
         if not self:
             raise ValueError(f'{item} is not in list')
-        cdef cRange citem = deref((<Range> item).c_Range)
-        cdef vector[cRange] vec = deref(self._vector.get())
+        cdef cRange citem = deref((<Range> item)._cpp_obj)
+        cdef vector[cRange] vec = deref(self._cpp_obj.get())
         cdef vector[cRange].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
@@ -800,8 +800,8 @@ cdef class List__Range:
     def count(self, item):
         if not self:
             return 0
-        cdef cRange citem = deref((<Range> item).c_Range)
-        cdef vector[cRange] vec = deref(self._vector.get())
+        cdef cRange citem = deref((<Range> item)._cpp_obj)
+        cdef vector[cRange] vec = deref(self._cpp_obj.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
@@ -810,18 +810,18 @@ Sequence.register(List__Range)
 cdef class List__Internship:
     def __init__(self, items=None):
         if isinstance(items, List__Internship):
-            self._vector = (<List__Internship> items)._vector
+            self._cpp_obj = (<List__Internship> items)._cpp_obj
         else:
-          self._vector = make_shared[vector[cInternship]]()
+          self._cpp_obj = make_shared[vector[cInternship]]()
           if items:
               for item in items:
-                  deref(self._vector).push_back(deref((<Internship> item).c_Internship))
+                  deref(self._cpp_obj).push_back(deref((<Internship> item)._cpp_obj))
 
     @staticmethod
     cdef create(
             shared_ptr[vector[cInternship]] c_items):
         inst = <List__Internship>List__Internship.__new__(List__Internship)
-        inst._vector = c_items
+        inst._cpp_obj = c_items
         return inst
 
     def __getitem__(self, int index):
@@ -835,11 +835,11 @@ cdef class List__Internship:
         if index < 0:
             index = size - index
         cdef cInternship citem = (
-            deref(self._vector.get())[index])
+            deref(self._cpp_obj.get())[index])
         return Internship.create(make_shared[cInternship](citem))
 
     def __len__(self):
-        return deref(self._vector).size()
+        return deref(self._cpp_obj).size()
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -864,16 +864,16 @@ cdef class List__Internship:
     def __contains__(self, item):
         if not self:
             return False
-        cdef cInternship citem = deref((<Internship> item).c_Internship)
+        cdef cInternship citem = deref((<Internship> item)._cpp_obj)
         cdef vector[cInternship] vec = deref(
-            self._vector.get())
+            self._cpp_obj.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
         if not self:
             raise StopIteration
         cdef cInternship citem
-        for citem in deref(self._vector):
+        for citem in deref(self._cpp_obj):
             yield Internship.create(make_shared[cInternship](citem))
 
     def __repr__(self):
@@ -886,7 +886,7 @@ cdef class List__Internship:
             raise StopIteration
         cdef cInternship citem
         cdef vector[cInternship] vec = deref(
-            self._vector.get())
+            self._cpp_obj.get())
         cdef vector[cInternship].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
@@ -896,8 +896,8 @@ cdef class List__Internship:
     def index(self, item):
         if not self:
             raise ValueError(f'{item} is not in list')
-        cdef cInternship citem = deref((<Internship> item).c_Internship)
-        cdef vector[cInternship] vec = deref(self._vector.get())
+        cdef cInternship citem = deref((<Internship> item)._cpp_obj)
+        cdef vector[cInternship] vec = deref(self._cpp_obj.get())
         cdef vector[cInternship].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
@@ -906,8 +906,8 @@ cdef class List__Internship:
     def count(self, item):
         if not self:
             return 0
-        cdef cInternship citem = deref((<Internship> item).c_Internship)
-        cdef vector[cInternship] vec = deref(self._vector.get())
+        cdef cInternship citem = deref((<Internship> item)._cpp_obj)
+        cdef vector[cInternship] vec = deref(self._cpp_obj.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
@@ -916,18 +916,18 @@ Sequence.register(List__Internship)
 cdef class List__string:
     def __init__(self, items=None):
         if isinstance(items, List__string):
-            self._vector = (<List__string> items)._vector
+            self._cpp_obj = (<List__string> items)._cpp_obj
         else:
-          self._vector = make_shared[vector[string]]()
+          self._cpp_obj = make_shared[vector[string]]()
           if items:
               for item in items:
-                  deref(self._vector).push_back(item.encode('UTF-8'))
+                  deref(self._cpp_obj).push_back(item.encode('UTF-8'))
 
     @staticmethod
     cdef create(
             shared_ptr[vector[string]] c_items):
         inst = <List__string>List__string.__new__(List__string)
-        inst._vector = c_items
+        inst._cpp_obj = c_items
         return inst
 
     def __getitem__(self, int index):
@@ -941,11 +941,11 @@ cdef class List__string:
         if index < 0:
             index = size - index
         cdef string citem = (
-            deref(self._vector.get())[index])
+            deref(self._cpp_obj.get())[index])
         return bytes(citem).decode('UTF-8')
 
     def __len__(self):
-        return deref(self._vector).size()
+        return deref(self._cpp_obj).size()
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -972,14 +972,14 @@ cdef class List__string:
             return False
         cdef string citem = item.encode('UTF-8')
         cdef vector[string] vec = deref(
-            self._vector.get())
+            self._cpp_obj.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
         if not self:
             raise StopIteration
         cdef string citem
-        for citem in deref(self._vector):
+        for citem in deref(self._cpp_obj):
             yield bytes(citem).decode('UTF-8')
 
     def __repr__(self):
@@ -992,7 +992,7 @@ cdef class List__string:
             raise StopIteration
         cdef string citem
         cdef vector[string] vec = deref(
-            self._vector.get())
+            self._cpp_obj.get())
         cdef vector[string].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
@@ -1003,7 +1003,7 @@ cdef class List__string:
         if not self:
             raise ValueError(f'{item} is not in list')
         cdef string citem = item.encode('UTF-8')
-        cdef vector[string] vec = deref(self._vector.get())
+        cdef vector[string] vec = deref(self._cpp_obj.get())
         cdef vector[string].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
@@ -1013,7 +1013,7 @@ cdef class List__string:
         if not self:
             return 0
         cdef string citem = item.encode('UTF-8')
-        cdef vector[string] vec = deref(self._vector.get())
+        cdef vector[string] vec = deref(self._cpp_obj.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
@@ -1022,18 +1022,18 @@ Sequence.register(List__string)
 cdef class List__i32:
     def __init__(self, items=None):
         if isinstance(items, List__i32):
-            self._vector = (<List__i32> items)._vector
+            self._cpp_obj = (<List__i32> items)._cpp_obj
         else:
-          self._vector = make_shared[vector[int32_t]]()
+          self._cpp_obj = make_shared[vector[int32_t]]()
           if items:
               for item in items:
-                  deref(self._vector).push_back(item)
+                  deref(self._cpp_obj).push_back(item)
 
     @staticmethod
     cdef create(
             shared_ptr[vector[int32_t]] c_items):
         inst = <List__i32>List__i32.__new__(List__i32)
-        inst._vector = c_items
+        inst._cpp_obj = c_items
         return inst
 
     def __getitem__(self, int index):
@@ -1047,11 +1047,11 @@ cdef class List__i32:
         if index < 0:
             index = size - index
         cdef int32_t citem = (
-            deref(self._vector.get())[index])
+            deref(self._cpp_obj.get())[index])
         return citem
 
     def __len__(self):
-        return deref(self._vector).size()
+        return deref(self._cpp_obj).size()
 
     def __richcmp__(self, other, op):
         cdef int cop = op
@@ -1078,14 +1078,14 @@ cdef class List__i32:
             return False
         cdef int32_t citem = item
         cdef vector[int32_t] vec = deref(
-            self._vector.get())
+            self._cpp_obj.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
 
     def __iter__(self):
         if not self:
             raise StopIteration
         cdef int32_t citem
-        for citem in deref(self._vector):
+        for citem in deref(self._cpp_obj):
             yield citem
 
     def __repr__(self):
@@ -1098,7 +1098,7 @@ cdef class List__i32:
             raise StopIteration
         cdef int32_t citem
         cdef vector[int32_t] vec = deref(
-            self._vector.get())
+            self._cpp_obj.get())
         cdef vector[int32_t].reverse_iterator loc = vec.rbegin()
         while loc != vec.rend():
             citem = deref(loc)
@@ -1109,7 +1109,7 @@ cdef class List__i32:
         if not self:
             raise ValueError(f'{item} is not in list')
         cdef int32_t citem = item
-        cdef vector[int32_t] vec = deref(self._vector.get())
+        cdef vector[int32_t] vec = deref(self._cpp_obj.get())
         cdef vector[int32_t].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
             return <int64_t> std_libcpp.distance(vec.begin(), loc)
@@ -1119,7 +1119,7 @@ cdef class List__i32:
         if not self:
             return 0
         cdef int32_t citem = item
-        cdef vector[int32_t] vec = deref(self._vector.get())
+        cdef vector[int32_t] vec = deref(self._cpp_obj.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
@@ -1128,31 +1128,31 @@ Sequence.register(List__i32)
 cdef class Set__i32:
     def __init__(self, items=None):
         if isinstance(items, Set__i32):
-            self._set = (<Set__i32> items)._set
+            self._cpp_obj = (<Set__i32> items)._cpp_obj
         else:
-          self._set = make_shared[cset[int32_t]]()
+          self._cpp_obj = make_shared[cset[int32_t]]()
           if items:
               for item in items:
-                  deref(self._set).insert(item)
+                  deref(self._cpp_obj).insert(item)
 
     @staticmethod
     cdef create(shared_ptr[cset[int32_t]] c_items):
         inst = <Set__i32>Set__i32.__new__(Set__i32)
-        inst._set = c_items
+        inst._cpp_obj = c_items
         return inst
 
     def __contains__(self, item):
         if not self:
             return False
-        return pbool(deref(self._set).count(item))
+        return pbool(deref(self._cpp_obj).count(item))
 
     def __len__(self):
-        return deref(self._set).size()
+        return deref(self._cpp_obj).size()
 
     def __iter__(self):
         if not self:
             raise StopIteration
-        for citem in deref(self._set):
+        for citem in deref(self._cpp_obj):
             yield citem
 
     def __repr__(self):
@@ -1166,8 +1166,8 @@ cdef class Set__i32:
         cdef cbool retval
         if (isinstance(self, Set__i32) and
                 isinstance(other, Set__i32)):
-            cself = deref((<Set__i32> self)._set)
-            cother = deref((<Set__i32> other)._set)
+            cself = deref((<Set__i32> self)._cpp_obj)
+            cother = deref((<Set__i32> other)._cpp_obj)
             # C level comparisons
             if cop == 0:    # Less Than (strict subset)
                 if not cself.size() < cother.size():
@@ -1233,8 +1233,8 @@ cdef class Set__i32:
 
         cdef shared_ptr[cset[int32_t]] shretval = \
             make_shared[cset[int32_t]]()
-        for citem in deref((<Set__i32> self)._set):
-            if deref((<Set__i32> other)._set).count(citem) > 0:
+        for citem in deref((<Set__i32> self)._cpp_obj):
+            if deref((<Set__i32> other)._cpp_obj).count(citem) > 0:
                 deref(shretval).insert(citem)
         return Set__i32.create(shretval)
 
@@ -1246,8 +1246,8 @@ cdef class Set__i32:
 
         cdef shared_ptr[cset[int32_t]] shretval = \
             make_shared[cset[int32_t]]()
-        for citem in deref((<Set__i32> self)._set):
-            if deref((<Set__i32> other)._set).count(citem) == 0:
+        for citem in deref((<Set__i32> self)._cpp_obj):
+            if deref((<Set__i32> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
         return Set__i32.create(shretval)
 
@@ -1259,9 +1259,9 @@ cdef class Set__i32:
 
         cdef shared_ptr[cset[int32_t]] shretval = \
             make_shared[cset[int32_t]]()
-        for citem in deref((<Set__i32> self)._set):
+        for citem in deref((<Set__i32> self)._cpp_obj):
                 deref(shretval).insert(citem)
-        for citem in deref((<Set__i32> other)._set):
+        for citem in deref((<Set__i32> other)._cpp_obj):
                 deref(shretval).insert(citem)
         return Set__i32.create(shretval)
 
@@ -1273,11 +1273,11 @@ cdef class Set__i32:
 
         cdef shared_ptr[cset[int32_t]] shretval = \
             make_shared[cset[int32_t]]()
-        for citem in deref((<Set__i32> self)._set):
-            if deref((<Set__i32> other)._set).count(citem) == 0:
+        for citem in deref((<Set__i32> self)._cpp_obj):
+            if deref((<Set__i32> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        for citem in deref((<Set__i32> other)._set):
-            if deref((<Set__i32> self)._set).count(citem) == 0:
+        for citem in deref((<Set__i32> other)._cpp_obj):
+            if deref((<Set__i32> self)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
         return Set__i32.create(shretval)
 
@@ -1308,31 +1308,31 @@ Set.register(Set__i32)
 cdef class Set__string:
     def __init__(self, items=None):
         if isinstance(items, Set__string):
-            self._set = (<Set__string> items)._set
+            self._cpp_obj = (<Set__string> items)._cpp_obj
         else:
-          self._set = make_shared[cset[string]]()
+          self._cpp_obj = make_shared[cset[string]]()
           if items:
               for item in items:
-                  deref(self._set).insert(item.encode('UTF-8'))
+                  deref(self._cpp_obj).insert(item.encode('UTF-8'))
 
     @staticmethod
     cdef create(shared_ptr[cset[string]] c_items):
         inst = <Set__string>Set__string.__new__(Set__string)
-        inst._set = c_items
+        inst._cpp_obj = c_items
         return inst
 
     def __contains__(self, item):
         if not self:
             return False
-        return pbool(deref(self._set).count(item.encode('UTF-8')))
+        return pbool(deref(self._cpp_obj).count(item.encode('UTF-8')))
 
     def __len__(self):
-        return deref(self._set).size()
+        return deref(self._cpp_obj).size()
 
     def __iter__(self):
         if not self:
             raise StopIteration
-        for citem in deref(self._set):
+        for citem in deref(self._cpp_obj):
             yield bytes(citem).decode('UTF-8')
 
     def __repr__(self):
@@ -1346,8 +1346,8 @@ cdef class Set__string:
         cdef cbool retval
         if (isinstance(self, Set__string) and
                 isinstance(other, Set__string)):
-            cself = deref((<Set__string> self)._set)
-            cother = deref((<Set__string> other)._set)
+            cself = deref((<Set__string> self)._cpp_obj)
+            cother = deref((<Set__string> other)._cpp_obj)
             # C level comparisons
             if cop == 0:    # Less Than (strict subset)
                 if not cself.size() < cother.size():
@@ -1413,8 +1413,8 @@ cdef class Set__string:
 
         cdef shared_ptr[cset[string]] shretval = \
             make_shared[cset[string]]()
-        for citem in deref((<Set__string> self)._set):
-            if deref((<Set__string> other)._set).count(citem) > 0:
+        for citem in deref((<Set__string> self)._cpp_obj):
+            if deref((<Set__string> other)._cpp_obj).count(citem) > 0:
                 deref(shretval).insert(citem)
         return Set__string.create(shretval)
 
@@ -1426,8 +1426,8 @@ cdef class Set__string:
 
         cdef shared_ptr[cset[string]] shretval = \
             make_shared[cset[string]]()
-        for citem in deref((<Set__string> self)._set):
-            if deref((<Set__string> other)._set).count(citem) == 0:
+        for citem in deref((<Set__string> self)._cpp_obj):
+            if deref((<Set__string> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
         return Set__string.create(shretval)
 
@@ -1439,9 +1439,9 @@ cdef class Set__string:
 
         cdef shared_ptr[cset[string]] shretval = \
             make_shared[cset[string]]()
-        for citem in deref((<Set__string> self)._set):
+        for citem in deref((<Set__string> self)._cpp_obj):
                 deref(shretval).insert(citem)
-        for citem in deref((<Set__string> other)._set):
+        for citem in deref((<Set__string> other)._cpp_obj):
                 deref(shretval).insert(citem)
         return Set__string.create(shretval)
 
@@ -1453,11 +1453,11 @@ cdef class Set__string:
 
         cdef shared_ptr[cset[string]] shretval = \
             make_shared[cset[string]]()
-        for citem in deref((<Set__string> self)._set):
-            if deref((<Set__string> other)._set).count(citem) == 0:
+        for citem in deref((<Set__string> self)._cpp_obj):
+            if deref((<Set__string> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        for citem in deref((<Set__string> other)._set):
-            if deref((<Set__string> self)._set).count(citem) == 0:
+        for citem in deref((<Set__string> other)._cpp_obj):
+            if deref((<Set__string> self)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
         return Set__string.create(shretval)
 
@@ -1488,12 +1488,12 @@ Set.register(Set__string)
 cdef class Map__i32_i32:
     def __init__(self, items=None):
         if isinstance(items, Map__i32_i32):
-            self._map = (<Map__i32_i32> items)._map
+            self._cpp_obj = (<Map__i32_i32> items)._cpp_obj
         else:
-          self._map = make_shared[cmap[int32_t,int32_t]]()
+          self._cpp_obj = make_shared[cmap[int32_t,int32_t]]()
           if items:
               for key, item in items.items():
-                  deref(self._map).insert(
+                  deref(self._cpp_obj).insert(
                       cpair[int32_t,int32_t](
                           key,
                           item))
@@ -1501,7 +1501,7 @@ cdef class Map__i32_i32:
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,int32_t]] c_items):
         inst = <Map__i32_i32>Map__i32_i32.__new__(Map__i32_i32)
-        inst._map = c_items
+        inst._cpp_obj = c_items
         return inst
 
     def __getitem__(self, key):
@@ -1509,20 +1509,20 @@ cdef class Map__i32_i32:
             raise KeyError(f'{key}')
         cdef int32_t ckey = key
         cdef cmap[int32_t,int32_t].iterator iter = deref(
-            self._map).find(ckey)
-        if iter == deref(self._map).end():
+            self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
             raise KeyError(f'{key}')
         cdef int32_t citem = deref(iter).second
         return citem
 
     def __len__(self):
-        return deref(self._map).size()
+        return deref(self._cpp_obj).size()
 
     def __iter__(self):
         if not self:
             raise StopIteration
         cdef int32_t citem
-        for pair in deref(self._map):
+        for pair in deref(self._cpp_obj):
             citem = pair.first
             yield citem
 
@@ -1557,15 +1557,15 @@ cdef class Map__i32_i32:
 
     def __contains__(self, key):
         cdef int32_t ckey = key
-        return deref(self._map).count(ckey) > 0
+        return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
         if not self:
             return default
         cdef int32_t ckey = key
         cdef cmap[int32_t,int32_t].iterator iter = \
-            deref(self._map).find(ckey)
-        if iter == deref(self._map).end():
+            deref(self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
             return default
         cdef int32_t citem = deref(iter).second
         return citem
@@ -1577,7 +1577,7 @@ cdef class Map__i32_i32:
         if not self:
             raise StopIteration
         cdef int32_t citem
-        for pair in deref(self._map):
+        for pair in deref(self._cpp_obj):
             citem = pair.second
             yield citem
 
@@ -1586,7 +1586,7 @@ cdef class Map__i32_i32:
             raise StopIteration
         cdef int32_t ckey
         cdef int32_t citem
-        for pair in deref(self._map):
+        for pair in deref(self._cpp_obj):
             ckey = pair.first
             citem = pair.second
 
@@ -1599,12 +1599,12 @@ Mapping.register(Map__i32_i32)
 cdef class Map__i32_string:
     def __init__(self, items=None):
         if isinstance(items, Map__i32_string):
-            self._map = (<Map__i32_string> items)._map
+            self._cpp_obj = (<Map__i32_string> items)._cpp_obj
         else:
-          self._map = make_shared[cmap[int32_t,string]]()
+          self._cpp_obj = make_shared[cmap[int32_t,string]]()
           if items:
               for key, item in items.items():
-                  deref(self._map).insert(
+                  deref(self._cpp_obj).insert(
                       cpair[int32_t,string](
                           key,
                           item.encode('UTF-8')))
@@ -1612,7 +1612,7 @@ cdef class Map__i32_string:
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,string]] c_items):
         inst = <Map__i32_string>Map__i32_string.__new__(Map__i32_string)
-        inst._map = c_items
+        inst._cpp_obj = c_items
         return inst
 
     def __getitem__(self, key):
@@ -1620,20 +1620,20 @@ cdef class Map__i32_string:
             raise KeyError(f'{key}')
         cdef int32_t ckey = key
         cdef cmap[int32_t,string].iterator iter = deref(
-            self._map).find(ckey)
-        if iter == deref(self._map).end():
+            self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
             raise KeyError(f'{key}')
         cdef string citem = deref(iter).second
         return bytes(citem).decode('UTF-8')
 
     def __len__(self):
-        return deref(self._map).size()
+        return deref(self._cpp_obj).size()
 
     def __iter__(self):
         if not self:
             raise StopIteration
         cdef int32_t citem
-        for pair in deref(self._map):
+        for pair in deref(self._cpp_obj):
             citem = pair.first
             yield citem
 
@@ -1668,15 +1668,15 @@ cdef class Map__i32_string:
 
     def __contains__(self, key):
         cdef int32_t ckey = key
-        return deref(self._map).count(ckey) > 0
+        return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
         if not self:
             return default
         cdef int32_t ckey = key
         cdef cmap[int32_t,string].iterator iter = \
-            deref(self._map).find(ckey)
-        if iter == deref(self._map).end():
+            deref(self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
             return default
         cdef string citem = deref(iter).second
         return bytes(citem).decode('UTF-8')
@@ -1688,7 +1688,7 @@ cdef class Map__i32_string:
         if not self:
             raise StopIteration
         cdef string citem
-        for pair in deref(self._map):
+        for pair in deref(self._cpp_obj):
             citem = pair.second
             yield bytes(citem).decode('UTF-8')
 
@@ -1697,7 +1697,7 @@ cdef class Map__i32_string:
             raise StopIteration
         cdef int32_t ckey
         cdef string citem
-        for pair in deref(self._map):
+        for pair in deref(self._cpp_obj):
             ckey = pair.first
             citem = pair.second
 
@@ -1710,12 +1710,12 @@ Mapping.register(Map__i32_string)
 cdef class Map__string_string:
     def __init__(self, items=None):
         if isinstance(items, Map__string_string):
-            self._map = (<Map__string_string> items)._map
+            self._cpp_obj = (<Map__string_string> items)._cpp_obj
         else:
-          self._map = make_shared[cmap[string,string]]()
+          self._cpp_obj = make_shared[cmap[string,string]]()
           if items:
               for key, item in items.items():
-                  deref(self._map).insert(
+                  deref(self._cpp_obj).insert(
                       cpair[string,string](
                           key.encode('UTF-8'),
                           item.encode('UTF-8')))
@@ -1723,7 +1723,7 @@ cdef class Map__string_string:
     @staticmethod
     cdef create(shared_ptr[cmap[string,string]] c_items):
         inst = <Map__string_string>Map__string_string.__new__(Map__string_string)
-        inst._map = c_items
+        inst._cpp_obj = c_items
         return inst
 
     def __getitem__(self, key):
@@ -1731,20 +1731,20 @@ cdef class Map__string_string:
             raise KeyError(f'{key}')
         cdef string ckey = key.encode('UTF-8')
         cdef cmap[string,string].iterator iter = deref(
-            self._map).find(ckey)
-        if iter == deref(self._map).end():
+            self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
             raise KeyError(f'{key}')
         cdef string citem = deref(iter).second
         return bytes(citem).decode('UTF-8')
 
     def __len__(self):
-        return deref(self._map).size()
+        return deref(self._cpp_obj).size()
 
     def __iter__(self):
         if not self:
             raise StopIteration
         cdef string citem
-        for pair in deref(self._map):
+        for pair in deref(self._cpp_obj):
             citem = pair.first
             yield bytes(citem).decode('UTF-8')
 
@@ -1779,15 +1779,15 @@ cdef class Map__string_string:
 
     def __contains__(self, key):
         cdef string ckey = key.encode('UTF-8')
-        return deref(self._map).count(ckey) > 0
+        return deref(self._cpp_obj).count(ckey) > 0
 
     def get(self, key, default=None):
         if not self:
             return default
         cdef string ckey = key.encode('UTF-8')
         cdef cmap[string,string].iterator iter = \
-            deref(self._map).find(ckey)
-        if iter == deref(self._map).end():
+            deref(self._cpp_obj).find(ckey)
+        if iter == deref(self._cpp_obj).end():
             return default
         cdef string citem = deref(iter).second
         return bytes(citem).decode('UTF-8')
@@ -1799,7 +1799,7 @@ cdef class Map__string_string:
         if not self:
             raise StopIteration
         cdef string citem
-        for pair in deref(self._map):
+        for pair in deref(self._cpp_obj):
             citem = pair.second
             yield bytes(citem).decode('UTF-8')
 
@@ -1808,7 +1808,7 @@ cdef class Map__string_string:
             raise StopIteration
         cdef string ckey
         cdef string citem
-        for pair in deref(self._map):
+        for pair in deref(self._cpp_obj):
             ckey = pair.first
             citem = pair.second
 
