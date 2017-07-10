@@ -25,7 +25,7 @@ class module_CONSTANTS {
   private static ?string $__name = null;
   public static function name(): string {
     if (self::$__name == null) {
-      self::$__name = 'Mark Zuckerberg';
+      self::$__name = "Mark Zuckerberg";
     }
     return self::$__name;
   }
@@ -39,13 +39,13 @@ class module_CONSTANTS {
     if (self::$__states == null) {
       self::$__states = Vector {
         Map {
-          'San Diego' => 3211000,
-          'Sacramento' => 479600,
-          'SF' => 837400,
+          "San Diego" => 3211000,
+          "Sacramento" => 479600,
+          "SF" => 837400,
         },
         Map {
-          'New York' => 8406000,
-          'Albany' => 98400,
+          "New York" => 8406000,
+          "Albany" => 98400,
         },
       };
     }
@@ -97,7 +97,7 @@ class module_CONSTANTS {
     if (self::$__instagram == null) {
       self::$__instagram = new Internship(
         12,
-        'Software Engineer',
+        "Software Engineer",
         Company::INSTAGRAM,
       );
     }
@@ -135,12 +135,12 @@ class module_CONSTANTS {
       self::$__internList = Vector {
         new Internship(
           12,
-          'Software Engineer',
+          "Software Engineer",
           Company::INSTAGRAM,
         ),
         new Internship(
           10,
-          'Sales Intern',
+          "Sales Intern",
           Company::FACEBOOK,
         ),
       };
@@ -155,7 +155,7 @@ class module_CONSTANTS {
   private static ?string $__apostrophe = null;
   public static function apostrophe(): string {
     if (self::$__apostrophe == null) {
-      self::$__apostrophe = '\'';
+      self::$__apostrophe = "'";
     }
     return self::$__apostrophe;
   }
@@ -167,7 +167,7 @@ class module_CONSTANTS {
   private static ?string $__tripleApostrophe = null;
   public static function tripleApostrophe(): string {
     if (self::$__tripleApostrophe == null) {
-      self::$__tripleApostrophe = '\'\'\'';
+      self::$__tripleApostrophe = "'''";
     }
     return self::$__tripleApostrophe;
   }
@@ -179,7 +179,7 @@ class module_CONSTANTS {
   private static ?string $__quotationMark = null;
   public static function quotationMark(): string {
     if (self::$__quotationMark == null) {
-      self::$__quotationMark = '"';
+      self::$__quotationMark = "\"";
     }
     return self::$__quotationMark;
   }
@@ -191,7 +191,7 @@ class module_CONSTANTS {
   private static ?string $__backslash = null;
   public static function backslash(): string {
     if (self::$__backslash == null) {
-      self::$__backslash = '\\';
+      self::$__backslash = "\\";
     }
     return self::$__backslash;
   }
@@ -203,7 +203,7 @@ class module_CONSTANTS {
   private static ?string $__escaped_a = null;
   public static function escaped_a(): string {
     if (self::$__escaped_a == null) {
-      self::$__escaped_a = '\x61';
+      self::$__escaped_a = "\x61";
     }
     return self::$__escaped_a;
   }
@@ -216,10 +216,10 @@ class module_CONSTANTS {
   public static function char2ascii(): Map<string, int> {
     if (self::$__char2ascii == null) {
       self::$__char2ascii = Map {
-        '\'' => 39,
-        '"' => 34,
-        '\\' => 92,
-        '\x61' => 97,
+        "'" => 39,
+        "\"" => 34,
+        "\\" => 92,
+        "\x61" => 97,
       };
     }
     return self::$__char2ascii;
@@ -233,22 +233,22 @@ class module_CONSTANTS {
   public static function escaped_strings(): Vector<string> {
     if (self::$__escaped_strings == null) {
       self::$__escaped_strings = Vector {
-        '\x61',
-        '\xab',
-        '\x6a',
-        '\xa6',
-        '\x61yyy',
-        '\xabyyy',
-        '\x6ayyy',
-        '\xa6yyy',
-        'zzz\x61',
-        'zzz\xab',
-        'zzz\x6a',
-        'zzz\xa6',
-        'zzz\x61yyy',
-        'zzz\xabyyy',
-        'zzz\x6ayyy',
-        'zzz\xa6yyy',
+        "\x61",
+        "\xab",
+        "\x6a",
+        "\xa6",
+        "\x61yyy",
+        "\xabyyy",
+        "\x6ayyy",
+        "\xa6yyy",
+        "zzz\x61",
+        "zzz\xab",
+        "zzz\x6a",
+        "zzz\xa6",
+        "zzz\x61yyy",
+        "zzz\xabyyy",
+        "zzz\x6ayyy",
+        "zzz\xa6yyy",
       };
     }
     return self::$__escaped_strings;
@@ -345,7 +345,7 @@ class module_CONSTANTS {
   private static ?string $__empty_string = null;
   public static function empty_string(): string {
     if (self::$__empty_string == null) {
-      self::$__empty_string = '';
+      self::$__empty_string = "";
     }
     return self::$__empty_string;
   }
@@ -459,28 +459,28 @@ class module_CONSTANTS {
   public static function __values(): array {
     if (self::$____values == null) {
       self::$____values = array(
-        'myInt' => 1337,
-        'name' => 'Mark Zuckerberg',
-        'states' => Vector {
+        "myInt" => 1337,
+        "name" => "Mark Zuckerberg",
+        "states" => Vector {
           Map {
-            'San Diego' => 3211000,
-            'Sacramento' => 479600,
-            'SF' => 837400,
+            "San Diego" => 3211000,
+            "Sacramento" => 479600,
+            "SF" => 837400,
           },
           Map {
-            'New York' => 8406000,
-            'Albany' => 98400,
+            "New York" => 8406000,
+            "Albany" => 98400,
           },
         },
-        'x' => 1.0,
-        'y' => 1000000.0,
-        'z' => 1e+09,
-        'instagram' => new Internship(
+        "x" => 1.0,
+        "y" => 1000000.0,
+        "z" => 1e+09,
+        "instagram" => new Internship(
           12,
-          'Software Engineer',
+          "Software Engineer",
           Company::INSTAGRAM,
         ),
-        'kRanges' => Vector {
+        "kRanges" => Vector {
           new Range(
             1,
             2,
@@ -490,70 +490,70 @@ class module_CONSTANTS {
             6,
           ),
         },
-        'internList' => Vector {
+        "internList" => Vector {
           new Internship(
             12,
-            'Software Engineer',
+            "Software Engineer",
             Company::INSTAGRAM,
           ),
           new Internship(
             10,
-            'Sales Intern',
+            "Sales Intern",
             Company::FACEBOOK,
           ),
         },
-        'apostrophe' => '\'',
-        'tripleApostrophe' => '\'\'\'',
-        'quotationMark' => '"',
-        'backslash' => '\\',
-        'escaped_a' => '\x61',
-        'char2ascii' => Map {
-          '\'' => 39,
-          '"' => 34,
-          '\\' => 92,
-          '\x61' => 97,
+        "apostrophe" => "'",
+        "tripleApostrophe" => "'''",
+        "quotationMark" => "\"",
+        "backslash" => "\\",
+        "escaped_a" => "\x61",
+        "char2ascii" => Map {
+          "'" => 39,
+          "\"" => 34,
+          "\\" => 92,
+          "\x61" => 97,
         },
-        'escaped_strings' => Vector {
-          '\x61',
-          '\xab',
-          '\x6a',
-          '\xa6',
-          '\x61yyy',
-          '\xabyyy',
-          '\x6ayyy',
-          '\xa6yyy',
-          'zzz\x61',
-          'zzz\xab',
-          'zzz\x6a',
-          'zzz\xa6',
-          'zzz\x61yyy',
-          'zzz\xabyyy',
-          'zzz\x6ayyy',
-          'zzz\xa6yyy',
+        "escaped_strings" => Vector {
+          "\x61",
+          "\xab",
+          "\x6a",
+          "\xa6",
+          "\x61yyy",
+          "\xabyyy",
+          "\x6ayyy",
+          "\xa6yyy",
+          "zzz\x61",
+          "zzz\xab",
+          "zzz\x6a",
+          "zzz\xa6",
+          "zzz\x61yyy",
+          "zzz\xabyyy",
+          "zzz\x6ayyy",
+          "zzz\xa6yyy",
         },
-        'false_c' => false,
-        'true_c' => true,
-        'zero_byte' => 0,
-        'zero16' => 0,
-        'zero32' => 0,
-        'zero64' => 0,
-        'zero_dot_zero' => 0.0,
-        'empty_string' => '',
-        'empty_int_list' => Vector {
+        "false_c" => false,
+        "true_c" => true,
+        "zero_byte" => 0,
+        "zero16" => 0,
+        "zero32" => 0,
+        "zero64" => 0,
+        "zero_dot_zero" => 0.0,
+        "empty_string" => "",
+        "empty_int_list" => Vector {
         },
-        'empty_string_list' => Vector {
+        "empty_string_list" => Vector {
         },
-        'empty_int_set' => Set {
+        "empty_int_set" => Set {
         },
-        'empty_string_set' => Set {
+        "empty_string_set" => Set {
         },
-        'empty_int_int_map' => Map {
+        "empty_int_int_map" => Map {
         },
-        'empty_int_string_map' => Map {
+        "empty_int_string_map" => Map {
         },
-        'empty_string_int_map' => Map {
+        "empty_string_int_map" => Map {
         },
-        'empty_string_string_map' => Map {
+        "empty_string_string_map" => Map {
         },
       );
     }
