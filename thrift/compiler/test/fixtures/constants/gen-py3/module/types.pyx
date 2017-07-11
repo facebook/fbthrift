@@ -16,6 +16,7 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET
+from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
@@ -62,6 +63,8 @@ cdef cCompany Company_to_cpp(value):
         return Company__INSTAGRAM
 
 
+cdef cInternship _Internship_defaults = cInternship()
+
 cdef class Internship(thrift.py3.types.Struct):
 
     def __init__(
@@ -70,19 +73,19 @@ cdef class Internship(thrift.py3.types.Struct):
         title=None,
         employer=None
     ):
-        self._cpp_obj = make_shared[cInternship]()
-
+        cdef shared_ptr[cInternship] c_inst = make_shared[cInternship]()
         inst = self
         if weeks is not None:
-            deref(inst._cpp_obj).weeks = weeks
+            deref(c_inst).weeks = weeks
         if title is not None:
-            deref(inst._cpp_obj).title = title.encode('UTF-8')
-            deref(inst._cpp_obj).__isset.title = True
+            deref(c_inst).title = title.encode('UTF-8')
+            deref(c_inst).__isset.title = True
 
         if employer is not None:
-            deref(inst._cpp_obj).employer = Company_to_cpp(employer)
-            deref(inst._cpp_obj).__isset.employer = True
+            deref(c_inst).employer = Company_to_cpp(employer)
+            deref(c_inst).__isset.employer = True
 
+        self._cpp_obj = move_shared(c_inst)
 
     cdef bytes _serialize(Internship self, proto):
         cdef string c_str
@@ -124,37 +127,36 @@ cdef class Internship(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        inst = <Internship>Internship.__new__(Internship)
-        inst._cpp_obj = make_shared[cInternship](deref(self._cpp_obj))
-        cdef Internship defaults = Internship_defaults
+        cdef shared_ptr[cInternship] c_inst = make_shared[cInternship](deref(self._cpp_obj))
 
         # Convert None's to default value.
         if weeks is None:
-            deref(inst._cpp_obj).weeks = deref(defaults._cpp_obj).weeks
+            deref(c_inst).weeks = _Internship_defaults.weeks
         if weeks is NOTSET:
             weeks = None
         if title is None:
-            deref(inst._cpp_obj).title = deref(defaults._cpp_obj).title
-            deref(inst._cpp_obj).__isset.title = False
+            deref(c_inst).title = _Internship_defaults.title
+            deref(c_inst).__isset.title = False
         if title is NOTSET:
             title = None
         if employer is None:
-            deref(inst._cpp_obj).employer = deref(defaults._cpp_obj).employer
-            deref(inst._cpp_obj).__isset.employer = False
+            deref(c_inst).employer = _Internship_defaults.employer
+            deref(c_inst).__isset.employer = False
         if employer is NOTSET:
             employer = None
 
         if weeks is not None:
-            deref(inst._cpp_obj).weeks = weeks
+            deref(c_inst).weeks = weeks
         if title is not None:
-            deref(inst._cpp_obj).title = title.encode('UTF-8')
-            deref(inst._cpp_obj).__isset.title = True
+            deref(c_inst).title = title.encode('UTF-8')
+            deref(c_inst).__isset.title = True
 
         if employer is not None:
-            deref(inst._cpp_obj).employer = Company_to_cpp(employer)
-            deref(inst._cpp_obj).__isset.employer = True
+            deref(c_inst).employer = Company_to_cpp(employer)
+            deref(c_inst).__isset.employer = True
 
-        return inst
+
+        return Internship.create(move_shared(c_inst))
 
     def __iter__(self):
         yield 'weeks', self.weeks
@@ -187,12 +189,7 @@ cdef class Internship(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.employer:
             return None
 
-        cdef int value = <int> deref(self._cpp_obj).employer
-        try:
-            return Company(value)
-        except ValueError:
-            return thrift.py3.types.BadEnum(Company, value)
-        
+        return translate_cpp_enum_to_python(Company, <int>deref(self._cpp_obj).employer)
 
 
     def __richcmp__(self, other, op):
@@ -227,8 +224,7 @@ cdef class Internship(thrift.py3.types.Struct):
         return f'Internship(weeks={repr(self.weeks)}, title={repr(self.title)}, employer={repr(self.employer)})'
 
 
-Internship_defaults = Internship()
-
+cdef cUnEnumStruct _UnEnumStruct_defaults = cUnEnumStruct()
 
 cdef class UnEnumStruct(thrift.py3.types.Struct):
 
@@ -236,13 +232,13 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
         UnEnumStruct self,
         city=None
     ):
-        self._cpp_obj = make_shared[cUnEnumStruct]()
-
+        cdef shared_ptr[cUnEnumStruct] c_inst = make_shared[cUnEnumStruct]()
         inst = self
         if city is not None:
-            deref(inst._cpp_obj).city = City_to_cpp(city)
-            deref(inst._cpp_obj).__isset.city = True
+            deref(c_inst).city = City_to_cpp(city)
+            deref(c_inst).__isset.city = True
 
+        self._cpp_obj = move_shared(c_inst)
 
     cdef bytes _serialize(UnEnumStruct self, proto):
         cdef string c_str
@@ -278,22 +274,21 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        inst = <UnEnumStruct>UnEnumStruct.__new__(UnEnumStruct)
-        inst._cpp_obj = make_shared[cUnEnumStruct](deref(self._cpp_obj))
-        cdef UnEnumStruct defaults = UnEnumStruct_defaults
+        cdef shared_ptr[cUnEnumStruct] c_inst = make_shared[cUnEnumStruct](deref(self._cpp_obj))
 
         # Convert None's to default value.
         if city is None:
-            deref(inst._cpp_obj).city = deref(defaults._cpp_obj).city
-            deref(inst._cpp_obj).__isset.city = False
+            deref(c_inst).city = _UnEnumStruct_defaults.city
+            deref(c_inst).__isset.city = False
         if city is NOTSET:
             city = None
 
         if city is not None:
-            deref(inst._cpp_obj).city = City_to_cpp(city)
-            deref(inst._cpp_obj).__isset.city = True
+            deref(c_inst).city = City_to_cpp(city)
+            deref(c_inst).__isset.city = True
 
-        return inst
+
+        return UnEnumStruct.create(move_shared(c_inst))
 
     def __iter__(self):
         yield 'city', self.city
@@ -310,12 +305,7 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
     @property
     def city(self):
 
-        cdef int value = <int> deref(self._cpp_obj).city
-        try:
-            return City(value)
-        except ValueError:
-            return thrift.py3.types.BadEnum(City, value)
-        
+        return translate_cpp_enum_to_python(City, <int>deref(self._cpp_obj).city)
 
 
     def __richcmp__(self, other, op):
@@ -348,8 +338,7 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
         return f'UnEnumStruct(city={repr(self.city)})'
 
 
-UnEnumStruct_defaults = UnEnumStruct()
-
+cdef cRange _Range_defaults = cRange()
 
 cdef class Range(thrift.py3.types.Struct):
 
@@ -358,13 +347,13 @@ cdef class Range(thrift.py3.types.Struct):
         min=None,
         max=None
     ):
-        self._cpp_obj = make_shared[cRange]()
-
+        cdef shared_ptr[cRange] c_inst = make_shared[cRange]()
         inst = self
         if min is not None:
-            deref(inst._cpp_obj).min = min
+            deref(c_inst).min = min
         if max is not None:
-            deref(inst._cpp_obj).max = max
+            deref(c_inst).max = max
+        self._cpp_obj = move_shared(c_inst)
 
     cdef bytes _serialize(Range self, proto):
         cdef string c_str
@@ -403,25 +392,24 @@ cdef class Range(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        inst = <Range>Range.__new__(Range)
-        inst._cpp_obj = make_shared[cRange](deref(self._cpp_obj))
-        cdef Range defaults = Range_defaults
+        cdef shared_ptr[cRange] c_inst = make_shared[cRange](deref(self._cpp_obj))
 
         # Convert None's to default value.
         if min is None:
-            deref(inst._cpp_obj).min = deref(defaults._cpp_obj).min
+            deref(c_inst).min = _Range_defaults.min
         if min is NOTSET:
             min = None
         if max is None:
-            deref(inst._cpp_obj).max = deref(defaults._cpp_obj).max
+            deref(c_inst).max = _Range_defaults.max
         if max is NOTSET:
             max = None
 
         if min is not None:
-            deref(inst._cpp_obj).min = min
+            deref(c_inst).min = min
         if max is not None:
-            deref(inst._cpp_obj).max = max
-        return inst
+            deref(c_inst).max = max
+
+        return Range.create(move_shared(c_inst))
 
     def __iter__(self):
         yield 'min', self.min
@@ -476,9 +464,6 @@ cdef class Range(thrift.py3.types.Struct):
 
     def __repr__(Range self):
         return f'Range(min={repr(self.min)}, max={repr(self.max)})'
-
-
-Range_defaults = Range()
 
 
 cdef class Map__string_i32:

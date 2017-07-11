@@ -94,8 +94,11 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "py3::s
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cSimpleException] move(unique_ptr[cSimpleException])
+    cdef shared_ptr[cSimpleException] move_shared "std::move"(shared_ptr[cSimpleException])
     cdef shared_ptr[cSimpleStruct] move(unique_ptr[cSimpleStruct])
+    cdef shared_ptr[cSimpleStruct] move_shared "std::move"(shared_ptr[cSimpleStruct])
     cdef shared_ptr[cComplexStruct] move(unique_ptr[cComplexStruct])
+    cdef shared_ptr[cComplexStruct] move_shared "std::move"(shared_ptr[cComplexStruct])
 
 # Forward Definition of the cython struct
 cdef class SimpleException(__Error)

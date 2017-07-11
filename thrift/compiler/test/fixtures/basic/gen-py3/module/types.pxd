@@ -46,6 +46,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cMyStruct] move(unique_ptr[cMyStruct])
+    cdef shared_ptr[cMyStruct] move_shared "std::move"(shared_ptr[cMyStruct])
 
 # Forward Definition of the cython struct
 cdef class MyStruct(thrift.py3.types.Struct)

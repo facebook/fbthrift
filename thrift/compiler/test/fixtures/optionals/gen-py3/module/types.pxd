@@ -103,8 +103,11 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cColor] move(unique_ptr[cColor])
+    cdef shared_ptr[cColor] move_shared "std::move"(shared_ptr[cColor])
     cdef shared_ptr[cVehicle] move(unique_ptr[cVehicle])
+    cdef shared_ptr[cVehicle] move_shared "std::move"(shared_ptr[cVehicle])
     cdef shared_ptr[cPerson] move(unique_ptr[cPerson])
+    cdef shared_ptr[cPerson] move_shared "std::move"(shared_ptr[cPerson])
 
 # Forward Definition of the cython struct
 cdef class Color(thrift.py3.types.Struct)

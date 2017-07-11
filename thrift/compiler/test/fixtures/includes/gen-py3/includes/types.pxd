@@ -38,6 +38,7 @@ cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "cpp2":
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cIncluded] move(unique_ptr[cIncluded])
+    cdef shared_ptr[cIncluded] move_shared "std::move"(shared_ptr[cIncluded])
 
 # Forward Definition of the cython struct
 cdef class Included(thrift.py3.types.Struct)

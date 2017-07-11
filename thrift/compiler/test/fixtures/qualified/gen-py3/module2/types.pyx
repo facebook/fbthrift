@@ -16,6 +16,7 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET
+from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
@@ -33,6 +34,8 @@ import module1.types
 
 
 
+cdef cStruct _Struct_defaults = cStruct()
+
 cdef class Struct(thrift.py3.types.Struct):
 
     def __init__(
@@ -40,23 +43,17 @@ cdef class Struct(thrift.py3.types.Struct):
         first=None,
         second=None
     ):
-        self._cpp_obj = make_shared[cStruct]()
-
+        cdef shared_ptr[cStruct] c_inst = make_shared[cStruct]()
         inst = self
-        cdef shared_ptr[module0.types.cStruct] __first
         if first is not None:
-            __first = (
-            <module0.types.Struct?> first)._cpp_obj
-            deref(inst._cpp_obj).first = deref(__first.get())
-            deref(inst._cpp_obj).__isset.first = True
+            deref(c_inst).first = deref((<module0.types.Struct?> first)._cpp_obj)
+            deref(c_inst).__isset.first = True
 
-        cdef shared_ptr[module1.types.cStruct] __second
         if second is not None:
-            __second = (
-            <module1.types.Struct?> second)._cpp_obj
-            deref(inst._cpp_obj).second = deref(__second.get())
-            deref(inst._cpp_obj).__isset.second = True
+            deref(c_inst).second = deref((<module1.types.Struct?> second)._cpp_obj)
+            deref(c_inst).__isset.second = True
 
+        self._cpp_obj = move_shared(c_inst)
 
     cdef bytes _serialize(Struct self, proto):
         cdef string c_str
@@ -95,37 +92,30 @@ cdef class Struct(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        inst = <Struct>Struct.__new__(Struct)
-        inst._cpp_obj = make_shared[cStruct](deref(self._cpp_obj))
-        cdef Struct defaults = Struct_defaults
+        cdef shared_ptr[cStruct] c_inst = make_shared[cStruct](deref(self._cpp_obj))
 
         # Convert None's to default value.
         if first is None:
-            deref(inst._cpp_obj).first = deref(defaults._cpp_obj).first
-            deref(inst._cpp_obj).__isset.first = False
+            deref(c_inst).first = _Struct_defaults.first
+            deref(c_inst).__isset.first = False
         if first is NOTSET:
             first = None
         if second is None:
-            deref(inst._cpp_obj).second = deref(defaults._cpp_obj).second
-            deref(inst._cpp_obj).__isset.second = False
+            deref(c_inst).second = _Struct_defaults.second
+            deref(c_inst).__isset.second = False
         if second is NOTSET:
             second = None
 
-        cdef shared_ptr[module0.types.cStruct] __first
         if first is not None:
-            __first = (
-            <module0.types.Struct?> first)._cpp_obj
-            deref(inst._cpp_obj).first = deref(__first.get())
-            deref(inst._cpp_obj).__isset.first = True
+            deref(c_inst).first = deref((<module0.types.Struct?> first)._cpp_obj)
+            deref(c_inst).__isset.first = True
 
-        cdef shared_ptr[module1.types.cStruct] __second
         if second is not None:
-            __second = (
-            <module1.types.Struct?> second)._cpp_obj
-            deref(inst._cpp_obj).second = deref(__second.get())
-            deref(inst._cpp_obj).__isset.second = True
+            deref(c_inst).second = deref((<module1.types.Struct?> second)._cpp_obj)
+            deref(c_inst).__isset.second = True
 
-        return inst
+
+        return Struct.create(move_shared(c_inst))
 
     def __iter__(self):
         yield 'first', self.first
@@ -145,26 +135,18 @@ cdef class Struct(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.first:
             return None
 
-        cdef shared_ptr[module0.types.cStruct] item
         if self.__first is None:
-            item = make_shared[module0.types.cStruct](
-                deref(self._cpp_obj).first)
-            self.__first = module0.types.Struct.create(item)
+            self.__first = module0.types.Struct.create(make_shared[module0.types.cStruct](deref(self._cpp_obj).first))
         return self.__first
-        
 
     @property
     def second(self):
         if not deref(self._cpp_obj).__isset.second:
             return None
 
-        cdef shared_ptr[module1.types.cStruct] item
         if self.__second is None:
-            item = make_shared[module1.types.cStruct](
-                deref(self._cpp_obj).second)
-            self.__second = module1.types.Struct.create(item)
+            self.__second = module1.types.Struct.create(make_shared[module1.types.cStruct](deref(self._cpp_obj).second))
         return self.__second
-        
 
 
     def __richcmp__(self, other, op):
@@ -198,8 +180,7 @@ cdef class Struct(thrift.py3.types.Struct):
         return f'Struct(first={repr(self.first)}, second={repr(self.second)})'
 
 
-Struct_defaults = Struct()
-
+cdef cBigStruct _BigStruct_defaults = cBigStruct()
 
 cdef class BigStruct(thrift.py3.types.Struct):
 
@@ -208,20 +189,17 @@ cdef class BigStruct(thrift.py3.types.Struct):
         s=None,
         id=None
     ):
-        self._cpp_obj = make_shared[cBigStruct]()
-
+        cdef shared_ptr[cBigStruct] c_inst = make_shared[cBigStruct]()
         inst = self
-        cdef shared_ptr[cStruct] __s
         if s is not None:
-            __s = (
-            <Struct?> s)._cpp_obj
-            deref(inst._cpp_obj).s = deref(__s.get())
-            deref(inst._cpp_obj).__isset.s = True
+            deref(c_inst).s = deref((<Struct?> s)._cpp_obj)
+            deref(c_inst).__isset.s = True
 
         if id is not None:
-            deref(inst._cpp_obj).id = id
-            deref(inst._cpp_obj).__isset.id = True
+            deref(c_inst).id = id
+            deref(c_inst).__isset.id = True
 
+        self._cpp_obj = move_shared(c_inst)
 
     cdef bytes _serialize(BigStruct self, proto):
         cdef string c_str
@@ -260,34 +238,30 @@ cdef class BigStruct(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        inst = <BigStruct>BigStruct.__new__(BigStruct)
-        inst._cpp_obj = make_shared[cBigStruct](deref(self._cpp_obj))
-        cdef BigStruct defaults = BigStruct_defaults
+        cdef shared_ptr[cBigStruct] c_inst = make_shared[cBigStruct](deref(self._cpp_obj))
 
         # Convert None's to default value.
         if s is None:
-            deref(inst._cpp_obj).s = deref(defaults._cpp_obj).s
-            deref(inst._cpp_obj).__isset.s = False
+            deref(c_inst).s = _BigStruct_defaults.s
+            deref(c_inst).__isset.s = False
         if s is NOTSET:
             s = None
         if id is None:
-            deref(inst._cpp_obj).id = deref(defaults._cpp_obj).id
-            deref(inst._cpp_obj).__isset.id = False
+            deref(c_inst).id = _BigStruct_defaults.id
+            deref(c_inst).__isset.id = False
         if id is NOTSET:
             id = None
 
-        cdef shared_ptr[cStruct] __s
         if s is not None:
-            __s = (
-            <Struct?> s)._cpp_obj
-            deref(inst._cpp_obj).s = deref(__s.get())
-            deref(inst._cpp_obj).__isset.s = True
+            deref(c_inst).s = deref((<Struct?> s)._cpp_obj)
+            deref(c_inst).__isset.s = True
 
         if id is not None:
-            deref(inst._cpp_obj).id = id
-            deref(inst._cpp_obj).__isset.id = True
+            deref(c_inst).id = id
+            deref(c_inst).__isset.id = True
 
-        return inst
+
+        return BigStruct.create(move_shared(c_inst))
 
     def __iter__(self):
         yield 's', self.s
@@ -307,13 +281,9 @@ cdef class BigStruct(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.s:
             return None
 
-        cdef shared_ptr[cStruct] item
         if self.__s is None:
-            item = make_shared[cStruct](
-                deref(self._cpp_obj).s)
-            self.__s = Struct.create(item)
+            self.__s = Struct.create(make_shared[cStruct](deref(self._cpp_obj).s))
         return self.__s
-        
 
     @property
     def id(self):
@@ -352,9 +322,6 @@ cdef class BigStruct(thrift.py3.types.Struct):
 
     def __repr__(BigStruct self):
         return f'BigStruct(s={repr(self.s)}, id={repr(self.id)})'
-
-
-BigStruct_defaults = BigStruct()
 
 
 c2 = Struct.create(

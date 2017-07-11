@@ -16,6 +16,7 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET
+from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
@@ -41,6 +42,8 @@ cdef cEnum Enum_to_cpp(value):
         return Enum__THREE
 
 
+cdef cStruct _Struct_defaults = cStruct()
+
 cdef class Struct(thrift.py3.types.Struct):
 
     def __init__(
@@ -48,17 +51,17 @@ cdef class Struct(thrift.py3.types.Struct):
         first=None,
         second=None
     ):
-        self._cpp_obj = make_shared[cStruct]()
-
+        cdef shared_ptr[cStruct] c_inst = make_shared[cStruct]()
         inst = self
         if first is not None:
-            deref(inst._cpp_obj).first = first
-            deref(inst._cpp_obj).__isset.first = True
+            deref(c_inst).first = first
+            deref(c_inst).__isset.first = True
 
         if second is not None:
-            deref(inst._cpp_obj).second = second.encode('UTF-8')
-            deref(inst._cpp_obj).__isset.second = True
+            deref(c_inst).second = second.encode('UTF-8')
+            deref(c_inst).__isset.second = True
 
+        self._cpp_obj = move_shared(c_inst)
 
     cdef bytes _serialize(Struct self, proto):
         cdef string c_str
@@ -97,31 +100,30 @@ cdef class Struct(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        inst = <Struct>Struct.__new__(Struct)
-        inst._cpp_obj = make_shared[cStruct](deref(self._cpp_obj))
-        cdef Struct defaults = Struct_defaults
+        cdef shared_ptr[cStruct] c_inst = make_shared[cStruct](deref(self._cpp_obj))
 
         # Convert None's to default value.
         if first is None:
-            deref(inst._cpp_obj).first = deref(defaults._cpp_obj).first
-            deref(inst._cpp_obj).__isset.first = False
+            deref(c_inst).first = _Struct_defaults.first
+            deref(c_inst).__isset.first = False
         if first is NOTSET:
             first = None
         if second is None:
-            deref(inst._cpp_obj).second = deref(defaults._cpp_obj).second
-            deref(inst._cpp_obj).__isset.second = False
+            deref(c_inst).second = _Struct_defaults.second
+            deref(c_inst).__isset.second = False
         if second is NOTSET:
             second = None
 
         if first is not None:
-            deref(inst._cpp_obj).first = first
-            deref(inst._cpp_obj).__isset.first = True
+            deref(c_inst).first = first
+            deref(c_inst).__isset.first = True
 
         if second is not None:
-            deref(inst._cpp_obj).second = second.encode('UTF-8')
-            deref(inst._cpp_obj).__isset.second = True
+            deref(c_inst).second = second.encode('UTF-8')
+            deref(c_inst).__isset.second = True
 
-        return inst
+
+        return Struct.create(move_shared(c_inst))
 
     def __iter__(self):
         yield 'first', self.first
@@ -180,9 +182,6 @@ cdef class Struct(thrift.py3.types.Struct):
 
     def __repr__(Struct self):
         return f'Struct(first={repr(self.first)}, second={repr(self.second)})'
-
-
-Struct_defaults = Struct()
 
 
 cdef class List__Enum:

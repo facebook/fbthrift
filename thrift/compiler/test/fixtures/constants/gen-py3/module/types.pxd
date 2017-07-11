@@ -88,8 +88,11 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cInternship] move(unique_ptr[cInternship])
+    cdef shared_ptr[cInternship] move_shared "std::move"(shared_ptr[cInternship])
     cdef shared_ptr[cUnEnumStruct] move(unique_ptr[cUnEnumStruct])
+    cdef shared_ptr[cUnEnumStruct] move_shared "std::move"(shared_ptr[cUnEnumStruct])
     cdef shared_ptr[cRange] move(unique_ptr[cRange])
+    cdef shared_ptr[cRange] move_shared "std::move"(shared_ptr[cRange])
 
 # Forward Definition of the cython struct
 cdef class Internship(thrift.py3.types.Struct)

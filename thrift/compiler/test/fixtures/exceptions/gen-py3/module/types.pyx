@@ -16,6 +16,7 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET
+from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
@@ -34,9 +35,9 @@ cdef class Banal(thrift.py3.exceptions.Error):
     def __init__(
         Banal self
     ):
-        self._cpp_obj = make_shared[cBanal]()
-
+        cdef shared_ptr[cBanal] c_inst = make_shared[cBanal]()
         inst = self
+        self._cpp_obj = move_shared(c_inst)
 
 
     def __iter__(self):
@@ -84,11 +85,11 @@ cdef class Fiery(thrift.py3.exceptions.Error):
         Fiery self,
         message=None
     ):
-        self._cpp_obj = make_shared[cFiery]()
-
+        cdef shared_ptr[cFiery] c_inst = make_shared[cFiery]()
         inst = self
         if message is not None:
-            deref(inst._cpp_obj).message = message.encode('UTF-8')
+            deref(c_inst).message = message.encode('UTF-8')
+        self._cpp_obj = move_shared(c_inst)
 
 
     def __iter__(self):

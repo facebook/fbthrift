@@ -11,3 +11,6 @@ cdef class BadEnum:
     cdef readonly object the_enum
     cdef readonly int value
     cdef readonly str name
+
+
+cdef translate_cpp_enum_to_python(object EnumClass, int value)

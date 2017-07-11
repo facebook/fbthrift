@@ -16,6 +16,7 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET
+from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
@@ -29,6 +30,8 @@ from enum import Enum
 
 
 
+cdef cFoo _Foo_defaults = cFoo()
+
 cdef class Foo(thrift.py3.types.Struct):
 
     def __init__(
@@ -38,25 +41,21 @@ cdef class Foo(thrift.py3.types.Struct):
         myBools=None,
         myNumbers=None
     ):
-        self._cpp_obj = make_shared[cFoo]()
-
+        cdef shared_ptr[cFoo] c_inst = make_shared[cFoo]()
         inst = self
         if myInteger is not None:
-            deref(inst._cpp_obj).myInteger = myInteger
+            deref(c_inst).myInteger = myInteger
         if myString is not None:
-            deref(inst._cpp_obj).myString = myString.encode('UTF-8')
-            deref(inst._cpp_obj).__isset.myString = True
+            deref(c_inst).myString = myString.encode('UTF-8')
+            deref(c_inst).__isset.myString = True
 
-        cdef List__bool _myBools
         if myBools is not None:
-            _myBools = List__bool(myBools)
-            deref(inst._cpp_obj).myBools = deref(_myBools._cpp_obj)
-            deref(inst._cpp_obj).__isset.myBools = True
+            deref(c_inst).myBools = <vector[cbool]>deref(List__bool(myBools)._cpp_obj)
+            deref(c_inst).__isset.myBools = True
 
-        cdef List__i32 _myNumbers
         if myNumbers is not None:
-            _myNumbers = List__i32(myNumbers)
-            deref(inst._cpp_obj).myNumbers = deref(_myNumbers._cpp_obj)
+            deref(c_inst).myNumbers = <vector[int32_t]>deref(List__i32(myNumbers)._cpp_obj)
+        self._cpp_obj = move_shared(c_inst)
 
     cdef bytes _serialize(Foo self, proto):
         cdef string c_str
@@ -101,47 +100,42 @@ cdef class Foo(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        inst = <Foo>Foo.__new__(Foo)
-        inst._cpp_obj = make_shared[cFoo](deref(self._cpp_obj))
-        cdef Foo defaults = Foo_defaults
+        cdef shared_ptr[cFoo] c_inst = make_shared[cFoo](deref(self._cpp_obj))
 
         # Convert None's to default value.
         if myInteger is None:
-            deref(inst._cpp_obj).myInteger = deref(defaults._cpp_obj).myInteger
+            deref(c_inst).myInteger = _Foo_defaults.myInteger
         if myInteger is NOTSET:
             myInteger = None
         if myString is None:
-            deref(inst._cpp_obj).myString = deref(defaults._cpp_obj).myString
-            deref(inst._cpp_obj).__isset.myString = False
+            deref(c_inst).myString = _Foo_defaults.myString
+            deref(c_inst).__isset.myString = False
         if myString is NOTSET:
             myString = None
         if myBools is None:
-            deref(inst._cpp_obj).myBools = deref(defaults._cpp_obj).myBools
-            deref(inst._cpp_obj).__isset.myBools = False
+            deref(c_inst).myBools = _Foo_defaults.myBools
+            deref(c_inst).__isset.myBools = False
         if myBools is NOTSET:
             myBools = None
         if myNumbers is None:
-            deref(inst._cpp_obj).myNumbers = deref(defaults._cpp_obj).myNumbers
+            deref(c_inst).myNumbers = _Foo_defaults.myNumbers
         if myNumbers is NOTSET:
             myNumbers = None
 
         if myInteger is not None:
-            deref(inst._cpp_obj).myInteger = myInteger
+            deref(c_inst).myInteger = myInteger
         if myString is not None:
-            deref(inst._cpp_obj).myString = myString.encode('UTF-8')
-            deref(inst._cpp_obj).__isset.myString = True
+            deref(c_inst).myString = myString.encode('UTF-8')
+            deref(c_inst).__isset.myString = True
 
-        cdef List__bool _myBools
         if myBools is not None:
-            _myBools = List__bool(myBools)
-            deref(inst._cpp_obj).myBools = deref(_myBools._cpp_obj)
-            deref(inst._cpp_obj).__isset.myBools = True
+            deref(c_inst).myBools = <vector[cbool]>deref(List__bool(myBools)._cpp_obj)
+            deref(c_inst).__isset.myBools = True
 
-        cdef List__i32 _myNumbers
         if myNumbers is not None:
-            _myNumbers = List__i32(myNumbers)
-            deref(inst._cpp_obj).myNumbers = deref(_myNumbers._cpp_obj)
-        return inst
+            deref(c_inst).myNumbers = <vector[int32_t]>deref(List__i32(myNumbers)._cpp_obj)
+
+        return Foo.create(move_shared(c_inst))
 
     def __iter__(self):
         yield 'myInteger', self.myInteger
@@ -175,24 +169,16 @@ cdef class Foo(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.myBools:
             return None
 
-        cdef shared_ptr[vector[cbool]] item
         if self.__myBools is None:
-            item = make_shared[vector[cbool]](
-                deref(self._cpp_obj).myBools)
-            self.__myBools = List__bool.create(item)
+            self.__myBools = List__bool.create(make_shared[vector[cbool]](deref(self._cpp_obj).myBools))
         return self.__myBools
-        
 
     @property
     def myNumbers(self):
 
-        cdef shared_ptr[vector[int32_t]] item
         if self.__myNumbers is None:
-            item = make_shared[vector[int32_t]](
-                deref(self._cpp_obj).myNumbers)
-            self.__myNumbers = List__i32.create(item)
+            self.__myNumbers = List__i32.create(make_shared[vector[int32_t]](deref(self._cpp_obj).myNumbers))
         return self.__myNumbers
-        
 
 
     def __richcmp__(self, other, op):
@@ -226,9 +212,6 @@ cdef class Foo(thrift.py3.types.Struct):
 
     def __repr__(Foo self):
         return f'Foo(myInteger={repr(self.myInteger)}, myString={repr(self.myString)}, myBools={repr(self.myBools)}, myNumbers={repr(self.myNumbers)})'
-
-
-Foo_defaults = Foo()
 
 
 cdef class List__bool:

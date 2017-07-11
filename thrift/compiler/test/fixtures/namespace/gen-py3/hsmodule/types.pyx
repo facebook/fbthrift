@@ -16,6 +16,7 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET
+from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
@@ -29,19 +30,21 @@ from enum import Enum
 
 
 
+cdef cHsFoo _HsFoo_defaults = cHsFoo()
+
 cdef class HsFoo(thrift.py3.types.Struct):
 
     def __init__(
         HsFoo self,
         MyInt=None
     ):
-        self._cpp_obj = make_shared[cHsFoo]()
-
+        cdef shared_ptr[cHsFoo] c_inst = make_shared[cHsFoo]()
         inst = self
         if MyInt is not None:
-            deref(inst._cpp_obj).MyInt = MyInt
-            deref(inst._cpp_obj).__isset.MyInt = True
+            deref(c_inst).MyInt = MyInt
+            deref(c_inst).__isset.MyInt = True
 
+        self._cpp_obj = move_shared(c_inst)
 
     cdef bytes _serialize(HsFoo self, proto):
         cdef string c_str
@@ -77,22 +80,21 @@ cdef class HsFoo(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        inst = <HsFoo>HsFoo.__new__(HsFoo)
-        inst._cpp_obj = make_shared[cHsFoo](deref(self._cpp_obj))
-        cdef HsFoo defaults = HsFoo_defaults
+        cdef shared_ptr[cHsFoo] c_inst = make_shared[cHsFoo](deref(self._cpp_obj))
 
         # Convert None's to default value.
         if MyInt is None:
-            deref(inst._cpp_obj).MyInt = deref(defaults._cpp_obj).MyInt
-            deref(inst._cpp_obj).__isset.MyInt = False
+            deref(c_inst).MyInt = _HsFoo_defaults.MyInt
+            deref(c_inst).__isset.MyInt = False
         if MyInt is NOTSET:
             MyInt = None
 
         if MyInt is not None:
-            deref(inst._cpp_obj).MyInt = MyInt
-            deref(inst._cpp_obj).__isset.MyInt = True
+            deref(c_inst).MyInt = MyInt
+            deref(c_inst).__isset.MyInt = True
 
-        return inst
+
+        return HsFoo.create(move_shared(c_inst))
 
     def __iter__(self):
         yield 'MyInt', self.MyInt
@@ -142,8 +144,5 @@ cdef class HsFoo(thrift.py3.types.Struct):
 
     def __repr__(HsFoo self):
         return f'HsFoo(MyInt={repr(self.MyInt)})'
-
-
-HsFoo_defaults = HsFoo()
 
 

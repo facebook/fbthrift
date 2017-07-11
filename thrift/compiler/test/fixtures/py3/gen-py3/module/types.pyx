@@ -16,6 +16,7 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET
+from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
@@ -50,13 +51,13 @@ cdef class SimpleException(thrift.py3.exceptions.Error):
         SimpleException self,
         err_code=None
     ):
-        self._cpp_obj = make_shared[cSimpleException]()
-
+        cdef shared_ptr[cSimpleException] c_inst = make_shared[cSimpleException]()
         inst = self
         if err_code is not None:
-            deref(inst._cpp_obj).err_code = err_code
-            deref(inst._cpp_obj).__isset.err_code = True
+            deref(c_inst).err_code = err_code
+            deref(c_inst).__isset.err_code = True
 
+        self._cpp_obj = move_shared(c_inst)
 
 
     def __iter__(self):
@@ -105,6 +106,8 @@ cdef class SimpleException(thrift.py3.exceptions.Error):
         return f'SimpleException(err_code={repr(self.err_code)})'
 
 
+cdef cSimpleStruct _SimpleStruct_defaults = cSimpleStruct()
+
 cdef class SimpleStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -117,37 +120,37 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         real=None,
         smaller_real=None
     ):
-        self._cpp_obj = make_shared[cSimpleStruct]()
-
+        cdef shared_ptr[cSimpleStruct] c_inst = make_shared[cSimpleStruct]()
         inst = self
         if is_on is not None:
-            deref(inst._cpp_obj).is_on = is_on
-            deref(inst._cpp_obj).__isset.is_on = True
+            deref(c_inst).is_on = is_on
+            deref(c_inst).__isset.is_on = True
 
         if tiny_int is not None:
-            deref(inst._cpp_obj).tiny_int = tiny_int
-            deref(inst._cpp_obj).__isset.tiny_int = True
+            deref(c_inst).tiny_int = tiny_int
+            deref(c_inst).__isset.tiny_int = True
 
         if small_int is not None:
-            deref(inst._cpp_obj).small_int = small_int
-            deref(inst._cpp_obj).__isset.small_int = True
+            deref(c_inst).small_int = small_int
+            deref(c_inst).__isset.small_int = True
 
         if nice_sized_int is not None:
-            deref(inst._cpp_obj).nice_sized_int = nice_sized_int
-            deref(inst._cpp_obj).__isset.nice_sized_int = True
+            deref(c_inst).nice_sized_int = nice_sized_int
+            deref(c_inst).__isset.nice_sized_int = True
 
         if big_int is not None:
-            deref(inst._cpp_obj).big_int = big_int
-            deref(inst._cpp_obj).__isset.big_int = True
+            deref(c_inst).big_int = big_int
+            deref(c_inst).__isset.big_int = True
 
         if real is not None:
-            deref(inst._cpp_obj).real = real
-            deref(inst._cpp_obj).__isset.real = True
+            deref(c_inst).real = real
+            deref(c_inst).__isset.real = True
 
         if smaller_real is not None:
-            deref(inst._cpp_obj).smaller_real = smaller_real
-            deref(inst._cpp_obj).__isset.smaller_real = True
+            deref(c_inst).smaller_real = smaller_real
+            deref(c_inst).__isset.smaller_real = True
 
+        self._cpp_obj = move_shared(c_inst)
 
     cdef bytes _serialize(SimpleStruct self, proto):
         cdef string c_str
@@ -201,76 +204,75 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        inst = <SimpleStruct>SimpleStruct.__new__(SimpleStruct)
-        inst._cpp_obj = make_shared[cSimpleStruct](deref(self._cpp_obj))
-        cdef SimpleStruct defaults = SimpleStruct_defaults
+        cdef shared_ptr[cSimpleStruct] c_inst = make_shared[cSimpleStruct](deref(self._cpp_obj))
 
         # Convert None's to default value.
         if is_on is None:
-            deref(inst._cpp_obj).is_on = deref(defaults._cpp_obj).is_on
-            deref(inst._cpp_obj).__isset.is_on = False
+            deref(c_inst).is_on = _SimpleStruct_defaults.is_on
+            deref(c_inst).__isset.is_on = False
         if is_on is NOTSET:
             is_on = None
         if tiny_int is None:
-            deref(inst._cpp_obj).tiny_int = deref(defaults._cpp_obj).tiny_int
-            deref(inst._cpp_obj).__isset.tiny_int = False
+            deref(c_inst).tiny_int = _SimpleStruct_defaults.tiny_int
+            deref(c_inst).__isset.tiny_int = False
         if tiny_int is NOTSET:
             tiny_int = None
         if small_int is None:
-            deref(inst._cpp_obj).small_int = deref(defaults._cpp_obj).small_int
-            deref(inst._cpp_obj).__isset.small_int = False
+            deref(c_inst).small_int = _SimpleStruct_defaults.small_int
+            deref(c_inst).__isset.small_int = False
         if small_int is NOTSET:
             small_int = None
         if nice_sized_int is None:
-            deref(inst._cpp_obj).nice_sized_int = deref(defaults._cpp_obj).nice_sized_int
-            deref(inst._cpp_obj).__isset.nice_sized_int = False
+            deref(c_inst).nice_sized_int = _SimpleStruct_defaults.nice_sized_int
+            deref(c_inst).__isset.nice_sized_int = False
         if nice_sized_int is NOTSET:
             nice_sized_int = None
         if big_int is None:
-            deref(inst._cpp_obj).big_int = deref(defaults._cpp_obj).big_int
-            deref(inst._cpp_obj).__isset.big_int = False
+            deref(c_inst).big_int = _SimpleStruct_defaults.big_int
+            deref(c_inst).__isset.big_int = False
         if big_int is NOTSET:
             big_int = None
         if real is None:
-            deref(inst._cpp_obj).real = deref(defaults._cpp_obj).real
-            deref(inst._cpp_obj).__isset.real = False
+            deref(c_inst).real = _SimpleStruct_defaults.real
+            deref(c_inst).__isset.real = False
         if real is NOTSET:
             real = None
         if smaller_real is None:
-            deref(inst._cpp_obj).smaller_real = deref(defaults._cpp_obj).smaller_real
-            deref(inst._cpp_obj).__isset.smaller_real = False
+            deref(c_inst).smaller_real = _SimpleStruct_defaults.smaller_real
+            deref(c_inst).__isset.smaller_real = False
         if smaller_real is NOTSET:
             smaller_real = None
 
         if is_on is not None:
-            deref(inst._cpp_obj).is_on = is_on
-            deref(inst._cpp_obj).__isset.is_on = True
+            deref(c_inst).is_on = is_on
+            deref(c_inst).__isset.is_on = True
 
         if tiny_int is not None:
-            deref(inst._cpp_obj).tiny_int = tiny_int
-            deref(inst._cpp_obj).__isset.tiny_int = True
+            deref(c_inst).tiny_int = tiny_int
+            deref(c_inst).__isset.tiny_int = True
 
         if small_int is not None:
-            deref(inst._cpp_obj).small_int = small_int
-            deref(inst._cpp_obj).__isset.small_int = True
+            deref(c_inst).small_int = small_int
+            deref(c_inst).__isset.small_int = True
 
         if nice_sized_int is not None:
-            deref(inst._cpp_obj).nice_sized_int = nice_sized_int
-            deref(inst._cpp_obj).__isset.nice_sized_int = True
+            deref(c_inst).nice_sized_int = nice_sized_int
+            deref(c_inst).__isset.nice_sized_int = True
 
         if big_int is not None:
-            deref(inst._cpp_obj).big_int = big_int
-            deref(inst._cpp_obj).__isset.big_int = True
+            deref(c_inst).big_int = big_int
+            deref(c_inst).__isset.big_int = True
 
         if real is not None:
-            deref(inst._cpp_obj).real = real
-            deref(inst._cpp_obj).__isset.real = True
+            deref(c_inst).real = real
+            deref(c_inst).__isset.real = True
 
         if smaller_real is not None:
-            deref(inst._cpp_obj).smaller_real = smaller_real
-            deref(inst._cpp_obj).__isset.smaller_real = True
+            deref(c_inst).smaller_real = smaller_real
+            deref(c_inst).__isset.smaller_real = True
 
-        return inst
+
+        return SimpleStruct.create(move_shared(c_inst))
 
     def __iter__(self):
         yield 'is_on', self.is_on
@@ -376,8 +378,7 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         return f'SimpleStruct(is_on={repr(self.is_on)}, tiny_int={repr(self.tiny_int)}, small_int={repr(self.small_int)}, nice_sized_int={repr(self.nice_sized_int)}, big_int={repr(self.big_int)}, real={repr(self.real)}, smaller_real={repr(self.smaller_real)})'
 
 
-SimpleStruct_defaults = SimpleStruct()
-
+cdef cComplexStruct _ComplexStruct_defaults = cComplexStruct()
 
 cdef class ComplexStruct(thrift.py3.types.Struct):
 
@@ -390,39 +391,33 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         an_enum=None,
         some_bytes=None
     ):
-        self._cpp_obj = make_shared[cComplexStruct]()
-
+        cdef shared_ptr[cComplexStruct] c_inst = make_shared[cComplexStruct]()
         inst = self
-        cdef shared_ptr[cSimpleStruct] __structOne
         if structOne is not None:
-            __structOne = (
-            <SimpleStruct?> structOne)._cpp_obj
-            deref(inst._cpp_obj).structOne = deref(__structOne.get())
-            deref(inst._cpp_obj).__isset.structOne = True
+            deref(c_inst).structOne = deref((<SimpleStruct?> structOne)._cpp_obj)
+            deref(c_inst).__isset.structOne = True
 
-        cdef shared_ptr[cSimpleStruct] __structTwo
         if structTwo is not None:
-            __structTwo = (
-            <SimpleStruct?> structTwo)._cpp_obj
-            deref(inst._cpp_obj).structTwo = deref(__structTwo.get())
-            deref(inst._cpp_obj).__isset.structTwo = True
+            deref(c_inst).structTwo = deref((<SimpleStruct?> structTwo)._cpp_obj)
+            deref(c_inst).__isset.structTwo = True
 
         if an_integer is not None:
-            deref(inst._cpp_obj).an_integer = an_integer
-            deref(inst._cpp_obj).__isset.an_integer = True
+            deref(c_inst).an_integer = an_integer
+            deref(c_inst).__isset.an_integer = True
 
         if name is not None:
-            deref(inst._cpp_obj).name = name.encode('UTF-8')
-            deref(inst._cpp_obj).__isset.name = True
+            deref(c_inst).name = name.encode('UTF-8')
+            deref(c_inst).__isset.name = True
 
         if an_enum is not None:
-            deref(inst._cpp_obj).an_enum = AnEnum_to_cpp(an_enum)
-            deref(inst._cpp_obj).__isset.an_enum = True
+            deref(c_inst).an_enum = AnEnum_to_cpp(an_enum)
+            deref(c_inst).__isset.an_enum = True
 
         if some_bytes is not None:
-            deref(inst._cpp_obj).some_bytes = some_bytes
-            deref(inst._cpp_obj).__isset.some_bytes = True
+            deref(c_inst).some_bytes = some_bytes
+            deref(c_inst).__isset.some_bytes = True
 
+        self._cpp_obj = move_shared(c_inst)
 
     cdef bytes _serialize(ComplexStruct self, proto):
         cdef string c_str
@@ -473,73 +468,66 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        inst = <ComplexStruct>ComplexStruct.__new__(ComplexStruct)
-        inst._cpp_obj = make_shared[cComplexStruct](deref(self._cpp_obj))
-        cdef ComplexStruct defaults = ComplexStruct_defaults
+        cdef shared_ptr[cComplexStruct] c_inst = make_shared[cComplexStruct](deref(self._cpp_obj))
 
         # Convert None's to default value.
         if structOne is None:
-            deref(inst._cpp_obj).structOne = deref(defaults._cpp_obj).structOne
-            deref(inst._cpp_obj).__isset.structOne = False
+            deref(c_inst).structOne = _ComplexStruct_defaults.structOne
+            deref(c_inst).__isset.structOne = False
         if structOne is NOTSET:
             structOne = None
         if structTwo is None:
-            deref(inst._cpp_obj).structTwo = deref(defaults._cpp_obj).structTwo
-            deref(inst._cpp_obj).__isset.structTwo = False
+            deref(c_inst).structTwo = _ComplexStruct_defaults.structTwo
+            deref(c_inst).__isset.structTwo = False
         if structTwo is NOTSET:
             structTwo = None
         if an_integer is None:
-            deref(inst._cpp_obj).an_integer = deref(defaults._cpp_obj).an_integer
-            deref(inst._cpp_obj).__isset.an_integer = False
+            deref(c_inst).an_integer = _ComplexStruct_defaults.an_integer
+            deref(c_inst).__isset.an_integer = False
         if an_integer is NOTSET:
             an_integer = None
         if name is None:
-            deref(inst._cpp_obj).name = deref(defaults._cpp_obj).name
-            deref(inst._cpp_obj).__isset.name = False
+            deref(c_inst).name = _ComplexStruct_defaults.name
+            deref(c_inst).__isset.name = False
         if name is NOTSET:
             name = None
         if an_enum is None:
-            deref(inst._cpp_obj).an_enum = deref(defaults._cpp_obj).an_enum
-            deref(inst._cpp_obj).__isset.an_enum = False
+            deref(c_inst).an_enum = _ComplexStruct_defaults.an_enum
+            deref(c_inst).__isset.an_enum = False
         if an_enum is NOTSET:
             an_enum = None
         if some_bytes is None:
-            deref(inst._cpp_obj).some_bytes = deref(defaults._cpp_obj).some_bytes
-            deref(inst._cpp_obj).__isset.some_bytes = False
+            deref(c_inst).some_bytes = _ComplexStruct_defaults.some_bytes
+            deref(c_inst).__isset.some_bytes = False
         if some_bytes is NOTSET:
             some_bytes = None
 
-        cdef shared_ptr[cSimpleStruct] __structOne
         if structOne is not None:
-            __structOne = (
-            <SimpleStruct?> structOne)._cpp_obj
-            deref(inst._cpp_obj).structOne = deref(__structOne.get())
-            deref(inst._cpp_obj).__isset.structOne = True
+            deref(c_inst).structOne = deref((<SimpleStruct?> structOne)._cpp_obj)
+            deref(c_inst).__isset.structOne = True
 
-        cdef shared_ptr[cSimpleStruct] __structTwo
         if structTwo is not None:
-            __structTwo = (
-            <SimpleStruct?> structTwo)._cpp_obj
-            deref(inst._cpp_obj).structTwo = deref(__structTwo.get())
-            deref(inst._cpp_obj).__isset.structTwo = True
+            deref(c_inst).structTwo = deref((<SimpleStruct?> structTwo)._cpp_obj)
+            deref(c_inst).__isset.structTwo = True
 
         if an_integer is not None:
-            deref(inst._cpp_obj).an_integer = an_integer
-            deref(inst._cpp_obj).__isset.an_integer = True
+            deref(c_inst).an_integer = an_integer
+            deref(c_inst).__isset.an_integer = True
 
         if name is not None:
-            deref(inst._cpp_obj).name = name.encode('UTF-8')
-            deref(inst._cpp_obj).__isset.name = True
+            deref(c_inst).name = name.encode('UTF-8')
+            deref(c_inst).__isset.name = True
 
         if an_enum is not None:
-            deref(inst._cpp_obj).an_enum = AnEnum_to_cpp(an_enum)
-            deref(inst._cpp_obj).__isset.an_enum = True
+            deref(c_inst).an_enum = AnEnum_to_cpp(an_enum)
+            deref(c_inst).__isset.an_enum = True
 
         if some_bytes is not None:
-            deref(inst._cpp_obj).some_bytes = some_bytes
-            deref(inst._cpp_obj).__isset.some_bytes = True
+            deref(c_inst).some_bytes = some_bytes
+            deref(c_inst).__isset.some_bytes = True
 
-        return inst
+
+        return ComplexStruct.create(move_shared(c_inst))
 
     def __iter__(self):
         yield 'structOne', self.structOne
@@ -563,26 +551,18 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.structOne:
             return None
 
-        cdef shared_ptr[cSimpleStruct] item
         if self.__structOne is None:
-            item = make_shared[cSimpleStruct](
-                deref(self._cpp_obj).structOne)
-            self.__structOne = SimpleStruct.create(item)
+            self.__structOne = SimpleStruct.create(make_shared[cSimpleStruct](deref(self._cpp_obj).structOne))
         return self.__structOne
-        
 
     @property
     def structTwo(self):
         if not deref(self._cpp_obj).__isset.structTwo:
             return None
 
-        cdef shared_ptr[cSimpleStruct] item
         if self.__structTwo is None:
-            item = make_shared[cSimpleStruct](
-                deref(self._cpp_obj).structTwo)
-            self.__structTwo = SimpleStruct.create(item)
+            self.__structTwo = SimpleStruct.create(make_shared[cSimpleStruct](deref(self._cpp_obj).structTwo))
         return self.__structTwo
-        
 
     @property
     def an_integer(self):
@@ -603,12 +583,7 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         if not deref(self._cpp_obj).__isset.an_enum:
             return None
 
-        cdef int value = <int> deref(self._cpp_obj).an_enum
-        try:
-            return AnEnum(value)
-        except ValueError:
-            return thrift.py3.types.BadEnum(AnEnum, value)
-        
+        return translate_cpp_enum_to_python(AnEnum, <int>deref(self._cpp_obj).an_enum)
 
     @property
     def some_bytes(self):
@@ -651,9 +626,6 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
 
     def __repr__(ComplexStruct self):
         return f'ComplexStruct(structOne={repr(self.structOne)}, structTwo={repr(self.structTwo)}, an_integer={repr(self.an_integer)}, name={repr(self.name)}, an_enum={repr(self.an_enum)}, some_bytes={repr(self.some_bytes)})'
-
-
-ComplexStruct_defaults = ComplexStruct()
 
 
 cdef class List__i16:

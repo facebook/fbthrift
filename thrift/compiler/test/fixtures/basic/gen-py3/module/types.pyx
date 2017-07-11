@@ -16,6 +16,7 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET
+from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
@@ -38,6 +39,8 @@ cdef cMyEnum MyEnum_to_cpp(value):
         return MyEnum__MyValue2
 
 
+cdef cMyStruct _MyStruct_defaults = cMyStruct()
+
 cdef class MyStruct(thrift.py3.types.Struct):
 
     def __init__(
@@ -45,17 +48,17 @@ cdef class MyStruct(thrift.py3.types.Struct):
         MyIntField=None,
         MyStringField=None
     ):
-        self._cpp_obj = make_shared[cMyStruct]()
-
+        cdef shared_ptr[cMyStruct] c_inst = make_shared[cMyStruct]()
         inst = self
         if MyIntField is not None:
-            deref(inst._cpp_obj).MyIntField = MyIntField
-            deref(inst._cpp_obj).__isset.MyIntField = True
+            deref(c_inst).MyIntField = MyIntField
+            deref(c_inst).__isset.MyIntField = True
 
         if MyStringField is not None:
-            deref(inst._cpp_obj).MyStringField = MyStringField.encode('UTF-8')
-            deref(inst._cpp_obj).__isset.MyStringField = True
+            deref(c_inst).MyStringField = MyStringField.encode('UTF-8')
+            deref(c_inst).__isset.MyStringField = True
 
+        self._cpp_obj = move_shared(c_inst)
 
     cdef bytes _serialize(MyStruct self, proto):
         cdef string c_str
@@ -94,31 +97,30 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        inst = <MyStruct>MyStruct.__new__(MyStruct)
-        inst._cpp_obj = make_shared[cMyStruct](deref(self._cpp_obj))
-        cdef MyStruct defaults = MyStruct_defaults
+        cdef shared_ptr[cMyStruct] c_inst = make_shared[cMyStruct](deref(self._cpp_obj))
 
         # Convert None's to default value.
         if MyIntField is None:
-            deref(inst._cpp_obj).MyIntField = deref(defaults._cpp_obj).MyIntField
-            deref(inst._cpp_obj).__isset.MyIntField = False
+            deref(c_inst).MyIntField = _MyStruct_defaults.MyIntField
+            deref(c_inst).__isset.MyIntField = False
         if MyIntField is NOTSET:
             MyIntField = None
         if MyStringField is None:
-            deref(inst._cpp_obj).MyStringField = deref(defaults._cpp_obj).MyStringField
-            deref(inst._cpp_obj).__isset.MyStringField = False
+            deref(c_inst).MyStringField = _MyStruct_defaults.MyStringField
+            deref(c_inst).__isset.MyStringField = False
         if MyStringField is NOTSET:
             MyStringField = None
 
         if MyIntField is not None:
-            deref(inst._cpp_obj).MyIntField = MyIntField
-            deref(inst._cpp_obj).__isset.MyIntField = True
+            deref(c_inst).MyIntField = MyIntField
+            deref(c_inst).__isset.MyIntField = True
 
         if MyStringField is not None:
-            deref(inst._cpp_obj).MyStringField = MyStringField.encode('UTF-8')
-            deref(inst._cpp_obj).__isset.MyStringField = True
+            deref(c_inst).MyStringField = MyStringField.encode('UTF-8')
+            deref(c_inst).__isset.MyStringField = True
 
-        return inst
+
+        return MyStruct.create(move_shared(c_inst))
 
     def __iter__(self):
         yield 'MyIntField', self.MyIntField
@@ -177,8 +179,5 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     def __repr__(MyStruct self):
         return f'MyStruct(MyIntField={repr(self.MyIntField)}, MyStringField={repr(self.MyStringField)})'
-
-
-MyStruct_defaults = MyStruct()
 
 

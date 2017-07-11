@@ -16,6 +16,7 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET
+from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
@@ -29,14 +30,16 @@ from enum import Enum
 
 
 
+cdef cEmpty _Empty_defaults = cEmpty()
+
 cdef class Empty(thrift.py3.types.Struct):
 
     def __init__(
         Empty self
     ):
-        self._cpp_obj = make_shared[cEmpty]()
-
+        cdef shared_ptr[cEmpty] c_inst = make_shared[cEmpty]()
         inst = self
+        self._cpp_obj = move_shared(c_inst)
 
     cdef bytes _serialize(Empty self, proto):
         cdef string c_str
@@ -69,13 +72,12 @@ cdef class Empty(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        inst = <Empty>Empty.__new__(Empty)
-        inst._cpp_obj = make_shared[cEmpty](deref(self._cpp_obj))
-        cdef Empty defaults = Empty_defaults
+        cdef shared_ptr[cEmpty] c_inst = make_shared[cEmpty](deref(self._cpp_obj))
 
         # Convert None's to default value.
 
-        return inst
+
+        return Empty.create(move_shared(c_inst))
 
     def __iter__(self):
         return iter(())
@@ -120,17 +122,16 @@ cdef class Empty(thrift.py3.types.Struct):
         return f'Empty()'
 
 
-Empty_defaults = Empty()
-
+cdef cNada _Nada_defaults = cNada()
 
 cdef class Nada(thrift.py3.types.Struct):
 
     def __init__(
         Nada self
     ):
-        self._cpp_obj = make_shared[cNada]()
-
+        cdef shared_ptr[cNada] c_inst = make_shared[cNada]()
         inst = self
+        self._cpp_obj = move_shared(c_inst)
 
     cdef bytes _serialize(Nada self, proto):
         cdef string c_str
@@ -163,13 +164,12 @@ cdef class Nada(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        inst = <Nada>Nada.__new__(Nada)
-        inst._cpp_obj = make_shared[cNada](deref(self._cpp_obj))
-        cdef Nada defaults = Nada_defaults
+        cdef shared_ptr[cNada] c_inst = make_shared[cNada](deref(self._cpp_obj))
 
         # Convert None's to default value.
 
-        return inst
+
+        return Nada.create(move_shared(c_inst))
 
     def __iter__(self):
         return iter(())
@@ -212,8 +212,5 @@ cdef class Nada(thrift.py3.types.Struct):
 
     def __repr__(Nada self):
         return f'Nada()'
-
-
-Nada_defaults = Nada()
 
 

@@ -45,6 +45,7 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET
+from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
@@ -77,25 +78,30 @@ cdef c{{enum:name}} {{enum:name}}_to_cpp(value):
 
 
 {{#program:structs}}
+{{^struct:exception?}}
+cdef c{{struct:name}} _{{struct:name}}_defaults = c{{struct:name}}()
+
+{{/struct:exception?}}
 cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/struct:exception?}}{{^struct:exception?}}(thrift.py3.types.Struct){{/struct:exception?}}:
 
     def __init__(
         {{struct:name}} self{{#struct:fields}},
         {{field:name}}=None{{/struct:fields}}
     ):
-        self._cpp_obj = make_shared[c{{struct:name}}]()
-
+        cdef shared_ptr[c{{struct:name}}] c_inst = make_shared[c{{struct:name}}]()
         inst = self
         {{#struct:fields}}
         {{#field:type}}
-        {{> CythonAssignField}}
+        if {{field:name}} is not None:
+            {{> CythonAssignField}}
 
         {{^field:required?}}
-            deref(inst._cpp_obj).__isset.{{field:name}} = True
+            deref(c_inst).__isset.{{field:name}} = True
 
         {{/field:required?}}
         {{/field:type}}
         {{/struct:fields}}
+        self._cpp_obj = move_shared(c_inst)
 
     {{^struct:exception?}}
     cdef bytes _serialize({{struct:name}} self, proto):
@@ -133,16 +139,14 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
         if not changes:
             return self
 
-        inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}})
-        inst._cpp_obj = make_shared[c{{struct:name}}](deref(self._cpp_obj))
-        cdef {{struct:name}} defaults = {{struct:name}}_defaults
+        cdef shared_ptr[c{{struct:name}}] c_inst = make_shared[c{{struct:name}}](deref(self._cpp_obj))
 
         # Convert None's to default value.
         {{#struct:fields}}
         if {{field:name}} is None:
-            deref(inst._cpp_obj).{{field:name}} = deref(defaults._cpp_obj).{{field:name}}
+            deref(c_inst).{{field:name}} = _{{struct:name}}_defaults.{{field:name}}
             {{^field:required?}}
-            deref(inst._cpp_obj).__isset.{{field:name}} = False
+            deref(c_inst).__isset.{{field:name}} = False
             {{/field:required?}}
         if {{field:name}} is NOTSET:
             {{field:name}} = None
@@ -150,15 +154,17 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
 
         {{#struct:fields}}
         {{#field:type}}
-        {{> CythonAssignField}}
+        if {{field:name}} is not None:
+            {{> CythonAssignField}}
 
         {{^field:required?}}
-            deref(inst._cpp_obj).__isset.{{field:name}} = True
+            deref(c_inst).__isset.{{field:name}} = True
 
         {{/field:required?}}
         {{/field:type}}
         {{/struct:fields}}
-        return inst
+
+        return {{struct:name}}.create(move_shared(c_inst))
     {{/struct:exception?}}
 
     def __iter__(self):
@@ -240,11 +246,6 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
 
     def __repr__({{struct:name}} self):
         return f'{{struct:name}}({{#struct:fields}}{{field:name}}={repr(self.{{field:name}})}{{^last?}}, {{/last?}}{{/struct:fields}})'
-{{^struct:exception?}}
-
-
-{{struct:name}}_defaults = {{struct:name}}()
-{{/struct:exception?}}
 
 
 {{/program:structs}}

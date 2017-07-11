@@ -16,6 +16,7 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET
+from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
@@ -29,19 +30,21 @@ from enum import Enum
 
 
 
+cdef cIncluded _Included_defaults = cIncluded()
+
 cdef class Included(thrift.py3.types.Struct):
 
     def __init__(
         Included self,
         MyIntField=None
     ):
-        self._cpp_obj = make_shared[cIncluded]()
-
+        cdef shared_ptr[cIncluded] c_inst = make_shared[cIncluded]()
         inst = self
         if MyIntField is not None:
-            deref(inst._cpp_obj).MyIntField = MyIntField
-            deref(inst._cpp_obj).__isset.MyIntField = True
+            deref(c_inst).MyIntField = MyIntField
+            deref(c_inst).__isset.MyIntField = True
 
+        self._cpp_obj = move_shared(c_inst)
 
     cdef bytes _serialize(Included self, proto):
         cdef string c_str
@@ -77,22 +80,21 @@ cdef class Included(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        inst = <Included>Included.__new__(Included)
-        inst._cpp_obj = make_shared[cIncluded](deref(self._cpp_obj))
-        cdef Included defaults = Included_defaults
+        cdef shared_ptr[cIncluded] c_inst = make_shared[cIncluded](deref(self._cpp_obj))
 
         # Convert None's to default value.
         if MyIntField is None:
-            deref(inst._cpp_obj).MyIntField = deref(defaults._cpp_obj).MyIntField
-            deref(inst._cpp_obj).__isset.MyIntField = False
+            deref(c_inst).MyIntField = _Included_defaults.MyIntField
+            deref(c_inst).__isset.MyIntField = False
         if MyIntField is NOTSET:
             MyIntField = None
 
         if MyIntField is not None:
-            deref(inst._cpp_obj).MyIntField = MyIntField
-            deref(inst._cpp_obj).__isset.MyIntField = True
+            deref(c_inst).MyIntField = MyIntField
+            deref(c_inst).__isset.MyIntField = True
 
-        return inst
+
+        return Included.create(move_shared(c_inst))
 
     def __iter__(self):
         yield 'MyIntField', self.MyIntField
@@ -140,9 +142,6 @@ cdef class Included(thrift.py3.types.Struct):
 
     def __repr__(Included self):
         return f'Included(MyIntField={repr(self.MyIntField)})'
-
-
-Included_defaults = Included()
 
 
 IncludedConstant = 42

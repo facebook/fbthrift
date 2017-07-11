@@ -28,3 +28,10 @@ cdef class BadEnum:
 
     def __repr__(self):
         return f'<{self.the_enum.__name__}.{self.name}: {self.value}>'
+
+
+cdef translate_cpp_enum_to_python(object EnumClass, int value):
+    try:
+        return EnumClass(value)
+    except ValueError:
+        return BadEnum(EnumClass, value)

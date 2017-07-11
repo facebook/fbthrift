@@ -50,7 +50,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cBanal] move(unique_ptr[cBanal])
+    cdef shared_ptr[cBanal] move_shared "std::move"(shared_ptr[cBanal])
     cdef shared_ptr[cFiery] move(unique_ptr[cFiery])
+    cdef shared_ptr[cFiery] move_shared "std::move"(shared_ptr[cFiery])
 
 # Forward Definition of the cython struct
 cdef class Banal(__Error)

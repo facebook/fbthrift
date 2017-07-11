@@ -86,7 +86,8 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types_custo
 
 {{#program:structs}}
 {{#first?}}cdef extern from "<utility>" namespace "std" nogil:{{/first?}}
-    cdef shared_ptr[c{{struct:name}}] move(unique_ptr[c{{struct:name}}]){{/program:structs}}
+    cdef shared_ptr[c{{struct:name}}] move(unique_ptr[c{{struct:name}}])
+    cdef shared_ptr[c{{struct:name}}] move_shared "std::move"(shared_ptr[c{{struct:name}}]){{/program:structs}}
 
 {{#program:structs}}
 # Forward Definition of the cython struct

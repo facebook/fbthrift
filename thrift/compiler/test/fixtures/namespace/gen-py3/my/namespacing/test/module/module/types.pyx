@@ -16,6 +16,7 @@ import thrift.py3.types
 cimport thrift.py3.types
 cimport thrift.py3.exceptions
 from thrift.py3.types import NOTSET
+from thrift.py3.types cimport translate_cpp_enum_to_python
 cimport thrift.py3.std_libcpp as std_libcpp
 from thrift.py3.serializer cimport IOBuf
 from thrift.py3.serializer import Protocol
@@ -29,19 +30,21 @@ from enum import Enum
 
 
 
+cdef cFoo _Foo_defaults = cFoo()
+
 cdef class Foo(thrift.py3.types.Struct):
 
     def __init__(
         Foo self,
         MyInt=None
     ):
-        self._cpp_obj = make_shared[cFoo]()
-
+        cdef shared_ptr[cFoo] c_inst = make_shared[cFoo]()
         inst = self
         if MyInt is not None:
-            deref(inst._cpp_obj).MyInt = MyInt
-            deref(inst._cpp_obj).__isset.MyInt = True
+            deref(c_inst).MyInt = MyInt
+            deref(c_inst).__isset.MyInt = True
 
+        self._cpp_obj = move_shared(c_inst)
 
     cdef bytes _serialize(Foo self, proto):
         cdef string c_str
@@ -77,22 +80,21 @@ cdef class Foo(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        inst = <Foo>Foo.__new__(Foo)
-        inst._cpp_obj = make_shared[cFoo](deref(self._cpp_obj))
-        cdef Foo defaults = Foo_defaults
+        cdef shared_ptr[cFoo] c_inst = make_shared[cFoo](deref(self._cpp_obj))
 
         # Convert None's to default value.
         if MyInt is None:
-            deref(inst._cpp_obj).MyInt = deref(defaults._cpp_obj).MyInt
-            deref(inst._cpp_obj).__isset.MyInt = False
+            deref(c_inst).MyInt = _Foo_defaults.MyInt
+            deref(c_inst).__isset.MyInt = False
         if MyInt is NOTSET:
             MyInt = None
 
         if MyInt is not None:
-            deref(inst._cpp_obj).MyInt = MyInt
-            deref(inst._cpp_obj).__isset.MyInt = True
+            deref(c_inst).MyInt = MyInt
+            deref(c_inst).__isset.MyInt = True
 
-        return inst
+
+        return Foo.create(move_shared(c_inst))
 
     def __iter__(self):
         yield 'MyInt', self.MyInt
@@ -142,8 +144,5 @@ cdef class Foo(thrift.py3.types.Struct):
 
     def __repr__(Foo self):
         return f'Foo(MyInt={repr(self.MyInt)})'
-
-
-Foo_defaults = Foo()
 
 

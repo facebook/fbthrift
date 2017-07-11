@@ -49,30 +49,22 @@ if they have been previously retrieved.
 }}{{#type:binary?}}{{!
   }}return self._cpp_obj.get().{{field:name}}{{!
 }}{{/type:binary?}}{{!
+}}{{#type:enum}}{{!
+  }}return translate_cpp_enum_to_python({{!
+    }}{{> types/CythonPythonType}}, {{!
+    }}<int>deref(self._cpp_obj).{{field:name}}){{!
+}}{{/type:enum}}{{!
 }}{{#type:struct?}}{{!
-}}cdef shared_ptr[{{> types/CythonCppType}}] item
-if self.__{{field:name}} is None:
-    item = make_shared[{{> types/CythonCppType}}](
-        deref(self._cpp_obj).{{field:name}})
-    self.__{{field:name}} = {{#type:struct}}{{!
-      }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
-      }}{{struct:name}}{{/type:struct}}.create(item)
-return self.__{{field:name}}
-{{/type:struct?}}{{!
+}}if self.__{{field:name}} is None:
+    self.__{{field:name}} = {{> types/CythonPythonType}}.create({{!
+      }}make_shared[{{> types/CythonCppType}}]({{!
+      }}deref(self._cpp_obj).{{field:name}}))
+return self.__{{field:name}}{{!
+}}{{/type:struct?}}{{!
 }}{{#type:container?}}{{!
-}}cdef shared_ptr[{{> types/CythonCppType}}] item
-if self.__{{field:name}} is None:
-    item = make_shared[{{> types/CythonCppType}}](
-        deref(self._cpp_obj).{{field:name}})
-    self.__{{field:name}} = {{!
-      }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
-      }}{{type:flat_name}}.create(item)
-return self.__{{field:name}}
-{{/type:container?}}{{!
-}}{{#type:enum}}
-cdef int value = <int> deref(self._cpp_obj).{{field:name}}
-try:
-    return {{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{enum:name}}(value)
-except ValueError:
-    return thrift.py3.types.BadEnum({{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{enum:name}}, value)
-{{/type:enum}}
+}}if self.__{{field:name}} is None:
+    self.__{{field:name}} = {{> types/CythonPythonType}}.create({{!
+      }}make_shared[{{> types/CythonCppType}}]({{!
+      }}deref(self._cpp_obj).{{field:name}}))
+return self.__{{field:name}}{{!
+}}{{/type:container?}}
