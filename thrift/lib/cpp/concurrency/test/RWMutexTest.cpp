@@ -1,4 +1,6 @@
 /*
+ * Copyright 2004-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -17,16 +19,14 @@
  * under the License.
  */
 
-#include <thrift/lib/cpp/concurrency/Mutex-impl.h>
+#include <thrift/lib/cpp/concurrency/Mutex.h>
 
 #include <gtest/gtest.h>
-#include "common/concurrency/Timeout.h"
 #include <thread>
 #include <condition_variable>
 #include <vector>
 
 using namespace std;
-using namespace facebook;
 using namespace apache::thrift::concurrency;
 
 using std::chrono::duration_cast;
