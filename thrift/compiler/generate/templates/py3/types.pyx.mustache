@@ -502,10 +502,8 @@ Sequence.register({{type:flat_name}})
         if not isinstance(other, {{type:flat_name}}):
             other = {{type:flat_name}}(other)
 
-        {{#type:setElemType}}
-        cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]] shretval = \
-            make_shared[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]]()
-        {{/type:setElemType}}
+        cdef shared_ptr[{{> types/CythonCppType}}] shretval = \
+            make_shared[{{> types/CythonCppType}}]()
         for citem in deref((<{{type:flat_name}}> self)._cpp_obj):
             if deref((<{{type:flat_name}}> other)._cpp_obj).count(citem) > 0:
                 deref(shretval).insert(citem)
@@ -517,10 +515,8 @@ Sequence.register({{type:flat_name}})
         if not isinstance(other, {{type:flat_name}}):
             other = {{type:flat_name}}(other)
 
-        {{#type:setElemType}}
-        cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]] shretval = \
-            make_shared[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]]()
-        {{/type:setElemType}}
+        cdef shared_ptr[{{> types/CythonCppType}}] shretval = \
+            make_shared[{{> types/CythonCppType}}]()
         for citem in deref((<{{type:flat_name}}> self)._cpp_obj):
             if deref((<{{type:flat_name}}> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
@@ -532,10 +528,8 @@ Sequence.register({{type:flat_name}})
         if not isinstance(other, {{type:flat_name}}):
             other = {{type:flat_name}}(other)
 
-        {{#type:setElemType}}
-        cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]] shretval = \
-            make_shared[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]]()
-        {{/type:setElemType}}
+        cdef shared_ptr[{{> types/CythonCppType}}] shretval = \
+            make_shared[{{> types/CythonCppType}}]()
         for citem in deref((<{{type:flat_name}}> self)._cpp_obj):
                 deref(shretval).insert(citem)
         for citem in deref((<{{type:flat_name}}> other)._cpp_obj):
@@ -548,10 +542,8 @@ Sequence.register({{type:flat_name}})
         if not isinstance(other, {{type:flat_name}}):
             other = {{type:flat_name}}(other)
 
-        {{#type:setElemType}}
-        cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]] shretval = \
-            make_shared[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]]()
-        {{/type:setElemType}}
+        cdef shared_ptr[{{> types/CythonCppType}}] shretval = \
+            make_shared[{{> types/CythonCppType}}]()
         for citem in deref((<{{type:flat_name}}> self)._cpp_obj):
             if deref((<{{type:flat_name}}> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
@@ -603,7 +595,7 @@ Set.register({{type:flat_name}})
             raise KeyError(f'{key}')
         cdef {{#type:keyType}}{{> types/CythonCppType}} ckey = {{!
             }}{{> CythonPythonToCppKey}}{{/type:keyType}}
-        cdef c{{#type:unordered?}}u{{/type:unordered?}}map[{{>CythonMapKeyValue}}].iterator iter = deref(
+        cdef {{> types/CythonCppType}}.iterator iter = deref(
             self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
             raise KeyError(f'{key}')
@@ -652,7 +644,7 @@ Set.register({{type:flat_name}})
     {{=<% %>=}}
         if not self:
             return 'i{}'
-        return f'i{{{", ".join(map(lambda i: f"{i[0]}: {i[1]}", self.items()))}}}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
     <%={{ }}=%>
 
 
@@ -669,7 +661,7 @@ Set.register({{type:flat_name}})
         cdef {{#type:keyType}}{{!
             }}{{> types/CythonCppType}} ckey = {{!
             }}{{> CythonPythonToCppKey}}{{/type:keyType}}
-        cdef c{{#type:unordered?}}u{{/type:unordered?}}map[{{>CythonMapKeyValue}}].iterator iter = \
+        cdef {{> types/CythonCppType}}.iterator iter = \
             deref(self._cpp_obj).find(ckey)
         if iter == deref(self._cpp_obj).end():
             return default

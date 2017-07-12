@@ -96,7 +96,7 @@ cdef api void call_cy_Raiser_doBland(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
-):  
+):
     cdef RaiserInterface iface
     iface = self
     promise = Promise_void.create(move(cPromise))
@@ -118,7 +118,7 @@ async def Raiser_doBland_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.doBland(ctx, )
+            result = await self.doBland(ctx,)
         else:
             result = await self.doBland()
     except Exception as ex:
@@ -136,7 +136,7 @@ cdef api void call_cy_Raiser_doRaise(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
-):  
+):
     cdef RaiserInterface iface
     iface = self
     promise = Promise_void.create(move(cPromise))
@@ -158,7 +158,7 @@ async def Raiser_doRaise_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.doRaise(ctx, )
+            result = await self.doRaise(ctx,)
         else:
             result = await self.doRaise()
     except module.types.Banal as ex:
@@ -180,7 +180,7 @@ cdef api void call_cy_Raiser_get200(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
-):  
+):
     cdef RaiserInterface iface
     iface = self
     promise = Promise_string.create(move(cPromise))
@@ -202,7 +202,7 @@ async def Raiser_get200_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.get200(ctx, )
+            result = await self.get200(ctx,)
         else:
             result = await self.get200()
     except Exception as ex:
@@ -220,7 +220,7 @@ cdef api void call_cy_Raiser_get500(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
-):  
+):
     cdef RaiserInterface iface
     iface = self
     promise = Promise_string.create(move(cPromise))
@@ -242,7 +242,7 @@ async def Raiser_get500_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.get500(ctx, )
+            result = await self.get500(ctx,)
         else:
             result = await self.get500()
     except module.types.Fiery as ex:

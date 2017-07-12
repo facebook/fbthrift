@@ -581,7 +581,7 @@ cdef class Map__string_i32:
     def __repr__(self):
         if not self:
             return 'i{}'
-        return f'i{{{", ".join(map(lambda i: f"{i[0]}: {i[1]}", self.items()))}}}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
 
 
@@ -757,7 +757,7 @@ cdef class List__Range:
         cdef unique_ptr[vector[cRange]] c_inst = make_unique[vector[cRange]]()
         if items:
             for item in items:
-                deref(c_inst).push_back(deref((<Range> item)._cpp_obj))
+                deref(c_inst).push_back(deref((<Range>item)._cpp_obj))
         return move_unique(c_inst)
 
     def __getitem__(self, int index):
@@ -800,7 +800,7 @@ cdef class List__Range:
     def __contains__(self, item):
         if not self:
             return False
-        cdef cRange citem = deref((<Range> item)._cpp_obj)
+        cdef cRange citem = deref((<Range>item)._cpp_obj)
         cdef vector[cRange] vec = deref(
             self._cpp_obj.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -832,7 +832,7 @@ cdef class List__Range:
     def index(self, item):
         if not self:
             raise ValueError(f'{item} is not in list')
-        cdef cRange citem = deref((<Range> item)._cpp_obj)
+        cdef cRange citem = deref((<Range>item)._cpp_obj)
         cdef vector[cRange] vec = deref(self._cpp_obj.get())
         cdef vector[cRange].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
@@ -842,7 +842,7 @@ cdef class List__Range:
     def count(self, item):
         if not self:
             return 0
-        cdef cRange citem = deref((<Range> item)._cpp_obj)
+        cdef cRange citem = deref((<Range>item)._cpp_obj)
         cdef vector[cRange] vec = deref(self._cpp_obj.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
@@ -867,7 +867,7 @@ cdef class List__Internship:
         cdef unique_ptr[vector[cInternship]] c_inst = make_unique[vector[cInternship]]()
         if items:
             for item in items:
-                deref(c_inst).push_back(deref((<Internship> item)._cpp_obj))
+                deref(c_inst).push_back(deref((<Internship>item)._cpp_obj))
         return move_unique(c_inst)
 
     def __getitem__(self, int index):
@@ -910,7 +910,7 @@ cdef class List__Internship:
     def __contains__(self, item):
         if not self:
             return False
-        cdef cInternship citem = deref((<Internship> item)._cpp_obj)
+        cdef cInternship citem = deref((<Internship>item)._cpp_obj)
         cdef vector[cInternship] vec = deref(
             self._cpp_obj.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -942,7 +942,7 @@ cdef class List__Internship:
     def index(self, item):
         if not self:
             raise ValueError(f'{item} is not in list')
-        cdef cInternship citem = deref((<Internship> item)._cpp_obj)
+        cdef cInternship citem = deref((<Internship>item)._cpp_obj)
         cdef vector[cInternship] vec = deref(self._cpp_obj.get())
         cdef vector[cInternship].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
@@ -952,7 +952,7 @@ cdef class List__Internship:
     def count(self, item):
         if not self:
             return 0
-        cdef cInternship citem = deref((<Internship> item)._cpp_obj)
+        cdef cInternship citem = deref((<Internship>item)._cpp_obj)
         cdef vector[cInternship] vec = deref(self._cpp_obj.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
@@ -1617,7 +1617,7 @@ cdef class Map__i32_i32:
     def __repr__(self):
         if not self:
             return 'i{}'
-        return f'i{{{", ".join(map(lambda i: f"{i[0]}: {i[1]}", self.items()))}}}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
 
 
@@ -1730,7 +1730,7 @@ cdef class Map__i32_string:
     def __repr__(self):
         if not self:
             return 'i{}'
-        return f'i{{{", ".join(map(lambda i: f"{i[0]}: {i[1]}", self.items()))}}}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
 
 
@@ -1843,7 +1843,7 @@ cdef class Map__string_string:
     def __repr__(self):
         if not self:
             return 'i{}'
-        return f'i{{{", ".join(map(lambda i: f"{i[0]}: {i[1]}", self.items()))}}}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
 
 
@@ -1894,8 +1894,7 @@ states = List__Map__string_i32.create(make_shared[vector[cmap[string,int32_t]]](
 x = 1.0
 y = 1000000.0
 z = 1000000000.0
-instagram = Internship.create(
-    make_shared[cInternship](cinstagram()))
+instagram = Internship.create(make_shared[cInternship](cinstagram()))
 kRanges = List__Range.create(make_shared[vector[cRange]](ckRanges()))
 internList = List__Internship.create(make_shared[vector[cInternship]](cinternList()))
 apostrophe = capostrophe().decode('UTF-8')

@@ -34,20 +34,11 @@ key, include the parallel CythonPythonToCppKey file instead.
 }}{{#type:float?}}item{{/type:float?}}{{!
 }}{{#type:string?}}item.encode('UTF-8'){{/type:string?}}{{!
 }}{{#type:binary?}}item{{/type:binary?}}{{!
-}}{{#type:struct}}deref((<{{!
-  }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
-  }}{{struct:name}}> item)._cpp_obj){{!
+}}{{#type:struct}}{{!
+  }}deref((<{{> types/CythonPythonType}}>item)._cpp_obj){{!
 }}{{/type:struct}}{{!
-}}{{#type:list?}}deref({{type:flat_name}}(item)._cpp_obj.get()){{/type:list?}}{{!
-}}{{#type:set?}}c{{#type:unordered?}}u{{/type:unordered?}}set[{{!
-  }}{{#type:setElemType}}{{> types/CythonCppType}}{{/type:setElemType}}{{!
-  }}](deref({{type:flat_name}}(item)._cpp_obj.get())){{/type:set?}}{{!
-}}{{#type:map?}}c{{#type:unordered?}}u{{/type:unordered?}}map[{{!
-  }}{{#type:keyType}}{{> types/CythonCppType}}{{/type:keyType}},{{!
-  }}{{#type:valueType}}{{> types/CythonCppType}}{{/type:valueType}}{{!
-  }}](deref({{type:flat_name}}(item)._cpp_obj.get())){{/type:map?}}{{!
-}}{{#type:enum}}{{!
-  }}<{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
-  }}c{{enum:name}}> {{!
-  }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
-  }}{{enum:name}}_to_cpp(item){{/type:enum}}
+}}{{#type:container?}}{{!
+  }}{{> types/CythonCppType}}({{!
+  }}deref({{> types/CythonPythonType}}(item)._cpp_obj.get())){{!
+}}{{/type:container?}}{{!
+}}{{#type:enum}}{{> types/CythonPythonType}}_to_cpp(item){{/type:enum}}

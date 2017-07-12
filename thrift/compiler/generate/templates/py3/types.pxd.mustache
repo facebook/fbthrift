@@ -128,32 +128,15 @@ cdef class {{struct:name}}{{#struct:exception?}}(__Error){{/struct:exception?}}{
 cdef class {{type:flat_name}}:
     cdef object __hash
     cdef object __weakref__
-{{#type:listElemType}}
-    cdef shared_ptr[vector[{{> types/CythonCppType}}]] _cpp_obj
+    cdef shared_ptr[{{> types/CythonCppType}}] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[vector[{{> types/CythonCppType}}]])
-{{/type:listElemType}}
-{{#type:setElemType}}
-    cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]] _cpp_obj
-    @staticmethod
-    cdef create(shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]])
-{{/type:setElemType}}
-{{#type:map?}}
-    cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonCppWrapperMapKeyValue}}]] _cpp_obj
-    @staticmethod
-    cdef create(shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonCppWrapperMapKeyValue}}]])
-{{/type:map?}}
+    cdef create(shared_ptr[{{> types/CythonCppType}}])
     @staticmethod
     cdef unique_ptr[{{> types/CythonCppType}}] _make_instance(object items) except *
 
 {{/program:containerTypes}}{{#program:moveContainerTypes}}
 {{#first?}}cdef extern from "<utility>" namespace "std" nogil:{{/first?}}
-{{#type:listElemType}}    cdef shared_ptr[vector[{{> types/CythonCppType}}]] {{!
-}}move(unique_ptr[vector[{{> types/CythonCppType}}]]){{/type:listElemType}}{{!
-}}{{#type:setElemType}}    cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]] {{!
-}}move(unique_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]]){{/type:setElemType}}{{!
-}}{{#type:map?}}    cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonCppWrapperMapKeyValue}}]] {{!
-}}move(unique_ptr[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonCppWrapperMapKeyValue}}]]){{/type:map?}}
+    cdef shared_ptr[{{> types/CythonCppType}}] move(unique_ptr[{{> types/CythonCppType}}])
     cdef unique_ptr[{{> types/CythonCppType}}] move_unique "std::move"(unique_ptr[{{> types/CythonCppType}}]){{!
 }}{{/program:moveContainerTypes}}
 

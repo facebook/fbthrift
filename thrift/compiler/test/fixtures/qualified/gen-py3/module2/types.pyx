@@ -354,5 +354,4 @@ cdef class BigStruct(thrift.py3.types.Struct):
         return f'BigStruct(s={repr(self.s)}, id={repr(self.id)})'
 
 
-c2 = Struct.create(
-    make_shared[cStruct](cc2()))
+c2 = Struct.create(make_shared[cStruct](cc2()))

@@ -87,7 +87,7 @@ cdef api void call_cy_MyService_query(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[module.types.cMyStruct] s,
     unique_ptr[includes.types.cIncluded] i
-):  
+):
     cdef MyServiceInterface iface
     iface = self
     promise = Promise_void.create(move(cPromise))
@@ -115,7 +115,7 @@ async def MyService_query_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.query(ctx, 
+            result = await self.query(ctx,
                       s,
                       i)
         else:
@@ -139,7 +139,7 @@ cdef api void call_cy_MyService_has_arg_docs(
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[module.types.cMyStruct] s,
     unique_ptr[includes.types.cIncluded] i
-):  
+):
     cdef MyServiceInterface iface
     iface = self
     promise = Promise_void.create(move(cPromise))
@@ -167,7 +167,7 @@ async def MyService_has_arg_docs_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.has_arg_docs(ctx, 
+            result = await self.has_arg_docs(ctx,
                       s,
                       i)
         else:

@@ -1111,7 +1111,7 @@ cdef class Map__Animal_string:
     def __repr__(self):
         if not self:
             return 'i{}'
-        return f'i{{{", ".join(map(lambda i: f"{i[0]}: {i[1]}", self.items()))}}}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
 
 
@@ -1174,7 +1174,7 @@ cdef class List__Vehicle:
         cdef unique_ptr[vector[cVehicle]] c_inst = make_unique[vector[cVehicle]]()
         if items:
             for item in items:
-                deref(c_inst).push_back(deref((<Vehicle> item)._cpp_obj))
+                deref(c_inst).push_back(deref((<Vehicle>item)._cpp_obj))
         return move_unique(c_inst)
 
     def __getitem__(self, int index):
@@ -1217,7 +1217,7 @@ cdef class List__Vehicle:
     def __contains__(self, item):
         if not self:
             return False
-        cdef cVehicle citem = deref((<Vehicle> item)._cpp_obj)
+        cdef cVehicle citem = deref((<Vehicle>item)._cpp_obj)
         cdef vector[cVehicle] vec = deref(
             self._cpp_obj.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -1249,7 +1249,7 @@ cdef class List__Vehicle:
     def index(self, item):
         if not self:
             raise ValueError(f'{item} is not in list')
-        cdef cVehicle citem = deref((<Vehicle> item)._cpp_obj)
+        cdef cVehicle citem = deref((<Vehicle>item)._cpp_obj)
         cdef vector[cVehicle] vec = deref(self._cpp_obj.get())
         cdef vector[cVehicle].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
@@ -1259,7 +1259,7 @@ cdef class List__Vehicle:
     def count(self, item):
         if not self:
             return 0
-        cdef cVehicle citem = deref((<Vehicle> item)._cpp_obj)
+        cdef cVehicle citem = deref((<Vehicle>item)._cpp_obj)
         cdef vector[cVehicle] vec = deref(self._cpp_obj.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 

@@ -34,16 +34,11 @@ keys (conventionally used for sets, lists, and map values).
 }}{{#type:float?}}key{{/type:float?}}{{!
 }}{{#type:string?}}key.encode('UTF-8'){{/type:string?}}{{!
 }}{{#type:binary?}}key{{/type:binary?}}{{!
-}}{{#type:struct}}deref((<{{> common/ModulePath}}.{{struct:name}}> key{{!
-  }})._cpp_obj){{/type:struct}}{{!
-}}{{#type:list?}}deref({{type:flat_name}}(key)._cpp_obj.get()){{/type:list?}}{{!
-}}{{#type:set?}}c{{#type:unordered?}}u{{/type:unordered?}}set[{{!
-  }}{{#type:setElemType}}{{> types/CythonCppType}}{{/type:setElemType}}{{!
-  }}](deref({{type:flat_name}}(key)._cpp_obj.get())){{/type:set?}}{{!
-}}{{#type:map?}}c{{#type:unordered?}}u{{/type:unordered?}}map[{{!
-  }}{{#type:keyType}}{{> types/CythonCppType}}{{/type:keyType}},{{!
-  }}{{#type:valueType}}{{> types/CythonCppType}}{{/type:valueType}}{{!
-  }}](deref({{type:flat_name}}(key)._cpp_obj.get())){{/type:map?}}{{!
-}}{{#type:enum}}{{!
-  }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
-  }}{{enum:name}}_to_cpp(key){{/type:enum}}
+}}{{#type:struct}}{{!
+  }}deref((<{{> types/CythonPythonType}}>key)._cpp_obj){{!
+}}{{/type:struct}}{{!
+}}{{#type:container?}}{{!
+  }}{{> types/CythonCppType}}({{!
+  }}deref({{> types/CythonPythonType}}(key)._cpp_obj.get())){{!
+}}{{/type:container?}}{{!
+}}{{#type:enum}}{{> types/CythonPythonType}}_to_cpp(key){{/type:enum}}

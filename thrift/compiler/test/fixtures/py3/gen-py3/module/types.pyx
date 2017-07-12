@@ -1132,7 +1132,7 @@ cdef class List__SimpleStruct:
         cdef unique_ptr[vector[cSimpleStruct]] c_inst = make_unique[vector[cSimpleStruct]]()
         if items:
             for item in items:
-                deref(c_inst).push_back(deref((<SimpleStruct> item)._cpp_obj))
+                deref(c_inst).push_back(deref((<SimpleStruct>item)._cpp_obj))
         return move_unique(c_inst)
 
     def __getitem__(self, int index):
@@ -1175,7 +1175,7 @@ cdef class List__SimpleStruct:
     def __contains__(self, item):
         if not self:
             return False
-        cdef cSimpleStruct citem = deref((<SimpleStruct> item)._cpp_obj)
+        cdef cSimpleStruct citem = deref((<SimpleStruct>item)._cpp_obj)
         cdef vector[cSimpleStruct] vec = deref(
             self._cpp_obj.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -1207,7 +1207,7 @@ cdef class List__SimpleStruct:
     def index(self, item):
         if not self:
             raise ValueError(f'{item} is not in list')
-        cdef cSimpleStruct citem = deref((<SimpleStruct> item)._cpp_obj)
+        cdef cSimpleStruct citem = deref((<SimpleStruct>item)._cpp_obj)
         cdef vector[cSimpleStruct] vec = deref(self._cpp_obj.get())
         cdef vector[cSimpleStruct].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
@@ -1217,7 +1217,7 @@ cdef class List__SimpleStruct:
     def count(self, item):
         if not self:
             return 0
-        cdef cSimpleStruct citem = deref((<SimpleStruct> item)._cpp_obj)
+        cdef cSimpleStruct citem = deref((<SimpleStruct>item)._cpp_obj)
         cdef vector[cSimpleStruct] vec = deref(self._cpp_obj.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
@@ -1662,7 +1662,7 @@ cdef class Map__string_string:
     def __repr__(self):
         if not self:
             return 'i{}'
-        return f'i{{{", ".join(map(lambda i: f"{i[0]}: {i[1]}", self.items()))}}}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
 
 
@@ -1725,7 +1725,7 @@ cdef class Map__string_SimpleStruct:
         cdef unique_ptr[cmap[string,cSimpleStruct]] c_inst = make_unique[cmap[string,cSimpleStruct]]()
         if items:
             for key, item in items.items():
-                deref(c_inst).insert(cpair[string,cSimpleStruct](key.encode('UTF-8'),deref((<SimpleStruct> item)._cpp_obj)))
+                deref(c_inst).insert(cpair[string,cSimpleStruct](key.encode('UTF-8'),deref((<SimpleStruct>item)._cpp_obj)))
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -1775,7 +1775,7 @@ cdef class Map__string_SimpleStruct:
     def __repr__(self):
         if not self:
             return 'i{}'
-        return f'i{{{", ".join(map(lambda i: f"{i[0]}: {i[1]}", self.items()))}}}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
 
 
@@ -1888,7 +1888,7 @@ cdef class Map__string_i16:
     def __repr__(self):
         if not self:
             return 'i{}'
-        return f'i{{{", ".join(map(lambda i: f"{i[0]}: {i[1]}", self.items()))}}}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
 
 
@@ -1951,7 +1951,7 @@ cdef class List__List__i32:
         cdef unique_ptr[vector[vector[int32_t]]] c_inst = make_unique[vector[vector[int32_t]]]()
         if items:
             for item in items:
-                deref(c_inst).push_back(deref(List__i32(item)._cpp_obj.get()))
+                deref(c_inst).push_back(vector[int32_t](deref(List__i32(item)._cpp_obj.get())))
         return move_unique(c_inst)
 
     def __getitem__(self, int index):
@@ -1995,7 +1995,7 @@ cdef class List__List__i32:
     def __contains__(self, item):
         if not self:
             return False
-        cdef vector[int32_t] citem = deref(List__i32(item)._cpp_obj.get())
+        cdef vector[int32_t] citem = vector[int32_t](deref(List__i32(item)._cpp_obj.get()))
         cdef vector[vector[int32_t]] vec = deref(
             self._cpp_obj.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -2029,7 +2029,7 @@ cdef class List__List__i32:
     def index(self, item):
         if not self:
             raise ValueError(f'{item} is not in list')
-        cdef vector[int32_t] citem = deref(List__i32(item)._cpp_obj.get())
+        cdef vector[int32_t] citem = vector[int32_t](deref(List__i32(item)._cpp_obj.get()))
         cdef vector[vector[int32_t]] vec = deref(self._cpp_obj.get())
         cdef vector[vector[int32_t]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
@@ -2039,7 +2039,7 @@ cdef class List__List__i32:
     def count(self, item):
         if not self:
             return 0
-        cdef vector[int32_t] citem = deref(List__i32(item)._cpp_obj.get())
+        cdef vector[int32_t] citem = vector[int32_t](deref(List__i32(item)._cpp_obj.get()))
         cdef vector[vector[int32_t]] vec = deref(self._cpp_obj.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
@@ -2114,7 +2114,7 @@ cdef class Map__string_i32:
     def __repr__(self):
         if not self:
             return 'i{}'
-        return f'i{{{", ".join(map(lambda i: f"{i[0]}: {i[1]}", self.items()))}}}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
 
 
@@ -2228,7 +2228,7 @@ cdef class Map__string_Map__string_i32:
     def __repr__(self):
         if not self:
             return 'i{}'
-        return f'i{{{", ".join(map(lambda i: f"{i[0]}: {i[1]}", self.items()))}}}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
 
 
@@ -2407,7 +2407,7 @@ cdef class Map__string_List__SimpleStruct:
         cdef unique_ptr[cmap[string,vector[cSimpleStruct]]] c_inst = make_unique[cmap[string,vector[cSimpleStruct]]]()
         if items:
             for key, item in items.items():
-                deref(c_inst).insert(cpair[string,vector[cSimpleStruct]](key.encode('UTF-8'),deref(List__SimpleStruct(item)._cpp_obj.get())))
+                deref(c_inst).insert(cpair[string,vector[cSimpleStruct]](key.encode('UTF-8'),vector[cSimpleStruct](deref(List__SimpleStruct(item)._cpp_obj.get()))))
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -2458,7 +2458,7 @@ cdef class Map__string_List__SimpleStruct:
     def __repr__(self):
         if not self:
             return 'i{}'
-        return f'i{{{", ".join(map(lambda i: f"{i[0]}: {i[1]}", self.items()))}}}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
 
 
@@ -2524,7 +2524,7 @@ cdef class List__List__string:
         cdef unique_ptr[vector[vector[string]]] c_inst = make_unique[vector[vector[string]]]()
         if items:
             for item in items:
-                deref(c_inst).push_back(deref(List__string(item)._cpp_obj.get()))
+                deref(c_inst).push_back(vector[string](deref(List__string(item)._cpp_obj.get())))
         return move_unique(c_inst)
 
     def __getitem__(self, int index):
@@ -2568,7 +2568,7 @@ cdef class List__List__string:
     def __contains__(self, item):
         if not self:
             return False
-        cdef vector[string] citem = deref(List__string(item)._cpp_obj.get())
+        cdef vector[string] citem = vector[string](deref(List__string(item)._cpp_obj.get()))
         cdef vector[vector[string]] vec = deref(
             self._cpp_obj.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -2602,7 +2602,7 @@ cdef class List__List__string:
     def index(self, item):
         if not self:
             raise ValueError(f'{item} is not in list')
-        cdef vector[string] citem = deref(List__string(item)._cpp_obj.get())
+        cdef vector[string] citem = vector[string](deref(List__string(item)._cpp_obj.get()))
         cdef vector[vector[string]] vec = deref(self._cpp_obj.get())
         cdef vector[vector[string]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
@@ -2612,7 +2612,7 @@ cdef class List__List__string:
     def count(self, item):
         if not self:
             return 0
-        cdef vector[string] citem = deref(List__string(item)._cpp_obj.get())
+        cdef vector[string] citem = vector[string](deref(List__string(item)._cpp_obj.get()))
         cdef vector[vector[string]] vec = deref(self._cpp_obj.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
@@ -3158,7 +3158,7 @@ cdef class List__AnEnum:
         cdef unique_ptr[vector[cAnEnum]] c_inst = make_unique[vector[cAnEnum]]()
         if items:
             for item in items:
-                deref(c_inst).push_back(<cAnEnum> AnEnum_to_cpp(item))
+                deref(c_inst).push_back(AnEnum_to_cpp(item))
         return move_unique(c_inst)
 
     def __getitem__(self, int index):
@@ -3201,7 +3201,7 @@ cdef class List__AnEnum:
     def __contains__(self, item):
         if not self:
             return False
-        cdef cAnEnum citem = <cAnEnum> AnEnum_to_cpp(item)
+        cdef cAnEnum citem = AnEnum_to_cpp(item)
         cdef vector[cAnEnum] vec = deref(
             self._cpp_obj.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -3233,7 +3233,7 @@ cdef class List__AnEnum:
     def index(self, item):
         if not self:
             raise ValueError(f'{item} is not in list')
-        cdef cAnEnum citem = <cAnEnum> AnEnum_to_cpp(item)
+        cdef cAnEnum citem = AnEnum_to_cpp(item)
         cdef vector[cAnEnum] vec = deref(self._cpp_obj.get())
         cdef vector[cAnEnum].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
@@ -3243,7 +3243,7 @@ cdef class List__AnEnum:
     def count(self, item):
         if not self:
             return 0
-        cdef cAnEnum citem = <cAnEnum> AnEnum_to_cpp(item)
+        cdef cAnEnum citem = AnEnum_to_cpp(item)
         cdef vector[cAnEnum] vec = deref(self._cpp_obj.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
@@ -3318,7 +3318,7 @@ cdef class Map__i32_double:
     def __repr__(self):
         if not self:
             return 'i{}'
-        return f'i{{{", ".join(map(lambda i: f"{i[0]}: {i[1]}", self.items()))}}}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
 
 
@@ -3485,8 +3485,7 @@ A_REAL_NUMBER = 3.14
 A_FAKE_NUMBER = 3.0
 A_WORD = cA_WORD().decode('UTF-8')
 SOME_BYTES = <bytes> cSOME_BYTES()
-A_STRUCT = SimpleStruct.create(
-    make_shared[cSimpleStruct](cA_STRUCT()))
+A_STRUCT = SimpleStruct.create(make_shared[cSimpleStruct](cA_STRUCT()))
 WORD_LIST = List__string.create(make_shared[vector[string]](cWORD_LIST()))
 SOME_MAP = List__Map__i32_double.create(make_shared[vector[cmap[int32_t,double]]](cSOME_MAP()))
 DIGITS = Set__i32.create(make_shared[cset[int32_t]](cDIGITS()))

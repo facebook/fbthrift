@@ -29,13 +29,13 @@ to the client.
 }}{{#type:float?}}<float> result{{/type:float?}}{{!
 }}{{#type:string?}}make_unique[string](<string?> result.encode('UTF-8')){{/type:string?}}{{!
 }}{{#type:binary?}}make_unique[string](<string?> result){{/type:binary?}}{{!
-}}{{#type:struct}}make_unique[{{> common/ModulePath}}.c{{struct:name}}]({{!
-  }}deref((<{{> common/ModulePath}}.{{struct:name}}?> result)._cpp_obj)){{/type:struct}}{{!
-}}{{#type:list?}}make_unique[vector[{{#type:listElemType}}{{>types/CythonCppType}}{{/type:listElemType}}]]({{!
-  }}deref((<{{> common/ModulePath}}.{{type:flat_name}}?> result)._cpp_obj)){{/type:list?}}{{!
-}}{{#type:set?}}make_unique[c{{#type:unordered?}}u{{/type:unordered?}}set[{{#type:setElemType}}{{>types/CythonCppType}}{{/type:setElemType}}]]({{!
-  }}deref((<{{> common/ModulePath}}.{{type:flat_name}}?> result)._cpp_obj)){{/type:set?}}{{!
-}}{{#type:map?}}make_unique[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonMapKeyValue}}]]({{!
-  }}deref((<{{> common/ModulePath}}.{{type:flat_name}}?> result)._cpp_obj)){{/type:map?}}{{!
+}}{{#type:struct}}{{!
+  }}make_unique[{{> types/CythonCppType}}]({{!
+  }}deref((<{{> types/CythonPythonType}}?> result)._cpp_obj)){{!
+}}{{/type:struct}}{{!
+}}{{#type:container?}}{{!
+  }}make_unique[{{> types/CythonCppType}}]({{!
+  }}deref((<{{> types/CythonPythonType}}?> result)._cpp_obj)){{!
+}}{{/type:container?}}{{!
 }}{{#type:void?}}c_unit{{/type:void?}}{{!
-}}{{#type:enum}}{{> common/ModulePath}}.{{enum:name}}_to_cpp(result){{/type:enum}}
+}}{{#type:enum}}{{> types/CythonPythonType}}_to_cpp(result){{/type:enum}}

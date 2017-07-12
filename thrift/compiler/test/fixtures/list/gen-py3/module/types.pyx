@@ -158,7 +158,7 @@ cdef class Map__i64_List__string:
         cdef unique_ptr[cmap[int64_t,vector[string]]] c_inst = make_unique[cmap[int64_t,vector[string]]]()
         if items:
             for key, item in items.items():
-                deref(c_inst).insert(cpair[int64_t,vector[string]](key,deref(List__string(item)._cpp_obj.get())))
+                deref(c_inst).insert(cpair[int64_t,vector[string]](key,vector[string](deref(List__string(item)._cpp_obj.get()))))
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -209,7 +209,7 @@ cdef class Map__i64_List__string:
     def __repr__(self):
         if not self:
             return 'i{}'
-        return f'i{{{", ".join(map(lambda i: f"{i[0]}: {i[1]}", self.items()))}}}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
 
 

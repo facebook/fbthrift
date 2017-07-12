@@ -541,7 +541,7 @@ cdef api void call_cy_SimpleService_get_five(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[int32_t] cPromise
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_i32.create(move(cPromise))
@@ -563,7 +563,7 @@ async def SimpleService_get_five_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.get_five(ctx, )
+            result = await self.get_five(ctx,)
         else:
             result = await self.get_five()
     except Exception as ex:
@@ -582,7 +582,7 @@ cdef api void call_cy_SimpleService_add_five(
     Cpp2RequestContext* ctx,
     cFollyPromise[int32_t] cPromise,
     int32_t num
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_i32.create(move(cPromise))
@@ -607,7 +607,7 @@ async def SimpleService_add_five_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.add_five(ctx, 
+            result = await self.add_five(ctx,
                       num)
         else:
             result = await self.add_five(
@@ -627,7 +627,7 @@ cdef api void call_cy_SimpleService_do_nothing(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_void.create(move(cPromise))
@@ -649,7 +649,7 @@ async def SimpleService_do_nothing_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.do_nothing(ctx, )
+            result = await self.do_nothing(ctx,)
         else:
             result = await self.do_nothing()
     except Exception as ex:
@@ -669,7 +669,7 @@ cdef api void call_cy_SimpleService_concat(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] first,
     unique_ptr[string] second
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_string.create(move(cPromise))
@@ -697,7 +697,7 @@ async def SimpleService_concat_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.concat(ctx, 
+            result = await self.concat(ctx,
                       first,
                       second)
         else:
@@ -720,7 +720,7 @@ cdef api void call_cy_SimpleService_get_value(
     Cpp2RequestContext* ctx,
     cFollyPromise[int32_t] cPromise,
     unique_ptr[module.types.cSimpleStruct] simple_struct
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_i32.create(move(cPromise))
@@ -745,7 +745,7 @@ async def SimpleService_get_value_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.get_value(ctx, 
+            result = await self.get_value(ctx,
                       simple_struct)
         else:
             result = await self.get_value(
@@ -766,7 +766,7 @@ cdef api void call_cy_SimpleService_negate(
     Cpp2RequestContext* ctx,
     cFollyPromise[cbool] cPromise,
     cbool input
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_bool.create(move(cPromise))
@@ -791,7 +791,7 @@ async def SimpleService_negate_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.negate(ctx, 
+            result = await self.negate(ctx,
                       input)
         else:
             result = await self.negate(
@@ -812,7 +812,7 @@ cdef api void call_cy_SimpleService_tiny(
     Cpp2RequestContext* ctx,
     cFollyPromise[int8_t] cPromise,
     int8_t input
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_byte.create(move(cPromise))
@@ -837,7 +837,7 @@ async def SimpleService_tiny_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.tiny(ctx, 
+            result = await self.tiny(ctx,
                       input)
         else:
             result = await self.tiny(
@@ -858,7 +858,7 @@ cdef api void call_cy_SimpleService_small(
     Cpp2RequestContext* ctx,
     cFollyPromise[int16_t] cPromise,
     int16_t input
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_i16.create(move(cPromise))
@@ -883,7 +883,7 @@ async def SimpleService_small_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.small(ctx, 
+            result = await self.small(ctx,
                       input)
         else:
             result = await self.small(
@@ -904,7 +904,7 @@ cdef api void call_cy_SimpleService_big(
     Cpp2RequestContext* ctx,
     cFollyPromise[int64_t] cPromise,
     int64_t input
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_i64.create(move(cPromise))
@@ -929,7 +929,7 @@ async def SimpleService_big_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.big(ctx, 
+            result = await self.big(ctx,
                       input)
         else:
             result = await self.big(
@@ -950,7 +950,7 @@ cdef api void call_cy_SimpleService_two(
     Cpp2RequestContext* ctx,
     cFollyPromise[double] cPromise,
     double input
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_double.create(move(cPromise))
@@ -975,7 +975,7 @@ async def SimpleService_two_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.two(ctx, 
+            result = await self.two(ctx,
                       input)
         else:
             result = await self.two(
@@ -995,7 +995,7 @@ cdef api void call_cy_SimpleService_expected_exception(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_void.create(move(cPromise))
@@ -1017,7 +1017,7 @@ async def SimpleService_expected_exception_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.expected_exception(ctx, )
+            result = await self.expected_exception(ctx,)
         else:
             result = await self.expected_exception()
     except module.types.SimpleException as ex:
@@ -1037,7 +1037,7 @@ cdef api void call_cy_SimpleService_unexpected_exception(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[int32_t] cPromise
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_i32.create(move(cPromise))
@@ -1059,7 +1059,7 @@ async def SimpleService_unexpected_exception_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.unexpected_exception(ctx, )
+            result = await self.unexpected_exception(ctx,)
         else:
             result = await self.unexpected_exception()
     except Exception as ex:
@@ -1078,7 +1078,7 @@ cdef api void call_cy_SimpleService_sum_i16_list(
     Cpp2RequestContext* ctx,
     cFollyPromise[int32_t] cPromise,
     unique_ptr[vector[int16_t]] numbers
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_i32.create(move(cPromise))
@@ -1103,7 +1103,7 @@ async def SimpleService_sum_i16_list_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.sum_i16_list(ctx, 
+            result = await self.sum_i16_list(ctx,
                       numbers)
         else:
             result = await self.sum_i16_list(
@@ -1124,7 +1124,7 @@ cdef api void call_cy_SimpleService_sum_i32_list(
     Cpp2RequestContext* ctx,
     cFollyPromise[int32_t] cPromise,
     unique_ptr[vector[int32_t]] numbers
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_i32.create(move(cPromise))
@@ -1149,7 +1149,7 @@ async def SimpleService_sum_i32_list_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.sum_i32_list(ctx, 
+            result = await self.sum_i32_list(ctx,
                       numbers)
         else:
             result = await self.sum_i32_list(
@@ -1170,7 +1170,7 @@ cdef api void call_cy_SimpleService_sum_i64_list(
     Cpp2RequestContext* ctx,
     cFollyPromise[int32_t] cPromise,
     unique_ptr[vector[int64_t]] numbers
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_i32.create(move(cPromise))
@@ -1195,7 +1195,7 @@ async def SimpleService_sum_i64_list_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.sum_i64_list(ctx, 
+            result = await self.sum_i64_list(ctx,
                       numbers)
         else:
             result = await self.sum_i64_list(
@@ -1216,7 +1216,7 @@ cdef api void call_cy_SimpleService_concat_many(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[vector[string]] words
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_string.create(move(cPromise))
@@ -1241,7 +1241,7 @@ async def SimpleService_concat_many_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.concat_many(ctx, 
+            result = await self.concat_many(ctx,
                       words)
         else:
             result = await self.concat_many(
@@ -1262,7 +1262,7 @@ cdef api void call_cy_SimpleService_count_structs(
     Cpp2RequestContext* ctx,
     cFollyPromise[int32_t] cPromise,
     unique_ptr[vector[module.types.cSimpleStruct]] items
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_i32.create(move(cPromise))
@@ -1287,7 +1287,7 @@ async def SimpleService_count_structs_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.count_structs(ctx, 
+            result = await self.count_structs(ctx,
                       items)
         else:
             result = await self.count_structs(
@@ -1308,7 +1308,7 @@ cdef api void call_cy_SimpleService_sum_set(
     Cpp2RequestContext* ctx,
     cFollyPromise[int32_t] cPromise,
     unique_ptr[cset[int32_t]] numbers
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_i32.create(move(cPromise))
@@ -1333,7 +1333,7 @@ async def SimpleService_sum_set_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.sum_set(ctx, 
+            result = await self.sum_set(ctx,
                       numbers)
         else:
             result = await self.sum_set(
@@ -1355,7 +1355,7 @@ cdef api void call_cy_SimpleService_contains_word(
     cFollyPromise[cbool] cPromise,
     unique_ptr[cset[string]] words,
     unique_ptr[string] word
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_bool.create(move(cPromise))
@@ -1383,7 +1383,7 @@ async def SimpleService_contains_word_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.contains_word(ctx, 
+            result = await self.contains_word(ctx,
                       words,
                       word)
         else:
@@ -1407,7 +1407,7 @@ cdef api void call_cy_SimpleService_get_map_value(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[cmap[string,string]] words,
     unique_ptr[string] key
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_string.create(move(cPromise))
@@ -1435,7 +1435,7 @@ async def SimpleService_get_map_value_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.get_map_value(ctx, 
+            result = await self.get_map_value(ctx,
                       words,
                       key)
         else:
@@ -1458,7 +1458,7 @@ cdef api void call_cy_SimpleService_map_length(
     Cpp2RequestContext* ctx,
     cFollyPromise[int16_t] cPromise,
     unique_ptr[cmap[string,module.types.cSimpleStruct]] items
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_i16.create(move(cPromise))
@@ -1483,7 +1483,7 @@ async def SimpleService_map_length_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.map_length(ctx, 
+            result = await self.map_length(ctx,
                       items)
         else:
             result = await self.map_length(
@@ -1504,7 +1504,7 @@ cdef api void call_cy_SimpleService_sum_map_values(
     Cpp2RequestContext* ctx,
     cFollyPromise[int16_t] cPromise,
     unique_ptr[cmap[string,int16_t]] items
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_i16.create(move(cPromise))
@@ -1529,7 +1529,7 @@ async def SimpleService_sum_map_values_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.sum_map_values(ctx, 
+            result = await self.sum_map_values(ctx,
                       items)
         else:
             result = await self.sum_map_values(
@@ -1550,7 +1550,7 @@ cdef api void call_cy_SimpleService_complex_sum_i32(
     Cpp2RequestContext* ctx,
     cFollyPromise[int32_t] cPromise,
     unique_ptr[module.types.cComplexStruct] counter
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_i32.create(move(cPromise))
@@ -1575,7 +1575,7 @@ async def SimpleService_complex_sum_i32_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.complex_sum_i32(ctx, 
+            result = await self.complex_sum_i32(ctx,
                       counter)
         else:
             result = await self.complex_sum_i32(
@@ -1596,7 +1596,7 @@ cdef api void call_cy_SimpleService_repeat_name(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[module.types.cComplexStruct] counter
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_string.create(move(cPromise))
@@ -1621,7 +1621,7 @@ async def SimpleService_repeat_name_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.repeat_name(ctx, 
+            result = await self.repeat_name(ctx,
                       counter)
         else:
             result = await self.repeat_name(
@@ -1641,7 +1641,7 @@ cdef api void call_cy_SimpleService_get_struct(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[module.types.cSimpleStruct]] cPromise
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_SimpleStruct.create(move(cPromise))
@@ -1663,7 +1663,7 @@ async def SimpleService_get_struct_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.get_struct(ctx, )
+            result = await self.get_struct(ctx,)
         else:
             result = await self.get_struct()
     except Exception as ex:
@@ -1682,7 +1682,7 @@ cdef api void call_cy_SimpleService_fib(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[vector[int32_t]]] cPromise,
     int16_t n
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_List__i32.create(move(cPromise))
@@ -1707,7 +1707,7 @@ async def SimpleService_fib_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.fib(ctx, 
+            result = await self.fib(ctx,
                       n)
         else:
             result = await self.fib(
@@ -1729,7 +1729,7 @@ cdef api void call_cy_SimpleService_unique_words(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[cset[string]]] cPromise,
     unique_ptr[vector[string]] words
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_Set__string.create(move(cPromise))
@@ -1754,7 +1754,7 @@ async def SimpleService_unique_words_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.unique_words(ctx, 
+            result = await self.unique_words(ctx,
                       words)
         else:
             result = await self.unique_words(
@@ -1776,7 +1776,7 @@ cdef api void call_cy_SimpleService_words_count(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[cmap[string,int16_t]]] cPromise,
     unique_ptr[vector[string]] words
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_Map__string_i16.create(move(cPromise))
@@ -1801,7 +1801,7 @@ async def SimpleService_words_count_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.words_count(ctx, 
+            result = await self.words_count(ctx,
                       words)
         else:
             result = await self.words_count(
@@ -1823,7 +1823,7 @@ cdef api void call_cy_SimpleService_set_enum(
     Cpp2RequestContext* ctx,
     cFollyPromise[module.types.cAnEnum] cPromise,
     module.types.cAnEnum in_enum
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_AnEnum.create(move(cPromise))
@@ -1848,7 +1848,7 @@ async def SimpleService_set_enum_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.set_enum(ctx, 
+            result = await self.set_enum(ctx,
                       in_enum)
         else:
             result = await self.set_enum(
@@ -1870,7 +1870,7 @@ cdef api void call_cy_SimpleService_list_of_lists(
     cFollyPromise[unique_ptr[vector[vector[int32_t]]]] cPromise,
     int16_t num_lists,
     int16_t num_items
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_List__List__i32.create(move(cPromise))
@@ -1898,7 +1898,7 @@ async def SimpleService_list_of_lists_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.list_of_lists(ctx, 
+            result = await self.list_of_lists(ctx,
                       num_lists,
                       num_items)
         else:
@@ -1922,7 +1922,7 @@ cdef api void call_cy_SimpleService_word_character_frequency(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[cmap[string,cmap[string,int32_t]]]] cPromise,
     unique_ptr[string] sentence
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_Map__string_Map__string_i32.create(move(cPromise))
@@ -1947,7 +1947,7 @@ async def SimpleService_word_character_frequency_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.word_character_frequency(ctx, 
+            result = await self.word_character_frequency(ctx,
                       sentence)
         else:
             result = await self.word_character_frequency(
@@ -1969,7 +1969,7 @@ cdef api void call_cy_SimpleService_list_of_sets(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[vector[cset[string]]]] cPromise,
     unique_ptr[string] some_words
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_List__Set__string.create(move(cPromise))
@@ -1994,7 +1994,7 @@ async def SimpleService_list_of_sets_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.list_of_sets(ctx, 
+            result = await self.list_of_sets(ctx,
                       some_words)
         else:
             result = await self.list_of_sets(
@@ -2016,7 +2016,7 @@ cdef api void call_cy_SimpleService_nested_map_argument(
     Cpp2RequestContext* ctx,
     cFollyPromise[int32_t] cPromise,
     unique_ptr[cmap[string,vector[module.types.cSimpleStruct]]] struct_map
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_i32.create(move(cPromise))
@@ -2041,7 +2041,7 @@ async def SimpleService_nested_map_argument_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.nested_map_argument(ctx, 
+            result = await self.nested_map_argument(ctx,
                       struct_map)
         else:
             result = await self.nested_map_argument(
@@ -2062,7 +2062,7 @@ cdef api void call_cy_SimpleService_make_sentence(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[vector[vector[string]]] word_chars
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_string.create(move(cPromise))
@@ -2087,7 +2087,7 @@ async def SimpleService_make_sentence_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.make_sentence(ctx, 
+            result = await self.make_sentence(ctx,
                       word_chars)
         else:
             result = await self.make_sentence(
@@ -2108,7 +2108,7 @@ cdef api void call_cy_SimpleService_get_union(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[cset[int32_t]]] cPromise,
     unique_ptr[vector[cset[int32_t]]] sets
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_Set__i32.create(move(cPromise))
@@ -2133,7 +2133,7 @@ async def SimpleService_get_union_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.get_union(ctx, 
+            result = await self.get_union(ctx,
                       sets)
         else:
             result = await self.get_union(
@@ -2155,7 +2155,7 @@ cdef api void call_cy_SimpleService_get_keys(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[cset[string]]] cPromise,
     unique_ptr[vector[cmap[string,string]]] string_map
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_Set__string.create(move(cPromise))
@@ -2180,7 +2180,7 @@ async def SimpleService_get_keys_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.get_keys(ctx, 
+            result = await self.get_keys(ctx,
                       string_map)
         else:
             result = await self.get_keys(
@@ -2202,7 +2202,7 @@ cdef api void call_cy_SimpleService_lookup_double(
     Cpp2RequestContext* ctx,
     cFollyPromise[double] cPromise,
     int32_t key
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_double.create(move(cPromise))
@@ -2227,7 +2227,7 @@ async def SimpleService_lookup_double_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.lookup_double(ctx, 
+            result = await self.lookup_double(ctx,
                       key)
         else:
             result = await self.lookup_double(
@@ -2248,7 +2248,7 @@ cdef api void call_cy_SimpleService_retrieve_binary(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] something
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_binary.create(move(cPromise))
@@ -2273,7 +2273,7 @@ async def SimpleService_retrieve_binary_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.retrieve_binary(ctx, 
+            result = await self.retrieve_binary(ctx,
                       something)
         else:
             result = await self.retrieve_binary(
@@ -2294,7 +2294,7 @@ cdef api void call_cy_SimpleService_contain_binary(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[cset[string]]] cPromise,
     unique_ptr[vector[string]] binaries
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_Set__binary.create(move(cPromise))
@@ -2319,7 +2319,7 @@ async def SimpleService_contain_binary_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.contain_binary(ctx, 
+            result = await self.contain_binary(ctx,
                       binaries)
         else:
             result = await self.contain_binary(
@@ -2341,7 +2341,7 @@ cdef api void call_cy_SimpleService_contain_enum(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[vector[module.types.cAnEnum]]] cPromise,
     unique_ptr[vector[module.types.cAnEnum]] the_enum
-):  
+):
     cdef SimpleServiceInterface iface
     iface = self
     promise = Promise_List__AnEnum.create(move(cPromise))
@@ -2366,7 +2366,7 @@ async def SimpleService_contain_enum_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.contain_enum(ctx, 
+            result = await self.contain_enum(ctx,
                       the_enum)
         else:
             result = await self.contain_enum(
@@ -2387,7 +2387,7 @@ cdef api void call_cy_DerivedService_get_six(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[int32_t] cPromise
-):  
+):
     cdef DerivedServiceInterface iface
     iface = self
     promise = Promise_i32.create(move(cPromise))
@@ -2409,7 +2409,7 @@ async def DerivedService_get_six_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.get_six(ctx, )
+            result = await self.get_six(ctx,)
         else:
             result = await self.get_six()
     except Exception as ex:
@@ -2427,7 +2427,7 @@ cdef api void call_cy_RederivedService_get_seven(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[int32_t] cPromise
-):  
+):
     cdef RederivedServiceInterface iface
     iface = self
     promise = Promise_i32.create(move(cPromise))
@@ -2449,7 +2449,7 @@ async def RederivedService_get_seven_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.get_seven(ctx, )
+            result = await self.get_seven(ctx,)
         else:
             result = await self.get_seven()
     except Exception as ex:

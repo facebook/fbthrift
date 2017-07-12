@@ -158,7 +158,7 @@ cdef class Map__i32_List__i32:
         cdef unique_ptr[cmap[int32_t,vector[int32_t]]] c_inst = make_unique[cmap[int32_t,vector[int32_t]]]()
         if items:
             for key, item in items.items():
-                deref(c_inst).insert(cpair[int32_t,vector[int32_t]](key,deref(List__i32(item)._cpp_obj.get())))
+                deref(c_inst).insert(cpair[int32_t,vector[int32_t]](key,vector[int32_t](deref(List__i32(item)._cpp_obj.get()))))
         return move_unique(c_inst)
 
     def __getitem__(self, key):
@@ -209,7 +209,7 @@ cdef class Map__i32_List__i32:
     def __repr__(self):
         if not self:
             return 'i{}'
-        return f'i{{{", ".join(map(lambda i: f"{i[0]}: {i[1]}", self.items()))}}}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
 
 
@@ -511,7 +511,7 @@ cdef class Map__i32_Set__i32:
     def __repr__(self):
         if not self:
             return 'i{}'
-        return f'i{{{", ".join(map(lambda i: f"{i[0]}: {i[1]}", self.items()))}}}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
 
 
@@ -627,7 +627,7 @@ cdef class Map__i32_i32:
     def __repr__(self):
         if not self:
             return 'i{}'
-        return f'i{{{", ".join(map(lambda i: f"{i[0]}: {i[1]}", self.items()))}}}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
 
 
@@ -967,7 +967,7 @@ cdef class Map__i32_Map__i32_Set__i32:
     def __repr__(self):
         if not self:
             return 'i{}'
-        return f'i{{{", ".join(map(lambda i: f"{i[0]}: {i[1]}", self.items()))}}}'
+        return f'i{{{", ".join(map(lambda i: f"{repr(i[0])}: {repr(i[1])}", self.items()))}}}'
 
 
 
@@ -1146,7 +1146,7 @@ cdef class List__List__Map__i32_Map__i32_Set__i32:
         cdef unique_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]] c_inst = make_unique[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]]()
         if items:
             for item in items:
-                deref(c_inst).push_back(deref(List__Map__i32_Map__i32_Set__i32(item)._cpp_obj.get()))
+                deref(c_inst).push_back(vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]](deref(List__Map__i32_Map__i32_Set__i32(item)._cpp_obj.get())))
         return move_unique(c_inst)
 
     def __getitem__(self, int index):
@@ -1190,7 +1190,7 @@ cdef class List__List__Map__i32_Map__i32_Set__i32:
     def __contains__(self, item):
         if not self:
             return False
-        cdef vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]] citem = deref(List__Map__i32_Map__i32_Set__i32(item)._cpp_obj.get())
+        cdef vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]] citem = vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]](deref(List__Map__i32_Map__i32_Set__i32(item)._cpp_obj.get()))
         cdef vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]] vec = deref(
             self._cpp_obj.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -1224,7 +1224,7 @@ cdef class List__List__Map__i32_Map__i32_Set__i32:
     def index(self, item):
         if not self:
             raise ValueError(f'{item} is not in list')
-        cdef vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]] citem = deref(List__Map__i32_Map__i32_Set__i32(item)._cpp_obj.get())
+        cdef vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]] citem = vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]](deref(List__Map__i32_Map__i32_Set__i32(item)._cpp_obj.get()))
         cdef vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]] vec = deref(self._cpp_obj.get())
         cdef vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
@@ -1234,7 +1234,7 @@ cdef class List__List__Map__i32_Map__i32_Set__i32:
     def count(self, item):
         if not self:
             return 0
-        cdef vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]] citem = deref(List__Map__i32_Map__i32_Set__i32(item)._cpp_obj.get())
+        cdef vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]] citem = vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]](deref(List__Map__i32_Map__i32_Set__i32(item)._cpp_obj.get()))
         cdef vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]] vec = deref(self._cpp_obj.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 

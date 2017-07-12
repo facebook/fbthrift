@@ -78,7 +78,7 @@ cdef api void call_cy_ExtendTestService_check(
     Cpp2RequestContext* ctx,
     cFollyPromise[cbool] cPromise,
     unique_ptr[hsmodule.types.cHsFoo] struct1
-):  
+):
     cdef ExtendTestServiceInterface iface
     iface = self
     promise = Promise_bool.create(move(cPromise))
@@ -103,7 +103,7 @@ async def ExtendTestService_check_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.check(ctx, 
+            result = await self.check(ctx,
                       struct1)
         else:
             result = await self.check(

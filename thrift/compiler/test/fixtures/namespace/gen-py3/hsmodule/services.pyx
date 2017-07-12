@@ -74,7 +74,7 @@ cdef api void call_cy_HsTestService_init(
     Cpp2RequestContext* ctx,
     cFollyPromise[int64_t] cPromise,
     int64_t int1
-):  
+):
     cdef HsTestServiceInterface iface
     iface = self
     promise = Promise_i64.create(move(cPromise))
@@ -99,7 +99,7 @@ async def HsTestService_init_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.init(ctx, 
+            result = await self.init(ctx,
                       int1)
         else:
             result = await self.init(

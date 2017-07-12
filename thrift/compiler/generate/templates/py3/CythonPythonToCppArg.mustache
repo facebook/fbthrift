@@ -21,9 +21,7 @@ representation is required to be passed by value as a client call argument. For
 most primitives, the conversion can be done automatically, but for strings and
 structures, some work is required.
 
-This template assumes that the Python object is in a variable named key, and is
-most often used with maps. Use the CythonPythonToCppItem template for general
-keys (conventionally used for sets, lists, and map values).
+This template assumes that the Python object is in a variable named arg_<field>.
 
 }}{{#type:bool?}}arg_{{field:name}}{{/type:bool?}}{{!
 }}{{#type:byte?}}arg_{{field:name}}{{/type:byte?}}{{!
@@ -34,14 +32,11 @@ keys (conventionally used for sets, lists, and map values).
 }}{{#type:float?}}arg_{{field:name}}{{/type:float?}}{{!
 }}{{#type:string?}}arg_{{field:name}}.encode('UTF-8'){{/type:string?}}{{!
 }}{{#type:binary?}}arg_{{field:name}}{{/type:binary?}}{{!
-}}{{#type:struct}}deref((<{{> common/ModulePath}}.{{struct:name}}>arg_{{field:name}}{{!
-  }})._cpp_obj){{/type:struct}}{{!
-}}{{#type:list?}}deref({{> common/ModulePath}}.{{type:flat_name}}(arg_{{field:name}})._cpp_obj.get()){{/type:list?}}{{!
-}}{{#type:set?}}c{{#type:unordered?}}u{{/type:unordered?}}set[{{!
-  }}{{#type:setElemType}}{{> types/CythonCppType}}{{/type:setElemType}}{{!
-  }}](deref({{> common/ModulePath}}.{{type:flat_name}}(arg_{{field:name}})._cpp_obj.get())){{/type:set?}}{{!
-}}{{#type:map?}}c{{#type:unordered?}}u{{/type:unordered?}}map[{{!
-  }}{{#type:keyType}}{{> types/CythonCppType}}{{/type:keyType}},{{!
-  }}{{#type:valueType}}{{> types/CythonCppType}}{{/type:valueType}}{{!
-  }}](deref({{> common/ModulePath}}.{{type:flat_name}}(arg_{{field:name}})._cpp_obj.get())){{/type:map?}}{{!
-}}{{#type:enum}}{{> common/ModulePath}}.{{enum:name}}_to_cpp(arg_{{field:name}}){{/type:enum}}
+}}{{#type:struct}}{{!
+  }}deref((<{{> types/CythonPythonType}}>arg_{{field:name}})._cpp_obj){{!
+}}{{/type:struct}}{{!
+}}{{#type:container?}}{{!
+  }}{{> types/CythonCppType}}({{!
+  }}deref({{> types/CythonPythonType}}(arg_{{field:name}})._cpp_obj.get())){{!
+}}{{/type:container?}}{{!
+}}{{#type:enum}}{{> types/CythonPythonType}}_to_cpp(arg_{{field:name}}){{/type:enum}}

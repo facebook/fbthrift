@@ -217,7 +217,7 @@ cdef class List__Enum:
         cdef unique_ptr[vector[cEnum]] c_inst = make_unique[vector[cEnum]]()
         if items:
             for item in items:
-                deref(c_inst).push_back(<cEnum> Enum_to_cpp(item))
+                deref(c_inst).push_back(Enum_to_cpp(item))
         return move_unique(c_inst)
 
     def __getitem__(self, int index):
@@ -260,7 +260,7 @@ cdef class List__Enum:
     def __contains__(self, item):
         if not self:
             return False
-        cdef cEnum citem = <cEnum> Enum_to_cpp(item)
+        cdef cEnum citem = Enum_to_cpp(item)
         cdef vector[cEnum] vec = deref(
             self._cpp_obj.get())
         return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
@@ -292,7 +292,7 @@ cdef class List__Enum:
     def index(self, item):
         if not self:
             raise ValueError(f'{item} is not in list')
-        cdef cEnum citem = <cEnum> Enum_to_cpp(item)
+        cdef cEnum citem = Enum_to_cpp(item)
         cdef vector[cEnum] vec = deref(self._cpp_obj.get())
         cdef vector[cEnum].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
         if loc != vec.end():
@@ -302,13 +302,12 @@ cdef class List__Enum:
     def count(self, item):
         if not self:
             return 0
-        cdef cEnum citem = <cEnum> Enum_to_cpp(item)
+        cdef cEnum citem = Enum_to_cpp(item)
         cdef vector[cEnum] vec = deref(self._cpp_obj.get())
         return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
 
 
 Sequence.register(List__Enum)
 
-c1 = Struct.create(
-    make_shared[cStruct](cc1()))
+c1 = Struct.create(make_shared[cStruct](cc1()))
 e1s = List__Enum.create(make_shared[vector[cEnum]](ce1s()))

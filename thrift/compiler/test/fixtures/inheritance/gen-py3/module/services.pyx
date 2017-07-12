@@ -102,7 +102,7 @@ cdef api void call_cy_MyRoot_do_root(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
-):  
+):
     cdef MyRootInterface iface
     iface = self
     promise = Promise_void.create(move(cPromise))
@@ -124,7 +124,7 @@ async def MyRoot_do_root_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.do_root(ctx, )
+            result = await self.do_root(ctx,)
         else:
             result = await self.do_root()
     except Exception as ex:
@@ -142,7 +142,7 @@ cdef api void call_cy_MyNode_do_mid(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
-):  
+):
     cdef MyNodeInterface iface
     iface = self
     promise = Promise_void.create(move(cPromise))
@@ -164,7 +164,7 @@ async def MyNode_do_mid_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.do_mid(ctx, )
+            result = await self.do_mid(ctx,)
         else:
             result = await self.do_mid()
     except Exception as ex:
@@ -182,7 +182,7 @@ cdef api void call_cy_MyLeaf_do_leaf(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
-):  
+):
     cdef MyLeafInterface iface
     iface = self
     promise = Promise_void.create(move(cPromise))
@@ -204,7 +204,7 @@ async def MyLeaf_do_leaf_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.do_leaf(ctx, )
+            result = await self.do_leaf(ctx,)
         else:
             result = await self.do_leaf()
     except Exception as ex:

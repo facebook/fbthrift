@@ -98,7 +98,7 @@ cdef api void call_cy_NestedContainers_mapList(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[cmap[int32_t,vector[int32_t]]] foo
-):  
+):
     cdef NestedContainersInterface iface
     iface = self
     promise = Promise_void.create(move(cPromise))
@@ -123,7 +123,7 @@ async def NestedContainers_mapList_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.mapList(ctx, 
+            result = await self.mapList(ctx,
                       foo)
         else:
             result = await self.mapList(
@@ -144,7 +144,7 @@ cdef api void call_cy_NestedContainers_mapSet(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[cmap[int32_t,cset[int32_t]]] foo
-):  
+):
     cdef NestedContainersInterface iface
     iface = self
     promise = Promise_void.create(move(cPromise))
@@ -169,7 +169,7 @@ async def NestedContainers_mapSet_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.mapSet(ctx, 
+            result = await self.mapSet(ctx,
                       foo)
         else:
             result = await self.mapSet(
@@ -190,7 +190,7 @@ cdef api void call_cy_NestedContainers_listMap(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[vector[cmap[int32_t,int32_t]]] foo
-):  
+):
     cdef NestedContainersInterface iface
     iface = self
     promise = Promise_void.create(move(cPromise))
@@ -215,7 +215,7 @@ async def NestedContainers_listMap_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.listMap(ctx, 
+            result = await self.listMap(ctx,
                       foo)
         else:
             result = await self.listMap(
@@ -236,7 +236,7 @@ cdef api void call_cy_NestedContainers_listSet(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[vector[cset[int32_t]]] foo
-):  
+):
     cdef NestedContainersInterface iface
     iface = self
     promise = Promise_void.create(move(cPromise))
@@ -261,7 +261,7 @@ async def NestedContainers_listSet_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.listSet(ctx, 
+            result = await self.listSet(ctx,
                       foo)
         else:
             result = await self.listSet(
@@ -282,7 +282,7 @@ cdef api void call_cy_NestedContainers_turtles(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
     unique_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]] foo
-):  
+):
     cdef NestedContainersInterface iface
     iface = self
     promise = Promise_void.create(move(cPromise))
@@ -307,7 +307,7 @@ async def NestedContainers_turtles_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.turtles(ctx, 
+            result = await self.turtles(ctx,
                       foo)
         else:
             result = await self.turtles(

@@ -214,7 +214,7 @@ cdef api void call_cy_MyService_ping(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
-):  
+):
     cdef MyServiceInterface iface
     iface = self
     promise = Promise_void.create(move(cPromise))
@@ -236,7 +236,7 @@ async def MyService_ping_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.ping(ctx, )
+            result = await self.ping(ctx,)
         else:
             result = await self.ping()
     except Exception as ex:
@@ -254,7 +254,7 @@ cdef api void call_cy_MyService_getRandomData(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
-):  
+):
     cdef MyServiceInterface iface
     iface = self
     promise = Promise_string.create(move(cPromise))
@@ -276,7 +276,7 @@ async def MyService_getRandomData_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.getRandomData(ctx, )
+            result = await self.getRandomData(ctx,)
         else:
             result = await self.getRandomData()
     except Exception as ex:
@@ -295,7 +295,7 @@ cdef api void call_cy_MyService_hasDataById(
     Cpp2RequestContext* ctx,
     cFollyPromise[cbool] cPromise,
     int64_t id
-):  
+):
     cdef MyServiceInterface iface
     iface = self
     promise = Promise_bool.create(move(cPromise))
@@ -320,7 +320,7 @@ async def MyService_hasDataById_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.hasDataById(ctx, 
+            result = await self.hasDataById(ctx,
                       id)
         else:
             result = await self.hasDataById(
@@ -341,7 +341,7 @@ cdef api void call_cy_MyService_getDataById(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise,
     int64_t id
-):  
+):
     cdef MyServiceInterface iface
     iface = self
     promise = Promise_string.create(move(cPromise))
@@ -366,7 +366,7 @@ async def MyService_getDataById_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.getDataById(ctx, 
+            result = await self.getDataById(ctx,
                       id)
         else:
             result = await self.getDataById(
@@ -388,7 +388,7 @@ cdef api void call_cy_MyService_putDataById(
     cFollyPromise[cFollyUnit] cPromise,
     int64_t id,
     unique_ptr[string] data
-):  
+):
     cdef MyServiceInterface iface
     iface = self
     promise = Promise_void.create(move(cPromise))
@@ -416,7 +416,7 @@ async def MyService_putDataById_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.putDataById(ctx, 
+            result = await self.putDataById(ctx,
                       id,
                       data)
         else:
@@ -440,7 +440,7 @@ cdef api void call_cy_MyService_lobDataById(
     cFollyPromise[cFollyUnit] cPromise,
     int64_t id,
     unique_ptr[string] data
-):  
+):
     cdef MyServiceInterface iface
     iface = self
     promise = Promise_void.create(move(cPromise))
@@ -468,7 +468,7 @@ async def MyService_lobDataById_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.lobDataById(ctx, 
+            result = await self.lobDataById(ctx,
                       id,
                       data)
         else:
@@ -490,7 +490,7 @@ cdef api void call_cy_MyServiceFast_ping(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
-):  
+):
     cdef MyServiceFastInterface iface
     iface = self
     promise = Promise_void.create(move(cPromise))
@@ -512,7 +512,7 @@ async def MyServiceFast_ping_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.ping(ctx, )
+            result = await self.ping(ctx,)
         else:
             result = await self.ping()
     except Exception as ex:
@@ -530,7 +530,7 @@ cdef api void call_cy_MyServiceFast_getRandomData(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
-):  
+):
     cdef MyServiceFastInterface iface
     iface = self
     promise = Promise_string.create(move(cPromise))
@@ -552,7 +552,7 @@ async def MyServiceFast_getRandomData_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.getRandomData(ctx, )
+            result = await self.getRandomData(ctx,)
         else:
             result = await self.getRandomData()
     except Exception as ex:
@@ -571,7 +571,7 @@ cdef api void call_cy_MyServiceFast_hasDataById(
     Cpp2RequestContext* ctx,
     cFollyPromise[cbool] cPromise,
     int64_t id
-):  
+):
     cdef MyServiceFastInterface iface
     iface = self
     promise = Promise_bool.create(move(cPromise))
@@ -596,7 +596,7 @@ async def MyServiceFast_hasDataById_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.hasDataById(ctx, 
+            result = await self.hasDataById(ctx,
                       id)
         else:
             result = await self.hasDataById(
@@ -617,7 +617,7 @@ cdef api void call_cy_MyServiceFast_getDataById(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise,
     int64_t id
-):  
+):
     cdef MyServiceFastInterface iface
     iface = self
     promise = Promise_string.create(move(cPromise))
@@ -642,7 +642,7 @@ async def MyServiceFast_getDataById_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.getDataById(ctx, 
+            result = await self.getDataById(ctx,
                       id)
         else:
             result = await self.getDataById(
@@ -664,7 +664,7 @@ cdef api void call_cy_MyServiceFast_putDataById(
     cFollyPromise[cFollyUnit] cPromise,
     int64_t id,
     unique_ptr[string] data
-):  
+):
     cdef MyServiceFastInterface iface
     iface = self
     promise = Promise_void.create(move(cPromise))
@@ -692,7 +692,7 @@ async def MyServiceFast_putDataById_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.putDataById(ctx, 
+            result = await self.putDataById(ctx,
                       id,
                       data)
         else:
@@ -716,7 +716,7 @@ cdef api void call_cy_MyServiceFast_lobDataById(
     cFollyPromise[cFollyUnit] cPromise,
     int64_t id,
     unique_ptr[string] data
-):  
+):
     cdef MyServiceFastInterface iface
     iface = self
     promise = Promise_void.create(move(cPromise))
@@ -744,7 +744,7 @@ async def MyServiceFast_lobDataById_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.lobDataById(ctx, 
+            result = await self.lobDataById(ctx,
                       id,
                       data)
         else:
@@ -766,7 +766,7 @@ cdef api void call_cy_MyServicePrioParent_ping(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
-):  
+):
     cdef MyServicePrioParentInterface iface
     iface = self
     promise = Promise_void.create(move(cPromise))
@@ -788,7 +788,7 @@ async def MyServicePrioParent_ping_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.ping(ctx, )
+            result = await self.ping(ctx,)
         else:
             result = await self.ping()
     except Exception as ex:
@@ -806,7 +806,7 @@ cdef api void call_cy_MyServicePrioParent_pong(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
-):  
+):
     cdef MyServicePrioParentInterface iface
     iface = self
     promise = Promise_void.create(move(cPromise))
@@ -828,7 +828,7 @@ async def MyServicePrioParent_pong_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.pong(ctx, )
+            result = await self.pong(ctx,)
         else:
             result = await self.pong()
     except Exception as ex:
@@ -846,7 +846,7 @@ cdef api void call_cy_MyServicePrioChild_pang(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
-):  
+):
     cdef MyServicePrioChildInterface iface
     iface = self
     promise = Promise_void.create(move(cPromise))
@@ -868,7 +868,7 @@ async def MyServicePrioChild_pang_coro(
 ):
     try:
         if ctx is not None:
-            result = await self.pang(ctx, )
+            result = await self.pang(ctx,)
         else:
             result = await self.pang()
     except Exception as ex:

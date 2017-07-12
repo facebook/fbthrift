@@ -59,26 +59,13 @@ file.
 {{constant:name}} = <bytes> c{{constant:name}}()
 {{/type:binary?}}
 {{#type:struct}}
-{{constant:name}} = {{#type:externalProgram?}}{{!
-    }}{{> common/ModulePath}}.{{/type:externalProgram?}}{{type:name}}.create(
-    make_shared[{{#type:externalProgram?}}{{> common/ModulePath}}.{{!
-      }}{{/type:externalProgram?}}c{{type:name}}](c{{constant:name}}()))
+{{constant:name}} = {{> types/CythonPythonType}}.create({{!
+    }}make_shared[{{> types/CythonCppType}}](c{{constant:name}}()))
 {{/type:struct}}
-{{#type:list?}}
-{{constant:name}} = {{type:flat_name}}.create(make_shared[vector[{{!
-    }}{{#type:listElemType}}{{> types/CythonCppType}}{{!
-    }}{{/type:listElemType}}]](c{{constant:name}}()))
-{{/type:list?}}
-{{#type:set?}}
-{{constant:name}} = {{type:flat_name}}.create(make_shared[c{{#type:unordered?}}u{{/type:unordered?}}set[{{!
-    }}{{#type:setElemType}}{{> types/CythonCppType}}{{!
-    }}{{/type:setElemType}}]](c{{constant:name}}()))
-{{/type:set?}}
-{{#type:map?}}
+{{#type:container?}}
 {{constant:name}} = {{type:flat_name}}.create({{!
-    }}make_shared[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonMapKeyValue}}{{!
-    }}]](c{{constant:name}}()))
-{{/type:map?}}
+    }}make_shared[{{> types/CythonCppType}}](c{{constant:name}}()))
+{{/type:container?}}
 {{#type:enum}}
 {{constant:name}} = {{#type:externalProgram?}}{{> common/ModulePath}}.{{!
     }}{{/type:externalProgram?}}{{enum:name}}(<int> (c{{constant:name}}()))

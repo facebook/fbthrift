@@ -201,7 +201,7 @@ cdef class NestedContainers(thrift.py3.client.Client):
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_NestedContainers_client).listMap(
-                deref(module.types.List__Map__i32_i32(arg_foo)._cpp_obj.get()),
+                vector[cmap[int32_t,int32_t]](deref(module.types.List__Map__i32_i32(arg_foo)._cpp_obj.get())),
             ),
             NestedContainers_listMap_callback,
             <PyObject *> future
@@ -217,7 +217,7 @@ cdef class NestedContainers(thrift.py3.client.Client):
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_NestedContainers_client).listSet(
-                deref(module.types.List__Set__i32(arg_foo)._cpp_obj.get()),
+                vector[cset[int32_t]](deref(module.types.List__Set__i32(arg_foo)._cpp_obj.get())),
             ),
             NestedContainers_listSet_callback,
             <PyObject *> future
@@ -233,7 +233,7 @@ cdef class NestedContainers(thrift.py3.client.Client):
         bridgeFutureWith[cFollyUnit](
             self._executor,
             deref(self._module_NestedContainers_client).turtles(
-                deref(module.types.List__List__Map__i32_Map__i32_Set__i32(arg_foo)._cpp_obj.get()),
+                vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]](deref(module.types.List__List__Map__i32_Map__i32_Set__i32(arg_foo)._cpp_obj.get())),
             ),
             NestedContainers_turtles_callback,
             <PyObject *> future
