@@ -23,12 +23,13 @@ cimport includes.types
 
 
 cdef extern from "gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
+    # Forward Declaration
+    cdef cppclass cMyStruct "cpp2::MyStruct"
+
+cdef extern from "gen-cpp2/module_types.h" namespace "cpp2":
     cdef cppclass cMyStruct__isset "cpp2::MyStruct::__isset":
         bint MyIncludedField
         bint MyIncludedInt
-
-    # Forward Declaration
-    cdef cppclass cMyStruct "cpp2::MyStruct"
 
     cdef cppclass cMyStruct "cpp2::MyStruct":
         cMyStruct() except +
@@ -42,6 +43,7 @@ cdef extern from "gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cMyStruct] move(unique_ptr[cMyStruct])
     cdef shared_ptr[cMyStruct] move_shared "std::move"(shared_ptr[cMyStruct])
+    cdef unique_ptr[cMyStruct] move_unique "std::move"(unique_ptr[cMyStruct])
 
 # Forward Definition of the cython struct
 cdef class MyStruct(thrift.py3.types.Struct)
@@ -51,6 +53,13 @@ cdef class MyStruct(thrift.py3.types.Struct):
     cdef object __weakref__
     cdef shared_ptr[cMyStruct] _cpp_obj
     cdef includes.types.Included __MyIncludedField
+
+    @staticmethod
+    cdef unique_ptr[cMyStruct] _make_instance(
+        cMyStruct* base_instance,
+        object MyIncludedField,
+        object MyIncludedInt
+    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct])

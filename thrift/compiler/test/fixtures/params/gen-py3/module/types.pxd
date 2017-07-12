@@ -25,12 +25,15 @@ cimport thrift.py3.types
 
 
 
+
 cdef class List__i32:
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[vector[int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[int32_t]])
+    @staticmethod
+    cdef unique_ptr[vector[int32_t]] _make_instance(object items) except *
 
 cdef class Map__i32_List__i32:
     cdef object __hash
@@ -38,6 +41,8 @@ cdef class Map__i32_List__i32:
     cdef shared_ptr[cmap[int32_t,vector[int32_t]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,vector[int32_t]]])
+    @staticmethod
+    cdef unique_ptr[cmap[int32_t,vector[int32_t]]] _make_instance(object items) except *
 
 cdef class Set__i32:
     cdef object __hash
@@ -45,6 +50,8 @@ cdef class Set__i32:
     cdef shared_ptr[cset[int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cset[int32_t]])
+    @staticmethod
+    cdef unique_ptr[cset[int32_t]] _make_instance(object items) except *
 
 cdef class Map__i32_Set__i32:
     cdef object __hash
@@ -52,6 +59,8 @@ cdef class Map__i32_Set__i32:
     cdef shared_ptr[cmap[int32_t,cset[int32_t]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,cset[int32_t]]])
+    @staticmethod
+    cdef unique_ptr[cmap[int32_t,cset[int32_t]]] _make_instance(object items) except *
 
 cdef class Map__i32_i32:
     cdef object __hash
@@ -59,6 +68,8 @@ cdef class Map__i32_i32:
     cdef shared_ptr[cmap[int32_t,int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,int32_t]])
+    @staticmethod
+    cdef unique_ptr[cmap[int32_t,int32_t]] _make_instance(object items) except *
 
 cdef class List__Map__i32_i32:
     cdef object __hash
@@ -66,6 +77,8 @@ cdef class List__Map__i32_i32:
     cdef shared_ptr[vector[cmap[int32_t,int32_t]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cmap[int32_t,int32_t]]])
+    @staticmethod
+    cdef unique_ptr[vector[cmap[int32_t,int32_t]]] _make_instance(object items) except *
 
 cdef class List__Set__i32:
     cdef object __hash
@@ -73,6 +86,8 @@ cdef class List__Set__i32:
     cdef shared_ptr[vector[cset[int32_t]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cset[int32_t]]])
+    @staticmethod
+    cdef unique_ptr[vector[cset[int32_t]]] _make_instance(object items) except *
 
 cdef class Map__i32_Map__i32_Set__i32:
     cdef object __hash
@@ -80,6 +95,8 @@ cdef class Map__i32_Map__i32_Set__i32:
     cdef shared_ptr[cmap[int32_t,cmap[int32_t,cset[int32_t]]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,cmap[int32_t,cset[int32_t]]]])
+    @staticmethod
+    cdef unique_ptr[cmap[int32_t,cmap[int32_t,cset[int32_t]]]] _make_instance(object items) except *
 
 cdef class List__Map__i32_Map__i32_Set__i32:
     cdef object __hash
@@ -87,6 +104,8 @@ cdef class List__Map__i32_Map__i32_Set__i32:
     cdef shared_ptr[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]])
+    @staticmethod
+    cdef unique_ptr[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]] _make_instance(object items) except *
 
 cdef class List__List__Map__i32_Map__i32_Set__i32:
     cdef object __hash
@@ -94,16 +113,28 @@ cdef class List__List__Map__i32_Map__i32_Set__i32:
     cdef shared_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]])
+    @staticmethod
+    cdef unique_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]] _make_instance(object items) except *
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[int32_t]] move(unique_ptr[vector[int32_t]])
+    cdef unique_ptr[vector[int32_t]] move_unique "std::move"(unique_ptr[vector[int32_t]])
     cdef shared_ptr[cmap[int32_t,vector[int32_t]]] move(unique_ptr[cmap[int32_t,vector[int32_t]]])
+    cdef unique_ptr[cmap[int32_t,vector[int32_t]]] move_unique "std::move"(unique_ptr[cmap[int32_t,vector[int32_t]]])
     cdef shared_ptr[cset[int32_t]] move(unique_ptr[cset[int32_t]])
+    cdef unique_ptr[cset[int32_t]] move_unique "std::move"(unique_ptr[cset[int32_t]])
     cdef shared_ptr[cmap[int32_t,cset[int32_t]]] move(unique_ptr[cmap[int32_t,cset[int32_t]]])
+    cdef unique_ptr[cmap[int32_t,cset[int32_t]]] move_unique "std::move"(unique_ptr[cmap[int32_t,cset[int32_t]]])
     cdef shared_ptr[cmap[int32_t,int32_t]] move(unique_ptr[cmap[int32_t,int32_t]])
+    cdef unique_ptr[cmap[int32_t,int32_t]] move_unique "std::move"(unique_ptr[cmap[int32_t,int32_t]])
     cdef shared_ptr[vector[cmap[int32_t,int32_t]]] move(unique_ptr[vector[cmap[int32_t,int32_t]]])
+    cdef unique_ptr[vector[cmap[int32_t,int32_t]]] move_unique "std::move"(unique_ptr[vector[cmap[int32_t,int32_t]]])
     cdef shared_ptr[vector[cset[int32_t]]] move(unique_ptr[vector[cset[int32_t]]])
+    cdef unique_ptr[vector[cset[int32_t]]] move_unique "std::move"(unique_ptr[vector[cset[int32_t]]])
     cdef shared_ptr[cmap[int32_t,cmap[int32_t,cset[int32_t]]]] move(unique_ptr[cmap[int32_t,cmap[int32_t,cset[int32_t]]]])
+    cdef unique_ptr[cmap[int32_t,cmap[int32_t,cset[int32_t]]]] move_unique "std::move"(unique_ptr[cmap[int32_t,cmap[int32_t,cset[int32_t]]]])
     cdef shared_ptr[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]] move(unique_ptr[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]])
+    cdef unique_ptr[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]] move_unique "std::move"(unique_ptr[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]])
     cdef shared_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]] move(unique_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]])
+    cdef unique_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]] move_unique "std::move"(unique_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]])
 

@@ -22,14 +22,15 @@ cimport thrift.py3.types
 
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
+    # Forward Declaration
+    cdef cppclass cFoo "cpp2::Foo"
+
+cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
     cdef cppclass cFoo__isset "cpp2::Foo::__isset":
         bint myInteger
         bint myString
         bint myBools
         bint myNumbers
-
-    # Forward Declaration
-    cdef cppclass cFoo "cpp2::Foo"
 
     cdef cppclass cFoo "cpp2::Foo":
         cFoo() except +
@@ -45,6 +46,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cFoo] move(unique_ptr[cFoo])
     cdef shared_ptr[cFoo] move_shared "std::move"(shared_ptr[cFoo])
+    cdef unique_ptr[cFoo] move_unique "std::move"(unique_ptr[cFoo])
 
 # Forward Definition of the cython struct
 cdef class Foo(thrift.py3.types.Struct)
@@ -57,6 +59,15 @@ cdef class Foo(thrift.py3.types.Struct):
     cdef List__i32 __myNumbers
 
     @staticmethod
+    cdef unique_ptr[cFoo] _make_instance(
+        cFoo* base_instance,
+        object myInteger,
+        object myString,
+        object myBools,
+        object myNumbers
+    ) except *
+
+    @staticmethod
     cdef create(shared_ptr[cFoo])
 
 
@@ -66,6 +77,8 @@ cdef class List__bool:
     cdef shared_ptr[vector[cbool]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cbool]])
+    @staticmethod
+    cdef unique_ptr[vector[cbool]] _make_instance(object items) except *
 
 cdef class List__i32:
     cdef object __hash
@@ -73,8 +86,12 @@ cdef class List__i32:
     cdef shared_ptr[vector[int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[int32_t]])
+    @staticmethod
+    cdef unique_ptr[vector[int32_t]] _make_instance(object items) except *
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[cbool]] move(unique_ptr[vector[cbool]])
+    cdef unique_ptr[vector[cbool]] move_unique "std::move"(unique_ptr[vector[cbool]])
     cdef shared_ptr[vector[int32_t]] move(unique_ptr[vector[int32_t]])
+    cdef unique_ptr[vector[int32_t]] move_unique "std::move"(unique_ptr[vector[int32_t]])
 

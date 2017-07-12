@@ -51,14 +51,30 @@ cdef class SimpleException(thrift.py3.exceptions.Error):
         SimpleException self,
         err_code=None
     ):
-        cdef shared_ptr[cSimpleException] c_inst = make_shared[cSimpleException]()
-        inst = self
+        self._cpp_obj = move(SimpleException._make_instance(
+          NULL,
+          err_code,
+        ))
+
+
+    @staticmethod
+    cdef unique_ptr[cSimpleException] _make_instance(
+        cSimpleException* base_instance,
+        object err_code
+    ) except *:
+        cdef unique_ptr[cSimpleException] c_inst
+        if base_instance:
+            c_inst = make_unique[cSimpleException](deref(base_instance))
+        else:
+            c_inst = make_unique[cSimpleException]()
+
         if err_code is not None:
             deref(c_inst).err_code = err_code
             deref(c_inst).__isset.err_code = True
 
-        self._cpp_obj = move_shared(c_inst)
-
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
 
     def __iter__(self):
         yield 'err_code', self.err_code
@@ -120,37 +136,16 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         real=None,
         smaller_real=None
     ):
-        cdef shared_ptr[cSimpleStruct] c_inst = make_shared[cSimpleStruct]()
-        inst = self
-        if is_on is not None:
-            deref(c_inst).is_on = is_on
-            deref(c_inst).__isset.is_on = True
-
-        if tiny_int is not None:
-            deref(c_inst).tiny_int = tiny_int
-            deref(c_inst).__isset.tiny_int = True
-
-        if small_int is not None:
-            deref(c_inst).small_int = small_int
-            deref(c_inst).__isset.small_int = True
-
-        if nice_sized_int is not None:
-            deref(c_inst).nice_sized_int = nice_sized_int
-            deref(c_inst).__isset.nice_sized_int = True
-
-        if big_int is not None:
-            deref(c_inst).big_int = big_int
-            deref(c_inst).__isset.big_int = True
-
-        if real is not None:
-            deref(c_inst).real = real
-            deref(c_inst).__isset.real = True
-
-        if smaller_real is not None:
-            deref(c_inst).smaller_real = smaller_real
-            deref(c_inst).__isset.smaller_real = True
-
-        self._cpp_obj = move_shared(c_inst)
+        self._cpp_obj = move(SimpleStruct._make_instance(
+          NULL,
+          is_on,
+          tiny_int,
+          small_int,
+          nice_sized_int,
+          big_int,
+          real,
+          smaller_real,
+        ))
 
     cdef bytes _serialize(SimpleStruct self, proto):
         cdef string c_str
@@ -204,44 +199,79 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        cdef shared_ptr[cSimpleStruct] c_inst = make_shared[cSimpleStruct](deref(self._cpp_obj))
+        inst = <SimpleStruct>SimpleStruct.__new__(SimpleStruct)
+        inst._cpp_obj = move(SimpleStruct._make_instance(
+          self._cpp_obj.get(),
+          is_on,
+          tiny_int,
+          small_int,
+          nice_sized_int,
+          big_int,
+          real,
+          smaller_real,
+        ))
+        return inst
 
-        # Convert None's to default value.
-        if is_on is None:
-            deref(c_inst).is_on = _SimpleStruct_defaults.is_on
-            deref(c_inst).__isset.is_on = False
-        if is_on is NOTSET:
-            is_on = None
-        if tiny_int is None:
-            deref(c_inst).tiny_int = _SimpleStruct_defaults.tiny_int
-            deref(c_inst).__isset.tiny_int = False
-        if tiny_int is NOTSET:
-            tiny_int = None
-        if small_int is None:
-            deref(c_inst).small_int = _SimpleStruct_defaults.small_int
-            deref(c_inst).__isset.small_int = False
-        if small_int is NOTSET:
-            small_int = None
-        if nice_sized_int is None:
-            deref(c_inst).nice_sized_int = _SimpleStruct_defaults.nice_sized_int
-            deref(c_inst).__isset.nice_sized_int = False
-        if nice_sized_int is NOTSET:
-            nice_sized_int = None
-        if big_int is None:
-            deref(c_inst).big_int = _SimpleStruct_defaults.big_int
-            deref(c_inst).__isset.big_int = False
-        if big_int is NOTSET:
-            big_int = None
-        if real is None:
-            deref(c_inst).real = _SimpleStruct_defaults.real
-            deref(c_inst).__isset.real = False
-        if real is NOTSET:
-            real = None
-        if smaller_real is None:
-            deref(c_inst).smaller_real = _SimpleStruct_defaults.smaller_real
-            deref(c_inst).__isset.smaller_real = False
-        if smaller_real is NOTSET:
-            smaller_real = None
+    @staticmethod
+    cdef unique_ptr[cSimpleStruct] _make_instance(
+        cSimpleStruct* base_instance,
+        object is_on,
+        object tiny_int,
+        object small_int,
+        object nice_sized_int,
+        object big_int,
+        object real,
+        object smaller_real
+    ) except *:
+        cdef unique_ptr[cSimpleStruct] c_inst
+        if base_instance:
+            c_inst = make_unique[cSimpleStruct](deref(base_instance))
+        else:
+            c_inst = make_unique[cSimpleStruct]()
+
+        if base_instance:
+            # Convert None's to default value.
+            if is_on is None:
+                deref(c_inst).is_on = _SimpleStruct_defaults.is_on
+                deref(c_inst).__isset.is_on = False
+            elif is_on is NOTSET:
+                is_on = None
+
+            if tiny_int is None:
+                deref(c_inst).tiny_int = _SimpleStruct_defaults.tiny_int
+                deref(c_inst).__isset.tiny_int = False
+            elif tiny_int is NOTSET:
+                tiny_int = None
+
+            if small_int is None:
+                deref(c_inst).small_int = _SimpleStruct_defaults.small_int
+                deref(c_inst).__isset.small_int = False
+            elif small_int is NOTSET:
+                small_int = None
+
+            if nice_sized_int is None:
+                deref(c_inst).nice_sized_int = _SimpleStruct_defaults.nice_sized_int
+                deref(c_inst).__isset.nice_sized_int = False
+            elif nice_sized_int is NOTSET:
+                nice_sized_int = None
+
+            if big_int is None:
+                deref(c_inst).big_int = _SimpleStruct_defaults.big_int
+                deref(c_inst).__isset.big_int = False
+            elif big_int is NOTSET:
+                big_int = None
+
+            if real is None:
+                deref(c_inst).real = _SimpleStruct_defaults.real
+                deref(c_inst).__isset.real = False
+            elif real is NOTSET:
+                real = None
+
+            if smaller_real is None:
+                deref(c_inst).smaller_real = _SimpleStruct_defaults.smaller_real
+                deref(c_inst).__isset.smaller_real = False
+            elif smaller_real is NOTSET:
+                smaller_real = None
 
         if is_on is not None:
             deref(c_inst).is_on = is_on
@@ -271,8 +301,9 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
             deref(c_inst).smaller_real = smaller_real
             deref(c_inst).__isset.smaller_real = True
 
-
-        return SimpleStruct.create(move_shared(c_inst))
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
 
     def __iter__(self):
         yield 'is_on', self.is_on
@@ -391,33 +422,15 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         an_enum=None,
         some_bytes=None
     ):
-        cdef shared_ptr[cComplexStruct] c_inst = make_shared[cComplexStruct]()
-        inst = self
-        if structOne is not None:
-            deref(c_inst).structOne = deref((<SimpleStruct?> structOne)._cpp_obj)
-            deref(c_inst).__isset.structOne = True
-
-        if structTwo is not None:
-            deref(c_inst).structTwo = deref((<SimpleStruct?> structTwo)._cpp_obj)
-            deref(c_inst).__isset.structTwo = True
-
-        if an_integer is not None:
-            deref(c_inst).an_integer = an_integer
-            deref(c_inst).__isset.an_integer = True
-
-        if name is not None:
-            deref(c_inst).name = name.encode('UTF-8')
-            deref(c_inst).__isset.name = True
-
-        if an_enum is not None:
-            deref(c_inst).an_enum = AnEnum_to_cpp(an_enum)
-            deref(c_inst).__isset.an_enum = True
-
-        if some_bytes is not None:
-            deref(c_inst).some_bytes = some_bytes
-            deref(c_inst).__isset.some_bytes = True
-
-        self._cpp_obj = move_shared(c_inst)
+        self._cpp_obj = move(ComplexStruct._make_instance(
+          NULL,
+          structOne,
+          structTwo,
+          an_integer,
+          name,
+          an_enum,
+          some_bytes,
+        ))
 
     cdef bytes _serialize(ComplexStruct self, proto):
         cdef string c_str
@@ -468,39 +481,71 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        cdef shared_ptr[cComplexStruct] c_inst = make_shared[cComplexStruct](deref(self._cpp_obj))
+        inst = <ComplexStruct>ComplexStruct.__new__(ComplexStruct)
+        inst._cpp_obj = move(ComplexStruct._make_instance(
+          self._cpp_obj.get(),
+          structOne,
+          structTwo,
+          an_integer,
+          name,
+          an_enum,
+          some_bytes,
+        ))
+        return inst
 
-        # Convert None's to default value.
-        if structOne is None:
-            deref(c_inst).structOne = _ComplexStruct_defaults.structOne
-            deref(c_inst).__isset.structOne = False
-        if structOne is NOTSET:
-            structOne = None
-        if structTwo is None:
-            deref(c_inst).structTwo = _ComplexStruct_defaults.structTwo
-            deref(c_inst).__isset.structTwo = False
-        if structTwo is NOTSET:
-            structTwo = None
-        if an_integer is None:
-            deref(c_inst).an_integer = _ComplexStruct_defaults.an_integer
-            deref(c_inst).__isset.an_integer = False
-        if an_integer is NOTSET:
-            an_integer = None
-        if name is None:
-            deref(c_inst).name = _ComplexStruct_defaults.name
-            deref(c_inst).__isset.name = False
-        if name is NOTSET:
-            name = None
-        if an_enum is None:
-            deref(c_inst).an_enum = _ComplexStruct_defaults.an_enum
-            deref(c_inst).__isset.an_enum = False
-        if an_enum is NOTSET:
-            an_enum = None
-        if some_bytes is None:
-            deref(c_inst).some_bytes = _ComplexStruct_defaults.some_bytes
-            deref(c_inst).__isset.some_bytes = False
-        if some_bytes is NOTSET:
-            some_bytes = None
+    @staticmethod
+    cdef unique_ptr[cComplexStruct] _make_instance(
+        cComplexStruct* base_instance,
+        object structOne,
+        object structTwo,
+        object an_integer,
+        object name,
+        object an_enum,
+        object some_bytes
+    ) except *:
+        cdef unique_ptr[cComplexStruct] c_inst
+        if base_instance:
+            c_inst = make_unique[cComplexStruct](deref(base_instance))
+        else:
+            c_inst = make_unique[cComplexStruct]()
+
+        if base_instance:
+            # Convert None's to default value.
+            if structOne is None:
+                deref(c_inst).structOne = _ComplexStruct_defaults.structOne
+                deref(c_inst).__isset.structOne = False
+            elif structOne is NOTSET:
+                structOne = None
+
+            if structTwo is None:
+                deref(c_inst).structTwo = _ComplexStruct_defaults.structTwo
+                deref(c_inst).__isset.structTwo = False
+            elif structTwo is NOTSET:
+                structTwo = None
+
+            if an_integer is None:
+                deref(c_inst).an_integer = _ComplexStruct_defaults.an_integer
+                deref(c_inst).__isset.an_integer = False
+            elif an_integer is NOTSET:
+                an_integer = None
+
+            if name is None:
+                deref(c_inst).name = _ComplexStruct_defaults.name
+                deref(c_inst).__isset.name = False
+            elif name is NOTSET:
+                name = None
+
+            if an_enum is None:
+                deref(c_inst).an_enum = _ComplexStruct_defaults.an_enum
+                deref(c_inst).__isset.an_enum = False
+            elif an_enum is NOTSET:
+                an_enum = None
+
+            if some_bytes is None:
+                deref(c_inst).some_bytes = _ComplexStruct_defaults.some_bytes
+                deref(c_inst).__isset.some_bytes = False
+            elif some_bytes is NOTSET:
+                some_bytes = None
 
         if structOne is not None:
             deref(c_inst).structOne = deref((<SimpleStruct?> structOne)._cpp_obj)
@@ -526,8 +571,9 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
             deref(c_inst).some_bytes = some_bytes
             deref(c_inst).__isset.some_bytes = True
 
-
-        return ComplexStruct.create(move_shared(c_inst))
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
 
     def __iter__(self):
         yield 'structOne', self.structOne
@@ -633,17 +679,21 @@ cdef class List__i16:
         if isinstance(items, List__i16):
             self._cpp_obj = (<List__i16> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[vector[int16_t]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).push_back(item)
+            self._cpp_obj = move(List__i16._make_instance(items))
 
     @staticmethod
-    cdef create(
-            shared_ptr[vector[int16_t]] c_items):
+    cdef create(shared_ptr[vector[int16_t]] c_items):
         inst = <List__i16>List__i16.__new__(List__i16)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[int16_t]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[int16_t]] c_inst = make_unique[vector[int16_t]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(item)
+        return move_unique(c_inst)
 
     def __getitem__(self, int index):
         size = len(self)
@@ -739,17 +789,21 @@ cdef class List__i32:
         if isinstance(items, List__i32):
             self._cpp_obj = (<List__i32> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[vector[int32_t]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).push_back(item)
+            self._cpp_obj = move(List__i32._make_instance(items))
 
     @staticmethod
-    cdef create(
-            shared_ptr[vector[int32_t]] c_items):
+    cdef create(shared_ptr[vector[int32_t]] c_items):
         inst = <List__i32>List__i32.__new__(List__i32)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[int32_t]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[int32_t]] c_inst = make_unique[vector[int32_t]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(item)
+        return move_unique(c_inst)
 
     def __getitem__(self, int index):
         size = len(self)
@@ -845,17 +899,21 @@ cdef class List__i64:
         if isinstance(items, List__i64):
             self._cpp_obj = (<List__i64> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[vector[int64_t]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).push_back(item)
+            self._cpp_obj = move(List__i64._make_instance(items))
 
     @staticmethod
-    cdef create(
-            shared_ptr[vector[int64_t]] c_items):
+    cdef create(shared_ptr[vector[int64_t]] c_items):
         inst = <List__i64>List__i64.__new__(List__i64)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[int64_t]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[int64_t]] c_inst = make_unique[vector[int64_t]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(item)
+        return move_unique(c_inst)
 
     def __getitem__(self, int index):
         size = len(self)
@@ -951,17 +1009,21 @@ cdef class List__string:
         if isinstance(items, List__string):
             self._cpp_obj = (<List__string> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[vector[string]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).push_back(item.encode('UTF-8'))
+            self._cpp_obj = move(List__string._make_instance(items))
 
     @staticmethod
-    cdef create(
-            shared_ptr[vector[string]] c_items):
+    cdef create(shared_ptr[vector[string]] c_items):
         inst = <List__string>List__string.__new__(List__string)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[string]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[string]] c_inst = make_unique[vector[string]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(item.encode('UTF-8'))
+        return move_unique(c_inst)
 
     def __getitem__(self, int index):
         size = len(self)
@@ -1057,17 +1119,21 @@ cdef class List__SimpleStruct:
         if isinstance(items, List__SimpleStruct):
             self._cpp_obj = (<List__SimpleStruct> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[vector[cSimpleStruct]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).push_back(deref((<SimpleStruct> item)._cpp_obj))
+            self._cpp_obj = move(List__SimpleStruct._make_instance(items))
 
     @staticmethod
-    cdef create(
-            shared_ptr[vector[cSimpleStruct]] c_items):
+    cdef create(shared_ptr[vector[cSimpleStruct]] c_items):
         inst = <List__SimpleStruct>List__SimpleStruct.__new__(List__SimpleStruct)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[cSimpleStruct]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[cSimpleStruct]] c_inst = make_unique[vector[cSimpleStruct]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(deref((<SimpleStruct> item)._cpp_obj))
+        return move_unique(c_inst)
 
     def __getitem__(self, int index):
         size = len(self)
@@ -1163,16 +1229,21 @@ cdef class Set__i32:
         if isinstance(items, Set__i32):
             self._cpp_obj = (<Set__i32> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[cset[int32_t]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).insert(item)
+            self._cpp_obj = move(Set__i32._make_instance(items))
 
     @staticmethod
     cdef create(shared_ptr[cset[int32_t]] c_items):
         inst = <Set__i32>Set__i32.__new__(Set__i32)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[cset[int32_t]] _make_instance(object items) except *:
+        cdef unique_ptr[cset[int32_t]] c_inst = make_unique[cset[int32_t]]()
+        if items:
+            for item in items:
+                deref(c_inst).insert(item)
+        return move_unique(c_inst)
 
     def __contains__(self, item):
         if not self:
@@ -1343,16 +1414,21 @@ cdef class Set__string:
         if isinstance(items, Set__string):
             self._cpp_obj = (<Set__string> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[cset[string]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).insert(item.encode('UTF-8'))
+            self._cpp_obj = move(Set__string._make_instance(items))
 
     @staticmethod
     cdef create(shared_ptr[cset[string]] c_items):
         inst = <Set__string>Set__string.__new__(Set__string)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[cset[string]] _make_instance(object items) except *:
+        cdef unique_ptr[cset[string]] c_inst = make_unique[cset[string]]()
+        if items:
+            for item in items:
+                deref(c_inst).insert(item.encode('UTF-8'))
+        return move_unique(c_inst)
 
     def __contains__(self, item):
         if not self:
@@ -1523,19 +1599,21 @@ cdef class Map__string_string:
         if isinstance(items, Map__string_string):
             self._cpp_obj = (<Map__string_string> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[cmap[string,string]]()
-          if items:
-              for key, item in items.items():
-                  deref(self._cpp_obj).insert(
-                      cpair[string,string](
-                          key.encode('UTF-8'),
-                          item.encode('UTF-8')))
+            self._cpp_obj = move(Map__string_string._make_instance(items))
 
     @staticmethod
     cdef create(shared_ptr[cmap[string,string]] c_items):
         inst = <Map__string_string>Map__string_string.__new__(Map__string_string)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[cmap[string,string]] _make_instance(object items) except *:
+        cdef unique_ptr[cmap[string,string]] c_inst = make_unique[cmap[string,string]]()
+        if items:
+            for key, item in items.items():
+                deref(c_inst).insert(cpair[string,string](key.encode('UTF-8'),item.encode('UTF-8')))
+        return move_unique(c_inst)
 
     def __getitem__(self, key):
         if not self:
@@ -1634,19 +1712,21 @@ cdef class Map__string_SimpleStruct:
         if isinstance(items, Map__string_SimpleStruct):
             self._cpp_obj = (<Map__string_SimpleStruct> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[cmap[string,cSimpleStruct]]()
-          if items:
-              for key, item in items.items():
-                  deref(self._cpp_obj).insert(
-                      cpair[string,cSimpleStruct](
-                          key.encode('UTF-8'),
-                          deref((<SimpleStruct> item)._cpp_obj)))
+            self._cpp_obj = move(Map__string_SimpleStruct._make_instance(items))
 
     @staticmethod
     cdef create(shared_ptr[cmap[string,cSimpleStruct]] c_items):
         inst = <Map__string_SimpleStruct>Map__string_SimpleStruct.__new__(Map__string_SimpleStruct)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[cmap[string,cSimpleStruct]] _make_instance(object items) except *:
+        cdef unique_ptr[cmap[string,cSimpleStruct]] c_inst = make_unique[cmap[string,cSimpleStruct]]()
+        if items:
+            for key, item in items.items():
+                deref(c_inst).insert(cpair[string,cSimpleStruct](key.encode('UTF-8'),deref((<SimpleStruct> item)._cpp_obj)))
+        return move_unique(c_inst)
 
     def __getitem__(self, key):
         if not self:
@@ -1745,19 +1825,21 @@ cdef class Map__string_i16:
         if isinstance(items, Map__string_i16):
             self._cpp_obj = (<Map__string_i16> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[cmap[string,int16_t]]()
-          if items:
-              for key, item in items.items():
-                  deref(self._cpp_obj).insert(
-                      cpair[string,int16_t](
-                          key.encode('UTF-8'),
-                          item))
+            self._cpp_obj = move(Map__string_i16._make_instance(items))
 
     @staticmethod
     cdef create(shared_ptr[cmap[string,int16_t]] c_items):
         inst = <Map__string_i16>Map__string_i16.__new__(Map__string_i16)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[cmap[string,int16_t]] _make_instance(object items) except *:
+        cdef unique_ptr[cmap[string,int16_t]] c_inst = make_unique[cmap[string,int16_t]]()
+        if items:
+            for key, item in items.items():
+                deref(c_inst).insert(cpair[string,int16_t](key.encode('UTF-8'),item))
+        return move_unique(c_inst)
 
     def __getitem__(self, key):
         if not self:
@@ -1856,17 +1938,21 @@ cdef class List__List__i32:
         if isinstance(items, List__List__i32):
             self._cpp_obj = (<List__List__i32> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[vector[vector[int32_t]]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).push_back(deref(List__i32(item)._cpp_obj.get()))
+            self._cpp_obj = move(List__List__i32._make_instance(items))
 
     @staticmethod
-    cdef create(
-            shared_ptr[vector[vector[int32_t]]] c_items):
+    cdef create(shared_ptr[vector[vector[int32_t]]] c_items):
         inst = <List__List__i32>List__List__i32.__new__(List__List__i32)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[vector[int32_t]]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[vector[int32_t]]] c_inst = make_unique[vector[vector[int32_t]]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(deref(List__i32(item)._cpp_obj.get()))
+        return move_unique(c_inst)
 
     def __getitem__(self, int index):
         size = len(self)
@@ -1965,19 +2051,21 @@ cdef class Map__string_i32:
         if isinstance(items, Map__string_i32):
             self._cpp_obj = (<Map__string_i32> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[cmap[string,int32_t]]()
-          if items:
-              for key, item in items.items():
-                  deref(self._cpp_obj).insert(
-                      cpair[string,int32_t](
-                          key.encode('UTF-8'),
-                          item))
+            self._cpp_obj = move(Map__string_i32._make_instance(items))
 
     @staticmethod
     cdef create(shared_ptr[cmap[string,int32_t]] c_items):
         inst = <Map__string_i32>Map__string_i32.__new__(Map__string_i32)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[cmap[string,int32_t]] _make_instance(object items) except *:
+        cdef unique_ptr[cmap[string,int32_t]] c_inst = make_unique[cmap[string,int32_t]]()
+        if items:
+            for key, item in items.items():
+                deref(c_inst).insert(cpair[string,int32_t](key.encode('UTF-8'),item))
+        return move_unique(c_inst)
 
     def __getitem__(self, key):
         if not self:
@@ -2076,19 +2164,21 @@ cdef class Map__string_Map__string_i32:
         if isinstance(items, Map__string_Map__string_i32):
             self._cpp_obj = (<Map__string_Map__string_i32> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[cmap[string,cmap[string,int32_t]]]()
-          if items:
-              for key, item in items.items():
-                  deref(self._cpp_obj).insert(
-                      cpair[string,cmap[string,int32_t]](
-                          key.encode('UTF-8'),
-                          cmap[string,int32_t](deref(Map__string_i32(item)._cpp_obj.get()))))
+            self._cpp_obj = move(Map__string_Map__string_i32._make_instance(items))
 
     @staticmethod
     cdef create(shared_ptr[cmap[string,cmap[string,int32_t]]] c_items):
         inst = <Map__string_Map__string_i32>Map__string_Map__string_i32.__new__(Map__string_Map__string_i32)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[cmap[string,cmap[string,int32_t]]] _make_instance(object items) except *:
+        cdef unique_ptr[cmap[string,cmap[string,int32_t]]] c_inst = make_unique[cmap[string,cmap[string,int32_t]]]()
+        if items:
+            for key, item in items.items():
+                deref(c_inst).insert(cpair[string,cmap[string,int32_t]](key.encode('UTF-8'),cmap[string,int32_t](deref(Map__string_i32(item)._cpp_obj.get()))))
+        return move_unique(c_inst)
 
     def __getitem__(self, key):
         if not self:
@@ -2191,17 +2281,21 @@ cdef class List__Set__string:
         if isinstance(items, List__Set__string):
             self._cpp_obj = (<List__Set__string> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[vector[cset[string]]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).push_back(cset[string](deref(Set__string(item)._cpp_obj.get())))
+            self._cpp_obj = move(List__Set__string._make_instance(items))
 
     @staticmethod
-    cdef create(
-            shared_ptr[vector[cset[string]]] c_items):
+    cdef create(shared_ptr[vector[cset[string]]] c_items):
         inst = <List__Set__string>List__Set__string.__new__(List__Set__string)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[cset[string]]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[cset[string]]] c_inst = make_unique[vector[cset[string]]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(cset[string](deref(Set__string(item)._cpp_obj.get())))
+        return move_unique(c_inst)
 
     def __getitem__(self, int index):
         size = len(self)
@@ -2300,19 +2394,21 @@ cdef class Map__string_List__SimpleStruct:
         if isinstance(items, Map__string_List__SimpleStruct):
             self._cpp_obj = (<Map__string_List__SimpleStruct> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[cmap[string,vector[cSimpleStruct]]]()
-          if items:
-              for key, item in items.items():
-                  deref(self._cpp_obj).insert(
-                      cpair[string,vector[cSimpleStruct]](
-                          key.encode('UTF-8'),
-                          deref(List__SimpleStruct(item)._cpp_obj.get())))
+            self._cpp_obj = move(Map__string_List__SimpleStruct._make_instance(items))
 
     @staticmethod
     cdef create(shared_ptr[cmap[string,vector[cSimpleStruct]]] c_items):
         inst = <Map__string_List__SimpleStruct>Map__string_List__SimpleStruct.__new__(Map__string_List__SimpleStruct)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[cmap[string,vector[cSimpleStruct]]] _make_instance(object items) except *:
+        cdef unique_ptr[cmap[string,vector[cSimpleStruct]]] c_inst = make_unique[cmap[string,vector[cSimpleStruct]]]()
+        if items:
+            for key, item in items.items():
+                deref(c_inst).insert(cpair[string,vector[cSimpleStruct]](key.encode('UTF-8'),deref(List__SimpleStruct(item)._cpp_obj.get())))
+        return move_unique(c_inst)
 
     def __getitem__(self, key):
         if not self:
@@ -2415,17 +2511,21 @@ cdef class List__List__string:
         if isinstance(items, List__List__string):
             self._cpp_obj = (<List__List__string> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[vector[vector[string]]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).push_back(deref(List__string(item)._cpp_obj.get()))
+            self._cpp_obj = move(List__List__string._make_instance(items))
 
     @staticmethod
-    cdef create(
-            shared_ptr[vector[vector[string]]] c_items):
+    cdef create(shared_ptr[vector[vector[string]]] c_items):
         inst = <List__List__string>List__List__string.__new__(List__List__string)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[vector[string]]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[vector[string]]] c_inst = make_unique[vector[vector[string]]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(deref(List__string(item)._cpp_obj.get()))
+        return move_unique(c_inst)
 
     def __getitem__(self, int index):
         size = len(self)
@@ -2524,17 +2624,21 @@ cdef class List__Set__i32:
         if isinstance(items, List__Set__i32):
             self._cpp_obj = (<List__Set__i32> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[vector[cset[int32_t]]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).push_back(cset[int32_t](deref(Set__i32(item)._cpp_obj.get())))
+            self._cpp_obj = move(List__Set__i32._make_instance(items))
 
     @staticmethod
-    cdef create(
-            shared_ptr[vector[cset[int32_t]]] c_items):
+    cdef create(shared_ptr[vector[cset[int32_t]]] c_items):
         inst = <List__Set__i32>List__Set__i32.__new__(List__Set__i32)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[cset[int32_t]]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[cset[int32_t]]] c_inst = make_unique[vector[cset[int32_t]]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(cset[int32_t](deref(Set__i32(item)._cpp_obj.get())))
+        return move_unique(c_inst)
 
     def __getitem__(self, int index):
         size = len(self)
@@ -2633,17 +2737,21 @@ cdef class List__Map__string_string:
         if isinstance(items, List__Map__string_string):
             self._cpp_obj = (<List__Map__string_string> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[vector[cmap[string,string]]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).push_back(cmap[string,string](deref(Map__string_string(item)._cpp_obj.get())))
+            self._cpp_obj = move(List__Map__string_string._make_instance(items))
 
     @staticmethod
-    cdef create(
-            shared_ptr[vector[cmap[string,string]]] c_items):
+    cdef create(shared_ptr[vector[cmap[string,string]]] c_items):
         inst = <List__Map__string_string>List__Map__string_string.__new__(List__Map__string_string)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[cmap[string,string]]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[cmap[string,string]]] c_inst = make_unique[vector[cmap[string,string]]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(cmap[string,string](deref(Map__string_string(item)._cpp_obj.get())))
+        return move_unique(c_inst)
 
     def __getitem__(self, int index):
         size = len(self)
@@ -2742,17 +2850,21 @@ cdef class List__binary:
         if isinstance(items, List__binary):
             self._cpp_obj = (<List__binary> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[vector[string]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).push_back(item)
+            self._cpp_obj = move(List__binary._make_instance(items))
 
     @staticmethod
-    cdef create(
-            shared_ptr[vector[string]] c_items):
+    cdef create(shared_ptr[vector[string]] c_items):
         inst = <List__binary>List__binary.__new__(List__binary)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[string]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[string]] c_inst = make_unique[vector[string]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(item)
+        return move_unique(c_inst)
 
     def __getitem__(self, int index):
         size = len(self)
@@ -2848,16 +2960,21 @@ cdef class Set__binary:
         if isinstance(items, Set__binary):
             self._cpp_obj = (<Set__binary> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[cset[string]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).insert(item)
+            self._cpp_obj = move(Set__binary._make_instance(items))
 
     @staticmethod
     cdef create(shared_ptr[cset[string]] c_items):
         inst = <Set__binary>Set__binary.__new__(Set__binary)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[cset[string]] _make_instance(object items) except *:
+        cdef unique_ptr[cset[string]] c_inst = make_unique[cset[string]]()
+        if items:
+            for item in items:
+                deref(c_inst).insert(item)
+        return move_unique(c_inst)
 
     def __contains__(self, item):
         if not self:
@@ -3028,17 +3145,21 @@ cdef class List__AnEnum:
         if isinstance(items, List__AnEnum):
             self._cpp_obj = (<List__AnEnum> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[vector[cAnEnum]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).push_back(<cAnEnum> AnEnum_to_cpp(item))
+            self._cpp_obj = move(List__AnEnum._make_instance(items))
 
     @staticmethod
-    cdef create(
-            shared_ptr[vector[cAnEnum]] c_items):
+    cdef create(shared_ptr[vector[cAnEnum]] c_items):
         inst = <List__AnEnum>List__AnEnum.__new__(List__AnEnum)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[cAnEnum]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[cAnEnum]] c_inst = make_unique[vector[cAnEnum]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(<cAnEnum> AnEnum_to_cpp(item))
+        return move_unique(c_inst)
 
     def __getitem__(self, int index):
         size = len(self)
@@ -3134,19 +3255,21 @@ cdef class Map__i32_double:
         if isinstance(items, Map__i32_double):
             self._cpp_obj = (<Map__i32_double> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[cmap[int32_t,double]]()
-          if items:
-              for key, item in items.items():
-                  deref(self._cpp_obj).insert(
-                      cpair[int32_t,double](
-                          key,
-                          item))
+            self._cpp_obj = move(Map__i32_double._make_instance(items))
 
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,double]] c_items):
         inst = <Map__i32_double>Map__i32_double.__new__(Map__i32_double)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[cmap[int32_t,double]] _make_instance(object items) except *:
+        cdef unique_ptr[cmap[int32_t,double]] c_inst = make_unique[cmap[int32_t,double]]()
+        if items:
+            for key, item in items.items():
+                deref(c_inst).insert(cpair[int32_t,double](key,item))
+        return move_unique(c_inst)
 
     def __getitem__(self, key):
         if not self:
@@ -3245,17 +3368,21 @@ cdef class List__Map__i32_double:
         if isinstance(items, List__Map__i32_double):
             self._cpp_obj = (<List__Map__i32_double> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[vector[cmap[int32_t,double]]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).push_back(cmap[int32_t,double](deref(Map__i32_double(item)._cpp_obj.get())))
+            self._cpp_obj = move(List__Map__i32_double._make_instance(items))
 
     @staticmethod
-    cdef create(
-            shared_ptr[vector[cmap[int32_t,double]]] c_items):
+    cdef create(shared_ptr[vector[cmap[int32_t,double]]] c_items):
         inst = <List__Map__i32_double>List__Map__i32_double.__new__(List__Map__i32_double)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[cmap[int32_t,double]]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[cmap[int32_t,double]]] c_inst = make_unique[vector[cmap[int32_t,double]]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(cmap[int32_t,double](deref(Map__i32_double(item)._cpp_obj.get())))
+        return move_unique(c_inst)
 
     def __getitem__(self, int index):
         size = len(self)

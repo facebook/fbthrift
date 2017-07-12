@@ -29,12 +29,13 @@ cdef extern from "gen-cpp2/module1_types.h" namespace "module1":
 cdef cEnum Enum_to_cpp(value)
 
 cdef extern from "gen-cpp2/module1_types_custom_protocol.h" namespace "module1":
+    # Forward Declaration
+    cdef cppclass cStruct "module1::Struct"
+
+cdef extern from "gen-cpp2/module1_types.h" namespace "module1":
     cdef cppclass cStruct__isset "module1::Struct::__isset":
         bint first
         bint second
-
-    # Forward Declaration
-    cdef cppclass cStruct "module1::Struct"
 
     cdef cppclass cStruct "module1::Struct":
         cStruct() except +
@@ -48,6 +49,7 @@ cdef extern from "gen-cpp2/module1_types_custom_protocol.h" namespace "module1":
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cStruct] move(unique_ptr[cStruct])
     cdef shared_ptr[cStruct] move_shared "std::move"(shared_ptr[cStruct])
+    cdef unique_ptr[cStruct] move_unique "std::move"(unique_ptr[cStruct])
 
 # Forward Definition of the cython struct
 cdef class Struct(thrift.py3.types.Struct)
@@ -56,6 +58,13 @@ cdef class Struct(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cStruct] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cStruct] _make_instance(
+        cStruct* base_instance,
+        object first,
+        object second
+    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cStruct])
@@ -67,9 +76,12 @@ cdef class List__Enum:
     cdef shared_ptr[vector[cEnum]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cEnum]])
+    @staticmethod
+    cdef unique_ptr[vector[cEnum]] _make_instance(object items) except *
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[cEnum]] move(unique_ptr[vector[cEnum]])
+    cdef unique_ptr[vector[cEnum]] move_unique "std::move"(unique_ptr[vector[cEnum]])
 
 cdef extern from "gen-cpp2/module1_constants.h" namespace "module1":
     cdef cStruct cc1 "module1::module1_constants::c1"()

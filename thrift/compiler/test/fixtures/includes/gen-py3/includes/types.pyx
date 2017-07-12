@@ -38,13 +38,10 @@ cdef class Included(thrift.py3.types.Struct):
         Included self,
         MyIntField=None
     ):
-        cdef shared_ptr[cIncluded] c_inst = make_shared[cIncluded]()
-        inst = self
-        if MyIntField is not None:
-            deref(c_inst).MyIntField = MyIntField
-            deref(c_inst).__isset.MyIntField = True
-
-        self._cpp_obj = move_shared(c_inst)
+        self._cpp_obj = move(Included._make_instance(
+          NULL,
+          MyIntField,
+        ))
 
     cdef bytes _serialize(Included self, proto):
         cdef string c_str
@@ -80,21 +77,39 @@ cdef class Included(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        cdef shared_ptr[cIncluded] c_inst = make_shared[cIncluded](deref(self._cpp_obj))
+        inst = <Included>Included.__new__(Included)
+        inst._cpp_obj = move(Included._make_instance(
+          self._cpp_obj.get(),
+          MyIntField,
+        ))
+        return inst
 
-        # Convert None's to default value.
-        if MyIntField is None:
-            deref(c_inst).MyIntField = _Included_defaults.MyIntField
-            deref(c_inst).__isset.MyIntField = False
-        if MyIntField is NOTSET:
-            MyIntField = None
+    @staticmethod
+    cdef unique_ptr[cIncluded] _make_instance(
+        cIncluded* base_instance,
+        object MyIntField
+    ) except *:
+        cdef unique_ptr[cIncluded] c_inst
+        if base_instance:
+            c_inst = make_unique[cIncluded](deref(base_instance))
+        else:
+            c_inst = make_unique[cIncluded]()
+
+        if base_instance:
+            # Convert None's to default value.
+            if MyIntField is None:
+                deref(c_inst).MyIntField = _Included_defaults.MyIntField
+                deref(c_inst).__isset.MyIntField = False
+            elif MyIntField is NOTSET:
+                MyIntField = None
 
         if MyIntField is not None:
             deref(c_inst).MyIntField = MyIntField
             deref(c_inst).__isset.MyIntField = True
 
-
-        return Included.create(move_shared(c_inst))
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
 
     def __iter__(self):
         yield 'MyIntField', self.MyIntField
@@ -110,7 +125,6 @@ cdef class Included(thrift.py3.types.Struct):
 
     @property
     def MyIntField(self):
-
         return self._cpp_obj.get().MyIntField
 
 

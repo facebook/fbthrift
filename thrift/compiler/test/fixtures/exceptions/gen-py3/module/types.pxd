@@ -22,11 +22,14 @@ cimport thrift.py3.types
 
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
-    cdef cppclass cBanal__isset "cpp2::Banal::__isset":
-        pass
-
     # Forward Declaration
     cdef cppclass cBanal "cpp2::Banal"(cTException)
+    # Forward Declaration
+    cdef cppclass cFiery "cpp2::Fiery"(cTException)
+
+cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
+    cdef cppclass cBanal__isset "cpp2::Banal::__isset":
+        pass
 
     cdef cppclass cBanal "cpp2::Banal"(cTException):
         cBanal() except +
@@ -36,9 +39,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
 
     cdef cppclass cFiery__isset "cpp2::Fiery::__isset":
         bint message
-
-    # Forward Declaration
-    cdef cppclass cFiery "cpp2::Fiery"(cTException)
 
     cdef cppclass cFiery "cpp2::Fiery"(cTException):
         cFiery() except +
@@ -51,8 +51,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cBanal] move(unique_ptr[cBanal])
     cdef shared_ptr[cBanal] move_shared "std::move"(shared_ptr[cBanal])
+    cdef unique_ptr[cBanal] move_unique "std::move"(unique_ptr[cBanal])
     cdef shared_ptr[cFiery] move(unique_ptr[cFiery])
     cdef shared_ptr[cFiery] move_shared "std::move"(shared_ptr[cFiery])
+    cdef unique_ptr[cFiery] move_unique "std::move"(unique_ptr[cFiery])
 
 # Forward Definition of the cython struct
 cdef class Banal(__Error)
@@ -61,6 +63,11 @@ cdef class Banal(__Error):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cBanal] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cBanal] _make_instance(
+        cBanal* base_instance
+    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cBanal])
@@ -72,6 +79,12 @@ cdef class Fiery(__Error):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cFiery] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cFiery] _make_instance(
+        cFiery* base_instance,
+        object message
+    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cFiery])

@@ -51,17 +51,11 @@ cdef class Struct(thrift.py3.types.Struct):
         first=None,
         second=None
     ):
-        cdef shared_ptr[cStruct] c_inst = make_shared[cStruct]()
-        inst = self
-        if first is not None:
-            deref(c_inst).first = first
-            deref(c_inst).__isset.first = True
-
-        if second is not None:
-            deref(c_inst).second = second.encode('UTF-8')
-            deref(c_inst).__isset.second = True
-
-        self._cpp_obj = move_shared(c_inst)
+        self._cpp_obj = move(Struct._make_instance(
+          NULL,
+          first,
+          second,
+        ))
 
     cdef bytes _serialize(Struct self, proto):
         cdef string c_str
@@ -100,19 +94,39 @@ cdef class Struct(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        cdef shared_ptr[cStruct] c_inst = make_shared[cStruct](deref(self._cpp_obj))
+        inst = <Struct>Struct.__new__(Struct)
+        inst._cpp_obj = move(Struct._make_instance(
+          self._cpp_obj.get(),
+          first,
+          second,
+        ))
+        return inst
 
-        # Convert None's to default value.
-        if first is None:
-            deref(c_inst).first = _Struct_defaults.first
-            deref(c_inst).__isset.first = False
-        if first is NOTSET:
-            first = None
-        if second is None:
-            deref(c_inst).second = _Struct_defaults.second
-            deref(c_inst).__isset.second = False
-        if second is NOTSET:
-            second = None
+    @staticmethod
+    cdef unique_ptr[cStruct] _make_instance(
+        cStruct* base_instance,
+        object first,
+        object second
+    ) except *:
+        cdef unique_ptr[cStruct] c_inst
+        if base_instance:
+            c_inst = make_unique[cStruct](deref(base_instance))
+        else:
+            c_inst = make_unique[cStruct]()
+
+        if base_instance:
+            # Convert None's to default value.
+            if first is None:
+                deref(c_inst).first = _Struct_defaults.first
+                deref(c_inst).__isset.first = False
+            elif first is NOTSET:
+                first = None
+
+            if second is None:
+                deref(c_inst).second = _Struct_defaults.second
+                deref(c_inst).__isset.second = False
+            elif second is NOTSET:
+                second = None
 
         if first is not None:
             deref(c_inst).first = first
@@ -122,8 +136,9 @@ cdef class Struct(thrift.py3.types.Struct):
             deref(c_inst).second = second.encode('UTF-8')
             deref(c_inst).__isset.second = True
 
-
-        return Struct.create(move_shared(c_inst))
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
 
     def __iter__(self):
         yield 'first', self.first
@@ -189,17 +204,21 @@ cdef class List__Enum:
         if isinstance(items, List__Enum):
             self._cpp_obj = (<List__Enum> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[vector[cEnum]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).push_back(<cEnum> Enum_to_cpp(item))
+            self._cpp_obj = move(List__Enum._make_instance(items))
 
     @staticmethod
-    cdef create(
-            shared_ptr[vector[cEnum]] c_items):
+    cdef create(shared_ptr[vector[cEnum]] c_items):
         inst = <List__Enum>List__Enum.__new__(List__Enum)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[cEnum]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[cEnum]] c_inst = make_unique[vector[cEnum]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(<cEnum> Enum_to_cpp(item))
+        return move_unique(c_inst)
 
     def __getitem__(self, int index):
         size = len(self)

@@ -62,6 +62,15 @@ cdef c{{enum:name}} {{enum:name}}_to_cpp(value)
 cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types_custom_protocol.h"{{!
 }} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":
 {{/first?}}
+    # Forward Declaration
+    cdef cppclass c{{struct:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}"{{#struct:exception?}}(cTException){{/struct:exception?}}
+{{/program:structs}}
+
+{{#program:structs}}
+{{#first?}}
+cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
+}} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":
+{{/first?}}
     cdef cppclass c{{struct:name}}__isset "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::__isset":
     {{#struct:fields}}
         bint {{field:name}}
@@ -69,9 +78,6 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types_custo
     {{^struct:fields}}
         pass
     {{/struct:fields}}
-
-    # Forward Declaration
-    cdef cppclass c{{struct:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}"{{#struct:exception?}}(cTException){{/struct:exception?}}
 
     cdef cppclass c{{struct:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}"{{#struct:exception?}}(cTException){{/struct:exception?}}:
         c{{struct:name}}() except +
@@ -87,7 +93,8 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types_custo
 {{#program:structs}}
 {{#first?}}cdef extern from "<utility>" namespace "std" nogil:{{/first?}}
     cdef shared_ptr[c{{struct:name}}] move(unique_ptr[c{{struct:name}}])
-    cdef shared_ptr[c{{struct:name}}] move_shared "std::move"(shared_ptr[c{{struct:name}}]){{/program:structs}}
+    cdef shared_ptr[c{{struct:name}}] move_shared "std::move"(shared_ptr[c{{struct:name}}])
+    cdef unique_ptr[c{{struct:name}}] move_unique "std::move"(unique_ptr[c{{struct:name}}]){{/program:structs}}
 
 {{#program:structs}}
 # Forward Definition of the cython struct
@@ -105,6 +112,12 @@ cdef class {{struct:name}}{{#struct:exception?}}(__Error){{/struct:exception?}}{
     cdef {{> types/CythonPythonType}} __{{field:name}}
     {{/type:container?}}{{/field:type}}
     {{/struct:fields}}
+
+    @staticmethod
+    cdef unique_ptr[c{{struct:name}}] _make_instance(
+        c{{struct:name}}* base_instance{{#struct:fields}},
+        object {{field:name}}{{/struct:fields}}
+    ) except *
 
     @staticmethod
     cdef create(shared_ptr[c{{struct:name}}])
@@ -130,6 +143,8 @@ cdef class {{type:flat_name}}:
     @staticmethod
     cdef create(shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonCppWrapperMapKeyValue}}]])
 {{/type:map?}}
+    @staticmethod
+    cdef unique_ptr[{{> types/CythonCppType}}] _make_instance(object items) except *
 
 {{/program:containerTypes}}{{#program:moveContainerTypes}}
 {{#first?}}cdef extern from "<utility>" namespace "std" nogil:{{/first?}}
@@ -138,7 +153,9 @@ cdef class {{type:flat_name}}:
 }}{{#type:setElemType}}    cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]] {{!
 }}move(unique_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{> types/CythonCppType}}]]){{/type:setElemType}}{{!
 }}{{#type:map?}}    cdef shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonCppWrapperMapKeyValue}}]] {{!
-}}move(unique_ptr[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonCppWrapperMapKeyValue}}]]){{/type:map?}}{{/program:moveContainerTypes}}
+}}move(unique_ptr[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonCppWrapperMapKeyValue}}]]){{/type:map?}}
+    cdef unique_ptr[{{> types/CythonCppType}}] move_unique "std::move"(unique_ptr[{{> types/CythonCppType}}]){{!
+}}{{/program:moveContainerTypes}}
 
 {{#program:constants}}
 {{#first?}}cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_constants.h"{{!

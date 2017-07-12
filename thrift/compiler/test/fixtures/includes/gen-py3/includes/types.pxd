@@ -22,11 +22,12 @@ cimport thrift.py3.types
 
 
 cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "cpp2":
-    cdef cppclass cIncluded__isset "cpp2::Included::__isset":
-        bint MyIntField
-
     # Forward Declaration
     cdef cppclass cIncluded "cpp2::Included"
+
+cdef extern from "gen-cpp2/includes_types.h" namespace "cpp2":
+    cdef cppclass cIncluded__isset "cpp2::Included::__isset":
+        bint MyIntField
 
     cdef cppclass cIncluded "cpp2::Included":
         cIncluded() except +
@@ -39,6 +40,7 @@ cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "cpp2":
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cIncluded] move(unique_ptr[cIncluded])
     cdef shared_ptr[cIncluded] move_shared "std::move"(shared_ptr[cIncluded])
+    cdef unique_ptr[cIncluded] move_unique "std::move"(unique_ptr[cIncluded])
 
 # Forward Definition of the cython struct
 cdef class Included(thrift.py3.types.Struct)
@@ -47,6 +49,12 @@ cdef class Included(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cIncluded] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cIncluded] _make_instance(
+        cIncluded* base_instance,
+        object MyIntField
+    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cIncluded])

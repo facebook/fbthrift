@@ -48,17 +48,11 @@ cdef class MyStruct(thrift.py3.types.Struct):
         MyIntField=None,
         MyStringField=None
     ):
-        cdef shared_ptr[cMyStruct] c_inst = make_shared[cMyStruct]()
-        inst = self
-        if MyIntField is not None:
-            deref(c_inst).MyIntField = MyIntField
-            deref(c_inst).__isset.MyIntField = True
-
-        if MyStringField is not None:
-            deref(c_inst).MyStringField = MyStringField.encode('UTF-8')
-            deref(c_inst).__isset.MyStringField = True
-
-        self._cpp_obj = move_shared(c_inst)
+        self._cpp_obj = move(MyStruct._make_instance(
+          NULL,
+          MyIntField,
+          MyStringField,
+        ))
 
     cdef bytes _serialize(MyStruct self, proto):
         cdef string c_str
@@ -97,19 +91,39 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        cdef shared_ptr[cMyStruct] c_inst = make_shared[cMyStruct](deref(self._cpp_obj))
+        inst = <MyStruct>MyStruct.__new__(MyStruct)
+        inst._cpp_obj = move(MyStruct._make_instance(
+          self._cpp_obj.get(),
+          MyIntField,
+          MyStringField,
+        ))
+        return inst
 
-        # Convert None's to default value.
-        if MyIntField is None:
-            deref(c_inst).MyIntField = _MyStruct_defaults.MyIntField
-            deref(c_inst).__isset.MyIntField = False
-        if MyIntField is NOTSET:
-            MyIntField = None
-        if MyStringField is None:
-            deref(c_inst).MyStringField = _MyStruct_defaults.MyStringField
-            deref(c_inst).__isset.MyStringField = False
-        if MyStringField is NOTSET:
-            MyStringField = None
+    @staticmethod
+    cdef unique_ptr[cMyStruct] _make_instance(
+        cMyStruct* base_instance,
+        object MyIntField,
+        object MyStringField
+    ) except *:
+        cdef unique_ptr[cMyStruct] c_inst
+        if base_instance:
+            c_inst = make_unique[cMyStruct](deref(base_instance))
+        else:
+            c_inst = make_unique[cMyStruct]()
+
+        if base_instance:
+            # Convert None's to default value.
+            if MyIntField is None:
+                deref(c_inst).MyIntField = _MyStruct_defaults.MyIntField
+                deref(c_inst).__isset.MyIntField = False
+            elif MyIntField is NOTSET:
+                MyIntField = None
+
+            if MyStringField is None:
+                deref(c_inst).MyStringField = _MyStruct_defaults.MyStringField
+                deref(c_inst).__isset.MyStringField = False
+            elif MyStringField is NOTSET:
+                MyStringField = None
 
         if MyIntField is not None:
             deref(c_inst).MyIntField = MyIntField
@@ -119,8 +133,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
             deref(c_inst).MyStringField = MyStringField.encode('UTF-8')
             deref(c_inst).__isset.MyStringField = True
 
-
-        return MyStruct.create(move_shared(c_inst))
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
 
     def __iter__(self):
         yield 'MyIntField', self.MyIntField

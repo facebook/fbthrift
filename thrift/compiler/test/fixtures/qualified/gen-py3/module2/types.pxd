@@ -24,12 +24,15 @@ cimport module1.types
 
 
 cdef extern from "src/gen-cpp2/module2_types_custom_protocol.h" namespace "module2":
+    # Forward Declaration
+    cdef cppclass cStruct "module2::Struct"
+    # Forward Declaration
+    cdef cppclass cBigStruct "module2::BigStruct"
+
+cdef extern from "src/gen-cpp2/module2_types.h" namespace "module2":
     cdef cppclass cStruct__isset "module2::Struct::__isset":
         bint first
         bint second
-
-    # Forward Declaration
-    cdef cppclass cStruct "module2::Struct"
 
     cdef cppclass cStruct "module2::Struct":
         cStruct() except +
@@ -43,9 +46,6 @@ cdef extern from "src/gen-cpp2/module2_types_custom_protocol.h" namespace "modul
         bint s
         bint id
 
-    # Forward Declaration
-    cdef cppclass cBigStruct "module2::BigStruct"
-
     cdef cppclass cBigStruct "module2::BigStruct":
         cBigStruct() except +
         cBigStruct(const cBigStruct&) except +
@@ -58,8 +58,10 @@ cdef extern from "src/gen-cpp2/module2_types_custom_protocol.h" namespace "modul
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cStruct] move(unique_ptr[cStruct])
     cdef shared_ptr[cStruct] move_shared "std::move"(shared_ptr[cStruct])
+    cdef unique_ptr[cStruct] move_unique "std::move"(unique_ptr[cStruct])
     cdef shared_ptr[cBigStruct] move(unique_ptr[cBigStruct])
     cdef shared_ptr[cBigStruct] move_shared "std::move"(shared_ptr[cBigStruct])
+    cdef unique_ptr[cBigStruct] move_unique "std::move"(unique_ptr[cBigStruct])
 
 # Forward Definition of the cython struct
 cdef class Struct(thrift.py3.types.Struct)
@@ -72,6 +74,13 @@ cdef class Struct(thrift.py3.types.Struct):
     cdef module1.types.Struct __second
 
     @staticmethod
+    cdef unique_ptr[cStruct] _make_instance(
+        cStruct* base_instance,
+        object first,
+        object second
+    ) except *
+
+    @staticmethod
     cdef create(shared_ptr[cStruct])
 
 # Forward Definition of the cython struct
@@ -82,6 +91,13 @@ cdef class BigStruct(thrift.py3.types.Struct):
     cdef object __weakref__
     cdef shared_ptr[cBigStruct] _cpp_obj
     cdef Struct __s
+
+    @staticmethod
+    cdef unique_ptr[cBigStruct] _make_instance(
+        cBigStruct* base_instance,
+        object s,
+        object id
+    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cBigStruct])

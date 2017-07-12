@@ -38,13 +38,10 @@ cdef class HsFoo(thrift.py3.types.Struct):
         HsFoo self,
         MyInt=None
     ):
-        cdef shared_ptr[cHsFoo] c_inst = make_shared[cHsFoo]()
-        inst = self
-        if MyInt is not None:
-            deref(c_inst).MyInt = MyInt
-            deref(c_inst).__isset.MyInt = True
-
-        self._cpp_obj = move_shared(c_inst)
+        self._cpp_obj = move(HsFoo._make_instance(
+          NULL,
+          MyInt,
+        ))
 
     cdef bytes _serialize(HsFoo self, proto):
         cdef string c_str
@@ -80,21 +77,39 @@ cdef class HsFoo(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        cdef shared_ptr[cHsFoo] c_inst = make_shared[cHsFoo](deref(self._cpp_obj))
+        inst = <HsFoo>HsFoo.__new__(HsFoo)
+        inst._cpp_obj = move(HsFoo._make_instance(
+          self._cpp_obj.get(),
+          MyInt,
+        ))
+        return inst
 
-        # Convert None's to default value.
-        if MyInt is None:
-            deref(c_inst).MyInt = _HsFoo_defaults.MyInt
-            deref(c_inst).__isset.MyInt = False
-        if MyInt is NOTSET:
-            MyInt = None
+    @staticmethod
+    cdef unique_ptr[cHsFoo] _make_instance(
+        cHsFoo* base_instance,
+        object MyInt
+    ) except *:
+        cdef unique_ptr[cHsFoo] c_inst
+        if base_instance:
+            c_inst = make_unique[cHsFoo](deref(base_instance))
+        else:
+            c_inst = make_unique[cHsFoo]()
+
+        if base_instance:
+            # Convert None's to default value.
+            if MyInt is None:
+                deref(c_inst).MyInt = _HsFoo_defaults.MyInt
+                deref(c_inst).__isset.MyInt = False
+            elif MyInt is NOTSET:
+                MyInt = None
 
         if MyInt is not None:
             deref(c_inst).MyInt = MyInt
             deref(c_inst).__isset.MyInt = True
 
-
-        return HsFoo.create(move_shared(c_inst))
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
 
     def __iter__(self):
         yield 'MyInt', self.MyInt

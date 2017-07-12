@@ -22,11 +22,12 @@ cimport thrift.py3.types
 
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
-    cdef cppclass cFoo__isset "cpp2::Foo::__isset":
-        bint MyInt
-
     # Forward Declaration
     cdef cppclass cFoo "cpp2::Foo"
+
+cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
+    cdef cppclass cFoo__isset "cpp2::Foo::__isset":
+        bint MyInt
 
     cdef cppclass cFoo "cpp2::Foo":
         cFoo() except +
@@ -39,6 +40,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cFoo] move(unique_ptr[cFoo])
     cdef shared_ptr[cFoo] move_shared "std::move"(shared_ptr[cFoo])
+    cdef unique_ptr[cFoo] move_unique "std::move"(unique_ptr[cFoo])
 
 # Forward Definition of the cython struct
 cdef class Foo(thrift.py3.types.Struct)
@@ -47,6 +49,12 @@ cdef class Foo(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cFoo] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cFoo] _make_instance(
+        cFoo* base_instance,
+        object MyInt
+    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cFoo])

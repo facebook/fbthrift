@@ -37,9 +37,9 @@ cdef class Empty(thrift.py3.types.Struct):
     def __init__(
         Empty self
     ):
-        cdef shared_ptr[cEmpty] c_inst = make_shared[cEmpty]()
-        inst = self
-        self._cpp_obj = move_shared(c_inst)
+        self._cpp_obj = move(Empty._make_instance(
+          NULL,
+        ))
 
     cdef bytes _serialize(Empty self, proto):
         cdef string c_str
@@ -72,12 +72,28 @@ cdef class Empty(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        cdef shared_ptr[cEmpty] c_inst = make_shared[cEmpty](deref(self._cpp_obj))
+        inst = <Empty>Empty.__new__(Empty)
+        inst._cpp_obj = move(Empty._make_instance(
+          self._cpp_obj.get(),
+        ))
+        return inst
 
-        # Convert None's to default value.
+    @staticmethod
+    cdef unique_ptr[cEmpty] _make_instance(
+        cEmpty* base_instance
+    ) except *:
+        cdef unique_ptr[cEmpty] c_inst
+        if base_instance:
+            c_inst = make_unique[cEmpty](deref(base_instance))
+        else:
+            c_inst = make_unique[cEmpty]()
 
-
-        return Empty.create(move_shared(c_inst))
+        if base_instance:
+            # Convert None's to default value.
+            pass
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
 
     def __iter__(self):
         return iter(())
@@ -129,9 +145,9 @@ cdef class Nada(thrift.py3.types.Struct):
     def __init__(
         Nada self
     ):
-        cdef shared_ptr[cNada] c_inst = make_shared[cNada]()
-        inst = self
-        self._cpp_obj = move_shared(c_inst)
+        self._cpp_obj = move(Nada._make_instance(
+          NULL,
+        ))
 
     cdef bytes _serialize(Nada self, proto):
         cdef string c_str
@@ -164,12 +180,28 @@ cdef class Nada(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        cdef shared_ptr[cNada] c_inst = make_shared[cNada](deref(self._cpp_obj))
+        inst = <Nada>Nada.__new__(Nada)
+        inst._cpp_obj = move(Nada._make_instance(
+          self._cpp_obj.get(),
+        ))
+        return inst
 
-        # Convert None's to default value.
+    @staticmethod
+    cdef unique_ptr[cNada] _make_instance(
+        cNada* base_instance
+    ) except *:
+        cdef unique_ptr[cNada] c_inst
+        if base_instance:
+            c_inst = make_unique[cNada](deref(base_instance))
+        else:
+            c_inst = make_unique[cNada]()
 
-
-        return Nada.create(move_shared(c_inst))
+        if base_instance:
+            # Convert None's to default value.
+            pass
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
 
     def __iter__(self):
         return iter(())

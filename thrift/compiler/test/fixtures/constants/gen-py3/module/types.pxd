@@ -40,13 +40,18 @@ cdef cCity City_to_cpp(value)
 cdef cCompany Company_to_cpp(value)
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
+    # Forward Declaration
+    cdef cppclass cInternship "cpp2::Internship"
+    # Forward Declaration
+    cdef cppclass cUnEnumStruct "cpp2::UnEnumStruct"
+    # Forward Declaration
+    cdef cppclass cRange "cpp2::Range"
+
+cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
     cdef cppclass cInternship__isset "cpp2::Internship::__isset":
         bint weeks
         bint title
         bint employer
-
-    # Forward Declaration
-    cdef cppclass cInternship "cpp2::Internship"
 
     cdef cppclass cInternship "cpp2::Internship":
         cInternship() except +
@@ -60,9 +65,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
     cdef cppclass cUnEnumStruct__isset "cpp2::UnEnumStruct::__isset":
         bint city
 
-    # Forward Declaration
-    cdef cppclass cUnEnumStruct "cpp2::UnEnumStruct"
-
     cdef cppclass cUnEnumStruct "cpp2::UnEnumStruct":
         cUnEnumStruct() except +
         cUnEnumStruct(const cUnEnumStruct&) except +
@@ -73,9 +75,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
     cdef cppclass cRange__isset "cpp2::Range::__isset":
         bint min
         bint max
-
-    # Forward Declaration
-    cdef cppclass cRange "cpp2::Range"
 
     cdef cppclass cRange "cpp2::Range":
         cRange() except +
@@ -89,10 +88,13 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cInternship] move(unique_ptr[cInternship])
     cdef shared_ptr[cInternship] move_shared "std::move"(shared_ptr[cInternship])
+    cdef unique_ptr[cInternship] move_unique "std::move"(unique_ptr[cInternship])
     cdef shared_ptr[cUnEnumStruct] move(unique_ptr[cUnEnumStruct])
     cdef shared_ptr[cUnEnumStruct] move_shared "std::move"(shared_ptr[cUnEnumStruct])
+    cdef unique_ptr[cUnEnumStruct] move_unique "std::move"(unique_ptr[cUnEnumStruct])
     cdef shared_ptr[cRange] move(unique_ptr[cRange])
     cdef shared_ptr[cRange] move_shared "std::move"(shared_ptr[cRange])
+    cdef unique_ptr[cRange] move_unique "std::move"(unique_ptr[cRange])
 
 # Forward Definition of the cython struct
 cdef class Internship(thrift.py3.types.Struct)
@@ -101,6 +103,14 @@ cdef class Internship(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cInternship] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cInternship] _make_instance(
+        cInternship* base_instance,
+        object weeks,
+        object title,
+        object employer
+    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cInternship])
@@ -114,6 +124,12 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cUnEnumStruct] _cpp_obj
 
     @staticmethod
+    cdef unique_ptr[cUnEnumStruct] _make_instance(
+        cUnEnumStruct* base_instance,
+        object city
+    ) except *
+
+    @staticmethod
     cdef create(shared_ptr[cUnEnumStruct])
 
 # Forward Definition of the cython struct
@@ -125,6 +141,13 @@ cdef class Range(thrift.py3.types.Struct):
     cdef shared_ptr[cRange] _cpp_obj
 
     @staticmethod
+    cdef unique_ptr[cRange] _make_instance(
+        cRange* base_instance,
+        object min,
+        object max
+    ) except *
+
+    @staticmethod
     cdef create(shared_ptr[cRange])
 
 
@@ -134,6 +157,8 @@ cdef class Map__string_i32:
     cdef shared_ptr[cmap[string,int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[string,int32_t]])
+    @staticmethod
+    cdef unique_ptr[cmap[string,int32_t]] _make_instance(object items) except *
 
 cdef class List__Map__string_i32:
     cdef object __hash
@@ -141,6 +166,8 @@ cdef class List__Map__string_i32:
     cdef shared_ptr[vector[cmap[string,int32_t]]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cmap[string,int32_t]]])
+    @staticmethod
+    cdef unique_ptr[vector[cmap[string,int32_t]]] _make_instance(object items) except *
 
 cdef class List__Range:
     cdef object __hash
@@ -148,6 +175,8 @@ cdef class List__Range:
     cdef shared_ptr[vector[cRange]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cRange]])
+    @staticmethod
+    cdef unique_ptr[vector[cRange]] _make_instance(object items) except *
 
 cdef class List__Internship:
     cdef object __hash
@@ -155,6 +184,8 @@ cdef class List__Internship:
     cdef shared_ptr[vector[cInternship]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cInternship]])
+    @staticmethod
+    cdef unique_ptr[vector[cInternship]] _make_instance(object items) except *
 
 cdef class List__string:
     cdef object __hash
@@ -162,6 +193,8 @@ cdef class List__string:
     cdef shared_ptr[vector[string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[string]])
+    @staticmethod
+    cdef unique_ptr[vector[string]] _make_instance(object items) except *
 
 cdef class List__i32:
     cdef object __hash
@@ -169,6 +202,8 @@ cdef class List__i32:
     cdef shared_ptr[vector[int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[int32_t]])
+    @staticmethod
+    cdef unique_ptr[vector[int32_t]] _make_instance(object items) except *
 
 cdef class Set__i32:
     cdef object __hash
@@ -176,6 +211,8 @@ cdef class Set__i32:
     cdef shared_ptr[cset[int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cset[int32_t]])
+    @staticmethod
+    cdef unique_ptr[cset[int32_t]] _make_instance(object items) except *
 
 cdef class Set__string:
     cdef object __hash
@@ -183,6 +220,8 @@ cdef class Set__string:
     cdef shared_ptr[cset[string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cset[string]])
+    @staticmethod
+    cdef unique_ptr[cset[string]] _make_instance(object items) except *
 
 cdef class Map__i32_i32:
     cdef object __hash
@@ -190,6 +229,8 @@ cdef class Map__i32_i32:
     cdef shared_ptr[cmap[int32_t,int32_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,int32_t]])
+    @staticmethod
+    cdef unique_ptr[cmap[int32_t,int32_t]] _make_instance(object items) except *
 
 cdef class Map__i32_string:
     cdef object __hash
@@ -197,6 +238,8 @@ cdef class Map__i32_string:
     cdef shared_ptr[cmap[int32_t,string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,string]])
+    @staticmethod
+    cdef unique_ptr[cmap[int32_t,string]] _make_instance(object items) except *
 
 cdef class Map__string_string:
     cdef object __hash
@@ -204,19 +247,32 @@ cdef class Map__string_string:
     cdef shared_ptr[cmap[string,string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[string,string]])
+    @staticmethod
+    cdef unique_ptr[cmap[string,string]] _make_instance(object items) except *
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cmap[string,int32_t]] move(unique_ptr[cmap[string,int32_t]])
+    cdef unique_ptr[cmap[string,int32_t]] move_unique "std::move"(unique_ptr[cmap[string,int32_t]])
     cdef shared_ptr[vector[cmap[string,int32_t]]] move(unique_ptr[vector[cmap[string,int32_t]]])
+    cdef unique_ptr[vector[cmap[string,int32_t]]] move_unique "std::move"(unique_ptr[vector[cmap[string,int32_t]]])
     cdef shared_ptr[vector[cRange]] move(unique_ptr[vector[cRange]])
+    cdef unique_ptr[vector[cRange]] move_unique "std::move"(unique_ptr[vector[cRange]])
     cdef shared_ptr[vector[cInternship]] move(unique_ptr[vector[cInternship]])
+    cdef unique_ptr[vector[cInternship]] move_unique "std::move"(unique_ptr[vector[cInternship]])
     cdef shared_ptr[vector[string]] move(unique_ptr[vector[string]])
+    cdef unique_ptr[vector[string]] move_unique "std::move"(unique_ptr[vector[string]])
     cdef shared_ptr[vector[int32_t]] move(unique_ptr[vector[int32_t]])
+    cdef unique_ptr[vector[int32_t]] move_unique "std::move"(unique_ptr[vector[int32_t]])
     cdef shared_ptr[cset[int32_t]] move(unique_ptr[cset[int32_t]])
+    cdef unique_ptr[cset[int32_t]] move_unique "std::move"(unique_ptr[cset[int32_t]])
     cdef shared_ptr[cset[string]] move(unique_ptr[cset[string]])
+    cdef unique_ptr[cset[string]] move_unique "std::move"(unique_ptr[cset[string]])
     cdef shared_ptr[cmap[int32_t,int32_t]] move(unique_ptr[cmap[int32_t,int32_t]])
+    cdef unique_ptr[cmap[int32_t,int32_t]] move_unique "std::move"(unique_ptr[cmap[int32_t,int32_t]])
     cdef shared_ptr[cmap[int32_t,string]] move(unique_ptr[cmap[int32_t,string]])
+    cdef unique_ptr[cmap[int32_t,string]] move_unique "std::move"(unique_ptr[cmap[int32_t,string]])
     cdef shared_ptr[cmap[string,string]] move(unique_ptr[cmap[string,string]])
+    cdef unique_ptr[cmap[string,string]] move_unique "std::move"(unique_ptr[cmap[string,string]])
 
 cdef extern from "src/gen-cpp2/module_constants.h" namespace "cpp2":
     cdef int32_t cmyInt "cpp2::module_constants::myInt"

@@ -22,11 +22,12 @@ cimport thrift.py3.types
 
 
 cdef extern from "gen-cpp2/hsmodule_types_custom_protocol.h" namespace "cpp2":
-    cdef cppclass cHsFoo__isset "cpp2::HsFoo::__isset":
-        bint MyInt
-
     # Forward Declaration
     cdef cppclass cHsFoo "cpp2::HsFoo"
+
+cdef extern from "gen-cpp2/hsmodule_types.h" namespace "cpp2":
+    cdef cppclass cHsFoo__isset "cpp2::HsFoo::__isset":
+        bint MyInt
 
     cdef cppclass cHsFoo "cpp2::HsFoo":
         cHsFoo() except +
@@ -39,6 +40,7 @@ cdef extern from "gen-cpp2/hsmodule_types_custom_protocol.h" namespace "cpp2":
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cHsFoo] move(unique_ptr[cHsFoo])
     cdef shared_ptr[cHsFoo] move_shared "std::move"(shared_ptr[cHsFoo])
+    cdef unique_ptr[cHsFoo] move_unique "std::move"(unique_ptr[cHsFoo])
 
 # Forward Definition of the cython struct
 cdef class HsFoo(thrift.py3.types.Struct)
@@ -47,6 +49,12 @@ cdef class HsFoo(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cHsFoo] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cHsFoo] _make_instance(
+        cHsFoo* base_instance,
+        object MyInt
+    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cHsFoo])

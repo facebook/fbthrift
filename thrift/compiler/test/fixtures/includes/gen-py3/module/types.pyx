@@ -41,17 +41,11 @@ cdef class MyStruct(thrift.py3.types.Struct):
         MyIncludedField=None,
         MyIncludedInt=None
     ):
-        cdef shared_ptr[cMyStruct] c_inst = make_shared[cMyStruct]()
-        inst = self
-        if MyIncludedField is not None:
-            deref(c_inst).MyIncludedField = deref((<includes.types.Included?> MyIncludedField)._cpp_obj)
-            deref(c_inst).__isset.MyIncludedField = True
-
-        if MyIncludedInt is not None:
-            deref(c_inst).MyIncludedInt = MyIncludedInt
-            deref(c_inst).__isset.MyIncludedInt = True
-
-        self._cpp_obj = move_shared(c_inst)
+        self._cpp_obj = move(MyStruct._make_instance(
+          NULL,
+          MyIncludedField,
+          MyIncludedInt,
+        ))
 
     cdef bytes _serialize(MyStruct self, proto):
         cdef string c_str
@@ -90,19 +84,39 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        cdef shared_ptr[cMyStruct] c_inst = make_shared[cMyStruct](deref(self._cpp_obj))
+        inst = <MyStruct>MyStruct.__new__(MyStruct)
+        inst._cpp_obj = move(MyStruct._make_instance(
+          self._cpp_obj.get(),
+          MyIncludedField,
+          MyIncludedInt,
+        ))
+        return inst
 
-        # Convert None's to default value.
-        if MyIncludedField is None:
-            deref(c_inst).MyIncludedField = _MyStruct_defaults.MyIncludedField
-            deref(c_inst).__isset.MyIncludedField = False
-        if MyIncludedField is NOTSET:
-            MyIncludedField = None
-        if MyIncludedInt is None:
-            deref(c_inst).MyIncludedInt = _MyStruct_defaults.MyIncludedInt
-            deref(c_inst).__isset.MyIncludedInt = False
-        if MyIncludedInt is NOTSET:
-            MyIncludedInt = None
+    @staticmethod
+    cdef unique_ptr[cMyStruct] _make_instance(
+        cMyStruct* base_instance,
+        object MyIncludedField,
+        object MyIncludedInt
+    ) except *:
+        cdef unique_ptr[cMyStruct] c_inst
+        if base_instance:
+            c_inst = make_unique[cMyStruct](deref(base_instance))
+        else:
+            c_inst = make_unique[cMyStruct]()
+
+        if base_instance:
+            # Convert None's to default value.
+            if MyIncludedField is None:
+                deref(c_inst).MyIncludedField = _MyStruct_defaults.MyIncludedField
+                deref(c_inst).__isset.MyIncludedField = False
+            elif MyIncludedField is NOTSET:
+                MyIncludedField = None
+
+            if MyIncludedInt is None:
+                deref(c_inst).MyIncludedInt = _MyStruct_defaults.MyIncludedInt
+                deref(c_inst).__isset.MyIncludedInt = False
+            elif MyIncludedInt is NOTSET:
+                MyIncludedInt = None
 
         if MyIncludedField is not None:
             deref(c_inst).MyIncludedField = deref((<includes.types.Included?> MyIncludedField)._cpp_obj)
@@ -112,8 +126,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
             deref(c_inst).MyIncludedInt = MyIncludedInt
             deref(c_inst).__isset.MyIncludedInt = True
 
-
-        return MyStruct.create(move_shared(c_inst))
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
 
     def __iter__(self):
         yield 'MyIncludedField', self.MyIncludedField
@@ -139,7 +154,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     @property
     def MyIncludedInt(self):
-
         return self._cpp_obj.get().MyIncludedInt
 
 

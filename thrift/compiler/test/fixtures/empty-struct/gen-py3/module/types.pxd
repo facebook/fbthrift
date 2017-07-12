@@ -22,11 +22,14 @@ cimport thrift.py3.types
 
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
-    cdef cppclass cEmpty__isset "cpp2::Empty::__isset":
-        pass
-
     # Forward Declaration
     cdef cppclass cEmpty "cpp2::Empty"
+    # Forward Declaration
+    cdef cppclass cNada "cpp2::Nada"
+
+cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
+    cdef cppclass cEmpty__isset "cpp2::Empty::__isset":
+        pass
 
     cdef cppclass cEmpty "cpp2::Empty":
         cEmpty() except +
@@ -36,9 +39,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
 
     cdef cppclass cNada__isset "cpp2::Nada::__isset":
         pass
-
-    # Forward Declaration
-    cdef cppclass cNada "cpp2::Nada"
 
     cdef cppclass cNada "cpp2::Nada":
         cNada() except +
@@ -50,8 +50,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cEmpty] move(unique_ptr[cEmpty])
     cdef shared_ptr[cEmpty] move_shared "std::move"(shared_ptr[cEmpty])
+    cdef unique_ptr[cEmpty] move_unique "std::move"(unique_ptr[cEmpty])
     cdef shared_ptr[cNada] move(unique_ptr[cNada])
     cdef shared_ptr[cNada] move_shared "std::move"(shared_ptr[cNada])
+    cdef unique_ptr[cNada] move_unique "std::move"(unique_ptr[cNada])
 
 # Forward Definition of the cython struct
 cdef class Empty(thrift.py3.types.Struct)
@@ -60,6 +62,11 @@ cdef class Empty(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cEmpty] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cEmpty] _make_instance(
+        cEmpty* base_instance
+    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cEmpty])
@@ -71,6 +78,11 @@ cdef class Nada(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cNada] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cNada] _make_instance(
+        cNada* base_instance
+    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cNada])

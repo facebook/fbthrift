@@ -35,10 +35,24 @@ cdef class Banal(thrift.py3.exceptions.Error):
     def __init__(
         Banal self
     ):
-        cdef shared_ptr[cBanal] c_inst = make_shared[cBanal]()
-        inst = self
-        self._cpp_obj = move_shared(c_inst)
+        self._cpp_obj = move(Banal._make_instance(
+          NULL,
+        ))
 
+
+    @staticmethod
+    cdef unique_ptr[cBanal] _make_instance(
+        cBanal* base_instance
+    ) except *:
+        cdef unique_ptr[cBanal] c_inst
+        if base_instance:
+            c_inst = make_unique[cBanal](deref(base_instance))
+        else:
+            c_inst = make_unique[cBanal]()
+
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
 
     def __iter__(self):
         return iter(())
@@ -85,12 +99,28 @@ cdef class Fiery(thrift.py3.exceptions.Error):
         Fiery self,
         message=None
     ):
-        cdef shared_ptr[cFiery] c_inst = make_shared[cFiery]()
-        inst = self
+        self._cpp_obj = move(Fiery._make_instance(
+          NULL,
+          message,
+        ))
+
+
+    @staticmethod
+    cdef unique_ptr[cFiery] _make_instance(
+        cFiery* base_instance,
+        object message
+    ) except *:
+        cdef unique_ptr[cFiery] c_inst
+        if base_instance:
+            c_inst = make_unique[cFiery](deref(base_instance))
+        else:
+            c_inst = make_unique[cFiery]()
+
         if message is not None:
             deref(c_inst).message = message.encode('UTF-8')
-        self._cpp_obj = move_shared(c_inst)
-
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
 
     def __iter__(self):
         yield 'message', self.message
@@ -106,7 +136,6 @@ cdef class Fiery(thrift.py3.exceptions.Error):
 
     @property
     def message(self):
-
         return self._cpp_obj.get().message.decode('UTF-8')
 
 

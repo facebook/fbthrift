@@ -41,21 +41,13 @@ cdef class Foo(thrift.py3.types.Struct):
         myBools=None,
         myNumbers=None
     ):
-        cdef shared_ptr[cFoo] c_inst = make_shared[cFoo]()
-        inst = self
-        if myInteger is not None:
-            deref(c_inst).myInteger = myInteger
-        if myString is not None:
-            deref(c_inst).myString = myString.encode('UTF-8')
-            deref(c_inst).__isset.myString = True
-
-        if myBools is not None:
-            deref(c_inst).myBools = <vector[cbool]>deref(List__bool(myBools)._cpp_obj)
-            deref(c_inst).__isset.myBools = True
-
-        if myNumbers is not None:
-            deref(c_inst).myNumbers = <vector[int32_t]>deref(List__i32(myNumbers)._cpp_obj)
-        self._cpp_obj = move_shared(c_inst)
+        self._cpp_obj = move(Foo._make_instance(
+          NULL,
+          myInteger,
+          myString,
+          myBools,
+          myNumbers,
+        ))
 
     cdef bytes _serialize(Foo self, proto):
         cdef string c_str
@@ -100,27 +92,53 @@ cdef class Foo(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        cdef shared_ptr[cFoo] c_inst = make_shared[cFoo](deref(self._cpp_obj))
+        inst = <Foo>Foo.__new__(Foo)
+        inst._cpp_obj = move(Foo._make_instance(
+          self._cpp_obj.get(),
+          myInteger,
+          myString,
+          myBools,
+          myNumbers,
+        ))
+        return inst
 
-        # Convert None's to default value.
-        if myInteger is None:
-            deref(c_inst).myInteger = _Foo_defaults.myInteger
-        if myInteger is NOTSET:
-            myInteger = None
-        if myString is None:
-            deref(c_inst).myString = _Foo_defaults.myString
-            deref(c_inst).__isset.myString = False
-        if myString is NOTSET:
-            myString = None
-        if myBools is None:
-            deref(c_inst).myBools = _Foo_defaults.myBools
-            deref(c_inst).__isset.myBools = False
-        if myBools is NOTSET:
-            myBools = None
-        if myNumbers is None:
-            deref(c_inst).myNumbers = _Foo_defaults.myNumbers
-        if myNumbers is NOTSET:
-            myNumbers = None
+    @staticmethod
+    cdef unique_ptr[cFoo] _make_instance(
+        cFoo* base_instance,
+        object myInteger,
+        object myString,
+        object myBools,
+        object myNumbers
+    ) except *:
+        cdef unique_ptr[cFoo] c_inst
+        if base_instance:
+            c_inst = make_unique[cFoo](deref(base_instance))
+        else:
+            c_inst = make_unique[cFoo]()
+
+        if base_instance:
+            # Convert None's to default value.
+            if myInteger is None:
+                deref(c_inst).myInteger = _Foo_defaults.myInteger
+            elif myInteger is NOTSET:
+                myInteger = None
+
+            if myString is None:
+                deref(c_inst).myString = _Foo_defaults.myString
+                deref(c_inst).__isset.myString = False
+            elif myString is NOTSET:
+                myString = None
+
+            if myBools is None:
+                deref(c_inst).myBools = _Foo_defaults.myBools
+                deref(c_inst).__isset.myBools = False
+            elif myBools is NOTSET:
+                myBools = None
+
+            if myNumbers is None:
+                deref(c_inst).myNumbers = _Foo_defaults.myNumbers
+            elif myNumbers is NOTSET:
+                myNumbers = None
 
         if myInteger is not None:
             deref(c_inst).myInteger = myInteger
@@ -134,8 +152,9 @@ cdef class Foo(thrift.py3.types.Struct):
 
         if myNumbers is not None:
             deref(c_inst).myNumbers = <vector[int32_t]>deref(List__i32(myNumbers)._cpp_obj)
-
-        return Foo.create(move_shared(c_inst))
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
 
     def __iter__(self):
         yield 'myInteger', self.myInteger
@@ -154,7 +173,6 @@ cdef class Foo(thrift.py3.types.Struct):
 
     @property
     def myInteger(self):
-
         return self._cpp_obj.get().myInteger
 
     @property
@@ -175,7 +193,6 @@ cdef class Foo(thrift.py3.types.Struct):
 
     @property
     def myNumbers(self):
-
         if self.__myNumbers is None:
             self.__myNumbers = List__i32.create(make_shared[vector[int32_t]](deref(self._cpp_obj).myNumbers))
         return self.__myNumbers
@@ -219,17 +236,21 @@ cdef class List__bool:
         if isinstance(items, List__bool):
             self._cpp_obj = (<List__bool> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[vector[cbool]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).push_back(item)
+            self._cpp_obj = move(List__bool._make_instance(items))
 
     @staticmethod
-    cdef create(
-            shared_ptr[vector[cbool]] c_items):
+    cdef create(shared_ptr[vector[cbool]] c_items):
         inst = <List__bool>List__bool.__new__(List__bool)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[cbool]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[cbool]] c_inst = make_unique[vector[cbool]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(item)
+        return move_unique(c_inst)
 
     def __getitem__(self, int index):
         size = len(self)
@@ -325,17 +346,21 @@ cdef class List__i32:
         if isinstance(items, List__i32):
             self._cpp_obj = (<List__i32> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[vector[int32_t]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).push_back(item)
+            self._cpp_obj = move(List__i32._make_instance(items))
 
     @staticmethod
-    cdef create(
-            shared_ptr[vector[int32_t]] c_items):
+    cdef create(shared_ptr[vector[int32_t]] c_items):
         inst = <List__i32>List__i32.__new__(List__i32)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[int32_t]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[int32_t]] c_inst = make_unique[vector[int32_t]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(item)
+        return move_unique(c_inst)
 
     def __getitem__(self, int index):
         size = len(self)

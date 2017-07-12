@@ -73,19 +73,12 @@ cdef class Internship(thrift.py3.types.Struct):
         title=None,
         employer=None
     ):
-        cdef shared_ptr[cInternship] c_inst = make_shared[cInternship]()
-        inst = self
-        if weeks is not None:
-            deref(c_inst).weeks = weeks
-        if title is not None:
-            deref(c_inst).title = title.encode('UTF-8')
-            deref(c_inst).__isset.title = True
-
-        if employer is not None:
-            deref(c_inst).employer = Company_to_cpp(employer)
-            deref(c_inst).__isset.employer = True
-
-        self._cpp_obj = move_shared(c_inst)
+        self._cpp_obj = move(Internship._make_instance(
+          NULL,
+          weeks,
+          title,
+          employer,
+        ))
 
     cdef bytes _serialize(Internship self, proto):
         cdef string c_str
@@ -127,23 +120,46 @@ cdef class Internship(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        cdef shared_ptr[cInternship] c_inst = make_shared[cInternship](deref(self._cpp_obj))
+        inst = <Internship>Internship.__new__(Internship)
+        inst._cpp_obj = move(Internship._make_instance(
+          self._cpp_obj.get(),
+          weeks,
+          title,
+          employer,
+        ))
+        return inst
 
-        # Convert None's to default value.
-        if weeks is None:
-            deref(c_inst).weeks = _Internship_defaults.weeks
-        if weeks is NOTSET:
-            weeks = None
-        if title is None:
-            deref(c_inst).title = _Internship_defaults.title
-            deref(c_inst).__isset.title = False
-        if title is NOTSET:
-            title = None
-        if employer is None:
-            deref(c_inst).employer = _Internship_defaults.employer
-            deref(c_inst).__isset.employer = False
-        if employer is NOTSET:
-            employer = None
+    @staticmethod
+    cdef unique_ptr[cInternship] _make_instance(
+        cInternship* base_instance,
+        object weeks,
+        object title,
+        object employer
+    ) except *:
+        cdef unique_ptr[cInternship] c_inst
+        if base_instance:
+            c_inst = make_unique[cInternship](deref(base_instance))
+        else:
+            c_inst = make_unique[cInternship]()
+
+        if base_instance:
+            # Convert None's to default value.
+            if weeks is None:
+                deref(c_inst).weeks = _Internship_defaults.weeks
+            elif weeks is NOTSET:
+                weeks = None
+
+            if title is None:
+                deref(c_inst).title = _Internship_defaults.title
+                deref(c_inst).__isset.title = False
+            elif title is NOTSET:
+                title = None
+
+            if employer is None:
+                deref(c_inst).employer = _Internship_defaults.employer
+                deref(c_inst).__isset.employer = False
+            elif employer is NOTSET:
+                employer = None
 
         if weeks is not None:
             deref(c_inst).weeks = weeks
@@ -155,8 +171,9 @@ cdef class Internship(thrift.py3.types.Struct):
             deref(c_inst).employer = Company_to_cpp(employer)
             deref(c_inst).__isset.employer = True
 
-
-        return Internship.create(move_shared(c_inst))
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
 
     def __iter__(self):
         yield 'weeks', self.weeks
@@ -174,7 +191,6 @@ cdef class Internship(thrift.py3.types.Struct):
 
     @property
     def weeks(self):
-
         return self._cpp_obj.get().weeks
 
     @property
@@ -232,13 +248,10 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
         UnEnumStruct self,
         city=None
     ):
-        cdef shared_ptr[cUnEnumStruct] c_inst = make_shared[cUnEnumStruct]()
-        inst = self
-        if city is not None:
-            deref(c_inst).city = City_to_cpp(city)
-            deref(c_inst).__isset.city = True
-
-        self._cpp_obj = move_shared(c_inst)
+        self._cpp_obj = move(UnEnumStruct._make_instance(
+          NULL,
+          city,
+        ))
 
     cdef bytes _serialize(UnEnumStruct self, proto):
         cdef string c_str
@@ -274,21 +287,39 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        cdef shared_ptr[cUnEnumStruct] c_inst = make_shared[cUnEnumStruct](deref(self._cpp_obj))
+        inst = <UnEnumStruct>UnEnumStruct.__new__(UnEnumStruct)
+        inst._cpp_obj = move(UnEnumStruct._make_instance(
+          self._cpp_obj.get(),
+          city,
+        ))
+        return inst
 
-        # Convert None's to default value.
-        if city is None:
-            deref(c_inst).city = _UnEnumStruct_defaults.city
-            deref(c_inst).__isset.city = False
-        if city is NOTSET:
-            city = None
+    @staticmethod
+    cdef unique_ptr[cUnEnumStruct] _make_instance(
+        cUnEnumStruct* base_instance,
+        object city
+    ) except *:
+        cdef unique_ptr[cUnEnumStruct] c_inst
+        if base_instance:
+            c_inst = make_unique[cUnEnumStruct](deref(base_instance))
+        else:
+            c_inst = make_unique[cUnEnumStruct]()
+
+        if base_instance:
+            # Convert None's to default value.
+            if city is None:
+                deref(c_inst).city = _UnEnumStruct_defaults.city
+                deref(c_inst).__isset.city = False
+            elif city is NOTSET:
+                city = None
 
         if city is not None:
             deref(c_inst).city = City_to_cpp(city)
             deref(c_inst).__isset.city = True
 
-
-        return UnEnumStruct.create(move_shared(c_inst))
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
 
     def __iter__(self):
         yield 'city', self.city
@@ -304,7 +335,6 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
 
     @property
     def city(self):
-
         return translate_cpp_enum_to_python(City, <int>deref(self._cpp_obj).city)
 
 
@@ -347,13 +377,11 @@ cdef class Range(thrift.py3.types.Struct):
         min=None,
         max=None
     ):
-        cdef shared_ptr[cRange] c_inst = make_shared[cRange]()
-        inst = self
-        if min is not None:
-            deref(c_inst).min = min
-        if max is not None:
-            deref(c_inst).max = max
-        self._cpp_obj = move_shared(c_inst)
+        self._cpp_obj = move(Range._make_instance(
+          NULL,
+          min,
+          max,
+        ))
 
     cdef bytes _serialize(Range self, proto):
         cdef string c_str
@@ -392,24 +420,45 @@ cdef class Range(thrift.py3.types.Struct):
         if not changes:
             return self
 
-        cdef shared_ptr[cRange] c_inst = make_shared[cRange](deref(self._cpp_obj))
+        inst = <Range>Range.__new__(Range)
+        inst._cpp_obj = move(Range._make_instance(
+          self._cpp_obj.get(),
+          min,
+          max,
+        ))
+        return inst
 
-        # Convert None's to default value.
-        if min is None:
-            deref(c_inst).min = _Range_defaults.min
-        if min is NOTSET:
-            min = None
-        if max is None:
-            deref(c_inst).max = _Range_defaults.max
-        if max is NOTSET:
-            max = None
+    @staticmethod
+    cdef unique_ptr[cRange] _make_instance(
+        cRange* base_instance,
+        object min,
+        object max
+    ) except *:
+        cdef unique_ptr[cRange] c_inst
+        if base_instance:
+            c_inst = make_unique[cRange](deref(base_instance))
+        else:
+            c_inst = make_unique[cRange]()
+
+        if base_instance:
+            # Convert None's to default value.
+            if min is None:
+                deref(c_inst).min = _Range_defaults.min
+            elif min is NOTSET:
+                min = None
+
+            if max is None:
+                deref(c_inst).max = _Range_defaults.max
+            elif max is NOTSET:
+                max = None
 
         if min is not None:
             deref(c_inst).min = min
         if max is not None:
             deref(c_inst).max = max
-
-        return Range.create(move_shared(c_inst))
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
 
     def __iter__(self):
         yield 'min', self.min
@@ -426,12 +475,10 @@ cdef class Range(thrift.py3.types.Struct):
 
     @property
     def min(self):
-
         return self._cpp_obj.get().min
 
     @property
     def max(self):
-
         return self._cpp_obj.get().max
 
 
@@ -471,19 +518,21 @@ cdef class Map__string_i32:
         if isinstance(items, Map__string_i32):
             self._cpp_obj = (<Map__string_i32> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[cmap[string,int32_t]]()
-          if items:
-              for key, item in items.items():
-                  deref(self._cpp_obj).insert(
-                      cpair[string,int32_t](
-                          key.encode('UTF-8'),
-                          item))
+            self._cpp_obj = move(Map__string_i32._make_instance(items))
 
     @staticmethod
     cdef create(shared_ptr[cmap[string,int32_t]] c_items):
         inst = <Map__string_i32>Map__string_i32.__new__(Map__string_i32)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[cmap[string,int32_t]] _make_instance(object items) except *:
+        cdef unique_ptr[cmap[string,int32_t]] c_inst = make_unique[cmap[string,int32_t]]()
+        if items:
+            for key, item in items.items():
+                deref(c_inst).insert(cpair[string,int32_t](key.encode('UTF-8'),item))
+        return move_unique(c_inst)
 
     def __getitem__(self, key):
         if not self:
@@ -582,17 +631,21 @@ cdef class List__Map__string_i32:
         if isinstance(items, List__Map__string_i32):
             self._cpp_obj = (<List__Map__string_i32> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[vector[cmap[string,int32_t]]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).push_back(cmap[string,int32_t](deref(Map__string_i32(item)._cpp_obj.get())))
+            self._cpp_obj = move(List__Map__string_i32._make_instance(items))
 
     @staticmethod
-    cdef create(
-            shared_ptr[vector[cmap[string,int32_t]]] c_items):
+    cdef create(shared_ptr[vector[cmap[string,int32_t]]] c_items):
         inst = <List__Map__string_i32>List__Map__string_i32.__new__(List__Map__string_i32)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[cmap[string,int32_t]]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[cmap[string,int32_t]]] c_inst = make_unique[vector[cmap[string,int32_t]]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(cmap[string,int32_t](deref(Map__string_i32(item)._cpp_obj.get())))
+        return move_unique(c_inst)
 
     def __getitem__(self, int index):
         size = len(self)
@@ -691,17 +744,21 @@ cdef class List__Range:
         if isinstance(items, List__Range):
             self._cpp_obj = (<List__Range> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[vector[cRange]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).push_back(deref((<Range> item)._cpp_obj))
+            self._cpp_obj = move(List__Range._make_instance(items))
 
     @staticmethod
-    cdef create(
-            shared_ptr[vector[cRange]] c_items):
+    cdef create(shared_ptr[vector[cRange]] c_items):
         inst = <List__Range>List__Range.__new__(List__Range)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[cRange]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[cRange]] c_inst = make_unique[vector[cRange]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(deref((<Range> item)._cpp_obj))
+        return move_unique(c_inst)
 
     def __getitem__(self, int index):
         size = len(self)
@@ -797,17 +854,21 @@ cdef class List__Internship:
         if isinstance(items, List__Internship):
             self._cpp_obj = (<List__Internship> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[vector[cInternship]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).push_back(deref((<Internship> item)._cpp_obj))
+            self._cpp_obj = move(List__Internship._make_instance(items))
 
     @staticmethod
-    cdef create(
-            shared_ptr[vector[cInternship]] c_items):
+    cdef create(shared_ptr[vector[cInternship]] c_items):
         inst = <List__Internship>List__Internship.__new__(List__Internship)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[cInternship]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[cInternship]] c_inst = make_unique[vector[cInternship]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(deref((<Internship> item)._cpp_obj))
+        return move_unique(c_inst)
 
     def __getitem__(self, int index):
         size = len(self)
@@ -903,17 +964,21 @@ cdef class List__string:
         if isinstance(items, List__string):
             self._cpp_obj = (<List__string> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[vector[string]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).push_back(item.encode('UTF-8'))
+            self._cpp_obj = move(List__string._make_instance(items))
 
     @staticmethod
-    cdef create(
-            shared_ptr[vector[string]] c_items):
+    cdef create(shared_ptr[vector[string]] c_items):
         inst = <List__string>List__string.__new__(List__string)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[string]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[string]] c_inst = make_unique[vector[string]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(item.encode('UTF-8'))
+        return move_unique(c_inst)
 
     def __getitem__(self, int index):
         size = len(self)
@@ -1009,17 +1074,21 @@ cdef class List__i32:
         if isinstance(items, List__i32):
             self._cpp_obj = (<List__i32> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[vector[int32_t]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).push_back(item)
+            self._cpp_obj = move(List__i32._make_instance(items))
 
     @staticmethod
-    cdef create(
-            shared_ptr[vector[int32_t]] c_items):
+    cdef create(shared_ptr[vector[int32_t]] c_items):
         inst = <List__i32>List__i32.__new__(List__i32)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[int32_t]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[int32_t]] c_inst = make_unique[vector[int32_t]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(item)
+        return move_unique(c_inst)
 
     def __getitem__(self, int index):
         size = len(self)
@@ -1115,16 +1184,21 @@ cdef class Set__i32:
         if isinstance(items, Set__i32):
             self._cpp_obj = (<Set__i32> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[cset[int32_t]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).insert(item)
+            self._cpp_obj = move(Set__i32._make_instance(items))
 
     @staticmethod
     cdef create(shared_ptr[cset[int32_t]] c_items):
         inst = <Set__i32>Set__i32.__new__(Set__i32)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[cset[int32_t]] _make_instance(object items) except *:
+        cdef unique_ptr[cset[int32_t]] c_inst = make_unique[cset[int32_t]]()
+        if items:
+            for item in items:
+                deref(c_inst).insert(item)
+        return move_unique(c_inst)
 
     def __contains__(self, item):
         if not self:
@@ -1295,16 +1369,21 @@ cdef class Set__string:
         if isinstance(items, Set__string):
             self._cpp_obj = (<Set__string> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[cset[string]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).insert(item.encode('UTF-8'))
+            self._cpp_obj = move(Set__string._make_instance(items))
 
     @staticmethod
     cdef create(shared_ptr[cset[string]] c_items):
         inst = <Set__string>Set__string.__new__(Set__string)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[cset[string]] _make_instance(object items) except *:
+        cdef unique_ptr[cset[string]] c_inst = make_unique[cset[string]]()
+        if items:
+            for item in items:
+                deref(c_inst).insert(item.encode('UTF-8'))
+        return move_unique(c_inst)
 
     def __contains__(self, item):
         if not self:
@@ -1475,19 +1554,21 @@ cdef class Map__i32_i32:
         if isinstance(items, Map__i32_i32):
             self._cpp_obj = (<Map__i32_i32> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[cmap[int32_t,int32_t]]()
-          if items:
-              for key, item in items.items():
-                  deref(self._cpp_obj).insert(
-                      cpair[int32_t,int32_t](
-                          key,
-                          item))
+            self._cpp_obj = move(Map__i32_i32._make_instance(items))
 
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,int32_t]] c_items):
         inst = <Map__i32_i32>Map__i32_i32.__new__(Map__i32_i32)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[cmap[int32_t,int32_t]] _make_instance(object items) except *:
+        cdef unique_ptr[cmap[int32_t,int32_t]] c_inst = make_unique[cmap[int32_t,int32_t]]()
+        if items:
+            for key, item in items.items():
+                deref(c_inst).insert(cpair[int32_t,int32_t](key,item))
+        return move_unique(c_inst)
 
     def __getitem__(self, key):
         if not self:
@@ -1586,19 +1667,21 @@ cdef class Map__i32_string:
         if isinstance(items, Map__i32_string):
             self._cpp_obj = (<Map__i32_string> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[cmap[int32_t,string]]()
-          if items:
-              for key, item in items.items():
-                  deref(self._cpp_obj).insert(
-                      cpair[int32_t,string](
-                          key,
-                          item.encode('UTF-8')))
+            self._cpp_obj = move(Map__i32_string._make_instance(items))
 
     @staticmethod
     cdef create(shared_ptr[cmap[int32_t,string]] c_items):
         inst = <Map__i32_string>Map__i32_string.__new__(Map__i32_string)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[cmap[int32_t,string]] _make_instance(object items) except *:
+        cdef unique_ptr[cmap[int32_t,string]] c_inst = make_unique[cmap[int32_t,string]]()
+        if items:
+            for key, item in items.items():
+                deref(c_inst).insert(cpair[int32_t,string](key,item.encode('UTF-8')))
+        return move_unique(c_inst)
 
     def __getitem__(self, key):
         if not self:
@@ -1697,19 +1780,21 @@ cdef class Map__string_string:
         if isinstance(items, Map__string_string):
             self._cpp_obj = (<Map__string_string> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[cmap[string,string]]()
-          if items:
-              for key, item in items.items():
-                  deref(self._cpp_obj).insert(
-                      cpair[string,string](
-                          key.encode('UTF-8'),
-                          item.encode('UTF-8')))
+            self._cpp_obj = move(Map__string_string._make_instance(items))
 
     @staticmethod
     cdef create(shared_ptr[cmap[string,string]] c_items):
         inst = <Map__string_string>Map__string_string.__new__(Map__string_string)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[cmap[string,string]] _make_instance(object items) except *:
+        cdef unique_ptr[cmap[string,string]] c_inst = make_unique[cmap[string,string]]()
+        if items:
+            for key, item in items.items():
+                deref(c_inst).insert(cpair[string,string](key.encode('UTF-8'),item.encode('UTF-8')))
+        return move_unique(c_inst)
 
     def __getitem__(self, key):
         if not self:

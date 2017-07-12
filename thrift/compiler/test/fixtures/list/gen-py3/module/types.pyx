@@ -35,17 +35,21 @@ cdef class List__string:
         if isinstance(items, List__string):
             self._cpp_obj = (<List__string> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[vector[string]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).push_back(item.encode('UTF-8'))
+            self._cpp_obj = move(List__string._make_instance(items))
 
     @staticmethod
-    cdef create(
-            shared_ptr[vector[string]] c_items):
+    cdef create(shared_ptr[vector[string]] c_items):
         inst = <List__string>List__string.__new__(List__string)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[string]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[string]] c_inst = make_unique[vector[string]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(item.encode('UTF-8'))
+        return move_unique(c_inst)
 
     def __getitem__(self, int index):
         size = len(self)
@@ -141,19 +145,21 @@ cdef class Map__i64_List__string:
         if isinstance(items, Map__i64_List__string):
             self._cpp_obj = (<Map__i64_List__string> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[cmap[int64_t,vector[string]]]()
-          if items:
-              for key, item in items.items():
-                  deref(self._cpp_obj).insert(
-                      cpair[int64_t,vector[string]](
-                          key,
-                          deref(List__string(item)._cpp_obj.get())))
+            self._cpp_obj = move(Map__i64_List__string._make_instance(items))
 
     @staticmethod
     cdef create(shared_ptr[cmap[int64_t,vector[string]]] c_items):
         inst = <Map__i64_List__string>Map__i64_List__string.__new__(Map__i64_List__string)
         inst._cpp_obj = c_items
         return inst
+
+    @staticmethod
+    cdef unique_ptr[cmap[int64_t,vector[string]]] _make_instance(object items) except *:
+        cdef unique_ptr[cmap[int64_t,vector[string]]] c_inst = make_unique[cmap[int64_t,vector[string]]]()
+        if items:
+            for key, item in items.items():
+                deref(c_inst).insert(cpair[int64_t,vector[string]](key,deref(List__string(item)._cpp_obj.get())))
+        return move_unique(c_inst)
 
     def __getitem__(self, key):
         if not self:

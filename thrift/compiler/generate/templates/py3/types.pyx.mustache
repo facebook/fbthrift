@@ -88,20 +88,10 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
         {{struct:name}} self{{#struct:fields}},
         {{field:name}}=None{{/struct:fields}}
     ):
-        cdef shared_ptr[c{{struct:name}}] c_inst = make_shared[c{{struct:name}}]()
-        inst = self
-        {{#struct:fields}}
-        {{#field:type}}
-        if {{field:name}} is not None:
-            {{> CythonAssignField}}
-
-        {{^field:required?}}
-            deref(c_inst).__isset.{{field:name}} = True
-
-        {{/field:required?}}
-        {{/field:type}}
-        {{/struct:fields}}
-        self._cpp_obj = move_shared(c_inst)
+        self._cpp_obj = move({{struct:name}}._make_instance(
+          NULL,{{#struct:fields}}
+          {{field:name}},{{/struct:fields}}
+        ))
 
     {{^struct:exception?}}
     cdef bytes _serialize({{struct:name}} self, proto):
@@ -139,33 +129,58 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
         if not changes:
             return self
 
-        cdef shared_ptr[c{{struct:name}}] c_inst = make_shared[c{{struct:name}}](deref(self._cpp_obj))
+        inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}})
+        inst._cpp_obj = move({{struct:name}}._make_instance(
+          self._cpp_obj.get(),{{#struct:fields}}
+          {{field:name}},{{/struct:fields}}
+        ))
+        return inst
+    {{/struct:exception?}}
 
-        # Convert None's to default value.
-        {{#struct:fields}}
-        if {{field:name}} is None:
-            deref(c_inst).{{field:name}} = _{{struct:name}}_defaults.{{field:name}}
-            {{^field:required?}}
-            deref(c_inst).__isset.{{field:name}} = False
-            {{/field:required?}}
-        if {{field:name}} is NOTSET:
-            {{field:name}} = None
-        {{/struct:fields}}
+    @staticmethod
+    cdef unique_ptr[c{{struct:name}}] _make_instance(
+        c{{struct:name}}* base_instance{{#struct:fields}},
+        object {{field:name}}{{/struct:fields}}
+    ) except *:
+        cdef unique_ptr[c{{struct:name}}] c_inst
+        if base_instance:
+            c_inst = make_unique[c{{struct:name}}](deref(base_instance))
+        else:
+            c_inst = make_unique[c{{struct:name}}]()
 
-        {{#struct:fields}}
-        {{#field:type}}
+        {{! We never have a base_instance for exceptions (because they have
+            no __call__, so don't generate this part for them because it
+            references the _defaults object, which they also don't have )}}
+        {{^struct:exception?}}
+        if base_instance:
+            # Convert None's to default value.
+            {{#struct:fields}}
+            if {{field:name}} is None:
+                deref(c_inst).{{field:name}} = _{{struct:name}}_defaults.{{field:name}}
+                {{^field:required?}}
+                deref(c_inst).__isset.{{field:name}} = False
+                {{/field:required?}}
+            elif {{field:name}} is NOTSET:
+                {{field:name}} = None
+
+            {{/struct:fields}}{{!
+            }}{{^struct:fields}}
+            pass
+            {{/struct:fields}}
+        {{/struct:exception?}}
+        {{#struct:fields}}{{#field:type}}
         if {{field:name}} is not None:
             {{> CythonAssignField}}
 
-        {{^field:required?}}
+            {{! This should also be inside the if statement, so indent appropriately }}
+            {{^field:required?}}
             deref(c_inst).__isset.{{field:name}} = True
 
-        {{/field:required?}}
-        {{/field:type}}
-        {{/struct:fields}}
-
-        return {{struct:name}}.create(move_shared(c_inst))
-    {{/struct:exception?}}
+            {{/field:required?}}
+        {{/field:type}}{{/struct:fields}}
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
 
     def __iter__(self):
         {{#struct:fields}}
@@ -199,9 +214,9 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
         {{! If there is no value and not ___isset we can say its None}}
         if not deref(self._cpp_obj).__isset.{{field:name}}:
             return None
+
         {{/field:required?}}
         {{/field:value}}
-
         {{> CythonStructGetter}}
 
         {{/field:type}}
@@ -251,27 +266,27 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
 {{/program:structs}}
 {{#program:containerTypes}}
 cdef class {{type:flat_name}}:
-{{#type:list?}}
     def __init__(self, items=None):
         if isinstance(items, {{type:flat_name}}):
             self._cpp_obj = (<{{type:flat_name}}> items)._cpp_obj
         else:
-          self._cpp_obj = make_shared[vector[{{#type:listElemType}}{{!
-              }}{{> types/CythonCppType}}{{!
-              }}{{/type:listElemType}}]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).push_back({{#type:listElemType}}{{!
-                      }}{{> CythonPythonToCppItem}}{{/type:listElemType}})
+            self._cpp_obj = move({{type:flat_name}}._make_instance(items))
 
     @staticmethod
-    cdef create(
-            shared_ptr[vector[{{#type:listElemType}}{{!
-            }}{{> types/CythonCppType}}{{/type:listElemType}}{{!
-            }}]] c_items):
+    cdef create(shared_ptr[{{> types/CythonCppType}}] c_items):
         inst = <{{type:flat_name}}>{{type:flat_name}}.__new__({{type:flat_name}})
         inst._cpp_obj = c_items
         return inst
+
+{{#type:list?}}
+    @staticmethod
+    cdef unique_ptr[{{> types/CythonCppType}}] _make_instance(object items) except *:
+        cdef unique_ptr[{{> types/CythonCppType}}] c_inst = make_unique[{{> types/CythonCppType}}]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back({{#type:listElemType}}{{!
+                    }}{{> CythonPythonToCppItem}}{{/type:listElemType}})
+        return move_unique(c_inst)
 
     def __getitem__(self, int index):
         size = len(self)
@@ -382,22 +397,14 @@ cdef class {{type:flat_name}}:
 Sequence.register({{type:flat_name}})
 {{/type:list?}}
 {{#type:set?}}
-    def __init__(self, items=None):
-        if isinstance(items, {{type:flat_name}}):
-            self._cpp_obj = (<{{type:flat_name}}> items)._cpp_obj
-        else:
-          self._cpp_obj = make_shared[c{{#type:unordered?}}u{{/type:unordered?}}set[{{#type:setElemType}}{{> types/CythonCppType}}{{/type:setElemType}}]]()
-          if items:
-              for item in items:
-                  deref(self._cpp_obj).insert({{#type:setElemType}}{{> CythonPythonToCppItem}}{{/type:setElemType}})
-
     @staticmethod
-    cdef create(shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}set[{{!
-            }}{{#type:setElemType}}{{> types/CythonCppType}}{{/type:setElemType}}{{!
-            }}]] c_items):
-        inst = <{{type:flat_name}}>{{type:flat_name}}.__new__({{type:flat_name}})
-        inst._cpp_obj = c_items
-        return inst
+    cdef unique_ptr[{{> types/CythonCppType}}] _make_instance(object items) except *:
+        cdef unique_ptr[{{> types/CythonCppType}}] c_inst = make_unique[{{> types/CythonCppType}}]()
+        if items:
+            for item in items:
+                deref(c_inst).insert({{#type:setElemType}}{{!
+                    }}{{> CythonPythonToCppItem}}{{/type:setElemType}})
+        return move_unique(c_inst)
 
     def __contains__(self, item):
         if not self:
@@ -578,23 +585,18 @@ Sequence.register({{type:flat_name}})
 Set.register({{type:flat_name}})
 {{/type:set?}}
 {{#type:map?}}
-    def __init__(self, items=None):
-        if isinstance(items, {{type:flat_name}}):
-            self._cpp_obj = (<{{type:flat_name}}> items)._cpp_obj
-        else:
-          self._cpp_obj = make_shared[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonMapKeyValue}}]]()
-          if items:
-              for key, item in items.items():
-                  deref(self._cpp_obj).insert(
-                      cpair[{{> CythonMapKeyValue}}](
-                          {{#type:keyType}}{{> CythonPythonToCppKey}}{{/type:keyType}},
-                          {{#type:valueType}}{{> CythonPythonToCppItem}}{{/type:valueType}}))
-
     @staticmethod
-    cdef create(shared_ptr[c{{#type:unordered?}}u{{/type:unordered?}}map[{{> CythonMapKeyValue}}]] c_items):
-        inst = <{{type:flat_name}}>{{type:flat_name}}.__new__({{type:flat_name}})
-        inst._cpp_obj = c_items
-        return inst
+    cdef unique_ptr[{{> types/CythonCppType}}] _make_instance(object items) except *:
+        cdef unique_ptr[{{> types/CythonCppType}}] c_inst = make_unique[{{> types/CythonCppType}}]()
+        if items:
+            for key, item in items.items():
+                deref(c_inst).insert(cpair[{{!
+                    }}{{#type:keyType}}{{> types/CythonCppType}}{{/type:keyType}},{{!
+                    }}{{#type:valueType}}{{> types/CythonCppType}}{{/type:valueType}}{{!
+                    }}]({{!
+                    }}{{#type:keyType}}{{> CythonPythonToCppKey}}{{/type:keyType}},{{!
+                    }}{{#type:valueType}}{{> CythonPythonToCppItem}}{{/type:valueType}}))
+        return move_unique(c_inst)
 
     def __getitem__(self, key):
         if not self:

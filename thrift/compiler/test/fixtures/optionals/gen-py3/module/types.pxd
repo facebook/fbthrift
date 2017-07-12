@@ -29,14 +29,19 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
 cdef cAnimal Animal_to_cpp(value)
 
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
+    # Forward Declaration
+    cdef cppclass cColor "cpp2::Color"
+    # Forward Declaration
+    cdef cppclass cVehicle "cpp2::Vehicle"
+    # Forward Declaration
+    cdef cppclass cPerson "cpp2::Person"
+
+cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
     cdef cppclass cColor__isset "cpp2::Color::__isset":
         bint red
         bint green
         bint blue
         bint alpha
-
-    # Forward Declaration
-    cdef cppclass cColor "cpp2::Color"
 
     cdef cppclass cColor "cpp2::Color":
         cColor() except +
@@ -54,9 +59,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
         bint description
         bint name
         bint hasAC
-
-    # Forward Declaration
-    cdef cppclass cVehicle "cpp2::Vehicle"
 
     cdef cppclass cVehicle "cpp2::Vehicle":
         cVehicle() except +
@@ -81,9 +83,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
         bint afraidOfAnimal
         bint vehicles
 
-    # Forward Declaration
-    cdef cppclass cPerson "cpp2::Person"
-
     cdef cppclass cPerson "cpp2::Person":
         cPerson() except +
         cPerson(const cPerson&) except +
@@ -104,10 +103,13 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cColor] move(unique_ptr[cColor])
     cdef shared_ptr[cColor] move_shared "std::move"(shared_ptr[cColor])
+    cdef unique_ptr[cColor] move_unique "std::move"(unique_ptr[cColor])
     cdef shared_ptr[cVehicle] move(unique_ptr[cVehicle])
     cdef shared_ptr[cVehicle] move_shared "std::move"(shared_ptr[cVehicle])
+    cdef unique_ptr[cVehicle] move_unique "std::move"(unique_ptr[cVehicle])
     cdef shared_ptr[cPerson] move(unique_ptr[cPerson])
     cdef shared_ptr[cPerson] move_shared "std::move"(shared_ptr[cPerson])
+    cdef unique_ptr[cPerson] move_unique "std::move"(unique_ptr[cPerson])
 
 # Forward Definition of the cython struct
 cdef class Color(thrift.py3.types.Struct)
@@ -116,6 +118,15 @@ cdef class Color(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cColor] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cColor] _make_instance(
+        cColor* base_instance,
+        object red,
+        object green,
+        object blue,
+        object alpha
+    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cColor])
@@ -128,6 +139,16 @@ cdef class Vehicle(thrift.py3.types.Struct):
     cdef object __weakref__
     cdef shared_ptr[cVehicle] _cpp_obj
     cdef Color __color
+
+    @staticmethod
+    cdef unique_ptr[cVehicle] _make_instance(
+        cVehicle* base_instance,
+        object color,
+        object licensePlate,
+        object description,
+        object name,
+        object hasAC
+    ) except *
 
     @staticmethod
     cdef create(shared_ptr[cVehicle])
@@ -145,6 +166,21 @@ cdef class Person(thrift.py3.types.Struct):
     cdef List__Vehicle __vehicles
 
     @staticmethod
+    cdef unique_ptr[cPerson] _make_instance(
+        cPerson* base_instance,
+        object id,
+        object name,
+        object age,
+        object address,
+        object favoriteColor,
+        object friends,
+        object bestFriend,
+        object petNames,
+        object afraidOfAnimal,
+        object vehicles
+    ) except *
+
+    @staticmethod
     cdef create(shared_ptr[cPerson])
 
 
@@ -154,6 +190,8 @@ cdef class Set__PersonID:
     cdef shared_ptr[cset[int64_t]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cset[int64_t]])
+    @staticmethod
+    cdef unique_ptr[cset[int64_t]] _make_instance(object items) except *
 
 cdef class Map__Animal_string:
     cdef object __hash
@@ -161,6 +199,8 @@ cdef class Map__Animal_string:
     cdef shared_ptr[cmap[cAnimal,string]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[cmap[cAnimal,string]])
+    @staticmethod
+    cdef unique_ptr[cmap[cAnimal,string]] _make_instance(object items) except *
 
 cdef class List__Vehicle:
     cdef object __hash
@@ -168,9 +208,14 @@ cdef class List__Vehicle:
     cdef shared_ptr[vector[cVehicle]] _cpp_obj
     @staticmethod
     cdef create(shared_ptr[vector[cVehicle]])
+    @staticmethod
+    cdef unique_ptr[vector[cVehicle]] _make_instance(object items) except *
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cset[int64_t]] move(unique_ptr[cset[int64_t]])
+    cdef unique_ptr[cset[int64_t]] move_unique "std::move"(unique_ptr[cset[int64_t]])
     cdef shared_ptr[cmap[cAnimal,string]] move(unique_ptr[cmap[cAnimal,string]])
+    cdef unique_ptr[cmap[cAnimal,string]] move_unique "std::move"(unique_ptr[cmap[cAnimal,string]])
     cdef shared_ptr[vector[cVehicle]] move(unique_ptr[vector[cVehicle]])
+    cdef unique_ptr[vector[cVehicle]] move_unique "std::move"(unique_ptr[vector[cVehicle]])
 
