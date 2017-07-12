@@ -3364,6 +3364,14 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
         fid = 37;
         _ftype = apache::thrift::protocol::T_SET;
       }
+      else if (_fname == "iobuf_type_val") {
+        fid = 38;
+        _ftype = apache::thrift::protocol::T_STRING;
+      }
+      else if (_fname == "iobuf_ptr_val") {
+        fid = 39;
+        _ftype = apache::thrift::protocol::T_STRING;
+      }
     }
     switch (fid) {
       case 1:
@@ -3774,6 +3782,26 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
         }
         break;
       }
+      case 38:
+      {
+        if (_ftype == apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readBinary(this->iobuf_type_val);
+          this->__isset.iobuf_type_val = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
+      case 39:
+      {
+        if (_ftype == apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readBinary(this->iobuf_ptr_val);
+          this->__isset.iobuf_ptr_val = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
       default:
       {
         xfer += iprot->skip(_ftype);
@@ -4003,6 +4031,10 @@ uint32_t AnnotatedStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionB, ::apache::thrift::type_class::floating_point>>, std::vector< ::some::valid::ns::IndirectionB>>::serializedSize<false>(*prot_, this->indirection_b);
   xfer += prot_->serializedFieldSize("indirection_c", apache::thrift::protocol::T_SET, 37);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionC, ::apache::thrift::type_class::integral>>, std::set< ::some::valid::ns::IndirectionC>>::serializedSize<false>(*prot_, this->indirection_c);
+  xfer += prot_->serializedFieldSize("iobuf_type_val", apache::thrift::protocol::T_STRING, 38);
+  xfer += prot_->serializedSizeBinary(this->iobuf_type_val);
+  xfer += prot_->serializedFieldSize("iobuf_ptr_val", apache::thrift::protocol::T_STRING, 39);
+  xfer += prot_->serializedSizeBinary(this->iobuf_ptr_val);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -4205,6 +4237,10 @@ uint32_t AnnotatedStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionB, ::apache::thrift::type_class::floating_point>>, std::vector< ::some::valid::ns::IndirectionB>>::serializedSize<false>(*prot_, this->indirection_b);
   xfer += prot_->serializedFieldSize("indirection_c", apache::thrift::protocol::T_SET, 37);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionC, ::apache::thrift::type_class::integral>>, std::set< ::some::valid::ns::IndirectionC>>::serializedSize<false>(*prot_, this->indirection_c);
+  xfer += prot_->serializedFieldSize("iobuf_type_val", apache::thrift::protocol::T_STRING, 38);
+  xfer += prot_->serializedSizeZCBinary(this->iobuf_type_val);
+  xfer += prot_->serializedFieldSize("iobuf_ptr_val", apache::thrift::protocol::T_STRING, 39);
+  xfer += prot_->serializedSizeZCBinary(this->iobuf_ptr_val);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -4455,6 +4491,12 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("indirection_c", apache::thrift::protocol::T_SET, 37);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::set<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionC, ::apache::thrift::type_class::integral>>, std::set< ::some::valid::ns::IndirectionC>>::write(*prot_, this->indirection_c);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("iobuf_type_val", apache::thrift::protocol::T_STRING, 38);
+  xfer += prot_->writeBinary(this->iobuf_type_val);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("iobuf_ptr_val", apache::thrift::protocol::T_STRING, 39);
+  xfer += prot_->writeBinary(this->iobuf_ptr_val);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

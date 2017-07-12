@@ -1357,6 +1357,8 @@ void AnnotatedStruct::__clear() {
   indirection_a.value = 0;
   indirection_b.clear();
   indirection_c.clear();
+  iobuf_type_val = apache::thrift::StringTraits< folly::IOBuf>::fromStringLiteral("value");
+  iobuf_ptr_val = apache::thrift::StringTraits< std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2");
   __isset.__clear();
 }
 
@@ -1470,6 +1472,12 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
     return false;
   }
   if (!((indirection_c == rhs.indirection_c))) {
+    return false;
+  }
+  if (!(apache::thrift::StringTraits<folly::IOBuf>::isEqual(iobuf_type_val, rhs.iobuf_type_val))) {
+    return false;
+  }
+  if (!(apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(iobuf_ptr_val, rhs.iobuf_ptr_val))) {
     return false;
   }
   return true;
@@ -1634,6 +1642,8 @@ void swap(AnnotatedStruct& a, AnnotatedStruct& b) {
   swap(a.indirection_a, b.indirection_a);
   swap(a.indirection_b, b.indirection_b);
   swap(a.indirection_c, b.indirection_c);
+  swap(a.iobuf_type_val, b.iobuf_type_val);
+  swap(a.iobuf_ptr_val, b.iobuf_ptr_val);
   swap(a.__isset, b.__isset);
 }
 

@@ -242,6 +242,8 @@ struct AnnotatedStruct {
   35: IndirectionA indirection_a
   36: list<IndirectionB> indirection_b
   37: set<IndirectionC> indirection_c
+  38: IOBuf iobuf_type_val = "value"
+  39: IOBufPtr iobuf_ptr_val = "value2"
 } (
     final,
     cpp2.noexcept_move_ctor,
