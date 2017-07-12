@@ -336,6 +336,26 @@ mstch::node mstch_const_value::map_elems() {
   return mstch::node();
 }
 
+mstch::node mstch_const_value::const_struct() {
+  std::vector<t_const*> constants;
+  std::vector<int32_t> idx;
+  if (const_value_->get_ttype()->is_struct() ||
+      const_value_->get_ttype()->is_xception()) {
+    auto const* strct =
+        dynamic_cast<t_struct const*>(const_value_->get_ttype());
+    for (auto member : const_value_->get_map()) {
+      constants.push_back(new t_const(
+          nullptr,
+          strct->get_member(member.first->get_string())->get_type(),
+          "",
+          member.second));
+      idx.push_back(strct->get_member(member.first->get_string())->get_key());
+    }
+  }
+  return generate_elements(
+      constants, generators_->const_generator_.get(), generators_, cache_, idx);
+}
+
 mstch::node mstch_field::type() {
   return generators_->type_generator_->generate(
       field_->get_type(), generators_, cache_, pos_);
@@ -407,23 +427,6 @@ mstch::node mstch_const::type() {
 mstch::node mstch_const::value() {
   return generators_->const_value_generator_->generate(
       cnst_->get_value(), generators_, cache_, pos_);
-}
-
-mstch::node mstch_const::get_struct() {
-  std::vector<t_const*> constants;
-  if (cnst_->get_type()->is_struct() || cnst_->get_type()->is_xception()) {
-    auto const* strct = dynamic_cast<t_struct const*>(cnst_->get_type());
-    for (auto member : cnst_->get_value()->get_map()) {
-      auto constant = std::make_unique<t_const>(
-          nullptr,
-          strct->get_member(member.first->get_string())->get_type(),
-          "",
-          member.second);
-      constants.push_back(constant.get());
-    }
-  }
-  return generate_elements(
-      constants, generators_->const_generator_.get(), generators_, cache_);
 }
 
 mstch::node mstch_program::structs() {

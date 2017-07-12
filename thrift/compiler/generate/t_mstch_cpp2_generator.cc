@@ -250,6 +250,7 @@ class mstch_cpp2_field : public mstch_field {
             {"field:cpp_ref_shared?", &mstch_cpp2_field::cpp_ref_shared},
             {"field:cpp_ref_shared_const?",
              &mstch_cpp2_field::cpp_ref_shared_const},
+            {"field:enum_has_value", &mstch_cpp2_field::enum_has_value},
         });
   }
   mstch::node cpp_ref() {
@@ -268,6 +269,21 @@ class mstch_cpp2_field : public mstch_field {
   mstch::node cpp_ref_shared_const() {
     return get_annotation("cpp.ref_type") == "shared_const" ||
         get_annotation("cpp2.ref_type") == "shared_const";
+  }
+  mstch::node enum_has_value() {
+    if (field_->get_type()->is_enum()) {
+      auto const* enm = dynamic_cast<t_enum const*>(field_->get_type());
+      auto const* const_value = field_->get_value();
+      using cv = t_const_value::t_const_value_type;
+      if (const_value->get_type() == cv::CV_INTEGER) {
+        auto* enm_value = enm->find_value(const_value->get_integer());
+        if (enm_value != nullptr) {
+          return generators_->enum_value_generator_->generate(
+              enm_value, generators_, cache_, pos_);
+        }
+      }
+    }
+    return mstch::node();
   }
 };
 

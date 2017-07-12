@@ -295,11 +295,14 @@ class mstch_base : public mstch::object {
       Container const& container,
       Generator const* generator,
       std::shared_ptr<mstch_generators const> generators,
-      std::shared_ptr<mstch_cache> cache) {
+      std::shared_ptr<mstch_cache> cache,
+      std::vector<int32_t> const& custom_index = std::vector<int32_t>()) {
     mstch::array a{};
     for (size_t i = 0; i < container.size(); ++i) {
       auto pos = element_position(i, container.size());
-      a.push_back(generator->generate(container[i], generators, cache, pos, i));
+      auto index = custom_index.empty() ? i : custom_index[i];
+      a.push_back(
+          generator->generate(container[i], generators, cache, pos, index));
     }
     return a;
   }
@@ -422,6 +425,7 @@ class mstch_const_value : public mstch_base {
             {"value:stringValue", &mstch_const_value::string_value},
             {"value:listElements", &mstch_const_value::list_elems},
             {"value:mapElements", &mstch_const_value::map_elems},
+            {"value:const_struct", &mstch_const_value::const_struct},
         });
   }
   mstch_const_value(
@@ -496,6 +500,7 @@ class mstch_const_value : public mstch_base {
   mstch::node string_value();
   mstch::node list_elems();
   mstch::node map_elems();
+  mstch::node const_struct();
 
  protected:
   t_const_value const* const_value_;
@@ -840,10 +845,8 @@ class mstch_const : public mstch_base {
         {
             {"constant:name", &mstch_const::name},
             {"constant:index", &mstch_const::index},
-            {"constant:index_plus_one", &mstch_const::index_plus_one},
             {"constant:type", &mstch_const::type},
             {"constant:value", &mstch_const::value},
-            {"constant:const_struct", &mstch_const::get_struct},
         });
   }
   mstch::node name() {
@@ -852,12 +855,8 @@ class mstch_const : public mstch_base {
   mstch::node index() {
     return index_;
   }
-  mstch::node index_plus_one() {
-    return index_ + 1;
-  }
   mstch::node type();
   mstch::node value();
-  mstch::node get_struct();
 
  protected:
   t_const const* cnst_;

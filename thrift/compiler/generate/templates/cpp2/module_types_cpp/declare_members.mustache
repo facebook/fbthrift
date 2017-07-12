@@ -19,7 +19,20 @@
 <%#struct:fields%><%#field:type%>
 <%#type:resolves_to_base_or_enum?%>
 <%#field:value%>
+<%^type:enum?%>
   <%field:name%><%type:cpp_indirection%> = <% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%>;
+<%/type:enum?%>
+<%#type:enum?%>
+<%#value:enum?%>
+  <%field:name%><%type:cpp_indirection%> = <% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%>;
+<%/value:enum?%>
+<%^value:enum?%><%#field:enum_has_value%>
+  <%field:name%><%type:cpp_indirection%> = <% > common/namespace_cpp2%><%type:name%>::<%enumValue:name%>;
+<%/field:enum_has_value%><%/value:enum?%>
+<%^value:enum?%><%^field:enum_has_value%>
+  <%field:name%><%type:cpp_indirection%> = static_cast<<% > common/namespace_cpp2%><%type:name%>>(<% > common/const_value%>);
+<%/field:enum_has_value%><%/value:enum?%>
+<%/type:enum?%>
 <%/field:value%>
 <%^field:value%>
   <%field:name%><%type:cpp_indirection%> = <% > module_types_cpp/unset_values%>;

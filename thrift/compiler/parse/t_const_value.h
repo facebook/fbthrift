@@ -21,6 +21,7 @@
 #include <thrift/compiler/parse/t_const.h>
 #include <thrift/compiler/parse/t_enum.h>
 #include <thrift/compiler/parse/t_enum_value.h>
+#include <thrift/compiler/parse/t_type.h>
 #include <utility>
 #include <vector>
 
@@ -146,6 +147,14 @@ class t_const_value {
 
   t_const* get_owner() const { return owner_;}
 
+  void set_ttype(t_type* type) {
+    type_ = type;
+  }
+
+  t_type* get_ttype() const {
+    return type_;
+  }
+
   void set_is_enum() {
     is_enum_ = true;
   }
@@ -184,6 +193,7 @@ class t_const_value {
 
   t_const_value_type valType_;
   t_const* owner_ = nullptr;
+  t_type* type_ = nullptr;
 
   bool is_enum_ = false;
   t_enum* tenum_ = nullptr;

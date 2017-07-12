@@ -19,7 +19,14 @@
     %><%#field:type%><%!
       %>      <%field:name%>(<%!
       %><%#field:value%><%!
-        %><% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%><%!
+        %><%^type:enum?%><%!
+          %><% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%><%!
+        %><%/type:enum?%><%!
+        %><%#type:enum?%><%!
+          %><%#value:enum?%><% > common/cxx_value_prefix%><% > common/const_value%><% > common/cxx_value_suffix%><%/value:enum?%><%!
+          %><%^value:enum?%><%#field:enum_has_value%><% > common/namespace_cpp2%><%type:name%>::<%enumValue:name%><%/field:enum_has_value%><%/value:enum?%><%!
+          %><%^value:enum?%><%^field:enum_has_value%>static_cast<<% > common/namespace_cpp2%><%type:name%>>(<% > common/const_value%>)<%/field:enum_has_value%><%/value:enum?%><%!
+        %><%/type:enum?%><%!
       %><%/field:value%><%!
       %><%^field:value%><%!
         %><%#type:resolves_to_container?%><% > module_types_h/smart_ptr_constructor%><%/type:resolves_to_container?%><%!
