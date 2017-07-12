@@ -151,11 +151,9 @@ class <%struct:name%> : private apache::thrift::detail::st::ComparisonOperators<
 <%/struct:fields?%>
 <% > module_types_h/eq_overload%>
 <% > module_types_h/lt_overload%>
-<%#struct:getters_setters?%>
 <%#struct:fields?%>
 <% > module_types_h/getters_setters%>
 <%/struct:fields?%>
-<%/struct:getters_setters?%>
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);

@@ -52,22 +52,6 @@ class decorated_struct;
 
 class ContainerStruct;
 
-typedef std::map<std::string, int64_t>  decorated_map;
-
-}}}} // namespace
-
-namespace std {
-template<> struct hash<typename  ::apache::thrift::fixtures::types::decorated_map> {
-size_t operator()(const  ::apache::thrift::fixtures::types::decorated_map&) const;
-};
-template<> struct equal_to<typename  ::apache::thrift::fixtures::types::decorated_map> {
-bool operator()(const  ::apache::thrift::fixtures::types::decorated_map&, 
-const  ::apache::thrift::fixtures::types::decorated_map&) const;
-};
-} // namespace
-
-namespace apache { namespace thrift { namespace fixtures { namespace types {
-
 void swap(decorated_struct &a, decorated_struct &b);
 
 class decorated_struct : public apache::thrift::TStructType<decorated_struct> {

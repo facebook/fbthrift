@@ -372,6 +372,8 @@ class mstch_cpp2_struct : public mstch_struct {
     if (type->is_struct() || type->is_xception()) {
       for (auto const* f : dynamic_cast<t_struct const*>(type)->get_members()) {
         if (f->get_req() == t_field::e_req::T_OPTIONAL ||
+            f->get_type()->annotations_.count("cpp.template") ||
+            f->get_type()->annotations_.count("cpp2.template") ||
             !is_orderable(f->get_type())) {
           return false;
         }
