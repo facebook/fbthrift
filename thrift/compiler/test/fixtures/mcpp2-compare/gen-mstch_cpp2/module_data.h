@@ -88,4 +88,25 @@ template <> struct TEnumDataStorage< ::some::valid::ns::AnnotatedEnum2> {
 };
 
 }} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
+struct _MyEnumBEnumDataStorage {
+  using type = MyEnumB;
+  static constexpr const std::size_t size = 1;
+  static constexpr const std::array<MyEnumB, 1> values = {{
+    MyEnumB::AField,
+  }};
+  static constexpr const std::array<folly::StringPiece, 1> names = {{
+    "AField",
+  }};
+};
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+template <> struct TEnumDataStorage< ::some::valid::ns::MyEnumB> {
+  using storage_type =  ::some::valid::ns::_MyEnumBEnumDataStorage;
+};
+
+}} // apache::thrift
 

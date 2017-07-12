@@ -182,7 +182,12 @@ struct containerStruct {
   27: unionTypeDef fieldZ
   28: list<unionTypeDef> fieldAA
   29: map<IndirectionB, IndirectionC> fieldAB
+  30: MyEnumB fieldAC
 } (cpp2.noncopyable, cpp.methods = "void foo(const std::string& bar) {}")
+
+enum MyEnumB {
+  AField = 0,
+}
 
 struct MyIncludedStruct {
   1: includes.IncludedInt64 MyIncludedInt = includes.IncludedConstant

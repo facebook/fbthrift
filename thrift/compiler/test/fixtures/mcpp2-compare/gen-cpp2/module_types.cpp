@@ -93,6 +93,31 @@ template <> bool TEnumTraits< ::some::valid::ns::AnnotatedEnum2>::findValue(cons
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
+const _MyEnumB_EnumMapFactory::ValuesToNamesMapType _MyEnumB_VALUES_TO_NAMES = _MyEnumB_EnumMapFactory::makeValuesToNamesMap();
+const _MyEnumB_EnumMapFactory::NamesToValuesMapType _MyEnumB_NAMES_TO_VALUES = _MyEnumB_EnumMapFactory::makeNamesToValuesMap();
+
+}}} // some::valid::ns
+namespace std {
+
+} // std
+namespace apache { namespace thrift {
+
+template <> const std::size_t TEnumTraits< ::some::valid::ns::MyEnumB>::size = 1;
+template <> const folly::Range<const  ::some::valid::ns::MyEnumB*> TEnumTraits< ::some::valid::ns::MyEnumB>::values = folly::range( ::some::valid::ns::_MyEnumBEnumDataStorage::values);
+template <> const folly::Range<const folly::StringPiece*> TEnumTraits< ::some::valid::ns::MyEnumB>::names = folly::range( ::some::valid::ns::_MyEnumBEnumDataStorage::names);
+template <> const char* TEnumTraits< ::some::valid::ns::MyEnumB>::findName( ::some::valid::ns::MyEnumB value) {
+  static auto const map = folly::Indestructible< ::some::valid::ns::_MyEnumB_EnumMapFactory::ValuesToNamesMapType>{ ::some::valid::ns::_MyEnumB_EnumMapFactory::makeValuesToNamesMap()};
+  return findName(*map, value);
+}
+
+template <> bool TEnumTraits< ::some::valid::ns::MyEnumB>::findValue(const char* name,  ::some::valid::ns::MyEnumB* outValue) {
+  static auto const map = folly::Indestructible< ::some::valid::ns::_MyEnumB_EnumMapFactory::NamesToValuesMapType>{ ::some::valid::ns::_MyEnumB_EnumMapFactory::makeNamesToValuesMap()};
+  return findValue(*map, name, outValue);
+}
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
 void Empty::__clear() {
   // clear all fields
 }
@@ -841,6 +866,7 @@ void containerStruct::__clear() {
   fieldZ.clear();
   fieldAA.clear();
   fieldAB.clear();
+  fieldAC =  ::some::valid::ns::MyEnumB::AField;
   __isset.__clear();
 }
 
@@ -990,6 +1016,9 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
     return false;
   }
   if (!((fieldAB == rhs.fieldAB))) {
+    return false;
+  }
+  if (!((fieldAC == rhs.fieldAC))) {
     return false;
   }
   return true;
@@ -1263,6 +1292,7 @@ void swap(containerStruct& a, containerStruct& b) {
   swap(a.fieldZ, b.fieldZ);
   swap(a.fieldAA, b.fieldAA);
   swap(a.fieldAB, b.fieldAB);
+  swap(a.fieldAC, b.fieldAC);
   swap(a.__isset, b.__isset);
 }
 

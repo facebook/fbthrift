@@ -36,4 +36,14 @@ constexpr const std::array<folly::StringPiece, 3> _AnnotatedEnum2EnumDataStorage
 namespace apache { namespace thrift {
 
 }} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
+constexpr const std::size_t _MyEnumBEnumDataStorage::size;
+constexpr const std::array<MyEnumB, 1> _MyEnumBEnumDataStorage::values;
+constexpr const std::array<folly::StringPiece, 1> _MyEnumBEnumDataStorage::names;
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+}} // apache::thrift
 

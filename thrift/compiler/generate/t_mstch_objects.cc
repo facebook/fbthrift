@@ -150,11 +150,11 @@ mstch::node mstch_type::get_struct() {
 }
 
 mstch::node mstch_type::get_enum() {
-  if (type_->is_enum()) {
+  if (resolved_type_->is_enum()) {
     std::string id = type_->get_program()->get_name() +
         get_type_namespace(type_->get_program());
     return generate_elements_cached(
-        std::vector<t_enum const*>{dynamic_cast<t_enum const*>(type_)},
+        std::vector<t_enum const*>{dynamic_cast<t_enum const*>(resolved_type_)},
         generators_->enum_generator_.get(),
         cache_->enums_,
         id,
