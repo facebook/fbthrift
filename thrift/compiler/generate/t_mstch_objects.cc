@@ -113,8 +113,8 @@ std::shared_ptr<mstch_base> const_generator::generate(
     std::shared_ptr<mstch_generators const> generators,
     std::shared_ptr<mstch_cache> cache,
     ELEMENT_POSITION pos,
-    int32_t /*index*/) const {
-  return std::make_shared<mstch_const>(cnst, generators, cache, pos);
+    int32_t index) const {
+  return std::make_shared<mstch_const>(cnst, generators, cache, pos, index);
 }
 
 std::shared_ptr<mstch_base> program_generator::generate(
@@ -407,6 +407,23 @@ mstch::node mstch_const::type() {
 mstch::node mstch_const::value() {
   return generators_->const_value_generator_->generate(
       cnst_->get_value(), generators_, cache_, pos_);
+}
+
+mstch::node mstch_const::get_struct() {
+  std::vector<t_const*> constants;
+  if (cnst_->get_type()->is_struct() || cnst_->get_type()->is_xception()) {
+    auto const* strct = dynamic_cast<t_struct const*>(cnst_->get_type());
+    for (auto member : cnst_->get_value()->get_map()) {
+      auto constant = std::make_unique<t_const>(
+          nullptr,
+          strct->get_member(member.first->get_string())->get_type(),
+          "",
+          member.second);
+      constants.push_back(constant.get());
+    }
+  }
+  return generate_elements(
+      constants, generators_->const_generator_.get(), generators_, cache_);
 }
 
 mstch::node mstch_program::structs() {

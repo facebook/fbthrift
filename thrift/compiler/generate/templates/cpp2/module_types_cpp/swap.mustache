@@ -28,9 +28,9 @@ void swap(Struct& a, Struct& b) {
 <%#struct:fields%>
   swap(a.<%field:name%>, b.<%field:name%>);
 <%/struct:fields%>
-<%#struct:isset_fields?%>
+<%#struct:non_req_fields?%>
   swap(a.__isset, b.__isset);
-<%/struct:isset_fields?%>
+<%/struct:non_req_fields?%>
 <%^struct:fields?%>
   (void)a;
   (void)b;

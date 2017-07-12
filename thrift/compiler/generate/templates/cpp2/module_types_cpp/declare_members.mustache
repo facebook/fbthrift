@@ -33,7 +33,7 @@
   <%field:name%>.clear();
 <%/field:cpp_ref?%>
 <%/type:resolves_to_container?%>
-<%#type:struct?%>
+<%#type:non_empty_struct?%>
 <%^field:cpp_ref?%>
   ::apache::thrift::Cpp2Ops< <% > Type%>>::clear(&<%field:name%>);
 <%/field:cpp_ref?%>
@@ -46,9 +46,9 @@
 <%#field:cpp_ref_shared_const?%>
   <%field:name%>.reset();
 <%/field:cpp_ref_shared_const?%>
-<%/type:struct?%>
+<%/type:non_empty_struct?%>
 <%/field:type%><%/struct:fields%>
-<%#struct:isset_fields?%>
+<%#struct:non_req_fields?%>
   __isset.__clear();
-<%/struct:isset_fields?%>
+<%/struct:non_req_fields?%>
 }

@@ -159,7 +159,7 @@ class const_generator {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const;
+      int32_t index = 0) const;
 };
 
 class program_generator {
@@ -832,24 +832,36 @@ class mstch_const : public mstch_base {
       t_const const* cnst,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos)
-      : mstch_base(generators, cache, pos), cnst_(cnst) {
+      ELEMENT_POSITION pos,
+      int32_t index)
+      : mstch_base(generators, cache, pos), cnst_(cnst), index_(index) {
     register_methods(
         this,
         {
             {"constant:name", &mstch_const::name},
+            {"constant:index", &mstch_const::index},
+            {"constant:index_plus_one", &mstch_const::index_plus_one},
             {"constant:type", &mstch_const::type},
             {"constant:value", &mstch_const::value},
+            {"constant:const_struct", &mstch_const::get_struct},
         });
   }
   mstch::node name() {
     return cnst_->get_name();
   }
+  mstch::node index() {
+    return index_;
+  }
+  mstch::node index_plus_one() {
+    return index_ + 1;
+  }
   mstch::node type();
   mstch::node value();
+  mstch::node get_struct();
 
  protected:
   t_const const* cnst_;
+  int32_t index_;
 };
 
 class mstch_program : public mstch_base {

@@ -2,5 +2,5 @@ android_lite:annotate src/module.thrift
 cpp src/module.thrift
 cpp2 src/module.thrift
 java src/module.thrift
-#mstch_cpp2 src/module.thrift
+mstch_cpp2 src/module.thrift
 cpp:json src/module2.thrift

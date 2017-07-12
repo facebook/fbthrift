@@ -78,7 +78,5 @@ Map:
 %><%/value:map?%><%!
 %><%/type:struct%><%!
 %><%#type:struct%><%!
-  %><%#value:map?%><%!
-    %><% > common/namespace_cpp2%><%type:name%>(<%#value:mapElements%><%#element:value%>::apache::thrift::detail::wrap_argument<<%value:index_plus_one%>>(<% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%>)<%^last?%>, <%/last?%><%/element:value%><%/value:mapElements%>)<%!
-  %><%/value:map?%><%!
+    %><% > common/namespace_cpp2%><%type:name%>(<%#constant:const_struct%><%#constant:type%><%#constant:value%>::apache::thrift::detail::wrap_argument<<%constant:index_plus_one%>>(<% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%>)<%^last?%>, <%/last?%><%/constant:value%><%/constant:type%><%/constant:const_struct%>)<%!
 %><%/type:struct%>

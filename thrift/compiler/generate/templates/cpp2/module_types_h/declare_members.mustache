@@ -17,17 +17,22 @@
 %><%#struct:fields%><%#field:type%>
   <% > RefType%> <%field:name%>;
 <%/field:type%><%/struct:fields%>
-<%#struct:isset_fields?%>
+<%#struct:non_req_fields?%>
 
   struct __isset {
+<%#struct:isset_fields?%>
     void __clear() {
-<%#struct:fields%><%^field:required?%><%^field:cpp_ref?%>
+<%#struct:isset_fields%>
       <%field:name%> = false;
-<%/field:cpp_ref?%><%/field:required?%><%/struct:fields%>
+<%/struct:isset_fields%>
     }
-
-<%#struct:fields%><%^field:required?%><%^field:cpp_ref?%>
-    bool <%field:name%> = false;
-<%/field:cpp_ref?%><%/field:required?%><%/struct:fields%>
-  } __isset;
 <%/struct:isset_fields?%>
+<%^struct:isset_fields?%>
+    void __clear() {}
+<%/struct:isset_fields?%>
+
+<%#struct:isset_fields%>
+    bool <%field:name%> = false;
+<%/struct:isset_fields%>
+  } __isset;
+<%/struct:non_req_fields?%>

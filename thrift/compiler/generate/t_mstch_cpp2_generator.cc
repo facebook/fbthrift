@@ -154,6 +154,7 @@ class mstch_cpp2_type : public mstch_type {
             {"type:string_or_binary?", &mstch_cpp2_type::is_string_or_binary},
             {"type:cpp_template", &mstch_cpp2_type::cpp_template},
             {"type:cpp_indirection", &mstch_cpp2_type::cpp_indirection},
+            {"type:non_empty_struct?", &mstch_cpp2_type::is_non_empty_struct},
         });
   }
   virtual std::string get_type_namespace(t_program const* program) override {
@@ -223,6 +224,13 @@ class mstch_cpp2_type : public mstch_type {
     }
     return std::string();
   }
+  mstch::node is_non_empty_struct() {
+    if (resolved_type_->is_struct() || resolved_type_->is_xception()) {
+      auto as_struct = dynamic_cast<t_struct const*>(resolved_type_);
+      return !as_struct->get_members().empty();
+    }
+    return false;
+  }
 };
 
 class mstch_cpp2_field : public mstch_field {
@@ -291,6 +299,7 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:final", &mstch_cpp2_struct::cpp_final},
             {"struct:message", &mstch_cpp2_struct::message},
             {"struct:struct_list", &mstch_cpp2_struct::struct_list},
+            {"struct:non_req_fields?", &mstch_cpp2_struct::has_non_req_fields},
             {"struct:isset_fields?", &mstch_cpp2_struct::has_isset_fields},
             {"struct:isset_fields", &mstch_cpp2_struct::isset_fields},
         });
@@ -299,7 +308,8 @@ class mstch_cpp2_struct : public mstch_struct {
     for (auto const* field : strct_->get_members()) {
       auto const* resolved_typedef = resolve_typedef(field->get_type());
       if (resolved_typedef->is_base_type() || resolved_typedef->is_enum() ||
-          resolved_typedef->is_struct()) {
+          resolved_typedef->is_struct() ||
+          field->get_req() == t_field::e_req::T_OPTIONAL) {
         return true;
       }
     }
@@ -309,7 +319,12 @@ class mstch_cpp2_struct : public mstch_struct {
     for (auto const* field : strct_->get_members()) {
       auto const* resolved_typedef = resolve_typedef(field->get_type());
       if (resolved_typedef->is_base_type() || resolved_typedef->is_enum() ||
-          resolved_typedef->is_struct()) {
+          resolved_typedef->is_struct() ||
+          field->annotations_.count("cpp.ref") ||
+          field->annotations_.count("cpp2.ref") ||
+          field->annotations_.count("cpp.ref_type") ||
+          field->annotations_.count("cpp2.ref_type") ||
+          field->get_req() == t_field::e_req::T_OPTIONAL) {
         return true;
       }
     }
@@ -381,7 +396,11 @@ class mstch_cpp2_struct : public mstch_struct {
   mstch::node has_cpp_ref() {
     for (auto const* f : strct_->get_members()) {
       if (f->annotations_.count("cpp.ref") ||
-          f->annotations_.count("cpp2.ref")) {
+          f->annotations_.count("cpp2.ref") ||
+          (f->annotations_.count("cpp.ref_type") &&
+           f->annotations_.at("cpp.ref_type") == "unique") ||
+          (f->annotations_.count("cpp2.ref_type") &&
+           f->annotations_.at("cpp.ref_type") == "unique")) {
         return true;
       }
     }
@@ -445,6 +464,14 @@ class mstch_cpp2_struct : public mstch_struct {
       a.push_back(m);
     }
     return a;
+  }
+  mstch::node has_non_req_fields() {
+    return std::any_of(
+        std::begin(strct_->get_members()),
+        std::end(strct_->get_members()),
+        [](const auto* field) {
+          return field->get_req() != t_field::e_req::T_REQUIRED;
+        });
   }
   mstch::node has_isset_fields() {
     for (const auto* field : strct_->get_members()) {
@@ -617,8 +644,9 @@ class mstch_cpp2_const : public mstch_const {
       t_const const* cnst,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION const pos)
-      : mstch_const(cnst, generators, cache, pos) {
+      ELEMENT_POSITION const pos,
+      int32_t index)
+      : mstch_const(cnst, generators, cache, pos, index) {
     register_methods(
         this,
         {
@@ -854,8 +882,9 @@ class const_cpp2_generator : public const_generator {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const override {
-    return std::make_shared<mstch_cpp2_const>(cnst, generators, cache, pos);
+      int32_t index = 0) const override {
+    return std::make_shared<mstch_cpp2_const>(
+        cnst, generators, cache, pos, index);
   }
 };
 
