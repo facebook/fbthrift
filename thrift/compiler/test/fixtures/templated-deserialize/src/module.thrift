@@ -1,6 +1,6 @@
 typedef i64 (cpp.type = "Foo", cpp.indirection=".value") IndirectionA
-typedef double (cpp.type = "Bar", cpp.indirection=".value") IndirectionB
 typedef i32 (cpp.type = "Baz", cpp.indirection=".__value()") IndirectionC
+typedef double (cpp.type = "Bar", cpp.indirection=".value") IndirectionB
 
 enum MyEnumA {
   fieldA = 1
@@ -19,7 +19,7 @@ struct containerStruct {
   3: set<i32> fieldC = [1, 2, 3, 4]
   4: string fieldD
   5: string fieldE = "somestring"
-  6: list<list<list<i32>>> fieldF = aListOfLists
+  6: list<list<list<i32>>> fieldF
   7: map<string, map<string, map<string, i32>>> fieldG
   8: list<set<i32>> fieldH
   9: bool fieldI = true
