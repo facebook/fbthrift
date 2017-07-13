@@ -695,19 +695,58 @@ cdef class List__i16:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
-    def __getitem__(self, int index):
-        size = len(self)
-        # Convert a negative index
-        if index < 0:
-            index = size - index
-        if index >= size:
-            raise IndexError('list index out of range')
-        # Support negative indexes
-        if index < 0:
-            index = size - index
-        cdef int16_t citem = (
-            deref(self._cpp_obj.get())[index])
-        return citem
+    def __getitem__(self, object index_obj):
+        cdef int index
+        cdef shared_ptr[vector[int16_t]] c_inst
+        cdef int16_t citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[vector[int16_t]]()
+            start_val = index_obj.start
+            stop_val = index_obj.stop
+            step_val = index_obj.step
+            sz = deref(self._cpp_obj).size()
+
+            if step_val == 0 or step_val is None:
+                step_val = 1
+            if step_val > 0:
+                if start_val is None:
+                    start_val = 0
+                elif start_val > sz:
+                    start_val = sz
+                if stop_val is None:
+                    stop_val = sz
+                elif stop_val > sz:
+                    stop_val = sz
+            else:
+                if start_val is None:
+                    start_val = sz - 1
+                elif start_val > sz - 1:
+                    start_val = sz - 1
+                if stop_val is None:
+                    stop_val = -1
+                elif stop_val > sz - 1:
+                    stop_val = sz - 1
+
+            index = start_val
+            while ((step_val > 0 and index < stop_val) or
+                   (step_val < 0 and index > stop_val)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+                index += step_val
+            return List__i16.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size - index
+            if index >= size:
+                raise IndexError('list index out of range')
+            # Support negative indexes
+            if index < 0:
+                index = size - index
+            citem = deref(self._cpp_obj.get())[index]
+            return citem
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -805,19 +844,58 @@ cdef class List__i32:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
-    def __getitem__(self, int index):
-        size = len(self)
-        # Convert a negative index
-        if index < 0:
-            index = size - index
-        if index >= size:
-            raise IndexError('list index out of range')
-        # Support negative indexes
-        if index < 0:
-            index = size - index
-        cdef int32_t citem = (
-            deref(self._cpp_obj.get())[index])
-        return citem
+    def __getitem__(self, object index_obj):
+        cdef int index
+        cdef shared_ptr[vector[int32_t]] c_inst
+        cdef int32_t citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[vector[int32_t]]()
+            start_val = index_obj.start
+            stop_val = index_obj.stop
+            step_val = index_obj.step
+            sz = deref(self._cpp_obj).size()
+
+            if step_val == 0 or step_val is None:
+                step_val = 1
+            if step_val > 0:
+                if start_val is None:
+                    start_val = 0
+                elif start_val > sz:
+                    start_val = sz
+                if stop_val is None:
+                    stop_val = sz
+                elif stop_val > sz:
+                    stop_val = sz
+            else:
+                if start_val is None:
+                    start_val = sz - 1
+                elif start_val > sz - 1:
+                    start_val = sz - 1
+                if stop_val is None:
+                    stop_val = -1
+                elif stop_val > sz - 1:
+                    stop_val = sz - 1
+
+            index = start_val
+            while ((step_val > 0 and index < stop_val) or
+                   (step_val < 0 and index > stop_val)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+                index += step_val
+            return List__i32.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size - index
+            if index >= size:
+                raise IndexError('list index out of range')
+            # Support negative indexes
+            if index < 0:
+                index = size - index
+            citem = deref(self._cpp_obj.get())[index]
+            return citem
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -915,19 +993,58 @@ cdef class List__i64:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
-    def __getitem__(self, int index):
-        size = len(self)
-        # Convert a negative index
-        if index < 0:
-            index = size - index
-        if index >= size:
-            raise IndexError('list index out of range')
-        # Support negative indexes
-        if index < 0:
-            index = size - index
-        cdef int64_t citem = (
-            deref(self._cpp_obj.get())[index])
-        return citem
+    def __getitem__(self, object index_obj):
+        cdef int index
+        cdef shared_ptr[vector[int64_t]] c_inst
+        cdef int64_t citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[vector[int64_t]]()
+            start_val = index_obj.start
+            stop_val = index_obj.stop
+            step_val = index_obj.step
+            sz = deref(self._cpp_obj).size()
+
+            if step_val == 0 or step_val is None:
+                step_val = 1
+            if step_val > 0:
+                if start_val is None:
+                    start_val = 0
+                elif start_val > sz:
+                    start_val = sz
+                if stop_val is None:
+                    stop_val = sz
+                elif stop_val > sz:
+                    stop_val = sz
+            else:
+                if start_val is None:
+                    start_val = sz - 1
+                elif start_val > sz - 1:
+                    start_val = sz - 1
+                if stop_val is None:
+                    stop_val = -1
+                elif stop_val > sz - 1:
+                    stop_val = sz - 1
+
+            index = start_val
+            while ((step_val > 0 and index < stop_val) or
+                   (step_val < 0 and index > stop_val)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+                index += step_val
+            return List__i64.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size - index
+            if index >= size:
+                raise IndexError('list index out of range')
+            # Support negative indexes
+            if index < 0:
+                index = size - index
+            citem = deref(self._cpp_obj.get())[index]
+            return citem
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -1025,19 +1142,58 @@ cdef class List__string:
                 deref(c_inst).push_back(item.encode('UTF-8'))
         return move_unique(c_inst)
 
-    def __getitem__(self, int index):
-        size = len(self)
-        # Convert a negative index
-        if index < 0:
-            index = size - index
-        if index >= size:
-            raise IndexError('list index out of range')
-        # Support negative indexes
-        if index < 0:
-            index = size - index
-        cdef string citem = (
-            deref(self._cpp_obj.get())[index])
-        return bytes(citem).decode('UTF-8')
+    def __getitem__(self, object index_obj):
+        cdef int index
+        cdef shared_ptr[vector[string]] c_inst
+        cdef string citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[vector[string]]()
+            start_val = index_obj.start
+            stop_val = index_obj.stop
+            step_val = index_obj.step
+            sz = deref(self._cpp_obj).size()
+
+            if step_val == 0 or step_val is None:
+                step_val = 1
+            if step_val > 0:
+                if start_val is None:
+                    start_val = 0
+                elif start_val > sz:
+                    start_val = sz
+                if stop_val is None:
+                    stop_val = sz
+                elif stop_val > sz:
+                    stop_val = sz
+            else:
+                if start_val is None:
+                    start_val = sz - 1
+                elif start_val > sz - 1:
+                    start_val = sz - 1
+                if stop_val is None:
+                    stop_val = -1
+                elif stop_val > sz - 1:
+                    stop_val = sz - 1
+
+            index = start_val
+            while ((step_val > 0 and index < stop_val) or
+                   (step_val < 0 and index > stop_val)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+                index += step_val
+            return List__string.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size - index
+            if index >= size:
+                raise IndexError('list index out of range')
+            # Support negative indexes
+            if index < 0:
+                index = size - index
+            citem = deref(self._cpp_obj.get())[index]
+            return bytes(citem).decode('UTF-8')
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -1135,19 +1291,58 @@ cdef class List__SimpleStruct:
                 deref(c_inst).push_back(deref((<SimpleStruct>item)._cpp_obj))
         return move_unique(c_inst)
 
-    def __getitem__(self, int index):
-        size = len(self)
-        # Convert a negative index
-        if index < 0:
-            index = size - index
-        if index >= size:
-            raise IndexError('list index out of range')
-        # Support negative indexes
-        if index < 0:
-            index = size - index
-        cdef cSimpleStruct citem = (
-            deref(self._cpp_obj.get())[index])
-        return SimpleStruct.create(make_shared[cSimpleStruct](citem))
+    def __getitem__(self, object index_obj):
+        cdef int index
+        cdef shared_ptr[vector[cSimpleStruct]] c_inst
+        cdef cSimpleStruct citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[vector[cSimpleStruct]]()
+            start_val = index_obj.start
+            stop_val = index_obj.stop
+            step_val = index_obj.step
+            sz = deref(self._cpp_obj).size()
+
+            if step_val == 0 or step_val is None:
+                step_val = 1
+            if step_val > 0:
+                if start_val is None:
+                    start_val = 0
+                elif start_val > sz:
+                    start_val = sz
+                if stop_val is None:
+                    stop_val = sz
+                elif stop_val > sz:
+                    stop_val = sz
+            else:
+                if start_val is None:
+                    start_val = sz - 1
+                elif start_val > sz - 1:
+                    start_val = sz - 1
+                if stop_val is None:
+                    stop_val = -1
+                elif stop_val > sz - 1:
+                    stop_val = sz - 1
+
+            index = start_val
+            while ((step_val > 0 and index < stop_val) or
+                   (step_val < 0 and index > stop_val)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+                index += step_val
+            return List__SimpleStruct.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size - index
+            if index >= size:
+                raise IndexError('list index out of range')
+            # Support negative indexes
+            if index < 0:
+                index = size - index
+            citem = deref(self._cpp_obj.get())[index]
+            return SimpleStruct.create(make_shared[cSimpleStruct](citem))
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -1954,19 +2149,58 @@ cdef class List__List__i32:
                 deref(c_inst).push_back(vector[int32_t](deref(List__i32(item)._cpp_obj.get())))
         return move_unique(c_inst)
 
-    def __getitem__(self, int index):
-        size = len(self)
-        # Convert a negative index
-        if index < 0:
-            index = size - index
-        if index >= size:
-            raise IndexError('list index out of range')
-        # Support negative indexes
-        if index < 0:
-            index = size - index
-        cdef vector[int32_t] citem = (
-            deref(self._cpp_obj.get())[index])
-        return List__i32.create(
+    def __getitem__(self, object index_obj):
+        cdef int index
+        cdef shared_ptr[vector[vector[int32_t]]] c_inst
+        cdef vector[int32_t] citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[vector[vector[int32_t]]]()
+            start_val = index_obj.start
+            stop_val = index_obj.stop
+            step_val = index_obj.step
+            sz = deref(self._cpp_obj).size()
+
+            if step_val == 0 or step_val is None:
+                step_val = 1
+            if step_val > 0:
+                if start_val is None:
+                    start_val = 0
+                elif start_val > sz:
+                    start_val = sz
+                if stop_val is None:
+                    stop_val = sz
+                elif stop_val > sz:
+                    stop_val = sz
+            else:
+                if start_val is None:
+                    start_val = sz - 1
+                elif start_val > sz - 1:
+                    start_val = sz - 1
+                if stop_val is None:
+                    stop_val = -1
+                elif stop_val > sz - 1:
+                    stop_val = sz - 1
+
+            index = start_val
+            while ((step_val > 0 and index < stop_val) or
+                   (step_val < 0 and index > stop_val)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+                index += step_val
+            return List__List__i32.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size - index
+            if index >= size:
+                raise IndexError('list index out of range')
+            # Support negative indexes
+            if index < 0:
+                index = size - index
+            citem = deref(self._cpp_obj.get())[index]
+            return List__i32.create(
     make_shared[vector[int32_t]](citem))
 
     def __len__(self):
@@ -2297,19 +2531,58 @@ cdef class List__Set__string:
                 deref(c_inst).push_back(cset[string](deref(Set__string(item)._cpp_obj.get())))
         return move_unique(c_inst)
 
-    def __getitem__(self, int index):
-        size = len(self)
-        # Convert a negative index
-        if index < 0:
-            index = size - index
-        if index >= size:
-            raise IndexError('list index out of range')
-        # Support negative indexes
-        if index < 0:
-            index = size - index
-        cdef cset[string] citem = (
-            deref(self._cpp_obj.get())[index])
-        return Set__string.create(
+    def __getitem__(self, object index_obj):
+        cdef int index
+        cdef shared_ptr[vector[cset[string]]] c_inst
+        cdef cset[string] citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[vector[cset[string]]]()
+            start_val = index_obj.start
+            stop_val = index_obj.stop
+            step_val = index_obj.step
+            sz = deref(self._cpp_obj).size()
+
+            if step_val == 0 or step_val is None:
+                step_val = 1
+            if step_val > 0:
+                if start_val is None:
+                    start_val = 0
+                elif start_val > sz:
+                    start_val = sz
+                if stop_val is None:
+                    stop_val = sz
+                elif stop_val > sz:
+                    stop_val = sz
+            else:
+                if start_val is None:
+                    start_val = sz - 1
+                elif start_val > sz - 1:
+                    start_val = sz - 1
+                if stop_val is None:
+                    stop_val = -1
+                elif stop_val > sz - 1:
+                    stop_val = sz - 1
+
+            index = start_val
+            while ((step_val > 0 and index < stop_val) or
+                   (step_val < 0 and index > stop_val)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+                index += step_val
+            return List__Set__string.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size - index
+            if index >= size:
+                raise IndexError('list index out of range')
+            # Support negative indexes
+            if index < 0:
+                index = size - index
+            citem = deref(self._cpp_obj.get())[index]
+            return Set__string.create(
     make_shared[cset[string]](citem))
 
     def __len__(self):
@@ -2527,19 +2800,58 @@ cdef class List__List__string:
                 deref(c_inst).push_back(vector[string](deref(List__string(item)._cpp_obj.get())))
         return move_unique(c_inst)
 
-    def __getitem__(self, int index):
-        size = len(self)
-        # Convert a negative index
-        if index < 0:
-            index = size - index
-        if index >= size:
-            raise IndexError('list index out of range')
-        # Support negative indexes
-        if index < 0:
-            index = size - index
-        cdef vector[string] citem = (
-            deref(self._cpp_obj.get())[index])
-        return List__string.create(
+    def __getitem__(self, object index_obj):
+        cdef int index
+        cdef shared_ptr[vector[vector[string]]] c_inst
+        cdef vector[string] citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[vector[vector[string]]]()
+            start_val = index_obj.start
+            stop_val = index_obj.stop
+            step_val = index_obj.step
+            sz = deref(self._cpp_obj).size()
+
+            if step_val == 0 or step_val is None:
+                step_val = 1
+            if step_val > 0:
+                if start_val is None:
+                    start_val = 0
+                elif start_val > sz:
+                    start_val = sz
+                if stop_val is None:
+                    stop_val = sz
+                elif stop_val > sz:
+                    stop_val = sz
+            else:
+                if start_val is None:
+                    start_val = sz - 1
+                elif start_val > sz - 1:
+                    start_val = sz - 1
+                if stop_val is None:
+                    stop_val = -1
+                elif stop_val > sz - 1:
+                    stop_val = sz - 1
+
+            index = start_val
+            while ((step_val > 0 and index < stop_val) or
+                   (step_val < 0 and index > stop_val)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+                index += step_val
+            return List__List__string.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size - index
+            if index >= size:
+                raise IndexError('list index out of range')
+            # Support negative indexes
+            if index < 0:
+                index = size - index
+            citem = deref(self._cpp_obj.get())[index]
+            return List__string.create(
     make_shared[vector[string]](citem))
 
     def __len__(self):
@@ -2640,19 +2952,58 @@ cdef class List__Set__i32:
                 deref(c_inst).push_back(cset[int32_t](deref(Set__i32(item)._cpp_obj.get())))
         return move_unique(c_inst)
 
-    def __getitem__(self, int index):
-        size = len(self)
-        # Convert a negative index
-        if index < 0:
-            index = size - index
-        if index >= size:
-            raise IndexError('list index out of range')
-        # Support negative indexes
-        if index < 0:
-            index = size - index
-        cdef cset[int32_t] citem = (
-            deref(self._cpp_obj.get())[index])
-        return Set__i32.create(
+    def __getitem__(self, object index_obj):
+        cdef int index
+        cdef shared_ptr[vector[cset[int32_t]]] c_inst
+        cdef cset[int32_t] citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[vector[cset[int32_t]]]()
+            start_val = index_obj.start
+            stop_val = index_obj.stop
+            step_val = index_obj.step
+            sz = deref(self._cpp_obj).size()
+
+            if step_val == 0 or step_val is None:
+                step_val = 1
+            if step_val > 0:
+                if start_val is None:
+                    start_val = 0
+                elif start_val > sz:
+                    start_val = sz
+                if stop_val is None:
+                    stop_val = sz
+                elif stop_val > sz:
+                    stop_val = sz
+            else:
+                if start_val is None:
+                    start_val = sz - 1
+                elif start_val > sz - 1:
+                    start_val = sz - 1
+                if stop_val is None:
+                    stop_val = -1
+                elif stop_val > sz - 1:
+                    stop_val = sz - 1
+
+            index = start_val
+            while ((step_val > 0 and index < stop_val) or
+                   (step_val < 0 and index > stop_val)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+                index += step_val
+            return List__Set__i32.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size - index
+            if index >= size:
+                raise IndexError('list index out of range')
+            # Support negative indexes
+            if index < 0:
+                index = size - index
+            citem = deref(self._cpp_obj.get())[index]
+            return Set__i32.create(
     make_shared[cset[int32_t]](citem))
 
     def __len__(self):
@@ -2753,19 +3104,58 @@ cdef class List__Map__string_string:
                 deref(c_inst).push_back(cmap[string,string](deref(Map__string_string(item)._cpp_obj.get())))
         return move_unique(c_inst)
 
-    def __getitem__(self, int index):
-        size = len(self)
-        # Convert a negative index
-        if index < 0:
-            index = size - index
-        if index >= size:
-            raise IndexError('list index out of range')
-        # Support negative indexes
-        if index < 0:
-            index = size - index
-        cdef cmap[string,string] citem = (
-            deref(self._cpp_obj.get())[index])
-        return Map__string_string.create(
+    def __getitem__(self, object index_obj):
+        cdef int index
+        cdef shared_ptr[vector[cmap[string,string]]] c_inst
+        cdef cmap[string,string] citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[vector[cmap[string,string]]]()
+            start_val = index_obj.start
+            stop_val = index_obj.stop
+            step_val = index_obj.step
+            sz = deref(self._cpp_obj).size()
+
+            if step_val == 0 or step_val is None:
+                step_val = 1
+            if step_val > 0:
+                if start_val is None:
+                    start_val = 0
+                elif start_val > sz:
+                    start_val = sz
+                if stop_val is None:
+                    stop_val = sz
+                elif stop_val > sz:
+                    stop_val = sz
+            else:
+                if start_val is None:
+                    start_val = sz - 1
+                elif start_val > sz - 1:
+                    start_val = sz - 1
+                if stop_val is None:
+                    stop_val = -1
+                elif stop_val > sz - 1:
+                    stop_val = sz - 1
+
+            index = start_val
+            while ((step_val > 0 and index < stop_val) or
+                   (step_val < 0 and index > stop_val)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+                index += step_val
+            return List__Map__string_string.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size - index
+            if index >= size:
+                raise IndexError('list index out of range')
+            # Support negative indexes
+            if index < 0:
+                index = size - index
+            citem = deref(self._cpp_obj.get())[index]
+            return Map__string_string.create(
     make_shared[cmap[string,string]](citem))
 
     def __len__(self):
@@ -2866,19 +3256,58 @@ cdef class List__binary:
                 deref(c_inst).push_back(item)
         return move_unique(c_inst)
 
-    def __getitem__(self, int index):
-        size = len(self)
-        # Convert a negative index
-        if index < 0:
-            index = size - index
-        if index >= size:
-            raise IndexError('list index out of range')
-        # Support negative indexes
-        if index < 0:
-            index = size - index
-        cdef string citem = (
-            deref(self._cpp_obj.get())[index])
-        return bytes(citem)
+    def __getitem__(self, object index_obj):
+        cdef int index
+        cdef shared_ptr[vector[string]] c_inst
+        cdef string citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[vector[string]]()
+            start_val = index_obj.start
+            stop_val = index_obj.stop
+            step_val = index_obj.step
+            sz = deref(self._cpp_obj).size()
+
+            if step_val == 0 or step_val is None:
+                step_val = 1
+            if step_val > 0:
+                if start_val is None:
+                    start_val = 0
+                elif start_val > sz:
+                    start_val = sz
+                if stop_val is None:
+                    stop_val = sz
+                elif stop_val > sz:
+                    stop_val = sz
+            else:
+                if start_val is None:
+                    start_val = sz - 1
+                elif start_val > sz - 1:
+                    start_val = sz - 1
+                if stop_val is None:
+                    stop_val = -1
+                elif stop_val > sz - 1:
+                    stop_val = sz - 1
+
+            index = start_val
+            while ((step_val > 0 and index < stop_val) or
+                   (step_val < 0 and index > stop_val)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+                index += step_val
+            return List__binary.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size - index
+            if index >= size:
+                raise IndexError('list index out of range')
+            # Support negative indexes
+            if index < 0:
+                index = size - index
+            citem = deref(self._cpp_obj.get())[index]
+            return bytes(citem)
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -3161,19 +3590,58 @@ cdef class List__AnEnum:
                 deref(c_inst).push_back(AnEnum_to_cpp(item))
         return move_unique(c_inst)
 
-    def __getitem__(self, int index):
-        size = len(self)
-        # Convert a negative index
-        if index < 0:
-            index = size - index
-        if index >= size:
-            raise IndexError('list index out of range')
-        # Support negative indexes
-        if index < 0:
-            index = size - index
-        cdef cAnEnum citem = (
-            deref(self._cpp_obj.get())[index])
-        return AnEnum(<int> citem)
+    def __getitem__(self, object index_obj):
+        cdef int index
+        cdef shared_ptr[vector[cAnEnum]] c_inst
+        cdef cAnEnum citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[vector[cAnEnum]]()
+            start_val = index_obj.start
+            stop_val = index_obj.stop
+            step_val = index_obj.step
+            sz = deref(self._cpp_obj).size()
+
+            if step_val == 0 or step_val is None:
+                step_val = 1
+            if step_val > 0:
+                if start_val is None:
+                    start_val = 0
+                elif start_val > sz:
+                    start_val = sz
+                if stop_val is None:
+                    stop_val = sz
+                elif stop_val > sz:
+                    stop_val = sz
+            else:
+                if start_val is None:
+                    start_val = sz - 1
+                elif start_val > sz - 1:
+                    start_val = sz - 1
+                if stop_val is None:
+                    stop_val = -1
+                elif stop_val > sz - 1:
+                    stop_val = sz - 1
+
+            index = start_val
+            while ((step_val > 0 and index < stop_val) or
+                   (step_val < 0 and index > stop_val)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+                index += step_val
+            return List__AnEnum.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size - index
+            if index >= size:
+                raise IndexError('list index out of range')
+            # Support negative indexes
+            if index < 0:
+                index = size - index
+            citem = deref(self._cpp_obj.get())[index]
+            return AnEnum(<int> citem)
 
     def __len__(self):
         return deref(self._cpp_obj).size()
@@ -3384,19 +3852,58 @@ cdef class List__Map__i32_double:
                 deref(c_inst).push_back(cmap[int32_t,double](deref(Map__i32_double(item)._cpp_obj.get())))
         return move_unique(c_inst)
 
-    def __getitem__(self, int index):
-        size = len(self)
-        # Convert a negative index
-        if index < 0:
-            index = size - index
-        if index >= size:
-            raise IndexError('list index out of range')
-        # Support negative indexes
-        if index < 0:
-            index = size - index
-        cdef cmap[int32_t,double] citem = (
-            deref(self._cpp_obj.get())[index])
-        return Map__i32_double.create(
+    def __getitem__(self, object index_obj):
+        cdef int index
+        cdef shared_ptr[vector[cmap[int32_t,double]]] c_inst
+        cdef cmap[int32_t,double] citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[vector[cmap[int32_t,double]]]()
+            start_val = index_obj.start
+            stop_val = index_obj.stop
+            step_val = index_obj.step
+            sz = deref(self._cpp_obj).size()
+
+            if step_val == 0 or step_val is None:
+                step_val = 1
+            if step_val > 0:
+                if start_val is None:
+                    start_val = 0
+                elif start_val > sz:
+                    start_val = sz
+                if stop_val is None:
+                    stop_val = sz
+                elif stop_val > sz:
+                    stop_val = sz
+            else:
+                if start_val is None:
+                    start_val = sz - 1
+                elif start_val > sz - 1:
+                    start_val = sz - 1
+                if stop_val is None:
+                    stop_val = -1
+                elif stop_val > sz - 1:
+                    stop_val = sz - 1
+
+            index = start_val
+            while ((step_val > 0 and index < stop_val) or
+                   (step_val < 0 and index > stop_val)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+                index += step_val
+            return List__Map__i32_double.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size - index
+            if index >= size:
+                raise IndexError('list index out of range')
+            # Support negative indexes
+            if index < 0:
+                index = size - index
+            citem = deref(self._cpp_obj.get())[index]
+            return Map__i32_double.create(
     make_shared[cmap[int32_t,double]](citem))
 
     def __len__(self):
