@@ -24,24 +24,31 @@ const (
   Animal_TARANTULA Animal = 3
 )
 
+var AnimalToName = map[Animal]string {
+  Animal_DOG: "DOG",
+  Animal_CAT: "CAT",
+  Animal_TARANTULA: "TARANTULA",
+}
+
+var AnimalToValue = map[string]Animal {
+  "DOG": Animal_DOG,
+  "CAT": Animal_CAT,
+  "TARANTULA": Animal_TARANTULA,
+}
+
 func (p Animal) String() string {
-  switch p {
-  case Animal_DOG: return "DOG"
-  case Animal_CAT: return "CAT"
-  case Animal_TARANTULA: return "TARANTULA"
+  if v, ok := AnimalToName[p]; ok {
+    return v
   }
   return "<UNSET>"
 }
 
 func AnimalFromString(s string) (Animal, error) {
-  switch s {
-  case "DOG": return Animal_DOG, nil 
-  case "CAT": return Animal_CAT, nil 
-  case "TARANTULA": return Animal_TARANTULA, nil 
+  if v, ok := AnimalToValue[s]; ok {
+    return v, nil
   }
   return Animal(0), fmt.Errorf("not a valid Animal string")
 }
-
 
 func AnimalPtr(v Animal) *Animal { return &v }
 

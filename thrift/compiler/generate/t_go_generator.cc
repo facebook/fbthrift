@@ -849,17 +849,16 @@ void t_go_generator::generate_typedef(t_typedef* ttypedef) {
  * @param tenum The enumeration
  */
 void t_go_generator::generate_enum(t_enum* tenum) {
-  std::ostringstream to_string_mapping, from_string_mapping;
+  std::ostringstream name_mapping, value_mapping;
   std::string tenum_name(publicize(tenum->get_name()));
   generate_go_docstring(f_types_, tenum);
   f_types_ << "type " << tenum_name << " int64" << endl << "const (" << endl;
 
-  to_string_mapping << indent() << "func (p " << tenum_name << ") String() string {" << endl;
-  to_string_mapping << indent() << "  switch p {" << endl;
+  name_mapping << indent() << "var " << tenum_name << "ToName = map["
+               << tenum_name << "]string {" << endl;
 
-  from_string_mapping << indent() << "func " << tenum_name << "FromString(s string) (" << tenum_name
-                      << ", error) {" << endl;
-  from_string_mapping << indent() << "  switch s {" << endl;
+  value_mapping << indent() << "var " << tenum_name << "ToValue = map[string]"
+                << tenum_name << " {" << endl;
 
   vector<t_enum_value*> constants = tenum->get_constants();
   vector<t_enum_value*>::iterator c_iter;
@@ -876,32 +875,42 @@ void t_go_generator::generate_enum(t_enum* tenum) {
 
     // Only add a to_string_mapping if there isn't a duplicate of the value
     if (seen.find(value) == seen.end()) {
-    // Dictionaries to/from string names of enums
-    to_string_mapping << indent() << "  case " << tenum_name << "_" << iter_name
-                      << ": return \"" << iter_std_name << "\"" << endl;
+      // Dictionaries to/from string names of enums
+      name_mapping << indent() << "  " << tenum_name << "_" << iter_name
+                   << ": \"" << iter_std_name << "\"," << endl;
     }
 
+    value_mapping << indent() << "  \"" << iter_std_name << "\": " << tenum_name
+                  << "_" << iter_name << "," << endl;
     if (iter_std_name != escape_string(iter_name)) {
-      from_string_mapping << indent() << "  case \"" << iter_std_name << "\", \""
-                          << escape_string(iter_name) << "\": return " << tenum_name
-                          << "_" << iter_name << ", nil " << endl;
-    } else {
-      from_string_mapping << indent() << "  case \"" << iter_std_name << "\": return "
-                          << tenum_name << "_" << iter_name << ", nil " << endl;
+      value_mapping << indent() << "  \"" << escape_string(iter_std_name)
+                    << "\": " << tenum_name << "_" << iter_name << "," << endl;
     }
     seen.insert(value);
   }
 
-  to_string_mapping << indent() << "  }" << endl;
-  to_string_mapping << indent() << "  return \"<UNSET>\"" << endl;
-  to_string_mapping << indent() << "}" << endl;
-  from_string_mapping << indent() << "  }" << endl;
-  from_string_mapping << indent() << "  return " << tenum_name << "(0),"
-                      << " fmt.Errorf(\"not a valid " << tenum_name << " string\")" << endl;
-  from_string_mapping << indent() << "}" << endl;
+  name_mapping << indent() << "}" << endl;
+  value_mapping << indent() << "}" << endl;
 
-  f_types_ << ")" << endl << endl << to_string_mapping.str() << endl << from_string_mapping.str()
-           << endl << endl;
+  f_types_ << ")" << endl << endl;
+  f_types_ << name_mapping.str() << endl;
+  f_types_ << value_mapping.str() << endl;
+  f_types_ << "func (p " << tenum_name << ") String() string {" << endl
+           << "  if v, ok := " << tenum_name << "ToName[p]; ok {" << endl
+           << "    return v" << endl
+           << "  }" << endl
+           << "  return \"<UNSET>\"" << endl
+           << "}" << endl
+           << endl;
+  f_types_ << "func " << tenum_name << "FromString(s string) (" << tenum_name
+           << ", error) {" << endl
+           << "  if v, ok := " << tenum_name << "ToValue[s]; ok {" << endl
+           << "    return v, nil" << endl
+           << "  }" << endl
+           << "  return " << tenum_name << "(0),"
+           << " fmt.Errorf(\"not a valid " << tenum_name << " string\")" << endl
+           << "}" << endl
+           << endl;
 
   // Generate a convenience function that converts an instance of an enum
   // (which may be a constant) into a pointer to an instance of that enum

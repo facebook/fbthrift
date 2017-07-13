@@ -21,18 +21,25 @@ type EmptyEnum int64
 const (
 )
 
+var EmptyEnumToName = map[EmptyEnum]string {
+}
+
+var EmptyEnumToValue = map[string]EmptyEnum {
+}
+
 func (p EmptyEnum) String() string {
-  switch p {
+  if v, ok := EmptyEnumToName[p]; ok {
+    return v
   }
   return "<UNSET>"
 }
 
 func EmptyEnumFromString(s string) (EmptyEnum, error) {
-  switch s {
+  if v, ok := EmptyEnumToValue[s]; ok {
+    return v, nil
   }
   return EmptyEnum(0), fmt.Errorf("not a valid EmptyEnum string")
 }
-
 
 func EmptyEnumPtr(v EmptyEnum) *EmptyEnum { return &v }
 
@@ -44,26 +51,33 @@ const (
   City_LON City = 3
 )
 
+var CityToName = map[City]string {
+  City_NYC: "NYC",
+  City_MPK: "MPK",
+  City_SEA: "SEA",
+  City_LON: "LON",
+}
+
+var CityToValue = map[string]City {
+  "NYC": City_NYC,
+  "MPK": City_MPK,
+  "SEA": City_SEA,
+  "LON": City_LON,
+}
+
 func (p City) String() string {
-  switch p {
-  case City_NYC: return "NYC"
-  case City_MPK: return "MPK"
-  case City_SEA: return "SEA"
-  case City_LON: return "LON"
+  if v, ok := CityToName[p]; ok {
+    return v
   }
   return "<UNSET>"
 }
 
 func CityFromString(s string) (City, error) {
-  switch s {
-  case "NYC": return City_NYC, nil 
-  case "MPK": return City_MPK, nil 
-  case "SEA": return City_SEA, nil 
-  case "LON": return City_LON, nil 
+  if v, ok := CityToValue[s]; ok {
+    return v, nil
   }
   return City(0), fmt.Errorf("not a valid City string")
 }
-
 
 func CityPtr(v City) *City { return &v }
 
@@ -75,26 +89,33 @@ const (
   Company_INSTAGRAM Company = 3
 )
 
+var CompanyToName = map[Company]string {
+  Company_FACEBOOK: "FACEBOOK",
+  Company_WHATSAPP: "WHATSAPP",
+  Company_OCULUS: "OCULUS",
+  Company_INSTAGRAM: "INSTAGRAM",
+}
+
+var CompanyToValue = map[string]Company {
+  "FACEBOOK": Company_FACEBOOK,
+  "WHATSAPP": Company_WHATSAPP,
+  "OCULUS": Company_OCULUS,
+  "INSTAGRAM": Company_INSTAGRAM,
+}
+
 func (p Company) String() string {
-  switch p {
-  case Company_FACEBOOK: return "FACEBOOK"
-  case Company_WHATSAPP: return "WHATSAPP"
-  case Company_OCULUS: return "OCULUS"
-  case Company_INSTAGRAM: return "INSTAGRAM"
+  if v, ok := CompanyToName[p]; ok {
+    return v
   }
   return "<UNSET>"
 }
 
 func CompanyFromString(s string) (Company, error) {
-  switch s {
-  case "FACEBOOK": return Company_FACEBOOK, nil 
-  case "WHATSAPP": return Company_WHATSAPP, nil 
-  case "OCULUS": return Company_OCULUS, nil 
-  case "INSTAGRAM": return Company_INSTAGRAM, nil 
+  if v, ok := CompanyToValue[s]; ok {
+    return v, nil
   }
   return Company(0), fmt.Errorf("not a valid Company string")
 }
-
 
 func CompanyPtr(v Company) *Company { return &v }
 

@@ -23,22 +23,29 @@ const (
   MyEnum_MyValue2 MyEnum = 1
 )
 
+var MyEnumToName = map[MyEnum]string {
+  MyEnum_MyValue1: "MyValue1",
+  MyEnum_MyValue2: "MyValue2",
+}
+
+var MyEnumToValue = map[string]MyEnum {
+  "MyValue1": MyEnum_MyValue1,
+  "MyValue2": MyEnum_MyValue2,
+}
+
 func (p MyEnum) String() string {
-  switch p {
-  case MyEnum_MyValue1: return "MyValue1"
-  case MyEnum_MyValue2: return "MyValue2"
+  if v, ok := MyEnumToName[p]; ok {
+    return v
   }
   return "<UNSET>"
 }
 
 func MyEnumFromString(s string) (MyEnum, error) {
-  switch s {
-  case "MyValue1": return MyEnum_MyValue1, nil 
-  case "MyValue2": return MyEnum_MyValue2, nil 
+  if v, ok := MyEnumToValue[s]; ok {
+    return v, nil
   }
   return MyEnum(0), fmt.Errorf("not a valid MyEnum string")
 }
-
 
 func MyEnumPtr(v MyEnum) *MyEnum { return &v }
 
