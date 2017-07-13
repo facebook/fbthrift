@@ -14,7 +14,5 @@
  * VirtualProtocol) to read/write thrift structs.
  */
 
-#include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/module_types.tcc"
+#include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include2_types.tcc"
 
-#include "include1_types_custom_protocol.h"
-#include "include2_types_custom_protocol.h"

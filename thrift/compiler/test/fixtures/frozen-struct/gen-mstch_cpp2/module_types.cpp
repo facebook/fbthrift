@@ -49,6 +49,8 @@ void ModuleA::__clear() {
   strField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
   listField.clear();
   mapField.clear();
+  ::apache::thrift::Cpp2Ops<  ::some::ns::IncludedA>::clear(&inclAField);
+  ::apache::thrift::Cpp2Ops<  ::some::ns::IncludedB>::clear(&inclBField);
   __isset.__clear();
 }
 
@@ -63,6 +65,12 @@ bool ModuleA::operator==(const ModuleA& rhs) const {
     return false;
   }
   if (!((mapField == rhs.mapField))) {
+    return false;
+  }
+  if (!((inclAField == rhs.inclAField))) {
+    return false;
+  }
+  if (!((inclBField == rhs.inclBField))) {
     return false;
   }
   return true;
@@ -84,12 +92,30 @@ std::map<std::string, int32_t> ModuleA::get_mapField() && {
   return std::move(mapField);
 }
 
+const  ::some::ns::IncludedA& ModuleA::get_inclAField() const& {
+  return inclAField;
+}
+
+ ::some::ns::IncludedA ModuleA::get_inclAField() && {
+  return std::move(inclAField);
+}
+
+const  ::some::ns::IncludedB& ModuleA::get_inclBField() const& {
+  return inclBField;
+}
+
+ ::some::ns::IncludedB ModuleA::get_inclBField() && {
+  return std::move(inclBField);
+}
+
 void swap(ModuleA& a, ModuleA& b) {
   using ::std::swap;
   swap(a.i32Field, b.i32Field);
   swap(a.strField, b.strField);
   swap(a.listField, b.listField);
   swap(a.mapField, b.mapField);
+  swap(a.inclAField, b.inclAField);
+  swap(a.inclBField, b.inclBField);
   swap(a.__isset, b.__isset);
 }
 

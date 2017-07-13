@@ -16,3 +16,5 @@
 
 #include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/module_types.tcc"
 
+#include "include1_types_custom_protocol.h"
+#include "include2_types_custom_protocol.h"

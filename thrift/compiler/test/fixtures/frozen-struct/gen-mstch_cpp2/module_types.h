@@ -12,6 +12,8 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/Cursor.h>
 
+#include "include1_types.h"
+#include "include2_types.h"
 #include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 
 
@@ -63,15 +65,19 @@ class ModuleA : private apache::thrift::detail::st::ComparisonOperators<ModuleA>
       i32Field(0) {}
   // FragileConstructor for use in initialization lists only
 
-  ModuleA(apache::thrift::FragileConstructor, int32_t i32Field__arg, std::string strField__arg, std::vector<int16_t> listField__arg, std::map<std::string, int32_t> mapField__arg) :
+  ModuleA(apache::thrift::FragileConstructor, int32_t i32Field__arg, std::string strField__arg, std::vector<int16_t> listField__arg, std::map<std::string, int32_t> mapField__arg,  ::some::ns::IncludedA inclAField__arg,  ::some::ns::IncludedB inclBField__arg) :
       i32Field(std::move(i32Field__arg)),
       strField(std::move(strField__arg)),
       listField(std::move(listField__arg)),
-      mapField(std::move(mapField__arg)) {
+      mapField(std::move(mapField__arg)),
+      inclAField(std::move(inclAField__arg)),
+      inclBField(std::move(inclBField__arg)) {
     __isset.i32Field = true;
     __isset.strField = true;
     __isset.listField = true;
     __isset.mapField = true;
+    __isset.inclAField = true;
+    __isset.inclBField = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   ModuleA(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -101,6 +107,20 @@ class ModuleA : private apache::thrift::detail::st::ComparisonOperators<ModuleA>
     mapField = arg.move();
     __isset.mapField = true;
   }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  ModuleA(::apache::thrift::detail::argument_wrapper<5, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    ModuleA(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    inclAField = arg.move();
+    __isset.inclAField = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  ModuleA(::apache::thrift::detail::argument_wrapper<6, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    ModuleA(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    inclBField = arg.move();
+    __isset.inclBField = true;
+  }
 
   ModuleA(ModuleA&&) = default;
 
@@ -117,6 +137,8 @@ class ModuleA : private apache::thrift::detail::st::ComparisonOperators<ModuleA>
   std::string strField;
   std::vector<int16_t> listField;
   std::map<std::string, int32_t> mapField;
+   ::some::ns::IncludedA inclAField;
+   ::some::ns::IncludedB inclBField;
 
   struct __isset {
     void __clear() {
@@ -124,12 +146,16 @@ class ModuleA : private apache::thrift::detail::st::ComparisonOperators<ModuleA>
       strField = false;
       listField = false;
       mapField = false;
+      inclAField = false;
+      inclBField = false;
     }
 
     bool i32Field = false;
     bool strField = false;
     bool listField = false;
     bool mapField = false;
+    bool inclAField = false;
+    bool inclBField = false;
   } __isset;
   bool operator==(const ModuleA& rhs) const;
 
@@ -145,6 +171,12 @@ class ModuleA : private apache::thrift::detail::st::ComparisonOperators<ModuleA>
     }
     if (!(mapField == rhs.mapField)) {
       return mapField < rhs.mapField;
+    }
+    if (!(inclAField == rhs.inclAField)) {
+      return inclAField < rhs.inclAField;
+    }
+    if (!(inclBField == rhs.inclBField)) {
+      return inclBField < rhs.inclBField;
     }
     (void)rhs;
     return false;
@@ -191,6 +223,24 @@ class ModuleA : private apache::thrift::detail::st::ComparisonOperators<ModuleA>
     mapField = std::forward<T_ModuleA_mapField_struct_setter>(mapField_);
     __isset.mapField = true;
     return mapField;
+  }
+  const  ::some::ns::IncludedA& get_inclAField() const&;
+   ::some::ns::IncludedA get_inclAField() &&;
+
+  template <typename T_ModuleA_inclAField_struct_setter>
+   ::some::ns::IncludedA& set_inclAField(T_ModuleA_inclAField_struct_setter&& inclAField_) {
+    inclAField = std::forward<T_ModuleA_inclAField_struct_setter>(inclAField_);
+    __isset.inclAField = true;
+    return inclAField;
+  }
+  const  ::some::ns::IncludedB& get_inclBField() const&;
+   ::some::ns::IncludedB get_inclBField() &&;
+
+  template <typename T_ModuleA_inclBField_struct_setter>
+   ::some::ns::IncludedB& set_inclBField(T_ModuleA_inclBField_struct_setter&& inclBField_) {
+    inclBField = std::forward<T_ModuleA_inclBField_struct_setter>(inclBField_);
+    __isset.inclBField = true;
+    return inclBField;
   }
 
   template <class Protocol_>
