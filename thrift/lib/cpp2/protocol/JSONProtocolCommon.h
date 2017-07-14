@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@
 #include <array>
 #include <limits>
 #include <list>
+#include <typeinfo>
+
 #include <folly/Conv.h>
 #include <folly/dynamic.h>
 #include <folly/json.h>
@@ -248,6 +250,22 @@ class JSONProtocolReaderCommon {
   void base64_decode(uint8_t *buf, uint32_t len) {
     protocol::base64_decode(buf, len);
   }
+
+  [[noreturn]] static void throwBadVersion();
+  [[noreturn]] static void throwUnrecognizableAsBoolean(std::string const& s);
+  [[noreturn]] static void throwUnrecognizableAsIntegral(
+      folly::StringPiece s,
+      std::type_info const& type);
+  [[noreturn]] static void throwUnrecognizableAsFloatingPoint(
+      std::string const& s);
+  [[noreturn]] static void throwUnrecognizableAsString(
+      std::string const& s,
+      std::exception const& e);
+  [[noreturn]] static void throwUnrecognizableAsAny(std::string const& s);
+  [[noreturn]] static void throwInvalidFieldStart(char ch);
+  [[noreturn]] static void throwUnexpectedChar(char ch, char expected);
+  [[noreturn]] static void throwInvalidEscapeChar(char ch);
+  [[noreturn]] static void throwInvalidHexChar(char ch);
 
   //  Rewrite in subclasses.
   std::array<folly::StringPiece, 2> bools_{{"", ""}};

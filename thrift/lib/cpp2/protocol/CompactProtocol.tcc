@@ -1,4 +1,6 @@
 /*
+ * Copyright 2004-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -313,7 +315,7 @@ uint32_t CompactProtocolWriter::writeBinary(
   size_t size = str.computeChainDataLength();
   // leave room for varint size
   if (size > std::numeric_limits<uint32_t>::max() - serializedSizeI32()) {
-    throw TProtocolException(TProtocolException::SIZE_LIMIT);
+    TProtocolException::throwExceededSizeLimit();
   }
   uint32_t result = apache::thrift::util::writeVarint(out_, (int32_t)size);
   if (sharing_ != SHARE_EXTERNAL_BUFFER) {
@@ -450,7 +452,7 @@ uint32_t CompactProtocolWriter::serializedSizeBinary(
     folly::IOBuf const& v) const {
   size_t size = v.computeChainDataLength();
   if (size > std::numeric_limits<uint32_t>::max() - serializedSizeI32()) {
-    throw TProtocolException(TProtocolException::SIZE_LIMIT);
+    TProtocolException::throwExceededSizeLimit();
   }
   return serializedSizeI32() + size;
 }
@@ -490,15 +492,13 @@ uint32_t CompactProtocolReader::readMessageBegin(std::string& name,
 
   rsize += readByte(protocolId);
   if (protocolId != detail::compact::PROTOCOL_ID) {
-    throw TProtocolException(TProtocolException::BAD_VERSION,
-                             "Bad protocol identifier");
+    throwBadProtocolIdentifier();
   }
 
   rsize += readByte(versionAndType);
   if ((int8_t)(versionAndType & VERSION_MASK) !=
       detail::compact::COMPACT_PROTOCOL_VERSION) {
-    throw TProtocolException(TProtocolException::BAD_VERSION,
-                             "Bad protocol version");
+    throwBadProtocolVersion();
   }
 
   messageType = (MessageType)
@@ -586,9 +586,9 @@ uint32_t CompactProtocolReader::readMapBegin(TType& keyType,
     rsize += readByte(kvType);
 
   if (msize < 0) {
-    throw TProtocolException(TProtocolException::NEGATIVE_SIZE);
+    TProtocolException::throwNegativeSize();
   } else if (container_limit_ && msize > container_limit_) {
-    throw TProtocolException(TProtocolException::SIZE_LIMIT);
+    TProtocolException::throwExceededSizeLimit();
   }
 
   keyType = getType((int8_t)((uint8_t)kvType >> 4));
@@ -616,9 +616,9 @@ uint32_t CompactProtocolReader::readListBegin(TType& elemType,
   }
 
   if (lsize < 0) {
-    throw TProtocolException(TProtocolException::NEGATIVE_SIZE);
+    TProtocolException::throwNegativeSize();
   } else if (container_limit_ && lsize > container_limit_) {
-    throw TProtocolException(TProtocolException::SIZE_LIMIT);
+    TProtocolException::throwExceededSizeLimit();
   }
 
   elemType = getType((int8_t)(size_and_type & 0x0f));
@@ -709,10 +709,10 @@ uint32_t CompactProtocolReader::readStringSize(int32_t& size) {
 
   // Catch error cases
   if (size < 0) {
-    throw TProtocolException(TProtocolException::NEGATIVE_SIZE);
+    TProtocolException::throwNegativeSize();
   }
   if (string_limit_ > 0 && size > string_limit_) {
-    throw TProtocolException(TProtocolException::SIZE_LIMIT);
+    TProtocolException::throwExceededSizeLimit();
   }
 
   return rsize;
@@ -727,7 +727,7 @@ uint32_t CompactProtocolReader::readStringBody(StrType& str, int32_t size) {
     auto data = in_.peekBytes();
     auto data_avail = std::min(data.size(), size_left);
     if (data.empty()) {
-      throw TProtocolException(TProtocolException::SIZE_LIMIT);
+      TProtocolException::throwExceededSizeLimit();
     }
 
     str.append((const char*)data.data(), data_avail);
@@ -774,7 +774,7 @@ TType CompactProtocolReader::getType(int8_t type) {
              sizeof(CTypeToTType)/sizeof(*CTypeToTType))) {
     return CTypeToTType[type];
   }
-  throw TProtocolException("don't know what type: " + std::to_string(type));
+  throwBadType(type);
 }
 
 }} // apache2::thrift

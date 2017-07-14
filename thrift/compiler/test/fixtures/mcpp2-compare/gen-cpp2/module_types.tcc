@@ -263,7 +263,7 @@ uint32_t MyStruct::read(Protocol_* iprot) {
   xfer += iprot->readStructEnd();
 
   if (!isset_MyBinaryField3) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'MyBinaryField3' was not found in serialized data! Struct: MyStruct");
+    TProtocolException::throwMissingRequiredField("MyBinaryField3", "MyStruct");
   }
   return xfer;
 }
@@ -966,19 +966,19 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
   xfer += iprot->readStructEnd();
 
   if (!isset_req_intValue) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_intValue' was not found in serialized data! Struct: ComplexUnion");
+    TProtocolException::throwMissingRequiredField("req_intValue", "ComplexUnion");
   }
   if (!isset_req_stringValue) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_stringValue' was not found in serialized data! Struct: ComplexUnion");
+    TProtocolException::throwMissingRequiredField("req_stringValue", "ComplexUnion");
   }
   if (!isset_req_union_map) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_union_map' was not found in serialized data! Struct: ComplexUnion");
+    TProtocolException::throwMissingRequiredField("req_union_map", "ComplexUnion");
   }
   if (!isset_req_a_union) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_a_union' was not found in serialized data! Struct: ComplexUnion");
+    TProtocolException::throwMissingRequiredField("req_a_union", "ComplexUnion");
   }
   if (!isset_MyBinaryField3) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'MyBinaryField3' was not found in serialized data! Struct: ComplexUnion");
+    TProtocolException::throwMissingRequiredField("MyBinaryField3", "ComplexUnion");
   }
   return xfer;
 }
@@ -1797,13 +1797,13 @@ uint32_t AnException::read(Protocol_* iprot) {
   xfer += iprot->readStructEnd();
 
   if (!isset_req_code) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_code' was not found in serialized data! Struct: AnException");
+    TProtocolException::throwMissingRequiredField("req_code", "AnException");
   }
   if (!isset_req_message) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_message' was not found in serialized data! Struct: AnException");
+    TProtocolException::throwMissingRequiredField("req_message", "AnException");
   }
   if (!isset_req_exception_map) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_exception_map' was not found in serialized data! Struct: AnException");
+    TProtocolException::throwMissingRequiredField("req_exception_map", "AnException");
   }
   return xfer;
 }
@@ -2018,7 +2018,7 @@ uint32_t AnotherException::read(Protocol_* iprot) {
   xfer += iprot->readStructEnd();
 
   if (!isset_req_code) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_code' was not found in serialized data! Struct: AnotherException");
+    TProtocolException::throwMissingRequiredField("req_code", "AnotherException");
   }
   return xfer;
 }
@@ -2737,25 +2737,25 @@ uint32_t containerStruct::read(Protocol_* iprot) {
   xfer += iprot->readStructEnd();
 
   if (!isset_req_fieldA) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_fieldA' was not found in serialized data! Struct: containerStruct");
+    TProtocolException::throwMissingRequiredField("req_fieldA", "containerStruct");
   }
   if (!isset_req_fieldB) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_fieldB' was not found in serialized data! Struct: containerStruct");
+    TProtocolException::throwMissingRequiredField("req_fieldB", "containerStruct");
   }
   if (!isset_req_fieldC) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_fieldC' was not found in serialized data! Struct: containerStruct");
+    TProtocolException::throwMissingRequiredField("req_fieldC", "containerStruct");
   }
   if (!isset_req_fieldE) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_fieldE' was not found in serialized data! Struct: containerStruct");
+    TProtocolException::throwMissingRequiredField("req_fieldE", "containerStruct");
   }
   if (!isset_req_fieldR) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_fieldR' was not found in serialized data! Struct: containerStruct");
+    TProtocolException::throwMissingRequiredField("req_fieldR", "containerStruct");
   }
   if (!isset_req_fieldV) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_fieldV' was not found in serialized data! Struct: containerStruct");
+    TProtocolException::throwMissingRequiredField("req_fieldV", "containerStruct");
   }
   if (!isset_req_fieldX) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_fieldX' was not found in serialized data! Struct: containerStruct");
+    TProtocolException::throwMissingRequiredField("req_fieldX", "containerStruct");
   }
   return xfer;
 }
@@ -3843,22 +3843,22 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
   xfer += iprot->readStructEnd();
 
   if (!isset_req_cpp_unique_ref) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_cpp_unique_ref' was not found in serialized data! Struct: AnnotatedStruct");
+    TProtocolException::throwMissingRequiredField("req_cpp_unique_ref", "AnnotatedStruct");
   }
   if (!isset_req_cpp2_unique_ref) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_cpp2_unique_ref' was not found in serialized data! Struct: AnnotatedStruct");
+    TProtocolException::throwMissingRequiredField("req_cpp2_unique_ref", "AnnotatedStruct");
   }
   if (!isset_req_container_with_ref) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_container_with_ref' was not found in serialized data! Struct: AnnotatedStruct");
+    TProtocolException::throwMissingRequiredField("req_container_with_ref", "AnnotatedStruct");
   }
   if (!isset_req_ref_type_shared) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_ref_type_shared' was not found in serialized data! Struct: AnnotatedStruct");
+    TProtocolException::throwMissingRequiredField("req_ref_type_shared", "AnnotatedStruct");
   }
   if (!isset_req_ref_type_const) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_ref_type_const' was not found in serialized data! Struct: AnnotatedStruct");
+    TProtocolException::throwMissingRequiredField("req_ref_type_const", "AnnotatedStruct");
   }
   if (!isset_req_ref_type_unique) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_ref_type_unique' was not found in serialized data! Struct: AnnotatedStruct");
+    TProtocolException::throwMissingRequiredField("req_ref_type_unique", "AnnotatedStruct");
   }
   return xfer;
 }

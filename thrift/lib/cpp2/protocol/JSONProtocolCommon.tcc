@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-present Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -165,7 +165,7 @@ uint32_t JSONProtocolWriterCommon::serializedSizeBinary(
     folly::IOBuf const& v) const {
   size_t size = v.computeChainDataLength();
   if (size > std::numeric_limits<uint32_t>::max() - serializedSizeI32()) {
-    throw TProtocolException(TProtocolException::SIZE_LIMIT);
+    TProtocolException::throwExceededSizeLimit();
   }
   return size * 6 + 3;
 }
@@ -374,8 +374,7 @@ uint32_t JSONProtocolReaderCommon::readMessageBegin(std::string& name,
   int64_t tmpVal;
   ret += readI64(tmpVal);
   if (tmpVal != TJSONProtocol::kThriftVersion1) {
-    throw TProtocolException(TProtocolException::BAD_VERSION,
-                             "Message contained bad version.");
+    throwBadVersion();
   }
   ret += readString(name);
   ret += readI64(tmpVal);
@@ -482,9 +481,7 @@ uint32_t JSONProtocolReaderCommon::skip(TType /*type*/) {
     return ret + readJSONNull();
   }
 
-  throw TProtocolException(
-    TProtocolException::INVALID_DATA,
-    std::string(1, ch) + " is not a valid start to a JSON field");
+  throwInvalidFieldStart(ch);
 }
 
 uint32_t JSONProtocolReaderCommon::readFromPositionAndAppend(
@@ -536,10 +533,7 @@ uint32_t JSONProtocolReaderCommon::readWhitespace() {
 uint32_t JSONProtocolReaderCommon::ensureCharNoWhitespace(char expected) {
   auto actual = in_.read<int8_t>();
   if (actual != expected) {
-    throw TProtocolException(
-      TProtocolException::INVALID_DATA,
-      folly::sformat("expected '{}' (hex 0x{:02x}), read '{:c}' (hex 0x{:02x})",
-                     expected, expected, actual, actual));
+    throwUnexpectedChar(actual, expected);
   }
   return 1;
 }
@@ -626,9 +620,7 @@ T JSONProtocolReaderCommon::castIntegral(folly::StringPiece val) {
   try {
     return folly::to<T>(val);
   } catch (const std::exception&) {
-    throw TProtocolException(
-      TProtocolException::INVALID_DATA,
-      folly::to<std::string>(val, " is not a valid ", typeid(T).name()));
+    throwUnrecognizableAsIntegral(val, typeid(T));
   }
 }
 
@@ -729,9 +721,7 @@ uint32_t JSONProtocolReaderCommon::readJSONVal(double& val) {
   try {
     val = folly::to<double>(s);
   } catch (const std::exception&) {
-    throw TProtocolException(
-      TProtocolException::INVALID_DATA,
-      s + " is not a valid float/double");
+    throwUnrecognizableAsFloatingPoint(s);
   }
   return ret;
 }
@@ -756,9 +746,7 @@ bool JSONProtocolReaderCommon::JSONtoBool(const std::string& s) {
   } else if (s == "false") {
     return false;
   } else {
-    throw TProtocolException(
-      TProtocolException::INVALID_DATA,
-      folly::to<std::string>(s, " is not a valid bool"));
+    throwUnrecognizableAsBoolean(s);
   }
   return false;
 }
@@ -774,9 +762,7 @@ uint32_t JSONProtocolReaderCommon::readJSONNull() {
   std::string s;
   auto ret = readJSONKeyword(s);
   if (s != "null") {
-    throw TProtocolException(
-      TProtocolException::INVALID_DATA,
-      folly::to<std::string>(s, " is not valid JSON"));
+    throwUnrecognizableAsAny(s);
   }
   return ret;
 }
@@ -825,9 +811,7 @@ uint32_t JSONProtocolReaderCommon::readJSONString(StrType& val) {
       } else {
         size_t pos = kEscapeChars.find_first_of(ch);
         if (pos == std::string::npos) {
-          throw TProtocolException(TProtocolException::INVALID_DATA,
-                                   "Expected control char, got '" +
-                                   std::string((const char *)&ch, 1)  + "'.");
+          throwInvalidEscapeChar(ch);
         }
         if (allowDecodeUTF8_) {
           json += "\\";
@@ -852,9 +836,7 @@ uint32_t JSONProtocolReaderCommon::readJSONString(StrType& val) {
       folly::dynamic parsed = folly::parseJson(json);
       val += parsed.getString();
     } catch (const std::exception& e) {
-      throw TProtocolException(
-          TProtocolException::INVALID_DATA,
-          json + " is not a valid JSON string: " + e.what());
+      throwUnrecognizableAsString(json, e);
     }
   }
 
@@ -893,12 +875,7 @@ uint8_t JSONProtocolReaderCommon::hexVal(uint8_t ch) {
     return ch - 'a' + 10;
   }
   else {
-    throw TProtocolException(
-        TProtocolException::INVALID_DATA,
-        folly::to<std::string>(
-          "Expected hex val ([0-9a-f]); got \'",
-          folly::StringPiece((char *)&ch, 1),
-          "\'."));
+    throwInvalidHexChar(ch);
   }
 }
 

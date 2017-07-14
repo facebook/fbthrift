@@ -90,7 +90,7 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
 
 <%#struct:fields%><%#field:required?%>
   if (!isset_<%field:name%>) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field '<%field:name%>' was not found in serialized data! Struct: <%struct:name%>");
+    TProtocolException::throwMissingRequiredField("<%field:name%>", "<%struct:name%>");
   }
 <%/field:required?%><%/struct:fields%>
   return xfer;

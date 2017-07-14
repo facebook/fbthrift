@@ -245,7 +245,7 @@ uint32_t MyField::read(Protocol_* iprot) {
   xfer += iprot->readStructEnd();
 
   if (!isset_req_value) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_value' was not found in serialized data! Struct: MyField");
+    TProtocolException::throwMissingRequiredField("req_value", "MyField");
   }
   return xfer;
 }
@@ -386,7 +386,7 @@ uint32_t MyStruct::read(Protocol_* iprot) {
   xfer += iprot->readStructEnd();
 
   if (!isset_req_ref) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_ref' was not found in serialized data! Struct: MyStruct");
+    TProtocolException::throwMissingRequiredField("req_ref", "MyStruct");
   }
   return xfer;
 }
@@ -1127,7 +1127,7 @@ uint32_t StructWithSharedConst::read(Protocol_* iprot) {
   xfer += iprot->readStructEnd();
 
   if (!isset_req_shared_const) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_shared_const' was not found in serialized data! Struct: StructWithSharedConst");
+    TProtocolException::throwMissingRequiredField("req_shared_const", "StructWithSharedConst");
   }
   return xfer;
 }
@@ -1388,7 +1388,7 @@ uint32_t StructWithRef::read(Protocol_* iprot) {
   xfer += iprot->readStructEnd();
 
   if (!isset_req_field) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_field' was not found in serialized data! Struct: StructWithRef");
+    TProtocolException::throwMissingRequiredField("req_field", "StructWithRef");
   }
   return xfer;
 }
@@ -1586,7 +1586,7 @@ uint32_t StructWithRefTypeUnique::read(Protocol_* iprot) {
   xfer += iprot->readStructEnd();
 
   if (!isset_req_field) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_field' was not found in serialized data! Struct: StructWithRefTypeUnique");
+    TProtocolException::throwMissingRequiredField("req_field", "StructWithRefTypeUnique");
   }
   return xfer;
 }
@@ -1784,7 +1784,7 @@ uint32_t StructWithRefTypeShared::read(Protocol_* iprot) {
   xfer += iprot->readStructEnd();
 
   if (!isset_req_field) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_field' was not found in serialized data! Struct: StructWithRefTypeShared");
+    TProtocolException::throwMissingRequiredField("req_field", "StructWithRefTypeShared");
   }
   return xfer;
 }
@@ -1982,7 +1982,7 @@ uint32_t StructWithRefTypeSharedConst::read(Protocol_* iprot) {
   xfer += iprot->readStructEnd();
 
   if (!isset_req_field) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'req_field' was not found in serialized data! Struct: StructWithRefTypeSharedConst");
+    TProtocolException::throwMissingRequiredField("req_field", "StructWithRefTypeSharedConst");
   }
   return xfer;
 }

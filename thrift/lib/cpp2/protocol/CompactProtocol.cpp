@@ -1,4 +1,6 @@
 /*
+ * Copyright 2004-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -18,3 +20,22 @@
  */
 
 #include "CompactProtocol.h"
+
+namespace apache {
+namespace thrift {
+
+[[noreturn]] void CompactProtocolReader::throwBadProtocolIdentifier() {
+  throw TProtocolException(
+      TProtocolException::BAD_VERSION, "Bad protocol identifier");
+}
+
+[[noreturn]] void CompactProtocolReader::throwBadProtocolVersion() {
+  throw TProtocolException(
+      TProtocolException::BAD_VERSION, "Bad protocol version");
+}
+
+[[noreturn]] void CompactProtocolReader::throwBadType(uint8_t const type) {
+  throw TProtocolException("don't know what type: " + std::to_string(type));
+}
+}
+}

@@ -3492,10 +3492,8 @@ class CppGenerator(t_generator.Generator):
             if not field.req == e_req.required:
                 continue
             with s('if (!isset_{0.name})'.format(field)):
-                out(('throw TProtocolException(TProtocolException::'
-                'MISSING_REQUIRED_FIELD, "Required field \'{0}\' was not found '
-                'in serialized data! Struct: {1}");').format(
-                        field.name, obj.name))
+                out('TProtocolException::throwMissingRequiredField("{0}", "{1}");'
+                    .format(field.name, obj.name))
         s('return xfer;')
         s.release()  # the function
 

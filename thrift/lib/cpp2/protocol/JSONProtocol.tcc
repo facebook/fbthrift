@@ -35,6 +35,10 @@ static constexpr folly::StringPiece kTypeNameMap("map");
 static constexpr folly::StringPiece kTypeNameList("lst");
 static constexpr folly::StringPiece kTypeNameSet("set");
 
+[[noreturn]] void throwNegativeSize(int64_t size);
+[[noreturn]] void throwExceededSizeLimit(int64_t size, int64_t sizeMax);
+[[noreturn]] void throwUnrecognizedType();
+
 static folly::StringPiece getTypeNameForTypeID(TType typeID) {
   using namespace apache::thrift::protocol;
   switch (typeID) {
@@ -63,16 +67,14 @@ static folly::StringPiece getTypeNameForTypeID(TType typeID) {
   case TType::T_LIST:
     return kTypeNameList;
   default:
-    throw TProtocolException(TProtocolException::NOT_IMPLEMENTED,
-                             "Unrecognized type");
+    throwUnrecognizedType();
   }
 }
 
 static protocol::TType getTypeIDForTypeName(folly::StringPiece name) {
   using namespace apache::thrift::protocol;
   auto fail = [] {
-    throw TProtocolException(TProtocolException::NOT_IMPLEMENTED,
-                             "Unrecognized type");
+    throwUnrecognizedType();
     return TType::T_STOP;
   };
   if (name.size() <= 1) {
@@ -105,15 +107,11 @@ static protocol::TType getTypeIDForTypeName(folly::StringPiece name) {
 
 static uint32_t clampSize(int64_t size) {
   if (size < 0) {
-    throw TProtocolException(
-        TProtocolException::NEGATIVE_SIZE,
-        folly::to<std::string>(size, " < 0"));
+    throwNegativeSize(size);
   }
   constexpr auto sizeMax = std::numeric_limits<uint32_t>::max();
   if (size > sizeMax) {
-    throw TProtocolException(
-        TProtocolException::SIZE_LIMIT,
-        folly::to<std::string>(size, " is too large (", sizeMax, ")"));
+    throwExceededSizeLimit(size, sizeMax);
   }
   return uint32_t(size);
 }
@@ -365,9 +363,7 @@ uint32_t JSONProtocolReader::readBool(bool& value) {
   int8_t tmp = false;
   auto ret = readInContext<int8_t>(tmp);
   if (tmp < 0 || tmp > 1) {
-    throw TProtocolException(
-      TProtocolException::INVALID_DATA,
-      folly::to<std::string>(tmp, " is not a valid bool"));
+    throwUnrecognizableAsBoolean(tmp);
   }
   value = bool(tmp);
   return ret;

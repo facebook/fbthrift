@@ -128,7 +128,7 @@ uint32_t Fiery::read(Protocol_* iprot) {
   xfer += iprot->readStructEnd();
 
   if (!isset_message) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'message' was not found in serialized data! Struct: Fiery");
+    TProtocolException::throwMissingRequiredField("message", "Fiery");
   }
   return xfer;
 }

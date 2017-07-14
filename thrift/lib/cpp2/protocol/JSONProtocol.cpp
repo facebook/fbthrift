@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,3 +15,40 @@
  */
 
 #include "JSONProtocol.h"
+
+#include <folly/Conv.h>
+
+namespace apache {
+namespace thrift {
+
+namespace detail {
+namespace json {
+
+[[noreturn]] void throwNegativeSize(int64_t const size) {
+  throw TProtocolException(
+      TProtocolException::NEGATIVE_SIZE, folly::to<std::string>(size, " < 0"));
+}
+
+[[noreturn]] void throwExceededSizeLimit(
+    int64_t const size,
+    int64_t const sizeMax) {
+  throw TProtocolException(
+      TProtocolException::SIZE_LIMIT,
+      folly::to<std::string>(size, " is too large (", sizeMax, ")"));
+}
+
+[[noreturn]] void throwUnrecognizedType() {
+  throw TProtocolException(
+      TProtocolException::NOT_IMPLEMENTED, "Unrecognized type");
+}
+}
+}
+
+[[noreturn]] void JSONProtocolReader::throwUnrecognizableAsBoolean(
+    int8_t const byte) {
+  throw TProtocolException(
+      TProtocolException::INVALID_DATA,
+      folly::to<std::string>(byte, " is not a valid bool"));
+}
+}
+}

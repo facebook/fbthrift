@@ -99,8 +99,12 @@ class TProtocolException : public apache::thrift::TLibraryException {
   }
 
   [[noreturn]] static void throwUnionMissingStop();
-
   [[noreturn]] static void throwReportedTypeMismatch();
+  [[noreturn]] static void throwNegativeSize();
+  [[noreturn]] static void throwExceededSizeLimit();
+  [[noreturn]] static void throwMissingRequiredField(
+      folly::StringPiece field,
+      folly::StringPiece type);
 
  protected:
   /**

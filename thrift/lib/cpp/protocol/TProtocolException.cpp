@@ -1,5 +1,5 @@
 /*
- * Copyright 2016-present Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #include <thrift/lib/cpp/protocol/TProtocolException.h>
+
+#include <folly/Format.h>
 
 namespace apache { namespace thrift { namespace protocol {
 
@@ -27,5 +30,23 @@ namespace apache { namespace thrift { namespace protocol {
   throw TProtocolException(
       TProtocolException::INVALID_DATA,
       "The reported type of thrift element does not match the serialized type");
+}
+
+[[noreturn]] void TProtocolException::throwNegativeSize() {
+  throw TProtocolException(TProtocolException::NEGATIVE_SIZE);
+}
+
+[[noreturn]] void TProtocolException::throwExceededSizeLimit() {
+  throw TProtocolException(TProtocolException::SIZE_LIMIT);
+}
+
+[[noreturn]] void TProtocolException::throwMissingRequiredField(
+    folly::StringPiece field,
+    folly::StringPiece type) {
+  constexpr auto fmt =
+      "Required field '{}' was not found in serialized data! Struct: {}";
+  throw TProtocolException(
+      TProtocolException::MISSING_REQUIRED_FIELD,
+      folly::sformat(fmt, field, type));
 }
 }}}

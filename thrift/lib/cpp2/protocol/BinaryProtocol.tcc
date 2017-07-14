@@ -1,5 +1,5 @@
 /*
- * Copyright 2011-present Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
@@ -181,7 +181,7 @@ uint32_t BinaryProtocolWriter::writeBinary(
   size_t size = str.computeChainDataLength();
   // leave room for size
   if (size > std::numeric_limits<uint32_t>::max() - serializedSizeI32()) {
-    throw TProtocolException(TProtocolException::SIZE_LIMIT);
+    TProtocolException::throwExceededSizeLimit();
   }
   uint32_t result = writeI32((int32_t)size);
   auto clone = str.clone();
@@ -318,7 +318,7 @@ uint32_t BinaryProtocolWriter::serializedSizeBinary(
     folly::IOBuf const& v) const {
   size_t size = v.computeChainDataLength();
   if (size > std::numeric_limits<uint32_t>::max() - serializedSizeI32()) {
-    throw TProtocolException(TProtocolException::SIZE_LIMIT);
+    TProtocolException::throwExceededSizeLimit();
   }
   return serializedSizeI32() + size;
 }
@@ -524,18 +524,18 @@ uint32_t BinaryProtocolReader::readFloat(float& flt) {
 void BinaryProtocolReader::checkStringSize(int32_t size) {
   // Catch error cases
   if (size < 0) {
-    throw TProtocolException(TProtocolException::NEGATIVE_SIZE);
+    TProtocolException::throwNegativeSize();
   }
   if (string_limit_ > 0 && size > string_limit_) {
-    throw TProtocolException(TProtocolException::SIZE_LIMIT);
+    TProtocolException::throwExceededSizeLimit();
   }
 }
 
 void BinaryProtocolReader::checkContainerSize(int32_t size) {
   if (size < 0) {
-    throw TProtocolException(TProtocolException::NEGATIVE_SIZE);
+    TProtocolException::throwNegativeSize();
   } else if (this->container_limit_ && size > this->container_limit_) {
-    throw TProtocolException(TProtocolException::SIZE_LIMIT);
+    TProtocolException::throwExceededSizeLimit();
   }
 }
 
@@ -592,7 +592,7 @@ uint32_t BinaryProtocolReader::readStringBody(StrType& str,
     auto data = in_.peekBytes();
     auto data_avail = std::min(data.size(), size_left);
     if (data.empty()) {
-      throw TProtocolException(TProtocolException::SIZE_LIMIT);
+      TProtocolException::throwExceededSizeLimit();
     }
 
     str.append((const char*)data.data(), data_avail);

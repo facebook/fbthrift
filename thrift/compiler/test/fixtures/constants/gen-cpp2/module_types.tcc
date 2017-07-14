@@ -120,7 +120,7 @@ uint32_t Internship::read(Protocol_* iprot) {
   xfer += iprot->readStructEnd();
 
   if (!isset_weeks) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'weeks' was not found in serialized data! Struct: Internship");
+    TProtocolException::throwMissingRequiredField("weeks", "Internship");
   }
   return xfer;
 }
@@ -329,10 +329,10 @@ uint32_t Range::read(Protocol_* iprot) {
   xfer += iprot->readStructEnd();
 
   if (!isset_min) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'min' was not found in serialized data! Struct: Range");
+    TProtocolException::throwMissingRequiredField("min", "Range");
   }
   if (!isset_max) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'max' was not found in serialized data! Struct: Range");
+    TProtocolException::throwMissingRequiredField("max", "Range");
   }
   return xfer;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -330,6 +330,10 @@ class CompactProtocolReader {
   inline uint32_t readStringBody(StrType& str, int32_t size);
 
   inline TType getType(int8_t type);
+
+  [[noreturn]] static void throwBadProtocolIdentifier();
+  [[noreturn]] static void throwBadProtocolVersion();
+  [[noreturn]] static void throwBadType(uint8_t type);
 
   int32_t string_limit_;
   int32_t container_limit_;

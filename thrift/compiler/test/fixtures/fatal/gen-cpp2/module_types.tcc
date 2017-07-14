@@ -1968,10 +1968,10 @@ uint32_t struct1::read(Protocol_* iprot) {
   xfer += iprot->readStructEnd();
 
   if (!isset_field0) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'field0' was not found in serialized data! Struct: struct1");
+    TProtocolException::throwMissingRequiredField("field0", "struct1");
   }
   if (!isset_field3) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'field3' was not found in serialized data! Struct: struct1");
+    TProtocolException::throwMissingRequiredField("field3", "struct1");
   }
   return xfer;
 }
@@ -2813,7 +2813,7 @@ uint32_t struct4::read(Protocol_* iprot) {
   xfer += iprot->readStructEnd();
 
   if (!isset_field0) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'field0' was not found in serialized data! Struct: struct4");
+    TProtocolException::throwMissingRequiredField("field0", "struct4");
   }
   return xfer;
 }
@@ -3004,7 +3004,7 @@ uint32_t struct5::read(Protocol_* iprot) {
   xfer += iprot->readStructEnd();
 
   if (!isset_field0) {
-    throw TProtocolException(TProtocolException::MISSING_REQUIRED_FIELD, "Required field 'field0' was not found in serialized data! Struct: struct5");
+    TProtocolException::throwMissingRequiredField("field0", "struct5");
   }
   return xfer;
 }
