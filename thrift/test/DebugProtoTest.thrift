@@ -76,7 +76,7 @@ struct OneOfEach {
   22: list<TwoInts> list_two_ints_init_default = [{}, {}],
   23: list<TwoInts> list_two_ints_init_explicit = [{a: 1, b: 2}, {a: 3, b: 4}],
   24: set<string> string_set,
-  25: hash_set<string> string_hash_set,
+  25: set<string> (cpp.template = 'std::unordered_set') string_hash_set,
 }
 
 struct Constant1 {
@@ -184,14 +184,14 @@ struct CompactProtoTestStruct {
   26: set<binary>        binary_set;
   27: set<bool>          boolean_set;
   28: set<Empty>         struct_set;
-  60: hash_set<byte>     byte_hash_set;
-  61: hash_set<i16>      i16_hash_set;
-  62: hash_set<i32>      i32_hash_set;
-  63: hash_set<i64>      i64_hash_set;
-  64: hash_set<double>   double_hash_set;
-  65: hash_set<string>   string_hash_set;
-  66: hash_set<binary>   binary_hash_set;
-  67: hash_set<bool>     boolean_hash_set;
+  60: set<byte> (cpp.template = 'std::unordered_set')     byte_hash_set;
+  61: set<i16> (cpp.template = 'std::unordered_set')      i16_hash_set;
+  62: set<i32> (cpp.template = 'std::unordered_set')      i32_hash_set;
+  63: set<i64> (cpp.template = 'std::unordered_set')      i64_hash_set;
+  64: set<double> (cpp.template = 'std::unordered_set')   double_hash_set;
+  65: set<string> (cpp.template = 'std::unordered_set')   string_hash_set;
+  66: set<binary> (cpp.template = 'std::unordered_set')   binary_hash_set;
+  67: set<bool> (cpp.template = 'std::unordered_set')     boolean_hash_set;
 
   // maps
   // primitives as keys
