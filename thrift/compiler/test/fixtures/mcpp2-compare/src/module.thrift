@@ -106,6 +106,8 @@ union ComplexUnion {
   21: optional binary MyBinaryField2
   22: required binary MyBinaryField3
   23: list<binary> MyBinaryListField4
+  24: MyStruct ref_field (cpp.ref);
+  25: MyStruct ref_field2 (cpp.ref_type="shared_const")
 } (cpp.methods = "void foo(const std::string& bar) {}")
 
 exception AnException {

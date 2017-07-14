@@ -16,19 +16,14 @@
 
 %><%#struct:fields%><%#field:type%>
   <%#type:resolves_to_base_or_enum?%>
+
   <%^type:string_or_binary?%>
-  <% > RefType%>& set_<%field:name%>(<% > Type%> t = <% > Type%>()) {
+  <% > Type%>& set_<%field:name%>(<% > Type%> t = <% > Type%>()) {
     __clear();
     type_ = Type::<%field:name%>;
-<%#field:cpp_ref?%>
-    ::new (std::addressof(value_.<%field:name%>)) <% > RefType%>(new <% > RefType%>::element_type(t));
-<%/field:cpp_ref?%>
-<%^field:cpp_ref?%>
     ::new (std::addressof(value_.<%field:name%>)) <% > Type%>(t);
-<%/field:cpp_ref?%>
     return value_.<%field:name%>;
   }
-
   <%/type:string_or_binary?%>
   <%#type:string_or_binary?%>
   <% > RefType%>& set_<%field:name%>(<% > Type%> const &t) {
@@ -66,45 +61,36 @@
 <%/field:cpp_ref?%>
     return value_.<%field:name%>;
   }
-
   <%/type:string_or_binary?%>
   <%/type:resolves_to_base_or_enum?%>
   <%#type:resolves_to_container_or_struct?%>
-  <% > RefType%>& set_<%field:name%>(<% > Type%> const &t) {
+  <%^field:cpp_ref?%>
+
+  <% > Type%>& set_<%field:name%>(<% > Type%> const &t) {
     __clear();
     type_ = Type::<%field:name%>;
-<%#field:cpp_ref?%>
-    ::new (std::addressof(value_.<%field:name%>)) <% > RefType%>(new <% > RefType%>::element_type(t));
-<%/field:cpp_ref?%>
-<%^field:cpp_ref?%>
     ::new (std::addressof(value_.<%field:name%>)) <% > Type%>(t);
-<%/field:cpp_ref?%>
     return value_.<%field:name%>;
   }
 
-  <% > RefType%>& set_<%field:name%>(<% > Type%>&& t) {
+  <% > Type%>& set_<%field:name%>(<% > Type%>&& t) {
     __clear();
     type_ = Type::<%field:name%>;
-<%#field:cpp_ref?%>
-    ::new (std::addressof(value_.<%field:name%>)) <% > RefType%>(new <% > RefType%>::element_type(std::move(t)));
-<%/field:cpp_ref?%>
-<%^field:cpp_ref?%>
     ::new (std::addressof(value_.<%field:name%>)) <% > Type%>(std::move(t));
-<%/field:cpp_ref?%>
     return value_.<%field:name%>;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<<% > Type%>, T...>> <% > RefType%>& set_<%field:name%>(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<<% > Type%>, T...>> <% > Type%>& set_<%field:name%>(T&&... t) {
     __clear();
     type_ = Type::<%field:name%>;
-<%#field:cpp_ref?%>
-    ::new (std::addressof(value_.<%field:name%>)) <% > RefType%>(new <% > RefType%>::element_type(std::forward<T>(t)...));
-<%/field:cpp_ref?%>
-<%^field:cpp_ref?%>
     ::new (std::addressof(value_.<%field:name%>)) <% > Type%>(std::forward<T>(t)...);
-<%/field:cpp_ref?%>
     return value_.<%field:name%>;
   }
-
+  <%/field:cpp_ref?%>
+  <%#field:cpp_ref?%>
+  <% > RefType%>& set_<%field:name%>(<% > Type%> const &t);
+  <% > RefType%>& set_<%field:name%>(<% > Type%>&& t);
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<<% > Type%>, T...>> <% > RefType%>& set_<%field:name%>(T&&... t);
+  <%/field:cpp_ref?%>
   <%/type:resolves_to_container_or_struct?%>
 <%/field:type%><%/struct:fields%>

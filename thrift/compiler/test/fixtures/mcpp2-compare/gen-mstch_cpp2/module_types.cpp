@@ -438,6 +438,16 @@ void ComplexUnion::__clear() {
       destruct(value_.MyBinaryListField4);
       break;
     }
+    case Type::ref_field:
+    {
+      destruct(value_.ref_field);
+      break;
+    }
+    case Type::ref_field2:
+    {
+      destruct(value_.ref_field2);
+      break;
+    }
     default:
     {
       assert(false);
@@ -566,11 +576,47 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
     {
       return value_.MyBinaryListField4 == rhs.value_.MyBinaryListField4;
     }
+    case Type::ref_field:
+    {
+      return *value_.ref_field == *rhs.value_.ref_field;
+    }
+    case Type::ref_field2:
+    {
+      return *value_.ref_field2 == *rhs.value_.ref_field2;
+    }
     default:
     {
       return true;
     }
   }
+}
+
+std::unique_ptr< ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field( ::some::valid::ns::MyStruct const &t) {
+  __clear();
+  type_ = Type::ref_field;
+  ::new (std::addressof(value_.ref_field)) std::unique_ptr< ::some::valid::ns::MyStruct>(new std::unique_ptr< ::some::valid::ns::MyStruct>::element_type(t));
+  return value_.ref_field;
+}
+
+std::unique_ptr< ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field( ::some::valid::ns::MyStruct&& t) {
+  __clear();
+  type_ = Type::ref_field;
+  ::new (std::addressof(value_.ref_field)) std::unique_ptr< ::some::valid::ns::MyStruct>(new std::unique_ptr< ::some::valid::ns::MyStruct>::element_type(std::move(t)));
+  return value_.ref_field;
+}
+
+std::shared_ptr<const  ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field2( ::some::valid::ns::MyStruct const &t) {
+  __clear();
+  type_ = Type::ref_field2;
+  ::new (std::addressof(value_.ref_field2)) std::shared_ptr<const  ::some::valid::ns::MyStruct>(new std::shared_ptr<const  ::some::valid::ns::MyStruct>::element_type(t));
+  return value_.ref_field2;
+}
+
+std::shared_ptr<const  ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field2( ::some::valid::ns::MyStruct&& t) {
+  __clear();
+  type_ = Type::ref_field2;
+  ::new (std::addressof(value_.ref_field2)) std::shared_ptr<const  ::some::valid::ns::MyStruct>(new std::shared_ptr<const  ::some::valid::ns::MyStruct>::element_type(std::move(t)));
+  return value_.ref_field2;
 }
 
 void swap(ComplexUnion& a, ComplexUnion& b) {

@@ -504,6 +504,20 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
+template<typename... T, typename > std::unique_ptr< ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field(T&&... t) {
+  __clear();
+  type_ = Type::ref_field;
+  ::new (std::addressof(value_.ref_field)) std::unique_ptr< ::some::valid::ns::MyStruct>(new std::unique_ptr< ::some::valid::ns::MyStruct>::element_type(std::forward<T>(t)...));
+  return value_.ref_field;
+}
+
+template<typename... T, typename > std::shared_ptr<const  ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field2(T&&... t) {
+  __clear();
+  type_ = Type::ref_field2;
+  ::new (std::addressof(value_.ref_field2)) std::shared_ptr<const  ::some::valid::ns::MyStruct>(new std::shared_ptr<const  ::some::valid::ns::MyStruct>::element_type(std::forward<T>(t)...));
+  return value_.ref_field2;
+}
+
 template <class Protocol_>
 uint32_t ComplexUnion::read(Protocol_* iprot) {
   uint32_t xfer = 0;
@@ -641,6 +655,14 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
       else if (_fname == "MyBinaryListField4") {
         fid = 23;
         _ftype = apache::thrift::protocol::T_LIST;
+      }
+      else if (_fname == "ref_field") {
+        fid = 24;
+        _ftype = apache::thrift::protocol::T_STRUCT;
+      }
+      else if (_fname == "ref_field2") {
+        fid = 25;
+        _ftype = apache::thrift::protocol::T_STRUCT;
       }
     }
     switch (fid) {
@@ -950,6 +972,30 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
         }
         break;
       }
+      case 24:
+      {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
+          this->set_ref_field();
+          std::unique_ptr< ::some::valid::ns::MyStruct> ptr = std::make_unique< ::some::valid::ns::MyStruct>();
+          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::read(iprot, ptr.get());
+          this->mutable_ref_field() = std::move(ptr);
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
+      case 25:
+      {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
+          this->set_ref_field2();
+          std::unique_ptr< ::some::valid::ns::MyStruct> ptr = std::make_unique< ::some::valid::ns::MyStruct>();
+          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::read(iprot, ptr.get());
+          this->mutable_ref_field2() = std::move(ptr);
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
       default:
       {
         xfer += iprot->skip(_ftype);
@@ -1152,6 +1198,30 @@ uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, std::vector<std::string>>::serializedSize<false>(*prot_, this->get_MyBinaryListField4());
       break;
     }
+    case ComplexUnion::Type::ref_field:
+    {
+      xfer += prot_->serializedFieldSize("ref_field", apache::thrift::protocol::T_STRUCT, 24);
+      if (this->get_ref_field()) {
+        xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::serializedSize(prot_, this->get_ref_field().get());
+      }
+      else {
+        xfer += prot_->serializedStructSize("MyStruct");
+        xfer += prot_->serializedSizeStop();
+      }
+      break;
+    }
+    case ComplexUnion::Type::ref_field2:
+    {
+      xfer += prot_->serializedFieldSize("ref_field2", apache::thrift::protocol::T_STRUCT, 25);
+      if (this->get_ref_field2()) {
+        xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::serializedSize(prot_, this->get_ref_field2().get());
+      }
+      else {
+        xfer += prot_->serializedStructSize("MyStruct");
+        xfer += prot_->serializedSizeStop();
+      }
+      break;
+    }
     case ComplexUnion::Type::__EMPTY__:;
   }
   xfer += prot_->serializedSizeStop();
@@ -1325,6 +1395,30 @@ uint32_t ComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
     {
       xfer += prot_->serializedFieldSize("MyBinaryListField4", apache::thrift::protocol::T_LIST, 23);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, std::vector<std::string>>::serializedSize<false>(*prot_, this->get_MyBinaryListField4());
+      break;
+    }
+    case ComplexUnion::Type::ref_field:
+    {
+      xfer += prot_->serializedFieldSize("ref_field", apache::thrift::protocol::T_STRUCT, 24);
+      if (this->get_ref_field()) {
+        xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::serializedSizeZC(prot_, this->get_ref_field().get());
+      }
+      else {
+        xfer += prot_->serializedStructSize("MyStruct");
+        xfer += prot_->serializedSizeStop();
+      }
+      break;
+    }
+    case ComplexUnion::Type::ref_field2:
+    {
+      xfer += prot_->serializedFieldSize("ref_field2", apache::thrift::protocol::T_STRUCT, 25);
+      if (this->get_ref_field2()) {
+        xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::serializedSizeZC(prot_, this->get_ref_field2().get());
+      }
+      else {
+        xfer += prot_->serializedStructSize("MyStruct");
+        xfer += prot_->serializedSizeStop();
+      }
       break;
     }
     case ComplexUnion::Type::__EMPTY__:;
@@ -1528,6 +1622,34 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
     {
       xfer += prot_->writeFieldBegin("MyBinaryListField4", apache::thrift::protocol::T_LIST, 23);
       xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::list<::apache::thrift::type_class::binary>, std::vector<std::string>>::write(*prot_, this->get_MyBinaryListField4());
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case ComplexUnion::Type::ref_field:
+    {
+      xfer += prot_->writeFieldBegin("ref_field", apache::thrift::protocol::T_STRUCT, 24);
+      if (this->get_ref_field()) {
+        xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::write(prot_, this->get_ref_field().get());
+      }
+      else {
+        xfer += prot_->writeStructBegin("MyStruct");
+        xfer += prot_->writeStructEnd();
+        xfer += prot_->writeFieldStop();
+      }
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case ComplexUnion::Type::ref_field2:
+    {
+      xfer += prot_->writeFieldBegin("ref_field2", apache::thrift::protocol::T_STRUCT, 25);
+      if (this->get_ref_field2()) {
+        xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::MyStruct>::write(prot_, this->get_ref_field2().get());
+      }
+      else {
+        xfer += prot_->writeStructBegin("MyStruct");
+        xfer += prot_->writeStructEnd();
+        xfer += prot_->writeFieldStop();
+      }
       xfer += prot_->writeFieldEnd();
       break;
     }
