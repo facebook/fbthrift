@@ -87,8 +87,7 @@ for name, index in zip(fixtureNames, range(len(fixtureNames))):
             extra = "include_prefix=" + path
             join = "," if ":" in args[0] else ":"
             args[0] = args[0] + join + extra
-        if ("cpp2" in args[0] and "mstch" not in args[0]) or \
-           ("schema" in args[0]):
+        if ("cpp2" in args[0] or "schema" in args[0]):
             # do not recurse in py generators. This is a hack because there is a
             # bug in the python generator that appears hard to fix. This is a
             # workaround. In future, we will use mstch, and the mstch

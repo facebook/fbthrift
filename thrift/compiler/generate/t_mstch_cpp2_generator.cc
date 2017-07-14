@@ -597,7 +597,7 @@ class mstch_cpp2_service : public mstch_service {
     return service_->get_program()->get_name();
   }
   mstch::node include_prefix() {
-    if (cache_->parsed_options_.count("include_prefix")) {
+    if (!service_->get_program()->get_include_prefix().empty()) {
       return cache_->parsed_options_["include_prefix"] + "/gen-cpp2/";
     }
     return std::string("");
@@ -767,7 +767,7 @@ class mstch_cpp2_program : public mstch_program {
     return get_namespace_array();
   }
   mstch::node include_prefix() {
-    if (cache_->parsed_options_.count("include_prefix")) {
+    if (!program_->get_include_prefix().empty()) {
       return cache_->parsed_options_["include_prefix"] + "/gen-cpp2/";
     }
     return std::string("");
