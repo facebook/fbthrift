@@ -165,7 +165,7 @@ struct struct3 {
   15: set<string> fieldO
   16: set<structB> fieldP
   17: map<string, structA> fieldQ
-  18: hash_map<string, structB> fieldR
+  18: map<string, structB> (cpp.template = 'std::unordered_map') fieldR
   19: map<binary, binary> fieldS
 }
 

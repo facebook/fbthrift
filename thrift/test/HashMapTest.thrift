@@ -18,6 +18,6 @@
  */
 
 struct foo {
-  1: hash_map<i32, i32> bar;
-  2: hash_map<string, i32> baz;
+  1: map<i32, i32> (cpp.template = 'std::unordered_map') bar;
+  2: map<string, i32> (cpp.template = 'std::unordered_map') baz;
 }

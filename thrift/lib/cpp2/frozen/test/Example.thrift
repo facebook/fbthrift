@@ -67,7 +67,7 @@ struct EveryLayout {
     (cpp.template = "std::unordered_set")
     aHashSet,
   6: map<i32, i32> aMap,
-  7: hash_map<i32, i32> aHashMap,
+  7: map<i32, i32> (cpp.template = 'std::unordered_map') aHashMap,
   8: optional i32 optInt, // optional layout
   9: float aFloat, // trivial layout
   10: optional map<i32, i32> optMap,
@@ -84,7 +84,6 @@ struct VectorTest {
   4: set<i32>
        (cpp.template = "apache::thrift::frozen::VectorAsHashSet")
        aHashSet;
-  5: hash_map<i32, i32>
-       (cpp.template = "apache::thrift::frozen::VectorAsHashMap")
+  5: map<i32, i32> (cpp.template = "apache::thrift::frozen::VectorAsHashMap")
        aHashMap;
 }

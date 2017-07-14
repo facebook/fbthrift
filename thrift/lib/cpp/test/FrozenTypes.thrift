@@ -16,7 +16,7 @@ struct Person {
 
 struct Team {
   2: optional map<i64, Person> peopleById;
-  4: optional hash_map<i64, i64> ssnLookup;
+  4: optional map<i64, i64> (cpp.template = 'std::unordered_map') ssnLookup;
   3: optional map<string, Person> peopleByName;
   1: optional set<string> projects;
 }

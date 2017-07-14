@@ -75,7 +75,7 @@ struct Insanity
 {
   1: map<Numberz, UserId> userMap,
   2: list<Xtruct> xtructs,
-  3: hash_map<string, string> str2str,
+  3: map<string, string> (cpp.template = 'std::unordered_map') str2str,
 }
 
 struct CrazyNesting {

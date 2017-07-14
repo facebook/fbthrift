@@ -67,7 +67,7 @@ struct OneOfEach {
   13: list<i16> i16_list = [1,2,3],
   14: list<i64> i64_list = [1,2,3]
   15: map<string, string> string_string_map;
-  16: hash_map<string, string> string_string_hash_map,
+  16: map<string, string> (cpp.template = 'std::unordered_map') string_string_hash_map,
   17: float float_precision,
   18: map<i64, float> rank_map,
   19: TwoInts two_ints_uninit,
@@ -114,7 +114,7 @@ struct HolyMoley {
   1: list<OneOfEach> big,
   2: set<list<string>> contain,
   3: map<string,list<Bonk>> bonks,
-  4: hash_map<string,list<Bonk>> bonkers,
+  4: map<string,list<Bonk>> (cpp.template = 'std::unordered_map') bonkers,
 }
 
 struct Backwards {
@@ -203,14 +203,14 @@ struct CompactProtoTestStruct {
   34: map<string, byte>           string_byte_map;
   35: map<binary, byte>           binary_byte_map;
   36: map<bool, byte>             boolean_byte_map;
-  50: hash_map<byte, byte>        byte_byte_hash_map;
-  51: hash_map<i16, byte>         i16_byte_hash_map;
-  52: hash_map<i32, byte>         i32_byte_hash_map;
-  53: hash_map<i64, byte>         i64_byte_hash_map;
-  54: hash_map<double, byte>      double_byte_hash_map;
-  55: hash_map<string, byte>      string_byte_hash_map;
-  56: hash_map<binary, byte>      binary_byte_hash_map;
-  57: hash_map<bool, byte>        boolean_byte_hash_map;
+  50: map<byte, byte> (cpp.template = 'std::unordered_map')        byte_byte_hash_map;
+  51: map<i16, byte> (cpp.template = 'std::unordered_map')         i16_byte_hash_map;
+  52: map<i32, byte> (cpp.template = 'std::unordered_map')         i32_byte_hash_map;
+  53: map<i64, byte> (cpp.template = 'std::unordered_map')         i64_byte_hash_map;
+  54: map<double, byte> (cpp.template = 'std::unordered_map')      double_byte_hash_map;
+  55: map<string, byte> (cpp.template = 'std::unordered_map')      string_byte_hash_map;
+  56: map<binary, byte> (cpp.template = 'std::unordered_map')      binary_byte_hash_map;
+  57: map<bool, byte> (cpp.template = 'std::unordered_map')        boolean_byte_hash_map;
   // primitives as values
   37: map<byte, i16>              byte_i16_map;
   38: map<byte, i32>              byte_i32_map;

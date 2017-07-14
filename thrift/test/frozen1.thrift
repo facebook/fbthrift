@@ -225,7 +225,7 @@ const struct_req_map_str_str struct_req_map_str_str_c = {
 };
 
 struct struct_hmap_i32_i32 {
-  153: hash_map<i32, i32> data
+  153: map<i32, i32> (cpp.template = 'std::unordered_map') data
 }
 
 const struct_hmap_i32_i32 struct_hmap_i32_i32_c = {
@@ -237,7 +237,7 @@ const struct_hmap_i32_i32 struct_hmap_i32_i32_c = {
 };
 
 struct struct_hmap_i32_str {
-  153: hash_map<i32, string> data
+  153: map<i32, string> (cpp.template = 'std::unordered_map') data
 }
 
 const struct_hmap_i32_str struct_hmap_i32_str_c = {
@@ -249,7 +249,7 @@ const struct_hmap_i32_str struct_hmap_i32_str_c = {
 };
 
 struct struct_hmap_str_str {
-  153: hash_map<string, string> data
+  153: map<string, string> (cpp.template = 'std::unordered_map') data
 }
 
 const struct_hmap_str_str struct_hmap_str_str_c = {
@@ -261,7 +261,7 @@ const struct_hmap_str_str struct_hmap_str_str_c = {
 };
 
 struct struct_req_hmap_i32_i32 {
-  153: required hash_map<i32, i32> data
+  153: required map<i32, i32> (cpp.template = 'std::unordered_map') data
 }
 
 const struct_req_hmap_i32_i32 struct_req_hmap_i32_i32_c = {
@@ -273,7 +273,7 @@ const struct_req_hmap_i32_i32 struct_req_hmap_i32_i32_c = {
 };
 
 struct struct_req_hmap_i32_str {
-  153: required hash_map<i32, string> data
+  153: required map<i32, string> (cpp.template = 'std::unordered_map') data
 }
 
 const struct_req_hmap_i32_str struct_req_hmap_i32_str_c = {
@@ -285,7 +285,7 @@ const struct_req_hmap_i32_str struct_req_hmap_i32_str_c = {
 };
 
 struct struct_req_hmap_str_str {
-  153: required hash_map<string, string> data
+  153: required map<string, string> (cpp.template = 'std::unordered_map') data
 }
 
 const struct_req_hmap_str_str struct_req_hmap_str_str_c = {
@@ -998,7 +998,7 @@ const variable_nested_req_map variable_nested_req_map_c = {
 }
 
 struct variable_nested_hmap {
-  1: hash_map<string, variable_nested> data
+  1: map<string, variable_nested> (cpp.template = 'std::unordered_map') data
 }
 
 const variable_nested_hmap variable_nested_hmap_c = {
@@ -1056,7 +1056,7 @@ const variable_nested_hmap variable_nested_hmap_c = {
 }
 
 struct variable_nested_req_hmap {
-  1: required hash_map<string, variable_nested> data
+  1: required map<string, variable_nested> (cpp.template = 'std::unordered_map') data
 }
 
 const variable_nested_req_hmap variable_nested_req_hmap_c = {
