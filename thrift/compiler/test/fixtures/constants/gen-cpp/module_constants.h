@@ -28,6 +28,19 @@ struct module_constants {
   static Internship const& instagram();
   static std::vector<Range>  const& kRanges();
   static std::vector<Internship>  const& internList();
+  static struct1 const& pod_0();
+  static struct1 const& pod_1();
+  static struct2 const& pod_2();
+  static struct3 const& pod_3();
+  static union1 const& u_1_1();
+  static union1 const& u_1_2();
+  static union1 const& u_1_3();
+  static union2 const& u_2_1();
+  static union2 const& u_2_2();
+  static union2 const& u_2_3();
+  static union2 const& u_2_4();
+  static union2 const& u_2_5();
+  static union2 const& u_2_6();
   // consider using folly::StringPiece instead of std::string whenever possible
   // to referencing this statically allocated string constant, in order to
   // prevent unnecessary allocations

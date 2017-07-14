@@ -66,6 +66,119 @@ std::vector<Internship>  const &module_constants::internList() {
   };
   return *instance;
 }
+struct1 const &module_constants::pod_0() {
+  static folly::Indestructible<struct1> const instance{
+    struct1()
+  };
+  return *instance;
+}
+struct1 const &module_constants::pod_1() {
+  static folly::Indestructible<struct1> const instance{
+    struct1(
+      ::apache::thrift::detail::wrap_argument<1>(10),
+      ::apache::thrift::detail::wrap_argument<2>("foo"))
+  };
+  return *instance;
+}
+struct2 const &module_constants::pod_2() {
+  static folly::Indestructible<struct2> const instance{
+    struct2(
+      ::apache::thrift::detail::wrap_argument<1>(98),
+      ::apache::thrift::detail::wrap_argument<2>("gaz"),
+      ::apache::thrift::detail::wrap_argument<3>(struct1(
+          ::apache::thrift::detail::wrap_argument<1>(12),
+          ::apache::thrift::detail::wrap_argument<2>("bar"))),
+      ::apache::thrift::detail::wrap_argument<4>(std::vector<int32_t> {
+          11,
+          22,
+          33,
+        }))
+  };
+  return *instance;
+}
+struct3 const &module_constants::pod_3() {
+  static folly::Indestructible<struct3> const instance{
+    struct3(
+      ::apache::thrift::detail::wrap_argument<1>("abc"),
+      ::apache::thrift::detail::wrap_argument<2>(456),
+      ::apache::thrift::detail::wrap_argument<3>(struct2(
+          ::apache::thrift::detail::wrap_argument<1>(888),
+          ::apache::thrift::detail::wrap_argument<3>(struct1(
+              ::apache::thrift::detail::wrap_argument<2>("gaz"))),
+          ::apache::thrift::detail::wrap_argument<4>(std::vector<int32_t> {
+              1,
+              2,
+              3,
+            }))))
+  };
+  return *instance;
+}
+union1 const &module_constants::u_1_1() {
+  static folly::Indestructible<union1> const instance{
+    union1(
+      ::apache::thrift::detail::wrap_argument<1>(97))
+  };
+  return *instance;
+}
+union1 const &module_constants::u_1_2() {
+  static folly::Indestructible<union1> const instance{
+    union1(
+      ::apache::thrift::detail::wrap_argument<2>(5.6))
+  };
+  return *instance;
+}
+union1 const &module_constants::u_1_3() {
+  static folly::Indestructible<union1> const instance{
+    union1()
+  };
+  return *instance;
+}
+union2 const &module_constants::u_2_1() {
+  static folly::Indestructible<union2> const instance{
+    union2(
+      ::apache::thrift::detail::wrap_argument<1>(51))
+  };
+  return *instance;
+}
+union2 const &module_constants::u_2_2() {
+  static folly::Indestructible<union2> const instance{
+    union2(
+      ::apache::thrift::detail::wrap_argument<2>(6.7))
+  };
+  return *instance;
+}
+union2 const &module_constants::u_2_3() {
+  static folly::Indestructible<union2> const instance{
+    union2(
+      ::apache::thrift::detail::wrap_argument<3>(struct1(
+          ::apache::thrift::detail::wrap_argument<1>(8),
+          ::apache::thrift::detail::wrap_argument<2>("abacabb"))))
+  };
+  return *instance;
+}
+union2 const &module_constants::u_2_4() {
+  static folly::Indestructible<union2> const instance{
+    union2(
+      ::apache::thrift::detail::wrap_argument<4>(union1(
+          ::apache::thrift::detail::wrap_argument<1>(43))))
+  };
+  return *instance;
+}
+union2 const &module_constants::u_2_5() {
+  static folly::Indestructible<union2> const instance{
+    union2(
+      ::apache::thrift::detail::wrap_argument<4>(union1(
+          ::apache::thrift::detail::wrap_argument<2>(9.8))))
+  };
+  return *instance;
+}
+union2 const &module_constants::u_2_6() {
+  static folly::Indestructible<union2> const instance{
+    union2(
+      ::apache::thrift::detail::wrap_argument<4>(union1()))
+  };
+  return *instance;
+}
 constexpr char const *const module_constants::apostrophe_;
 constexpr char const *const module_constants::tripleApostrophe_;
 constexpr char const *const module_constants::quotationMark_;

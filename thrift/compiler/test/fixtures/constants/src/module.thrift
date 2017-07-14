@@ -66,6 +66,106 @@ const list<Internship> internList = [
   }
 ];
 
+struct struct1 {
+  1: i32 a = 1234567
+  2: string b = "<uninitialized>"
+}
+
+const struct1 pod_0 = {};
+
+const struct1 pod_1 = {
+  "a": 10,
+  "b": "foo"
+}
+
+struct struct2 {
+  1: i32 a
+  2: string b
+  3: struct1 c
+  4: list<i32> d
+}
+
+const struct2 pod_2 = {
+  "a": 98,
+  "b": "gaz",
+  "c": {
+    "a": 12,
+    "b": "bar"
+  },
+  "d": [11, 22, 33]
+}
+
+struct struct3 {
+  1: string a
+  2: i32 b
+  3: struct2 c
+}
+
+const struct3 pod_3 = {
+  "a":"abc",
+  "b":456,
+  "c": {
+    "a":888,
+    "c":{
+      "b":"gaz"
+    }
+    "d": [1, 2, 3]
+  }
+}
+
+union union1 {
+  1: i32 i
+  2: double d
+}
+
+const union1 u_1_1 = {
+  "i": 97
+}
+
+const union1 u_1_2 = {
+  "d": 5.6
+}
+
+const union1 u_1_3 = {}
+
+union union2 {
+  1: i32 i
+  2: double d
+  3: struct1 s
+  4: union1 u
+}
+
+const union2 u_2_1 = {
+  "i": 51
+}
+
+const union2 u_2_2 = {
+  "d": 6.7
+}
+
+const union2 u_2_3 = {
+  "s": {
+    "a": 8,
+    "b": "abacabb"
+  }
+}
+
+const union2 u_2_4 = {
+  "u": {
+    "i": 43
+  }
+}
+
+const union2 u_2_5 = {
+  "u": {
+    "d": 9.8
+  }
+}
+
+const union2 u_2_6 = {
+  "u": {}
+}
+
 const string apostrophe = "'";
 const string tripleApostrophe = "'''";
 const string quotationMark = '"'; //" //fix syntax highlighting

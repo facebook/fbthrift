@@ -101,6 +101,16 @@ class UnEnumStruct;
 
 class Range;
 
+class struct1;
+
+class struct2;
+
+class struct3;
+
+class union1;
+
+class union2;
+
 void swap(Internship &a, Internship &b);
 
 class Internship : public apache::thrift::TStructType<Internship> {
@@ -305,5 +315,822 @@ class Range : public apache::thrift::TStructType<Range> {
 class Range;
 void merge(const Range& from, Range& to);
 void merge(Range&& from, Range& to);
+void swap(struct1 &a, struct1 &b);
+
+class struct1 : public apache::thrift::TStructType<struct1> {
+ public:
+
+  static const uint64_t _reflection_id = 18317194148543753228U;
+  static void _reflection_register(::apache::thrift::reflection::Schema&);
+  struct1() : a(1234567), b("<uninitialized>") {
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct1(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct1(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    a = arg.move();
+    __isset.a = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct1(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct1(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    b = arg.move();
+    __isset.b = true;
+  }
+
+  struct1(const struct1&) = default;
+  struct1& operator=(const struct1& src)= default;
+  struct1(struct1&&) = default;
+  struct1& operator=(struct1&&) = default;
+
+  void __clear();
+
+  virtual ~struct1() throw() {}
+
+  int32_t a;
+  std::string b;
+
+  struct __isset {
+    __isset() { __clear(); } 
+    void __clear() {
+      a = false;
+      b = false;
+    }
+    bool a;
+    bool b;
+  } __isset;
+
+  bool operator == (const struct1 &) const;
+  bool operator != (const struct1& rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const struct1 & ) const;
+
+  uint32_t read(apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+class struct1;
+void merge(const struct1& from, struct1& to);
+void merge(struct1&& from, struct1& to);
+void swap(struct2 &a, struct2 &b);
+
+class struct2 : public apache::thrift::TStructType<struct2> {
+ public:
+
+  static const uint64_t _reflection_id = 13919930284671800588U;
+  static void _reflection_register(::apache::thrift::reflection::Schema&);
+  struct2() : a(0) {
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct2(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    a = arg.move();
+    __isset.a = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct2(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    b = arg.move();
+    __isset.b = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct2(
+    ::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    c = arg.move();
+    __isset.c = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct2(
+    ::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    d = arg.move();
+    __isset.d = true;
+  }
+
+  struct2(const struct2&) = default;
+  struct2& operator=(const struct2& src)= default;
+  struct2(struct2&&) = default;
+  struct2& operator=(struct2&&) = default;
+
+  void __clear();
+
+  virtual ~struct2() throw() {}
+
+  int32_t a;
+  std::string b;
+  struct1 c;
+  std::vector<int32_t>  d;
+
+  struct __isset {
+    __isset() { __clear(); } 
+    void __clear() {
+      a = false;
+      b = false;
+      c = false;
+      d = false;
+    }
+    bool a;
+    bool b;
+    bool c;
+    bool d;
+  } __isset;
+
+  bool operator == (const struct2 &) const;
+  bool operator != (const struct2& rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const struct2 & ) const;
+
+  uint32_t read(apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+class struct2;
+void merge(const struct2& from, struct2& to);
+void merge(struct2&& from, struct2& to);
+void swap(struct3 &a, struct3 &b);
+
+class struct3 : public apache::thrift::TStructType<struct3> {
+ public:
+
+  static const uint64_t _reflection_id = 16392874475279945260U;
+  static void _reflection_register(::apache::thrift::reflection::Schema&);
+  struct3() : b(0) {
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct3(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    a = arg.move();
+    __isset.a = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct3(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    b = arg.move();
+    __isset.b = true;
+  }
+  template <
+    typename T__ThriftWrappedArgument__Ctor,
+    typename... Args__ThriftWrappedArgument__Ctor
+  >
+  explicit struct3(
+    ::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg,
+    Args__ThriftWrappedArgument__Ctor&&... args
+  ):
+    struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    c = arg.move();
+    __isset.c = true;
+  }
+
+  struct3(const struct3&) = default;
+  struct3& operator=(const struct3& src)= default;
+  struct3(struct3&&) = default;
+  struct3& operator=(struct3&&) = default;
+
+  void __clear();
+
+  virtual ~struct3() throw() {}
+
+  std::string a;
+  int32_t b;
+  struct2 c;
+
+  struct __isset {
+    __isset() { __clear(); } 
+    void __clear() {
+      a = false;
+      b = false;
+      c = false;
+    }
+    bool a;
+    bool b;
+    bool c;
+  } __isset;
+
+  bool operator == (const struct3 &) const;
+  bool operator != (const struct3& rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator < (const struct3 & ) const;
+
+  uint32_t read(apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+
+};
+
+class struct3;
+void merge(const struct3& from, struct3& to);
+void merge(struct3&& from, struct3& to);
+class union1 : public apache::thrift::TStructType<union1> {
+ public:
+  enum class Type {
+    __EMPTY__ = 0,
+    i = 1,
+    d = 2,
+  };
+
+  union1() : type_(Type::__EMPTY__) {}
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union1(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_i(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union1(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_d(arg.move());
+  }
+  union1(const union1& rhs) : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch (rhs.type_) {
+      case Type::i: {
+        set_i(rhs.value_.i);
+        break;
+      }
+      case Type::d: {
+        set_d(rhs.value_.d);
+        break;
+      }
+      default: assert(false);
+    }
+  }
+
+  union1& operator=(const union1& rhs) {
+    if (this == &rhs) { return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch (rhs.type_) {
+      case Type::i: {
+        set_i(rhs.value_.i);
+        break;
+      }
+      case Type::d: {
+        set_d(rhs.value_.d);
+        break;
+      }
+      default: assert(false);
+    }
+    return *this;
+  }
+
+  union1(union1&& rhs) : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch (rhs.type_) {
+      case Type::i: {
+        set_i(std::move(rhs.value_.i));
+        break;
+      }
+      case Type::d: {
+        set_d(std::move(rhs.value_.d));
+        break;
+      }
+      default: assert(false);
+    }
+    rhs.__clear();
+  }
+
+  union1& operator=(union1&& rhs) {
+    if (this == &rhs) { return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch (rhs.type_) {
+      case Type::i: {
+        set_i(std::move(rhs.value_.i));
+        break;
+      }
+      case Type::d: {
+        set_d(std::move(rhs.value_.d));
+        break;
+      }
+      default: assert(false);
+    }
+    rhs.__clear();
+    return *this;
+  }
+
+
+  void __clear() {
+    if (type_ == Type::__EMPTY__) { return; }
+    switch (type_) {
+      case Type::i: {
+        
+        break;
+      }
+      case Type::d: {
+        
+        break;
+      }
+      default: assert(false);
+    }
+    type_ = Type::__EMPTY__;
+  }
+  virtual ~union1() throw() {
+    __clear();
+  }
+
+  union storage_type {
+    int32_t i;
+    double d;
+    
+    storage_type() {}
+    ~storage_type() {}
+  };
+
+  bool operator==(const union1& rhs) const {
+    if (type_ != rhs.type_) { return false; }
+    switch (type_) {
+      case Type::i: {
+        return value_.i == rhs.value_.i;
+
+        break;
+      }
+      case Type::d: {
+        return value_.d == rhs.value_.d;
+
+        break;
+      }
+      default: return true;
+    }
+  }
+
+  bool operator!=(const union1& rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator<(const union1& rhs) const {
+    if (type_ != rhs.type_) return type_ < rhs.type_;
+    switch (type_) {
+      case Type::i: {
+        return value_.i < rhs.value_.i;
+
+        break;
+      }
+      case Type::d: {
+        return value_.d < rhs.value_.d;
+
+        break;
+      }
+      default: return false;
+    }
+    return false;
+  }
+
+  template<typename... T>
+  void set_i(T&&... t) {
+    __clear();
+    type_ = Type::i;
+    new (&value_.i) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_d(T&&... t) {
+    __clear();
+    type_ = Type::d;
+    new (&value_.d) double(std::forward<T>(t)...);
+  }
+
+  const int32_t& get_i() const {
+    assert(type_ == Type::i);
+    return value_.i;
+  }
+
+  const double& get_d() const {
+    assert(type_ == Type::d);
+    return value_.d;
+  }
+
+  int32_t& mutable_i() {
+    assert(type_ == Type::i);
+    return value_.i;
+  }
+
+  double& mutable_d() {
+    assert(type_ == Type::d);
+    return value_.d;
+  }
+
+  int32_t move_i() {
+    assert(type_ == Type::i);
+    return std::move(value_.i);
+  }
+
+  double move_d() {
+    assert(type_ == Type::d);
+    return std::move(value_.d);
+  }
+
+  Type getType() const { return type_; }
+
+  uint32_t read(apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+ private:
+  Type type_;
+  storage_type value_;
+
+};
+
+class union2 : public apache::thrift::TStructType<union2> {
+ public:
+  enum class Type {
+    __EMPTY__ = 0,
+    i = 1,
+    d = 2,
+    s = 3,
+    u = 4,
+  };
+
+  union2() : type_(Type::__EMPTY__) {}
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union2(
+    ::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_i(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union2(
+    ::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_d(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union2(
+    ::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_s(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  explicit union2(
+    ::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_u(arg.move());
+  }
+  union2(const union2& rhs) : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch (rhs.type_) {
+      case Type::i: {
+        set_i(rhs.value_.i);
+        break;
+      }
+      case Type::d: {
+        set_d(rhs.value_.d);
+        break;
+      }
+      case Type::s: {
+        set_s(rhs.value_.s);
+        break;
+      }
+      case Type::u: {
+        set_u(rhs.value_.u);
+        break;
+      }
+      default: assert(false);
+    }
+  }
+
+  union2& operator=(const union2& rhs) {
+    if (this == &rhs) { return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch (rhs.type_) {
+      case Type::i: {
+        set_i(rhs.value_.i);
+        break;
+      }
+      case Type::d: {
+        set_d(rhs.value_.d);
+        break;
+      }
+      case Type::s: {
+        set_s(rhs.value_.s);
+        break;
+      }
+      case Type::u: {
+        set_u(rhs.value_.u);
+        break;
+      }
+      default: assert(false);
+    }
+    return *this;
+  }
+
+  union2(union2&& rhs) : type_(Type::__EMPTY__) {
+    if (this == &rhs) { return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch (rhs.type_) {
+      case Type::i: {
+        set_i(std::move(rhs.value_.i));
+        break;
+      }
+      case Type::d: {
+        set_d(std::move(rhs.value_.d));
+        break;
+      }
+      case Type::s: {
+        set_s(std::move(rhs.value_.s));
+        break;
+      }
+      case Type::u: {
+        set_u(std::move(rhs.value_.u));
+        break;
+      }
+      default: assert(false);
+    }
+    rhs.__clear();
+  }
+
+  union2& operator=(union2&& rhs) {
+    if (this == &rhs) { return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch (rhs.type_) {
+      case Type::i: {
+        set_i(std::move(rhs.value_.i));
+        break;
+      }
+      case Type::d: {
+        set_d(std::move(rhs.value_.d));
+        break;
+      }
+      case Type::s: {
+        set_s(std::move(rhs.value_.s));
+        break;
+      }
+      case Type::u: {
+        set_u(std::move(rhs.value_.u));
+        break;
+      }
+      default: assert(false);
+    }
+    rhs.__clear();
+    return *this;
+  }
+
+
+  void __clear() {
+    if (type_ == Type::__EMPTY__) { return; }
+    switch (type_) {
+      case Type::i: {
+        
+        break;
+      }
+      case Type::d: {
+        
+        break;
+      }
+      case Type::s: {
+        value_.s.~struct1();
+        break;
+      }
+      case Type::u: {
+        value_.u.~union1();
+        break;
+      }
+      default: assert(false);
+    }
+    type_ = Type::__EMPTY__;
+  }
+  virtual ~union2() throw() {
+    __clear();
+  }
+
+  union storage_type {
+    int32_t i;
+    double d;
+    struct1 s;
+    union1 u;
+    
+    storage_type() {}
+    ~storage_type() {}
+  };
+
+  bool operator==(const union2& rhs) const {
+    if (type_ != rhs.type_) { return false; }
+    switch (type_) {
+      case Type::i: {
+        return value_.i == rhs.value_.i;
+
+        break;
+      }
+      case Type::d: {
+        return value_.d == rhs.value_.d;
+
+        break;
+      }
+      case Type::s: {
+        return value_.s == rhs.value_.s;
+
+        break;
+      }
+      case Type::u: {
+        return value_.u == rhs.value_.u;
+
+        break;
+      }
+      default: return true;
+    }
+  }
+
+  bool operator!=(const union2& rhs) const {
+    return !(*this == rhs);
+  }
+
+  bool operator<(const union2& rhs) const {
+    if (type_ != rhs.type_) return type_ < rhs.type_;
+    switch (type_) {
+      case Type::i: {
+        return value_.i < rhs.value_.i;
+
+        break;
+      }
+      case Type::d: {
+        return value_.d < rhs.value_.d;
+
+        break;
+      }
+      case Type::s: {
+        return value_.s < rhs.value_.s;
+
+        break;
+      }
+      case Type::u: {
+        return value_.u < rhs.value_.u;
+
+        break;
+      }
+      default: return false;
+    }
+    return false;
+  }
+
+  template<typename... T>
+  void set_i(T&&... t) {
+    __clear();
+    type_ = Type::i;
+    new (&value_.i) int32_t(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_d(T&&... t) {
+    __clear();
+    type_ = Type::d;
+    new (&value_.d) double(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_s(T&&... t) {
+    __clear();
+    type_ = Type::s;
+    new (&value_.s) struct1(std::forward<T>(t)...);
+  }
+
+  template<typename... T>
+  void set_u(T&&... t) {
+    __clear();
+    type_ = Type::u;
+    new (&value_.u) union1(std::forward<T>(t)...);
+  }
+
+  const int32_t& get_i() const {
+    assert(type_ == Type::i);
+    return value_.i;
+  }
+
+  const double& get_d() const {
+    assert(type_ == Type::d);
+    return value_.d;
+  }
+
+  const struct1& get_s() const {
+    assert(type_ == Type::s);
+    return value_.s;
+  }
+
+  const union1& get_u() const {
+    assert(type_ == Type::u);
+    return value_.u;
+  }
+
+  int32_t& mutable_i() {
+    assert(type_ == Type::i);
+    return value_.i;
+  }
+
+  double& mutable_d() {
+    assert(type_ == Type::d);
+    return value_.d;
+  }
+
+  struct1& mutable_s() {
+    assert(type_ == Type::s);
+    return value_.s;
+  }
+
+  union1& mutable_u() {
+    assert(type_ == Type::u);
+    return value_.u;
+  }
+
+  int32_t move_i() {
+    assert(type_ == Type::i);
+    return std::move(value_.i);
+  }
+
+  double move_d() {
+    assert(type_ == Type::d);
+    return std::move(value_.d);
+  }
+
+  struct1 move_s() {
+    assert(type_ == Type::s);
+    return std::move(value_.s);
+  }
+
+  union1 move_u() {
+    assert(type_ == Type::u);
+    return std::move(value_.u);
+  }
+
+  Type getType() const { return type_; }
+
+  uint32_t read(apache::thrift::protocol::TProtocol* iprot);
+  uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
+ private:
+  Type type_;
+  storage_type value_;
+
+};
+
 
 

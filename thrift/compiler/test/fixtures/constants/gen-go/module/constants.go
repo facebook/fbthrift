@@ -24,6 +24,19 @@ const Z = 1e+09
 var Instagram *Internship
 var KRanges []*Range
 var InternList []*Internship
+var Pod_0 *Struct1
+var Pod_1 *Struct1
+var Pod_2 *Struct2
+var Pod_3 *Struct3
+var U_1_1 *Union1
+var U_1_2 *Union1
+var U_1_3 *Union1
+var U_2_1 *Union2
+var U_2_2 *Union2
+var U_2_3 *Union2
+var U_2_4 *Union2
+var U_2_5 *Union2
+var U_2_6 *Union2
 const Apostrophe = "'"
 const TripleApostrophe = "'''"
 const QuotationMark = "\""
@@ -79,6 +92,70 @@ InternList = []*Internship{
     Weeks: 10,
     Title: "Sales Intern",
     Employer:     0,}, }
+
+Pod_0 = &Struct1{}
+
+Pod_1 = &Struct1{
+  A: 10,
+  B: "foo",}
+
+Pod_2 = &Struct2{
+  A: 98,
+  B: "gaz",
+  v1 := &Struct1{
+    A: 12,
+    B: "bar",}
+  Pod_2.C = v1
+  v3 := []int32{
+    11,     22,     33,   }
+  Pod_2.D = v3}
+
+Pod_3 = &Struct3{
+  A: "abc",
+  B: 456,
+  v5 := &Struct2{
+    A: 888,
+    v7 := &Struct1{
+      B: "gaz",}
+    v5.C = v7
+    v9 := []int32{
+      1,       2,       3,     }
+    v5.D = v9}
+  Pod_3.C = v5}
+
+U_1_1 = &Union1{
+  I: 97,}
+
+U_1_2 = &Union1{
+  D: 5.6,}
+
+U_1_3 = &Union1{}
+
+U_2_1 = &Union2{
+  I: 51,}
+
+U_2_2 = &Union2{
+  D: 6.7,}
+
+U_2_3 = &Union2{
+  v11 := &Struct1{
+    A: 8,
+    B: "abacabb",}
+  U_2_3.S = v11}
+
+U_2_4 = &Union2{
+  v13 := &Union1{
+    I: 43,}
+  U_2_4.U = v13}
+
+U_2_5 = &Union2{
+  v15 := &Union1{
+    D: 9.8,}
+  U_2_5.U = v15}
+
+U_2_6 = &Union2{
+  v17 := &Union1{}
+  U_2_6.U = v17}
 
 Char2ascii = map[string]int32{
   "'": 39,

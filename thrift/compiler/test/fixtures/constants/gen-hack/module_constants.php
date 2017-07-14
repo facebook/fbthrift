@@ -150,6 +150,247 @@ class module_CONSTANTS {
 
   /**
    * Original thrift constant:-
+   * struct module.struct1 pod_0
+   */
+  private static ?struct1 $__pod_0 = null;
+  public static function pod_0(): struct1 {
+    if (self::$__pod_0 == null) {
+      self::$__pod_0 = new struct1(
+        null,
+        null,
+      );
+    }
+    return self::$__pod_0;
+  }
+
+  /**
+   * Original thrift constant:-
+   * struct module.struct1 pod_1
+   */
+  private static ?struct1 $__pod_1 = null;
+  public static function pod_1(): struct1 {
+    if (self::$__pod_1 == null) {
+      self::$__pod_1 = new struct1(
+        10,
+        "foo",
+      );
+    }
+    return self::$__pod_1;
+  }
+
+  /**
+   * Original thrift constant:-
+   * struct module.struct2 pod_2
+   */
+  private static ?struct2 $__pod_2 = null;
+  public static function pod_2(): struct2 {
+    if (self::$__pod_2 == null) {
+      self::$__pod_2 = new struct2(
+        98,
+        "gaz",
+        new struct1(
+          12,
+          "bar",
+        ),
+        Vector {
+          11,
+          22,
+          33,
+        },
+      );
+    }
+    return self::$__pod_2;
+  }
+
+  /**
+   * Original thrift constant:-
+   * struct module.struct3 pod_3
+   */
+  private static ?struct3 $__pod_3 = null;
+  public static function pod_3(): struct3 {
+    if (self::$__pod_3 == null) {
+      self::$__pod_3 = new struct3(
+        "abc",
+        456,
+        new struct2(
+          888,
+          null,
+          new struct1(
+            null,
+            "gaz",
+          ),
+          Vector {
+            1,
+            2,
+            3,
+          },
+        ),
+      );
+    }
+    return self::$__pod_3;
+  }
+
+  /**
+   * Original thrift constant:-
+   * struct module.union1 u_1_1
+   */
+  private static ?union1 $__u_1_1 = null;
+  public static function u_1_1(): union1 {
+    if (self::$__u_1_1 == null) {
+      self::$__u_1_1 = new union1(
+        97,
+        null,
+      );
+    }
+    return self::$__u_1_1;
+  }
+
+  /**
+   * Original thrift constant:-
+   * struct module.union1 u_1_2
+   */
+  private static ?union1 $__u_1_2 = null;
+  public static function u_1_2(): union1 {
+    if (self::$__u_1_2 == null) {
+      self::$__u_1_2 = new union1(
+        null,
+        5.6,
+      );
+    }
+    return self::$__u_1_2;
+  }
+
+  /**
+   * Original thrift constant:-
+   * struct module.union1 u_1_3
+   */
+  private static ?union1 $__u_1_3 = null;
+  public static function u_1_3(): union1 {
+    if (self::$__u_1_3 == null) {
+      self::$__u_1_3 = new union1(
+        null,
+        null,
+      );
+    }
+    return self::$__u_1_3;
+  }
+
+  /**
+   * Original thrift constant:-
+   * struct module.union2 u_2_1
+   */
+  private static ?union2 $__u_2_1 = null;
+  public static function u_2_1(): union2 {
+    if (self::$__u_2_1 == null) {
+      self::$__u_2_1 = new union2(
+        51,
+        null,
+        null,
+        null,
+      );
+    }
+    return self::$__u_2_1;
+  }
+
+  /**
+   * Original thrift constant:-
+   * struct module.union2 u_2_2
+   */
+  private static ?union2 $__u_2_2 = null;
+  public static function u_2_2(): union2 {
+    if (self::$__u_2_2 == null) {
+      self::$__u_2_2 = new union2(
+        null,
+        6.7,
+        null,
+        null,
+      );
+    }
+    return self::$__u_2_2;
+  }
+
+  /**
+   * Original thrift constant:-
+   * struct module.union2 u_2_3
+   */
+  private static ?union2 $__u_2_3 = null;
+  public static function u_2_3(): union2 {
+    if (self::$__u_2_3 == null) {
+      self::$__u_2_3 = new union2(
+        null,
+        null,
+        new struct1(
+          8,
+          "abacabb",
+        ),
+        null,
+      );
+    }
+    return self::$__u_2_3;
+  }
+
+  /**
+   * Original thrift constant:-
+   * struct module.union2 u_2_4
+   */
+  private static ?union2 $__u_2_4 = null;
+  public static function u_2_4(): union2 {
+    if (self::$__u_2_4 == null) {
+      self::$__u_2_4 = new union2(
+        null,
+        null,
+        null,
+        new union1(
+          43,
+          null,
+        ),
+      );
+    }
+    return self::$__u_2_4;
+  }
+
+  /**
+   * Original thrift constant:-
+   * struct module.union2 u_2_5
+   */
+  private static ?union2 $__u_2_5 = null;
+  public static function u_2_5(): union2 {
+    if (self::$__u_2_5 == null) {
+      self::$__u_2_5 = new union2(
+        null,
+        null,
+        null,
+        new union1(
+          null,
+          9.8,
+        ),
+      );
+    }
+    return self::$__u_2_5;
+  }
+
+  /**
+   * Original thrift constant:-
+   * struct module.union2 u_2_6
+   */
+  private static ?union2 $__u_2_6 = null;
+  public static function u_2_6(): union2 {
+    if (self::$__u_2_6 == null) {
+      self::$__u_2_6 = new union2(
+        null,
+        null,
+        null,
+        new union1(
+          null,
+          null,
+        ),
+      );
+    }
+    return self::$__u_2_6;
+  }
+
+  /**
+   * Original thrift constant:-
    * string apostrophe
    */
   private static ?string $__apostrophe = null;
@@ -502,6 +743,104 @@ class module_CONSTANTS {
             Company::FACEBOOK,
           ),
         },
+        "pod_0" => new struct1(
+          null,
+          null,
+        ),
+        "pod_1" => new struct1(
+          10,
+          "foo",
+        ),
+        "pod_2" => new struct2(
+          98,
+          "gaz",
+          new struct1(
+            12,
+            "bar",
+          ),
+          Vector {
+            11,
+            22,
+            33,
+          },
+        ),
+        "pod_3" => new struct3(
+          "abc",
+          456,
+          new struct2(
+            888,
+            null,
+            new struct1(
+              null,
+              "gaz",
+            ),
+            Vector {
+              1,
+              2,
+              3,
+            },
+          ),
+        ),
+        "u_1_1" => new union1(
+          97,
+          null,
+        ),
+        "u_1_2" => new union1(
+          null,
+          5.6,
+        ),
+        "u_1_3" => new union1(
+          null,
+          null,
+        ),
+        "u_2_1" => new union2(
+          51,
+          null,
+          null,
+          null,
+        ),
+        "u_2_2" => new union2(
+          null,
+          6.7,
+          null,
+          null,
+        ),
+        "u_2_3" => new union2(
+          null,
+          null,
+          new struct1(
+            8,
+            "abacabb",
+          ),
+          null,
+        ),
+        "u_2_4" => new union2(
+          null,
+          null,
+          null,
+          new union1(
+            43,
+            null,
+          ),
+        ),
+        "u_2_5" => new union2(
+          null,
+          null,
+          null,
+          new union1(
+            null,
+            9.8,
+          ),
+        ),
+        "u_2_6" => new union2(
+          null,
+          null,
+          null,
+          new union1(
+            null,
+            null,
+          ),
+        ),
         "apostrophe" => "'",
         "tripleApostrophe" => "'''",
         "quotationMark" => "\"",

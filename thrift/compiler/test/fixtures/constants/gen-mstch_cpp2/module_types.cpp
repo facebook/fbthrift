@@ -211,4 +211,302 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace cpp2 {
 
+void struct1::__clear() {
+  // clear all fields
+  a = 1234567;
+  b = apache::thrift::StringTraits< std::string>::fromStringLiteral("<uninitialized>");
+  __isset.__clear();
+}
+
+bool struct1::operator==(const struct1& rhs) const {
+  if (!((a == rhs.a))) {
+    return false;
+  }
+  if (!((b == rhs.b))) {
+    return false;
+  }
+  return true;
+}
+
+void swap(struct1& a, struct1& b) {
+  using ::std::swap;
+  swap(a.a, b.a);
+  swap(a.b, b.b);
+  swap(a.__isset, b.__isset);
+}
+
+template uint32_t struct1::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t struct1::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t struct1::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t struct1::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t struct1::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t struct1::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t struct1::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t struct1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
+void struct2::__clear() {
+  // clear all fields
+  a = 0;
+  b = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  ::apache::thrift::Cpp2Ops<  ::cpp2::struct1>::clear(&c);
+  d.clear();
+  __isset.__clear();
+}
+
+bool struct2::operator==(const struct2& rhs) const {
+  if (!((a == rhs.a))) {
+    return false;
+  }
+  if (!((b == rhs.b))) {
+    return false;
+  }
+  if (!((c == rhs.c))) {
+    return false;
+  }
+  if (!((d == rhs.d))) {
+    return false;
+  }
+  return true;
+}
+
+const  ::cpp2::struct1& struct2::get_c() const& {
+  return c;
+}
+
+ ::cpp2::struct1 struct2::get_c() && {
+  return std::move(c);
+}
+
+const std::vector<int32_t>& struct2::get_d() const& {
+  return d;
+}
+
+std::vector<int32_t> struct2::get_d() && {
+  return std::move(d);
+}
+
+void swap(struct2& a, struct2& b) {
+  using ::std::swap;
+  swap(a.a, b.a);
+  swap(a.b, b.b);
+  swap(a.c, b.c);
+  swap(a.d, b.d);
+  swap(a.__isset, b.__isset);
+}
+
+template uint32_t struct2::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t struct2::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t struct2::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t struct2::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t struct2::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t struct2::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t struct2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t struct2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
+void struct3::__clear() {
+  // clear all fields
+  a = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  b = 0;
+  ::apache::thrift::Cpp2Ops<  ::cpp2::struct2>::clear(&c);
+  __isset.__clear();
+}
+
+bool struct3::operator==(const struct3& rhs) const {
+  if (!((a == rhs.a))) {
+    return false;
+  }
+  if (!((b == rhs.b))) {
+    return false;
+  }
+  if (!((c == rhs.c))) {
+    return false;
+  }
+  return true;
+}
+
+const  ::cpp2::struct2& struct3::get_c() const& {
+  return c;
+}
+
+ ::cpp2::struct2 struct3::get_c() && {
+  return std::move(c);
+}
+
+void swap(struct3& a, struct3& b) {
+  using ::std::swap;
+  swap(a.a, b.a);
+  swap(a.b, b.b);
+  swap(a.c, b.c);
+  swap(a.__isset, b.__isset);
+}
+
+template uint32_t struct3::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t struct3::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t struct3::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t struct3::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t struct3::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t struct3::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t struct3::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t struct3::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
+void union1::__clear() {
+  // clear all fields
+  if (type_ == Type::__EMPTY__) { return; }
+  switch(type_) {
+    case Type::i:
+    {
+      destruct(value_.i);
+      break;
+    }
+    case Type::d:
+    {
+      destruct(value_.d);
+      break;
+    }
+    default:
+    {
+      assert(false);
+      break;
+    }
+  }
+  type_ = Type::__EMPTY__;
+}
+
+bool union1::operator==(const union1& rhs) const {
+  if (type_ != rhs.type_) { return false; }
+  switch(type_) {
+    case Type::i:
+    {
+      return value_.i == rhs.value_.i;
+    }
+    case Type::d:
+    {
+      return value_.d == rhs.value_.d;
+    }
+    default:
+    {
+      return true;
+    }
+  }
+}
+
+void swap(union1& a, union1& b) {
+  union1 temp(std::move(a));
+  a = std::move(b);
+  b = std::move(temp);
+}
+
+template uint32_t union1::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t union1::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t union1::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t union1::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t union1::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t union1::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t union1::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t union1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
+void union2::__clear() {
+  // clear all fields
+  if (type_ == Type::__EMPTY__) { return; }
+  switch(type_) {
+    case Type::i:
+    {
+      destruct(value_.i);
+      break;
+    }
+    case Type::d:
+    {
+      destruct(value_.d);
+      break;
+    }
+    case Type::s:
+    {
+      destruct(value_.s);
+      break;
+    }
+    case Type::u:
+    {
+      destruct(value_.u);
+      break;
+    }
+    default:
+    {
+      assert(false);
+      break;
+    }
+  }
+  type_ = Type::__EMPTY__;
+}
+
+bool union2::operator==(const union2& rhs) const {
+  if (type_ != rhs.type_) { return false; }
+  switch(type_) {
+    case Type::i:
+    {
+      return value_.i == rhs.value_.i;
+    }
+    case Type::d:
+    {
+      return value_.d == rhs.value_.d;
+    }
+    case Type::s:
+    {
+      return value_.s == rhs.value_.s;
+    }
+    case Type::u:
+    {
+      return value_.u == rhs.value_.u;
+    }
+    default:
+    {
+      return true;
+    }
+  }
+}
+
+void swap(union2& a, union2& b) {
+  union2 temp(std::move(a));
+  a = std::move(b);
+  b = std::move(temp);
+}
+
+template uint32_t union2::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t union2::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t union2::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t union2::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t union2::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t union2::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t union2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t union2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace cpp2 {
+
 } // cpp2

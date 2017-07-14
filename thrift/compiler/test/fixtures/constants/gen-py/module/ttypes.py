@@ -27,7 +27,7 @@ except:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'EmptyEnum', 'City', 'Company', 'Internship', 'UnEnumStruct', 'Range']
+__all__ = ['UTF8STRINGS', 'EmptyEnum', 'City', 'Company', 'Internship', 'UnEnumStruct', 'Range', 'struct1', 'struct2', 'struct3', 'union1', 'union2']
 
 class EmptyEnum:
 
@@ -359,6 +359,619 @@ class Range:
   if not six.PY2:
     __hash__ = object.__hash__
 
+class struct1:
+  """
+  Attributes:
+   - a
+   - b
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocol) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      self.checkRequired()
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocol) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      self.checkRequired()
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.I32:
+          self.a = iprot.readI32()
+        else:
+          iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.STRING:
+          self.b = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+    self.checkRequired()
+
+  def checkRequired(self):
+    return
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocol) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocol) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('struct1')
+    if self.a != None:
+      oprot.writeFieldBegin('a', TType.I32, 1)
+      oprot.writeI32(self.a)
+      oprot.writeFieldEnd()
+    if self.b != None:
+      oprot.writeFieldBegin('b', TType.STRING, 2)
+      oprot.writeString(self.b.encode('utf-8')) if UTF8STRINGS and not isinstance(self.b, bytes) else oprot.writeString(self.b)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    value = pprint.pformat(self.a, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    a=%s' % (value))
+    value = pprint.pformat(self.b, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    b=%s' % (value))
+    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  # Override the __hash__ function for Python3 - t10434117
+  if not six.PY2:
+    __hash__ = object.__hash__
+
+class struct2:
+  """
+  Attributes:
+   - a
+   - b
+   - c
+   - d
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocol) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      self.checkRequired()
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocol) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      self.checkRequired()
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.I32:
+          self.a = iprot.readI32()
+        else:
+          iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.STRING:
+          self.b = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
+      elif fid == 3:
+        if ftype == TType.STRUCT:
+          self.c = struct1()
+          self.c.read(iprot)
+        else:
+          iprot.skip(ftype)
+      elif fid == 4:
+        if ftype == TType.LIST:
+          self.d = []
+          (_etype3, _size0) = iprot.readListBegin()
+          if _size0 >= 0:
+            for _i4 in six.moves.range(_size0):
+              _elem5 = iprot.readI32()
+              self.d.append(_elem5)
+          else: 
+            while iprot.peekList():
+              _elem6 = iprot.readI32()
+              self.d.append(_elem6)
+          iprot.readListEnd()
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+    self.checkRequired()
+
+  def checkRequired(self):
+    return
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocol) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocol) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('struct2')
+    if self.a != None:
+      oprot.writeFieldBegin('a', TType.I32, 1)
+      oprot.writeI32(self.a)
+      oprot.writeFieldEnd()
+    if self.b != None:
+      oprot.writeFieldBegin('b', TType.STRING, 2)
+      oprot.writeString(self.b.encode('utf-8')) if UTF8STRINGS and not isinstance(self.b, bytes) else oprot.writeString(self.b)
+      oprot.writeFieldEnd()
+    if self.c != None:
+      oprot.writeFieldBegin('c', TType.STRUCT, 3)
+      self.c.write(oprot)
+      oprot.writeFieldEnd()
+    if self.d != None:
+      oprot.writeFieldBegin('d', TType.LIST, 4)
+      oprot.writeListBegin(TType.I32, len(self.d))
+      for iter7 in self.d:
+        oprot.writeI32(iter7)
+      oprot.writeListEnd()
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    value = pprint.pformat(self.a, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    a=%s' % (value))
+    value = pprint.pformat(self.b, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    b=%s' % (value))
+    value = pprint.pformat(self.c, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    c=%s' % (value))
+    value = pprint.pformat(self.d, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    d=%s' % (value))
+    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  # Override the __hash__ function for Python3 - t10434117
+  if not six.PY2:
+    __hash__ = object.__hash__
+
+class struct3:
+  """
+  Attributes:
+   - a
+   - b
+   - c
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocol) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      self.checkRequired()
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocol) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      self.checkRequired()
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == 1:
+        if ftype == TType.STRING:
+          self.a = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.I32:
+          self.b = iprot.readI32()
+        else:
+          iprot.skip(ftype)
+      elif fid == 3:
+        if ftype == TType.STRUCT:
+          self.c = struct2()
+          self.c.read(iprot)
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+    self.checkRequired()
+
+  def checkRequired(self):
+    return
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocol) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocol) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('struct3')
+    if self.a != None:
+      oprot.writeFieldBegin('a', TType.STRING, 1)
+      oprot.writeString(self.a.encode('utf-8')) if UTF8STRINGS and not isinstance(self.a, bytes) else oprot.writeString(self.a)
+      oprot.writeFieldEnd()
+    if self.b != None:
+      oprot.writeFieldBegin('b', TType.I32, 2)
+      oprot.writeI32(self.b)
+      oprot.writeFieldEnd()
+    if self.c != None:
+      oprot.writeFieldBegin('c', TType.STRUCT, 3)
+      self.c.write(oprot)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    value = pprint.pformat(self.a, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    a=%s' % (value))
+    value = pprint.pformat(self.b, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    b=%s' % (value))
+    value = pprint.pformat(self.c, indent=0)
+    value = padding.join(value.splitlines(True))
+    L.append('    c=%s' % (value))
+    return "%s(\n%s)" % (self.__class__.__name__, ",\n".join(L))
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  # Override the __hash__ function for Python3 - t10434117
+  if not six.PY2:
+    __hash__ = object.__hash__
+
+class union1(object):
+  """
+  Attributes:
+   - i
+   - d
+  """
+
+  thrift_spec = None
+  __init__ = None
+
+  __EMPTY__ = 0
+  I = 1
+  D = 2
+  
+  @staticmethod
+  def isUnion():
+    return True
+
+  def get_i(self):
+    assert self.field == 1
+    return self.value
+
+  def get_d(self):
+    assert self.field == 2
+    return self.value
+
+  def set_i(self, value):
+    self.field = 1
+    self.value = value
+
+  def set_d(self, value):
+    self.field = 2
+    self.value = value
+
+  def getType(self):
+    return self.field
+
+  def __repr__(self):
+    value = pprint.pformat(self.value)
+    member = ''
+    if self.field == 1:
+      padding = ' ' * 2
+      value = padding.join(value.splitlines(True))
+      member = '\n    %s=%s' % ('i', value)
+    if self.field == 2:
+      padding = ' ' * 2
+      value = padding.join(value.splitlines(True))
+      member = '\n    %s=%s' % ('d', value)
+    return "%s(%s)" % (self.__class__.__name__, member)
+
+  def read(self, iprot):
+    self.field = 0
+    self.value = None
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocol) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, True], utf8strings=UTF8STRINGS, protoid=0)
+      self.checkRequired()
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocol) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, True], utf8strings=UTF8STRINGS, protoid=2)
+      self.checkRequired()
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+
+      if fid == 1:
+        if ftype == TType.I32:
+          i = iprot.readI32()
+          assert self.field == 0 and self.value is None
+          self.set_i(i)
+        else:
+          iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.DOUBLE:
+          d = iprot.readDouble()
+          assert self.field == 0 and self.value is None
+          self.set_d(d)
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocol) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, True], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocol) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, True], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeUnionBegin('union1')
+    if self.field == 1:
+      oprot.writeFieldBegin('i', TType.I32, 1)
+      i = self.value
+      oprot.writeI32(i)
+      oprot.writeFieldEnd()
+    if self.field == 2:
+      oprot.writeFieldBegin('d', TType.DOUBLE, 2)
+      d = self.value
+      oprot.writeDouble(d)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeUnionEnd()
+  
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__
+
+  def __ne__(self, other):
+    return not (self == other)
+
+class union2(object):
+  """
+  Attributes:
+   - i
+   - d
+   - s
+   - u
+  """
+
+  thrift_spec = None
+  __init__ = None
+
+  __EMPTY__ = 0
+  I = 1
+  D = 2
+  S = 3
+  U = 4
+  
+  @staticmethod
+  def isUnion():
+    return True
+
+  def get_i(self):
+    assert self.field == 1
+    return self.value
+
+  def get_d(self):
+    assert self.field == 2
+    return self.value
+
+  def get_s(self):
+    assert self.field == 3
+    return self.value
+
+  def get_u(self):
+    assert self.field == 4
+    return self.value
+
+  def set_i(self, value):
+    self.field = 1
+    self.value = value
+
+  def set_d(self, value):
+    self.field = 2
+    self.value = value
+
+  def set_s(self, value):
+    self.field = 3
+    self.value = value
+
+  def set_u(self, value):
+    self.field = 4
+    self.value = value
+
+  def getType(self):
+    return self.field
+
+  def __repr__(self):
+    value = pprint.pformat(self.value)
+    member = ''
+    if self.field == 1:
+      padding = ' ' * 2
+      value = padding.join(value.splitlines(True))
+      member = '\n    %s=%s' % ('i', value)
+    if self.field == 2:
+      padding = ' ' * 2
+      value = padding.join(value.splitlines(True))
+      member = '\n    %s=%s' % ('d', value)
+    if self.field == 3:
+      padding = ' ' * 2
+      value = padding.join(value.splitlines(True))
+      member = '\n    %s=%s' % ('s', value)
+    if self.field == 4:
+      padding = ' ' * 2
+      value = padding.join(value.splitlines(True))
+      member = '\n    %s=%s' % ('u', value)
+    return "%s(%s)" % (self.__class__.__name__, member)
+
+  def read(self, iprot):
+    self.field = 0
+    self.value = None
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocol) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, True], utf8strings=UTF8STRINGS, protoid=0)
+      self.checkRequired()
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocol) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, True], utf8strings=UTF8STRINGS, protoid=2)
+      self.checkRequired()
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+
+      if fid == 1:
+        if ftype == TType.I32:
+          i = iprot.readI32()
+          assert self.field == 0 and self.value is None
+          self.set_i(i)
+        else:
+          iprot.skip(ftype)
+      elif fid == 2:
+        if ftype == TType.DOUBLE:
+          d = iprot.readDouble()
+          assert self.field == 0 and self.value is None
+          self.set_d(d)
+        else:
+          iprot.skip(ftype)
+      elif fid == 3:
+        if ftype == TType.STRUCT:
+          s = struct1()
+          s.read(iprot)
+          assert self.field == 0 and self.value is None
+          self.set_s(s)
+        else:
+          iprot.skip(ftype)
+      elif fid == 4:
+        if ftype == TType.STRUCT:
+          u = union1()
+          u.read(iprot)
+          assert self.field == 0 and self.value is None
+          self.set_u(u)
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocol) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, True], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocol) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, True], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeUnionBegin('union2')
+    if self.field == 1:
+      oprot.writeFieldBegin('i', TType.I32, 1)
+      i = self.value
+      oprot.writeI32(i)
+      oprot.writeFieldEnd()
+    if self.field == 2:
+      oprot.writeFieldBegin('d', TType.DOUBLE, 2)
+      d = self.value
+      oprot.writeDouble(d)
+      oprot.writeFieldEnd()
+    if self.field == 3:
+      oprot.writeFieldBegin('s', TType.STRUCT, 3)
+      s = self.value
+      s.write(oprot)
+      oprot.writeFieldEnd()
+    if self.field == 4:
+      oprot.writeFieldBegin('u', TType.STRUCT, 4)
+      u = self.value
+      u.write(oprot)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeUnionEnd()
+  
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__
+
+  def __ne__(self, other):
+    return not (self == other)
+
 all_structs.append(Internship)
 Internship.thrift_spec = (
   None, # 0
@@ -412,6 +1025,128 @@ def Range__init__(self, min=None, max=None,):
   self.max = max
 
 Range.__init__ = Range__init__
+
+all_structs.append(struct1)
+struct1.thrift_spec = (
+  None, # 0
+  (1, TType.I32, 'a', None, 1234567, 2, ), # 1
+  (2, TType.STRING, 'b', True, "<uninitialized>", 2, ), # 2
+)
+
+struct1.thrift_struct_annotations = {
+}
+struct1.thrift_field_annotations = {
+}
+
+def struct1__init__(self, a=struct1.thrift_spec[1][4], b=struct1.thrift_spec[2][4],):
+  self.a = a
+  self.b = b
+
+struct1.__init__ = struct1__init__
+
+all_structs.append(struct2)
+struct2.thrift_spec = (
+  None, # 0
+  (1, TType.I32, 'a', None, None, 2, ), # 1
+  (2, TType.STRING, 'b', True, None, 2, ), # 2
+  (3, TType.STRUCT, 'c', [struct1, struct1.thrift_spec, False], None, 2, ), # 3
+  (4, TType.LIST, 'd', (TType.I32,None), None, 2, ), # 4
+)
+
+struct2.thrift_struct_annotations = {
+}
+struct2.thrift_field_annotations = {
+}
+
+def struct2__init__(self, a=None, b=None, c=None, d=None,):
+  self.a = a
+  self.b = b
+  self.c = c
+  self.d = d
+
+struct2.__init__ = struct2__init__
+
+all_structs.append(struct3)
+struct3.thrift_spec = (
+  None, # 0
+  (1, TType.STRING, 'a', True, None, 2, ), # 1
+  (2, TType.I32, 'b', None, None, 2, ), # 2
+  (3, TType.STRUCT, 'c', [struct2, struct2.thrift_spec, False], None, 2, ), # 3
+)
+
+struct3.thrift_struct_annotations = {
+}
+struct3.thrift_field_annotations = {
+}
+
+def struct3__init__(self, a=None, b=None, c=None,):
+  self.a = a
+  self.b = b
+  self.c = c
+
+struct3.__init__ = struct3__init__
+
+all_structs.append(union1)
+union1.thrift_spec = (
+  None, # 0
+  (1, TType.I32, 'i', None, None, 2, ), # 1
+  (2, TType.DOUBLE, 'd', None, None, 2, ), # 2
+)
+
+union1.thrift_struct_annotations = {
+}
+union1.thrift_field_annotations = {
+}
+
+def union1__init__(self, i=None, d=None,):
+  self.field = 0
+  self.value = None
+  if i is not None:
+    assert self.field == 0 and self.value is None
+    self.field = 1
+    self.value = i
+  if d is not None:
+    assert self.field == 0 and self.value is None
+    self.field = 2
+    self.value = d
+
+union1.__init__ = union1__init__
+
+all_structs.append(union2)
+union2.thrift_spec = (
+  None, # 0
+  (1, TType.I32, 'i', None, None, 2, ), # 1
+  (2, TType.DOUBLE, 'd', None, None, 2, ), # 2
+  (3, TType.STRUCT, 's', [struct1, struct1.thrift_spec, False], None, 2, ), # 3
+  (4, TType.STRUCT, 'u', [union1, union1.thrift_spec, True], None, 2, ), # 4
+)
+
+union2.thrift_struct_annotations = {
+}
+union2.thrift_field_annotations = {
+}
+
+def union2__init__(self, i=None, d=None, s=None, u=None,):
+  self.field = 0
+  self.value = None
+  if i is not None:
+    assert self.field == 0 and self.value is None
+    self.field = 1
+    self.value = i
+  if d is not None:
+    assert self.field == 0 and self.value is None
+    self.field = 2
+    self.value = d
+  if s is not None:
+    assert self.field == 0 and self.value is None
+    self.field = 3
+    self.value = s
+  if u is not None:
+    assert self.field == 0 and self.value is None
+    self.field = 4
+    self.value = u
+
+union2.__init__ = union2__init__
 
 fix_spec(all_structs)
 del all_structs

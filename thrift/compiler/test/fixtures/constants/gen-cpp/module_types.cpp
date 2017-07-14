@@ -434,4 +434,586 @@ void merge(Range&& from, Range& to) {
   merge(std::move(from.max), to.max);
 }
 
+const uint64_t struct1::_reflection_id;
+void struct1::_reflection_register(::apache::thrift::reflection::Schema& schema) {
+   ::module_reflection_::reflectionInitializer_18317194148543753228(schema);
+}
+
+bool struct1::operator == (const struct1 & rhs) const {
+  if (!(this->a == rhs.a))
+    return false;
+  if (!(this->b == rhs.b))
+    return false;
+  return true;
+}
+
+uint32_t struct1::read(apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
+  int16_t fid;
+
+  ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
+  if (schema != nullptr) {
+     ::module_reflection_::reflectionInitializer_18317194148543753228(*schema);
+    iprot->setNextStructType(struct1::_reflection_id);
+  }
+  xfer += iprot->readStructBegin(_fname);
+
+  using apache::thrift::protocol::TProtocolException;
+
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (_ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->a);
+          this->__isset.a = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      case 2:
+        if (_ftype == apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->b);
+          this->__isset.b = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(_ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+void struct1::__clear() {
+  a = 1234567;
+  b = "<uninitialized>";
+  __isset.__clear();
+}
+uint32_t struct1::write(apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("struct1");
+  xfer += oprot->writeFieldBegin("a", apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32(this->a);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("b", apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeString(this->b);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(struct1 &a, struct1 &b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+  swap(a.a, b.a);
+  swap(a.b, b.b);
+  swap(a.__isset, b.__isset);
+}
+
+void merge(const struct1& from, struct1& to) {
+  using apache::thrift::merge;
+  merge(from.a, to.a);
+  to.__isset.a = to.__isset.a || from.__isset.a;
+  merge(from.b, to.b);
+  to.__isset.b = to.__isset.b || from.__isset.b;
+}
+
+void merge(struct1&& from, struct1& to) {
+  using apache::thrift::merge;
+  merge(std::move(from.a), to.a);
+  to.__isset.a = to.__isset.a || from.__isset.a;
+  merge(std::move(from.b), to.b);
+  to.__isset.b = to.__isset.b || from.__isset.b;
+}
+
+const uint64_t struct2::_reflection_id;
+void struct2::_reflection_register(::apache::thrift::reflection::Schema& schema) {
+   ::module_reflection_::reflectionInitializer_13919930284671800588(schema);
+}
+
+bool struct2::operator == (const struct2 & rhs) const {
+  if (!(this->a == rhs.a))
+    return false;
+  if (!(this->b == rhs.b))
+    return false;
+  if (!(this->c == rhs.c))
+    return false;
+  if (!(this->d == rhs.d))
+    return false;
+  return true;
+}
+
+uint32_t struct2::read(apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
+  int16_t fid;
+
+  ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
+  if (schema != nullptr) {
+     ::module_reflection_::reflectionInitializer_13919930284671800588(*schema);
+    iprot->setNextStructType(struct2::_reflection_id);
+  }
+  xfer += iprot->readStructBegin(_fname);
+
+  using apache::thrift::protocol::TProtocolException;
+
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (_ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->a);
+          this->__isset.a = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      case 2:
+        if (_ftype == apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->b);
+          this->__isset.b = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      case 3:
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
+          xfer += this->c.read(iprot);
+          this->__isset.c = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      case 4:
+        if (_ftype == apache::thrift::protocol::T_LIST) {
+          {
+            this->d.clear();
+            uint32_t _size7;
+            bool _sizeUnknown8;
+            apache::thrift::protocol::TType _etype11;
+            xfer += iprot->readListBegin(_etype11, _size7, _sizeUnknown8);
+            if (!_sizeUnknown8) {
+              this->d.resize(_size7);
+              uint32_t _i13;
+              for (_i13 = 0; _i13 < _size7; ++_i13)
+              {
+                xfer += iprot->readI32(this->d[_i13]);
+              }
+            } else {
+              while (iprot->peekList())
+              {
+                int32_t _elem14;
+                xfer += iprot->readI32(_elem14);
+                this->d.push_back(_elem14);
+              }
+            }
+            xfer += iprot->readListEnd();
+          }
+          this->__isset.d = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(_ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+void struct2::__clear() {
+  a = 0;
+  b = "";
+  c.__clear();
+  d.clear();
+  __isset.__clear();
+}
+uint32_t struct2::write(apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("struct2");
+  xfer += oprot->writeFieldBegin("a", apache::thrift::protocol::T_I32, 1);
+  xfer += oprot->writeI32(this->a);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("b", apache::thrift::protocol::T_STRING, 2);
+  xfer += oprot->writeString(this->b);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("c", apache::thrift::protocol::T_STRUCT, 3);
+  xfer += this->c.write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("d", apache::thrift::protocol::T_LIST, 4);
+  {
+    xfer += oprot->writeListBegin(apache::thrift::protocol::T_I32, this->d.size());
+    std::vector<int32_t> ::const_iterator _iter15;
+    for (_iter15 = this->d.begin(); _iter15 != this->d.end(); ++_iter15)
+    {
+      xfer += oprot->writeI32((*_iter15));
+    }
+    xfer += oprot->writeListEnd();
+  }
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(struct2 &a, struct2 &b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+  swap(a.a, b.a);
+  swap(a.b, b.b);
+  swap(a.c, b.c);
+  swap(a.d, b.d);
+  swap(a.__isset, b.__isset);
+}
+
+void merge(const struct2& from, struct2& to) {
+  using apache::thrift::merge;
+  merge(from.a, to.a);
+  to.__isset.a = to.__isset.a || from.__isset.a;
+  merge(from.b, to.b);
+  to.__isset.b = to.__isset.b || from.__isset.b;
+  merge(from.c, to.c);
+  to.__isset.c = to.__isset.c || from.__isset.c;
+  merge(from.d, to.d);
+  to.__isset.d = to.__isset.d || from.__isset.d;
+}
+
+void merge(struct2&& from, struct2& to) {
+  using apache::thrift::merge;
+  merge(std::move(from.a), to.a);
+  to.__isset.a = to.__isset.a || from.__isset.a;
+  merge(std::move(from.b), to.b);
+  to.__isset.b = to.__isset.b || from.__isset.b;
+  merge(std::move(from.c), to.c);
+  to.__isset.c = to.__isset.c || from.__isset.c;
+  merge(std::move(from.d), to.d);
+  to.__isset.d = to.__isset.d || from.__isset.d;
+}
+
+const uint64_t struct3::_reflection_id;
+void struct3::_reflection_register(::apache::thrift::reflection::Schema& schema) {
+   ::module_reflection_::reflectionInitializer_16392874475279945260(schema);
+}
+
+bool struct3::operator == (const struct3 & rhs) const {
+  if (!(this->a == rhs.a))
+    return false;
+  if (!(this->b == rhs.b))
+    return false;
+  if (!(this->c == rhs.c))
+    return false;
+  return true;
+}
+
+uint32_t struct3::read(apache::thrift::protocol::TProtocol* iprot) {
+
+  uint32_t xfer = 0;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
+  int16_t fid;
+
+  ::apache::thrift::reflection::Schema * schema = iprot->getSchema();
+  if (schema != nullptr) {
+     ::module_reflection_::reflectionInitializer_16392874475279945260(*schema);
+    iprot->setNextStructType(struct3::_reflection_id);
+  }
+  xfer += iprot->readStructBegin(_fname);
+
+  using apache::thrift::protocol::TProtocolException;
+
+
+
+  while (true)
+  {
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (_ftype == apache::thrift::protocol::T_STOP) {
+      break;
+    }
+    switch (fid)
+    {
+      case 1:
+        if (_ftype == apache::thrift::protocol::T_STRING) {
+          xfer += iprot->readString(this->a);
+          this->__isset.a = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      case 2:
+        if (_ftype == apache::thrift::protocol::T_I32) {
+          xfer += iprot->readI32(this->b);
+          this->__isset.b = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      case 3:
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
+          xfer += this->c.read(iprot);
+          this->__isset.c = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      default:
+        xfer += iprot->skip(_ftype);
+        break;
+    }
+    xfer += iprot->readFieldEnd();
+  }
+
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+void struct3::__clear() {
+  a = "";
+  b = 0;
+  c.__clear();
+  __isset.__clear();
+}
+uint32_t struct3::write(apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("struct3");
+  xfer += oprot->writeFieldBegin("a", apache::thrift::protocol::T_STRING, 1);
+  xfer += oprot->writeString(this->a);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("b", apache::thrift::protocol::T_I32, 2);
+  xfer += oprot->writeI32(this->b);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldBegin("c", apache::thrift::protocol::T_STRUCT, 3);
+  xfer += this->c.write(oprot);
+  xfer += oprot->writeFieldEnd();
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+void swap(struct3 &a, struct3 &b) {
+  using ::std::swap;
+  (void)a;
+  (void)b;
+  swap(a.a, b.a);
+  swap(a.b, b.b);
+  swap(a.c, b.c);
+  swap(a.__isset, b.__isset);
+}
+
+void merge(const struct3& from, struct3& to) {
+  using apache::thrift::merge;
+  merge(from.a, to.a);
+  to.__isset.a = to.__isset.a || from.__isset.a;
+  merge(from.b, to.b);
+  to.__isset.b = to.__isset.b || from.__isset.b;
+  merge(from.c, to.c);
+  to.__isset.c = to.__isset.c || from.__isset.c;
+}
+
+void merge(struct3&& from, struct3& to) {
+  using apache::thrift::merge;
+  merge(std::move(from.a), to.a);
+  to.__isset.a = to.__isset.a || from.__isset.a;
+  merge(std::move(from.b), to.b);
+  to.__isset.b = to.__isset.b || from.__isset.b;
+  merge(std::move(from.c), to.c);
+  to.__isset.c = to.__isset.c || from.__isset.c;
+}
+
+uint32_t union1::read(apache::thrift::protocol::TProtocol* iprot) {
+  uint32_t xfer = 0;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
+  int16_t fid;
+  xfer += iprot->readStructBegin(_fname);
+  xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+  if (_ftype == apache::thrift::protocol::T_STOP) {
+    __clear();
+  } else {
+    switch (fid) {
+      case 1: {
+        if (_ftype == apache::thrift::protocol::T_I32) {
+          set_i();
+          xfer += iprot->readI32(this->value_.i);
+        } else {
+        xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
+      case 2: {
+        if (_ftype == apache::thrift::protocol::T_DOUBLE) {
+          set_d();
+          xfer += iprot->readDouble(this->value_.d);
+        } else {
+        xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
+      default: xfer += iprot->skip(_ftype); break;
+    }
+    xfer += iprot->readFieldEnd();
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (UNLIKELY(_ftype != apache::thrift::protocol::T_STOP)) {
+      using apache::thrift::protocol::TProtocolException;
+      TProtocolException::throwUnionMissingStop();
+    }
+  }
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t union1::write(apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("union1");
+  switch (type_) {
+    case Type::i: {
+      xfer += oprot->writeFieldBegin("i", apache::thrift::protocol::T_I32, 1);
+      xfer += oprot->writeI32(this->value_.i);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::d: {
+      xfer += oprot->writeFieldBegin("d", apache::thrift::protocol::T_DOUBLE, 2);
+      xfer += oprot->writeDouble(this->value_.d);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::__EMPTY__:;
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
+uint32_t union2::read(apache::thrift::protocol::TProtocol* iprot) {
+  uint32_t xfer = 0;
+  std::string _fname;
+  apache::thrift::protocol::TType _ftype;
+  int16_t fid;
+  xfer += iprot->readStructBegin(_fname);
+  xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+  if (_ftype == apache::thrift::protocol::T_STOP) {
+    __clear();
+  } else {
+    switch (fid) {
+      case 1: {
+        if (_ftype == apache::thrift::protocol::T_I32) {
+          set_i();
+          xfer += iprot->readI32(this->value_.i);
+        } else {
+        xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
+      case 2: {
+        if (_ftype == apache::thrift::protocol::T_DOUBLE) {
+          set_d();
+          xfer += iprot->readDouble(this->value_.d);
+        } else {
+        xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
+      case 3: {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
+          set_s();
+          xfer += this->value_.s.read(iprot);
+        } else {
+        xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
+      case 4: {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
+          set_u();
+          xfer += this->value_.u.read(iprot);
+        } else {
+        xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
+      default: xfer += iprot->skip(_ftype); break;
+    }
+    xfer += iprot->readFieldEnd();
+    xfer += iprot->readFieldBegin(_fname, _ftype, fid);
+    if (UNLIKELY(_ftype != apache::thrift::protocol::T_STOP)) {
+      using apache::thrift::protocol::TProtocolException;
+      TProtocolException::throwUnionMissingStop();
+    }
+  }
+  xfer += iprot->readStructEnd();
+
+  return xfer;
+}
+
+uint32_t union2::write(apache::thrift::protocol::TProtocol* oprot) const {
+  uint32_t xfer = 0;
+  xfer += oprot->writeStructBegin("union2");
+  switch (type_) {
+    case Type::i: {
+      xfer += oprot->writeFieldBegin("i", apache::thrift::protocol::T_I32, 1);
+      xfer += oprot->writeI32(this->value_.i);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::d: {
+      xfer += oprot->writeFieldBegin("d", apache::thrift::protocol::T_DOUBLE, 2);
+      xfer += oprot->writeDouble(this->value_.d);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::s: {
+      xfer += oprot->writeFieldBegin("s", apache::thrift::protocol::T_STRUCT, 3);
+      xfer += this->value_.s.write(oprot);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::u: {
+      xfer += oprot->writeFieldBegin("u", apache::thrift::protocol::T_STRUCT, 4);
+      xfer += this->value_.u.write(oprot);
+      xfer += oprot->writeFieldEnd();
+      break;
+    }
+    case Type::__EMPTY__:;
+  }
+  xfer += oprot->writeFieldStop();
+  xfer += oprot->writeStructEnd();
+  return xfer;
+}
+
 

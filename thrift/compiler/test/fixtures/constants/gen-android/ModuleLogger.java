@@ -8,6 +8,7 @@
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.facebook.thrift.lite.*;
@@ -94,6 +95,156 @@ public class ModuleLogger {
           throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Required field 'Range.max' was not present!");
         }
       
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        break;
+      }
+      
+      case struct1: {
+        oprot.writeStructBegin(new TStruct("struct1"));
+        if (mMap.containsKey(Module.struct1_a) && mMap.get(Module.struct1_a) != null) {
+          writeFieldBegin(oprot, Module.struct1_a);
+          oprot.writeI32((int) mMap.get(Module.struct1_a));
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.struct1_b) && mMap.get(Module.struct1_b) != null) {
+          writeFieldBegin(oprot, Module.struct1_b);
+          oprot.writeString((String) mMap.get(Module.struct1_b));
+          oprot.writeFieldEnd();
+        }
+      
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        break;
+      }
+      
+      case struct2: {
+        oprot.writeStructBegin(new TStruct("struct2"));
+        if (mMap.containsKey(Module.struct2_a) && mMap.get(Module.struct2_a) != null) {
+          writeFieldBegin(oprot, Module.struct2_a);
+          oprot.writeI32((int) mMap.get(Module.struct2_a));
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.struct2_b) && mMap.get(Module.struct2_b) != null) {
+          writeFieldBegin(oprot, Module.struct2_b);
+          oprot.writeString((String) mMap.get(Module.struct2_b));
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.struct2_c) && mMap.get(Module.struct2_c) != null) {
+          writeFieldBegin(oprot, Module.struct2_c);
+          ((ModuleLogger) mMap.get(Module.struct2_c)).write(oprot);
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.struct2_d) && mMap.get(Module.struct2_d) != null) {
+          writeFieldBegin(oprot, Module.struct2_d);
+          List<Integer> var0 = (List<Integer>) mMap.get(Module.struct2_d);
+          oprot.writeListBegin(new TList(TType.I32, var0.size()));
+          for (int iter0 : var0) {
+            oprot.writeI32(iter0);
+          }
+          oprot.writeListEnd();
+          oprot.writeFieldEnd();
+        }
+      
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        break;
+      }
+      
+      case struct3: {
+        oprot.writeStructBegin(new TStruct("struct3"));
+        if (mMap.containsKey(Module.struct3_a) && mMap.get(Module.struct3_a) != null) {
+          writeFieldBegin(oprot, Module.struct3_a);
+          oprot.writeString((String) mMap.get(Module.struct3_a));
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.struct3_b) && mMap.get(Module.struct3_b) != null) {
+          writeFieldBegin(oprot, Module.struct3_b);
+          oprot.writeI32((int) mMap.get(Module.struct3_b));
+          oprot.writeFieldEnd();
+        }
+      
+        if (mMap.containsKey(Module.struct3_c) && mMap.get(Module.struct3_c) != null) {
+          writeFieldBegin(oprot, Module.struct3_c);
+          ((ModuleLogger) mMap.get(Module.struct3_c)).write(oprot);
+          oprot.writeFieldEnd();
+        }
+      
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        break;
+      }
+      
+      case union1: {
+        if (this.mMap.size() < 1) {
+          throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Cannot write a union with no set value!");
+        } else if (this.mMap.size() > 1) {
+          throw new TProtocolException(TProtocolException.INVALID_DATA, "Cannot write a union with more than one set value!");
+        }
+        oprot.writeStructBegin(new TStruct("union1"));
+        switch (mMap.keySet().iterator().next().id) {
+        case 1: {
+          writeFieldBegin(oprot, Module.union1_i);
+          oprot.writeI32((int) mMap.get(Module.union1_i));
+          oprot.writeFieldEnd();
+          break;
+        }
+      
+        case 2: {
+          writeFieldBegin(oprot, Module.union1_d);
+          oprot.writeDouble((double) mMap.get(Module.union1_d));
+          oprot.writeFieldEnd();
+          break;
+        }
+      
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        break;
+      }
+      
+      case union2: {
+        if (this.mMap.size() < 1) {
+          throw new TProtocolException(TProtocolException.MISSING_REQUIRED_FIELD, "Cannot write a union with no set value!");
+        } else if (this.mMap.size() > 1) {
+          throw new TProtocolException(TProtocolException.INVALID_DATA, "Cannot write a union with more than one set value!");
+        }
+        oprot.writeStructBegin(new TStruct("union2"));
+        switch (mMap.keySet().iterator().next().id) {
+        case 1: {
+          writeFieldBegin(oprot, Module.union2_i);
+          oprot.writeI32((int) mMap.get(Module.union2_i));
+          oprot.writeFieldEnd();
+          break;
+        }
+      
+        case 2: {
+          writeFieldBegin(oprot, Module.union2_d);
+          oprot.writeDouble((double) mMap.get(Module.union2_d));
+          oprot.writeFieldEnd();
+          break;
+        }
+      
+        case 3: {
+          writeFieldBegin(oprot, Module.union2_s);
+          ((ModuleLogger) mMap.get(Module.union2_s)).write(oprot);
+          oprot.writeFieldEnd();
+          break;
+        }
+      
+        case 4: {
+          writeFieldBegin(oprot, Module.union2_u);
+          ((ModuleLogger) mMap.get(Module.union2_u)).write(oprot);
+          oprot.writeFieldEnd();
+          break;
+        }
+      
+        }
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         break;

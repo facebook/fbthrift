@@ -114,6 +114,165 @@ class module_CONSTANTS {
     return self::$__internList;
   }
 
+  private static $__pod_0 = null;
+  public static function pod_0() {
+    if (self::$__pod_0 == null) {
+      self::$__pod_0 = new struct1(array(
+      ));
+    }
+    return self::$__pod_0;
+  }
+
+  private static $__pod_1 = null;
+  public static function pod_1() {
+    if (self::$__pod_1 == null) {
+      self::$__pod_1 = new struct1(array(
+        "a" => 10,
+        "b" => "foo",
+      ));
+    }
+    return self::$__pod_1;
+  }
+
+  private static $__pod_2 = null;
+  public static function pod_2() {
+    if (self::$__pod_2 == null) {
+      self::$__pod_2 = new struct2(array(
+        "a" => 98,
+        "b" => "gaz",
+        "c" => new struct1(array(
+          "a" => 12,
+          "b" => "bar",
+        )),
+        "d" => array(
+          11,
+          22,
+          33,
+        ),
+      ));
+    }
+    return self::$__pod_2;
+  }
+
+  private static $__pod_3 = null;
+  public static function pod_3() {
+    if (self::$__pod_3 == null) {
+      self::$__pod_3 = new struct3(array(
+        "a" => "abc",
+        "b" => 456,
+        "c" => new struct2(array(
+          "a" => 888,
+          "c" => new struct1(array(
+            "b" => "gaz",
+          )),
+          "d" => array(
+            1,
+            2,
+            3,
+          ),
+        )),
+      ));
+    }
+    return self::$__pod_3;
+  }
+
+  private static $__u_1_1 = null;
+  public static function u_1_1() {
+    if (self::$__u_1_1 == null) {
+      self::$__u_1_1 = new union1(array(
+        "i" => 97,
+      ));
+    }
+    return self::$__u_1_1;
+  }
+
+  private static $__u_1_2 = null;
+  public static function u_1_2() {
+    if (self::$__u_1_2 == null) {
+      self::$__u_1_2 = new union1(array(
+        "d" => 5.6,
+      ));
+    }
+    return self::$__u_1_2;
+  }
+
+  private static $__u_1_3 = null;
+  public static function u_1_3() {
+    if (self::$__u_1_3 == null) {
+      self::$__u_1_3 = new union1(array(
+      ));
+    }
+    return self::$__u_1_3;
+  }
+
+  private static $__u_2_1 = null;
+  public static function u_2_1() {
+    if (self::$__u_2_1 == null) {
+      self::$__u_2_1 = new union2(array(
+        "i" => 51,
+      ));
+    }
+    return self::$__u_2_1;
+  }
+
+  private static $__u_2_2 = null;
+  public static function u_2_2() {
+    if (self::$__u_2_2 == null) {
+      self::$__u_2_2 = new union2(array(
+        "d" => 6.7,
+      ));
+    }
+    return self::$__u_2_2;
+  }
+
+  private static $__u_2_3 = null;
+  public static function u_2_3() {
+    if (self::$__u_2_3 == null) {
+      self::$__u_2_3 = new union2(array(
+        "s" => new struct1(array(
+          "a" => 8,
+          "b" => "abacabb",
+        )),
+      ));
+    }
+    return self::$__u_2_3;
+  }
+
+  private static $__u_2_4 = null;
+  public static function u_2_4() {
+    if (self::$__u_2_4 == null) {
+      self::$__u_2_4 = new union2(array(
+        "u" => new union1(array(
+          "i" => 43,
+        )),
+      ));
+    }
+    return self::$__u_2_4;
+  }
+
+  private static $__u_2_5 = null;
+  public static function u_2_5() {
+    if (self::$__u_2_5 == null) {
+      self::$__u_2_5 = new union2(array(
+        "u" => new union1(array(
+          "d" => 9.8,
+        )),
+      ));
+    }
+    return self::$__u_2_5;
+  }
+
+  private static $__u_2_6 = null;
+  public static function u_2_6() {
+    if (self::$__u_2_6 == null) {
+      self::$__u_2_6 = new union2(array(
+        "u" => new union1(array(
+        )),
+      ));
+    }
+    return self::$__u_2_6;
+  }
+
   private static $__apostrophe = null;
   public static function apostrophe() {
     if (self::$__apostrophe == null) {
@@ -376,6 +535,74 @@ class module_CONSTANTS {
             "employer" =>             0,
           )),
         ),
+        "pod_0" => new struct1(array(
+        )),
+        "pod_1" => new struct1(array(
+          "a" => 10,
+          "b" => "foo",
+        )),
+        "pod_2" => new struct2(array(
+          "a" => 98,
+          "b" => "gaz",
+          "c" => new struct1(array(
+            "a" => 12,
+            "b" => "bar",
+          )),
+          "d" => array(
+            11,
+            22,
+            33,
+          ),
+        )),
+        "pod_3" => new struct3(array(
+          "a" => "abc",
+          "b" => 456,
+          "c" => new struct2(array(
+            "a" => 888,
+            "c" => new struct1(array(
+              "b" => "gaz",
+            )),
+            "d" => array(
+              1,
+              2,
+              3,
+            ),
+          )),
+        )),
+        "u_1_1" => new union1(array(
+          "i" => 97,
+        )),
+        "u_1_2" => new union1(array(
+          "d" => 5.6,
+        )),
+        "u_1_3" => new union1(array(
+        )),
+        "u_2_1" => new union2(array(
+          "i" => 51,
+        )),
+        "u_2_2" => new union2(array(
+          "d" => 6.7,
+        )),
+        "u_2_3" => new union2(array(
+          "s" => new struct1(array(
+            "a" => 8,
+            "b" => "abacabb",
+          )),
+        )),
+        "u_2_4" => new union2(array(
+          "u" => new union1(array(
+            "i" => 43,
+          )),
+        )),
+        "u_2_5" => new union2(array(
+          "u" => new union1(array(
+            "d" => 9.8,
+          )),
+        )),
+        "u_2_6" => new union2(array(
+          "u" => new union1(array(
+          )),
+        )),
         "apostrophe" => "'",
         "tripleApostrophe" => "'''",
         "quotationMark" => "\"",

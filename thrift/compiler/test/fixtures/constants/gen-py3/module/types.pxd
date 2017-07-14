@@ -46,6 +46,16 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
     cdef cppclass cUnEnumStruct "cpp2::UnEnumStruct"
     # Forward Declaration
     cdef cppclass cRange "cpp2::Range"
+    # Forward Declaration
+    cdef cppclass cstruct1 "cpp2::struct1"
+    # Forward Declaration
+    cdef cppclass cstruct2 "cpp2::struct2"
+    # Forward Declaration
+    cdef cppclass cstruct3 "cpp2::struct3"
+    # Forward Declaration
+    cdef cppclass cunion1 "cpp2::union1"
+    # Forward Declaration
+    cdef cppclass cunion2 "cpp2::union2"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
     cdef cppclass cInternship__isset "cpp2::Internship::__isset":
@@ -84,6 +94,76 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         int32_t max
         cRange__isset __isset
 
+    cdef cppclass cstruct1__isset "cpp2::struct1::__isset":
+        bint a
+        bint b
+
+    cdef cppclass cstruct1 "cpp2::struct1":
+        cstruct1() except +
+        cstruct1(const cstruct1&) except +
+        bint operator==(cstruct1&)
+        int32_t a
+        string b
+        cstruct1__isset __isset
+
+    cdef cppclass cstruct2__isset "cpp2::struct2::__isset":
+        bint a
+        bint b
+        bint c
+        bint d
+
+    cdef cppclass cstruct2 "cpp2::struct2":
+        cstruct2() except +
+        cstruct2(const cstruct2&) except +
+        bint operator==(cstruct2&)
+        int32_t a
+        string b
+        cstruct1 c
+        vector[int32_t] d
+        cstruct2__isset __isset
+
+    cdef cppclass cstruct3__isset "cpp2::struct3::__isset":
+        bint a
+        bint b
+        bint c
+
+    cdef cppclass cstruct3 "cpp2::struct3":
+        cstruct3() except +
+        cstruct3(const cstruct3&) except +
+        bint operator==(cstruct3&)
+        string a
+        int32_t b
+        cstruct2 c
+        cstruct3__isset __isset
+
+    cdef cppclass cunion1__isset "cpp2::union1::__isset":
+        bint i
+        bint d
+
+    cdef cppclass cunion1 "cpp2::union1":
+        cunion1() except +
+        cunion1(const cunion1&) except +
+        bint operator==(cunion1&)
+        int32_t i
+        double d
+        cunion1__isset __isset
+
+    cdef cppclass cunion2__isset "cpp2::union2::__isset":
+        bint i
+        bint d
+        bint s
+        bint u
+
+    cdef cppclass cunion2 "cpp2::union2":
+        cunion2() except +
+        cunion2(const cunion2&) except +
+        bint operator==(cunion2&)
+        int32_t i
+        double d
+        cstruct1 s
+        cunion1 u
+        cunion2__isset __isset
+
 
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cInternship] move(unique_ptr[cInternship])
@@ -95,6 +175,21 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cRange] move(unique_ptr[cRange])
     cdef shared_ptr[cRange] move_shared "std::move"(shared_ptr[cRange])
     cdef unique_ptr[cRange] move_unique "std::move"(unique_ptr[cRange])
+    cdef shared_ptr[cstruct1] move(unique_ptr[cstruct1])
+    cdef shared_ptr[cstruct1] move_shared "std::move"(shared_ptr[cstruct1])
+    cdef unique_ptr[cstruct1] move_unique "std::move"(unique_ptr[cstruct1])
+    cdef shared_ptr[cstruct2] move(unique_ptr[cstruct2])
+    cdef shared_ptr[cstruct2] move_shared "std::move"(shared_ptr[cstruct2])
+    cdef unique_ptr[cstruct2] move_unique "std::move"(unique_ptr[cstruct2])
+    cdef shared_ptr[cstruct3] move(unique_ptr[cstruct3])
+    cdef shared_ptr[cstruct3] move_shared "std::move"(shared_ptr[cstruct3])
+    cdef unique_ptr[cstruct3] move_unique "std::move"(unique_ptr[cstruct3])
+    cdef shared_ptr[cunion1] move(unique_ptr[cunion1])
+    cdef shared_ptr[cunion1] move_shared "std::move"(shared_ptr[cunion1])
+    cdef unique_ptr[cunion1] move_unique "std::move"(unique_ptr[cunion1])
+    cdef shared_ptr[cunion2] move(unique_ptr[cunion2])
+    cdef shared_ptr[cunion2] move_shared "std::move"(shared_ptr[cunion2])
+    cdef unique_ptr[cunion2] move_unique "std::move"(unique_ptr[cunion2])
 
 # Forward Definition of the cython struct
 cdef class Internship(thrift.py3.types.Struct)
@@ -150,6 +245,115 @@ cdef class Range(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cRange])
 
+# Forward Definition of the cython struct
+cdef class struct1(thrift.py3.types.Struct)
+
+cdef class struct1(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cstruct1] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cstruct1] _make_instance(
+        cstruct1* base_instance,
+        object a,
+        object b
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cstruct1])
+
+# Forward Definition of the cython struct
+cdef class struct2(thrift.py3.types.Struct)
+
+cdef class struct2(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cstruct2] _cpp_obj
+    cdef struct1 __c
+    cdef List__i32 __d
+
+    @staticmethod
+    cdef unique_ptr[cstruct2] _make_instance(
+        cstruct2* base_instance,
+        object a,
+        object b,
+        object c,
+        object d
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cstruct2])
+
+# Forward Definition of the cython struct
+cdef class struct3(thrift.py3.types.Struct)
+
+cdef class struct3(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cstruct3] _cpp_obj
+    cdef struct2 __c
+
+    @staticmethod
+    cdef unique_ptr[cstruct3] _make_instance(
+        cstruct3* base_instance,
+        object a,
+        object b,
+        object c
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cstruct3])
+
+# Forward Definition of the cython struct
+cdef class union1(thrift.py3.types.Struct)
+
+cdef class union1(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cunion1] _cpp_obj
+
+    @staticmethod
+    cdef unique_ptr[cunion1] _make_instance(
+        cunion1* base_instance,
+        object i,
+        object d
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cunion1])
+
+# Forward Definition of the cython struct
+cdef class union2(thrift.py3.types.Struct)
+
+cdef class union2(thrift.py3.types.Struct):
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[cunion2] _cpp_obj
+    cdef struct1 __s
+    cdef union1 __u
+
+    @staticmethod
+    cdef unique_ptr[cunion2] _make_instance(
+        cunion2* base_instance,
+        object i,
+        object d,
+        object s,
+        object u
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cunion2])
+
+
+cdef class List__i32:
+    cdef object __hash
+    cdef object __weakref__
+    cdef shared_ptr[vector[int32_t]] _cpp_obj
+    @staticmethod
+    cdef create(shared_ptr[vector[int32_t]])
+    @staticmethod
+    cdef unique_ptr[vector[int32_t]] _make_instance(object items) except *
 
 cdef class Map__string_i32:
     cdef object __hash
@@ -195,15 +399,6 @@ cdef class List__string:
     cdef create(shared_ptr[vector[string]])
     @staticmethod
     cdef unique_ptr[vector[string]] _make_instance(object items) except *
-
-cdef class List__i32:
-    cdef object __hash
-    cdef object __weakref__
-    cdef shared_ptr[vector[int32_t]] _cpp_obj
-    @staticmethod
-    cdef create(shared_ptr[vector[int32_t]])
-    @staticmethod
-    cdef unique_ptr[vector[int32_t]] _make_instance(object items) except *
 
 cdef class Set__i32:
     cdef object __hash
@@ -251,6 +446,8 @@ cdef class Map__string_string:
     cdef unique_ptr[cmap[string,string]] _make_instance(object items) except *
 
 cdef extern from "<utility>" namespace "std" nogil:
+    cdef shared_ptr[vector[int32_t]] move(unique_ptr[vector[int32_t]])
+    cdef unique_ptr[vector[int32_t]] move_unique "std::move"(unique_ptr[vector[int32_t]])
     cdef shared_ptr[cmap[string,int32_t]] move(unique_ptr[cmap[string,int32_t]])
     cdef unique_ptr[cmap[string,int32_t]] move_unique "std::move"(unique_ptr[cmap[string,int32_t]])
     cdef shared_ptr[vector[cmap[string,int32_t]]] move(unique_ptr[vector[cmap[string,int32_t]]])
@@ -261,8 +458,6 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[vector[cInternship]] move_unique "std::move"(unique_ptr[vector[cInternship]])
     cdef shared_ptr[vector[string]] move(unique_ptr[vector[string]])
     cdef unique_ptr[vector[string]] move_unique "std::move"(unique_ptr[vector[string]])
-    cdef shared_ptr[vector[int32_t]] move(unique_ptr[vector[int32_t]])
-    cdef unique_ptr[vector[int32_t]] move_unique "std::move"(unique_ptr[vector[int32_t]])
     cdef shared_ptr[cset[int32_t]] move(unique_ptr[cset[int32_t]])
     cdef unique_ptr[cset[int32_t]] move_unique "std::move"(unique_ptr[cset[int32_t]])
     cdef shared_ptr[cset[string]] move(unique_ptr[cset[string]])
@@ -284,6 +479,19 @@ cdef extern from "src/gen-cpp2/module_constants.h" namespace "cpp2":
     cdef cInternship cinstagram "cpp2::module_constants::instagram"()
     cdef vector[cRange] ckRanges "cpp2::module_constants::kRanges"()
     cdef vector[cInternship] cinternList "cpp2::module_constants::internList"()
+    cdef cstruct1 cpod_0 "cpp2::module_constants::pod_0"()
+    cdef cstruct1 cpod_1 "cpp2::module_constants::pod_1"()
+    cdef cstruct2 cpod_2 "cpp2::module_constants::pod_2"()
+    cdef cstruct3 cpod_3 "cpp2::module_constants::pod_3"()
+    cdef cunion1 cu_1_1 "cpp2::module_constants::u_1_1"()
+    cdef cunion1 cu_1_2 "cpp2::module_constants::u_1_2"()
+    cdef cunion1 cu_1_3 "cpp2::module_constants::u_1_3"()
+    cdef cunion2 cu_2_1 "cpp2::module_constants::u_2_1"()
+    cdef cunion2 cu_2_2 "cpp2::module_constants::u_2_2"()
+    cdef cunion2 cu_2_3 "cpp2::module_constants::u_2_3"()
+    cdef cunion2 cu_2_4 "cpp2::module_constants::u_2_4"()
+    cdef cunion2 cu_2_5 "cpp2::module_constants::u_2_5"()
+    cdef cunion2 cu_2_6 "cpp2::module_constants::u_2_6"()
     cdef const char* capostrophe "cpp2::module_constants::apostrophe"()
     cdef const char* ctripleApostrophe "cpp2::module_constants::tripleApostrophe"()
     cdef const char* cquotationMark "cpp2::module_constants::quotationMark"()

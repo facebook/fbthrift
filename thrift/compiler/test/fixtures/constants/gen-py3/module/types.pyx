@@ -513,6 +513,1074 @@ cdef class Range(thrift.py3.types.Struct):
         return f'Range(min={repr(self.min)}, max={repr(self.max)})'
 
 
+cdef cstruct1 _struct1_defaults = cstruct1()
+
+cdef class struct1(thrift.py3.types.Struct):
+
+    def __init__(
+        struct1 self,
+        a=None,
+        b=None
+    ):
+        self._cpp_obj = move(struct1._make_instance(
+          NULL,
+          a,
+          b,
+        ))
+
+    cdef bytes _serialize(struct1 self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cstruct1](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cstruct1](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cstruct1](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize(struct1 self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cstruct1](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cstruct1](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cstruct1](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (struct1, serialize(self)))
+
+    def __call__(
+        struct1 self,
+        a=NOTSET,
+        b=NOTSET
+    ):
+        changes = any((
+            a is not NOTSET,
+
+            b is not NOTSET,
+        ))
+
+        if not changes:
+            return self
+
+        inst = <struct1>struct1.__new__(struct1)
+        inst._cpp_obj = move(struct1._make_instance(
+          self._cpp_obj.get(),
+          a,
+          b,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cstruct1] _make_instance(
+        cstruct1* base_instance,
+        object a,
+        object b
+    ) except *:
+        cdef unique_ptr[cstruct1] c_inst
+        if base_instance:
+            c_inst = make_unique[cstruct1](deref(base_instance))
+        else:
+            c_inst = make_unique[cstruct1]()
+
+        if base_instance:
+            # Convert None's to default value.
+            if a is None:
+                deref(c_inst).a = _struct1_defaults.a
+                deref(c_inst).__isset.a = False
+            elif a is NOTSET:
+                a = None
+
+            if b is None:
+                deref(c_inst).b = _struct1_defaults.b
+                deref(c_inst).__isset.b = False
+            elif b is NOTSET:
+                b = None
+
+        if a is not None:
+            deref(c_inst).a = a
+            deref(c_inst).__isset.a = True
+
+        if b is not None:
+            deref(c_inst).b = b.encode('UTF-8')
+            deref(c_inst).__isset.b = True
+
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'a', self.a
+        yield 'b', self.b
+
+    def __bool__(self):
+        return deref(self._cpp_obj).__isset.a or deref(self._cpp_obj).__isset.b
+
+    @staticmethod
+    cdef create(shared_ptr[cstruct1] cpp_obj):
+        inst = <struct1>struct1.__new__(struct1)
+        inst._cpp_obj = cpp_obj
+        return inst
+
+    @property
+    def a(self):
+        return self._cpp_obj.get().a
+
+    @property
+    def b(self):
+        return self._cpp_obj.get().b.decode('UTF-8')
+
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, struct1) and
+                isinstance(other, struct1)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cstruct1 cself = deref((<struct1>self)._cpp_obj)
+        cdef cstruct1 cother = deref((<struct1>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    def __hash__(struct1 self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.a,
+            self.b,
+            ))
+        return self.__hash
+
+    def __repr__(struct1 self):
+        return f'struct1(a={repr(self.a)}, b={repr(self.b)})'
+
+
+cdef cstruct2 _struct2_defaults = cstruct2()
+
+cdef class struct2(thrift.py3.types.Struct):
+
+    def __init__(
+        struct2 self,
+        a=None,
+        b=None,
+        c=None,
+        d=None
+    ):
+        self._cpp_obj = move(struct2._make_instance(
+          NULL,
+          a,
+          b,
+          c,
+          d,
+        ))
+
+    cdef bytes _serialize(struct2 self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cstruct2](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cstruct2](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cstruct2](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize(struct2 self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cstruct2](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cstruct2](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cstruct2](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (struct2, serialize(self)))
+
+    def __call__(
+        struct2 self,
+        a=NOTSET,
+        b=NOTSET,
+        c=NOTSET,
+        d=NOTSET
+    ):
+        changes = any((
+            a is not NOTSET,
+
+            b is not NOTSET,
+
+            c is not NOTSET,
+
+            d is not NOTSET,
+        ))
+
+        if not changes:
+            return self
+
+        inst = <struct2>struct2.__new__(struct2)
+        inst._cpp_obj = move(struct2._make_instance(
+          self._cpp_obj.get(),
+          a,
+          b,
+          c,
+          d,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cstruct2] _make_instance(
+        cstruct2* base_instance,
+        object a,
+        object b,
+        object c,
+        object d
+    ) except *:
+        cdef unique_ptr[cstruct2] c_inst
+        if base_instance:
+            c_inst = make_unique[cstruct2](deref(base_instance))
+        else:
+            c_inst = make_unique[cstruct2]()
+
+        if base_instance:
+            # Convert None's to default value.
+            if a is None:
+                deref(c_inst).a = _struct2_defaults.a
+                deref(c_inst).__isset.a = False
+            elif a is NOTSET:
+                a = None
+
+            if b is None:
+                deref(c_inst).b = _struct2_defaults.b
+                deref(c_inst).__isset.b = False
+            elif b is NOTSET:
+                b = None
+
+            if c is None:
+                deref(c_inst).c = _struct2_defaults.c
+                deref(c_inst).__isset.c = False
+            elif c is NOTSET:
+                c = None
+
+            if d is None:
+                deref(c_inst).d = _struct2_defaults.d
+                deref(c_inst).__isset.d = False
+            elif d is NOTSET:
+                d = None
+
+        if a is not None:
+            deref(c_inst).a = a
+            deref(c_inst).__isset.a = True
+
+        if b is not None:
+            deref(c_inst).b = b.encode('UTF-8')
+            deref(c_inst).__isset.b = True
+
+        if c is not None:
+            deref(c_inst).c = deref((<struct1?> c)._cpp_obj)
+            deref(c_inst).__isset.c = True
+
+        if d is not None:
+            deref(c_inst).d = <vector[int32_t]>deref(List__i32(d)._cpp_obj)
+            deref(c_inst).__isset.d = True
+
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'a', self.a
+        yield 'b', self.b
+        yield 'c', self.c
+        yield 'd', self.d
+
+    def __bool__(self):
+        return deref(self._cpp_obj).__isset.a or deref(self._cpp_obj).__isset.b or deref(self._cpp_obj).__isset.c or deref(self._cpp_obj).__isset.d
+
+    @staticmethod
+    cdef create(shared_ptr[cstruct2] cpp_obj):
+        inst = <struct2>struct2.__new__(struct2)
+        inst._cpp_obj = cpp_obj
+        return inst
+
+    @property
+    def a(self):
+        if not deref(self._cpp_obj).__isset.a:
+            return None
+
+        return self._cpp_obj.get().a
+
+    @property
+    def b(self):
+        if not deref(self._cpp_obj).__isset.b:
+            return None
+
+        return self._cpp_obj.get().b.decode('UTF-8')
+
+    @property
+    def c(self):
+        if not deref(self._cpp_obj).__isset.c:
+            return None
+
+        if self.__c is None:
+            self.__c = struct1.create(make_shared[cstruct1](deref(self._cpp_obj).c))
+        return self.__c
+
+    @property
+    def d(self):
+        if not deref(self._cpp_obj).__isset.d:
+            return None
+
+        if self.__d is None:
+            self.__d = List__i32.create(make_shared[vector[int32_t]](deref(self._cpp_obj).d))
+        return self.__d
+
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, struct2) and
+                isinstance(other, struct2)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cstruct2 cself = deref((<struct2>self)._cpp_obj)
+        cdef cstruct2 cother = deref((<struct2>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    def __hash__(struct2 self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.a,
+            self.b,
+            self.c,
+            self.d,
+            ))
+        return self.__hash
+
+    def __repr__(struct2 self):
+        return f'struct2(a={repr(self.a)}, b={repr(self.b)}, c={repr(self.c)}, d={repr(self.d)})'
+
+
+cdef cstruct3 _struct3_defaults = cstruct3()
+
+cdef class struct3(thrift.py3.types.Struct):
+
+    def __init__(
+        struct3 self,
+        a=None,
+        b=None,
+        c=None
+    ):
+        self._cpp_obj = move(struct3._make_instance(
+          NULL,
+          a,
+          b,
+          c,
+        ))
+
+    cdef bytes _serialize(struct3 self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cstruct3](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cstruct3](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cstruct3](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize(struct3 self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cstruct3](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cstruct3](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cstruct3](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (struct3, serialize(self)))
+
+    def __call__(
+        struct3 self,
+        a=NOTSET,
+        b=NOTSET,
+        c=NOTSET
+    ):
+        changes = any((
+            a is not NOTSET,
+
+            b is not NOTSET,
+
+            c is not NOTSET,
+        ))
+
+        if not changes:
+            return self
+
+        inst = <struct3>struct3.__new__(struct3)
+        inst._cpp_obj = move(struct3._make_instance(
+          self._cpp_obj.get(),
+          a,
+          b,
+          c,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cstruct3] _make_instance(
+        cstruct3* base_instance,
+        object a,
+        object b,
+        object c
+    ) except *:
+        cdef unique_ptr[cstruct3] c_inst
+        if base_instance:
+            c_inst = make_unique[cstruct3](deref(base_instance))
+        else:
+            c_inst = make_unique[cstruct3]()
+
+        if base_instance:
+            # Convert None's to default value.
+            if a is None:
+                deref(c_inst).a = _struct3_defaults.a
+                deref(c_inst).__isset.a = False
+            elif a is NOTSET:
+                a = None
+
+            if b is None:
+                deref(c_inst).b = _struct3_defaults.b
+                deref(c_inst).__isset.b = False
+            elif b is NOTSET:
+                b = None
+
+            if c is None:
+                deref(c_inst).c = _struct3_defaults.c
+                deref(c_inst).__isset.c = False
+            elif c is NOTSET:
+                c = None
+
+        if a is not None:
+            deref(c_inst).a = a.encode('UTF-8')
+            deref(c_inst).__isset.a = True
+
+        if b is not None:
+            deref(c_inst).b = b
+            deref(c_inst).__isset.b = True
+
+        if c is not None:
+            deref(c_inst).c = deref((<struct2?> c)._cpp_obj)
+            deref(c_inst).__isset.c = True
+
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'a', self.a
+        yield 'b', self.b
+        yield 'c', self.c
+
+    def __bool__(self):
+        return deref(self._cpp_obj).__isset.a or deref(self._cpp_obj).__isset.b or deref(self._cpp_obj).__isset.c
+
+    @staticmethod
+    cdef create(shared_ptr[cstruct3] cpp_obj):
+        inst = <struct3>struct3.__new__(struct3)
+        inst._cpp_obj = cpp_obj
+        return inst
+
+    @property
+    def a(self):
+        if not deref(self._cpp_obj).__isset.a:
+            return None
+
+        return self._cpp_obj.get().a.decode('UTF-8')
+
+    @property
+    def b(self):
+        if not deref(self._cpp_obj).__isset.b:
+            return None
+
+        return self._cpp_obj.get().b
+
+    @property
+    def c(self):
+        if not deref(self._cpp_obj).__isset.c:
+            return None
+
+        if self.__c is None:
+            self.__c = struct2.create(make_shared[cstruct2](deref(self._cpp_obj).c))
+        return self.__c
+
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, struct3) and
+                isinstance(other, struct3)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cstruct3 cself = deref((<struct3>self)._cpp_obj)
+        cdef cstruct3 cother = deref((<struct3>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    def __hash__(struct3 self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.a,
+            self.b,
+            self.c,
+            ))
+        return self.__hash
+
+    def __repr__(struct3 self):
+        return f'struct3(a={repr(self.a)}, b={repr(self.b)}, c={repr(self.c)})'
+
+
+cdef cunion1 _union1_defaults = cunion1()
+
+cdef class union1(thrift.py3.types.Struct):
+
+    def __init__(
+        union1 self,
+        i=None,
+        d=None
+    ):
+        self._cpp_obj = move(union1._make_instance(
+          NULL,
+          i,
+          d,
+        ))
+
+    cdef bytes _serialize(union1 self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cunion1](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cunion1](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cunion1](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize(union1 self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cunion1](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cunion1](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cunion1](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (union1, serialize(self)))
+
+    def __call__(
+        union1 self,
+        i=NOTSET,
+        d=NOTSET
+    ):
+        changes = any((
+            i is not NOTSET,
+
+            d is not NOTSET,
+        ))
+
+        if not changes:
+            return self
+
+        inst = <union1>union1.__new__(union1)
+        inst._cpp_obj = move(union1._make_instance(
+          self._cpp_obj.get(),
+          i,
+          d,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cunion1] _make_instance(
+        cunion1* base_instance,
+        object i,
+        object d
+    ) except *:
+        cdef unique_ptr[cunion1] c_inst
+        if base_instance:
+            c_inst = make_unique[cunion1](deref(base_instance))
+        else:
+            c_inst = make_unique[cunion1]()
+
+        if base_instance:
+            # Convert None's to default value.
+            if i is None:
+                deref(c_inst).i = _union1_defaults.i
+                deref(c_inst).__isset.i = False
+            elif i is NOTSET:
+                i = None
+
+            if d is None:
+                deref(c_inst).d = _union1_defaults.d
+                deref(c_inst).__isset.d = False
+            elif d is NOTSET:
+                d = None
+
+        if i is not None:
+            deref(c_inst).i = i
+            deref(c_inst).__isset.i = True
+
+        if d is not None:
+            deref(c_inst).d = d
+            deref(c_inst).__isset.d = True
+
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'i', self.i
+        yield 'd', self.d
+
+    def __bool__(self):
+        return deref(self._cpp_obj).__isset.i or deref(self._cpp_obj).__isset.d
+
+    @staticmethod
+    cdef create(shared_ptr[cunion1] cpp_obj):
+        inst = <union1>union1.__new__(union1)
+        inst._cpp_obj = cpp_obj
+        return inst
+
+    @property
+    def i(self):
+        if not deref(self._cpp_obj).__isset.i:
+            return None
+
+        return self._cpp_obj.get().i
+
+    @property
+    def d(self):
+        if not deref(self._cpp_obj).__isset.d:
+            return None
+
+        return self._cpp_obj.get().d
+
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, union1) and
+                isinstance(other, union1)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cunion1 cself = deref((<union1>self)._cpp_obj)
+        cdef cunion1 cother = deref((<union1>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    def __hash__(union1 self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.i,
+            self.d,
+            ))
+        return self.__hash
+
+    def __repr__(union1 self):
+        return f'union1(i={repr(self.i)}, d={repr(self.d)})'
+
+
+cdef cunion2 _union2_defaults = cunion2()
+
+cdef class union2(thrift.py3.types.Struct):
+
+    def __init__(
+        union2 self,
+        i=None,
+        d=None,
+        s=None,
+        u=None
+    ):
+        self._cpp_obj = move(union2._make_instance(
+          NULL,
+          i,
+          d,
+          s,
+          u,
+        ))
+
+    cdef bytes _serialize(union2 self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cunion2](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cunion2](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cunion2](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize(union2 self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cunion2](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cunion2](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cunion2](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (union2, serialize(self)))
+
+    def __call__(
+        union2 self,
+        i=NOTSET,
+        d=NOTSET,
+        s=NOTSET,
+        u=NOTSET
+    ):
+        changes = any((
+            i is not NOTSET,
+
+            d is not NOTSET,
+
+            s is not NOTSET,
+
+            u is not NOTSET,
+        ))
+
+        if not changes:
+            return self
+
+        inst = <union2>union2.__new__(union2)
+        inst._cpp_obj = move(union2._make_instance(
+          self._cpp_obj.get(),
+          i,
+          d,
+          s,
+          u,
+        ))
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[cunion2] _make_instance(
+        cunion2* base_instance,
+        object i,
+        object d,
+        object s,
+        object u
+    ) except *:
+        cdef unique_ptr[cunion2] c_inst
+        if base_instance:
+            c_inst = make_unique[cunion2](deref(base_instance))
+        else:
+            c_inst = make_unique[cunion2]()
+
+        if base_instance:
+            # Convert None's to default value.
+            if i is None:
+                deref(c_inst).i = _union2_defaults.i
+                deref(c_inst).__isset.i = False
+            elif i is NOTSET:
+                i = None
+
+            if d is None:
+                deref(c_inst).d = _union2_defaults.d
+                deref(c_inst).__isset.d = False
+            elif d is NOTSET:
+                d = None
+
+            if s is None:
+                deref(c_inst).s = _union2_defaults.s
+                deref(c_inst).__isset.s = False
+            elif s is NOTSET:
+                s = None
+
+            if u is None:
+                deref(c_inst).u = _union2_defaults.u
+                deref(c_inst).__isset.u = False
+            elif u is NOTSET:
+                u = None
+
+        if i is not None:
+            deref(c_inst).i = i
+            deref(c_inst).__isset.i = True
+
+        if d is not None:
+            deref(c_inst).d = d
+            deref(c_inst).__isset.d = True
+
+        if s is not None:
+            deref(c_inst).s = deref((<struct1?> s)._cpp_obj)
+            deref(c_inst).__isset.s = True
+
+        if u is not None:
+            deref(c_inst).u = deref((<union1?> u)._cpp_obj)
+            deref(c_inst).__isset.u = True
+
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __iter__(self):
+        yield 'i', self.i
+        yield 'd', self.d
+        yield 's', self.s
+        yield 'u', self.u
+
+    def __bool__(self):
+        return deref(self._cpp_obj).__isset.i or deref(self._cpp_obj).__isset.d or deref(self._cpp_obj).__isset.s or deref(self._cpp_obj).__isset.u
+
+    @staticmethod
+    cdef create(shared_ptr[cunion2] cpp_obj):
+        inst = <union2>union2.__new__(union2)
+        inst._cpp_obj = cpp_obj
+        return inst
+
+    @property
+    def i(self):
+        if not deref(self._cpp_obj).__isset.i:
+            return None
+
+        return self._cpp_obj.get().i
+
+    @property
+    def d(self):
+        if not deref(self._cpp_obj).__isset.d:
+            return None
+
+        return self._cpp_obj.get().d
+
+    @property
+    def s(self):
+        if not deref(self._cpp_obj).__isset.s:
+            return None
+
+        if self.__s is None:
+            self.__s = struct1.create(make_shared[cstruct1](deref(self._cpp_obj).s))
+        return self.__s
+
+    @property
+    def u(self):
+        if not deref(self._cpp_obj).__isset.u:
+            return None
+
+        if self.__u is None:
+            self.__u = union1.create(make_shared[cunion1](deref(self._cpp_obj).u))
+        return self.__u
+
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, union2) and
+                isinstance(other, union2)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cunion2 cself = deref((<union2>self)._cpp_obj)
+        cdef cunion2 cother = deref((<union2>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    def __hash__(union2 self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.i,
+            self.d,
+            self.s,
+            self.u,
+            ))
+        return self.__hash
+
+    def __repr__(union2 self):
+        return f'union2(i={repr(self.i)}, d={repr(self.d)}, s={repr(self.s)}, u={repr(self.u)})'
+
+
+cdef class List__i32:
+    def __init__(self, items=None):
+        if isinstance(items, List__i32):
+            self._cpp_obj = (<List__i32> items)._cpp_obj
+        else:
+            self._cpp_obj = move(List__i32._make_instance(items))
+
+    @staticmethod
+    cdef create(shared_ptr[vector[int32_t]] c_items):
+        inst = <List__i32>List__i32.__new__(List__i32)
+        inst._cpp_obj = c_items
+        return inst
+
+    @staticmethod
+    cdef unique_ptr[vector[int32_t]] _make_instance(object items) except *:
+        cdef unique_ptr[vector[int32_t]] c_inst = make_unique[vector[int32_t]]()
+        if items:
+            for item in items:
+                deref(c_inst).push_back(item)
+        return move_unique(c_inst)
+
+    def __getitem__(self, object index_obj):
+        cdef int index
+        cdef shared_ptr[vector[int32_t]] c_inst
+        cdef int32_t citem
+        if isinstance(index_obj, slice):
+            c_inst = make_shared[vector[int32_t]]()
+            start_val = index_obj.start
+            stop_val = index_obj.stop
+            step_val = index_obj.step
+            sz = deref(self._cpp_obj).size()
+
+            if step_val == 0 or step_val is None:
+                step_val = 1
+            if step_val > 0:
+                if start_val is None:
+                    start_val = 0
+                elif start_val > sz:
+                    start_val = sz
+                if stop_val is None:
+                    stop_val = sz
+                elif stop_val > sz:
+                    stop_val = sz
+            else:
+                if start_val is None:
+                    start_val = sz - 1
+                elif start_val > sz - 1:
+                    start_val = sz - 1
+                if stop_val is None:
+                    stop_val = -1
+                elif stop_val > sz - 1:
+                    stop_val = sz - 1
+
+            index = start_val
+            while ((step_val > 0 and index < stop_val) or
+                   (step_val < 0 and index > stop_val)):
+                citem = deref(self._cpp_obj.get())[index]
+                deref(c_inst).push_back(citem)
+                index += step_val
+            return List__i32.create(c_inst)
+        else:
+            index = <int?>index_obj
+            size = len(self)
+            # Convert a negative index
+            if index < 0:
+                index = size - index
+            if index >= size:
+                raise IndexError('list index out of range')
+            # Support negative indexes
+            if index < 0:
+                index = size - index
+            citem = deref(self._cpp_obj.get())[index]
+            return citem
+
+    def __len__(self):
+        return deref(self._cpp_obj).size()
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
+        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
+            return cop != 2
+        if (len(self) != len(other)):
+            return cop != 2
+
+        for one, two in zip(self, other):
+            if one != two:
+                return cop != 2
+
+        return cop == 2
+
+    def __hash__(self):
+        if not self.__hash:
+            self.__hash = hash(tuple(self))
+        return self.__hash
+
+    def __contains__(self, item):
+        if not self:
+            return False
+        cdef int32_t citem = item
+        cdef vector[int32_t] vec = deref(
+            self._cpp_obj.get())
+        return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
+
+    def __iter__(self):
+        if not self:
+            raise StopIteration
+        cdef int32_t citem
+        for citem in deref(self._cpp_obj):
+            yield citem
+
+    def __repr__(self):
+        if not self:
+            return 'i[]'
+        return f'i[{", ".join(map(repr, self))}]'
+
+    def __reversed__(self):
+        if not self:
+            raise StopIteration
+        cdef int32_t citem
+        cdef vector[int32_t] vec = deref(
+            self._cpp_obj.get())
+        cdef vector[int32_t].reverse_iterator loc = vec.rbegin()
+        while loc != vec.rend():
+            citem = deref(loc)
+            yield citem
+            inc(loc)
+
+    def index(self, item):
+        if not self:
+            raise ValueError(f'{item} is not in list')
+        cdef int32_t citem = item
+        cdef vector[int32_t] vec = deref(self._cpp_obj.get())
+        cdef vector[int32_t].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
+        if loc != vec.end():
+            return <int64_t> std_libcpp.distance(vec.begin(), loc)
+        raise ValueError(f'{item} is not in list')
+
+    def count(self, item):
+        if not self:
+            return 0
+        cdef int32_t citem = item
+        cdef vector[int32_t] vec = deref(self._cpp_obj.get())
+        return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
+
+
+Sequence.register(List__i32)
+
 cdef class Map__string_i32:
     def __init__(self, items=None):
         if isinstance(items, Map__string_i32):
@@ -1224,155 +2292,6 @@ cdef class List__string:
 
 
 Sequence.register(List__string)
-
-cdef class List__i32:
-    def __init__(self, items=None):
-        if isinstance(items, List__i32):
-            self._cpp_obj = (<List__i32> items)._cpp_obj
-        else:
-            self._cpp_obj = move(List__i32._make_instance(items))
-
-    @staticmethod
-    cdef create(shared_ptr[vector[int32_t]] c_items):
-        inst = <List__i32>List__i32.__new__(List__i32)
-        inst._cpp_obj = c_items
-        return inst
-
-    @staticmethod
-    cdef unique_ptr[vector[int32_t]] _make_instance(object items) except *:
-        cdef unique_ptr[vector[int32_t]] c_inst = make_unique[vector[int32_t]]()
-        if items:
-            for item in items:
-                deref(c_inst).push_back(item)
-        return move_unique(c_inst)
-
-    def __getitem__(self, object index_obj):
-        cdef int index
-        cdef shared_ptr[vector[int32_t]] c_inst
-        cdef int32_t citem
-        if isinstance(index_obj, slice):
-            c_inst = make_shared[vector[int32_t]]()
-            start_val = index_obj.start
-            stop_val = index_obj.stop
-            step_val = index_obj.step
-            sz = deref(self._cpp_obj).size()
-
-            if step_val == 0 or step_val is None:
-                step_val = 1
-            if step_val > 0:
-                if start_val is None:
-                    start_val = 0
-                elif start_val > sz:
-                    start_val = sz
-                if stop_val is None:
-                    stop_val = sz
-                elif stop_val > sz:
-                    stop_val = sz
-            else:
-                if start_val is None:
-                    start_val = sz - 1
-                elif start_val > sz - 1:
-                    start_val = sz - 1
-                if stop_val is None:
-                    stop_val = -1
-                elif stop_val > sz - 1:
-                    stop_val = sz - 1
-
-            index = start_val
-            while ((step_val > 0 and index < stop_val) or
-                   (step_val < 0 and index > stop_val)):
-                citem = deref(self._cpp_obj.get())[index]
-                deref(c_inst).push_back(citem)
-                index += step_val
-            return List__i32.create(c_inst)
-        else:
-            index = <int?>index_obj
-            size = len(self)
-            # Convert a negative index
-            if index < 0:
-                index = size - index
-            if index >= size:
-                raise IndexError('list index out of range')
-            # Support negative indexes
-            if index < 0:
-                index = size - index
-            citem = deref(self._cpp_obj.get())[index]
-            return citem
-
-    def __len__(self):
-        return deref(self._cpp_obj).size()
-
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(type(self), type(other)))
-        if not (isinstance(self, Iterable) and isinstance(other, Iterable)):
-            return cop != 2
-        if (len(self) != len(other)):
-            return cop != 2
-
-        for one, two in zip(self, other):
-            if one != two:
-                return cop != 2
-
-        return cop == 2
-
-    def __hash__(self):
-        if not self.__hash:
-            self.__hash = hash(tuple(self))
-        return self.__hash
-
-    def __contains__(self, item):
-        if not self:
-            return False
-        cdef int32_t citem = item
-        cdef vector[int32_t] vec = deref(
-            self._cpp_obj.get())
-        return std_libcpp.find(vec.begin(), vec.end(), citem) != vec.end()
-
-    def __iter__(self):
-        if not self:
-            raise StopIteration
-        cdef int32_t citem
-        for citem in deref(self._cpp_obj):
-            yield citem
-
-    def __repr__(self):
-        if not self:
-            return 'i[]'
-        return f'i[{", ".join(map(repr, self))}]'
-
-    def __reversed__(self):
-        if not self:
-            raise StopIteration
-        cdef int32_t citem
-        cdef vector[int32_t] vec = deref(
-            self._cpp_obj.get())
-        cdef vector[int32_t].reverse_iterator loc = vec.rbegin()
-        while loc != vec.rend():
-            citem = deref(loc)
-            yield citem
-            inc(loc)
-
-    def index(self, item):
-        if not self:
-            raise ValueError(f'{item} is not in list')
-        cdef int32_t citem = item
-        cdef vector[int32_t] vec = deref(self._cpp_obj.get())
-        cdef vector[int32_t].iterator loc = std_libcpp.find(vec.begin(), vec.end(), citem)
-        if loc != vec.end():
-            return <int64_t> std_libcpp.distance(vec.begin(), loc)
-        raise ValueError(f'{item} is not in list')
-
-    def count(self, item):
-        if not self:
-            return 0
-        cdef int32_t citem = item
-        cdef vector[int32_t] vec = deref(self._cpp_obj.get())
-        return <int64_t> std_libcpp.count(vec.begin(), vec.end(), citem)
-
-
-Sequence.register(List__i32)
 
 cdef class Set__i32:
     def __init__(self, items=None):
@@ -2092,6 +3011,19 @@ z = 1000000000.0
 instagram = Internship.create(make_shared[cInternship](cinstagram()))
 kRanges = List__Range.create(make_shared[vector[cRange]](ckRanges()))
 internList = List__Internship.create(make_shared[vector[cInternship]](cinternList()))
+pod_0 = struct1.create(make_shared[cstruct1](cpod_0()))
+pod_1 = struct1.create(make_shared[cstruct1](cpod_1()))
+pod_2 = struct2.create(make_shared[cstruct2](cpod_2()))
+pod_3 = struct3.create(make_shared[cstruct3](cpod_3()))
+u_1_1 = union1.create(make_shared[cunion1](cu_1_1()))
+u_1_2 = union1.create(make_shared[cunion1](cu_1_2()))
+u_1_3 = union1.create(make_shared[cunion1](cu_1_3()))
+u_2_1 = union2.create(make_shared[cunion2](cu_2_1()))
+u_2_2 = union2.create(make_shared[cunion2](cu_2_2()))
+u_2_3 = union2.create(make_shared[cunion2](cu_2_3()))
+u_2_4 = union2.create(make_shared[cunion2](cu_2_4()))
+u_2_5 = union2.create(make_shared[cunion2](cu_2_5()))
+u_2_6 = union2.create(make_shared[cunion2](cu_2_6()))
 apostrophe = capostrophe().decode('UTF-8')
 tripleApostrophe = ctripleApostrophe().decode('UTF-8')
 quotationMark = cquotationMark().decode('UTF-8')

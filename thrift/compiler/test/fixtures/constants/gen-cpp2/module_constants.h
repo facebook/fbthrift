@@ -54,6 +54,32 @@ struct module_constants {
 
   static std::vector< ::cpp2::Internship> const& internList();
 
+  static  ::cpp2::struct1 const& pod_0();
+
+  static  ::cpp2::struct1 const& pod_1();
+
+  static  ::cpp2::struct2 const& pod_2();
+
+  static  ::cpp2::struct3 const& pod_3();
+
+  static  ::cpp2::union1 const& u_1_1();
+
+  static  ::cpp2::union1 const& u_1_2();
+
+  static  ::cpp2::union1 const& u_1_3();
+
+  static  ::cpp2::union2 const& u_2_1();
+
+  static  ::cpp2::union2 const& u_2_2();
+
+  static  ::cpp2::union2 const& u_2_3();
+
+  static  ::cpp2::union2 const& u_2_4();
+
+  static  ::cpp2::union2 const& u_2_5();
+
+  static  ::cpp2::union2 const& u_2_6();
+
   // consider using folly::StringPiece instead of std::string whenever possible
   // to referencing this statically allocated string constant, in order to
   // prevent unnecessary allocations

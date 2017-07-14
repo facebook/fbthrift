@@ -391,4 +391,694 @@ class Range implements IThriftStruct {
 
 }
 
+class struct1 implements IThriftStruct {
+  static $_TSPEC = array(
+    1 => array(
+      'var' => 'a',
+      'type' => TType::I32,
+      ),
+    2 => array(
+      'var' => 'b',
+      'type' => TType::STRING,
+      ),
+    );
+  public static $_TFIELDMAP = array(
+    'a' => 1,
+    'b' => 2,
+  );
+  const STRUCTURAL_ID = 7783381726179123112;
+  public $a = 1234567;
+  public $b = "<uninitialized>";
+
+  public function __construct($vals=null) {
+    if (is_array($vals)) {
+      if (isset($vals['a'])) {
+        $this->a = $vals['a'];
+      }
+      if (isset($vals['b'])) {
+        $this->b = $vals['b'];
+      }
+    } else if ($vals) {
+      throw new TProtocolException(
+        'struct1 constructor must be passed array or null'
+      );
+    }
+  }
+
+  public function getName() {
+    return 'struct1';
+  }
+
+  public static function __set_state($vals) {
+    return new struct1($vals);
+  }
+
+  public function read(TProtocol $input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      if (!$fid && $fname !== null) {
+        if (isset(self::$_TFIELDMAP[$fname])) {
+          $fid = self::$_TFIELDMAP[$fname];
+          $ftype = self::$_TSPEC[$fid]['type'];
+        }
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->a);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->b);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write(TProtocol $output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('struct1');
+    if ($this->a !== null) {
+      $xfer += $output->writeFieldBegin('a', TType::I32, 1);
+      $xfer += $output->writeI32($this->a);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->b !== null) {
+      $xfer += $output->writeFieldBegin('b', TType::STRING, 2);
+      $xfer += $output->writeString($this->b);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class struct2 implements IThriftStruct {
+  static $_TSPEC = array(
+    1 => array(
+      'var' => 'a',
+      'type' => TType::I32,
+      ),
+    2 => array(
+      'var' => 'b',
+      'type' => TType::STRING,
+      ),
+    3 => array(
+      'var' => 'c',
+      'type' => TType::STRUCT,
+      'class' => 'struct1',
+      ),
+    4 => array(
+      'var' => 'd',
+      'type' => TType::LST,
+      'etype' => TType::I32,
+      'elem' => array(
+        'type' => TType::I32,
+        ),
+        'format' => 'array',
+      ),
+    );
+  public static $_TFIELDMAP = array(
+    'a' => 1,
+    'b' => 2,
+    'c' => 3,
+    'd' => 4,
+  );
+  const STRUCTURAL_ID = 6352184485829261382;
+  public $a = null;
+  public $b = null;
+  public $c = null;
+  public $d = null;
+
+  public function __construct($vals=null) {
+    if (is_array($vals)) {
+      if (isset($vals['a'])) {
+        $this->a = $vals['a'];
+      }
+      if (isset($vals['b'])) {
+        $this->b = $vals['b'];
+      }
+      if (isset($vals['c'])) {
+        $this->c = $vals['c'];
+      }
+      if (isset($vals['d'])) {
+        $this->d = $vals['d'];
+      }
+    } else if ($vals) {
+      throw new TProtocolException(
+        'struct2 constructor must be passed array or null'
+      );
+    }
+  }
+
+  public function getName() {
+    return 'struct2';
+  }
+
+  public static function __set_state($vals) {
+    return new struct2($vals);
+  }
+
+  public function read(TProtocol $input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      if (!$fid && $fname !== null) {
+        if (isset(self::$_TFIELDMAP[$fname])) {
+          $fid = self::$_TFIELDMAP[$fname];
+          $ftype = self::$_TSPEC[$fid]['type'];
+        }
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->a);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->b);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 3:
+          if ($ftype == TType::STRUCT) {
+            $this->c = new struct1();
+            $xfer += $this->c->read($input);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 4:
+          if ($ftype == TType::LST) {
+            $this->d = array();
+            $_size0 = 0;
+            $_etype3 = 0;
+            $xfer += $input->readListBegin($_etype3, $_size0);
+            for ($_i4 = 0; $_size0 === null || $_i4 < $_size0; ++$_i4)
+            {
+              if ($_size0 === null && !$input->readListHasNext()) {
+                break;
+              }
+              $elem5 = null;
+              $xfer += $input->readI32($elem5);
+              $this->d []= $elem5;
+            }
+            $xfer += $input->readListEnd();
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write(TProtocol $output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('struct2');
+    if ($this->a !== null) {
+      $xfer += $output->writeFieldBegin('a', TType::I32, 1);
+      $xfer += $output->writeI32($this->a);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->b !== null) {
+      $xfer += $output->writeFieldBegin('b', TType::STRING, 2);
+      $xfer += $output->writeString($this->b);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->c !== null) {
+      if (!is_object($this->c)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('c', TType::STRUCT, 3);
+      $xfer += $this->c->write($output);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->d !== null) {
+      if (!is_array($this->d) && !(($this->d instanceof Iterator || $this->d instanceof IteratorAggregate) && $this->d instanceof Countable)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('d', TType::LST, 4);
+      {
+        $output->writeListBegin(TType::I32, count($this->d));
+        {
+          foreach ($this->d as $iter0)
+          {
+            $xfer += $output->writeI32($iter0);
+          }
+        }
+        $output->writeListEnd();
+      }
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class struct3 implements IThriftStruct {
+  static $_TSPEC = array(
+    1 => array(
+      'var' => 'a',
+      'type' => TType::STRING,
+      ),
+    2 => array(
+      'var' => 'b',
+      'type' => TType::I32,
+      ),
+    3 => array(
+      'var' => 'c',
+      'type' => TType::STRUCT,
+      'class' => 'struct2',
+      ),
+    );
+  public static $_TFIELDMAP = array(
+    'a' => 1,
+    'b' => 2,
+    'c' => 3,
+  );
+  const STRUCTURAL_ID = 8770775784736740409;
+  public $a = null;
+  public $b = null;
+  public $c = null;
+
+  public function __construct($vals=null) {
+    if (is_array($vals)) {
+      if (isset($vals['a'])) {
+        $this->a = $vals['a'];
+      }
+      if (isset($vals['b'])) {
+        $this->b = $vals['b'];
+      }
+      if (isset($vals['c'])) {
+        $this->c = $vals['c'];
+      }
+    } else if ($vals) {
+      throw new TProtocolException(
+        'struct3 constructor must be passed array or null'
+      );
+    }
+  }
+
+  public function getName() {
+    return 'struct3';
+  }
+
+  public static function __set_state($vals) {
+    return new struct3($vals);
+  }
+
+  public function read(TProtocol $input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      if (!$fid && $fname !== null) {
+        if (isset(self::$_TFIELDMAP[$fname])) {
+          $fid = self::$_TFIELDMAP[$fname];
+          $ftype = self::$_TSPEC[$fid]['type'];
+        }
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::STRING) {
+            $xfer += $input->readString($this->a);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->b);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 3:
+          if ($ftype == TType::STRUCT) {
+            $this->c = new struct2();
+            $xfer += $this->c->read($input);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write(TProtocol $output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('struct3');
+    if ($this->a !== null) {
+      $xfer += $output->writeFieldBegin('a', TType::STRING, 1);
+      $xfer += $output->writeString($this->a);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->b !== null) {
+      $xfer += $output->writeFieldBegin('b', TType::I32, 2);
+      $xfer += $output->writeI32($this->b);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->c !== null) {
+      if (!is_object($this->c)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('c', TType::STRUCT, 3);
+      $xfer += $this->c->write($output);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class union1 implements IThriftStruct {
+  static $_TSPEC = array(
+    1 => array(
+      'var' => 'i',
+      'type' => TType::I32,
+      ),
+    2 => array(
+      'var' => 'd',
+      'type' => TType::DOUBLE,
+      ),
+    );
+  public static $_TFIELDMAP = array(
+    'i' => 1,
+    'd' => 2,
+  );
+  const STRUCTURAL_ID = 3529312341790331108;
+  public $i = null;
+  public $d = null;
+
+  public function __construct($vals=null) {
+    if (is_array($vals)) {
+      if (isset($vals['i'])) {
+        $this->i = $vals['i'];
+      }
+      if (isset($vals['d'])) {
+        $this->d = $vals['d'];
+      }
+    } else if ($vals) {
+      throw new TProtocolException(
+        'union1 constructor must be passed array or null'
+      );
+    }
+  }
+
+  public function getName() {
+    return 'union1';
+  }
+
+  public static function __set_state($vals) {
+    return new union1($vals);
+  }
+
+  public function read(TProtocol $input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      if (!$fid && $fname !== null) {
+        if (isset(self::$_TFIELDMAP[$fname])) {
+          $fid = self::$_TFIELDMAP[$fname];
+          $ftype = self::$_TSPEC[$fid]['type'];
+        }
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->i);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::DOUBLE) {
+            $xfer += $input->readDouble($this->d);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write(TProtocol $output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('union1');
+    if ($this->i !== null) {
+      $xfer += $output->writeFieldBegin('i', TType::I32, 1);
+      $xfer += $output->writeI32($this->i);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->d !== null) {
+      $xfer += $output->writeFieldBegin('d', TType::DOUBLE, 2);
+      $xfer += $output->writeDouble($this->d);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
+class union2 implements IThriftStruct {
+  static $_TSPEC = array(
+    1 => array(
+      'var' => 'i',
+      'type' => TType::I32,
+      ),
+    2 => array(
+      'var' => 'd',
+      'type' => TType::DOUBLE,
+      ),
+    3 => array(
+      'var' => 's',
+      'type' => TType::STRUCT,
+      'class' => 'struct1',
+      ),
+    4 => array(
+      'var' => 'u',
+      'type' => TType::STRUCT,
+      'class' => 'union1',
+      ),
+    );
+  public static $_TFIELDMAP = array(
+    'i' => 1,
+    'd' => 2,
+    's' => 3,
+    'u' => 4,
+  );
+  const STRUCTURAL_ID = 1639711719709684790;
+  public $i = null;
+  public $d = null;
+  public $s = null;
+  public $u = null;
+
+  public function __construct($vals=null) {
+    if (is_array($vals)) {
+      if (isset($vals['i'])) {
+        $this->i = $vals['i'];
+      }
+      if (isset($vals['d'])) {
+        $this->d = $vals['d'];
+      }
+      if (isset($vals['s'])) {
+        $this->s = $vals['s'];
+      }
+      if (isset($vals['u'])) {
+        $this->u = $vals['u'];
+      }
+    } else if ($vals) {
+      throw new TProtocolException(
+        'union2 constructor must be passed array or null'
+      );
+    }
+  }
+
+  public function getName() {
+    return 'union2';
+  }
+
+  public static function __set_state($vals) {
+    return new union2($vals);
+  }
+
+  public function read(TProtocol $input)
+  {
+    $xfer = 0;
+    $fname = null;
+    $ftype = 0;
+    $fid = 0;
+    $xfer += $input->readStructBegin($fname);
+    while (true)
+    {
+      $xfer += $input->readFieldBegin($fname, $ftype, $fid);
+      if ($ftype == TType::STOP) {
+        break;
+      }
+      if (!$fid && $fname !== null) {
+        if (isset(self::$_TFIELDMAP[$fname])) {
+          $fid = self::$_TFIELDMAP[$fname];
+          $ftype = self::$_TSPEC[$fid]['type'];
+        }
+      }
+      switch ($fid)
+      {
+        case 1:
+          if ($ftype == TType::I32) {
+            $xfer += $input->readI32($this->i);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 2:
+          if ($ftype == TType::DOUBLE) {
+            $xfer += $input->readDouble($this->d);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 3:
+          if ($ftype == TType::STRUCT) {
+            $this->s = new struct1();
+            $xfer += $this->s->read($input);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        case 4:
+          if ($ftype == TType::STRUCT) {
+            $this->u = new union1();
+            $xfer += $this->u->read($input);
+          } else {
+            $xfer += $input->skip($ftype);
+          }
+          break;
+        default:
+          $xfer += $input->skip($ftype);
+          break;
+      }
+      $xfer += $input->readFieldEnd();
+    }
+    $xfer += $input->readStructEnd();
+    return $xfer;
+  }
+
+  public function write(TProtocol $output) {
+    $xfer = 0;
+    $xfer += $output->writeStructBegin('union2');
+    if ($this->i !== null) {
+      $xfer += $output->writeFieldBegin('i', TType::I32, 1);
+      $xfer += $output->writeI32($this->i);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->d !== null) {
+      $xfer += $output->writeFieldBegin('d', TType::DOUBLE, 2);
+      $xfer += $output->writeDouble($this->d);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->s !== null) {
+      if (!is_object($this->s)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('s', TType::STRUCT, 3);
+      $xfer += $this->s->write($output);
+      $xfer += $output->writeFieldEnd();
+    }
+    if ($this->u !== null) {
+      if (!is_object($this->u)) {
+        throw new TProtocolException('Bad type in structure.', TProtocolException::INVALID_DATA);
+      }
+      $xfer += $output->writeFieldBegin('u', TType::STRUCT, 4);
+      $xfer += $this->u->write($output);
+      $xfer += $output->writeFieldEnd();
+    }
+    $xfer += $output->writeFieldStop();
+    $xfer += $output->writeStructEnd();
+    return $xfer;
+  }
+
+}
+
 ?>

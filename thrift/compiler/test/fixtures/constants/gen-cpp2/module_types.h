@@ -21,6 +21,11 @@ namespace cpp2 {
 class Internship;
 class UnEnumStruct;
 class Range;
+class struct1;
+class struct2;
+class struct3;
+class union1;
+class union2;
 
 enum class EmptyEnum {};
 
@@ -496,6 +501,1142 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Range>::serializ
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::Range>::serializedSizeZC(Protocol const* proto,  ::cpp2::Range const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace cpp2 {
+
+class struct1 : private apache::thrift::detail::st::ComparisonOperators<struct1> {
+ public:
+
+  struct1() :
+      a(1234567),
+      b(apache::thrift::StringTraits< std::string>::fromStringLiteral("<uninitialized>")) {}
+  // FragileConstructor for use in initialization lists only
+
+  struct1(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg) :
+      a(std::move(a__arg)),
+      b(std::move(b__arg)) {
+    __isset.a = true;
+    __isset.b = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  struct1(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    struct1(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    a = arg.move();
+    __isset.a = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  struct1(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    struct1(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    b = arg.move();
+    __isset.b = true;
+  }
+
+  struct1(struct1&&) = default;
+
+  struct1(const struct1&) = default;
+
+  struct1& operator=(struct1&&) = default;
+
+  struct1& operator=(const struct1&) = default;
+  void __clear();
+
+  virtual ~struct1() throw() {}
+
+  int32_t a;
+  std::string b;
+
+  struct __isset {
+    void __clear() {
+      a = false;
+      b = false;
+    }
+
+    bool a = false;
+    bool b = false;
+  } __isset;
+  bool operator==(const struct1& rhs) const;
+
+  bool operator < (const struct1& rhs) const {
+    if (!(a == rhs.a)) {
+      return a < rhs.a;
+    }
+    if (!(b == rhs.b)) {
+      return b < rhs.b;
+    }
+    (void)rhs;
+    return false;
+  }
+
+  int32_t get_a() const {
+    return a;
+  }
+
+  int32_t& set_a(int32_t a_) {
+    a = a_;
+    __isset.a = true;
+    return a;
+  }
+
+  const std::string& get_b() const& {
+    return b;
+  }
+
+  std::string get_b() && {
+    return std::move(b);
+  }
+
+  template <typename T_struct1_b_struct_setter>
+  std::string& set_b(T_struct1_b_struct_setter&& b_) {
+    b = std::forward<T_struct1_b_struct_setter>(b_);
+    __isset.b = true;
+    return b;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+};
+
+void swap(struct1& a, struct1& b);
+extern template uint32_t struct1::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t struct1::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t struct1::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t struct1::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t struct1::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t struct1::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t struct1::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t struct1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::cpp2::struct1>::clear( ::cpp2::struct1* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::struct1>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::struct1>::write(Protocol* proto,  ::cpp2::struct1 const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::struct1>::read(Protocol* proto,  ::cpp2::struct1* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::struct1>::serializedSize(Protocol const* proto,  ::cpp2::struct1 const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::struct1>::serializedSizeZC(Protocol const* proto,  ::cpp2::struct1 const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace cpp2 {
+
+class struct2 : private apache::thrift::detail::st::ComparisonOperators<struct2> {
+ public:
+
+  struct2() :
+      a(0) {}
+  // FragileConstructor for use in initialization lists only
+
+  struct2(apache::thrift::FragileConstructor, int32_t a__arg, std::string b__arg,  ::cpp2::struct1 c__arg, std::vector<int32_t> d__arg) :
+      a(std::move(a__arg)),
+      b(std::move(b__arg)),
+      c(std::move(c__arg)),
+      d(std::move(d__arg)) {
+    __isset.a = true;
+    __isset.b = true;
+    __isset.c = true;
+    __isset.d = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  struct2(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    struct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    a = arg.move();
+    __isset.a = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  struct2(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    struct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    b = arg.move();
+    __isset.b = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  struct2(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    struct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    c = arg.move();
+    __isset.c = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  struct2(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    struct2(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    d = arg.move();
+    __isset.d = true;
+  }
+
+  struct2(struct2&&) = default;
+
+  struct2(const struct2&) = default;
+
+  struct2& operator=(struct2&&) = default;
+
+  struct2& operator=(const struct2&) = default;
+  void __clear();
+
+  virtual ~struct2() throw() {}
+
+  int32_t a;
+  std::string b;
+   ::cpp2::struct1 c;
+  std::vector<int32_t> d;
+
+  struct __isset {
+    void __clear() {
+      a = false;
+      b = false;
+      c = false;
+      d = false;
+    }
+
+    bool a = false;
+    bool b = false;
+    bool c = false;
+    bool d = false;
+  } __isset;
+  bool operator==(const struct2& rhs) const;
+
+  bool operator < (const struct2& rhs) const {
+    if (!(a == rhs.a)) {
+      return a < rhs.a;
+    }
+    if (!(b == rhs.b)) {
+      return b < rhs.b;
+    }
+    if (!(c == rhs.c)) {
+      return c < rhs.c;
+    }
+    if (!(d == rhs.d)) {
+      return d < rhs.d;
+    }
+    (void)rhs;
+    return false;
+  }
+
+  int32_t get_a() const {
+    return a;
+  }
+
+  int32_t& set_a(int32_t a_) {
+    a = a_;
+    __isset.a = true;
+    return a;
+  }
+
+  const std::string& get_b() const& {
+    return b;
+  }
+
+  std::string get_b() && {
+    return std::move(b);
+  }
+
+  template <typename T_struct2_b_struct_setter>
+  std::string& set_b(T_struct2_b_struct_setter&& b_) {
+    b = std::forward<T_struct2_b_struct_setter>(b_);
+    __isset.b = true;
+    return b;
+  }
+  const  ::cpp2::struct1& get_c() const&;
+   ::cpp2::struct1 get_c() &&;
+
+  template <typename T_struct2_c_struct_setter>
+   ::cpp2::struct1& set_c(T_struct2_c_struct_setter&& c_) {
+    c = std::forward<T_struct2_c_struct_setter>(c_);
+    __isset.c = true;
+    return c;
+  }
+  const std::vector<int32_t>& get_d() const&;
+  std::vector<int32_t> get_d() &&;
+
+  template <typename T_struct2_d_struct_setter>
+  std::vector<int32_t>& set_d(T_struct2_d_struct_setter&& d_) {
+    d = std::forward<T_struct2_d_struct_setter>(d_);
+    __isset.d = true;
+    return d;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+};
+
+void swap(struct2& a, struct2& b);
+extern template uint32_t struct2::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t struct2::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t struct2::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t struct2::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t struct2::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t struct2::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t struct2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t struct2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::cpp2::struct2>::clear( ::cpp2::struct2* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::struct2>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::struct2>::write(Protocol* proto,  ::cpp2::struct2 const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::struct2>::read(Protocol* proto,  ::cpp2::struct2* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::struct2>::serializedSize(Protocol const* proto,  ::cpp2::struct2 const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::struct2>::serializedSizeZC(Protocol const* proto,  ::cpp2::struct2 const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace cpp2 {
+
+class struct3 : private apache::thrift::detail::st::ComparisonOperators<struct3> {
+ public:
+
+  struct3() :
+      b(0) {}
+  // FragileConstructor for use in initialization lists only
+
+  struct3(apache::thrift::FragileConstructor, std::string a__arg, int32_t b__arg,  ::cpp2::struct2 c__arg) :
+      a(std::move(a__arg)),
+      b(std::move(b__arg)),
+      c(std::move(c__arg)) {
+    __isset.a = true;
+    __isset.b = true;
+    __isset.c = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  struct3(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    a = arg.move();
+    __isset.a = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  struct3(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    b = arg.move();
+    __isset.b = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  struct3(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    struct3(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    c = arg.move();
+    __isset.c = true;
+  }
+
+  struct3(struct3&&) = default;
+
+  struct3(const struct3&) = default;
+
+  struct3& operator=(struct3&&) = default;
+
+  struct3& operator=(const struct3&) = default;
+  void __clear();
+
+  virtual ~struct3() throw() {}
+
+  std::string a;
+  int32_t b;
+   ::cpp2::struct2 c;
+
+  struct __isset {
+    void __clear() {
+      a = false;
+      b = false;
+      c = false;
+    }
+
+    bool a = false;
+    bool b = false;
+    bool c = false;
+  } __isset;
+  bool operator==(const struct3& rhs) const;
+
+  bool operator < (const struct3& rhs) const {
+    if (!(a == rhs.a)) {
+      return a < rhs.a;
+    }
+    if (!(b == rhs.b)) {
+      return b < rhs.b;
+    }
+    if (!(c == rhs.c)) {
+      return c < rhs.c;
+    }
+    (void)rhs;
+    return false;
+  }
+
+  const std::string& get_a() const& {
+    return a;
+  }
+
+  std::string get_a() && {
+    return std::move(a);
+  }
+
+  template <typename T_struct3_a_struct_setter>
+  std::string& set_a(T_struct3_a_struct_setter&& a_) {
+    a = std::forward<T_struct3_a_struct_setter>(a_);
+    __isset.a = true;
+    return a;
+  }
+
+  int32_t get_b() const {
+    return b;
+  }
+
+  int32_t& set_b(int32_t b_) {
+    b = b_;
+    __isset.b = true;
+    return b;
+  }
+  const  ::cpp2::struct2& get_c() const&;
+   ::cpp2::struct2 get_c() &&;
+
+  template <typename T_struct3_c_struct_setter>
+   ::cpp2::struct2& set_c(T_struct3_c_struct_setter&& c_) {
+    c = std::forward<T_struct3_c_struct_setter>(c_);
+    __isset.c = true;
+    return c;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+};
+
+void swap(struct3& a, struct3& b);
+extern template uint32_t struct3::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t struct3::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t struct3::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t struct3::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t struct3::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t struct3::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t struct3::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t struct3::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::cpp2::struct3>::clear( ::cpp2::struct3* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::struct3>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::struct3>::write(Protocol* proto,  ::cpp2::struct3 const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::struct3>::read(Protocol* proto,  ::cpp2::struct3* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::struct3>::serializedSize(Protocol const* proto,  ::cpp2::struct3 const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::struct3>::serializedSizeZC(Protocol const* proto,  ::cpp2::struct3 const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace cpp2 {
+
+class union1 : private apache::thrift::detail::st::ComparisonOperators<union1> {
+ public:
+  enum Type {
+    __EMPTY__ = 0,
+    i = 1,
+    d = 2,
+  } ;
+
+  union1() :
+      type_(Type::__EMPTY__) {}
+
+  union1(union1&& rhs) :
+      type_(Type::__EMPTY__) {
+    if (this == &rhs) {return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch(rhs.type_) {
+      case Type::i:
+      {
+        set_i(std::move(rhs.value_.i));
+        break;
+      }
+      case Type::d:
+      {
+        set_d(std::move(rhs.value_.d));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+  }
+
+  union1(const union1& rhs) :
+      type_(Type::__EMPTY__) {
+    if (this == &rhs) {return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch(rhs.type_) {
+      case Type::i:
+      {
+        set_i(rhs.value_.i);
+        break;
+      }
+      case Type::d:
+      {
+        set_d(rhs.value_.d);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+  }
+
+  union1& operator=(union1&& rhs) {
+    if (this == &rhs) {return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch(rhs.type_) {
+      case Type::i:
+      {
+        set_i(std::move(rhs.value_.i));
+        break;
+      }
+      case Type::d:
+      {
+        set_d(std::move(rhs.value_.d));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+    return *this;
+  }
+
+  union1& operator=(const union1& rhs) {
+    if (this == &rhs) {return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch(rhs.type_) {
+      case Type::i:
+      {
+        set_i(rhs.value_.i);
+        break;
+      }
+      case Type::d:
+      {
+        set_d(rhs.value_.d);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    return *this;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  union1(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_i(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  union1(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_d(arg.move());
+  }
+  void __clear();
+
+  virtual ~union1() throw() {
+    __clear();
+  }
+
+  union storage_type {
+    int32_t i;
+    double d;
+
+    storage_type() {}
+    ~storage_type() {}
+  } ;
+  bool operator==(const union1& rhs) const;
+
+  bool operator < (const union1& rhs) const {
+    if (type_ != rhs.type_) { return type_ < rhs.type_; }
+    switch(type_) {
+      case Type::i:
+      {
+        return value_.i < rhs.value_.i;
+      }
+      case Type::d:
+      {
+        return value_.d < rhs.value_.d;
+      }
+      default:
+      {
+        return false;
+      }
+    }
+  }
+
+  int32_t& set_i(int32_t t = int32_t()) {
+    __clear();
+    type_ = Type::i;
+    ::new (std::addressof(value_.i)) int32_t(t);
+    return value_.i;
+  }
+
+  double& set_d(double t = double()) {
+    __clear();
+    type_ = Type::d;
+    ::new (std::addressof(value_.d)) double(t);
+    return value_.d;
+  }
+
+  int32_t const & get_i() const {
+    assert(type_ == Type::i);
+    return value_.i;
+  }
+
+  double const & get_d() const {
+    assert(type_ == Type::d);
+    return value_.d;
+  }
+
+  int32_t & mutable_i() {
+    assert(type_ == Type::i);
+    return value_.i;
+  }
+
+  double & mutable_d() {
+    assert(type_ == Type::d);
+    return value_.d;
+  }
+
+  int32_t move_i() {
+    assert(type_ == Type::i);
+    return std::move(value_.i);
+  }
+
+  double move_d() {
+    assert(type_ == Type::d);
+    return std::move(value_.d);
+  }
+
+  Type getType() const { return type_; }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+ protected:
+  template <class T>
+  void destruct(T &val) {
+    (&val)->~T();
+  }
+
+  Type type_;
+  storage_type value_;
+};
+
+void swap(union1& a, union1& b);
+extern template uint32_t union1::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t union1::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t union1::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t union1::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t union1::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t union1::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t union1::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t union1::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::cpp2::union1>::clear( ::cpp2::union1* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::union1>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::union1>::write(Protocol* proto,  ::cpp2::union1 const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::union1>::read(Protocol* proto,  ::cpp2::union1* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::union1>::serializedSize(Protocol const* proto,  ::cpp2::union1 const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::union1>::serializedSizeZC(Protocol const* proto,  ::cpp2::union1 const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace cpp2 {
+
+class union2 : private apache::thrift::detail::st::ComparisonOperators<union2> {
+ public:
+  enum Type {
+    __EMPTY__ = 0,
+    i = 1,
+    d = 2,
+    s = 3,
+    u = 4,
+  } ;
+
+  union2() :
+      type_(Type::__EMPTY__) {}
+
+  union2(union2&& rhs) :
+      type_(Type::__EMPTY__) {
+    if (this == &rhs) {return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch(rhs.type_) {
+      case Type::i:
+      {
+        set_i(std::move(rhs.value_.i));
+        break;
+      }
+      case Type::d:
+      {
+        set_d(std::move(rhs.value_.d));
+        break;
+      }
+      case Type::s:
+      {
+        set_s(std::move(rhs.value_.s));
+        break;
+      }
+      case Type::u:
+      {
+        set_u(std::move(rhs.value_.u));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+  }
+
+  union2(const union2& rhs) :
+      type_(Type::__EMPTY__) {
+    if (this == &rhs) {return; }
+    if (rhs.type_ == Type::__EMPTY__) { return; }
+    switch(rhs.type_) {
+      case Type::i:
+      {
+        set_i(rhs.value_.i);
+        break;
+      }
+      case Type::d:
+      {
+        set_d(rhs.value_.d);
+        break;
+      }
+      case Type::s:
+      {
+        set_s(rhs.value_.s);
+        break;
+      }
+      case Type::u:
+      {
+        set_u(rhs.value_.u);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+  }
+
+  union2& operator=(union2&& rhs) {
+    if (this == &rhs) {return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch(rhs.type_) {
+      case Type::i:
+      {
+        set_i(std::move(rhs.value_.i));
+        break;
+      }
+      case Type::d:
+      {
+        set_d(std::move(rhs.value_.d));
+        break;
+      }
+      case Type::s:
+      {
+        set_s(std::move(rhs.value_.s));
+        break;
+      }
+      case Type::u:
+      {
+        set_u(std::move(rhs.value_.u));
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    rhs.__clear();
+    return *this;
+  }
+
+  union2& operator=(const union2& rhs) {
+    if (this == &rhs) {return *this; }
+    __clear();
+    if (rhs.type_ == Type::__EMPTY__) { return *this; }
+    switch(rhs.type_) {
+      case Type::i:
+      {
+        set_i(rhs.value_.i);
+        break;
+      }
+      case Type::d:
+      {
+        set_d(rhs.value_.d);
+        break;
+      }
+      case Type::s:
+      {
+        set_s(rhs.value_.s);
+        break;
+      }
+      case Type::u:
+      {
+        set_u(rhs.value_.u);
+        break;
+      }
+      default:
+      {
+        assert(false);
+        break;
+      }
+    }
+    return *this;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  union2(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_i(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  union2(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_d(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  union2(::apache::thrift::detail::argument_wrapper<3, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_s(arg.move());
+  }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  union2(::apache::thrift::detail::argument_wrapper<4, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_u(arg.move());
+  }
+  void __clear();
+
+  virtual ~union2() throw() {
+    __clear();
+  }
+
+  union storage_type {
+    int32_t i;
+    double d;
+     ::cpp2::struct1 s;
+     ::cpp2::union1 u;
+
+    storage_type() {}
+    ~storage_type() {}
+  } ;
+  bool operator==(const union2& rhs) const;
+
+  bool operator < (const union2& rhs) const {
+    if (type_ != rhs.type_) { return type_ < rhs.type_; }
+    switch(type_) {
+      case Type::i:
+      {
+        return value_.i < rhs.value_.i;
+      }
+      case Type::d:
+      {
+        return value_.d < rhs.value_.d;
+      }
+      case Type::s:
+      {
+        return value_.s < rhs.value_.s;
+      }
+      case Type::u:
+      {
+        return value_.u < rhs.value_.u;
+      }
+      default:
+      {
+        return false;
+      }
+    }
+  }
+
+  int32_t& set_i(int32_t t = int32_t()) {
+    __clear();
+    type_ = Type::i;
+    ::new (std::addressof(value_.i)) int32_t(t);
+    return value_.i;
+  }
+
+  double& set_d(double t = double()) {
+    __clear();
+    type_ = Type::d;
+    ::new (std::addressof(value_.d)) double(t);
+    return value_.d;
+  }
+
+   ::cpp2::struct1& set_s( ::cpp2::struct1 const &t) {
+    __clear();
+    type_ = Type::s;
+    ::new (std::addressof(value_.s))  ::cpp2::struct1(t);
+    return value_.s;
+  }
+
+   ::cpp2::struct1& set_s( ::cpp2::struct1&& t) {
+    __clear();
+    type_ = Type::s;
+    ::new (std::addressof(value_.s))  ::cpp2::struct1(std::move(t));
+    return value_.s;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::cpp2::struct1, T...>>  ::cpp2::struct1& set_s(T&&... t) {
+    __clear();
+    type_ = Type::s;
+    ::new (std::addressof(value_.s))  ::cpp2::struct1(std::forward<T>(t)...);
+    return value_.s;
+  }
+
+   ::cpp2::union1& set_u( ::cpp2::union1 const &t) {
+    __clear();
+    type_ = Type::u;
+    ::new (std::addressof(value_.u))  ::cpp2::union1(t);
+    return value_.u;
+  }
+
+   ::cpp2::union1& set_u( ::cpp2::union1&& t) {
+    __clear();
+    type_ = Type::u;
+    ::new (std::addressof(value_.u))  ::cpp2::union1(std::move(t));
+    return value_.u;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::cpp2::union1, T...>>  ::cpp2::union1& set_u(T&&... t) {
+    __clear();
+    type_ = Type::u;
+    ::new (std::addressof(value_.u))  ::cpp2::union1(std::forward<T>(t)...);
+    return value_.u;
+  }
+
+  int32_t const & get_i() const {
+    assert(type_ == Type::i);
+    return value_.i;
+  }
+
+  double const & get_d() const {
+    assert(type_ == Type::d);
+    return value_.d;
+  }
+
+   ::cpp2::struct1 const & get_s() const {
+    assert(type_ == Type::s);
+    return value_.s;
+  }
+
+   ::cpp2::union1 const & get_u() const {
+    assert(type_ == Type::u);
+    return value_.u;
+  }
+
+  int32_t & mutable_i() {
+    assert(type_ == Type::i);
+    return value_.i;
+  }
+
+  double & mutable_d() {
+    assert(type_ == Type::d);
+    return value_.d;
+  }
+
+   ::cpp2::struct1 & mutable_s() {
+    assert(type_ == Type::s);
+    return value_.s;
+  }
+
+   ::cpp2::union1 & mutable_u() {
+    assert(type_ == Type::u);
+    return value_.u;
+  }
+
+  int32_t move_i() {
+    assert(type_ == Type::i);
+    return std::move(value_.i);
+  }
+
+  double move_d() {
+    assert(type_ == Type::d);
+    return std::move(value_.d);
+  }
+
+   ::cpp2::struct1 move_s() {
+    assert(type_ == Type::s);
+    return std::move(value_.s);
+  }
+
+   ::cpp2::union1 move_u() {
+    assert(type_ == Type::u);
+    return std::move(value_.u);
+  }
+
+  Type getType() const { return type_; }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+ protected:
+  template <class T>
+  void destruct(T &val) {
+    (&val)->~T();
+  }
+
+  Type type_;
+  storage_type value_;
+};
+
+void swap(union2& a, union2& b);
+extern template uint32_t union2::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t union2::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t union2::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t union2::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t union2::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t union2::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t union2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t union2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+} // cpp2
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::cpp2::union2>::clear( ::cpp2::union2* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::cpp2::union2>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::union2>::write(Protocol* proto,  ::cpp2::union2 const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::union2>::read(Protocol* proto,  ::cpp2::union2* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::union2>::serializedSize(Protocol const* proto,  ::cpp2::union2 const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::cpp2::union2>::serializedSizeZC(Protocol const* proto,  ::cpp2::union2 const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

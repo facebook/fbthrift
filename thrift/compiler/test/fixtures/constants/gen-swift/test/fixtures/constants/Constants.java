@@ -92,6 +92,14 @@ public final class Constants
 
     public static final String name = "Mark Zuckerberg";
 
+    public static final test.fixtures.constants.Struct1 pod_0 = ;
+
+    public static final test.fixtures.constants.Struct1 pod_1 = ;
+
+    public static final test.fixtures.constants.Struct2 pod_2 = ;
+
+    public static final test.fixtures.constants.Struct3 pod_3 = ;
+
     public static final String quotationMark = """;
 
     public static final List<Map<String, Integer>> states = ImmutableList.<Map<String, Integer>>builder()
@@ -109,6 +117,24 @@ public final class Constants
     public static final String tripleApostrophe = "'''";
 
     public static final boolean true_c = true;
+
+    public static final test.fixtures.constants.Union1 u_1_1 = ;
+
+    public static final test.fixtures.constants.Union1 u_1_2 = ;
+
+    public static final test.fixtures.constants.Union1 u_1_3 = ;
+
+    public static final test.fixtures.constants.Union2 u_2_1 = ;
+
+    public static final test.fixtures.constants.Union2 u_2_2 = ;
+
+    public static final test.fixtures.constants.Union2 u_2_3 = ;
+
+    public static final test.fixtures.constants.Union2 u_2_4 = ;
+
+    public static final test.fixtures.constants.Union2 u_2_5 = ;
+
+    public static final test.fixtures.constants.Union2 u_2_6 = ;
 
     public static final double x = 1.0;
 
