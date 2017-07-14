@@ -8,8 +8,8 @@
 
 #include <folly/Indestructible.h>
 
-namespace some { namespace valid { namespace ns {
+namespace a { namespace different { namespace ns {
 
 constexpr int64_t const includes_constants::IncludedConstant_;
 
-}}} // some::valid::ns
+}}} // a::different::ns

@@ -4501,7 +4501,7 @@ class MyIncludedStruct : private apache::thrift::detail::st::ComparisonOperators
       MyIncludedInt(42LL) {}
   // FragileConstructor for use in initialization lists only
 
-  MyIncludedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::IncludedInt64 MyIncludedInt__arg) :
+  MyIncludedStruct(apache::thrift::FragileConstructor,  ::a::different::ns::IncludedInt64 MyIncludedInt__arg) :
       MyIncludedInt(std::move(MyIncludedInt__arg)) {
     __isset.MyIncludedInt = true;
   }
@@ -4524,7 +4524,7 @@ class MyIncludedStruct : private apache::thrift::detail::st::ComparisonOperators
 
   virtual ~MyIncludedStruct() throw() {}
 
-   ::some::valid::ns::IncludedInt64 MyIncludedInt;
+   ::a::different::ns::IncludedInt64 MyIncludedInt;
 
   struct __isset {
     void __clear() {
@@ -4536,11 +4536,11 @@ class MyIncludedStruct : private apache::thrift::detail::st::ComparisonOperators
   bool operator==(const MyIncludedStruct& rhs) const;
   bool operator < (const MyIncludedStruct& rhs) const;
 
-   ::some::valid::ns::IncludedInt64 get_MyIncludedInt() const {
+   ::a::different::ns::IncludedInt64 get_MyIncludedInt() const {
     return MyIncludedInt;
   }
 
-   ::some::valid::ns::IncludedInt64& set_MyIncludedInt( ::some::valid::ns::IncludedInt64 MyIncludedInt_) {
+   ::a::different::ns::IncludedInt64& set_MyIncludedInt( ::a::different::ns::IncludedInt64 MyIncludedInt_) {
     MyIncludedInt = MyIncludedInt_;
     __isset.MyIncludedInt = true;
     return MyIncludedInt;

@@ -101,7 +101,7 @@ folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:na
 <%/type:void?%>
 <%#function:exceptions%>
     if (result.getIsSet(<%#type:void?%><%field:index%><%/type:void?%><%^type:void?%><%field:index_plus_one%><%/type:void?%>)) {
-      interior_ew = folly::make_exception_wrapper<<% > common/namespace_cpp2%><%#field:type%><%type:name%><%/field:type%>>(result.get<<%#type:void?%><%field:index%><%/type:void?%><%^type:void?%><%field:index_plus_one%><%/type:void?%>>().ref());
+      interior_ew = folly::make_exception_wrapper<<%#field:type%><% > common/type_namespace_cpp2%><%type:name%><%/field:type%>>(result.get<<%#type:void?%><%field:index%><%/type:void?%><%^type:void?%><%field:index_plus_one%><%/type:void?%>>().ref());
       return; // from try_and_catch
     }
 <%/function:exceptions%>

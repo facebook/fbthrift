@@ -17,8 +17,8 @@
 #include "folly/sorted_vector_types.h"
 
 
-namespace some { namespace valid { namespace ns {
+namespace a { namespace different { namespace ns {
 
 typedef int64_t IncludedInt64;
 
-}}} // some::valid::ns
+}}} // a::different::ns

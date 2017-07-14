@@ -17,6 +17,6 @@
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-namespace some { namespace valid { namespace ns {
+namespace a { namespace different { namespace ns {
 
-}}} // some::valid::ns
+}}} // a::different::ns

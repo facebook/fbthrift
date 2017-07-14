@@ -155,6 +155,7 @@ class mstch_cpp2_type : public mstch_type {
             {"type:cpp_template", &mstch_cpp2_type::cpp_template},
             {"type:cpp_indirection", &mstch_cpp2_type::cpp_indirection},
             {"type:non_empty_struct?", &mstch_cpp2_type::is_non_empty_struct},
+            {"type:namespace_cpp2", &mstch_cpp2_type::namespace_cpp2},
         });
   }
   virtual std::string get_type_namespace(t_program const* program) override {
@@ -230,6 +231,34 @@ class mstch_cpp2_type : public mstch_type {
       return !as_struct->get_members().empty();
     }
     return false;
+  }
+  mstch::array get_namespace_array(t_program const* program) {
+    std::vector<std::string> v;
+
+    auto ns = program->get_namespace("cpp2");
+    if (ns != "") {
+      v = split_namespace(ns);
+    } else {
+      ns = program->get_namespace("cpp");
+      if (ns != "") {
+        v = split_namespace(ns);
+      }
+      v.push_back("cpp2");
+    }
+    mstch::array a;
+    for (auto it = v.begin(); it != v.end(); ++it) {
+      mstch::map m;
+      m.emplace("namespace:name", *it);
+      a.push_back(m);
+    }
+    for (auto itr = a.begin(); itr != a.end(); ++itr) {
+      boost::get<mstch::map>(*itr).emplace("first?", itr == a.begin());
+      boost::get<mstch::map>(*itr).emplace("last?", std::next(itr) == a.end());
+    }
+    return a;
+  }
+  mstch::node namespace_cpp2() {
+    return get_namespace_array(type_->get_program());
   }
 };
 

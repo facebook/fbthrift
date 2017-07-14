@@ -24,13 +24,13 @@
         %><%/type:enum?%><%!
         %><%#type:enum?%><%!
           %><%#value:enum?%><% > common/cxx_value_prefix%><% > common/const_value%><% > common/cxx_value_suffix%><%/value:enum?%><%!
-          %><%^value:enum?%><%#field:enum_has_value%><% > common/namespace_cpp2%><%type:name%>::<%enumValue:name%><%/field:enum_has_value%><%/value:enum?%><%!
-          %><%^value:enum?%><%^field:enum_has_value%>static_cast<<% > common/namespace_cpp2%><%type:name%>>(<% > common/const_value%>)<%/field:enum_has_value%><%/value:enum?%><%!
+          %><%^value:enum?%><%#field:enum_has_value%><% > common/type_namespace_cpp2%><%type:name%>::<%enumValue:name%><%/field:enum_has_value%><%/value:enum?%><%!
+          %><%^value:enum?%><%^field:enum_has_value%>static_cast<<% > common/type_namespace_cpp2%><%type:name%>>(<% > common/const_value%>)<%/field:enum_has_value%><%/value:enum?%><%!
         %><%/type:enum?%><%!
       %><%/field:value%><%!
       %><%^field:value%><%!
         %><%#type:resolves_to_container?%><% > module_types_h/smart_ptr_constructor%><%/type:resolves_to_container?%><%!
-        %><%#type:enum?%><%#type:enum%><%#enum:has_zero%><% > common/namespace_cpp2%><%type:name%>::<%enumValue:name%><%/enum:has_zero%><%^enum:has_zero%>static_cast<<% > common/namespace_cpp2%><%type:name%>>(0)<%/enum:has_zero%><%/type:enum%><%/type:enum?%><%!
+        %><%#type:enum?%><%#type:enum%><%#enum:has_zero%><% > common/type_namespace_cpp2%><%type:name%>::<%enumValue:name%><%/enum:has_zero%><%^enum:has_zero%>static_cast<<% > common/namespace_cpp2%><%type:name%>>(0)<%/enum:has_zero%><%/type:enum%><%/type:enum?%><%!
         %><%^type:enum?%><%^type:container?%>0<%/type:container?%><%/type:enum?%><%!
       %><%/field:value%><%!
       %>)<% > common/comma_newline%><%!

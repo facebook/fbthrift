@@ -16,6 +16,6 @@
 
 
 
-namespace some { namespace valid { namespace ns {
+namespace a { namespace different { namespace ns {
 
-}}} // some::valid::ns
+}}} // a::different::ns

@@ -27,10 +27,10 @@
   <%field:name%><%type:cpp_indirection%> = <% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%>;
 <%/value:enum?%>
 <%^value:enum?%><%#field:enum_has_value%>
-  <%field:name%><%type:cpp_indirection%> = <% > common/namespace_cpp2%><%type:name%>::<%enumValue:name%>;
+  <%field:name%><%type:cpp_indirection%> = <% > common/type_namespace_cpp2%><%type:name%>::<%enumValue:name%>;
 <%/field:enum_has_value%><%/value:enum?%>
 <%^value:enum?%><%^field:enum_has_value%>
-  <%field:name%><%type:cpp_indirection%> = static_cast<<% > common/namespace_cpp2%><%type:name%>>(<% > common/const_value%>);
+  <%field:name%><%type:cpp_indirection%> = static_cast<<% > common/type_namespace_cpp2%><%type:name%>>(<% > common/const_value%>);
 <%/field:enum_has_value%><%/value:enum?%>
 <%/type:enum?%>
 <%/field:value%>
