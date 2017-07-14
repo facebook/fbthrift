@@ -251,6 +251,10 @@ struct AnnotatedStruct {
   37: set<IndirectionC> indirection_c
   38: IOBuf iobuf_type_val = "value"
   39: IOBufPtr iobuf_ptr_val = "value2"
+  40: containerStruct struct_struct = {
+        "fieldD" : "some string",
+        "fieldI" : false,
+      }
 } (
     final,
     cpp2.noexcept_move_ctor,

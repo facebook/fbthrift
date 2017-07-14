@@ -1435,6 +1435,7 @@ void AnnotatedStruct::__clear() {
   indirection_c.clear();
   iobuf_type_val = apache::thrift::StringTraits< folly::IOBuf>::fromStringLiteral("value");
   iobuf_ptr_val = apache::thrift::StringTraits< std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2");
+  ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::clear(&struct_struct);
   __isset.__clear();
 }
 
@@ -1554,6 +1555,9 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
     return false;
   }
   if (!(apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(iobuf_ptr_val, rhs.iobuf_ptr_val))) {
+    return false;
+  }
+  if (!((struct_struct == rhs.struct_struct))) {
     return false;
   }
   return true;
@@ -1679,6 +1683,14 @@ std::set< ::some::valid::ns::IndirectionC> AnnotatedStruct::get_indirection_c() 
   return std::move(indirection_c);
 }
 
+const  ::some::valid::ns::containerStruct& AnnotatedStruct::get_struct_struct() const& {
+  return struct_struct;
+}
+
+ ::some::valid::ns::containerStruct AnnotatedStruct::get_struct_struct() && {
+  return std::move(struct_struct);
+}
+
 void swap(AnnotatedStruct& a, AnnotatedStruct& b) {
   using ::std::swap;
   swap(a.no_annotation, b.no_annotation);
@@ -1720,6 +1732,7 @@ void swap(AnnotatedStruct& a, AnnotatedStruct& b) {
   swap(a.indirection_c, b.indirection_c);
   swap(a.iobuf_type_val, b.iobuf_type_val);
   swap(a.iobuf_ptr_val, b.iobuf_ptr_val);
+  swap(a.struct_struct, b.struct_struct);
   swap(a.__isset, b.__isset);
 }
 

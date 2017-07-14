@@ -4711,10 +4711,11 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
       base_type(0),
       indirection_a(0),
       iobuf_type_val(apache::thrift::StringTraits< folly::IOBuf>::fromStringLiteral("value")),
-      iobuf_ptr_val(apache::thrift::StringTraits< std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2")) {}
+      iobuf_ptr_val(apache::thrift::StringTraits< std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2")),
+      struct_struct( ::some::valid::ns::containerStruct(::apache::thrift::detail::wrap_argument<4>(apache::thrift::StringTraits< std::string>::fromStringLiteral("some string")), ::apache::thrift::detail::wrap_argument<9>(false))) {}
   // FragileConstructor for use in initialization lists only
 
-  AnnotatedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::containerStruct no_annotation__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref__arg, std::unique_ptr<std::map<int32_t, std::vector<std::string>>> container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, std::unique_ptr<std::vector<std::string>> req_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, std::unique_ptr<std::set<int32_t>> opt_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique__arg, std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared__arg, std::shared_ptr<const std::map<int32_t, std::vector<std::string>>> ref_type_const__arg, std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const__arg, std::unique_ptr<std::vector<std::string>> req_ref_type_unique__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique__arg, std::shared_ptr<std::set<int32_t>> opt_ref_type_shared__arg,  ::some::valid::ns::CppFakeI32 base_type__arg,  ::some::valid::ns::FollySmallVectorI64 list_type__arg,  ::some::valid::ns::SortedVectorSetString set_type__arg,  ::some::valid::ns::FakeMap map_type__arg,  ::some::valid::ns::UnorderedMapStruct map_struct_type__arg,  ::some::valid::ns::IOBuf iobuf_type__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr__arg, std::list<int32_t> list_i32_template__arg, std::deque<std::string> list_string_template__arg, folly::sorted_vector_set<std::string> set_template__arg, folly::sorted_vector_map<int64_t, std::string> map_template__arg,  ::some::valid::ns::std_list typedef_list_template__arg,  ::some::valid::ns::std_deque typedef_deque_template__arg,  ::some::valid::ns::folly_set typedef_set_template__arg,  ::some::valid::ns::folly_map typedef_map_template__arg,  ::some::valid::ns::IndirectionA indirection_a__arg, std::vector< ::some::valid::ns::IndirectionB> indirection_b__arg, std::set< ::some::valid::ns::IndirectionC> indirection_c__arg,  ::some::valid::ns::IOBuf iobuf_type_val__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr_val__arg) :
+  AnnotatedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::containerStruct no_annotation__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref__arg, std::unique_ptr<std::map<int32_t, std::vector<std::string>>> container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, std::unique_ptr<std::vector<std::string>> req_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, std::unique_ptr<std::set<int32_t>> opt_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique__arg, std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared__arg, std::shared_ptr<const std::map<int32_t, std::vector<std::string>>> ref_type_const__arg, std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const__arg, std::unique_ptr<std::vector<std::string>> req_ref_type_unique__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique__arg, std::shared_ptr<std::set<int32_t>> opt_ref_type_shared__arg,  ::some::valid::ns::CppFakeI32 base_type__arg,  ::some::valid::ns::FollySmallVectorI64 list_type__arg,  ::some::valid::ns::SortedVectorSetString set_type__arg,  ::some::valid::ns::FakeMap map_type__arg,  ::some::valid::ns::UnorderedMapStruct map_struct_type__arg,  ::some::valid::ns::IOBuf iobuf_type__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr__arg, std::list<int32_t> list_i32_template__arg, std::deque<std::string> list_string_template__arg, folly::sorted_vector_set<std::string> set_template__arg, folly::sorted_vector_map<int64_t, std::string> map_template__arg,  ::some::valid::ns::std_list typedef_list_template__arg,  ::some::valid::ns::std_deque typedef_deque_template__arg,  ::some::valid::ns::folly_set typedef_set_template__arg,  ::some::valid::ns::folly_map typedef_map_template__arg,  ::some::valid::ns::IndirectionA indirection_a__arg, std::vector< ::some::valid::ns::IndirectionB> indirection_b__arg, std::set< ::some::valid::ns::IndirectionC> indirection_c__arg,  ::some::valid::ns::IOBuf iobuf_type_val__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr_val__arg,  ::some::valid::ns::containerStruct struct_struct__arg) :
       no_annotation(std::move(no_annotation__arg)),
       cpp_unique_ref(std::move(cpp_unique_ref__arg)),
       cpp2_unique_ref(std::move(cpp2_unique_ref__arg)),
@@ -4753,7 +4754,8 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
       indirection_b(std::move(indirection_b__arg)),
       indirection_c(std::move(indirection_c__arg)),
       iobuf_type_val(std::move(iobuf_type_val__arg)),
-      iobuf_ptr_val(std::move(iobuf_ptr_val__arg)) {
+      iobuf_ptr_val(std::move(iobuf_ptr_val__arg)),
+      struct_struct(std::move(struct_struct__arg)) {
     __isset.no_annotation = true;
     __isset.base_type = true;
     __isset.list_type = true;
@@ -4775,6 +4777,7 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
     __isset.indirection_c = true;
     __isset.iobuf_type_val = true;
     __isset.iobuf_ptr_val = true;
+    __isset.struct_struct = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   AnnotatedStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -5031,6 +5034,13 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
     iobuf_ptr_val = arg.move();
     __isset.iobuf_ptr_val = true;
   }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  AnnotatedStruct(::apache::thrift::detail::argument_wrapper<40, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    AnnotatedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    struct_struct = arg.move();
+    __isset.struct_struct = true;
+  }
 
   AnnotatedStruct(AnnotatedStruct&& other) noexcept :
       no_annotation(std::move(other.no_annotation)),
@@ -5072,6 +5082,7 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
       indirection_c(std::move(other.indirection_c)),
       iobuf_type_val(std::move(other.iobuf_type_val)),
       iobuf_ptr_val(std::move(other.iobuf_ptr_val)),
+      struct_struct(std::move(other.struct_struct)),
       __isset(other.__isset) {}
 
   AnnotatedStruct& operator=(AnnotatedStruct&&) = default;
@@ -5115,6 +5126,7 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
   std::set< ::some::valid::ns::IndirectionC> indirection_c;
    ::some::valid::ns::IOBuf iobuf_type_val;
    ::some::valid::ns::IOBufPtr iobuf_ptr_val;
+   ::some::valid::ns::containerStruct struct_struct;
 
   struct __isset {
     void __clear() {
@@ -5139,6 +5151,7 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
       indirection_c = false;
       iobuf_type_val = false;
       iobuf_ptr_val = false;
+      struct_struct = false;
     }
 
     bool no_annotation = false;
@@ -5162,6 +5175,7 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
     bool indirection_c = false;
     bool iobuf_type_val = false;
     bool iobuf_ptr_val = false;
+    bool struct_struct = false;
   } __isset;
   bool operator==(const AnnotatedStruct& rhs) const;
   bool operator < (const AnnotatedStruct& rhs) const;
@@ -5379,6 +5393,15 @@ class AnnotatedStruct : private apache::thrift::detail::st::ComparisonOperators<
     iobuf_ptr_val = std::forward<T_AnnotatedStruct_iobuf_ptr_val_struct_setter>(iobuf_ptr_val_);
     __isset.iobuf_ptr_val = true;
     return iobuf_ptr_val;
+  }
+  const  ::some::valid::ns::containerStruct& get_struct_struct() const&;
+   ::some::valid::ns::containerStruct get_struct_struct() &&;
+
+  template <typename T_AnnotatedStruct_struct_struct_struct_setter>
+   ::some::valid::ns::containerStruct& set_struct_struct(T_AnnotatedStruct_struct_struct_struct_setter&& struct_struct_) {
+    struct_struct = std::forward<T_AnnotatedStruct_struct_struct_struct_setter>(struct_struct_);
+    __isset.struct_struct = true;
+    return struct_struct;
   }
 
   template <class Protocol_>

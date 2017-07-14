@@ -16,9 +16,6 @@
 #pragma once
 
 #include <thrift/compiler/parse/t_const_value.h>
-#include <thrift/compiler/parse/t_list.h>
-#include <thrift/compiler/parse/t_map.h>
-#include <thrift/compiler/parse/t_set.h>
 
 class t_program;
 
@@ -50,7 +47,7 @@ class t_const : public t_doc {
         program_(program), type_(type), name_(name), value_(value) {
     if (value) {
       value->set_owner(this);
-      set_values_type(type, value);
+      t_const_value::set_values_type(type, value);
     }
   }
 
@@ -64,30 +61,6 @@ class t_const : public t_doc {
   std::string get_name() const { return name_; }
 
   t_const_value* get_value() const { return value_; }
-
-  void set_values_type(t_type* type, t_const_value* value) {
-    value->set_ttype(type);
-    if (type->is_list()) {
-      auto* elem_type = dynamic_cast<const t_list*>(type)->get_elem_type();
-      for (auto list_val : value->get_list()) {
-        set_values_type(elem_type, list_val);
-      }
-    }
-    if (type->is_set()) {
-      auto* elem_type = dynamic_cast<const t_set*>(type)->get_elem_type();
-      for (auto set_val : value->get_list()) {
-        set_values_type(elem_type, set_val);
-      }
-    }
-    if (type->is_map()) {
-      auto* key_type = dynamic_cast<const t_map*>(type)->get_key_type();
-      auto* val_type = dynamic_cast<const t_map*>(type)->get_val_type();
-      for (auto map_val : value->get_map()) {
-        set_values_type(key_type, map_val.first);
-        set_values_type(val_type, map_val.second);
-      }
-    }
-  }
 
  private:
   t_program* program_;

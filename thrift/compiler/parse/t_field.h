@@ -72,7 +72,10 @@ class t_field : public t_doc {
   /**
    * t_field setters
    */
-  void set_value(t_const_value* value) { value_ = value; }
+  void set_value(t_const_value* value) {
+    t_const_value::set_values_type(type_, value);
+    value_ = value;
+  }
 
   void set_req(e_req req) { req_ = req; }
 

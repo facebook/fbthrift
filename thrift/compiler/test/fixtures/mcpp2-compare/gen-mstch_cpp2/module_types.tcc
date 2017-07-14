@@ -3524,6 +3524,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
         fid = 39;
         _ftype = apache::thrift::protocol::T_STRING;
       }
+      else if (_fname == "struct_struct") {
+        fid = 40;
+        _ftype = apache::thrift::protocol::T_STRUCT;
+      }
     }
     switch (fid) {
       case 1:
@@ -3954,6 +3958,16 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
         }
         break;
       }
+      case 40:
+      {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
+          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::read(iprot, &this->struct_struct);
+          this->__isset.struct_struct = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
       default:
       {
         xfer += iprot->skip(_ftype);
@@ -4187,6 +4201,8 @@ uint32_t AnnotatedStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedSizeBinary(this->iobuf_type_val);
   xfer += prot_->serializedFieldSize("iobuf_ptr_val", apache::thrift::protocol::T_STRING, 39);
   xfer += prot_->serializedSizeBinary(this->iobuf_ptr_val);
+  xfer += prot_->serializedFieldSize("struct_struct", apache::thrift::protocol::T_STRUCT, 40);
+  xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::serializedSize(prot_, &this->struct_struct);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -4393,6 +4409,8 @@ uint32_t AnnotatedStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedSizeZCBinary(this->iobuf_type_val);
   xfer += prot_->serializedFieldSize("iobuf_ptr_val", apache::thrift::protocol::T_STRING, 39);
   xfer += prot_->serializedSizeZCBinary(this->iobuf_ptr_val);
+  xfer += prot_->serializedFieldSize("struct_struct", apache::thrift::protocol::T_STRUCT, 40);
+  xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::serializedSizeZC(prot_, &this->struct_struct);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -4649,6 +4667,9 @@ uint32_t AnnotatedStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("iobuf_ptr_val", apache::thrift::protocol::T_STRING, 39);
   xfer += prot_->writeBinary(this->iobuf_ptr_val);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("struct_struct", apache::thrift::protocol::T_STRUCT, 40);
+  xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::containerStruct>::write(prot_, &this->struct_struct);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
