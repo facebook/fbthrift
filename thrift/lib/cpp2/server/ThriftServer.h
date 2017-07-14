@@ -402,6 +402,9 @@ class ThriftServer : public apache::thrift::BaseThriftServer
       // make sure a handshake that takes too long doesn't kill the connection
       config.sslHandshakeTimeout = std::chrono::milliseconds::zero();
     }
+    // We want the server to start even if cert/key is missing as it may become
+    // available later
+    config.strictSSL = false;
     return config;
   }
 
