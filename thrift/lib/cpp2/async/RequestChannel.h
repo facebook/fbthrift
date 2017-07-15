@@ -77,7 +77,7 @@ class ClientReceiveState {
     return excw_ ? true : false;
   }
 
-  folly::exception_wrapper exceptionWrapper() {
+  folly::exception_wrapper const& exceptionWrapper() const {
     return excw_;
   }
 
