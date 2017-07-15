@@ -61,8 +61,8 @@ bool ExtraServiceAsyncClient::sync_simple_function(apache::thrift::RpcOptions& r
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_simple_function(_returnState);
 }
@@ -180,8 +180,8 @@ void ExtraServiceAsyncClient::sync_throws_function(apache::thrift::RpcOptions& r
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   recv_throws_function(_returnState);
 }
@@ -297,8 +297,8 @@ bool ExtraServiceAsyncClient::sync_throws_function2(apache::thrift::RpcOptions& 
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_throws_function2(_returnState);
 }
@@ -416,8 +416,8 @@ void ExtraServiceAsyncClient::sync_throws_function3(apache::thrift::RpcOptions& 
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   recv_throws_function3(_return, _returnState);
 }

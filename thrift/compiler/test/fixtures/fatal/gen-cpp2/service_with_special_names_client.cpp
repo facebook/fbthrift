@@ -61,8 +61,8 @@ int32_t service_with_special_namesAsyncClient::sync_get(apache::thrift::RpcOptio
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_get(_returnState);
 }
@@ -180,8 +180,8 @@ int32_t service_with_special_namesAsyncClient::sync_getter(apache::thrift::RpcOp
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_getter(_returnState);
 }
@@ -299,8 +299,8 @@ int32_t service_with_special_namesAsyncClient::sync_lists(apache::thrift::RpcOpt
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_lists(_returnState);
 }
@@ -418,8 +418,8 @@ int32_t service_with_special_namesAsyncClient::sync_maps(apache::thrift::RpcOpti
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_maps(_returnState);
 }
@@ -537,8 +537,8 @@ int32_t service_with_special_namesAsyncClient::sync_name(apache::thrift::RpcOpti
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_name(_returnState);
 }
@@ -656,8 +656,8 @@ int32_t service_with_special_namesAsyncClient::sync_name_to_value(apache::thrift
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_name_to_value(_returnState);
 }
@@ -775,8 +775,8 @@ int32_t service_with_special_namesAsyncClient::sync_names(apache::thrift::RpcOpt
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_names(_returnState);
 }
@@ -894,8 +894,8 @@ int32_t service_with_special_namesAsyncClient::sync_prefix_tree(apache::thrift::
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_prefix_tree(_returnState);
 }
@@ -1013,8 +1013,8 @@ int32_t service_with_special_namesAsyncClient::sync_sets(apache::thrift::RpcOpti
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_sets(_returnState);
 }
@@ -1132,8 +1132,8 @@ int32_t service_with_special_namesAsyncClient::sync_setter(apache::thrift::RpcOp
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_setter(_returnState);
 }
@@ -1251,8 +1251,8 @@ int32_t service_with_special_namesAsyncClient::sync_str(apache::thrift::RpcOptio
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_str(_returnState);
 }
@@ -1370,8 +1370,8 @@ int32_t service_with_special_namesAsyncClient::sync_strings(apache::thrift::RpcO
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_strings(_returnState);
 }
@@ -1489,8 +1489,8 @@ int32_t service_with_special_namesAsyncClient::sync_type(apache::thrift::RpcOpti
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_type(_returnState);
 }
@@ -1608,8 +1608,8 @@ int32_t service_with_special_namesAsyncClient::sync_value(apache::thrift::RpcOpt
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_value(_returnState);
 }
@@ -1727,8 +1727,8 @@ int32_t service_with_special_namesAsyncClient::sync_value_to_name(apache::thrift
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_value_to_name(_returnState);
 }
@@ -1846,8 +1846,8 @@ int32_t service_with_special_namesAsyncClient::sync_values(apache::thrift::RpcOp
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_values(_returnState);
 }
@@ -1965,8 +1965,8 @@ int32_t service_with_special_namesAsyncClient::sync_id(apache::thrift::RpcOption
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_id(_returnState);
 }
@@ -2084,8 +2084,8 @@ int32_t service_with_special_namesAsyncClient::sync_ids(apache::thrift::RpcOptio
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_ids(_returnState);
 }
@@ -2203,8 +2203,8 @@ int32_t service_with_special_namesAsyncClient::sync_descriptor(apache::thrift::R
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_descriptor(_returnState);
 }
@@ -2322,8 +2322,8 @@ int32_t service_with_special_namesAsyncClient::sync_descriptors(apache::thrift::
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_descriptors(_returnState);
 }
@@ -2441,8 +2441,8 @@ int32_t service_with_special_namesAsyncClient::sync_key(apache::thrift::RpcOptio
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_key(_returnState);
 }
@@ -2560,8 +2560,8 @@ int32_t service_with_special_namesAsyncClient::sync_keys(apache::thrift::RpcOpti
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_keys(_returnState);
 }
@@ -2679,8 +2679,8 @@ int32_t service_with_special_namesAsyncClient::sync_annotation(apache::thrift::R
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_annotation(_returnState);
 }
@@ -2798,8 +2798,8 @@ int32_t service_with_special_namesAsyncClient::sync_annotations(apache::thrift::
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_annotations(_returnState);
 }
@@ -2917,8 +2917,8 @@ int32_t service_with_special_namesAsyncClient::sync_member(apache::thrift::RpcOp
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_member(_returnState);
 }
@@ -3036,8 +3036,8 @@ int32_t service_with_special_namesAsyncClient::sync_members(apache::thrift::RpcO
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_members(_returnState);
 }
@@ -3155,8 +3155,8 @@ int32_t service_with_special_namesAsyncClient::sync_field(apache::thrift::RpcOpt
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_field(_returnState);
 }
@@ -3274,8 +3274,8 @@ int32_t service_with_special_namesAsyncClient::sync_fields(apache::thrift::RpcOp
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_fields(_returnState);
 }

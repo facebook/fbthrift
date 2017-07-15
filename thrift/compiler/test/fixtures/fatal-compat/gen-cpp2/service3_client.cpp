@@ -157,8 +157,8 @@ void service3AsyncClient::sync_methodA(apache::thrift::RpcOptions& rpcOptions) {
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   recv_methodA(_returnState);
 }
@@ -274,8 +274,8 @@ void service3AsyncClient::sync_methodB(apache::thrift::RpcOptions& rpcOptions, i
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   recv_methodB(_returnState);
 }
@@ -391,8 +391,8 @@ int32_t service3AsyncClient::sync_methodC(apache::thrift::RpcOptions& rpcOptions
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_methodC(_returnState);
 }
@@ -510,8 +510,8 @@ int32_t service3AsyncClient::sync_methodD(apache::thrift::RpcOptions& rpcOptions
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_methodD(_returnState);
 }
@@ -629,8 +629,8 @@ void service3AsyncClient::sync_methodE(apache::thrift::RpcOptions& rpcOptions,  
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   recv_methodE(_return, _returnState);
 }
@@ -746,8 +746,8 @@ void service3AsyncClient::sync_methodF(apache::thrift::RpcOptions& rpcOptions,  
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   recv_methodF(_return, _returnState);
 }

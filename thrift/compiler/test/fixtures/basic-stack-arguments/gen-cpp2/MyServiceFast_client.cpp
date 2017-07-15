@@ -61,8 +61,8 @@ bool MyServiceFastAsyncClient::sync_hasDataById(apache::thrift::RpcOptions& rpcO
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_hasDataById(_returnState);
 }
@@ -180,8 +180,8 @@ void MyServiceFastAsyncClient::sync_getDataById(apache::thrift::RpcOptions& rpcO
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   recv_getDataById(_return, _returnState);
 }
@@ -297,8 +297,8 @@ void MyServiceFastAsyncClient::sync_putDataById(apache::thrift::RpcOptions& rpcO
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   recv_putDataById(_returnState);
 }

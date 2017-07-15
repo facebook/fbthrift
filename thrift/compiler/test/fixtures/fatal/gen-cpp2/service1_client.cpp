@@ -61,8 +61,8 @@ void service1AsyncClient::sync_method1(apache::thrift::RpcOptions& rpcOptions) {
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   recv_method1(_returnState);
 }
@@ -178,8 +178,8 @@ void service1AsyncClient::sync_method2(apache::thrift::RpcOptions& rpcOptions, i
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   recv_method2(_returnState);
 }
@@ -295,8 +295,8 @@ int32_t service1AsyncClient::sync_method3(apache::thrift::RpcOptions& rpcOptions
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_method3(_returnState);
 }
@@ -414,8 +414,8 @@ int32_t service1AsyncClient::sync_method4(apache::thrift::RpcOptions& rpcOptions
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   return recv_method4(_returnState);
 }
@@ -533,8 +533,8 @@ void service1AsyncClient::sync_method5(apache::thrift::RpcOptions& rpcOptions,  
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   recv_method5(_return, _returnState);
 }
@@ -650,8 +650,8 @@ void service1AsyncClient::sync_method6(apache::thrift::RpcOptions& rpcOptions,  
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
   recv_method6(_return, _returnState);
 }

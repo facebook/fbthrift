@@ -1823,8 +1823,8 @@ class CppGenerator(t_generator.Generator):
                     out("};")
 
                     with out("if (!_returnState.buf())"):
-                        out("assert(_returnState.exception());")
-                        out("std::rethrow_exception(_returnState.exception());")
+                        out("assert(_returnState.exceptionWrapper());")
+                        out("_returnState.exceptionWrapper().throw_exception();")
 
                     if not function.returntype.is_void:
                         if not self._is_complex_type(function.returntype):

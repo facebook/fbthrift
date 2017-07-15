@@ -46,8 +46,8 @@ void <%service:name%>AsyncClient::sync_<%function:name%>(apache::thrift::RpcOpti
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exception());
-    std::rethrow_exception(_returnState.exception());
+    assert(_returnState.exceptionWrapper());
+    _returnState.exceptionWrapper().throw_exception();
   }
 <%^type:resolves_to_complex_return?%>
 <%#type:void?%>
