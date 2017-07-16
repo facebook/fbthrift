@@ -86,15 +86,11 @@ class ClientReceiveState {
   }
 
   std::exception_ptr exception() {
-    if (!exc_ && excw_) {
-      exc_ = excw_.to_exception_ptr();
-    }
-    return exc_;
+    return excw_.to_exception_ptr();
   }
 
   void resetException(folly::exception_wrapper ex) {
     excw_ = std::move(ex);
-    exc_ = std::exception_ptr();
   }
 
   uint16_t protocolId() const {
@@ -142,7 +138,6 @@ class ClientReceiveState {
   std::shared_ptr<apache::thrift::ContextStack> ctx_;
   std::unique_ptr<folly::IOBuf> buf_;
   std::unique_ptr<apache::thrift::transport::THeader> header_;
-  std::exception_ptr exc_;
   folly::exception_wrapper excw_;
   bool isSecurityActive_;
   bool isStreamEnd_;
