@@ -218,7 +218,7 @@ TEST(ThriftServer, FutureClientTest) {
 
     // Wait for future to finish
     f.getVia(&base);
-    EXPECT_TRUE(false);
+    ADD_FAILURE();
   } catch (...) {
     return;
   }

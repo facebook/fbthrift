@@ -1,4 +1,6 @@
 /*
+ * Copyright 2004-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -250,7 +252,7 @@ TEST(SimpleJSONToThriftTest, NegativeBoundaryCase) {
   myByteStruct thriftByteObjW;
   try {
     deserializeJSON(thriftByteObjW, jsonByteTW);
-    EXPECT_TRUE(false);
+    ADD_FAILURE();
   } catch (apache::thrift::TException &e) {
   }
 
@@ -263,7 +265,7 @@ TEST(SimpleJSONToThriftTest, NegativeBoundaryCase) {
   myI16Struct thriftI16ObjW;
   try {
     deserializeJSON(thriftI16ObjW, jsonI16TW);
-    EXPECT_TRUE(false);
+    ADD_FAILURE();
   } catch (apache::thrift::TException &e) {
   }
 
@@ -277,7 +279,7 @@ TEST(SimpleJSONToThriftTest, NegativeBoundaryCase) {
   try {
     deserializeJSON(thriftI32ObjW, jsonI32TW);
     cout << serializeJSON(thriftI32ObjW) << endl;
-    EXPECT_TRUE(false);
+    ADD_FAILURE();
   } catch (apache::thrift::TException &e) {
   }
 
@@ -293,7 +295,7 @@ TEST(SimpleJSONToThriftTest, PassingWrongType) {
   myI32Struct thriftI32Obj;
   try {
     deserializeJSON(thriftI32Obj, jsonI32T);
-    EXPECT_TRUE(false);
+    ADD_FAILURE();
   } catch (std::exception &e) {
   }
 }
@@ -415,7 +417,7 @@ TEST(SimpleJSONToThriftTest, BoundaryCase) {
   mySimpleStruct thriftSimpleObj;
   try {
     deserializeJSON(thriftSimpleObj, jsonSimpleT);
-    EXPECT_TRUE(false);
+    ADD_FAILURE();
   } catch (apache::thrift::TException &e) {
   }
 
@@ -423,7 +425,7 @@ TEST(SimpleJSONToThriftTest, BoundaryCase) {
   myByteStruct thriftByteObjW;
   try {
     deserializeJSON(thriftByteObjW, jsonByteTW);
-    EXPECT_TRUE(false);
+    ADD_FAILURE();
   } catch (apache::thrift::TException &e) {
   }
 
@@ -436,7 +438,7 @@ TEST(SimpleJSONToThriftTest, BoundaryCase) {
   myI16Struct thriftI16ObjW;
   try {
     deserializeJSON(thriftI16ObjW, jsonI16TW);
-    EXPECT_TRUE(false);
+    ADD_FAILURE();
   } catch (apache::thrift::TException &e) {
   }
 
@@ -449,7 +451,7 @@ TEST(SimpleJSONToThriftTest, BoundaryCase) {
   myI32Struct thriftI32ObjW;
   try {
     deserializeJSON(thriftI32ObjW, jsonI32TW);
-    EXPECT_TRUE(false);
+    ADD_FAILURE();
   } catch (apache::thrift::TException &e) {
   }
 
@@ -462,7 +464,7 @@ TEST(SimpleJSONToThriftTest, BoundaryCase) {
   myBoolStruct thriftBoolObjW;
   try {
     deserializeJSON(thriftBoolObjW, jsonBoolTW);
-    EXPECT_TRUE(false);
+    ADD_FAILURE();
   } catch (std::exception &e) {
   }
 
@@ -486,7 +488,7 @@ TEST(SimpleJSONToThriftTest, ComplexTypeMissingRequiredFieldInMember) {
   myComplexStruct thriftComplexObj;
   try {
     deserializeJSON(thriftComplexObj, jsonComplexT);
-    EXPECT_TRUE(false);
+    ADD_FAILURE();
   } catch (apache::thrift::TException &e) {
   }
 }
@@ -645,6 +647,6 @@ TEST(SimpleJSONToThriftTest, MapKeysTests) {
   try {
     testSimpleJSON(mapStruct);
   } catch (apache::thrift::TException &e) {
-    EXPECT_TRUE(false);
+    ADD_FAILURE();
   }
 }

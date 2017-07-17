@@ -1,4 +1,6 @@
 /*
+ * Copyright 2004-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 
 #include <folly/json.h>
 #include <thrift/test/JsonToThriftTest/gen-cpp/myBinaryStruct_types.h>
@@ -250,7 +251,7 @@ TEST(JsonToThriftTest, NegativeBoundaryCase) {
   myByteStruct thriftByteObjW;
   try {
     thriftByteObjW.readFromJson(jsonByteTW.c_str());
-    EXPECT_TRUE(false);
+    ADD_FAILURE();
   } catch (apache::thrift::TException &e) {
   }
 
@@ -263,7 +264,7 @@ TEST(JsonToThriftTest, NegativeBoundaryCase) {
   myI16Struct thriftI16ObjW;
   try {
     thriftI16ObjW.readFromJson(jsonI16TW.c_str());
-    EXPECT_TRUE(false);
+    ADD_FAILURE();
   } catch (apache::thrift::TException &e) {
   }
 
@@ -276,7 +277,7 @@ TEST(JsonToThriftTest, NegativeBoundaryCase) {
   myI32Struct thriftI32ObjW;
   try {
     thriftI32ObjW.readFromJson(jsonI32TW.c_str());
-    EXPECT_TRUE(false);
+    ADD_FAILURE();
   } catch (apache::thrift::TException &e) {
   }
 
@@ -292,7 +293,7 @@ TEST(JsonToThriftTest, PassingWrongType) {
   myI32Struct thriftI32Obj;
   try {
     thriftI32Obj.readFromJson(jsonI32T.c_str());
-    EXPECT_TRUE(false);
+    ADD_FAILURE();
   } catch (std::exception &e) {
   }
 }
@@ -329,7 +330,7 @@ TEST(JsonToThriftTest, BoundaryCase) {
   mySimpleStruct thriftSimpleObj;
   try {
     thriftSimpleObj.readFromJson(jsonSimpleT.c_str());
-    EXPECT_TRUE(false);
+    ADD_FAILURE();
   } catch (apache::thrift::TException &e) {
   }
 
@@ -337,7 +338,7 @@ TEST(JsonToThriftTest, BoundaryCase) {
   myByteStruct thriftByteObjW;
   try {
     thriftByteObjW.readFromJson(jsonByteTW.c_str());
-    EXPECT_TRUE(false);
+    ADD_FAILURE();
   } catch (apache::thrift::TException &e) {
   }
 
@@ -350,7 +351,7 @@ TEST(JsonToThriftTest, BoundaryCase) {
   myI16Struct thriftI16ObjW;
   try {
     thriftI16ObjW.readFromJson(jsonI16TW.c_str());
-    EXPECT_TRUE(false);
+    ADD_FAILURE();
   } catch (apache::thrift::TException &e) {
   }
 
@@ -363,7 +364,7 @@ TEST(JsonToThriftTest, BoundaryCase) {
   myI32Struct thriftI32ObjW;
   try {
     thriftI32ObjW.readFromJson(jsonI32TW.c_str());
-    EXPECT_TRUE(false);
+    ADD_FAILURE();
   } catch (apache::thrift::TException &e) {
   }
 
@@ -391,7 +392,7 @@ TEST(JsonToThriftTest, ComplexTypeMissingRequiredFieldInMember) {
   myComplexStruct thriftComplexObj;
   try {
     thriftComplexObj.readFromJson(jsonComplexT.c_str());
-    EXPECT_TRUE(false);
+    ADD_FAILURE();
   } catch (apache::thrift::TException &e) {
   }
 }

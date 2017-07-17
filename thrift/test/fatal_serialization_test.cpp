@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -526,7 +526,7 @@ TEST_F(SimpleJsonTest, throws_on_unset_required_value) {
   try {
     struct2 a;
     serializer_read(a, reader);
-    EXPECT_TRUE(false) << "didn't throw!";
+    ADD_FAILURE() << "didn't throw!";
   }
   catch(TProtocolException& e) {
     EXPECT_EQ(TProtocolException::MISSING_REQUIRED_FIELD, e.getType());
@@ -590,7 +590,7 @@ TEST_F(SimpleJsonTest, throws_on_missing_required_ref) {
 
   try {
     serializer_read(a, reader);
-    EXPECT_TRUE(false) << "didn't throw!";
+    ADD_FAILURE() << "didn't throw!";
   }
   catch(TProtocolException& e) {
     EXPECT_EQ(TProtocolException::MISSING_REQUIRED_FIELD, e.getType());

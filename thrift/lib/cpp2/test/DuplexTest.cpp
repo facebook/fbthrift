@@ -158,7 +158,7 @@ TEST(Duplex, DuplexTest) {
   }, START, COUNT, INTERVAL);
 
   // fail on time out
-  base.tryRunAfterDelay([] {EXPECT_TRUE(false);}, 5000);
+  base.tryRunAfterDelay([] { ADD_FAILURE(); }, 5000);
 
   base.loopForever();
 

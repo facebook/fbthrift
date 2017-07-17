@@ -148,7 +148,7 @@ void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
     try {
       TestServiceAsyncClient::recv_sendResponse(res, state);
     } catch(const std::exception&) {
-      EXPECT_TRUE(false);
+      ADD_FAILURE();
     }
     EXPECT_EQ(res, "10");
     c.down();
@@ -156,7 +156,7 @@ void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
 
 
   // fail on time out
-  base.tryRunAfterDelay([] {EXPECT_TRUE(false);}, 5000);
+  base.tryRunAfterDelay([] { ADD_FAILURE(); }, 5000);
 
   base.tryRunAfterDelay([&client,&c,&sp] {
     RpcOptions rpcOptions1;
@@ -174,7 +174,7 @@ void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
       try {
         TestServiceAsyncClient::recv_sendResponse(res, state);
       } catch(const std::exception&) {
-        EXPECT_TRUE(false);
+        ADD_FAILURE();
       }
       EXPECT_EQ(res, "10");
       c.down();
@@ -195,7 +195,7 @@ void runTest(std::function<void(HeaderClientChannel* channel)> setup) {
       try {
         TestServiceAsyncClient::recv_sendResponse(res, state);
       } catch(const std::exception&) {
-        EXPECT_TRUE(false);
+        ADD_FAILURE();
       }
       EXPECT_EQ(res, "10");
       c.down();
@@ -319,7 +319,7 @@ public:
         int32_t res = DuplexClientAsyncClient::recv_update(state);
         EXPECT_EQ(res, si);
       } catch (const std::exception&) {
-        EXPECT_TRUE(false);
+        ADD_FAILURE();
       }
     }, startIndex_);
     startIndex_++;
@@ -396,12 +396,12 @@ void duplexTest(const apache::thrift::SecurityMech mech) {
       bool res = DuplexServiceAsyncClient::recv_registerForUpdates(state);
       EXPECT_TRUE(res);
     } catch (const std::exception&) {
-      EXPECT_TRUE(false);
+      ADD_FAILURE();
     }
   }, START, COUNT, INTERVAL);
 
   // fail on time out
-  base.tryRunAfterDelay([] {EXPECT_TRUE(false);}, 5000);
+  base.tryRunAfterDelay([] { ADD_FAILURE(); }, 5000);
 
   base.loopForever();
 
