@@ -42,6 +42,9 @@ namespace thrift {
 class HTTPClientChannel : public ClientChannel,
                           private proxygen::HTTPSession::InfoCallback,
                           virtual public folly::DelayedDestruction {
+ private:
+  static const std::chrono::milliseconds kDefaultTransactionTimeout;
+
  public:
   using Ptr = std::unique_ptr<HTTPClientChannel,
                               folly::DelayedDestruction::Destructor>;
@@ -295,14 +298,13 @@ class HTTPClientChannel : public ClientChannel,
 
   void setRequestHeaderOptions(apache::thrift::transport::THeader* header);
 
-  proxygen::HTTPUpstreamSession* httpSession_ = nullptr;
-  folly::EventBase* evb_;
+  proxygen::HTTPUpstreamSession* httpSession_{nullptr};
+  folly::EventBase* evb_{nullptr};
   std::string httpHost_;
   std::string httpUrl_;
-  std::chrono::milliseconds timeout_;
-  uint16_t protocolId_;
-  CloseCallback* closeCallback_;
-
+  std::chrono::milliseconds timeout_{kDefaultTransactionTimeout};
+  uint16_t protocolId_{apache::thrift::protocol::T_BINARY_PROTOCOL};
+  CloseCallback* closeCallback_{nullptr};
 };
 
 }} // apache::thrift

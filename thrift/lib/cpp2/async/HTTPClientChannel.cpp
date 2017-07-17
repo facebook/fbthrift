@@ -41,12 +41,11 @@ using Us = std::chrono::microseconds;
 using apache::thrift::transport::TTransportException;
 using proxygen::WheelTimerInstance;
 
-namespace {
-const std::chrono::milliseconds kDefaultTransactionTimeout(500);
-}
-
 namespace apache {
 namespace thrift {
+
+const std::chrono::milliseconds HTTPClientChannel::kDefaultTransactionTimeout =
+    std::chrono::milliseconds(500);
 
 HTTPClientChannel::Ptr HTTPClientChannel::newHTTP1xChannel(
     async::TAsyncTransport::UniquePtr transport,
@@ -72,9 +71,7 @@ HTTPClientChannel::Ptr HTTPClientChannel::newHTTP2Channel(
 HTTPClientChannel::HTTPClientChannel(
     async::TAsyncTransport::UniquePtr transport,
     std::unique_ptr<proxygen::HTTPCodec> codec)
-    : evb_(transport->getEventBase()),
-      timeout_(kDefaultTransactionTimeout),
-      closeCallback_(nullptr) {
+    : evb_(transport->getEventBase()) {
   auto localAddress = transport->getLocalAddress();
   auto peerAddress = transport->getPeerAddress();
 
@@ -125,7 +122,7 @@ void HTTPClientChannel::closeNow() {
 void HTTPClientChannel::attachEventBase(EventBase* eventBase) {
   assert(eventBase->isInEventBaseThread());
   if (httpSession_) {
-    httpSession_->attachEventBase(eventBase, kDefaultTransactionTimeout);
+    httpSession_->attachEventBase(eventBase, timeout_);
   }
   evb_ = eventBase;
 }

@@ -227,6 +227,7 @@ TEST(HTTPClientChannelTest, ClientTimeout) {
   auto channel = HTTPClientChannel::newHTTP1xChannel(
       std::move(socket), "127.0.0.1", "/foobar");
   channel->setTimeout(1);
+  channel->setProtocolId(apache::thrift::protocol::T_BINARY_PROTOCOL);
   TestServiceAsyncClient client(std::move(channel));
   bool threw = false;
   client.sendResponse([&](apache::thrift::ClientReceiveState&& state) {
