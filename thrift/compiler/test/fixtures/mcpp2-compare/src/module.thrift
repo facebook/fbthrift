@@ -52,6 +52,11 @@ const MyEnumA constEnumB = 3
 struct Empty {
 } (cpp.noexcept_move_ctor)
 
+struct ASimpleStruct {
+  1: i64 boolField
+} (no_default_comparators)
+
+
 struct MyStruct {
   1: bool MyBoolField,
   2: i64 MyIntField = 12,

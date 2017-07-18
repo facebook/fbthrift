@@ -147,6 +147,40 @@ namespace apache { namespace thrift {
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
+void ASimpleStruct::__clear() {
+  // clear all fields
+  boolField = 0;
+  __isset.__clear();
+}
+
+bool ASimpleStruct::operator==(const ASimpleStruct& rhs) const {
+  if (!((boolField == rhs.boolField))) {
+    return false;
+  }
+  return true;
+}
+
+void swap(ASimpleStruct& a, ASimpleStruct& b) {
+  using ::std::swap;
+  swap(a.boolField, b.boolField);
+  swap(a.__isset, b.__isset);
+}
+
+template uint32_t ASimpleStruct::read<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t ASimpleStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t ASimpleStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t ASimpleStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t ASimpleStruct::read<>(apache::thrift::CompactProtocolReader*);
+template uint32_t ASimpleStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t ASimpleStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t ASimpleStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
 void MyStruct::__clear() {
   // clear all fields
   MyBoolField = 0;

@@ -51,6 +51,7 @@ struct apache_thrift_indirection_module_IndirectionB {
 };
 
 class Empty;
+class ASimpleStruct;
 class MyStruct;
 class SimpleUnion;
 class ComplexUnion;
@@ -436,6 +437,108 @@ template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::Empty
 }
 
 template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::Empty>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::Empty const* obj) {
+  return obj->serializedSizeZC(proto);
+}
+
+}} // apache::thrift
+namespace some { namespace valid { namespace ns {
+
+class ASimpleStruct : private apache::thrift::detail::st::ComparisonOperators<ASimpleStruct> {
+ public:
+
+  ASimpleStruct() :
+      boolField(0) {}
+  // FragileConstructor for use in initialization lists only
+
+  ASimpleStruct(apache::thrift::FragileConstructor, int64_t boolField__arg) :
+      boolField(std::move(boolField__arg)) {
+    __isset.boolField = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  ASimpleStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    ASimpleStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    boolField = arg.move();
+    __isset.boolField = true;
+  }
+
+  ASimpleStruct(ASimpleStruct&&) = default;
+
+  ASimpleStruct(const ASimpleStruct&) = default;
+
+  ASimpleStruct& operator=(ASimpleStruct&&) = default;
+
+  ASimpleStruct& operator=(const ASimpleStruct&) = default;
+  void __clear();
+
+  virtual ~ASimpleStruct() throw() {}
+
+  int64_t boolField;
+
+  struct __isset {
+    void __clear() {
+      boolField = false;
+    }
+
+    bool boolField = false;
+  } __isset;
+  bool operator==(const ASimpleStruct& rhs) const;
+  bool operator < (const ASimpleStruct& rhs) const;
+
+  int64_t get_boolField() const {
+    return boolField;
+  }
+
+  int64_t& set_boolField(int64_t boolField_) {
+    boolField = boolField_;
+    __isset.boolField = true;
+    return boolField;
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+};
+
+void swap(ASimpleStruct& a, ASimpleStruct& b);
+extern template uint32_t ASimpleStruct::read<>(apache::thrift::BinaryProtocolReader*);
+extern template uint32_t ASimpleStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+extern template uint32_t ASimpleStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t ASimpleStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+extern template uint32_t ASimpleStruct::read<>(apache::thrift::CompactProtocolReader*);
+extern template uint32_t ASimpleStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+extern template uint32_t ASimpleStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+extern template uint32_t ASimpleStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+}}} // some::valid::ns
+namespace apache { namespace thrift {
+
+template <> inline void Cpp2Ops< ::some::valid::ns::ASimpleStruct>::clear( ::some::valid::ns::ASimpleStruct* obj) {
+  return obj->__clear();
+}
+
+template <> inline constexpr apache::thrift::protocol::TType Cpp2Ops< ::some::valid::ns::ASimpleStruct>::thriftType() {
+  return apache::thrift::protocol::T_STRUCT;
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ASimpleStruct>::write(Protocol* proto,  ::some::valid::ns::ASimpleStruct const* obj) {
+  return obj->write(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ASimpleStruct>::read(Protocol* proto,  ::some::valid::ns::ASimpleStruct* obj) {
+  return obj->read(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ASimpleStruct>::serializedSize(Protocol const* proto,  ::some::valid::ns::ASimpleStruct const* obj) {
+  return obj->serializedSize(proto);
+}
+
+template <> template <class Protocol> uint32_t Cpp2Ops< ::some::valid::ns::ASimpleStruct>::serializedSizeZC(Protocol const* proto,  ::some::valid::ns::ASimpleStruct const* obj) {
   return obj->serializedSizeZC(proto);
 }
 

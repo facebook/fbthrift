@@ -438,7 +438,8 @@ class mstch_cpp2_struct : public mstch_struct {
     return false;
   }
   mstch::node is_struct_orderable() {
-    return is_orderable(strct_);
+    return is_orderable(strct_) &&
+        !strct_->annotations_.count("no_default_comparators");
   }
   mstch::node has_cpp_ref() {
     for (auto const* f : strct_->get_members()) {
