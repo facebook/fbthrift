@@ -110,7 +110,7 @@ TEST_F(FunctionSendRecvRequestCallbackTest, 2w_recv_failure) {
   client->voidResponse(opts, newCallback());
   eb->loop();
   EXPECT_FALSE(bool(ew));
-  ew = state.moveExceptionWrapper();
+  ew = std::move(state.exceptionWrapper());
   EXPECT_TRUE(ew.with_exception([](TTransportException const& ex) {
     EXPECT_EQ(TTransportException::TIMED_OUT, ex.getType());
   }));
@@ -125,7 +125,7 @@ TEST_F(FunctionSendRecvRequestCallbackTest, 2w_recv_success) {
   client->voidResponse(opts, newCallback());
   eb->loop();
   EXPECT_FALSE(bool(ew));
-  ew = state.moveExceptionWrapper();
+  ew = std::move(state.exceptionWrapper());
   EXPECT_FALSE(bool(ew));
   EXPECT_NE(nullptr, state.buf());
 }

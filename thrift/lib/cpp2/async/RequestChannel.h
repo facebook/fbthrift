@@ -81,8 +81,8 @@ class ClientReceiveState {
     return excw_;
   }
 
-  folly::exception_wrapper&& moveExceptionWrapper() {
-    return std::move(excw_);
+  folly::exception_wrapper& exceptionWrapper() {
+    return excw_;
   }
 
   std::exception_ptr exception() {
@@ -175,7 +175,7 @@ class SendRecvRequestCallback : public RequestCallback {
   void requestError(ClientReceiveState&& state) final {
     switch (phase_) {
       case Phase::Send:
-        send(state.moveExceptionWrapper());
+        send(std::move(state.exceptionWrapper()));
         phase_ = Phase::Recv;
         break;
       case Phase::Recv:

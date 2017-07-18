@@ -33,7 +33,7 @@ class FutureCallbackBase : public RequestCallback {
 
     void requestError(ClientReceiveState&& state) override {
       CHECK(state.isException());
-      promise_.setException(state.moveExceptionWrapper());
+      promise_.setException(std::move(state.exceptionWrapper()));
     }
 
   protected:
