@@ -2479,6 +2479,10 @@ uint32_t containerStruct::read(Protocol_* iprot) {
         fid = 30;
         _ftype = apache::thrift::protocol::T_I32;
       }
+      else if (_fname == "fieldAD") {
+        fid = 32;
+        _ftype = apache::thrift::protocol::T_MAP;
+      }
     }
     switch (fid) {
       case 1:
@@ -2933,6 +2937,17 @@ uint32_t containerStruct::read(Protocol_* iprot) {
         }
         break;
       }
+      case 32:
+      {
+        if (_ftype == apache::thrift::protocol::T_MAP) {
+          this->fieldAD = std::map<std::string, int32_t>();
+          xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::read(*iprot, this->fieldAD);
+          this->__isset.fieldAD = true;
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
       default:
       {
         xfer += iprot->skip(_ftype);
@@ -3071,6 +3086,8 @@ uint32_t containerStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionB, ::apache::thrift::type_class::floating_point>, ::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionC, ::apache::thrift::type_class::integral>>, std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>>::serializedSize<false>(*prot_, this->fieldAB);
   xfer += prot_->serializedFieldSize("fieldAC", apache::thrift::protocol::T_I32, 30);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumB>::serializedSize<false>(*prot_, this->fieldAC);
+  xfer += prot_->serializedFieldSize("fieldAD", apache::thrift::protocol::T_MAP, 32);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::serializedSize<false>(*prot_, this->fieldAD);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -3179,6 +3196,8 @@ uint32_t containerStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionB, ::apache::thrift::type_class::floating_point>, ::apache::thrift::detail::pm::IndirectionTag<apache_thrift_indirection_module_IndirectionC, ::apache::thrift::type_class::integral>>, std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>>::serializedSize<false>(*prot_, this->fieldAB);
   xfer += prot_->serializedFieldSize("fieldAC", apache::thrift::protocol::T_I32, 30);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumB>::serializedSize<false>(*prot_, this->fieldAC);
+  xfer += prot_->serializedFieldSize("fieldAD", apache::thrift::protocol::T_MAP, 32);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::serializedSize<false>(*prot_, this->fieldAD);
   xfer += prot_->serializedSizeStop();
   return xfer;
 }
@@ -3329,6 +3348,9 @@ uint32_t containerStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldBegin("fieldAC", apache::thrift::protocol::T_I32, 30);
   xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::enumeration,  ::some::valid::ns::MyEnumB>::write(*prot_, this->fieldAC);
+  xfer += prot_->writeFieldEnd();
+  xfer += prot_->writeFieldBegin("fieldAD", apache::thrift::protocol::T_MAP, 32);
+  xfer += ::apache::thrift::detail::pm::protocol_methods< ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::integral>, std::map<std::string, int32_t>>::write(*prot_, this->fieldAD);
   xfer += prot_->writeFieldEnd();
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();

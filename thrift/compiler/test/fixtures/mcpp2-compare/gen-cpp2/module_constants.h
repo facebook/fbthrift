@@ -66,6 +66,8 @@ struct module_constants {
 
   static std::vector<bool> const& aList();
 
+  static std::map<std::string, int32_t> const& anEmptyMap();
+
   static std::map<int32_t, std::string> const& aMap();
 
   static std::set<std::string> const& aSet();

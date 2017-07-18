@@ -13,6 +13,7 @@ const float aFloat = 0.1
 const double aDouble = 0.12
 const string aString = "Joe Doe"
 const list<bool> aList = [true, false]
+const map<string, i32> anEmptyMap = {}
 const map<i32, string> aMap = {
   1: "foo",
   2: "bar",
@@ -190,6 +191,7 @@ struct containerStruct {
   28: list<unionTypeDef> fieldAA
   29: map<IndirectionB, IndirectionC> fieldAB
   30: MyEnumB fieldAC
+  32: map<string, i32> fieldAD = {}
 } (cpp2.noncopyable, cpp.methods = "void foo(const std::string& bar) {}")
 
 enum MyEnumB {

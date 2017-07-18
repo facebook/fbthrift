@@ -390,8 +390,10 @@ class mstch_cpp2_struct : public mstch_struct {
       const t_type* type = resolve_typedef(field->get_type());
       if ((type->is_base_type() && !type->is_string()) ||
           (type->is_string() && field->get_value() != nullptr) ||
-          (type->is_container() && field->get_value() != nullptr) ||
-          (type->is_struct() && field->get_value() != nullptr) ||
+          (type->is_container() && field->get_value() != nullptr &&
+           !field->get_value()->is_empty()) ||
+          (type->is_struct() && field->get_value() &&
+           !field->get_value()->is_empty()) ||
           type->is_enum() ||
           (type->is_container() &&
            (has_annotation(field, "cpp.ref") ||

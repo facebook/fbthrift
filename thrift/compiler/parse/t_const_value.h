@@ -132,14 +132,10 @@ class t_const_value {
         return mapVal_.empty();
       case CV_LIST:
         return listVal_.empty();
-      case CV_BOOL:
-        return boolVal_ == false;
-      case CV_INTEGER:
-        return intVal_ == 0;
-      case CV_DOUBLE:
-        return doubleVal_ == 0;
       case CV_STRING:
         return stringVal_.empty();
+      default:
+        return false;
     }
     return false;
   }

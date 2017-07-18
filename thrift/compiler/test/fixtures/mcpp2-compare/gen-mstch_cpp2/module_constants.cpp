@@ -32,6 +32,11 @@ std::vector<bool> const& module_constants::aList() {
   return *instance;
 }
 
+std::map<std::string, int32_t> const& module_constants::anEmptyMap() {
+  static folly::Indestructible<std::map<std::string, int32_t>> const instance;
+  return *instance;
+}
+
 std::map<int32_t, std::string> const& module_constants::aMap() {
   static folly::Indestructible<std::map<int32_t, std::string>> const instance(std::initializer_list<std::pair<const int32_t, std::string>>{{1, apache::thrift::StringTraits< std::string>::fromStringLiteral("foo")},
   {2, apache::thrift::StringTraits< std::string>::fromStringLiteral("bar")}});
