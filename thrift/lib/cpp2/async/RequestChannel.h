@@ -507,16 +507,15 @@ void clientSendT(
     throw;
   }
 
+  if (sync) {
+    channel->sendRequestSync(
+        rpcOptions, std::move(callback), std::move(ctx), queue.move(), header);
+    return;
+  }
+
   auto eb = channel->getEventBase();
-  if(!eb || eb->isInEventBaseThread()) {
-    if (sync) {
-      channel->sendRequestSync(
-          rpcOptions,
-          std::move(callback),
-          std::move(ctx),
-          queue.move(),
-          header);
-    } else if (oneway) {
+  if (!eb || eb->isInEventBaseThread()) {
+    if (oneway) {
       // Calling asyncComplete before sending because
       // sendOnewayRequest moves from ctx and clears it.
       ctx->asyncComplete();
