@@ -18,10 +18,11 @@
 
 #include <utility>
 
+#include <proxygen/lib/http/HTTPCommonHeaders.h>
+#include <proxygen/lib/http/HTTPMethod.h>
 #include <proxygen/lib/http/codec/HTTP1xCodec.h>
 #include <proxygen/lib/http/codec/HTTP2Codec.h>
-#include <proxygen/lib/http/HTTPMethod.h>
-#include <proxygen/lib/http/HTTPCommonHeaders.h>
+#include <proxygen/lib/utils/Base64.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <wangle/ssl/SSLContextConfig.h>
@@ -267,6 +268,22 @@ void HTTPClientChannel::setRequestHeaderOptions(THeader* header) {
   header->forceClientType(THRIFT_HTTP_CLIENT_TYPE);
 }
 
+void HTTPClientChannel::setHeaders(
+    proxygen::HTTPHeaders& dstHeaders,
+    const transport::THeader::StringToStringMap& srcHeaders) {
+  for (auto it = srcHeaders.begin(); it != srcHeaders.end(); ++it) {
+    if (it->first.find(":") != std::string::npos) {
+      auto name = proxygen::Base64::urlEncode(folly::StringPiece(it->first));
+      auto value = proxygen::Base64::urlEncode(folly::StringPiece(it->second));
+      dstHeaders.rawSet(
+          folly::to<std::string>("encode_", name),
+          folly::to<std::string>(name, "_", value));
+    } else {
+      dstHeaders.rawSet(it->first, it->second);
+    }
+  }
+}
+
 proxygen::HTTPMessage HTTPClientChannel::buildHTTPMessage(THeader* header) {
   proxygen::HTTPMessage msg;
   msg.setMethod(proxygen::HTTPMethod::POST);
@@ -277,9 +294,7 @@ proxygen::HTTPMessage HTTPClientChannel::buildHTTPMessage(THeader* header) {
 
   {
     auto pwh = getPersistentWriteHeaders();
-    for (auto it = pwh.begin(); it != pwh.end(); ++it) {
-      headers.rawSet(it->first, it->second);
-    }
+    setHeaders(headers, pwh);
     // We do not clear the persistent write headers, since http does not
     // distinguish persistent/per request headers
     // pwh.clear();
@@ -287,17 +302,13 @@ proxygen::HTTPMessage HTTPClientChannel::buildHTTPMessage(THeader* header) {
 
   {
     auto wh = header->releaseWriteHeaders();
-    for (auto it = wh.begin(); it != wh.end(); ++it) {
-      headers.rawSet(it->first, it->second);
-    }
+    setHeaders(headers, wh);
   }
 
   {
     auto eh = header->getExtraWriteHeaders();
     if (eh) {
-      for (auto it = eh->cbegin(); it != eh->cend(); ++it) {
-        headers.rawSet(it->first, it->second);
-      }
+      setHeaders(headers, *eh);
     }
   }
 

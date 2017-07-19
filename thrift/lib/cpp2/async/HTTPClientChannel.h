@@ -263,6 +263,10 @@ class HTTPClientChannel : public ClientChannel,
     std::unique_ptr<proxygen::HTTPHeaders> trailers_;
   };
 
+  void setHeaders(
+      proxygen::HTTPHeaders& dstHeaders,
+      const transport::THeader::StringToStringMap& srcHeaders);
+
   proxygen::HTTPMessage buildHTTPMessage(transport::THeader* header);
 
   // HTTPSession::InfoCallback methods
