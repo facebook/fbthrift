@@ -947,7 +947,8 @@ void containerStruct::__clear() {
   fieldAA.clear();
   fieldAB.clear();
   fieldAC =  ::some::valid::ns::MyEnumB::AField;
-  fieldAD.clear();
+  fieldAD = static_cast< ::a::different::ns::AnEnum>(0);
+  fieldAE.clear();
   __isset.__clear();
 }
 
@@ -1103,6 +1104,9 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
     return false;
   }
   if (!((fieldAD == rhs.fieldAD))) {
+    return false;
+  }
+  if (!((fieldAE == rhs.fieldAE))) {
     return false;
   }
   return true;
@@ -1332,12 +1336,12 @@ std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> con
   return std::move(fieldAB);
 }
 
-const std::map<std::string, int32_t>& containerStruct::get_fieldAD() const& {
-  return fieldAD;
+const std::map<std::string, int32_t>& containerStruct::get_fieldAE() const& {
+  return fieldAE;
 }
 
-std::map<std::string, int32_t> containerStruct::get_fieldAD() && {
-  return std::move(fieldAD);
+std::map<std::string, int32_t> containerStruct::get_fieldAE() && {
+  return std::move(fieldAE);
 }
 
 void swap(containerStruct& a, containerStruct& b) {
@@ -1386,6 +1390,7 @@ void swap(containerStruct& a, containerStruct& b) {
   swap(a.fieldAB, b.fieldAB);
   swap(a.fieldAC, b.fieldAC);
   swap(a.fieldAD, b.fieldAD);
+  swap(a.fieldAE, b.fieldAE);
   swap(a.__isset, b.__isset);
 }
 

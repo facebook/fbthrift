@@ -191,7 +191,8 @@ struct containerStruct {
   28: list<unionTypeDef> fieldAA
   29: map<IndirectionB, IndirectionC> fieldAB
   30: MyEnumB fieldAC
-  32: map<string, i32> fieldAD = {}
+  31: includes.AnEnum fieldAD
+  32: map<string, i32> fieldAE = {}
 } (cpp2.noncopyable, cpp.methods = "void foo(const std::string& bar) {}")
 
 enum MyEnumB {
