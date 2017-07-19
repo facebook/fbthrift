@@ -22,7 +22,6 @@
 #include <thrift/lib/cpp/protocol/TType.h>
 #include <thrift/lib/cpp/protocol/TProtocolException.h>
 #include <thrift/lib/cpp/util/BitwiseCast.h>
-#include <thrift/lib/cpp/util/shared_ptr_util.h>
 
 #include <memory>
 
@@ -724,7 +723,7 @@ class TProtocol {
    * valid for the lifetime of the TProtocol object.
    */
   explicit TProtocol(TTransport* ptrans):
-    ptrans_(ptrans, NoopPtrDestructor<TTransport>()) {
+    ptrans_(ptrans, [](TTransport*) {}) {
   }
 
   std::shared_ptr<TTransport> ptrans_;

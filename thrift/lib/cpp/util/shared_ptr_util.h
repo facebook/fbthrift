@@ -22,7 +22,6 @@
 #ifndef THRIFT_UTIL_SHARED_PTR_UTIL_H_
 #define THRIFT_UTIL_SHARED_PTR_UTIL_H_ 1
 
-#include <memory>
 #include <boost/type_traits/is_convertible.hpp>
 #include <boost/utility/enable_if.hpp>
 
@@ -47,32 +46,5 @@
 
 #define THRIFT_OVERLOAD_IF(T, Y) \
   THRIFT_OVERLOAD_IF_DEFN(T, Y) = nullptr
-
-namespace apache { namespace thrift {
-
-/**
- * A helper functor that can be used as a shared_ptr destructor, but that does
- * nothing at all.
- *
- * This can be used to create a shared_ptr to an object that shouldn't really
- * be destroyed when the last shared_ptr to it goes away.  This is useful in
- * some situations to call thrift APIs that require a shared_ptr argument when
- * you have an object on the stack or otherwise owned by some other part of the
- * code.
- *
- * WARNING: If at all possible, please avoid using this class to create
- * shared_ptr.  Attempting to use shared_ptrs with manually managed objects is
- * generally a bad idea.  This class should only be used in a few rare cases
- * where a temporary shared_ptr is needed, and you can guarantee that all
- * shared_ptrs to the object will be destroyed before the object itself is
- * destroyed.
- */
-template<class T>
-class NoopPtrDestructor {
- public:
-  void operator()(T* /*obj*/) {}
-};
-
-}} // apache::thrift
 
 #endif // THRIFT_UTIL_SHARED_PTR_UTIL_H_

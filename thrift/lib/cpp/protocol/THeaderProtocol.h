@@ -24,7 +24,6 @@
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp/protocol/TVirtualProtocol.h>
 #include <thrift/lib/cpp/transport/THeaderTransport.h>
-#include <thrift/lib/cpp/util/shared_ptr_util.h>
 
 #include <memory>
 
@@ -86,8 +85,7 @@ class THeaderProtocol
                   int8_t protoVersion = -1) :
       TVirtualProtocol<THeaderProtocol>(
           getTransportWrapper(
-              std::shared_ptr<TTransport>(trans,
-                                            NoopPtrDestructor<TTransport>()),
+              std::shared_ptr<TTransport>(trans, [](TTransport*) {}),
               clientTypes))
       , trans_(std::dynamic_pointer_cast<transport::THeaderTransport,
                                          TTransport>(this->getTransport()))
