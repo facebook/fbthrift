@@ -39,6 +39,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
 
     void generate_program() override;
     mstch::map extend_program(const t_program&) override;
+    mstch::map extend_field(const t_field&) override;
     mstch::map extend_type(const t_type&) override;
     mstch::map extend_service(const t_service&) override;
 
@@ -63,6 +64,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
         vector<t_type*>& container_types,
         std::set<string>& visited_names,
         t_type* type);
+    string ref_type(const t_field& field) const;
 };
 
 mstch::map t_mstch_py3_generator::extend_program(const t_program& program) {
@@ -95,6 +97,55 @@ mstch::map t_mstch_py3_generator::extend_program(const t_program& program) {
   };
   add_container_types(program, result);
   return result;
+}
+
+mstch::map t_mstch_py3_generator::extend_field(const t_field& field) {
+  string ref_type = this->ref_type(field);
+
+  mstch::map result{
+      {"reference?", (ref_type != "")},
+      {"ref_type", ref_type},
+      {"unique_ref?", (ref_type == "unique")},
+      {"shared_ref?", (ref_type == "shared")},
+      {"shared_const_ref?", (ref_type == "shared_const")},
+  };
+  return result;
+}
+
+// TODO: This needs to mirror the behavior of t_cpp_generator::cpp_ref_type
+// but it's not obvious how to get there
+string t_mstch_py3_generator::ref_type(const t_field& field) const {
+  auto& annotations = field.annotations_;
+
+  // backward compatibility with 'ref' annotation
+  if (annotations.count("cpp.ref") != 0 || annotations.count("cpp2.ref") != 0) {
+    return "unique";
+  }
+
+  auto it = annotations.find("cpp.ref_type");
+  if (it == annotations.end()) {
+    it = annotations.find("cpp2.ref_type");
+  }
+
+  if (it == annotations.end()) {
+    return "";
+  }
+
+  auto& reftype = it->second;
+
+  if (reftype == "unique" || reftype == "std::unique_ptr") {
+    return "unique";
+  } else if (reftype == "shared" || reftype == "std::shared_ptr") {
+    return "shared";
+  } else if (reftype == "shared_const") {
+    return "shared_const";
+  } else {
+    // It is legal to get here but hopefully nobody will in practice, since
+    // we're not set up to handle other kinds of refs:
+    std::ostringstream err;
+    err << "Unhandled ref_type " << reftype;
+    throw std::runtime_error{err.str()};
+  }
 }
 
 mstch::map t_mstch_py3_generator::extend_type(const t_type& type) {

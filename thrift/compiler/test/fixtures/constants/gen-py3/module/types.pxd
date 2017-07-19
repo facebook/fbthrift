@@ -191,6 +191,16 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cunion2] move_shared "std::move"(shared_ptr[cunion2])
     cdef unique_ptr[cunion2] move_unique "std::move"(unique_ptr[cunion2])
 
+cdef extern from "<memory>" namespace "std" nogil:
+    cdef shared_ptr[const cInternship] const_pointer_cast "std::const_pointer_cast<const cpp2::Internship>"(shared_ptr[cInternship])
+    cdef shared_ptr[const cUnEnumStruct] const_pointer_cast "std::const_pointer_cast<const cpp2::UnEnumStruct>"(shared_ptr[cUnEnumStruct])
+    cdef shared_ptr[const cRange] const_pointer_cast "std::const_pointer_cast<const cpp2::Range>"(shared_ptr[cRange])
+    cdef shared_ptr[const cstruct1] const_pointer_cast "std::const_pointer_cast<const cpp2::struct1>"(shared_ptr[cstruct1])
+    cdef shared_ptr[const cstruct2] const_pointer_cast "std::const_pointer_cast<const cpp2::struct2>"(shared_ptr[cstruct2])
+    cdef shared_ptr[const cstruct3] const_pointer_cast "std::const_pointer_cast<const cpp2::struct3>"(shared_ptr[cstruct3])
+    cdef shared_ptr[const cunion1] const_pointer_cast "std::const_pointer_cast<const cpp2::union1>"(shared_ptr[cunion1])
+    cdef shared_ptr[const cunion2] const_pointer_cast "std::const_pointer_cast<const cpp2::union2>"(shared_ptr[cunion2])
+
 # Forward Definition of the cython struct
 cdef class Internship(thrift.py3.types.Struct)
 
@@ -468,6 +478,28 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[cmap[int32_t,string]] move_unique "std::move"(unique_ptr[cmap[int32_t,string]])
     cdef shared_ptr[cmap[string,string]] move(unique_ptr[cmap[string,string]])
     cdef unique_ptr[cmap[string,string]] move_unique "std::move"(unique_ptr[cmap[string,string]])
+cdef extern from "<memory>" namespace "std" nogil:
+    cdef shared_ptr[const vector[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[int32_t]])
+
+    cdef shared_ptr[const cmap[string,int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[string,int32_t]])
+
+    cdef shared_ptr[const vector[cmap[string,int32_t]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cmap[string,int32_t]]])
+
+    cdef shared_ptr[const vector[cRange]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cRange]])
+
+    cdef shared_ptr[const vector[cInternship]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cInternship]])
+
+    cdef shared_ptr[const vector[string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[string]])
+
+    cdef shared_ptr[const cset[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cset[int32_t]])
+
+    cdef shared_ptr[const cset[string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cset[string]])
+
+    cdef shared_ptr[const cmap[int32_t,int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int32_t,int32_t]])
+
+    cdef shared_ptr[const cmap[int32_t,string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int32_t,string]])
+
+    cdef shared_ptr[const cmap[string,string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[string,string]])
 
 cdef extern from "src/gen-cpp2/module_constants.h" namespace "cpp2":
     cdef int32_t cmyInt "cpp2::module_constants::myInt"

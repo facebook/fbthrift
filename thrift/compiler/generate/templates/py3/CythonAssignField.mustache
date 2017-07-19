@@ -16,9 +16,24 @@
 
 }}{{!
 
-Called specifically from Struct.pyx when initializing the individual attributes
+Called specifically from types.pyx when initializing the individual attributes
 on a struct from an existing struct passed in by the user.
 
+}}{{#field:reference?}}{{!
+}}deref(c_inst).{{field:name}} = {{!
+  }}{{#field:unique_ref?}}{{!
+    For unique references, we just make a copy of the target object - it's not
+    especially efficient but there isn't much else we can do from a shared ptr
+    }}make_unique[{{> types/CythonCppType}}](deref((<{{> types/CythonPythonType}}?>{{field:name}})._cpp_obj)){{!
+  }}{{/field:unique_ref?}}{{!
+  }}{{#field:shared_ref?}}{{!
+    }}(<{{> types/CythonPythonType}}?>{{field:name}})._cpp_obj{{!
+  }}{{/field:shared_ref?}}{{!
+  }}{{#field:shared_const_ref?}}{{!
+    }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
+    }}const_pointer_cast((<{{> types/CythonPythonType}}?>{{field:name}})._cpp_obj){{!
+  }}{{/field:shared_const_ref?}}{{!
+}}{{/field:reference?}}{{^field:reference?}}{{!
 }}{{#type:bool?}}{{!
   }}deref(c_inst).{{field:name}} = {{field:name}}{{!
 }}{{/type:bool?}}{{!
@@ -58,4 +73,4 @@ on a struct from an existing struct passed in by the user.
   }}deref(c_inst).{{field:name}} = {{!
     }}<{{> types/CythonCppType}}>{{!
     }}deref({{> types/CythonPythonType }}({{field:name}})._cpp_obj){{!
-}}{{/type:container?}}
+}}{{/type:container?}}{{/field:reference?}}

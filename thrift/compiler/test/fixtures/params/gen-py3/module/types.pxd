@@ -26,6 +26,8 @@ cimport thrift.py3.types
 
 
 
+
+
 cdef class List__i32:
     cdef object __hash
     cdef object __weakref__
@@ -137,4 +139,24 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]] move_unique "std::move"(unique_ptr[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]])
     cdef shared_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]] move(unique_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]])
     cdef unique_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]] move_unique "std::move"(unique_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]])
+cdef extern from "<memory>" namespace "std" nogil:
+    cdef shared_ptr[const vector[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[int32_t]])
+
+    cdef shared_ptr[const cmap[int32_t,vector[int32_t]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int32_t,vector[int32_t]]])
+
+    cdef shared_ptr[const cset[int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cset[int32_t]])
+
+    cdef shared_ptr[const cmap[int32_t,cset[int32_t]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int32_t,cset[int32_t]]])
+
+    cdef shared_ptr[const cmap[int32_t,int32_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int32_t,int32_t]])
+
+    cdef shared_ptr[const vector[cmap[int32_t,int32_t]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cmap[int32_t,int32_t]]])
+
+    cdef shared_ptr[const vector[cset[int32_t]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cset[int32_t]]])
+
+    cdef shared_ptr[const cmap[int32_t,cmap[int32_t,cset[int32_t]]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[int32_t,cmap[int32_t,cset[int32_t]]]])
+
+    cdef shared_ptr[const vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]])
+
+    cdef shared_ptr[const vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[vector[cmap[int32_t,cmap[int32_t,cset[int32_t]]]]]])
 

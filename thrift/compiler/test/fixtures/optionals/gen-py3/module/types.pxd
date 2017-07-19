@@ -111,6 +111,11 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cPerson] move_shared "std::move"(shared_ptr[cPerson])
     cdef unique_ptr[cPerson] move_unique "std::move"(unique_ptr[cPerson])
 
+cdef extern from "<memory>" namespace "std" nogil:
+    cdef shared_ptr[const cColor] const_pointer_cast "std::const_pointer_cast<const cpp2::Color>"(shared_ptr[cColor])
+    cdef shared_ptr[const cVehicle] const_pointer_cast "std::const_pointer_cast<const cpp2::Vehicle>"(shared_ptr[cVehicle])
+    cdef shared_ptr[const cPerson] const_pointer_cast "std::const_pointer_cast<const cpp2::Person>"(shared_ptr[cPerson])
+
 # Forward Definition of the cython struct
 cdef class Color(thrift.py3.types.Struct)
 
@@ -218,4 +223,10 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef unique_ptr[cmap[cAnimal,string]] move_unique "std::move"(unique_ptr[cmap[cAnimal,string]])
     cdef shared_ptr[vector[cVehicle]] move(unique_ptr[vector[cVehicle]])
     cdef unique_ptr[vector[cVehicle]] move_unique "std::move"(unique_ptr[vector[cVehicle]])
+cdef extern from "<memory>" namespace "std" nogil:
+    cdef shared_ptr[const cset[int64_t]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cset[int64_t]])
+
+    cdef shared_ptr[const cmap[cAnimal,string]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[cmap[cAnimal,string]])
+
+    cdef shared_ptr[const vector[cVehicle]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cVehicle]])
 

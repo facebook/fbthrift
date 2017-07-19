@@ -56,6 +56,10 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cFiery] move_shared "std::move"(shared_ptr[cFiery])
     cdef unique_ptr[cFiery] move_unique "std::move"(unique_ptr[cFiery])
 
+cdef extern from "<memory>" namespace "std" nogil:
+    cdef shared_ptr[const cBanal] const_pointer_cast "std::const_pointer_cast<const cpp2::Banal>"(shared_ptr[cBanal])
+    cdef shared_ptr[const cFiery] const_pointer_cast "std::const_pointer_cast<const cpp2::Fiery>"(shared_ptr[cFiery])
+
 # Forward Definition of the cython struct
 cdef class Banal(__Error)
 

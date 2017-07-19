@@ -84,17 +84,39 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
         c{{struct:name}}(const c{{struct:name}}&) except +
         bint operator==(c{{struct:name}}&)
     {{#struct:fields}}
-        {{#field:type}}{{> types/CythonCppType}}{{/field:type}} {{field:name}}
+        {{#field:type}}{{> types/CythonCppStructFieldType}}{{/field:type}} {{field:name}}
     {{/struct:fields}}
         c{{struct:name}}__isset __isset
 
-{{/program:structs}}
+{{/program:structs}}{{!
+
+}}{{#program:structs}}{{#struct:fields}}{{#field:reference?}}
+    {{! Hacky workaround to get shared_ptr's aliasing constructor since it
+        doesn't seem doable with Cython's template support. Note that this may
+        create multiple copies of the same definition, so we have to have unambiguous
+        names (it seems like it should be fine since they're all extern, but in
+        practice I'm getting "ambiguous overloaded method" errors with container
+        types)}}
+    cdef shared_ptr[{{#field:type}}{{> types/CythonCppType}}{{/field:type}}] {{!
+    }}aliasing_constructor_{{field:name}} {{!
+    }}"std::shared_ptr<{{!
+    }}{{#field:type}}{{> ContainerCppFieldType}}{{/field:type}}{{!
+    }}>"(shared_ptr[c{{struct:name}}]&, {{!
+    }}{{#field:type}}{{> types/CythonCppType}}{{/field:type}}*)
+{{/field:reference?}}{{/struct:fields}}{{/program:structs}}
 
 {{#program:structs}}
 {{#first?}}cdef extern from "<utility>" namespace "std" nogil:{{/first?}}
     cdef shared_ptr[c{{struct:name}}] move(unique_ptr[c{{struct:name}}])
     cdef shared_ptr[c{{struct:name}}] move_shared "std::move"(shared_ptr[c{{struct:name}}])
     cdef unique_ptr[c{{struct:name}}] move_unique "std::move"(unique_ptr[c{{struct:name}}]){{/program:structs}}
+
+{{#program:structs}}
+{{#first?}}cdef extern from "<memory>" namespace "std" nogil:{{/first?}}
+    cdef shared_ptr[const c{{struct:name}}] const_pointer_cast {{!
+    }}"std::const_pointer_cast<const {{!
+    }}{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}{{!
+    }}>"(shared_ptr[c{{struct:name}}]){{/program:structs}}
 
 {{#program:structs}}
 # Forward Definition of the cython struct
@@ -138,7 +160,13 @@ cdef class {{type:flat_name}}:
 {{#first?}}cdef extern from "<utility>" namespace "std" nogil:{{/first?}}
     cdef shared_ptr[{{> types/CythonCppType}}] move(unique_ptr[{{> types/CythonCppType}}])
     cdef unique_ptr[{{> types/CythonCppType}}] move_unique "std::move"(unique_ptr[{{> types/CythonCppType}}]){{!
-}}{{/program:moveContainerTypes}}
+}}{{/program:moveContainerTypes}}{{!
+
+}}{{#program:moveContainerTypes}}
+{{#first?}}
+cdef extern from "<memory>" namespace "std" nogil:{{/first?}}
+    cdef shared_ptr[const {{> types/CythonCppType}}] const_pointer_cast {{!
+    }}"std::const_pointer_cast"(shared_ptr[{{> types/CythonCppType}}]){{/program:moveContainerTypes}}
 
 {{#program:constants}}
 {{#first?}}cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_constants.h"{{!

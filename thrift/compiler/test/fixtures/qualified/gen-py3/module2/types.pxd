@@ -63,6 +63,10 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cBigStruct] move_shared "std::move"(shared_ptr[cBigStruct])
     cdef unique_ptr[cBigStruct] move_unique "std::move"(unique_ptr[cBigStruct])
 
+cdef extern from "<memory>" namespace "std" nogil:
+    cdef shared_ptr[const cStruct] const_pointer_cast "std::const_pointer_cast<const module2::Struct>"(shared_ptr[cStruct])
+    cdef shared_ptr[const cBigStruct] const_pointer_cast "std::const_pointer_cast<const module2::BigStruct>"(shared_ptr[cBigStruct])
+
 # Forward Definition of the cython struct
 cdef class Struct(thrift.py3.types.Struct)
 

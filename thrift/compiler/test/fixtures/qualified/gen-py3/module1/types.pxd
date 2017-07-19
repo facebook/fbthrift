@@ -51,6 +51,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cStruct] move_shared "std::move"(shared_ptr[cStruct])
     cdef unique_ptr[cStruct] move_unique "std::move"(unique_ptr[cStruct])
 
+cdef extern from "<memory>" namespace "std" nogil:
+    cdef shared_ptr[const cStruct] const_pointer_cast "std::const_pointer_cast<const module1::Struct>"(shared_ptr[cStruct])
+
 # Forward Definition of the cython struct
 cdef class Struct(thrift.py3.types.Struct)
 
@@ -82,6 +85,8 @@ cdef class List__Enum:
 cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[vector[cEnum]] move(unique_ptr[vector[cEnum]])
     cdef unique_ptr[vector[cEnum]] move_unique "std::move"(unique_ptr[vector[cEnum]])
+cdef extern from "<memory>" namespace "std" nogil:
+    cdef shared_ptr[const vector[cEnum]] const_pointer_cast "std::const_pointer_cast"(shared_ptr[vector[cEnum]])
 
 cdef extern from "gen-cpp2/module1_constants.h" namespace "module1":
     cdef cStruct cc1 "module1::module1_constants::c1"()

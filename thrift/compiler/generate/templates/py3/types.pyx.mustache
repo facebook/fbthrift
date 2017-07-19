@@ -156,10 +156,15 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
             # Convert None's to default value.
             {{#struct:fields}}
             if {{field:name}} is None:
+                {{#field:reference?}}
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
+                {{/field:reference?}}{{!
+                }}{{^field:reference?}}
                 deref(c_inst).{{field:name}} = _{{struct:name}}_defaults.{{field:name}}
                 {{^field:required?}}
                 deref(c_inst).__isset.{{field:name}} = False
-                {{/field:required?}}
+                {{/field:required?}}{{!
+                }}{{/field:reference?}}
             elif {{field:name}} is NOTSET:
                 {{field:name}} = None
 
@@ -173,10 +178,10 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
             {{> CythonAssignField}}
 
             {{! This should also be inside the if statement, so indent appropriately }}
-            {{^field:required?}}
+            {{^field:required?}}{{^field:reference?}}
             deref(c_inst).__isset.{{field:name}} = True
 
-            {{/field:required?}}
+            {{/field:reference?}}{{/field:required?}}
         {{/field:type}}{{/struct:fields}}
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
@@ -194,8 +199,10 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
         return {{#struct:fields}}{{!
             }}{{#field:required?}}True{{/field:required?}}{{!
             }}{{^field:required?}}{{!
+            }}{{#field:reference?}}<bint>(deref(self._cpp_obj).{{field:name}}){{/field:reference?}}{{!
+            }}{{^field:reference?}}{{!
             }}deref(self._cpp_obj).__isset.{{field:name}}{{!
-            }}{{/field:required?}}{{!
+            }}{{/field:reference?}}{{/field:required?}}{{!
             }}{{^last?}} or {{/last?}}{{/struct:fields}}{{!
             }}{{^struct:fields}}True{{/struct:fields}}
 
@@ -210,12 +217,12 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
     def {{field:name}}(self):
         {{#field:type}}
         {{^field:value}}
-        {{^field:required?}}
-        {{! If there is no value and not ___isset we can say its None}}
+        {{^field:required?}}{{^field:reference?}}
+        {{! If there is no value and not ___isset we can say it's None}}
         if not deref(self._cpp_obj).__isset.{{field:name}}:
             return None
 
-        {{/field:required?}}
+        {{/field:reference?}}{{/field:required?}}
         {{/field:value}}
         {{> CythonStructGetter}}
 

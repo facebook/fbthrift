@@ -55,6 +55,10 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cNada] move_shared "std::move"(shared_ptr[cNada])
     cdef unique_ptr[cNada] move_unique "std::move"(unique_ptr[cNada])
 
+cdef extern from "<memory>" namespace "std" nogil:
+    cdef shared_ptr[const cEmpty] const_pointer_cast "std::const_pointer_cast<const cpp2::Empty>"(shared_ptr[cEmpty])
+    cdef shared_ptr[const cNada] const_pointer_cast "std::const_pointer_cast<const cpp2::Nada>"(shared_ptr[cNada])
+
 # Forward Definition of the cython struct
 cdef class Empty(thrift.py3.types.Struct)
 

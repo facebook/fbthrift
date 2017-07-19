@@ -42,6 +42,9 @@ cdef extern from "<utility>" namespace "std" nogil:
     cdef shared_ptr[cIncluded] move_shared "std::move"(shared_ptr[cIncluded])
     cdef unique_ptr[cIncluded] move_unique "std::move"(unique_ptr[cIncluded])
 
+cdef extern from "<memory>" namespace "std" nogil:
+    cdef shared_ptr[const cIncluded] const_pointer_cast "std::const_pointer_cast<const cpp2::Included>"(shared_ptr[cIncluded])
+
 # Forward Definition of the cython struct
 cdef class Included(thrift.py3.types.Struct)
 

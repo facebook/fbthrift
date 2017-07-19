@@ -455,32 +455,26 @@ cdef class MyStruct(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value.
             if opt_ref is None:
-                deref(c_inst).opt_ref = _MyStruct_defaults.opt_ref
-                deref(c_inst).__isset.opt_ref = False
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif opt_ref is NOTSET:
                 opt_ref = None
 
             if ref is None:
-                deref(c_inst).ref = _MyStruct_defaults.ref
-                deref(c_inst).__isset.ref = False
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif ref is NOTSET:
                 ref = None
 
             if req_ref is None:
-                deref(c_inst).req_ref = _MyStruct_defaults.req_ref
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif req_ref is NOTSET:
                 req_ref = None
 
         if opt_ref is not None:
-            deref(c_inst).opt_ref = deref((<MyField?> opt_ref)._cpp_obj)
-            deref(c_inst).__isset.opt_ref = True
-
+            deref(c_inst).opt_ref = make_unique[cMyField](deref((<MyField?>opt_ref)._cpp_obj))
         if ref is not None:
-            deref(c_inst).ref = deref((<MyField?> ref)._cpp_obj)
-            deref(c_inst).__isset.ref = True
-
+            deref(c_inst).ref = make_unique[cMyField](deref((<MyField?>ref)._cpp_obj))
         if req_ref is not None:
-            deref(c_inst).req_ref = deref((<MyField?> req_ref)._cpp_obj)
+            deref(c_inst).req_ref = make_unique[cMyField](deref((<MyField?>req_ref)._cpp_obj))
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -491,7 +485,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         yield 'req_ref', self.req_ref
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.opt_ref or deref(self._cpp_obj).__isset.ref or True
+        return <bint>(deref(self._cpp_obj).opt_ref) or <bint>(deref(self._cpp_obj).ref) or True
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct] cpp_obj):
@@ -501,26 +495,26 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
     @property
     def opt_ref(self):
-        if not deref(self._cpp_obj).__isset.opt_ref:
-            return None
-
         if self.__opt_ref is None:
-            self.__opt_ref = MyField.create(make_shared[cMyField](deref(self._cpp_obj).opt_ref))
+            if not deref(self._cpp_obj).opt_ref:
+                return None
+            self.__opt_ref = MyField.create(aliasing_constructor_opt_ref(self._cpp_obj, (deref(self._cpp_obj).opt_ref.get())))
         return self.__opt_ref
 
     @property
     def ref(self):
-        if not deref(self._cpp_obj).__isset.ref:
-            return None
-
         if self.__ref is None:
-            self.__ref = MyField.create(make_shared[cMyField](deref(self._cpp_obj).ref))
+            if not deref(self._cpp_obj).ref:
+                return None
+            self.__ref = MyField.create(aliasing_constructor_ref(self._cpp_obj, (deref(self._cpp_obj).ref.get())))
         return self.__ref
 
     @property
     def req_ref(self):
         if self.__req_ref is None:
-            self.__req_ref = MyField.create(make_shared[cMyField](deref(self._cpp_obj).req_ref))
+            if not deref(self._cpp_obj).req_ref:
+                return None
+            self.__req_ref = MyField.create(aliasing_constructor_req_ref(self._cpp_obj, (deref(self._cpp_obj).req_ref.get())))
         return self.__req_ref
 
 
@@ -638,8 +632,7 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value.
             if u is None:
-                deref(c_inst).u = _StructWithUnion_defaults.u
-                deref(c_inst).__isset.u = False
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif u is NOTSET:
                 u = None
 
@@ -656,9 +649,7 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
                 f = None
 
         if u is not None:
-            deref(c_inst).u = deref((<MyUnion?> u)._cpp_obj)
-            deref(c_inst).__isset.u = True
-
+            deref(c_inst).u = make_unique[cMyUnion](deref((<MyUnion?>u)._cpp_obj))
         if aDouble is not None:
             deref(c_inst).aDouble = aDouble
             deref(c_inst).__isset.aDouble = True
@@ -677,7 +668,7 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
         yield 'f', self.f
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.u or deref(self._cpp_obj).__isset.aDouble or deref(self._cpp_obj).__isset.f
+        return <bint>(deref(self._cpp_obj).u) or deref(self._cpp_obj).__isset.aDouble or deref(self._cpp_obj).__isset.f
 
     @staticmethod
     cdef create(shared_ptr[cStructWithUnion] cpp_obj):
@@ -687,11 +678,10 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
 
     @property
     def u(self):
-        if not deref(self._cpp_obj).__isset.u:
-            return None
-
         if self.__u is None:
-            self.__u = MyUnion.create(make_shared[cMyUnion](deref(self._cpp_obj).u))
+            if not deref(self._cpp_obj).u:
+                return None
+            self.__u = MyUnion.create(aliasing_constructor_u(self._cpp_obj, (deref(self._cpp_obj).u.get())))
         return self.__u
 
     @property
@@ -979,65 +969,47 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value.
             if list_ref is None:
-                deref(c_inst).list_ref = _StructWithContainers_defaults.list_ref
-                deref(c_inst).__isset.list_ref = False
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif list_ref is NOTSET:
                 list_ref = None
 
             if set_ref is None:
-                deref(c_inst).set_ref = _StructWithContainers_defaults.set_ref
-                deref(c_inst).__isset.set_ref = False
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif set_ref is NOTSET:
                 set_ref = None
 
             if map_ref is None:
-                deref(c_inst).map_ref = _StructWithContainers_defaults.map_ref
-                deref(c_inst).__isset.map_ref = False
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif map_ref is NOTSET:
                 map_ref = None
 
             if list_ref_unique is None:
-                deref(c_inst).list_ref_unique = _StructWithContainers_defaults.list_ref_unique
-                deref(c_inst).__isset.list_ref_unique = False
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif list_ref_unique is NOTSET:
                 list_ref_unique = None
 
             if set_ref_shared is None:
-                deref(c_inst).set_ref_shared = _StructWithContainers_defaults.set_ref_shared
-                deref(c_inst).__isset.set_ref_shared = False
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif set_ref_shared is NOTSET:
                 set_ref_shared = None
 
             if list_ref_shared_const is None:
-                deref(c_inst).list_ref_shared_const = _StructWithContainers_defaults.list_ref_shared_const
-                deref(c_inst).__isset.list_ref_shared_const = False
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif list_ref_shared_const is NOTSET:
                 list_ref_shared_const = None
 
         if list_ref is not None:
-            deref(c_inst).list_ref = <vector[int32_t]>deref(List__i32(list_ref)._cpp_obj)
-            deref(c_inst).__isset.list_ref = True
-
+            deref(c_inst).list_ref = make_unique[vector[int32_t]](deref((<List__i32?>list_ref)._cpp_obj))
         if set_ref is not None:
-            deref(c_inst).set_ref = <cset[int32_t]>deref(Set__i32(set_ref)._cpp_obj)
-            deref(c_inst).__isset.set_ref = True
-
+            deref(c_inst).set_ref = make_unique[cset[int32_t]](deref((<Set__i32?>set_ref)._cpp_obj))
         if map_ref is not None:
-            deref(c_inst).map_ref = <cmap[int32_t,int32_t]>deref(Map__i32_i32(map_ref)._cpp_obj)
-            deref(c_inst).__isset.map_ref = True
-
+            deref(c_inst).map_ref = make_unique[cmap[int32_t,int32_t]](deref((<Map__i32_i32?>map_ref)._cpp_obj))
         if list_ref_unique is not None:
-            deref(c_inst).list_ref_unique = <vector[int32_t]>deref(List__i32(list_ref_unique)._cpp_obj)
-            deref(c_inst).__isset.list_ref_unique = True
-
+            deref(c_inst).list_ref_unique = make_unique[vector[int32_t]](deref((<List__i32?>list_ref_unique)._cpp_obj))
         if set_ref_shared is not None:
-            deref(c_inst).set_ref_shared = <cset[int32_t]>deref(Set__i32(set_ref_shared)._cpp_obj)
-            deref(c_inst).__isset.set_ref_shared = True
-
+            deref(c_inst).set_ref_shared = (<Set__i32?>set_ref_shared)._cpp_obj
         if list_ref_shared_const is not None:
-            deref(c_inst).list_ref_shared_const = <vector[int32_t]>deref(List__i32(list_ref_shared_const)._cpp_obj)
-            deref(c_inst).__isset.list_ref_shared_const = True
-
+            deref(c_inst).list_ref_shared_const = const_pointer_cast((<List__i32?>list_ref_shared_const)._cpp_obj)
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -1051,7 +1023,7 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
         yield 'list_ref_shared_const', self.list_ref_shared_const
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.list_ref or deref(self._cpp_obj).__isset.set_ref or deref(self._cpp_obj).__isset.map_ref or deref(self._cpp_obj).__isset.list_ref_unique or deref(self._cpp_obj).__isset.set_ref_shared or deref(self._cpp_obj).__isset.list_ref_shared_const
+        return <bint>(deref(self._cpp_obj).list_ref) or <bint>(deref(self._cpp_obj).set_ref) or <bint>(deref(self._cpp_obj).map_ref) or <bint>(deref(self._cpp_obj).list_ref_unique) or <bint>(deref(self._cpp_obj).set_ref_shared) or <bint>(deref(self._cpp_obj).list_ref_shared_const)
 
     @staticmethod
     cdef create(shared_ptr[cStructWithContainers] cpp_obj):
@@ -1061,56 +1033,50 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
 
     @property
     def list_ref(self):
-        if not deref(self._cpp_obj).__isset.list_ref:
-            return None
-
         if self.__list_ref is None:
-            self.__list_ref = List__i32.create(make_shared[vector[int32_t]](deref(self._cpp_obj).list_ref))
+            if not deref(self._cpp_obj).list_ref:
+                return None
+            self.__list_ref = List__i32.create(aliasing_constructor_list_ref(self._cpp_obj, (deref(self._cpp_obj).list_ref.get())))
         return self.__list_ref
 
     @property
     def set_ref(self):
-        if not deref(self._cpp_obj).__isset.set_ref:
-            return None
-
         if self.__set_ref is None:
-            self.__set_ref = Set__i32.create(make_shared[cset[int32_t]](deref(self._cpp_obj).set_ref))
+            if not deref(self._cpp_obj).set_ref:
+                return None
+            self.__set_ref = Set__i32.create(aliasing_constructor_set_ref(self._cpp_obj, (deref(self._cpp_obj).set_ref.get())))
         return self.__set_ref
 
     @property
     def map_ref(self):
-        if not deref(self._cpp_obj).__isset.map_ref:
-            return None
-
         if self.__map_ref is None:
-            self.__map_ref = Map__i32_i32.create(make_shared[cmap[int32_t,int32_t]](deref(self._cpp_obj).map_ref))
+            if not deref(self._cpp_obj).map_ref:
+                return None
+            self.__map_ref = Map__i32_i32.create(aliasing_constructor_map_ref(self._cpp_obj, (deref(self._cpp_obj).map_ref.get())))
         return self.__map_ref
 
     @property
     def list_ref_unique(self):
-        if not deref(self._cpp_obj).__isset.list_ref_unique:
-            return None
-
         if self.__list_ref_unique is None:
-            self.__list_ref_unique = List__i32.create(make_shared[vector[int32_t]](deref(self._cpp_obj).list_ref_unique))
+            if not deref(self._cpp_obj).list_ref_unique:
+                return None
+            self.__list_ref_unique = List__i32.create(aliasing_constructor_list_ref_unique(self._cpp_obj, (deref(self._cpp_obj).list_ref_unique.get())))
         return self.__list_ref_unique
 
     @property
     def set_ref_shared(self):
-        if not deref(self._cpp_obj).__isset.set_ref_shared:
-            return None
-
         if self.__set_ref_shared is None:
-            self.__set_ref_shared = Set__i32.create(make_shared[cset[int32_t]](deref(self._cpp_obj).set_ref_shared))
+            if not deref(self._cpp_obj).set_ref_shared:
+                return None
+            self.__set_ref_shared = Set__i32.create(aliasing_constructor_set_ref_shared(self._cpp_obj, (deref(self._cpp_obj).set_ref_shared.get())))
         return self.__set_ref_shared
 
     @property
     def list_ref_shared_const(self):
-        if not deref(self._cpp_obj).__isset.list_ref_shared_const:
-            return None
-
         if self.__list_ref_shared_const is None:
-            self.__list_ref_shared_const = List__i32.create(make_shared[vector[int32_t]](deref(self._cpp_obj).list_ref_shared_const))
+            if not deref(self._cpp_obj).list_ref_shared_const:
+                return None
+            self.__list_ref_shared_const = List__i32.create(aliasing_constructor_list_ref_shared_const(self._cpp_obj, <vector[int32_t]*>(deref(self._cpp_obj).list_ref_shared_const.get())))
         return self.__list_ref_shared_const
 
 
@@ -1231,32 +1197,26 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value.
             if opt_shared_const is None:
-                deref(c_inst).opt_shared_const = _StructWithSharedConst_defaults.opt_shared_const
-                deref(c_inst).__isset.opt_shared_const = False
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif opt_shared_const is NOTSET:
                 opt_shared_const = None
 
             if shared_const is None:
-                deref(c_inst).shared_const = _StructWithSharedConst_defaults.shared_const
-                deref(c_inst).__isset.shared_const = False
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif shared_const is NOTSET:
                 shared_const = None
 
             if req_shared_const is None:
-                deref(c_inst).req_shared_const = _StructWithSharedConst_defaults.req_shared_const
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif req_shared_const is NOTSET:
                 req_shared_const = None
 
         if opt_shared_const is not None:
-            deref(c_inst).opt_shared_const = deref((<MyField?> opt_shared_const)._cpp_obj)
-            deref(c_inst).__isset.opt_shared_const = True
-
+            deref(c_inst).opt_shared_const = const_pointer_cast((<MyField?>opt_shared_const)._cpp_obj)
         if shared_const is not None:
-            deref(c_inst).shared_const = deref((<MyField?> shared_const)._cpp_obj)
-            deref(c_inst).__isset.shared_const = True
-
+            deref(c_inst).shared_const = const_pointer_cast((<MyField?>shared_const)._cpp_obj)
         if req_shared_const is not None:
-            deref(c_inst).req_shared_const = deref((<MyField?> req_shared_const)._cpp_obj)
+            deref(c_inst).req_shared_const = const_pointer_cast((<MyField?>req_shared_const)._cpp_obj)
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -1267,7 +1227,7 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
         yield 'req_shared_const', self.req_shared_const
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.opt_shared_const or deref(self._cpp_obj).__isset.shared_const or True
+        return <bint>(deref(self._cpp_obj).opt_shared_const) or <bint>(deref(self._cpp_obj).shared_const) or True
 
     @staticmethod
     cdef create(shared_ptr[cStructWithSharedConst] cpp_obj):
@@ -1277,26 +1237,26 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
 
     @property
     def opt_shared_const(self):
-        if not deref(self._cpp_obj).__isset.opt_shared_const:
-            return None
-
         if self.__opt_shared_const is None:
-            self.__opt_shared_const = MyField.create(make_shared[cMyField](deref(self._cpp_obj).opt_shared_const))
+            if not deref(self._cpp_obj).opt_shared_const:
+                return None
+            self.__opt_shared_const = MyField.create(aliasing_constructor_opt_shared_const(self._cpp_obj, <cMyField*>(deref(self._cpp_obj).opt_shared_const.get())))
         return self.__opt_shared_const
 
     @property
     def shared_const(self):
-        if not deref(self._cpp_obj).__isset.shared_const:
-            return None
-
         if self.__shared_const is None:
-            self.__shared_const = MyField.create(make_shared[cMyField](deref(self._cpp_obj).shared_const))
+            if not deref(self._cpp_obj).shared_const:
+                return None
+            self.__shared_const = MyField.create(aliasing_constructor_shared_const(self._cpp_obj, <cMyField*>(deref(self._cpp_obj).shared_const.get())))
         return self.__shared_const
 
     @property
     def req_shared_const(self):
         if self.__req_shared_const is None:
-            self.__req_shared_const = MyField.create(make_shared[cMyField](deref(self._cpp_obj).req_shared_const))
+            if not deref(self._cpp_obj).req_shared_const:
+                return None
+            self.__req_shared_const = MyField.create(aliasing_constructor_req_shared_const(self._cpp_obj, <cMyField*>(deref(self._cpp_obj).req_shared_const.get())))
         return self.__req_shared_const
 
 
@@ -1522,32 +1482,26 @@ cdef class StructWithRef(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value.
             if def_field is None:
-                deref(c_inst).def_field = _StructWithRef_defaults.def_field
-                deref(c_inst).__isset.def_field = False
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif def_field is NOTSET:
                 def_field = None
 
             if opt_field is None:
-                deref(c_inst).opt_field = _StructWithRef_defaults.opt_field
-                deref(c_inst).__isset.opt_field = False
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif opt_field is NOTSET:
                 opt_field = None
 
             if req_field is None:
-                deref(c_inst).req_field = _StructWithRef_defaults.req_field
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif req_field is NOTSET:
                 req_field = None
 
         if def_field is not None:
-            deref(c_inst).def_field = deref((<Empty?> def_field)._cpp_obj)
-            deref(c_inst).__isset.def_field = True
-
+            deref(c_inst).def_field = make_unique[cEmpty](deref((<Empty?>def_field)._cpp_obj))
         if opt_field is not None:
-            deref(c_inst).opt_field = deref((<Empty?> opt_field)._cpp_obj)
-            deref(c_inst).__isset.opt_field = True
-
+            deref(c_inst).opt_field = make_unique[cEmpty](deref((<Empty?>opt_field)._cpp_obj))
         if req_field is not None:
-            deref(c_inst).req_field = deref((<Empty?> req_field)._cpp_obj)
+            deref(c_inst).req_field = make_unique[cEmpty](deref((<Empty?>req_field)._cpp_obj))
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -1558,7 +1512,7 @@ cdef class StructWithRef(thrift.py3.types.Struct):
         yield 'req_field', self.req_field
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.def_field or deref(self._cpp_obj).__isset.opt_field or True
+        return <bint>(deref(self._cpp_obj).def_field) or <bint>(deref(self._cpp_obj).opt_field) or True
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRef] cpp_obj):
@@ -1568,26 +1522,26 @@ cdef class StructWithRef(thrift.py3.types.Struct):
 
     @property
     def def_field(self):
-        if not deref(self._cpp_obj).__isset.def_field:
-            return None
-
         if self.__def_field is None:
-            self.__def_field = Empty.create(make_shared[cEmpty](deref(self._cpp_obj).def_field))
+            if not deref(self._cpp_obj).def_field:
+                return None
+            self.__def_field = Empty.create(aliasing_constructor_def_field(self._cpp_obj, (deref(self._cpp_obj).def_field.get())))
         return self.__def_field
 
     @property
     def opt_field(self):
-        if not deref(self._cpp_obj).__isset.opt_field:
-            return None
-
         if self.__opt_field is None:
-            self.__opt_field = Empty.create(make_shared[cEmpty](deref(self._cpp_obj).opt_field))
+            if not deref(self._cpp_obj).opt_field:
+                return None
+            self.__opt_field = Empty.create(aliasing_constructor_opt_field(self._cpp_obj, (deref(self._cpp_obj).opt_field.get())))
         return self.__opt_field
 
     @property
     def req_field(self):
         if self.__req_field is None:
-            self.__req_field = Empty.create(make_shared[cEmpty](deref(self._cpp_obj).req_field))
+            if not deref(self._cpp_obj).req_field:
+                return None
+            self.__req_field = Empty.create(aliasing_constructor_req_field(self._cpp_obj, (deref(self._cpp_obj).req_field.get())))
         return self.__req_field
 
 
@@ -1705,32 +1659,26 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value.
             if def_field is None:
-                deref(c_inst).def_field = _StructWithRefTypeUnique_defaults.def_field
-                deref(c_inst).__isset.def_field = False
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif def_field is NOTSET:
                 def_field = None
 
             if opt_field is None:
-                deref(c_inst).opt_field = _StructWithRefTypeUnique_defaults.opt_field
-                deref(c_inst).__isset.opt_field = False
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif opt_field is NOTSET:
                 opt_field = None
 
             if req_field is None:
-                deref(c_inst).req_field = _StructWithRefTypeUnique_defaults.req_field
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif req_field is NOTSET:
                 req_field = None
 
         if def_field is not None:
-            deref(c_inst).def_field = deref((<Empty?> def_field)._cpp_obj)
-            deref(c_inst).__isset.def_field = True
-
+            deref(c_inst).def_field = make_unique[cEmpty](deref((<Empty?>def_field)._cpp_obj))
         if opt_field is not None:
-            deref(c_inst).opt_field = deref((<Empty?> opt_field)._cpp_obj)
-            deref(c_inst).__isset.opt_field = True
-
+            deref(c_inst).opt_field = make_unique[cEmpty](deref((<Empty?>opt_field)._cpp_obj))
         if req_field is not None:
-            deref(c_inst).req_field = deref((<Empty?> req_field)._cpp_obj)
+            deref(c_inst).req_field = make_unique[cEmpty](deref((<Empty?>req_field)._cpp_obj))
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -1741,7 +1689,7 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
         yield 'req_field', self.req_field
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.def_field or deref(self._cpp_obj).__isset.opt_field or True
+        return <bint>(deref(self._cpp_obj).def_field) or <bint>(deref(self._cpp_obj).opt_field) or True
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeUnique] cpp_obj):
@@ -1751,26 +1699,26 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
 
     @property
     def def_field(self):
-        if not deref(self._cpp_obj).__isset.def_field:
-            return None
-
         if self.__def_field is None:
-            self.__def_field = Empty.create(make_shared[cEmpty](deref(self._cpp_obj).def_field))
+            if not deref(self._cpp_obj).def_field:
+                return None
+            self.__def_field = Empty.create(aliasing_constructor_def_field(self._cpp_obj, (deref(self._cpp_obj).def_field.get())))
         return self.__def_field
 
     @property
     def opt_field(self):
-        if not deref(self._cpp_obj).__isset.opt_field:
-            return None
-
         if self.__opt_field is None:
-            self.__opt_field = Empty.create(make_shared[cEmpty](deref(self._cpp_obj).opt_field))
+            if not deref(self._cpp_obj).opt_field:
+                return None
+            self.__opt_field = Empty.create(aliasing_constructor_opt_field(self._cpp_obj, (deref(self._cpp_obj).opt_field.get())))
         return self.__opt_field
 
     @property
     def req_field(self):
         if self.__req_field is None:
-            self.__req_field = Empty.create(make_shared[cEmpty](deref(self._cpp_obj).req_field))
+            if not deref(self._cpp_obj).req_field:
+                return None
+            self.__req_field = Empty.create(aliasing_constructor_req_field(self._cpp_obj, (deref(self._cpp_obj).req_field.get())))
         return self.__req_field
 
 
@@ -1888,32 +1836,26 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value.
             if def_field is None:
-                deref(c_inst).def_field = _StructWithRefTypeShared_defaults.def_field
-                deref(c_inst).__isset.def_field = False
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif def_field is NOTSET:
                 def_field = None
 
             if opt_field is None:
-                deref(c_inst).opt_field = _StructWithRefTypeShared_defaults.opt_field
-                deref(c_inst).__isset.opt_field = False
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif opt_field is NOTSET:
                 opt_field = None
 
             if req_field is None:
-                deref(c_inst).req_field = _StructWithRefTypeShared_defaults.req_field
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif req_field is NOTSET:
                 req_field = None
 
         if def_field is not None:
-            deref(c_inst).def_field = deref((<Empty?> def_field)._cpp_obj)
-            deref(c_inst).__isset.def_field = True
-
+            deref(c_inst).def_field = (<Empty?>def_field)._cpp_obj
         if opt_field is not None:
-            deref(c_inst).opt_field = deref((<Empty?> opt_field)._cpp_obj)
-            deref(c_inst).__isset.opt_field = True
-
+            deref(c_inst).opt_field = (<Empty?>opt_field)._cpp_obj
         if req_field is not None:
-            deref(c_inst).req_field = deref((<Empty?> req_field)._cpp_obj)
+            deref(c_inst).req_field = (<Empty?>req_field)._cpp_obj
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -1924,7 +1866,7 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
         yield 'req_field', self.req_field
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.def_field or deref(self._cpp_obj).__isset.opt_field or True
+        return <bint>(deref(self._cpp_obj).def_field) or <bint>(deref(self._cpp_obj).opt_field) or True
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeShared] cpp_obj):
@@ -1934,26 +1876,26 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
 
     @property
     def def_field(self):
-        if not deref(self._cpp_obj).__isset.def_field:
-            return None
-
         if self.__def_field is None:
-            self.__def_field = Empty.create(make_shared[cEmpty](deref(self._cpp_obj).def_field))
+            if not deref(self._cpp_obj).def_field:
+                return None
+            self.__def_field = Empty.create(aliasing_constructor_def_field(self._cpp_obj, (deref(self._cpp_obj).def_field.get())))
         return self.__def_field
 
     @property
     def opt_field(self):
-        if not deref(self._cpp_obj).__isset.opt_field:
-            return None
-
         if self.__opt_field is None:
-            self.__opt_field = Empty.create(make_shared[cEmpty](deref(self._cpp_obj).opt_field))
+            if not deref(self._cpp_obj).opt_field:
+                return None
+            self.__opt_field = Empty.create(aliasing_constructor_opt_field(self._cpp_obj, (deref(self._cpp_obj).opt_field.get())))
         return self.__opt_field
 
     @property
     def req_field(self):
         if self.__req_field is None:
-            self.__req_field = Empty.create(make_shared[cEmpty](deref(self._cpp_obj).req_field))
+            if not deref(self._cpp_obj).req_field:
+                return None
+            self.__req_field = Empty.create(aliasing_constructor_req_field(self._cpp_obj, (deref(self._cpp_obj).req_field.get())))
         return self.__req_field
 
 
@@ -2071,32 +2013,26 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
         if base_instance:
             # Convert None's to default value.
             if def_field is None:
-                deref(c_inst).def_field = _StructWithRefTypeSharedConst_defaults.def_field
-                deref(c_inst).__isset.def_field = False
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif def_field is NOTSET:
                 def_field = None
 
             if opt_field is None:
-                deref(c_inst).opt_field = _StructWithRefTypeSharedConst_defaults.opt_field
-                deref(c_inst).__isset.opt_field = False
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif opt_field is NOTSET:
                 opt_field = None
 
             if req_field is None:
-                deref(c_inst).req_field = _StructWithRefTypeSharedConst_defaults.req_field
+                raise ValueError("Reference-annotated fields may not be initialized to defaults")
             elif req_field is NOTSET:
                 req_field = None
 
         if def_field is not None:
-            deref(c_inst).def_field = deref((<Empty?> def_field)._cpp_obj)
-            deref(c_inst).__isset.def_field = True
-
+            deref(c_inst).def_field = const_pointer_cast((<Empty?>def_field)._cpp_obj)
         if opt_field is not None:
-            deref(c_inst).opt_field = deref((<Empty?> opt_field)._cpp_obj)
-            deref(c_inst).__isset.opt_field = True
-
+            deref(c_inst).opt_field = const_pointer_cast((<Empty?>opt_field)._cpp_obj)
         if req_field is not None:
-            deref(c_inst).req_field = deref((<Empty?> req_field)._cpp_obj)
+            deref(c_inst).req_field = const_pointer_cast((<Empty?>req_field)._cpp_obj)
         # in C++ you don't have to call move(), but this doesn't translate
         # into a C++ return statement, so you do here
         return move_unique(c_inst)
@@ -2107,7 +2043,7 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
         yield 'req_field', self.req_field
 
     def __bool__(self):
-        return deref(self._cpp_obj).__isset.def_field or deref(self._cpp_obj).__isset.opt_field or True
+        return <bint>(deref(self._cpp_obj).def_field) or <bint>(deref(self._cpp_obj).opt_field) or True
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeSharedConst] cpp_obj):
@@ -2117,26 +2053,26 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
 
     @property
     def def_field(self):
-        if not deref(self._cpp_obj).__isset.def_field:
-            return None
-
         if self.__def_field is None:
-            self.__def_field = Empty.create(make_shared[cEmpty](deref(self._cpp_obj).def_field))
+            if not deref(self._cpp_obj).def_field:
+                return None
+            self.__def_field = Empty.create(aliasing_constructor_def_field(self._cpp_obj, <cEmpty*>(deref(self._cpp_obj).def_field.get())))
         return self.__def_field
 
     @property
     def opt_field(self):
-        if not deref(self._cpp_obj).__isset.opt_field:
-            return None
-
         if self.__opt_field is None:
-            self.__opt_field = Empty.create(make_shared[cEmpty](deref(self._cpp_obj).opt_field))
+            if not deref(self._cpp_obj).opt_field:
+                return None
+            self.__opt_field = Empty.create(aliasing_constructor_opt_field(self._cpp_obj, <cEmpty*>(deref(self._cpp_obj).opt_field.get())))
         return self.__opt_field
 
     @property
     def req_field(self):
         if self.__req_field is None:
-            self.__req_field = Empty.create(make_shared[cEmpty](deref(self._cpp_obj).req_field))
+            if not deref(self._cpp_obj).req_field:
+                return None
+            self.__req_field = Empty.create(aliasing_constructor_req_field(self._cpp_obj, <cEmpty*>(deref(self._cpp_obj).req_field.get())))
         return self.__req_field
 
 

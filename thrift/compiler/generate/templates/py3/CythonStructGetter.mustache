@@ -22,6 +22,23 @@ by Cython. Complex objects need to be wrapped or decoded appropriately. Structs
 are special because we try to memoize their wrappers on the parent handler
 if they have been previously retrieved.
 
+}}{{#field:reference?}}{{!
+}}if self.__{{field:name}} is None:
+    if not deref(self._cpp_obj).{{field:name}}:
+        return None
+    {{! Use an aliasing constructor since the object we're returning is still
+        managed by the top-level object, possible via a unique_ptr }}
+    self.__{{field:name}} = {{> types/CythonPythonType}}.create(aliasing_constructor_{{field:name}}({{!
+      }}self._cpp_obj, {{!
+        If this is a shared_const ref, we cast away the constness as part of
+        creating the new object (since the new object needs a plain shared_ptr).
+        This is unsafe in theory but seems ok in practice, since we never modify
+        our underlying object.
+      }}{{#field:shared_const_ref?}}<{{> types/CythonCppType}}*>{{/field:shared_const_ref?}}{{!
+      }}(deref(self._cpp_obj).{{field:name}}.get())))
+return self.__{{field:name}}{{!
+}}{{/field:reference?}}{{!
+}}{{^field:reference?}}{{!
 }}{{#type:bool?}}{{!
   }}return <pbool> self._cpp_obj.get().{{field:name}}{{!
 }}{{/type:bool?}}{{!
@@ -67,4 +84,5 @@ return self.__{{field:name}}{{!
       }}make_shared[{{> types/CythonCppType}}]({{!
       }}deref(self._cpp_obj).{{field:name}}))
 return self.__{{field:name}}{{!
-}}{{/type:container?}}
+}}{{/type:container?}}{{!
+}}{{/field:reference?}}
