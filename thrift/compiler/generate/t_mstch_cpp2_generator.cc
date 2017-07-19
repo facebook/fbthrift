@@ -970,8 +970,8 @@ void t_mstch_cpp2_generator::generate_program() {
   auto const* program = get_program();
   set_mstch_generators();
 
-  generate_constants(program);
   generate_structs(program);
+  generate_constants(program);
   for (const auto* service : program->get_services()) {
     generate_service(service);
   }
