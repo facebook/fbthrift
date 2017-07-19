@@ -22,8 +22,7 @@
 #ifndef THRIFT_UTIL_SHARED_PTR_UTIL_H_
 #define THRIFT_UTIL_SHARED_PTR_UTIL_H_ 1
 
-#include <boost/type_traits/is_convertible.hpp>
-#include <boost/utility/enable_if.hpp>
+#include <type_traits>
 
 /**
  * Helper macros to allow function overloading even when using
@@ -41,8 +40,7 @@
  * defined separately from where it is declared.
  */
 #define THRIFT_OVERLOAD_IF_DEFN(T, Y) \
-  typename ::boost::enable_if<typename ::boost::is_convertible<T*, Y*>::type, \
-                              void*>::type
+  typename ::std::enable_if<::std::is_convertible<T*, Y*>::value, void*>::type
 
 #define THRIFT_OVERLOAD_IF(T, Y) \
   THRIFT_OVERLOAD_IF_DEFN(T, Y) = nullptr
