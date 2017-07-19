@@ -271,15 +271,16 @@ void HTTPClientChannel::setRequestHeaderOptions(THeader* header) {
 void HTTPClientChannel::setHeaders(
     proxygen::HTTPHeaders& dstHeaders,
     const transport::THeader::StringToStringMap& srcHeaders) {
-  for (auto it = srcHeaders.begin(); it != srcHeaders.end(); ++it) {
-    if (it->first.find(":") != std::string::npos) {
-      auto name = proxygen::Base64::urlEncode(folly::StringPiece(it->first));
-      auto value = proxygen::Base64::urlEncode(folly::StringPiece(it->second));
+  for (const auto& header : srcHeaders) {
+    if (header.first.find(":") != std::string::npos) {
+      auto name = proxygen::Base64::urlEncode(folly::StringPiece(header.first));
+      auto value =
+          proxygen::Base64::urlEncode(folly::StringPiece(header.second));
       dstHeaders.rawSet(
           folly::to<std::string>("encode_", name),
           folly::to<std::string>(name, "_", value));
     } else {
-      dstHeaders.rawSet(it->first, it->second);
+      dstHeaders.rawSet(header.first, header.second);
     }
   }
 }
