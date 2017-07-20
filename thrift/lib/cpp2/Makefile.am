@@ -41,6 +41,7 @@ thrift2includedir = $(includedir)/thrift/lib/cpp2
 thrift2include_HEADERS = \
 	TypeClass.h \
 	Thrift.h \
+	FrozenTApplicationException.h \
 	GeneratedCodeHelper.h \
 	GeneratedHeaderHelper.h \
 	GeneratedSerializationCodeHelper.h \
@@ -194,7 +195,8 @@ libthriftprotocol_la_LDFLAGS = -no-undefined \
 libthriftprotocol_la_CPPFLAGS = $(AM_CPPFLAGS) -I../cpp
 
 libthriftcpp2_la_SOURCES = Version.cpp \
-			   GeneratedCodeHelper.cpp \
+				 FrozenTApplicationException.cpp \
+				 GeneratedCodeHelper.cpp \
 			   async/HeaderChannel.cpp \
 			   async/HeaderChannelTrait.cpp \
 			   async/HeaderClientChannel.cpp \
