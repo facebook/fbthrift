@@ -47,7 +47,7 @@ void makeVector(std::vector<std::unordered_map<int32_t, std::string>>& vec) {
   for (int32_t i = 0; i < VECTOR_ELEMENTS_MAX; ++i) {
     std::unordered_map<int32_t, std::string> m;
     makeMap(m);
-    vec[i] = m;
+    vec.push_back(m);
   }
 }
 
