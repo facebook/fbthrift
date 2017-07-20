@@ -1,5 +1,5 @@
 /*
- * Copyright 2015-present Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,12 @@
  */
 #pragma once
 
-#include <folly/futures/Future.h>
 #include <folly/Traits.h>
-#include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <folly/futures/Future.h>
 #include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
 #include <thrift/lib/cpp2/Thrift.h>
+#include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/frozen/Frozen.h>
 #include <type_traits>
 
 namespace apache { namespace thrift {
@@ -354,6 +355,242 @@ class ThriftPresult : private std::tuple<Field...>,
     return xfer;
   }
 };
+
+namespace frozen {
+
+template <bool hasIsSet, typename... Args>
+class Layout<ThriftPresult<hasIsSet, Args...>, void>
+    : public LayoutBase, private std::tuple<Field<typename Args::ref_type>...> {
+ public:
+  using Base = LayoutBase;
+
+  using LayoutSelf = Layout;
+
+  using T = ThriftPresult<hasIsSet, Args...>;
+
+  using Tuple = std::tuple<Field<typename Args::ref_type>...>;
+
+  Layout()
+      : LayoutBase(typeid(T)),
+        Tuple(Field<typename Args::ref_type>{Args::fid,
+                                             typeid(Args).name()}...) {}
+
+  FieldPosition maximize() {
+    FieldPosition pos = startFieldPosition();
+    forEachElement(MaximizeTupleAccessor(pos));
+    return pos;
+  }
+  FieldPosition layout(LayoutRoot& root, const T& x, LayoutPosition self) {
+    FieldPosition pos = startFieldPosition();
+    forEachElement(LayoutTupleAccessor(root, x, self, pos));
+    return pos;
+  }
+  void freeze(FreezeRoot& root, const T& x, FreezePosition self) const {
+    forEachElement(FreezeTupleAccessor(root, x, self));
+  }
+  void thaw(ViewPosition self, T& out) const {
+    forEachElement(ThawTupleAccessor(self, out));
+  }
+  void print(std::ostream& os, int level) const final {
+    LayoutBase::print(os, level);
+    os << "::apache::thrift::ThriftPresult";
+  }
+  void clear() final {
+    LayoutBase::clear();
+    forEachElement(ClearTupleAccessor());
+  }
+
+  struct View : public ViewBase<View, LayoutSelf, T> {
+    View() {}
+    View(const LayoutSelf* layout, ViewPosition position)
+        : ViewBase<View, LayoutSelf, T>(layout, position) {}
+    template <int Idx>
+    auto get()
+        -> decltype(std::get<Idx>(this->layout_->asTuple())
+                        .layout.view(this->position_(
+                            std::get<Idx>(this->layout_->asTuple()).pos))) {
+      return std::get<Idx>(this->layout_->asTuple())
+          .layout.view(
+              this->position_(std::get<Idx>(this->layout_->asTuple()).pos));
+    }
+    void thaw(ViewPosition pos, T& o) {
+      this->layout_->thaw(pos, o);
+    }
+  };
+  View view(ViewPosition self) const {
+    return View(this, self);
+  }
+
+  template <typename SchemaInfo>
+  void save(
+      typename SchemaInfo::Schema& schema,
+      typename SchemaInfo::Layout& _layout,
+      typename SchemaInfo::Helper& helper) const {
+    Base::template save<SchemaInfo>(schema, _layout, helper);
+    forEachElement(SaveTupleAccessor<SchemaInfo>(schema, _layout, helper));
+  }
+
+  template <typename SchemaInfo>
+  void load(
+      const typename SchemaInfo::Schema& schema,
+      const typename SchemaInfo::Layout& _layout) {
+    Base::template load<SchemaInfo>(schema, _layout);
+    std::unordered_map<int, const schema::MemoryField*> refs;
+    for (const auto& field : _layout.getFields()) {
+      refs[field.getId()] = &field;
+    }
+    forEachElement(LoadTupleAccessor<SchemaInfo>(schema, _layout, refs));
+  }
+
+  inline Tuple& asTuple() {
+    return *this;
+  }
+
+  inline const Tuple& asTuple() const {
+    return *this;
+  }
+
+ protected:
+  template <
+      typename F,
+      typename Seq = std::make_index_sequence<sizeof...(Args)>>
+  void forEachElement(F&& f) {
+    forEachElement(std::forward<F>(f), Seq{});
+  }
+
+  template <
+      typename F,
+      typename Seq = std::make_index_sequence<sizeof...(Args)>>
+  void forEachElement(F&& f) const {
+    forEachElement(std::forward<F>(f), Seq{});
+  }
+
+ private:
+  template <typename F, size_t... Idxs>
+  void forEachElement(F&& f, std::index_sequence<Idxs...>) {
+    using _ = bool[sizeof...(Args)];
+    (void)_{(f.template forEach<Idxs>(std::get<Idxs>(asTuple())), false)...};
+  }
+
+  template <typename F, size_t... Idxs>
+  void forEachElement(F&& f, std::index_sequence<Idxs...>) const {
+    using _ = bool[sizeof...(Args)];
+    (void)_{(f.template forEach<Idxs>(std::get<Idxs>(asTuple())), false)...};
+  }
+
+  struct MaximizeTupleAccessor {
+    explicit MaximizeTupleAccessor(FieldPosition& pos) : pos_(pos) {}
+
+    template <int Idx, typename T>
+    void forEach(T& field) {
+      pos_ = maximizeField(pos_, field);
+    }
+
+    FieldPosition& pos_;
+  };
+
+  struct LayoutTupleAccessor {
+    explicit LayoutTupleAccessor(
+        LayoutRoot& root,
+        const T& x,
+        LayoutPosition& self,
+        FieldPosition& pos)
+        : root_(root), x_(x), self_(self), pos_(pos) {}
+
+    template <int Idx, typename T>
+    void forEach(T& field) {
+      if (x_.getIsSet(Idx)) {
+        pos_ =
+            root_.layoutField(self_, pos_, field, x_.template get<Idx>().ref());
+      }
+    }
+
+    LayoutRoot& root_;
+    const T& x_;
+    LayoutPosition& self_;
+    FieldPosition& pos_;
+  };
+
+  struct FreezeTupleAccessor {
+    explicit FreezeTupleAccessor(
+        FreezeRoot& root,
+        const T& x,
+        FreezePosition& self)
+        : root_(root), x_(x), self_(self) {}
+
+    template <int Idx, typename T>
+    void forEach(T& field) {
+      if (x_.getIsSet(Idx)) {
+        root_.freezeField(self_, field, x_.template get<Idx>().ref());
+      }
+    }
+
+    FreezeRoot& root_;
+    const T& x_;
+    FreezePosition& self_;
+  };
+
+  struct ThawTupleAccessor {
+    explicit ThawTupleAccessor(ViewPosition& self, T& out)
+        : self_(self), out_(out) {}
+
+    template <int Idx, typename T>
+    void forEach(T& field) {
+      thawField(self_, field, out_.template get<Idx>().ref());
+      out_.setIsSet(Idx, !field.layout.empty());
+    }
+
+    ViewPosition& self_;
+    T& out_;
+  };
+
+  struct ClearTupleAccessor {
+    template <int Idx, typename T>
+    void forEach(T& field) {
+      field.clear();
+    }
+  };
+
+  template <typename SchemaInfo>
+  struct SaveTupleAccessor {
+    SaveTupleAccessor(
+        typename SchemaInfo::Schema& schema,
+        typename SchemaInfo::Layout& layout,
+        typename SchemaInfo::Helper& helper)
+        : schema_(schema), layout_(layout), helper_(helper) {}
+
+    template <int Idx, typename T>
+    void forEach(T& field) {
+      field.template save<SchemaInfo>(schema_, layout_, helper_);
+    }
+
+    typename SchemaInfo::Schema& schema_;
+    typename SchemaInfo::Layout& layout_;
+    typename SchemaInfo::Helper& helper_;
+  };
+
+  template <typename SchemaInfo>
+  struct LoadTupleAccessor {
+    LoadTupleAccessor(
+        const typename SchemaInfo::Schema& schema,
+        const typename SchemaInfo::Layout& layout,
+        const std::unordered_map<int, const schema::MemoryField*>& refs)
+        : schema_(schema), layout_(layout), refs_(refs) {}
+
+    template <int Idx, typename T>
+    void forEach(T& field) {
+      if (auto ptr = folly::get_default(refs_, field.key, nullptr)) {
+        field.template load<SchemaInfo>(schema_, *ptr);
+      }
+    }
+
+    const typename SchemaInfo::Schema& schema_;
+    const typename SchemaInfo::Layout& layout_;
+    const std::unordered_map<int, const schema::MemoryField*>& refs_;
+  };
+};
+
+} // apache::thrift::frozen
 
 template <bool hasIsSet, class... Args>
 class Cpp2Ops<ThriftPresult<hasIsSet, Args...>> {
