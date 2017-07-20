@@ -155,24 +155,19 @@ TEST(HTTPClientChannelTest, SimpleTestAsync) {
   auto channel = HTTPClientChannel::newHTTP1xChannel(
       std::move(socket), "127.0.0.1", "/foobar");
   TestServiceAsyncClient client(std::move(channel));
-  client.sendResponse([&eb](apache::thrift::ClientReceiveState&& state) {
-    if (state.exception()) {
-      try {
-        std::rethrow_exception(state.exception());
-      } catch (const std::exception& e) {
-        LOG(INFO) << e.what();
-      }
-    }
-    EXPECT_TRUE(state.exception() == nullptr);
-    std::string res;
-    TestServiceAsyncClient::recv_sendResponse(res, state);
-    EXPECT_EQ(res, "test24");
-    eb.terminateLoopSoon();
-  }, 24);
+  client.sendResponse(
+      [&eb](apache::thrift::ClientReceiveState&& state) {
+        EXPECT_FALSE(state.exceptionWrapper()) << state.exceptionWrapper();
+        std::string res;
+        TestServiceAsyncClient::recv_sendResponse(res, state);
+        EXPECT_EQ(res, "test24");
+        eb.terminateLoopSoon();
+      },
+      24);
   eb.loop();
 
   client.eventBaseAsync([&eb](apache::thrift::ClientReceiveState&& state) {
-    EXPECT_TRUE(state.exception() == nullptr);
+    EXPECT_FALSE(state.exceptionWrapper()) << state.exceptionWrapper();
     std::string res;
     TestServiceAsyncClient::recv_eventBaseAsync(res, state);
     EXPECT_EQ(res, "hello world");
@@ -208,13 +203,15 @@ TEST(HTTPClientChannelTest, LongResponse) {
       std::move(socket), "127.0.0.1", "/foobar");
   TestServiceAsyncClient client(std::move(channel));
 
-  client.serializationTest([&eb](apache::thrift::ClientReceiveState&& state) {
-    EXPECT_TRUE(state.exception() == nullptr);
-    std::string res;
-    TestServiceAsyncClient::recv_serializationTest(res, state);
-    EXPECT_EQ(res, string(4096, 'a'));
-    eb.terminateLoopSoon();
-  }, true);
+  client.serializationTest(
+      [&eb](apache::thrift::ClientReceiveState&& state) {
+        EXPECT_FALSE(state.exceptionWrapper()) << state.exceptionWrapper();
+        std::string res;
+        TestServiceAsyncClient::recv_serializationTest(res, state);
+        EXPECT_EQ(res, string(4096, 'a'));
+        eb.terminateLoopSoon();
+      },
+      true);
   eb.loop();
 }
 
@@ -229,27 +226,16 @@ TEST(HTTPClientChannelTest, ClientTimeout) {
   channel->setTimeout(1);
   channel->setProtocolId(apache::thrift::protocol::T_BINARY_PROTOCOL);
   TestServiceAsyncClient client(std::move(channel));
-  bool threw = false;
-  client.sendResponse([&](apache::thrift::ClientReceiveState&& state) {
-    if (state.exception()) {
-      try {
-        std::rethrow_exception(state.exception());
-      } catch (const TTransportException& e) {
-        auto expected = TTransportException::TIMED_OUT;
-        EXPECT_EQ(expected, e.getType());
-        threw = true;
-      }
-    } else {
-      std::string res;
-      TestServiceAsyncClient::recv_sendResponse(res, state);
-      LOG(WARNING) << res;
-      EXPECT_EQ(res, "test99999");
-    }
-    eb.terminateLoopSoon();
-  }, 99999);
+  client.sendResponse(
+      [&](apache::thrift::ClientReceiveState&& state) {
+        EXPECT_TRUE(state.exceptionWrapper());
+        auto ex = state.exceptionWrapper().get_exception();
+        auto& e = dynamic_cast<TTransportException const&>(*ex);
+        EXPECT_EQ(TTransportException::TIMED_OUT, e.getType());
+        eb.terminateLoopSoon();
+      },
+      99999);
   eb.loop();
-
-  EXPECT_TRUE(threw);
 }
 
 TEST(HTTPClientChannelTest, NoBodyResponse) {

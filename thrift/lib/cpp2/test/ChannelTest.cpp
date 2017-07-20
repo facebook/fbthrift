@@ -242,12 +242,7 @@ class TestRequestCallback : public RequestCallback, public CloseCallback {
     securityEndTime_ = securityEnd_;
   }
   void requestError(ClientReceiveState&& state) override {
-    std::exception_ptr ex = state.exception();
-    try {
-      std::rethrow_exception(ex);
-    } catch (const std::exception& e) {
-      // Verify that exception pointer is passed properly
-    }
+    EXPECT_TRUE(state.exceptionWrapper());
     replyError_++;
     securityStartTime_ = securityStart_;
     securityEndTime_ = securityEnd_;

@@ -13,36 +13,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #include <memory>
-#include <gtest/gtest.h>
-#include <thrift/lib/cpp2/test/gen-cpp/TestService.h>
-#include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
-#include <thrift/lib/cpp2/server/Cpp2Connection.h>
-#include <thrift/lib/cpp2/server/ThriftServer.h>
-#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
-#include <thrift/lib/cpp2/async/RequestChannel.h>
-#include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
-
-#include <thrift/lib/cpp/util/ScopedServerThread.h>
-#include <folly/io/async/EventBase.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
-#include <folly/io/async/AsyncServerSocket.h>
-#include <folly/Memory.h>
-#include <thrift/lib/cpp/transport/THeader.h>
-
-#include <thrift/lib/cpp2/async/StubSaslClient.h>
-#include <thrift/lib/cpp2/async/StubSaslServer.h>
-#include <thrift/lib/cpp2/test/util/TestInterface.h>
-#include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
-#include <thrift/lib/cpp2/test/util/TestHeaderClientChannelFactory.h>
-
-#include <folly/fibers/FiberManagerMap.h>
-#include <wangle/acceptor/ServerSocketConfig.h>
-#include <wangle/concurrent/GlobalExecutor.h>
 
 #include <boost/cast.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/thread.hpp>
+#include <gmock/gmock.h>
+#include <gtest/gtest.h>
+
+#include <folly/Memory.h>
+#include <folly/fibers/FiberManagerMap.h>
+#include <folly/io/async/AsyncServerSocket.h>
+#include <folly/io/async/EventBase.h>
+#include <wangle/acceptor/ServerSocketConfig.h>
+#include <wangle/concurrent/GlobalExecutor.h>
+
+#include <thrift/lib/cpp/async/TAsyncSocket.h>
+#include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp/util/ScopedServerThread.h>
+#include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/RequestChannel.h>
+#include <thrift/lib/cpp2/async/StubSaslClient.h>
+#include <thrift/lib/cpp2/async/StubSaslServer.h>
+#include <thrift/lib/cpp2/server/Cpp2Connection.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/test/gen-cpp/TestService.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
+#include <thrift/lib/cpp2/test/util/TestHeaderClientChannelFactory.h>
+#include <thrift/lib/cpp2/test/util/TestInterface.h>
+#include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
+#include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::test::cpp2;
@@ -214,7 +215,7 @@ TEST(ThriftServer, DefaultCompressionTest) {
       }
     }
     void requestError(ClientReceiveState&& state) override {
-      std::rethrow_exception(state.exception());
+      state.exceptionWrapper().throw_exception();
     }
     bool compressionExpected_;
     uint16_t expectedTransform_;
@@ -353,13 +354,11 @@ TEST(ThriftServer, ClientTimeoutTest) {
     return std::unique_ptr<RequestCallback>(new FunctionReplyCallback(
         [&cbCall, client, &timeout](ClientReceiveState&& state) {
           cbCall++;
-          if (state.exception()) {
+          if (state.exceptionWrapper()) {
             timeout = true;
-            try {
-              std::rethrow_exception(state.exception());
-            } catch (const TTransportException& e) {
-              EXPECT_EQ(int(TTransportException::TIMED_OUT), int(e.getType()));
-            }
+            auto ex = state.exceptionWrapper().get_exception();
+            auto& e = dynamic_cast<TTransportException const&>(*ex);
+            EXPECT_EQ(TTransportException::TIMED_OUT, e.getType());
             return;
           }
           try {
@@ -367,7 +366,7 @@ TEST(ThriftServer, ClientTimeoutTest) {
             client->recv_sendResponse(resp, state);
           } catch (const TApplicationException& e) {
             timeout = true;
-            EXPECT_EQ(int(TApplicationException::TIMEOUT), int(e.getType()));
+            EXPECT_EQ(TApplicationException::TIMEOUT, e.getType());
             EXPECT_TRUE(state.header()->getFlags() &
                 HEADER_FLAG_SUPPORT_OUT_OF_ORDER);
             return;
@@ -485,17 +484,13 @@ class Callback : public RequestCallback {
     ADD_FAILURE();
   }
   void requestError(ClientReceiveState&& state) override {
-    try {
-      std::rethrow_exception(state.exception());
-    } catch (const apache::thrift::transport::TTransportException& ex) {
-      // Verify we got a write and not a read error
-      // Comparing substring because the rest contains ips and ports
-      std::string expected = "transport is closed in write()";
-      std::string actual = std::string(ex.what()).substr(0, expected.size());
-      EXPECT_EQ(expected, actual);
-    } catch (...) {
-      ADD_FAILURE();
-    }
+    EXPECT_TRUE(state.exceptionWrapper());
+    auto ex =
+        state.exceptionWrapper()
+            .get_exception<apache::thrift::transport::TTransportException>();
+    ASSERT_TRUE(ex);
+    EXPECT_THAT(
+        ex->what(), testing::StartsWith("transport is closed in write()"));
   }
 };
 }
@@ -591,16 +586,13 @@ TEST(ThriftServer, FailureInjection) {
     }
 
     void requestError(ClientReceiveState&& state) override {
-      try {
-        std::rethrow_exception(state.exception());
-      } catch (const TTransportException& ex) {
-        if (ex.getType() == TTransportException::TIMED_OUT) {
-          EXPECT_EQ(TIMEOUT, *expected_);
-        } else {
-          EXPECT_EQ(DISCONNECT, *expected_);
-        }
-      } catch (...) {
-        ADD_FAILURE() << "Unexpected exception thrown";
+      ASSERT_TRUE(state.exceptionWrapper());
+      auto ex_ = state.exceptionWrapper().get_exception();
+      auto& ex = dynamic_cast<TTransportException const&>(*ex_);
+      if (ex.getType() == TTransportException::TIMED_OUT) {
+        EXPECT_EQ(TIMEOUT, *expected_);
+      } else {
+        EXPECT_EQ(DISCONNECT, *expected_);
       }
     }
 

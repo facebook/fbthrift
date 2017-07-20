@@ -40,7 +40,7 @@ class ClientSyncEventBaseCallback final : public RequestCallback {
     eb_->terminateLoopSoon();
   }
   void requestError(ClientReceiveState&& rs) override {
-    assert(rs.exception());
+    assert(rs.isException());
     assert(eb_);
     cb_->requestError(std::move(rs));
     eb_->terminateLoopSoon();

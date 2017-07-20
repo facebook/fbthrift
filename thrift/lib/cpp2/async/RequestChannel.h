@@ -85,10 +85,6 @@ class ClientReceiveState {
     return excw_;
   }
 
-  std::exception_ptr exception() {
-    return excw_.to_exception_ptr();
-  }
-
   uint16_t protocolId() const {
     return protocolId_;
   }
@@ -216,9 +212,8 @@ class FunctionReplyCallback : public RequestCallback {
     callback_(std::move(state));
   }
   void requestError(ClientReceiveState&& state) override {
-    VLOG(1)
-      << "Got an exception in FunctionReplyCallback replyReceiveError: "
-      << folly::exceptionStr(state.exception());
+    VLOG(1) << "Got an exception in FunctionReplyCallback replyReceiveError: "
+            << state.exceptionWrapper();
     callback_(std::move(state));
   }
   void requestSent() override {}
@@ -437,7 +432,7 @@ class ClientSyncCallback : public RequestCallback {
     *rs_ = std::move(rs);
   }
   void requestError(ClientReceiveState&& rs) override {
-    assert(rs.exception());
+    assert(rs.exceptionWrapper());
     *rs_ = std::move(rs);
   }
   bool isOneway() const {
