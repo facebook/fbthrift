@@ -1,4 +1,6 @@
 /*
+ * Copyright 2004-present Facebook, Inc.
+ *
  * Licensed to the Apache Software Foundation (ASF) under one
  * or more contributor license agreements. See the NOTICE file
  * distributed with this work for additional information
@@ -16,7 +18,6 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
 #ifndef _THRIFT_TAPPLICATIONEXCEPTION_H_
 #define _THRIFT_TAPPLICATIONEXCEPTION_H_ 1
 
@@ -76,6 +77,10 @@ class TApplicationException : public TException {
 
   ~TApplicationException() throw() override {}
 
+  const std::string& getMessage() const {
+    return message_;
+  }
+
   /**
    * Returns an error code that provides information about the type of error
    * that has occurred.
@@ -84,6 +89,14 @@ class TApplicationException : public TException {
    */
   TApplicationExceptionType getType() const {
     return type_;
+  }
+
+  void setMessage(std::string&& msg) {
+    message_ = std::move(msg);
+  }
+
+  void setType(TApplicationExceptionType type) {
+    type_ = type;
   }
 
   const char* what() const throw() override {
