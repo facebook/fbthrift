@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-#ifndef THRIFT_PROTOCOL_TPROTOCOLTYPES_H_
-#define THRIFT_PROTOCOL_TPROTOCOLTYPES_H_ 1
+#include "Frozen2Protocol.h"
 
-namespace apache { namespace thrift { namespace protocol {
+namespace apache {
+namespace thrift {
 
-enum PROTOCOL_TYPES {
-  T_BINARY_PROTOCOL = 0,
-  T_JSON_PROTOCOL = 1,
-  T_COMPACT_PROTOCOL = 2,
-  T_DEBUG_PROTOCOL = 3,
-  T_VIRTUAL_PROTOCOL = 4,
-  T_SIMPLE_JSON_PROTOCOL = 5,
-  T_FROZEN2_PROTOCOL = 6,
-};
-}}} // apache::thrift::protocol
+[[noreturn]] void Frozen2ProtocolReader::throwBadProtocolId(int32_t sz) {
+  throw TProtocolException(
+      TProtocolException::BAD_VERSION,
+      folly::to<std::string>("Bad protocol id, sz= ", sz));
+}
 
-#endif // #define _THRIFT_PROTOCOL_TPROTOCOLTYPES_H_ 1
+[[noreturn]] void Frozen2ProtocolReader::throwBadProtocolVersion(int32_t sz) {
+  throw TProtocolException(
+      TProtocolException::BAD_VERSION,
+      folly::to<std::string>("Bad protocol version, sz= ", sz));
+}
+}
+} // apache::thrift

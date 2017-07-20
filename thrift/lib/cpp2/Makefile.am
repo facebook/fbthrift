@@ -156,6 +156,8 @@ thrift2include_protocol_HEADERS = \
 	protocol/CompactProtocol.tcc \
 	protocol/CompactV1Protocol.h \
 	protocol/CompactV1Protocol.tcc \
+	protocol/Frozen2Protocol.h \
+	protocol/Frozen2Protocol.tcc \
 	protocol/JSONProtocol.h \
 	protocol/JSONProtocol.tcc \
 	protocol/JSONProtocolCommon.h \
@@ -176,6 +178,7 @@ libthriftprotocol_la_SOURCES = Version.cpp \
                                protocol/CompactProtocol.cpp \
                                protocol/CompactV1Protocol.cpp \
                                protocol/DebugProtocol.cpp \
+															 protocol/Frozen2Protocol.cpp \
                                protocol/JSONProtocol.cpp \
                                protocol/JSONProtocolCommon.cpp \
                                protocol/Serializer.cpp \
