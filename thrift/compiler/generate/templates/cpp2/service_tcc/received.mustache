@@ -31,8 +31,14 @@ void <%service:name%>AsyncClient::<%function:name%>T(Protocol_* prot, bool useSy
   args.get<<%field:index%>>().value = const_cast<<% > Type%>*>(&<%field:name%>);
 <%/type:resolves_to_complex_return?%>
 <%/field:type%><%/function:args%>
+<%^service:frozen2?%>
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
   auto writer = [&](Protocol_* p) { args.write(p); };
+<%/service:frozen2?%>
+<%#service:frozen2?%>
+  auto sizer = [&](Protocol_* p) { return ::apache::thrift::detail::serializedResponseBodySizeZC(p, &args); };
+  auto writer = [&](Protocol_* p) { ::apache::thrift::detail::serializeResponseBody(p, &args); };
+<%/service:frozen2?%>
 <%#function:oneway?%>
   apache::thrift::clientSendT<Protocol_>(prot, rpcOptions, std::move(callback), std::move(ctx), header, channel_.get(), "<%function:name%>", writer, sizer, true, useSync);
 <%/function:oneway?%>
@@ -65,7 +71,12 @@ folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:na
     prot->readMessageBegin(_fname, mtype, protoSeqId);
     if (mtype == apache::thrift::T_EXCEPTION) {
       apache::thrift::TApplicationException x;
+<%^service:frozen2?%>
       x.read(prot);
+<%/service:frozen2?%>
+<%#service:frozen2?%>
+      ::apache::thrift::detail::deserializeExceptionBody(prot, &x);
+<%/service:frozen2?%>
       prot->readMessageEnd();
       interior_ew = folly::make_exception_wrapper<apache::thrift::TApplicationException>(x);
       return; // from try_and_catch
@@ -90,7 +101,12 @@ folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:na
 <%^type:void?%>
     result.get<0>().value = &_return;
 <%/type:void?%>
+<%^service:frozen2?%>
     result.read(prot);
+<%/service:frozen2?%>
+<%#service:frozen2?%>
+    ::apache::thrift::detail::deserializeRequestBody(prot, &result);
+<%/service:frozen2?%>
     prot->readMessageEnd();
     ctx->postRead(state.header(), state.buf()->length());
 <%^type:void?%>
