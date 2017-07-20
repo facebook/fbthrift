@@ -28,7 +28,15 @@ from .TBinaryProtocol import TBinaryProtocolAccelerated
 from .TCompactProtocol import TCompactProtocolAccelerated
 from thrift.transport.THeaderTransport import THeaderTransport, CLIENT_TYPE
 
-class THeaderProtocol(TProtocolBase):
+
+class THeaderProtocolAccelerate(object):
+
+    """Base class for pass through header protocols"""
+    def get_protocol_id(self):
+        raise NotImplementedError()
+
+
+class THeaderProtocol(TProtocolBase, THeaderProtocolAccelerate):
 
     """Pass through header protocol (transport can set)"""
     T_BINARY_PROTOCOL = 0
