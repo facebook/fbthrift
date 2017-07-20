@@ -45,6 +45,7 @@ thrift2include_HEADERS = \
 	GeneratedCodeHelper.h \
 	GeneratedHeaderHelper.h \
 	GeneratedSerializationCodeHelper.h \
+	SerializationSwitch.h \
 	ServiceIncludes.h \
 	CloneableIOBuf.h
 

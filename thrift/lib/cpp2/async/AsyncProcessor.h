@@ -16,19 +16,20 @@
 #ifndef THRIFT_ASYNCPROCESSOR2_H
 #define THRIFT_ASYNCPROCESSOR2_H 1
 
-#include <thrift/lib/cpp/TProcessor.h>
+#include <folly/String.h>
+#include <folly/futures/Future.h>
 #include <folly/io/async/EventBase.h>
-#include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp/TProcessor.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
-#include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
+#include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/SerializationSwitch.h>
+#include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
-#include <thrift/lib/cpp2/Thrift.h>
-#include <folly/String.h>
-#include <folly/futures/Future.h>
 #include <wangle/deprecated/rx/Observer.h>
 
 namespace apache { namespace thrift {
@@ -149,7 +150,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
     smsg.protocolType = iprot->protocolType();
     smsg.buffer = buf;
     c->onReadData(smsg);
-    uint32_t bytes = ::apache::thrift::Cpp2Ops<Args>::read(iprot, &args);
+    uint32_t bytes = detail::deserializeRequestBody(iprot, &args);
     iprot->readMessageEnd();
     c->postRead(nullptr, bytes);
   }
@@ -161,12 +162,12 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
                                              apache::thrift::ContextStack* ctx,
                                              const Result& result) {
     folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-    size_t bufSize = Cpp2Ops<Result>::serializedSizeZC(prot, &result);
+    size_t bufSize = detail::serializedResponseBodySizeZC(prot, &result);
     bufSize += prot->serializedMessageSize(method);
     prot->setOutput(&queue, bufSize);
     ctx->preWrite();
     prot->writeMessageBegin(method, apache::thrift::T_REPLY, protoSeqId);
-    Cpp2Ops<Result>::write(prot, &result);
+    detail::serializeResponseBody(prot, &result);
     prot->writeMessageEnd();
     ::apache::thrift::SerializedMessage smsg;
     smsg.protocolType = prot->protocolType();
@@ -184,11 +185,11 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       apache::thrift::ContextStack*,
       const apache::thrift::TApplicationException& x) {
     folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-    size_t bufSize = x.serializedSizeZC(prot);
+    size_t bufSize = detail::serializedExceptionBodySizeZC(prot, &x);
     bufSize += prot->serializedMessageSize(method);
     prot->setOutput(&queue, bufSize);
     prot->writeMessageBegin(method, apache::thrift::T_EXCEPTION, protoSeqId);
-    x.write(prot);
+    detail::serializeExceptionBody(prot, &x);
     prot->writeMessageEnd();
     return queue;
   }

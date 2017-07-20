@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Facebook, Inc.
+ * Copyright 2004-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
@@ -38,14 +37,14 @@ IOBufQueue helper<ProtocolReader, ProtocolWriter>::write_exn(
     ContextStack* ctx,
     const TApplicationException& x) {
   IOBufQueue queue(IOBufQueue::cacheChainLength());
-  size_t bufSize = x.serializedSizeZC(prot);
+  size_t bufSize = detail::serializedExceptionBodySizeZC(prot, &x);
   bufSize += prot->serializedMessageSize(method);
   prot->setOutput(&queue, bufSize);
   if (ctx) {
     ctx->handlerErrorWrapped(exception_wrapper(x));
   }
   prot->writeMessageBegin(method, T_EXCEPTION, protoSeqId);
-  x.write(prot);
+  detail::serializeExceptionBody(prot, &x);
   prot->writeMessageEnd();
   return queue;
 }

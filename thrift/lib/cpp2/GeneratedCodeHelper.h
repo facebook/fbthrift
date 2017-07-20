@@ -19,9 +19,11 @@
 #include <folly/futures/Future.h>
 #include <thrift/lib/cpp2/FrozenTApplicationException.h>
 #include <thrift/lib/cpp2/GeneratedHeaderHelper.h>
+#include <thrift/lib/cpp2/SerializationSwitch.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/frozen/Frozen.h>
+#include <thrift/lib/cpp2/protocol/Frozen2Protocol.h>
 #include <type_traits>
 
 namespace apache { namespace thrift {
