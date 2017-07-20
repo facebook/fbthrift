@@ -1055,6 +1055,9 @@ void t_mstch_cpp2_generator::generate_service(t_service const* service) {
       {{"binary", "BinaryProtocol", "T_BINARY_PROTOCOL"}},
       {{"compact", "CompactProtocol", "T_COMPACT_PROTOCOL"}},
   };
+  if (cache_->parsed_options_.count("frozen2")) {
+    protocols.push_back({{"frozen", "Frozen2Protocol", "T_FROZEN2_PROTOCOL"}});
+  }
   for (const auto& protocol : protocols) {
     render_to_file(
         cache_->services_[service_id],

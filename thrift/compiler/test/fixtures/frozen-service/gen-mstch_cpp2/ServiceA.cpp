@@ -11,6 +11,7 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/Frozen2Protocol.h>
 namespace some { namespace ns {
 
 std::unique_ptr<apache::thrift::AsyncProcessor> ServiceASvIf::getProcessor() {
@@ -225,6 +226,24 @@ const ServiceAAsyncProcessor::CompactProtocolProcessMap ServiceAAsyncProcessor::
   {"i32ThrowMethod", &ServiceAAsyncProcessor::_processInThread_i32ThrowMethod<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"moduleAThrowMethod", &ServiceAAsyncProcessor::_processInThread_moduleAThrowMethod<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"mixedMethod", &ServiceAAsyncProcessor::_processInThread_mixedMethod<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+};
+
+const ServiceAAsyncProcessor::Frozen2ProtocolProcessMap& ServiceAAsyncProcessor::getFrozen2ProtocolProcessMap() {
+  return frozen2ProcessMap_;
+}
+
+const ServiceAAsyncProcessor::Frozen2ProtocolProcessMap ServiceAAsyncProcessor::frozen2ProcessMap_ {
+  {"moduleAMethod", &ServiceAAsyncProcessor::_processInThread_moduleAMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>},
+  {"moduleBMethod", &ServiceAAsyncProcessor::_processInThread_moduleBMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>},
+  {"i32StrDoubleMethod", &ServiceAAsyncProcessor::_processInThread_i32StrDoubleMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>},
+  {"versioningMethod", &ServiceAAsyncProcessor::_processInThread_versioningMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>},
+  {"retI32Method", &ServiceAAsyncProcessor::_processInThread_retI32Method<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>},
+  {"retModAMethod", &ServiceAAsyncProcessor::_processInThread_retModAMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>},
+  {"throwMethod", &ServiceAAsyncProcessor::_processInThread_throwMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>},
+  {"multiThrowMethod", &ServiceAAsyncProcessor::_processInThread_multiThrowMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>},
+  {"i32ThrowMethod", &ServiceAAsyncProcessor::_processInThread_i32ThrowMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>},
+  {"moduleAThrowMethod", &ServiceAAsyncProcessor::_processInThread_moduleAThrowMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>},
+  {"mixedMethod", &ServiceAAsyncProcessor::_processInThread_mixedMethod<apache::thrift::Frozen2ProtocolReader, apache::thrift::Frozen2ProtocolWriter>},
 };
 
 }} // some::ns

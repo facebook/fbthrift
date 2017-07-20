@@ -45,6 +45,14 @@
   static const <%service:name%>AsyncProcessor::CompactProtocolProcessMap& getCompactProtocolProcessMap();
  private:
   static const <%service:name%>AsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
+<%#service:frozen2?%>
+ public:
+  using Frozen2ProtocolProcessFunc = ProcessFunc<<%service:name%>AsyncProcessor, apache::thrift::Frozen2ProtocolReader>;
+  using Frozen2ProtocolProcessMap = ProcessMap<Frozen2ProtocolProcessFunc>;
+  static const <%service:name%>AsyncProcessor::Frozen2ProtocolProcessMap& getFrozen2ProtocolProcessMap();
+ private:
+  static const <%service:name%>AsyncProcessor::Frozen2ProtocolProcessMap frozen2ProcessMap_;
+<%/service:frozen2?%>
  private:
 <%#service:functions%><%#function:returnType%>
 <%^function:eb%>

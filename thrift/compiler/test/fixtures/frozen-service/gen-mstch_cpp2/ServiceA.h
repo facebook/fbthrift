@@ -15,6 +15,7 @@
 
 
 #include "thrift/compiler/test/fixtures/frozen-service/gen-cpp2/module_types.h"
+#include "module_layouts.h"
 
 namespace folly {
   class IOBuf;
@@ -24,6 +25,7 @@ namespace apache { namespace thrift {
   class Cpp2RequestContext;
   class BinaryProtocolReader;
   class CompactProtocolReader;
+  class Frozen2ProtocolReader;
   namespace transport { class THeader; }
 }}
 
@@ -149,6 +151,12 @@ class ServiceAAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor 
   static const ServiceAAsyncProcessor::CompactProtocolProcessMap& getCompactProtocolProcessMap();
  private:
   static const ServiceAAsyncProcessor::CompactProtocolProcessMap compactProcessMap_;
+ public:
+  using Frozen2ProtocolProcessFunc = ProcessFunc<ServiceAAsyncProcessor, apache::thrift::Frozen2ProtocolReader>;
+  using Frozen2ProtocolProcessMap = ProcessMap<Frozen2ProtocolProcessFunc>;
+  static const ServiceAAsyncProcessor::Frozen2ProtocolProcessMap& getFrozen2ProtocolProcessMap();
+ private:
+  static const ServiceAAsyncProcessor::Frozen2ProtocolProcessMap frozen2ProcessMap_;
  private:
   template <typename ProtocolIn_, typename ProtocolOut_>
   void _processInThread_moduleAMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);

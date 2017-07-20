@@ -37,6 +37,9 @@
 <%/service:extends%>
 
 #include "<%service:programIncludePrefix%><%service:programName%>_types.h"
+<%#service:frozen2?%>
+#include "<%service:normalizedIncludePrefix%><%service:programName%>_layouts.h"
+<%/service:frozen2?%>
 
 namespace folly {
   class IOBuf;
@@ -46,6 +49,9 @@ namespace apache { namespace thrift {
   class Cpp2RequestContext;
   class BinaryProtocolReader;
   class CompactProtocolReader;
+<%#service:frozen2?%>
+  class Frozen2ProtocolReader;
+<%/service:frozen2?%>
   namespace transport { class THeader; }
 }}
 
