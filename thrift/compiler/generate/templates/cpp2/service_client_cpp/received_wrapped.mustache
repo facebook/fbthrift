@@ -48,6 +48,13 @@ folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:na
       return recv_wrapped_<%function:name%>T(&reader, _return, state);
 <%/type:void?%>
     }
+<%#service:frozen2?%>
+    case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
+    {
+      apache::thrift::Frozen2ProtocolReader reader;
+      return recv_wrapped_<%function:name%>T(&reader, <%^type:void?%>_return, <%/type:void?%>state);
+    }
+<%/service:frozen2?%>
     default:
     {
     }

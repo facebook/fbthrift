@@ -37,6 +37,14 @@ void <%service:name%>AsyncClient::<%function:name%>Impl(bool useSync, apache::th
       <%function:name%>T(&writer, useSync, rpcOptions, std::move(callback)<% > service_common/param_list%>);
       break;
     }
+<%#service:frozen2?%>
+    case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
+    {
+      apache::thrift::Frozen2ProtocolWriter writer;
+      <%function:name%>T(&writer, useSync, rpcOptions, std::move(callback)<% > service_common/param_list%>);
+      break;
+    }
+<%/service:frozen2?%>
     default:
     {
       throw apache::thrift::TApplicationException("Could not find Protocol");

@@ -10,6 +10,7 @@
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/Frozen2Protocol.h>
 namespace some { namespace ns {
 
 const char* ServiceAAsyncClient::getServiceName() {
@@ -36,6 +37,12 @@ void ServiceAAsyncClient::moduleAMethodImpl(bool useSync, apache::thrift::RpcOpt
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
+      moduleAMethodT(&writer, useSync, rpcOptions, std::move(callback), modArg);
+      break;
+    }
+    case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
+    {
+      apache::thrift::Frozen2ProtocolWriter writer;
       moduleAMethodT(&writer, useSync, rpcOptions, std::move(callback), modArg);
       break;
     }
@@ -111,6 +118,11 @@ folly::exception_wrapper ServiceAAsyncClient::recv_wrapped_moduleAMethod(::apach
       apache::thrift::CompactProtocolReader reader;
       return recv_wrapped_moduleAMethodT(&reader, state);
     }
+    case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
+    {
+      apache::thrift::Frozen2ProtocolReader reader;
+      return recv_wrapped_moduleAMethodT(&reader, state);
+    }
     default:
     {
     }
@@ -153,6 +165,12 @@ void ServiceAAsyncClient::moduleBMethodImpl(bool useSync, apache::thrift::RpcOpt
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
+      moduleBMethodT(&writer, useSync, rpcOptions, std::move(callback), modArg);
+      break;
+    }
+    case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
+    {
+      apache::thrift::Frozen2ProtocolWriter writer;
       moduleBMethodT(&writer, useSync, rpcOptions, std::move(callback), modArg);
       break;
     }
@@ -228,6 +246,11 @@ folly::exception_wrapper ServiceAAsyncClient::recv_wrapped_moduleBMethod(::apach
       apache::thrift::CompactProtocolReader reader;
       return recv_wrapped_moduleBMethodT(&reader, state);
     }
+    case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
+    {
+      apache::thrift::Frozen2ProtocolReader reader;
+      return recv_wrapped_moduleBMethodT(&reader, state);
+    }
     default:
     {
     }
@@ -270,6 +293,12 @@ void ServiceAAsyncClient::i32StrDoubleMethodImpl(bool useSync, apache::thrift::R
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
+      i32StrDoubleMethodT(&writer, useSync, rpcOptions, std::move(callback), i32Arg, strArg, doubleArg);
+      break;
+    }
+    case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
+    {
+      apache::thrift::Frozen2ProtocolWriter writer;
       i32StrDoubleMethodT(&writer, useSync, rpcOptions, std::move(callback), i32Arg, strArg, doubleArg);
       break;
     }
@@ -345,6 +374,11 @@ folly::exception_wrapper ServiceAAsyncClient::recv_wrapped_i32StrDoubleMethod(::
       apache::thrift::CompactProtocolReader reader;
       return recv_wrapped_i32StrDoubleMethodT(&reader, state);
     }
+    case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
+    {
+      apache::thrift::Frozen2ProtocolReader reader;
+      return recv_wrapped_i32StrDoubleMethodT(&reader, state);
+    }
     default:
     {
     }
@@ -387,6 +421,12 @@ void ServiceAAsyncClient::versioningMethodImpl(bool useSync, apache::thrift::Rpc
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
+      versioningMethodT(&writer, useSync, rpcOptions, std::move(callback), i32Arg, strArg, doubleArg);
+      break;
+    }
+    case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
+    {
+      apache::thrift::Frozen2ProtocolWriter writer;
       versioningMethodT(&writer, useSync, rpcOptions, std::move(callback), i32Arg, strArg, doubleArg);
       break;
     }
@@ -462,6 +502,11 @@ folly::exception_wrapper ServiceAAsyncClient::recv_wrapped_versioningMethod(::ap
       apache::thrift::CompactProtocolReader reader;
       return recv_wrapped_versioningMethodT(&reader, state);
     }
+    case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
+    {
+      apache::thrift::Frozen2ProtocolReader reader;
+      return recv_wrapped_versioningMethodT(&reader, state);
+    }
     default:
     {
     }
@@ -504,6 +549,12 @@ void ServiceAAsyncClient::retI32MethodImpl(bool useSync, apache::thrift::RpcOpti
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
+      retI32MethodT(&writer, useSync, rpcOptions, std::move(callback));
+      break;
+    }
+    case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
+    {
+      apache::thrift::Frozen2ProtocolWriter writer;
       retI32MethodT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
@@ -579,6 +630,11 @@ folly::exception_wrapper ServiceAAsyncClient::recv_wrapped_retI32Method(int32_t&
       apache::thrift::CompactProtocolReader reader;
       return recv_wrapped_retI32MethodT(&reader, _return, state);
     }
+    case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
+    {
+      apache::thrift::Frozen2ProtocolReader reader;
+      return recv_wrapped_retI32MethodT(&reader, _return, state);
+    }
     default:
     {
     }
@@ -623,6 +679,12 @@ void ServiceAAsyncClient::retModAMethodImpl(bool useSync, apache::thrift::RpcOpt
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
+      retModAMethodT(&writer, useSync, rpcOptions, std::move(callback));
+      break;
+    }
+    case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
+    {
+      apache::thrift::Frozen2ProtocolWriter writer;
       retModAMethodT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
@@ -698,6 +760,11 @@ folly::exception_wrapper ServiceAAsyncClient::recv_wrapped_retModAMethod( ::some
       apache::thrift::CompactProtocolReader reader;
       return recv_wrapped_retModAMethodT(&reader, _return, state);
     }
+    case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
+    {
+      apache::thrift::Frozen2ProtocolReader reader;
+      return recv_wrapped_retModAMethodT(&reader, _return, state);
+    }
     default:
     {
     }
@@ -740,6 +807,12 @@ void ServiceAAsyncClient::throwMethodImpl(bool useSync, apache::thrift::RpcOptio
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
+      throwMethodT(&writer, useSync, rpcOptions, std::move(callback));
+      break;
+    }
+    case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
+    {
+      apache::thrift::Frozen2ProtocolWriter writer;
       throwMethodT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
@@ -815,6 +888,11 @@ folly::exception_wrapper ServiceAAsyncClient::recv_wrapped_throwMethod(::apache:
       apache::thrift::CompactProtocolReader reader;
       return recv_wrapped_throwMethodT(&reader, state);
     }
+    case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
+    {
+      apache::thrift::Frozen2ProtocolReader reader;
+      return recv_wrapped_throwMethodT(&reader, state);
+    }
     default:
     {
     }
@@ -857,6 +935,12 @@ void ServiceAAsyncClient::multiThrowMethodImpl(bool useSync, apache::thrift::Rpc
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
+      multiThrowMethodT(&writer, useSync, rpcOptions, std::move(callback));
+      break;
+    }
+    case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
+    {
+      apache::thrift::Frozen2ProtocolWriter writer;
       multiThrowMethodT(&writer, useSync, rpcOptions, std::move(callback));
       break;
     }
@@ -932,6 +1016,11 @@ folly::exception_wrapper ServiceAAsyncClient::recv_wrapped_multiThrowMethod(::ap
       apache::thrift::CompactProtocolReader reader;
       return recv_wrapped_multiThrowMethodT(&reader, state);
     }
+    case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
+    {
+      apache::thrift::Frozen2ProtocolReader reader;
+      return recv_wrapped_multiThrowMethodT(&reader, state);
+    }
     default:
     {
     }
@@ -974,6 +1063,12 @@ void ServiceAAsyncClient::i32ThrowMethodImpl(bool useSync, apache::thrift::RpcOp
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
+      i32ThrowMethodT(&writer, useSync, rpcOptions, std::move(callback), i32Arg);
+      break;
+    }
+    case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
+    {
+      apache::thrift::Frozen2ProtocolWriter writer;
       i32ThrowMethodT(&writer, useSync, rpcOptions, std::move(callback), i32Arg);
       break;
     }
@@ -1049,6 +1144,11 @@ folly::exception_wrapper ServiceAAsyncClient::recv_wrapped_i32ThrowMethod(::apac
       apache::thrift::CompactProtocolReader reader;
       return recv_wrapped_i32ThrowMethodT(&reader, state);
     }
+    case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
+    {
+      apache::thrift::Frozen2ProtocolReader reader;
+      return recv_wrapped_i32ThrowMethodT(&reader, state);
+    }
     default:
     {
     }
@@ -1091,6 +1191,12 @@ void ServiceAAsyncClient::moduleAThrowMethodImpl(bool useSync, apache::thrift::R
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
+      moduleAThrowMethodT(&writer, useSync, rpcOptions, std::move(callback), modArg);
+      break;
+    }
+    case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
+    {
+      apache::thrift::Frozen2ProtocolWriter writer;
       moduleAThrowMethodT(&writer, useSync, rpcOptions, std::move(callback), modArg);
       break;
     }
@@ -1166,6 +1272,11 @@ folly::exception_wrapper ServiceAAsyncClient::recv_wrapped_moduleAThrowMethod(::
       apache::thrift::CompactProtocolReader reader;
       return recv_wrapped_moduleAThrowMethodT(&reader, state);
     }
+    case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
+    {
+      apache::thrift::Frozen2ProtocolReader reader;
+      return recv_wrapped_moduleAThrowMethodT(&reader, state);
+    }
     default:
     {
     }
@@ -1208,6 +1319,12 @@ void ServiceAAsyncClient::mixedMethodImpl(bool useSync, apache::thrift::RpcOptio
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
+      mixedMethodT(&writer, useSync, rpcOptions, std::move(callback), strArg, i32Arg, modArg);
+      break;
+    }
+    case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
+    {
+      apache::thrift::Frozen2ProtocolWriter writer;
       mixedMethodT(&writer, useSync, rpcOptions, std::move(callback), strArg, i32Arg, modArg);
       break;
     }
@@ -1281,6 +1398,11 @@ folly::exception_wrapper ServiceAAsyncClient::recv_wrapped_mixedMethod(std::stri
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolReader reader;
+      return recv_wrapped_mixedMethodT(&reader, _return, state);
+    }
+    case apache::thrift::protocol::T_FROZEN2_PROTOCOL:
+    {
+      apache::thrift::Frozen2ProtocolReader reader;
       return recv_wrapped_mixedMethodT(&reader, _return, state);
     }
     default:
