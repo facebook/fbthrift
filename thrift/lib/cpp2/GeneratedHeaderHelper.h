@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Facebook, Inc.
+ * Copyright 2016-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #pragma once
 
 namespace folly {
@@ -31,6 +30,8 @@ class BinaryProtocolReader;
 class BinaryProtocolWriter;
 class CompactProtocolReader;
 class CompactProtocolWriter;
+class Frozen2ProtocolReader;
+class Frozen2ProtocolWriter;
 
 } // thrift
 } // apache

@@ -1247,6 +1247,30 @@ void process_pmap(
       std::move(req), std::move(buf), std::move(iprot), ctx, eb, tm);
 }
 
+template <class Processor, typename... Args>
+inline void process_frozen(
+    Processor*,
+    std::unique_ptr<ResponseChannel::Request>,
+    std::unique_ptr<folly::IOBuf>,
+    Args&&...) {
+  LOG(ERROR) << "Received Frozen2Protocol request, "
+             << "but server is not built with Frozen2 support";
+}
+
+template <class Processor>
+inline auto process_frozen(
+    Processor* processor,
+    std::unique_ptr<ResponseChannel::Request> req,
+    std::unique_ptr<folly::IOBuf> buf,
+    Cpp2RequestContext* ctx,
+    folly::EventBase* eb,
+    concurrency::ThreadManager* tm)
+    -> decltype(processor->getFrozen2ProtocolProcessMap(), void()) {
+  const auto& pmap = processor->getFrozen2ProtocolProcessMap();
+  return process_pmap(
+      processor, pmap, std::move(req), std::move(buf), ctx, eb, tm);
+}
+
 //  Generated AsyncProcessor::process just calls this.
 template <class Processor>
 void process(
@@ -1267,6 +1291,10 @@ void process(
       const auto& pmap = processor->getCompactProtocolProcessMap();
       return process_pmap(
           processor, pmap, std::move(req), std::move(buf), ctx, eb, tm);
+    }
+    case protocol::T_FROZEN2_PROTOCOL: {
+      return process_frozen(
+          processor, std::move(req), std::move(buf), ctx, eb, tm);
     }
     default:
       LOG(ERROR) << "invalid protType: " << protType;
