@@ -95,6 +95,10 @@ bool record_genfiles = false;
   fprintf(stderr, "                Many options will not require values.\n");
   fprintf(stderr, "  --record-genfiles FILE\n");
   fprintf(stderr, "              Save the list of generated files to FILE\n");
+  fprintf(stderr, "  --python-compiler FILE\n");
+  fprintf(
+      stderr,
+      "              Path to the python implementation of the thrift compiler\n");
   fprintf(stderr, "\n");
   fprintf(stderr, "Available generators (and options):\n");
 
@@ -118,6 +122,7 @@ static bool generate(
     t_program* program,
     const vector<string>& generator_strings,
     std::set<std::string>& already_generated,
+    const std::string& user_python_compiler,
     char** argv) {
   // Oooohh, recursive code generation, hot!!
   if (gen_recurse) {
@@ -131,7 +136,12 @@ static bool generate(
       include->set_out_path(
           program->get_out_path(), program->is_out_path_absolute());
 
-      if (!generate(include, generator_strings, already_generated, argv)) {
+      if (!generate(
+              include,
+              generator_strings,
+              already_generated,
+              user_python_compiler,
+              argv)) {
         return false;
       } else {
         already_generated.insert(include->get_path());
@@ -160,15 +170,24 @@ static bool generate(
           ifstream ifile;
           auto dirname = path.substr(0, last + 1);
           std::string pycompiler;
-          std::vector<std::string> pycompilers = {
-            "py/thrift.lpar",
-            "py/thrift.par",
-            "../py/thrift.par",
-            "py/thrift.xar",
-            "../py/thrift.xar",
-          };
+          std::vector<std::string> pycompilers;
+          if (!user_python_compiler.empty()) {
+            pycompilers.push_back(user_python_compiler);
+          }
+          pycompilers.insert(
+              pycompilers.end(),
+              {
+                  dirname + "py/thrift.lpar",
+                  dirname + "../py/thrift.lpar",
+                  dirname + "py/thrift.par",
+                  dirname + "../py/thrift.par",
+                  dirname + "py/thrift.xar",
+                  dirname + "../py/thrift.xar",
+                  dirname + "py/thrift.pex",
+                  dirname + "../py/thrift.pex",
+              });
           for (const auto& comp : pycompilers) {
-            pycompiler = dirname + comp;
+            pycompiler = comp;
             ifile.open(pycompiler.c_str());
             if (ifile) break;
           }
@@ -227,6 +246,7 @@ int main(int argc, char** argv) {
     usage();
   }
 
+  std::string user_python_compiler;
   vector<string> generator_strings;
 
   // Set the current path to a dummy value to make warning messages clearer.
@@ -397,6 +417,19 @@ int main(int argc, char** argv) {
           return -1;
         }
 #       endif
+      } else if (strcmp(arg, "-python-compiler") == 0) {
+        if (i + 1 == argc - 1) {
+          fprintf(
+              stderr,
+              "No path was given for the python compiler between "
+              "%s and '%s'\n",
+              arg,
+              argv[i + 1]);
+          usage();
+        }
+        arg = argv[++i];
+        user_python_compiler = arg;
+        break;
       } else {
         fprintf(stderr, "!!! Unrecognized option: %s\n", arg);
         usage();
@@ -555,7 +588,12 @@ int main(int argc, char** argv) {
   bool success;
   try {
     std::set<std::string> already_generated{program->get_path()};
-    success = generate(program, generator_strings, already_generated, argv);
+    success = generate(
+        program,
+        generator_strings,
+        already_generated,
+        user_python_compiler,
+        argv);
   } catch (const std::exception &e) {
     std::cerr << e.what() << std::endl;
     return 1;

@@ -108,6 +108,8 @@ def init_parser():
             'generator. Many options will not require values.')),
         (['--fbcode_dir'], {}),
         (['--record-genfiles'], {}),
+        # Only used as a passthrough from the C++ compiler
+        (['--python-compiler'], {}),
     ]
 
     for i, j in rules:
