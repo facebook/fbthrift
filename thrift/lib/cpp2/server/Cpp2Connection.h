@@ -58,7 +58,7 @@ class Cpp2Connection
    *        should be nullptr in normal mode
    */
   Cpp2Connection(
-    const std::shared_ptr<apache::thrift::async::TAsyncSocket>& asyncSocket,
+      const std::shared_ptr<apache::thrift::async::TAsyncTransport>& transport,
       const folly::SocketAddress* address,
       std::shared_ptr<Cpp2Worker> worker,
       const std::shared_ptr<HeaderServerChannel>& serverChannel = nullptr);
@@ -112,7 +112,7 @@ class Cpp2Connection
   }
   Cpp2ConnContext context_;
 
-  std::shared_ptr<apache::thrift::async::TAsyncSocket> socket_;
+  std::shared_ptr<apache::thrift::async::TAsyncTransport> transport_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
 
   /**

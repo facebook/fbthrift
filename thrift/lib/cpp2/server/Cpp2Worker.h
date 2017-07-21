@@ -154,6 +154,9 @@ class Cpp2Worker
                        wangle::SecureTransportType,
                        const wangle::TransportInfo&) override;
 
+  virtual std::shared_ptr<async::TAsyncTransport> createThriftTransport(
+      folly::AsyncTransportWrapper::UniquePtr);
+
   SSLPolicy getSSLPolicy() {
     return server_->getSSLPolicy();
   }

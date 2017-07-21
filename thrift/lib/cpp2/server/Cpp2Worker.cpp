@@ -60,29 +60,34 @@ void Cpp2Worker::onNewConnection(
     return;
   }
 
+  auto fd = sock->getUnderlyingTransport<folly::AsyncSocket>()->getFd();
+  VLOG(4) << "Cpp2Worker: Creating connection for socket " << fd;
+
+  auto thriftTransport = createThriftTransport(std::move(sock));
+  auto connection = std::make_shared<Cpp2Connection>(
+      std::move(thriftTransport), addr, shared_from_this());
+  Acceptor::addConnection(connection.get());
+  connection->addConnection(connection);
+  connection->start();
+
+  VLOG(4) << "Cpp2Worker: created connection for socket " << fd;
+
+  if (observer) {
+    observer->connAccepted();
+    observer->activeConnections(
+        getConnectionManager()->getNumConnections() * server_->nWorkers_);
+  }
+}
+
+std::shared_ptr<async::TAsyncTransport> Cpp2Worker::createThriftTransport(
+    folly::AsyncTransportWrapper::UniquePtr sock) {
   TAsyncSocket* tsock = dynamic_cast<TAsyncSocket*>(sock.release());
   CHECK(tsock);
   auto asyncSocket = std::shared_ptr<TAsyncSocket>(
     tsock, TAsyncSocket::Destructor());
-
-  VLOG(4) << "Cpp2Worker: Creating connection for socket " <<
-    asyncSocket->getFd();
-
   asyncSocket->setIsAccepted(true);
   asyncSocket->setShutdownSocketSet(server_->shutdownSocketSet_.get());
-  auto result = std::make_shared<Cpp2Connection>(
-                                  asyncSocket, addr, shared_from_this());
-  Acceptor::addConnection(result.get());
-  result->addConnection(result);
-  result->start();
-
-  VLOG(4) << "Cpp2Worker: created connection for socket " <<
-    asyncSocket->getFd();
-  if (observer) {
-    observer->connAccepted();
-    observer->activeConnections(
-      getConnectionManager()->getNumConnections() * server_->nWorkers_);
-  }
+  return asyncSocket;
 }
 
 void Cpp2Worker::plaintextConnectionReady(

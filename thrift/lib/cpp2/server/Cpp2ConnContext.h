@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Facebook, Inc.
+ * Copyright 2014-present Facebook, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 #ifndef THRIFT_ASYNC_CPP2CONNCONTEXT_H_
 #define THRIFT_ASYNC_CPP2CONNCONTEXT_H_ 1
 
@@ -44,26 +43,26 @@ class TClientBase;
 class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
  public:
   explicit Cpp2ConnContext(
-    const folly::SocketAddress* address = nullptr,
-    const apache::thrift::async::TAsyncSocket* socket = nullptr,
-    const apache::thrift::SaslServer* sasl_server = nullptr,
-    folly::EventBaseManager* manager = nullptr,
-    const std::shared_ptr<RequestChannel>& duplexChannel = nullptr,
-    const std::shared_ptr<X509> peerCert = nullptr /*overridden from socket*/,
-    apache::thrift::ClientIdentityHook clientIdentityHook = nullptr)
-    : saslServer_(sasl_server),
-      manager_(manager),
-      requestHeader_(nullptr),
-      duplexChannel_(duplexChannel),
-      peerCert_(peerCert),
-      peerIdentities_(nullptr, [](void*){}) {
+      const folly::SocketAddress* address = nullptr,
+      const apache::thrift::async::TAsyncTransport* transport = nullptr,
+      const apache::thrift::SaslServer* sasl_server = nullptr,
+      folly::EventBaseManager* manager = nullptr,
+      const std::shared_ptr<RequestChannel>& duplexChannel = nullptr,
+      const std::shared_ptr<X509> peerCert = nullptr /*overridden from socket*/,
+      apache::thrift::ClientIdentityHook clientIdentityHook = nullptr)
+      : saslServer_(sasl_server),
+        manager_(manager),
+        requestHeader_(nullptr),
+        duplexChannel_(duplexChannel),
+        peerCert_(peerCert),
+        peerIdentities_(nullptr, [](void*) {}) {
     if (address) {
       peerAddress_ = *address;
     }
-    if (socket) {
-      socket->getLocalAddress(&localAddress_);
-      if (auto sslSocket = dynamic_cast<const async::TAsyncSSLSocket*>(socket)) {
-        peerCert_ = sslSocket->getPeerCert();
+    if (transport) {
+      transport->getLocalAddress(&localAddress_);
+      peerCert_ = transport->getPeerCert();
+      if (transport->getUnderlyingTransport<async::TAsyncSSLSocket>()) {
         isTls_ = true;
       }
     }

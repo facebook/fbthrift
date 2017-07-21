@@ -17,7 +17,6 @@
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 
 #include <thrift/lib/cpp/async/TEventConnection.h>
-#include <thrift/lib/cpp/async/TAsyncSocket.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/security/SecurityKillSwitch.h>
@@ -49,31 +48,33 @@ bool Cpp2Connection::isClientLocal(const folly::SocketAddress& clientAddr,
 }
 
 Cpp2Connection::Cpp2Connection(
-  const std::shared_ptr<TAsyncSocket>& asyncSocket,
-  const folly::SocketAddress* address,
-  std::shared_ptr<Cpp2Worker> worker,
-  const std::shared_ptr<HeaderServerChannel>& serverChannel)
-    : processor_(worker->getServer()->getCpp2Processor())
-    , duplexChannel_(worker->getServer()->isDuplex() ?
-        std::make_unique<DuplexChannel>(
-            DuplexChannel::Who::SERVER, asyncSocket) :
-        nullptr)
-    , channel_(serverChannel ? serverChannel :  // used by client
-               duplexChannel_ ? duplexChannel_->getServerChannel() : // server
-               std::shared_ptr<HeaderServerChannel>(
-                   new HeaderServerChannel(asyncSocket),
-                   folly::DelayedDestruction::Destructor()))
-    , worker_(std::move(worker))
-    , context_(address,
-               asyncSocket.get(),
-               channel_->getSaslServer(),
-               worker_->getServer()->getEventBaseManager(),
-               duplexChannel_ ? duplexChannel_->getClientChannel() : nullptr,
-               nullptr,
-               worker_->getServer()->getClientIdentityHook())
-    , socket_(asyncSocket)
-    , threadManager_(worker_->getServer()->getThreadManager()) {
-
+    const std::shared_ptr<TAsyncTransport>& transport,
+    const folly::SocketAddress* address,
+    std::shared_ptr<Cpp2Worker> worker,
+    const std::shared_ptr<HeaderServerChannel>& serverChannel)
+    : processor_(worker->getServer()->getCpp2Processor()),
+      duplexChannel_(
+          worker->getServer()->isDuplex() ? std::make_unique<DuplexChannel>(
+                                                DuplexChannel::Who::SERVER,
+                                                transport)
+                                          : nullptr),
+      channel_(
+          serverChannel ? serverChannel : // used by client
+              duplexChannel_ ? duplexChannel_->getServerChannel() : // server
+                  std::shared_ptr<HeaderServerChannel>(
+                      new HeaderServerChannel(transport),
+                      folly::DelayedDestruction::Destructor())),
+      worker_(std::move(worker)),
+      context_(
+          address,
+          transport.get(),
+          channel_->getSaslServer(),
+          worker_->getServer()->getEventBaseManager(),
+          duplexChannel_ ? duplexChannel_->getClientChannel() : nullptr,
+          nullptr,
+          worker_->getServer()->getClientIdentityHook()),
+      transport_(transport),
+      threadManager_(worker_->getServer()->getThreadManager()) {
   channel_->setQueueSends(worker_->getServer()->getQueueSends());
   channel_->setMinCompressBytes(worker_->getServer()->getMinCompressBytes());
   channel_->setDefaultWriteTransforms(
@@ -102,12 +103,11 @@ Cpp2Connection::Cpp2Connection(
     }
   }
 
-  if (asyncSocket) {
+  if (transport) {
     auto factory = worker_->getServer()->getSaslServerFactory();
     if (factory) {
       channel_->setSaslServer(
-        unique_ptr<SaslServer>(factory(asyncSocket->getEventBase()))
-      );
+          unique_ptr<SaslServer>(factory(transport->getEventBase())));
       // Refresh the saslServer_ pointer in context_
       context_.setSaslServer(channel_->getSaslServer());
     }
@@ -164,7 +164,7 @@ void Cpp2Connection::stop() {
     channel_->closeNow();
   }
 
-  socket_.reset();
+  transport_.reset();
 
   this_.reset();
 }
@@ -211,7 +211,7 @@ void Cpp2Connection::queueTimeoutExpired() {
 }
 
 bool Cpp2Connection::pending() {
-  return socket_ ? socket_->isPending() : false;
+  return transport_ ? transport_->isPending() : false;
 }
 
 void Cpp2Connection::killRequest(
@@ -321,7 +321,7 @@ void Cpp2Connection::requestReceived(
 
   if (useHttpHandler && worker_->getServer()->getGetHandler()) {
     worker_->getServer()->getGetHandler()(
-        worker_->getEventBase(), socket_, req->extractBuf());
+        worker_->getEventBase(), transport_, req->extractBuf());
 
     // Close the channel, since the handler now owns the socket.
     channel_->setCallback(nullptr);
