@@ -177,8 +177,11 @@ static bool generate(
             ret = execv(pycompiler.c_str(), argv);
           }
           if (!ifile || ret < 0) {
-            pwarning(1, "Unable to get a generator for \"%s\".\n",
-                     iter->c_str());
+            pwarning(
+                1,
+                "Unable to get a generator for \"%s\" ret: %d.\n",
+                iter->c_str(),
+                ret);
           }
         }
       } else {
@@ -260,18 +263,26 @@ int main(int argc, char** argv) {
         g_allow_64bit_consts = true;
       } else if (strcmp(arg, "-record-genfiles") == 0) {
         record_genfiles = true;
-        arg = argv[++i];
-        if (arg == nullptr) {
-          fprintf(stderr, "!!! Missing genfile file specification\n");
+        if (i + 1 == argc - 1) {
+          fprintf(
+              stderr,
+              "!!! Missing genfile file specification between %s and '%s'\n",
+              arg,
+              argv[i + 1]);
           usage();
         }
+        arg = argv[++i];
         genfile_file.open(arg);
       } else if (strcmp(arg, "-gen") == 0) {
-        arg = argv[++i];
-        if (arg == nullptr) {
-          fprintf(stderr, "!!! Missing generator specification\n");
+        if (i + 1 == argc - 1) {
+          fprintf(
+              stderr,
+              "!!! Missing generator specification between %s and '%s'\n",
+              arg,
+              argv[i + 1]);
           usage();
         }
+        arg = argv[++i];
         generator_strings.push_back(arg);
       } else if (strcmp(arg, "-dense") == 0) {
         gen_dense = true;
@@ -324,29 +335,36 @@ int main(int argc, char** argv) {
       } else if (strcmp(arg, "-cpp_use_include_prefix") == 0) {
         g_cpp_use_include_prefix = true;
       } else if (strcmp(arg, "-I") == 0) {
-        // An argument of "-I\ asdf" is invalid and has unknown results
-        arg = argv[++i];
-
-        if (arg == nullptr) {
-          fprintf(stderr, "!!! Missing Include directory\n");
+        if (i + 1 == argc - 1) {
+          fprintf(
+              stderr,
+              "!!! Missing Include directory between %s and '%s'\n",
+              arg,
+              argv[i + 1]);
           usage();
         }
+        // An argument of "-I\ asdf" is invalid and has unknown results
+        arg = argv[++i];
         g_incl_searchpath.push_back(arg);
       } else if (strcmp(arg, "-templates") == 0) {
-        arg = argv[++i];
-        if (arg == nullptr) {
+        if (i + 1 == argc - 1) {
           fprintf(stderr, "-templates: missing template directory");
           usage();
         }
+        arg = argv[++i];
         g_template_dir = arg;
 
       } else if (strcmp(arg, "-o") == 0 || (strcmp(arg, "-out") == 0)) {
         out_path_is_absolute = (strcmp(arg, "-out") == 0) ? true : false;
-        arg = argv[++i];
-        if (arg == nullptr) {
-          fprintf(stderr, "-o: missing output directory\n");
+        if (i + 1 == argc - 1) {
+          fprintf(
+              stderr,
+              "-o: missing output directory between %s and '%s'\n",
+              arg,
+              argv[i + 1]);
           usage();
         }
+        arg = argv[++i];
         out_path = arg;
 
         // Strip out trailing \ on a Windows path
