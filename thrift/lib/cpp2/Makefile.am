@@ -88,7 +88,7 @@ thrift2include_frozen2_HEADERS = \
 	frozen/FrozenTestUtil.h \
 	frozen/FrozenAssociative-inl.h \
 	frozen/FrozenBool-inl.h \
-	frozen/FrozenEnum-inl \
+	frozen/FrozenEnum-inl.h \
 	frozen/FrozenHashtable-inl.h \
 	frozen/FrozenIntegral-inl.h \
 	frozen/FrozenOptional-inl.h \
@@ -277,7 +277,7 @@ endif
 
 libthriftcpp2_la_LIBADD = \
 	../cpp/libthrift.la \
-	libfrozen2.la \
+	libthriftfrozen2.la \
 	libthriftprotocol.la \
 	libsaslstubs.a \
 	$(FOLLY_LIBS) \
