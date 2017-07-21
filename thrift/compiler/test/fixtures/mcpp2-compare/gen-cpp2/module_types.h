@@ -321,6 +321,8 @@ template <> inline constexpr  ::some::valid::ns::MyEnumB TEnumTraits< ::some::va
 }} // apache::thrift
 namespace some { namespace valid { namespace ns {
 
+typedef  ::a::different::ns::AStruct AStruct;
+
 typedef int32_t simpleTypeDef;
 
 typedef std::map<int16_t, std::string> containerTypeDef;
@@ -4740,9 +4742,11 @@ class MyIncludedStruct : private apache::thrift::detail::st::ComparisonOperators
       MyIncludedInt(42LL) {}
   // FragileConstructor for use in initialization lists only
 
-  MyIncludedStruct(apache::thrift::FragileConstructor,  ::a::different::ns::IncludedInt64 MyIncludedInt__arg) :
-      MyIncludedInt(std::move(MyIncludedInt__arg)) {
+  MyIncludedStruct(apache::thrift::FragileConstructor,  ::a::different::ns::IncludedInt64 MyIncludedInt__arg,  ::some::valid::ns::AStruct MyIncludedStruct__arg) :
+      MyIncludedInt(std::move(MyIncludedInt__arg)),
+      MyIncludedStruct(std::move(MyIncludedStruct__arg)) {
     __isset.MyIncludedInt = true;
+    __isset.MyIncludedStruct = true;
   }
   template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
   MyIncludedStruct(::apache::thrift::detail::argument_wrapper<1, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
@@ -4750,6 +4754,13 @@ class MyIncludedStruct : private apache::thrift::detail::st::ComparisonOperators
   {
     MyIncludedInt = arg.move();
     __isset.MyIncludedInt = true;
+  }
+  template <typename T__ThriftWrappedArgument__Ctor, typename... Args__ThriftWrappedArgument__Ctor>
+  MyIncludedStruct(::apache::thrift::detail::argument_wrapper<2, T__ThriftWrappedArgument__Ctor> arg, Args__ThriftWrappedArgument__Ctor&&... args):
+    MyIncludedStruct(std::forward<Args__ThriftWrappedArgument__Ctor>(args)...)
+  {
+    MyIncludedStruct = arg.move();
+    __isset.MyIncludedStruct = true;
   }
 
   MyIncludedStruct(MyIncludedStruct&&) = default;
@@ -4764,13 +4775,16 @@ class MyIncludedStruct : private apache::thrift::detail::st::ComparisonOperators
   virtual ~MyIncludedStruct() throw() {}
 
    ::a::different::ns::IncludedInt64 MyIncludedInt;
+   ::some::valid::ns::AStruct MyIncludedStruct;
 
   struct __isset {
     void __clear() {
       MyIncludedInt = false;
+      MyIncludedStruct = false;
     }
 
     bool MyIncludedInt = false;
+    bool MyIncludedStruct = false;
   } __isset;
   bool operator==(const MyIncludedStruct& rhs) const;
   bool operator < (const MyIncludedStruct& rhs) const;
@@ -4783,6 +4797,15 @@ class MyIncludedStruct : private apache::thrift::detail::st::ComparisonOperators
     MyIncludedInt = MyIncludedInt_;
     __isset.MyIncludedInt = true;
     return MyIncludedInt;
+  }
+  const  ::some::valid::ns::AStruct& get_MyIncludedStruct() const&;
+   ::some::valid::ns::AStruct get_MyIncludedStruct() &&;
+
+  template <typename T_MyIncludedStruct_MyIncludedStruct_struct_setter>
+   ::some::valid::ns::AStruct& set_MyIncludedStruct(T_MyIncludedStruct_MyIncludedStruct_struct_setter&& MyIncludedStruct_) {
+    MyIncludedStruct = std::forward<T_MyIncludedStruct_MyIncludedStruct_struct_setter>(MyIncludedStruct_);
+    __isset.MyIncludedStruct = true;
+    return MyIncludedStruct;
   }
 
   template <class Protocol_>

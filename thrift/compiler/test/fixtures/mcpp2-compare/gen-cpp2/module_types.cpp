@@ -1412,6 +1412,7 @@ namespace some { namespace valid { namespace ns {
 void MyIncludedStruct::__clear() {
   // clear all fields
   MyIncludedInt = 42LL;
+  ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AStruct>::clear(&MyIncludedStruct);
   __isset.__clear();
 }
 
@@ -1419,12 +1420,24 @@ bool MyIncludedStruct::operator==(const MyIncludedStruct& rhs) const {
   if (!((MyIncludedInt == rhs.MyIncludedInt))) {
     return false;
   }
+  if (!((MyIncludedStruct == rhs.MyIncludedStruct))) {
+    return false;
+  }
   return true;
+}
+
+const  ::some::valid::ns::AStruct& MyIncludedStruct::get_MyIncludedStruct() const& {
+  return MyIncludedStruct;
+}
+
+ ::some::valid::ns::AStruct MyIncludedStruct::get_MyIncludedStruct() && {
+  return std::move(MyIncludedStruct);
 }
 
 void swap(MyIncludedStruct& a, MyIncludedStruct& b) {
   using ::std::swap;
   swap(a.MyIncludedInt, b.MyIncludedInt);
+  swap(a.MyIncludedStruct, b.MyIncludedStruct);
   swap(a.__isset, b.__isset);
 }
 

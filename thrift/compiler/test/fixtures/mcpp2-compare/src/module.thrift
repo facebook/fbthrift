@@ -3,6 +3,8 @@ cpp_include "<folly/small_vector.h>"
 
 namespace cpp2 some.valid.ns
 
+typedef includes.AStruct AStruct
+
 // Generate base consts
 const bool aBool = true
 const byte aByte = 1
@@ -201,6 +203,7 @@ enum MyEnumB {
 
 struct MyIncludedStruct {
   1: includes.IncludedInt64 MyIncludedInt = includes.IncludedConstant
+  2: AStruct MyIncludedStruct
 } (cpp2.declare_hash = 1, cpp2.declare_equal_to)
 
 typedef i32 (cpp.type = "CppFakeI32") CppFakeI32

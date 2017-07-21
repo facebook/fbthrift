@@ -819,12 +819,16 @@ class mstch_typedef : public mstch_base {
         this,
         {
             {"typedef:type", &mstch_typedef::type},
+            {"typedef:is_same_type", &mstch_typedef::is_same_type},
             {"typedef:symbolic", &mstch_typedef::symbolic},
         });
   }
   mstch::node type();
   mstch::node symbolic() {
     return typedf_->get_symbolic();
+  }
+  mstch::node is_same_type() {
+    return typedf_->get_name() == typedf_->get_type()->get_name();
   }
 
  protected:
