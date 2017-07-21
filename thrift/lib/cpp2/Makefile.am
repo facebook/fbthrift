@@ -79,6 +79,34 @@ thrift2include_async_HEADERS = \
 	async/ClientChannel.h \
 	async/ServerChannel.h
 
+thrift2include_frozen2dir = $(thrift2includedir)/frozen
+
+thrift2include_frozen2_HEADERS = \
+	frozen/Frozen.h \
+	frozen/FrozenMacros.h \
+	frozen/FrozenUtil.h \
+	frozen/FrozenTestUtil.h \
+	frozen/FrozenAssociative-inl.h \
+	frozen/FrozenBool-inl.h \
+	frozen/FrozenEnum-inl \
+	frozen/FrozenHashtable-inl.h \
+	frozen/FrozenIntegral-inl.h \
+	frozen/FrozenOptional-inl.h \
+	frozen/FrozenOrderedTable-inl.h \
+	frozen/FrozenPair-inl.h \
+	frozen/FrozenRange-inl.h \
+	frozen/FrozenString-inl.h \
+	frozen/FrozenTrivial-inl.h \
+	frozen/HintTypes.h \
+	frozen/Traits.h \
+	frozen/VectorAssociative.h \
+	frozen/schema/MemorySchema.h
+
+libthriftfrozen2_la_SOURCES = \
+	frozen/Frozen.cpp \
+	frozen/FrozenUtil.cpp \
+	frozen/schema/MemorySchema.cpp
+
 thrift2include_fataldir = $(thrift2includedir)/fatal
 
 thrift2include_fatal_HEADERS = \
@@ -249,6 +277,7 @@ endif
 
 libthriftcpp2_la_LIBADD = \
 	../cpp/libthrift.la \
+	libfrozen2.la \
 	libthriftprotocol.la \
 	libsaslstubs.a \
 	$(FOLLY_LIBS) \
