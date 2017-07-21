@@ -23,7 +23,7 @@
 
 SUBDIRS = . test
 
-lib_LTLIBRARIES = libthriftprotocol.la
+lib_LTLIBRARIES = libthriftfrozen2.la libthriftprotocol.la
 
 if WITH_CPP
 lib_LTLIBRARIES += libthriftcpp2.la
@@ -89,7 +89,7 @@ thrift2include_frozen2_HEADERS = \
 	frozen/FrozenAssociative-inl.h \
 	frozen/FrozenBool-inl.h \
 	frozen/FrozenEnum-inl.h \
-	frozen/FrozenHashtable-inl.h \
+	frozen/FrozenHashTable-inl.h \
 	frozen/FrozenIntegral-inl.h \
 	frozen/FrozenOptional-inl.h \
 	frozen/FrozenOrderedTable-inl.h \
@@ -106,6 +106,21 @@ libthriftfrozen2_la_SOURCES = \
 	frozen/Frozen.cpp \
 	frozen/FrozenUtil.cpp \
 	frozen/schema/MemorySchema.cpp
+
+libthriftfrozen2_la_LDFLAGS = \
+	-no-undefined \
+	-version-info $(LT_VERSION) \
+	$(BOOST_LDFLAGS)
+
+libthriftfrozen2_la_CPPFLAGS = \
+	$(AM_CPPFLAGS) \
+	-I../cpp
+
+libthriftfrozen2_la_LIBADD = \
+	$(FOLLY_LIBS) \
+	$(BOOST_SYSTEM_LIB) \
+	-ldouble-conversion \
+	../thrift/libfrozenschema.a
 
 thrift2include_fataldir = $(thrift2includedir)/fatal
 
