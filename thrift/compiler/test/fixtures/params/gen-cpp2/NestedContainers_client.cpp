@@ -61,8 +61,8 @@ void NestedContainersAsyncClient::sync_mapList(apache::thrift::RpcOptions& rpcOp
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exceptionWrapper());
-    _returnState.exceptionWrapper().throw_exception();
+    assert(_returnState.exception());
+    _returnState.exception().throw_exception();
   }
   recv_mapList(_returnState);
 }
@@ -93,9 +93,8 @@ void NestedContainersAsyncClient::mapList(folly::Function<void (::apache::thrift
 }
 
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_mapList(::apache::thrift::ClientReceiveState& state) {
-  auto ew = state.exceptionWrapper();
-  if (ew) {
-    return ew;
+  if (state.isException()) {
+    return std::move(state.exception());
   }
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
@@ -178,8 +177,8 @@ void NestedContainersAsyncClient::sync_mapSet(apache::thrift::RpcOptions& rpcOpt
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exceptionWrapper());
-    _returnState.exceptionWrapper().throw_exception();
+    assert(_returnState.exception());
+    _returnState.exception().throw_exception();
   }
   recv_mapSet(_returnState);
 }
@@ -210,9 +209,8 @@ void NestedContainersAsyncClient::mapSet(folly::Function<void (::apache::thrift:
 }
 
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_mapSet(::apache::thrift::ClientReceiveState& state) {
-  auto ew = state.exceptionWrapper();
-  if (ew) {
-    return ew;
+  if (state.isException()) {
+    return std::move(state.exception());
   }
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
@@ -295,8 +293,8 @@ void NestedContainersAsyncClient::sync_listMap(apache::thrift::RpcOptions& rpcOp
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exceptionWrapper());
-    _returnState.exceptionWrapper().throw_exception();
+    assert(_returnState.exception());
+    _returnState.exception().throw_exception();
   }
   recv_listMap(_returnState);
 }
@@ -327,9 +325,8 @@ void NestedContainersAsyncClient::listMap(folly::Function<void (::apache::thrift
 }
 
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_listMap(::apache::thrift::ClientReceiveState& state) {
-  auto ew = state.exceptionWrapper();
-  if (ew) {
-    return ew;
+  if (state.isException()) {
+    return std::move(state.exception());
   }
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
@@ -412,8 +409,8 @@ void NestedContainersAsyncClient::sync_listSet(apache::thrift::RpcOptions& rpcOp
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exceptionWrapper());
-    _returnState.exceptionWrapper().throw_exception();
+    assert(_returnState.exception());
+    _returnState.exception().throw_exception();
   }
   recv_listSet(_returnState);
 }
@@ -444,9 +441,8 @@ void NestedContainersAsyncClient::listSet(folly::Function<void (::apache::thrift
 }
 
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_listSet(::apache::thrift::ClientReceiveState& state) {
-  auto ew = state.exceptionWrapper();
-  if (ew) {
-    return ew;
+  if (state.isException()) {
+    return std::move(state.exception());
   }
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
@@ -529,8 +525,8 @@ void NestedContainersAsyncClient::sync_turtles(apache::thrift::RpcOptions& rpcOp
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exceptionWrapper());
-    _returnState.exceptionWrapper().throw_exception();
+    assert(_returnState.exception());
+    _returnState.exception().throw_exception();
   }
   recv_turtles(_returnState);
 }
@@ -561,9 +557,8 @@ void NestedContainersAsyncClient::turtles(folly::Function<void (::apache::thrift
 }
 
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_turtles(::apache::thrift::ClientReceiveState& state) {
-  auto ew = state.exceptionWrapper();
-  if (ew) {
-    return ew;
+  if (state.isException()) {
+    return std::move(state.exception());
   }
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");

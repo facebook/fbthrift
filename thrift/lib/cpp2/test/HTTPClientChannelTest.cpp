@@ -157,7 +157,7 @@ TEST(HTTPClientChannelTest, SimpleTestAsync) {
   TestServiceAsyncClient client(std::move(channel));
   client.sendResponse(
       [&eb](apache::thrift::ClientReceiveState&& state) {
-        EXPECT_FALSE(state.exceptionWrapper()) << state.exceptionWrapper();
+        EXPECT_FALSE(state.exception()) << state.exception();
         std::string res;
         TestServiceAsyncClient::recv_sendResponse(res, state);
         EXPECT_EQ(res, "test24");
@@ -167,7 +167,7 @@ TEST(HTTPClientChannelTest, SimpleTestAsync) {
   eb.loop();
 
   client.eventBaseAsync([&eb](apache::thrift::ClientReceiveState&& state) {
-    EXPECT_FALSE(state.exceptionWrapper()) << state.exceptionWrapper();
+    EXPECT_FALSE(state.exception()) << state.exception();
     std::string res;
     TestServiceAsyncClient::recv_eventBaseAsync(res, state);
     EXPECT_EQ(res, "hello world");
@@ -205,7 +205,7 @@ TEST(HTTPClientChannelTest, LongResponse) {
 
   client.serializationTest(
       [&eb](apache::thrift::ClientReceiveState&& state) {
-        EXPECT_FALSE(state.exceptionWrapper()) << state.exceptionWrapper();
+        EXPECT_FALSE(state.exception()) << state.exception();
         std::string res;
         TestServiceAsyncClient::recv_serializationTest(res, state);
         EXPECT_EQ(res, string(4096, 'a'));
@@ -228,8 +228,8 @@ TEST(HTTPClientChannelTest, ClientTimeout) {
   TestServiceAsyncClient client(std::move(channel));
   client.sendResponse(
       [&](apache::thrift::ClientReceiveState&& state) {
-        EXPECT_TRUE(state.exceptionWrapper());
-        auto ex = state.exceptionWrapper().get_exception();
+        EXPECT_TRUE(state.exception());
+        auto ex = state.exception().get_exception();
         auto& e = dynamic_cast<TTransportException const&>(*ex);
         EXPECT_EQ(TTransportException::TIMED_OUT, e.getType());
         eb.terminateLoopSoon();

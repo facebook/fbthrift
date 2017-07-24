@@ -61,8 +61,8 @@ void MyServiceFastAsyncClient::sync_ping(apache::thrift::RpcOptions& rpcOptions)
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exceptionWrapper());
-    _returnState.exceptionWrapper().throw_exception();
+    assert(_returnState.exception());
+    _returnState.exception().throw_exception();
   }
   recv_ping(_returnState);
 }
@@ -93,9 +93,8 @@ void MyServiceFastAsyncClient::ping(folly::Function<void (::apache::thrift::Clie
 }
 
 folly::exception_wrapper MyServiceFastAsyncClient::recv_wrapped_ping(::apache::thrift::ClientReceiveState& state) {
-  auto ew = state.exceptionWrapper();
-  if (ew) {
-    return ew;
+  if (state.isException()) {
+    return std::move(state.exception());
   }
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
@@ -178,8 +177,8 @@ void MyServiceFastAsyncClient::sync_getRandomData(apache::thrift::RpcOptions& rp
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exceptionWrapper());
-    _returnState.exceptionWrapper().throw_exception();
+    assert(_returnState.exception());
+    _returnState.exception().throw_exception();
   }
   recv_getRandomData(_return, _returnState);
 }
@@ -210,9 +209,8 @@ void MyServiceFastAsyncClient::getRandomData(folly::Function<void (::apache::thr
 }
 
 folly::exception_wrapper MyServiceFastAsyncClient::recv_wrapped_getRandomData(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = state.exceptionWrapper();
-  if (ew) {
-    return ew;
+  if (state.isException()) {
+    return std::move(state.exception());
   }
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
@@ -295,8 +293,8 @@ bool MyServiceFastAsyncClient::sync_hasDataById(apache::thrift::RpcOptions& rpcO
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exceptionWrapper());
-    _returnState.exceptionWrapper().throw_exception();
+    assert(_returnState.exception());
+    _returnState.exception().throw_exception();
   }
   return recv_hasDataById(_returnState);
 }
@@ -327,9 +325,8 @@ void MyServiceFastAsyncClient::hasDataById(folly::Function<void (::apache::thrif
 }
 
 folly::exception_wrapper MyServiceFastAsyncClient::recv_wrapped_hasDataById(bool& _return, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = state.exceptionWrapper();
-  if (ew) {
-    return ew;
+  if (state.isException()) {
+    return std::move(state.exception());
   }
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
@@ -414,8 +411,8 @@ void MyServiceFastAsyncClient::sync_getDataById(apache::thrift::RpcOptions& rpcO
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exceptionWrapper());
-    _returnState.exceptionWrapper().throw_exception();
+    assert(_returnState.exception());
+    _returnState.exception().throw_exception();
   }
   recv_getDataById(_return, _returnState);
 }
@@ -446,9 +443,8 @@ void MyServiceFastAsyncClient::getDataById(folly::Function<void (::apache::thrif
 }
 
 folly::exception_wrapper MyServiceFastAsyncClient::recv_wrapped_getDataById(std::string& _return, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = state.exceptionWrapper();
-  if (ew) {
-    return ew;
+  if (state.isException()) {
+    return std::move(state.exception());
   }
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
@@ -531,8 +527,8 @@ void MyServiceFastAsyncClient::sync_putDataById(apache::thrift::RpcOptions& rpcO
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exceptionWrapper());
-    _returnState.exceptionWrapper().throw_exception();
+    assert(_returnState.exception());
+    _returnState.exception().throw_exception();
   }
   recv_putDataById(_returnState);
 }
@@ -563,9 +559,8 @@ void MyServiceFastAsyncClient::putDataById(folly::Function<void (::apache::thrif
 }
 
 folly::exception_wrapper MyServiceFastAsyncClient::recv_wrapped_putDataById(::apache::thrift::ClientReceiveState& state) {
-  auto ew = state.exceptionWrapper();
-  if (ew) {
-    return ew;
+  if (state.isException()) {
+    return std::move(state.exception());
   }
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");

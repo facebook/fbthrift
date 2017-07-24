@@ -2129,7 +2129,7 @@ void ReturnServiceAsyncClient::noReturnT(Protocol_* prot, bool useSync, apache::
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_noReturnT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -2202,7 +2202,7 @@ void ReturnServiceAsyncClient::boolReturnT(Protocol_* prot, bool useSync, apache
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_boolReturnT(Protocol_* prot, bool& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -2286,7 +2286,7 @@ void ReturnServiceAsyncClient::i16ReturnT(Protocol_* prot, bool useSync, apache:
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_i16ReturnT(Protocol_* prot, int16_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -2370,7 +2370,7 @@ void ReturnServiceAsyncClient::i32ReturnT(Protocol_* prot, bool useSync, apache:
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_i32ReturnT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -2454,7 +2454,7 @@ void ReturnServiceAsyncClient::i64ReturnT(Protocol_* prot, bool useSync, apache:
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_i64ReturnT(Protocol_* prot, int64_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -2538,7 +2538,7 @@ void ReturnServiceAsyncClient::floatReturnT(Protocol_* prot, bool useSync, apach
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_floatReturnT(Protocol_* prot, float& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -2622,7 +2622,7 @@ void ReturnServiceAsyncClient::doubleReturnT(Protocol_* prot, bool useSync, apac
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_doubleReturnT(Protocol_* prot, double& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -2706,7 +2706,7 @@ void ReturnServiceAsyncClient::stringReturnT(Protocol_* prot, bool useSync, apac
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_stringReturnT(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -2788,7 +2788,7 @@ void ReturnServiceAsyncClient::binaryReturnT(Protocol_* prot, bool useSync, apac
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_binaryReturnT(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -2870,7 +2870,7 @@ void ReturnServiceAsyncClient::mapReturnT(Protocol_* prot, bool useSync, apache:
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_mapReturnT(Protocol_* prot, std::map<std::string, int64_t>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -2952,7 +2952,7 @@ void ReturnServiceAsyncClient::simpleTypedefReturnT(Protocol_* prot, bool useSyn
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_simpleTypedefReturnT(Protocol_* prot,  ::some::valid::ns::simpleTypeDef& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -3036,7 +3036,7 @@ void ReturnServiceAsyncClient::complexTypedefReturnT(Protocol_* prot, bool useSy
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_complexTypedefReturnT(Protocol_* prot,  ::some::valid::ns::complexStructTypeDef& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -3118,7 +3118,7 @@ void ReturnServiceAsyncClient::list_mostComplexTypedefReturnT(Protocol_* prot, b
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_list_mostComplexTypedefReturnT(Protocol_* prot, std::vector< ::some::valid::ns::mostComplexTypeDef>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -3200,7 +3200,7 @@ void ReturnServiceAsyncClient::enumReturnT(Protocol_* prot, bool useSync, apache
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_enumReturnT(Protocol_* prot,  ::some::valid::ns::MyEnumA& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -3284,7 +3284,7 @@ void ReturnServiceAsyncClient::list_EnumReturnT(Protocol_* prot, bool useSync, a
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_list_EnumReturnT(Protocol_* prot, std::vector< ::some::valid::ns::MyEnumA>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -3366,7 +3366,7 @@ void ReturnServiceAsyncClient::structReturnT(Protocol_* prot, bool useSync, apac
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_structReturnT(Protocol_* prot,  ::some::valid::ns::MyStruct& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -3448,7 +3448,7 @@ void ReturnServiceAsyncClient::set_StructReturnT(Protocol_* prot, bool useSync, 
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_set_StructReturnT(Protocol_* prot, std::set< ::some::valid::ns::MyStruct>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -3530,7 +3530,7 @@ void ReturnServiceAsyncClient::unionReturnT(Protocol_* prot, bool useSync, apach
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_unionReturnT(Protocol_* prot,  ::some::valid::ns::ComplexUnion& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -3612,7 +3612,7 @@ void ReturnServiceAsyncClient::list_UnionReturnT(Protocol_* prot, bool useSync, 
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_list_UnionReturnT(Protocol_* prot, std::vector< ::some::valid::ns::ComplexUnion>& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});

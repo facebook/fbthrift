@@ -580,7 +580,7 @@ void MyServiceFastAsyncClient::pingT(Protocol_* prot, bool useSync, apache::thri
 template <typename Protocol_>
 folly::exception_wrapper MyServiceFastAsyncClient::recv_wrapped_pingT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -653,7 +653,7 @@ void MyServiceFastAsyncClient::getRandomDataT(Protocol_* prot, bool useSync, apa
 template <typename Protocol_>
 folly::exception_wrapper MyServiceFastAsyncClient::recv_wrapped_getRandomDataT(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -736,7 +736,7 @@ void MyServiceFastAsyncClient::hasDataByIdT(Protocol_* prot, bool useSync, apach
 template <typename Protocol_>
 folly::exception_wrapper MyServiceFastAsyncClient::recv_wrapped_hasDataByIdT(Protocol_* prot, bool& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -821,7 +821,7 @@ void MyServiceFastAsyncClient::getDataByIdT(Protocol_* prot, bool useSync, apach
 template <typename Protocol_>
 folly::exception_wrapper MyServiceFastAsyncClient::recv_wrapped_getDataByIdT(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -905,7 +905,7 @@ void MyServiceFastAsyncClient::putDataByIdT(Protocol_* prot, bool useSync, apach
 template <typename Protocol_>
 folly::exception_wrapper MyServiceFastAsyncClient::recv_wrapped_putDataByIdT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});

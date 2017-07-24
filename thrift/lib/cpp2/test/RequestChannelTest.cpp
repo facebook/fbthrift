@@ -110,7 +110,7 @@ TEST_F(FunctionSendRecvRequestCallbackTest, 2w_recv_failure) {
   client->voidResponse(opts, newCallback());
   eb->loop();
   EXPECT_FALSE(bool(ew));
-  ew = std::move(state.exceptionWrapper());
+  ew = std::move(state.exception());
   EXPECT_TRUE(ew.with_exception([](TTransportException const& ex) {
     EXPECT_EQ(TTransportException::TIMED_OUT, ex.getType());
   }));
@@ -125,7 +125,7 @@ TEST_F(FunctionSendRecvRequestCallbackTest, 2w_recv_success) {
   client->voidResponse(opts, newCallback());
   eb->loop();
   EXPECT_FALSE(bool(ew));
-  ew = std::move(state.exceptionWrapper());
+  ew = std::move(state.exception());
   EXPECT_FALSE(bool(ew));
   EXPECT_NE(nullptr, state.buf());
 }
@@ -152,7 +152,7 @@ TEST_F(FunctionSendCallbackTest, with_missing_server_fails) {
   ScopedBoundPort bound;
   exception_wrapper exn;
   sendOnewayMessage(bound.getAddress(), [&](CSR&& state) {
-      exn = state.exceptionWrapper();
+    exn = std::move(state.exception());
   });
   EXPECT_TRUE(bool(exn));
   auto err = "transport is closed in write()";
@@ -168,7 +168,7 @@ TEST_F(FunctionSendCallbackTest, with_throwing_server_passes) {
           Invoke([&](int64_t) { done.post(); }), Throw(runtime_error("hi"))));
   exception_wrapper exn = make_exception_wrapper<runtime_error>("lo");
   sendOnewayMessage(ssit.getAddress(), [&](CSR&& state) {
-      exn = state.exceptionWrapper();
+    exn = std::move(state.exception());
   });
   done.timed_wait(chrono::steady_clock::now() + chrono::milliseconds(50));
   EXPECT_FALSE(exn);

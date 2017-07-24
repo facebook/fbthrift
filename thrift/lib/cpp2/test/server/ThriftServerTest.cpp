@@ -215,7 +215,7 @@ TEST(ThriftServer, DefaultCompressionTest) {
       }
     }
     void requestError(ClientReceiveState&& state) override {
-      state.exceptionWrapper().throw_exception();
+      state.exception().throw_exception();
     }
     bool compressionExpected_;
     uint16_t expectedTransform_;
@@ -354,9 +354,9 @@ TEST(ThriftServer, ClientTimeoutTest) {
     return std::unique_ptr<RequestCallback>(new FunctionReplyCallback(
         [&cbCall, client, &timeout](ClientReceiveState&& state) {
           cbCall++;
-          if (state.exceptionWrapper()) {
+          if (state.exception()) {
             timeout = true;
-            auto ex = state.exceptionWrapper().get_exception();
+            auto ex = state.exception().get_exception();
             auto& e = dynamic_cast<TTransportException const&>(*ex);
             EXPECT_EQ(TTransportException::TIMED_OUT, e.getType());
             return;
@@ -484,9 +484,9 @@ class Callback : public RequestCallback {
     ADD_FAILURE();
   }
   void requestError(ClientReceiveState&& state) override {
-    EXPECT_TRUE(state.exceptionWrapper());
+    EXPECT_TRUE(state.exception());
     auto ex =
-        state.exceptionWrapper()
+        state.exception()
             .get_exception<apache::thrift::transport::TTransportException>();
     ASSERT_TRUE(ex);
     EXPECT_THAT(
@@ -586,8 +586,8 @@ TEST(ThriftServer, FailureInjection) {
     }
 
     void requestError(ClientReceiveState&& state) override {
-      ASSERT_TRUE(state.exceptionWrapper());
-      auto ex_ = state.exceptionWrapper().get_exception();
+      ASSERT_TRUE(state.exception());
+      auto ex_ = state.exception().get_exception();
       auto& ex = dynamic_cast<TTransportException const&>(*ex_);
       if (ex.getType() == TTransportException::TIMED_OUT) {
         EXPECT_EQ(TIMEOUT, *expected_);

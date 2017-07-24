@@ -600,7 +600,7 @@ void NestedContainersAsyncClient::mapListT(Protocol_* prot, bool useSync, apache
 template <typename Protocol_>
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_mapListT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -674,7 +674,7 @@ void NestedContainersAsyncClient::mapSetT(Protocol_* prot, bool useSync, apache:
 template <typename Protocol_>
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_mapSetT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -748,7 +748,7 @@ void NestedContainersAsyncClient::listMapT(Protocol_* prot, bool useSync, apache
 template <typename Protocol_>
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_listMapT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -822,7 +822,7 @@ void NestedContainersAsyncClient::listSetT(Protocol_* prot, bool useSync, apache
 template <typename Protocol_>
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_listSetT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -896,7 +896,7 @@ void NestedContainersAsyncClient::turtlesT(Protocol_* prot, bool useSync, apache
 template <typename Protocol_>
 folly::exception_wrapper NestedContainersAsyncClient::recv_wrapped_turtlesT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});

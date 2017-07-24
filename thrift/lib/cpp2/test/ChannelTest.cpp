@@ -242,7 +242,7 @@ class TestRequestCallback : public RequestCallback, public CloseCallback {
     securityEndTime_ = securityEnd_;
   }
   void requestError(ClientReceiveState&& state) override {
-    EXPECT_TRUE(state.exceptionWrapper());
+    EXPECT_TRUE(state.exception());
     replyError_++;
     securityStartTime_ = securityStart_;
     securityEndTime_ = securityEnd_;
@@ -505,12 +505,11 @@ class HeaderChannelClosedTest
 
     void requestError(ClientReceiveState&& state) override {
       EXPECT_TRUE(state.isException());
-      EXPECT_TRUE(state.exceptionWrapper().with_exception(
-        [this] (const TTransportException& e) {
-          EXPECT_EQ(e.getType(), TTransportException::END_OF_FILE);
-          c_->gotError_ = true;
-        }
-      ));
+      EXPECT_TRUE(state.exception().with_exception(
+          [this](const TTransportException& e) {
+            EXPECT_EQ(e.getType(), TTransportException::END_OF_FILE);
+            c_->gotError_ = true;
+          }));
     }
 
    private:

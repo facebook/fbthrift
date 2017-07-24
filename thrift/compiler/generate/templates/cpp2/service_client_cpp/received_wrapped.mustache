@@ -20,9 +20,8 @@ folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:na
 <%^type:void?%>
 folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:name%>(<% > Type%>& _return, ::apache::thrift::ClientReceiveState& state) {
 <%/type:void?%>
-  auto ew = state.exceptionWrapper();
-  if (ew) {
-    return ew;
+  if (state.isException()) {
+    return std::move(state.exception());
   }
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");

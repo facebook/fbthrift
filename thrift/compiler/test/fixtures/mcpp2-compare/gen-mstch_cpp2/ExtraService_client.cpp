@@ -61,8 +61,8 @@ bool ExtraServiceAsyncClient::sync_simple_function(apache::thrift::RpcOptions& r
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exceptionWrapper());
-    _returnState.exceptionWrapper().throw_exception();
+    assert(_returnState.exception());
+    _returnState.exception().throw_exception();
   }
   return recv_simple_function(_returnState);
 }
@@ -93,9 +93,8 @@ void ExtraServiceAsyncClient::simple_function(folly::Function<void (::apache::th
 }
 
 folly::exception_wrapper ExtraServiceAsyncClient::recv_wrapped_simple_function(bool& _return, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = state.exceptionWrapper();
-  if (ew) {
-    return ew;
+  if (state.isException()) {
+    return std::move(state.exception());
   }
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
@@ -180,8 +179,8 @@ void ExtraServiceAsyncClient::sync_throws_function(apache::thrift::RpcOptions& r
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exceptionWrapper());
-    _returnState.exceptionWrapper().throw_exception();
+    assert(_returnState.exception());
+    _returnState.exception().throw_exception();
   }
   recv_throws_function(_returnState);
 }
@@ -212,9 +211,8 @@ void ExtraServiceAsyncClient::throws_function(folly::Function<void (::apache::th
 }
 
 folly::exception_wrapper ExtraServiceAsyncClient::recv_wrapped_throws_function(::apache::thrift::ClientReceiveState& state) {
-  auto ew = state.exceptionWrapper();
-  if (ew) {
-    return ew;
+  if (state.isException()) {
+    return std::move(state.exception());
   }
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
@@ -297,8 +295,8 @@ bool ExtraServiceAsyncClient::sync_throws_function2(apache::thrift::RpcOptions& 
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exceptionWrapper());
-    _returnState.exceptionWrapper().throw_exception();
+    assert(_returnState.exception());
+    _returnState.exception().throw_exception();
   }
   return recv_throws_function2(_returnState);
 }
@@ -329,9 +327,8 @@ void ExtraServiceAsyncClient::throws_function2(folly::Function<void (::apache::t
 }
 
 folly::exception_wrapper ExtraServiceAsyncClient::recv_wrapped_throws_function2(bool& _return, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = state.exceptionWrapper();
-  if (ew) {
-    return ew;
+  if (state.isException()) {
+    return std::move(state.exception());
   }
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");
@@ -416,8 +413,8 @@ void ExtraServiceAsyncClient::sync_throws_function3(apache::thrift::RpcOptions& 
     }
   };
   if (!_returnState.buf()) {
-    assert(_returnState.exceptionWrapper());
-    _returnState.exceptionWrapper().throw_exception();
+    assert(_returnState.exception());
+    _returnState.exception().throw_exception();
   }
   recv_throws_function3(_return, _returnState);
 }
@@ -448,9 +445,8 @@ void ExtraServiceAsyncClient::throws_function3(folly::Function<void (::apache::t
 }
 
 folly::exception_wrapper ExtraServiceAsyncClient::recv_wrapped_throws_function3(std::map<int32_t, std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
-  auto ew = state.exceptionWrapper();
-  if (ew) {
-    return ew;
+  if (state.isException()) {
+    return std::move(state.exception());
   }
   if (!state.buf()) {
     return folly::make_exception_wrapper<apache::thrift::TApplicationException>("recv_ called without result");

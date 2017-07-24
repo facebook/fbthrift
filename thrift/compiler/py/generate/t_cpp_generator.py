@@ -1823,8 +1823,8 @@ class CppGenerator(t_generator.Generator):
                     out("};")
 
                     with out("if (!_returnState.buf())"):
-                        out("assert(_returnState.exceptionWrapper());")
-                        out("_returnState.exceptionWrapper().throw_exception();")
+                        out("assert(_returnState.exception());")
+                        out("_returnState.exception().throw_exception();")
 
                     if not function.returntype.is_void:
                         if not self._is_complex_type(function.returntype):
@@ -2200,9 +2200,8 @@ class CppGenerator(t_generator.Generator):
                         name="recv_wrapped_" + function.name,
                         modifiers="static",
                         output=self._additional_outputs[-1]):
-            out('auto ew = state.exceptionWrapper();')
-            with out('if (ew)'):
-                out('return ew;')
+            with out('if (state.isException())'):
+                out('return std::move(state.exception());')
             with out('if (!state.buf())'):
                 out('return folly::make_exception_wrapper<'
                     'apache::thrift::TApplicationException>('
@@ -2278,7 +2277,7 @@ class CppGenerator(t_generator.Generator):
                     modifiers="static",
                     output=self._out_tcc):
             with out('if (state.isException())'):
-                out('return state.exceptionWrapper();')
+                out('return std::move(state.exception());')
             out("prot->setInput(state.buf());")
             out("auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});")
             out("apache::thrift::ContextStack* ctx = state.ctx();")

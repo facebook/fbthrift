@@ -77,11 +77,11 @@ class ClientReceiveState {
     return excw_ ? true : false;
   }
 
-  folly::exception_wrapper const& exceptionWrapper() const {
+  folly::exception_wrapper const& exception() const {
     return excw_;
   }
 
-  folly::exception_wrapper& exceptionWrapper() {
+  folly::exception_wrapper& exception() {
     return excw_;
   }
 
@@ -167,7 +167,7 @@ class SendRecvRequestCallback : public RequestCallback {
   void requestError(ClientReceiveState&& state) final {
     switch (phase_) {
       case Phase::Send:
-        send(std::move(state.exceptionWrapper()));
+        send(std::move(state.exception()));
         phase_ = Phase::Recv;
         break;
       case Phase::Recv:
@@ -213,7 +213,7 @@ class FunctionReplyCallback : public RequestCallback {
   }
   void requestError(ClientReceiveState&& state) override {
     VLOG(1) << "Got an exception in FunctionReplyCallback replyReceiveError: "
-            << state.exceptionWrapper();
+            << state.exception();
     callback_(std::move(state));
   }
   void requestSent() override {}
@@ -432,7 +432,7 @@ class ClientSyncCallback : public RequestCallback {
     *rs_ = std::move(rs);
   }
   void requestError(ClientReceiveState&& rs) override {
-    assert(rs.exceptionWrapper());
+    assert(rs.exception());
     *rs_ = std::move(rs);
   }
   bool isOneway() const {
@@ -447,7 +447,7 @@ template <typename T>
 void clientCallbackToObservable(ClientReceiveState& state,
     folly::exception_wrapper (*recv_wrapped)(T&, ClientReceiveState&),
     wangle::SubjectPtr<T>& subj) {
-  if (auto ew = state.exceptionWrapper()) {
+  if (auto const& ew = state.exception()) {
     subj->onError(ew);
     return;
   }

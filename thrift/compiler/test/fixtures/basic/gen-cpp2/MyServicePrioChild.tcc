@@ -145,7 +145,7 @@ void MyServicePrioChildAsyncClient::pangT(Protocol_* prot, bool useSync, apache:
 template <typename Protocol_>
 folly::exception_wrapper MyServicePrioChildAsyncClient::recv_wrapped_pangT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});

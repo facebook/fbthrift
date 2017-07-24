@@ -57,7 +57,7 @@ folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:na
 folly::exception_wrapper <%service:name%>AsyncClient::recv_wrapped_<%function:name%>T(Protocol_* prot, <% > Type%>& _return, ::apache::thrift::ClientReceiveState& state) {
 <%/type:void?%>
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});

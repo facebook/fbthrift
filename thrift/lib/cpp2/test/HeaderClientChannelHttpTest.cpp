@@ -86,7 +86,7 @@ TEST(HeaderClientChannelHttpTest, SimpleTest) {
   TestServiceAsyncClient client(std::move(channel));
   client.sendResponse(
       [](apache::thrift::ClientReceiveState&& state) {
-        EXPECT_FALSE(state.exceptionWrapper()) << state.exceptionWrapper();
+        EXPECT_FALSE(state.exception()) << state.exception();
         std::string res;
         TestServiceAsyncClient::recv_sendResponse(res, state);
         EXPECT_EQ(res, "test24");
@@ -95,7 +95,7 @@ TEST(HeaderClientChannelHttpTest, SimpleTest) {
   eb.loop();
 
   client.eventBaseAsync([](apache::thrift::ClientReceiveState&& state) {
-    EXPECT_FALSE(state.exceptionWrapper()) << state.exceptionWrapper();
+    EXPECT_FALSE(state.exception()) << state.exception();
     std::string res;
     TestServiceAsyncClient::recv_eventBaseAsync(res, state);
     EXPECT_EQ(res, "hello world");
@@ -116,7 +116,7 @@ TEST(HeaderClientChannel, LongResponse) {
 
   client.serializationTest(
       [](apache::thrift::ClientReceiveState&& state) {
-        EXPECT_FALSE(state.exceptionWrapper()) << state.exceptionWrapper();
+        EXPECT_FALSE(state.exception()) << state.exception();
         std::string res;
         TestServiceAsyncClient::recv_serializationTest(res, state);
         EXPECT_EQ(res, string(4096, 'a'));

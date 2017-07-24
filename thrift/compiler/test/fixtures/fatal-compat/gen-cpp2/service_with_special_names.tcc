@@ -6820,7 +6820,7 @@ void service_with_special_namesAsyncClient::getT(Protocol_* prot, bool useSync, 
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_getT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -6904,7 +6904,7 @@ void service_with_special_namesAsyncClient::getterT(Protocol_* prot, bool useSyn
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_getterT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -6988,7 +6988,7 @@ void service_with_special_namesAsyncClient::listsT(Protocol_* prot, bool useSync
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_listsT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -7072,7 +7072,7 @@ void service_with_special_namesAsyncClient::mapsT(Protocol_* prot, bool useSync,
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_mapsT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -7156,7 +7156,7 @@ void service_with_special_namesAsyncClient::nameT(Protocol_* prot, bool useSync,
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_nameT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -7240,7 +7240,7 @@ void service_with_special_namesAsyncClient::name_to_valueT(Protocol_* prot, bool
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_name_to_valueT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -7324,7 +7324,7 @@ void service_with_special_namesAsyncClient::namesT(Protocol_* prot, bool useSync
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_namesT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -7408,7 +7408,7 @@ void service_with_special_namesAsyncClient::prefix_treeT(Protocol_* prot, bool u
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_prefix_treeT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -7492,7 +7492,7 @@ void service_with_special_namesAsyncClient::setsT(Protocol_* prot, bool useSync,
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_setsT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -7576,7 +7576,7 @@ void service_with_special_namesAsyncClient::setterT(Protocol_* prot, bool useSyn
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_setterT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -7660,7 +7660,7 @@ void service_with_special_namesAsyncClient::strT(Protocol_* prot, bool useSync, 
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_strT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -7744,7 +7744,7 @@ void service_with_special_namesAsyncClient::stringsT(Protocol_* prot, bool useSy
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_stringsT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -7828,7 +7828,7 @@ void service_with_special_namesAsyncClient::typeT(Protocol_* prot, bool useSync,
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_typeT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -7912,7 +7912,7 @@ void service_with_special_namesAsyncClient::valueT(Protocol_* prot, bool useSync
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_valueT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -7996,7 +7996,7 @@ void service_with_special_namesAsyncClient::value_to_nameT(Protocol_* prot, bool
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_value_to_nameT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -8080,7 +8080,7 @@ void service_with_special_namesAsyncClient::valuesT(Protocol_* prot, bool useSyn
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_valuesT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -8164,7 +8164,7 @@ void service_with_special_namesAsyncClient::idT(Protocol_* prot, bool useSync, a
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_idT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -8248,7 +8248,7 @@ void service_with_special_namesAsyncClient::idsT(Protocol_* prot, bool useSync, 
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_idsT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -8332,7 +8332,7 @@ void service_with_special_namesAsyncClient::descriptorT(Protocol_* prot, bool us
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_descriptorT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -8416,7 +8416,7 @@ void service_with_special_namesAsyncClient::descriptorsT(Protocol_* prot, bool u
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_descriptorsT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -8500,7 +8500,7 @@ void service_with_special_namesAsyncClient::keyT(Protocol_* prot, bool useSync, 
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_keyT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -8584,7 +8584,7 @@ void service_with_special_namesAsyncClient::keysT(Protocol_* prot, bool useSync,
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_keysT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -8668,7 +8668,7 @@ void service_with_special_namesAsyncClient::annotationT(Protocol_* prot, bool us
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_annotationT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -8752,7 +8752,7 @@ void service_with_special_namesAsyncClient::annotationsT(Protocol_* prot, bool u
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_annotationsT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -8836,7 +8836,7 @@ void service_with_special_namesAsyncClient::memberT(Protocol_* prot, bool useSyn
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_memberT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -8920,7 +8920,7 @@ void service_with_special_namesAsyncClient::membersT(Protocol_* prot, bool useSy
 template <typename Protocol_>
 folly::exception_wrapper service_with_special_namesAsyncClient::recv_wrapped_membersT(Protocol_* prot, int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});

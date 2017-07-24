@@ -633,7 +633,7 @@ void MyServiceAsyncClient::pingT(Protocol_* prot, bool useSync, apache::thrift::
 template <typename Protocol_>
 folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_pingT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -706,7 +706,7 @@ void MyServiceAsyncClient::getRandomDataT(Protocol_* prot, bool useSync, apache:
 template <typename Protocol_>
 folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_getRandomDataT(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -789,7 +789,7 @@ void MyServiceAsyncClient::hasDataByIdT(Protocol_* prot, bool useSync, apache::t
 template <typename Protocol_>
 folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_hasDataByIdT(Protocol_* prot, bool& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -874,7 +874,7 @@ void MyServiceAsyncClient::getDataByIdT(Protocol_* prot, bool useSync, apache::t
 template <typename Protocol_>
 folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_getDataByIdT(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -958,7 +958,7 @@ void MyServiceAsyncClient::putDataByIdT(Protocol_* prot, bool useSync, apache::t
 template <typename Protocol_>
 folly::exception_wrapper MyServiceAsyncClient::recv_wrapped_putDataByIdT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});

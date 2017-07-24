@@ -542,7 +542,7 @@ void RaiserAsyncClient::doBlandT(Protocol_* prot, bool useSync, apache::thrift::
 template <typename Protocol_>
 folly::exception_wrapper RaiserAsyncClient::recv_wrapped_doBlandT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -615,7 +615,7 @@ void RaiserAsyncClient::doRaiseT(Protocol_* prot, bool useSync, apache::thrift::
 template <typename Protocol_>
 folly::exception_wrapper RaiserAsyncClient::recv_wrapped_doRaiseT(Protocol_* prot, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -696,7 +696,7 @@ void RaiserAsyncClient::get200T(Protocol_* prot, bool useSync, apache::thrift::R
 template <typename Protocol_>
 folly::exception_wrapper RaiserAsyncClient::recv_wrapped_get200T(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -778,7 +778,7 @@ void RaiserAsyncClient::get500T(Protocol_* prot, bool useSync, apache::thrift::R
 template <typename Protocol_>
 folly::exception_wrapper RaiserAsyncClient::recv_wrapped_get500T(Protocol_* prot, std::string& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
