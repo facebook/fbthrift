@@ -47,29 +47,6 @@ cdef class MyStruct(thrift.py3.types.Struct):
           MyIncludedInt,
         ))
 
-    cdef bytes _serialize(MyStruct self, proto):
-        cdef string c_str
-        if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cMyStruct](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cMyStruct](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cMyStruct](deref(self._cpp_obj.get()), &c_str)
-        return <bytes> c_str
-
-    cdef uint32_t _deserialize(MyStruct self, const IOBuf* buf, proto):
-        cdef uint32_t needed
-        if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cMyStruct](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cMyStruct](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cMyStruct](buf, deref(self._cpp_obj.get()))
-        return needed
-
-    def __reduce__(self):
-        return (deserialize, (MyStruct, serialize(self)))
-
     def __call__(
         MyStruct self,
         MyIncludedField=NOTSET,
@@ -157,6 +134,16 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return self._cpp_obj.get().MyIncludedInt
 
 
+    def __hash__(MyStruct self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.MyIncludedField,
+            self.MyIncludedInt,
+            ))
+        return self.__hash
+
+    def __repr__(MyStruct self):
+        return f'MyStruct(MyIncludedField={repr(self.MyIncludedField)}, MyIncludedInt={repr(self.MyIncludedInt)})'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -176,15 +163,27 @@ cdef class MyStruct(thrift.py3.types.Struct):
             return cmp
         return not cmp
 
-    def __hash__(MyStruct self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.MyIncludedField,
-            self.MyIncludedInt,
-            ))
-        return self.__hash
+    cdef bytes _serialize(MyStruct self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cMyStruct](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cMyStruct](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cMyStruct](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
 
-    def __repr__(MyStruct self):
-        return f'MyStruct(MyIncludedField={repr(self.MyIncludedField)}, MyIncludedInt={repr(self.MyIncludedInt)})'
+    cdef uint32_t _deserialize(MyStruct self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cMyStruct](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cMyStruct](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cMyStruct](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (MyStruct, serialize(self)))
 
 

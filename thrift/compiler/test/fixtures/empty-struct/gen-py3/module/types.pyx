@@ -41,29 +41,6 @@ cdef class Empty(thrift.py3.types.Struct):
           NULL,
         ))
 
-    cdef bytes _serialize(Empty self, proto):
-        cdef string c_str
-        if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cEmpty](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cEmpty](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cEmpty](deref(self._cpp_obj.get()), &c_str)
-        return <bytes> c_str
-
-    cdef uint32_t _deserialize(Empty self, const IOBuf* buf, proto):
-        cdef uint32_t needed
-        if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cEmpty](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cEmpty](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cEmpty](buf, deref(self._cpp_obj.get()))
-        return needed
-
-    def __reduce__(self):
-        return (deserialize, (Empty, serialize(self)))
-
     def __call__(
         Empty self
     ):
@@ -108,6 +85,15 @@ cdef class Empty(thrift.py3.types.Struct):
         return inst
 
 
+    def __hash__(Empty self):
+        if not self.__hash:
+            self.__hash = hash((
+            type(self)   # Hash the class there are no fields
+            ))
+        return self.__hash
+
+    def __repr__(Empty self):
+        return f'Empty()'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -127,27 +113,103 @@ cdef class Empty(thrift.py3.types.Struct):
             return cmp
         return not cmp
 
-    def __hash__(Empty self):
-        if not self.__hash:
-            self.__hash = hash((
-            type(self)   # Hash the class there are no fields
-            ))
-        return self.__hash
+    cdef bytes _serialize(Empty self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cEmpty](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cEmpty](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cEmpty](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
 
-    def __repr__(Empty self):
-        return f'Empty()'
+    cdef uint32_t _deserialize(Empty self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cEmpty](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cEmpty](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cEmpty](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (Empty, serialize(self)))
 
 
-cdef cNada _Nada_defaults = cNada()
+class NadaType(Enum):
+    EMPTY = <int>cNada__type___EMPTY__
 
 cdef class Nada(thrift.py3.types.Struct):
-
     def __init__(
         Nada self
     ):
         self._cpp_obj = move(Nada._make_instance(
           NULL,
         ))
+        self._load_cache()
+
+    @staticmethod
+    cdef unique_ptr[cNada] _make_instance(
+        cNada* base_instance
+    ) except *:
+        cdef unique_ptr[cNada] c_inst = make_unique[cNada]()
+        cdef bint any_set = False
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __bool__(self):
+        return self.__type != NadaType.EMPTY
+
+    @staticmethod
+    cdef create(shared_ptr[cNada] cpp_obj):
+        inst = <Nada>Nada.__new__(Nada)
+        inst._cpp_obj = cpp_obj
+        inst._load_cache()
+        return inst
+
+
+    def __hash__(Nada self):
+        if not self.__hash:
+            self.__hash = hash((
+                self.__type,
+                self.__cached,
+            ))
+        return self.__hash
+
+    def __repr__(Nada self):
+        return f'Nada(type={self.__type.name}, value={repr(self.__cached)})'
+
+    cdef _load_cache(Nada self):
+        if self.__type is not None:
+            return
+
+        self.__type = NadaType(<int>(deref(self._cpp_obj).getType()))
+        if self.__type == NadaType.EMPTY:
+            self.__cached = None
+
+    def get_type(Nada self):
+        return self.__type
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, Nada) and
+                isinstance(other, Nada)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cNada cself = deref((<Nada>self)._cpp_obj)
+        cdef cNada cother = deref((<Nada>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
 
     cdef bytes _serialize(Nada self, proto):
         cdef string c_str
@@ -171,78 +233,5 @@ cdef class Nada(thrift.py3.types.Struct):
 
     def __reduce__(self):
         return (deserialize, (Nada, serialize(self)))
-
-    def __call__(
-        Nada self
-    ):
-        changes = any((        ))
-
-        if not changes:
-            return self
-
-        inst = <Nada>Nada.__new__(Nada)
-        inst._cpp_obj = move(Nada._make_instance(
-          self._cpp_obj.get(),
-        ))
-        return inst
-
-    @staticmethod
-    cdef unique_ptr[cNada] _make_instance(
-        cNada* base_instance
-    ) except *:
-        cdef unique_ptr[cNada] c_inst
-        if base_instance:
-            c_inst = make_unique[cNada](deref(base_instance))
-        else:
-            c_inst = make_unique[cNada]()
-
-        if base_instance:
-            # Convert None's to default value.
-            pass
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return move_unique(c_inst)
-
-    def __iter__(self):
-        return iter(())
-
-    def __bool__(self):
-        return True
-
-    @staticmethod
-    cdef create(shared_ptr[cNada] cpp_obj):
-        inst = <Nada>Nada.__new__(Nada)
-        inst._cpp_obj = cpp_obj
-        return inst
-
-
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
-        if not (
-                isinstance(self, Nada) and
-                isinstance(other, Nada)):
-            if cop == 2:  # different types are never equal
-                return False
-            else:         # different types are always notequal
-                return True
-
-        cdef cNada cself = deref((<Nada>self)._cpp_obj)
-        cdef cNada cother = deref((<Nada>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
-
-    def __hash__(Nada self):
-        if not self.__hash:
-            self.__hash = hash((
-            type(self)   # Hash the class there are no fields
-            ))
-        return self.__hash
-
-    def __repr__(Nada self):
-        return f'Nada()'
 
 

@@ -78,6 +78,7 @@ cdef c{{enum:name}} {{enum:name}}_to_cpp(value):
 
 
 {{#program:structs}}
+{{^struct:union?}}
 {{^struct:exception?}}
 cdef c{{struct:name}} _{{struct:name}}_defaults = c{{struct:name}}()
 
@@ -94,29 +95,6 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
         ))
 
     {{^struct:exception?}}
-    cdef bytes _serialize({{struct:name}} self, proto):
-        cdef string c_str
-        if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[c{{struct:name}}](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[c{{struct:name}}](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.JSON:
-            serializer.JSONSerialize[c{{struct:name}}](deref(self._cpp_obj.get()), &c_str)
-        return <bytes> c_str
-
-    cdef uint32_t _deserialize({{struct:name}} self, const IOBuf* buf, proto):
-        cdef uint32_t needed
-        if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[c{{struct:name}}](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[c{{struct:name}}](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[c{{struct:name}}](buf, deref(self._cpp_obj.get()))
-        return needed
-
-    def __reduce__(self):
-        return (deserialize, ({{struct:name}}, serialize(self)))
-
     def __call__(
         {{struct:name}} self{{#struct:fields}},
         {{field:name}}=NOTSET{{/struct:fields}}
@@ -230,25 +208,6 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
 
     {{/struct:fields}}
 
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
-        if not (
-                isinstance(self, {{struct:name}}) and
-                isinstance(other, {{struct:name}})):
-            if cop == 2:  # different types are never equal
-                return False
-            else:         # different types are always notequal
-                return True
-
-        cdef c{{struct:name}} cself = deref((<{{struct:name}}>self)._cpp_obj)
-        cdef c{{struct:name}} cother = deref((<{{struct:name}}>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
-
     def __hash__({{struct:name}} self):
         {{^struct:exception?}}
         if not self.__hash:
@@ -268,6 +227,135 @@ cdef class {{struct:name}}{{#struct:exception?}}(thrift.py3.exceptions.Error){{/
 
     def __repr__({{struct:name}} self):
         return f'{{struct:name}}({{#struct:fields}}{{field:name}}={repr(self.{{field:name}})}{{^last?}}, {{/last?}}{{/struct:fields}})'
+{{/struct:union?}}{{!
+}}{{#struct:union?}}
+class {{struct:name}}Type(Enum):
+    EMPTY = <int>c{{struct:name}}__type___EMPTY__
+{{#struct:fields}}{{#field:type}}
+    {{field:name}} = <int>c{{struct:name}}__type_{{field:name}}
+{{/field:type}}{{/struct:fields}}
+
+cdef class {{struct:name}}(thrift.py3.types.Struct):
+    def __init__(
+        {{struct:name}} self{{#struct:fields}},
+        {{field:name}}=None{{/struct:fields}}
+    ):
+        self._cpp_obj = move({{struct:name}}._make_instance(
+          NULL,{{#struct:fields}}
+          {{field:name}},{{/struct:fields}}
+        ))
+        self._load_cache()
+
+    @staticmethod
+    cdef unique_ptr[c{{struct:name}}] _make_instance(
+        c{{struct:name}}* base_instance{{#struct:fields}},
+        {{field:name}}{{/struct:fields}}
+    ) except *:
+        cdef unique_ptr[c{{struct:name}}] c_inst = make_unique[c{{struct:name}}]()
+        cdef bint any_set = False
+        {{#struct:fields}}{{#field:type}}
+        if {{field:name}} is not None:
+            if any_set:
+                raise ValueError("At most one field may be set when initializing a union")
+            {{> CythonUnionAssignField}}
+
+            any_set = True
+        {{/field:type}}{{/struct:fields}}
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __bool__(self):
+        return self.__type != {{struct:name}}Type.EMPTY
+
+    @staticmethod
+    cdef create(shared_ptr[c{{struct:name}}] cpp_obj):
+        inst = <{{struct:name}}>{{struct:name}}.__new__({{struct:name}})
+        inst._cpp_obj = cpp_obj
+        inst._load_cache()
+        return inst
+
+    {{#struct:fields}}
+    @property
+    def {{field:name}}(self):
+        if self.__type != {{struct:name}}Type.{{field:name}}:
+            raise ValueError(f'Union contains a value of type {self.__type.name}, not {{field:name}}')
+        return self.__cached
+
+    {{/struct:fields}}
+
+    def __hash__({{struct:name}} self):
+        if not self.__hash:
+            self.__hash = hash((
+                self.__type,
+                self.__cached,
+            ))
+        return self.__hash
+
+    def __repr__({{struct:name}} self):
+        return f'{{struct:name}}(type={self.__type.name}, value={repr(self.__cached)})'
+
+    cdef _load_cache({{struct:name}} self):
+        if self.__type is not None:
+            return
+
+        self.__type = {{struct:name}}Type(<int>(deref(self._cpp_obj).getType()))
+        if self.__type == {{struct:name}}Type.EMPTY:
+            self.__cached = None
+        {{#struct:fields}}{{#field:type}}
+        elif self.__type == {{struct:name}}Type.{{field:name}}:
+            {{> CythonUnionGetter}}
+
+        {{/field:type}}{{/struct:fields}}
+
+    def get_type({{struct:name}} self):
+        return self.__type
+
+{{/struct:union?}}
+    {{! Below are some things that are common to structs and unions: }}
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, {{struct:name}}) and
+                isinstance(other, {{struct:name}})):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef c{{struct:name}} cself = deref((<{{struct:name}}>self)._cpp_obj)
+        cdef c{{struct:name}} cother = deref((<{{struct:name}}>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
+
+    {{^struct:exception?}}
+    cdef bytes _serialize({{struct:name}} self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[c{{struct:name}}](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[c{{struct:name}}](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[c{{struct:name}}](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
+
+    cdef uint32_t _deserialize({{struct:name}} self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[c{{struct:name}}](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[c{{struct:name}}](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[c{{struct:name}}](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, ({{struct:name}}, serialize(self)))
+    {{/struct:exception?}}
 
 
 {{/program:structs}}

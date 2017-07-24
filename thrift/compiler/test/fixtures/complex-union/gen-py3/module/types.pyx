@@ -30,10 +30,16 @@ from enum import Enum
 
 
 
-cdef cComplexUnion _ComplexUnion_defaults = cComplexUnion()
+class ComplexUnionType(Enum):
+    EMPTY = <int>cComplexUnion__type___EMPTY__
+    intValue = <int>cComplexUnion__type_intValue
+    stringValue = <int>cComplexUnion__type_stringValue
+    intListValue = <int>cComplexUnion__type_intListValue
+    stringListValue = <int>cComplexUnion__type_stringListValue
+    typedefValue = <int>cComplexUnion__type_typedefValue
+    stringRef = <int>cComplexUnion__type_stringRef
 
 cdef class ComplexUnion(thrift.py3.types.Struct):
-
     def __init__(
         ComplexUnion self,
         intValue=None,
@@ -52,6 +58,156 @@ cdef class ComplexUnion(thrift.py3.types.Struct):
           typedefValue,
           stringRef,
         ))
+        self._load_cache()
+
+    @staticmethod
+    cdef unique_ptr[cComplexUnion] _make_instance(
+        cComplexUnion* base_instance,
+        intValue,
+        stringValue,
+        intListValue,
+        stringListValue,
+        typedefValue,
+        stringRef
+    ) except *:
+        cdef unique_ptr[cComplexUnion] c_inst = make_unique[cComplexUnion]()
+        cdef bint any_set = False
+        if intValue is not None:
+            if any_set:
+                raise ValueError("At most one field may be set when initializing a union")
+            deref(c_inst).set_intValue(intValue)
+            any_set = True
+        if stringValue is not None:
+            if any_set:
+                raise ValueError("At most one field may be set when initializing a union")
+            deref(c_inst).set_stringValue(stringValue.encode('UTF-8'))
+            any_set = True
+        if intListValue is not None:
+            if any_set:
+                raise ValueError("At most one field may be set when initializing a union")
+            deref(c_inst).set_intListValue(<vector[int64_t]>deref(List__i64(intListValue)._cpp_obj))
+            any_set = True
+        if stringListValue is not None:
+            if any_set:
+                raise ValueError("At most one field may be set when initializing a union")
+            deref(c_inst).set_stringListValue(<vector[string]>deref(List__string(stringListValue)._cpp_obj))
+            any_set = True
+        if typedefValue is not None:
+            if any_set:
+                raise ValueError("At most one field may be set when initializing a union")
+            deref(c_inst).set_typedefValue(<cmap[int16_t,string]>deref(Map__i16_string(typedefValue)._cpp_obj))
+            any_set = True
+        if stringRef is not None:
+            if any_set:
+                raise ValueError("At most one field may be set when initializing a union")
+            deref(c_inst).set_stringRef(string(deref((<str?>stringRef)._cpp_obj)))
+            any_set = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __bool__(self):
+        return self.__type != ComplexUnionType.EMPTY
+
+    @staticmethod
+    cdef create(shared_ptr[cComplexUnion] cpp_obj):
+        inst = <ComplexUnion>ComplexUnion.__new__(ComplexUnion)
+        inst._cpp_obj = cpp_obj
+        inst._load_cache()
+        return inst
+
+    @property
+    def intValue(self):
+        if self.__type != ComplexUnionType.intValue:
+            raise ValueError(f'Union contains a value of type {self.__type.name}, not intValue')
+        return self.__cached
+
+    @property
+    def stringValue(self):
+        if self.__type != ComplexUnionType.stringValue:
+            raise ValueError(f'Union contains a value of type {self.__type.name}, not stringValue')
+        return self.__cached
+
+    @property
+    def intListValue(self):
+        if self.__type != ComplexUnionType.intListValue:
+            raise ValueError(f'Union contains a value of type {self.__type.name}, not intListValue')
+        return self.__cached
+
+    @property
+    def stringListValue(self):
+        if self.__type != ComplexUnionType.stringListValue:
+            raise ValueError(f'Union contains a value of type {self.__type.name}, not stringListValue')
+        return self.__cached
+
+    @property
+    def typedefValue(self):
+        if self.__type != ComplexUnionType.typedefValue:
+            raise ValueError(f'Union contains a value of type {self.__type.name}, not typedefValue')
+        return self.__cached
+
+    @property
+    def stringRef(self):
+        if self.__type != ComplexUnionType.stringRef:
+            raise ValueError(f'Union contains a value of type {self.__type.name}, not stringRef')
+        return self.__cached
+
+
+    def __hash__(ComplexUnion self):
+        if not self.__hash:
+            self.__hash = hash((
+                self.__type,
+                self.__cached,
+            ))
+        return self.__hash
+
+    def __repr__(ComplexUnion self):
+        return f'ComplexUnion(type={self.__type.name}, value={repr(self.__cached)})'
+
+    cdef _load_cache(ComplexUnion self):
+        if self.__type is not None:
+            return
+
+        self.__type = ComplexUnionType(<int>(deref(self._cpp_obj).getType()))
+        if self.__type == ComplexUnionType.EMPTY:
+            self.__cached = None
+        elif self.__type == ComplexUnionType.intValue:
+            self.__cached = deref(self._cpp_obj).get_intValue()
+        elif self.__type == ComplexUnionType.stringValue:
+            self.__cached = bytes(deref(self._cpp_obj).get_stringValue()).decode('UTF-8')
+        elif self.__type == ComplexUnionType.intListValue:
+            self.__cached = List__i64.create(make_shared[vector[int64_t]](deref(self._cpp_obj).get_intListValue()))
+        elif self.__type == ComplexUnionType.stringListValue:
+            self.__cached = List__string.create(make_shared[vector[string]](deref(self._cpp_obj).get_stringListValue()))
+        elif self.__type == ComplexUnionType.typedefValue:
+            self.__cached = Map__i16_string.create(make_shared[cmap[int16_t,string]](deref(self._cpp_obj).get_typedefValue()))
+        elif self.__type == ComplexUnionType.stringRef:
+            if not deref(self._cpp_obj).get_stringRef():
+                self.__cached = None
+            else:
+                self.__cached = str.create(aliasing_constructor_stringRef(self._cpp_obj, (deref(self._cpp_obj).get_stringRef()).get()))
+
+    def get_type(ComplexUnion self):
+        return self.__type
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, ComplexUnion) and
+                isinstance(other, ComplexUnion)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cComplexUnion cself = deref((<ComplexUnion>self)._cpp_obj)
+        cdef cComplexUnion cother = deref((<ComplexUnion>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
 
     cdef bytes _serialize(ComplexUnion self, proto):
         cdef string c_str
@@ -76,229 +232,13 @@ cdef class ComplexUnion(thrift.py3.types.Struct):
     def __reduce__(self):
         return (deserialize, (ComplexUnion, serialize(self)))
 
-    def __call__(
-        ComplexUnion self,
-        intValue=NOTSET,
-        stringValue=NOTSET,
-        intListValue=NOTSET,
-        stringListValue=NOTSET,
-        typedefValue=NOTSET,
-        stringRef=NOTSET
-    ):
-        changes = any((
-            intValue is not NOTSET,
 
-            stringValue is not NOTSET,
-
-            intListValue is not NOTSET,
-
-            stringListValue is not NOTSET,
-
-            typedefValue is not NOTSET,
-
-            stringRef is not NOTSET,
-        ))
-
-        if not changes:
-            return self
-
-        inst = <ComplexUnion>ComplexUnion.__new__(ComplexUnion)
-        inst._cpp_obj = move(ComplexUnion._make_instance(
-          self._cpp_obj.get(),
-          intValue,
-          stringValue,
-          intListValue,
-          stringListValue,
-          typedefValue,
-          stringRef,
-        ))
-        return inst
-
-    @staticmethod
-    cdef unique_ptr[cComplexUnion] _make_instance(
-        cComplexUnion* base_instance,
-        object intValue,
-        object stringValue,
-        object intListValue,
-        object stringListValue,
-        object typedefValue,
-        object stringRef
-    ) except *:
-        cdef unique_ptr[cComplexUnion] c_inst
-        if base_instance:
-            c_inst = make_unique[cComplexUnion](deref(base_instance))
-        else:
-            c_inst = make_unique[cComplexUnion]()
-
-        if base_instance:
-            # Convert None's to default value.
-            if intValue is None:
-                deref(c_inst).intValue = _ComplexUnion_defaults.intValue
-                deref(c_inst).__isset.intValue = False
-            elif intValue is NOTSET:
-                intValue = None
-
-            if stringValue is None:
-                deref(c_inst).stringValue = _ComplexUnion_defaults.stringValue
-                deref(c_inst).__isset.stringValue = False
-            elif stringValue is NOTSET:
-                stringValue = None
-
-            if intListValue is None:
-                deref(c_inst).intListValue = _ComplexUnion_defaults.intListValue
-                deref(c_inst).__isset.intListValue = False
-            elif intListValue is NOTSET:
-                intListValue = None
-
-            if stringListValue is None:
-                deref(c_inst).stringListValue = _ComplexUnion_defaults.stringListValue
-                deref(c_inst).__isset.stringListValue = False
-            elif stringListValue is NOTSET:
-                stringListValue = None
-
-            if typedefValue is None:
-                deref(c_inst).typedefValue = _ComplexUnion_defaults.typedefValue
-                deref(c_inst).__isset.typedefValue = False
-            elif typedefValue is NOTSET:
-                typedefValue = None
-
-            if stringRef is None:
-                raise ValueError("Reference-annotated fields may not be initialized to defaults")
-            elif stringRef is NOTSET:
-                stringRef = None
-
-        if intValue is not None:
-            deref(c_inst).intValue = intValue
-            deref(c_inst).__isset.intValue = True
-
-        if stringValue is not None:
-            deref(c_inst).stringValue = stringValue.encode('UTF-8')
-            deref(c_inst).__isset.stringValue = True
-
-        if intListValue is not None:
-            deref(c_inst).intListValue = <vector[int64_t]>deref(List__i64(intListValue)._cpp_obj)
-            deref(c_inst).__isset.intListValue = True
-
-        if stringListValue is not None:
-            deref(c_inst).stringListValue = <vector[string]>deref(List__string(stringListValue)._cpp_obj)
-            deref(c_inst).__isset.stringListValue = True
-
-        if typedefValue is not None:
-            deref(c_inst).typedefValue = <cmap[int16_t,string]>deref(Map__i16_string(typedefValue)._cpp_obj)
-            deref(c_inst).__isset.typedefValue = True
-
-        if stringRef is not None:
-            deref(c_inst).stringRef = make_unique[string](deref((<str?>stringRef)._cpp_obj))
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return move_unique(c_inst)
-
-    def __iter__(self):
-        yield 'intValue', self.intValue
-        yield 'stringValue', self.stringValue
-        yield 'intListValue', self.intListValue
-        yield 'stringListValue', self.stringListValue
-        yield 'typedefValue', self.typedefValue
-        yield 'stringRef', self.stringRef
-
-    def __bool__(self):
-        return deref(self._cpp_obj).__isset.intValue or deref(self._cpp_obj).__isset.stringValue or deref(self._cpp_obj).__isset.intListValue or deref(self._cpp_obj).__isset.stringListValue or deref(self._cpp_obj).__isset.typedefValue or <bint>(deref(self._cpp_obj).stringRef)
-
-    @staticmethod
-    cdef create(shared_ptr[cComplexUnion] cpp_obj):
-        inst = <ComplexUnion>ComplexUnion.__new__(ComplexUnion)
-        inst._cpp_obj = cpp_obj
-        return inst
-
-    @property
-    def intValue(self):
-        if not deref(self._cpp_obj).__isset.intValue:
-            return None
-
-        return self._cpp_obj.get().intValue
-
-    @property
-    def stringValue(self):
-        if not deref(self._cpp_obj).__isset.stringValue:
-            return None
-
-        return self._cpp_obj.get().stringValue.decode('UTF-8')
-
-    @property
-    def intListValue(self):
-        if not deref(self._cpp_obj).__isset.intListValue:
-            return None
-
-        if self.__intListValue is None:
-            self.__intListValue = List__i64.create(make_shared[vector[int64_t]](deref(self._cpp_obj).intListValue))
-        return self.__intListValue
-
-    @property
-    def stringListValue(self):
-        if not deref(self._cpp_obj).__isset.stringListValue:
-            return None
-
-        if self.__stringListValue is None:
-            self.__stringListValue = List__string.create(make_shared[vector[string]](deref(self._cpp_obj).stringListValue))
-        return self.__stringListValue
-
-    @property
-    def typedefValue(self):
-        if not deref(self._cpp_obj).__isset.typedefValue:
-            return None
-
-        if self.__typedefValue is None:
-            self.__typedefValue = Map__i16_string.create(make_shared[cmap[int16_t,string]](deref(self._cpp_obj).typedefValue))
-        return self.__typedefValue
-
-    @property
-    def stringRef(self):
-        if self.__stringRef is None:
-            if not deref(self._cpp_obj).stringRef:
-                return None
-            self.__stringRef = str.create(aliasing_constructor_stringRef(self._cpp_obj, (deref(self._cpp_obj).stringRef.get())))
-        return self.__stringRef
-
-
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
-        if not (
-                isinstance(self, ComplexUnion) and
-                isinstance(other, ComplexUnion)):
-            if cop == 2:  # different types are never equal
-                return False
-            else:         # different types are always notequal
-                return True
-
-        cdef cComplexUnion cself = deref((<ComplexUnion>self)._cpp_obj)
-        cdef cComplexUnion cother = deref((<ComplexUnion>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
-
-    def __hash__(ComplexUnion self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.intValue,
-            self.stringValue,
-            self.intListValue,
-            self.stringListValue,
-            self.typedefValue,
-            self.stringRef,
-            ))
-        return self.__hash
-
-    def __repr__(ComplexUnion self):
-        return f'ComplexUnion(intValue={repr(self.intValue)}, stringValue={repr(self.stringValue)}, intListValue={repr(self.intListValue)}, stringListValue={repr(self.stringListValue)}, typedefValue={repr(self.typedefValue)}, stringRef={repr(self.stringRef)})'
-
-
-cdef cFinalComplexUnion _FinalComplexUnion_defaults = cFinalComplexUnion()
+class FinalComplexUnionType(Enum):
+    EMPTY = <int>cFinalComplexUnion__type___EMPTY__
+    thingOne = <int>cFinalComplexUnion__type_thingOne
+    thingTwo = <int>cFinalComplexUnion__type_thingTwo
 
 cdef class FinalComplexUnion(thrift.py3.types.Struct):
-
     def __init__(
         FinalComplexUnion self,
         thingOne=None,
@@ -309,6 +249,97 @@ cdef class FinalComplexUnion(thrift.py3.types.Struct):
           thingOne,
           thingTwo,
         ))
+        self._load_cache()
+
+    @staticmethod
+    cdef unique_ptr[cFinalComplexUnion] _make_instance(
+        cFinalComplexUnion* base_instance,
+        thingOne,
+        thingTwo
+    ) except *:
+        cdef unique_ptr[cFinalComplexUnion] c_inst = make_unique[cFinalComplexUnion]()
+        cdef bint any_set = False
+        if thingOne is not None:
+            if any_set:
+                raise ValueError("At most one field may be set when initializing a union")
+            deref(c_inst).set_thingOne(thingOne.encode('UTF-8'))
+            any_set = True
+        if thingTwo is not None:
+            if any_set:
+                raise ValueError("At most one field may be set when initializing a union")
+            deref(c_inst).set_thingTwo(thingTwo.encode('UTF-8'))
+            any_set = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __bool__(self):
+        return self.__type != FinalComplexUnionType.EMPTY
+
+    @staticmethod
+    cdef create(shared_ptr[cFinalComplexUnion] cpp_obj):
+        inst = <FinalComplexUnion>FinalComplexUnion.__new__(FinalComplexUnion)
+        inst._cpp_obj = cpp_obj
+        inst._load_cache()
+        return inst
+
+    @property
+    def thingOne(self):
+        if self.__type != FinalComplexUnionType.thingOne:
+            raise ValueError(f'Union contains a value of type {self.__type.name}, not thingOne')
+        return self.__cached
+
+    @property
+    def thingTwo(self):
+        if self.__type != FinalComplexUnionType.thingTwo:
+            raise ValueError(f'Union contains a value of type {self.__type.name}, not thingTwo')
+        return self.__cached
+
+
+    def __hash__(FinalComplexUnion self):
+        if not self.__hash:
+            self.__hash = hash((
+                self.__type,
+                self.__cached,
+            ))
+        return self.__hash
+
+    def __repr__(FinalComplexUnion self):
+        return f'FinalComplexUnion(type={self.__type.name}, value={repr(self.__cached)})'
+
+    cdef _load_cache(FinalComplexUnion self):
+        if self.__type is not None:
+            return
+
+        self.__type = FinalComplexUnionType(<int>(deref(self._cpp_obj).getType()))
+        if self.__type == FinalComplexUnionType.EMPTY:
+            self.__cached = None
+        elif self.__type == FinalComplexUnionType.thingOne:
+            self.__cached = bytes(deref(self._cpp_obj).get_thingOne()).decode('UTF-8')
+        elif self.__type == FinalComplexUnionType.thingTwo:
+            self.__cached = bytes(deref(self._cpp_obj).get_thingTwo()).decode('UTF-8')
+
+    def get_type(FinalComplexUnion self):
+        return self.__type
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, FinalComplexUnion) and
+                isinstance(other, FinalComplexUnion)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cFinalComplexUnion cself = deref((<FinalComplexUnion>self)._cpp_obj)
+        cdef cFinalComplexUnion cother = deref((<FinalComplexUnion>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
 
     cdef bytes _serialize(FinalComplexUnion self, proto):
         cdef string c_str
@@ -332,124 +363,6 @@ cdef class FinalComplexUnion(thrift.py3.types.Struct):
 
     def __reduce__(self):
         return (deserialize, (FinalComplexUnion, serialize(self)))
-
-    def __call__(
-        FinalComplexUnion self,
-        thingOne=NOTSET,
-        thingTwo=NOTSET
-    ):
-        changes = any((
-            thingOne is not NOTSET,
-
-            thingTwo is not NOTSET,
-        ))
-
-        if not changes:
-            return self
-
-        inst = <FinalComplexUnion>FinalComplexUnion.__new__(FinalComplexUnion)
-        inst._cpp_obj = move(FinalComplexUnion._make_instance(
-          self._cpp_obj.get(),
-          thingOne,
-          thingTwo,
-        ))
-        return inst
-
-    @staticmethod
-    cdef unique_ptr[cFinalComplexUnion] _make_instance(
-        cFinalComplexUnion* base_instance,
-        object thingOne,
-        object thingTwo
-    ) except *:
-        cdef unique_ptr[cFinalComplexUnion] c_inst
-        if base_instance:
-            c_inst = make_unique[cFinalComplexUnion](deref(base_instance))
-        else:
-            c_inst = make_unique[cFinalComplexUnion]()
-
-        if base_instance:
-            # Convert None's to default value.
-            if thingOne is None:
-                deref(c_inst).thingOne = _FinalComplexUnion_defaults.thingOne
-                deref(c_inst).__isset.thingOne = False
-            elif thingOne is NOTSET:
-                thingOne = None
-
-            if thingTwo is None:
-                deref(c_inst).thingTwo = _FinalComplexUnion_defaults.thingTwo
-                deref(c_inst).__isset.thingTwo = False
-            elif thingTwo is NOTSET:
-                thingTwo = None
-
-        if thingOne is not None:
-            deref(c_inst).thingOne = thingOne.encode('UTF-8')
-            deref(c_inst).__isset.thingOne = True
-
-        if thingTwo is not None:
-            deref(c_inst).thingTwo = thingTwo.encode('UTF-8')
-            deref(c_inst).__isset.thingTwo = True
-
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return move_unique(c_inst)
-
-    def __iter__(self):
-        yield 'thingOne', self.thingOne
-        yield 'thingTwo', self.thingTwo
-
-    def __bool__(self):
-        return deref(self._cpp_obj).__isset.thingOne or deref(self._cpp_obj).__isset.thingTwo
-
-    @staticmethod
-    cdef create(shared_ptr[cFinalComplexUnion] cpp_obj):
-        inst = <FinalComplexUnion>FinalComplexUnion.__new__(FinalComplexUnion)
-        inst._cpp_obj = cpp_obj
-        return inst
-
-    @property
-    def thingOne(self):
-        if not deref(self._cpp_obj).__isset.thingOne:
-            return None
-
-        return self._cpp_obj.get().thingOne.decode('UTF-8')
-
-    @property
-    def thingTwo(self):
-        if not deref(self._cpp_obj).__isset.thingTwo:
-            return None
-
-        return self._cpp_obj.get().thingTwo.decode('UTF-8')
-
-
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
-        if not (
-                isinstance(self, FinalComplexUnion) and
-                isinstance(other, FinalComplexUnion)):
-            if cop == 2:  # different types are never equal
-                return False
-            else:         # different types are always notequal
-                return True
-
-        cdef cFinalComplexUnion cself = deref((<FinalComplexUnion>self)._cpp_obj)
-        cdef cFinalComplexUnion cother = deref((<FinalComplexUnion>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
-
-    def __hash__(FinalComplexUnion self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.thingOne,
-            self.thingTwo,
-            ))
-        return self.__hash
-
-    def __repr__(FinalComplexUnion self):
-        return f'FinalComplexUnion(thingOne={repr(self.thingOne)}, thingTwo={repr(self.thingTwo)})'
 
 
 cdef class List__i64:

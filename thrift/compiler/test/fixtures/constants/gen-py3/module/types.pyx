@@ -80,29 +80,6 @@ cdef class Internship(thrift.py3.types.Struct):
           employer,
         ))
 
-    cdef bytes _serialize(Internship self, proto):
-        cdef string c_str
-        if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cInternship](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cInternship](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cInternship](deref(self._cpp_obj.get()), &c_str)
-        return <bytes> c_str
-
-    cdef uint32_t _deserialize(Internship self, const IOBuf* buf, proto):
-        cdef uint32_t needed
-        if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cInternship](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cInternship](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cInternship](buf, deref(self._cpp_obj.get()))
-        return needed
-
-    def __reduce__(self):
-        return (deserialize, (Internship, serialize(self)))
-
     def __call__(
         Internship self,
         weeks=NOTSET,
@@ -208,6 +185,17 @@ cdef class Internship(thrift.py3.types.Struct):
         return translate_cpp_enum_to_python(Company, <int>deref(self._cpp_obj).employer)
 
 
+    def __hash__(Internship self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.weeks,
+            self.title,
+            self.employer,
+            ))
+        return self.__hash
+
+    def __repr__(Internship self):
+        return f'Internship(weeks={repr(self.weeks)}, title={repr(self.title)}, employer={repr(self.employer)})'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -227,17 +215,28 @@ cdef class Internship(thrift.py3.types.Struct):
             return cmp
         return not cmp
 
-    def __hash__(Internship self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.weeks,
-            self.title,
-            self.employer,
-            ))
-        return self.__hash
+    cdef bytes _serialize(Internship self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cInternship](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cInternship](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cInternship](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
 
-    def __repr__(Internship self):
-        return f'Internship(weeks={repr(self.weeks)}, title={repr(self.title)}, employer={repr(self.employer)})'
+    cdef uint32_t _deserialize(Internship self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cInternship](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cInternship](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cInternship](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (Internship, serialize(self)))
 
 
 cdef cUnEnumStruct _UnEnumStruct_defaults = cUnEnumStruct()
@@ -252,29 +251,6 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
           NULL,
           city,
         ))
-
-    cdef bytes _serialize(UnEnumStruct self, proto):
-        cdef string c_str
-        if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cUnEnumStruct](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cUnEnumStruct](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cUnEnumStruct](deref(self._cpp_obj.get()), &c_str)
-        return <bytes> c_str
-
-    cdef uint32_t _deserialize(UnEnumStruct self, const IOBuf* buf, proto):
-        cdef uint32_t needed
-        if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cUnEnumStruct](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cUnEnumStruct](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cUnEnumStruct](buf, deref(self._cpp_obj.get()))
-        return needed
-
-    def __reduce__(self):
-        return (deserialize, (UnEnumStruct, serialize(self)))
 
     def __call__(
         UnEnumStruct self,
@@ -338,6 +314,15 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
         return translate_cpp_enum_to_python(City, <int>deref(self._cpp_obj).city)
 
 
+    def __hash__(UnEnumStruct self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.city,
+            ))
+        return self.__hash
+
+    def __repr__(UnEnumStruct self):
+        return f'UnEnumStruct(city={repr(self.city)})'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -357,15 +342,28 @@ cdef class UnEnumStruct(thrift.py3.types.Struct):
             return cmp
         return not cmp
 
-    def __hash__(UnEnumStruct self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.city,
-            ))
-        return self.__hash
+    cdef bytes _serialize(UnEnumStruct self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cUnEnumStruct](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cUnEnumStruct](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cUnEnumStruct](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
 
-    def __repr__(UnEnumStruct self):
-        return f'UnEnumStruct(city={repr(self.city)})'
+    cdef uint32_t _deserialize(UnEnumStruct self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cUnEnumStruct](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cUnEnumStruct](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cUnEnumStruct](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (UnEnumStruct, serialize(self)))
 
 
 cdef cRange _Range_defaults = cRange()
@@ -382,29 +380,6 @@ cdef class Range(thrift.py3.types.Struct):
           min,
           max,
         ))
-
-    cdef bytes _serialize(Range self, proto):
-        cdef string c_str
-        if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cRange](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cRange](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cRange](deref(self._cpp_obj.get()), &c_str)
-        return <bytes> c_str
-
-    cdef uint32_t _deserialize(Range self, const IOBuf* buf, proto):
-        cdef uint32_t needed
-        if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cRange](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cRange](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cRange](buf, deref(self._cpp_obj.get()))
-        return needed
-
-    def __reduce__(self):
-        return (deserialize, (Range, serialize(self)))
 
     def __call__(
         Range self,
@@ -482,6 +457,16 @@ cdef class Range(thrift.py3.types.Struct):
         return self._cpp_obj.get().max
 
 
+    def __hash__(Range self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.min,
+            self.max,
+            ))
+        return self.__hash
+
+    def __repr__(Range self):
+        return f'Range(min={repr(self.min)}, max={repr(self.max)})'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -501,16 +486,28 @@ cdef class Range(thrift.py3.types.Struct):
             return cmp
         return not cmp
 
-    def __hash__(Range self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.min,
-            self.max,
-            ))
-        return self.__hash
+    cdef bytes _serialize(Range self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cRange](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cRange](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cRange](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
 
-    def __repr__(Range self):
-        return f'Range(min={repr(self.min)}, max={repr(self.max)})'
+    cdef uint32_t _deserialize(Range self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cRange](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cRange](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cRange](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (Range, serialize(self)))
 
 
 cdef cstruct1 _struct1_defaults = cstruct1()
@@ -527,29 +524,6 @@ cdef class struct1(thrift.py3.types.Struct):
           a,
           b,
         ))
-
-    cdef bytes _serialize(struct1 self, proto):
-        cdef string c_str
-        if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cstruct1](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cstruct1](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cstruct1](deref(self._cpp_obj.get()), &c_str)
-        return <bytes> c_str
-
-    cdef uint32_t _deserialize(struct1 self, const IOBuf* buf, proto):
-        cdef uint32_t needed
-        if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cstruct1](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cstruct1](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cstruct1](buf, deref(self._cpp_obj.get()))
-        return needed
-
-    def __reduce__(self):
-        return (deserialize, (struct1, serialize(self)))
 
     def __call__(
         struct1 self,
@@ -633,6 +607,16 @@ cdef class struct1(thrift.py3.types.Struct):
         return self._cpp_obj.get().b.decode('UTF-8')
 
 
+    def __hash__(struct1 self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.a,
+            self.b,
+            ))
+        return self.__hash
+
+    def __repr__(struct1 self):
+        return f'struct1(a={repr(self.a)}, b={repr(self.b)})'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -652,16 +636,28 @@ cdef class struct1(thrift.py3.types.Struct):
             return cmp
         return not cmp
 
-    def __hash__(struct1 self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.a,
-            self.b,
-            ))
-        return self.__hash
+    cdef bytes _serialize(struct1 self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cstruct1](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cstruct1](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cstruct1](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
 
-    def __repr__(struct1 self):
-        return f'struct1(a={repr(self.a)}, b={repr(self.b)})'
+    cdef uint32_t _deserialize(struct1 self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cstruct1](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cstruct1](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cstruct1](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (struct1, serialize(self)))
 
 
 cdef cstruct2 _struct2_defaults = cstruct2()
@@ -682,29 +678,6 @@ cdef class struct2(thrift.py3.types.Struct):
           c,
           d,
         ))
-
-    cdef bytes _serialize(struct2 self, proto):
-        cdef string c_str
-        if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cstruct2](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cstruct2](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cstruct2](deref(self._cpp_obj.get()), &c_str)
-        return <bytes> c_str
-
-    cdef uint32_t _deserialize(struct2 self, const IOBuf* buf, proto):
-        cdef uint32_t needed
-        if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cstruct2](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cstruct2](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cstruct2](buf, deref(self._cpp_obj.get()))
-        return needed
-
-    def __reduce__(self):
-        return (deserialize, (struct2, serialize(self)))
 
     def __call__(
         struct2 self,
@@ -844,6 +817,18 @@ cdef class struct2(thrift.py3.types.Struct):
         return self.__d
 
 
+    def __hash__(struct2 self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.a,
+            self.b,
+            self.c,
+            self.d,
+            ))
+        return self.__hash
+
+    def __repr__(struct2 self):
+        return f'struct2(a={repr(self.a)}, b={repr(self.b)}, c={repr(self.c)}, d={repr(self.d)})'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -863,18 +848,28 @@ cdef class struct2(thrift.py3.types.Struct):
             return cmp
         return not cmp
 
-    def __hash__(struct2 self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.a,
-            self.b,
-            self.c,
-            self.d,
-            ))
-        return self.__hash
+    cdef bytes _serialize(struct2 self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cstruct2](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cstruct2](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cstruct2](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
 
-    def __repr__(struct2 self):
-        return f'struct2(a={repr(self.a)}, b={repr(self.b)}, c={repr(self.c)}, d={repr(self.d)})'
+    cdef uint32_t _deserialize(struct2 self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cstruct2](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cstruct2](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cstruct2](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (struct2, serialize(self)))
 
 
 cdef cstruct3 _struct3_defaults = cstruct3()
@@ -893,29 +888,6 @@ cdef class struct3(thrift.py3.types.Struct):
           b,
           c,
         ))
-
-    cdef bytes _serialize(struct3 self, proto):
-        cdef string c_str
-        if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cstruct3](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cstruct3](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cstruct3](deref(self._cpp_obj.get()), &c_str)
-        return <bytes> c_str
-
-    cdef uint32_t _deserialize(struct3 self, const IOBuf* buf, proto):
-        cdef uint32_t needed
-        if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cstruct3](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cstruct3](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cstruct3](buf, deref(self._cpp_obj.get()))
-        return needed
-
-    def __reduce__(self):
-        return (deserialize, (struct3, serialize(self)))
 
     def __call__(
         struct3 self,
@@ -1030,6 +1002,17 @@ cdef class struct3(thrift.py3.types.Struct):
         return self.__c
 
 
+    def __hash__(struct3 self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.a,
+            self.b,
+            self.c,
+            ))
+        return self.__hash
+
+    def __repr__(struct3 self):
+        return f'struct3(a={repr(self.a)}, b={repr(self.b)}, c={repr(self.c)})'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -1049,23 +1032,36 @@ cdef class struct3(thrift.py3.types.Struct):
             return cmp
         return not cmp
 
-    def __hash__(struct3 self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.a,
-            self.b,
-            self.c,
-            ))
-        return self.__hash
+    cdef bytes _serialize(struct3 self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cstruct3](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cstruct3](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cstruct3](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
 
-    def __repr__(struct3 self):
-        return f'struct3(a={repr(self.a)}, b={repr(self.b)}, c={repr(self.c)})'
+    cdef uint32_t _deserialize(struct3 self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cstruct3](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cstruct3](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cstruct3](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (struct3, serialize(self)))
 
 
-cdef cunion1 _union1_defaults = cunion1()
+class union1Type(Enum):
+    EMPTY = <int>cunion1__type___EMPTY__
+    i = <int>cunion1__type_i
+    d = <int>cunion1__type_d
 
 cdef class union1(thrift.py3.types.Struct):
-
     def __init__(
         union1 self,
         i=None,
@@ -1076,6 +1072,97 @@ cdef class union1(thrift.py3.types.Struct):
           i,
           d,
         ))
+        self._load_cache()
+
+    @staticmethod
+    cdef unique_ptr[cunion1] _make_instance(
+        cunion1* base_instance,
+        i,
+        d
+    ) except *:
+        cdef unique_ptr[cunion1] c_inst = make_unique[cunion1]()
+        cdef bint any_set = False
+        if i is not None:
+            if any_set:
+                raise ValueError("At most one field may be set when initializing a union")
+            deref(c_inst).set_i(i)
+            any_set = True
+        if d is not None:
+            if any_set:
+                raise ValueError("At most one field may be set when initializing a union")
+            deref(c_inst).set_d(d)
+            any_set = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __bool__(self):
+        return self.__type != union1Type.EMPTY
+
+    @staticmethod
+    cdef create(shared_ptr[cunion1] cpp_obj):
+        inst = <union1>union1.__new__(union1)
+        inst._cpp_obj = cpp_obj
+        inst._load_cache()
+        return inst
+
+    @property
+    def i(self):
+        if self.__type != union1Type.i:
+            raise ValueError(f'Union contains a value of type {self.__type.name}, not i')
+        return self.__cached
+
+    @property
+    def d(self):
+        if self.__type != union1Type.d:
+            raise ValueError(f'Union contains a value of type {self.__type.name}, not d')
+        return self.__cached
+
+
+    def __hash__(union1 self):
+        if not self.__hash:
+            self.__hash = hash((
+                self.__type,
+                self.__cached,
+            ))
+        return self.__hash
+
+    def __repr__(union1 self):
+        return f'union1(type={self.__type.name}, value={repr(self.__cached)})'
+
+    cdef _load_cache(union1 self):
+        if self.__type is not None:
+            return
+
+        self.__type = union1Type(<int>(deref(self._cpp_obj).getType()))
+        if self.__type == union1Type.EMPTY:
+            self.__cached = None
+        elif self.__type == union1Type.i:
+            self.__cached = deref(self._cpp_obj).get_i()
+        elif self.__type == union1Type.d:
+            self.__cached = deref(self._cpp_obj).get_d()
+
+    def get_type(union1 self):
+        return self.__type
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, union1) and
+                isinstance(other, union1)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cunion1 cself = deref((<union1>self)._cpp_obj)
+        cdef cunion1 cother = deref((<union1>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
 
     cdef bytes _serialize(union1 self, proto):
         cdef string c_str
@@ -1100,129 +1187,15 @@ cdef class union1(thrift.py3.types.Struct):
     def __reduce__(self):
         return (deserialize, (union1, serialize(self)))
 
-    def __call__(
-        union1 self,
-        i=NOTSET,
-        d=NOTSET
-    ):
-        changes = any((
-            i is not NOTSET,
 
-            d is not NOTSET,
-        ))
-
-        if not changes:
-            return self
-
-        inst = <union1>union1.__new__(union1)
-        inst._cpp_obj = move(union1._make_instance(
-          self._cpp_obj.get(),
-          i,
-          d,
-        ))
-        return inst
-
-    @staticmethod
-    cdef unique_ptr[cunion1] _make_instance(
-        cunion1* base_instance,
-        object i,
-        object d
-    ) except *:
-        cdef unique_ptr[cunion1] c_inst
-        if base_instance:
-            c_inst = make_unique[cunion1](deref(base_instance))
-        else:
-            c_inst = make_unique[cunion1]()
-
-        if base_instance:
-            # Convert None's to default value.
-            if i is None:
-                deref(c_inst).i = _union1_defaults.i
-                deref(c_inst).__isset.i = False
-            elif i is NOTSET:
-                i = None
-
-            if d is None:
-                deref(c_inst).d = _union1_defaults.d
-                deref(c_inst).__isset.d = False
-            elif d is NOTSET:
-                d = None
-
-        if i is not None:
-            deref(c_inst).i = i
-            deref(c_inst).__isset.i = True
-
-        if d is not None:
-            deref(c_inst).d = d
-            deref(c_inst).__isset.d = True
-
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return move_unique(c_inst)
-
-    def __iter__(self):
-        yield 'i', self.i
-        yield 'd', self.d
-
-    def __bool__(self):
-        return deref(self._cpp_obj).__isset.i or deref(self._cpp_obj).__isset.d
-
-    @staticmethod
-    cdef create(shared_ptr[cunion1] cpp_obj):
-        inst = <union1>union1.__new__(union1)
-        inst._cpp_obj = cpp_obj
-        return inst
-
-    @property
-    def i(self):
-        if not deref(self._cpp_obj).__isset.i:
-            return None
-
-        return self._cpp_obj.get().i
-
-    @property
-    def d(self):
-        if not deref(self._cpp_obj).__isset.d:
-            return None
-
-        return self._cpp_obj.get().d
-
-
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
-        if not (
-                isinstance(self, union1) and
-                isinstance(other, union1)):
-            if cop == 2:  # different types are never equal
-                return False
-            else:         # different types are always notequal
-                return True
-
-        cdef cunion1 cself = deref((<union1>self)._cpp_obj)
-        cdef cunion1 cother = deref((<union1>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
-
-    def __hash__(union1 self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.i,
-            self.d,
-            ))
-        return self.__hash
-
-    def __repr__(union1 self):
-        return f'union1(i={repr(self.i)}, d={repr(self.d)})'
-
-
-cdef cunion2 _union2_defaults = cunion2()
+class union2Type(Enum):
+    EMPTY = <int>cunion2__type___EMPTY__
+    i = <int>cunion2__type_i
+    d = <int>cunion2__type_d
+    s = <int>cunion2__type_s
+    u = <int>cunion2__type_u
 
 cdef class union2(thrift.py3.types.Struct):
-
     def __init__(
         union2 self,
         i=None,
@@ -1237,6 +1210,125 @@ cdef class union2(thrift.py3.types.Struct):
           s,
           u,
         ))
+        self._load_cache()
+
+    @staticmethod
+    cdef unique_ptr[cunion2] _make_instance(
+        cunion2* base_instance,
+        i,
+        d,
+        s,
+        u
+    ) except *:
+        cdef unique_ptr[cunion2] c_inst = make_unique[cunion2]()
+        cdef bint any_set = False
+        if i is not None:
+            if any_set:
+                raise ValueError("At most one field may be set when initializing a union")
+            deref(c_inst).set_i(i)
+            any_set = True
+        if d is not None:
+            if any_set:
+                raise ValueError("At most one field may be set when initializing a union")
+            deref(c_inst).set_d(d)
+            any_set = True
+        if s is not None:
+            if any_set:
+                raise ValueError("At most one field may be set when initializing a union")
+            deref(c_inst).set_s(deref((<struct1?> s)._cpp_obj))
+            any_set = True
+        if u is not None:
+            if any_set:
+                raise ValueError("At most one field may be set when initializing a union")
+            deref(c_inst).set_u(deref((<union1?> u)._cpp_obj))
+            any_set = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return move_unique(c_inst)
+
+    def __bool__(self):
+        return self.__type != union2Type.EMPTY
+
+    @staticmethod
+    cdef create(shared_ptr[cunion2] cpp_obj):
+        inst = <union2>union2.__new__(union2)
+        inst._cpp_obj = cpp_obj
+        inst._load_cache()
+        return inst
+
+    @property
+    def i(self):
+        if self.__type != union2Type.i:
+            raise ValueError(f'Union contains a value of type {self.__type.name}, not i')
+        return self.__cached
+
+    @property
+    def d(self):
+        if self.__type != union2Type.d:
+            raise ValueError(f'Union contains a value of type {self.__type.name}, not d')
+        return self.__cached
+
+    @property
+    def s(self):
+        if self.__type != union2Type.s:
+            raise ValueError(f'Union contains a value of type {self.__type.name}, not s')
+        return self.__cached
+
+    @property
+    def u(self):
+        if self.__type != union2Type.u:
+            raise ValueError(f'Union contains a value of type {self.__type.name}, not u')
+        return self.__cached
+
+
+    def __hash__(union2 self):
+        if not self.__hash:
+            self.__hash = hash((
+                self.__type,
+                self.__cached,
+            ))
+        return self.__hash
+
+    def __repr__(union2 self):
+        return f'union2(type={self.__type.name}, value={repr(self.__cached)})'
+
+    cdef _load_cache(union2 self):
+        if self.__type is not None:
+            return
+
+        self.__type = union2Type(<int>(deref(self._cpp_obj).getType()))
+        if self.__type == union2Type.EMPTY:
+            self.__cached = None
+        elif self.__type == union2Type.i:
+            self.__cached = deref(self._cpp_obj).get_i()
+        elif self.__type == union2Type.d:
+            self.__cached = deref(self._cpp_obj).get_d()
+        elif self.__type == union2Type.s:
+            self.__cached = struct1.create(make_shared[cstruct1](deref(self._cpp_obj).get_s()))
+        elif self.__type == union2Type.u:
+            self.__cached = union1.create(make_shared[cunion1](deref(self._cpp_obj).get_u()))
+
+    def get_type(union2 self):
+        return self.__type
+
+    def __richcmp__(self, other, op):
+        cdef int cop = op
+        if cop not in (2, 3):
+            raise TypeError("unorderable types: {}, {}".format(self, other))
+        if not (
+                isinstance(self, union2) and
+                isinstance(other, union2)):
+            if cop == 2:  # different types are never equal
+                return False
+            else:         # different types are always notequal
+                return True
+
+        cdef cunion2 cself = deref((<union2>self)._cpp_obj)
+        cdef cunion2 cother = deref((<union2>other)._cpp_obj)
+        cdef cbool cmp = cself == cother
+        if cop == 2:
+            return cmp
+        return not cmp
 
     cdef bytes _serialize(union2 self, proto):
         cdef string c_str
@@ -1260,176 +1352,6 @@ cdef class union2(thrift.py3.types.Struct):
 
     def __reduce__(self):
         return (deserialize, (union2, serialize(self)))
-
-    def __call__(
-        union2 self,
-        i=NOTSET,
-        d=NOTSET,
-        s=NOTSET,
-        u=NOTSET
-    ):
-        changes = any((
-            i is not NOTSET,
-
-            d is not NOTSET,
-
-            s is not NOTSET,
-
-            u is not NOTSET,
-        ))
-
-        if not changes:
-            return self
-
-        inst = <union2>union2.__new__(union2)
-        inst._cpp_obj = move(union2._make_instance(
-          self._cpp_obj.get(),
-          i,
-          d,
-          s,
-          u,
-        ))
-        return inst
-
-    @staticmethod
-    cdef unique_ptr[cunion2] _make_instance(
-        cunion2* base_instance,
-        object i,
-        object d,
-        object s,
-        object u
-    ) except *:
-        cdef unique_ptr[cunion2] c_inst
-        if base_instance:
-            c_inst = make_unique[cunion2](deref(base_instance))
-        else:
-            c_inst = make_unique[cunion2]()
-
-        if base_instance:
-            # Convert None's to default value.
-            if i is None:
-                deref(c_inst).i = _union2_defaults.i
-                deref(c_inst).__isset.i = False
-            elif i is NOTSET:
-                i = None
-
-            if d is None:
-                deref(c_inst).d = _union2_defaults.d
-                deref(c_inst).__isset.d = False
-            elif d is NOTSET:
-                d = None
-
-            if s is None:
-                deref(c_inst).s = _union2_defaults.s
-                deref(c_inst).__isset.s = False
-            elif s is NOTSET:
-                s = None
-
-            if u is None:
-                deref(c_inst).u = _union2_defaults.u
-                deref(c_inst).__isset.u = False
-            elif u is NOTSET:
-                u = None
-
-        if i is not None:
-            deref(c_inst).i = i
-            deref(c_inst).__isset.i = True
-
-        if d is not None:
-            deref(c_inst).d = d
-            deref(c_inst).__isset.d = True
-
-        if s is not None:
-            deref(c_inst).s = deref((<struct1?> s)._cpp_obj)
-            deref(c_inst).__isset.s = True
-
-        if u is not None:
-            deref(c_inst).u = deref((<union1?> u)._cpp_obj)
-            deref(c_inst).__isset.u = True
-
-        # in C++ you don't have to call move(), but this doesn't translate
-        # into a C++ return statement, so you do here
-        return move_unique(c_inst)
-
-    def __iter__(self):
-        yield 'i', self.i
-        yield 'd', self.d
-        yield 's', self.s
-        yield 'u', self.u
-
-    def __bool__(self):
-        return deref(self._cpp_obj).__isset.i or deref(self._cpp_obj).__isset.d or deref(self._cpp_obj).__isset.s or deref(self._cpp_obj).__isset.u
-
-    @staticmethod
-    cdef create(shared_ptr[cunion2] cpp_obj):
-        inst = <union2>union2.__new__(union2)
-        inst._cpp_obj = cpp_obj
-        return inst
-
-    @property
-    def i(self):
-        if not deref(self._cpp_obj).__isset.i:
-            return None
-
-        return self._cpp_obj.get().i
-
-    @property
-    def d(self):
-        if not deref(self._cpp_obj).__isset.d:
-            return None
-
-        return self._cpp_obj.get().d
-
-    @property
-    def s(self):
-        if not deref(self._cpp_obj).__isset.s:
-            return None
-
-        if self.__s is None:
-            self.__s = struct1.create(make_shared[cstruct1](deref(self._cpp_obj).s))
-        return self.__s
-
-    @property
-    def u(self):
-        if not deref(self._cpp_obj).__isset.u:
-            return None
-
-        if self.__u is None:
-            self.__u = union1.create(make_shared[cunion1](deref(self._cpp_obj).u))
-        return self.__u
-
-
-    def __richcmp__(self, other, op):
-        cdef int cop = op
-        if cop not in (2, 3):
-            raise TypeError("unorderable types: {}, {}".format(self, other))
-        if not (
-                isinstance(self, union2) and
-                isinstance(other, union2)):
-            if cop == 2:  # different types are never equal
-                return False
-            else:         # different types are always notequal
-                return True
-
-        cdef cunion2 cself = deref((<union2>self)._cpp_obj)
-        cdef cunion2 cother = deref((<union2>other)._cpp_obj)
-        cdef cbool cmp = cself == cother
-        if cop == 2:
-            return cmp
-        return not cmp
-
-    def __hash__(union2 self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.i,
-            self.d,
-            self.s,
-            self.u,
-            ))
-        return self.__hash
-
-    def __repr__(union2 self):
-        return f'union2(i={repr(self.i)}, d={repr(self.d)}, s={repr(self.s)}, u={repr(self.u)})'
 
 
 cdef class List__i32:

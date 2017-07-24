@@ -71,6 +71,7 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types_custo
 cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
 }} namespace "{{#program:cppNamespaces}}{{value}}{{^last?}}::{{/last?}}{{/program:cppNamespaces}}":
 {{/first?}}
+    {{^struct:union?}}
     cdef cppclass c{{struct:name}}__isset "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::__isset":
     {{#struct:fields}}
         bint {{field:name}}
@@ -78,15 +79,33 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
     {{^struct:fields}}
         pass
     {{/struct:fields}}
+    {{/struct:union?}}
+    {{#struct:union?}}
+    cdef enum c{{struct:name}}__type "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type":
+        c{{struct:name}}__type___EMPTY__ "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type::__EMPTY__",
+    {{#struct:fields}}
+        c{{struct:name}}__type_{{field:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}::Type::{{field:name}}",
+    {{/struct:fields}}
+    {{/struct:union?}}
 
     cdef cppclass c{{struct:name}} "{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{struct:name}}"{{#struct:exception?}}(cTException){{/struct:exception?}}:
         c{{struct:name}}() except +
         c{{struct:name}}(const c{{struct:name}}&) except +
         bint operator==(c{{struct:name}}&)
+    {{^struct:union?}}
     {{#struct:fields}}
         {{#field:type}}{{> types/CythonCppStructFieldType}}{{/field:type}} {{field:name}}
     {{/struct:fields}}
         c{{struct:name}}__isset __isset
+    {{/struct:union?}}
+    {{#struct:union?}}
+        c{{struct:name}}__type getType() const
+    {{#struct:fields}}
+        {{#field:type}}const {{> types/CythonCppStructFieldType}}& get_{{field:name}}() const{{/field:type}}
+        {{! Note that the set methods don't take in a shared/unique_ptr, they just take in an object ref,
+            but they return the appropriate ptr }}
+        {{#field:type}}{{> types/CythonCppStructFieldType}}& set_{{field:name}}(const {{> types/CythonCppType}}&){{/field:type}}
+    {{/struct:fields}}{{/struct:union?}}
 
 {{/program:structs}}{{!
 
@@ -126,6 +145,7 @@ cdef class {{struct:name}}{{#struct:exception?}}(__Error){{/struct:exception?}}{
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[c{{struct:name}}] _cpp_obj
+    {{^struct:union?}}
     {{!Memoized Python wrappers of struct fields, created lazily}}
     {{#struct:fields}}
     {{#field:type}}{{#type:struct}}
@@ -133,7 +153,12 @@ cdef class {{struct:name}}{{#struct:exception?}}(__Error){{/struct:exception?}}{
     {{/type:struct}}{{#type:container?}}
     cdef {{> types/CythonPythonType}} __{{field:name}}
     {{/type:container?}}{{/field:type}}
-    {{/struct:fields}}
+    {{/struct:fields}}{{/struct:union?}}
+    {{#struct:union?}}
+    cdef object __type
+    cdef object __cached
+    cdef _load_cache({{struct:name}} self)
+    {{/struct:union?}}
 
     @staticmethod
     cdef unique_ptr[c{{struct:name}}] _make_instance(

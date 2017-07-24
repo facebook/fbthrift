@@ -17,60 +17,60 @@
 }}{{!
 
 Called specifically from types.pyx when initializing the individual attributes
-on a struct.
+on a union.
 
 }}{{#field:reference?}}{{!
-}}deref(c_inst).{{field:name}} = {{!
+}}deref(c_inst).set_{{field:name}}({{!
   }}{{#field:unique_ref?}}{{!
     For unique references, we just make a copy of the target object - it's not
     especially efficient but there isn't much else we can do from a shared ptr
-    }}make_unique[{{> types/CythonCppType}}](deref((<{{> types/CythonPythonType}}?>{{field:name}})._cpp_obj)){{!
+    }}{{> types/CythonCppType}}(deref((<{{> types/CythonPythonType}}?>{{field:name}})._cpp_obj)){{!
   }}{{/field:unique_ref?}}{{!
   }}{{#field:shared_ref?}}{{!
-    }}(<{{> types/CythonPythonType}}?>{{field:name}})._cpp_obj{{!
+    }}deref((<{{> types/CythonPythonType}}?>{{field:name}})._cpp_obj){{!
   }}{{/field:shared_ref?}}{{!
   }}{{#field:shared_const_ref?}}{{!
-    }}{{#type:externalProgram?}}{{> common/ModulePath}}.{{/type:externalProgram?}}{{!
-    }}const_pointer_cast((<{{> types/CythonPythonType}}?>{{field:name}})._cpp_obj){{!
+    }}deref((<{{> types/CythonPythonType}}?>{{field:name}})._cpp_obj){{!
   }}{{/field:shared_const_ref?}}{{!
+  }}){{!
 }}{{/field:reference?}}{{^field:reference?}}{{!
 }}{{#type:bool?}}{{!
-  }}deref(c_inst).{{field:name}} = {{field:name}}{{!
+  }}deref(c_inst).set_{{field:name}}({{field:name}}){{!
 }}{{/type:bool?}}{{!
 }}{{#type:byte?}}{{!
-  }}deref(c_inst).{{field:name}} = {{field:name}}{{!
+  }}deref(c_inst).set_{{field:name}}({{field:name}}){{!
 }}{{/type:byte?}}{{!
 }}{{#type:i16?}}{{!
-  }}deref(c_inst).{{field:name}} = {{field:name}}{{!
+  }}deref(c_inst).set_{{field:name}}({{field:name}}){{!
 }}{{/type:i16?}}{{!
 }}{{#type:i32?}}{{!
-  }}deref(c_inst).{{field:name}} = {{field:name}}{{!
+  }}deref(c_inst).set_{{field:name}}({{field:name}}){{!
 }}{{/type:i32?}}{{!
 }}{{#type:i64?}}{{!
-  }}deref(c_inst).{{field:name}} = {{field:name}}{{!
+  }}deref(c_inst).set_{{field:name}}({{field:name}}){{!
 }}{{/type:i64?}}{{!
 }}{{#type:double?}}{{!
-  }}deref(c_inst).{{field:name}} = {{field:name}}{{!
+  }}deref(c_inst).set_{{field:name}}({{field:name}}){{!
 }}{{/type:double?}}{{!
 }}{{#type:float?}}{{!
-  }}deref(c_inst).{{field:name}} = {{field:name}}{{!
+  }}deref(c_inst).set_{{field:name}}({{field:name}}){{!
 }}{{/type:float?}}{{!
 }}{{#type:string?}}{{!
-  }}deref(c_inst).{{field:name}} = {{field:name}}.encode('UTF-8'){{!
+  }}deref(c_inst).set_{{field:name}}({{field:name}}.encode('UTF-8')){{!
 }}{{/type:string?}}{{!
 }}{{#type:binary?}}{{!
-  }}deref(c_inst).{{field:name}} = {{field:name}}{{!
+  }}deref(c_inst).set_{{field:name}}({{field:name}}){{!
 }}{{/type:binary?}}{{!
 }}{{#type:enum?}}{{!
-  }}deref(c_inst).{{field:name}} = {{!
-    }}{{> types/CythonPythonType}}_to_cpp({{field:name}}){{!
+  }}deref(c_inst).set_{{field:name}}({{!
+    }}{{> types/CythonPythonType}}_to_cpp({{field:name}})){{!
 }}{{/type:enum?}}{{!
 }}{{#type:struct?}}{{!
-  }}deref(c_inst).{{field:name}} = {{!
-    }}deref((<{{> types/CythonPythonType }}?> {{field:name}})._cpp_obj){{!
+  }}deref(c_inst).set_{{field:name}}({{!
+    }}deref((<{{> types/CythonPythonType }}?> {{field:name}})._cpp_obj)){{!
 }}{{/type:struct?}}{{!
 }}{{#type:container?}}{{!
-  }}deref(c_inst).{{field:name}} = {{!
+  }}deref(c_inst).set_{{field:name}}({{!
     }}<{{> types/CythonCppType}}>{{!
-    }}deref({{> types/CythonPythonType }}({{field:name}})._cpp_obj){{!
+    }}deref({{> types/CythonPythonType }}({{field:name}})._cpp_obj)){{!
 }}{{/type:container?}}{{/field:reference?}}

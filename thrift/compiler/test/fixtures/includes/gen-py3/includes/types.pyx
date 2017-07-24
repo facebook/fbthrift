@@ -43,29 +43,6 @@ cdef class Included(thrift.py3.types.Struct):
           MyIntField,
         ))
 
-    cdef bytes _serialize(Included self, proto):
-        cdef string c_str
-        if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cIncluded](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cIncluded](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cIncluded](deref(self._cpp_obj.get()), &c_str)
-        return <bytes> c_str
-
-    cdef uint32_t _deserialize(Included self, const IOBuf* buf, proto):
-        cdef uint32_t needed
-        if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cIncluded](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cIncluded](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cIncluded](buf, deref(self._cpp_obj.get()))
-        return needed
-
-    def __reduce__(self):
-        return (deserialize, (Included, serialize(self)))
-
     def __call__(
         Included self,
         MyIntField=NOTSET
@@ -128,6 +105,15 @@ cdef class Included(thrift.py3.types.Struct):
         return self._cpp_obj.get().MyIntField
 
 
+    def __hash__(Included self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.MyIntField,
+            ))
+        return self.__hash
+
+    def __repr__(Included self):
+        return f'Included(MyIntField={repr(self.MyIntField)})'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -147,15 +133,28 @@ cdef class Included(thrift.py3.types.Struct):
             return cmp
         return not cmp
 
-    def __hash__(Included self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.MyIntField,
-            ))
-        return self.__hash
+    cdef bytes _serialize(Included self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cIncluded](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cIncluded](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cIncluded](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
 
-    def __repr__(Included self):
-        return f'Included(MyIntField={repr(self.MyIntField)})'
+    cdef uint32_t _deserialize(Included self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cIncluded](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cIncluded](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cIncluded](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (Included, serialize(self)))
 
 
 IncludedConstant = 42

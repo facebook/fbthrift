@@ -54,17 +54,20 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
     cdef cppclass cStructWithRefTypeSharedConst "cpp2::StructWithRefTypeSharedConst"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
-    cdef cppclass cMyUnion__isset "cpp2::MyUnion::__isset":
-        bint anInteger
-        bint aString
+    cdef enum cMyUnion__type "cpp2::MyUnion::Type":
+        cMyUnion__type___EMPTY__ "cpp2::MyUnion::Type::__EMPTY__",
+        cMyUnion__type_anInteger "cpp2::MyUnion::Type::anInteger",
+        cMyUnion__type_aString "cpp2::MyUnion::Type::aString",
 
     cdef cppclass cMyUnion "cpp2::MyUnion":
         cMyUnion() except +
         cMyUnion(const cMyUnion&) except +
         bint operator==(cMyUnion&)
-        int32_t anInteger
-        string aString
-        cMyUnion__isset __isset
+        cMyUnion__type getType() const
+        const int32_t& get_anInteger() const
+        int32_t& set_anInteger(const int32_t&)
+        const string& get_aString() const
+        string& set_aString(const string&)
 
     cdef cppclass cMyField__isset "cpp2::MyField::__isset":
         bint opt_value
@@ -302,6 +305,9 @@ cdef class MyUnion(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cMyUnion] _cpp_obj
+    cdef object __type
+    cdef object __cached
+    cdef _load_cache(MyUnion self)
 
     @staticmethod
     cdef unique_ptr[cMyUnion] _make_instance(

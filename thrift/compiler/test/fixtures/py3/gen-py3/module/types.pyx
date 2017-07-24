@@ -96,6 +96,11 @@ cdef class SimpleException(thrift.py3.exceptions.Error):
         return self._cpp_obj.get().err_code
 
 
+    def __hash__(SimpleException self):
+        return super().__hash__()
+
+    def __repr__(SimpleException self):
+        return f'SimpleException(err_code={repr(self.err_code)})'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -115,11 +120,6 @@ cdef class SimpleException(thrift.py3.exceptions.Error):
             return cmp
         return not cmp
 
-    def __hash__(SimpleException self):
-        return super().__hash__()
-
-    def __repr__(SimpleException self):
-        return f'SimpleException(err_code={repr(self.err_code)})'
 
 
 cdef cSimpleStruct _SimpleStruct_defaults = cSimpleStruct()
@@ -146,29 +146,6 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
           real,
           smaller_real,
         ))
-
-    cdef bytes _serialize(SimpleStruct self, proto):
-        cdef string c_str
-        if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cSimpleStruct](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cSimpleStruct](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cSimpleStruct](deref(self._cpp_obj.get()), &c_str)
-        return <bytes> c_str
-
-    cdef uint32_t _deserialize(SimpleStruct self, const IOBuf* buf, proto):
-        cdef uint32_t needed
-        if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cSimpleStruct](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cSimpleStruct](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cSimpleStruct](buf, deref(self._cpp_obj.get()))
-        return needed
-
-    def __reduce__(self):
-        return (deserialize, (SimpleStruct, serialize(self)))
 
     def __call__(
         SimpleStruct self,
@@ -373,6 +350,21 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
         return self._cpp_obj.get().smaller_real
 
 
+    def __hash__(SimpleStruct self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.is_on,
+            self.tiny_int,
+            self.small_int,
+            self.nice_sized_int,
+            self.big_int,
+            self.real,
+            self.smaller_real,
+            ))
+        return self.__hash
+
+    def __repr__(SimpleStruct self):
+        return f'SimpleStruct(is_on={repr(self.is_on)}, tiny_int={repr(self.tiny_int)}, small_int={repr(self.small_int)}, nice_sized_int={repr(self.nice_sized_int)}, big_int={repr(self.big_int)}, real={repr(self.real)}, smaller_real={repr(self.smaller_real)})'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -392,21 +384,28 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
             return cmp
         return not cmp
 
-    def __hash__(SimpleStruct self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.is_on,
-            self.tiny_int,
-            self.small_int,
-            self.nice_sized_int,
-            self.big_int,
-            self.real,
-            self.smaller_real,
-            ))
-        return self.__hash
+    cdef bytes _serialize(SimpleStruct self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cSimpleStruct](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cSimpleStruct](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cSimpleStruct](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
 
-    def __repr__(SimpleStruct self):
-        return f'SimpleStruct(is_on={repr(self.is_on)}, tiny_int={repr(self.tiny_int)}, small_int={repr(self.small_int)}, nice_sized_int={repr(self.nice_sized_int)}, big_int={repr(self.big_int)}, real={repr(self.real)}, smaller_real={repr(self.smaller_real)})'
+    cdef uint32_t _deserialize(SimpleStruct self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cSimpleStruct](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cSimpleStruct](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cSimpleStruct](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (SimpleStruct, serialize(self)))
 
 
 cdef cComplexStruct _ComplexStruct_defaults = cComplexStruct()
@@ -431,29 +430,6 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
           an_enum,
           some_bytes,
         ))
-
-    cdef bytes _serialize(ComplexStruct self, proto):
-        cdef string c_str
-        if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cComplexStruct](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cComplexStruct](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cComplexStruct](deref(self._cpp_obj.get()), &c_str)
-        return <bytes> c_str
-
-    cdef uint32_t _deserialize(ComplexStruct self, const IOBuf* buf, proto):
-        cdef uint32_t needed
-        if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cComplexStruct](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cComplexStruct](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cComplexStruct](buf, deref(self._cpp_obj.get()))
-        return needed
-
-    def __reduce__(self):
-        return (deserialize, (ComplexStruct, serialize(self)))
 
     def __call__(
         ComplexStruct self,
@@ -639,6 +615,20 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
         return self._cpp_obj.get().some_bytes
 
 
+    def __hash__(ComplexStruct self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.structOne,
+            self.structTwo,
+            self.an_integer,
+            self.name,
+            self.an_enum,
+            self.some_bytes,
+            ))
+        return self.__hash
+
+    def __repr__(ComplexStruct self):
+        return f'ComplexStruct(structOne={repr(self.structOne)}, structTwo={repr(self.structTwo)}, an_integer={repr(self.an_integer)}, name={repr(self.name)}, an_enum={repr(self.an_enum)}, some_bytes={repr(self.some_bytes)})'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -658,20 +648,28 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
             return cmp
         return not cmp
 
-    def __hash__(ComplexStruct self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.structOne,
-            self.structTwo,
-            self.an_integer,
-            self.name,
-            self.an_enum,
-            self.some_bytes,
-            ))
-        return self.__hash
+    cdef bytes _serialize(ComplexStruct self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cComplexStruct](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cComplexStruct](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cComplexStruct](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
 
-    def __repr__(ComplexStruct self):
-        return f'ComplexStruct(structOne={repr(self.structOne)}, structTwo={repr(self.structTwo)}, an_integer={repr(self.an_integer)}, name={repr(self.name)}, an_enum={repr(self.an_enum)}, some_bytes={repr(self.some_bytes)})'
+    cdef uint32_t _deserialize(ComplexStruct self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cComplexStruct](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cComplexStruct](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cComplexStruct](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (ComplexStruct, serialize(self)))
 
 
 cdef class List__i16:

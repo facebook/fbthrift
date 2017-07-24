@@ -28,37 +28,47 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "cpp2":
     cdef cppclass cFinalComplexUnion "cpp2::FinalComplexUnion"
 
 cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
-    cdef cppclass cComplexUnion__isset "cpp2::ComplexUnion::__isset":
-        bint intValue
-        bint stringValue
-        bint intListValue
-        bint stringListValue
-        bint typedefValue
-        bint stringRef
+    cdef enum cComplexUnion__type "cpp2::ComplexUnion::Type":
+        cComplexUnion__type___EMPTY__ "cpp2::ComplexUnion::Type::__EMPTY__",
+        cComplexUnion__type_intValue "cpp2::ComplexUnion::Type::intValue",
+        cComplexUnion__type_stringValue "cpp2::ComplexUnion::Type::stringValue",
+        cComplexUnion__type_intListValue "cpp2::ComplexUnion::Type::intListValue",
+        cComplexUnion__type_stringListValue "cpp2::ComplexUnion::Type::stringListValue",
+        cComplexUnion__type_typedefValue "cpp2::ComplexUnion::Type::typedefValue",
+        cComplexUnion__type_stringRef "cpp2::ComplexUnion::Type::stringRef",
 
     cdef cppclass cComplexUnion "cpp2::ComplexUnion":
         cComplexUnion() except +
         cComplexUnion(const cComplexUnion&) except +
         bint operator==(cComplexUnion&)
-        int64_t intValue
-        string stringValue
-        vector[int64_t] intListValue
-        vector[string] stringListValue
-        cmap[int16_t,string] typedefValue
-        unique_ptr[string] stringRef
-        cComplexUnion__isset __isset
+        cComplexUnion__type getType() const
+        const int64_t& get_intValue() const
+        int64_t& set_intValue(const int64_t&)
+        const string& get_stringValue() const
+        string& set_stringValue(const string&)
+        const vector[int64_t]& get_intListValue() const
+        vector[int64_t]& set_intListValue(const vector[int64_t]&)
+        const vector[string]& get_stringListValue() const
+        vector[string]& set_stringListValue(const vector[string]&)
+        const cmap[int16_t,string]& get_typedefValue() const
+        cmap[int16_t,string]& set_typedefValue(const cmap[int16_t,string]&)
+        const unique_ptr[string]& get_stringRef() const
+        unique_ptr[string]& set_stringRef(const string&)
 
-    cdef cppclass cFinalComplexUnion__isset "cpp2::FinalComplexUnion::__isset":
-        bint thingOne
-        bint thingTwo
+    cdef enum cFinalComplexUnion__type "cpp2::FinalComplexUnion::Type":
+        cFinalComplexUnion__type___EMPTY__ "cpp2::FinalComplexUnion::Type::__EMPTY__",
+        cFinalComplexUnion__type_thingOne "cpp2::FinalComplexUnion::Type::thingOne",
+        cFinalComplexUnion__type_thingTwo "cpp2::FinalComplexUnion::Type::thingTwo",
 
     cdef cppclass cFinalComplexUnion "cpp2::FinalComplexUnion":
         cFinalComplexUnion() except +
         cFinalComplexUnion(const cFinalComplexUnion&) except +
         bint operator==(cFinalComplexUnion&)
-        string thingOne
-        string thingTwo
-        cFinalComplexUnion__isset __isset
+        cFinalComplexUnion__type getType() const
+        const string& get_thingOne() const
+        string& set_thingOne(const string&)
+        const string& get_thingTwo() const
+        string& set_thingTwo(const string&)
 
     cdef shared_ptr[string] aliasing_constructor_stringRef "std::shared_ptr<std::string>"(shared_ptr[cComplexUnion]&, string*)
 
@@ -81,9 +91,9 @@ cdef class ComplexUnion(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cComplexUnion] _cpp_obj
-    cdef List__i64 __intListValue
-    cdef List__string __stringListValue
-    cdef Map__i16_string __typedefValue
+    cdef object __type
+    cdef object __cached
+    cdef _load_cache(ComplexUnion self)
 
     @staticmethod
     cdef unique_ptr[cComplexUnion] _make_instance(
@@ -106,6 +116,9 @@ cdef class FinalComplexUnion(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cFinalComplexUnion] _cpp_obj
+    cdef object __type
+    cdef object __cached
+    cdef _load_cache(FinalComplexUnion self)
 
     @staticmethod
     cdef unique_ptr[cFinalComplexUnion] _make_instance(

@@ -43,29 +43,6 @@ cdef class HsFoo(thrift.py3.types.Struct):
           MyInt,
         ))
 
-    cdef bytes _serialize(HsFoo self, proto):
-        cdef string c_str
-        if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cHsFoo](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cHsFoo](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cHsFoo](deref(self._cpp_obj.get()), &c_str)
-        return <bytes> c_str
-
-    cdef uint32_t _deserialize(HsFoo self, const IOBuf* buf, proto):
-        cdef uint32_t needed
-        if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cHsFoo](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cHsFoo](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cHsFoo](buf, deref(self._cpp_obj.get()))
-        return needed
-
-    def __reduce__(self):
-        return (deserialize, (HsFoo, serialize(self)))
-
     def __call__(
         HsFoo self,
         MyInt=NOTSET
@@ -131,6 +108,15 @@ cdef class HsFoo(thrift.py3.types.Struct):
         return self._cpp_obj.get().MyInt
 
 
+    def __hash__(HsFoo self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.MyInt,
+            ))
+        return self.__hash
+
+    def __repr__(HsFoo self):
+        return f'HsFoo(MyInt={repr(self.MyInt)})'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -150,14 +136,27 @@ cdef class HsFoo(thrift.py3.types.Struct):
             return cmp
         return not cmp
 
-    def __hash__(HsFoo self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.MyInt,
-            ))
-        return self.__hash
+    cdef bytes _serialize(HsFoo self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cHsFoo](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cHsFoo](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cHsFoo](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
 
-    def __repr__(HsFoo self):
-        return f'HsFoo(MyInt={repr(self.MyInt)})'
+    cdef uint32_t _deserialize(HsFoo self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cHsFoo](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cHsFoo](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cHsFoo](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (HsFoo, serialize(self)))
 
 

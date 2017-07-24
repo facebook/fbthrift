@@ -61,29 +61,6 @@ cdef class Color(thrift.py3.types.Struct):
           alpha,
         ))
 
-    cdef bytes _serialize(Color self, proto):
-        cdef string c_str
-        if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cColor](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cColor](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cColor](deref(self._cpp_obj.get()), &c_str)
-        return <bytes> c_str
-
-    cdef uint32_t _deserialize(Color self, const IOBuf* buf, proto):
-        cdef uint32_t needed
-        if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cColor](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cColor](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cColor](buf, deref(self._cpp_obj.get()))
-        return needed
-
-    def __reduce__(self):
-        return (deserialize, (Color, serialize(self)))
-
     def __call__(
         Color self,
         red=NOTSET,
@@ -218,6 +195,18 @@ cdef class Color(thrift.py3.types.Struct):
         return self._cpp_obj.get().alpha
 
 
+    def __hash__(Color self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.red,
+            self.green,
+            self.blue,
+            self.alpha,
+            ))
+        return self.__hash
+
+    def __repr__(Color self):
+        return f'Color(red={repr(self.red)}, green={repr(self.green)}, blue={repr(self.blue)}, alpha={repr(self.alpha)})'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -237,18 +226,28 @@ cdef class Color(thrift.py3.types.Struct):
             return cmp
         return not cmp
 
-    def __hash__(Color self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.red,
-            self.green,
-            self.blue,
-            self.alpha,
-            ))
-        return self.__hash
+    cdef bytes _serialize(Color self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cColor](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cColor](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cColor](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
 
-    def __repr__(Color self):
-        return f'Color(red={repr(self.red)}, green={repr(self.green)}, blue={repr(self.blue)}, alpha={repr(self.alpha)})'
+    cdef uint32_t _deserialize(Color self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cColor](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cColor](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cColor](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (Color, serialize(self)))
 
 
 cdef cVehicle _Vehicle_defaults = cVehicle()
@@ -271,29 +270,6 @@ cdef class Vehicle(thrift.py3.types.Struct):
           name,
           hasAC,
         ))
-
-    cdef bytes _serialize(Vehicle self, proto):
-        cdef string c_str
-        if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cVehicle](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cVehicle](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cVehicle](deref(self._cpp_obj.get()), &c_str)
-        return <bytes> c_str
-
-    cdef uint32_t _deserialize(Vehicle self, const IOBuf* buf, proto):
-        cdef uint32_t needed
-        if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cVehicle](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cVehicle](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cVehicle](buf, deref(self._cpp_obj.get()))
-        return needed
-
-    def __reduce__(self):
-        return (deserialize, (Vehicle, serialize(self)))
 
     def __call__(
         Vehicle self,
@@ -451,6 +427,19 @@ cdef class Vehicle(thrift.py3.types.Struct):
         return <pbool> self._cpp_obj.get().hasAC
 
 
+    def __hash__(Vehicle self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.color,
+            self.licensePlate,
+            self.description,
+            self.name,
+            self.hasAC,
+            ))
+        return self.__hash
+
+    def __repr__(Vehicle self):
+        return f'Vehicle(color={repr(self.color)}, licensePlate={repr(self.licensePlate)}, description={repr(self.description)}, name={repr(self.name)}, hasAC={repr(self.hasAC)})'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -470,19 +459,28 @@ cdef class Vehicle(thrift.py3.types.Struct):
             return cmp
         return not cmp
 
-    def __hash__(Vehicle self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.color,
-            self.licensePlate,
-            self.description,
-            self.name,
-            self.hasAC,
-            ))
-        return self.__hash
+    cdef bytes _serialize(Vehicle self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cVehicle](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cVehicle](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cVehicle](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
 
-    def __repr__(Vehicle self):
-        return f'Vehicle(color={repr(self.color)}, licensePlate={repr(self.licensePlate)}, description={repr(self.description)}, name={repr(self.name)}, hasAC={repr(self.hasAC)})'
+    cdef uint32_t _deserialize(Vehicle self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cVehicle](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cVehicle](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cVehicle](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (Vehicle, serialize(self)))
 
 
 cdef cPerson _Person_defaults = cPerson()
@@ -515,29 +513,6 @@ cdef class Person(thrift.py3.types.Struct):
           afraidOfAnimal,
           vehicles,
         ))
-
-    cdef bytes _serialize(Person self, proto):
-        cdef string c_str
-        if proto is Protocol.COMPACT:
-            serializer.CompactSerialize[cPerson](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.BINARY:
-            serializer.BinarySerialize[cPerson](deref(self._cpp_obj.get()), &c_str)
-        elif proto is Protocol.JSON:
-            serializer.JSONSerialize[cPerson](deref(self._cpp_obj.get()), &c_str)
-        return <bytes> c_str
-
-    cdef uint32_t _deserialize(Person self, const IOBuf* buf, proto):
-        cdef uint32_t needed
-        if proto is Protocol.COMPACT:
-            needed = serializer.CompactDeserialize[cPerson](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.BINARY:
-            needed = serializer.BinaryDeserialize[cPerson](buf, deref(self._cpp_obj.get()))
-        elif proto is Protocol.JSON:
-            needed = serializer.JSONDeserialize[cPerson](buf, deref(self._cpp_obj.get()))
-        return needed
-
-    def __reduce__(self):
-        return (deserialize, (Person, serialize(self)))
 
     def __call__(
         Person self,
@@ -819,6 +794,24 @@ cdef class Person(thrift.py3.types.Struct):
         return self.__vehicles
 
 
+    def __hash__(Person self):
+        if not self.__hash:
+            self.__hash = hash((
+            self.id,
+            self.name,
+            self.age,
+            self.address,
+            self.favoriteColor,
+            self.friends,
+            self.bestFriend,
+            self.petNames,
+            self.afraidOfAnimal,
+            self.vehicles,
+            ))
+        return self.__hash
+
+    def __repr__(Person self):
+        return f'Person(id={repr(self.id)}, name={repr(self.name)}, age={repr(self.age)}, address={repr(self.address)}, favoriteColor={repr(self.favoriteColor)}, friends={repr(self.friends)}, bestFriend={repr(self.bestFriend)}, petNames={repr(self.petNames)}, afraidOfAnimal={repr(self.afraidOfAnimal)}, vehicles={repr(self.vehicles)})'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -838,24 +831,28 @@ cdef class Person(thrift.py3.types.Struct):
             return cmp
         return not cmp
 
-    def __hash__(Person self):
-        if not self.__hash:
-            self.__hash = hash((
-            self.id,
-            self.name,
-            self.age,
-            self.address,
-            self.favoriteColor,
-            self.friends,
-            self.bestFriend,
-            self.petNames,
-            self.afraidOfAnimal,
-            self.vehicles,
-            ))
-        return self.__hash
+    cdef bytes _serialize(Person self, proto):
+        cdef string c_str
+        if proto is Protocol.COMPACT:
+            serializer.CompactSerialize[cPerson](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.BINARY:
+            serializer.BinarySerialize[cPerson](deref(self._cpp_obj.get()), &c_str)
+        elif proto is Protocol.JSON:
+            serializer.JSONSerialize[cPerson](deref(self._cpp_obj.get()), &c_str)
+        return <bytes> c_str
 
-    def __repr__(Person self):
-        return f'Person(id={repr(self.id)}, name={repr(self.name)}, age={repr(self.age)}, address={repr(self.address)}, favoriteColor={repr(self.favoriteColor)}, friends={repr(self.friends)}, bestFriend={repr(self.bestFriend)}, petNames={repr(self.petNames)}, afraidOfAnimal={repr(self.afraidOfAnimal)}, vehicles={repr(self.vehicles)})'
+    cdef uint32_t _deserialize(Person self, const IOBuf* buf, proto):
+        cdef uint32_t needed
+        if proto is Protocol.COMPACT:
+            needed = serializer.CompactDeserialize[cPerson](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.BINARY:
+            needed = serializer.BinaryDeserialize[cPerson](buf, deref(self._cpp_obj.get()))
+        elif proto is Protocol.JSON:
+            needed = serializer.JSONDeserialize[cPerson](buf, deref(self._cpp_obj.get()))
+        return needed
+
+    def __reduce__(self):
+        return (deserialize, (Person, serialize(self)))
 
 
 cdef class Set__PersonID:

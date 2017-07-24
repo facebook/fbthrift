@@ -136,33 +136,41 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "cpp2":
         cstruct2 c
         cstruct3__isset __isset
 
-    cdef cppclass cunion1__isset "cpp2::union1::__isset":
-        bint i
-        bint d
+    cdef enum cunion1__type "cpp2::union1::Type":
+        cunion1__type___EMPTY__ "cpp2::union1::Type::__EMPTY__",
+        cunion1__type_i "cpp2::union1::Type::i",
+        cunion1__type_d "cpp2::union1::Type::d",
 
     cdef cppclass cunion1 "cpp2::union1":
         cunion1() except +
         cunion1(const cunion1&) except +
         bint operator==(cunion1&)
-        int32_t i
-        double d
-        cunion1__isset __isset
+        cunion1__type getType() const
+        const int32_t& get_i() const
+        int32_t& set_i(const int32_t&)
+        const double& get_d() const
+        double& set_d(const double&)
 
-    cdef cppclass cunion2__isset "cpp2::union2::__isset":
-        bint i
-        bint d
-        bint s
-        bint u
+    cdef enum cunion2__type "cpp2::union2::Type":
+        cunion2__type___EMPTY__ "cpp2::union2::Type::__EMPTY__",
+        cunion2__type_i "cpp2::union2::Type::i",
+        cunion2__type_d "cpp2::union2::Type::d",
+        cunion2__type_s "cpp2::union2::Type::s",
+        cunion2__type_u "cpp2::union2::Type::u",
 
     cdef cppclass cunion2 "cpp2::union2":
         cunion2() except +
         cunion2(const cunion2&) except +
         bint operator==(cunion2&)
-        int32_t i
-        double d
-        cstruct1 s
-        cunion1 u
-        cunion2__isset __isset
+        cunion2__type getType() const
+        const int32_t& get_i() const
+        int32_t& set_i(const int32_t&)
+        const double& get_d() const
+        double& set_d(const double&)
+        const cstruct1& get_s() const
+        cstruct1& set_s(const cstruct1&)
+        const cunion1& get_u() const
+        cunion1& set_u(const cunion1&)
 
 
 cdef extern from "<utility>" namespace "std" nogil:
@@ -322,6 +330,9 @@ cdef class union1(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cunion1] _cpp_obj
+    cdef object __type
+    cdef object __cached
+    cdef _load_cache(union1 self)
 
     @staticmethod
     cdef unique_ptr[cunion1] _make_instance(
@@ -340,8 +351,9 @@ cdef class union2(thrift.py3.types.Struct):
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cunion2] _cpp_obj
-    cdef struct1 __s
-    cdef union1 __u
+    cdef object __type
+    cdef object __cached
+    cdef _load_cache(union2 self)
 
     @staticmethod
     cdef unique_ptr[cunion2] _make_instance(

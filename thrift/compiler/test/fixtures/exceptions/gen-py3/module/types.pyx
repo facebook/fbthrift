@@ -67,6 +67,11 @@ cdef class Banal(thrift.py3.exceptions.Error):
         return inst
 
 
+    def __hash__(Banal self):
+        return super().__hash__()
+
+    def __repr__(Banal self):
+        return f'Banal()'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -86,11 +91,6 @@ cdef class Banal(thrift.py3.exceptions.Error):
             return cmp
         return not cmp
 
-    def __hash__(Banal self):
-        return super().__hash__()
-
-    def __repr__(Banal self):
-        return f'Banal()'
 
 
 cdef class Fiery(thrift.py3.exceptions.Error):
@@ -139,6 +139,11 @@ cdef class Fiery(thrift.py3.exceptions.Error):
         return self._cpp_obj.get().message.decode('UTF-8')
 
 
+    def __hash__(Fiery self):
+        return super().__hash__()
+
+    def __repr__(Fiery self):
+        return f'Fiery(message={repr(self.message)})'
     def __richcmp__(self, other, op):
         cdef int cop = op
         if cop not in (2, 3):
@@ -158,10 +163,5 @@ cdef class Fiery(thrift.py3.exceptions.Error):
             return cmp
         return not cmp
 
-    def __hash__(Fiery self):
-        return super().__hash__()
-
-    def __repr__(Fiery self):
-        return f'Fiery(message={repr(self.message)})'
 
 
