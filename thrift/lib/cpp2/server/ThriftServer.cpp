@@ -256,8 +256,21 @@ void ThriftServer::setup() {
     folly::EventBase::getLibeventMethod();
 
   try {
-    // We check for write success so we don't need or want SIGPIPEs.
-    signal(SIGPIPE, SIG_IGN);
+    // OpenSSL might try to write to a closed socket if the peer disconnects
+    // abruptly, raising a SIGPIPE signal. By default this will terminate the
+    // process, which we don't want. Hence we need to handle SIGPIPE specially.
+    //
+    // We don't use SIG_IGN here as child processes will inherit that handler.
+    // Instead, we swallow the signal to enable SIGPIPE in children to behave
+    // normally.
+    // Furthermore, setting flags to 0 and using sigaction prevents SA_RESTART
+    // from restarting syscalls after the handler completed. This is important
+    // for code using SIGPIPE to interrupt syscalls in other threads.
+    struct sigaction sa = {};
+    sa.sa_handler = [](int) {};
+    sa.sa_flags = 0;
+    sigemptyset(&sa.sa_mask);
+    sigaction(SIGPIPE, &sa, nullptr);
 
     if (!observer_ && apache::thrift::observerFactory_) {
       observer_ = apache::thrift::observerFactory_->getObserver();
