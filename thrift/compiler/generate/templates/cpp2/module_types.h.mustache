@@ -237,9 +237,8 @@ template<> struct equal_to<typename <% > common/namespace_cpp2%><%struct:name%>>
 <%/program:structs%>
 <% > common/namespace_cpp2_begin%>
 
-<%^program:structs%><%#program:typedefs%><%#typedef:type%>
-
-typedef <% > Type%> <%typedef:symbolic%>;
-<%/typedef:type%><%/program:typedefs%><%/program:structs%>
+<%^program:structs%>
+<% > module_types_h/typedef_initialize%>
+<%/program:structs%>
 
 <% > common/namespace_cpp2_end%>

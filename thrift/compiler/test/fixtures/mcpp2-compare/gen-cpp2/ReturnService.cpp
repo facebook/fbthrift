@@ -245,6 +245,30 @@ void ReturnServiceSvIf::async_tm_list_UnionReturn(std::unique_ptr<apache::thrift
   apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_list_UnionReturn(); });
 }
 
+void ReturnServiceSvIf::readDataEb( ::some::valid::ns::IOBuf& /*_return*/, int64_t /*size*/) {
+  throw apache::thrift::TApplicationException("Function readDataEb is unimplemented");
+}
+
+folly::Future<std::unique_ptr< ::some::valid::ns::IOBuf>> ReturnServiceSvIf::future_readDataEb(int64_t size) {
+  return apache::thrift::detail::si::future_returning_uptr([&]( ::some::valid::ns::IOBuf& _return) { readDataEb(_return, size); });
+}
+
+void ReturnServiceSvIf::async_eb_readDataEb(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBuf>>> callback, int64_t size) {
+  apache::thrift::detail::si::async_eb(this, std::move(callback), [this, size]() mutable { return future_readDataEb(size); });
+}
+
+void ReturnServiceSvIf::readData( ::some::valid::ns::IOBufPtr& /*_return*/, int64_t /*size*/) {
+  throw apache::thrift::TApplicationException("Function readData is unimplemented");
+}
+
+folly::Future<std::unique_ptr< ::some::valid::ns::IOBufPtr>> ReturnServiceSvIf::future_readData(int64_t size) {
+  return apache::thrift::detail::si::future_returning_uptr([&]( ::some::valid::ns::IOBufPtr& _return) { readData(_return, size); });
+}
+
+void ReturnServiceSvIf::async_tm_readData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBufPtr>>> callback, int64_t size) {
+  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] { return future_readData(size); });
+}
+
 bool ReturnServiceSvNull::boolReturn() {
   return 0;
 }
@@ -286,6 +310,8 @@ void ReturnServiceSvNull::structReturn( ::some::valid::ns::MyStruct& /*_return*/
 void ReturnServiceSvNull::set_StructReturn(std::set< ::some::valid::ns::MyStruct>& /*_return*/) {}
 
 void ReturnServiceSvNull::list_UnionReturn(std::vector< ::some::valid::ns::ComplexUnion>& /*_return*/) {}
+
+void ReturnServiceSvNull::readData( ::some::valid::ns::IOBufPtr& /*_return*/, int64_t /*size*/) {}
 
 const char* ReturnServiceAsyncProcessor::getServiceName() {
   return "ReturnService";
@@ -329,6 +355,8 @@ const ReturnServiceAsyncProcessor::BinaryProtocolProcessMap ReturnServiceAsyncPr
   {"set_StructReturn", &ReturnServiceAsyncProcessor::_processInThread_set_StructReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"unionReturn", &ReturnServiceAsyncProcessor::process_unionReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
   {"list_UnionReturn", &ReturnServiceAsyncProcessor::_processInThread_list_UnionReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"readDataEb", &ReturnServiceAsyncProcessor::process_readDataEb<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
+  {"readData", &ReturnServiceAsyncProcessor::_processInThread_readData<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
 };
 
 const ReturnServiceAsyncProcessor::CompactProtocolProcessMap& ReturnServiceAsyncProcessor::getCompactProtocolProcessMap() {
@@ -355,6 +383,8 @@ const ReturnServiceAsyncProcessor::CompactProtocolProcessMap ReturnServiceAsyncP
   {"set_StructReturn", &ReturnServiceAsyncProcessor::_processInThread_set_StructReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"unionReturn", &ReturnServiceAsyncProcessor::process_unionReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
   {"list_UnionReturn", &ReturnServiceAsyncProcessor::_processInThread_list_UnionReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"readDataEb", &ReturnServiceAsyncProcessor::process_readDataEb<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+  {"readData", &ReturnServiceAsyncProcessor::_processInThread_readData<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
 };
 
 }}} // some::valid::ns

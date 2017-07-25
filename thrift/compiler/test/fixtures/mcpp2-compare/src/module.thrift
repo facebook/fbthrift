@@ -298,6 +298,8 @@ service ReturnService {
   set<MyStruct> set_StructReturn()
   ComplexUnion unionReturn() (thread="eb")
   list<ComplexUnion> list_UnionReturn()
+  IOBuf readDataEb(1: i64 size) (thread="eb");
+  IOBufPtr readData(1: i64 size);
 }
 
 service ParamService {

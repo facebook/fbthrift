@@ -91,6 +91,12 @@ class ReturnServiceSvAsyncIf {
   virtual void async_tm_list_UnionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>>>> callback) = 0;
   virtual void async_list_UnionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>>>> callback) = delete;
   virtual folly::Future<std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>>> future_list_UnionReturn() = 0;
+  virtual void async_eb_readDataEb(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBuf>>> callback, int64_t size) = 0;
+  virtual void async_readDataEb(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBuf>>> callback, int64_t size) = delete;
+  virtual folly::Future<std::unique_ptr< ::some::valid::ns::IOBuf>> future_readDataEb(int64_t size) = 0;
+  virtual void async_tm_readData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBufPtr>>> callback, int64_t size) = 0;
+  virtual void async_readData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBufPtr>>> callback, int64_t size) = delete;
+  virtual folly::Future<std::unique_ptr< ::some::valid::ns::IOBufPtr>> future_readData(int64_t size) = 0;
 };
 
 class ReturnServiceAsyncProcessor;
@@ -156,6 +162,12 @@ class ReturnServiceSvIf : public ReturnServiceSvAsyncIf, public apache::thrift::
   virtual void list_UnionReturn(std::vector< ::some::valid::ns::ComplexUnion>& /*_return*/);
   folly::Future<std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>>> future_list_UnionReturn() override;
   void async_tm_list_UnionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>>>> callback) override;
+  virtual void readDataEb( ::some::valid::ns::IOBuf& /*_return*/, int64_t /*size*/);
+  folly::Future<std::unique_ptr< ::some::valid::ns::IOBuf>> future_readDataEb(int64_t size) override;
+  void async_eb_readDataEb(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBuf>>> callback, int64_t size) override;
+  virtual void readData( ::some::valid::ns::IOBufPtr& /*_return*/, int64_t /*size*/);
+  folly::Future<std::unique_ptr< ::some::valid::ns::IOBufPtr>> future_readData(int64_t size) override;
+  void async_tm_readData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBufPtr>>> callback, int64_t size) override;
 };
 
 class ReturnServiceSvNull : public ReturnServiceSvIf {
@@ -174,6 +186,7 @@ class ReturnServiceSvNull : public ReturnServiceSvIf {
   void structReturn( ::some::valid::ns::MyStruct& /*_return*/) override;
   void set_StructReturn(std::set< ::some::valid::ns::MyStruct>& /*_return*/) override;
   void list_UnionReturn(std::vector< ::some::valid::ns::ComplexUnion>& /*_return*/) override;
+  void readData( ::some::valid::ns::IOBufPtr& /*_return*/, int64_t /*size*/) override;
 };
 
 class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
@@ -383,6 +396,24 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
   static void throw_list_UnionReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
   template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_list_UnionReturn(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_readDataEb(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static folly::IOBufQueue return_readDataEb(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  ::some::valid::ns::IOBuf const& _return);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_readDataEb(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_readDataEb(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void _processInThread_readData(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <typename ProtocolIn_, typename ProtocolOut_>
+  void process_readData(std::unique_ptr<apache::thrift::ResponseChannel::Request> req, std::unique_ptr<folly::IOBuf> buf, std::unique_ptr<ProtocolIn_> iprot,apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static folly::IOBufQueue return_readData(int32_t protoSeqId, apache::thrift::ContextStack* ctx,  ::some::valid::ns::IOBufPtr const& _return);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_readData(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
+  template <class ProtocolIn_, class ProtocolOut_>
+  static void throw_wrapped_readData(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
   ReturnServiceAsyncProcessor(ReturnServiceSvIf* iface) :
       iface_(iface) {}
@@ -827,6 +858,50 @@ class ReturnServiceAsyncClient : public apache::thrift::TClientBase {
   static folly::exception_wrapper recv_wrapped_list_UnionReturnT(Protocol_* prot, std::vector< ::some::valid::ns::ComplexUnion>& _return, ::apache::thrift::ClientReceiveState& state);
   template <typename Protocol_>
   static void recv_list_UnionReturnT(Protocol_* prot, std::vector< ::some::valid::ns::ComplexUnion>& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void readDataEb(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t size);
+  virtual void readDataEb(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t size);
+ private:
+  virtual void readDataEbImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t size);
+ public:
+  virtual void sync_readDataEb( ::some::valid::ns::IOBuf& _return, int64_t size);
+  virtual void sync_readDataEb(apache::thrift::RpcOptions& rpcOptions,  ::some::valid::ns::IOBuf& _return, int64_t size);
+  virtual folly::Future< ::some::valid::ns::IOBuf> future_readDataEb(int64_t size);
+  virtual folly::Future< ::some::valid::ns::IOBuf> future_readDataEb(apache::thrift::RpcOptions& rpcOptions, int64_t size);
+  virtual folly::Future<std::pair< ::some::valid::ns::IOBuf, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_readDataEb(apache::thrift::RpcOptions& rpcOptions, int64_t size);
+  virtual void readDataEb(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t size);
+  static folly::exception_wrapper recv_wrapped_readDataEb( ::some::valid::ns::IOBuf& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_readDataEb( ::some::valid::ns::IOBuf& _return, ::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual void recv_instance_readDataEb( ::some::valid::ns::IOBuf& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_readDataEb( ::some::valid::ns::IOBuf& _return, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  void readDataEbT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t size);
+  template <typename Protocol_>
+  static folly::exception_wrapper recv_wrapped_readDataEbT(Protocol_* prot,  ::some::valid::ns::IOBuf& _return, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  static void recv_readDataEbT(Protocol_* prot,  ::some::valid::ns::IOBuf& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual void readData(std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t size);
+  virtual void readData(apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t size);
+ private:
+  virtual void readDataImpl(bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t size);
+ public:
+  virtual void sync_readData( ::some::valid::ns::IOBufPtr& _return, int64_t size);
+  virtual void sync_readData(apache::thrift::RpcOptions& rpcOptions,  ::some::valid::ns::IOBufPtr& _return, int64_t size);
+  virtual folly::Future< ::some::valid::ns::IOBufPtr> future_readData(int64_t size);
+  virtual folly::Future< ::some::valid::ns::IOBufPtr> future_readData(apache::thrift::RpcOptions& rpcOptions, int64_t size);
+  virtual folly::Future<std::pair< ::some::valid::ns::IOBufPtr, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_readData(apache::thrift::RpcOptions& rpcOptions, int64_t size);
+  virtual void readData(folly::Function<void (::apache::thrift::ClientReceiveState&&)> callback, int64_t size);
+  static folly::exception_wrapper recv_wrapped_readData( ::some::valid::ns::IOBufPtr& _return, ::apache::thrift::ClientReceiveState& state);
+  static void recv_readData( ::some::valid::ns::IOBufPtr& _return, ::apache::thrift::ClientReceiveState& state);
+  // Mock friendly virtual instance method
+  virtual void recv_instance_readData( ::some::valid::ns::IOBufPtr& _return, ::apache::thrift::ClientReceiveState& state);
+  virtual folly::exception_wrapper recv_instance_wrapped_readData( ::some::valid::ns::IOBufPtr& _return, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  void readDataT(Protocol_* prot, bool useSync, apache::thrift::RpcOptions& rpcOptions, std::unique_ptr<apache::thrift::RequestCallback> callback, int64_t size);
+  template <typename Protocol_>
+  static folly::exception_wrapper recv_wrapped_readDataT(Protocol_* prot,  ::some::valid::ns::IOBufPtr& _return, ::apache::thrift::ClientReceiveState& state);
+  template <typename Protocol_>
+  static void recv_readDataT(Protocol_* prot,  ::some::valid::ns::IOBufPtr& _return, ::apache::thrift::ClientReceiveState& state);
  protected:
   std::unique_ptr<apache::thrift::Cpp2ConnContext> connectionContext_;
   std::shared_ptr<apache::thrift::RequestChannel> channel_;
