@@ -214,9 +214,6 @@ typedef set<string> (cpp.type =
 typedef map<i64, double> (cpp.type = "FakeMap") FakeMap
 typedef map<string, containerStruct> (cpp.type =
     "std::unordered_map<std::string, containerStruct>") UnorderedMapStruct
-typedef binary (cpp2.type = "folly::IOBuf") IOBuf
-typedef binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") IOBufPtr
-
 typedef list<i32> (cpp.template = "std::list") std_list
 typedef list<string> (cpp2.template = "std::deque") std_deque
 typedef set<string> (cpp.template = "folly::sorted_vector_set") folly_set
@@ -369,3 +366,6 @@ service ExtraService extends ParamService {
   oneway void oneway_void_ret_struct_param(1: MyStruct param1)
   oneway void oneway_void_ret_listunion_param(1: list<ComplexUnion> param1)
 }
+
+typedef binary (cpp2.type = "folly::IOBuf") IOBuf
+typedef binary (cpp2.type = "std::unique_ptr<folly::IOBuf>") IOBufPtr

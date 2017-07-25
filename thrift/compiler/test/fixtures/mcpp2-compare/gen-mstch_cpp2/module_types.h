@@ -357,10 +357,6 @@ typedef FakeMap FakeMap;
 
 typedef std::unordered_map<std::string, containerStruct> UnorderedMapStruct;
 
-typedef folly::IOBuf IOBuf;
-
-typedef std::unique_ptr<folly::IOBuf> IOBufPtr;
-
 typedef std::list<int32_t> std_list;
 
 typedef std::deque<std::string> std_deque;
@@ -368,6 +364,10 @@ typedef std::deque<std::string> std_deque;
 typedef folly::sorted_vector_set<std::string> folly_set;
 
 typedef folly::sorted_vector_map<int64_t, std::string> folly_map;
+
+typedef folly::IOBuf IOBuf;
+
+typedef std::unique_ptr<folly::IOBuf> IOBufPtr;
 
 class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
  public:

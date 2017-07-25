@@ -197,11 +197,10 @@ class mstch_cpp2_type : public mstch_type {
   }
   mstch::node cpp_typedef_type() {
     if (type_->is_typedef()) {
-      auto const* typedf = dynamic_cast<const t_typedef*>(type_)->get_type();
-      if (typedf->annotations_.count("cpp.type")) {
-        return typedf->annotations_.at("cpp.type");
-      } else if (typedf->annotations_.count("cpp2.type")) {
-        return typedf->annotations_.at("cpp2.type");
+      if (resolved_type_->annotations_.count("cpp.type")) {
+        return resolved_type_->annotations_.at("cpp.type");
+      } else if (resolved_type_->annotations_.count("cpp2.type")) {
+        return resolved_type_->annotations_.at("cpp2.type");
       }
     }
     return std::string();
