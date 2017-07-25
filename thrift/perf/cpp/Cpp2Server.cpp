@@ -23,6 +23,7 @@
 
 #include <folly/Random.h>
 #include <folly/String.h>
+#include <folly/ssl/Init.h>
 
 #include <thrift/perf/cpp/AsyncLoadHandler2.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
@@ -89,18 +90,18 @@ int main(int argc, char* argv[]) {
 
   auto handler = std::make_shared<AsyncLoadHandler2>();
 
-  folly::SSLContext::setSSLLockTypes({
+  folly::ssl::setLockTypes({
 #ifdef CRYPTO_LOCK_EVP_PKEY
-      {CRYPTO_LOCK_EVP_PKEY, SSLContext::LOCK_NONE},
+      {CRYPTO_LOCK_EVP_PKEY, folly::ssl::LockType::NONE},
 #endif
 #ifdef CRYPTO_LOCK_SSL_SESSION
-      {CRYPTO_LOCK_SSL_SESSION, SSLContext::LOCK_SPINLOCK},
+      {CRYPTO_LOCK_SSL_SESSION, folly::ssl::LockType::SPINLOCK},
 #endif
 #ifdef CRYPTO_LOCK_SSL_CTX
-      {CRYPTO_LOCK_SSL_CTX, SSLContext::LOCK_NONE},
+      {CRYPTO_LOCK_SSL_CTX, folly::ssl::LockType::NONE},
 #endif
 #ifdef CRYPTO_LOCK_ERR
-      {CRYPTO_LOCK_ERR, SSLContext::LOCK_SPINLOCK}
+      {CRYPTO_LOCK_ERR, folly::ssl::LockType::SPINLOCK}
 #endif
   });
 
