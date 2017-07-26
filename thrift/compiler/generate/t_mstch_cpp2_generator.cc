@@ -178,14 +178,15 @@ class mstch_cpp2_type : public mstch_type {
     return resolved_type_->is_container();
   }
   mstch::node resolves_to_container_or_struct() {
-    return resolved_type_->is_container() || resolved_type_->is_struct();
+    return resolved_type_->is_container() || resolved_type_->is_struct() ||
+        resolved_type_->is_xception();
   }
   mstch::node resolves_to_container_or_enum() {
     return resolved_type_->is_container() || resolved_type_->is_enum();
   }
   mstch::node resolves_to_complex_return() {
     return resolved_type_->is_container() || resolved_type_->is_string() ||
-        resolved_type_->is_struct();
+        resolved_type_->is_struct() || resolved_type_->is_xception();
   }
   mstch::node cpp_type() {
     if (type_->annotations_.count("cpp.type")) {

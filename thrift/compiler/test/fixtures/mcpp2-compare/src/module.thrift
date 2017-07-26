@@ -116,6 +116,7 @@ union ComplexUnion {
   23: list<binary> MyBinaryListField4
   24: MyStruct ref_field (cpp.ref);
   25: MyStruct ref_field2 (cpp.ref_type="shared_const")
+  26: AnException excp_field
 } (cpp.methods = "void foo(const std::string& bar) {}")
 
 exception AnException {

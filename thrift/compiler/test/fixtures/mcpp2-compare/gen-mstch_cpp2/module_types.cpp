@@ -482,6 +482,11 @@ void ComplexUnion::__clear() {
       destruct(value_.ref_field2);
       break;
     }
+    case Type::excp_field:
+    {
+      destruct(value_.excp_field);
+      break;
+    }
     default:
     {
       assert(false);
@@ -617,6 +622,10 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
     case Type::ref_field2:
     {
       return *value_.ref_field2 == *rhs.value_.ref_field2;
+    }
+    case Type::excp_field:
+    {
+      return value_.excp_field == rhs.value_.excp_field;
     }
     default:
     {

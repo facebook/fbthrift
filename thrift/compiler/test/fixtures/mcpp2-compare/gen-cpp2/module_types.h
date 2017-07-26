@@ -1137,6 +1137,7 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     MyBinaryListField4 = 23,
     ref_field = 24,
     ref_field2 = 25,
+    excp_field = 26,
   } ;
 
   ComplexUnion() :
@@ -1300,6 +1301,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
       case Type::ref_field2:
       {
         set_ref_field2(std::move(*rhs.value_.ref_field2));
+        break;
+      }
+      case Type::excp_field:
+      {
+        set_excp_field(std::move(rhs.value_.excp_field));
         break;
       }
       default:
@@ -1471,6 +1477,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
         set_ref_field2(*rhs.value_.ref_field2);
         break;
       }
+      case Type::excp_field:
+      {
+        set_excp_field(rhs.value_.excp_field);
+        break;
+      }
       default:
       {
         assert(false);
@@ -1637,6 +1648,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
       case Type::ref_field2:
       {
         set_ref_field2(std::move(*rhs.value_.ref_field2));
+        break;
+      }
+      case Type::excp_field:
+      {
+        set_excp_field(std::move(rhs.value_.excp_field));
         break;
       }
       default:
@@ -1807,6 +1823,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
       case Type::ref_field2:
       {
         set_ref_field2(*rhs.value_.ref_field2);
+        break;
+      }
+      case Type::excp_field:
+      {
+        set_excp_field(rhs.value_.excp_field);
         break;
       }
       default:
@@ -2003,6 +2024,12 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
   {
     set_ref_field2(arg.move());
   }
+  template <typename T__ThriftWrappedArgument__Ctor>
+  ComplexUnion(::apache::thrift::detail::argument_wrapper<26, T__ThriftWrappedArgument__Ctor> arg):
+    type_(Type::__EMPTY__)
+  {
+    set_excp_field(arg.move());
+  }
   void __clear();
 
   virtual ~ComplexUnion() throw() {
@@ -2041,6 +2068,7 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     std::vector<std::string> MyBinaryListField4;
     std::unique_ptr< ::some::valid::ns::MyStruct> ref_field;
     std::shared_ptr<const  ::some::valid::ns::MyStruct> ref_field2;
+     ::some::valid::ns::AnException excp_field;
 
     storage_type() {}
     ~storage_type() {}
@@ -2551,6 +2579,27 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
   std::shared_ptr<const  ::some::valid::ns::MyStruct>& set_ref_field2( ::some::valid::ns::MyStruct&& t);
   template<typename... T, typename = ::apache::thrift::safe_overload_t< ::some::valid::ns::MyStruct, T...>> std::shared_ptr<const  ::some::valid::ns::MyStruct>& set_ref_field2(T&&... t);
 
+   ::some::valid::ns::AnException& set_excp_field( ::some::valid::ns::AnException const &t) {
+    __clear();
+    type_ = Type::excp_field;
+    ::new (std::addressof(value_.excp_field))  ::some::valid::ns::AnException(t);
+    return value_.excp_field;
+  }
+
+   ::some::valid::ns::AnException& set_excp_field( ::some::valid::ns::AnException&& t) {
+    __clear();
+    type_ = Type::excp_field;
+    ::new (std::addressof(value_.excp_field))  ::some::valid::ns::AnException(std::move(t));
+    return value_.excp_field;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::some::valid::ns::AnException, T...>>  ::some::valid::ns::AnException& set_excp_field(T&&... t) {
+    __clear();
+    type_ = Type::excp_field;
+    ::new (std::addressof(value_.excp_field))  ::some::valid::ns::AnException(std::forward<T>(t)...);
+    return value_.excp_field;
+  }
+
   int64_t const & get_intValue() const {
     assert(type_ == Type::intValue);
     return value_.intValue;
@@ -2704,6 +2753,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
   std::shared_ptr<const  ::some::valid::ns::MyStruct> const & get_ref_field2() const {
     assert(type_ == Type::ref_field2);
     return value_.ref_field2;
+  }
+
+   ::some::valid::ns::AnException const & get_excp_field() const {
+    assert(type_ == Type::excp_field);
+    return value_.excp_field;
   }
 
   int64_t & mutable_intValue() {
@@ -2861,6 +2915,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
     return value_.ref_field2;
   }
 
+   ::some::valid::ns::AnException & mutable_excp_field() {
+    assert(type_ == Type::excp_field);
+    return value_.excp_field;
+  }
+
   int64_t move_intValue() {
     assert(type_ == Type::intValue);
     return std::move(value_.intValue);
@@ -3014,6 +3073,11 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
   std::shared_ptr<const  ::some::valid::ns::MyStruct> move_ref_field2() {
     assert(type_ == Type::ref_field2);
     return std::move(value_.ref_field2);
+  }
+
+   ::some::valid::ns::AnException move_excp_field() {
+    assert(type_ == Type::excp_field);
+    return std::move(value_.excp_field);
   }
 
   Type getType() const { return type_; }

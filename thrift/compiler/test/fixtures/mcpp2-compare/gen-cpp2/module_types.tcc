@@ -749,6 +749,10 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
         fid = 25;
         _ftype = apache::thrift::protocol::T_STRUCT;
       }
+      else if (_fname == "excp_field") {
+        fid = 26;
+        _ftype = apache::thrift::protocol::T_STRUCT;
+      }
     }
     switch (fid) {
       case 1:
@@ -1081,6 +1085,16 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
         }
         break;
       }
+      case 26:
+      {
+        if (_ftype == apache::thrift::protocol::T_STRUCT) {
+          this->set_excp_field();
+          xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AnException>::read(iprot, &this->mutable_excp_field());
+        } else {
+          xfer += iprot->skip(_ftype);
+        }
+        break;
+      }
       default:
       {
         xfer += iprot->skip(_ftype);
@@ -1307,6 +1321,12 @@ uint32_t ComplexUnion::serializedSize(Protocol_ const* prot_) const {
       }
       break;
     }
+    case ComplexUnion::Type::excp_field:
+    {
+      xfer += prot_->serializedFieldSize("excp_field", apache::thrift::protocol::T_STRUCT, 26);
+      xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AnException>::serializedSize(prot_, &this->get_excp_field());
+      break;
+    }
     case ComplexUnion::Type::__EMPTY__:;
   }
   xfer += prot_->serializedSizeStop();
@@ -1504,6 +1524,12 @@ uint32_t ComplexUnion::serializedSizeZC(Protocol_ const* prot_) const {
         xfer += prot_->serializedStructSize("MyStruct");
         xfer += prot_->serializedSizeStop();
       }
+      break;
+    }
+    case ComplexUnion::Type::excp_field:
+    {
+      xfer += prot_->serializedFieldSize("excp_field", apache::thrift::protocol::T_STRUCT, 26);
+      xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AnException>::serializedSizeZC(prot_, &this->get_excp_field());
       break;
     }
     case ComplexUnion::Type::__EMPTY__:;
@@ -1735,6 +1761,13 @@ uint32_t ComplexUnion::write(Protocol_* prot_) const {
         xfer += prot_->writeStructEnd();
         xfer += prot_->writeFieldStop();
       }
+      xfer += prot_->writeFieldEnd();
+      break;
+    }
+    case ComplexUnion::Type::excp_field:
+    {
+      xfer += prot_->writeFieldBegin("excp_field", apache::thrift::protocol::T_STRUCT, 26);
+      xfer += ::apache::thrift::Cpp2Ops<  ::some::valid::ns::AnException>::write(prot_, &this->get_excp_field());
       xfer += prot_->writeFieldEnd();
       break;
     }
