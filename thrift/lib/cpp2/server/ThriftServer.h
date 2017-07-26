@@ -279,8 +279,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   int64_t getRequestLoad() override;
   std::string getLoadInfo(int64_t load) override;
 
-  void setIOThreadPoolExecutor(
-    std::shared_ptr<wangle::IOThreadPoolExecutor> pool) {
+  void setAcceptExecutor(std::shared_ptr<wangle::IOThreadPoolExecutor> pool) {
     acceptPool_ = pool;
   }
 
