@@ -293,9 +293,6 @@ cdef class BigStruct(thrift.py3.types.Struct):
 
     @property
     def id(self):
-        if not deref(self._cpp_obj).__isset.id:
-            return None
-
         return self._cpp_obj.get().id
 
 

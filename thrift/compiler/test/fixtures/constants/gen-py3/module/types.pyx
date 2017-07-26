@@ -172,9 +172,6 @@ cdef class Internship(thrift.py3.types.Struct):
 
     @property
     def title(self):
-        if not deref(self._cpp_obj).__isset.title:
-            return None
-
         return self._cpp_obj.get().title.decode('UTF-8')
 
     @property
@@ -786,16 +783,10 @@ cdef class struct2(thrift.py3.types.Struct):
 
     @property
     def a(self):
-        if not deref(self._cpp_obj).__isset.a:
-            return None
-
         return self._cpp_obj.get().a
 
     @property
     def b(self):
-        if not deref(self._cpp_obj).__isset.b:
-            return None
-
         return self._cpp_obj.get().b.decode('UTF-8')
 
     @property
@@ -980,16 +971,10 @@ cdef class struct3(thrift.py3.types.Struct):
 
     @property
     def a(self):
-        if not deref(self._cpp_obj).__isset.a:
-            return None
-
         return self._cpp_obj.get().a.decode('UTF-8')
 
     @property
     def b(self):
-        if not deref(self._cpp_obj).__isset.b:
-            return None
-
         return self._cpp_obj.get().b
 
     @property

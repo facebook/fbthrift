@@ -102,9 +102,6 @@ cdef class Foo(thrift.py3.types.Struct):
 
     @property
     def MyInt(self):
-        if not deref(self._cpp_obj).__isset.MyInt:
-            return None
-
         return self._cpp_obj.get().MyInt
 
 

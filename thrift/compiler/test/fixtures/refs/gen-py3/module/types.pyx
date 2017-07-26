@@ -276,16 +276,10 @@ cdef class MyField(thrift.py3.types.Struct):
 
     @property
     def opt_value(self):
-        if not deref(self._cpp_obj).__isset.opt_value:
-            return None
-
         return self._cpp_obj.get().opt_value
 
     @property
     def value(self):
-        if not deref(self._cpp_obj).__isset.value:
-            return None
-
         return self._cpp_obj.get().value
 
     @property
@@ -636,9 +630,6 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
 
     @property
     def aDouble(self):
-        if not deref(self._cpp_obj).__isset.aDouble:
-            return None
-
         return self._cpp_obj.get().aDouble
 
     @property

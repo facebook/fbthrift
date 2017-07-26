@@ -90,9 +90,6 @@ cdef class SimpleException(thrift.py3.exceptions.Error):
 
     @property
     def err_code(self):
-        if not deref(self._cpp_obj).__isset.err_code:
-            return None
-
         return self._cpp_obj.get().err_code
 
 
@@ -302,51 +299,30 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
 
     @property
     def is_on(self):
-        if not deref(self._cpp_obj).__isset.is_on:
-            return None
-
         return <pbool> self._cpp_obj.get().is_on
 
     @property
     def tiny_int(self):
-        if not deref(self._cpp_obj).__isset.tiny_int:
-            return None
-
         return self._cpp_obj.get().tiny_int
 
     @property
     def small_int(self):
-        if not deref(self._cpp_obj).__isset.small_int:
-            return None
-
         return self._cpp_obj.get().small_int
 
     @property
     def nice_sized_int(self):
-        if not deref(self._cpp_obj).__isset.nice_sized_int:
-            return None
-
         return self._cpp_obj.get().nice_sized_int
 
     @property
     def big_int(self):
-        if not deref(self._cpp_obj).__isset.big_int:
-            return None
-
         return self._cpp_obj.get().big_int
 
     @property
     def real(self):
-        if not deref(self._cpp_obj).__isset.real:
-            return None
-
         return self._cpp_obj.get().real
 
     @property
     def smaller_real(self):
-        if not deref(self._cpp_obj).__isset.smaller_real:
-            return None
-
         return self._cpp_obj.get().smaller_real
 
 
@@ -588,16 +564,10 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
 
     @property
     def an_integer(self):
-        if not deref(self._cpp_obj).__isset.an_integer:
-            return None
-
         return self._cpp_obj.get().an_integer
 
     @property
     def name(self):
-        if not deref(self._cpp_obj).__isset.name:
-            return None
-
         return self._cpp_obj.get().name.decode('UTF-8')
 
     @property
@@ -609,9 +579,6 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
 
     @property
     def some_bytes(self):
-        if not deref(self._cpp_obj).__isset.some_bytes:
-            return None
-
         return self._cpp_obj.get().some_bytes
 
 

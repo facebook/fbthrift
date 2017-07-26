@@ -168,30 +168,18 @@ cdef class Color(thrift.py3.types.Struct):
 
     @property
     def red(self):
-        if not deref(self._cpp_obj).__isset.red:
-            return None
-
         return self._cpp_obj.get().red
 
     @property
     def green(self):
-        if not deref(self._cpp_obj).__isset.green:
-            return None
-
         return self._cpp_obj.get().green
 
     @property
     def blue(self):
-        if not deref(self._cpp_obj).__isset.blue:
-            return None
-
         return self._cpp_obj.get().blue
 
     @property
     def alpha(self):
-        if not deref(self._cpp_obj).__isset.alpha:
-            return None
-
         return self._cpp_obj.get().alpha
 
 
@@ -403,23 +391,14 @@ cdef class Vehicle(thrift.py3.types.Struct):
 
     @property
     def licensePlate(self):
-        if not deref(self._cpp_obj).__isset.licensePlate:
-            return None
-
         return self._cpp_obj.get().licensePlate.decode('UTF-8')
 
     @property
     def description(self):
-        if not deref(self._cpp_obj).__isset.description:
-            return None
-
         return self._cpp_obj.get().description.decode('UTF-8')
 
     @property
     def name(self):
-        if not deref(self._cpp_obj).__isset.name:
-            return None
-
         return self._cpp_obj.get().name.decode('UTF-8')
 
     @property
@@ -717,30 +696,18 @@ cdef class Person(thrift.py3.types.Struct):
 
     @property
     def id(self):
-        if not deref(self._cpp_obj).__isset.id:
-            return None
-
         return self._cpp_obj.get().id
 
     @property
     def name(self):
-        if not deref(self._cpp_obj).__isset.name:
-            return None
-
         return self._cpp_obj.get().name.decode('UTF-8')
 
     @property
     def age(self):
-        if not deref(self._cpp_obj).__isset.age:
-            return None
-
         return self._cpp_obj.get().age
 
     @property
     def address(self):
-        if not deref(self._cpp_obj).__isset.address:
-            return None
-
         return self._cpp_obj.get().address.decode('UTF-8')
 
     @property
@@ -763,9 +730,6 @@ cdef class Person(thrift.py3.types.Struct):
 
     @property
     def bestFriend(self):
-        if not deref(self._cpp_obj).__isset.bestFriend:
-            return None
-
         return self._cpp_obj.get().bestFriend
 
     @property
