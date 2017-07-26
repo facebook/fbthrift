@@ -15,7 +15,7 @@
 
 
 #include "thrift/compiler/test/fixtures/frozen-service/gen-cpp2/module_types.h"
-#include "module_layouts.h"
+#include "thrift/compiler/test/fixtures/frozen-service/gen-cpp2/module_layouts.h"
 
 namespace folly {
   class IOBuf;
