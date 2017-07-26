@@ -3915,7 +3915,7 @@ void ReturnServiceAsyncClient::readDataEbT(Protocol_* prot, bool useSync, apache
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_readDataEbT(Protocol_* prot,  ::some::valid::ns::IOBuf& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
@@ -3998,7 +3998,7 @@ void ReturnServiceAsyncClient::readDataT(Protocol_* prot, bool useSync, apache::
 template <typename Protocol_>
 folly::exception_wrapper ReturnServiceAsyncClient::recv_wrapped_readDataT(Protocol_* prot,  ::some::valid::ns::IOBufPtr& _return, ::apache::thrift::ClientReceiveState& state) {
   if (state.isException()) {
-    return state.exceptionWrapper();
+    return std::move(state.exception());
   }
   prot->setInput(state.buf());
   auto guard = folly::makeGuard([&] {prot->setInput(nullptr);});
