@@ -176,6 +176,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   bool stopWorkersOnStopListening_ = true;
 
   std::shared_ptr<wangle::IOThreadPoolExecutor> acceptPool_;
+  int nAcceptors_ = 1;
 
   // HeaderServerChannel and Cpp2Worker to use for a duplex server
   // (used by client). Both are nullptr for a regular server.
@@ -281,6 +282,11 @@ class ThriftServer : public apache::thrift::BaseThriftServer
   void setIOThreadPoolExecutor(
     std::shared_ptr<wangle::IOThreadPoolExecutor> pool) {
     acceptPool_ = pool;
+  }
+
+  void setNumAcceptThreads(int numAcceptThreads) {
+    CHECK(!acceptPool_);
+    nAcceptors_ = numAcceptThreads;
   }
 
   std::shared_ptr<wangle::IOThreadPoolExecutor>

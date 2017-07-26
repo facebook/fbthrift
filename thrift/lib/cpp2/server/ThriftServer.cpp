@@ -373,6 +373,11 @@ void ThriftServer::setup() {
 
       // Resize the IO pool
       ioThreadPool_->setNumThreads(nWorkers_);
+      if (!acceptPool_) {
+        acceptPool_ = std::make_shared<wangle::IOThreadPoolExecutor>(
+            nAcceptors_,
+            std::make_shared<wangle::NamedThreadFactory>("Acceptor Thread"));
+      }
 
       ServerBootstrap::childHandler(
           acceptorFactory_ ? acceptorFactory_
