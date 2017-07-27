@@ -103,6 +103,7 @@ libthriftz_la_LDFLAGS   = -version-info $(LT_VERSION) $(BOOST_LDFLAGS)
 
 include_thriftdir = $(includedir)/thrift/lib/cpp/
 include_thrift_HEADERS = \
+                         DistinctTable.h \
                          EventHandlerBase.h \
                          Reflection.h \
                          TDispatchProcessor.h \
