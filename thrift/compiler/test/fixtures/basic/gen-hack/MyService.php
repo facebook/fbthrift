@@ -1350,6 +1350,7 @@ class MyService_ping_args implements \IThriftStruct, \IThriftShapishStruct {
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const type TShape = shape(
+    ...
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
@@ -1477,6 +1478,7 @@ class MyService_getRandomData_args implements \IThriftStruct, \IThriftShapishStr
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const type TShape = shape(
+    ...
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
@@ -1629,6 +1631,7 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
   };
   const type TShape = shape(
     'id' => int,
+    ...
   );
   const int STRUCTURAL_ID = 3807211151619655933;
   public int $id;
@@ -1809,6 +1812,7 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
   };
   const type TShape = shape(
     'id' => int,
+    ...
   );
   const int STRUCTURAL_ID = 3807211151619655933;
   public int $id;
@@ -1995,6 +1999,7 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
   const type TShape = shape(
     'id' => int,
     'data' => string,
+    ...
   );
   const int STRUCTURAL_ID = 1055685087985327657;
   public int $id;
@@ -2190,6 +2195,7 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
   const type TShape = shape(
     'id' => int,
     'data' => string,
+    ...
   );
   const int STRUCTURAL_ID = 1055685087985327657;
   public int $id;

@@ -33,6 +33,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
   };
   const type TShape = shape(
     'a' => string,
+    ...
   );
   const int STRUCTURAL_ID = 7939807933046472325;
   /**
@@ -619,7 +620,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     'map_of_string_to_list_of_i32_with_default_value' => 88,
   };
   const type TShape = shape(
-    'just_an_A' => ?\test\fixtures\A::TShape,
+    ?'just_an_A' => ?\test\fixtures\A::TShape,
     'set_of_i32' => array<int, bool>,
     'list_of_i32' => array<int>,
     'list_of_string' => array<string>,
@@ -635,27 +636,28 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     'list_of_map_of_string_to_A' => array<array<string, \test\fixtures\A::TShape>>,
     'list_of_self' => array<\test\fixtures\B::TShape>,
     'map_of_string_to_self' => array<string, \test\fixtures\B::TShape>,
-    'just_an_enum' => ?\test\fixtures\Enum,
-    'optional_just_an_A' => ?\test\fixtures\A::TShape,
-    'optional_set_of_i32' => ?array<int, bool>,
-    'optional_list_of_i32' => ?array<int>,
-    'optional_list_of_string' => ?array<string>,
-    'optional_map_of_string_to_i32' => ?array<string, int>,
-    'optional_map_of_string_to_A' => ?array<string, \test\fixtures\A::TShape>,
-    'optional_map_of_string_to_list_of_i32' => ?array<string, array<int>>,
-    'optional_map_of_string_to_list_of_A' => ?array<string, array<\test\fixtures\A::TShape>>,
-    'optional_map_of_string_to_set_of_i32' => ?array<string, array<int, bool>>,
-    'optional_enum' => ?\test\fixtures\Enum,
+    ?'just_an_enum' => ?\test\fixtures\Enum,
+    ?'optional_just_an_A' => ?\test\fixtures\A::TShape,
+    ?'optional_set_of_i32' => ?array<int, bool>,
+    ?'optional_list_of_i32' => ?array<int>,
+    ?'optional_list_of_string' => ?array<string>,
+    ?'optional_map_of_string_to_i32' => ?array<string, int>,
+    ?'optional_map_of_string_to_A' => ?array<string, \test\fixtures\A::TShape>,
+    ?'optional_map_of_string_to_list_of_i32' => ?array<string, array<int>>,
+    ?'optional_map_of_string_to_list_of_A' => ?array<string, array<\test\fixtures\A::TShape>>,
+    ?'optional_map_of_string_to_set_of_i32' => ?array<string, array<int, bool>>,
+    ?'optional_enum' => ?\test\fixtures\Enum,
     'required_enum_with_default' => \test\fixtures\Enum,
     'string_with_default_value' => string,
     'i32_with_default_value' => int,
     'double_with_default_value' => float,
-    'enum_with_default_value' => ?\test\fixtures\Enum,
-    'A_with_default_value' => ?\test\fixtures\A::TShape,
+    ?'enum_with_default_value' => ?\test\fixtures\Enum,
+    ?'A_with_default_value' => ?\test\fixtures\A::TShape,
     'set_of_i32_with_default_value' => array<int, bool>,
     'map_of_i32_to_string_with_default_value' => array<int, string>,
     'list_of_string_with_default_value' => array<string>,
     'map_of_string_to_list_of_i32_with_default_value' => array<string, array<int>>,
+    ...
   );
   const int STRUCTURAL_ID = 6828162265155952980;
   /**

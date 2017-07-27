@@ -31,6 +31,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
   };
   const type TShape = shape(
     'a' => string,
+    ...
   );
   const int STRUCTURAL_ID = 7939807933046472325;
   /**
@@ -539,7 +540,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     'optional_enum' => 60,
   };
   const type TShape = shape(
-    'just_an_A' => ?A::TShape,
+    ?'just_an_A' => ?A::TShape,
     'set_of_i32' => array<int, bool>,
     'list_of_i32' => array<int>,
     'list_of_string' => array<string>,
@@ -555,17 +556,18 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     'list_of_map_of_string_to_A' => array<array<arraykey, A::TShape>>,
     'list_of_self' => array<B::TShape>,
     'map_of_string_to_self' => array<arraykey, B::TShape>,
-    'just_an_enum' => ?Enum,
-    'optional_just_an_A' => ?A::TShape,
-    'optional_set_of_i32' => ?array<int, bool>,
-    'optional_list_of_i32' => ?array<int>,
-    'optional_list_of_string' => ?array<string>,
-    'optional_map_of_string_to_i32' => ?array<arraykey, int>,
-    'optional_map_of_string_to_A' => ?array<arraykey, A::TShape>,
-    'optional_map_of_string_to_list_of_i32' => ?array<arraykey, array<int>>,
-    'optional_map_of_string_to_list_of_A' => ?array<arraykey, array<A::TShape>>,
-    'optional_map_of_string_to_set_of_i32' => ?array<arraykey, array<int, bool>>,
-    'optional_enum' => ?Enum,
+    ?'just_an_enum' => ?Enum,
+    ?'optional_just_an_A' => ?A::TShape,
+    ?'optional_set_of_i32' => ?array<int, bool>,
+    ?'optional_list_of_i32' => ?array<int>,
+    ?'optional_list_of_string' => ?array<string>,
+    ?'optional_map_of_string_to_i32' => ?array<arraykey, int>,
+    ?'optional_map_of_string_to_A' => ?array<arraykey, A::TShape>,
+    ?'optional_map_of_string_to_list_of_i32' => ?array<arraykey, array<int>>,
+    ?'optional_map_of_string_to_list_of_A' => ?array<arraykey, array<A::TShape>>,
+    ?'optional_map_of_string_to_set_of_i32' => ?array<arraykey, array<int, bool>>,
+    ?'optional_enum' => ?Enum,
+    ...
   );
   const int STRUCTURAL_ID = 8418159757686116954;
   /**

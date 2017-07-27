@@ -1222,6 +1222,7 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
   };
   const type TShape = shape(
     'foo' => array<int, array<int>>,
+    ...
   );
   const int STRUCTURAL_ID = 860610040470759468;
   public Map<int, Vector<int>> $foo;
@@ -1475,6 +1476,7 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
   };
   const type TShape = shape(
     'foo' => array<int, array<int, bool>>,
+    ...
   );
   const int STRUCTURAL_ID = 860610040470759468;
   public Map<int, Set<int>> $foo;
@@ -1726,6 +1728,7 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
   };
   const type TShape = shape(
     'foo' => array<array<int, int>>,
+    ...
   );
   const int STRUCTURAL_ID = 860610040470759468;
   public Vector<Map<int, int>> $foo;
@@ -1975,6 +1978,7 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
   };
   const type TShape = shape(
     'foo' => array<array<int, bool>>,
+    ...
   );
   const int STRUCTURAL_ID = 860610040470759468;
   public Vector<Set<int>> $foo;
@@ -2241,6 +2245,7 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
   };
   const type TShape = shape(
     'foo' => array<array<array<int, array<int, array<int, bool>>>>>,
+    ...
   );
   const int STRUCTURAL_ID = 860610040470759468;
   public Vector<Vector<Map<int, Map<int, Set<int>>>>> $foo;

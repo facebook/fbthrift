@@ -1450,12 +1450,16 @@ void t_hack_generator::generate_php_struct_shape_spec(std::ofstream& out,
 
     bool nullable = field_is_nullable(tstruct, *m_iter, dval);
 
+    string namePrefix = nullable ? "?" : "";
+
     string typehint = nullable ? "?" : "";
 
     typehint += type_to_typehint(t, false, true);
 
-    indent(out) << "  '" << (*m_iter)->get_name() << "' => " << typehint << "," << endl;
+    indent(out) << "  " << namePrefix << "'" << (*m_iter)->get_name() << "' => "
+                << typehint << "," << endl;
   }
+  indent(out) << "  ..." << endl;
   indent(out) << ");" << endl;
 }
 

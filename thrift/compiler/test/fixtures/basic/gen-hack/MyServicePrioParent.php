@@ -512,6 +512,7 @@ class MyServicePrioParent_ping_args implements \IThriftStruct, \IThriftShapishSt
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const type TShape = shape(
+    ...
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
@@ -639,6 +640,7 @@ class MyServicePrioParent_pong_args implements \IThriftStruct, \IThriftShapishSt
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const type TShape = shape(
+    ...
   );
   const int STRUCTURAL_ID = 957977401221134810;
 

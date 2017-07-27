@@ -22,6 +22,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
   };
   const type TShape = shape(
     'a' => string,
+    ...
   );
   const int STRUCTURAL_ID = 7939807933046472325;
   /**
@@ -504,7 +505,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     'optional_map_of_string_to_set_of_i32' => 59,
   };
   const type TShape = shape(
-    'just_an_A' => ?A::TShape,
+    ?'just_an_A' => ?A::TShape,
     'set_of_i32' => array<int, bool>,
     'list_of_i32' => array<int>,
     'list_of_string' => array<string>,
@@ -520,15 +521,16 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     'list_of_map_of_string_to_A' => array<array<string, A::TShape>>,
     'list_of_self' => array<B::TShape>,
     'map_of_string_to_self' => array<string, B::TShape>,
-    'optional_just_an_A' => ?A::TShape,
-    'optional_set_of_i32' => ?array<int, bool>,
-    'optional_list_of_i32' => ?array<int>,
-    'optional_list_of_string' => ?array<string>,
-    'optional_map_of_string_to_i32' => ?array<string, int>,
-    'optional_map_of_string_to_A' => ?array<string, A::TShape>,
-    'optional_map_of_string_to_list_of_i32' => ?array<string, array<int>>,
-    'optional_map_of_string_to_list_of_A' => ?array<string, array<A::TShape>>,
-    'optional_map_of_string_to_set_of_i32' => ?array<string, array<int, bool>>,
+    ?'optional_just_an_A' => ?A::TShape,
+    ?'optional_set_of_i32' => ?array<int, bool>,
+    ?'optional_list_of_i32' => ?array<int>,
+    ?'optional_list_of_string' => ?array<string>,
+    ?'optional_map_of_string_to_i32' => ?array<string, int>,
+    ?'optional_map_of_string_to_A' => ?array<string, A::TShape>,
+    ?'optional_map_of_string_to_list_of_i32' => ?array<string, array<int>>,
+    ?'optional_map_of_string_to_list_of_A' => ?array<string, array<A::TShape>>,
+    ?'optional_map_of_string_to_set_of_i32' => ?array<string, array<int, bool>>,
+    ...
   );
   const int STRUCTURAL_ID = 5337530759322918209;
   /**

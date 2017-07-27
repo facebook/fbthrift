@@ -38,6 +38,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
   const type TShape = shape(
     'MyIntField' => int,
     'MyStringField' => string,
+    ...
   );
   const int STRUCTURAL_ID = 4929291502389600438;
   /**

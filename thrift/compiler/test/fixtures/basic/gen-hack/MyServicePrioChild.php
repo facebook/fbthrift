@@ -287,6 +287,7 @@ class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStr
   public static Map<string, int> $_TFIELDMAP = Map {
   };
   const type TShape = shape(
+    ...
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
