@@ -99,7 +99,11 @@ thrift2include_frozen2_HEADERS = \
 	frozen/FrozenTrivial-inl.h \
 	frozen/HintTypes.h \
 	frozen/Traits.h \
-	frozen/VectorAssociative.h \
+	frozen/VectorAssociative.h
+
+thrift2include_frozen2_schemadir = $(thrift2include_frozen2dir)/schema
+
+thrift2include_frozen2_schema_HEADERS = \
 	frozen/schema/MemorySchema.h
 
 libthriftfrozen2_la_SOURCES = \
