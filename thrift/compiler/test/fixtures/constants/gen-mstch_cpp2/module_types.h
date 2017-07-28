@@ -173,7 +173,7 @@ class Internship : private apache::thrift::detail::st::ComparisonOperators<Inter
   Internship& operator=(const Internship&) = default;
   void __clear();
 
-  virtual ~Internship() throw() {}
+  virtual ~Internship() {}
 
   int32_t weeks;
   std::string title;
@@ -308,7 +308,7 @@ class UnEnumStruct : private apache::thrift::detail::st::ComparisonOperators<UnE
   UnEnumStruct& operator=(const UnEnumStruct&) = default;
   void __clear();
 
-  virtual ~UnEnumStruct() throw() {}
+  virtual ~UnEnumStruct() {}
 
    ::cpp2::City city;
 
@@ -422,7 +422,7 @@ class Range : private apache::thrift::detail::st::ComparisonOperators<Range> {
   Range& operator=(const Range&) = default;
   void __clear();
 
-  virtual ~Range() throw() {}
+  virtual ~Range() {}
 
   int32_t min;
   int32_t max;
@@ -545,7 +545,7 @@ class struct1 : private apache::thrift::detail::st::ComparisonOperators<struct1>
   struct1& operator=(const struct1&) = default;
   void __clear();
 
-  virtual ~struct1() throw() {}
+  virtual ~struct1() {}
 
   int32_t a;
   std::string b;
@@ -702,7 +702,7 @@ class struct2 : private apache::thrift::detail::st::ComparisonOperators<struct2>
   struct2& operator=(const struct2&) = default;
   void __clear();
 
-  virtual ~struct2() throw() {}
+  virtual ~struct2() {}
 
   int32_t a;
   std::string b;
@@ -880,7 +880,7 @@ class struct3 : private apache::thrift::detail::st::ComparisonOperators<struct3>
   struct3& operator=(const struct3&) = default;
   void __clear();
 
-  virtual ~struct3() throw() {}
+  virtual ~struct3() {}
 
   std::string a;
   int32_t b;
@@ -1117,7 +1117,7 @@ class union1 : private apache::thrift::detail::st::ComparisonOperators<union1> {
   }
   void __clear();
 
-  virtual ~union1() throw() {
+  virtual ~union1() {
     __clear();
   }
 
@@ -1426,7 +1426,7 @@ class union2 : private apache::thrift::detail::st::ComparisonOperators<union2> {
   }
   void __clear();
 
-  virtual ~union2() throw() {
+  virtual ~union2() {
     __clear();
   }
 

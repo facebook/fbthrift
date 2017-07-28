@@ -111,7 +111,7 @@ class Color : private apache::thrift::detail::st::ComparisonOperators<Color> {
   Color& operator=(const Color&) = default;
   void __clear();
 
-  virtual ~Color() throw() {}
+  virtual ~Color() {}
 
   double red;
   double green;
@@ -239,7 +239,7 @@ class Vehicle : private apache::thrift::detail::st::ComparisonOperators<Vehicle>
   Vehicle& operator=(const Vehicle&) = default;
   void __clear();
 
-  virtual ~Vehicle() throw() {}
+  virtual ~Vehicle() {}
 
    ::cpp2::Color color;
   folly::Optional<std::string> licensePlate;
@@ -387,7 +387,7 @@ class Person : private apache::thrift::detail::st::ComparisonOperators<Person> {
   Person& operator=(const Person&) = default;
   void __clear();
 
-  virtual ~Person() throw() {}
+  virtual ~Person() {}
 
    ::cpp2::PersonID id;
   std::string name;

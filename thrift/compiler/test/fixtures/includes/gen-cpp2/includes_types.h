@@ -49,7 +49,7 @@ class Included : private apache::thrift::detail::st::ComparisonOperators<Include
   Included& operator=(const Included&) = default;
   void __clear();
 
-  virtual ~Included() throw() {}
+  virtual ~Included() {}
 
   int64_t MyIntField;
 

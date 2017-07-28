@@ -78,7 +78,7 @@ class ModuleA : private apache::thrift::detail::st::ComparisonOperators<ModuleA>
   ModuleA& operator=(const ModuleA&) = default;
   void __clear();
 
-  virtual ~ModuleA() throw() {}
+  virtual ~ModuleA() {}
 
   int32_t i32Field;
   std::string strField;
@@ -238,7 +238,7 @@ class ModuleB : private apache::thrift::detail::st::ComparisonOperators<ModuleB>
   ModuleB& operator=(const ModuleB&) = default;
   void __clear();
 
-  virtual ~ModuleB() throw() {}
+  virtual ~ModuleB() {}
 
   int32_t i32Field;
 
@@ -356,7 +356,7 @@ class ExceptionA : private apache::thrift::detail::st::ComparisonOperators<Excep
   ExceptionA& operator=(const ExceptionA&) = default;
   void __clear();
 
-  virtual ~ExceptionA() throw() {}
+  virtual ~ExceptionA() {}
 
   int32_t code;
   std::string msg;
@@ -417,7 +417,7 @@ class ExceptionA : private apache::thrift::detail::st::ComparisonOperators<Excep
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
 
-  virtual const char* what() const throw() {
+  virtual const char* what() const noexcept {
     return " ::some::ns::ExceptionA";
   }
 };
@@ -499,7 +499,7 @@ class ExceptionB : private apache::thrift::detail::st::ComparisonOperators<Excep
   ExceptionB& operator=(const ExceptionB&) = default;
   void __clear();
 
-  virtual ~ExceptionB() throw() {}
+  virtual ~ExceptionB() {}
 
   int32_t code;
   std::string msg;
@@ -560,7 +560,7 @@ class ExceptionB : private apache::thrift::detail::st::ComparisonOperators<Excep
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
 
-  virtual const char* what() const throw() {
+  virtual const char* what() const noexcept {
     return " ::some::ns::ExceptionB";
   }
 };

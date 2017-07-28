@@ -386,7 +386,7 @@ class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
   Empty& operator=(const Empty&) = default;
   void __clear();
 
-  virtual ~Empty() throw() {}
+  virtual ~Empty() {}
 
   bool operator==(const Empty& /* rhs */) const;
 
@@ -473,7 +473,7 @@ class ASimpleStruct : private apache::thrift::detail::st::ComparisonOperators<AS
   ASimpleStruct& operator=(const ASimpleStruct&) = default;
   void __clear();
 
-  virtual ~ASimpleStruct() throw() {}
+  virtual ~ASimpleStruct() {}
 
   int64_t boolField;
 
@@ -647,7 +647,7 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
   MyStruct& operator=(const MyStruct&) = default;
   void __clear();
 
-  virtual ~MyStruct() throw() {}
+  virtual ~MyStruct() {}
 
   bool MyBoolField;
   int64_t MyIntField;
@@ -954,7 +954,7 @@ class SimpleUnion : private apache::thrift::detail::st::ComparisonOperators<Simp
   }
   void __clear();
 
-  ~SimpleUnion() throw() {
+  ~SimpleUnion() {
     __clear();
   }
   union storage_type {
@@ -2032,7 +2032,7 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
   }
   void __clear();
 
-  virtual ~ComplexUnion() throw() {
+  virtual ~ComplexUnion() {
     __clear();
   }
 
@@ -3301,7 +3301,7 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
   AnException& operator=(const AnException&) = default;
   void __clear();
 
-  virtual ~AnException() throw() {}
+  virtual ~AnException() {}
 
   int32_t code;
   int32_t req_code;
@@ -3507,7 +3507,7 @@ class AnException : private apache::thrift::detail::st::ComparisonOperators<AnEx
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
 
-  virtual const char* what() const throw() {
+  virtual const char* what() const noexcept {
     return message2.c_str();
   }
 };
@@ -3668,7 +3668,7 @@ class AnotherException : private apache::thrift::detail::st::ComparisonOperators
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
 
-  virtual const char* what() const throw() {
+  virtual const char* what() const noexcept {
     return " ::some::valid::ns::AnotherException";
   }
 };
@@ -4166,7 +4166,7 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   containerStruct& operator=(containerStruct&&) = default;
   void __clear();
 
-  virtual ~containerStruct() throw() {}
+  virtual ~containerStruct() {}
 
   bool fieldA;
   bool req_fieldA;
@@ -4836,7 +4836,7 @@ class MyIncludedStruct : private apache::thrift::detail::st::ComparisonOperators
   MyIncludedStruct& operator=(const MyIncludedStruct&) = default;
   void __clear();
 
-  virtual ~MyIncludedStruct() throw() {}
+  virtual ~MyIncludedStruct() {}
 
    ::a::different::ns::IncludedInt64 MyIncludedInt;
    ::some::valid::ns::AStruct MyIncludedStruct;

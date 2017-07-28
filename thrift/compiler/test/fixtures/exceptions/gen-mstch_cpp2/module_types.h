@@ -38,7 +38,7 @@ class Banal : private apache::thrift::detail::st::ComparisonOperators<Banal>, pu
   Banal& operator=(const Banal&) = default;
   void __clear();
 
-  virtual ~Banal() throw() {}
+  virtual ~Banal() {}
 
   bool operator==(const Banal& /* rhs */) const;
 
@@ -56,7 +56,7 @@ class Banal : private apache::thrift::detail::st::ComparisonOperators<Banal>, pu
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
 
-  virtual const char* what() const throw() {
+  virtual const char* what() const noexcept {
     return " ::cpp2::Banal";
   }
 };
@@ -125,7 +125,7 @@ class Fiery : private apache::thrift::detail::st::ComparisonOperators<Fiery>, pu
   Fiery& operator=(const Fiery&) = default;
   void __clear();
 
-  virtual ~Fiery() throw() {}
+  virtual ~Fiery() {}
 
   std::string message;
   bool operator==(const Fiery& rhs) const;
@@ -161,7 +161,7 @@ class Fiery : private apache::thrift::detail::st::ComparisonOperators<Fiery>, pu
   template <class Protocol_>
   uint32_t write(Protocol_* prot_) const;
 
-  virtual const char* what() const throw() {
+  virtual const char* what() const noexcept {
     return " ::cpp2::Fiery";
   }
 };

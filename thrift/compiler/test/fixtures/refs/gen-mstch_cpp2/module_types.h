@@ -187,7 +187,7 @@ class MyUnion : private apache::thrift::detail::st::ComparisonOperators<MyUnion>
   }
   void __clear();
 
-  virtual ~MyUnion() throw() {
+  virtual ~MyUnion() {
     __clear();
   }
 
@@ -382,7 +382,7 @@ class MyField : private apache::thrift::detail::st::ComparisonOperators<MyField>
   MyField& operator=(const MyField&) = default;
   void __clear();
 
-  virtual ~MyField() throw() {}
+  virtual ~MyField() {}
 
   int64_t opt_value;
   int64_t value;
@@ -520,7 +520,7 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
   MyStruct& operator=(const MyStruct& src);
   void __clear();
 
-  virtual ~MyStruct() throw() {}
+  virtual ~MyStruct() {}
 
   std::unique_ptr< ::cpp2::MyField> opt_ref;
   std::unique_ptr< ::cpp2::MyField> ref;
@@ -625,7 +625,7 @@ class StructWithUnion : private apache::thrift::detail::st::ComparisonOperators<
   StructWithUnion& operator=(const StructWithUnion& src);
   void __clear();
 
-  virtual ~StructWithUnion() throw() {}
+  virtual ~StructWithUnion() {}
 
   std::unique_ptr< ::cpp2::MyUnion> u;
   double aDouble;
@@ -739,7 +739,7 @@ class RecursiveStruct : private apache::thrift::detail::st::ComparisonOperators<
   RecursiveStruct& operator=(const RecursiveStruct&) = default;
   void __clear();
 
-  virtual ~RecursiveStruct() throw() {}
+  virtual ~RecursiveStruct() {}
 
   std::vector< ::cpp2::RecursiveStruct> mes;
 
@@ -876,7 +876,7 @@ class StructWithContainers : private apache::thrift::detail::st::ComparisonOpera
   StructWithContainers& operator=(const StructWithContainers& src);
   void __clear();
 
-  virtual ~StructWithContainers() throw() {}
+  virtual ~StructWithContainers() {}
 
   std::unique_ptr<std::vector<int32_t>> list_ref;
   std::unique_ptr<std::set<int32_t>> set_ref;
@@ -1002,7 +1002,7 @@ class StructWithSharedConst : private apache::thrift::detail::st::ComparisonOper
   StructWithSharedConst& operator=(const StructWithSharedConst&) = default;
   void __clear();
 
-  virtual ~StructWithSharedConst() throw() {}
+  virtual ~StructWithSharedConst() {}
 
   std::shared_ptr<const  ::cpp2::MyField> opt_shared_const;
   std::shared_ptr<const  ::cpp2::MyField> shared_const;
@@ -1082,7 +1082,7 @@ class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
   Empty& operator=(const Empty&) = default;
   void __clear();
 
-  virtual ~Empty() throw() {}
+  virtual ~Empty() {}
 
   bool operator==(const Empty& /* rhs */) const;
 
@@ -1177,7 +1177,7 @@ class StructWithRef : private apache::thrift::detail::st::ComparisonOperators<St
   StructWithRef& operator=(const StructWithRef& src);
   void __clear();
 
-  virtual ~StructWithRef() throw() {}
+  virtual ~StructWithRef() {}
 
   std::unique_ptr< ::cpp2::Empty> def_field;
   std::unique_ptr< ::cpp2::Empty> opt_field;
@@ -1276,7 +1276,7 @@ class StructWithRefTypeUnique : private apache::thrift::detail::st::ComparisonOp
   StructWithRefTypeUnique& operator=(const StructWithRefTypeUnique& src);
   void __clear();
 
-  virtual ~StructWithRefTypeUnique() throw() {}
+  virtual ~StructWithRefTypeUnique() {}
 
   std::unique_ptr< ::cpp2::Empty> def_field;
   std::unique_ptr< ::cpp2::Empty> opt_field;
@@ -1377,7 +1377,7 @@ class StructWithRefTypeShared : private apache::thrift::detail::st::ComparisonOp
   StructWithRefTypeShared& operator=(const StructWithRefTypeShared&) = default;
   void __clear();
 
-  virtual ~StructWithRefTypeShared() throw() {}
+  virtual ~StructWithRefTypeShared() {}
 
   std::shared_ptr< ::cpp2::Empty> def_field;
   std::shared_ptr< ::cpp2::Empty> opt_field;
@@ -1478,7 +1478,7 @@ class StructWithRefTypeSharedConst : private apache::thrift::detail::st::Compari
   StructWithRefTypeSharedConst& operator=(const StructWithRefTypeSharedConst&) = default;
   void __clear();
 
-  virtual ~StructWithRefTypeSharedConst() throw() {}
+  virtual ~StructWithRefTypeSharedConst() {}
 
   std::shared_ptr<const  ::cpp2::Empty> def_field;
   std::shared_ptr<const  ::cpp2::Empty> opt_field;

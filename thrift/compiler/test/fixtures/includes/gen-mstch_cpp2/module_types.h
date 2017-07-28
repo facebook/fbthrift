@@ -58,7 +58,7 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
   MyStruct& operator=(const MyStruct&) = default;
   void __clear();
 
-  virtual ~MyStruct() throw() {}
+  virtual ~MyStruct() {}
 
    ::cpp2::Included MyIncludedField;
    ::cpp2::IncludedInt64 MyIncludedInt;

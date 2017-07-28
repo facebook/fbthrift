@@ -87,7 +87,7 @@ class AStruct : private apache::thrift::detail::st::ComparisonOperators<AStruct>
   AStruct& operator=(const AStruct&) = default;
   void __clear();
 
-  virtual ~AStruct() throw() {}
+  virtual ~AStruct() {}
 
   int32_t FieldA;
 

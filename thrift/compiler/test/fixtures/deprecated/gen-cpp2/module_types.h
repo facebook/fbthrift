@@ -64,7 +64,7 @@ class FOLLY_DEPRECATED(
   House& operator=(const House&) = default;
   void __clear();
 
-  virtual ~House() throw() {}
+  virtual ~House() {}
 
    ::cpp2::ColorID id;
   std::string houseName;
@@ -159,7 +159,7 @@ class FOLLY_DEPRECATED(
   Field& operator=(const Field&) = default;
   void __clear();
 
-  virtual ~Field() throw() {}
+  virtual ~Field() {}
 
    ::cpp2::ColorID id;
   int32_t FOLLY_DEPRECATED(

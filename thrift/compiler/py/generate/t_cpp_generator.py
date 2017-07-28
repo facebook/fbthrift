@@ -2887,13 +2887,13 @@ class CppGenerator(t_generator.Generator):
         # END if not pointers
 
         if 'final' not in obj.annotations:
-            with struct.defn('~{name}() throw()', name=obj.name,
+            with struct.defn('~{name}()', name=obj.name,
                              modifiers='virtual', in_header=True):
                 if obj.is_union:
                     out('__clear();')
             struct()
         elif obj.is_union:
-            with struct.defn('~{name}() throw()', name=obj.name,
+            with struct.defn('~{name}()', name=obj.name,
                              in_header=True):
                 out('__clear();')
 
@@ -3256,7 +3256,7 @@ class CppGenerator(t_generator.Generator):
                 what = '{0}.c_str()'.format(obj.annotations['message'])
             else:
                 what = '"{0}"'.format(self._type_name(obj))
-            with struct.defn('virtual const char* what() const throw()',
+            with struct.defn('virtual const char* what() const noexcept',
                                    in_header=True) as x1:
                 x1('return {0};'.format(what))
 

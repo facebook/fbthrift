@@ -132,7 +132,7 @@ class SmallStruct : private apache::thrift::detail::st::ComparisonOperators<Smal
   SmallStruct& operator=(const SmallStruct&) = default;
   void __clear();
 
-  virtual ~SmallStruct() throw() {}
+  virtual ~SmallStruct() {}
 
   bool small_A;
   int32_t small_B;
@@ -450,7 +450,7 @@ class containerStruct : private apache::thrift::detail::st::ComparisonOperators<
   containerStruct& operator=(const containerStruct& src);
   void __clear();
 
-  virtual ~containerStruct() throw() {}
+  virtual ~containerStruct() {}
 
   bool fieldA;
   std::map<std::string, bool> fieldB;

@@ -427,7 +427,7 @@ class union1 : private apache::thrift::detail::st::ComparisonOperators<union1> {
   }
   void __clear();
 
-  virtual ~union1() throw() {
+  virtual ~union1() {
     __clear();
   }
 
@@ -804,7 +804,7 @@ class union2 : private apache::thrift::detail::st::ComparisonOperators<union2> {
   }
   void __clear();
 
-  virtual ~union2() throw() {
+  virtual ~union2() {
     __clear();
   }
 
@@ -1181,7 +1181,7 @@ class union3 : private apache::thrift::detail::st::ComparisonOperators<union3> {
   }
   void __clear();
 
-  virtual ~union3() throw() {
+  virtual ~union3() {
     __clear();
   }
 
@@ -1421,7 +1421,7 @@ class structA : private apache::thrift::detail::st::ComparisonOperators<structA>
   structA& operator=(const structA&) = default;
   void __clear();
 
-  virtual ~structA() throw() {}
+  virtual ~structA() {}
 
   int32_t a;
   std::string b;
@@ -1724,7 +1724,7 @@ class unionA : private apache::thrift::detail::st::ComparisonOperators<unionA> {
   }
   void __clear();
 
-  virtual ~unionA() throw() {
+  virtual ~unionA() {
     __clear();
   }
 
@@ -2006,7 +2006,7 @@ class structB : private apache::thrift::detail::st::ComparisonOperators<structB>
   structB& operator=(const structB&) = default;
   void __clear();
 
-  virtual ~structB() throw() {}
+  virtual ~structB() {}
 
   double c;
   bool d;
@@ -2396,7 +2396,7 @@ class structC : private apache::thrift::detail::st::ComparisonOperators<structC>
   structC& operator=(const structC&) = default;
   void __clear();
 
-  virtual ~structC() throw() {}
+  virtual ~structC() {}
 
   int32_t a;
   std::string b;
@@ -2993,7 +2993,7 @@ class struct1 : private apache::thrift::detail::st::ComparisonOperators<struct1>
   struct1& operator=(const struct1&) = default;
   void __clear();
 
-  virtual ~struct1() throw() {}
+  virtual ~struct1() {}
 
   int32_t field0;
   std::string field1;
@@ -3215,7 +3215,7 @@ class struct2 : private apache::thrift::detail::st::ComparisonOperators<struct2>
   struct2& operator=(const struct2&) = default;
   void __clear();
 
-  virtual ~struct2() throw() {}
+  virtual ~struct2() {}
 
   int32_t fieldA;
   std::string fieldB;
@@ -3552,7 +3552,7 @@ class struct3 : private apache::thrift::detail::st::ComparisonOperators<struct3>
   struct3& operator=(const struct3&) = default;
   void __clear();
 
-  virtual ~struct3() throw() {}
+  virtual ~struct3() {}
 
   int32_t fieldA;
   std::string fieldB;
@@ -3888,7 +3888,7 @@ class struct4 : private apache::thrift::detail::st::ComparisonOperators<struct4>
   struct4& operator=(const struct4& src);
   void __clear();
 
-  virtual ~struct4() throw() {}
+  virtual ~struct4() {}
 
   int32_t field0;
   std::string field1;
@@ -4055,7 +4055,7 @@ class struct5 : private apache::thrift::detail::st::ComparisonOperators<struct5>
   struct5& operator=(const struct5&) = default;
   void __clear();
 
-  virtual ~struct5() throw() {}
+  virtual ~struct5() {}
 
   int32_t field0;
   std::string field1;
@@ -4209,7 +4209,7 @@ class struct_binary : private apache::thrift::detail::st::ComparisonOperators<st
   struct_binary& operator=(const struct_binary&) = default;
   void __clear();
 
-  virtual ~struct_binary() throw() {}
+  virtual ~struct_binary() {}
 
   std::string bi;
 
@@ -4341,7 +4341,7 @@ class dep_A_struct : private apache::thrift::detail::st::ComparisonOperators<dep
   dep_A_struct& operator=(const dep_A_struct&) = default;
   void __clear();
 
-  virtual ~dep_A_struct() throw() {}
+  virtual ~dep_A_struct() {}
 
    ::test_cpp2::cpp_reflection::dep_B_struct b;
    ::test_cpp2::cpp_reflection::dep_C_struct c;
@@ -4480,7 +4480,7 @@ class annotated : private apache::thrift::detail::st::ComparisonOperators<annota
   annotated& operator=(const annotated&) = default;
   void __clear();
 
-  virtual ~annotated() throw() {}
+  virtual ~annotated() {}
 
   int32_t a;
 
@@ -5383,7 +5383,7 @@ class union_with_special_names : private apache::thrift::detail::st::ComparisonO
   }
   void __clear();
 
-  virtual ~union_with_special_names() throw() {
+  virtual ~union_with_special_names() {
     __clear();
   }
 
@@ -6518,7 +6518,7 @@ class struct_with_special_names : private apache::thrift::detail::st::Comparison
   struct_with_special_names& operator=(const struct_with_special_names&) = default;
   void __clear();
 
-  virtual ~struct_with_special_names() throw() {}
+  virtual ~struct_with_special_names() {}
 
   int32_t get;
   int32_t getter;
@@ -7098,7 +7098,7 @@ class struct_with_indirections : private apache::thrift::detail::st::ComparisonO
   struct_with_indirections& operator=(const struct_with_indirections&) = default;
   void __clear();
 
-  virtual ~struct_with_indirections() throw() {}
+  virtual ~struct_with_indirections() {}
 
   int32_t real;
    ::test_cpp2::cpp_reflection::FakeI32 fake;

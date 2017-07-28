@@ -223,7 +223,7 @@ class SomeStruct : private apache::thrift::detail::st::ComparisonOperators<SomeS
   SomeStruct& operator=(const SomeStruct&) = default;
   void __clear();
 
-  virtual ~SomeStruct() throw() {}
+  virtual ~SomeStruct() {}
 
   int32_t fieldA;
 

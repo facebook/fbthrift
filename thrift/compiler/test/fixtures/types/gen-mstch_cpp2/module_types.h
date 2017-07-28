@@ -144,7 +144,7 @@ class decorated_struct : private apache::thrift::detail::st::ComparisonOperators
   decorated_struct& operator=(const decorated_struct&) = default;
   void __clear();
 
-  virtual ~decorated_struct() throw() {}
+  virtual ~decorated_struct() {}
 
   std::string field;
 
@@ -321,7 +321,7 @@ class ContainerStruct : private apache::thrift::detail::st::ComparisonOperators<
   ContainerStruct& operator=(const ContainerStruct&) = default;
   void __clear();
 
-  virtual ~ContainerStruct() throw() {}
+  virtual ~ContainerStruct() {}
 
   std::vector<int32_t> fieldA;
   std::list<int32_t> fieldB;

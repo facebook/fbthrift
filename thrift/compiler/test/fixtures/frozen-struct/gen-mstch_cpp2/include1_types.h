@@ -57,7 +57,7 @@ class IncludedA : private apache::thrift::detail::st::ComparisonOperators<Includ
   IncludedA& operator=(const IncludedA&) = default;
   void __clear();
 
-  virtual ~IncludedA() throw() {}
+  virtual ~IncludedA() {}
 
   int32_t i32Field;
   std::string strField;

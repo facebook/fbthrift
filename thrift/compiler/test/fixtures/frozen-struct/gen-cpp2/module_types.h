@@ -131,7 +131,7 @@ class ModuleA : private apache::thrift::detail::st::ComparisonOperators<ModuleA>
   ModuleA& operator=(const ModuleA&) = default;
   void __clear();
 
-  virtual ~ModuleA() throw() {}
+  virtual ~ModuleA() {}
 
   int32_t i32Field;
   std::string strField;
@@ -331,7 +331,7 @@ class ModuleB : private apache::thrift::detail::st::ComparisonOperators<ModuleB>
   ModuleB& operator=(const ModuleB&) = default;
   void __clear();
 
-  virtual ~ModuleB() throw() {}
+  virtual ~ModuleB() {}
 
   int32_t i32Field;
    ::some::ns::EnumB inclEnumB;

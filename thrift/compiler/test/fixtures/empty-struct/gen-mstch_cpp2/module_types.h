@@ -38,7 +38,7 @@ class Empty : private apache::thrift::detail::st::ComparisonOperators<Empty> {
   Empty& operator=(const Empty&) = default;
   void __clear();
 
-  virtual ~Empty() throw() {}
+  virtual ~Empty() {}
 
   bool operator==(const Empty& /* rhs */) const;
 
@@ -163,7 +163,7 @@ class Nada : private apache::thrift::detail::st::ComparisonOperators<Nada> {
   }
   void __clear();
 
-  virtual ~Nada() throw() {
+  virtual ~Nada() {
     __clear();
   }
 

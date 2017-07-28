@@ -250,7 +250,7 @@ class ComplexUnion : private apache::thrift::detail::st::ComparisonOperators<Com
   }
   void __clear();
 
-  virtual ~ComplexUnion() throw() {
+  virtual ~ComplexUnion() {
     __clear();
   }
 
@@ -650,7 +650,7 @@ class FinalComplexUnion : private apache::thrift::detail::st::ComparisonOperator
   }
   void __clear();
 
-  ~FinalComplexUnion() throw() {
+  ~FinalComplexUnion() {
     __clear();
   }
   union storage_type {

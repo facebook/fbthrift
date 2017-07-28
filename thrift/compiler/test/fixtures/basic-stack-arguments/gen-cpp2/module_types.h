@@ -93,7 +93,7 @@ class MyStruct : private apache::thrift::detail::st::ComparisonOperators<MyStruc
   MyStruct& operator=(const MyStruct&) = default;
   void __clear();
 
-  virtual ~MyStruct() throw() {}
+  virtual ~MyStruct() {}
 
   int64_t MyIntField;
   std::string MyStringField;
