@@ -19,7 +19,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> ServiceASvIf::getProcessor() {
 }
 
 void ServiceASvIf::moduleAMethod(std::unique_ptr< ::some::ns::ModuleA> /*modArg*/) {
-  throw apache::thrift::TApplicationException("Function moduleAMethod is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("moduleAMethod");
 }
 
 folly::Future<folly::Unit> ServiceASvIf::future_moduleAMethod(std::unique_ptr< ::some::ns::ModuleA> modArg) {
@@ -31,7 +31,7 @@ void ServiceASvIf::async_tm_moduleAMethod(std::unique_ptr<apache::thrift::Handle
 }
 
 void ServiceASvIf::moduleBMethod(std::unique_ptr< ::some::ns::ModuleB> /*modArg*/) {
-  throw apache::thrift::TApplicationException("Function moduleBMethod is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("moduleBMethod");
 }
 
 folly::Future<folly::Unit> ServiceASvIf::future_moduleBMethod(std::unique_ptr< ::some::ns::ModuleB> modArg) {
@@ -43,7 +43,7 @@ void ServiceASvIf::async_tm_moduleBMethod(std::unique_ptr<apache::thrift::Handle
 }
 
 void ServiceASvIf::i32StrDoubleMethod(int32_t /*i32Arg*/, std::unique_ptr<std::string> /*strArg*/, double /*doubleArg*/) {
-  throw apache::thrift::TApplicationException("Function i32StrDoubleMethod is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("i32StrDoubleMethod");
 }
 
 folly::Future<folly::Unit> ServiceASvIf::future_i32StrDoubleMethod(int32_t i32Arg, std::unique_ptr<std::string> strArg, double doubleArg) {
@@ -55,7 +55,7 @@ void ServiceASvIf::async_tm_i32StrDoubleMethod(std::unique_ptr<apache::thrift::H
 }
 
 void ServiceASvIf::versioningMethod(int32_t /*i32Arg*/, std::unique_ptr<std::string> /*strArg*/, double /*doubleArg*/) {
-  throw apache::thrift::TApplicationException("Function versioningMethod is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("versioningMethod");
 }
 
 folly::Future<folly::Unit> ServiceASvIf::future_versioningMethod(int32_t i32Arg, std::unique_ptr<std::string> strArg, double doubleArg) {
@@ -67,7 +67,7 @@ void ServiceASvIf::async_tm_versioningMethod(std::unique_ptr<apache::thrift::Han
 }
 
 int32_t ServiceASvIf::retI32Method() {
-  throw apache::thrift::TApplicationException("Function retI32Method is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("retI32Method");
 }
 
 folly::Future<int32_t> ServiceASvIf::future_retI32Method() {
@@ -79,7 +79,7 @@ void ServiceASvIf::async_tm_retI32Method(std::unique_ptr<apache::thrift::Handler
 }
 
 void ServiceASvIf::retModAMethod( ::some::ns::ModuleA& /*_return*/) {
-  throw apache::thrift::TApplicationException("Function retModAMethod is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("retModAMethod");
 }
 
 folly::Future<std::unique_ptr< ::some::ns::ModuleA>> ServiceASvIf::future_retModAMethod() {
@@ -91,7 +91,7 @@ void ServiceASvIf::async_tm_retModAMethod(std::unique_ptr<apache::thrift::Handle
 }
 
 void ServiceASvIf::throwMethod() {
-  throw apache::thrift::TApplicationException("Function throwMethod is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("throwMethod");
 }
 
 folly::Future<folly::Unit> ServiceASvIf::future_throwMethod() {
@@ -103,7 +103,7 @@ void ServiceASvIf::async_tm_throwMethod(std::unique_ptr<apache::thrift::HandlerC
 }
 
 void ServiceASvIf::multiThrowMethod() {
-  throw apache::thrift::TApplicationException("Function multiThrowMethod is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("multiThrowMethod");
 }
 
 folly::Future<folly::Unit> ServiceASvIf::future_multiThrowMethod() {
@@ -115,7 +115,7 @@ void ServiceASvIf::async_tm_multiThrowMethod(std::unique_ptr<apache::thrift::Han
 }
 
 void ServiceASvIf::i32ThrowMethod(int32_t /*i32Arg*/) {
-  throw apache::thrift::TApplicationException("Function i32ThrowMethod is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("i32ThrowMethod");
 }
 
 folly::Future<folly::Unit> ServiceASvIf::future_i32ThrowMethod(int32_t i32Arg) {
@@ -127,7 +127,7 @@ void ServiceASvIf::async_tm_i32ThrowMethod(std::unique_ptr<apache::thrift::Handl
 }
 
 void ServiceASvIf::moduleAThrowMethod(std::unique_ptr< ::some::ns::ModuleA> /*modArg*/) {
-  throw apache::thrift::TApplicationException("Function moduleAThrowMethod is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("moduleAThrowMethod");
 }
 
 folly::Future<folly::Unit> ServiceASvIf::future_moduleAThrowMethod(std::unique_ptr< ::some::ns::ModuleA> modArg) {
@@ -139,7 +139,7 @@ void ServiceASvIf::async_tm_moduleAThrowMethod(std::unique_ptr<apache::thrift::H
 }
 
 void ServiceASvIf::mixedMethod(std::string& /*_return*/, std::unique_ptr<std::string> /*strArg*/, int32_t /*i32Arg*/, std::unique_ptr< ::some::ns::ModuleB> /*modArg*/) {
-  throw apache::thrift::TApplicationException("Function mixedMethod is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("mixedMethod");
 }
 
 folly::Future<std::unique_ptr<std::string>> ServiceASvIf::future_mixedMethod(std::unique_ptr<std::string> strArg, int32_t i32Arg, std::unique_ptr< ::some::ns::ModuleB> modArg) {

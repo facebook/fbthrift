@@ -18,7 +18,7 @@
 
 <%^type:resolves_to_complex_return?%>
 <% > Type%> <%service:name%>SvIf::<%function:name%>(<% > service_common/commented_out_function_param_list_ptr_no_start_comma%>) {
-  throw apache::thrift::TApplicationException("Function <%function:name%> is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("<%function:name%>");
 }
 
 folly::Future<<% > ServiceType%>> <%service:name%>SvIf::future_<%function:name%>(<% > service_common/function_param_list_ptr_no_start_comma%>) {
@@ -38,7 +38,7 @@ void <%service:name%>SvIf::async_<%#function:eb%>eb<%/function:eb%><%^function:e
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
 void <%service:name%>SvIf::<%function:name%>(<% > Type%>& /*_return*/<% > service_common/commented_out_function_param_list_ptr%>) {
-  throw apache::thrift::TApplicationException("Function <%function:name%> is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("<%function:name%>");
 }
 
 folly::Future<std::unique_ptr<<% > Type%>>> <%service:name%>SvIf::future_<%function:name%>(<% > service_common/function_param_list_ptr_no_start_comma%>) {

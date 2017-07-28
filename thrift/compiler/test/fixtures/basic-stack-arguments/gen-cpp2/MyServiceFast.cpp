@@ -18,7 +18,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> MyServiceFastSvIf::getProcessor(
 }
 
 bool MyServiceFastSvIf::hasDataById(int64_t /*id*/) {
-  throw apache::thrift::TApplicationException("Function hasDataById is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("hasDataById");
 }
 
 folly::Future<bool> MyServiceFastSvIf::future_hasDataById(int64_t id) {
@@ -30,7 +30,7 @@ void MyServiceFastSvIf::async_eb_hasDataById(std::unique_ptr<apache::thrift::Han
 }
 
 void MyServiceFastSvIf::getDataById(std::string& /*_return*/, int64_t /*id*/) {
-  throw apache::thrift::TApplicationException("Function getDataById is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("getDataById");
 }
 
 folly::Future<std::string> MyServiceFastSvIf::future_getDataById(int64_t id) {
@@ -42,7 +42,7 @@ void MyServiceFastSvIf::async_eb_getDataById(std::unique_ptr<apache::thrift::Han
 }
 
 void MyServiceFastSvIf::putDataById(int64_t /*id*/, const std::string& /*data*/) {
-  throw apache::thrift::TApplicationException("Function putDataById is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("putDataById");
 }
 
 folly::Future<folly::Unit> MyServiceFastSvIf::future_putDataById(int64_t id, const std::string& data) {
@@ -54,7 +54,7 @@ void MyServiceFastSvIf::async_eb_putDataById(std::unique_ptr<apache::thrift::Han
 }
 
 void MyServiceFastSvIf::lobDataById(int64_t /*id*/, const std::string& /*data*/) {
-  throw apache::thrift::TApplicationException("Function lobDataById is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("lobDataById");
 }
 
 folly::Future<folly::Unit> MyServiceFastSvIf::future_lobDataById(int64_t id, const std::string& data) {

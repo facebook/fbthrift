@@ -18,7 +18,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> MyLeafSvIf::getProcessor() {
 }
 
 void MyLeafSvIf::do_leaf() {
-  throw apache::thrift::TApplicationException("Function do_leaf is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("do_leaf");
 }
 
 folly::Future<folly::Unit> MyLeafSvIf::future_do_leaf() {

@@ -18,7 +18,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> RaiserSvIf::getProcessor() {
 }
 
 void RaiserSvIf::doBland() {
-  throw apache::thrift::TApplicationException("Function doBland is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("doBland");
 }
 
 folly::Future<folly::Unit> RaiserSvIf::future_doBland() {
@@ -30,7 +30,7 @@ void RaiserSvIf::async_tm_doBland(std::unique_ptr<apache::thrift::HandlerCallbac
 }
 
 void RaiserSvIf::doRaise() {
-  throw apache::thrift::TApplicationException("Function doRaise is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("doRaise");
 }
 
 folly::Future<folly::Unit> RaiserSvIf::future_doRaise() {
@@ -42,7 +42,7 @@ void RaiserSvIf::async_tm_doRaise(std::unique_ptr<apache::thrift::HandlerCallbac
 }
 
 void RaiserSvIf::get200(std::string& /*_return*/) {
-  throw apache::thrift::TApplicationException("Function get200 is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("get200");
 }
 
 folly::Future<std::unique_ptr<std::string>> RaiserSvIf::future_get200() {
@@ -54,7 +54,7 @@ void RaiserSvIf::async_tm_get200(std::unique_ptr<apache::thrift::HandlerCallback
 }
 
 void RaiserSvIf::get500(std::string& /*_return*/) {
-  throw apache::thrift::TApplicationException("Function get500 is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("get500");
 }
 
 folly::Future<std::unique_ptr<std::string>> RaiserSvIf::future_get500() {

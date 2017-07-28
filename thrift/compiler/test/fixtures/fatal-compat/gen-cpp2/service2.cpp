@@ -18,7 +18,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> service2SvIf::getProcessor() {
 }
 
 void service2SvIf::methodA() {
-  throw apache::thrift::TApplicationException("Function methodA is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("methodA");
 }
 
 folly::Future<folly::Unit> service2SvIf::future_methodA() {
@@ -30,7 +30,7 @@ void service2SvIf::async_tm_methodA(std::unique_ptr<apache::thrift::HandlerCallb
 }
 
 void service2SvIf::methodB(int32_t /*x*/, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> /*y*/, double /*z*/) {
-  throw apache::thrift::TApplicationException("Function methodB is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("methodB");
 }
 
 folly::Future<folly::Unit> service2SvIf::future_methodB(int32_t x, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> y, double z) {
@@ -42,7 +42,7 @@ void service2SvIf::async_tm_methodB(std::unique_ptr<apache::thrift::HandlerCallb
 }
 
 int32_t service2SvIf::methodC() {
-  throw apache::thrift::TApplicationException("Function methodC is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("methodC");
 }
 
 folly::Future<int32_t> service2SvIf::future_methodC() {
@@ -54,7 +54,7 @@ void service2SvIf::async_tm_methodC(std::unique_ptr<apache::thrift::HandlerCallb
 }
 
 int32_t service2SvIf::methodD(int32_t /*i*/, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> /*j*/, double /*k*/) {
-  throw apache::thrift::TApplicationException("Function methodD is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("methodD");
 }
 
 folly::Future<int32_t> service2SvIf::future_methodD(int32_t i, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> j, double k) {
@@ -66,7 +66,7 @@ void service2SvIf::async_tm_methodD(std::unique_ptr<apache::thrift::HandlerCallb
 }
 
 void service2SvIf::methodE( ::test_cpp2::cpp_reflection::struct2& /*_return*/) {
-  throw apache::thrift::TApplicationException("Function methodE is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("methodE");
 }
 
 folly::Future<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>> service2SvIf::future_methodE() {
@@ -78,7 +78,7 @@ void service2SvIf::async_tm_methodE(std::unique_ptr<apache::thrift::HandlerCallb
 }
 
 void service2SvIf::methodF( ::test_cpp2::cpp_reflection::struct2& /*_return*/, int32_t /*l*/, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> /*m*/, double /*n*/) {
-  throw apache::thrift::TApplicationException("Function methodF is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("methodF");
 }
 
 folly::Future<std::unique_ptr< ::test_cpp2::cpp_reflection::struct2>> service2SvIf::future_methodF(int32_t l, std::unique_ptr< ::test_cpp2::cpp_reflection::struct1> m, double n) {

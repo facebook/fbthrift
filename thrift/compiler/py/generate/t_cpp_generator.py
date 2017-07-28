@@ -1196,9 +1196,9 @@ class CppGenerator(t_generator.Generator):
                                                                      True),
                                 name=function.name,
                                 modifiers='virtual'):
-                        out('throw apache::thrift::TApplicationException('
-                          '"Function {0} is unimplemented");'
-                          .format(function.name))
+                        out('apache::thrift::detail::si::'
+                            'throw_app_exn_unimplemented("{0}");'
+                            .format(function.name))
                     self._generate_server_future_function(service, function)
                 self._generate_server_async_function(service, function)
 

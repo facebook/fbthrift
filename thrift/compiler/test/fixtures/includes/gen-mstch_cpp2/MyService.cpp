@@ -18,7 +18,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> MyServiceSvIf::getProcessor() {
 }
 
 void MyServiceSvIf::query(std::unique_ptr< ::cpp2::MyStruct> /*s*/, std::unique_ptr< ::cpp2::Included> /*i*/) {
-  throw apache::thrift::TApplicationException("Function query is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("query");
 }
 
 folly::Future<folly::Unit> MyServiceSvIf::future_query(std::unique_ptr< ::cpp2::MyStruct> s, std::unique_ptr< ::cpp2::Included> i) {
@@ -30,7 +30,7 @@ void MyServiceSvIf::async_tm_query(std::unique_ptr<apache::thrift::HandlerCallba
 }
 
 void MyServiceSvIf::has_arg_docs(std::unique_ptr< ::cpp2::MyStruct> /*s*/, std::unique_ptr< ::cpp2::Included> /*i*/) {
-  throw apache::thrift::TApplicationException("Function has_arg_docs is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("has_arg_docs");
 }
 
 folly::Future<folly::Unit> MyServiceSvIf::future_has_arg_docs(std::unique_ptr< ::cpp2::MyStruct> s, std::unique_ptr< ::cpp2::Included> i) {

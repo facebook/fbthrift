@@ -18,7 +18,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> MyNodeSvIf::getProcessor() {
 }
 
 void MyNodeSvIf::do_mid() {
-  throw apache::thrift::TApplicationException("Function do_mid is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("do_mid");
 }
 
 folly::Future<folly::Unit> MyNodeSvIf::future_do_mid() {

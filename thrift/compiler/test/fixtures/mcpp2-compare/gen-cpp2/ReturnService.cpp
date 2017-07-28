@@ -18,7 +18,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> ReturnServiceSvIf::getProcessor(
 }
 
 void ReturnServiceSvIf::noReturn() {
-  throw apache::thrift::TApplicationException("Function noReturn is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("noReturn");
 }
 
 folly::Future<folly::Unit> ReturnServiceSvIf::future_noReturn() {
@@ -30,7 +30,7 @@ void ReturnServiceSvIf::async_eb_noReturn(std::unique_ptr<apache::thrift::Handle
 }
 
 bool ReturnServiceSvIf::boolReturn() {
-  throw apache::thrift::TApplicationException("Function boolReturn is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("boolReturn");
 }
 
 folly::Future<bool> ReturnServiceSvIf::future_boolReturn() {
@@ -42,7 +42,7 @@ void ReturnServiceSvIf::async_tm_boolReturn(std::unique_ptr<apache::thrift::Hand
 }
 
 int16_t ReturnServiceSvIf::i16Return() {
-  throw apache::thrift::TApplicationException("Function i16Return is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("i16Return");
 }
 
 folly::Future<int16_t> ReturnServiceSvIf::future_i16Return() {
@@ -54,7 +54,7 @@ void ReturnServiceSvIf::async_tm_i16Return(std::unique_ptr<apache::thrift::Handl
 }
 
 int32_t ReturnServiceSvIf::i32Return() {
-  throw apache::thrift::TApplicationException("Function i32Return is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("i32Return");
 }
 
 folly::Future<int32_t> ReturnServiceSvIf::future_i32Return() {
@@ -66,7 +66,7 @@ void ReturnServiceSvIf::async_tm_i32Return(std::unique_ptr<apache::thrift::Handl
 }
 
 int64_t ReturnServiceSvIf::i64Return() {
-  throw apache::thrift::TApplicationException("Function i64Return is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("i64Return");
 }
 
 folly::Future<int64_t> ReturnServiceSvIf::future_i64Return() {
@@ -78,7 +78,7 @@ void ReturnServiceSvIf::async_tm_i64Return(std::unique_ptr<apache::thrift::Handl
 }
 
 float ReturnServiceSvIf::floatReturn() {
-  throw apache::thrift::TApplicationException("Function floatReturn is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("floatReturn");
 }
 
 folly::Future<float> ReturnServiceSvIf::future_floatReturn() {
@@ -90,7 +90,7 @@ void ReturnServiceSvIf::async_tm_floatReturn(std::unique_ptr<apache::thrift::Han
 }
 
 double ReturnServiceSvIf::doubleReturn() {
-  throw apache::thrift::TApplicationException("Function doubleReturn is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("doubleReturn");
 }
 
 folly::Future<double> ReturnServiceSvIf::future_doubleReturn() {
@@ -102,7 +102,7 @@ void ReturnServiceSvIf::async_tm_doubleReturn(std::unique_ptr<apache::thrift::Ha
 }
 
 void ReturnServiceSvIf::stringReturn(std::string& /*_return*/) {
-  throw apache::thrift::TApplicationException("Function stringReturn is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("stringReturn");
 }
 
 folly::Future<std::unique_ptr<std::string>> ReturnServiceSvIf::future_stringReturn() {
@@ -114,7 +114,7 @@ void ReturnServiceSvIf::async_eb_stringReturn(std::unique_ptr<apache::thrift::Ha
 }
 
 void ReturnServiceSvIf::binaryReturn(std::string& /*_return*/) {
-  throw apache::thrift::TApplicationException("Function binaryReturn is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("binaryReturn");
 }
 
 folly::Future<std::unique_ptr<std::string>> ReturnServiceSvIf::future_binaryReturn() {
@@ -126,7 +126,7 @@ void ReturnServiceSvIf::async_tm_binaryReturn(std::unique_ptr<apache::thrift::Ha
 }
 
 void ReturnServiceSvIf::mapReturn(std::map<std::string, int64_t>& /*_return*/) {
-  throw apache::thrift::TApplicationException("Function mapReturn is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("mapReturn");
 }
 
 folly::Future<std::unique_ptr<std::map<std::string, int64_t>>> ReturnServiceSvIf::future_mapReturn() {
@@ -138,7 +138,7 @@ void ReturnServiceSvIf::async_tm_mapReturn(std::unique_ptr<apache::thrift::Handl
 }
 
  ::some::valid::ns::simpleTypeDef ReturnServiceSvIf::simpleTypedefReturn() {
-  throw apache::thrift::TApplicationException("Function simpleTypedefReturn is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("simpleTypedefReturn");
 }
 
 folly::Future< ::some::valid::ns::simpleTypeDef> ReturnServiceSvIf::future_simpleTypedefReturn() {
@@ -150,7 +150,7 @@ void ReturnServiceSvIf::async_tm_simpleTypedefReturn(std::unique_ptr<apache::thr
 }
 
 void ReturnServiceSvIf::complexTypedefReturn( ::some::valid::ns::complexStructTypeDef& /*_return*/) {
-  throw apache::thrift::TApplicationException("Function complexTypedefReturn is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("complexTypedefReturn");
 }
 
 folly::Future<std::unique_ptr< ::some::valid::ns::complexStructTypeDef>> ReturnServiceSvIf::future_complexTypedefReturn() {
@@ -162,7 +162,7 @@ void ReturnServiceSvIf::async_tm_complexTypedefReturn(std::unique_ptr<apache::th
 }
 
 void ReturnServiceSvIf::list_mostComplexTypedefReturn(std::vector< ::some::valid::ns::mostComplexTypeDef>& /*_return*/) {
-  throw apache::thrift::TApplicationException("Function list_mostComplexTypedefReturn is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("list_mostComplexTypedefReturn");
 }
 
 folly::Future<std::unique_ptr<std::vector< ::some::valid::ns::mostComplexTypeDef>>> ReturnServiceSvIf::future_list_mostComplexTypedefReturn() {
@@ -174,7 +174,7 @@ void ReturnServiceSvIf::async_tm_list_mostComplexTypedefReturn(std::unique_ptr<a
 }
 
  ::some::valid::ns::MyEnumA ReturnServiceSvIf::enumReturn() {
-  throw apache::thrift::TApplicationException("Function enumReturn is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("enumReturn");
 }
 
 folly::Future< ::some::valid::ns::MyEnumA> ReturnServiceSvIf::future_enumReturn() {
@@ -186,7 +186,7 @@ void ReturnServiceSvIf::async_eb_enumReturn(std::unique_ptr<apache::thrift::Hand
 }
 
 void ReturnServiceSvIf::list_EnumReturn(std::vector< ::some::valid::ns::MyEnumA>& /*_return*/) {
-  throw apache::thrift::TApplicationException("Function list_EnumReturn is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("list_EnumReturn");
 }
 
 folly::Future<std::unique_ptr<std::vector< ::some::valid::ns::MyEnumA>>> ReturnServiceSvIf::future_list_EnumReturn() {
@@ -198,7 +198,7 @@ void ReturnServiceSvIf::async_eb_list_EnumReturn(std::unique_ptr<apache::thrift:
 }
 
 void ReturnServiceSvIf::structReturn( ::some::valid::ns::MyStruct& /*_return*/) {
-  throw apache::thrift::TApplicationException("Function structReturn is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("structReturn");
 }
 
 folly::Future<std::unique_ptr< ::some::valid::ns::MyStruct>> ReturnServiceSvIf::future_structReturn() {
@@ -210,7 +210,7 @@ void ReturnServiceSvIf::async_tm_structReturn(std::unique_ptr<apache::thrift::Ha
 }
 
 void ReturnServiceSvIf::set_StructReturn(std::set< ::some::valid::ns::MyStruct>& /*_return*/) {
-  throw apache::thrift::TApplicationException("Function set_StructReturn is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("set_StructReturn");
 }
 
 folly::Future<std::unique_ptr<std::set< ::some::valid::ns::MyStruct>>> ReturnServiceSvIf::future_set_StructReturn() {
@@ -222,7 +222,7 @@ void ReturnServiceSvIf::async_tm_set_StructReturn(std::unique_ptr<apache::thrift
 }
 
 void ReturnServiceSvIf::unionReturn( ::some::valid::ns::ComplexUnion& /*_return*/) {
-  throw apache::thrift::TApplicationException("Function unionReturn is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("unionReturn");
 }
 
 folly::Future<std::unique_ptr< ::some::valid::ns::ComplexUnion>> ReturnServiceSvIf::future_unionReturn() {
@@ -234,7 +234,7 @@ void ReturnServiceSvIf::async_eb_unionReturn(std::unique_ptr<apache::thrift::Han
 }
 
 void ReturnServiceSvIf::list_UnionReturn(std::vector< ::some::valid::ns::ComplexUnion>& /*_return*/) {
-  throw apache::thrift::TApplicationException("Function list_UnionReturn is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("list_UnionReturn");
 }
 
 folly::Future<std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>>> ReturnServiceSvIf::future_list_UnionReturn() {
@@ -246,7 +246,7 @@ void ReturnServiceSvIf::async_tm_list_UnionReturn(std::unique_ptr<apache::thrift
 }
 
 void ReturnServiceSvIf::readDataEb( ::some::valid::ns::IOBuf& /*_return*/, int64_t /*size*/) {
-  throw apache::thrift::TApplicationException("Function readDataEb is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("readDataEb");
 }
 
 folly::Future<std::unique_ptr< ::some::valid::ns::IOBuf>> ReturnServiceSvIf::future_readDataEb(int64_t size) {
@@ -258,7 +258,7 @@ void ReturnServiceSvIf::async_eb_readDataEb(std::unique_ptr<apache::thrift::Hand
 }
 
 void ReturnServiceSvIf::readData( ::some::valid::ns::IOBufPtr& /*_return*/, int64_t /*size*/) {
-  throw apache::thrift::TApplicationException("Function readData is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("readData");
 }
 
 folly::Future<std::unique_ptr< ::some::valid::ns::IOBufPtr>> ReturnServiceSvIf::future_readData(int64_t size) {

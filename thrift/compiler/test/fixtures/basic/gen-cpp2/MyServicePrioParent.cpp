@@ -18,7 +18,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> MyServicePrioParentSvIf::getProc
 }
 
 void MyServicePrioParentSvIf::ping() {
-  throw apache::thrift::TApplicationException("Function ping is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("ping");
 }
 
 folly::Future<folly::Unit> MyServicePrioParentSvIf::future_ping() {
@@ -30,7 +30,7 @@ void MyServicePrioParentSvIf::async_tm_ping(std::unique_ptr<apache::thrift::Hand
 }
 
 void MyServicePrioParentSvIf::pong() {
-  throw apache::thrift::TApplicationException("Function pong is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("pong");
 }
 
 folly::Future<folly::Unit> MyServicePrioParentSvIf::future_pong() {

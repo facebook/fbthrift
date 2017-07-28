@@ -18,7 +18,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> ExtraServiceSvIf::getProcessor()
 }
 
 bool ExtraServiceSvIf::simple_function() {
-  throw apache::thrift::TApplicationException("Function simple_function is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("simple_function");
 }
 
 folly::Future<bool> ExtraServiceSvIf::future_simple_function() {
@@ -30,7 +30,7 @@ void ExtraServiceSvIf::async_tm_simple_function(std::unique_ptr<apache::thrift::
 }
 
 void ExtraServiceSvIf::throws_function() {
-  throw apache::thrift::TApplicationException("Function throws_function is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("throws_function");
 }
 
 folly::Future<folly::Unit> ExtraServiceSvIf::future_throws_function() {
@@ -42,7 +42,7 @@ void ExtraServiceSvIf::async_eb_throws_function(std::unique_ptr<apache::thrift::
 }
 
 bool ExtraServiceSvIf::throws_function2(bool /*param1*/) {
-  throw apache::thrift::TApplicationException("Function throws_function2 is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("throws_function2");
 }
 
 folly::Future<bool> ExtraServiceSvIf::future_throws_function2(bool param1) {
@@ -54,7 +54,7 @@ void ExtraServiceSvIf::async_tm_throws_function2(std::unique_ptr<apache::thrift:
 }
 
 void ExtraServiceSvIf::throws_function3(std::map<int32_t, std::string>& /*_return*/, bool /*param1*/, std::unique_ptr<std::string> /*param2*/) {
-  throw apache::thrift::TApplicationException("Function throws_function3 is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("throws_function3");
 }
 
 folly::Future<std::unique_ptr<std::map<int32_t, std::string>>> ExtraServiceSvIf::future_throws_function3(bool param1, std::unique_ptr<std::string> param2) {
@@ -66,7 +66,7 @@ void ExtraServiceSvIf::async_tm_throws_function3(std::unique_ptr<apache::thrift:
 }
 
 void ExtraServiceSvIf::oneway_void_ret() {
-  throw apache::thrift::TApplicationException("Function oneway_void_ret is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("oneway_void_ret");
 }
 
 folly::Future<folly::Unit> ExtraServiceSvIf::future_oneway_void_ret() {
@@ -78,7 +78,7 @@ void ExtraServiceSvIf::async_tm_oneway_void_ret(std::unique_ptr<apache::thrift::
 }
 
 void ExtraServiceSvIf::oneway_void_ret_i32_i32_i32_i32_i32_param(int32_t /*param1*/, int32_t /*param2*/, int32_t /*param3*/, int32_t /*param4*/, int32_t /*param5*/) {
-  throw apache::thrift::TApplicationException("Function oneway_void_ret_i32_i32_i32_i32_i32_param is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("oneway_void_ret_i32_i32_i32_i32_i32_param");
 }
 
 folly::Future<folly::Unit> ExtraServiceSvIf::future_oneway_void_ret_i32_i32_i32_i32_i32_param(int32_t param1, int32_t param2, int32_t param3, int32_t param4, int32_t param5) {
@@ -90,7 +90,7 @@ void ExtraServiceSvIf::async_tm_oneway_void_ret_i32_i32_i32_i32_i32_param(std::u
 }
 
 void ExtraServiceSvIf::oneway_void_ret_map_setlist_param(std::unique_ptr<std::map<std::string, int64_t>> /*param1*/, std::unique_ptr<std::set<std::vector<std::string>>> /*param2*/) {
-  throw apache::thrift::TApplicationException("Function oneway_void_ret_map_setlist_param is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("oneway_void_ret_map_setlist_param");
 }
 
 folly::Future<folly::Unit> ExtraServiceSvIf::future_oneway_void_ret_map_setlist_param(std::unique_ptr<std::map<std::string, int64_t>> param1, std::unique_ptr<std::set<std::vector<std::string>>> param2) {
@@ -102,7 +102,7 @@ void ExtraServiceSvIf::async_eb_oneway_void_ret_map_setlist_param(std::unique_pt
 }
 
 void ExtraServiceSvIf::oneway_void_ret_struct_param(std::unique_ptr< ::some::valid::ns::MyStruct> /*param1*/) {
-  throw apache::thrift::TApplicationException("Function oneway_void_ret_struct_param is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("oneway_void_ret_struct_param");
 }
 
 folly::Future<folly::Unit> ExtraServiceSvIf::future_oneway_void_ret_struct_param(std::unique_ptr< ::some::valid::ns::MyStruct> param1) {
@@ -114,7 +114,7 @@ void ExtraServiceSvIf::async_tm_oneway_void_ret_struct_param(std::unique_ptr<apa
 }
 
 void ExtraServiceSvIf::oneway_void_ret_listunion_param(std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>> /*param1*/) {
-  throw apache::thrift::TApplicationException("Function oneway_void_ret_listunion_param is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("oneway_void_ret_listunion_param");
 }
 
 folly::Future<folly::Unit> ExtraServiceSvIf::future_oneway_void_ret_listunion_param(std::unique_ptr<std::vector< ::some::valid::ns::ComplexUnion>> param1) {

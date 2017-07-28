@@ -18,7 +18,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> NestedContainersSvIf::getProcess
 }
 
 void NestedContainersSvIf::mapList(std::unique_ptr<std::map<int32_t, std::vector<int32_t>>> /*foo*/) {
-  throw apache::thrift::TApplicationException("Function mapList is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("mapList");
 }
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_mapList(std::unique_ptr<std::map<int32_t, std::vector<int32_t>>> foo) {
@@ -30,7 +30,7 @@ void NestedContainersSvIf::async_tm_mapList(std::unique_ptr<apache::thrift::Hand
 }
 
 void NestedContainersSvIf::mapSet(std::unique_ptr<std::map<int32_t, std::set<int32_t>>> /*foo*/) {
-  throw apache::thrift::TApplicationException("Function mapSet is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("mapSet");
 }
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_mapSet(std::unique_ptr<std::map<int32_t, std::set<int32_t>>> foo) {
@@ -42,7 +42,7 @@ void NestedContainersSvIf::async_tm_mapSet(std::unique_ptr<apache::thrift::Handl
 }
 
 void NestedContainersSvIf::listMap(std::unique_ptr<std::vector<std::map<int32_t, int32_t>>> /*foo*/) {
-  throw apache::thrift::TApplicationException("Function listMap is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("listMap");
 }
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_listMap(std::unique_ptr<std::vector<std::map<int32_t, int32_t>>> foo) {
@@ -54,7 +54,7 @@ void NestedContainersSvIf::async_tm_listMap(std::unique_ptr<apache::thrift::Hand
 }
 
 void NestedContainersSvIf::listSet(std::unique_ptr<std::vector<std::set<int32_t>>> /*foo*/) {
-  throw apache::thrift::TApplicationException("Function listSet is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("listSet");
 }
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_listSet(std::unique_ptr<std::vector<std::set<int32_t>>> foo) {
@@ -66,7 +66,7 @@ void NestedContainersSvIf::async_tm_listSet(std::unique_ptr<apache::thrift::Hand
 }
 
 void NestedContainersSvIf::turtles(std::unique_ptr<std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>> /*foo*/) {
-  throw apache::thrift::TApplicationException("Function turtles is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("turtles");
 }
 
 folly::Future<folly::Unit> NestedContainersSvIf::future_turtles(std::unique_ptr<std::vector<std::vector<std::map<int32_t, std::map<int32_t, std::set<int32_t>>>>>> foo) {

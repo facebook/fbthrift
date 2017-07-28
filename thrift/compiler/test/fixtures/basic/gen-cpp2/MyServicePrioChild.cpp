@@ -18,7 +18,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> MyServicePrioChildSvIf::getProce
 }
 
 void MyServicePrioChildSvIf::pang() {
-  throw apache::thrift::TApplicationException("Function pang is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("pang");
 }
 
 folly::Future<folly::Unit> MyServicePrioChildSvIf::future_pang() {

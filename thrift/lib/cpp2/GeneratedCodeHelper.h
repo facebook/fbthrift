@@ -1468,6 +1468,8 @@ async_eb(ServerInterface* si, CallbackPtr<F> callback, F&& f) {
         async_tm(si, std::move(callback), std::move(f));
       });
 }
+
+[[noreturn]] void throw_app_exn_unimplemented(char const* name);
 }} // detail::si
 
 }} // apache::thrift

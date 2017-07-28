@@ -18,7 +18,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> service_with_special_namesSvIf::
 }
 
 int32_t service_with_special_namesSvIf::get() {
-  throw apache::thrift::TApplicationException("Function get is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("get");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_get() {
@@ -30,7 +30,7 @@ void service_with_special_namesSvIf::async_tm_get(std::unique_ptr<apache::thrift
 }
 
 int32_t service_with_special_namesSvIf::getter() {
-  throw apache::thrift::TApplicationException("Function getter is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("getter");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_getter() {
@@ -42,7 +42,7 @@ void service_with_special_namesSvIf::async_tm_getter(std::unique_ptr<apache::thr
 }
 
 int32_t service_with_special_namesSvIf::lists() {
-  throw apache::thrift::TApplicationException("Function lists is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("lists");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_lists() {
@@ -54,7 +54,7 @@ void service_with_special_namesSvIf::async_tm_lists(std::unique_ptr<apache::thri
 }
 
 int32_t service_with_special_namesSvIf::maps() {
-  throw apache::thrift::TApplicationException("Function maps is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("maps");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_maps() {
@@ -66,7 +66,7 @@ void service_with_special_namesSvIf::async_tm_maps(std::unique_ptr<apache::thrif
 }
 
 int32_t service_with_special_namesSvIf::name() {
-  throw apache::thrift::TApplicationException("Function name is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("name");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_name() {
@@ -78,7 +78,7 @@ void service_with_special_namesSvIf::async_tm_name(std::unique_ptr<apache::thrif
 }
 
 int32_t service_with_special_namesSvIf::name_to_value() {
-  throw apache::thrift::TApplicationException("Function name_to_value is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("name_to_value");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_name_to_value() {
@@ -90,7 +90,7 @@ void service_with_special_namesSvIf::async_tm_name_to_value(std::unique_ptr<apac
 }
 
 int32_t service_with_special_namesSvIf::names() {
-  throw apache::thrift::TApplicationException("Function names is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("names");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_names() {
@@ -102,7 +102,7 @@ void service_with_special_namesSvIf::async_tm_names(std::unique_ptr<apache::thri
 }
 
 int32_t service_with_special_namesSvIf::prefix_tree() {
-  throw apache::thrift::TApplicationException("Function prefix_tree is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("prefix_tree");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_prefix_tree() {
@@ -114,7 +114,7 @@ void service_with_special_namesSvIf::async_tm_prefix_tree(std::unique_ptr<apache
 }
 
 int32_t service_with_special_namesSvIf::sets() {
-  throw apache::thrift::TApplicationException("Function sets is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("sets");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_sets() {
@@ -126,7 +126,7 @@ void service_with_special_namesSvIf::async_tm_sets(std::unique_ptr<apache::thrif
 }
 
 int32_t service_with_special_namesSvIf::setter() {
-  throw apache::thrift::TApplicationException("Function setter is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("setter");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_setter() {
@@ -138,7 +138,7 @@ void service_with_special_namesSvIf::async_tm_setter(std::unique_ptr<apache::thr
 }
 
 int32_t service_with_special_namesSvIf::str() {
-  throw apache::thrift::TApplicationException("Function str is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("str");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_str() {
@@ -150,7 +150,7 @@ void service_with_special_namesSvIf::async_tm_str(std::unique_ptr<apache::thrift
 }
 
 int32_t service_with_special_namesSvIf::strings() {
-  throw apache::thrift::TApplicationException("Function strings is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("strings");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_strings() {
@@ -162,7 +162,7 @@ void service_with_special_namesSvIf::async_tm_strings(std::unique_ptr<apache::th
 }
 
 int32_t service_with_special_namesSvIf::type() {
-  throw apache::thrift::TApplicationException("Function type is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("type");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_type() {
@@ -174,7 +174,7 @@ void service_with_special_namesSvIf::async_tm_type(std::unique_ptr<apache::thrif
 }
 
 int32_t service_with_special_namesSvIf::value() {
-  throw apache::thrift::TApplicationException("Function value is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("value");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_value() {
@@ -186,7 +186,7 @@ void service_with_special_namesSvIf::async_tm_value(std::unique_ptr<apache::thri
 }
 
 int32_t service_with_special_namesSvIf::value_to_name() {
-  throw apache::thrift::TApplicationException("Function value_to_name is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("value_to_name");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_value_to_name() {
@@ -198,7 +198,7 @@ void service_with_special_namesSvIf::async_tm_value_to_name(std::unique_ptr<apac
 }
 
 int32_t service_with_special_namesSvIf::values() {
-  throw apache::thrift::TApplicationException("Function values is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("values");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_values() {
@@ -210,7 +210,7 @@ void service_with_special_namesSvIf::async_tm_values(std::unique_ptr<apache::thr
 }
 
 int32_t service_with_special_namesSvIf::id() {
-  throw apache::thrift::TApplicationException("Function id is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("id");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_id() {
@@ -222,7 +222,7 @@ void service_with_special_namesSvIf::async_tm_id(std::unique_ptr<apache::thrift:
 }
 
 int32_t service_with_special_namesSvIf::ids() {
-  throw apache::thrift::TApplicationException("Function ids is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("ids");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_ids() {
@@ -234,7 +234,7 @@ void service_with_special_namesSvIf::async_tm_ids(std::unique_ptr<apache::thrift
 }
 
 int32_t service_with_special_namesSvIf::descriptor() {
-  throw apache::thrift::TApplicationException("Function descriptor is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("descriptor");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_descriptor() {
@@ -246,7 +246,7 @@ void service_with_special_namesSvIf::async_tm_descriptor(std::unique_ptr<apache:
 }
 
 int32_t service_with_special_namesSvIf::descriptors() {
-  throw apache::thrift::TApplicationException("Function descriptors is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("descriptors");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_descriptors() {
@@ -258,7 +258,7 @@ void service_with_special_namesSvIf::async_tm_descriptors(std::unique_ptr<apache
 }
 
 int32_t service_with_special_namesSvIf::key() {
-  throw apache::thrift::TApplicationException("Function key is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("key");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_key() {
@@ -270,7 +270,7 @@ void service_with_special_namesSvIf::async_tm_key(std::unique_ptr<apache::thrift
 }
 
 int32_t service_with_special_namesSvIf::keys() {
-  throw apache::thrift::TApplicationException("Function keys is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("keys");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_keys() {
@@ -282,7 +282,7 @@ void service_with_special_namesSvIf::async_tm_keys(std::unique_ptr<apache::thrif
 }
 
 int32_t service_with_special_namesSvIf::annotation() {
-  throw apache::thrift::TApplicationException("Function annotation is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("annotation");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_annotation() {
@@ -294,7 +294,7 @@ void service_with_special_namesSvIf::async_tm_annotation(std::unique_ptr<apache:
 }
 
 int32_t service_with_special_namesSvIf::annotations() {
-  throw apache::thrift::TApplicationException("Function annotations is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("annotations");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_annotations() {
@@ -306,7 +306,7 @@ void service_with_special_namesSvIf::async_tm_annotations(std::unique_ptr<apache
 }
 
 int32_t service_with_special_namesSvIf::member() {
-  throw apache::thrift::TApplicationException("Function member is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("member");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_member() {
@@ -318,7 +318,7 @@ void service_with_special_namesSvIf::async_tm_member(std::unique_ptr<apache::thr
 }
 
 int32_t service_with_special_namesSvIf::members() {
-  throw apache::thrift::TApplicationException("Function members is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("members");
 }
 
 folly::Future<int32_t> service_with_special_namesSvIf::future_members() {

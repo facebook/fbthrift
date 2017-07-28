@@ -18,7 +18,7 @@ std::unique_ptr<apache::thrift::AsyncProcessor> MyRootSvIf::getProcessor() {
 }
 
 void MyRootSvIf::do_root() {
-  throw apache::thrift::TApplicationException("Function do_root is unimplemented");
+  apache::thrift::detail::si::throw_app_exn_unimplemented("do_root");
 }
 
 folly::Future<folly::Unit> MyRootSvIf::future_do_root() {
