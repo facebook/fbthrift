@@ -41,7 +41,7 @@ void MyServicePrioChildAsyncClient::pangImpl(bool useSync, apache::thrift::RpcOp
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }

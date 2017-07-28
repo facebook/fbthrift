@@ -41,7 +41,7 @@ void MyServicePrioParentAsyncClient::pingImpl(bool useSync, apache::thrift::RpcO
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -157,7 +157,7 @@ void MyServicePrioParentAsyncClient::pongImpl(bool useSync, apache::thrift::RpcO
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }

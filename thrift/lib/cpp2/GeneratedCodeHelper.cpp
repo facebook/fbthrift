@@ -28,6 +28,15 @@ using namespace apache::thrift::transport;
 
 namespace apache { namespace thrift {
 
+namespace detail {
+namespace ac {
+
+[[noreturn]] void throw_app_exn(char const* const msg) {
+  throw TApplicationException(msg);
+}
+} // namespace ac
+} // namespace detail
+
 namespace detail { namespace ap {
 
 template <typename ProtocolReader, typename ProtocolWriter>

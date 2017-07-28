@@ -41,7 +41,7 @@ void MyServiceFastAsyncClient::hasDataByIdImpl(bool useSync, apache::thrift::Rpc
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -159,7 +159,7 @@ void MyServiceFastAsyncClient::getDataByIdImpl(bool useSync, apache::thrift::Rpc
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -275,7 +275,7 @@ void MyServiceFastAsyncClient::putDataByIdImpl(bool useSync, apache::thrift::Rpc
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -391,7 +391,7 @@ void MyServiceFastAsyncClient::lobDataByIdImpl(bool useSync, apache::thrift::Rpc
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }

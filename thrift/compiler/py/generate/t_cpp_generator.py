@@ -2052,8 +2052,8 @@ class CppGenerator(t_generator.Generator):
                               format(name=function.name, args=args_list))
 
                     with out().case("default", nobreak=True):
-                        out("throw apache::thrift::TApplicationException("
-                          '"Could not find Protocol");')
+                        out("apache::thrift::detail::ac::throw_app_exn("
+                            '"Could not find Protocol");')
             out().label('public:')
 
     def _generate_templated_client_function(self, service, function):

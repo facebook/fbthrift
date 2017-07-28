@@ -1142,6 +1142,14 @@ class Cpp2Ops<std::unique_ptr<folly::IOBuf>> {
   }
 };
 
+//  AsyncClient helpers
+namespace detail {
+namespace ac {
+
+[[noreturn]] void throw_app_exn(char const* msg);
+} // namespace ac
+} // namespace detail
+
 //  AsyncProcessor helpers
 namespace detail { namespace ap {
 

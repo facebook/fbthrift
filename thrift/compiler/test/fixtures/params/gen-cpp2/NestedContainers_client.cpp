@@ -41,7 +41,7 @@ void NestedContainersAsyncClient::mapListImpl(bool useSync, apache::thrift::RpcO
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -157,7 +157,7 @@ void NestedContainersAsyncClient::mapSetImpl(bool useSync, apache::thrift::RpcOp
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -273,7 +273,7 @@ void NestedContainersAsyncClient::listMapImpl(bool useSync, apache::thrift::RpcO
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -389,7 +389,7 @@ void NestedContainersAsyncClient::listSetImpl(bool useSync, apache::thrift::RpcO
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -505,7 +505,7 @@ void NestedContainersAsyncClient::turtlesImpl(bool useSync, apache::thrift::RpcO
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }

@@ -41,7 +41,7 @@ void MyServiceAsyncClient::queryImpl(bool useSync, apache::thrift::RpcOptions& r
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -157,7 +157,7 @@ void MyServiceAsyncClient::has_arg_docsImpl(bool useSync, apache::thrift::RpcOpt
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }

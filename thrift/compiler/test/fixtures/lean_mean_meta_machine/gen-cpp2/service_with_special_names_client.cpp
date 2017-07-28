@@ -41,7 +41,7 @@ void service_with_special_namesAsyncClient::getImpl(bool useSync, apache::thrift
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -159,7 +159,7 @@ void service_with_special_namesAsyncClient::getterImpl(bool useSync, apache::thr
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -277,7 +277,7 @@ void service_with_special_namesAsyncClient::listsImpl(bool useSync, apache::thri
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -395,7 +395,7 @@ void service_with_special_namesAsyncClient::mapsImpl(bool useSync, apache::thrif
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -513,7 +513,7 @@ void service_with_special_namesAsyncClient::nameImpl(bool useSync, apache::thrif
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -631,7 +631,7 @@ void service_with_special_namesAsyncClient::name_to_valueImpl(bool useSync, apac
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -749,7 +749,7 @@ void service_with_special_namesAsyncClient::namesImpl(bool useSync, apache::thri
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -867,7 +867,7 @@ void service_with_special_namesAsyncClient::prefix_treeImpl(bool useSync, apache
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -985,7 +985,7 @@ void service_with_special_namesAsyncClient::setsImpl(bool useSync, apache::thrif
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -1103,7 +1103,7 @@ void service_with_special_namesAsyncClient::setterImpl(bool useSync, apache::thr
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -1221,7 +1221,7 @@ void service_with_special_namesAsyncClient::strImpl(bool useSync, apache::thrift
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -1339,7 +1339,7 @@ void service_with_special_namesAsyncClient::stringsImpl(bool useSync, apache::th
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -1457,7 +1457,7 @@ void service_with_special_namesAsyncClient::typeImpl(bool useSync, apache::thrif
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -1575,7 +1575,7 @@ void service_with_special_namesAsyncClient::valueImpl(bool useSync, apache::thri
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -1693,7 +1693,7 @@ void service_with_special_namesAsyncClient::value_to_nameImpl(bool useSync, apac
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -1811,7 +1811,7 @@ void service_with_special_namesAsyncClient::valuesImpl(bool useSync, apache::thr
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -1929,7 +1929,7 @@ void service_with_special_namesAsyncClient::idImpl(bool useSync, apache::thrift:
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -2047,7 +2047,7 @@ void service_with_special_namesAsyncClient::idsImpl(bool useSync, apache::thrift
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -2165,7 +2165,7 @@ void service_with_special_namesAsyncClient::descriptorImpl(bool useSync, apache:
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -2283,7 +2283,7 @@ void service_with_special_namesAsyncClient::descriptorsImpl(bool useSync, apache
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -2401,7 +2401,7 @@ void service_with_special_namesAsyncClient::keyImpl(bool useSync, apache::thrift
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -2519,7 +2519,7 @@ void service_with_special_namesAsyncClient::keysImpl(bool useSync, apache::thrif
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -2637,7 +2637,7 @@ void service_with_special_namesAsyncClient::annotationImpl(bool useSync, apache:
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -2755,7 +2755,7 @@ void service_with_special_namesAsyncClient::annotationsImpl(bool useSync, apache
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -2873,7 +2873,7 @@ void service_with_special_namesAsyncClient::memberImpl(bool useSync, apache::thr
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
@@ -2991,7 +2991,7 @@ void service_with_special_namesAsyncClient::membersImpl(bool useSync, apache::th
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }

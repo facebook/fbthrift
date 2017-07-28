@@ -41,7 +41,7 @@ void MyLeafAsyncClient::do_leafImpl(bool useSync, apache::thrift::RpcOptions& rp
     }
     default:
     {
-      throw apache::thrift::TApplicationException("Could not find Protocol");
+      apache::thrift::detail::ac::throw_app_exn("Could not find Protocol");
     }
   }
 }
