@@ -284,6 +284,7 @@ class ThriftPresult : private std::tuple<Field...>,
   // to employ the empty base class optimization when they are empty
   typedef std::tuple<Field...> Fields;
   typedef detail::IsSetHelper<hasIsSet, sizeof...(Field)> CurIsSetHelper;
+
  public:
 
   CurIsSetHelper& isSet() { return *this; }
@@ -362,7 +363,10 @@ class ThriftPresult : private std::tuple<Field...>,
 namespace frozen {
 
 template <bool hasIsSet, typename... Args>
-class Layout<ThriftPresult<hasIsSet, Args...>, void>
+class Layout<
+    ThriftPresult<hasIsSet, Args...>,
+    std::enable_if_t<
+        !folly::IsTriviallyCopyable<ThriftPresult<hasIsSet, Args...>>::value>>
     : public LayoutBase, private std::tuple<Field<typename Args::ref_type>...> {
  public:
   using Base = LayoutBase;

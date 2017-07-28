@@ -44,12 +44,14 @@ using ResultExcA = ThriftPresult<
     true,
     FieldData<0, protocol::T_STRING, std::string*>,
     FieldData<5, protocol::T_STRUCT, ExceptionA>>;
-
 using ResultExcB = ThriftPresult<
     true,
     FieldData<0, protocol::T_STRING, std::string*>,
     FieldData<1, protocol::T_STRUCT, StructA*>,
     FieldData<5, protocol::T_STRUCT, ExceptionA>>;
+
+using EmptyNoIsSet = ThriftPresult<false>;
+using EmptyHasIsSet = ThriftPresult<true>;
 
 template <typename From, typename To>
 void freezeAndThaw(From& a, To& b) {
@@ -141,6 +143,15 @@ TEST(PresultLayout, ResultUnmatchedWithException) {
   ASSERT_FALSE(b.getIsSet(0));
   ASSERT_FALSE(b.getIsSet(1));
   ASSERT_TRUE(b.getIsSet(2));
+}
+
+TEST(PresultLayout, EmptyTriviallyCopyable) {
+  // This test passes if there's no fatal error
+  EmptyNoIsSet a, b;
+  freezeAndThaw(a, b);
+
+  EmptyHasIsSet c, d;
+  freezeAndThaw(c, d);
 }
 
 TEST(PreusltLayout, GetView) {
