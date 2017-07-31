@@ -67,7 +67,7 @@ class MyServicePrioChild_pang_args : public apache::thrift::TStructType<MyServic
 
   void __clear();
 
-  virtual ~MyServicePrioChild_pang_args() throw() {}
+  virtual ~MyServicePrioChild_pang_args() noexcept {}
 
 
   bool operator == (const MyServicePrioChild_pang_args &) const;
@@ -92,7 +92,7 @@ class MyServicePrioChild_pang_pargs : public apache::thrift::TStructType<MyServi
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   MyServicePrioChild_pang_pargs() = default;
 
-  virtual ~MyServicePrioChild_pang_pargs() throw() {}
+  virtual ~MyServicePrioChild_pang_pargs() noexcept {}
 
 
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
@@ -109,7 +109,7 @@ class MyServicePrioChild_pang_presult : public apache::thrift::TStructType<MySer
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   MyServicePrioChild_pang_presult() = default;
 
-  virtual ~MyServicePrioChild_pang_presult() throw() {}
+  virtual ~MyServicePrioChild_pang_presult() noexcept {}
 
 
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);

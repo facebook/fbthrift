@@ -88,7 +88,7 @@ class service1_method1_args : public apache::thrift::TStructType<service1_method
 
   void __clear();
 
-  virtual ~service1_method1_args() throw() {}
+  virtual ~service1_method1_args() noexcept {}
 
 
   bool operator == (const service1_method1_args &) const;
@@ -115,7 +115,7 @@ class service1_method1_pargs : public apache::thrift::TStructType<service1_metho
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service1_method1_pargs() = default;
 
-  virtual ~service1_method1_pargs() throw() {}
+  virtual ~service1_method1_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -134,7 +134,7 @@ class service1_method1_presult : public apache::thrift::TStructType<service1_met
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service1_method1_presult() = default;
 
-  virtual ~service1_method1_presult() throw() {}
+  virtual ~service1_method1_presult() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -201,7 +201,7 @@ class service1_method2_args : public apache::thrift::TStructType<service1_method
 
   void __clear();
 
-  virtual ~service1_method2_args() throw() {}
+  virtual ~service1_method2_args() noexcept {}
 
   int32_t x;
   struct1 y;
@@ -279,7 +279,7 @@ class service1_method2_pargs : public apache::thrift::TStructType<service1_metho
     z = arg.move();
   }
 
-  virtual ~service1_method2_pargs() throw() {}
+  virtual ~service1_method2_pargs() noexcept {}
 
   const int32_t* x;
   const struct1* y;
@@ -301,7 +301,7 @@ class service1_method2_presult : public apache::thrift::TStructType<service1_met
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service1_method2_presult() = default;
 
-  virtual ~service1_method2_presult() throw() {}
+  virtual ~service1_method2_presult() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -329,7 +329,7 @@ class service1_method3_args : public apache::thrift::TStructType<service1_method
 
   void __clear();
 
-  virtual ~service1_method3_args() throw() {}
+  virtual ~service1_method3_args() noexcept {}
 
 
   bool operator == (const service1_method3_args &) const;
@@ -356,7 +356,7 @@ class service1_method3_pargs : public apache::thrift::TStructType<service1_metho
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service1_method3_pargs() = default;
 
-  virtual ~service1_method3_pargs() throw() {}
+  virtual ~service1_method3_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -388,7 +388,7 @@ class service1_method3_presult : public apache::thrift::TStructType<service1_met
     __isset.success = true;
   }
 
-  virtual ~service1_method3_presult() throw() {}
+  virtual ~service1_method3_presult() noexcept {}
 
   int32_t* success;
 
@@ -464,7 +464,7 @@ class service1_method4_args : public apache::thrift::TStructType<service1_method
 
   void __clear();
 
-  virtual ~service1_method4_args() throw() {}
+  virtual ~service1_method4_args() noexcept {}
 
   int32_t i;
   struct1 j;
@@ -542,7 +542,7 @@ class service1_method4_pargs : public apache::thrift::TStructType<service1_metho
     k = arg.move();
   }
 
-  virtual ~service1_method4_pargs() throw() {}
+  virtual ~service1_method4_pargs() noexcept {}
 
   const int32_t* i;
   const struct1* j;
@@ -577,7 +577,7 @@ class service1_method4_presult : public apache::thrift::TStructType<service1_met
     __isset.success = true;
   }
 
-  virtual ~service1_method4_presult() throw() {}
+  virtual ~service1_method4_presult() noexcept {}
 
   int32_t* success;
 
@@ -614,7 +614,7 @@ class service1_method5_args : public apache::thrift::TStructType<service1_method
 
   void __clear();
 
-  virtual ~service1_method5_args() throw() {}
+  virtual ~service1_method5_args() noexcept {}
 
 
   bool operator == (const service1_method5_args &) const;
@@ -641,7 +641,7 @@ class service1_method5_pargs : public apache::thrift::TStructType<service1_metho
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service1_method5_pargs() = default;
 
-  virtual ~service1_method5_pargs() throw() {}
+  virtual ~service1_method5_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -673,7 +673,7 @@ class service1_method5_presult : public apache::thrift::TStructType<service1_met
     __isset.success = true;
   }
 
-  virtual ~service1_method5_presult() throw() {}
+  virtual ~service1_method5_presult() noexcept {}
 
   struct2* success;
 
@@ -749,7 +749,7 @@ class service1_method6_args : public apache::thrift::TStructType<service1_method
 
   void __clear();
 
-  virtual ~service1_method6_args() throw() {}
+  virtual ~service1_method6_args() noexcept {}
 
   int32_t l;
   struct1 m;
@@ -827,7 +827,7 @@ class service1_method6_pargs : public apache::thrift::TStructType<service1_metho
     n = arg.move();
   }
 
-  virtual ~service1_method6_pargs() throw() {}
+  virtual ~service1_method6_pargs() noexcept {}
 
   const int32_t* l;
   const struct1* m;
@@ -862,7 +862,7 @@ class service1_method6_presult : public apache::thrift::TStructType<service1_met
     __isset.success = true;
   }
 
-  virtual ~service1_method6_presult() throw() {}
+  virtual ~service1_method6_presult() noexcept {}
 
   struct2* success;
 

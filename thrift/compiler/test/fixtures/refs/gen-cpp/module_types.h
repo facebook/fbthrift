@@ -178,7 +178,7 @@ class MyUnion : public apache::thrift::TStructType<MyUnion> {
     }
     type_ = Type::__EMPTY__;
   }
-  virtual ~MyUnion() throw() {
+  virtual ~MyUnion() noexcept {
     __clear();
   }
 
@@ -338,7 +338,7 @@ class MyField : public apache::thrift::TStructType<MyField> {
 
   void __clear();
 
-  virtual ~MyField() throw() {}
+  virtual ~MyField() noexcept {}
 
   int64_t opt_value;
   int64_t value;
@@ -426,7 +426,7 @@ class MyStruct : public apache::thrift::TStructType<MyStruct> {
 
   void __clear();
 
-  virtual ~MyStruct() throw() {}
+  virtual ~MyStruct() noexcept {}
 
   std::unique_ptr<MyField> opt_ref;
   std::unique_ptr<MyField> ref;
@@ -512,7 +512,7 @@ class StructWithUnion : public apache::thrift::TStructType<StructWithUnion> {
 
   void __clear();
 
-  virtual ~StructWithUnion() throw() {}
+  virtual ~StructWithUnion() noexcept {}
 
   std::unique_ptr<MyUnion> u;
   double aDouble;
@@ -573,7 +573,7 @@ class RecursiveStruct : public apache::thrift::TStructType<RecursiveStruct> {
 
   void __clear();
 
-  virtual ~RecursiveStruct() throw() {}
+  virtual ~RecursiveStruct() noexcept {}
 
   std::vector<RecursiveStruct>  mes;
 
@@ -699,7 +699,7 @@ class StructWithContainers : public apache::thrift::TStructType<StructWithContai
 
   void __clear();
 
-  virtual ~StructWithContainers() throw() {}
+  virtual ~StructWithContainers() noexcept {}
 
   std::unique_ptr<std::vector<int32_t> > list_ref;
   std::unique_ptr<std::set<int32_t> > set_ref;
@@ -782,7 +782,7 @@ class StructWithSharedConst : public apache::thrift::TStructType<StructWithShare
 
   void __clear();
 
-  virtual ~StructWithSharedConst() throw() {}
+  virtual ~StructWithSharedConst() noexcept {}
 
   std::shared_ptr<const MyField> opt_shared_const;
   std::shared_ptr<const MyField> shared_const;
@@ -826,7 +826,7 @@ class Empty : public apache::thrift::TStructType<Empty> {
 
   void __clear();
 
-  virtual ~Empty() throw() {}
+  virtual ~Empty() noexcept {}
 
 
   bool operator == (const Empty &) const;
@@ -901,7 +901,7 @@ class StructWithRef : public apache::thrift::TStructType<StructWithRef> {
 
   void __clear();
 
-  virtual ~StructWithRef() throw() {}
+  virtual ~StructWithRef() noexcept {}
 
   std::unique_ptr<Empty> def_field;
   std::unique_ptr<Empty> opt_field;
@@ -985,7 +985,7 @@ class StructWithRefTypeUnique : public apache::thrift::TStructType<StructWithRef
 
   void __clear();
 
-  virtual ~StructWithRefTypeUnique() throw() {}
+  virtual ~StructWithRefTypeUnique() noexcept {}
 
   std::unique_ptr<Empty> def_field;
   std::unique_ptr<Empty> opt_field;
@@ -1065,7 +1065,7 @@ class StructWithRefTypeShared : public apache::thrift::TStructType<StructWithRef
 
   void __clear();
 
-  virtual ~StructWithRefTypeShared() throw() {}
+  virtual ~StructWithRefTypeShared() noexcept {}
 
   std::shared_ptr<Empty> def_field;
   std::shared_ptr<Empty> opt_field;
@@ -1145,7 +1145,7 @@ class StructWithRefTypeSharedConst : public apache::thrift::TStructType<StructWi
 
   void __clear();
 
-  virtual ~StructWithRefTypeSharedConst() throw() {}
+  virtual ~StructWithRefTypeSharedConst() noexcept {}
 
   std::shared_ptr<const Empty> def_field;
   std::shared_ptr<const Empty> opt_field;

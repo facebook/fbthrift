@@ -370,7 +370,7 @@ class union1 : public apache::thrift::TStructType<union1> {
     }
     type_ = Type::__EMPTY__;
   }
-  virtual ~union1() throw() {
+  virtual ~union1() noexcept {
     __clear();
   }
 
@@ -708,7 +708,7 @@ class union2 : public apache::thrift::TStructType<union2> {
     }
     type_ = Type::__EMPTY__;
   }
-  virtual ~union2() throw() {
+  virtual ~union2() noexcept {
     __clear();
   }
 
@@ -1046,7 +1046,7 @@ class union3 : public apache::thrift::TStructType<union3> {
     }
     type_ = Type::__EMPTY__;
   }
-  virtual ~union3() throw() {
+  virtual ~union3() noexcept {
     __clear();
   }
 
@@ -1262,7 +1262,7 @@ class structA : public apache::thrift::TStructType<structA> {
 
   void __clear();
 
-  virtual ~structA() throw() {}
+  virtual ~structA() noexcept {}
 
   int32_t a;
   std::string b;
@@ -1487,7 +1487,7 @@ class unionA : public apache::thrift::TStructType<unionA> {
     }
     type_ = Type::__EMPTY__;
   }
-  virtual ~unionA() throw() {
+  virtual ~unionA() noexcept {
     __clear();
   }
 
@@ -1736,7 +1736,7 @@ class structB : public apache::thrift::TStructType<structB> {
 
   void __clear();
 
-  virtual ~structB() throw() {}
+  virtual ~structB() noexcept {}
 
   double c;
   bool d;
@@ -2175,7 +2175,7 @@ class structC : public apache::thrift::TStructType<structC> {
 
   void __clear();
 
-  virtual ~structC() throw() {}
+  virtual ~structC() noexcept {}
 
   int32_t a;
   std::string b;
@@ -2384,7 +2384,7 @@ class struct1 : public apache::thrift::TStructType<struct1> {
 
   void __clear();
 
-  virtual ~struct1() throw() {}
+  virtual ~struct1() noexcept {}
 
   int32_t field0;
   std::string field1;
@@ -2532,7 +2532,7 @@ class struct2 : public apache::thrift::TStructType<struct2> {
 
   void __clear();
 
-  virtual ~struct2() throw() {}
+  virtual ~struct2() noexcept {}
 
   int32_t fieldA;
   std::string fieldB;
@@ -2830,7 +2830,7 @@ class struct3 : public apache::thrift::TStructType<struct3> {
 
   void __clear();
 
-  virtual ~struct3() throw() {}
+  virtual ~struct3() noexcept {}
 
   int32_t fieldA;
   std::string fieldB;
@@ -2978,7 +2978,7 @@ class struct4 : public apache::thrift::TStructType<struct4> {
 
   void __clear();
 
-  virtual ~struct4() throw() {}
+  virtual ~struct4() noexcept {}
 
   int32_t field0;
   std::string field1;
@@ -3095,7 +3095,7 @@ class struct5 : public apache::thrift::TStructType<struct5> {
 
   void __clear();
 
-  virtual ~struct5() throw() {}
+  virtual ~struct5() noexcept {}
 
   int32_t field0;
   std::string field1;
@@ -3164,7 +3164,7 @@ class struct_binary : public apache::thrift::TStructType<struct_binary> {
 
   void __clear();
 
-  virtual ~struct_binary() throw() {}
+  virtual ~struct_binary() noexcept {}
 
   std::string bi;
 
@@ -3223,7 +3223,7 @@ class annotated : public apache::thrift::TStructType<annotated> {
 
   void __clear();
 
-  virtual ~annotated() throw() {}
+  virtual ~annotated() noexcept {}
 
   int32_t a;
 
@@ -4033,7 +4033,7 @@ class union_with_special_names : public apache::thrift::TStructType<union_with_s
     }
     type_ = Type::__EMPTY__;
   }
-  virtual ~union_with_special_names() throw() {
+  virtual ~union_with_special_names() noexcept {
     __clear();
   }
 
@@ -5287,7 +5287,7 @@ class struct_with_special_names : public apache::thrift::TStructType<struct_with
 
   void __clear();
 
-  virtual ~struct_with_special_names() throw() {}
+  virtual ~struct_with_special_names() noexcept {}
 
   int32_t get;
   int32_t getter;
@@ -5460,7 +5460,7 @@ class struct_with_indirections : public apache::thrift::TStructType<struct_with_
 
   void __clear();
 
-  virtual ~struct_with_indirections() throw() {}
+  virtual ~struct_with_indirections() noexcept {}
 
   int32_t real;
   FakeI32 fake;

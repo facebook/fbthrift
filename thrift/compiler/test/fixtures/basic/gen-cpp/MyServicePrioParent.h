@@ -70,7 +70,7 @@ class MyServicePrioParent_ping_args : public apache::thrift::TStructType<MyServi
 
   void __clear();
 
-  virtual ~MyServicePrioParent_ping_args() throw() {}
+  virtual ~MyServicePrioParent_ping_args() noexcept {}
 
 
   bool operator == (const MyServicePrioParent_ping_args &) const;
@@ -95,7 +95,7 @@ class MyServicePrioParent_ping_pargs : public apache::thrift::TStructType<MyServ
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   MyServicePrioParent_ping_pargs() = default;
 
-  virtual ~MyServicePrioParent_ping_pargs() throw() {}
+  virtual ~MyServicePrioParent_ping_pargs() noexcept {}
 
 
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
@@ -112,7 +112,7 @@ class MyServicePrioParent_ping_presult : public apache::thrift::TStructType<MySe
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   MyServicePrioParent_ping_presult() = default;
 
-  virtual ~MyServicePrioParent_ping_presult() throw() {}
+  virtual ~MyServicePrioParent_ping_presult() noexcept {}
 
 
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
@@ -138,7 +138,7 @@ class MyServicePrioParent_pong_args : public apache::thrift::TStructType<MyServi
 
   void __clear();
 
-  virtual ~MyServicePrioParent_pong_args() throw() {}
+  virtual ~MyServicePrioParent_pong_args() noexcept {}
 
 
   bool operator == (const MyServicePrioParent_pong_args &) const;
@@ -163,7 +163,7 @@ class MyServicePrioParent_pong_pargs : public apache::thrift::TStructType<MyServ
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   MyServicePrioParent_pong_pargs() = default;
 
-  virtual ~MyServicePrioParent_pong_pargs() throw() {}
+  virtual ~MyServicePrioParent_pong_pargs() noexcept {}
 
 
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
@@ -180,7 +180,7 @@ class MyServicePrioParent_pong_presult : public apache::thrift::TStructType<MySe
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   MyServicePrioParent_pong_presult() = default;
 
-  virtual ~MyServicePrioParent_pong_presult() throw() {}
+  virtual ~MyServicePrioParent_pong_presult() noexcept {}
 
 
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);

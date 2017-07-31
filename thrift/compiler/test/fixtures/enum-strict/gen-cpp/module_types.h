@@ -96,7 +96,7 @@ class MyStruct : public apache::thrift::TStructType<MyStruct> {
 
   void __clear();
 
-  virtual ~MyStruct() throw() {}
+  virtual ~MyStruct() noexcept {}
 
   MyEnum baz;
 

@@ -63,7 +63,7 @@ class StructUsingOtherNamespace : public apache::thrift::TStructType<StructUsing
 
   void __clear();
 
-  virtual ~StructUsingOtherNamespace() throw() {}
+  virtual ~StructUsingOtherNamespace() noexcept {}
 
   std::unique_ptr< ::cpp1::Included> other;
 

@@ -192,7 +192,7 @@ class service_with_special_names_get_args : public apache::thrift::TStructType<s
 
   void __clear();
 
-  virtual ~service_with_special_names_get_args() throw() {}
+  virtual ~service_with_special_names_get_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_get_args &) const;
@@ -219,7 +219,7 @@ class service_with_special_names_get_pargs : public apache::thrift::TStructType<
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_get_pargs() = default;
 
-  virtual ~service_with_special_names_get_pargs() throw() {}
+  virtual ~service_with_special_names_get_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -251,7 +251,7 @@ class service_with_special_names_get_presult : public apache::thrift::TStructTyp
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_get_presult() throw() {}
+  virtual ~service_with_special_names_get_presult() noexcept {}
 
   int32_t* success;
 
@@ -288,7 +288,7 @@ class service_with_special_names_getter_args : public apache::thrift::TStructTyp
 
   void __clear();
 
-  virtual ~service_with_special_names_getter_args() throw() {}
+  virtual ~service_with_special_names_getter_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_getter_args &) const;
@@ -315,7 +315,7 @@ class service_with_special_names_getter_pargs : public apache::thrift::TStructTy
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_getter_pargs() = default;
 
-  virtual ~service_with_special_names_getter_pargs() throw() {}
+  virtual ~service_with_special_names_getter_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -347,7 +347,7 @@ class service_with_special_names_getter_presult : public apache::thrift::TStruct
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_getter_presult() throw() {}
+  virtual ~service_with_special_names_getter_presult() noexcept {}
 
   int32_t* success;
 
@@ -384,7 +384,7 @@ class service_with_special_names_lists_args : public apache::thrift::TStructType
 
   void __clear();
 
-  virtual ~service_with_special_names_lists_args() throw() {}
+  virtual ~service_with_special_names_lists_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_lists_args &) const;
@@ -411,7 +411,7 @@ class service_with_special_names_lists_pargs : public apache::thrift::TStructTyp
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_lists_pargs() = default;
 
-  virtual ~service_with_special_names_lists_pargs() throw() {}
+  virtual ~service_with_special_names_lists_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -443,7 +443,7 @@ class service_with_special_names_lists_presult : public apache::thrift::TStructT
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_lists_presult() throw() {}
+  virtual ~service_with_special_names_lists_presult() noexcept {}
 
   int32_t* success;
 
@@ -480,7 +480,7 @@ class service_with_special_names_maps_args : public apache::thrift::TStructType<
 
   void __clear();
 
-  virtual ~service_with_special_names_maps_args() throw() {}
+  virtual ~service_with_special_names_maps_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_maps_args &) const;
@@ -507,7 +507,7 @@ class service_with_special_names_maps_pargs : public apache::thrift::TStructType
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_maps_pargs() = default;
 
-  virtual ~service_with_special_names_maps_pargs() throw() {}
+  virtual ~service_with_special_names_maps_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -539,7 +539,7 @@ class service_with_special_names_maps_presult : public apache::thrift::TStructTy
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_maps_presult() throw() {}
+  virtual ~service_with_special_names_maps_presult() noexcept {}
 
   int32_t* success;
 
@@ -576,7 +576,7 @@ class service_with_special_names_name_args : public apache::thrift::TStructType<
 
   void __clear();
 
-  virtual ~service_with_special_names_name_args() throw() {}
+  virtual ~service_with_special_names_name_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_name_args &) const;
@@ -603,7 +603,7 @@ class service_with_special_names_name_pargs : public apache::thrift::TStructType
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_name_pargs() = default;
 
-  virtual ~service_with_special_names_name_pargs() throw() {}
+  virtual ~service_with_special_names_name_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -635,7 +635,7 @@ class service_with_special_names_name_presult : public apache::thrift::TStructTy
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_name_presult() throw() {}
+  virtual ~service_with_special_names_name_presult() noexcept {}
 
   int32_t* success;
 
@@ -672,7 +672,7 @@ class service_with_special_names_name_to_value_args : public apache::thrift::TSt
 
   void __clear();
 
-  virtual ~service_with_special_names_name_to_value_args() throw() {}
+  virtual ~service_with_special_names_name_to_value_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_name_to_value_args &) const;
@@ -699,7 +699,7 @@ class service_with_special_names_name_to_value_pargs : public apache::thrift::TS
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_name_to_value_pargs() = default;
 
-  virtual ~service_with_special_names_name_to_value_pargs() throw() {}
+  virtual ~service_with_special_names_name_to_value_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -731,7 +731,7 @@ class service_with_special_names_name_to_value_presult : public apache::thrift::
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_name_to_value_presult() throw() {}
+  virtual ~service_with_special_names_name_to_value_presult() noexcept {}
 
   int32_t* success;
 
@@ -768,7 +768,7 @@ class service_with_special_names_names_args : public apache::thrift::TStructType
 
   void __clear();
 
-  virtual ~service_with_special_names_names_args() throw() {}
+  virtual ~service_with_special_names_names_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_names_args &) const;
@@ -795,7 +795,7 @@ class service_with_special_names_names_pargs : public apache::thrift::TStructTyp
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_names_pargs() = default;
 
-  virtual ~service_with_special_names_names_pargs() throw() {}
+  virtual ~service_with_special_names_names_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -827,7 +827,7 @@ class service_with_special_names_names_presult : public apache::thrift::TStructT
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_names_presult() throw() {}
+  virtual ~service_with_special_names_names_presult() noexcept {}
 
   int32_t* success;
 
@@ -864,7 +864,7 @@ class service_with_special_names_prefix_tree_args : public apache::thrift::TStru
 
   void __clear();
 
-  virtual ~service_with_special_names_prefix_tree_args() throw() {}
+  virtual ~service_with_special_names_prefix_tree_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_prefix_tree_args &) const;
@@ -891,7 +891,7 @@ class service_with_special_names_prefix_tree_pargs : public apache::thrift::TStr
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_prefix_tree_pargs() = default;
 
-  virtual ~service_with_special_names_prefix_tree_pargs() throw() {}
+  virtual ~service_with_special_names_prefix_tree_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -923,7 +923,7 @@ class service_with_special_names_prefix_tree_presult : public apache::thrift::TS
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_prefix_tree_presult() throw() {}
+  virtual ~service_with_special_names_prefix_tree_presult() noexcept {}
 
   int32_t* success;
 
@@ -960,7 +960,7 @@ class service_with_special_names_sets_args : public apache::thrift::TStructType<
 
   void __clear();
 
-  virtual ~service_with_special_names_sets_args() throw() {}
+  virtual ~service_with_special_names_sets_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_sets_args &) const;
@@ -987,7 +987,7 @@ class service_with_special_names_sets_pargs : public apache::thrift::TStructType
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_sets_pargs() = default;
 
-  virtual ~service_with_special_names_sets_pargs() throw() {}
+  virtual ~service_with_special_names_sets_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -1019,7 +1019,7 @@ class service_with_special_names_sets_presult : public apache::thrift::TStructTy
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_sets_presult() throw() {}
+  virtual ~service_with_special_names_sets_presult() noexcept {}
 
   int32_t* success;
 
@@ -1056,7 +1056,7 @@ class service_with_special_names_setter_args : public apache::thrift::TStructTyp
 
   void __clear();
 
-  virtual ~service_with_special_names_setter_args() throw() {}
+  virtual ~service_with_special_names_setter_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_setter_args &) const;
@@ -1083,7 +1083,7 @@ class service_with_special_names_setter_pargs : public apache::thrift::TStructTy
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_setter_pargs() = default;
 
-  virtual ~service_with_special_names_setter_pargs() throw() {}
+  virtual ~service_with_special_names_setter_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -1115,7 +1115,7 @@ class service_with_special_names_setter_presult : public apache::thrift::TStruct
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_setter_presult() throw() {}
+  virtual ~service_with_special_names_setter_presult() noexcept {}
 
   int32_t* success;
 
@@ -1152,7 +1152,7 @@ class service_with_special_names_str_args : public apache::thrift::TStructType<s
 
   void __clear();
 
-  virtual ~service_with_special_names_str_args() throw() {}
+  virtual ~service_with_special_names_str_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_str_args &) const;
@@ -1179,7 +1179,7 @@ class service_with_special_names_str_pargs : public apache::thrift::TStructType<
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_str_pargs() = default;
 
-  virtual ~service_with_special_names_str_pargs() throw() {}
+  virtual ~service_with_special_names_str_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -1211,7 +1211,7 @@ class service_with_special_names_str_presult : public apache::thrift::TStructTyp
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_str_presult() throw() {}
+  virtual ~service_with_special_names_str_presult() noexcept {}
 
   int32_t* success;
 
@@ -1248,7 +1248,7 @@ class service_with_special_names_strings_args : public apache::thrift::TStructTy
 
   void __clear();
 
-  virtual ~service_with_special_names_strings_args() throw() {}
+  virtual ~service_with_special_names_strings_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_strings_args &) const;
@@ -1275,7 +1275,7 @@ class service_with_special_names_strings_pargs : public apache::thrift::TStructT
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_strings_pargs() = default;
 
-  virtual ~service_with_special_names_strings_pargs() throw() {}
+  virtual ~service_with_special_names_strings_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -1307,7 +1307,7 @@ class service_with_special_names_strings_presult : public apache::thrift::TStruc
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_strings_presult() throw() {}
+  virtual ~service_with_special_names_strings_presult() noexcept {}
 
   int32_t* success;
 
@@ -1344,7 +1344,7 @@ class service_with_special_names_type_args : public apache::thrift::TStructType<
 
   void __clear();
 
-  virtual ~service_with_special_names_type_args() throw() {}
+  virtual ~service_with_special_names_type_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_type_args &) const;
@@ -1371,7 +1371,7 @@ class service_with_special_names_type_pargs : public apache::thrift::TStructType
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_type_pargs() = default;
 
-  virtual ~service_with_special_names_type_pargs() throw() {}
+  virtual ~service_with_special_names_type_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -1403,7 +1403,7 @@ class service_with_special_names_type_presult : public apache::thrift::TStructTy
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_type_presult() throw() {}
+  virtual ~service_with_special_names_type_presult() noexcept {}
 
   int32_t* success;
 
@@ -1440,7 +1440,7 @@ class service_with_special_names_value_args : public apache::thrift::TStructType
 
   void __clear();
 
-  virtual ~service_with_special_names_value_args() throw() {}
+  virtual ~service_with_special_names_value_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_value_args &) const;
@@ -1467,7 +1467,7 @@ class service_with_special_names_value_pargs : public apache::thrift::TStructTyp
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_value_pargs() = default;
 
-  virtual ~service_with_special_names_value_pargs() throw() {}
+  virtual ~service_with_special_names_value_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -1499,7 +1499,7 @@ class service_with_special_names_value_presult : public apache::thrift::TStructT
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_value_presult() throw() {}
+  virtual ~service_with_special_names_value_presult() noexcept {}
 
   int32_t* success;
 
@@ -1536,7 +1536,7 @@ class service_with_special_names_value_to_name_args : public apache::thrift::TSt
 
   void __clear();
 
-  virtual ~service_with_special_names_value_to_name_args() throw() {}
+  virtual ~service_with_special_names_value_to_name_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_value_to_name_args &) const;
@@ -1563,7 +1563,7 @@ class service_with_special_names_value_to_name_pargs : public apache::thrift::TS
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_value_to_name_pargs() = default;
 
-  virtual ~service_with_special_names_value_to_name_pargs() throw() {}
+  virtual ~service_with_special_names_value_to_name_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -1595,7 +1595,7 @@ class service_with_special_names_value_to_name_presult : public apache::thrift::
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_value_to_name_presult() throw() {}
+  virtual ~service_with_special_names_value_to_name_presult() noexcept {}
 
   int32_t* success;
 
@@ -1632,7 +1632,7 @@ class service_with_special_names_values_args : public apache::thrift::TStructTyp
 
   void __clear();
 
-  virtual ~service_with_special_names_values_args() throw() {}
+  virtual ~service_with_special_names_values_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_values_args &) const;
@@ -1659,7 +1659,7 @@ class service_with_special_names_values_pargs : public apache::thrift::TStructTy
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_values_pargs() = default;
 
-  virtual ~service_with_special_names_values_pargs() throw() {}
+  virtual ~service_with_special_names_values_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -1691,7 +1691,7 @@ class service_with_special_names_values_presult : public apache::thrift::TStruct
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_values_presult() throw() {}
+  virtual ~service_with_special_names_values_presult() noexcept {}
 
   int32_t* success;
 
@@ -1728,7 +1728,7 @@ class service_with_special_names_id_args : public apache::thrift::TStructType<se
 
   void __clear();
 
-  virtual ~service_with_special_names_id_args() throw() {}
+  virtual ~service_with_special_names_id_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_id_args &) const;
@@ -1755,7 +1755,7 @@ class service_with_special_names_id_pargs : public apache::thrift::TStructType<s
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_id_pargs() = default;
 
-  virtual ~service_with_special_names_id_pargs() throw() {}
+  virtual ~service_with_special_names_id_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -1787,7 +1787,7 @@ class service_with_special_names_id_presult : public apache::thrift::TStructType
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_id_presult() throw() {}
+  virtual ~service_with_special_names_id_presult() noexcept {}
 
   int32_t* success;
 
@@ -1824,7 +1824,7 @@ class service_with_special_names_ids_args : public apache::thrift::TStructType<s
 
   void __clear();
 
-  virtual ~service_with_special_names_ids_args() throw() {}
+  virtual ~service_with_special_names_ids_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_ids_args &) const;
@@ -1851,7 +1851,7 @@ class service_with_special_names_ids_pargs : public apache::thrift::TStructType<
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_ids_pargs() = default;
 
-  virtual ~service_with_special_names_ids_pargs() throw() {}
+  virtual ~service_with_special_names_ids_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -1883,7 +1883,7 @@ class service_with_special_names_ids_presult : public apache::thrift::TStructTyp
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_ids_presult() throw() {}
+  virtual ~service_with_special_names_ids_presult() noexcept {}
 
   int32_t* success;
 
@@ -1920,7 +1920,7 @@ class service_with_special_names_descriptor_args : public apache::thrift::TStruc
 
   void __clear();
 
-  virtual ~service_with_special_names_descriptor_args() throw() {}
+  virtual ~service_with_special_names_descriptor_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_descriptor_args &) const;
@@ -1947,7 +1947,7 @@ class service_with_special_names_descriptor_pargs : public apache::thrift::TStru
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_descriptor_pargs() = default;
 
-  virtual ~service_with_special_names_descriptor_pargs() throw() {}
+  virtual ~service_with_special_names_descriptor_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -1979,7 +1979,7 @@ class service_with_special_names_descriptor_presult : public apache::thrift::TSt
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_descriptor_presult() throw() {}
+  virtual ~service_with_special_names_descriptor_presult() noexcept {}
 
   int32_t* success;
 
@@ -2016,7 +2016,7 @@ class service_with_special_names_descriptors_args : public apache::thrift::TStru
 
   void __clear();
 
-  virtual ~service_with_special_names_descriptors_args() throw() {}
+  virtual ~service_with_special_names_descriptors_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_descriptors_args &) const;
@@ -2043,7 +2043,7 @@ class service_with_special_names_descriptors_pargs : public apache::thrift::TStr
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_descriptors_pargs() = default;
 
-  virtual ~service_with_special_names_descriptors_pargs() throw() {}
+  virtual ~service_with_special_names_descriptors_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -2075,7 +2075,7 @@ class service_with_special_names_descriptors_presult : public apache::thrift::TS
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_descriptors_presult() throw() {}
+  virtual ~service_with_special_names_descriptors_presult() noexcept {}
 
   int32_t* success;
 
@@ -2112,7 +2112,7 @@ class service_with_special_names_key_args : public apache::thrift::TStructType<s
 
   void __clear();
 
-  virtual ~service_with_special_names_key_args() throw() {}
+  virtual ~service_with_special_names_key_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_key_args &) const;
@@ -2139,7 +2139,7 @@ class service_with_special_names_key_pargs : public apache::thrift::TStructType<
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_key_pargs() = default;
 
-  virtual ~service_with_special_names_key_pargs() throw() {}
+  virtual ~service_with_special_names_key_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -2171,7 +2171,7 @@ class service_with_special_names_key_presult : public apache::thrift::TStructTyp
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_key_presult() throw() {}
+  virtual ~service_with_special_names_key_presult() noexcept {}
 
   int32_t* success;
 
@@ -2208,7 +2208,7 @@ class service_with_special_names_keys_args : public apache::thrift::TStructType<
 
   void __clear();
 
-  virtual ~service_with_special_names_keys_args() throw() {}
+  virtual ~service_with_special_names_keys_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_keys_args &) const;
@@ -2235,7 +2235,7 @@ class service_with_special_names_keys_pargs : public apache::thrift::TStructType
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_keys_pargs() = default;
 
-  virtual ~service_with_special_names_keys_pargs() throw() {}
+  virtual ~service_with_special_names_keys_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -2267,7 +2267,7 @@ class service_with_special_names_keys_presult : public apache::thrift::TStructTy
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_keys_presult() throw() {}
+  virtual ~service_with_special_names_keys_presult() noexcept {}
 
   int32_t* success;
 
@@ -2304,7 +2304,7 @@ class service_with_special_names_annotation_args : public apache::thrift::TStruc
 
   void __clear();
 
-  virtual ~service_with_special_names_annotation_args() throw() {}
+  virtual ~service_with_special_names_annotation_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_annotation_args &) const;
@@ -2331,7 +2331,7 @@ class service_with_special_names_annotation_pargs : public apache::thrift::TStru
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_annotation_pargs() = default;
 
-  virtual ~service_with_special_names_annotation_pargs() throw() {}
+  virtual ~service_with_special_names_annotation_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -2363,7 +2363,7 @@ class service_with_special_names_annotation_presult : public apache::thrift::TSt
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_annotation_presult() throw() {}
+  virtual ~service_with_special_names_annotation_presult() noexcept {}
 
   int32_t* success;
 
@@ -2400,7 +2400,7 @@ class service_with_special_names_annotations_args : public apache::thrift::TStru
 
   void __clear();
 
-  virtual ~service_with_special_names_annotations_args() throw() {}
+  virtual ~service_with_special_names_annotations_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_annotations_args &) const;
@@ -2427,7 +2427,7 @@ class service_with_special_names_annotations_pargs : public apache::thrift::TStr
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_annotations_pargs() = default;
 
-  virtual ~service_with_special_names_annotations_pargs() throw() {}
+  virtual ~service_with_special_names_annotations_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -2459,7 +2459,7 @@ class service_with_special_names_annotations_presult : public apache::thrift::TS
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_annotations_presult() throw() {}
+  virtual ~service_with_special_names_annotations_presult() noexcept {}
 
   int32_t* success;
 
@@ -2496,7 +2496,7 @@ class service_with_special_names_member_args : public apache::thrift::TStructTyp
 
   void __clear();
 
-  virtual ~service_with_special_names_member_args() throw() {}
+  virtual ~service_with_special_names_member_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_member_args &) const;
@@ -2523,7 +2523,7 @@ class service_with_special_names_member_pargs : public apache::thrift::TStructTy
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_member_pargs() = default;
 
-  virtual ~service_with_special_names_member_pargs() throw() {}
+  virtual ~service_with_special_names_member_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -2555,7 +2555,7 @@ class service_with_special_names_member_presult : public apache::thrift::TStruct
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_member_presult() throw() {}
+  virtual ~service_with_special_names_member_presult() noexcept {}
 
   int32_t* success;
 
@@ -2592,7 +2592,7 @@ class service_with_special_names_members_args : public apache::thrift::TStructTy
 
   void __clear();
 
-  virtual ~service_with_special_names_members_args() throw() {}
+  virtual ~service_with_special_names_members_args() noexcept {}
 
 
   bool operator == (const service_with_special_names_members_args &) const;
@@ -2619,7 +2619,7 @@ class service_with_special_names_members_pargs : public apache::thrift::TStructT
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   service_with_special_names_members_pargs() = default;
 
-  virtual ~service_with_special_names_members_pargs() throw() {}
+  virtual ~service_with_special_names_members_pargs() noexcept {}
 
 
   void readFromJson(const char* jsonText, size_t len, const folly::json::serialization_opts& opts = folly::json::serialization_opts());
@@ -2651,7 +2651,7 @@ class service_with_special_names_members_presult : public apache::thrift::TStruc
     __isset.success = true;
   }
 
-  virtual ~service_with_special_names_members_presult() throw() {}
+  virtual ~service_with_special_names_members_presult() noexcept {}
 
   int32_t* success;
 

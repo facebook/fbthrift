@@ -67,7 +67,7 @@ class Struct : public apache::thrift::TStructType<Struct> {
 
   void __clear();
 
-  virtual ~Struct() throw() {}
+  virtual ~Struct() noexcept {}
 
    ::MODULE0::Struct first;
    ::MODULE1::Struct second;
@@ -140,7 +140,7 @@ class BigStruct : public apache::thrift::TStructType<BigStruct> {
 
   void __clear();
 
-  virtual ~BigStruct() throw() {}
+  virtual ~BigStruct() noexcept {}
 
   Struct s;
   int32_t id;

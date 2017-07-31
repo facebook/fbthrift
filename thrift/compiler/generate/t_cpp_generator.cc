@@ -1783,7 +1783,7 @@ void t_cpp_generator::generate_cpp_union(t_struct* tstruct) {
   bool virtDest =
       tstruct->annotations_.find("final") == tstruct->annotations_.end();
   indent(out) << (virtDest ? "virtual " : "") << "~" << tstruct->get_name()
-              << "() throw() {" << endl;
+              << "() noexcept {" << endl;
   indent_up();
   indent(out) << "__clear();" << endl;
   indent_down();
@@ -2526,7 +2526,7 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
 
   if (tstruct->annotations_.find("final") == tstruct->annotations_.end()) {
     out << endl << indent() << "virtual ~" << tstruct->get_name()
-        << "() throw() {}" << endl << endl;
+        << "() noexcept {}" << endl << endl;
   }
 
   // Declare all fields
@@ -2600,7 +2600,7 @@ void t_cpp_generator::generate_struct_definition(ofstream& out,
     }
 
     out <<
-      indent() << "virtual const char* what() const throw() {" << endl <<
+      indent() << "virtual const char* what() const noexcept {" << endl <<
       indent() << "  return " << what << ";" << endl <<
       indent() << "}" << endl << endl;
   }

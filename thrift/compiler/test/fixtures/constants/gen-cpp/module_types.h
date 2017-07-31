@@ -166,7 +166,7 @@ class Internship : public apache::thrift::TStructType<Internship> {
 
   void __clear();
 
-  virtual ~Internship() throw() {}
+  virtual ~Internship() noexcept {}
 
   int32_t weeks;
   std::string title;
@@ -227,7 +227,7 @@ class UnEnumStruct : public apache::thrift::TStructType<UnEnumStruct> {
 
   void __clear();
 
-  virtual ~UnEnumStruct() throw() {}
+  virtual ~UnEnumStruct() noexcept {}
 
   City city;
 
@@ -295,7 +295,7 @@ class Range : public apache::thrift::TStructType<Range> {
 
   void __clear();
 
-  virtual ~Range() throw() {}
+  virtual ~Range() noexcept {}
 
   int32_t min;
   int32_t max;
@@ -358,7 +358,7 @@ class struct1 : public apache::thrift::TStructType<struct1> {
 
   void __clear();
 
-  virtual ~struct1() throw() {}
+  virtual ~struct1() noexcept {}
 
   int32_t a;
   std::string b;
@@ -457,7 +457,7 @@ class struct2 : public apache::thrift::TStructType<struct2> {
 
   void __clear();
 
-  virtual ~struct2() throw() {}
+  virtual ~struct2() noexcept {}
 
   int32_t a;
   std::string b;
@@ -549,7 +549,7 @@ class struct3 : public apache::thrift::TStructType<struct3> {
 
   void __clear();
 
-  virtual ~struct3() throw() {}
+  virtual ~struct3() noexcept {}
 
   std::string a;
   int32_t b;
@@ -691,7 +691,7 @@ class union1 : public apache::thrift::TStructType<union1> {
     }
     type_ = Type::__EMPTY__;
   }
-  virtual ~union1() throw() {
+  virtual ~union1() noexcept {
     __clear();
   }
 
@@ -961,7 +961,7 @@ class union2 : public apache::thrift::TStructType<union2> {
     }
     type_ = Type::__EMPTY__;
   }
-  virtual ~union2() throw() {
+  virtual ~union2() noexcept {
     __clear();
   }
 

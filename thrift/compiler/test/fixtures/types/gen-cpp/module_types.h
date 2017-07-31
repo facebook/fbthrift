@@ -82,7 +82,7 @@ class decorated_struct : public apache::thrift::TStructType<decorated_struct> {
 
   void __clear();
 
-  virtual ~decorated_struct() throw() {}
+  virtual ~decorated_struct() noexcept {}
 
   std::string field;
 
@@ -231,7 +231,7 @@ class ContainerStruct : public apache::thrift::TStructType<ContainerStruct> {
 
   void __clear();
 
-  virtual ~ContainerStruct() throw() {}
+  virtual ~ContainerStruct() noexcept {}
 
   std::vector<int32_t>  fieldA;
   std::list<int32_t>  fieldB;

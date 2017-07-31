@@ -87,7 +87,7 @@ class MyServiceFast_ping_args : public apache::thrift::TStructType<MyServiceFast
 
   void __clear();
 
-  virtual ~MyServiceFast_ping_args() throw() {}
+  virtual ~MyServiceFast_ping_args() noexcept {}
 
 
   bool operator == (const MyServiceFast_ping_args &) const;
@@ -112,7 +112,7 @@ class MyServiceFast_ping_pargs : public apache::thrift::TStructType<MyServiceFas
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   MyServiceFast_ping_pargs() = default;
 
-  virtual ~MyServiceFast_ping_pargs() throw() {}
+  virtual ~MyServiceFast_ping_pargs() noexcept {}
 
 
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
@@ -129,7 +129,7 @@ class MyServiceFast_ping_presult : public apache::thrift::TStructType<MyServiceF
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   MyServiceFast_ping_presult() = default;
 
-  virtual ~MyServiceFast_ping_presult() throw() {}
+  virtual ~MyServiceFast_ping_presult() noexcept {}
 
 
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
@@ -155,7 +155,7 @@ class MyServiceFast_getRandomData_args : public apache::thrift::TStructType<MySe
 
   void __clear();
 
-  virtual ~MyServiceFast_getRandomData_args() throw() {}
+  virtual ~MyServiceFast_getRandomData_args() noexcept {}
 
 
   bool operator == (const MyServiceFast_getRandomData_args &) const;
@@ -180,7 +180,7 @@ class MyServiceFast_getRandomData_pargs : public apache::thrift::TStructType<MyS
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   MyServiceFast_getRandomData_pargs() = default;
 
-  virtual ~MyServiceFast_getRandomData_pargs() throw() {}
+  virtual ~MyServiceFast_getRandomData_pargs() noexcept {}
 
 
   uint32_t write(apache::thrift::protocol::TProtocol* oprot) const;
@@ -210,7 +210,7 @@ class MyServiceFast_getRandomData_presult : public apache::thrift::TStructType<M
     __isset.success = true;
   }
 
-  virtual ~MyServiceFast_getRandomData_presult() throw() {}
+  virtual ~MyServiceFast_getRandomData_presult() noexcept {}
 
   std::string* success;
 
@@ -258,7 +258,7 @@ class MyServiceFast_hasDataById_args : public apache::thrift::TStructType<MyServ
 
   void __clear();
 
-  virtual ~MyServiceFast_hasDataById_args() throw() {}
+  virtual ~MyServiceFast_hasDataById_args() noexcept {}
 
   int64_t id;
 
@@ -304,7 +304,7 @@ class MyServiceFast_hasDataById_pargs : public apache::thrift::TStructType<MySer
     id = arg.move();
   }
 
-  virtual ~MyServiceFast_hasDataById_pargs() throw() {}
+  virtual ~MyServiceFast_hasDataById_pargs() noexcept {}
 
   const int64_t* id;
 
@@ -335,7 +335,7 @@ class MyServiceFast_hasDataById_presult : public apache::thrift::TStructType<MyS
     __isset.success = true;
   }
 
-  virtual ~MyServiceFast_hasDataById_presult() throw() {}
+  virtual ~MyServiceFast_hasDataById_presult() noexcept {}
 
   bool* success;
 
@@ -383,7 +383,7 @@ class MyServiceFast_getDataById_args : public apache::thrift::TStructType<MyServ
 
   void __clear();
 
-  virtual ~MyServiceFast_getDataById_args() throw() {}
+  virtual ~MyServiceFast_getDataById_args() noexcept {}
 
   int64_t id;
 
@@ -429,7 +429,7 @@ class MyServiceFast_getDataById_pargs : public apache::thrift::TStructType<MySer
     id = arg.move();
   }
 
-  virtual ~MyServiceFast_getDataById_pargs() throw() {}
+  virtual ~MyServiceFast_getDataById_pargs() noexcept {}
 
   const int64_t* id;
 
@@ -460,7 +460,7 @@ class MyServiceFast_getDataById_presult : public apache::thrift::TStructType<MyS
     __isset.success = true;
   }
 
-  virtual ~MyServiceFast_getDataById_presult() throw() {}
+  virtual ~MyServiceFast_getDataById_presult() noexcept {}
 
   std::string* success;
 
@@ -521,7 +521,7 @@ class MyServiceFast_putDataById_args : public apache::thrift::TStructType<MyServ
 
   void __clear();
 
-  virtual ~MyServiceFast_putDataById_args() throw() {}
+  virtual ~MyServiceFast_putDataById_args() noexcept {}
 
   int64_t id;
   std::string data;
@@ -582,7 +582,7 @@ class MyServiceFast_putDataById_pargs : public apache::thrift::TStructType<MySer
     data = arg.move();
   }
 
-  virtual ~MyServiceFast_putDataById_pargs() throw() {}
+  virtual ~MyServiceFast_putDataById_pargs() noexcept {}
 
   const int64_t* id;
   const std::string* data;
@@ -601,7 +601,7 @@ class MyServiceFast_putDataById_presult : public apache::thrift::TStructType<MyS
   static void _reflection_register(::apache::thrift::reflection::Schema&);
   MyServiceFast_putDataById_presult() = default;
 
-  virtual ~MyServiceFast_putDataById_presult() throw() {}
+  virtual ~MyServiceFast_putDataById_presult() noexcept {}
 
 
   uint32_t read(apache::thrift::protocol::TProtocol* iprot);
@@ -653,7 +653,7 @@ class MyServiceFast_lobDataById_args : public apache::thrift::TStructType<MyServ
 
   void __clear();
 
-  virtual ~MyServiceFast_lobDataById_args() throw() {}
+  virtual ~MyServiceFast_lobDataById_args() noexcept {}
 
   int64_t id;
   std::string data;
@@ -714,7 +714,7 @@ class MyServiceFast_lobDataById_pargs : public apache::thrift::TStructType<MySer
     data = arg.move();
   }
 
-  virtual ~MyServiceFast_lobDataById_pargs() throw() {}
+  virtual ~MyServiceFast_lobDataById_pargs() noexcept {}
 
   const int64_t* id;
   const std::string* data;

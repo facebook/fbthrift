@@ -245,7 +245,7 @@ class ComplexUnion : public apache::thrift::TStructType<ComplexUnion> {
     }
     type_ = Type::__EMPTY__;
   }
-  virtual ~ComplexUnion() throw() {
+  virtual ~ComplexUnion() noexcept {
     __clear();
   }
 
@@ -591,7 +591,7 @@ class FinalComplexUnion : public apache::thrift::TStructType<FinalComplexUnion> 
     }
     type_ = Type::__EMPTY__;
   }
-  ~FinalComplexUnion() throw() {
+  ~FinalComplexUnion() noexcept {
     __clear();
   }
 

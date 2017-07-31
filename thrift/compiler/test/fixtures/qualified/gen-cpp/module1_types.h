@@ -91,7 +91,7 @@ class Struct : public apache::thrift::TStructType<Struct> {
 
   void __clear();
 
-  virtual ~Struct() throw() {}
+  virtual ~Struct() noexcept {}
 
   int32_t first;
   std::string second;

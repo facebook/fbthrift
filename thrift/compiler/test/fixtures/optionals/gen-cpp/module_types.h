@@ -123,7 +123,7 @@ class Color : public apache::thrift::TStructType<Color> {
 
   void __clear();
 
-  virtual ~Color() throw() {}
+  virtual ~Color() noexcept {}
 
   double red;
   double green;
@@ -241,7 +241,7 @@ class Vehicle : public apache::thrift::TStructType<Vehicle> {
 
   void __clear();
 
-  virtual ~Vehicle() throw() {}
+  virtual ~Vehicle() noexcept {}
 
   Color color;
   std::string licensePlate;
@@ -427,7 +427,7 @@ class Person : public apache::thrift::TStructType<Person> {
 
   void __clear();
 
-  virtual ~Person() throw() {}
+  virtual ~Person() noexcept {}
 
   PersonID id;
   std::string name;

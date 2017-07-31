@@ -59,7 +59,7 @@ class Included : public apache::thrift::TStructType<Included> {
 
   void __clear();
 
-  virtual ~Included() throw() {}
+  virtual ~Included() noexcept {}
 
   int16_t some_val;
 
