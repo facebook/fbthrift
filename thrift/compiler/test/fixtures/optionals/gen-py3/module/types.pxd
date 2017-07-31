@@ -166,7 +166,7 @@ cdef class Person(thrift.py3.types.Struct):
     cdef object __weakref__
     cdef shared_ptr[cPerson] _cpp_obj
     cdef Color __favoriteColor
-    cdef Set__PersonID __friends
+    cdef Set__i64 __friends
     cdef Map__Animal_string __petNames
     cdef List__Vehicle __vehicles
 
@@ -189,7 +189,7 @@ cdef class Person(thrift.py3.types.Struct):
     cdef create(shared_ptr[cPerson])
 
 
-cdef class Set__PersonID:
+cdef class Set__i64:
     cdef object __hash
     cdef object __weakref__
     cdef shared_ptr[cset[int64_t]] _cpp_obj

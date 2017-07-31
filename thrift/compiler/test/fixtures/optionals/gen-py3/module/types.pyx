@@ -650,7 +650,7 @@ cdef class Person(thrift.py3.types.Struct):
             deref(c_inst).__isset.favoriteColor = True
 
         if friends is not None:
-            deref(c_inst).friends = <cset[int64_t]>deref(Set__PersonID(friends)._cpp_obj)
+            deref(c_inst).friends = <cset[int64_t]>deref(Set__i64(friends)._cpp_obj)
             deref(c_inst).__isset.friends = True
 
         if bestFriend is not None:
@@ -725,7 +725,7 @@ cdef class Person(thrift.py3.types.Struct):
             return None
 
         if self.__friends is None:
-            self.__friends = Set__PersonID.create(make_shared[cset[int64_t]](deref(self._cpp_obj).friends))
+            self.__friends = Set__i64.create(make_shared[cset[int64_t]](deref(self._cpp_obj).friends))
         return self.__friends
 
     @property
@@ -819,16 +819,16 @@ cdef class Person(thrift.py3.types.Struct):
         return (deserialize, (Person, serialize(self)))
 
 
-cdef class Set__PersonID:
+cdef class Set__i64:
     def __init__(self, items=None):
-        if isinstance(items, Set__PersonID):
-            self._cpp_obj = (<Set__PersonID> items)._cpp_obj
+        if isinstance(items, Set__i64):
+            self._cpp_obj = (<Set__i64> items)._cpp_obj
         else:
-            self._cpp_obj = move(Set__PersonID._make_instance(items))
+            self._cpp_obj = move(Set__i64._make_instance(items))
 
     @staticmethod
     cdef create(shared_ptr[cset[int64_t]] c_items):
-        inst = <Set__PersonID>Set__PersonID.__new__(Set__PersonID)
+        inst = <Set__i64>Set__i64.__new__(Set__i64)
         inst._cpp_obj = c_items
         return inst
 
@@ -863,10 +863,10 @@ cdef class Set__PersonID:
         cdef int cop = op
         cdef cset[int64_t] cself, cother
         cdef cbool retval
-        if (isinstance(self, Set__PersonID) and
-                isinstance(other, Set__PersonID)):
-            cself = deref((<Set__PersonID> self)._cpp_obj)
-            cother = deref((<Set__PersonID> other)._cpp_obj)
+        if (isinstance(self, Set__i64) and
+                isinstance(other, Set__i64)):
+            cself = deref((<Set__i64> self)._cpp_obj)
+            cother = deref((<Set__i64> other)._cpp_obj)
             # C level comparisons
             if cop == 0:    # Less Than (strict subset)
                 if not cself.size() < cother.size():
@@ -925,60 +925,60 @@ cdef class Set__PersonID:
         return self.__hash
 
     def __and__(self, other):
-        if not isinstance(self, Set__PersonID):
-            self = Set__PersonID(self)
-        if not isinstance(other, Set__PersonID):
-            other = Set__PersonID(other)
+        if not isinstance(self, Set__i64):
+            self = Set__i64(self)
+        if not isinstance(other, Set__i64):
+            other = Set__i64(other)
 
         cdef shared_ptr[cset[int64_t]] shretval = \
             make_shared[cset[int64_t]]()
-        for citem in deref((<Set__PersonID> self)._cpp_obj):
-            if deref((<Set__PersonID> other)._cpp_obj).count(citem) > 0:
+        for citem in deref((<Set__i64> self)._cpp_obj):
+            if deref((<Set__i64> other)._cpp_obj).count(citem) > 0:
                 deref(shretval).insert(citem)
-        return Set__PersonID.create(shretval)
+        return Set__i64.create(shretval)
 
     def __sub__(self, other):
-        if not isinstance(self, Set__PersonID):
-            self = Set__PersonID(self)
-        if not isinstance(other, Set__PersonID):
-            other = Set__PersonID(other)
+        if not isinstance(self, Set__i64):
+            self = Set__i64(self)
+        if not isinstance(other, Set__i64):
+            other = Set__i64(other)
 
         cdef shared_ptr[cset[int64_t]] shretval = \
             make_shared[cset[int64_t]]()
-        for citem in deref((<Set__PersonID> self)._cpp_obj):
-            if deref((<Set__PersonID> other)._cpp_obj).count(citem) == 0:
+        for citem in deref((<Set__i64> self)._cpp_obj):
+            if deref((<Set__i64> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return Set__PersonID.create(shretval)
+        return Set__i64.create(shretval)
 
     def __or__(self, other):
-        if not isinstance(self, Set__PersonID):
-            self = Set__PersonID(self)
-        if not isinstance(other, Set__PersonID):
-            other = Set__PersonID(other)
+        if not isinstance(self, Set__i64):
+            self = Set__i64(self)
+        if not isinstance(other, Set__i64):
+            other = Set__i64(other)
 
         cdef shared_ptr[cset[int64_t]] shretval = \
             make_shared[cset[int64_t]]()
-        for citem in deref((<Set__PersonID> self)._cpp_obj):
+        for citem in deref((<Set__i64> self)._cpp_obj):
                 deref(shretval).insert(citem)
-        for citem in deref((<Set__PersonID> other)._cpp_obj):
+        for citem in deref((<Set__i64> other)._cpp_obj):
                 deref(shretval).insert(citem)
-        return Set__PersonID.create(shretval)
+        return Set__i64.create(shretval)
 
     def __xor__(self, other):
-        if not isinstance(self, Set__PersonID):
-            self = Set__PersonID(self)
-        if not isinstance(other, Set__PersonID):
-            other = Set__PersonID(other)
+        if not isinstance(self, Set__i64):
+            self = Set__i64(self)
+        if not isinstance(other, Set__i64):
+            other = Set__i64(other)
 
         cdef shared_ptr[cset[int64_t]] shretval = \
             make_shared[cset[int64_t]]()
-        for citem in deref((<Set__PersonID> self)._cpp_obj):
-            if deref((<Set__PersonID> other)._cpp_obj).count(citem) == 0:
+        for citem in deref((<Set__i64> self)._cpp_obj):
+            if deref((<Set__i64> other)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        for citem in deref((<Set__PersonID> other)._cpp_obj):
-            if deref((<Set__PersonID> self)._cpp_obj).count(citem) == 0:
+        for citem in deref((<Set__i64> other)._cpp_obj):
+            if deref((<Set__i64> self)._cpp_obj).count(citem) == 0:
                 deref(shretval).insert(citem)
-        return Set__PersonID.create(shretval)
+        return Set__i64.create(shretval)
 
     def isdisjoint(self, other):
         return len(self & other) == 0
@@ -1002,7 +1002,7 @@ cdef class Set__PersonID:
         return self >= other
 
 
-Set.register(Set__PersonID)
+Set.register(Set__i64)
 
 cdef class Map__Animal_string:
     def __init__(self, items=None):

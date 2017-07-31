@@ -61,7 +61,7 @@ class t_mstch_py3_generator : public t_mstch_generator {
 
    private:
     void load_container_type(
-        vector<t_type*>& container_types,
+        vector<const t_type*>& container_types,
         std::set<string>& visited_names,
         t_type* type);
     string ref_type(const t_field& field) const;
@@ -311,8 +311,8 @@ mstch::array t_mstch_py3_generator::get_return_types(const t_program& program) {
 void t_mstch_py3_generator::add_container_types(
     const t_program& program,
     mstch::map& results) {
-  vector<t_type*> container_types;
-  vector<t_type*> move_container_types;
+  vector<const t_type*> container_types;
+  vector<const t_type*> move_container_types;
   std::set<string> visited_names;
 
   for (const auto service : program.get_services()) {
@@ -359,9 +359,11 @@ void t_mstch_py3_generator::add_container_types(
 }
 
 void t_mstch_py3_generator::load_container_type(
-    vector<t_type*>& container_types,
+    vector<const t_type*>& container_types,
     std::set<string>& visited_names,
-    t_type* type) {
+    t_type* orig_type) {
+  auto type = &resolve_typedef(*orig_type);
+
   if (!type->is_container()) return;
 
   string flat_name = flatten_type_name(*type);
@@ -387,7 +389,9 @@ void t_mstch_py3_generator::load_container_type(
   container_types.push_back(type);
 }
 
-std::string t_mstch_py3_generator::flatten_type_name(const t_type& type) {
+std::string t_mstch_py3_generator::flatten_type_name(const t_type& orig_type) {
+  auto& type = resolve_typedef(orig_type);
+
   if (type.is_list()) {
     return "List__" +
         flatten_type_name(*dynamic_cast<const t_list&>(type).get_elem_type());
