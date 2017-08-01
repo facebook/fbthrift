@@ -20,6 +20,8 @@ type EnumType = Enum;
  * A
  */
 class A implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'a',
@@ -86,7 +88,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
       'a' => $this->a,
     );
   }
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -123,7 +125,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('A');
     if ($this->a !== null) {
@@ -144,6 +146,8 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
  * B
  */
 class B implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'just_an_A',
@@ -1547,7 +1551,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'optional_enum' => $this->optional_enum,
     );
   }
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -2373,7 +2377,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('B');
     if ($this->just_an_A !== null) {

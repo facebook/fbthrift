@@ -43,6 +43,8 @@ type CompanyType = Company;
  * Internship
  */
 class Internship implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'weeks',
@@ -98,7 +100,7 @@ class Internship implements \IThriftStruct {
     return 'Internship';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -157,7 +159,7 @@ class Internship implements \IThriftStruct {
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('Internship');
     if ($this->weeks !== null) {
@@ -190,6 +192,8 @@ class Internship implements \IThriftStruct {
  * UnEnumStruct
  */
 class UnEnumStruct implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'city',
@@ -219,7 +223,7 @@ class UnEnumStruct implements \IThriftStruct {
     return 'UnEnumStruct';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -259,7 +263,7 @@ class UnEnumStruct implements \IThriftStruct {
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('UnEnumStruct');
     if ($this->city !== null) {
@@ -280,6 +284,8 @@ class UnEnumStruct implements \IThriftStruct {
  * Range
  */
 class Range implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'min',
@@ -323,7 +329,7 @@ class Range implements \IThriftStruct {
     return 'Range';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -377,7 +383,7 @@ class Range implements \IThriftStruct {
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('Range');
     if ($this->min !== null) {
@@ -404,6 +410,8 @@ class Range implements \IThriftStruct {
  * struct1
  */
 class struct1 implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'a',
@@ -447,7 +455,7 @@ class struct1 implements \IThriftStruct {
     return 'struct1';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -491,7 +499,7 @@ class struct1 implements \IThriftStruct {
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('struct1');
     if ($this->a !== null) {
@@ -518,6 +526,8 @@ class struct1 implements \IThriftStruct {
  * struct2
  */
 class struct2 implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'a',
@@ -593,7 +603,7 @@ class struct2 implements \IThriftStruct {
     return 'struct2';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -668,7 +678,7 @@ class struct2 implements \IThriftStruct {
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('struct2');
     if ($this->a !== null) {
@@ -721,6 +731,8 @@ class struct2 implements \IThriftStruct {
  * struct3
  */
 class struct3 implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'a',
@@ -776,7 +788,7 @@ class struct3 implements \IThriftStruct {
     return 'struct3';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -828,7 +840,7 @@ class struct3 implements \IThriftStruct {
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('struct3');
     if ($this->a !== null) {
@@ -870,6 +882,8 @@ enum union1Enum: int {
  * union1
  */
 class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'i',
@@ -949,7 +963,7 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
     return nullthrows($this->d);
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -996,7 +1010,7 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('union1');
     if ($this->i !== null) {
@@ -1031,6 +1045,8 @@ enum union2Enum: int {
  * union2
  */
 class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'i',
@@ -1172,7 +1188,7 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
     return nullthrows($this->u);
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -1237,7 +1253,7 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('union2');
     if ($this->i !== null) {

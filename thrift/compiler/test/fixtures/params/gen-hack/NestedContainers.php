@@ -1197,6 +1197,8 @@ class NestedContainersProcessor extends NestedContainersSyncProcessor {}
 // HELPER FUNCTIONS AND STRUCTURES
 
 class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'foo',
@@ -1289,7 +1291,7 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
       )->toArray(),
     );
   }
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -1360,7 +1362,7 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('NestedContainers_mapList_args');
     if ($this->foo !== null) {
@@ -1397,6 +1399,8 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
 }
 
 class NestedContainers_mapList_result implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1410,7 +1414,7 @@ class NestedContainers_mapList_result implements \IThriftStruct, \IThriftShapish
     return 'NestedContainers_mapList_result';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -1440,7 +1444,7 @@ class NestedContainers_mapList_result implements \IThriftStruct, \IThriftShapish
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('NestedContainers_mapList_result');
     $xfer += $output->writeFieldStop();
@@ -1451,6 +1455,8 @@ class NestedContainers_mapList_result implements \IThriftStruct, \IThriftShapish
 }
 
 class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'foo',
@@ -1541,7 +1547,7 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
       )->toArray(),
     );
   }
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -1612,7 +1618,7 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('NestedContainers_mapSet_args');
     if ($this->foo !== null) {
@@ -1649,6 +1655,8 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
 }
 
 class NestedContainers_mapSet_result implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1662,7 +1670,7 @@ class NestedContainers_mapSet_result implements \IThriftStruct, \IThriftShapishS
     return 'NestedContainers_mapSet_result';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -1692,7 +1700,7 @@ class NestedContainers_mapSet_result implements \IThriftStruct, \IThriftShapishS
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('NestedContainers_mapSet_result');
     $xfer += $output->writeFieldStop();
@@ -1703,6 +1711,8 @@ class NestedContainers_mapSet_result implements \IThriftStruct, \IThriftShapishS
 }
 
 class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'foo',
@@ -1795,7 +1805,7 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
       )->toArray(),
     );
   }
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -1866,7 +1876,7 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('NestedContainers_listMap_args');
     if ($this->foo !== null) {
@@ -1903,6 +1913,8 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
 }
 
 class NestedContainers_listMap_result implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1916,7 +1928,7 @@ class NestedContainers_listMap_result implements \IThriftStruct, \IThriftShapish
     return 'NestedContainers_listMap_result';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -1946,7 +1958,7 @@ class NestedContainers_listMap_result implements \IThriftStruct, \IThriftShapish
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('NestedContainers_listMap_result');
     $xfer += $output->writeFieldStop();
@@ -1957,6 +1969,8 @@ class NestedContainers_listMap_result implements \IThriftStruct, \IThriftShapish
 }
 
 class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'foo',
@@ -2043,7 +2057,7 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
       )->toArray(),
     );
   }
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -2111,7 +2125,7 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('NestedContainers_listSet_args');
     if ($this->foo !== null) {
@@ -2147,6 +2161,8 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
 }
 
 class NestedContainers_listSet_result implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -2160,7 +2176,7 @@ class NestedContainers_listSet_result implements \IThriftStruct, \IThriftShapish
     return 'NestedContainers_listSet_result';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -2190,7 +2206,7 @@ class NestedContainers_listSet_result implements \IThriftStruct, \IThriftShapish
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('NestedContainers_listSet_result');
     $xfer += $output->writeFieldStop();
@@ -2201,6 +2217,8 @@ class NestedContainers_listSet_result implements \IThriftStruct, \IThriftShapish
 }
 
 class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'foo',
@@ -2352,7 +2370,7 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
       )->toArray(),
     );
   }
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -2471,7 +2489,7 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('NestedContainers_turtles_args');
     if ($this->foo !== null) {
@@ -2533,6 +2551,8 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
 }
 
 class NestedContainers_turtles_result implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -2546,7 +2566,7 @@ class NestedContainers_turtles_result implements \IThriftStruct, \IThriftShapish
     return 'NestedContainers_turtles_result';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -2576,7 +2596,7 @@ class NestedContainers_turtles_result implements \IThriftStruct, \IThriftShapish
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('NestedContainers_turtles_result');
     $xfer += $output->writeFieldStop();

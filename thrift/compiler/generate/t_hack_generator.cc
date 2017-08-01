@@ -2216,6 +2216,8 @@ void t_hack_generator::_generate_php_struct_definition(
   out << " {" << endl;
   indent_up();
 
+  indent(out) << "use \\ThriftSerializationTrait;" << endl << endl;
+
   if (generateAsTrait && is_exception) {
     indent(out) << "require extends TException;" << endl;
   }
@@ -2406,8 +2408,8 @@ void t_hack_generator::generate_php_struct_reader(ofstream& out,
   const vector<t_field*>& fields = tstruct->get_members();
   vector<t_field*>::const_iterator f_iter;
 
-  indent(out) <<
-    "public function read(\\TProtocol $input): int {" << endl;
+  indent(out) << "public function readLegacy(\\TProtocol $input): int {"
+              << endl;
   indent_up();
   t_name_generator namer;
 
@@ -2571,8 +2573,8 @@ void t_hack_generator::generate_php_struct_writer(ofstream& out,
   const vector<t_field*>& fields = tstruct->get_sorted_members();
   vector<t_field*>::const_iterator f_iter;
 
-  indent(out) <<
-    "public function write(\\TProtocol $output): int {" << endl;
+  indent(out) << "public function writeLegacy(\\TProtocol $output): int {"
+              << endl;
   indent_up();
 
   t_name_generator namer;

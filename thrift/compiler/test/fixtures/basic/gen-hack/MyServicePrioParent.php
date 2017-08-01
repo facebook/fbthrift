@@ -507,6 +507,8 @@ class MyServicePrioParentProcessor extends MyServicePrioParentSyncProcessor {}
 // HELPER FUNCTIONS AND STRUCTURES
 
 class MyServicePrioParent_ping_args implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -540,7 +542,7 @@ class MyServicePrioParent_ping_args implements \IThriftStruct, \IThriftShapishSt
     return shape(
     );
   }
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -570,7 +572,7 @@ class MyServicePrioParent_ping_args implements \IThriftStruct, \IThriftShapishSt
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyServicePrioParent_ping_args');
     $xfer += $output->writeFieldStop();
@@ -581,6 +583,8 @@ class MyServicePrioParent_ping_args implements \IThriftStruct, \IThriftShapishSt
 }
 
 class MyServicePrioParent_ping_result implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -594,7 +598,7 @@ class MyServicePrioParent_ping_result implements \IThriftStruct, \IThriftShapish
     return 'MyServicePrioParent_ping_result';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -624,7 +628,7 @@ class MyServicePrioParent_ping_result implements \IThriftStruct, \IThriftShapish
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyServicePrioParent_ping_result');
     $xfer += $output->writeFieldStop();
@@ -635,6 +639,8 @@ class MyServicePrioParent_ping_result implements \IThriftStruct, \IThriftShapish
 }
 
 class MyServicePrioParent_pong_args implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -668,7 +674,7 @@ class MyServicePrioParent_pong_args implements \IThriftStruct, \IThriftShapishSt
     return shape(
     );
   }
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -698,7 +704,7 @@ class MyServicePrioParent_pong_args implements \IThriftStruct, \IThriftShapishSt
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyServicePrioParent_pong_args');
     $xfer += $output->writeFieldStop();
@@ -709,6 +715,8 @@ class MyServicePrioParent_pong_args implements \IThriftStruct, \IThriftShapishSt
 }
 
 class MyServicePrioParent_pong_result implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -722,7 +730,7 @@ class MyServicePrioParent_pong_result implements \IThriftStruct, \IThriftShapish
     return 'MyServicePrioParent_pong_result';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -752,7 +760,7 @@ class MyServicePrioParent_pong_result implements \IThriftStruct, \IThriftShapish
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyServicePrioParent_pong_result');
     $xfer += $output->writeFieldStop();

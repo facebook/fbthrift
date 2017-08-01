@@ -21,6 +21,8 @@ type MyEnumType = MyEnum;
  * MyStruct
  */
 class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'MyIntField',
@@ -104,7 +106,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       'MyStringField' => $this->MyStringField,
     );
   }
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -148,7 +150,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyStruct');
     if ($this->MyIntField !== null) {

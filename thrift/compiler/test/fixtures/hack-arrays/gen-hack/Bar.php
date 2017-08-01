@@ -190,6 +190,8 @@ class BarClient extends ThriftClientBase implements BarIf {
 // HELPER FUNCTIONS AND STRUCTURES
 
 class Bar_baz_args implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'a',
@@ -249,7 +251,7 @@ class Bar_baz_args implements \IThriftStruct {
     return 'Bar_baz_args';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -358,7 +360,7 @@ class Bar_baz_args implements \IThriftStruct {
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('Bar_baz_args');
     if ($this->a !== null) {
@@ -420,6 +422,8 @@ class Bar_baz_args implements \IThriftStruct {
 }
 
 class Bar_baz_result implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     0 => array(
       'var' => 'success',
@@ -439,7 +443,7 @@ class Bar_baz_result implements \IThriftStruct {
     return 'Bar_baz_result';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -476,7 +480,7 @@ class Bar_baz_result implements \IThriftStruct {
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('Bar_baz_result');
     if ($this->success !== null) {

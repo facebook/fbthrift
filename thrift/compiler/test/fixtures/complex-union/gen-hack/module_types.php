@@ -21,6 +21,8 @@ enum ComplexUnionEnum: int {
  * ComplexUnion
  */
 class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'intValue',
@@ -239,7 +241,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     return nullthrows($this->stringRef);
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -369,7 +371,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('ComplexUnion');
     if ($this->intValue !== null) {
@@ -460,6 +462,8 @@ enum FinalComplexUnionEnum: int {
  * FinalComplexUnion
  */
 class FinalComplexUnion implements \IThriftStruct, \IThriftUnion<FinalComplexUnionEnum> {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'thingOne',
@@ -539,7 +543,7 @@ class FinalComplexUnion implements \IThriftStruct, \IThriftUnion<FinalComplexUni
     return nullthrows($this->thingTwo);
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -586,7 +590,7 @@ class FinalComplexUnion implements \IThriftStruct, \IThriftUnion<FinalComplexUni
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('FinalComplexUnion');
     if ($this->thingOne !== null) {

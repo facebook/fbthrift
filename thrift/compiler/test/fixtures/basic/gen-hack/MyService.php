@@ -1345,6 +1345,8 @@ class MyServiceProcessor extends MyServiceSyncProcessor {}
 // HELPER FUNCTIONS AND STRUCTURES
 
 class MyService_ping_args implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1378,7 +1380,7 @@ class MyService_ping_args implements \IThriftStruct, \IThriftShapishStruct {
     return shape(
     );
   }
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -1408,7 +1410,7 @@ class MyService_ping_args implements \IThriftStruct, \IThriftShapishStruct {
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyService_ping_args');
     $xfer += $output->writeFieldStop();
@@ -1419,6 +1421,8 @@ class MyService_ping_args implements \IThriftStruct, \IThriftShapishStruct {
 }
 
 class MyService_ping_result implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1432,7 +1436,7 @@ class MyService_ping_result implements \IThriftStruct, \IThriftShapishStruct {
     return 'MyService_ping_result';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -1462,7 +1466,7 @@ class MyService_ping_result implements \IThriftStruct, \IThriftShapishStruct {
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyService_ping_result');
     $xfer += $output->writeFieldStop();
@@ -1473,6 +1477,8 @@ class MyService_ping_result implements \IThriftStruct, \IThriftShapishStruct {
 }
 
 class MyService_getRandomData_args implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -1506,7 +1512,7 @@ class MyService_getRandomData_args implements \IThriftStruct, \IThriftShapishStr
     return shape(
     );
   }
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -1536,7 +1542,7 @@ class MyService_getRandomData_args implements \IThriftStruct, \IThriftShapishStr
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyService_getRandomData_args');
     $xfer += $output->writeFieldStop();
@@ -1547,6 +1553,8 @@ class MyService_getRandomData_args implements \IThriftStruct, \IThriftShapishStr
 }
 
 class MyService_getRandomData_result implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     0 => array(
       'var' => 'success',
@@ -1566,7 +1574,7 @@ class MyService_getRandomData_result implements \IThriftStruct, \IThriftShapishS
     return 'MyService_getRandomData_result';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -1603,7 +1611,7 @@ class MyService_getRandomData_result implements \IThriftStruct, \IThriftShapishS
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyService_getRandomData_result');
     if ($this->success !== null) {
@@ -1620,6 +1628,8 @@ class MyService_getRandomData_result implements \IThriftStruct, \IThriftShapishS
 }
 
 class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'id',
@@ -1674,7 +1684,7 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
       'id' => $this->id,
     );
   }
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -1711,7 +1721,7 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyService_hasDataById_args');
     if ($this->id !== null) {
@@ -1728,6 +1738,8 @@ class MyService_hasDataById_args implements \IThriftStruct, \IThriftShapishStruc
 }
 
 class MyService_hasDataById_result implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     0 => array(
       'var' => 'success',
@@ -1747,7 +1759,7 @@ class MyService_hasDataById_result implements \IThriftStruct, \IThriftShapishStr
     return 'MyService_hasDataById_result';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -1784,7 +1796,7 @@ class MyService_hasDataById_result implements \IThriftStruct, \IThriftShapishStr
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyService_hasDataById_result');
     if ($this->success !== null) {
@@ -1801,6 +1813,8 @@ class MyService_hasDataById_result implements \IThriftStruct, \IThriftShapishStr
 }
 
 class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'id',
@@ -1855,7 +1869,7 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
       'id' => $this->id,
     );
   }
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -1892,7 +1906,7 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyService_getDataById_args');
     if ($this->id !== null) {
@@ -1909,6 +1923,8 @@ class MyService_getDataById_args implements \IThriftStruct, \IThriftShapishStruc
 }
 
 class MyService_getDataById_result implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     0 => array(
       'var' => 'success',
@@ -1928,7 +1944,7 @@ class MyService_getDataById_result implements \IThriftStruct, \IThriftShapishStr
     return 'MyService_getDataById_result';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -1965,7 +1981,7 @@ class MyService_getDataById_result implements \IThriftStruct, \IThriftShapishStr
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyService_getDataById_result');
     if ($this->success !== null) {
@@ -1982,6 +1998,8 @@ class MyService_getDataById_result implements \IThriftStruct, \IThriftShapishStr
 }
 
 class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'id',
@@ -2057,7 +2075,7 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
       'data' => $this->data,
     );
   }
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -2101,7 +2119,7 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyService_putDataById_args');
     if ($this->id !== null) {
@@ -2124,6 +2142,8 @@ class MyService_putDataById_args implements \IThriftStruct, \IThriftShapishStruc
 }
 
 class MyService_putDataById_result implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -2137,7 +2157,7 @@ class MyService_putDataById_result implements \IThriftStruct, \IThriftShapishStr
     return 'MyService_putDataById_result';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -2167,7 +2187,7 @@ class MyService_putDataById_result implements \IThriftStruct, \IThriftShapishStr
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyService_putDataById_result');
     $xfer += $output->writeFieldStop();
@@ -2178,6 +2198,8 @@ class MyService_putDataById_result implements \IThriftStruct, \IThriftShapishStr
 }
 
 class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'id',
@@ -2253,7 +2275,7 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
       'data' => $this->data,
     );
   }
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -2297,7 +2319,7 @@ class MyService_lobDataById_args implements \IThriftStruct, \IThriftShapishStruc
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyService_lobDataById_args');
     if ($this->id !== null) {

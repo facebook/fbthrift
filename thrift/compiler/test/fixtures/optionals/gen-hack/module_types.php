@@ -22,6 +22,8 @@ type AnimalType = Animal;
  * Color
  */
 class Color implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'red',
@@ -95,7 +97,7 @@ class Color implements \IThriftStruct {
     return 'Color';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -153,7 +155,7 @@ class Color implements \IThriftStruct {
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('Color');
     if ($this->red !== null) {
@@ -192,6 +194,8 @@ class Color implements \IThriftStruct {
  * Vehicle
  */
 class Vehicle implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'color',
@@ -265,7 +269,7 @@ class Vehicle implements \IThriftStruct {
     return 'Vehicle';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -331,7 +335,7 @@ class Vehicle implements \IThriftStruct {
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('Vehicle');
     if ($this->color !== null) {
@@ -379,6 +383,8 @@ class Vehicle implements \IThriftStruct {
  * Person
  */
 class Person implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'id',
@@ -533,7 +539,7 @@ class Person implements \IThriftStruct {
     return 'Person';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -690,7 +696,7 @@ class Person implements \IThriftStruct {
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('Person');
     if ($this->id !== null) {

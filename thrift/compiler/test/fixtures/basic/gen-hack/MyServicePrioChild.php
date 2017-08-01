@@ -282,6 +282,8 @@ class MyServicePrioChildProcessor extends MyServicePrioChildSyncProcessor {}
 // HELPER FUNCTIONS AND STRUCTURES
 
 class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -315,7 +317,7 @@ class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStr
     return shape(
     );
   }
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -345,7 +347,7 @@ class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStr
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyServicePrioChild_pang_args');
     $xfer += $output->writeFieldStop();
@@ -356,6 +358,8 @@ class MyServicePrioChild_pang_args implements \IThriftStruct, \IThriftShapishStr
 }
 
 class MyServicePrioChild_pang_result implements \IThriftStruct, \IThriftShapishStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     );
   public static Map<string, int> $_TFIELDMAP = Map {
@@ -369,7 +373,7 @@ class MyServicePrioChild_pang_result implements \IThriftStruct, \IThriftShapishS
     return 'MyServicePrioChild_pang_result';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -399,7 +403,7 @@ class MyServicePrioChild_pang_result implements \IThriftStruct, \IThriftShapishS
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('MyServicePrioChild_pang_result');
     $xfer += $output->writeFieldStop();

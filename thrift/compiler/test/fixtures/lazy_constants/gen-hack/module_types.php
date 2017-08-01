@@ -35,6 +35,8 @@ type CompanyType = Company;
  * Internship
  */
 class Internship implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'weeks',
@@ -90,7 +92,7 @@ class Internship implements \IThriftStruct {
     return 'Internship';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -149,7 +151,7 @@ class Internship implements \IThriftStruct {
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('Internship');
     if ($this->weeks !== null) {
@@ -182,6 +184,8 @@ class Internship implements \IThriftStruct {
  * Range
  */
 class Range implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
   public static array $_TSPEC = array(
     1 => array(
       'var' => 'min',
@@ -225,7 +229,7 @@ class Range implements \IThriftStruct {
     return 'Range';
   }
 
-  public function read(\TProtocol $input): int {
+  public function readLegacy(\TProtocol $input): int {
     $xfer = 0;
     $fname = '';
     $ftype = 0;
@@ -279,7 +283,7 @@ class Range implements \IThriftStruct {
     return $xfer;
   }
 
-  public function write(\TProtocol $output): int {
+  public function writeLegacy(\TProtocol $output): int {
     $xfer = 0;
     $xfer += $output->writeStructBegin('Range');
     if ($this->min !== null) {
