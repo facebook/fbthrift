@@ -88,8 +88,6 @@ class MyLeafAsyncProcessor : public  ::cpp2::MyNodeAsyncProcessor {
   template <class ProtocolIn_, class ProtocolOut_>
   static folly::IOBufQueue return_do_leaf(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
   template <class ProtocolIn_, class ProtocolOut_>
-  static void throw_do_leaf(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx);
-  template <class ProtocolIn_, class ProtocolOut_>
   static void throw_wrapped_do_leaf(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,folly::exception_wrapper ew,apache::thrift::Cpp2RequestContext* reqCtx);
  public:
   MyLeafAsyncProcessor(MyLeafSvIf* iface) :

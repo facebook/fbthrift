@@ -275,36 +275,24 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
  */
 class HandlerCallbackBase {
  protected:
-  typedef void(*exn_ptr)(std::unique_ptr<ResponseChannel::Request>,
-                         int32_t protoSeqId,
-                         apache::thrift::ContextStack*,
-                         std::exception_ptr,
-                         Cpp2RequestContext*);
   typedef void(*exnw_ptr)(std::unique_ptr<ResponseChannel::Request>,
                           int32_t protoSeqId,
                           apache::thrift::ContextStack*,
                           folly::exception_wrapper,
                           Cpp2RequestContext*);
  public:
-
   HandlerCallbackBase()
-      : ep_(nullptr)
-      , eb_(nullptr)
-      , tm_(nullptr)
-      , reqCtx_(nullptr)
-      , protoSeqId_(0) {}
+      : eb_(nullptr), tm_(nullptr), reqCtx_(nullptr), protoSeqId_(0) {}
 
   HandlerCallbackBase(
     std::unique_ptr<ResponseChannel::Request> req,
     std::unique_ptr<apache::thrift::ContextStack> ctx,
-    exn_ptr ep,
     exnw_ptr ewp,
     folly::EventBase* eb,
     apache::thrift::concurrency::ThreadManager* tm,
     Cpp2RequestContext* reqCtx) :
       req_(std::move(req)),
       ctx_(std::move(ctx)),
-      ep_(ep),
       ewp_(ewp),
       eb_(eb),
       tm_(tm),
@@ -332,7 +320,7 @@ class HandlerCallbackBase {
 
   // Warning: just like "throw ex", this captures the STATIC type of ex, not
   // the dynamic type.  If you need the dynamic type, then either you should
-  // be using exception_ptr instead of a reference to a base exception class,
+  // be using exception_wrapper instead of a reference to a base exception type,
   // or your exception hierarchy should be equipped to throw polymorphically,
   // see // http://www.parashift.com/c++-faq/throwing-polymorphically.html
   template <class Exception>
@@ -426,7 +414,7 @@ class HandlerCallbackBase {
 
       apache::thrift::TApplicationException ex(
         "Failed to add task to queue, too full");
-      if (req_ && ep_) {
+      if (req_ && ewp_) {
         req_->sendErrorWrapped(
             folly::make_exception_wrapper<TApplicationException>(std::move(ex)),
             kQueueOverloadedErrorCode);
@@ -440,6 +428,16 @@ class HandlerCallbackBase {
   }
 
  protected:
+  static folly::exception_wrapper wrap_eptr(std::exception_ptr eptr) {
+    try {
+      std::rethrow_exception(eptr);
+    } catch (std::exception& e) {
+      return folly::exception_wrapper(std::current_exception(), e);
+    } catch (...) {
+      return folly::exception_wrapper(std::current_exception());
+    }
+  }
+
   // HACK(tudorb): Call this to set up forwarding to the event base and
   // thread manager of the other callback.  Use when you want to create
   // callback wrappers that forward to another callback (and do some
@@ -447,7 +445,6 @@ class HandlerCallbackBase {
   void forward(const HandlerCallbackBase& other) {
     eb_ = other.eb_;
     tm_ = other.tm_;
-    ep_ = other.ep_;
     ewp_ = other.ewp_;
   }
 
@@ -463,11 +460,7 @@ class HandlerCallbackBase {
 
   // Can be called from IO or TM thread
   virtual void doException(std::exception_ptr ex) {
-    if (req_ == nullptr) {
-      LOG(ERROR) << folly::exceptionStr(ex);
-    } else {
-      callExceptionInEventBaseThread(ep_, ex);
-    }
+    doExceptionWrapped(wrap_eptr(ex));
   }
 
   virtual void doExceptionWrapped(folly::exception_wrapper ew) {
@@ -515,7 +508,6 @@ class HandlerCallbackBase {
   std::unique_ptr<apache::thrift::ContextStack> ctx_;
 
   // May be null in a oneway call
-  exn_ptr ep_;
   exnw_ptr ewp_;
 
   // Useful pointers, so handler doesn't need to have a pointer to the server
@@ -553,18 +545,22 @@ class HandlerCallback : public HandlerCallbackBase {
       : cp_(nullptr) {}
 
   HandlerCallback(
-    std::unique_ptr<ResponseChannel::Request> req,
-    std::unique_ptr<apache::thrift::ContextStack> ctx,
-    cob_ptr cp,
-    exn_ptr ep,
-    exnw_ptr ewp,
-    int32_t protoSeqId,
-    folly::EventBase* eb,
-    apache::thrift::concurrency::ThreadManager* tm,
-    Cpp2RequestContext* reqCtx) :
-      HandlerCallbackBase(std::move(req), std::move(ctx), ep, ewp,
-                          eb, tm, reqCtx),
-      cp_(cp) {
+      std::unique_ptr<ResponseChannel::Request> req,
+      std::unique_ptr<apache::thrift::ContextStack> ctx,
+      cob_ptr cp,
+      exnw_ptr ewp,
+      int32_t protoSeqId,
+      folly::EventBase* eb,
+      apache::thrift::concurrency::ThreadManager* tm,
+      Cpp2RequestContext* reqCtx)
+      : HandlerCallbackBase(
+            std::move(req),
+            std::move(ctx),
+            ewp,
+            eb,
+            tm,
+            reqCtx),
+        cp_(cp) {
     this->protoSeqId_ = protoSeqId;
   }
 
@@ -653,18 +649,22 @@ class HandlerCallback<void> : public HandlerCallbackBase {
       : cp_(nullptr) {}
 
   HandlerCallback(
-    std::unique_ptr<ResponseChannel::Request> req,
-    std::unique_ptr<apache::thrift::ContextStack> ctx,
-    cob_ptr cp,
-    exn_ptr ep,
-    exnw_ptr ewp,
-    int32_t protoSeqId,
-    folly::EventBase* eb,
-    apache::thrift::concurrency::ThreadManager* tm,
-    Cpp2RequestContext* reqCtx) :
-      HandlerCallbackBase(std::move(req), std::move(ctx), ep, ewp,
-                          eb, tm, reqCtx),
-      cp_(cp) {
+      std::unique_ptr<ResponseChannel::Request> req,
+      std::unique_ptr<apache::thrift::ContextStack> ctx,
+      cob_ptr cp,
+      exnw_ptr ewp,
+      int32_t protoSeqId,
+      folly::EventBase* eb,
+      apache::thrift::concurrency::ThreadManager* tm,
+      Cpp2RequestContext* reqCtx)
+      : HandlerCallbackBase(
+            std::move(req),
+            std::move(ctx),
+            ewp,
+            eb,
+            tm,
+            reqCtx),
+        cp_(cp) {
     this->protoSeqId_ = protoSeqId;
   }
 
@@ -730,20 +730,23 @@ public:
       apache::thrift::ContextStack*,
       const ResultType&);
  public:
-
   StreamingHandlerCallback(
-    std::unique_ptr<ResponseChannel::Request> req,
-    std::unique_ptr<apache::thrift::ContextStack> ctx,
-    cob_ptr cp,
-    exn_ptr ep,
-    exnw_ptr ewp,
-    int32_t protoSeqId,
-    folly::EventBase* eb,
-    apache::thrift::concurrency::ThreadManager* tm,
-    Cpp2RequestContext* reqCtx) :
-      HandlerCallbackBase(std::move(req), std::move(ctx), ep, ewp,
-                          eb, tm, reqCtx),
-      cp_(cp) {
+      std::unique_ptr<ResponseChannel::Request> req,
+      std::unique_ptr<apache::thrift::ContextStack> ctx,
+      cob_ptr cp,
+      exnw_ptr ewp,
+      int32_t protoSeqId,
+      folly::EventBase* eb,
+      apache::thrift::concurrency::ThreadManager* tm,
+      Cpp2RequestContext* reqCtx)
+      : HandlerCallbackBase(
+            std::move(req),
+            std::move(ctx),
+            ewp,
+            eb,
+            tm,
+            reqCtx),
+        cp_(cp) {
     this->protoSeqId_ = protoSeqId;
   }
 

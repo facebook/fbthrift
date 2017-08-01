@@ -63,7 +63,7 @@ void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<a
     LOG(ERROR) << ex.what() << " in function noResponse";
     return;
   }
-  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(c), nullptr, nullptr, eb, tm, ctx));
+  std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(new apache::thrift::HandlerCallbackBase(std::move(req), std::move(c), nullptr, eb, tm, ctx));
 <%/function:oneway?%>
 <%^function:oneway?%>
     ProtocolOut_ prot;
@@ -83,10 +83,10 @@ void <%service:name%>AsyncProcessor::process_<%function:name%>(std::unique_ptr<a
     }
   }
 <%^type:resolves_to_complex_return?%>
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > Type%>>>(std::move(req), std::move(c), return_<%function:name%><ProtocolIn_,ProtocolOut_>, throw_<%function:name%><ProtocolIn_, ProtocolOut_>, throw_wrapped_<%function:name%><ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<<% > Type%>>>(std::move(req), std::move(c), return_<%function:name%><ProtocolIn_,ProtocolOut_>, throw_wrapped_<%function:name%><ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
 <%/type:resolves_to_complex_return?%>
 <%#type:resolves_to_complex_return?%>
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>>(std::move(req), std::move(c), return_<%function:name%><ProtocolIn_,ProtocolOut_>, throw_<%function:name%><ProtocolIn_, ProtocolOut_>, throw_wrapped_<%function:name%><ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<<% > Type%>>>>(std::move(req), std::move(c), return_<%function:name%><ProtocolIn_,ProtocolOut_>, throw_wrapped_<%function:name%><ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
 <%/type:resolves_to_complex_return?%>
 <%^function:eb%>
   if (!callback->isRequestActive()) {
@@ -114,64 +114,6 @@ folly::IOBufQueue <%service:name%>AsyncProcessor::return_<%function:name%>(int32
   result.setIsSet(0, true);
 <%/type:void?%>
   return serializeResponse("<%function:name%>", &prot, protoSeqId, ctx, result);
-}
-
-template <class ProtocolIn_, class ProtocolOut_>
-void <%service:name%>AsyncProcessor::throw_<%function:name%>(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx) {
-  ProtocolOut_ prot;
-<%#function:exceptions?%>
-  <%service:name%>_<%function:name%>_presult result;
-<%/function:exceptions?%>
-  try {
-    std::rethrow_exception(ep);
-  }
-<%#function:exceptions%>
-  catch (const <%#field:type%><% > common/type_namespace_cpp2%><%type:name%><%/field:type%>& e) {
-    ctx->userExceptionWrapped(true, folly::exception_wrapper(ep, e));
-<%#type:void?%>
-    result.get<<%field:index%>>().ref() = e;
-    result.setIsSet(<%field:index%>, true);
-<%/type:void?%>
-<%^type:void?%>
-    result.get<<%field:index_plus_one%>>().ref() = e;
-    result.setIsSet(<%field:index_plus_one%>, true);
-<%/type:void?%>
-  }
-<%/function:exceptions%>
-  catch (const std::exception& e) {
-    auto ew = folly::exception_wrapper(ep, e);
-    if (req) {
-      LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in function <%function:name%>";
-      apache::thrift::TApplicationException x(folly::exceptionStr(e).toStdString());
-      ctx->userExceptionWrapped(false, ew);
-      ctx->handlerErrorWrapped(ew);
-      folly::IOBufQueue queue = serializeException("<%function:name%>", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in oneway function <%function:name%>";
-    }
-  }
-  catch (...) {
-    if (req) {
-      LOG(ERROR) << "<unknown exception>" << " in function <%function:name%>";
-      apache::thrift::TApplicationException x("<unknown exception>");
-      folly::IOBufQueue queue = serializeException("<%function:name%>", &prot, protoSeqId, nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << "<unknown exception>" << " in oneway function <%function:name%>";
-    }
-  }
-<%#function:exceptions?%>
-  auto queue = serializeResponse("<%function:name%>", &prot, protoSeqId, ctx, result);
-  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-  return req->sendReply(queue.move());
-<%/function:exceptions?%>
 }
 
 template <class ProtocolIn_, class ProtocolOut_>

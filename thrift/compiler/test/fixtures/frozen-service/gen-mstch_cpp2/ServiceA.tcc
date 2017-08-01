@@ -74,7 +74,7 @@ void ServiceAAsyncProcessor::process_moduleAMethod(std::unique_ptr<apache::thrif
       LOG(ERROR) << ex.what() << " in oneway function moduleAMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_moduleAMethod<ProtocolIn_,ProtocolOut_>, throw_moduleAMethod<ProtocolIn_, ProtocolOut_>, throw_wrapped_moduleAMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_moduleAMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_moduleAMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -88,43 +88,6 @@ folly::IOBufQueue ServiceAAsyncProcessor::return_moduleAMethod(int32_t protoSeqI
   ProtocolOut_ prot;
   ServiceA_moduleAMethod_presult result;
   return serializeResponse("moduleAMethod", &prot, protoSeqId, ctx, result);
-}
-
-template <class ProtocolIn_, class ProtocolOut_>
-void ServiceAAsyncProcessor::throw_moduleAMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx) {
-  ProtocolOut_ prot;
-  try {
-    std::rethrow_exception(ep);
-  }
-  catch (const std::exception& e) {
-    auto ew = folly::exception_wrapper(ep, e);
-    if (req) {
-      LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in function moduleAMethod";
-      apache::thrift::TApplicationException x(folly::exceptionStr(e).toStdString());
-      ctx->userExceptionWrapped(false, ew);
-      ctx->handlerErrorWrapped(ew);
-      folly::IOBufQueue queue = serializeException("moduleAMethod", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in oneway function moduleAMethod";
-    }
-  }
-  catch (...) {
-    if (req) {
-      LOG(ERROR) << "<unknown exception>" << " in function moduleAMethod";
-      apache::thrift::TApplicationException x("<unknown exception>");
-      folly::IOBufQueue queue = serializeException("moduleAMethod", &prot, protoSeqId, nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << "<unknown exception>" << " in oneway function moduleAMethod";
-    }
-  }
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -185,7 +148,7 @@ void ServiceAAsyncProcessor::process_moduleBMethod(std::unique_ptr<apache::thrif
       LOG(ERROR) << ex.what() << " in oneway function moduleBMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_moduleBMethod<ProtocolIn_,ProtocolOut_>, throw_moduleBMethod<ProtocolIn_, ProtocolOut_>, throw_wrapped_moduleBMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_moduleBMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_moduleBMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -199,43 +162,6 @@ folly::IOBufQueue ServiceAAsyncProcessor::return_moduleBMethod(int32_t protoSeqI
   ProtocolOut_ prot;
   ServiceA_moduleBMethod_presult result;
   return serializeResponse("moduleBMethod", &prot, protoSeqId, ctx, result);
-}
-
-template <class ProtocolIn_, class ProtocolOut_>
-void ServiceAAsyncProcessor::throw_moduleBMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx) {
-  ProtocolOut_ prot;
-  try {
-    std::rethrow_exception(ep);
-  }
-  catch (const std::exception& e) {
-    auto ew = folly::exception_wrapper(ep, e);
-    if (req) {
-      LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in function moduleBMethod";
-      apache::thrift::TApplicationException x(folly::exceptionStr(e).toStdString());
-      ctx->userExceptionWrapped(false, ew);
-      ctx->handlerErrorWrapped(ew);
-      folly::IOBufQueue queue = serializeException("moduleBMethod", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in oneway function moduleBMethod";
-    }
-  }
-  catch (...) {
-    if (req) {
-      LOG(ERROR) << "<unknown exception>" << " in function moduleBMethod";
-      apache::thrift::TApplicationException x("<unknown exception>");
-      folly::IOBufQueue queue = serializeException("moduleBMethod", &prot, protoSeqId, nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << "<unknown exception>" << " in oneway function moduleBMethod";
-    }
-  }
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -300,7 +226,7 @@ void ServiceAAsyncProcessor::process_i32StrDoubleMethod(std::unique_ptr<apache::
       LOG(ERROR) << ex.what() << " in oneway function i32StrDoubleMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_i32StrDoubleMethod<ProtocolIn_,ProtocolOut_>, throw_i32StrDoubleMethod<ProtocolIn_, ProtocolOut_>, throw_wrapped_i32StrDoubleMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_i32StrDoubleMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_i32StrDoubleMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -314,43 +240,6 @@ folly::IOBufQueue ServiceAAsyncProcessor::return_i32StrDoubleMethod(int32_t prot
   ProtocolOut_ prot;
   ServiceA_i32StrDoubleMethod_presult result;
   return serializeResponse("i32StrDoubleMethod", &prot, protoSeqId, ctx, result);
-}
-
-template <class ProtocolIn_, class ProtocolOut_>
-void ServiceAAsyncProcessor::throw_i32StrDoubleMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx) {
-  ProtocolOut_ prot;
-  try {
-    std::rethrow_exception(ep);
-  }
-  catch (const std::exception& e) {
-    auto ew = folly::exception_wrapper(ep, e);
-    if (req) {
-      LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in function i32StrDoubleMethod";
-      apache::thrift::TApplicationException x(folly::exceptionStr(e).toStdString());
-      ctx->userExceptionWrapped(false, ew);
-      ctx->handlerErrorWrapped(ew);
-      folly::IOBufQueue queue = serializeException("i32StrDoubleMethod", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in oneway function i32StrDoubleMethod";
-    }
-  }
-  catch (...) {
-    if (req) {
-      LOG(ERROR) << "<unknown exception>" << " in function i32StrDoubleMethod";
-      apache::thrift::TApplicationException x("<unknown exception>");
-      folly::IOBufQueue queue = serializeException("i32StrDoubleMethod", &prot, protoSeqId, nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << "<unknown exception>" << " in oneway function i32StrDoubleMethod";
-    }
-  }
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -415,7 +304,7 @@ void ServiceAAsyncProcessor::process_versioningMethod(std::unique_ptr<apache::th
       LOG(ERROR) << ex.what() << " in oneway function versioningMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_versioningMethod<ProtocolIn_,ProtocolOut_>, throw_versioningMethod<ProtocolIn_, ProtocolOut_>, throw_wrapped_versioningMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_versioningMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_versioningMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -429,43 +318,6 @@ folly::IOBufQueue ServiceAAsyncProcessor::return_versioningMethod(int32_t protoS
   ProtocolOut_ prot;
   ServiceA_versioningMethod_presult result;
   return serializeResponse("versioningMethod", &prot, protoSeqId, ctx, result);
-}
-
-template <class ProtocolIn_, class ProtocolOut_>
-void ServiceAAsyncProcessor::throw_versioningMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx) {
-  ProtocolOut_ prot;
-  try {
-    std::rethrow_exception(ep);
-  }
-  catch (const std::exception& e) {
-    auto ew = folly::exception_wrapper(ep, e);
-    if (req) {
-      LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in function versioningMethod";
-      apache::thrift::TApplicationException x(folly::exceptionStr(e).toStdString());
-      ctx->userExceptionWrapped(false, ew);
-      ctx->handlerErrorWrapped(ew);
-      folly::IOBufQueue queue = serializeException("versioningMethod", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in oneway function versioningMethod";
-    }
-  }
-  catch (...) {
-    if (req) {
-      LOG(ERROR) << "<unknown exception>" << " in function versioningMethod";
-      apache::thrift::TApplicationException x("<unknown exception>");
-      folly::IOBufQueue queue = serializeException("versioningMethod", &prot, protoSeqId, nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << "<unknown exception>" << " in oneway function versioningMethod";
-    }
-  }
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -524,7 +376,7 @@ void ServiceAAsyncProcessor::process_retI32Method(std::unique_ptr<apache::thrift
       LOG(ERROR) << ex.what() << " in oneway function retI32Method";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_retI32Method<ProtocolIn_,ProtocolOut_>, throw_retI32Method<ProtocolIn_, ProtocolOut_>, throw_wrapped_retI32Method<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(std::move(req), std::move(c), return_retI32Method<ProtocolIn_,ProtocolOut_>, throw_wrapped_retI32Method<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -540,43 +392,6 @@ folly::IOBufQueue ServiceAAsyncProcessor::return_retI32Method(int32_t protoSeqId
   result.get<0>().value = const_cast<int32_t*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("retI32Method", &prot, protoSeqId, ctx, result);
-}
-
-template <class ProtocolIn_, class ProtocolOut_>
-void ServiceAAsyncProcessor::throw_retI32Method(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx) {
-  ProtocolOut_ prot;
-  try {
-    std::rethrow_exception(ep);
-  }
-  catch (const std::exception& e) {
-    auto ew = folly::exception_wrapper(ep, e);
-    if (req) {
-      LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in function retI32Method";
-      apache::thrift::TApplicationException x(folly::exceptionStr(e).toStdString());
-      ctx->userExceptionWrapped(false, ew);
-      ctx->handlerErrorWrapped(ew);
-      folly::IOBufQueue queue = serializeException("retI32Method", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in oneway function retI32Method";
-    }
-  }
-  catch (...) {
-    if (req) {
-      LOG(ERROR) << "<unknown exception>" << " in function retI32Method";
-      apache::thrift::TApplicationException x("<unknown exception>");
-      folly::IOBufQueue queue = serializeException("retI32Method", &prot, protoSeqId, nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << "<unknown exception>" << " in oneway function retI32Method";
-    }
-  }
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -635,7 +450,7 @@ void ServiceAAsyncProcessor::process_retModAMethod(std::unique_ptr<apache::thrif
       LOG(ERROR) << ex.what() << " in oneway function retModAMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::ns::ModuleA>>>(std::move(req), std::move(c), return_retModAMethod<ProtocolIn_,ProtocolOut_>, throw_retModAMethod<ProtocolIn_, ProtocolOut_>, throw_wrapped_retModAMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr< ::some::ns::ModuleA>>>(std::move(req), std::move(c), return_retModAMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_retModAMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -651,43 +466,6 @@ folly::IOBufQueue ServiceAAsyncProcessor::return_retModAMethod(int32_t protoSeqI
   result.get<0>().value = const_cast< ::some::ns::ModuleA*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("retModAMethod", &prot, protoSeqId, ctx, result);
-}
-
-template <class ProtocolIn_, class ProtocolOut_>
-void ServiceAAsyncProcessor::throw_retModAMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx) {
-  ProtocolOut_ prot;
-  try {
-    std::rethrow_exception(ep);
-  }
-  catch (const std::exception& e) {
-    auto ew = folly::exception_wrapper(ep, e);
-    if (req) {
-      LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in function retModAMethod";
-      apache::thrift::TApplicationException x(folly::exceptionStr(e).toStdString());
-      ctx->userExceptionWrapped(false, ew);
-      ctx->handlerErrorWrapped(ew);
-      folly::IOBufQueue queue = serializeException("retModAMethod", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in oneway function retModAMethod";
-    }
-  }
-  catch (...) {
-    if (req) {
-      LOG(ERROR) << "<unknown exception>" << " in function retModAMethod";
-      apache::thrift::TApplicationException x("<unknown exception>");
-      folly::IOBufQueue queue = serializeException("retModAMethod", &prot, protoSeqId, nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << "<unknown exception>" << " in oneway function retModAMethod";
-    }
-  }
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -746,7 +524,7 @@ void ServiceAAsyncProcessor::process_throwMethod(std::unique_ptr<apache::thrift:
       LOG(ERROR) << ex.what() << " in oneway function throwMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_throwMethod<ProtocolIn_,ProtocolOut_>, throw_throwMethod<ProtocolIn_, ProtocolOut_>, throw_wrapped_throwMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_throwMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_throwMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -760,52 +538,6 @@ folly::IOBufQueue ServiceAAsyncProcessor::return_throwMethod(int32_t protoSeqId,
   ProtocolOut_ prot;
   ServiceA_throwMethod_presult result;
   return serializeResponse("throwMethod", &prot, protoSeqId, ctx, result);
-}
-
-template <class ProtocolIn_, class ProtocolOut_>
-void ServiceAAsyncProcessor::throw_throwMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx) {
-  ProtocolOut_ prot;
-  ServiceA_throwMethod_presult result;
-  try {
-    std::rethrow_exception(ep);
-  }
-  catch (const  ::some::ns::ExceptionA& e) {
-    ctx->userExceptionWrapped(true, folly::exception_wrapper(ep, e));
-    result.get<0>().ref() = e;
-    result.setIsSet(0, true);
-  }
-  catch (const std::exception& e) {
-    auto ew = folly::exception_wrapper(ep, e);
-    if (req) {
-      LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in function throwMethod";
-      apache::thrift::TApplicationException x(folly::exceptionStr(e).toStdString());
-      ctx->userExceptionWrapped(false, ew);
-      ctx->handlerErrorWrapped(ew);
-      folly::IOBufQueue queue = serializeException("throwMethod", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in oneway function throwMethod";
-    }
-  }
-  catch (...) {
-    if (req) {
-      LOG(ERROR) << "<unknown exception>" << " in function throwMethod";
-      apache::thrift::TApplicationException x("<unknown exception>");
-      folly::IOBufQueue queue = serializeException("throwMethod", &prot, protoSeqId, nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << "<unknown exception>" << " in oneway function throwMethod";
-    }
-  }
-  auto queue = serializeResponse("throwMethod", &prot, protoSeqId, ctx, result);
-  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-  return req->sendReply(queue.move());
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -874,7 +606,7 @@ void ServiceAAsyncProcessor::process_multiThrowMethod(std::unique_ptr<apache::th
       LOG(ERROR) << ex.what() << " in oneway function multiThrowMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_multiThrowMethod<ProtocolIn_,ProtocolOut_>, throw_multiThrowMethod<ProtocolIn_, ProtocolOut_>, throw_wrapped_multiThrowMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_multiThrowMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_multiThrowMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -888,57 +620,6 @@ folly::IOBufQueue ServiceAAsyncProcessor::return_multiThrowMethod(int32_t protoS
   ProtocolOut_ prot;
   ServiceA_multiThrowMethod_presult result;
   return serializeResponse("multiThrowMethod", &prot, protoSeqId, ctx, result);
-}
-
-template <class ProtocolIn_, class ProtocolOut_>
-void ServiceAAsyncProcessor::throw_multiThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx) {
-  ProtocolOut_ prot;
-  ServiceA_multiThrowMethod_presult result;
-  try {
-    std::rethrow_exception(ep);
-  }
-  catch (const  ::some::ns::ExceptionA& e) {
-    ctx->userExceptionWrapped(true, folly::exception_wrapper(ep, e));
-    result.get<0>().ref() = e;
-    result.setIsSet(0, true);
-  }
-  catch (const  ::some::ns::ExceptionB& e) {
-    ctx->userExceptionWrapped(true, folly::exception_wrapper(ep, e));
-    result.get<1>().ref() = e;
-    result.setIsSet(1, true);
-  }
-  catch (const std::exception& e) {
-    auto ew = folly::exception_wrapper(ep, e);
-    if (req) {
-      LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in function multiThrowMethod";
-      apache::thrift::TApplicationException x(folly::exceptionStr(e).toStdString());
-      ctx->userExceptionWrapped(false, ew);
-      ctx->handlerErrorWrapped(ew);
-      folly::IOBufQueue queue = serializeException("multiThrowMethod", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in oneway function multiThrowMethod";
-    }
-  }
-  catch (...) {
-    if (req) {
-      LOG(ERROR) << "<unknown exception>" << " in function multiThrowMethod";
-      apache::thrift::TApplicationException x("<unknown exception>");
-      folly::IOBufQueue queue = serializeException("multiThrowMethod", &prot, protoSeqId, nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << "<unknown exception>" << " in oneway function multiThrowMethod";
-    }
-  }
-  auto queue = serializeResponse("multiThrowMethod", &prot, protoSeqId, ctx, result);
-  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-  return req->sendReply(queue.move());
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1015,7 +696,7 @@ void ServiceAAsyncProcessor::process_i32ThrowMethod(std::unique_ptr<apache::thri
       LOG(ERROR) << ex.what() << " in oneway function i32ThrowMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_i32ThrowMethod<ProtocolIn_,ProtocolOut_>, throw_i32ThrowMethod<ProtocolIn_, ProtocolOut_>, throw_wrapped_i32ThrowMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_i32ThrowMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_i32ThrowMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1029,52 +710,6 @@ folly::IOBufQueue ServiceAAsyncProcessor::return_i32ThrowMethod(int32_t protoSeq
   ProtocolOut_ prot;
   ServiceA_i32ThrowMethod_presult result;
   return serializeResponse("i32ThrowMethod", &prot, protoSeqId, ctx, result);
-}
-
-template <class ProtocolIn_, class ProtocolOut_>
-void ServiceAAsyncProcessor::throw_i32ThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx) {
-  ProtocolOut_ prot;
-  ServiceA_i32ThrowMethod_presult result;
-  try {
-    std::rethrow_exception(ep);
-  }
-  catch (const  ::some::ns::ExceptionA& e) {
-    ctx->userExceptionWrapped(true, folly::exception_wrapper(ep, e));
-    result.get<0>().ref() = e;
-    result.setIsSet(0, true);
-  }
-  catch (const std::exception& e) {
-    auto ew = folly::exception_wrapper(ep, e);
-    if (req) {
-      LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in function i32ThrowMethod";
-      apache::thrift::TApplicationException x(folly::exceptionStr(e).toStdString());
-      ctx->userExceptionWrapped(false, ew);
-      ctx->handlerErrorWrapped(ew);
-      folly::IOBufQueue queue = serializeException("i32ThrowMethod", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in oneway function i32ThrowMethod";
-    }
-  }
-  catch (...) {
-    if (req) {
-      LOG(ERROR) << "<unknown exception>" << " in function i32ThrowMethod";
-      apache::thrift::TApplicationException x("<unknown exception>");
-      folly::IOBufQueue queue = serializeException("i32ThrowMethod", &prot, protoSeqId, nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << "<unknown exception>" << " in oneway function i32ThrowMethod";
-    }
-  }
-  auto queue = serializeResponse("i32ThrowMethod", &prot, protoSeqId, ctx, result);
-  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-  return req->sendReply(queue.move());
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1145,7 +780,7 @@ void ServiceAAsyncProcessor::process_moduleAThrowMethod(std::unique_ptr<apache::
       LOG(ERROR) << ex.what() << " in oneway function moduleAThrowMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_moduleAThrowMethod<ProtocolIn_,ProtocolOut_>, throw_moduleAThrowMethod<ProtocolIn_, ProtocolOut_>, throw_wrapped_moduleAThrowMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<void>>(std::move(req), std::move(c), return_moduleAThrowMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_moduleAThrowMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1159,52 +794,6 @@ folly::IOBufQueue ServiceAAsyncProcessor::return_moduleAThrowMethod(int32_t prot
   ProtocolOut_ prot;
   ServiceA_moduleAThrowMethod_presult result;
   return serializeResponse("moduleAThrowMethod", &prot, protoSeqId, ctx, result);
-}
-
-template <class ProtocolIn_, class ProtocolOut_>
-void ServiceAAsyncProcessor::throw_moduleAThrowMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx) {
-  ProtocolOut_ prot;
-  ServiceA_moduleAThrowMethod_presult result;
-  try {
-    std::rethrow_exception(ep);
-  }
-  catch (const  ::some::ns::ExceptionA& e) {
-    ctx->userExceptionWrapped(true, folly::exception_wrapper(ep, e));
-    result.get<0>().ref() = e;
-    result.setIsSet(0, true);
-  }
-  catch (const std::exception& e) {
-    auto ew = folly::exception_wrapper(ep, e);
-    if (req) {
-      LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in function moduleAThrowMethod";
-      apache::thrift::TApplicationException x(folly::exceptionStr(e).toStdString());
-      ctx->userExceptionWrapped(false, ew);
-      ctx->handlerErrorWrapped(ew);
-      folly::IOBufQueue queue = serializeException("moduleAThrowMethod", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in oneway function moduleAThrowMethod";
-    }
-  }
-  catch (...) {
-    if (req) {
-      LOG(ERROR) << "<unknown exception>" << " in function moduleAThrowMethod";
-      apache::thrift::TApplicationException x("<unknown exception>");
-      folly::IOBufQueue queue = serializeException("moduleAThrowMethod", &prot, protoSeqId, nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << "<unknown exception>" << " in oneway function moduleAThrowMethod";
-    }
-  }
-  auto queue = serializeResponse("moduleAThrowMethod", &prot, protoSeqId, ctx, result);
-  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-  return req->sendReply(queue.move());
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1279,7 +868,7 @@ void ServiceAAsyncProcessor::process_mixedMethod(std::unique_ptr<apache::thrift:
       LOG(ERROR) << ex.what() << " in oneway function mixedMethod";
     }
   }
-  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>>(std::move(req), std::move(c), return_mixedMethod<ProtocolIn_,ProtocolOut_>, throw_mixedMethod<ProtocolIn_, ProtocolOut_>, throw_wrapped_mixedMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
+  auto callback = std::make_unique<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>>(std::move(req), std::move(c), return_mixedMethod<ProtocolIn_,ProtocolOut_>, throw_wrapped_mixedMethod<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
   if (!callback->isRequestActive()) {
     callback.release()->deleteInThread();
     return;
@@ -1295,57 +884,6 @@ folly::IOBufQueue ServiceAAsyncProcessor::return_mixedMethod(int32_t protoSeqId,
   result.get<0>().value = const_cast<std::string*>(&_return);
   result.setIsSet(0, true);
   return serializeResponse("mixedMethod", &prot, protoSeqId, ctx, result);
-}
-
-template <class ProtocolIn_, class ProtocolOut_>
-void ServiceAAsyncProcessor::throw_mixedMethod(std::unique_ptr<apache::thrift::ResponseChannel::Request> req,int32_t protoSeqId,apache::thrift::ContextStack* ctx,std::exception_ptr ep,apache::thrift::Cpp2RequestContext* reqCtx) {
-  ProtocolOut_ prot;
-  ServiceA_mixedMethod_presult result;
-  try {
-    std::rethrow_exception(ep);
-  }
-  catch (const  ::some::ns::ExceptionA& e) {
-    ctx->userExceptionWrapped(true, folly::exception_wrapper(ep, e));
-    result.get<1>().ref() = e;
-    result.setIsSet(1, true);
-  }
-  catch (const  ::some::ns::ExceptionB& e) {
-    ctx->userExceptionWrapped(true, folly::exception_wrapper(ep, e));
-    result.get<2>().ref() = e;
-    result.setIsSet(2, true);
-  }
-  catch (const std::exception& e) {
-    auto ew = folly::exception_wrapper(ep, e);
-    if (req) {
-      LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in function mixedMethod";
-      apache::thrift::TApplicationException x(folly::exceptionStr(e).toStdString());
-      ctx->userExceptionWrapped(false, ew);
-      ctx->handlerErrorWrapped(ew);
-      folly::IOBufQueue queue = serializeException("mixedMethod", &prot, protoSeqId, ctx, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << folly::exceptionStr(e).toStdString() << " in oneway function mixedMethod";
-    }
-  }
-  catch (...) {
-    if (req) {
-      LOG(ERROR) << "<unknown exception>" << " in function mixedMethod";
-      apache::thrift::TApplicationException x("<unknown exception>");
-      folly::IOBufQueue queue = serializeException("mixedMethod", &prot, protoSeqId, nullptr, x);
-      queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-      req->sendReply(queue.move());
-      return;
-    }
-    else {
-      LOG(ERROR) << "<unknown exception>" << " in oneway function mixedMethod";
-    }
-  }
-  auto queue = serializeResponse("mixedMethod", &prot, protoSeqId, ctx, result);
-  queue.append(apache::thrift::transport::THeader::transform(queue.move(), reqCtx->getHeader()->getWriteTransforms(), reqCtx->getHeader()->getMinCompressBytes()));
-  return req->sendReply(queue.move());
 }
 
 template <class ProtocolIn_, class ProtocolOut_>

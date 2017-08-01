@@ -1422,13 +1422,12 @@ class CppGenerator(t_generator.Generator):
         if function.oneway:
             out('std::unique_ptr<apache::thrift::HandlerCallbackBase> callback(' +
               'new apache::thrift::HandlerCallbackBase(std::move(req), ' +
-              'std::move(c), nullptr, nullptr, eb, tm, ctx));')
+              'std::move(c), nullptr, eb, tm, ctx));')
         else:
             cb_class = self._get_handler_callback_class(function)
             out(('auto callback = std::make_unique<{0}>(std::move(req), ' +
                'std::move(c), return_{1}<ProtocolIn_,' +
-               'ProtocolOut_>, throw_{1}<ProtocolIn_,' +
-               ' ProtocolOut_>, throw_wrapped_{1}<ProtocolIn_,' +
+               'ProtocolOut_>, throw_wrapped_{1}<ProtocolIn_,' +
                ' ProtocolOut_>, ctx->getProtoSeqId(),' +
                ' eb, tm, ctx);').format(cb_class, function.name))
         # Oneway request won't be canceled if expired. see D1006482 for
@@ -1650,50 +1649,6 @@ class CppGenerator(t_generator.Generator):
                             out('{0};'.format(
                                 self._get_presult_exception_isset(ex_idx, xception, 'true')))
                 if not function.oneway:
-                    with out().defn(
-                        'template <class ProtocolIn_, class ProtocolOut_>\n' +
-                        'void {name}(std::unique_ptr' +
-                        '<apache::thrift::ResponseChannel::Request> req,' +
-                        'int32_t protoSeqId,' +
-                        'apache::thrift::ContextStack* ctx,' +
-                        'std::exception_ptr ep,' +
-                        'apache::thrift::Cpp2RequestContext* reqCtx)',
-                                name="throw_{0}".format(function.name),
-                                modifiers='static',
-                                output=self._out_tcc):
-                        out('ProtocolOut_ prot;')
-                        if len(function.xceptions.members) > 0:
-                            out('{0}_{1}_presult result;'.format(
-                                    service.name, function.name))
-                        with out('try'):
-                            out('std::rethrow_exception(ep);')
-                        cast_xceptions(
-                            function.xceptions.members)
-                        with out('catch (const std::exception& e)'):
-                            out('auto ew = folly::exception_wrapper(ep, e);')
-                            self._generate_app_ex(
-                                service,
-                                "folly::exceptionStr(e)." +
-                                "toStdString()",
-                                function.name, "protoSeqId", True,
-                                out(), 'reqCtx',
-                                uex_ew='ew')
-                        with out('catch (...)'):
-                            self._generate_app_ex(
-                                service,
-                                "\"<unknown exception>\"",
-                                function.name, "protoSeqId", True,
-                                out(), 'reqCtx')
-                        if len(function.xceptions.members) > 0:
-                            out('auto queue = serializeResponse('
-                              '"{0}", &prot, protoSeqId, ctx,'
-                              ' result);'.format(function.name))
-                            out('queue.append('
-                                'apache::thrift::transport::THeader::transform('
-                                'queue.move(), '
-                                '{0}->getHeader()->getWriteTransforms(), '
-                                '{0}->getHeader()->getMinCompressBytes()));'.format('reqCtx'))
-                            out('return req->sendReply(queue.move());')
                     with out().defn(
                         'template <class ProtocolIn_, class ProtocolOut_>\n' +
                         'void {name}(std::unique_ptr' +
