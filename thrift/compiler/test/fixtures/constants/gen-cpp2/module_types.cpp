@@ -4,15 +4,15 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "thrift/compiler/test/fixtures/constants/gen-cpp2/module_types.h"
+#include "src/gen-cpp2/module_types.h"
 
-#include "thrift/compiler/test/fixtures/constants/gen-cpp2/module_types.tcc"
+#include "src/gen-cpp2/module_types.tcc"
 
 #include <algorithm>
 
 #include <folly/Indestructible.h>
 
-#include "thrift/compiler/test/fixtures/constants/gen-cpp2/module_data.h"
+#include "src/gen-cpp2/module_data.h"
 
 
 

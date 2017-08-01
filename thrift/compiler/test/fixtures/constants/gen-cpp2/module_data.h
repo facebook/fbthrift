@@ -11,7 +11,7 @@
 
 #include <thrift/lib/cpp/Thrift.h>
 
-#include "thrift/compiler/test/fixtures/constants/gen-cpp2/module_types.h"
+#include "src/gen-cpp2/module_types.h"
 
 namespace cpp2 {
 

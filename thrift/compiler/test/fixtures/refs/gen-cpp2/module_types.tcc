@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "thrift/compiler/test/fixtures/refs/gen-cpp2/module_types.h"
+#include "src/gen-cpp2/module_types.h"
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>

@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/enums_types.h"
+#include "src/gen-cpp2/enums_types.h"
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>

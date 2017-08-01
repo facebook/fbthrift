@@ -14,7 +14,7 @@
 
 
 
-#include "thrift/compiler/test/fixtures/exceptions/gen-cpp2/module_types.h"
+#include "src/gen-cpp2/module_types.h"
 
 namespace folly {
   class IOBuf;

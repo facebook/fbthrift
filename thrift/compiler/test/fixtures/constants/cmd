@@ -3,7 +3,6 @@ py src/module.thrift
 php:lazy_constants=1 src/module.thrift
 hack:lazy_constants=1 src/module.thrift
 cpp src/module.thrift
-cpp2 src/module.thrift
 go src/module.thrift
 mstch_cpp2 src/module.thrift
 mstch_swift src/module.thrift

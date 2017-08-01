@@ -11,7 +11,7 @@
 
 #include <thrift/lib/cpp/Thrift.h>
 
-#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/includes_types.h"
+#include "src/gen-cpp2/includes_types.h"
 
 namespace a { namespace different { namespace ns {
 

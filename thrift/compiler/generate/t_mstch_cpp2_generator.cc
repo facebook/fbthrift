@@ -629,10 +629,14 @@ class mstch_cpp2_service : public mstch_service {
     return service_->get_program()->get_name();
   }
   mstch::node include_prefix() {
-    if (!service_->get_program()->get_include_prefix().empty()) {
-      return cache_->parsed_options_["include_prefix"] + "/gen-cpp2/";
+    auto prefix = service_->get_program()->get_include_prefix();
+    if (!prefix.empty()) {
+      if (prefix[0] == '/') {
+        return cache_->parsed_options_["include_prefix"] + "/gen-cpp2/";
+      }
+      return prefix + "gen-cpp2/";
     }
-    return std::string("");
+    return std::string();
   }
   mstch::node thrift_includes() {
     mstch::array a{};
@@ -799,10 +803,14 @@ class mstch_cpp2_program : public mstch_program {
     return get_namespace_array();
   }
   mstch::node include_prefix() {
-    if (!program_->get_include_prefix().empty()) {
-      return cache_->parsed_options_["include_prefix"] + "/gen-cpp2/";
+    auto prefix = program_->get_include_prefix();
+    if (!prefix.empty()) {
+      if (prefix[0] == '/') {
+        return cache_->parsed_options_["include_prefix"] + "/gen-cpp2/";
+      }
+      return prefix + "gen-cpp2/";
     }
-    return std::string("");
+    return std::string();
   }
   mstch::node has_enums() {
     return !program_->get_enums().empty();
@@ -958,9 +966,7 @@ t_mstch_cpp2_generator::t_mstch_cpp2_generator(
     const std::map<std::string, std::string>& parsed_options,
     const std::string& /*option_string*/)
     : t_mstch_generator(program, "cpp2", parsed_options, true) {
-  // TODO: use gen-cpp2 when this implementation is ready to replace the
-  // old python implementation.
-  out_dir_base_ = "gen-mstch_cpp2";
+  out_dir_base_ = "gen-cpp2";
 }
 
 void t_mstch_cpp2_generator::generate_program() {

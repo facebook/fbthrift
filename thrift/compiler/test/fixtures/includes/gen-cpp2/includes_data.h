@@ -11,6 +11,6 @@
 
 #include <thrift/lib/cpp/Thrift.h>
 
-#include "thrift/compiler/test/fixtures/includes/gen-cpp2/includes_types.h"
+#include "src/gen-cpp2/includes_types.h"
 
 

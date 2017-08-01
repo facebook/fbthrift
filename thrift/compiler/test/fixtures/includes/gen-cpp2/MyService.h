@@ -16,7 +16,7 @@
 #include "includes_types.h"
 
 
-#include "thrift/compiler/test/fixtures/includes/gen-cpp2/service_types.h"
+#include "src/gen-cpp2/service_types.h"
 
 namespace folly {
   class IOBuf;

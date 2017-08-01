@@ -13,9 +13,9 @@
 #include <folly/futures/Future.h>
 
 
-#include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/MyNode.h"
+#include "src/gen-cpp2/MyNode.h"
 
-#include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/module_types.h"
+#include "src/gen-cpp2/module_types.h"
 
 namespace folly {
   class IOBuf;

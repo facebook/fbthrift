@@ -4,9 +4,9 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/MyRoot.h"
+#include "src/gen-cpp2/MyRoot.h"
 
-#include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/MyRoot.tcc"
+#include "src/gen-cpp2/MyRoot.tcc"
 
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>

@@ -157,6 +157,8 @@ def parseParameters(parser, args):
         if len(tmp) == 1:
             tmp.append('')
         lang, switches = tmp
+        if "mstch_cpp2" == lang:
+            lang = "cpp2"
         if lang not in generator_registry.generator_factory_map:
             raise ArgumentError('Language {0} not defined.'.format(lang))
         switches = toDict(switches)

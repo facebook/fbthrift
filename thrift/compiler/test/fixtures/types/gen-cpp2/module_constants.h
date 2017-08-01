@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "thrift/compiler/test/fixtures/types/gen-cpp2/module_types.h"
+#include "src/gen-cpp2/module_types.h"
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 

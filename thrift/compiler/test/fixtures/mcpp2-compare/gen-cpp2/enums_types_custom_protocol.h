@@ -14,5 +14,5 @@
  * VirtualProtocol) to read/write thrift structs.
  */
 
-#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/enums_types.tcc"
+#include "src/gen-cpp2/enums_types.tcc"
 

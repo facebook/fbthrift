@@ -120,7 +120,7 @@ bool record_genfiles = false;
  */
 static bool generate(
     t_program* program,
-    const vector<string>& generator_strings,
+    vector<string>& generator_strings,
     std::set<std::string>& already_generated,
     const std::string& user_python_compiler,
     char** argv) {
@@ -157,9 +157,29 @@ static bool generate(
       dump_docstrings(program);
     }
 
-    vector<string>::const_iterator iter;
-    for (iter = generator_strings.begin(); iter != generator_strings.end(); ++iter) {
-      t_generator* generator = t_generator_registry::get_generator(program, *iter);
+    for (auto options : generator_strings) {
+      // Use cpp2 python generator if:
+      if (options.find("mstch_cpp2") != std::string::npos &&
+          (options.find("json") != std::string::npos ||
+           options.find("future") != std::string::npos ||
+           options.find("frozen") != std::string::npos ||
+           options.find("frozen2") != std::string::npos ||
+           options.find("py_generator") != std::string::npos ||
+           options.find("optionals") != std::string::npos ||
+           options.find("stack_arguments") != std::string::npos ||
+           options.find("fatal") != std::string::npos ||
+           options.find("reflection") != std::string::npos ||
+           options.find("compatibility") != std::string::npos ||
+           options.find("implicit_templates") != std::string::npos ||
+           options.find("separate_processmap") != std::string::npos ||
+           options.find("process_in_event_base") != std::string::npos ||
+           options.find("terse_writes") != std::string::npos ||
+           options.find("modulemap") != std::string::npos)) {
+        options = options.replace(0, 6, "");
+      }
+
+      t_generator* generator =
+          t_generator_registry::get_generator(program, options);
 
 #     ifndef _WIN32
       if (!apache::thrift::compiler::isWindows() && generator == nullptr) {
@@ -199,12 +219,12 @@ static bool generate(
             pwarning(
                 1,
                 "Unable to get a generator for \"%s\" ret: %d.\n",
-                iter->c_str(),
+                options.c_str(),
                 ret);
           }
         }
       } else {
-        pverbose("Generating \"%s\"\n", iter->c_str());
+        pverbose("Generating \"%s\"\n", options.c_str());
         generator->generate_program();
         if (record_genfiles) {
           for (const std::string& s : generator->get_genfiles()) {

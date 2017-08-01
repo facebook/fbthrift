@@ -1,6 +1,5 @@
 android_lite src/module.thrift
 cpp src/module.thrift
-cpp2 src/module.thrift
 go src/module.thrift
 java src/module.thrift
 hack src/module.thrift

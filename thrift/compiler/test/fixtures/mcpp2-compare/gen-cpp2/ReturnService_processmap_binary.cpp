@@ -4,9 +4,9 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/ReturnService.h"
+#include "src/gen-cpp2/ReturnService.h"
 
-#include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/ReturnService.tcc"
+#include "src/gen-cpp2/ReturnService.tcc"
 
 namespace some { namespace valid { namespace ns {
 

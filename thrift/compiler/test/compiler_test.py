@@ -131,12 +131,6 @@ class CompilerTest(unittest.TestCase):
             fixture_code = os.path.join(fixture_dir, 'gen-' + lang)
             self.compare_code(gen_code, fixture_code)
 
-        # Compare the generate code of cpp2 and mstch_cpp2 if both present
-        if "cpp2" in languages and "mstch_cpp2" in languages:
-            gen_code = os.path.join(self.tmp, 'gen-cpp2')
-            fixture_code = os.path.join(fixture_dir, 'gen-mstch_cpp2')
-            self.compare_code(gen_code, fixture_code)
-
 def add_fixture(klazz, name):
     def test_method(self):
         self.runTest(name)

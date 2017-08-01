@@ -6,7 +6,7 @@
  */
 #pragma once
 
-#include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/MyLeaf.h"
+#include "src/gen-cpp2/MyLeaf.h"
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
