@@ -619,7 +619,7 @@ class CppGenerator(t_generator.Generator):
             # TEnumTraits<T>::findValue()
             with out().defn('template <> bool TEnumTraits<{fullName}>::'
                         'findValue(const char* name, {fullName}* outValue)'.
-                        format(**locals()), name='findName'):
+                        format(**locals()), name='findValue'):
                 out('static auto const map = folly::Indestructible<{0}{1}'
                     '::NamesToValuesMapType>{{{0}{1}::makeNamesToValuesMap()}};'
                     .format(ns, map_factory))
