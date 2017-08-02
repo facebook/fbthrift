@@ -181,7 +181,8 @@ thrift2include_utildir = $(thrift2includedir)/util
 thrift2include_util_HEADERS = \
 	util/MapCopy.h \
 	util/ScopedServerInterfaceThread.h \
-	util/ScopedServerInterfaceThread-inl.h
+	util/ScopedServerInterfaceThread-inl.h \
+	util/Frozen2ViewHelpers.h
 
 thrift2include_securitydir = $(thrift2includedir)/security
 

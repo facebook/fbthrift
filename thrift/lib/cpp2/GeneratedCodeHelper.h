@@ -24,6 +24,7 @@
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/frozen/Frozen.h>
 #include <thrift/lib/cpp2/protocol/Frozen2Protocol.h>
+#include <thrift/lib/cpp2/util/Frozen2ViewHelpers.h>
 #include <type_traits>
 
 namespace apache { namespace thrift {
@@ -361,6 +362,16 @@ class ThriftPresult : private std::tuple<Field...>,
 };
 
 namespace frozen {
+
+template <bool hasIsSet, typename... Fields>
+struct ViewHelper<ThriftPresult<hasIsSet, Fields...>> {
+  using ViewType = ThriftPresult<hasIsSet, Fields...>;
+  using ObjectType = ThriftPresult<hasIsSet, Fields...>;
+
+  static ObjectType thaw(ViewType v) {
+    return v;
+  }
+};
 
 template <bool hasIsSet, typename... Args>
 class Layout<
