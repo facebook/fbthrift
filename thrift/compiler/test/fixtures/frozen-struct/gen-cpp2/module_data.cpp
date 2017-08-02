@@ -4,7 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
-#include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/module_data.h"
+#include "src/gen-cpp2/module_data.h"
 
 namespace some { namespace ns {
 

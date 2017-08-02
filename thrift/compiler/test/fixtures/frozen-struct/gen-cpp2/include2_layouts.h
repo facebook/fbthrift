@@ -7,7 +7,7 @@
 #pragma once
 
 #include <thrift/lib/cpp2/frozen/Frozen.h>
-#include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include2_types.h"
+#include "src/gen-cpp2/include2_types.h"
 namespace apache { namespace thrift { namespace frozen {
 
 FROZEN_TYPE( ::some::ns::IncludedB,

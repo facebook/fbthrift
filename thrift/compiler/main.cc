@@ -162,8 +162,6 @@ static bool generate(
       if (options.find("mstch_cpp2") != std::string::npos &&
           (options.find("json") != std::string::npos ||
            options.find("future") != std::string::npos ||
-           options.find("frozen") != std::string::npos ||
-           options.find("frozen2") != std::string::npos ||
            options.find("py_generator") != std::string::npos ||
            options.find("optionals") != std::string::npos ||
            options.find("stack_arguments") != std::string::npos ||
