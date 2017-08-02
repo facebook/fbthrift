@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <thrift/lib/cpp2/util/Frozen2ViewHelpers.h>
+
 namespace apache {
 namespace thrift {
 
@@ -128,6 +130,16 @@ uint32_t Frozen2ProtocolReader::readObject(T& o) {
   frozen::deserializeRootLayout(range, layout);
   layout.thaw({range.begin(), 0}, o);
   return len;
+}
+
+template <typename ViewT>
+inline uint32_t Frozen2ProtocolReader::readObject(
+    frozen::Bundled<ViewT>& mapped) {
+  using T = typename frozen::ViewHelper<ViewT>::ObjectType;
+  std::string str;
+  uint32_t xfer = readString(str);
+  mapped = frozen::mapFrozen<T>(std::move(str));
+  return xfer;
 }
 
 uint32_t Frozen2ProtocolReader::readI32(int32_t& i32) {

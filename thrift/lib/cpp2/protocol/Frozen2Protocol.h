@@ -109,6 +109,9 @@ class Frozen2ProtocolReader {
   template <typename T>
   inline uint32_t readObject(T&);
 
+  template <typename ViewType>
+  inline uint32_t readObject(frozen::Bundled<ViewType>&);
+
   uint32_t skip(TType type) {
     if (type == TType::T_STRUCT) {
       std::string str;

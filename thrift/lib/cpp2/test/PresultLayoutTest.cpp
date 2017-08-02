@@ -173,3 +173,24 @@ TEST(PreusltLayout, GetView) {
   ASSERT_EQ(i32Layout, 8);
   ASSERT_EQ(strLayout[0], 'a');
 }
+
+TEST(PresultLayout, GetViewFromProtocol) {
+  Frozen2ProtocolWriter outprot;
+  folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+
+  Matched a;
+  int32_t i32A = 8;
+  std::string strA = "a";
+  a.get<0>().value = &i32A;
+  a.get<1>().value = &strA;
+
+  outprot.setOutput(&queue, outprot.serializedObjectSize(a));
+  outprot.writeObject(a);
+
+  Frozen2ProtocolReader inprot;
+  inprot.setInput(queue.front());
+  frozen::MappedFrozen<Matched> mapped;
+  inprot.readObject(mapped);
+  ASSERT_EQ(mapped.get<0>(), 8);
+  ASSERT_EQ(mapped.get<1>()[0], 'a');
+}

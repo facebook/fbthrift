@@ -69,3 +69,24 @@ TEST(Frozen2Protocol, readObject) {
 
   ASSERT_EQ(a, b);
 }
+
+TEST(Frozen2Protocol, readObjectWithView) {
+  Frozen2ProtocolWriter outprot;
+  folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
+
+  StructA a;
+  a.i32Field = 1;
+  a.strField = "a";
+  makeVector(a.listField);
+
+  outprot.setOutput(&queue, outprot.serializedObjectSize(a));
+  outprot.writeObject(a);
+
+  Frozen2ProtocolReader inprot;
+  inprot.setInput(queue.front());
+  frozen::MappedFrozen<StructA> mapped;
+  inprot.readObject(mapped);
+
+  ASSERT_EQ(mapped.i32Field(), 1);
+  ASSERT_EQ(mapped.strField()[0], 'a');
+}
