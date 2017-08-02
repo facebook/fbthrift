@@ -420,9 +420,6 @@ class Layout<
           .layout.view(
               this->position_(std::get<Idx>(this->layout_->asTuple()).pos));
     }
-    void thaw(ViewPosition pos, T& o) {
-      this->layout_->thaw(pos, o);
-    }
   };
   View view(ViewPosition self) const {
     return View(this, self);
