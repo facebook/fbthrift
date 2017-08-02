@@ -1262,11 +1262,19 @@ void process_pmap(
 template <class Processor, typename... Args>
 inline void process_frozen(
     Processor*,
-    std::unique_ptr<ResponseChannel::Request>,
+    std::unique_ptr<ResponseChannel::Request> req,
     std::unique_ptr<folly::IOBuf>,
+    Cpp2RequestContext* ctx,
+    folly::EventBase* eb,
     Args&&...) {
-  LOG(ERROR) << "Received Frozen2Protocol request, "
+  DLOG(INFO) << "Received Frozen2Protocol request, "
              << "but server is not built with Frozen2 support";
+  const char* fn = "process";
+  auto type =
+      TApplicationException::TApplicationExceptionType::INVALID_PROTOCOL;
+  const auto msg = "Server not built with frozen2 support";
+  return helper_r<Frozen2ProtocolReader>::process_exn(
+      fn, type, msg, std::move(req), ctx, eb, ctx->getProtoSeqId());
 }
 
 template <class Processor>
